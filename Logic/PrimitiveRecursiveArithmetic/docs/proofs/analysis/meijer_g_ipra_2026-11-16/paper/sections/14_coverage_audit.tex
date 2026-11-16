@@ -1,0 +1,99 @@
+\section{Coverage ledger and source audit}\label{sec:coverage}
+
+\subsection{Status vocabulary}
+
+The companion machine-readable ledger contains 107 claim families extracted
+from the two requested pages.  The statuses are intentionally stricter than a
+binary ``covered/not covered'' flag.
+
+\begin{description}[style=nextline,leftmargin=3.2em]
+\item[\statusP\ --- proved]
+A complete finite constructive argument is written in this report.  It may use
+a previously stated finite Gamma, power-series, or arithmetic lemma, but no
+unnamed convergence or choice principle.
+\item[\statusQ\ --- quantitatively conditional]
+The identity is proved from an explicit certificate predicate: pole clearance,
+branch margin, tail majorant, quadrature bound, endpoint modulus, or transform
+test-class certificate.  The source page suppresses these hypotheses.
+\item[\statusC\ --- corrected]
+The literal web statement is too broad, branch-dependent, resonant, or
+undefined at a boundary.  A corrected theorem is stated and proved.
+\item[\statusR\ --- reduced]
+The claim is reduced to the general certified compiler or transform-kernel
+principle, but a long specialized normalization or an auxiliary
+special-function reduction is not printed in full.  Such a result is not used
+as an unproved premise elsewhere.
+\item[\statusX\ --- not established]
+Reserved for a rejected or unsupported claim.  No ledger item has this status:
+problematic source statements were replaced by precise corrected forms rather
+than simply discarded.
+\end{description}
+
+The distribution is
+\[
+ 46\ \statusP,\qquad 30\ \statusQ,\qquad
+ 29\ \statusC,\qquad 2\ \statusR,
+\]
+for a total of 107 source claim families.  Counting a corrected theorem as a
+success is justified only because the report both identifies the defect and
+proves the repaired statement.
+
+\subsection{Principal corrections}
+
+The most important corrections are mathematical, not stylistic.
+
+\begin{enumerate}
+\item The fundamental systems following the differential equation require
+nonresonance, or else logarithmic Frobenius solutions and Laurent jets.  Merely
+listing $p$ or $q$ power-series solutions does not prove linear independence
+when exponents differ by integers.
+\item Every occurrence of ``for all $x$'' involving $\Log$, $x^\alpha$,
+$\sqrt{x^2}$, inverse trigonometric functions, Bessel functions, or the Lerch
+transcendent needs a branch and domain statement.
+\item The two step-function formulas are naturally positive-real Mellin
+formulas.  For a signed real argument the symmetric statement uses $G(|x|)$,
+and the value at $x=1$ depends on the Heaviside convention.
+\item The Lerch series formulas are proved first for $|x|<1$; outside the unit
+disc the $G$-expression selects a branch continuation, not a globally
+single-valued power series.
+\item The transform sections use phrases such as ``suitable function'' and
+omit convergence restrictions.  The report replaces them by a coded test
+class with explicit Mellin, endpoint, Fubini, and inversion certificates.
+\item The long six-term representation of $x$ is interpreted at $x=0$ by a
+common continuous limit; its individual summands contain singular-looking
+factors there.
+\item Negative derivative order means an antiderivative only after a base point
+or integration constant is specified.  The two displayed G-continuations need
+not remain equal for negative order.
+\end{enumerate}
+
+\subsection{Levels of verification}
+
+Four levels must not be conflated.
+
+\begin{enumerate}
+\item \emph{Mathematical proof.}  The present text supplies finite estimates,
+coefficient calculations, and certificate reductions.
+\item \emph{Executable regression evidence.}  The Python scripts check exact
+coefficient identities and high-precision numerical instances.  Wolfram
+Language was used independently to verify the four MathWorld special cases.
+\item \emph{Lean host scaffold.}  The files in \code{lean/} define the proposed
+records and target interfaces.  They contain placeholders and are explicitly
+not presented as a compiled analytic proof.
+\item \emph{Object-iPRA theorem.}  The eventual endpoint is a derivation
+\code{[] |- [PRAAx] phi}.  No main analytic theorem in this archive is claimed
+to have reached that endpoint.
+\end{enumerate}
+
+This distinction follows the current ProveIt repository itself: its checked
+\code{ConciseIPRA} and \code{IPRADerivations} libraries are kernel-checked,
+whereas the proof packets under \code{docs/proofs} are research reports and
+formalization plans unless a separate derivation module is listed.
+
+\subsection{Detailed ledger}
+
+The table below is generated from \code{claims/coverage.csv}; the CSV also
+contains notes omitted from the typeset table.  In the source column,
+\code{WP} abbreviates Wikipedia and \code{MW} abbreviates MathWorld.
+
+\input{../claims/coverage_table}

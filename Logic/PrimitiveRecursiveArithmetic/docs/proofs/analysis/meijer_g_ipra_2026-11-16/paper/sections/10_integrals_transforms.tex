@@ -1,0 +1,331 @@
+\section{Mellin, Euler, convolution, Laplace, and transform pairs}\label{sec:transforms}
+
+The source page explicitly omits many convergence restrictions.  We retain the
+formulas but replace ``whenever the integral exists'' by checkable endpoint,
+strip, branch, and Fubini certificates.
+
+\subsection{A finite Mellin-pair theorem}
+
+Write the plus-sign kernel as
+\begin{equation}\label{eq:M-kernel}
+ M(s)=
+ \frac{\prod_{j=1}^{m}\Gamma(b_j+s)
+       \prod_{j=1}^{n}\Gamma(1-a_j-s)}
+      {\prod_{j=m+1}^{q}\Gamma(1-b_j-s)
+       \prod_{j=n+1}^{p}\Gamma(a_j+s)}.
+\end{equation}
+The expected pair is
+\begin{equation}\label{eq:mellin-pair}
+ G(\eta x)=\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
+ M(s)(\eta x)^{-s}\dd s,
+ \qquad
+ \int_0^\infty x^{u-1}G(\eta x)\dd x=\eta^{-u}M(u).
+\end{equation}
+A raw exchange of these two infinite integrals would insert a Dirac delta and
+is not a valid elementary Fubini proof.  The constructive proof uses finite
+Fourier inversion after $x=\e^y$.
+
+\begin{definition}[Mellin certificate]\label{def:mellin-cert}
+A Mellin-pair certificate at $c$ gives:
+\begin{enumerate}
+\item endpoint majorants for $f(y)=\e^{cy}G(\eta\e^y)$ and its required finite
+      differences as $y\to\pm\infty$;
+\item vertical decay and quadrature bounds for $M(c+\ii t)$;
+\item a rational modulus of continuity for $f$ on every requested finite
+      interval;
+\item an error schedule for the Fej\'er kernels
+\[
+ K_T(v)=\frac1{2\pi T}\left(\frac{\sin(Tv/2)}{\sin(v/2)}\right)^2
+\]
+(or the continuous triangular Fourier analogue).
+\end{enumerate}
+\end{definition}
+All occurrences of trigonometric functions in the finite kernel have certified
+power-series approximants; its positivity and normalization reduce to finite
+identities and rational error bounds.
+
+\begin{theorem}[Certified Mellin transform]\label{thm:mellin}
+Assume a Mellin certificate and a rational strip
+\begin{equation}\label{eq:mellin-strip}
+ -\min_{1\le j\le m}\Re b_j+\epsilon
+ \le\Re u\le
+ 1-\max_{1\le j\le n}\Re a_j-\epsilon
+\end{equation}
+with $\epsilon>0$ (with the absent side omitted when $m=0$ or $n=0$).  Then
+\begin{equation}\label{eq:mellin-result}
+ \int_0^\infty x^{u-1}G_{p,q}^{m,n}(\eta x)\dd x
+ =\eta^{-u}
+ \frac{\prod_{j=1}^{m}\Gamma(b_j+u)
+       \prod_{j=1}^{n}\Gamma(1-a_j-u)}
+      {\prod_{j=m+1}^{q}\Gamma(1-b_j-u)
+       \prod_{j=n+1}^{p}\Gamma(a_j+u)}.
+\end{equation}
+The equality is a family of finite ball equalities with a primitive-recursive
+modulus.
+\end{theorem}
+\begin{proof}
+After $x=\e^y$, the Mellin transform on the line $\Re u=c$ is the Fourier
+transform of $f(y)$.  Truncate $y$ and $t$ to rational intervals, use finite
+quadrature, and replace the sharp cutoff by the triangular multiplier.  The
+resulting double sum may be reordered exactly.  The finite Fourier kernel
+approximates the identity by the supplied modulus of continuity, while endpoint
+and frequency tails use the certificate.  Moving $u$ within the strip is
+justified by multiplying $f(y)$ by $\e^{(\Re u-c)y}$; the margin $\epsilon$
+preserves both tails.  The Gamma ratio is $M(u)$ by definition.  Every error is
+assigned a dyadic budget before the finite computation.
+\end{proof}
+
+\subsection{Euler--Beta integrals}
+
+Insert the finite contour representation of $G(zx)$ and use
+\begin{equation}\label{eq:beta-inner}
+ \int_0^1 x^{s-\alpha}(1-x)^{\alpha-\beta-1}\dd x
+ =\frac{\Gamma(1-\alpha+s)\Gamma(\alpha-\beta)}
+        {\Gamma(1-\beta+s)}.
+\end{equation}
+The new Gamma quotient is exactly one new top numerator parameter $\alpha$ and
+one new bottom denominator parameter $\beta$.
+
+\begin{theorem}[Two Euler-type integrals]\label{thm:euler-integrals}
+Assume $\Re(\alpha-\beta)>0$, compatible branches, and an endpoint/Fubini
+certificate.  Then
+\begin{align}
+\int_0^1x^{-\alpha}(1-x)^{\alpha-\beta-1}
+G_{p,q}^{m,n}(zx)\dd x
+&=\Gamma(\alpha-\beta)
+G_{p+1,q+1}^{m,n+1}\!\left(
+ \left.\begin{matrix}\alpha,\mathbf a\\\mathbf b,\beta\end{matrix}\right|z\right),
+\label{eq:euler-zero-one}\\
+\int_1^\infty x^{-\alpha}(x-1)^{\alpha-\beta-1}
+G_{p,q}^{m,n}(zx)\dd x
+&=\Gamma(\alpha-\beta)
+G_{p+1,q+1}^{m+1,n}\!\left(
+ \left.\begin{matrix}\mathbf a,\alpha\\\beta,\mathbf b\end{matrix}\right|z\right).
+\label{eq:euler-one-infty}
+\end{align}
+\end{theorem}
+\begin{proof}
+For \eqref{eq:euler-zero-one}, perform the calculation
+\eqref{eq:beta-inner} on $[\epsilon,1-\epsilon]$, where all sums and integrals
+are finite.  The beta identity itself is proved by rational quadrature and the
+Gamma/Beta contract.  The endpoint majorants send $\epsilon$ to the requested
+precision.  For \eqref{eq:euler-one-infty}, substitute $x=1/t$; the inner
+integral becomes a beta integral whose Gamma quotient is
+$\Gamma(\beta-s)/\Gamma(\alpha-s)$, inserting the bottom numerator parameter
+$\beta$ and top denominator parameter $\alpha$.  The supplied Fubini budget
+justifies the finite order exchange.
+\end{proof}
+
+\subsection{Convolution of two \texorpdfstring{$G$}{G}-functions}
+
+Let the second $G$ have parameters $\mathbf c$ (length $\sigma$),
+$\mathbf d$ (length $\tau$), and indices $\mu,\nu$.  The source gives two
+equivalent concatenations.
+
+\begin{theorem}[Meijer convolution]\label{thm:convolution}
+Under a common Mellin strip, positive scales $\eta,\omega$, and a convolution
+certificate,
+\begin{align}
+&\int_0^\infty
+G_{p,q}^{m,n}(\eta x)G_{\sigma,\tau}^{\mu,\nu}(\omega x)\dd x\notag\\
+&=\frac1\eta
+G_{q+\sigma,p+\tau}^{n+\mu,m+\nu}\!\left(
+ \left.\begin{matrix}-b_1,\ldots,-b_m,\mathbf c,-b_{m+1},\ldots,-b_q\\
+ -a_1,\ldots,-a_n,\mathbf d,-a_{n+1},\ldots,-a_p
+ \end{matrix}\right|\frac\omega\eta\right)\label{eq:conv-one}\\
+&=\frac1\omega
+G_{p+\tau,q+\sigma}^{m+\nu,n+\mu}\!\left(
+ \left.\begin{matrix}a_1,\ldots,a_n,-\mathbf d,a_{n+1},\ldots,a_p\\
+ b_1,\ldots,b_m,-\mathbf c,b_{m+1},\ldots,b_q
+ \end{matrix}\right|\frac\eta\omega\right).
+\label{eq:conv-two}
+\end{align}
+\end{theorem}
+\begin{proof}
+Insert a finite Mellin--Barnes approximation for the first factor.  The inner
+$x$-integral is the Mellin transform of the second factor at $1-s$, supplied by
+\cref{thm:mellin}.  Its Gamma factors concatenate with those already present;
+reading the four blocks gives \eqref{eq:conv-one}.  Insert the second factor
+instead to obtain \eqref{eq:conv-two}; alternatively apply inversion and the
+scale change $x\mapsto(\eta/\omega)x$.  The convolution certificate bounds the
+four discarded regions in the finite $(x,t)$ rectangle, so the order exchange
+is an iPRA finite-sum equality plus error inequalities.
+\end{proof}
+
+\subsection{Products with rational powers}
+
+The introductory source claim allows arguments $cx^\gamma$ and $dx^\delta$.
+The following finite compiler proves its mathematically precise form.
+
+\begin{theorem}[Rational-power product compiler]\label{thm:rational-power-product}
+Let $\gamma,\delta>0$ be rational, write
+$\gamma/\delta=A/B$ in lowest terms with $A,B\in\N_{>0}$, and let $c,d>0$.
+Under a common endpoint, branch, Mellin, and Fubini certificate, every integral
+\begin{equation}\label{eq:rational-power-product}
+ \int_0^\infty x^{\lambda-1}G_1(cx^\gamma)G_2(dx^\delta)\dd x
+\end{equation}
+is a computable constant times one ordinary Meijer $G$-function.  Its four
+parameter blocks, argument, and constant are produced by a finite
+primitive-recursive list transformation.  Taking $\lambda=1$ proves the
+product-integral assertion on the source page.
+\end{theorem}
+\begin{proof}
+Insert
+$G_1(cx^\gamma)=(2\pi\ii)^{-1}\int\Phi_1(s)c^sx^{\gamma s}\dd s$.
+The inner integral is the power-substituted Mellin transform
+\[
+ \int_0^\infty x^{\lambda+\gamma s-1}G_2(dx^\delta)\dd x
+ =\frac1\delta d^{-(\lambda+\gamma s)/\delta}
+ M_2\!\left(\frac{\lambda+\gamma s}{\delta}\right).
+\]
+This is first performed on a finite rectangle; the certificate controls all
+discarded pieces.  Put $s=Bu$.  Gamma factors from $\Phi_1(Bu)$ have slope
+$\pm B$, while those from $M_2(\lambda/\delta+Au)$ have slope $\pm A$.
+Gauss multiplication replaces them by unit-slope factors, for example
+\begin{align*}
+ \Gamma(\alpha+Au)
+ &= (2\pi)^{(1-A)/2}A^{\alpha+Au-1/2}
+    \prod_{r=0}^{A-1}\Gamma\!\left(u+\frac{\alpha+r}{A}\right),\\
+ \Gamma(\beta-Bu)
+ &= (2\pi)^{(1-B)/2}B^{\beta-Bu-1/2}
+    \prod_{r=0}^{B-1}\Gamma\!\left(\frac{\beta+r}{B}-u\right).
+\end{align*}
+The inverted formulas handle reciprocal Gamma factors.  Tagging each result by
+slope sign and numerator/denominator position sorts the finite list into the
+four standard blocks.  All $u$-dependent powers combine into one new argument;
+the rest form the prefactor.  Hence the resulting integral is one ordinary
+Meijer $G$-integral.  List expansion, sorting, affine parameter formation, and
+exponent collection are bounded loops, and tail transport uses the same
+finite Gamma-multiplication bounds as \cref{thm:multiplication}.
+\end{proof}
+
+\subsection{Laplace transforms}
+
+The elementary inner integral is
+\begin{equation}\label{eq:laplace-inner}
+ \int_0^\infty \e^{-\omega x}x^{s-\alpha}\dd x
+ =\omega^{\alpha-s-1}\Gamma(1-\alpha+s),
+ \qquad \Re\omega>0.
+\end{equation}
+
+\begin{theorem}[Laplace and inverse Laplace]\label{thm:laplace}
+Under endpoint and Fubini certificates and $\Re\omega>0$,
+\begin{equation}\label{eq:laplace-main}
+\int_0^\infty \e^{-\omega x}x^{-\alpha}G_{p,q}^{m,n}(\eta x)\dd x
+=\omega^{\alpha-1}
+G_{p+1,q}^{m,n+1}\!\left(
+ \left.\begin{matrix}\alpha,\mathbf a\\\mathbf b\end{matrix}\right|
+ \frac\eta\omega\right).
+\end{equation}
+If a Bromwich-line certificate places $\Re\omega=c$ to the right of all poles,
+then the inverse formula is
+\begin{equation}\label{eq:inverse-laplace}
+ x^{-\alpha}G_{p,q+1}^{m,n}(\mathbf a;\mathbf b,\alpha\mid\eta x)
+ =\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
+ \e^{\omega x}\omega^{\alpha-1}
+ G_{p,q}^{m,n}(\mathbf a;\mathbf b\mid\eta/\omega)\dd\omega.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equation \eqref{eq:laplace-inner} inserts the top numerator parameter $\alpha$
+and extracts $\omega^{\alpha-1}$; the remaining power changes the argument to
+$\eta/\omega$.  Finite Fubini proves \eqref{eq:laplace-main}.  The inverse is
+finite Bromwich/Fourier inversion after $\omega=c+\ii t$, with exactly the same
+Fej\'er-kernel method as \cref{thm:mellin}.  The line and tail bounds are part
+of the certificate, rather than hidden in the phrase ``as usual''.
+\end{proof}
+
+\begin{theorem}[Quadratic-argument Laplace formula]\label{thm:quadratic-laplace}
+For $\Re\omega>0$ and the same type of certificates,
+\begin{equation}\label{eq:quadratic-laplace}
+ \int_0^\infty \e^{-\omega x}G_{p,q}^{m,n}(\eta x^2)\dd x
+ =\frac1{\sqrt\pi\,\omega}
+ G_{p+2,q}^{m,n+2}\!\left(
+ \left.\begin{matrix}0,\frac12,\mathbf a\\\mathbf b\end{matrix}\right|
+ \frac{4\eta}{\omega^2}\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Inside a finite contour use
+$\int_0^\infty\e^{-\omega x}x^{2s}\dd x=
+\omega^{-2s-1}\Gamma(2s+1)$ and the duplication identity
+\[
+ \Gamma(2s+1)=\frac{2^{2s}}{\sqrt\pi}\Gamma(s+1)\Gamma(s+\tfrac12).
+\]
+The two new Gamma factors correspond to top parameters $0$ and $1/2$, and
+$2^{2s}\eta^s\omega^{-2s}=(4\eta/\omega^2)^s$.
+\end{proof}
+
+\subsection{Transform kernels: what is proved}
+
+A pair $(k,h)$ is a transform pair on a coded test class $\mathcal T$ when the
+two finite-window operators
+\[
+ (K_Rf)(z)=\int_{1/R}^{R}k(z,y)f(y)\dd y,
+ \qquad
+ (H_Rg)(z)=\int_{1/R}^{R}h(z,y)g(y)\dd y
+\]
+have quadrature and tail certificates, and
+$H_{R(k)}K_{R(k)}f$ is within $2^{-k}$ of $f$ on the requested rational compact
+set.  This definition is first-order once $f,k,h,R$ are fixed PR names.
+
+\begin{theorem}[Certified kernel principle]\label{thm:kernel-principle}
+Suppose the Mellin multipliers of $k$ and $h$ multiply to $1$ on a rational
+strip, and suppose the test function and kernels carry common Mellin, endpoint,
+and Fubini certificates.  Then $(k,h)$ is a transform pair in the finite sense
+above.
+\end{theorem}
+\begin{proof}
+Take finite Mellin transforms.  Convolution becomes multiplication by
+\cref{thm:convolution}; the two multipliers cancel algebraically.  Apply the
+finite Mellin inversion theorem and add the four explicit truncation errors.
+\end{proof}
+
+The Narain kernels on the source page have reciprocal Gamma-ratio multipliers
+once
+$n-p=m-q>0$ and
+$\sum a_j+\sum b_j=\sum c_j+\sum d_j$.  Therefore they instantiate
+\cref{thm:kernel-principle} whenever the further endpoint conditions are
+supplied.  If $p=q$, $m=n$, $a_j+b_j=0$, and $c_j+d_j=0$, parameter inversion
+and reordering show $k=h$; the Hankel kernel is the stated special case.  The
+Wimp kernels are treated identically after expanding the auxiliary $A$-function
+into its $G$-kernel.  These are status \statusQ/\statusR results because the
+source does not specify a maximal test class.
+
+The generalized Laplace pair follows from \cref{thm:kernel-principle} with its
+stated balance
+\[
+ (q+1-p)\frac{\rho}{2\gamma}=\sum_ja_j-\sum_jb_j,
+ \qquad \gamma>0,\quad p\le q.
+\]
+At $\gamma=1/2$, $\rho=0$, and $p=q=0$, the kernel reduces by
+\cref{thm:exp-case} to the ordinary Laplace kernel.  The two Meijer transforms
+with $K_\nu/I_\nu$ and with Whittaker $W/M$ are direct specializations.  For the
+second, set $\gamma=1/2$, $\rho=-m-k$, $p=q=1$, $a_1=m-k$, and $b_1=2m$.
+The forward-kernel identification is the residue identity
+\begin{equation}\label{eq:g-u-whittaker}
+ G_{1,2}^{2,0}\!\left(
+  \left.\begin{matrix}a\\b_1,b_2\end{matrix}\right|x\right)
+ =x^{b_2}\e^{-x}U(a-b_1,1+b_2-b_1,x),
+\end{equation}
+with a common branch.  Taking $(a,b_1,b_2)=(m-k,0,2m)$ and using
+\[
+ W_{k+1/2,m}(x)=x^{m+1/2}\e^{-x/2}U(m-k,1+2m,x)
+\]
+gives exactly the source's $x^{-k-1/2}\e^{-x/2}W_{k+1/2,m}(x)$ kernel after
+multiplying by the generalized-Laplace power $x^{-m-k}$.  For the inverse
+kernel, \cref{thm:hyp-to-g} gives
+\[
+ G_{1,2}^{1,1}\!\left(
+ \left.\begin{matrix}k-m\\0,-2m\end{matrix}\right|-x\right)
+ =\frac{\Gamma(1+m-k)}{\Gamma(1+2m)}
+ {}_1F_1(1+m-k;1+2m;x).
+\]
+Combining this with
+$M_{k-1/2,m}(x)=x^{m+1/2}\e^{-x/2}
+ {}_1F_1(1+m-k;1+2m;x)$ produces the displayed inverse kernel and its Gamma
+normalization.  Formula \eqref{eq:g-u-whittaker} follows from the same two
+residue families as the upper incomplete Gamma case, with a factorial tail.
+Thus both Meijer pairs have status \statusQ under the inherited certificates.
+An unrestricted theorem for every ``suitable'' function is intentionally not
+asserted.

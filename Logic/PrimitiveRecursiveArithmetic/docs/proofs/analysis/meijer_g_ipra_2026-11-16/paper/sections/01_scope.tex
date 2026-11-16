@@ -1,0 +1,128 @@
+\section{Scope, source audit, and exact status}
+
+\subsection{What the two source pages actually assert}
+
+The Wikipedia page gives one definition, three contour types, convergence
+conditions, a differential equation, two residue expansions, conversion to and
+from generalized hypergeometric functions, a polynomial repair formula,
+parameter identities, derivatives, recurrences, scaling expansions, integral
+formulas, transform kernels, and a long table of special cases.  MathWorld gives
+the two sign conventions for the Mellin--Barnes integral, the four-list Wolfram
+Language convention, a generalized fourth parameter $r$, and five special
+values.  We treat a displayed equation, its domain clause, and its convergence
+clause as separate claims.  This is important: several displayed identities
+are correct only after adding hypotheses that the prose suppresses.
+
+The machine-readable ledger \code{claims/coverage.csv} contains the complete
+itemization.  Its status codes are:
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{@{}cX@{}}
+\toprule
+\statusP & proved by a finite algebraic, coefficient, residue, or tail argument developed in this report;\\
+\statusQ & proved under an explicit quantitative admissibility, Fubini, or transform certificate;\\
+\statusC & source statement corrected or restricted (branch, boundary, resonance, or convergence);\\
+\statusR & reduced to a reusable certificate theorem, but a broad ``all suitable functions'' assertion is not made;\\
+\statusX & literal source wording is undefined or cannot be true on the advertised whole domain.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+A status describes the human mathematical argument, not a completed Lean
+object proof.
+
+\subsection{Main constructive theorem}
+
+Fix integers $0\le m\le q$ and $0\le n\le p$, finite parameter lists
+$\mathbf a=(a_1,\ldots,a_p)$ and $\mathbf b=(b_1,\ldots,b_q)$, a branch of
+$\Log$, and an argument $z\ne0$.  Define
+\begin{equation}\label{eq:phi-minus}
+ \Phi(s)=
+ \frac{\prod_{j=1}^{m}\Gamma(b_j-s)
+       \prod_{j=1}^{n}\Gamma(1-a_j+s)}
+      {\prod_{j=m+1}^{q}\Gamma(1-b_j+s)
+       \prod_{j=n+1}^{p}\Gamma(a_j-s)}.
+\end{equation}
+The traditional notation is
+\begin{equation}\label{eq:main-definition}
+ G_{p,q}^{m,n}\!\left(\left.\begin{matrix}\mathbf a\\\mathbf b\end{matrix}\right|z\right)
+ =\frac1{2\pi\ii}\int_L \Phi(s)z^s\dd s.
+\end{equation}
+In iPRA, \eqref{eq:main-definition} is not a primitive definition.  A datum
+must also supply a rational polygonal or vertical contour, pole-clearance and
+branch certificates, and primitive-recursive error bounds.
+
+\begin{theorem}[Certified equivalence of presentations]\label{thm:master}
+For every fixed coded parameter datum satisfying one of the admissibility
+contracts in \cref{sec:definitions,sec:convergence}, and every requested
+precision $k$, there is a primitive-recursive procedure producing a rational
+complex ball of radius at most $2^{-k}$ which contains each of the following
+quantities whenever that presentation is admissible:
+\begin{enumerate}[label=(\roman*)]
+\item the truncated Mellin--Barnes integral with certified tails;
+\item the right- or left-residue normal form, including confluent Laurent jets;
+\item the local solution of the Meijer differential equation selected by the
+      same Frobenius data.
+\end{enumerate}
+Whenever two presentations are simultaneously admissible on the same branch
+domain, their two balls overlap.  In the nonconfluent right-loop regime the
+normal form is the finite sum of generalized hypergeometric series in
+\cref{thm:slater-right}; in the left-loop regime it is
+\cref{thm:slater-left}.  All algorithms and all error schedules are primitive
+recursive.  The proof uses only finite sums, products, bounded searches,
+quantifier-free induction, and previously specified finite Gamma and residue
+contracts.
+\end{theorem}
+
+The proof occupies \cref{sec:hypergeom,sec:definitions,sec:convergence}.  Its
+value is logical as well as computational: all later identities can be proved
+on whichever presentation makes the claim finite.  Parameter identities are
+proved at the integrand level; local analytic identities are proved
+coefficientwise; integral transforms are proved by finite Fubini estimates.
+No unrestricted identity theorem is needed.
+
+\subsection{Three levels that must not be conflated}
+
+The accompanying files establish three different things.
+\begin{enumerate}
+\item The present report gives a human-readable constructive proof with explicit
+      finite contracts and error reductions.
+\item The Python programs perform exact-rational recurrence checks and
+      high-precision numerical regression tests.  They are evidence against
+      transcription errors, not proofs of universal statements.
+\item The Lean file gives executable finite definitions and target theorem
+      signatures.  It intentionally contains clearly marked placeholders for
+      the analytic contracts and does not masquerade as an object-iPRA proof.
+\end{enumerate}
+The final ProveIt endpoint is a term of
+\[
+ []\;\vdash[\mathrm{PRAAx}]\;\varphi.
+\]
+A theorem about Lean's host type \code{Complex} or \code{Rat} is not that
+endpoint.  Once such a derivation is built, ProveIt's checked theorem
+\code{pra\_iff\_native} transfers it to the concise native scalar calculus.
+
+\subsection{Corrections to literal web-page wording}
+
+\begin{audit}[Fundamental systems]
+The displayed $p\le q$ and $p\ge q$ lists are fundamental systems only under a
+nonresonance hypothesis, for example $b_i-b_j\notin\Z$ in the first list and
+$a_i-a_j\notin\Z$ in the second, together with nonzero leading coefficients.
+At resonance, logarithmic Frobenius solutions or parameter derivatives replace
+some listed functions.  The differential equation remains valid.
+\end{audit}
+
+\begin{audit}[``For all $x$'']
+The formulas for $\log(1+x)$, inverse trigonometric functions, powers, and
+Lerch transcendent require a branch.  The Heaviside formulas are pointwise
+statements on the positive real axis away from $x=1$ unless a convention at the
+jump is supplied.  The Lerch series has a pole or divergence at many advertised
+points.  We prove branch-qualified or finite-observation versions rather than
+the literal universal quantifier.
+\end{audit}
+
+\begin{audit}[Transform inversions]
+The pages use ``suitable function'' and omit substantial convergence
+conditions.  In weak arithmetic this cannot be left implicit.  We prove a
+finite transform theorem from named endpoint, decay, quadrature, and Fubini
+certificates.  Narain, Wimp, and the generalized Laplace formulas then become
+instances.  We do not claim an unspecified maximal function-space theorem.
+\end{audit}

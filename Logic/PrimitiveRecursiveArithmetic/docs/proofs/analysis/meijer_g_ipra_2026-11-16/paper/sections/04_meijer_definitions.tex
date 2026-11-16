@@ -1,0 +1,129 @@
+\section{Meijer data and the three definitions}\label{sec:definitions}
+
+\subsection{Four parameter blocks}
+
+It is logically and computationally preferable to store the parameters in the
+four blocks
+\[
+ A^-=(a_1,\ldots,a_n),\quad A^+=(a_{n+1},\ldots,a_p),\quad
+ B^-=(b_1,\ldots,b_m),\quad B^+=(b_{m+1},\ldots,b_q).
+\]
+This is also the Wolfram Language convention
+\code{MeijerG[\{\{A-\},\{A+\}\},\{\{B-\},\{B+\}\},z]}.
+The separation condition for the standard contour is
+\begin{equation}\label{eq:pole-separation}
+ a_k-b_j\notin\{1,2,3,\ldots\}
+ \qquad(1\le k\le n,\ 1\le j\le m),
+\end{equation}
+because the two pole families are
+$s=b_j+\ell$ and $s=a_k-1-\ell$.
+In iPRA, \eqref{eq:pole-separation} is replaced by a rational lower bound on
+their distance over the finite contour window under consideration, plus an
+arithmetic proof that the two arithmetic progressions never meet.
+
+Define
+\begin{equation}\label{eq:delta-nu}
+ \delta=m+n-\frac{p+q}{2},
+ \qquad
+ \nu=\sum_{j=1}^{q}b_j-\sum_{j=1}^{p}a_j.
+\end{equation}
+These quantities govern vertical-line decay.
+
+\subsection{Mellin--Barnes definition and sign convention}
+
+The Wikipedia/MathWorld convention is \eqref{eq:main-definition}.  Setting
+$u=-s$ gives the equally standard inverse-Mellin form
+\begin{equation}\label{eq:plus-convention}
+ \frac1{2\pi\ii}\int_{-L}
+ \frac{\prod_{j=1}^{m}\Gamma(b_j+u)
+       \prod_{j=1}^{n}\Gamma(1-a_j-u)}
+      {\prod_{j=m+1}^{q}\Gamma(1-b_j-u)
+       \prod_{j=n+1}^{p}\Gamma(a_j+u)}z^{-u}\dd u.
+\end{equation}
+The orientation reversal from $\dd s=-\dd u$ is cancelled by reversing the
+endpoints.  This is a finite change-of-variable proof on every truncated
+contour; the tail certificates are identical because $\abs u=\abs s$.
+Thus MathWorld equations (1) and (2) are constructively equivalent.
+
+\begin{definition}[Vertical datum]
+A vertical datum consists of a rational $\sigma$ such that the line
+$\Re s=\sigma$ separates the two pole families, a branch interval for
+$\Log z$, and constants certifying the bound in
+\cref{thm:vertical-convergence}.  Its precision-$k$ value is a rational
+quadrature on $\sigma-\ii T(k)\le s\le\sigma+\ii T(k)$.
+\end{definition}
+
+\begin{definition}[Right-loop and left-loop data]
+A right-loop datum encloses the poles $b_j+\ell$ and excludes the poles
+$a_k-1-\ell$; a left-loop datum does the reverse.  At precision $k$ only
+finitely many poles and a finite closing rectangle are used.  The datum gives
+a remainder bound showing that the omitted side tends below $2^{-k}$.
+\end{definition}
+
+\subsection{Residue normal forms}
+
+For nonconfluent right poles, define $G$ directly by the finite sum of
+hypergeometric names in \cref{thm:slater-right}.  For nonconfluent left poles,
+use \cref{thm:slater-left}.  These definitions are preferable in iPRA: they
+reduce evaluation to primitive recursion and a ratio-tail certificate, and the
+contour integral becomes a theorem rather than a foundational infinitary
+object.
+
+When poles coalesce, the correct normal form is a power-log series.  We now give
+a finite algorithm that covers every multiplicity.
+
+\begin{definition}[Laurent-jet residue algorithm]\label{def:jet}
+Let $s_0$ be a pole of multiplicity $r$.  Put $u=s-s_0$.  For each Gamma or
+reciprocal-Gamma factor, request its Laurent or Taylor jet through degree
+$r-1$ with a rational remainder ball.  Expand
+\[
+ z^{s_0+u}=z^{s_0}\sum_{j=0}^{r-1}\frac{(u\Log z)^j}{j!}+O(u^r).
+\]
+Multiply the finite Laurent polynomials by bounded convolution and select the
+coefficient of $u^{-1}$.  The result is
+$z^{s_0}$ times a polynomial in $\Log z$ of degree at most $r-1$.
+\end{definition}
+Every step in \cref{def:jet} is primitive recursive for externally fixed $r$.
+The remainder is bounded by finite Cauchy products of the jet remainders.  In a
+pole sequence indexed by $\ell$, the additional polynomial factor in $\ell$
+and $\Log z$ does not destroy the geometric or superfactorial tail proved in
+\cref{thm:hyp-conv}.  Thus confluent cases such as integer-order $K_\nu$ and the
+repeated-parameter Lerch formulas require no limiting choice principle.
+
+\subsection{Generalized fourth parameter}
+
+MathWorld's generalized form is
+\begin{equation}\label{eq:r-general}
+ G_{p,q}^{m,n}\!\left(\left.\begin{matrix}\mathbf a\\\mathbf b\end{matrix}
+ \right|x;r\right)
+ =\frac1{2\pi\ii}\int_L
+ \Psi(s)x^{-s/r}\dd s,
+\end{equation}
+where $\Psi$ is the plus-sign kernel in \eqref{eq:plus-convention}.  For a fixed
+nonzero rational $r$ and a branch of $\Log x$, this is covered by the same
+vertical and residue machinery: replace $\Log x$ by $\Log x/r$ in every
+exponential estimate.  The substitution $s=ru$ yields the finite identity
+\begin{equation}\label{eq:r-substitution}
+ G(x;r)=\frac{r}{2\pi\ii}\int_{L/r}\Psi(ru)x^{-u}\dd u.
+\end{equation}
+For integer or reciprocal-integer $r$, Gauss multiplication for Gamma converts
+\eqref{eq:r-substitution} to an ordinary $G$ with expanded parameter lists and
+an explicit power and constant.  The special $r=1/2$ cosine formula is proved
+directly in \cref{thm:mathworld-specials}.
+
+\subsection{Admissibility predicate}
+
+A coded datum is \emph{admissible at precision $k$} when all of the following
+finite checks pass:
+\begin{enumerate}
+\item list lengths and block indices are consistent;
+\item every requested denominator and Gamma factor has an apartness witness;
+\item the branch box avoids zero and the branch cut;
+\item the contour window has rational pole clearance;
+\item the supplied tail, jet, and quadrature bounds sum to at most $2^{-k}$;
+\item every use of an improper real integral carries endpoint majorants;
+\item every exchange of sums or integrals carries a finite Fubini budget.
+\end{enumerate}
+This predicate, denoted $\Adm(d,k)$, is primitive recursive.  All global-looking
+analytic assertions in the sequel are abbreviations for the family of finite
+implications $\Adm(d,k)\to\BallEq_k(\cdots)$.

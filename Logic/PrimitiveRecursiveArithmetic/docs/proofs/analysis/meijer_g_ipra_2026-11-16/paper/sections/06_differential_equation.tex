@@ -1,0 +1,118 @@
+\section{Differential equation and local solution bases}\label{sec:ode}
+
+Put $\thetaop=z\frac{\dd}{\dd z}$.  The differential equation listed on
+Wikipedia is
+\begin{equation}\label{eq:meijer-ode}
+ \left[(-1)^{p-m-n}z\prod_{j=1}^{p}(\thetaop-a_j+1)
+       -\prod_{j=1}^{q}(\thetaop-b_j)\right]G(z)=0.
+\end{equation}
+
+\subsection{The kernel shift identity}
+
+The proof is a one-line Gamma recurrence once the signs are tracked correctly.
+From $\Gamma(w+1)=w\Gamma(w)$,
+\begin{equation}\label{eq:phi-shift}
+ \frac{\Phi(s)}{\Phi(s-1)}
+ =(-1)^{p-m-n}
+   \frac{\prod_{j=1}^{p}(s-a_j)}
+        {\prod_{j=1}^{q}(s-b_j)}.
+\end{equation}
+The exponent can also be written $p+m-n$; the two differ by the even number
+$2m$.
+
+\begin{theorem}[Meijer differential equation]\label{thm:ode}
+Every certified presentation of $G_{p,q}^{m,n}$ satisfies
+\eqref{eq:meijer-ode} in the quantitative derivative sense of
+\cref{thm:analyticity}.
+\end{theorem}
+\begin{proof}
+On a finite vertical contour, $\thetaop$ multiplies $z^s$ by $s$.  Hence the
+second product in \eqref{eq:meijer-ode} has integrand
+$\prod_j(s-b_j)\Phi(s)z^s$.  In the first product, shift $s$ to $s-1$ after the
+extra factor $z$; its integrand becomes
+$(-1)^{p-m-n}\prod_j(s-a_j)\Phi(s-1)z^s$, equal by
+\eqref{eq:phi-shift}.  The two finite contours differ only by horizontal
+connector segments and residues crossed by the shift.  Choosing a common
+admissible strip, or performing the argument on the residue normal form, makes
+these corrections cancel.  Tail and derivative errors are allocated below
+$2^{-k-2}$.  In the nonconfluent series presentation, the same result follows
+more directly: inserting $z^{b_h+k}$ turns \eqref{eq:meijer-ode} into the
+coefficient recurrence obtained from \eqref{eq:hypergeom}.  For confluent
+power-log terms, $\thetaop$ acts on the finite polynomial in $\Log z$, and the
+Laurent-jet identity gives the same cancellation.
+\end{proof}
+
+\subsection{Order and singularities}
+
+Expanding the products in $\thetaop$ shows that the equation has order
+$\max(p,q)$ except at a degenerate leading coefficient.  At $z=0$ it is a
+regular singular equation when $p\le q$ in the standard local direction; at
+$z=\infty$ the inverted equation is analogous.  When $p=q$, the leading
+coefficient vanishes at
+\begin{equation}\label{eq:balanced-singularity}
+ z=(-1)^{p-m-n},
+\end{equation}
+which explains the additional singular point mentioned on the source page.
+These are finite polynomial calculations in the coefficients of
+\eqref{eq:meijer-ode}.
+
+\subsection{Fundamental systems and the missing hypothesis}
+
+For $p\le q$, place $b_h$ first in the bottom list and consider
+\begin{equation}\label{eq:right-basis}
+ Y_h(z)=G_{p,q}^{1,p}\!\left(
+ \left.\begin{matrix}a_1,\ldots,a_p\\
+ b_h,b_1,\ldots,\widehat{b_h},\ldots,b_q
+ \end{matrix}\right|(-1)^{p-m-n+1}z\right),
+ \quad h=1,\ldots,q.
+\end{equation}
+The right-residue formula gives
+\begin{equation}\label{eq:right-leading}
+ Y_h(z)=c_hz^{b_h}(1+O(z)),\qquad c_h\ne0,
+\end{equation}
+under Gamma apartness.  Apply $\dd^{r}/\dd z^{r}$ for
+$r=0,\ldots,q-1$.  The leading Wronskian is
+\begin{equation}\label{eq:wronskian}
+ \left(\prod_{h=1}^{q}c_h\right)
+ z^{\sum_hb_h-q(q-1)/2}
+ \prod_{1\le i<j\le q}(b_j-b_i),
+\end{equation}
+up to a factor $1+O(z)$.
+
+\begin{theorem}[Corrected fundamental-system theorem]\label{thm:fundamental}
+Suppose $p\le q$, the $b_h$ are pairwise distinct modulo integers, and every
+leading Gamma factor in \eqref{eq:right-leading} has a quantitative apartness
+witness.  Then the $q$ functions \eqref{eq:right-basis} form a fundamental
+system on a sufficiently small certified punctured sector.  Dually, for
+$p\ge q$, the $p$ functions obtained by placing each $a_h$ first and using the
+left-residue presentation form a fundamental system when the $a_h$ are
+pairwise distinct modulo integers.
+\end{theorem}
+\begin{proof}
+The Vandermonde factor in \eqref{eq:wronskian} has a rational lower bound by
+hypothesis.  Uniform tail bounds make the $O(z)$ correction smaller than half
+the leading term on an explicitly searched rational radius.  Therefore the
+Wronskian is apart from zero there.  Each function solves the same equation by
+\cref{thm:ode}; an order-$q$ linear equation cannot have more than $q$
+independent local solutions.  The usual linear-algebra proof is finite: solve
+the initial-value system by Cramer's rule using the Wronskian apartness witness.
+The left case follows after $z\mapsto z^{-1}$.
+\end{proof}
+
+\begin{remark}[Resonance]
+If two exponents differ by an integer, the Vandermonde argument fails and the
+listed $G$-functions may be dependent.  The jet construction supplies the
+missing logarithmic Frobenius solutions.  Thus the source statement is correct
+generically but not literally without a resonance clause.
+\end{remark}
+
+\subsection{Uniqueness without an unrestricted identity theorem}
+
+Many later special cases are established by showing that two named functions
+solve the same differential equation and have the same local coefficients.  In
+this report that phrase abbreviates a finite argument: for every requested
+precision choose a rational disk, compute enough coefficients, bound both
+remainders, and use a finite recurrence to show coefficient equality.  If one
+uses initial values instead, the Wronskian lower bound gives a finite
+Gr\"onwall/Picard estimate.  No quantification over arbitrary open sets is
+required.

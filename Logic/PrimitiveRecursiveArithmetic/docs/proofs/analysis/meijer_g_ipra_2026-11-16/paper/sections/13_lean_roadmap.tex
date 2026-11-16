@@ -1,0 +1,414 @@
+\section{Lean formalization outline and path to object iPRA}\label{sec:formalization}
+
+This section specifies the representations, dependency order, induction
+invariants, and final theorem types needed for a complete formalization.  The
+files in \code{lean/} mirror the plan.  They are an integration scaffold, not a
+claim that the analytic development has already been checked by Lean.
+
+\subsection{The endpoint that counts}
+
+At the pinned ProveIt revision, the ordinary iPRA syntax is in
+\code{LeanProofs.ConciseIPRA}.  Primitive-recursive symbols have type
+\code{PR k}; terms have type \code{PTm n}; the axioms are \code{PRAAx}; and the
+convenient induction rule is \code{PRA.qfInd}.  A completed theorem must have
+the shape
+\begin{lstlisting}[language={}]
+import ConciseIPRA.PR
+import ConciseIPRA.NativeBiInterpretation
+
+namespace LeanProofs.ConciseIPRA
+
+-- phi : Fm PTm 0
+example : [] |- [PRAAx] phi := by
+  ... -- an explicit object-language derivation
+
+end LeanProofs.ConciseIPRA
+\end{lstlisting}
+After this theorem exists, \code{pra\_iff\_native} transfers it to the checked
+native scalar calculus.  A theorem merely about Lean's \code{Nat},
+\code{Rat}, or a host complex type is useful evidence but is not a proof in
+iPRA.
+
+Every formalized result should therefore have three visibly separate layers:
+\begin{enumerate}
+\item an executable host definition and regression theorem;
+\item a primitive-recursive graph formula or bounded certificate checker;
+\item a theorem of type \code{[] |- [PRAAx] phi} proving that checker sound.
+\end{enumerate}
+
+\subsection{Compilation rather than a universal evaluator}
+
+The user-facing notation permits variable lists of parameters, but iPRA need
+not quantify over an all-purpose program interpreter.  A small external
+compiler takes a concrete theorem family---fixed $p,q,m,n$, fixed formulas for
+the parameter names, and fixed branch/tail algorithms---and emits ordinary
+\code{PR} symbols.  List coding, bounded loops, rational arithmetic, and
+finite-polynomial operations are themselves primitive recursive.  Soundness
+is proved once for their checkers.  The resulting theorem is a schema over
+fixed compiled names, exactly as in the existing Gamma and Barnes-$G$ packets.
+
+For a genuinely uniform family such as ``all rational parameter lists of
+length at most $r$'', $r$ is external and the generated checker uses bounded
+loops through $r$.  This avoids both higher types and a universal
+primitive-recursive evaluator.
+
+\subsection{Data types and numerical predicates}
+
+The host scaffold uses the following records.
+\begin{lstlisting}[language={}]
+structure QComplex where
+  reNum : Int
+  reDen : Nat       -- positive
+  imNum : Int
+  imDen : Nat       -- positive
+
+structure MeijerSpec where
+  aNum : List QComplex
+  aDen : List QComplex
+  bNum : List QComplex
+  bDen : List QComplex
+
+structure BranchCert where
+  centerArg : Rat
+  radiusArg : Rat
+  awayZero  : Rat
+  cutMargin : Rat
+
+structure EvalCert where
+  truncation : Nat
+  guardBits  : Nat
+  tailNum    : Nat
+  tailPow    : Nat
+  clearance  : Rat
+\end{lstlisting}
+The names \code{aNum}, \code{aDen}, \code{bNum}, and \code{bDen} denote the
+four parameter blocks $A^-,A^+,B^-,B^+$.  In the object language these records
+are natural-number tuples obtained by pairing.
+
+A complex ball uses the $\ell^1$ norm because it avoids square roots:
+\[
+ B(c,p)=\{w:\abs{\Re(w-c)}+\abs{\Im(w-c)}\le2^{-p}\}.
+\]
+The object predicate \code{BallEq(x,y,p)} is a cleared integer inequality
+between the centers and error numerators returned by two fixed evaluators.
+There is no set-valued object in the formal language.  Division is never a
+primitive theorem conclusion: a reciprocal operation requires
+\code{Apart(q,d)}, and all final inequalities are cross-multiplied by the
+positive denominator $d$.
+
+The basic reusable object lemmas are:
+\begin{enumerate}
+\item signed-integer and rational normalization, order, and absolute value;
+\item complex addition, multiplication, integer powers, and finite products;
+\item ball addition, multiplication, Horner evaluation, and telescoping sums;
+\item reciprocal with a quantitative apartness witness;
+\item dyadic exponential, logarithm, trigonometric, and square-root names;
+\item bounded sums, products, search, pairing, and simultaneous recursion;
+\item finite Laurent polynomials with truncated convolution.
+\end{enumerate}
+The checked \code{IPRADerivations} arithmetic library supplies much of the
+first and sixth items.  The Gamma packet is the intended source of the
+certified Gamma, reciprocal-Gamma, logarithm, and Stirling interfaces, but its
+analytic contracts still have to be instantiated as object derivations rather
+than imported as axioms.
+
+\subsection{Module graph}
+
+A dependency order minimizing circularity is
+\begin{verbatim}
+MeijerG/Codes
+  -> MeijerG/RationalBalls
+  -> MeijerG/FiniteLists
+  -> MeijerG/HypergeometricTerms
+  -> MeijerG/HypergeometricTail
+  -> MeijerG/GammaRatio
+  -> MeijerG/SlaterRight
+  -> MeijerG/SlaterLeft
+  -> MeijerG/LaurentJets
+  -> MeijerG/ResidueEvaluator
+  -> MeijerG/ContourEvaluator
+  -> MeijerG/ContourResidueAgreement
+  -> MeijerG/DifferentialEquation
+  -> MeijerG/ParameterAlgebra
+  -> MeijerG/Derivatives
+  -> MeijerG/Mellin
+  -> MeijerG/RationalPowerProducts
+  -> MeijerG/Laplace
+  -> MeijerG/TransformKernels
+  -> MeijerG/Whittaker
+  -> MeijerG/SpecialCases
+  -> MeijerG/ObjectTargets
+  -> MeijerG/Checks/Axioms
+\end{verbatim}
+The hypergeometric and residue modules should be completed before the contour
+modules.  This makes most source-page identities available without waiting for
+a general complex-integration library.
+
+\subsection{Stage 1: exact hypergeometric terms}
+
+For externally fixed numerator parameters $\alpha_1,\ldots,\alpha_r$ and
+denominator parameters $\beta_1,\ldots,\beta_s$, define a term graph by
+\begin{align*}
+ T_0&=1,\\
+ T_{k+1}\,(k+1)\prod_{j=1}^{s}(\beta_j+k)
+ &=T_k z\prod_{i=1}^{r}(\alpha_i+k).
+\end{align*}
+The object implementation stores a rational complex center and a common
+positive denominator.  The primary theorem is the cleared recurrence; a
+quotient presentation is derived only under denominator apartness.
+
+The partial-sum loop maintains the quantifier-free invariant
+\begin{equation}\label{eq:lean-hyp-invariant}
+ S_k=\sum_{j<k}T_j,
+ \qquad
+ D_kT_{k+1}=N_kT_k,
+ \qquad
+ \operatorname{Err}_k\le E_k,
+\end{equation}
+where all equalities are represented by integer cross products.  If a bounded
+checker proves $\abs{T_{j+1}}\le\rho\abs{T_j}$ for $j\ge N$ and
+$\rho\le1-2^{-h}$, the geometric tail theorem yields
+\[
+ \abs{\sum_{j\ge N}T_j}\le \frac{\abs{T_N}}{1-\rho}.
+\]
+The proof is qf induction on the finite geometric sum, followed by a cleared
+inequality.  This module proves \cref{thm:hyp-conv} for every compiled series.
+
+\subsection{Stage 2: Gamma ratios and Slater coefficients}
+
+A Slater term contains products such as
+\[
+ C_h=
+ \frac{\prod_{j\le m,j\ne h}\Gamma(b_j-b_h)
+       \prod_{j\le n}\Gamma(1+b_h-a_j)}
+      {\prod_{j>m}\Gamma(1+b_h-b_j)
+       \prod_{j>n}\Gamma(a_j-b_h)}.
+\]
+At requested precision $p$, the compiler allocates guard bits backwards
+through the finite product tree, requests Gamma balls, checks denominator
+apartness, and outputs a ball for $C_h$.  The soundness invariant records a
+product center, an accumulated numerator error, and a positive lower bound for
+every denominator factor.
+
+The right-Slater target is schematically
+\begin{lstlisting}[language={}]
+RightAdmissible spec z p ->
+BallEq
+  (meijerRight spec z (p + guard spec p))
+  (sumOverRightPoles spec z (p + guard spec p))
+  p
+\end{lstlisting}
+and similarly for the left expansion.  The proof has two parts:
+\begin{enumerate}
+\item exact residue algebra for a finite closing rectangle;
+\item the explicit closing-side and series-tail inequalities from
+      \cref{sec:convergence}.
+\end{enumerate}
+For most special cases only the second line---the already normalized
+hypergeometric sum---is needed as the definition, so an early formalization can
+prove all coefficient identities before contour agreement.
+
+\subsection{Stage 3: confluent poles as finite Laurent jets}
+
+Encode a truncated Laurent polynomial by a list indexed from $-r$ to $d$.
+Provide PR functions for addition, shift, truncated convolution, and coefficient
+selection.  For a pole of multiplicity $r$, the invariant after multiplying
+$i$ factors is
+\[
+ F_i(u)=\sum_{j=-r}^{r-1}c_{i,j}u^j+u^rR_i(u),
+ \qquad \abs{R_i(u)}\le M_i
+ \quad(\abs u\le\rho).
+\]
+The update for $M_i$ is a finite Cauchy-product bound.  Multiply by the finite
+jet
+\[
+ z^{s_0+u}=z^{s_0}\sum_{j<r}\frac{(u\Log z)^j}{j!}+u^rR_z(u)
+\]
+and select coefficient $u^{-1}$.  The output is a polynomial in $\Log z$ of
+degree at most $r-1$, exactly as in \cref{def:jet}.
+
+The key object theorem is not ``take a limit as parameters collide''.  It is a
+finite coefficient theorem saying the emitted jet is the residue of the
+certified local product.  This handles integer-order $K_\nu$, $Y_\nu$, the
+six-term identity in \cref{sec:elementary-cases}, and every polynomial repair.
+
+\subsection{Stage 4: the contour evaluator}
+
+A contour is a finite list of rational complex vertices plus, for an unbounded
+vertical contour, a truncation function $T(p)$.  On each segment, use a
+composite Taylor or trapezoidal rule with a supplied derivative bound.  The
+object predicate \code{ContourSafe} checks:
+\begin{enumerate}
+\item positive distance from every relevant pole and from zero;
+\item a branch box containing the image of $z^s$;
+\item the vertical estimate \eqref{eq:master-vertical-bound};
+\item a quadrature bound for every segment;
+\item a closing-side bound for the finite residue rectangle.
+\end{enumerate}
+The finite residue theorem from the ProveIt Cauchy--residue packet can then be
+specialized to the Gamma-ratio integrand.  Its output is the
+\code{ContourResidueAgreement} theorem.  This theorem is optional for the
+coefficient identities but essential for the literal Mellin--Barnes definition
+and transform formulas.
+
+\subsection{Stage 5: differential equation without differentiation axioms}
+
+There are two complementary formalizations.
+
+First, for a residue series $F(z)=z^\lambda\sum c_kz^k$, calculate the
+coefficient of $z^{\lambda+k}$ in
+\[
+ (-1)^{p-m-n}z\prod_j(\thetaop-a_j+1)F
+ -\prod_j(\thetaop-b_j)F.
+\]
+It is exactly the cleared hypergeometric term recurrence.  A qf induction proves
+that every partial polynomial satisfies the equation up to an explicit tail;
+the tail tends below $2^{-p}$ by the same ratio certificate.
+
+Second, on a finite contour, applying $\thetaop$ multiplies the kernel by $s$.
+Gamma recurrence converts the operator multiplier to zero identically.  The
+finite quadrature error is propagated through the fixed polynomial in $s$.
+This proves the ODE on contour domains and agrees with the series theorem on
+overlap.
+
+A representative object target is
+\begin{lstlisting}[language={}]
+Admissible spec z p ->
+BallEq
+  (meijerODELeft spec z (p + guard))
+  (meijerODERight spec z (p + guard))
+  p
+\end{lstlisting}
+where both sides are finite combinations of derivative-name evaluators; no
+quantification over an arbitrary differentiable function occurs.
+
+\subsection{Stage 6: parameter algebra and derivative rules}
+
+Cancellation, power shift, block permutations, inversion, and integer block
+moves are finite identities of Gamma products.  Represent a parameter list as
+a bounded array and normalize it to a multiset of tagged affine expressions.
+The certificate consists of a permutation, a cancellation matching, and a
+small exponent adjustment.  Its checker proves equality of the kernels by
+bounded product commutativity.
+
+For the multiplication theorem, Gauss multiplication expands each Gamma
+factor into $k$ factors.  The certificate records the affine map
+$a\mapsto(a+r)/k$ or $b\mapsto(b+r)/k$, the extracted power of $k$, and the
+argument scale.  All exponents are rational and are checked after clearing the
+common denominator.
+
+Derivative identities use a finite polynomial in $s$ and one Gamma recurrence.
+The primary formal statement is a coefficient or contour ball equality, not an
+unbounded limit definition of derivative.  A generic fixed-order Taylor
+contract then identifies that name with the derivative on a certified disc.
+
+\subsection{Stage 7: Mellin, Euler, rational powers, Laplace, and transform kernels}
+
+A finite Fubini certificate contains four truncation bounds, a common
+quadrature mesh, and a rational majorant for the discarded rectangles.  The
+proof first rearranges a genuinely finite double sum.  It then adds:
+\begin{enumerate}
+\item $x$-endpoint tails;
+\item contour-frequency tails;
+\item quadrature errors;
+\item the inner Beta or Gamma integral error.
+\end{enumerate}
+The Mellin transform theorem uses the triangular Fourier/Fej\'er kernel from
+\cref{def:mellin-cert}; its normalization and positivity are separate finite
+lemmas.  The final theorem is parameterized by a fixed function name and its
+explicit modulus.  No theorem quantifies over ``all integrable functions''.
+
+The Laplace theorem is easier: the inner integral is a Gamma contract and the
+remaining Gamma product is normalized syntactically to the target $G$.
+Convolution concatenates two parameter arrays after applying the Mellin theorem
+at $1-s$.  These normalized-list equalities should be checked by an executable
+certificate, avoiding large manual rewrites in Lean.
+
+For rational powers $x^\gamma,x^\delta$, normalize
+$\gamma/\delta=A/B$, substitute $s=Bu$, and expand every slope-$A$ or
+slope-$B$ Gamma factor with the finite Gauss multiplication theorem.  The
+certificate stores the expanded parameter blocks, the collected rational
+power, and the prefactor.  Its soundness theorem is a bounded-list induction
+plus the existing Gamma-multiplication contracts.
+
+Transform-pair modules never quantify over an unspecified function space.  A
+fixed test-function code carries endpoint, Mellin, Fubini, and inversion
+moduli; the checker verifies that the two finite Mellin multipliers multiply to
+one.  The Whittaker module separately compiles the $U$ and ${}_1F_1$
+reductions used by the forward and inverse kernels, including branch and Gamma
+denominator guards.
+
+\subsection{Stage 8: special functions}
+
+Each elementary or higher special case has a very small certificate:
+\begin{enumerate}
+\item a concrete \code{MeijerSpec};
+\item its single- or double-residue expansion;
+\item a list of Gamma cancellations;
+\item a coefficient recurrence matching the target series;
+\item a branch equality such as $\sqrt{x^2}=x$;
+\item a common tail bound.
+\end{enumerate}
+For example, the cosine proof compiles to
+\begin{lstlisting}[language={}]
+SafeCosBranch x p ->
+BallEq
+  (sqrtPi * meijerG cosSpec (x*x/4) (p+g))
+  (cosName x (p+g))
+  p
+\end{lstlisting}
+The induction invariant states equality of the first $N$ rational terms; the
+factorial duplication theorem converts the coefficient denominators.  The
+Lerch theorem uses the exact identity
+\code{poch a k / poch (a+1) k = a / (a+k)} in cross-multiplied form.  Bessel
+$Y$ and integer-order $K$ additionally invoke the jet module.
+
+\subsection{Representative object-language target list}
+
+The companion \code{ObjectLanguageTargets.lean} records the following final
+families.
+\begin{enumerate}
+\item \code{HyperTermRecurrence}: exact cleared recurrence for every compiled
+      hypergeometric term.
+\item \code{HyperTail}: a ratio certificate implies the requested tail ball.
+\item \code{SlaterRight} and \code{SlaterLeft}: residue evaluator equals the
+      compiled hypergeometric sum.
+\item \code{ContourEqualsResidues}: the finite contour evaluator agrees with
+      the residue evaluator.
+\item \code{MeijerODE}: the two sides of the differential equation agree.
+\item \code{PowerShift}, \code{Inversion}, \code{CancelTopBottom}, and
+      \code{MultiplyParameters}.
+\item Integral targets \code{Mellin}, \code{Euler}, \code{Convolution},
+      \code{RationalPower}, and \code{Laplace}, each under an explicit
+      certificate predicate.
+\item Transform targets \code{KernelPair}, \code{Narain},
+      \code{GenLaplace}, and \code{Whittaker} for fixed coded test classes.
+\item \code{ExpCase}, \code{CosCase}, \code{LogCase},
+      \code{IncompleteGammaCase}, \code{BesselCases}, and \code{LerchCases}.
+\end{enumerate}
+All equality targets are \code{BallEq} schemas in the requested precision.
+Exact finite identities, such as parameter-list normalization, are proved as
+ordinary object equalities and then used inside the ball proofs.
+
+\subsection{Milestones and trust audit}
+
+A practical sequence of independently useful milestones is:
+\begin{enumerate}
+\item checked exact rational/complex balls and hypergeometric recurrence;
+\item checked geometric/factorial tail theorem;
+\item cosine, exponential, logarithm, and rational special cases entirely in
+      \code{Prf PRAAx};
+\item generic nonconfluent Slater evaluator;
+\item Laurent-jet residues and Bessel $K,Y$;
+\item parameter algebra and the differential equation;
+\item contour/residue agreement;
+\item Mellin, convolution, and Laplace certificates;
+\item transform-pair instances.
+\end{enumerate}
+
+Each completed module should be audited for \code{sorry}, \code{admit},
+\code{axiom}, \code{Classical.choice}, and untrusted native decision procedures.
+Use \code{\#print axioms} on host helper theorems, and additionally inspect the
+final theorem type to confirm that it is a \code{Prf PRAAx} derivation.  Python
+and Wolfram checks in this archive are regression evidence only; they are not
+part of the trusted proof base.

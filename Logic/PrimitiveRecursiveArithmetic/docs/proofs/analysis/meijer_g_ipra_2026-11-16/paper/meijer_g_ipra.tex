@@ -1,0 +1,207 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{url}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={The Meijer G-function in intuitionistic primitive recursive arithmetic},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Constructive quantitative proofs and Lean formalization plan}
+}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Meijer $G$ in iPRA}
+\rhead{16 November 2026}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.52em}
+\setlist{nosep,leftmargin=2em}
+\allowdisplaybreaks
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{contract}[theorem]{Finite contract}
+\newtheorem{audit}[theorem]{Source audit}
+\newtheorem{roadmap}[theorem]{Formalization step}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\Arg}{\operatorname{Arg}}
+\newcommand{\Res}{\operatorname*{Res}}
+\newcommand{\BallEq}{\operatorname{BallEq}}
+\newcommand{\Safe}{\operatorname{Safe}}
+\newcommand{\Adm}{\operatorname{Adm}}
+\newcommand{\Eval}{\operatorname{Eval}}
+\newcommand{\Hyp}{\operatorname{Hyp}}
+\newcommand{\thetaop}{\vartheta}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\statusP}{\textbf{P}}
+\newcommand{\statusQ}{\textbf{Q}}
+\newcommand{\statusC}{\textbf{C}}
+\newcommand{\statusR}{\textbf{R}}
+\newcommand{\statusX}{\textbf{X}}
+\newcommand{\G}[5]{G_{#1,#2}^{#3,#4}\!\left(#5\right)}
+\newcommand{\Garr}[6]{G_{#1,#2}^{#3,#4}\!\left(\left.\begin{matrix}#5\\#6\end{matrix}\right|z\right)}
+\newcommand{\poch}[2]{\left(#1\right)_{#2}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{black!2},
+  showstringspaces=false
+}
+
+\title{\textbf{The Meijer $G$-function in intuitionistic primitive recursive arithmetic}\\
+\large Mellin--Barnes certificates, residue normal forms, special functions, and a Lean formalization roadmap}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{16 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Meijer $G$-function is normally introduced by an improper complex contour
+integral and then used as a universal container for hypergeometric functions,
+Bessel functions, incomplete gamma functions, transform kernels, and numerous
+parameter identities.  None of the phrases ``arbitrary complex number'',
+``choose a contour'', or ``take the analytic continuation'' is primitive in
+intuitionistic primitive recursive arithmetic (iPRA).  We therefore replace
+each such phrase by finite data: rational complex approximants, pole-clearance
+certificates, a branch certificate for $\Log z$, primitive-recursive tail and
+quadrature bounds, and a requested dyadic accuracy.
+
+The central result is a constructive equivalence between three presentations:
+a certified Mellin--Barnes integral, a residue expansion in generalized
+hypergeometric series, and the solution of the Meijer differential equation
+selected by explicit local data.  In the nonconfluent case the residue
+expansion is the most economical iPRA definition.  Confluent poles are handled
+by a finite Laurent-jet algebra and yield the expected powers of $\Log z$.
+From this engine we prove, in corrected quantitative form, the definition and
+three contour regimes, Slater's formulas, the differential equation,
+nonresonant fundamental systems, hypergeometric conversion and polynomial
+cases, parameter cancellation, power shift, inversion, multiplication,
+derivative and contiguous relations, scaling series, Mellin/Euler/convolution
+and Laplace formulas, and the elementary and higher-function special cases
+listed by Wikipedia and MathWorld.  The broad Narain, generalized Laplace, and Meijer transform statements are
+proved as finite-window theorems under explicit transform certificates; the
+Wimp family is reduced to the same certified-kernel principle after expanding
+its auxiliary kernel, but its long normalization and maximal test class are not
+developed as a separate theorem.  The web pages omit the function-space and
+convergence hypotheses needed for an unconditional inversion theorem.
+
+The report carefully distinguishes a human constructive proof, executable
+finite regression checks, a Lean host-level scaffold, and a completed
+object-iPRA derivation.  The first three are supplied.  The final endpoint must
+have type $[]\vdash_{\mathrm{PRAAx}}\varphi$ in ProveIt's checked
+\code{ConciseIPRA} syntax and remains the stated formalization work; no analytic
+kernel proof is claimed here.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_scope}
+\input{sections/02_ipra_semantics}
+\input{sections/03_hypergeometric_engine}
+\input{sections/04_meijer_definitions}
+\input{sections/05_convergence_residues}
+\input{sections/06_differential_equation}
+\input{sections/07_hypergeometric_polynomial}
+\input{sections/08_algebraic_identities}
+\input{sections/09_derivatives_recurrences}
+\input{sections/10_integrals_transforms}
+\input{sections/11_elementary_cases}
+\input{sections/12_higher_cases}
+\input{sections/13_lean_roadmap}
+\input{sections/14_coverage_audit}
+\input{sections/15_appendices}
+
+\begin{thebibliography}{99}
+\bibitem{DLMF16}
+NIST Digital Library of Mathematical Functions, Chapter 16, especially
+Sections 16.17--16.21, \emph{Meijer $G$-Function},
+\url{https://dlmf.nist.gov/16}, inspected 16 November 2026.
+
+\bibitem{Wikipedia}
+Wikipedia contributors, \emph{Meijer $G$-function},
+\url{https://en.wikipedia.org/wiki/Meijer_G-function}, inspected 16 November 2026.
+
+\bibitem{MathWorld}
+E. W. Weisstein, \emph{Meijer $G$-Function}, MathWorld---A Wolfram Web Resource,
+\url{https://mathworld.wolfram.com/MeijerG-Function.html}, inspected 16 November 2026.
+
+\bibitem{Bateman}
+A. Erd\'elyi, W. Magnus, F. Oberhettinger, and F. G. Tricomi,
+\emph{Higher Transcendental Functions}, Vol. I, McGraw--Hill, 1953,
+Section 5.3.
+
+\bibitem{Luke}
+Y. L. Luke, \emph{The Special Functions and Their Approximations}, Vol. I,
+Academic Press, 1969.
+
+\bibitem{Prudnikov}
+A. P. Prudnikov, Yu. A. Brychkov, and O. I. Marichev,
+\emph{Integrals and Series}, Vol. 3: More Special Functions, Gordon and Breach,
+1990.
+
+\bibitem{Beals}
+R. Beals and J. Szmigielski, \emph{Meijer $G$-functions: a gentle
+introduction}, Notices of the AMS 60 (2013), 866--872.
+
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt}, commit
+\code{85afffc93b2abbc1972fdfc98244052cbfbda1b3},
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{ConciseIPRA}
+ProveIt, \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}, checked Lean
+formalization of iPRA and the native scalar core, commit as in \cite{ProveIt}.
+
+\bibitem{GammaPacket}
+ProveIt, \emph{Gamma in intuitionistic primitive recursive arithmetic},
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/gamma_ipra},
+commit as in \cite{ProveIt}.
+
+\bibitem{ResiduePacket}
+ProveIt, \emph{Cauchy and residue theorems in iPRA},
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/cauchy_residue_ipra},
+commit as in \cite{ProveIt}.
+
+\bibitem{BarnesPacket}
+ProveIt, \emph{The Barnes $G$-function in iPRA},
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/barnes_g_ipra_2026-11-16},
+commit as in \cite{ProveIt}.
+\end{thebibliography}
+
+\end{document}

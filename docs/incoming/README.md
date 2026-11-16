@@ -319,6 +319,8 @@ manifests, `metadata/checksums.sha256` and `metadata/FILE_MANIFEST.txt`.
 deleted. It leaves out one ignored checksum manifest.
 `ipra_bounded_reflection_2026-11-16.zip` has no wrapper directory. It was placed the same
 way, under `foundations/`, and then deleted. All 5 of its members are placed.
+`meijer_g_ipra_2026-11-16.zip` was placed the same way, under `analysis/`, and then deleted.
+It leaves out one ignored checksum manifest and one ignored `.log` file.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

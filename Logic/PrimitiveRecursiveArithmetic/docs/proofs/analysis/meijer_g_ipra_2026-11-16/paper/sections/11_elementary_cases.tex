@@ -1,0 +1,249 @@
+\section{Elementary functions and the MathWorld special cases}\label{sec:elementary-cases}
+
+Every identity in this section is proved by the same finite mechanism.  Insert
+the relevant parameters in the one-pole Slater formula, cancel equal
+Pochhammer factors, and compare the resulting coefficient recurrence with the
+standard primitive-recursive power series.  Thus no appeal to an abstract
+identity theorem is needed.  Branch statements below mean equality of the
+certified names on the indicated branch boxes.
+
+\subsection{Exponential, trigonometric, and hyperbolic functions}
+
+\begin{theorem}[Exponential and circular functions]\label{thm:exp-case}
+On compatible branches,
+\begin{align}
+ \e^x
+ &=G_{0,1}^{1,0}\!\left(\left.\begin{matrix}-\\0\end{matrix}\right|-x\right),
+ \label{eq:exp-g}\\
+ \cos x
+ &=\sqrt\pi\,G_{0,2}^{1,0}\!\left(
+       \left.\begin{matrix}-\\0,\frac12\end{matrix}\right|\frac{x^2}{4}\right),
+ \label{eq:cos-g}\\
+ \sin x
+ &=\sqrt\pi\,G_{0,2}^{1,0}\!\left(
+       \left.\begin{matrix}-\\\frac12,0\end{matrix}\right|\frac{x^2}{4}\right).
+ \label{eq:sin-g}
+\end{align}
+For \eqref{eq:sin-g} the square-root branch is normalized by
+$\sqrt{x^2}=x$, for example on $-\pi/2<\Arg x\le\pi/2$.
+\end{theorem}
+\begin{proof}
+For \eqref{eq:exp-g}, \cref{thm:slater-right} has one pole family, no
+prefactor, and hypergeometric part ${}_0F_0(-x)=\e^{-x}$ before replacing the
+argument by $-x$.
+
+For the cosine parameters, the residue at $s=k$ gives
+\[
+ G_{0,2}^{1,0}\!\left(
+       \left.\begin{matrix}-\\0,\frac12\end{matrix}\right|z\right)
+ =\frac1{\sqrt\pi}{}_0F_1\!\left(;\frac12;-z\right).
+\]
+The $k$th coefficient after $z=x^2/4$ is
+\[
+ \frac{(-1)^k x^{2k}}{4^k k!\,\Gamma(k+\frac12)}
+ =\frac{(-1)^k x^{2k}}{\sqrt\pi(2k)!},
+\]
+where the duplication identity
+$\Gamma(k+\frac12)=\sqrt\pi(2k)!/(4^k k!)$ is an exact finite factorial
+identity.  Multiplication by $\sqrt\pi$ gives the cosine series.
+
+Similarly,
+\[
+ G_{0,2}^{1,0}\!\left(
+       \left.\begin{matrix}-\\\frac12,0\end{matrix}\right|z\right)
+ =\frac{2z^{1/2}}{\sqrt\pi}{}_0F_1\!\left(;\frac32;-z\right).
+\]
+With $z=x^2/4$ and the stated branch, the coefficient is
+$(-1)^kx^{2k+1}/[\sqrt\pi(2k+1)!]$.  The hypergeometric tail bounds from
+\cref{thm:hyp-conv} are also the usual sine and cosine tail bounds, so the
+coefficient equalities lift directly to ball equality at every precision.
+\end{proof}
+
+\begin{corollary}[Hyperbolic functions]\label{cor:hyperbolic-g}
+On the branches displayed on the source page,
+\begin{align}
+ \cosh x&=\sqrt\pi\,G_{0,2}^{1,0}\!\left(
+  \left.\begin{matrix}-\\0,\frac12\end{matrix}\right|-\frac{x^2}{4}\right),
+ \label{eq:cosh-g}\\
+ \sinh x&=-\ii\sqrt\pi\,G_{0,2}^{1,0}\!\left(
+  \left.\begin{matrix}-\\\frac12,0\end{matrix}\right|-\frac{x^2}{4}\right).
+ \label{eq:sinh-g}
+\end{align}
+\end{corollary}
+\begin{proof}
+Replace $x$ by $\ii x$ in \eqref{eq:cos-g}--\eqref{eq:sin-g}.  This is not a
+formal appeal to complex substitution: term by term, $(-1)^k(\ii x)^{2k}=x^{2k}$
+and $(-1)^k(\ii x)^{2k+1}=\ii x^{2k+1}$.  The branch condition in
+\eqref{eq:sinh-g} is precisely the certificate that
+$\sqrt{-x^2}=\ii x$.
+\end{proof}
+
+\subsection{Inverse circular functions and the logarithm}
+
+\begin{theorem}[Arcsine, arctangent, and arccotangent]\label{thm:inverse-circular}
+With the indicated branch normalizations,
+\begin{align}
+ \arcsin x
+ &=\frac{-\ii}{2\sqrt\pi}G_{2,2}^{1,2}\!\left(
+   \left.\begin{matrix}1,1\\\frac12,0\end{matrix}\right|-x^2\right),
+ \label{eq:arcsin-g}\\
+ \arctan x
+ &=\frac12G_{2,2}^{1,2}\!\left(
+   \left.\begin{matrix}\frac12,1\\\frac12,0\end{matrix}\right|x^2\right),
+ \label{eq:arctan-g}\\
+ \operatorname{arccot}x
+ &=\frac12G_{2,2}^{2,1}\!\left(
+   \left.\begin{matrix}\frac12,1\\\frac12,0\end{matrix}\right|x^2\right).
+ \label{eq:arccot-g}
+\end{align}
+Here $\operatorname{arccot}x$ is the branch selected by
+$\operatorname{arccot}x=\arctan(1/x)$, not an unspecified global convention.
+\end{theorem}
+\begin{proof}
+The right-residue formula and elementary Gamma cancellation give
+\begin{align*}
+G_{2,2}^{1,2}\!\left(
+ \left.\begin{matrix}1,1\\\frac12,0\end{matrix}\right|z\right)
+ &=2\sqrt\pi\,z^{1/2}
+ {}_2F_1\!\left(\frac12,\frac12;\frac32;-z\right),\\
+G_{2,2}^{1,2}\!\left(
+ \left.\begin{matrix}\frac12,1\\\frac12,0\end{matrix}\right|z\right)
+ &=2z^{1/2}
+ {}_2F_1\!\left(1,\frac12;\frac32;-z\right).
+\end{align*}
+On the first branch $(-x^2)^{1/2}=\ii x$; hence the first expression becomes
+$x\,{}_2F_1(1/2,1/2;3/2;x^2)$ after multiplying by
+$-\ii/(2\sqrt\pi)$.  This is the coefficient definition of $\arcsin x$.
+The second becomes
+$x\,{}_2F_1(1,1/2;3/2;-x^2)$, whose coefficient recurrence is
+$(-1)^kx^{2k+1}/(2k+1)$.
+
+For \eqref{eq:arccot-g}, apply the inversion theorem
+\eqref{eq:inversion}: the displayed $G_{2,2}^{2,1}(x^2)$ equals the
+$G_{2,2}^{1,2}$ in \eqref{eq:arctan-g} at $x^{-2}$.  Thus its half is
+$\arctan(1/x)$ on the chosen branch.  All three statements extend from their
+convergent local series exactly as certified names, using either the finite
+contour presentation or a chain of overlapping rational discs with explicit
+Taylor remainders.
+\end{proof}
+
+\begin{theorem}[Logarithm and rational function]\label{thm:log-rational}
+For a branch box avoiding $(-\infty,-1]$ and the relevant poles,
+\begin{align}
+ G_{2,2}^{1,2}\!\left(
+  \left.\begin{matrix}1,1\\1,0\end{matrix}\right|z\right)
+ &=\Log(1+z),
+ \label{eq:log-g}\\
+ G_{2,2}^{1,2}\!\left(
+  \left.\begin{matrix}1,1\\1,1\end{matrix}\right|z\right)
+ &=\frac{z}{1+z}.
+ \label{eq:rational-g}
+\end{align}
+These prove MathWorld formulas (4) and (5), with the missing domain
+qualification restored.
+\end{theorem}
+\begin{proof}
+Slater's formula gives, respectively,
+\[
+ z\,{}_2F_1(1,1;2;-z),
+ \qquad z\,{}_2F_1(1,1;1;-z).
+\]
+The first has coefficient $(-1)^kz^{k+1}/(k+1)$ and therefore is
+$\Log(1+z)$.  In the second, the common parameter $1$ cancels and
+${}_1F_0(1;;-z)=(1+z)^{-1}$.  The tail estimates are geometric on
+$\abs z<1$; outside that disc, the certified contour or the algebraic identity
+$(1+z)F=z$ supplies continuation without excluded-middle reasoning.
+\end{proof}
+
+\subsection{The four MathWorld formulas}
+
+\begin{theorem}[MathWorld special cases]\label{thm:mathworld-specials}
+In addition to \eqref{eq:log-g}--\eqref{eq:rational-g},
+\begin{align}
+G_{0,2}^{1,0}\!\left(
+ \left.\begin{matrix}-\\0,\frac12\end{matrix}\right|\frac z2\right)
+ &=\frac{\cos\sqrt{2z}}{\sqrt\pi},
+ \label{eq:mathworld-cos}\\
+G_{1,0}^{0,1}\!\left(
+ \left.\begin{matrix}1-a\\-\end{matrix}\right|z\right)
+ &=z^{-a}\e^{-1/z},
+ \label{eq:mathworld-recip-exp}\\
+G_{0,2}^{1,0}\!\left(
+ \left.\begin{matrix}-\\0,\frac12\end{matrix}\right|\frac z2;\frac12\right)
+ &=\frac{\cos z}{\sqrt\pi}.
+ \label{eq:mathworld-r-cos}
+\end{align}
+The last line uses the generalized fourth parameter of
+\eqref{eq:r-general}.
+\end{theorem}
+\begin{proof}
+Equation \eqref{eq:mathworld-cos} is \eqref{eq:cos-g} with
+$x=\sqrt{2z}$.  The left-residue formula for the single top pole in
+\eqref{eq:mathworld-recip-exp} is
+$z^{-a}{}_0F_0(-1/z)$.
+
+For \eqref{eq:mathworld-r-cos}, take residues in the generalized integral.
+The $k$th term is
+\[
+ \frac{(-1)^k(z/2)^{2k}}{k!\,\Gamma(k+\frac12)}
+ =\frac{(-1)^kz^{2k}}{\sqrt\pi(2k)!}.
+\]
+The equality is therefore the cosine series.  This also explains why the
+fourth parameter cannot be discarded without changing the branch and scale.
+\end{proof}
+
+\subsection{Step functions and a source correction}
+
+\begin{theorem}[Positive-real step kernels]\label{thm:step-g}
+For positive real $x$ with $x\ne1$,
+\begin{align}
+G_{1,1}^{1,0}\!\left(\left.\begin{matrix}1\\0\end{matrix}\right|x\right)
+ &=\begin{cases}1,&0<x<1,\\0,&x>1,\end{cases}
+ \label{eq:step-in}\\
+G_{1,1}^{0,1}\!\left(\left.\begin{matrix}1\\0\end{matrix}\right|x\right)
+ &=\begin{cases}0,&0<x<1,\\1,&x>1.\end{cases}
+ \label{eq:step-out}
+\end{align}
+At $x=1$ the value depends on the chosen Heaviside convention.  For real
+signed input the source's formulas for $H(1-|x|)$ and $H(|x|-1)$ must be read
+with $G(|x|)$, or restricted to $x>0$; the literal ``for all $x$'' statement
+with $G(x)$ is not branch-independent.
+\end{theorem}
+\begin{proof}
+For $0<x<1$, the right-loop residue formula for $G_{1,1}^{1,0}$ has one pole
+and reduces to ${}_1F_0(0;;-x)=1$, whereas $G_{1,1}^{0,1}$ has no enclosed
+right poles and is zero.  For $x>1$, the left-loop roles reverse: the first has
+no left pole and the second has one residue equal to $1$.  The closing-side
+bounds are geometric, so this is a finite remainder proof at every requested
+precision.  No claim is made at the discontinuity without a separate coded
+boundary convention.
+\end{proof}
+
+\subsection{The six-term representation of the identity function}
+
+The source also prints a six-term expression involving
+$G_{1,3}^{3,0}$ and $G_{2,4}^{2,0}$ which equals $\abs x$, followed by a factor
+$\operatorname{sgn}x$.  Each summand is a confluent case, so expanding it by
+naive nonconfluent Slater formulas is invalid.  Applying the Laurent-jet
+algorithm of \cref{def:jet}, then the contiguous relations of
+\cref{sec:derivatives}, reduces the bracket to the unique solution $F(t)$ of
+\[
+ 2tF'(t)-F(t)=0,\qquad F(1)=1,
+\]
+namely $F(t)=\sqrt t$ on $t>0$.  The reduction is a finite rational certificate
+in the parameter lists; the companion numerical script independently checks
+the printed combination at several positive points.
+
+\begin{proposition}[Corrected scope of the six-term identity]
+For real $x\ne0$, with every $G$ evaluated on the positive argument $x^2$ and
+with the real positive square root, the six-term bracket printed by the source
+is $\abs x$, hence multiplication by $\operatorname{sgn}x$ gives $x$.  At
+$x=0$ the statement means the common continuous limit; the individual printed
+terms need not be defined there.
+\end{proposition}
+
+This proposition is assigned status \statusQ rather than \statusP in the
+ledger: the report specifies the exact differential/contiguous certificate and
+checks it computationally, but does not print the several-page normalized
+certificate term by term.  It is therefore not used as a dependency of any
+other result.

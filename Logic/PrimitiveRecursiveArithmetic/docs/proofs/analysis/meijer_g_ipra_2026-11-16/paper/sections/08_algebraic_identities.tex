@@ -1,0 +1,159 @@
+\section{Parameter algebra: cancellation, shifts, inversion, multiplication}\label{sec:algebra}
+
+All identities in this section are first proved on a finite truncated contour.
+They are therefore algebraic identities of rational approximants plus explicit
+tail transport.  Alternatively, they can be checked coefficientwise in the
+residue normal forms.
+
+\subsection{Cancellation}
+
+If $a_1=b_q$ with $a_1$ in the numerator $a$-block and $b_q$ in the denominator
+$b$-block, the factors
+$\Gamma(1-a_1+s)$ and $\Gamma(1-b_q+s)$ cancel.  If $a_p=b_1$ with $a_p$ in the
+denominator $a$-block and $b_1$ in the numerator $b$-block, the factors
+$\Gamma(a_p-s)$ and $\Gamma(b_1-s)$ cancel.
+
+\begin{theorem}[Order reduction]\label{thm:cancellation}
+With parameters placed in the indicated blocks,
+\begin{align}
+G_{p,q}^{m,n}\!\left(
+ \left.\begin{matrix}a_1,a_2,\ldots,a_p\\b_1,\ldots,b_{q-1},a_1\end{matrix}\right|z\right)
+&=G_{p-1,q-1}^{m,n-1}\!\left(
+ \left.\begin{matrix}a_2,\ldots,a_p\\b_1,\ldots,b_{q-1}\end{matrix}\right|z\right),\label{eq:cancel-one}\\
+G_{p,q}^{m,n}\!\left(
+ \left.\begin{matrix}a_1,\ldots,a_{p-1},b_1\\b_1,b_2,\ldots,b_q\end{matrix}\right|z\right)
+&=G_{p-1,q-1}^{m-1,n}\!\left(
+ \left.\begin{matrix}a_1,\ldots,a_{p-1}\\b_2,\ldots,b_q\end{matrix}\right|z\right).
+\label{eq:cancel-two}
+\end{align}
+\end{theorem}
+\begin{proof}
+The two Mellin kernels are literally equal after cancelling a common factor.
+The same contour and every finite error certificate are reusable.  If a
+numerical evaluator avoids symbolic cancellation, cross-multiply by the common
+Gamma enclosure and use its apartness witness.
+\end{proof}
+
+\subsection{Power shift}
+
+\begin{theorem}[Power shift]\label{thm:power-shift}
+On one fixed branch of $\Log z$,
+\begin{equation}\label{eq:power-shift}
+ z^\rho G_{p,q}^{m,n}\!\left(
+ \left.\begin{matrix}\mathbf a\\\mathbf b\end{matrix}\right|z\right)
+ =G_{p,q}^{m,n}\!\left(
+ \left.\begin{matrix}\mathbf a+\rho\\\mathbf b+\rho\end{matrix}\right|z\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+In the right side put $u=s-\rho$.  Every Gamma argument becomes the
+corresponding unshifted argument, while $z^s=z^\rho z^u$.  Translate the finite
+contour by $\rho$; pole-clearance certificates translate with it.  On residue
+series, every exponent $b_h+k$ increases by $\rho$ and all parameter
+differences are unchanged.  The branch certificate proves the power law.
+\end{proof}
+
+\subsection{Integer interchange identities}
+
+Let $d=\alpha'-\alpha\in\Z$.  The reflection formula gives
+\begin{equation}\label{eq:reflection-ratio}
+ \frac{\Gamma(1-\alpha+s)/\Gamma(\alpha'-s)}
+      {\Gamma(1-\alpha'+s)/\Gamma(\alpha-s)}
+ =\frac{\sin\pi(\alpha'-s)}{\sin\pi(\alpha-s)}=(-1)^d.
+\end{equation}
+This proves the top interchange identity.  The same argument with $b$-factors
+proves the bottom identity.
+
+\begin{theorem}[Integer interchanges]\label{thm:interchanges}
+Whenever the two sides have common admissible contours,
+\begin{align}
+&G_{p+2,q}^{m,n+1}\!\left(
+ \left.\begin{matrix}\alpha,\mathbf a,\alpha'\\\mathbf b\end{matrix}\right|z\right)
+ =(-1)^{\alpha'-\alpha}
+ G_{p+2,q}^{m,n+1}\!\left(
+ \left.\begin{matrix}\alpha',\mathbf a,\alpha\\\mathbf b\end{matrix}\right|z\right),\label{eq:top-swap}\\
+&G_{p,q+2}^{m+1,n}\!\left(
+ \left.\begin{matrix}\mathbf a\\\beta,\mathbf b,\beta'\end{matrix}\right|z\right)
+ =(-1)^{\beta'-\beta}
+ G_{p,q+2}^{m+1,n}\!\left(
+ \left.\begin{matrix}\mathbf a\\\beta',\mathbf b,\beta\end{matrix}\right|z\right).
+\label{eq:bottom-swap}
+\end{align}
+If $d=\beta-\alpha\in\N$, then
+\begin{equation}\label{eq:block-transfer}
+G_{p+1,q+1}^{m,n+1}\!\left(
+ \left.\begin{matrix}\alpha,\mathbf a\\\mathbf b,\beta\end{matrix}\right|z\right)
+=(-1)^d
+G_{p+1,q+1}^{m+1,n}\!\left(
+ \left.\begin{matrix}\mathbf a,\alpha\\\beta,\mathbf b\end{matrix}\right|z\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equations \eqref{eq:top-swap} and \eqref{eq:bottom-swap} follow from
+\eqref{eq:reflection-ratio}.  For \eqref{eq:block-transfer}, repeated use of
+$\Gamma(w+1)=w\Gamma(w)$ shows that the quotient of the two affected kernel
+factors is the constant $(-1)^d$.  All sine and Gamma divisions are performed
+only after the common factors have been cross-multiplied; the final identity
+extends through removable parameter collisions by the jet evaluator.
+\end{proof}
+
+\subsection{Inversion}
+
+\begin{theorem}[Inversion]\label{thm:inversion}
+With compatible branches,
+\begin{equation}\label{eq:inversion}
+G_{p,q}^{m,n}\!\left(
+ \left.\begin{matrix}\mathbf a\\\mathbf b\end{matrix}\right|z\right)
+=G_{q,p}^{n,m}\!\left(
+ \left.\begin{matrix}1-\mathbf b\\1-\mathbf a\end{matrix}\right|z^{-1}\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Substitute $u=-s$ in the truncated contour integral.  Then
+$z^s=(z^{-1})^u$, the factors $\Gamma(b_j-s)$ become
+$\Gamma(1-(1-b_j)+u)$, and the factors $\Gamma(1-a_j+s)$ become
+$\Gamma((1-a_j)-u)$ in the complementary block.  Orientation signs cancel as
+in \eqref{eq:plus-convention}.  A right loop becomes a left loop, and the
+branch certificate transports $\Log(z^{-1})=-\Log z$.  The tail bounds are
+unchanged.
+\end{proof}
+
+\subsection{Gauss multiplication}
+
+For $h\ge1$, write
+\[
+ \Delta_h(c)=\left(\frac c h,\frac{c+1}h,\ldots,\frac{c+h-1}h\right).
+\]
+Apply the constructive Gamma multiplication theorem
+\begin{equation}\label{eq:gauss-mult}
+ \Gamma(hw)=(2\pi)^{(1-h)/2}h^{hw-1/2}
+ \prod_{r=0}^{h-1}\Gamma\!\left(w+\frac rh\right)
+\end{equation}
+to every factor after the substitution $s=hu$.
+
+\begin{theorem}[Meijer multiplication theorem]\label{thm:multiplication}
+For $h\in\N_{>0}$ and $z\ne0$ on a fixed branch,
+\begin{align}
+&G_{p,q}^{m,n}\!\left(
+ \left.\begin{matrix}\mathbf a\\\mathbf b\end{matrix}\right|z\right)\notag\\
+&\quad=
+\frac{h^{1+\nu+(p-q)/2}}{(2\pi)^{(h-1)\delta}}
+G_{hp,hq}^{hm,hn}\!\left(
+ \left.\begin{matrix}\Delta_h(a_1),\ldots,\Delta_h(a_p)\\
+                       \Delta_h(b_1),\ldots,\Delta_h(b_q)
+ \end{matrix}\right|
+ \frac{z^h}{h^{h(q-p)}}\right).
+\label{eq:meijer-multiplication}
+\end{align}
+\end{theorem}
+\begin{proof}
+Put $s=hu$ in the left integral.  Expand every Gamma factor by
+\eqref{eq:gauss-mult}.  The $(2\pi)$ powers combine to
+$(2\pi)^{-(h-1)\delta}$; the constant powers of $h$ combine with $\dd s=h\dd u$
+to $h^{1+\nu+(p-q)/2}$.  The $u$-dependent powers of $h$ join $z^{hu}$ to give
+$(z^h/h^{h(q-p)})^u$.  The remaining Gamma factors are exactly the expanded
+parameter lists.  This is an identity on each finite contour; the Gamma
+multiplication packet transports the error bounds.  All exponents of $h$ are
+rational powers on the positive real branch and therefore have direct finite
+names.
+\end{proof}
