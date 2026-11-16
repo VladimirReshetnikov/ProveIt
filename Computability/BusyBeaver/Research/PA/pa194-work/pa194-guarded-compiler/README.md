@@ -103,10 +103,14 @@ model. Of its three fields, `inhabited` is proved for these theories in `pa194-m
     isomorphic members are isomorphic;
   - `sA1`, `sA2`, `sM1`, `sM2`: the same for sums and products of two members.
 
-  `SourceFacts adjunctiveFullSepTheory` is not proved. Two things are missing: the
-  identification of each `tHyp s…` with the quote of a standard sentence of the source
-  language (not written), and standard proofs of those twelve sentences in the source
-  theory. Independently of this, `pa194-model-axioms` proves six of the seventeen fields
+  Each `tHyp s…` is the typed quote of an explicit standard formula of the source language,
+  `sinst tau0 s…`: the sentence with the source templates substituted for its letters
+  (`tHyp_eq_quote`, from `quote_sinst` of `PA194Schematic`). So `SourceFacts T` follows from
+  `Provable T ⌜sinst tau0 s…⌝` for the twelve sentences (`sourceFacts_of_quotes`).
+
+  `SourceFacts adjunctiveFullSepTheory` is not proved: internal provability of those twelve
+  quotes in the actual source theory is missing. It would follow from standard derivations
+  of the twelve formulas in that theory; none is supplied here. Independently of this, `pa194-model-axioms` proves six of the seventeen fields
   directly for the actual source theory and assumes the other eleven
   ([`NAME-FACTS-ELEVEN.md`](../pa194-model-axioms/NAME-FACTS-ELEVEN.md)); those eleven are
   among the fields that `nameFacts_of_sourceFacts` derives.
@@ -133,9 +137,9 @@ objects of the standalone modules they import (the import closure of
 `PA194ConditionalRefutation` and `PA194OrderIsoRew`, compiled from the repository sources at
 `34c4c35edc`). The forty axiom reports are `[propext, Classical.choice, Quot.sound]`.
 `PA194Schematic` was compiled the same day against the Foundation objects alone, and
-`PA194NameForms` against the objects of the nine; their nine and six reports are the same
+`PA194NameForms` against the objects of the nine; their ten and six reports are the same
 three axioms. `PA194NameSchema`, `PA194NameSemantics` and `PA194NameFactsProof` were compiled
-the same way, on top of those; of their eight, nine and fifteen reports, the six for the
+the same way, on top of those; of their eight, nine and seventeen reports, the six for the
 facts about relations in `PA194NameSemantics` list `propext` alone and the others the same
 three axioms. The script itself has not been run.
 

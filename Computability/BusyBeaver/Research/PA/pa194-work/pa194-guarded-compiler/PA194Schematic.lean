@@ -447,6 +447,69 @@ theorem instS_provable_of_valid (T : Theory L) [T.Δ₁] (φ : Sentence (boxL ar
   (TProvable.iff_provable (T := T.internalize V) (σ := instS σ φ)).mpr
     (inst_provable_of_valid σ T φ h)
 
+/-! ### Standard instances
+
+`sinst τ φ` replaces the letters of a formula without free variables by standard formulas
+of `L`. Its typed quote is the internal instance at the typed quotes of `τ`, so an instance
+at quoted formulas is the quote of an explicit standard formula. -/
+
+/-- A standard term without free variables as a term of `L`: a bound variable. -/
+def tstd {n : ℕ} : FirstOrder.Semiterm (boxL ar) Empty n → SyntacticSemiterm L n
+  | .bvar i => #i
+  | .fvar x => nomatch x
+  | .func f _ => nomatch f
+
+theorem quote_tstd {n : ℕ} (t : FirstOrder.Semiterm (boxL ar) Empty n) :
+    (⌜(tstd t : SyntacticSemiterm L n)⌝ : Bootstrapping.Semiterm V L n) = tqS t := by
+  cases t with
+  | bvar i => simp [tstd]
+  | fvar x => exact nomatch x
+  | func f _ => exact nomatch f
+
+/-- The standard instance of a formula without free variables. -/
+def sinst (τ : (i : ι) → Semiproposition L (ar i)) :
+    {n : ℕ} → FirstOrder.Semiformula (boxL ar) Empty n → Semiproposition L n
+  | _, .rel (.box i) v => (τ i) ⇜ fun j => tstd (v j)
+  | _, .nrel (.box i) v => ∼((τ i) ⇜ fun j => tstd (v j))
+  | _, ⊤ => ⊤
+  | _, ⊥ => ⊥
+  | _, φ ⋏ ψ => sinst τ φ ⋏ sinst τ ψ
+  | _, φ ⋎ ψ => sinst τ φ ⋎ sinst τ ψ
+  | _, ∀⁰ φ => ∀⁰ sinst τ φ
+  | _, ∃⁰ φ => ∃⁰ sinst τ φ
+
+/-- The typed quote of the standard instance is the internal instance at the typed quotes. -/
+theorem quote_sinst (τ : (i : ι) → Semiproposition L (ar i)) {n : ℕ}
+    (φ : FirstOrder.Semiformula (boxL ar) Empty n) :
+    (⌜sinst τ φ⌝ : Bootstrapping.Semiformula V L n) =
+      instS (fun i => (⌜τ i⌝ : Bootstrapping.Semiformula V L (ar i))) φ := by
+  induction φ using FirstOrder.Semiformula.rec'
+  case hrel k r v =>
+    cases r with
+    | box i =>
+      rw [instS_rel]
+      show (⌜(τ i) ⇜ fun j => tstd (v j)⌝ : Bootstrapping.Semiformula V L _) = _
+      rw [FirstOrder.Semiformula.typed_quote_substs]
+      congr 1
+      funext j
+      exact quote_tstd _
+  case hnrel k r v =>
+    cases r with
+    | box i =>
+      rw [instS_nrel]
+      show (⌜∼((τ i) ⇜ fun j => tstd (v j))⌝ : Bootstrapping.Semiformula V L _) = _
+      simp only [LCWQIsoGödelQuote.neg, FirstOrder.Semiformula.typed_quote_substs]
+      congr 2
+      funext j
+      exact quote_tstd _
+  case hverum => simp [sinst]
+  case hfalsum => simp [sinst]
+  case hand φ ψ ihφ ihψ => simp [sinst, ihφ, ihψ]
+  case hor φ ψ ihφ ihψ => simp [sinst, ihφ, ihψ]
+  case hall φ ih => simp [sinst, ih]
+  case hexs φ ih => simp [sinst, ih]
+
+#print axioms quote_sinst
 #print axioms instS_rel
 #print axioms instS_substs
 #print axioms instS_provable_of_valid
