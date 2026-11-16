@@ -1,0 +1,1508 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{enumitem}
+\usepackage{url}
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black,pdftitle={A Constructive Atlas of Trigonometric Identities in Intuitionistic Primitive Recursive Arithmetic},pdfauthor={ProveIt research artifact},pdfsubject={Constructive trigonometric identities in iPRA}}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\iPRA}{\mathsf{iPRA}}
+\newcommand{\cis}{\operatorname{cis}}
+\newcommand{\apart}{\mathrel{\#}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\angles}{\mathcal A}
+\newcommand{\laur}{\mathcal L}
+\newcommand{\den}{\operatorname{den}}
+\newcommand{\num}{\operatorname{num}}
+\newcommand{\atanTwo}{\operatorname{atan2}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\sem}[1]{[\![#1]\!]}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\RePart}{Re}
+\DeclareMathOperator{\ImPart}{Im}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single}
+\sloppy
+
+\title{A Constructive Atlas of Trigonometric Identities in Intuitionistic Primitive Recursive Arithmetic}
+\author{Research artifact prepared for the ProveIt project}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report gives a constructive proof architecture for the large majority of the
+finite identities catalogued in Wikipedia's \emph{List of trigonometric identities},
+and for several of its analytic and infinite families, inside intuitionistic
+primitive recursive arithmetic (\(\iPRA\)).  Because ordinary \(\iPRA\) has only
+natural-number objects, the phrase ``a theorem about real sine and cosine in
+\(\iPRA\)'' is made precise by a definitional interpretation: a real is a fixed
+primitive-recursive rapidly convergent dyadic name together with an arithmetic
+regularity certificate.  Equality is extensional equality of names; strict order
+and division use positive separation, or \emph{apartness}, witnesses.
+
+The analytic core defines the complex exponential by factorial series with an
+explicit primitive-recursive tail modulus.  The finite Cauchy-product identity
+proves \(\exp(z+w)=\exp z\exp w\), hence the sine and cosine addition laws and the
+Pythagorean identity.  A quarter turn is then constructed, without an appeal to a
+classical intermediate-value theorem, by a bounded rational sign-search for the
+unique zero of cosine in \([1,2]\); \(\pi\) is twice that zero.
+
+Once this foundation is present, almost all elementary identities are finite
+algebra.  We isolate a Gaussian Laurent-polynomial certificate calculus in which
+\(\cis(x+y)=\cis x\,\cis y\) and \(\cis(\pi/2)=i\).  Its executable reference
+implementation checks 227 identities in 27 families, with exact rational
+arithmetic and zero failures.  Polynomial identities are unconditional.
+Tangent, cotangent, secant, cosecant, square-root, phase, and inverse-function
+forms are stated with the constructive side conditions that their usual printed
+versions suppress.  The archive contains this report, the exact checker and its
+certificate ledger, a coverage table, and a Lean implementation plan tied to the
+ProveIt \code{ConciseIPRA} development.
+\end{abstract}
+
+\tableofcontents
+
+\section{Scope, status, and the precise theorem}
+
+The source list is not one theorem.  It combines polynomial identities, rational
+identities with hidden domain restrictions, statements about signs and branches,
+finite sums and products, power-series formulas, inverse functions, and several
+substantial theorems about infinite products or Bessel functions.  A responsible
+constructive treatment must separate these layers.
+
+\begin{definition}[Three proof levels]
+We use the following status terminology.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item A \emph{division-free identity} is an equality built from integer or
+rational constants, addition, multiplication, sine, cosine, and integer angle
+combinations.  It is asserted without side conditions.
+\item A \emph{guarded rational identity} is asserted after every denominator is
+supplied with an apartness witness.  Its cross-multiplied polynomial form is
+usually unconditional.
+\item An \emph{analytic identity} includes a convergence modulus, an order or
+branch certificate, or both.  The modulus is required to be primitive recursive.
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[Constructive trigonometric atlas]
+\label{thm:atlas}
+For every fixed finite tuple of primitive-recursive regular real names, \(\iPRA\)
+proves the translations of all division-free identities in Sections
+\ref{sec:algebra-families}--\ref{sec:triangles}.  For every fixed tuple of such
+names and fixed apartness or branch certificates, \(\iPRA\) proves the guarded
+translations in those sections.  It also proves the exponential, sine, cosine,
+quarter-turn, inverse-function, differentiation, and dyadic-product theorems of
+Sections \ref{sec:exp}--\ref{sec:pi}, \ref{sec:inverse}, and
+\ref{sec:infinite}, with the explicit moduli given there.
+
+The proof is uniform syntactically: from the codes of the displayed
+primitive-recursive terms and their certificates one constructs a finite
+\(\iPRA\) derivation by a primitive-recursive proof transformer.
+\end{theorem}
+
+The last sentence is deliberately not phrased as quantification over all
+primitive-recursive functions.  There is no primitive-recursive universal
+function evaluating every primitive-recursive program, and ordinary first-order
+\(\iPRA\) has no function variables.  The theorem is therefore a proof schema
+over fixed primitive-recursive terms, or equivalently a conservative definitional
+extension by those terms.  This is exactly the form in which numerical analysis
+is normally represented in a first-order arithmetic weak enough to care about
+program extraction.
+
+The archive's \code{artifacts/coverage.csv} gives a row-by-row status.  The main
+boundary is as follows.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.24\textwidth}X@{}}
+\toprule
+Completed in this report & Basic, reciprocal and Pythagorean identities;
+parity, reflections, shifts and periodicity; all sum/difference identities;
+finite many-angle, multiple-angle and Chebyshev schemas; half-angle and
+power-reduction formulas; product-to-sum and sum-to-product schemas; finite
+geometric, Lagrange, Dirichlet and arithmetic-progression sums; roots-of-unity
+products; finite Viete products; Hermite's cotangent identity; amplitude and
+linear-fractional identities; Euler and hyperbolic conversions; principal
+inverse compositions; triangle identities; derivatives of sine and cosine; and
+the dyadic infinite cosine product.\\
+\addlinespace
+Completed with explicit guards & Every quotient form involving tangent,
+cotangent, secant or cosecant; signed square-root half-angle formulas; phase
+representations; inverse addition formulas; and formulas with poles in finite
+sums or products.\\
+\addlinespace
+Constructive proof outline supplied & Jacobi--Anger/Bessel generating identities
+and the broader termwise differentiation/integration library.\\
+\addlinespace
+Not claimed complete & The full Euler--Weierstrass product over all zeros of
+sine and application-specific medical-imaging operator identities.  These need
+substantial product or integration libraries beyond the trigonometric core.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{What ``in \(\iPRA\)'' means}
+\label{sec:meaning}
+
+\subsection{The arithmetic base}
+
+The ProveIt \code{ConciseIPRA} development presents the usual first-order
+intuitionistic primitive recursive arithmetic with a symbol for every primitive
+recursive function, defining equations, successor axioms, and induction for
+quantifier-free formulas.  The Lean file \code{ConciseIPRA/PR.lean} represents a
+primitive-recursive symbol of arity \(k\) by an inductive type \code{PR k}; its
+constructors are zero, successor, projection, composition, and primitive
+recursion.  The arithmetic axioms contain the two recursion equations and
+quantifier-free induction.  We use exactly that interface.
+
+No real numbers are added as primitive objects.  All real-number language below
+is an abbreviation for formulas about natural-number codes.
+
+\subsection{Signed integers, dyadics, and rapid names}
+
+A signed integer is represented by a pair \((a,b)\in\N^2\), denoting \(a-b\).
+A dyadic is a triple \((a,b,e)\), denoting \((a-b)/2^e\).  Addition,
+multiplication, comparison after a common denominator, absolute value, and
+rounding to a prescribed denominator are primitive recursive.
+
+\begin{definition}[Rapid dyadic name]
+A rapid name is a fixed primitive-recursive dyadic sequence
+\(p\mapsto x[p]\), supplied with an \(\iPRA\) proof of
+\[
+  \abs{x[p+1]-x[p]}\le 2^{-p-3}.
+  \tag{2.1}
+\]
+It also carries an integer magnitude bound \(B\ge1\) such that
+\(\abs{x[p]}\le B\) for every \(p\).
+\end{definition}
+
+The geometric sum proves, intuitionistically and with only finite induction,
+that for \(q\ge p\),
+\[
+ \abs{x[q]-x[p]}\le \sum_{j=p}^{q-1}2^{-j-3}<2^{-p-2}.
+ \tag{2.2}
+\]
+Thus the closed interval
+\[
+ I_x(p)=[x[p]-2^{-p-2},\ x[p]+2^{-p-2}]
+ \tag{2.3}
+\]
+contains every later approximation.  One may regularize the intervals by taking
+finite intersections, but none of the proofs needs that cosmetic step.
+
+\begin{definition}[Extensional equality and apartness]
+For rapid names \(x,y\), write \(x=_\R y\) when
+\[
+  \forall p\;\abs{x[p+4]-y[p+4]}\le 2^{-p}.
+  \tag{2.4}
+\]
+An apartness witness \(x\apart0\) is a finite tuple
+\((p,m,\sigma)\), \(\sigma\in\{-1,+1\}\), certifying that the whole interval
+\(I_x(p)\) lies respectively above \(2^{-m}\) or below \(-2^{-m}\).
+Likewise, \(x<y\) is used only with a finite precision at which
+\(I_x(p)\) and \(I_y(p)\) are strictly separated.
+\end{definition}
+
+Apartness is positive information.  From \(x\ne0\) in intuitionistic logic one
+cannot in general compute a reciprocal; from \(x\apart0\) one can.  This is the
+reason every quotient identity later has an explicit guard.
+
+\subsection{Arithmetic on names}
+
+Negation and addition are pointwise with a fixed precision shift.  To multiply
+\(x\) and \(y\), use bounds \(B_x,B_y\), request the input intervals at a
+precision exceeding the output precision by
+\(\ceil{\log_2(B_x+B_y+2)}+O(1)\), multiply their endpoints, and round outward.
+All loops are bounded by data already present in the names.  The regularity
+proof is the elementary estimate
+\[
+ \abs{xy-x'y'}\le \abs{x}\abs{y-y'}+\abs{y'}\abs{x-x'}.
+ \tag{2.5}
+\]
+
+If an apartness witness gives \(0<d\le\abs{x}\), interval inversion is applied
+at a precision for which the input width is below \(d/2\).  The estimate
+\[
+ \abs{x^{-1}-y^{-1}}=\frac{\abs{x-y}}{\abs{x}\abs{y}}
+ \le \frac{2\abs{x-y}}{d^2}
+ \tag{2.6}
+\]
+gives a primitive-recursive precision shift.  Square root on a nonnegative
+bounded interval is obtained by a fixed number of rational bisections; if a
+positive lower bound is available it is Lipschitz, and at zero the elementary
+modulus \(\abs{\sqrt u-\sqrt v}\le\sqrt{\abs{u-v}}\) is used.  The latter merely
+doubles the requested input precision.
+
+\begin{proposition}[Closure]
+Rapid names with certificates are closed under negation, addition, bounded
+multiplication, reciprocal from apartness, nonnegative square root, finite sums,
+and finite products.  Codes for all these operations are primitive recursive,
+and their regularity proofs use only quantifier-free induction.
+\end{proposition}
+
+\begin{proof}
+Every construction is a bounded loop on dyadic integers.  Equations (2.2),
+(2.5), and (2.6) provide quantifier-free loop invariants.  Universal closure in
+the precision parameter is introduced after proving the corresponding fixed
+precision inequality.  No choice sequence or undecidable sign test is used.
+\end{proof}
+
+\subsection{The translation of a real statement}
+
+A displayed equality \(F(x_1,\ldots,x_r)=G(x_1,\ldots,x_r)\) denotes the
+first-order formula obtained by replacing every operation with its name
+constructor and replacing equality by (2.4).  A theorem ``for all constructive
+reals'' means: for arbitrary fixed \code{PR} terms for the input names and
+arbitrary fixed derivations of their regularity assumptions, a uniform proof
+transformer emits an \(\iPRA\) proof of the translated equality.  This avoids
+both second-order quantification and any hidden classical completion of \(\Q\).
+
+\section{The complex exponential with an explicit primitive-recursive modulus}
+\label{sec:exp}
+
+We use the \(\ell^1\) norm on Gaussian rationals,
+\(\norm{a+ib}_1=\abs a+\abs b\), because it is rational and submultiplicative.
+Complex rapid names are pairs of real names.
+
+For a complex number bounded by an integer \(B\ge1\), define the finite sum
+\[
+ E_N(z)=\sum_{n=0}^{N-1}\frac{z^n}{n!}.
+ \tag{3.1}
+\]
+Factorials, powers, and bounded sums are primitive recursive.
+
+\begin{lemma}[Explicit exponential tail]
+\label{lem:exp-tail}
+Let \(\norm z_1\le B\), \(B\ge1\), and put
+\[
+ N(B,p)=2B^2+2B+p+4.
+ \tag{3.2}
+\]
+Then
+\[
+ \sum_{n=N(B,p)}^\infty\frac{\norm z_1^n}{n!}<2^{-p-3}.
+ \tag{3.3}
+\]
+The proof of the corresponding finite-tail bound is formalizable in \(\iPRA\).
+\end{lemma}
+
+\begin{proof}
+For \(n\ge2B\), successive majorant terms have ratio
+\(B/(n+1)\le1/2\), so the tail is at most twice its first term.  Write
+\(N=2B+m\), where \(m=2B^2+p+4\).  Discarding the positive factor
+\((2B)!\) and using \(B\le2^B\),
+\[
+ 2\frac{B^N}{N!}
+ \le 2B^{2B}2^{-m}
+ \le 2\,2^{2B^2}2^{-(2B^2+p+4)}=2^{-p-3}.
+\]
+All inequalities concern natural-number products and powers.  The ratio-tail
+argument is a finite induction followed by a geometric-sum estimate, so
+quantifier-free induction suffices.
+\end{proof}
+
+To evaluate \(E_N\) at a real name, request a sufficiently fine input interval
+and perform outward interval arithmetic.  A deliberately coarse sensitivity
+bound is obtained by replacing every coefficient and every intermediate value
+by \((B+1)^N\); requesting
+\[
+ p+(B+2)N(B,p)+N(B,p)+8
+ \tag{3.4}
+\]
+input bits is more than sufficient.  The exact shift is unimportant; its
+primitive recursiveness and proved adequacy are what matter.
+
+\begin{definition}[Constructive exponential, sine, and cosine]
+The name \(\exp z\) at precision \(p\) is the outward-rounded value of
+\(E_{N(B,p+4)}(z)\).  Put
+\[
+ \sin x=\frac{\exp(ix)-\exp(-ix)}{2i},\qquad
+ \cos x=\frac{\exp(ix)+\exp(-ix)}2,
+ \qquad \cis x=\exp(ix).
+ \tag{3.5}
+\]
+Division by \(2\) is exact dyadic division and needs no apartness guard.
+\end{definition}
+
+\subsection{The multiplication law}
+
+The key finite identity is
+\[
+ \sum_{r+s=k}\frac{x^r}{r!}\frac{y^s}{s!}
+ =\frac1{k!}\sum_{r=0}^k\binom{k}{r}x^r y^{k-r}
+ =\frac{(x+y)^k}{k!}.
+ \tag{3.6}
+\]
+It is a polynomial identity over \(\Z\) after multiplication by \(k!\).
+The binomial theorem and the factorial identity
+\(\binom{k}{r}r!(k-r)!=k!\) are proved by primitive recursion.
+
+\begin{theorem}[Exponential addition]
+\label{thm:exp-add}
+For bounded complex rapid names,
+\[
+ \exp(x+y)=\exp x\,\exp y.
+ \tag{3.7}
+\]
+\end{theorem}
+
+\begin{proof}
+Multiply finite sums and group terms of total degree \(k\).  Equation (3.6)
+identifies every coefficient below the truncation boundary.  The discarded
+parts are bounded by Lemma \ref{lem:exp-tail}; the product error is bounded by
+the same tails multiplied by the elementary bound
+\(\norm{\exp z}_1\le 2^{2B+2}\).  Given an output precision \(p\), all
+truncation indices and input precisions are supplied by explicit primitive-
+recursive expressions.  Hence \(\iPRA\) proves the precision-\(p\) equality;
+universal introduction gives (3.7).
+\end{proof}
+
+Taking \(y=-x\) gives \(\exp x\exp(-x)=1\).  Substituting \(ix,iy\) and taking
+real and imaginary parts gives the fundamental formulas
+\begin{align}
+ \sin(x+y)&=\sin x\cos y+\cos x\sin y,\tag{3.8}\\
+ \cos(x+y)&=\cos x\cos y-\sin x\sin y.\tag{3.9}
+\end{align}
+Moreover,
+\[
+ \cos^2x+\sin^2x
+ =\frac{(u+u^{-1})^2-(u-u^{-1})^2}{4}=1,
+ \qquad u=\cis x.
+ \tag{3.10}
+\]
+These are the only analytic facts needed by the finite algebraic atlas.
+
+\section{A primitive-recursive construction of the quarter turn and \(\pi\)}
+\label{sec:pi}
+
+We cannot define \(\pi\) by saying ``choose the least positive zero of sine.''
+That would hide both a choice principle and a real-number minimization.  Instead
+we construct a rapidly convergent rational sequence with a verified error
+bound.
+
+\subsection{Alternating estimates}
+
+For \(0\le t\le2\), the absolute terms in the sine and cosine series decrease
+from the first nonconstant term onward.  The alternating-series estimates,
+proved by finite pairing and the explicit tail bound, yield
+\begin{align}
+ t-\frac{t^3}{6}&\le\sin t\le t,\tag{4.1}\\
+ \cos1&\ge1-\frac12=\frac12,\tag{4.2}\\
+ \cos2&\le1-2+\frac{16}{24}=-\frac13.\tag{4.3}
+\end{align}
+In particular, for \(0\le t\le2\),
+\[
+ \sin t\ge t\left(1-\frac{t^2}{6}\right)\ge\frac t3.
+ \tag{4.4}
+\]
+
+From the already proved addition formulas,
+\[
+ \cos a-\cos b
+ =2\sin\frac{a+b}{2}\sin\frac{b-a}{2}.
+ \tag{4.5}
+\]
+Thus for \(1\le a<b\le2\), equation (4.4) gives the quantitative strict
+monotonicity estimate
+\[
+ \cos a-\cos b\ge\frac{b-a}{9}.
+ \tag{4.6}
+\]
+The upper estimate \(\abs{\cos a-\cos b}\le\abs{a-b}\) follows from
+\(\abs{\sin t}\le\abs t\).  Both bounds are algebraic consequences of finite
+series estimates and require no derivative theorem.
+
+\subsection{Located sign-search}
+
+Fix an output precision \(p\).  Begin with the rational bracket \([1,2]\), whose
+endpoint cosine signs are certified by (4.2)--(4.3).  Repeatedly take the
+rational midpoint \(m\) and compute an interval for \(\cos m\) of width at most
+\(2^{-p-12}\).  Rational comparison gives three decidable cases.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If the interval lies strictly above zero, replace the left endpoint by
+\(m\).
+\item If it lies strictly below zero, replace the right endpoint by \(m\).
+\item If it contains zero, record \(m\) as an approximate zero.
+\end{enumerate}
+Run at most \(p+12\) midpoint steps.  If case (c) occurs, then
+\(\abs{\cos m}\le2^{-p-12}\).  If it never occurs, the final bracket has width
+at most \(2^{-p-12}\); monotonicity and the Lipschitz estimate imply that its
+midpoint \(m\) satisfies the same bound, up to one harmless bit.
+
+Let \(r[p]\) be the resulting midpoint.  Equation (4.6) implies
+\[
+ \abs{r[p]-r[q]}
+ \le9\bigl(\abs{\cos r[p]}+\abs{\cos r[q]}\bigr),
+ \tag{4.7}
+\]
+so a fixed precision shift turns \(r\) into a rapid name.  This is a bounded
+loop using only rational comparisons, hence a primitive-recursive construction.
+
+\begin{definition}[Quarter turn and \(\pi\)]
+Let \(q\) be the real represented by the shifted name \(r\), and define
+\(\pi=2q\).
+\end{definition}
+
+\begin{theorem}[Quarter-turn specification]
+\label{thm:quarter}
+The theory \(\iPRA\) proves
+\[
+ 1\le q\le2,\qquad \cos q=0,\qquad \sin q=1.
+ \tag{4.8}
+\]
+Consequently
+\[
+ \sin\pi=0,\quad \cos\pi=-1,\quad
+ \sin(2\pi)=0,\quad \cos(2\pi)=1,
+ \tag{4.9}
+\]
+and sine and cosine have period \(2\pi\).
+\end{theorem}
+
+\begin{proof}
+The construction and the exponential continuity modulus show
+\(\cos q=0\).  Since \(q\in[1,2]\), (4.4) gives \(\sin q\ge1/3\).  Equation
+(3.10) gives \((\sin q)^2=1\).  Factor
+\((\sin q-1)(\sin q+1)=0\); the second factor is positively apart from zero,
+so constructive cancellation gives \(\sin q=1\).  Equations (4.9) and
+periodicity are now finite applications of (3.8)--(3.9).
+\end{proof}
+
+This construction is also useful in formalization: it prevents every later
+identity involving \(\pi\) from depending on a large pre-existing constructive
+real-analysis library.
+
+\section{The finite Gaussian Laurent certificate calculus}
+\label{sec:certificate}
+
+The analytic work is now complete.  The rest of most of the source list can be
+verified in a finite ring.
+
+\begin{definition}[Angle syntax]
+For angle variables \(x_1,\ldots,x_r\), an angle code is
+\[
+ a=(m_1,\ldots,m_r;k)\in\Z^r\times\Z,
+ \qquad
+ \sem{a}=\sum_jm_jx_j+kq.
+ \tag{5.1}
+\]
+Addition and negation are componentwise.
+\end{definition}
+
+Let
+\[
+ \laur=\Q(i)[z_1^{\pm1},\ldots,z_r^{\pm1}]
+ \tag{5.2}
+\]
+be the Gaussian Laurent ring.  Define
+\begin{align}
+ U(a)&=i^k\prod_jz_j^{m_j},\tag{5.3}\\
+ S(a)&=\frac{U(a)-U(-a)}{2i},\qquad
+ C(a)=\frac{U(a)+U(-a)}2.\tag{5.4}
+\end{align}
+A Laurent polynomial is represented by a finite list of monomials with Gaussian
+rational coefficients.  Sorting monomials, merging equal exponents, and deleting
+zero coefficients is a primitive-recursive normalizer.
+
+\begin{theorem}[Certificate soundness]
+\label{thm:certificate-sound}
+If the normalized Laurent residue of two division-free expressions is zero,
+then \(\iPRA\) proves their equality under every assignment of the angle
+variables to regular real names.
+
+For rational expressions \(P/Q\) and \(R/T\), a zero normalized residue
+\(PT-RQ\) proves equality whenever the evaluations of \(Q\) and \(T\) are
+apart from zero.
+\end{theorem}
+
+\begin{proof}
+Evaluate \(z_j\) as \(\cis x_j\).  Theorem \ref{thm:exp-add} and Theorem
+\ref{thm:quarter} give
+\(U(a+b)=U(a)U(b)\), \(U(-a)=U(a)^{-1}\), and \(U(q)=i\).  Equations (5.4)
+then evaluate to the constructed sine and cosine.  Soundness of each finite
+normalizer step is ring arithmetic; induction on the finite term and monomial
+lists is quantifier-free induction.  The rational case is cross multiplication
+followed by constructive cancellation using the supplied apartness witnesses.
+\end{proof}
+
+The accompanying Python implementation uses only exact fractions and finite
+maps; it performs no floating-point trigonometry.  Its certificate ledger
+contains 227 zero residues in 27 families.  The finite checks are regressions,
+not a replacement for the schema proofs: for example, the report proves the
+\(n\)-angle binomial theorem for arbitrary \(n\), while the executable ledger
+checks \(0\le n\le10\).
+
+\section{Basic, symmetry, periodicity, and addition families}
+\label{sec:algebra-families}
+
+Put \(s_x=\sin x\), \(c_x=\cos x\).  The reciprocal functions are partial
+constructive functions:
+\[
+ \tan x=\frac{s_x}{c_x}\quad(c_x\apart0),\quad
+ \cot x=\frac{c_x}{s_x}\quad(s_x\apart0),\quad
+ \sec x=\frac1{c_x},\quad \csc x=\frac1{s_x}.
+ \tag{6.1}
+\]
+Their familiar Pythagorean consequences are
+\[
+ 1+\tan^2x=\sec^2x,
+ \qquad 1+\cot^2x=\csc^2x,
+ \tag{6.2}
+\]
+with the corresponding guards.  Cross multiplication reduces both to
+\(s_x^2+c_x^2=1\).
+
+\subsection{Parity derived constructively}
+
+It is worth deriving parity rather than assuming it, because the derivation
+illustrates constructive cancellation without division.  Setting \(y=-x\) in
+the addition laws gives
+\begin{align*}
+ s_xc_{-x}+c_xs_{-x}&=0,\\
+ c_xc_{-x}-s_xs_{-x}&=1.
+\end{align*}
+Multiply the first equation by \(c_x\), the second by \(s_x\), and subtract.
+Using \(s_x^2+c_x^2=1\) gives \(s_{-x}=-s_x\).  The analogous linear
+combination gives \(c_{-x}=c_x\).  No case split on whether \(s_x\) or \(c_x\)
+is zero is used.
+
+The quarter-turn values then give all reflection and shift formulas, for example
+\begin{align}
+ \sin(q-x)&=\cos x,& \cos(q-x)&=\sin x,\tag{6.3}\\
+ \sin(x+q)&=\cos x,& \cos(x+q)&=-\sin x,\tag{6.4}\\
+ \sin(\pi-x)&=\sin x,& \cos(\pi-x)&=-\cos x,\tag{6.5}\\
+ \sin(x+\pi)&=-\sin x,& \cos(x+\pi)&=-\cos x,\tag{6.6}\\
+ \sin(x+2\pi)&=\sin x,& \cos(x+2\pi)&=\cos x.\tag{6.7}
+\end{align}
+Sign tables on quadrants are constructive consequences of (4.4), the shift
+formulas, and a supplied strict interval locating the angle modulo \(2\pi\).
+At an axis one states the exact zero separately instead of invoking an
+undecidable trichotomy for reals.
+
+\subsection{Sums and differences}
+
+The unconditional formulas are
+\begin{align}
+ \sin(x\pm y)&=\sin x\cos y\pm\cos x\sin y,\tag{6.8}\\
+ \cos(x\pm y)&=\cos x\cos y\mp\sin x\sin y.\tag{6.9}
+\end{align}
+For example, the tangent formula is best recorded first in cross-multiplied
+form
+\[
+ \cos(x+y)\bigl(\tan x+\tan y\bigr)
+ =\sin(x+y)\bigl(1-\tan x\tan y\bigr),
+ \tag{6.10}
+\]
+with \(\cos x\apart0\) and \(\cos y\apart0\).  If in addition
+\(1-\tan x\tan y\apart0\), cancellation yields
+\[
+ \tan(x+y)=\frac{\tan x+\tan y}{1-\tan x\tan y}.
+ \tag{6.11}
+\]
+The corresponding formulas for subtraction, cotangent, secant, and cosecant
+follow identically.  The exact checker includes all six common quotient forms.
+The constructive correction is not a change in algebra; it is the replacement
+of an implicit ``where defined'' by finite positive data sufficient to perform
+the divisions.
+
+\section{Multiple angles, Chebyshev polynomials, and finite angle sums}
+\label{sec:multiple}
+
+From \(\cis x=c_x+is_x\) and \(\cis(nx)=\cis(x)^n\), the binomial theorem gives,
+for every \(n\in\N\),
+\begin{align}
+ \cos(nx)
+ &=\sum_{j=0}^{\floor{n/2}}(-1)^j\binom{n}{2j}
+ c_x^{n-2j}s_x^{2j},\tag{7.1}\\
+ \sin(nx)
+ &=\sum_{j=0}^{\floor{(n-1)/2}}(-1)^j\binom{n}{2j+1}
+ c_x^{n-2j-1}s_x^{2j+1}.\tag{7.2}
+\end{align}
+This proof is a bounded binomial expansion and is directly available in
+\(\iPRA\).  The familiar special cases include
+\begin{align*}
+ \sin2x&=2s_xc_x,&
+ \cos2x&=c_x^2-s_x^2=2c_x^2-1=1-2s_x^2,\\
+ \sin3x&=3s_x-4s_x^3,&
+ \cos3x&=4c_x^3-3c_x.
+\end{align*}
+Quotient versions for \(\tan,\cot,\sec,\csc\) are obtained by guarded
+cancellation.  For instance
+\[
+ \tan3x=\frac{3t-t^3}{1-3t^2},\qquad t=\tan x,
+ \tag{7.3}
+\]
+provided the displayed terms are defined and the denominator is apart from
+zero.
+
+Define the Chebyshev polynomials by primitive recursion:
+\begin{align*}
+ T_0(X)&=1,&T_1(X)&=X,&T_{n+1}(X)&=2XT_n(X)-T_{n-1}(X),\\
+ U_0(X)&=1,&U_1(X)&=2X,&U_{n+1}(X)&=2XU_n(X)-U_{n-1}(X).
+\end{align*}
+Adding the formulas for \(\cos((n+1)x)\) and \(\cos((n-1)x)\) proves
+\[
+ \cos(nx)=T_n(\cos x),\qquad
+ \sin(nx)=\sin x\,U_{n-1}(\cos x).
+ \tag{7.4}
+\]
+The induction invariant is a polynomial equality and therefore quantifier-free.
+
+\subsection{A finite sum of arbitrary angles}
+
+Let \(t_j=\tan x_j\), and let \(e_k\) be the elementary symmetric polynomial
+of degree \(k\) in \(t_1,\ldots,t_n\), with \(e_0=1\).  Expanding
+\[
+ \prod_{j=1}^n(1+it_j)
+ =(e_0-e_2+e_4-\cdots)+i(e_1-e_3+e_5-\cdots)
+ \tag{7.5}
+\]
+and comparing it with
+\(\prod_j\sec x_j\,\cis(\sum_jx_j)\) gives
+\begin{align}
+ \tan\sum_jx_j&=
+ \frac{e_1-e_3+e_5-\cdots}{e_0-e_2+e_4-\cdots},\tag{7.6}\\
+ \sec\sum_jx_j&=
+ \frac{\prod_j\sec x_j}{e_0-e_2+e_4-\cdots},\tag{7.7}\\
+ \csc\sum_jx_j&=
+ \frac{\prod_j\sec x_j}{e_1-e_3+e_5-\cdots}.
+ \tag{7.8}
+\end{align}
+Each quotient carries the obvious apartness guard.  The expansion is a finite
+induction updating the elementary symmetric list from high degree to low degree;
+the exact checker validates the first four arities, while (7.5) is the general
+proof.
+
+\section{Half angles, tangent half-angle substitution, and power reduction}
+\label{sec:half-power}
+
+The double-angle identities immediately give the unconditional square formulas
+\[
+ \sin^2\frac x2=\frac{1-\cos x}{2},\qquad
+ \cos^2\frac x2=\frac{1+\cos x}{2}.
+ \tag{8.1}
+\]
+A printed formula with a square root must include branch information:
+\[
+ \sin\frac x2=\sigma_s\sqrt{\frac{1-\cos x}{2}},\qquad
+ \cos\frac x2=\sigma_c\sqrt{\frac{1+\cos x}{2}},
+ \tag{8.2}
+\]
+where \(\sigma_s,\sigma_c\in\{-1,+1\}\) are certified by locating \(x/2\) in a
+strict half-period interval.  At a zero endpoint, the value is stated as zero.
+This avoids deciding the sign of an arbitrary real.
+
+With the relevant denominators apart from zero,
+\begin{align}
+ \tan\frac x2&=\frac{\sin x}{1+\cos x}
+ =\frac{1-\cos x}{\sin x},\tag{8.3}\\
+ \cot\frac x2&=\frac{\sin x}{1-\cos x}
+ =\frac{1+\cos x}{\sin x}.\tag{8.4}
+\end{align}
+Putting \(t=\tan(x/2)\) yields the Weierstrass substitution
+\begin{align}
+ \sin x&=\frac{2t}{1+t^2},&
+ \cos x&=\frac{1-t^2}{1+t^2},&
+ \cis x&=\frac{1+it}{1-it}.
+ \tag{8.5}
+\end{align}
+The denominator \(1+t^2\) has a constructive positive lower bound \(1\), so
+only the definition of \(t\) itself needs a cosine apartness witness.
+
+\subsection{General power reduction}
+
+The two compact master identities are
+\begin{align}
+ \cos^n x
+ &=2^{-n}\sum_{k=0}^n\binom nk\cis((n-2k)x)
+ =2^{-n}\sum_{k=0}^n\binom nk\cos((n-2k)x),\tag{8.6}\\
+ \sin^n x
+ &=(2i)^{-n}\sum_{k=0}^n(-1)^k\binom nk\cis((n-2k)x).
+ \tag{8.7}
+\end{align}
+They are simply the binomial expansions of
+\(((u+u^{-1})/2)^n\) and \(((u-u^{-1})/(2i))^n\).  Pairing terms \(k\) and
+\(n-k\) gives the usual purely real even/odd tables.  For example,
+\begin{align*}
+ \sin^2x&=\frac{1-\cos2x}{2},&
+ \cos^2x&=\frac{1+\cos2x}{2},\\
+ \sin^3x&=\frac{3\sin x-\sin3x}{4},&
+ \cos^3x&=\frac{3\cos x+\cos3x}{4},\\
+ \sin^4x&=\frac{3-4\cos2x+\cos4x}{8},&
+ \cos^4x&=\frac{3+4\cos2x+\cos4x}{8}.
+\end{align*}
+All divisions are by positive integers and are total on dyadic/rational names.
+
+\section{Products to sums, sums to products, and finite products}
+\label{sec:products}
+
+Adding and subtracting the angle formulas proves
+\begin{align}
+ \cos x\cos y&=\frac{\cos(x-y)+\cos(x+y)}2,\tag{9.1}\\
+ \sin x\sin y&=\frac{\cos(x-y)-\cos(x+y)}2,\tag{9.2}\\
+ \sin x\cos y&=\frac{\sin(x+y)+\sin(x-y)}2,\tag{9.3}\\
+ \cos x\sin y&=\frac{\sin(x+y)-\sin(x-y)}2.\tag{9.4}
+\end{align}
+Conversely, setting \(p=(x+y)/2\), \(r=(x-y)/2\) gives all four
+sum-to-product formulas.  Division by two is rational scalar multiplication,
+not a partial real division.
+
+For arbitrary \(n\), finite expansion gives
+\begin{align}
+ \prod_{j=1}^n\cos x_j
+ &=2^{-n}\sum_{\eps\in\{-1,1\}^n}
+   \cos\left(\sum_j\eps_jx_j\right),\tag{9.5}\\
+ \prod_{j=1}^n\sin x_j
+ &=(2i)^{-n}\sum_{\eps\in\{-1,1\}^n}
+   \left(\prod_j\eps_j\right)
+   \cis\left(\sum_j\eps_jx_j\right).
+ \tag{9.6}
+\end{align}
+The sum ranges over a primitive-recursively enumerable finite cube.  Pairing a
+sign vector with its negative converts (9.6) into the familiar real sine or
+cosine formula according to the parity of \(n\).
+
+\subsection{Roots of unity}
+
+For \(n\ge2\), let \(\zeta=\cis(2\pi/n)\).  Finite polynomial division gives
+\[
+ \frac{Z^n-1}{Z-1}=\prod_{k=1}^{n-1}(Z-\zeta^k)
+ =1+Z+\cdots+Z^{n-1}.
+ \tag{9.7}
+\]
+This is a finite identity in a cyclotomic extension, which can be represented
+by pairs of polynomials modulo \(1+Z+\cdots+Z^{n-1}\); no algebraic closure is
+needed.  Setting \(Z=1\), pairing conjugate factors, and using positivity of
+sine on \((0,\pi)\) yields
+\[
+ \prod_{k=1}^{n-1}\sin\frac{k\pi}{n}=\frac{n}{2^{n-1}}.
+ \tag{9.8}
+\]
+Likewise,
+\[
+ \prod_{k=0}^{n-1}\sin\left(x+\frac{k\pi}{n}\right)
+ =2^{1-n}\sin(nx).
+ \tag{9.9}
+\]
+Equation (9.9) is first proved after squaring or as a complex Laurent identity;
+the sign is fixed by a rational sample interval.  Half-products follow by
+positive square root, for example
+\[
+ \prod_{k=1}^{n-1}\sin\frac{k\pi}{2n}
+ =\frac{\sqrt n}{2^{n-1}}.
+ \tag{9.10}
+\]
+Every root sign in (9.8)--(9.10) is justified by an explicit interval
+\(0<k\pi/n<\pi\).
+
+\subsection{Finite Viete product}
+
+Repeatedly applying \(\sin2t=2\sin t\cos t\) gives, for every \(N\ge1\),
+\[
+ 2^N\sin x\prod_{j=0}^{N-1}\cos(2^jx)=\sin(2^Nx).
+ \tag{9.11}
+\]
+This cross-multiplied form is unconditional.  Dividing by \(2^N\sin x\)
+requires \(\sin x\apart0\).  The certificate ledger checks \(N\le9\), while
+finite induction proves the schema.
+
+\subsection{Hermite's cotangent identity}
+
+If every \(\sin(a_k-a_j)\) for \(j\ne k\), and every displayed pole factor,
+is apart from zero, then
+\[
+ \prod_{j=1}^n\cot(z-a_j)
+ =\cos\frac{n\pi}{2}
+ +\sum_{k=1}^n\cot(z-a_k)
+   \prod_{j\ne k}\cot(a_k-a_j).
+ \tag{9.12}
+\]
+For a human proof put \(w=e^{2iz}\), \(\alpha_k=e^{2ia_k}\), and use
+\[
+ \cot(z-a_k)=i\frac{w+\alpha_k}{w-\alpha_k}.
+ \tag{9.13}
+\]
+Both sides of (9.12) are rational functions of \(w\).  At each simple pole
+\(w=\alpha_k\) their principal parts agree, since the residue of the product is
+the residue of its \(k\)-th factor times
+\(\prod_{j\ne k}\cot(a_k-a_j)\).  Their difference is therefore constant.
+Comparing leading coefficients after multiplication by
+\(\prod_k(w-\alpha_k)\) gives \(\cos(n\pi/2)\).  This is finite polynomial
+arithmetic.  The checker independently normalizes the cases \(n=2,3\).
+
+\section{Finite trigonometric sums}
+\label{sec:finite-sums}
+
+The finite geometric identity
+\[
+ (1-r)\sum_{k=0}^nr^k=1-r^{n+1}
+ \tag{10.1}
+\]
+is proved by a one-line induction in \(\iPRA\).  Put \(r=\cis h\) and use
+\(1-e^{ih}=-2ie^{ih/2}\sin(h/2)\).  The unconditional cross-multiplied formula
+is
+\[
+ \sin\frac h2\sum_{k=0}^n\cis(a+kh)
+ =\sin\frac{(n+1)h}{2}\,
+  \cis\left(a+\frac{nh}{2}\right).
+ \tag{10.2}
+\]
+If \(\sin(h/2)\apart0\), division and real/imaginary parts give
+\begin{align}
+ \sum_{k=0}^n\cos(a+kh)
+ &=\frac{\sin((n+1)h/2)}{\sin(h/2)}
+   \cos\left(a+\frac{nh}{2}\right),\tag{10.3}\\
+ \sum_{k=0}^n\sin(a+kh)
+ &=\frac{\sin((n+1)h/2)}{\sin(h/2)}
+   \sin\left(a+\frac{nh}{2}\right).
+ \tag{10.4}
+\end{align}
+When the denominator is zero, (10.2) remains valid and the sum is handled by
+the corresponding polynomial limiting case, such as \((n+1)\cos a\).
+
+Useful specializations include
+\begin{align}
+ \sum_{k=0}^n\sin(2kx)
+ &=\frac{\cos x-\cos((2n+1)x)}{2\sin x},\tag{10.5}\\
+ \sum_{k=1}^n\cos(2kx)
+ &=\frac{-\sin x+\sin((2n+1)x)}{2\sin x},\tag{10.6}\\
+ 1+2\sum_{k=1}^n\cos(2kx)
+ &=\frac{\sin((2n+1)x)}{\sin x},\tag{10.7}\\
+ \sum_{k=1}^n\cos((2k-1)x)
+ &=\frac{\sin(2nx)}{2\sin x}.
+ \tag{10.8}
+\end{align}
+Equation (10.7) is the Dirichlet-kernel identity.  Every quotient is guarded by
+\(\sin x\apart0\); the cross-multiplied forms are unconditional.  The exact
+ledger checks the Lagrange and Dirichlet families through \(n=10\), and the
+arithmetic-progression formulas through \(n=8\).
+
+\section{Linear combinations and linear-fractional rotations}
+\label{sec:linear}
+
+The identity
+\[
+ R\cos(x-\phi)=R\cos\phi\cos x+R\sin\phi\sin x
+ \tag{11.1}
+\]
+is unconditional.  Hence, whenever data \(R,\phi\) satisfy
+\(R\cos\phi=A\) and \(R\sin\phi=B\),
+\[
+ A\cos x+B\sin x=R\cos(x-\phi).
+ \tag{11.2}
+\]
+One also has the unconditional amplitude equation
+\[
+ (A\cos u+B\cos v)^2+(A\sin u+B\sin v)^2
+ =A^2+B^2+2AB\cos(u-v).
+ \tag{11.3}
+\]
+For the usual canonical phase, let \(R=\sqrt{A^2+B^2}\).  If \(R\apart0\),
+construct \(\phi=\atanTwo(B,A)\) with its quadrant certificate; then
+\(\cos\phi=A/R\) and \(\sin\phi=B/R\).  If \(R=0\) is positively certified,
+the left side is identically zero and no phase is needed.  What is not
+constructively valid is an unguarded algorithm that decides which of these two
+cases holds for an arbitrary real pair.
+
+The tangent action of a rotation is the Mobius map
+\[
+ M_a(X)=\frac{\cos a\,X-\sin a}{\sin a\,X+\cos a}.
+ \tag{11.4}
+\]
+Matrix multiplication and the addition formulas prove
+\[
+ M_a(M_b(X))=M_{a+b}(X),
+ \tag{11.5}
+\]
+where all evaluated denominators are apart from zero.  Cross multiplication is
+a polynomial identity and is one of the exact certificates.
+
+\section{Euler, hyperbolic, series, derivatives, and integrals}
+\label{sec:analytic-families}
+
+Euler's formulas are definitions in the chosen construction:
+\[
+ \cos x=\frac{e^{ix}+e^{-ix}}2,
+ \qquad
+ \sin x=\frac{e^{ix}-e^{-ix}}{2i}.
+ \tag{12.1}
+\]
+Defining
+\(\cosh x=(e^x+e^{-x})/2\) and
+\(\sinh x=(e^x-e^{-x})/2\) gives without further analysis
+\[
+ \cos(ix)=\cosh x,
+ \quad \sin(ix)=i\sinh x,
+ \quad \cosh(ix)=\cos x,
+ \quad \sinh(ix)=i\sin x.
+ \tag{12.2}
+\]
+The factorial definitions immediately yield the Maclaurin series
+\begin{align}
+ \sin x&=\sum_{n=0}^\infty(-1)^n\frac{x^{2n+1}}{(2n+1)!},\tag{12.3}\\
+ \cos x&=\sum_{n=0}^\infty(-1)^n\frac{x^{2n}}{(2n)!},\tag{12.4}
+\end{align}
+with a modulus obtained from (3.2).  Series for tangent, secant, and related
+functions are obtained by formal power-series inversion on a neighborhood with
+a certified nonzero constant term; evaluation at a real point additionally
+requires a denominator apartness bound.
+
+\subsection{Constructive differentiation}
+
+For bounded \(x\) and small \(h\), the exponential series gives the explicit
+remainder estimate
+\[
+ \norm{e^h-1-h}_1\le C_B\norm h_1^2,
+ \tag{12.5}
+\]
+where, for example, \(C_B=2^{2B+4}\) is a primitive-recursive integer
+majorant on \(\norm h_1\le1\).  Using
+\(e^{x+h}-e^x=e^x(e^h-1)\), equation (12.5) gives a primitive-recursive
+modulus for
+\[
+ \frac{e^{x+h}-e^x}{h}\longrightarrow e^x.
+ \tag{12.6}
+\]
+Taking real and imaginary parts proves
+\[
+ (\sin x)'=\cos x,
+ \qquad (\cos x)'=-\sin x.
+ \tag{12.7}
+\]
+Product and quotient rules follow from finite algebra plus a lower bound on the
+quotient denominator.  Thus
+\[
+ (\tan x)'=\sec^2x,
+ \quad (\cot x)'=-\csc^2x,
+ \quad (\sec x)'=\sec x\tan x,
+ \quad (\csc x)'=-\csc x\cot x
+ \tag{12.8}
+\]
+on constructively open regions carrying the relevant apartness witnesses.
+Termwise integration of (12.3)--(12.4), with the same factorial tail modulus,
+gives
+\[
+ \int_a^b\sin x\,dx=\cos a-\cos b,
+ \qquad
+ \int_a^b\cos x\,dx=\sin b-\sin a
+ \tag{12.9}
+\]
+for rational or rapid-name endpoints.  A general constructive Riemann-integration
+library is not needed for these two identities; the integrated series itself is
+a certified antiderivative.
+
+\section{Principal inverse functions and branch-safe identities}
+\label{sec:inverse}
+
+Classical tables often write inverse identities without enough branch data.
+Here the principal inverses are algorithms, and their uniqueness intervals are
+part of every theorem.
+
+\subsection{Constructing \(\arcsin\)}
+
+On \([-q,q]\), sine is increasing.  A quantitative inverse modulus is available
+even at the endpoints.  If \(-q\le a<b\le q\), put \(d=b-a\).  The
+sum-to-product formula gives
+\[
+ \sin b-\sin a
+ =2\cos\frac{a+b}{2}\sin\frac d2.
+ \tag{13.1}
+\]
+For fixed \(d\), the smallest possible cosine factor occurs at an endpoint and
+is at least \(\sin(d/2)\).  With (4.4),
+\[
+ \sin b-\sin a\ge2\sin^2\frac d2\ge\frac{d^2}{18}.
+ \tag{13.2}
+\]
+Thus a sine-value uncertainty below \(2^{-2p-C}\) locates its argument to
+within \(2^{-p}\).
+
+For \(x\in[-1,1]\), a bounded rational bisection of \([-q,q]\) compares a
+certified interval for \(\sin m-x\) with zero.  A separated sign keeps the
+appropriate half; an interval containing zero invokes (13.2) and already gives
+a sufficiently accurate argument.  The resulting rapid name is
+\(\arcsin x\).  The construction is primitive recursive because the number of
+steps and every requested precision are explicit functions of \(p\).
+
+Define
+\[
+ \arccos x=q-\arcsin x,
+ \qquad
+ \arctan x=\arcsin\frac{x}{\sqrt{1+x^2}}.
+ \tag{13.3}
+\]
+The square-root denominator is at least one, so it is uniformly apart from
+zero.
+
+\begin{theorem}[Principal compositions]
+Constructively,
+\begin{align*}
+ \sin(\arcsin x)&=x &&(-1\le x\le1),\\
+ \arcsin(\sin y)&=y &&(-q\le y\le q),\\
+ \cos(\arccos x)&=x &&(-1\le x\le1),\\
+ \arccos(\cos y)&=y &&(0\le y\le2q),\\
+ \tan(\arctan x)&=x &&(x\in\R),\\
+ \arctan(\tan y)&=y &&(-q<y<q\text{ with endpoint separation}).
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+The forward equations are the specifications of the bisection algorithms.
+The reverse equations use strict monotonicity and the stated interval
+membership.  Tangent is handled through (13.3), the positive square root, and
+the half-plane in which cosine is positive.  All endpoint inequalities are
+finite interval certificates.
+\end{proof}
+
+\subsection{Addition of inverse tangents}
+
+The globally correct branch-safe statement is
+\[
+ \arctan x+\arctan y
+ =\atanTwo(x+y,1-xy),
+ \tag{13.4}
+\]
+where the right side carries a certificate selecting the argument of the vector
+\((1-xy,x+y)\), and the vector is apart from \((0,0)\).  If a branch certificate
+shows \(1-xy>0\), this reduces to
+\[
+ \arctan x+\arctan y
+ =\arctan\frac{x+y}{1-xy}.
+ \tag{13.5}
+\]
+If it is negative, a certified \(\pm\pi\) correction is required according to
+the sign of \(x+y\).  The proof applies the tangent addition formula and then
+uses uniqueness in the selected open interval.  This also supplies a clean
+constructive proof of Machin-type formulas: multiply the corresponding Gaussian
+rationals, verify the resulting argument exactly, and certify the quadrant.
+
+\section{Triangle identities}
+\label{sec:triangles}
+
+Let \(\alpha+\beta+\gamma=\pi\).  Substitute
+\(\gamma=\pi-\alpha-\beta\) and use the addition and reflection formulas.
+Every polynomial triangle identity is then a Laurent certificate in two angle
+variables.  Representative examples are
+\begin{align}
+ \tan\alpha+\tan\beta+\tan\gamma
+ &=\tan\alpha\tan\beta\tan\gamma,\tag{14.1}\\
+ \cot\beta\cot\gamma+\cot\gamma\cot\alpha+
+ \cot\alpha\cot\beta&=1,\tag{14.2}\\
+ \sin\alpha+\sin\beta+\sin\gamma
+ &=4\cos\frac\alpha2\cos\frac\beta2\cos\frac\gamma2,\tag{14.3}\\
+ \cos\alpha+\cos\beta+\cos\gamma
+ &=1+4\sin\frac\alpha2\sin\frac\beta2\sin\frac\gamma2,\tag{14.4}\\
+ \sin^2\alpha+\sin^2\beta+\sin^2\gamma
+ &=2+2\cos\alpha\cos\beta\cos\gamma,\tag{14.5}\\
+ \cos^2\alpha+\cos^2\beta+\cos^2\gamma
+ &=1-2\cos\alpha\cos\beta\cos\gamma.\tag{14.6}
+\end{align}
+Quotient formulas (14.1)--(14.2) require the relevant sine and cosine
+apartness witnesses.  Equations (14.3)--(14.6) are unconditional.  The exact
+ledger contains seventeen triangle and half-angle variants, including signed
+and double-angle forms.
+
+As an illustration, (14.3) follows by first combining \(\sin\alpha+\sin\beta\):
+\[
+ 2\sin\frac{\alpha+\beta}{2}\cos\frac{\alpha-\beta}{2}
+ =2\cos\frac\gamma2\cos\frac{\alpha-\beta}{2}.
+\]
+Adding \(\sin\gamma=2\sin(\gamma/2)\cos(\gamma/2)\), factoring
+\(2\cos(\gamma/2)\), and applying the cosine sum formula gives the right side.
+This proof uses no positivity assumption; positivity is needed only when a
+square root or quotient version is selected.
+
+\section{Infinite dyadic products and Viete's formula}
+\label{sec:infinite}
+
+Put \(t=x/2^N\) in (9.11).  The finite identity becomes
+\[
+ \prod_{j=1}^N\cos\frac{x}{2^j}
+ =\frac{\sin x}{2^N\sin(x/2^N)},
+ \tag{15.1}
+\]
+when the denominator is apart from zero, with an unconditional
+cross-multiplied version.
+
+For \(\abs t\le1\), the alternating series gives
+\[
+ \abs{\sin t-t}\le\frac{\abs t^3}{6}.
+ \tag{15.2}
+\]
+Therefore
+\[
+ \abs{2^N\sin(x/2^N)-x}
+ \le\frac{\abs x^3}{6\,4^N}.
+ \tag{15.3}
+\]
+Given a magnitude bound for \(x\) and a desired precision \(p\), a bounded
+search for \(N\) with \(4^N>2^{p+C}\abs x^3\) is primitive recursive.  Hence
+(15.1) has the constructive limit
+\[
+ \frac{\sin x}{x}=\prod_{j=1}^\infty\cos\frac{x}{2^j},
+ \tag{15.4}
+\]
+with quotient notation guarded by \(x\apart0\); at \(x=0\) the continuous value
+is one and can be stated directly.
+
+Taking \(x=q=\pi/2\) gives
+\[
+ \frac{2}{\pi}
+ =\prod_{j=1}^\infty\cos\frac{\pi}{2^{j+1}}.
+ \tag{15.5}
+\]
+Let \(r_0=0\) and \(r_{n+1}=\sqrt{2+r_n}\), always choosing the nonnegative
+square root.  Repeated positive half-angle formulas prove
+\(\cos(\pi/2^{n+2})=r_{n+1}/2\), so
+\[
+ \frac2\pi=\prod_{n=1}^\infty\frac{r_n}{2},
+ \tag{15.6}
+\]
+which is the nested-radical Viete formula.  Equations (15.3) and the square-root
+modulus make (15.6) a theorem of the interpreted \(\iPRA\), not merely a
+classical limit assertion.
+
+The full Euler--Weierstrass factorization
+\(\sin x=x\prod_{n\ge1}(1-x^2/(n^2\pi^2))\) is intentionally not claimed here.
+Its constructive proof needs a separate theory of normally convergent infinite
+products and a zero-classification argument.  None of the finite or dyadic
+identities above depends on it.
+
+\section{Bessel generating identities: a constructive extension path}
+\label{sec:bessel}
+
+Several entries in the source list express compositions through Bessel
+functions.  They are not part of the 227 finite certificates, but their standard
+proof is compatible with \(\iPRA\).  For \(n\ge0\), define
+\[
+ J_n(z)=\sum_{m=0}^\infty
+ \frac{(-1)^m}{m!(m+n)!}\left(\frac z2\right)^{2m+n},
+ \qquad J_{-n}(z)=(-1)^nJ_n(z).
+ \tag{16.1}
+\]
+Factorial ratios again give an explicit geometric tail after a
+primitive-recursive index.  Expanding two exponentials and collecting the
+coefficient of a formal Laurent variable \(t\) yields
+\[
+ \exp\left(\frac z2(t-t^{-1})\right)
+ =\sum_{n\in\Z}J_n(z)t^n.
+ \tag{16.2}
+\]
+For every requested precision, only a finite rectangle in the double series is
+needed; the omitted rows and columns have factorial tail bounds of the form in
+Lemma \ref{lem:exp-tail}.  Thus rearrangement is justified by explicit finite
+error estimates rather than a classical unconditional-convergence theorem.
+Setting \(t=e^{i\theta}\) gives
+\[
+ e^{iz\sin\theta}=\sum_{n\in\Z}J_n(z)e^{in\theta},
+ \tag{16.3}
+\]
+and replacing \(t\) by \(ie^{i\theta}\) gives the cosine form
+\[
+ e^{iz\cos\theta}=\sum_{n\in\Z}i^nJ_n(z)e^{in\theta}.
+ \tag{16.4}
+\]
+A complete Lean implementation needs a reusable two-dimensional series-tail
+library, but no stronger logical principle.  The formalization plan in
+Section \ref{sec:lean} lists this after the finite and one-dimensional analytic
+layers.
+
+\section{Why the proofs are intuitionistic and primitive recursive}
+\label{sec:logical-audit}
+
+The following audit records where classical-looking steps were replaced.
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.68\textwidth}@{}}
+\toprule
+Classical shorthand & Constructive replacement\\
+\midrule
+\endfirsthead
+\toprule
+Classical shorthand & Constructive replacement\\
+\midrule
+\endhead
+``Take a real limit'' & A rapid dyadic name with a displayed primitive-recursive
+modulus and a proof of every precision inequality.\\
+``The denominator is nonzero'' & A finite apartness witness giving a positive
+dyadic lower bound.\\
+``Choose the sign of a square root'' & A quadrant or interval-location
+certificate; zero endpoints are separate exact cases.\\
+Intermediate value theorem & A bounded located sign-search with quantitative
+monotonicity estimates.\\
+Monotonic inverse & Bisection plus an explicit inverse modulus such as (13.2).\\
+Rearrange an infinite series & Compare finite rectangles and bound every omitted
+tail by a primitive-recursive majorant.\\
+Complex roots of unity & A finite polynomial quotient ring; no algebraic closure
+or choice of arbitrary roots.\\
+``For all computable reals'' & A uniform proof schema over fixed
+primitive-recursive name terms and their arithmetic certificates.\\
+Ring simplification & A finite Gaussian Laurent normalizer whose soundness is
+proved by quantifier-free induction.\\
+\bottomrule
+\end{longtable}
+
+All unbounded statements in the final formulas are ordinary first-order
+universal quantifiers over natural precision parameters.  Induction is applied
+to quantifier-free invariants for finite sums, products, recursion equations,
+normalization lists, and bounded search.  The logic never uses excluded middle
+for real equality, Markov's principle, countable choice, or a nonconstructive
+completion of the rationals.
+
+\section{Lean formalization plan}
+\label{sec:lean}
+
+The archive contains three Lean files.  They are deliberately separated by
+proof layer.
+
+\subsection{Layer A: abstract algebraic trigonometry}
+
+\code{Lean/TrigAlgebra.lean} introduces a class
+\begin{lstlisting}
+class TrigSystem (Angle R) [AddCommGroup Angle] [CommRing R] where
+  sin cos : Angle -> R
+  q : Angle
+  sin_zero : sin 0 = 0
+  cos_zero : cos 0 = 1
+  sin_add : sin (x+y) = sin x*cos y + cos x*sin y
+  cos_add : cos (x+y) = cos x*cos y - sin x*sin y
+  pythagorean : sin x ^ 2 + cos x ^ 2 = 1
+  sin_q : sin q = 1
+  cos_q : cos q = 0
+\end{lstlisting}
+It then derives parity, subtraction, quarter-turn shifts, periods, double and
+triple angles, Chebyshev recurrences, product-to-sum identities, and half-angle
+squares by \code{ring} or \code{linear_combination}.  This layer should be made
+fully compiling first.  It contains no constructive-real implementation and no
+classical analysis.
+
+\subsection{Layer B: exact certificate syntax}
+
+\code{Lean/LaurentCertificate.lean} fixes the intended types:
+Gaussian rationals, finitely supported integer monomials, Laurent polynomials,
+integer angle vectors, and numerator/denominator pairs.  Completion consists of
+implementing the Python reference normalizer and proving:
+\begin{enumerate}
+\item normalization preserves evaluation;
+\item normalized zero evaluates to zero;
+\item \code{cis}, \code{sine}, and \code{cosine} syntax evaluates correctly in
+any \code{TrigSystem};
+\item a rational certificate is sound under denominator apartness.
+\end{enumerate}
+All inductions are structural or on finite maps.  No tactic beyond finite ring
+normalization is logically needed.
+
+\subsection{Layer C: direct integration with ConciseIPRA}
+
+\code{Lean/IPRABridge.lean} imports
+\code{ConciseIPRA.PR} and \code{ConciseIPRA.EqArith}.  The implementation order
+is:
+\begin{enumerate}
+\item Define signed integers and dyadics as explicit \code{PR} symbols; prove
+all computation equations through \code{PRA.proj}, \code{PRA.comp},
+\code{PRA.precZero}, and \code{PRA.precSucc}.
+\item Define formulas \code{Regular}, \code{EqReal}, \code{Bounds}, and
+\code{Apart} over \code{PTm}; implement name constructors for negation,
+addition, multiplication, reciprocal, and square root.
+\item Prove regularity closure with \code{PRA.qfInd}.  Keep the magnitude bound
+as part of every name package so multiplication and series precision shifts are
+primitive-recursive terms.
+\item Define finite complex exponential sums and the index
+\code{expTerms B p = 2*B*B + 2*B + p + 4}.  Formalize Lemma
+\ref{lem:exp-tail}.
+\item Prove the finite coefficient identity (3.6), then exponential addition,
+sine/cosine addition, and Pythagoras.
+\item Implement the bounded sign-search of Section \ref{sec:pi}; prove the
+quarter-turn specification.
+\item Connect the Laurent evaluator to the real-name operations and import the
+227 certificates as data, or regenerate them inside Lean.
+\item Add inverse bisection, derivative moduli, and the dyadic infinite product.
+\item Finally add the two-dimensional factorial-tail library for Bessel
+identities.
+\end{enumerate}
+
+The existing ProveIt development already supplies the crucial syntactic objects:
+\code{PR k}, \code{PTm n}, the axiom family \code{PRAAx}, and the theorem
+\code{PRA.qfInd}.  The bridge should reuse these rather than formalizing a second
+arithmetic.
+
+\subsection{Suggested theorem interfaces}
+
+The following interfaces make the path to completion unambiguous.
+\begin{lstlisting}
+-- arithmetic names
+regular_add  : Regular a -> Regular b -> Regular (add a b)
+regular_mul  : Bounds a A -> Bounds b B ->
+               Regular a -> Regular b -> Regular (mul a b)
+regular_inv  : Apart a w -> Regular a -> Regular (inv a w)
+
+-- analytic core
+exp_tail     : TailBound B p (expTerms B p)
+cexp_add     : EqComplex (cexp (addC x y)) (mulC (cexp x) (cexp y))
+pythagorean  : EqReal (sin x * sin x + cos x * cos x) one
+quarter_spec : EqReal (cos quarterTurn) zero
+quarter_sin  : EqReal (sin quarterTurn) one
+
+-- certificate bridge
+normalize_sound : eval (normalize P) rho = eval P rho
+certificate_sound : check lhs rhs = true -> Guards rho lhs rhs ->
+                    EqReal (evalRF lhs rho) (evalRF rhs rho)
+\end{lstlisting}
+The actual types will use arithmetized derivations
+\(\Gamma\vdash[\mathsf{PRAAx}]A\), not meta-level Lean propositions, for the
+final soundness theorem.
+
+\section{Executable verification and reproducibility}
+\label{sec:verification}
+
+Run
+\begin{lstlisting}
+./scripts/verify_all.sh
+\end{lstlisting}
+from the archive root.  The script constructs the Gaussian Laurent model,
+normalizes both polynomial and cross-multiplied rational residues, and writes
+\code{artifacts/identity_certificates.json}.  It uses Python's exact
+\code{Fraction}; no numerical sampling is accepted as a proof.
+
+\VerbatimInput[fontsize=\small]{artifacts/verification_report.txt}
+
+The checked instances include: basic and Pythagorean identities; parity,
+reflection, shift, and periodicity; all addition and common quotient formulas;
+double, triple, and binomial multiple-angle formulas; Chebyshev recurrences;
+half-angle and Weierstrass formulas; product/sum conversions; general products
+through six factors; power reductions through fifth powers; elementary-
+symmetric many-angle formulas through four variables; Lagrange and Dirichlet
+families through ten; arithmetic progressions through eight; finite Viete
+products through nine; a linear-fractional rotation; amplitude squares;
+Hermite identities for two and three poles; seventeen triangle identities; and
+Euler's formulas.
+
+The exact checker has a narrower role than the report's proof.  It detects
+transcription and sign errors in a large finite catalog.  The arbitrary-\(n\)
+claims are justified by the finite induction or binomial arguments in the text,
+not by extrapolation from checked instances.
+
+\section{Limitations and further research questions}
+
+\begin{enumerate}
+\item Complete the direct arithmetization of rapid names on top of
+\code{ConciseIPRA.PR}, replacing every \code{axiom} in
+\code{Lean/IPRABridge.lean} with a derivation object.
+\item Prove the Laurent normalizer correct in Lean and import the JSON ledger as
+certificates.  A useful comparison is whether direct reflection or proof-term
+generation gives the smaller trusted kernel footprint.
+\item Develop a constructive normally-convergent product library and use it to
+formalize the Euler--Weierstrass sine product in \(\iPRA\) with an explicit
+uniform modulus away from its zeros.
+\item Add an efficient interval \(\atanTwo\) whose branch certificate composes
+well under Gaussian multiplication, then generate a large library of
+Machin-type arctangent identities automatically.
+\item Formalize the two-dimensional factorial-tail lemma and Jacobi--Anger
+identities.  Determine the smallest reusable series interface sufficient for
+both Bessel and trigonometric applications.
+\item Extract a standalone proof checker in the style of ConciseIPRA's scalar
+calculi.  The algebraic checker is already tiny; the research question is how
+small a checker can validate the analytic modulus certificates as well.
+\item Compare the exponential-series construction of \(\pi\) here with
+polygonal, arctangent, and AGM constructions under the metric ``size of a
+straightforward iPRA proof checker.''
+\end{enumerate}
+
+\appendix
+\section{A compact catalog of proved formulas}
+
+This appendix groups formulas by their proof generator.  All quotient signs
+mean ``under apartness of every displayed denominator.''
+
+\subsection*{Generated from \(\cis(x+y)=\cis x\cis y\)}
+\begin{align*}
+\sin(x\pm y)&=\sin x\cos y\pm\cos x\sin y,\\
+\cos(x\pm y)&=\cos x\cos y\mp\sin x\sin y,\\
+\tan(x\pm y)&=\frac{\tan x\pm\tan y}{1\mp\tan x\tan y},\\
+\cot(x+y)&=\frac{\cot x\cot y-1}{\cot x+\cot y},\\
+\cot(x-y)&=\frac{\cot x\cot y+1}{\cot y-\cot x},\\
+\sec(x+y)&=\frac{\sec x\sec y}{1-\tan x\tan y},\\
+\csc(x+y)&=\frac{\sec x\sec y}{\tan x+\tan y}.
+\end{align*}
+
+\subsection*{Generated by binomial expansion}
+Equations (7.1)--(7.2), all double/triple-angle polynomial forms, all guarded
+quotient multiple-angle forms, Chebyshev formulas (7.4), and power reductions
+(8.6)--(8.7).
+
+\subsection*{Generated by the two-factor product identities}
+Equations (9.1)--(9.6), all sum-to-product formulas, triangle formulas
+(14.3)--(14.6), and the signed variants in the certificate ledger.
+
+\subsection*{Generated by finite geometric sums}
+Equations (10.2)--(10.8), arbitrary arithmetic-progression sums, the Dirichlet
+kernel, odd-harmonic cosine sums, and their sine/cosine shifted variants.
+
+\subsection*{Generated by repeated doubling}
+Finite Viete products (9.11), the dyadic product (15.4), Viete's nested radical
+(15.6), and their cross-multiplied zero-safe versions.
+
+\section{Artifact inventory}
+
+\begin{description}
+\item[\code{trigonometric_identities_ipra.tex}] This source.
+\item[\code{trigonometric_identities_ipra.pdf}] Compiled report.
+\item[\code{scripts/verify_identities.py}] Exact Gaussian Laurent checker.
+\item[\code{scripts/verify_all.sh}] Reproducibility wrapper.
+\item[\code{artifacts/identity_certificates.json}] Per-identity zero-residue
+ledger.
+\item[\code{artifacts/verification_report.txt}] Summary generated by the
+checker.
+\item[\code{artifacts/coverage.csv}] Coverage and constructive side-condition
+matrix.
+\item[\code{Lean/TrigAlgebra.lean}] Abstract algebraic Lean prototype.
+\item[\code{Lean/LaurentCertificate.lean}] Certificate datatype and soundness
+outline.
+\item[\code{Lean/IPRABridge.lean}] Direct ConciseIPRA implementation blueprint.
+\end{description}
+
+\begin{thebibliography}{9}
+\bibitem{wiki}
+Wikipedia contributors, \emph{List of trigonometric identities},
+\url{https://en.wikipedia.org/wiki/List_of_trigonometric_identities}, accessed
+15 November 2026.
+
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt}, especially
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}
+and
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/TrigonometricIdentities}.
+
+\bibitem{bishop}
+E. Bishop and D. Bridges, \emph{Constructive Analysis}, Springer, 1985.
+
+\bibitem{bridges-richman}
+D. Bridges and F. Richman, \emph{Varieties of Constructive Mathematics},
+Cambridge University Press, 1987.
+\end{thebibliography}
+
+\end{document}
