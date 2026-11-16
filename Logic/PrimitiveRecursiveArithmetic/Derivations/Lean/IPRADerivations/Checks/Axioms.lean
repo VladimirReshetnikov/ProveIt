@@ -344,6 +344,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegDescent.lt_t'
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegDescent.lt_y
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegDescent.neg_descent
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent.sq_gap
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent.assemble
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent.pos_t
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent.pos_r
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent.pos_y
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent.gen_descent_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent.neg_t
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent.neg_r
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent.neg_y
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent.gen_descent_neg
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
