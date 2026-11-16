@@ -79,6 +79,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiUpper
 import IPRADerivations.AnalyticNumberTheory.PhiLimsup
 import IPRADerivations.AnalyticNumberTheory.PhiPowTwo
 import IPRADerivations.AnalyticNumberTheory.Harmonic
+import IPRADerivations.AnalyticNumberTheory.DyadicModulus
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.SumReindex

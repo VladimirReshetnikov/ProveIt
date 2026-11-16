@@ -592,6 +592,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Harmonic.dyadic
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Harmonic.harmonic_dyadic
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Harmonic.harmonic_dyadic_closed
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.modulus_exponent
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.floor_bound
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.dyadic_rate
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.theta_rate
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.geom_two
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.pw_mul_base
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.bernoulli
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.decr
