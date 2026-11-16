@@ -526,6 +526,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_odd_binom
 #print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_telescope
 #print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_partial_sum
+#print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_split
+#print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_shift
+#print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_shift'
+#print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_fact
+#print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_one
+#print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_binom
+#print axioms LeanProofs.IPRA.Analysis.Pochhammer.gauss_ratio
+#print axioms LeanProofs.IPRA.Analysis.Pochhammer.gauss_derivative
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY
