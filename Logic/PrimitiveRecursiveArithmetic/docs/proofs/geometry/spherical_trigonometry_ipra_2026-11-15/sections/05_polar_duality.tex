@@ -1,0 +1,117 @@
+\section{The polar triangle and side--angle duality}
+\label{sec:polar}
+
+The polar triangle is the mechanism behind the perfect duality of spherical
+trigonometry.  In the present vector model it is constructive and explicit.
+
+\begin{definition}[Positive polar triangle]
+Define
+\begin{equation}
+ u^*=\frac{v\crossp w}{s_a},\qquad
+ v^*=\frac{w\crossp u}{s_b},\qquad
+ w^*=\frac{u\crossp v}{s_c}.                               \tag{5.1}
+\end{equation}
+The signs are fixed by
+\(u\dotp u^*=v\dotp v^*=w\dotp w^*=\tau/(s_a,s_b,s_c)>0\),
+so no binary choice of antipodes remains.
+\end{definition}
+
+Each polar vertex is a unit vector and is perpendicular to the great circle
+containing the opposite original side.
+
+\begin{theorem}[Polar side and angle correspondences]
+\label{thm:polar-correspondence}
+Let \(a^*,b^*,c^*\) and \(A^*,B^*,C^*\) denote the sides and angles of the
+positive polar triangle.  Then
+\begin{equation}
+ a^*=\pi-A,
+ \qquad b^*=\pi-B,
+ \qquad c^*=\pi-C,                                         \tag{5.2}
+\end{equation}
+and
+\begin{equation}
+ A^*=\pi-a,
+ \qquad B^*=\pi-b,
+ \qquad C^*=\pi-c.                                         \tag{5.3}
+\end{equation}
+The polar operation is involutive: \((u^*)^*=u\), cyclically.
+\end{theorem}
+
+\begin{proof}
+By Lagrange's four-vector identity,
+\begin{align*}
+ v^*\dotp w^*
+ &=\frac{(w\crossp u)\dotp(u\crossp v)}{s_bs_c}\\
+ &=\frac{(w\dotp u)(u\dotp v)-(w\dotp v)(u\dotp u)}{s_bs_c}\\
+ &=\frac{yz-x}{s_bs_c}=-\cos A=\cos(\pi-A).
+\end{align*}
+The side \(a^*\) lies in \((0,\pi)\), and its sine is positive, so the branch is
+uniquely \(a^*=\pi-A\).  The other side identities are cyclic.
+
+For involution, use the vector triple-product identity:
+\begin{equation}
+ (w\crossp u)\crossp(u\crossp v)
+ =u\bigl((w\crossp u)\dotp v\bigr)=\tau u.                 \tag{5.4}
+\end{equation}
+After division by \(s_bs_c\), the norm of the left-hand side is
+\(\tau/(s_bs_c)=s_A=\sin a^*\).  Normalizing therefore returns \(u\).
+The angle correspondence (5.3) follows by applying (5.2) to the polar triangle
+and using involution.
+\end{proof}
+
+All steps in this proof are polynomial before positive normalization.  In
+particular, polar duality does not require a compactness argument or a choice
+of one of two normals: the orientation witness \(\tau>0\) fixes the sign.
+
+\begin{corollary}[Duality principle]
+\label{cor:duality-principle}
+Any identity valid for all proper spherical triangles remains valid after the
+simultaneous substitution
+\begin{equation}
+ (a,b,c;A,B,C)
+ \longmapsto
+ (\pi-A,\pi-B,\pi-C;\pi-a,\pi-b,\pi-c),                   \tag{5.5}
+\end{equation}
+with the corresponding changes
+\(\sin(\pi-x)=\sin x\) and \(\cos(\pi-x)=-\cos x\).
+\end{corollary}
+
+Applying the side cosine law to the polar triangle immediately gives
+\[
+ -\cos A=\cos B\cos C-\sin B\sin C\cos a,
+\]
+which is Theorem~\ref{thm:angle-cosine}.  Thus the supplemental cosine law is
+not an independent analytic theorem; it is the ordinary cosine law under the
+finite polar construction.
+
+\subsection{Half-sums under polarity}
+
+Put
+\begin{equation}
+ p=\frac{a+b+c}{2},\qquad P=\frac{A+B+C}{2}.                \tag{5.6}
+\end{equation}
+For the polar triangle,
+\begin{equation}
+ p^*=\frac{a^*+b^*+c^*}{2}=\frac{3\pi}{2}-P,
+ \qquad
+ P^*=\frac{3\pi}{2}-p.                                    \tag{5.7}
+\end{equation}
+Consequently
+\begin{align}
+ \sin(p^*-b^*)&=\cos(P-B),&
+ \sin p^*&=-\cos P,                                       \tag{5.8}\\
+ \sin b^*&=\sin B,&
+ \cos(P^*-B^*)&=\sin(p-b),                                \tag{5.9}
+\end{align}
+with cyclic companions.  These elementary substitutions turn the angle
+half-formulas into the side half-formulas in Section~\ref{sec:half-formulas}.
+
+\begin{corollary}[Polar excess and perimeter]
+If \(E=A+B+C-\pi\) is the original spherical excess and \(E^*\) the polar
+excess, then
+\begin{equation}
+ E^*=2\pi-(a+b+c).                                         \tag{5.10}
+\end{equation}
+Thus the proper-triangle condition \(a+b+c<2\pi\) is equivalent to positive
+excess of the polar triangle.
+\end{corollary}

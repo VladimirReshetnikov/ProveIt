@@ -1,0 +1,195 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,angles,quotes}
+\hypersetup{
+  hypertexnames=false,
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!55!black,
+  pdftitle={Spherical Trigonometry and the Tetrahedral Cosine Law in Intuitionistic Primitive Recursive Arithmetic},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Constructive spherical trigonometry in iPRA}
+}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Spherical trigonometry in iPRA}
+\fancyhead[R]{\small Constructive vector and finite-arithmetic proofs}
+\fancyfoot[C]{\thepage}
+\setlist{nosep}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\allowdisplaybreaks
+\sloppy
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{convention}[theorem]{Convention}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\dotp}{\mathbin{\boldsymbol{\cdot}}}
+\newcommand{\crossp}{\mathbin{\boldsymbol{\times}}}
+\newcommand{\apart}{\mathrel{\#}}
+\newcommand{\hav}{\operatorname{hav}}
+\newcommand{\atanTwo}{\operatorname{atan2}}
+\newcommand{\Area}{\operatorname{Area}}
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\cis}{\operatorname{cis}}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\csch}{\operatorname{csch}}
+\newcommand{\qturn}{q}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\cyc}{\operatorname{cyc}}
+\newcommand{\BigO}{\mathcal O}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\detm}{det}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\arcsec}{arcsec}
+
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single}
+
+\title{\textbf{Spherical Trigonometry and the Tetrahedral Cosine Law\\
+       in Intuitionistic Primitive Recursive Arithmetic}\\[0.4em]
+       \large Vector identities, constructive real names, a formula atlas, and a Lean completion route}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We develop spherical trigonometry in intuitionistic primitive recursive
+arithmetic (\(\ipra\)).  The core is deliberately finite.  A positively oriented
+proper spherical triangle is represented by three unit vectors \(u,v,w\), and
+all side and angle sines and cosines are recovered from dot products, cross
+products and the scalar triple product.  Lagrange's identity and the \(3\times3\)
+Gram determinant immediately yield the spherical cosine and sine laws.  The
+polar triangle supplies the dual cosine law for angles and converts every
+side formula into an angle formula and conversely.
+
+From this kernel we prove the half-angle and half-side formulas, half-tangent
+forms, haversine identities, Delambre--Gauss analogies, Napier's analogies,
+the spherical law of tangents, cotangent and five-part rules, the complete
+right and quadrantal triangle rules, Cagnoli's equation, differential
+variation formulas, a quantitative planar limit, Girard's excess formula,
+and the polygonal excess theorem.  For a tetrahedron, closure of the four
+oriented face-area vectors gives the advertised cosine-law analogue for face
+areas and dihedral angles; the facewise sine laws also give the tetrahedral
+sine-product identity.
+
+The phrase ``in \(\ipra\)'' is interpreted arithmetically rather than by silently
+adding a completed real-number sort.  Inputs are fixed primitive-recursive
+rapid dyadic names, supplied with regularity, magnitude, orientation and
+apartness certificates.  Every division has a positive separation witness,
+every square root is computed by bounded dyadic search, and each limit has an
+explicit primitive-recursive modulus.  Most formulas reduce to checked
+polynomial identities.  The bundled exact checker verifies 68 finite generator
+identities in 14 families with zero residuals.  The archive contains the complete \LaTeX{} source,
+this PDF, exact symbolic regression code, a formula-coverage ledger, and Lean
+prototype files with a dependency-ordered path to a genuine
+\(\Prf\;\PRAAx\) derivation.  The Lean files are an outline and algebraic
+prototype, not a claim of completed object-level formalization.
+\end{abstract}
+
+\tableofcontents
+
+\input{sections/01_scope}
+\input{sections/02_ipra}
+\input{sections/03_vector_model}
+\input{sections/04_core_laws}
+\input{sections/05_polar_duality}
+\input{sections/06_half_formulas}
+\input{sections/07_analogies}
+\input{sections/08_cotangent_special}
+\input{sections/09_differential_limit}
+\input{sections/10_area}
+\input{sections/11_tetrahedron}
+\input{sections/12_formalization}
+\input{sections/13_coverage}
+\input{sections/appendix_formula_atlas}
+\input{sections/appendix_ipra_target}
+
+\begin{thebibliography}{99}
+\bibitem{wiki-slc}
+Wikipedia contributors, ``Spherical law of cosines,'' accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Spherical_law_of_cosines}
+
+\bibitem{wiki-sines}
+Wikipedia contributors, ``Law of sines: Spherical law of sines,'' accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Law_of_sines#Spherical_law_of_sines}
+
+\bibitem{wiki-halfside}
+Wikipedia contributors, ``Half-side formula,'' accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Half-side_formula}
+
+\bibitem{wiki-costet}
+Wikipedia contributors, ``Law of cosines: Analogue for tetrahedra,'' accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Law_of_cosines#Analogue_for_tetrahedra}
+
+\bibitem{wiki-sphtrig}
+Wikipedia contributors, ``Spherical trigonometry,'' accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Spherical_trigonometry}
+
+\bibitem{mathworld}
+E. W. Weisstein, ``Spherical Trigonometry,'' MathWorld--A Wolfram Web Resource,
+accessed 15 November 2026.
+\url{https://mathworld.wolfram.com/SphericalTrigonometry.html}
+
+\bibitem{todhunter}
+I. Todhunter, \emph{Spherical Trigonometry}, 5th ed., Macmillan, 1886.
+
+\bibitem{bishopbridges}
+E. Bishop and D. Bridges, \emph{Constructive Analysis}, Springer, 1985.
+
+\bibitem{bridgesrichman}
+D. Bridges and F. Richman, \emph{Varieties of Constructive Mathematics},
+Cambridge University Press, 1987.
+
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt}, repository snapshot
+\code{a3c053cc6243}, 15 November 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}
+
+\bibitem{trigpacket}
+ProveIt, \emph{A Constructive Atlas of Trigonometric Identities in Intuitionistic
+Primitive Recursive Arithmetic}, directory
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/trigonometric_identities_ipra_2026-11-15}, 2026.
+
+\bibitem{trianglepacket}
+ProveIt, \emph{Heron, sine, and cosine laws in intuitionistic PRA}, directory
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/geometry/triangle_formulas_ipra}, 2026.
+
+\bibitem{rodriguespacket}
+ProveIt, \emph{Euler's rotation theorem and Rodrigues' formula in iPRA}, directory
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/geometry/euler_rodrigues_ipra}, 2026.
+\end{thebibliography}
+
+\end{document}

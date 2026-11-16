@@ -1,0 +1,124 @@
+\section{Coverage, constructive solution procedures, and limitations}
+\label{sec:coverage}
+
+\subsection{Coverage of the requested source pages}
+
+The following table records the mathematical coverage.  ``Cyclic'' means that
+the displayed generator is proved once and all cyclic relabelings are obtained
+by the same proof term or a finite renaming transformation.
+
+\begin{longtable}{@{}p{0.24\textwidth}p{0.17\textwidth}p{0.49\textwidth}@{}}
+\toprule
+Family & Status & Constructive content \\
+\midrule
+\endfirsthead
+\toprule
+Family & Status & Constructive content \\
+\midrule
+\endhead
+Spherical side cosine law & proved, 3 cyclic & Vector tangent projection;
+polynomial numerator form and guarded quotient form.\\
+Spherical sine law & proved & Scalar triple product; common ratio and all
+cross-multiplied forms.\\
+Supplemental/angle cosine law & proved, 3 cyclic & Direct Gram reduction and
+polar-dual proof.\\
+Polar triangle & proved & Explicit normalized cross products, branch signs,
+and involution.\\
+Half-angle formulas & proved, 9 cyclic instances & Square identities first;
+positive-root forms from branch certificates.\\
+Half-side formulas & proved, 9 cyclic instances & Polar duals of half-angle
+formulas, including the requested formula.\\
+Half-tangent forms & proved, 6 cyclic instances & Rational formulas in the six
+half-tangents, with denominator guards.\\
+Haversines & proved, cyclic and dual & Stable navigation form and inverse
+form.\\
+Delambre--Gauss analogies & proved, 12 cyclic instances & Cross forms first;
+quotients under apartness.\\
+Napier analogies & proved, 12 cyclic instances & Guarded quotients of
+Delambre identities.\\
+Spherical tangent law & proved, 3 cyclic instances & Quotients of Napier
+analogies; cross form valid at symmetric cases.\\
+Cotangent/four-part rules & proved, 6 & Cosine-law substitution and polar
+duality.\\
+Five-part rules & proved, cyclic/dual family & Finite substitution and
+cancellation; includes the MathWorld miscellaneous identities.\\
+Cagnoli equation & proved, 3 cyclic & Side/angle cosine laws plus the sine
+law.\\
+Right-triangle rules & proved, 10 & Direct specialization at \(C=\pi/2\).\\
+Quadrantal rules & proved, 10 & Polar duals of right-triangle rules.\\
+Differential variations & proved, 3 & Constructive derivatives with explicit
+moduli; no infinitesimals as objects.\\
+Planar limit & proved quantitatively & Explicit error
+\(\le2\varepsilon^4\) for the cosine law and
+\(\le\varepsilon^3/3\) for the sine cross relation.\\
+Girard and polygon excess & proved & Equal-area chart, finite lune dissection,
+explicit boundary-strip modulus.\\
+Solid-angle and L'Huilier formulas & proved & Two-chart \(\atanTwo\), Gram
+factorization, positive branches.\\
+Tetrahedral cosine law & proved, 4 vertex choices & Closure of oriented
+face-area vectors and a norm expansion.\\
+Tetrahedral sine product & proved, 4 vertex choices & Product of three planar
+face sine laws.\\
+\bottomrule
+\end{longtable}
+
+Counting cyclic instances separately, the appendices contain well over one
+hundred explicit identities.  The exact regression artifact verifies 68 finite generator identities in 14
+families, with zero failures.  It does not attempt to certify every quotient
+and square-root presentation independently; instead it checks the polynomial
+generators from which those presentations are derived.  The branch,
+apartness, convergence and object-language obligations remain explicit parts
+of the mathematical and formalization arguments.
+
+\subsection{Constructive solution of spherical triangles}
+
+The formula atlas also yields finite algorithms for the classical data cases.
+An ``inverse'' operation below means a two-chart constructive angle name plus a
+branch interval; it never means an unguarded classical choice.
+
+\begin{enumerate}[label=\textup{Case \arabic*.}]
+\item \textbf{SSS.}  Given \(a,b,c\) with certified proper-triangle
+inequalities, use the positive half-angle formulas (6.4)--(6.6) to obtain
+\(A,B,C\) uniquely in \((0,\pi)\).  This avoids inverse-cosine ambiguity.
+\item \textbf{SAS.}  Given \(b,c,A\), compute \(\cos a\) from (4.1), compute
+its positive sine from the Gram/radical identity, then construct
+\(a=\atanTwo(\sin a,\cos a)\).  Reduce to SSS.
+\item \textbf{SSA.}  Given \(a,b,A\), the sine law determines \(\sin B\).
+There can be one or two branch-certified values \(B\in(0,\pi)\).  Enumerate the
+two candidates \(B\) and \(\pi-B\), and retain exactly those passing a cosine
+law and the proper-triangle inequalities.  The search is finite and decidable
+at the certificate level.
+\item \textbf{ASA.}  Given \(A,C,b\), use two cotangent four-part equations to
+obtain the remaining sides, with determinant apartness, then apply the sine
+law for the last angle.
+\item \textbf{AAS.}  This is the polar/dual version of SSA and has the same
+one-or-two-solution branch ledger.
+\item \textbf{AAA.}  Use the positive half-side formulas (6.9)--(6.13) to
+obtain \(a,b,c\) uniquely.
+\item \textbf{SSAA.}  Given two sides and their opposite angles, Napier's
+analogies compute the half-sums and half-differences of the remaining pair,
+again under explicit denominator and branch certificates.
+\end{enumerate}
+
+Each algorithm consists of bounded rational operations, bounded square-root
+search and finitely many chart/branch tests.  Therefore each fixed certified
+instance has a primitive-recursive real-name implementation.  The ambiguous
+SSA/AAS cases return a finite list rather than invoking an excluded-middle
+choice of one solution.
+
+\subsection{What is not claimed}
+
+The report does not claim that the accompanying Lean files are compiled, nor
+that a completed \code{Prf PRAAx} term has already been constructed.  It also
+does not claim a universal internal solver quantified over arbitrary
+real-number functions or arbitrary PR program codes.  The result is the
+first-order schema described in Section~\ref{sec:ipra}, with a concrete route
+to internal derivations.
+
+The area construction is developed far enough to give a primitive-recursive
+modulus for certified finite geodesic polygons.  A general constructive
+surface-measure library for arbitrary subsets of the sphere is neither needed
+nor asserted.  Similarly, degenerate triangles, antipodal vertices and
+unoriented polygons require separate signed or limiting conventions; the
+proper/nondegenerate hypotheses are maintained explicitly instead of being
+silently erased by classical case splits.

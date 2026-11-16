@@ -1,0 +1,185 @@
+\section{Area, spherical excess, solid angle, and polygons}
+\label{sec:area}
+
+\subsection{Constructive spherical area}
+
+A statement about area requires more than the algebraic triangle certificate,
+but it still admits a primitive-recursive finite-precision interpretation.
+Use the equal-area coordinates
+\begin{equation}
+ \Phi(\lambda,z)=
+ \bigl(\sqrt{1-z^2}\cos\lambda,
+       \sqrt{1-z^2}\sin\lambda,z\bigr),
+ \quad -\pi\le\lambda\le\pi,\quad -1\le z\le1.            \tag{10.1}
+\end{equation}
+Away from the two pole lines,
+\begin{equation}
+ \norm{\partial_\lambda\Phi\crossp\partial_z\Phi}=1.       \tag{10.2}
+\end{equation}
+Thus surface area is ordinary rectangle area \(d\lambda\,dz\) in this chart.
+All coordinate functions have the constructive names from Section~\ref{sec:ipra}.
+
+For a polygon bounded by \(m\) great-circle arcs, subdivide the
+\((\lambda,z)\)-rectangle into a dyadic grid.  A cell whose interval evaluation
+has a fixed sign against every boundary normal is decidably inside or outside.
+The undecided cells lie in a union of strips around the boundary great circles.
+The strip of angular half-width \(\delta\) around one great circle has area
+\begin{equation}
+ 4\pi\sin\delta\le4\pi\delta.                              \tag{10.3}
+\end{equation}
+Therefore the gap between lower and upper cell sums is at most
+\(4\pi m\delta\), plus the explicitly bounded coordinate-roundoff margin.
+Choosing a dyadic \(\delta\) from the requested output precision gives a
+primitive-recursive modulus.  This constructs a rapid area name.  Cellwise
+counting proves finite additivity; boundary strips vanish with the same
+modulus.  No appeal to a nonconstructive measure-extension theorem is needed.
+
+There is an even simpler computation for a lune.  Choose the polar axis of its
+two bounding great circles as the \(z\)-axis.  A lune of angle \(\alpha\)
+corresponds to the rectangle
+\(0\le\lambda\le\alpha\), \(-1\le z\le1\).  Equations
+(10.1)--(10.2) give
+\begin{equation}
+ \Area(\text{lune of angle }\alpha)=2\alpha.               \tag{10.4}
+\end{equation}
+At finite precision the Riemann sum is exact because the area density is the
+constant \(1\).
+
+\subsection{Girard's theorem}
+
+\begin{theorem}[Girard's spherical excess formula]
+\label{thm:girard}
+For a proper spherical triangle on the unit sphere,
+\begin{equation}
+ \Area(ABC)=E:=A+B+C-\pi.                                  \tag{10.5}
+\end{equation}
+On a sphere of radius \(R\), the area is \(R^2E\).
+\end{theorem}
+
+\begin{proof}
+The three side great circles partition the sphere into eight spherical
+triangles, paired antipodally.  Let the area of the original triangle be
+\(T\), and choose one triangle from each of the other three antipodal pairs,
+with areas \(X,Y,Z\), so that these four regions form a hemisphere.  Finite
+additivity gives
+\begin{equation}
+ T+X+Y+Z=2\pi.                                              \tag{10.6}
+\end{equation}
+The interior-angle lune at \(A\) consists of the original triangle together
+with one of the regions \(X,Y,Z\); after relabeling take its area to be
+\(T+X\).  Similarly the \(B\)- and \(C\)-lunes have areas \(T+Y\) and
+\(T+Z\).  By (10.4), their total area is
+\begin{equation}
+ 2A+2B+2C=3T+X+Y+Z.                                        \tag{10.7}
+\end{equation}
+Use (10.6) to replace \(X+Y+Z\) by \(2\pi-T\).  Then
+\[
+ 2(A+B+C)=2T+2\pi,
+\]
+so \(T=A+B+C-\pi\).  The proof is a finite dissection identity plus the exact
+lune calculation.  Both are valid for the rapid area names just constructed.
+Scaling a unit-sphere patch by \(R\) multiplies every area by \(R^2\).
+\end{proof}
+
+\subsection{An algebraic solid-angle formula}
+
+The area can also be recovered directly from the vector certificate.  Put
+\begin{equation}
+ D=1+x+y+z,
+ \qquad
+ Q=4\cos\frac a2\cos\frac b2\cos\frac c2
+   =\sqrt{2(1+x)(1+y)(1+z)}.                               \tag{10.8}
+\end{equation}
+The polynomial identity
+\begin{equation}
+ D^2+\tau^2=2(1+x)(1+y)(1+z)=Q^2                          \tag{10.9}
+\end{equation}
+uses only the Gram relation.
+
+\begin{theorem}[Oriented solid-angle formula]
+\label{thm:solid-angle}
+For the positive orientation,
+\begin{align}
+ \cos\frac E2&=\frac{D}{Q},                                \tag{10.10}\\
+ \sin\frac E2&=\frac{\tau}{Q},                             \tag{10.11}\\
+ E&=2\atanTwo(\tau,D).                                     \tag{10.12}
+\end{align}
+If \(D\apart0\), then
+\begin{equation}
+ \tan\frac E2=\frac{\tau}{1+x+y+z}.                       \tag{10.13}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Since \(E/2=P-\pi/2\), the addition formulas give
+\(\cos(E/2)=\sin P\) and \(\sin(E/2)=-\cos P\).  Expand
+\(\sin P\) and \(\cos P\) by successive half-angle addition.  Substitute the
+half-angle formulas of Section~\ref{sec:half-formulas}, clear the positive
+factor \(4\cos(a/2)\cos(b/2)\cos(c/2)\), and use (4.16).  The two numerators
+reduce respectively to \(D\) and \(\tau\).  This is a finite polynomial
+normalization after the certified square-root equations are inserted.
+Equation (10.9) verifies that the displayed pair is a unit pair.  Since
+\(0<E<2\pi\) and \(\tau>0\), the constructive two-chart \(\atanTwo\) operation
+selects exactly \(E/2\), proving (10.12).  Guarded division yields (10.13).
+\end{proof}
+
+Formula (10.12) is often the most stable computational form of Girard's
+excess.  It avoids subtracting nearly equal angles for a small triangle.
+
+\subsection{L'Huilier's formula}
+
+\begin{corollary}[L'Huilier]
+\label{cor:lhuillier}
+Let \(p=(a+b+c)/2\).  Then
+\begin{equation}
+ \tan^2\frac E4=
+ \tan\frac p2
+ \tan\frac{p-a}{2}
+ \tan\frac{p-b}{2}
+ \tan\frac{p-c}{2},                                       \tag{10.14}
+\end{equation}
+and the positive square root gives \(\tan(E/4)\).
+\end{corollary}
+
+\begin{proof}
+From (10.10),
+\begin{equation}
+ \tan^2\frac E4=\frac{1-\cos(E/2)}{1+\cos(E/2)}
+ =\frac{Q-D}{Q+D}.                                         \tag{10.15}
+\end{equation}
+Write each tangent on the right of (10.14) as a sine divided by a cosine.
+Apply product-to-sum twice to the four numerator factors and twice to the four
+denominator factors.  After inserting
+\(Q=4\cos(a/2)\cos(b/2)\cos(c/2)\), the resulting numerator is
+\(Q-D\) and the denominator is \(Q+D\).  Equivalently, cross multiplication
+reduces to (10.9) and the three identities
+\(2\sin r\sin s=\cos(r-s)-\cos(r+s)\).  All factors in (10.14) are positive
+for a proper triangle, so nonnegative-root uniqueness fixes the sign.
+\end{proof}
+
+\subsection{Spherical polygons}
+
+\begin{theorem}[Polygonal excess]
+\label{thm:polygon-excess}
+Let a positively oriented simple geodesic \(n\)-gon on the unit sphere have
+interior angles \(\alpha_1,\ldots,\alpha_n\), and suppose a certified
+noncrossing triangulation lies in the polygon.  Then
+\begin{equation}
+ \Area(P)=\sum_{j=1}^n\alpha_j-(n-2)\pi.                   \tag{10.16}
+\end{equation}
+On a radius-\(R\) sphere, multiply by \(R^2\).
+\end{theorem}
+
+\begin{proof}
+A triangulation has \(n-2\) triangles.  Finite additivity says the polygonal
+area is the sum of their areas.  The triangle angles partition the polygon's
+interior angles, including at vertices incident to several diagonals.  Applying
+Girard to each triangle therefore gives
+\[
+ \Area(P)
+ =\sum_{j=1}^n\alpha_j-(n-2)\pi.
+\]
+The entire argument is finite.  The triangulation and its noncrossing/orientation
+signs are part of the arithmetic certificate, so no choice of a diagonal is
+made inside \(\ipra\).
+\end{proof}

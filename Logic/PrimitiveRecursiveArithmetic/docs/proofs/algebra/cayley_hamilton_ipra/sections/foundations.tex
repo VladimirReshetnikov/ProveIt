@@ -1,0 +1,223 @@
+\section{What is proved, and what ``in iPRA'' means}
+\label{sec:foundations}
+
+The main result is a uniform arithmetic form of the Cayley--Hamilton theorem.
+It is accompanied by a finite constructive development of its principal
+algebraic consequences. Throughout, a ring is associative, commutative, and
+unital unless explicitly stated otherwise. We allow the zero ring. Thus a
+polynomial displayed with leading coefficient $1$ is monic in the formal
+coefficient sense; its actual degree is $n$ only when $1\ne0$.
+
+\begin{theorem}[Uniform arithmetic Cayley--Hamilton]
+\label{thm:arithmetic}
+There is a primitive recursive function $\mathrm{CHCheck}:\mathbb N\to
+\{0,1\}$, defined explicitly below by integer polynomial arithmetic, for which
+intuitionistic primitive recursive arithmetic proves
+\[
+                 \forall n\;\mathrm{CHCheck}(n)=1.
+\]
+The assertion says that every coefficient in every entry of
+$\det(tI_n-X)\big|_{t=X}$ is zero, where $X=(x_{ij})$ is the generic matrix
+over $\mathbb Z[x_{00},\ldots,x_{n-1,n-1}]$. Consequently, specializing the
+variables gives $\chi_A(A)=0$ over every commutative ring. For each fixed
+primitive recursive presentation of a ring whose ring laws are provable in
+iPRA, this specialization is itself an iPRA derivation.
+\end{theorem}
+
+The human proof of this theorem is given in Sections~\ref{sec:determinants}
+and~\ref{sec:main}, with its induction accounting below. The accompanying
+Lean files are a specification and a route to a completed formalization;
+they are not a completed Lean kernel verification of this arithmetic
+theorem. The executable checks are independent finite corroboration, not
+a substitute for the uniform proof.
+
+There are three distinct levels of assertion in this report.
+\begin{enumerate}
+\item \emph{Arithmetic identities}: equations between specified primitive
+recursive functions on natural-number codes. These are the literal iPRA
+statements.
+\item \emph{Algebraic interpretations}: theorems about arbitrary rings,
+modules, or supplied field data obtained from the finite identities. Such
+objects are mathematical interpretations, not new sorts silently added to
+first-order arithmetic.
+\item \emph{Effective analytic versions}: statements about rational
+approximations with explicit primitive recursive moduli. These are reduced
+to finite inequalities at any requested precision, not quantified
+existence claims about arbitrary real numbers or arbitrary analytic
+functions.
+\end{enumerate}
+This distinction is necessary: a short theorem in ordinary Lean with
+\texttt{[CommRing R]} does not alone establish an object-language iPRA proof.
+
+\subsection{The base theory and its permitted induction}
+
+We use intuitionistic first-order logic with equality, symbols for the
+primitive recursive functions, their defining equations, and induction
+for quantifier-free formulas with parameters. A primitive recursive
+definition is built from zero, successor, projections, composition, and
+primitive recursion. Abbreviations for newly defined primitive recursive
+functions are conservative definitional extensions. This is the
+presentation underlying the repository interface inspected in
+Section~\ref{sec:lean}.
+
+The quantifier-free induction rule has the form
+\[
+ \frac{\varphi(0,\mathbf a)\qquad
+       \varphi(k,\mathbf a)\longrightarrow\varphi(k+1,\mathbf a)}
+      {\varphi(k,\mathbf a)},
+ \qquad \varphi\text{ quantifier-free}.
+\]
+Universal closure is taken after the derivation, not inserted into its
+induction formula. Equality of natural numbers and every primitive
+recursive Boolean test are decidable by their defining recursions. Thus
+finite case distinctions and bounded search are legitimate intuitionistically.
+No step requires excluded middle for arbitrary formulas, Markov's
+principle, choice, an infinite basis construction, or a completeness axiom.
+
+If $P(i,\mathbf a)$ is a decidable primitive recursive predicate, the bounded
+assertion $\forall i<b\,P(i,\mathbf a)$ can be replaced by the equation
+\[
+ \operatorname{all}(b,P,\mathbf a)=1,\qquad
+ \operatorname{all}(0,P,\mathbf a)=1,\quad
+ \operatorname{all}(k+1,P,\mathbf a)
+ =\operatorname{all}(k,P,\mathbf a)\,\mathbf1_{P(k,\mathbf a)}.
+\]
+Here $P$ is a fixed definition, not a quantified function argument.
+An elementary quantifier-free induction proves that the product is $1$
+exactly when each test is $1$. Nested bounded assertions are flattened in
+the same way. This device will express statements about all entries,
+coefficients, permutations, and intermediate stages of a finite calculation.
+
+\subsection{Explicit coding conventions}
+
+One possible list coding uses
+\[
+ \operatorname{nil}=0,\qquad
+ \operatorname{cons}(a,b)=2^a(2b+1).
+\]
+For a positive code, find its exponent of $2$ by searching up to the code;
+the remaining odd factor determines the tail. The tail is smaller than
+the code. Repeated decoding for at most the original code many steps
+therefore suffices to define length, indexing with default $0$, append,
+and bounded updates by primitive recursion. Efficient coding is
+irrelevant to proof-theoretic strength; this deliberately simple coding
+also shows that every advertised bound is a natural-number bound.
+
+Integers are encoded by $2a$ for $a\ge0$ and $2a+1$ for $-(a+1)$.
+Signed addition, multiplication, negation, and comparison are primitive
+recursive, and their ring laws have the familiar quantifier-free proofs
+from the laws of natural-number arithmetic. A rational is a signed
+integer numerator and a positive denominator, optionally reduced by the
+Euclidean algorithm. That algorithm can be run for a bound supplied by
+its initial arguments, with a stable state after termination. Comparison
+and equality use cross multiplication. Invalid input codes receive a
+fixed default so that all underlying functions are total.
+
+An $n\times m$ matrix is a list of $nm$ scalar codes, indexed in row-major
+order. A univariate polynomial is a coefficient list, interpreted with
+zero beyond its length. Matrix multiplication, polynomial convolution,
+trace, and powers are bounded sums and products or primitive recursions.
+Polynomial coefficients need not be trimmed: degree \emph{bounds}, rather
+than a choice of the last nonzero coefficient, suffice throughout the core.
+
+For a completely literal generic identity, use multivariate polynomials
+over the coded integers. With $r$ variables and a coordinate exponent
+bound $d$, enumerate exponent vectors $\alpha\in\{0,\ldots,d\}^{r}$
+by the base-$(d+1)$ number
+\[
+                    [\alpha]=\sum_{j<r}\alpha_j(d+1)^j.
+\]
+Store the coefficient array of length $(d+1)^r$. Addition pads to a common
+bound. Multiplication increases the bound to the sum of the input bounds
+and uses the finite convolution
+\[
+ (fg)_\alpha=\sum_{\beta,\gamma:\,\beta+\gamma=\alpha}
+                       f_\beta g_\gamma.
+\]
+The sum is implemented over all bounded vector pairs with a Boolean
+filter. Thus no unproved normal-form decision procedure is assumed.
+Commutativity, associativity, and distributivity follow by finite
+reindexing of these convolution sums. At a fixed degree bound, polynomial
+equality is equality of two finite arrays.
+
+For dimension $n$, set $r=n^2$ and form the generic matrix $X$. Compute
+$c_0,\ldots,c_n$ from the permutation expansion of $\det(tI-X)$, then
+compute $\sum_{j=0}^{n}c_jX^j$. The coefficient $c_j$ is supported only on
+monomials of total degree $n-j$, and each entry of $X^j$ is supported
+only in total degree $j$. Product expansion and induction on $j$ prove
+these support assertions, including zero entries. Thus every residual
+entry is supported in total degree $n$. No coefficient is discarded by
+the coordinate exponent cap $n$, and comparing
+the $n^2(n+1)^{n^2}$ integer coefficients suffices. For $n=0$ this is an
+empty conjunction, equal to $1$. This algorithm is the promised
+$\mathrm{CHCheck}$.
+
+\subsection{Why primitive recursiveness alone is insufficient}
+\label{sec:induction}
+
+An algorithm being primitive recursive does not imply that every true
+claim about it is provable in iPRA. The proof obligations here are
+specific finite loop invariants, not an appeal to that invalid principle.
+The following bookkeeping explains how the ordinary notation in the
+proofs abbreviates quantifier-free arithmetic reasoning.
+
+Fix an ambient dimension $n$ and the inputs to a claimed identity. All
+index sets have explicit bounds: matrix indices below $n$, candidate
+permutations among the $n^n$ maps $\{0,\ldots,n-1\}\to\{0,\ldots,n-1\}$,
+subsets among $2^n$ bit masks, and polynomial coefficient arrays bounded
+by the displayed exponent caps. Use $0^0=1$ for the unique empty map.
+The following invariants suffice.
+\begin{enumerate}
+\item A finite sum after $k$ steps equals the sum of its first $k$ summands;
+reindexing follows by inserting each value of a bounded permutation
+exactly once. Products have the corresponding invariant.
+\item In a sign-reversing involution, the sum over the first $k$ pairs is
+zero. Pairs are indexed by the smaller member of their two-element orbit,
+selected by a decidable numerical comparison. This proves cancellation
+even in characteristic $2$, without cancelling a factor $2$.
+\item In convolution, the partial sum accounts for exactly the first $k$
+index pairs or triples. Associativity is a reindexing of the same bounded
+triple sum, so its packed coefficient invariant is quantifier-free.
+\item The adjugate entry identity is the cofactor expansion with a row or
+column replaced. Its bookkeeping is the bounded permutation deletion
+map described in Section~\ref{sec:determinants}.
+\item In the main proof, after processing coefficient $k<n$, the invariant
+is exactly
+\[
+                \sum_{j=0}^{k} c_jX^j=-X^{k+1}B_k.
+\]
+It is a finite array equality. No induction on the formula ``all matrices
+of size $k$ satisfy Cayley--Hamilton'' is used.
+\end{enumerate}
+These are equations between fixed primitive recursive functions, or
+bounded conjunctions of such equations. If a lower-dimensional identity
+is needed in a dimension induction, keep $n$ fixed and pack all its
+restrictions of sizes at most the current stage into one finite array
+invariant. Alternatively, the determinant identities below are derived
+directly at the given dimension by finite reindexing.
+
+Integer sizes and list codes do not create an implicit unbounded search.
+For the generic calculations, expand a computation without collecting
+terms: addition adds term counts and multiplication multiplies them;
+the sum of absolute integer coefficients obeys the same bounds.
+Primitive recursion through the given computation produces an explicit
+bound on every coefficient and code. For other fixed primitive
+recursive scalar operations, monotone majorants are constructed along
+their definitions. The finite computation is then indexed within those
+bounds. This is the standard direct compilation of each stated
+invariant into quantifier-free induction, not a uniform total interpreter
+for all primitive recursive programs.
+
+Universal polynomial equality can subsequently be evaluated in any
+commutative ring: evaluate each finite monomial and sum, using the ring
+laws to preserve addition and multiplication. This external
+specialization uses no decision of equality in that ring. To make it an
+internal iPRA theorem, fix a presentation with primitive recursive
+operations and iPRA proofs of its ring laws. Such a presentation uses
+either canonical scalar codes with numerical equality, or a primitive
+recursive equivalence relation together with proofs of equivalence,
+congruence, and the ring laws modulo that relation. Unreduced rational
+pairs use the latter option, with cross-multiplication equality.
+One must not assert that an
+arbitrary program code describes such a ring, or that iPRA decides this.
+

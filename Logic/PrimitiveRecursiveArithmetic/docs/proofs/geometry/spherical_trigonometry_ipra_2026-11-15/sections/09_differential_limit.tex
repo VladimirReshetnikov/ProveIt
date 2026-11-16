@@ -1,0 +1,135 @@
+\section{Differential variations and the quantitative planar limit}
+\label{sec:differential-limit}
+
+\subsection{Constructive differentiable families}
+
+A differentiable real name in this section means a fixed primitive-recursive
+procedure for rational approximations to \(f(t)\) and \(f'(t)\), together with
+a primitive-recursive modulus \(\delta(n)\) such that every rational
+\(0<\abs h\le2^{-\delta(n)}\) satisfies
+\begin{equation}
+ \abs{\frac{f(t+h)-f(t)}h-f'(t)}\le2^{-n}.                 \tag{9.1}
+\end{equation}
+The product and chain rules are finite error estimates on bounded intervals.
+The ProveIt trigonometric packet proves the derivative names
+\((\sin x)'=\cos x\) and \((\cos x)'=-\sin x\) from the finite exponential
+series, with explicit tail schedules.  Thus differentiating the cosine laws is
+legitimate in \(\ipra\) for every fixed primitive-recursive family.
+
+\begin{theorem}[Differential variation formulas]
+\label{thm:differential}
+Along a differentiable family of proper spherical triangles,
+\begin{align}
+ da&=\cos C\,db+\cos B\,dc+\sin b\sin C\,dA,              \tag{9.2}\\
+ db&=\cos A\,dc+\cos C\,da+\sin c\sin A\,dB,              \tag{9.3}\\
+ dc&=\cos B\,da+\cos A\,db+\sin a\sin B\,dC.              \tag{9.4}
+\end{align}
+Here each symbol denotes the derivative name at the fixed parameter value.
+\end{theorem}
+
+\begin{proof}
+Differentiate the cosine law for \(a\):
+\begin{align*}
+ -\sin a\,da
+ &=(-\sin b\cos c+\cos b\sin c\cos A)\,db\\
+ &\quad+(-\cos b\sin c+\sin b\cos c\cos A)\,dc
+       -\sin b\sin c\sin A\,dA.
+\end{align*}
+The cyclic five-part identities give
+\begin{align*}
+ \sin a\cos C&=\sin b\cos c-\cos b\sin c\cos A,\\
+ \sin a\cos B&=\cos b\sin c-\sin b\cos c\cos A.
+\end{align*}
+The sine law gives
+\(
+ \sin b\sin c\sin A=\sin a\sin b\sin C
+\).
+Substitution yields
+\[
+ \sin a\,da=
+ \sin a\bigl(\cos C\,db+\cos B\,dc+\sin b\sin C\,dA\bigr).
+\]
+Since \(\sin a\) has a positive apartness witness, cancellation proves (9.2).
+The other formulas are cyclic.  At the finite-precision level the proof is a
+sum of product-rule estimates followed by the same polynomial simplification;
+no infinitesimal objects are added to the language of arithmetic.
+\end{proof}
+
+The equations may be solved for any three unknown differentials once the other
+three are supplied and the relevant determinant is positively separated from
+zero.  Constructively, matrix inversion is therefore guarded by an explicit
+rational lower bound on that determinant.
+
+\subsection{A uniform small-triangle estimate}
+
+The usual statement that the spherical cosine law tends to the planar cosine
+law can be made quantitative.
+
+\begin{theorem}[Planar cosine law with an explicit remainder]
+\label{thm:planar-limit}
+Suppose
+\(0\le a,b,c\le\varepsilon\le1\) and the exact spherical cosine law holds.
+Then
+\begin{equation}
+ \abs{c^2-a^2-b^2+2ab\cos C}\le2\varepsilon^4.             \tag{9.5}
+\end{equation}
+Cyclic variants hold for the other sides.
+\end{theorem}
+
+\begin{proof}
+The finite Taylor bounds, valid constructively on \([0,1]\), are
+\begin{align}
+ \abs{t^2-2(1-\cos t)}&\le\frac{t^4}{12},                 \tag{9.6}\\
+ 0\le t-\sin t&\le\frac{t^3}{6}.                          \tag{9.7}
+\end{align}
+Put \(F(t)=2(1-\cos t)\).  The spherical cosine law implies
+\begin{equation}
+ F(c)=F(a)+F(b)-2(1-\cos a)(1-\cos b)-2\sin a\sin b\cos C.
+                                                                    \tag{9.8}
+\end{equation}
+Therefore
+\begin{align*}
+ &c^2-a^2-b^2+2ab\cos C\\
+ &=[c^2-F(c)]-[a^2-F(a)]-[b^2-F(b)]\\
+ &\quad-2(1-\cos a)(1-\cos b)
+       +2(ab-\sin a\sin b)\cos C.
+\end{align*}
+The first line of errors has absolute value at most
+\(3\varepsilon^4/12\).  Since \(1-\cos t\le t^2/2\), the next term is at most
+\(\varepsilon^4/2\).  Finally,
+\[
+ \abs{ab-\sin a\sin b}
+ \le a\abs{b-\sin b}+\sin b\abs{a-\sin a}
+ \le\frac{\varepsilon^4}{3},
+\]
+so the last term is at most \(2\varepsilon^4/3\).  Their sum is
+\(17\varepsilon^4/12<2\varepsilon^4\), proving (9.5).
+All Taylor estimates come from finite alternating sums with primitive-recursive
+remainder indices.
+\end{proof}
+
+For a sphere of radius \(R\), let \(\ell_a=Ra\), etc., and assume
+\(\ell_a,\ell_b,\ell_c\le L\le R\).  Multiplying (9.5) by \(R^2\) gives
+\begin{equation}
+ \abs{\ell_c^2-\ell_a^2-\ell_b^2+2\ell_a\ell_b\cos C}
+ \le\frac{2L^4}{R^2}.                                      \tag{9.9}
+\end{equation}
+Thus the curvature correction is explicitly quadratic in \(1/R\).
+
+\begin{corollary}[Planar sine-law cross relation]
+Under the same small-side hypothesis,
+\begin{equation}
+ \abs{a\sin B-b\sin A}\le\frac{\varepsilon^3}{3},          \tag{9.10}
+\end{equation}
+with cyclic companions.
+\end{corollary}
+
+\begin{proof}
+The exact spherical sine law says
+\(\sin a\sin B=\sin b\sin A\).  Hence
+\[
+ a\sin B-b\sin A
+ =(a-\sin a)\sin B-(b-\sin b)\sin A,
+\]
+and (9.7) gives the bound.
+\end{proof}

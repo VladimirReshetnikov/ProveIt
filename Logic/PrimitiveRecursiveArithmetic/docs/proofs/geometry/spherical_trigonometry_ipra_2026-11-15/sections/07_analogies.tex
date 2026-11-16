@@ -1,0 +1,134 @@
+\section{Delambre--Gauss analogies, Napier analogies, and the tangent law}
+\label{sec:analogies}
+
+The four Delambre formulas are best stated first without division.  This form
+remains meaningful even when a traditional quotient presentation would have a
+zero denominator.
+
+\begin{theorem}[Delambre--Gauss analogies]
+\label{thm:delambre}
+For a proper spherical triangle,
+\begin{align}
+ \sin\frac{A+B}{2}\cos\frac c2
+ &=\cos\frac{a-b}{2}\cos\frac C2,                           \tag{7.1}\\
+ \sin\frac{A-B}{2}\sin\frac c2
+ &=\sin\frac{a-b}{2}\cos\frac C2,                           \tag{7.2}\\
+ \cos\frac{A+B}{2}\cos\frac c2
+ &=\cos\frac{a+b}{2}\sin\frac C2,                           \tag{7.3}\\
+ \cos\frac{A-B}{2}\sin\frac c2
+ &=\sin\frac{a+b}{2}\sin\frac C2.                           \tag{7.4}
+\end{align}
+Cyclic permutation gives twelve cross-multiplied identities.  Whenever the
+displayed divisors are apart from zero, these are equivalent to the usual
+four quotient analogies.
+\end{theorem}
+
+\begin{proof}
+We prove (7.1) in detail; the other three use the same calculation with the
+corresponding signs.  Squaring and applying the half-angle identities reduces
+(7.1) to
+\begin{equation}
+ (1-\cos(A+B))(1+\cos c)
+ =(1+\cos(a-b))(1+\cos C).                                 \tag{7.5}
+\end{equation}
+The angle cosine law gives
+\begin{align*}
+ 1-\cos(A+B)
+ &=1-\cos A\cos B+\sin A\sin B\\
+ &=1+\cos C+\sin A\sin B(1-\cos c).
+\end{align*}
+The side cosine law gives, dually,
+\begin{align*}
+ 1+\cos(a-b)
+ &=1+\cos a\cos b+\sin a\sin b\\
+ &=1+\cos c+\sin a\sin b(1-\cos C).
+\end{align*}
+After multiplication by \(1+\cos c\) and \(1+\cos C\), respectively, the
+constant terms agree.  The remaining terms agree because
+\begin{equation}
+ \sin A\sin B\sin^2c=\sin a\sin b\sin^2C,                 \tag{7.6}
+\end{equation}
+which is the spherical sine law twice.  This proves equality of the squares.
+Both sides of (7.1) are nonnegative: \(\cos(c/2),\cos(C/2)>0\),
+\(\cos((a-b)/2)>0\) by the strict triangle inequalities, and
+\(\sin((A+B)/2)>0\).  Nonnegative-root uniqueness therefore yields (7.1).
+
+For (7.2)--(7.4), square the two sides, replace each half-square by
+\((1\pm\cos)/2\), and use the same two cosine laws plus (7.6).  The required
+signs follow from the proper-triangle inequalities; signed versions may also
+be retained directly when no order simplification is desired.  Every squared
+calculation is polynomial after clearing the positive factors.
+\end{proof}
+
+The quotient forms most commonly printed are
+\begin{align}
+ \frac{\sin((A+B)/2)}{\cos(C/2)}
+ &=\frac{\cos((a-b)/2)}{\cos(c/2)},                         \tag{7.7}\\
+ \frac{\sin((A-B)/2)}{\cos(C/2)}
+ &=\frac{\sin((a-b)/2)}{\sin(c/2)},                         \tag{7.8}\\
+ \frac{\cos((A+B)/2)}{\sin(C/2)}
+ &=\frac{\cos((a+b)/2)}{\cos(c/2)},                         \tag{7.9}\\
+ \frac{\cos((A-B)/2)}{\sin(C/2)}
+ &=\frac{\sin((a+b)/2)}{\sin(c/2)}.                         \tag{7.10}
+\end{align}
+Here the half-side and half-angle sines/cosines are positive except for the
+possible factors involving \(A-B\) or \(a-b\); those occur only in numerators.
+
+\subsection{Napier's analogies}
+
+\begin{theorem}[Napier analogies]
+\label{thm:napier}
+With the usual apartness guards,
+\begin{align}
+ \tan\frac{A+B}{2}
+ &=\frac{\cos((a-b)/2)}{\cos((a+b)/2)}\cot\frac C2,         \tag{7.11}\\
+ \tan\frac{A-B}{2}
+ &=\frac{\sin((a-b)/2)}{\sin((a+b)/2)}\cot\frac C2,         \tag{7.12}\\
+ \tan\frac{a+b}{2}
+ &=\frac{\cos((A-B)/2)}{\cos((A+B)/2)}\tan\frac c2,        \tag{7.13}\\
+ \tan\frac{a-b}{2}
+ &=\frac{\sin((A-B)/2)}{\sin((A+B)/2)}\tan\frac c2.        \tag{7.14}
+\end{align}
+The cyclic permutations give twelve formulas.
+\end{theorem}
+
+\begin{proof}
+Divide (7.1) by (7.3) to obtain (7.11), and divide (7.2) by (7.4) to obtain
+(7.12).  Dividing (7.4) by (7.3) gives (7.13); dividing (7.2) by (7.1) gives
+(7.14).  Constructively each division is justified by an explicit apartness
+witness.  Alternatively, retain the corresponding cross-multiplied identity,
+which follows without any quotient.
+\end{proof}
+
+\subsection{The spherical law of tangents}
+
+\begin{corollary}[Law of tangents]
+\label{cor:tangent-law}
+For each cyclic pair,
+\begin{equation}
+ \frac{\tan((A-B)/2)}{\tan((A+B)/2)}
+ =\frac{\tan((a-b)/2)}{\tan((a+b)/2)},                     \tag{7.15}
+\end{equation}
+with the required apartness assumptions.  Thus also
+\begin{align}
+ \frac{\tan((B-C)/2)}{\tan((B+C)/2)}
+ &=\frac{\tan((b-c)/2)}{\tan((b+c)/2)},                    \tag{7.16}\\
+ \frac{\tan((C-A)/2)}{\tan((C+A)/2)}
+ &=\frac{\tan((c-a)/2)}{\tan((c+a)/2)}.                    \tag{7.17}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Divide (7.12) by (7.11), or equivalently divide (7.14) by (7.13).  The common
+factor \(\cot(C/2)\), respectively \(\tan(c/2)\), cancels with its positive
+apartness witness.  After cross multiplication, (7.15) is again a finite
+polynomial consequence of Theorem~\ref{thm:delambre}.
+\end{proof}
+
+\begin{remark}[Constructive preference for cross forms]
+The quotient identities are convenient for numerical solution of a triangle,
+but their logically strongest versions are the cross-multiplied equations.
+They remain valid at symmetric configurations such as \(A=B\) or \(a=b\),
+where a printed ratio may become \(0/0\).  The formalization therefore proves
+cross forms first and derives quotients only under apartness.
+\end{remark}

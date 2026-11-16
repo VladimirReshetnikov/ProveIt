@@ -198,7 +198,10 @@ the same way and then deleted:
 `flt_ipra.zip` was placed the same way, under `diophantine-number-theory/`, and then deleted.
 It leaves out only its ignored `SHA256SUMS.txt`. `central_limit_ipra_2026-11-15.zip` was placed
 the same way, under a new area, `probability/`, and then deleted. It leaves out only its
-ignored `SHA256SUMS.txt`.
+ignored `SHA256SUMS.txt`. `spherical_trigonometry_ipra_2026-11-15.zip` was placed the same
+way, under `geometry/`, and then deleted. It leaves out only its ignored `SHA256SUMS` and
+`artifacts/latex_build.log`. `cayley_hamilton_ipra.zip` was placed the same way, under
+`algebra/`, and then deleted. All 24 of its members are placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

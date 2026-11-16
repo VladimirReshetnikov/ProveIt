@@ -1,0 +1,160 @@
+\section{Cotangent, five-part, Cagnoli, right, and quadrantal rules}
+\label{sec:cotangent-special}
+
+\subsection{The six cotangent four-part formulas}
+
+The six parts of a spherical triangle occur cyclically as
+\(a,C,b,A,c,B\).  Choosing four consecutive parts gives one inner side, one
+inner angle, one outer side and one outer angle.  The general mnemonic is
+\begin{equation}
+ \cos(\text{inner side})\cos(\text{inner angle})
+ =\cot(\text{outer side})\sin(\text{inner side})
+  -\cot(\text{outer angle})\sin(\text{inner angle}).        \tag{8.1}
+\end{equation}
+Explicitly,
+\begin{align}
+ \cos b\cos C&=\cot a\sin b-\cot A\sin C,                 \tag{CT1}\\
+ \cos b\cos A&=\cot c\sin b-\cot C\sin A,                 \tag{CT2}\\
+ \cos c\cos A&=\cot b\sin c-\cot B\sin A,                 \tag{CT3}\\
+ \cos c\cos B&=\cot a\sin c-\cot A\sin B,                 \tag{CT4}\\
+ \cos a\cos B&=\cot c\sin a-\cot C\sin B,                 \tag{CT5}\\
+ \cos a\cos C&=\cot b\sin a-\cot B\sin C.                 \tag{CT6}
+\end{align}
+For a proper triangle every side and angle sine is positive, so all cotangents
+have canonical apartness witnesses.
+
+\begin{proof}[Proof of CT1 and the family]
+Begin with the cosine law for \(a\), substitute the cosine law for \(c\), and
+use the sine law to replace \(\sin c\):
+\begin{align*}
+ \cos a
+ &=\cos b\cos c+\sin b\sin c\cos A\\
+ &=\cos b(\cos a\cos b+\sin a\sin b\cos C)
+   +\sin b\sin C\sin a\cot A.
+\end{align*}
+Move the \(\cos a\cos^2b\) term to the left:
+\[
+ \cos a\sin^2b
+ =\cos b\sin a\sin b\cos C
+  +\sin b\sin C\sin a\cot A.
+\]
+Cancel the positive product \(\sin a\sin b\) to obtain CT1.  The same
+substitution pattern gives CT3 and CT5.  Applying those three identities to
+the polar triangle gives CT2, CT4 and CT6.  Before cancellation, each proof is
+an integer polynomial identity, so it is valid without any division.
+\end{proof}
+
+Two frequently printed consequences are already visible here:
+\begin{align}
+ \cos A&=\csc b\,\csc c\,(\cos a-\cos b\cos c),           \tag{8.2}\\
+ \cos a\cos C&=\sin a\cot b-\sin C\cot B.                 \tag{8.3}
+\end{align}
+
+\subsection{Five-part rules}
+
+Substitute the cosine law for \(b\) into the law for \(a\):
+\begin{align*}
+ \cos a
+ &=(\cos a\cos c+\sin a\sin c\cos B)\cos c
+   +\sin b\sin c\cos A.
+\end{align*}
+After moving \(\cos a\cos^2c\) to the left and canceling the positive factor
+\(\sin c\), one obtains
+\begin{equation}
+ \cos a\sin c
+ =\sin a\cos c\cos B+\sin b\cos A.                         \tag{8.4}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \sin a\cos B=\cos b\sin c-\sin b\cos c\cos A.            \tag{8.5}
+\end{equation}
+Cyclic permutation gives
+\begin{align}
+ \cos b\sin a&=\sin b\cos a\cos C+\sin c\cos B,          \tag{8.6}\\
+ \cos c\sin b&=\sin c\cos b\cos A+\sin a\cos C.          \tag{8.7}
+\end{align}
+Polar duality and reversal of the cyclic order produce the remaining standard
+five-part variants.  Their division-free versions require no side conditions.
+
+\subsection{Cagnoli's equation}
+
+\begin{theorem}[Cagnoli]
+\label{thm:cagnoli}
+The six parts of a spherical triangle satisfy
+\begin{equation}
+ \sin b\sin c+\cos b\cos c\cos A
+ =\sin B\sin C-\cos B\cos C\cos a.                         \tag{8.8}
+\end{equation}
+There are two cyclic companions.
+\end{theorem}
+
+\begin{proof}
+Multiply the side cosine law for \(a\) by \(\cos A\), replacing
+\(\cos^2A\) by \(1-\sin^2A\):
+\begin{equation}
+ \cos a\cos A
+ =\cos b\cos c\cos A+\sin b\sin c
+  -\sin b\sin c\sin^2A.                                   \tag{8.9}
+\end{equation}
+Multiply the angle cosine law for \(A\) by \(\cos a\):
+\begin{equation}
+ \cos a\cos A
+ =-\cos B\cos C\cos a+\sin B\sin C
+  -\sin B\sin C\sin^2a.                                  \tag{8.10}
+\end{equation}
+The sine law gives
+\(
+ \sin b\sin c\sin^2A=\sin B\sin C\sin^2a
+\).
+Subtract the common remainder from (8.9)--(8.10), yielding (8.8).
+\end{proof}
+
+\subsection{Right spherical triangles}
+
+Assume \(C=\pi/2\).  Then \(\sin C=1\) and \(\cos C=0\).  The core laws reduce
+to Napier's ten rules:
+\begin{alignat}{3}
+ \text{(R1)}\quad&\cos c=\cos a\cos b,
+ &\qquad \text{(R6)}\quad&\tan b=\cos A\tan c,             \tag{8.11}\\
+ \text{(R2)}\quad&\sin a=\sin A\sin c,
+ &\text{(R7)}\quad&\tan a=\cos B\tan c,                  \tag{8.12}\\
+ \text{(R3)}\quad&\sin b=\sin B\sin c,
+ &\text{(R8)}\quad&\cos A=\sin B\cos a,                  \tag{8.13}\\
+ \text{(R4)}\quad&\tan a=\tan A\sin b,
+ &\text{(R9)}\quad&\cos B=\sin A\cos b,                  \tag{8.14}\\
+ \text{(R5)}\quad&\tan b=\tan B\sin a,
+ &\text{(R10)}\quad&\cos c=\cot A\cot B.                 \tag{8.15}
+\end{alignat}
+The tangent and cotangent equations are guarded by the corresponding cosine or
+sine apartness witnesses.  R1 is the side cosine law; R2--R3 are the sine law;
+R8--R9 come from the angle cosine laws.  R4--R7 and R10 follow by guarded
+division.  Thus the ten-rule mnemonic introduces no new theorem.
+
+Napier's circle summarizes them constructively.  Write the five parts
+\[
+ a,\quad \frac\pi2-B,\quad b,\quad \frac\pi2-c,\quad \frac\pi2-A
+\]
+in cyclic order.  For any three selected parts, the sine of the middle part is
+the product of the tangents of the two adjacent parts and also the product of
+the cosines of the two opposite parts.  Each assertion is one of
+(R1)--(R10) after the complement identities.
+
+\subsection{Quadrantal spherical triangles}
+
+Assume instead that \(c=\pi/2\).  Applying the right-triangle rules to the
+polar triangle gives
+\begin{alignat}{3}
+ \text{(Q1)}\quad&\cos C=-\cos A\cos B,
+ &\qquad \text{(Q6)}\quad&\tan B=-\cos a\tan C,            \tag{8.16}\\
+ \text{(Q2)}\quad&\sin A=\sin a\sin C,
+ &\text{(Q7)}\quad&\tan A=-\cos b\tan C,                   \tag{8.17}\\
+ \text{(Q3)}\quad&\sin B=\sin b\sin C,
+ &\text{(Q8)}\quad&\cos a=\sin b\cos A,                  \tag{8.18}\\
+ \text{(Q4)}\quad&\tan A=\tan a\sin B,
+ &\text{(Q9)}\quad&\cos b=\sin a\cos B,                  \tag{8.19}\\
+ \text{(Q5)}\quad&\tan B=\tan b\sin A,
+ &\text{(Q10)}\quad&\cos C=-\cot a\cot b.                \tag{8.20}
+\end{alignat}
+Again the quotient forms are derived only under apartness.  The minus signs in
+Q1, Q6, Q7 and Q10 arise from
+\(\cos(\pi-x)=-\cos x\) under polar duality.

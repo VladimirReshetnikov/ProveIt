@@ -1,0 +1,152 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1.02in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+  urlcolor=blue!45!black,pdftitle={Cayley--Hamilton in Intuitionistic Primitive Recursive Arithmetic},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov}]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=*}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,
+  keepspaces=true,breaklines=true,frame=single,rulecolor=\color{black!20},
+  backgroundcolor=\color{black!2},showstringspaces=false}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Cayley--Hamilton in iPRA}
+\fancyhead[R]{\small Finite proofs and formalization}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.6in}
+{\Large\sffamily\color{blue!45!black}CONSTRUCTIVE ALGEBRA}\par
+\vspace{0.35in}
+{\huge\bfseries Cayley--Hamilton in\par
+ Intuitionistic Primitive\par Recursive Arithmetic}\par
+\vspace{0.25in}
+{\Large Finite proofs, effective applications,\par
+ and an explicit Lean formalization route}\par
+\vspace{0.55in}
+{\large Prepared for Vladimir Reshetnikov}\par
+{\large 15 November 2026}\par
+\vspace{0.5in}
+\begin{abstract}
+We prove a uniform arithmetized Cayley--Hamilton theorem using finite
+determinant expansion, the adjugate identity, and coefficient telescoping.
+Explicit coding reduces the theorem to a primitive recursive numerical
+equation with quantifier-free induction invariants. The development
+covers 27 result families: polynomial adjugates, monic reduction, unit
+inversion, effective minimal polynomials, Newton and Bell identities,
+Hessenberg formulas, Faddeev--LeVerrier, finite formal logarithms,
+module and integrality consequences, interpolation, quantitative matrix
+functions, and specified quaternionic extensions. Every use of division,
+spectral data, coordinates, or analytic convergence is made explicit.
+The accompanying Lean sources define the numerical checker, the exact
+object-language target, and ordinary Mathlib comparison statements.
+They are an uncompiled outline, not a completed Lean verification.
+Exact executable checks and pinned source provenance accompany the proof.
+\end{abstract}
+\vfill
+\noindent\textbf{Status.} Developed human proofs with an iPRA induction audit;
+executable finite checks passed; complete Lean proof construction remains.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\tableofcontents
+\clearpage
+\input{sections/coverage}
+\clearpage
+\input{sections/foundations}
+\input{sections/core}
+\input{sections/trace}
+\input{sections/applications}
+\input{sections/formalization}
+
+\section*{Source notes}
+\addcontentsline{toc}{section}{Source notes}
+The online article sets the scope, rather than serving as a collection
+of unchecked axioms. The determinant and module arguments are classical
+finite algebra, with related general formulations in
+\cite{stacks,conrad}. Stein's account provides context for the
+algebraic-number application~\cite{stein}. The quaternion discussion
+uses explicit coordinate representations; Zhang's paper is relevant
+background~\cite{zhang}. Tian's octonion-matrix work is cited only to
+identify the more general result that is \emph{not} proved here~\cite{tian}.
+The repository and Mathlib citations document actual interfaces, not
+a claim that those interfaces automatically internalize these proofs.
+
+\begin{thebibliography}{99}
+\bibitem{wikipedia}
+Wikipedia contributors, \emph{Cayley--Hamilton theorem}, inspected
+revision \texttt{1375228092}, last edited 16 September 2026.
+\url{https://en.wikipedia.org/w/index.php?title=Cayley%E2%80%93Hamilton_theorem&oldid=1375228092}.
+
+\bibitem{stacks}
+The Stacks Project Authors, \emph{Cayley--Hamilton}, Section 10.16,
+Tag 05G6, especially Lemmas 10.16.1--10.16.3.
+\url{https://stacks.math.columbia.edu/tag/05G6}.
+
+\bibitem{conrad}
+Brian Conrad, \emph{Generalized Cayley--Hamilton and integrality},
+Math 210B notes, Stanford University.
+\url{https://math.stanford.edu/~conrad/210BPage/handouts/cayleyhamilton.pdf}.
+
+\bibitem{stein}
+William A. Stein, \emph{Algebraic Number Theory, a Computational Approach},
+Chapter 2, Basic Commutative Algebra.
+\url{https://wstein.org/books/ant/ant/Ch2.html}.
+
+\bibitem{zhang}
+Fuzhen Zhang, Quaternions and matrices of quaternions,
+\emph{Linear Algebra and its Applications} \textbf{251} (1997), 21--57.
+DOI: \href{https://doi.org/10.1016/0024-3795(95)00543-9}{10.1016/0024-3795(95)00543-9}.
+Author institution record:
+\url{https://nsuworks.nova.edu/math_facarticles/100/}.
+
+\bibitem{tian}
+Yongge Tian, \emph{Matrix representations of octonions and their
+applications}, arXiv:math/0003166v2 (2000).
+\url{https://arxiv.org/abs/math/0003166v2}.
+
+\bibitem{proveit-pr}
+Vladimir Reshetnikov, ProveIt, \texttt{ConciseIPRA/PR.lean},
+commit \texttt{73e6a339db7c72c6b13259059a8345b24385f6e3}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/73e6a339db7c72c6b13259059a8345b24385f6e3/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}.
+
+\bibitem{proveit-native}
+Vladimir Reshetnikov, ProveIt, \texttt{NativeBiInterpretation.lean},
+same pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/73e6a339db7c72c6b13259059a8345b24385f6e3/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}.
+
+\bibitem{proveit-packets}
+Vladimir Reshetnikov, ProveIt, \emph{Delivered iPRA proof packets},
+same pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/73e6a339db7c72c6b13259059a8345b24385f6e3/Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md}.
+
+\bibitem{mathlib}
+The Mathlib Community, \texttt{Mathlib.LinearAlgebra.Matrix.Charpoly.Basic}
+and \texttt{Coeff}, inspected tag \texttt{v4.32.0}.
+\url{https://github.com/leanprover-community/mathlib4/tree/v4.32.0/Mathlib/LinearAlgebra/Matrix/Charpoly}.
+Documentation:
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Charpoly/Basic.html}.
+\end{thebibliography}
+\end{document}
