@@ -1,0 +1,172 @@
+\section{Resolution of the recurring difficulty reports}\label{sec:difficulties}
+
+This section states each common obstruction in a form suitable for a formalization decision.  ``Resolved'' means the generic consumer or composition theorem is supplied; it does not mean that every theorem-specific quantitative producer exists.
+
+\subsection{Ambient evidence versus an object proof}
+
+\paragraph{Failure mode.}
+A Lean theorem about \(\Nat\), a successful Python computation, or a checked finite certificate is cited as though it had type \(\Prf\,\PRAAx\).
+
+\paragraph{Repair.}
+Every executable node ends in a local contract.  Semantic code may calculate terms and proof schedules, but the public endpoint is converted through \cref{thm:contract-sequent}.  Tests remain validation only.
+
+\paragraph{Status.}
+Resolved architecturally.  The remaining work for an application is to construct its local object derivations.
+
+\subsection{Bounded quantifiers inside induction}
+
+\paragraph{Failure mode.}
+An invariant says ``for every table entry below the current index'' or ``there exists a pivot'', and is therefore not syntactically quantifier-free.
+
+\paragraph{Repair.}
+Compile the bounded statement to a Boolean fold or a strategy checker.  The invariant contains an equality such as \(b(s)=1\), which is quantifier-free.  Reflection is used outside or alongside the induction.
+
+\paragraph{Status.}
+Generic human proof complete; checked implementation should extend the existing bounded-sum/search library.
+
+\subsection{All precisions inside one loop}
+
+\paragraph{Failure mode.}
+A trace invariant quantifies over every requested precision.
+
+\paragraph{Repair.}
+Keep terminal precision as an open parameter, run reverse demand before the trace, allocate only the finite observations requested by that parameter, prove one QF invariant, and quantify after induction.
+
+\paragraph{Status.}
+Resolved for acyclic and justified capped-cyclic demand systems.
+
+\subsection{Hidden quantitative producers}
+
+\paragraph{Failure mode.}
+A height cutoff, separation gap, effective constant, finite net, or representative system is inserted as host-language data without a formula or proof.
+
+\paragraph{Repair.}
+Attach a boundary formula to the node that needs the data.  Query reachability collects it into the least residual frontier.  A later producer contract closes it.
+
+\paragraph{Status.}
+Resolved as a status discipline.  Existence of particular producers may remain open mathematics.
+
+\subsection{A universal primitive-recursive evaluator}
+
+\paragraph{Failure mode.}
+The framework assumes one total primitive-recursive function that evaluates every coded primitive-recursive function.
+
+\begin{barrier}
+There is no total primitive-recursive universal evaluator for all unary primitive-recursive functions.
+\end{barrier}
+
+\begin{proof}
+If \(U(e,x)\) were such an evaluator, \(g(e)=U(e,e)+1\) would be primitive recursive.  Let \(d\) code \(g\).  Then \(g(d)=U(d,d)+1=g(d)+1\), contradiction.
+\end{proof}
+
+\paragraph{Repair.}
+Specialize fixed syntax at the metalevel, or use a clocked evaluator for a fixed instruction set and explicit bound.  The generated term is an ordinary finite composition/recursion tree.
+
+\subsection{Independent finite witnesses}
+
+\paragraph{Failure mode.}
+Each stage or horizon chooses a witness independently, but the conclusion assumes compatible choices.
+
+\paragraph{Repair.}
+Use backward viability for finite horizons.  Then apply the coherence trichotomy: stable observer for finite use, extension system for a path, and tail data for a regular name.
+
+\paragraph{Status.}
+Finite case resolved.  Infinite coherence remains conditional on explicit producer data.
+
+\subsection{Exact branch labels at collisions}
+
+\paragraph{Failure mode.}
+Roots, eigenvectors, axes, or minimizers are assigned exact labels through collision or symmetry points.
+
+\paragraph{Repair.}
+Return multisets, clusters, projectors, invariant subspaces, projective classes, or approximate relations.  Add labels only under a reflected separation and normalization guard.
+
+\paragraph{Status.}
+Unrestricted selector rejected; guarded and quotient formulations resolved.
+
+\subsection{Division or normalization from mere nonzero}
+
+\paragraph{Failure mode.}
+A represented real satisfying \(x\ne0\) is inverted as though one had a rational \(\delta>0\) with \(|x|\ge\delta\).
+
+\paragraph{Repair.}
+Totalize the program outside its intended domain and make \(\delta\) part of the contract.  Precision demand depends on \(\delta\); the correctness theorem is guarded by its positive-margin formula.
+
+\paragraph{Status.}
+Generic guarded composition resolved.  Margin production is theorem-specific.
+
+\subsection{Abstract compactness}
+
+\paragraph{Failure mode.}
+A compact space is used to choose a finite subcover or minimizer without effective coverage data.
+
+\paragraph{Repair.}
+Supply a finite net generator, a coverage certificate, and continuity/modulus contracts.  Verify every net point by a bounded fold and transport through the modulus.
+
+\paragraph{Status.}
+Finite consumer resolved.  Effective net and coverage remain producers.
+
+\subsection{Metastability versus a rate}
+
+\paragraph{Failure mode.}
+A theorem that supplies a stable finite window for every challenge function is upgraded to a global Cauchy modulus.
+
+\paragraph{Repair.}
+Retain the metastable bounded-strategy contract.  Upgrade only when a tail modulus or contraction rate is explicitly supplied.
+
+\paragraph{Status.}
+Local finite interface resolved; general conversion is false computably.
+
+\subsection{Finiteness versus a height bound}
+
+\paragraph{Failure mode.}
+A statement that a set has finitely many elements, or at most \(k\) elements, is treated as a computable bound on their codes.
+
+\paragraph{Repair.}
+Use a height-bound/complete-list interface.  A height bound yields bounded enumeration and filtering.  A complete explicit list yields the maximum of its heights.  A cardinality bound alone yields neither.
+
+\paragraph{Status.}
+Verifier and conversions resolved under explicit coding assumptions; effective height remains the hard producer.
+
+\subsection{Classical proof reuse}
+
+\paragraph{Failure mode.}
+A classical theorem is imported through semantic soundness or unrestricted negative translation.
+
+\paragraph{Repair.}
+Translate a fixed proof only after every axiom image is derived.  For finite endpoints, use two-sided strategy decidability to recover stable conclusions.  Otherwise keep the negative conclusion or construct witnesses directly.
+
+\paragraph{Status.}
+Bounded endpoint resolved; general proof translator remains formalization work.
+
+\subsection{Open-sequent transport}
+
+\paragraph{Failure mode.}
+A theorem is proved in one backend under hypotheses but only a closed-sentence bridge is available.
+
+\paragraph{Repair.}
+Keep the canonical ordinary contract; close only at a final endpoint when necessary.  Complete the bridge's term/formula round trip and context transport as a separate checked module.
+
+\paragraph{Status.}
+Native open transfer checked upstream; full Foundation open transfer remains an identified integration task.
+
+\subsection{Summary matrix}
+
+\begin{longtable}{@{}p{0.20\textwidth}p{0.36\textwidth}p{0.18\textwidth}p{0.18\textwidth}@{}}
+\toprule
+Difficulty & Framework response & Generic status & Remaining producer \\
+\midrule
+Ambient evidence & open contract ending in \(\Prf\,\PRAAx\) & resolved interface & local derivations \\
+Bounded induction & Boolean fold/strategy checker & human-complete & checked reflected-fold library \\
+Precision & reverse demand before induction & resolved schema & local moduli/caps \\
+Missing constants & residual frontier & resolved normal form & theorem-specific proof \\
+Nonunique witness & viability and coherence trichotomy & finite case resolved & extension/tail data \\
+Branch collisions & quotient or guarded label & reformulated & separation gap \\
+Partial operation & totalization plus margin & conditional theorem & positive margin \\
+Compactness & finite net and coverage & conditional theorem & effective coverage \\
+Metastability & retain finite strategy & resolved weaker interface & tail rate \\
+Diophantine finiteness & height/list interface & verifier resolved & height bound \\
+Classical alternation & two-sided bounded strategy & fixed bounded case resolved & unbounded witness data \\
+Backend mismatch & canonical open contract and bridge module & partial & Foundation open transport \\
+\bottomrule
+\end{longtable}

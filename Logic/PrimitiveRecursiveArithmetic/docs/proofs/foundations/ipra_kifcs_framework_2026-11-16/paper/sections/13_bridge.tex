@@ -1,0 +1,83 @@
+\section{Open-sequent portability and backend integration}\label{sec:bridge}
+
+\subsection{The canonical interface}
+
+New portable results should be stated first in the ordinary ConciseIPRA language as open contracts or, equivalently, sequents \(\seq{A}{\varphi}\).  This preserves hypotheses and free parameters and gives direct access to the checked derivation library.  Backend-specific translations occur only at the boundary required by an application.
+
+\subsection{Native scalar transfer is already context-sensitive}
+
+The checked theorem \texttt{pra\_iff\_native} states, for arbitrary finite contexts,
+\[
+  \seq{A}{\varphi}
+  \quad\Longleftrightarrow\quad
+  \NPrf(A^{\mathrm{nat}},\varphi^{\mathrm{nat}}).
+\]
+Combining it with \cref{thm:contract-sequent} gives immediately:
+\begin{theorem}[Contract/native equivalence]\label{thm:contract-native}
+\[
+ \Contract(A,\varphi)
+ \quad\Longleftrightarrow\quad
+ \NPrf(A^{\mathrm{nat}},\varphi^{\mathrm{nat}}).
+\]
+\end{theorem}
+
+\begin{proof}
+Compose the contract--sequent equivalence with \texttt{pra\_iff\_native}.
+\end{proof}
+
+Thus the compact native checker can verify a compiled contract after the ordinary theorem exists.  Native transfer should not be used as a substitute for constructing the ordinary theorem, because the checked equivalence already provides the proper order of operations.
+
+\subsection{Substitution before translation}
+
+Suppose a generic contract contains free parameters and an application has concrete terms.  First apply \cref{thm:contract-subst} in the ordinary language.  Then translate the specialized sequent.  This avoids proving a separate backend theorem for every parameter instance and keeps variable-layout obligations localized.
+
+\subsection{Foundation transport}
+
+The current bridge already supports important closed endpoints and contains much of the syntax translation needed for open results.  The repository unification plan correctly isolates the remaining task: preserve and reflect a finite open context while retaining the identities of free variables under binders.
+
+A complete open bridge should provide functions of the following mathematical shape:
+\begin{align*}
+ \seq{A}{\varphi}
+   &\longrightarrow
+   \mathsf{FoundationPrf}(A^F,\varphi^F),\\
+ \mathsf{FoundationPrf}(B,\theta)
+   &\longrightarrow
+   \seq{B^C}{\theta^C},
+\end{align*}
+with round-trip equivalences sufficient to recover the original formulas.  The first direction can translate a derivation under arbitrary term assignments.  Reflection must assign the finitely occurring free variables distinct fresh indices so their identities survive translation.
+
+\begin{principle}[Bridge obligation isolation]
+Until the open Foundation bridge is checked, an application may use either:
+\begin{enumerate}
+  \item a closed exported theorem obtained by universally closing and discharging the ordinary contract; or
+  \item a backend-specific local theorem whose exact premises and theory are stated separately.
+\end{enumerate}
+It must not silently identify an ambient Foundation theorem with an ordinary \(\Prf\,\PRAAx\) contract.
+\end{principle}
+
+\subsection{Round-trip requirements}
+
+The open bridge needs four families of lemmas.
+\begin{enumerate}
+  \item \textbf{Term round trip:} every primitive-recursive code is provably extensionally equal to its translated round trip at arbitrary parameters.
+  \item \textbf{Formula round trip:} equality atoms, implication, and both quantifiers are preserved up to object-level biconditional.
+  \item \textbf{Context transport:} translation commutes with list mapping, weakening, substitution, and binder shift.
+  \item \textbf{Sequent recovery:} translated assumptions can be replaced by original assumptions through simultaneous cut and the round-trip biconditionals.
+\end{enumerate}
+The principal formal risk is de Bruijn bookkeeping, not a missing mathematical principle.  Therefore the implementation should first register translation/substitution simp lemmas, then recurse on derivations.
+
+\subsection{Portable theorem packaging}
+
+A portable theorem artifact should expose:
+\begin{itemize}
+  \item the ordinary formula and contract;
+  \item a native corollary using \cref{thm:contract-native};
+  \item a Foundation corollary only when the relevant bridge declaration is checked;
+  \item the exact theory name for every exported endpoint;
+  \item a record of any closure operation used to eliminate local hypotheses.
+\end{itemize}
+This prevents accidental upgrades between \iPRA, classical PRA, HA, PA, and stronger fragments.
+
+\subsection{Why open transport matters}
+
+Closed sentences are adequate for final published theorems but inefficient for a reusable library.  Arithmetic lemmas are naturally stated at arbitrary terms under local hypotheses; graph nodes consume temporary invariants; residual producer theorems are often conditional.  Closing every intermediate result introduces avoidable quantifiers and repeated instantiation proofs.  The contract interface keeps these results open and makes the remaining backend transport requirement explicit.

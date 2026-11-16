@@ -507,6 +507,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fib_parity
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fib_parity_one
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fib_parity_two
+#print axioms LeanProofs.IPRA.Combinatorics.Catalan.cb_fact
+#print axioms LeanProofs.IPRA.Combinatorics.Catalan.cb_rec
+#print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_spec
+#print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_zero
+#print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_rec
+#print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_odd_binom
+#print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_telescope
+#print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_partial_sum
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY

@@ -1,0 +1,14 @@
+{
+  "name": "bounded_challenge_response",
+  "formula": "forall u<U exists v<V(u) forall w<W(u,v) A(u,v,w,x)",
+  "truth_certificate": {
+    "response_table": "v(u)",
+    "atomic_table": "truth certificate for every legal (u,w)"
+  },
+  "false_certificate": {
+    "challenge": "u0<U",
+    "counterresponse_table": "w(v) for every v<V(u0)",
+    "atomic_table": "falsity certificate for A(u0,v,w(v),x)"
+  },
+  "checker_requirement": "all bounds and atom checkers are primitive recursive"
+}

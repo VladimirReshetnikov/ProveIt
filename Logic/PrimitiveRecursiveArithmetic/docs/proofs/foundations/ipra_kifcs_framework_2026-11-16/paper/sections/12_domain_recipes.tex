@@ -1,0 +1,104 @@
+\section{Domain embedding recipes}\label{sec:domains}
+
+This section turns the general framework into reusable proof patterns.  The recipes are not assertions that every named deep theorem has now been proved.  They identify the admissible statement, the finite data, the object-theory core, and the remaining producer obligations.
+
+\subsection{Elementary and algebraic number theory}
+
+\paragraph{Divisibility, gcd, and congruence.}
+Use primitive-recursive bounded search for quotients and Bézout coefficients within explicit bounds.  Divisibility is witnessed by a term \(k\) and an algebra equation \(a=bk\).  Euclidean descent is a loop with the remainder as a decreasing rank.  Congruence calculations reduce to polynomial identities and divisibility witnesses.
+
+\paragraph{Finite sums over divisors or primes.}
+Primality and divisibility below \(n\) are bounded predicates.  A sum such as
+\(\sum_{d\mid n}f(d)\) is a primitive recursion over \(d<n+1\) with a Boolean guard.  Prove the summation recurrence by QF induction; prove identities by rearranging finite double sums through explicit bijections or counting certificates.  No infinite Dirichlet series is needed for a finite identity.
+
+\paragraph{Asymptotic theorems.}
+State a theorem with explicit constants and threshold:
+\[
+ n\ge N(k)\longrightarrow |A(n)-M(n)|\le E(k,n).
+\]
+The verifier is finite arithmetic.  The producer must supply \(N\), constants, and any zero-free or contour estimate in an effective form.  An ineffective existence of constants is not silently converted to a PR symbol.
+
+\subsection{Diophantine geometry}
+
+\paragraph{Height-bounded enumeration.}
+A rational point is encoded by primitive integer tuples with bounded numerator and denominator.  For a supplied height bound \(H(C)\), enumerate the finite box, test the equations, normalize signs/gcd, and remove duplicates by bounded search.  Completeness follows immediately from the height hypothesis.
+
+\begin{theorem}[Height/list equivalence for decidable presentations]\label{thm:height-list}
+Fix a Diophantine presentation with a primitive-recursive point verifier and height.  The following data are interconvertible by primitive-recursive, object-verifiable constructions:
+\begin{enumerate}[label=(\roman*)]
+  \item a bound \(H\) proved to dominate the height of every valid point;
+  \item a finite complete duplicate-free list of all valid points.
+\end{enumerate}
+The conversion from a list to a bound takes the maximum height (or zero for the empty list); the conversion from a bound to a list is bounded enumeration and verification.
+\end{theorem}
+
+\begin{proof}
+Given \(H\), enumerate every canonical code of height at most \(H\), retain exactly those satisfying the verifier, and remove duplicates.  Every retained item is valid by reflection.  Every valid point has height at most \(H\), hence has a canonical code in the enumerated box and appears in the filtered list.  Conversely, given a complete list, take the maximum of the finitely many heights.  Completeness implies every valid point occurs and is bounded by that maximum.  All operations are bounded folds and searches, so their correctness is handled by \cref{sec:boolean-search}.
+\end{proof}
+
+This theorem clarifies the Faltings/Siegel difficulty.  The finite part of the proof is not the obstacle.  The obstacle is the uniform, effective, object-justified height producer.
+
+\paragraph{Mordell--Weil descent.}
+A Selmer class is not automatically a rational point on its covering.  The interface must return a finite relation of covering representatives with explicit local/global compatibility certificates.  Backward viability can amalgamate a finite descent tree once such representatives are supplied.  A general uniform representative producer remains a separate mathematical problem.
+
+\paragraph{Runge and explicit special cases.}
+When geometry yields an explicit height inequality, the complete proof fits the framework: derive the inequality using algebra nodes and guarded estimates, compute \(H\), enumerate, and verify.  This is why Runge-type cases can be fully constructive even when general Siegel remains open.
+
+\subsection{Real and complex analysis}
+
+\paragraph{Real names.}
+Use dyadic rational approximants with a regularity contract
+\[
+ |a_k-a_\ell|\le2^{-k}\quad(\ell\ge k),
+\]
+or a relational cloud plus \cref{thm:regular-name}.  Addition and multiplication have explicit demand transformers.  Inversion, logarithm, square root, and inverse trigonometric functions require guards.
+
+\paragraph{Integration.}
+A Riemann or quadrature approximation is a finite rational sum.  The input includes a modulus of continuity or derivative bounds and a tail/error theorem.  The terminal query determines a mesh size.  The object proof consists of the finite sum identity, local cell estimates, and a finite error sum.  An ``integrable'' proposition without a modulus is insufficient for a uniform PR integrator.
+
+\paragraph{Power series.}
+A series is consumed through a partial sum and a tail bound.  Composition, differentiation, or inversion requires explicit coefficient bounds and a radius/apartness guard.  Formal power-series identities are exact algebra nodes; analytic equality adds a finite tail estimate.
+
+\paragraph{Contour arguments.}
+Replace a contour by a rational polygonal path or a certified finite parametrization, and replace integrals by quadrature with explicit error.  Winding numbers are finite integer computations under a positive distance-from-pole guard.  Residue theorems then separate into exact algebraic residue identities and quantitative approximation estimates.
+
+\paragraph{Gamma, zeta, and special functions.}
+Choose one finite representation---Euler products, alternating series, Euler--Maclaurin sums, or contour quadrature---and attach explicit domain, truncation, and error contracts.  Functional equations become comparisons of two finite approximations with common error budgets plus exact algebraic identities.  Any hidden ineffective constant remains a producer obligation.
+
+\subsection{Probability and limit theorems}
+
+A directly admissible probability object is a finite rational law.  Expectations and moments are finite sums.  For triangular arrays or approximated laws, input data include tail, moment, and quantization moduli.  A central limit theorem suitable for \iPRA\ states an explicit finite bound, such as a Berry--Esseen inequality for rational variables with a displayed constant.  CDF comparisons at discontinuity points require anti-concentration or smoothing data.  Weak convergence without a modulus is retained as a finite-test or metastable contract.
+
+\subsection{Geometry}
+
+\paragraph{Coordinate algebra.}
+Whenever possible, express the theorem as a polynomial identity in integer or rational coordinates.  The current \texttt{ipra\_ring} backend already handles a meaningful class of triangle identities.
+
+\paragraph{Avoiding division.}
+Use homogeneous coordinates, oriented determinants, squared distances, and cross-multiplied ratio statements.  Introduce a denominator only under a nondegeneracy/apartness certificate.
+
+\paragraph{Incidence and conics.}
+A projective incidence theorem is a determinant identity plus rank/nondegeneracy guards.  Pappus, Pascal, Desargues, Ceva, and Menelaus are natural algebra-node targets after suitable coordinate normalization.
+
+\paragraph{Spherical and rotational geometry.}
+Trigonometric quantities are finite names with error contracts.  Exact axes and inverse angles are guarded.  At singular configurations, use rotation matrices, quaternions modulo sign, or relations of admissible axes rather than a discontinuous selected vector.
+
+\subsection{Linear algebra and spectral theory}
+
+Fixed-dimension determinant, adjugate, Cayley--Hamilton, and characteristic-polynomial identities are algebra nodes.  Variable dimension uses loops over indices with QF matrix-entry invariants.  Gaussian elimination is totalized: pivot search consumes a certified rank/pivot margin, or the output is a relation of row-reduction branches.
+
+For symmetric spectral theory, an unordered multiset of eigenvalue intervals is stable through collisions.  Ordered labels require a separation certificate.  Eigenspaces are represented by approximate projectors or finite relations of bases; a normalized eigenvector requires a simple-eigenvalue gap and a sign/coordinate normalization guard.
+
+\subsection{Combinatorics and finite topology}
+
+Finite combinatorial identities are particularly well suited to \KIFCS.  Objects are bounded codes, predicates are decidable, and counting is primitive recursion.  Bijections can be supplied as mutually inverse PR maps with object-level inverse equations.  Recurrences use QF induction.
+
+Topological theorems should first be stated for finite simplicial or cubical complexes.  Chains, boundaries, parity, homology over finite coefficients, and carrier maps are finite matrix calculations.  Passage from a represented continuous space to a finite complex requires an approximation/nerve producer with explicit mesh and separation data.  The finite theorem and the approximation theorem remain distinct contracts.
+
+\subsection{Algebraic geometry and sheaf-like constructions}
+
+Use finite affine presentations, ideal-membership witnesses, localization equalities with explicit killing exponents, finite principal-open covers, and Cech tuples.  A section is local finite data plus overlap certificates.  Gluing follows \cref{thm:finite-gluing}; quotient equality is witnessed algebraically rather than decided for arbitrary represented reals.  General geometric finiteness theorems still require effective degree/height bounds before enumeration.
+
+\subsection{Classical finite arguments}
+
+A finite decidable argument may be classically discovered and then checked constructively.  The best route is certificate extraction: a classical search tool produces a finite witness, and \iPRA\ verifies it.  For theorem schemas whose conclusions are negative or stable, a negative-translation route may also apply, but it should be formalized as a separate proof translation and not assumed globally.  Disjunction and existential conclusions require explicit recoverability, normally supplied here by bounded decidability and least search.

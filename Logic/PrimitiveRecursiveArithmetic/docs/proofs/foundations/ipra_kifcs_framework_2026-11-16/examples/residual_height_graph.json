@@ -1,0 +1,20 @@
+{
+  "name": "height_bounded_enumerator",
+  "permanent": ["InputWellFormed(x)"],
+  "nodes": [
+    {"name": "input", "kind": "boundary", "parents": [], "boundaries": []},
+    {"name": "enumerate", "kind": "loop", "parents": ["input"],
+     "boundaries": [{"key": "height", "formula": "HeightBound(x,H)", "producer": "effective height theorem"}]},
+    {"name": "verify", "kind": "boolean", "parents": ["enumerate"], "boundaries": []},
+    {"name": "complete", "kind": "observer", "parents": ["verify"],
+     "boundaries": [{"key": "height", "formula": "HeightBound(x,H)", "producer": "effective height theorem"}]},
+    {"name": "sound", "kind": "observer", "parents": ["verify"], "boundaries": []},
+    {"name": "unused_label", "kind": "observer", "parents": [],
+     "boundaries": [{"key": "gap", "formula": "SeparationGap(x,g)", "producer": "root separation theorem"}]}
+  ],
+  "queries": {
+    "soundness": ["sound"],
+    "completeness": ["complete"],
+    "combined": ["sound", "complete"]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "two_node_precision_cycle",
+  "nodes": ["r0", "r1"],
+  "seed": {"r0": 1, "r1": 0},
+  "cap": {"r0": 8, "r1": 8},
+  "edges": [
+    {"provider": "r0", "consumer": "r1", "transform": "q + 1"},
+    {"provider": "r1", "consumer": "r0", "transform": "floor(q/2) + 1"}
+  ],
+  "policy": "inflationary capped iteration; overflow is explicit"
+}

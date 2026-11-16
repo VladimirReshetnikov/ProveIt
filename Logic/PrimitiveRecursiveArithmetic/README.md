@@ -63,7 +63,7 @@ Euclid's theorem, Bézout's identity, `C(2n, n) ≤ 2^{2n}` and the Catalan iden
 
 ## Proof packets
 
-[`docs/proofs/`](docs/proofs/README.md) files 107 research packets, delivered from 14 to
+[`docs/proofs/`](docs/proofs/README.md) files 108 research packets, delivered from 14 to
 16 November 2026. Each gives a human-readable proof of a classical theorem in a finitary,
 quantitative form intended for iPRA. Most add exact-arithmetic reference code and a Lean plan
 or scaffold aimed at `ConciseIPRA`.
@@ -77,7 +77,7 @@ The packets are grouped by area:
 | [`analytic-number-theory/`](docs/proofs/analytic-number-theory/) | 10 | prime number theorem, Dirichlet's theorem, the zeta functional equation |
 | [`combinatorics/`](docs/proofs/combinatorics/) | 3 | Bell numbers, Catalan numbers, Fibonacci and Lucas numbers |
 | [`diophantine-number-theory/`](docs/proofs/diophantine-number-theory/) | 12 | Pell equations, transcendence of e and π, Fermat for exponents divisible by 3, 4, 5 or 7, Siegel and Faltings analyses |
-| [`foundations/`](docs/proofs/foundations/) | 37 | cross-domain frameworks of certificates, moduli and finite contracts |
+| [`foundations/`](docs/proofs/foundations/) | 38 | cross-domain frameworks of certificates, moduli and finite contracts |
 | [`geometry/`](docs/proofs/geometry/) | 16 | isoperimetric inequality, Platonic solids, spherical trigonometry, Zariski descent, the hat monotile, the Conway criterion, pentagonal tilings |
 | [`probability/`](docs/proofs/probability/) | 4 | central limit theorems, expected value, medians, the normal distribution |
 | [`topology/`](docs/proofs/topology/) | 3 | Jordan curve theorem, invariance of dimension, observation towers |
@@ -86,7 +86,7 @@ The packets are grouped by area:
 [proofs README](docs/proofs/README.md) repeat what each packet says about itself. Many
 packets say that their Lean files are uncompiled outlines, or that they prove only part of
 what was asked; for example, the Faltings and Siegel packets do not prove the general
-theorems. Eighteen packets state that they construct derivations in `ConciseIPRA`'s `Prf PRAAx`,
+theorems. Nineteen packets state that they construct derivations in `ConciseIPRA`'s `Prf PRAAx`,
 all for framework rules and small examples:
 - `cifer_ipra_framework_2026-11-15`, in uncompiled source, for residual proof-graph
   compilation and boundary discharge by simultaneous cut;
@@ -110,6 +110,8 @@ all for framework rules and small examples:
   compilers on top of the checked bounded-search backend;
 - `ipra_kifcr_framework_2026-11-16`, in uncompiled outlines, for residual compilation
   closed by simultaneous cut;
+- `ipra_kifcs_framework_2026-11-16`, in uncompiled candidates, for the open-contract calculus
+  and a normalized trace reflection by quantifier-free induction;
 - `ipra_local_global`, for a variable-length recursion rule and an example;
 - `ipra_native_clause_framework_2026-11-15`, through the native clause calculus `KPrf` in
   uncompiled source, for list cut and export by `native_iff_pra`;

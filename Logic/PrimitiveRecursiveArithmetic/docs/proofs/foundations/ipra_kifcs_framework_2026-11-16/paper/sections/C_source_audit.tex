@@ -1,0 +1,38 @@
+\section{Source and provenance audit}
+
+\subsection{Repository snapshot}
+The primary source is Vladimir Reshetnikov's ProveIt repository at commit
+\path{7fa3ba48e8f62e8018ed954faaa48b908217eaf1}, observed on 16 November 2026.
+
+\subsection{Primary inspected paths}
+\begin{itemize}
+  \item \RepoPath{Logic/PrimitiveRecursiveArithmetic/README.md}
+  \item \RepoPath{Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md}
+  \item \RepoPath{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Deduction.lean}
+  \item \RepoPath{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}
+  \item \RepoPath{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}
+  \item \RepoPath{Logic/PrimitiveRecursiveArithmetic/Derivations/README.md}
+  \item \RepoPath{Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_kifcr_framework_2026-11-16}
+  \item \RepoPath{Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_cbip_framework_2026-11-16}
+\end{itemize}
+
+\subsection{Prior framework relationship}
+The Boolean, search, demand, trace, relational, guarded, algebra, and domain-recipe sections consolidate KIFC-R.  The normalized trace and bounded-strategy design consolidates CBIP.  The new claims of this report are the sequent-polymorphic contract interface, its exactness and substitution laws, query-minimal multi-sink composition in that interface, and the explicit coherence trichotomy.
+
+\subsection{Limitations of the audit}
+The artifact container did not contain Lean and did not perform a clean repository build.  Current API claims are based on source inspection at the pinned commit.  New Lean files are therefore not described as kernel checked.  The PDF, Python code, tests, JSON, and static source scans were executed locally and their logs are included.
+
+\subsection{References}
+\begin{thebibliography}{9}
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt}, repository revision
+\path{7fa3ba48e8f62e8018ed954faaa48b908217eaf1}, 2026.
+
+\bibitem{kifcr}
+\emph{KIFC-R: Kernel-Integrated Finitary Contracts with Residual Boundaries},
+research packet under \RepoPath{Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_kifcr_framework_2026-11-16}.
+
+\bibitem{cbip}
+\emph{Certified Bounded Interaction Programs for iPRA},
+research packet under \RepoPath{Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_cbip_framework_2026-11-16}.
+\end{thebibliography}

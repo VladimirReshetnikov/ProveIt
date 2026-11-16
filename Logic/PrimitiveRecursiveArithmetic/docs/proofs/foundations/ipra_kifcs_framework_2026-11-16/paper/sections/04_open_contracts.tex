@@ -1,0 +1,218 @@
+\section{Sequent-polymorphic contracts}\label{sec:contracts}
+
+\subsection{Definition}
+
+Fix a free-variable arity \(n\).  All formulas in this section lie in \(\Fm(\PTm,n)\).  A finite list \(A\) is read as an interface of required formulas, not as a set of semantic truths.
+
+\begin{definition}[Open contract]\label{def:contract}
+For a list \(A\) and formula \(\varphi\), define
+\[
+ \Contract(A,\varphi)
+ \;\defeq\;
+ \prod_{\Delta:\mathrm{List}(\Fm)}
+ \left(\prod_{\psi\in A}\seq{\Delta}{\psi}\right)
+ \longrightarrow \seq{\Delta}{\varphi}.
+\]
+Equivalently, in Lean-shaped notation,
+\begin{lstlisting}
+def Contract (A : List (Fm PTm n)) (phi : Fm PTm n) : Prop :=
+  forall Delta,
+    (forall psi, psi in A -> Delta |- [PRAAx] psi) ->
+    Delta |- [PRAAx] phi
+\end{lstlisting}
+\end{definition}
+The product notation is constructive: a contract is an operation that consumes derivations of its inputs and returns a derivation of its output.  It is not a claim that the formulas are true in the standard natural numbers.
+
+\subsection{Exact equivalence with an ordinary sequent}
+
+\begin{theorem}[Contract--sequent equivalence]\label{thm:contract-sequent}
+For every finite list \(A\) and formula \(\varphi\),
+\[
+                  \Contract(A,\varphi)
+                  \quad\Longleftrightarrow\quad
+                  \seq{A}{\varphi}.
+\]
+The equivalence is uniform in the free-variable arity.
+\end{theorem}
+
+\begin{proof}
+Suppose first that \(h:\seq{A}{\varphi}\).  Let \(\Delta\) be arbitrary and suppose that for every \(\psi\in A\) a derivation \(s_\psi:\seq{\Delta}{\psi}\) is supplied.  Apply simultaneous cut to \(h\) and the family \(s\).  The result is \(\seq{\Delta}{\varphi}\), hence a contract.
+
+Conversely, suppose that \(c:\Contract(A,\varphi)\).  Instantiate its universally quantified context with \(\Delta=A\).  For each \(\psi\in A\), the hypothesis constructor gives \(A\vdash\psi\).  Applying \(c\) to this family gives \(A\vdash\varphi\).
+
+Both constructions use only the existing natural-deduction rules and the derived theorem \texttt{Prf.trans}.  In particular, \(\Contract\) adds no object-level axiom and no semantic soundness principle.
+\end{proof}
+
+\begin{corollary}[Closed contracts]
+\(\Contract([],\varphi)\) is equivalent to \(\seq{[]}{\varphi}\).
+\end{corollary}
+
+\begin{corollary}[Singleton implication]
+\(\Contract([\psi],\varphi)\) is equivalent to both \([\psi]\vdash\varphi\) and \(\vdash\psi\to\varphi\).
+\end{corollary}
+
+\begin{proof}
+The first equivalence is \cref{thm:contract-sequent}.  Implication introduction and elimination give the second.
+\end{proof}
+
+\subsection{Identity, composition, and simultaneous replacement}
+
+The point of \cref{def:contract} is not to change provability but to make the admissible composition laws explicit in the type.
+
+\begin{lemma}[Identity]
+If \(\varphi\in A\), then \(\Contract(A,\varphi)\).
+\end{lemma}
+
+\begin{proof}
+Given \(\Delta\) and a supplier for every member of \(A\), apply the supplier to \(\varphi\) and its membership proof.
+\end{proof}
+
+\begin{theorem}[Simultaneous contract cut]\label{thm:contract-cut}
+Suppose
+\[
+ c:\Contract(A,\varphi),
+ \qquad
+ s_\psi:\Contract(B,\psi)\quad(\psi\in A).
+\]
+Then \(\Contract(B,\varphi)\).
+\end{theorem}
+
+\begin{proof}
+Let \(\Delta\) prove every member of \(B\).  Each \(s_\psi\) turns that family into a derivation \(\Delta\vdash\psi\).  Supplying these derivations to \(c\) yields \(\Delta\vdash\varphi\).  No induction on derivations is needed at this interface level; it has already been packaged by simultaneous cut.
+\end{proof}
+
+\begin{corollary}[Unary bind]
+If \(\Contract(A,\varphi)\) and \(\Contract(\varphi::A,\chi)\), then \(\Contract(A,\chi)\).
+\end{corollary}
+
+\begin{proof}
+Supply the distinguished premise \(\varphi\) by the first contract and every member of \(A\) by identity.
+\end{proof}
+
+\begin{corollary}[Composition of local rules]
+Let \(r_i:\Contract(A_i,\varphi_i)\) for \(i<m\), and let
+\[
+ t:\Contract(\varphi_0::\cdots::\varphi_{m-1}::B,\chi).
+\]
+Then there is a contract from \(A_0+\!+\cdots+\!+A_{m-1}+\!+B\) to \(\chi\).
+\end{corollary}
+
+\begin{proof}
+Under an arbitrary target context, restrict the supplied family to each \(A_i\), obtain every \(\varphi_i\), retain the members of \(B\), and apply \(t\).  The finite concatenation and membership injections are metalevel bookkeeping; all logical work is contract application.
+\end{proof}
+
+\subsection{Assumption variance and normalization}
+
+\begin{lemma}[Weakening the available interface]\label{lem:contract-weakening}
+If every member of \(A\) belongs to \(B\) and \(\Contract(A,\varphi)\), then \(\Contract(B,\varphi)\).
+\end{lemma}
+
+\begin{proof}
+A supplier for \(B\) restricts along the inclusion \(A\subseteq B\), after which the original contract applies.
+\end{proof}
+
+Thus the assumption list is contravariant with respect to inclusion of required inputs: more available inputs never invalidate a contract.  This justifies stable deduplication, sorting, and insertion of permanent hypotheses in generated code.
+
+\begin{proposition}[Permutation and duplicate invariance]\label{prop:contract-normalization}
+If \(A\) and \(B\) have the same members, ignoring order and multiplicity, then
+\[
+                 \Contract(A,\varphi)\quad\Longleftrightarrow\quad
+                 \Contract(B,\varphi).
+\]
+\end{proposition}
+
+\begin{proof}
+Apply \cref{lem:contract-weakening} in both directions.  The theorem does not say that Lean's list expressions are definitionally equal; it supplies the proof transformer that makes their difference irrelevant to derivability.
+\end{proof}
+
+This is the first concrete improvement over a context-fixed conditional record.  A generator may choose a deterministic normalized order for provenance without forcing every local node proof to be stated in that order.
+
+\subsection{Substitution naturality}
+
+Let \(\sigma:\mathrm{Fin}(n)\to\PTm(m)\) be a simultaneous substitution.  Write \(A[\sigma]\) for the list obtained by substituting every formula.
+
+\begin{theorem}[Contract substitution]\label{thm:contract-subst}
+If \(\Contract(A,\varphi)\), then
+\[
+                     \Contract(A[\sigma],\varphi[\sigma]).
+\]
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:contract-sequent}, obtain \(A\vdash\varphi\).  The checked substitution theorem gives \(A[\sigma]\vdash\varphi[\sigma]\).  Apply the reverse direction of \cref{thm:contract-sequent}.
+\end{proof}
+
+\begin{corollary}[Specialization]
+An open contract with parameters can be instantiated at arbitrary primitive-recursive terms without reproving the graph or trace theorem.
+\end{corollary}
+
+This is the correct way to package theorem schemas.  For example, a finite-sum contract may remain open in the summation bound, the summand parameters, and a modulus; an application later substitutes its concrete terms.
+
+\subsection{Conjunction and finite products}
+
+\begin{lemma}[Pairing conclusions]
+If \(\Contract(A,\varphi)\) and \(\Contract(A,\psi)\), then
+\(\Contract(A,\varphi\wedge\psi)\).
+\end{lemma}
+
+\begin{proof}
+Under any supplier for \(A\), apply both contracts and conjunction introduction.
+\end{proof}
+
+Iterating this lemma yields a contract for any fixed finite conjunction of sink conclusions.  Conversely, conjunction elimination yields a contract for each component.  Therefore a multi-query compiler can export either one conjunction or a list of separate contracts without changing logical strength.
+
+\subsection{Residualized contracts}
+
+\begin{definition}[Residual theorem]
+A residual theorem consists of:
+\begin{itemize}
+  \item a normalized list \(R\) of boundary formulas;
+  \item a list \(\Gamma\) of permanent hypotheses;
+  \item a conclusion \(\varphi\);
+  \item a contract \(\Contract(R+\!+\Gamma,\varphi)\);
+  \item provenance for every member of \(R\).
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Residual discharge]\label{thm:residual-discharge}
+Suppose \(c:\Contract(R+\!+\Gamma,\varphi)\).  If a context \(\Delta\) derives every member of \(R\) and every member of \(\Gamma\), then \(\Delta\vdash\varphi\).
+\end{theorem}
+
+\begin{proof}
+Combine the two supplied families by membership in the concatenation and apply \(c\).
+\end{proof}
+
+\begin{corollary}[Closure by producer contracts]
+If every \(\rho\in R\) has a producer contract \(\Contract(P_\rho,\rho)\), then the residual theorem composes to a contract from
+\[
+               \left(\mathop{+\!+}_{\rho\in R} P_\rho\right)+\!+\Gamma
+               \quad\text{to}\quad\varphi.
+\]
+\end{corollary}
+
+The producer can itself be residualized.  This yields a modular proof graph with no distinction between ``main theorem'' and ``lemma'' beyond the chosen query.
+
+\subsection{Contracts as a thin proof category}
+
+For fixed arity, regard a finite formula interface as an object.  A contract from \(A\) to each member of \(B\) is a morphism \(A\to B\).  Identity is supplied by hypotheses, and composition is simultaneous contract cut.  Associativity and unit laws hold extensionally because both sides send the same input derivations to derivations related by the same admissible cuts.  No quotient of proof terms is needed for the compiler: it only needs the operations and their types.
+
+A useful refinement is to attach a resource annotation \(r\) to a contract while leaving the proof field unchanged.  Demand composition then combines annotations, whereas logical composition remains \cref{thm:contract-cut}.  This strict separation prevents precision bookkeeping from leaking into the logic.
+
+\subsection{Why semantic implication is insufficient}
+
+A host theorem of the form
+\[
+       \forall\vec x\in\Nat^n,
+       \bigl(\bigwedge_{\psi\in A}\psi(\vec x)\bigr)\to\varphi(\vec x)
+\]
+does not by itself provide a contract.  It may use classical reasoning, unbounded choice, non-primitive recursion, or facts about the standard model unavailable in \iPRA.  A contract contains the syntactic derivation transformation.  Semantic testing remains useful for finding errors in generated terms, but it never fills the \texttt{proof} field.
+
+\subsection{Minimal trusted kernel}
+
+The contract layer reduces the generic trusted logical core to:
+\begin{enumerate}
+  \item the existing \texttt{Prf} constructors;
+  \item \texttt{Prf.trans}, \texttt{Prf.subst}, and \texttt{Prf.weaken};
+  \item finite metalevel list operations whose output is checked through the generated derivation.
+\end{enumerate}
+Everything else---graph traversal, residual normalization, strategy extraction, register allocation, demand propagation---may be implemented by ordinary code without entering the trusted base.

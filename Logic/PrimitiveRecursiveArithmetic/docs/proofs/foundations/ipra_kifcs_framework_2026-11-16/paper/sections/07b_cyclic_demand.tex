@@ -1,0 +1,115 @@
+\section{Capped cyclic demand closure}\label{sec:cyclic-demand}
+
+\subsection{Why acyclic propagation is sometimes insufficient}
+
+Most precision graphs are acyclic: the output tolerance determines tolerances of its inputs.  Some useful interfaces, however, produce mutually dependent finite resource requests.  A chart-refinement routine may ask for coefficient precision determined by a separation estimate, while the verified separation estimate itself depends on a finite coefficient precision.  A relational matching step may enlarge both the candidate horizon and the precision used to test compatibility.  These are not legitimate unbounded recursive definitions, but they can be sound when all coordinates have justified finite caps and all updates are monotone.
+
+The correct object is a least fixed point in a finite product of natural intervals.  The finite lattice is not invoked abstractly.  We compute the fixed point by a bounded primitive recursion and prove termination by an explicit integer rank.
+
+\subsection{Demand systems}
+
+Fix \(N\) coordinates.  For each \(i<N\), let \(s_i\) be the seed request and \(C_i\) a cap, with \(s_i\le C_i\).  Let \(E\) be a fixed finite edge set.  An edge \(e=(j\to i)\) carries a monotone primitive-recursive transformer \(d_e:\Nat\to\Nat\).  A raw demand vector \(r\) is closed when
+\[
+   s_i\le r_i\le C_i
+   \quad\text{and}\quad
+   d_e(r_j)\le r_i\qquad(e:j\to i).
+\]
+The caps are theorem-specific data.  They may come from a syntactic upper bound, a deliberately overprovisioned precision schedule, or a residual cap-adequacy hypothesis.
+
+Define the capped update
+\[
+ T_i(r)=\min\!\left(C_i,
+   \max\left(r_i,s_i,\max_{e:j\to i}d_e(r_j)\right)\right).
+\]
+The maximum over an empty set is zero.  Define an overflow Boolean
+\[
+  \mathsf{ov}(r)=1
+  \quad\Longleftrightarrow\quad
+  \exists e:j\to i\; d_e(r_j)>C_i.
+\]
+Both are fixed finite folds and therefore primitive recursive.
+
+Let \(r^{(0)}=s\) and \(r^{(t+1)}=T(r^{(t)})\).  Set
+\[
+  L=1+\sum_{i<N}(C_i-s_i).
+\]
+
+\begin{lemma}[Monotone inflation]\label{lem:demand-inflation}
+For every \(t\),
+\[
+  s\le r^{(t)}\le C,
+  \qquad r^{(t)}\le r^{(t+1)},
+\]
+componentwise.  The map \(T\) is monotone on the capped box.
+\end{lemma}
+
+\begin{proof}
+The seed and current coordinate occur in the maximum, so before capping the proposed value is at least both.  Since the current coordinate is at most its cap, taking the minimum with that cap cannot lower it.  This proves inflation and preservation of the lower bound.  The outer minimum proves the upper bound.  If \(r\le r'\), monotonicity of every \(d_e\), finite maximum, and minimum gives \(T(r)\le T(r')\).
+\end{proof}
+
+\begin{lemma}[Strict rank increase]\label{lem:demand-rank}
+Let
+\[
+  \rho(r)=\sum_{i<N}(r_i-s_i).
+\]
+If \(T(r)\ne r\) and \(s\le r\le C\), then \(\rho(T(r))\ge\rho(r)+1\).  Moreover \(\rho(r)\le L-1\).
+\end{lemma}
+
+\begin{proof}
+By inflation, every coordinate weakly increases.  If the vectors differ, some natural coordinate increases strictly and hence by at least one.  Summing the coordinate differences gives the first inequality.  The cap gives \(r_i-s_i\le C_i-s_i\); summing gives the second.
+\end{proof}
+
+\begin{theorem}[Finite stabilization and least capped closure]\label{thm:capped-closure}
+The vector \(r^*=r^{(L)}\) satisfies \(T(r^*)=r^*\).  It is the componentwise least fixed point of \(T\) above \(s\).  More generally, if \(u\) lies in the capped box, \(s\le u\), and \(T(u)\le u\), then \(r^*\le u\).
+\end{theorem}
+
+\begin{proof}
+Assume for contradiction that \(T(r^{(L)})\ne r^{(L)}\).  If any earlier update had already been stationary, all later iterates would be equal by determinism, contradicting the assumed final change.  Thus the first \(L+1\) updates are strict.  Repeated application of \cref{lem:demand-rank} gives \(\rho(r^{(L+1)})\ge L+1\), while the cap gives \(\rho(r^{(L+1)})\le L-1\), impossible.  Hence \(r^*\) is fixed.
+
+For leastness, prove by induction on \(t\) that \(r^{(t)}\le u\).  The seed case is assumed.  If \(r^{(t)}\le u\), monotonicity gives
+\[
+  r^{(t+1)}=T(r^{(t)})\le T(u)\le u.
+\]
+At \(t=L\) this yields \(r^*\le u\).  A fixed point above the seed is a special case of a pre-fixed point.
+\end{proof}
+
+\begin{corollary}[Raw demand adequacy]\label{cor:raw-demand-adequacy}
+If \(\mathsf{ov}(r^*)=0\), then \(r^*\) satisfies every uncapped edge inequality \(d_e(r^*_j)\le r^*_i\) and is least among all raw closed vectors in the capped box.
+\end{corollary}
+
+\begin{proof}
+No overflow means every edge demand is at most the receiving cap.  At a fixed point, the capped maximum equals the current coordinate.  Since no demanded value was truncated by the cap, each raw demand is at most that coordinate.  Any raw closed vector is a pre-fixed point of \(T\), so leastness follows from \cref{thm:capped-closure}.
+\end{proof}
+
+\subsection{Overflow as a residual or a diagnostic}
+
+The compiler must not silently interpret saturation as success.  It has two admissible policies.
+\begin{enumerate}[label=(\arabic*)]
+  \item \emph{Static cap proof.}  Prove in the object theory that every edge transformer maps the relevant source cap below the target cap.  By monotonicity, overflow is impossible throughout the iteration.
+  \item \emph{Dynamic boundary.}  Compute \(r^*\), retain the formula \(\mathsf{ov}(r^*)=0\) as a residual boundary, and compile the downstream theorem conditionally on it.
+\end{enumerate}
+A failed finite test may suggest a larger cap, but only an object-level cap proof or retained boundary justifies the final theorem.
+
+\subsection{Object-theory realization}
+
+For a fixed \(N\) and edge set, encode the vector in a fixed nested pair or a bounded table.  Generate primitive-recursive symbols for lookup, update, the finite maxima, \(T\), overflow, rank, and the \(L\)-step iteration.  The main invariant contains only equations and order predicates already represented by QF formulas:
+\[
+ \Inv(t):
+ s\le r^{(t)}\le C\;\wedge\;
+ r^{(t)}\le r^{(t+1)}\;\wedge\;
+ \rho(r^{(t)})\le L-1.
+\]
+The base and successor cases use the defining equations of the generated folds and the checked order/semiring library.  Stabilization can be formalized in either of two ways.
+\begin{itemize}
+  \item Prove the rank-increase implication and use QF induction to show that \(L\) strict updates contradict the rank cap.
+  \item Add a Boolean \(\mathsf{changed}\) flag and a counter of strict updates to the packed trace; once unchanged, freeze the state.  The QF invariant directly shows the counter is bounded by \(L-1\), so the state is frozen by time \(L\).
+\end{itemize}
+The second form is usually easier for generated proofs because every fact is local to one transition.
+
+\subsection{Changing-parameter recursion}
+
+Some cycles are only apparent because a later phase changes a parameter.  For example, a horizon \(h\) may grow while precision \(q(h)\) is recomputed.  The framework first chooses a single finite terminal cap \(H\), then treats \((h,q)\) as coordinates of the same capped closure.  This avoids induction hypotheses that quantify over all future horizons.  If no finite \(H\) is known, the theorem is not a finite-use result and the missing horizon producer must be made residual.
+
+\subsection{Commutation with proof compilation}
+
+Demand closure is computed before term generation and forward proof scheduling.  The closed vector is substituted into every node's local contract.  Thus resource closure and proof compilation commute in the following precise sense: compiling with the least closed vector yields the same terminal formula as compiling with any larger adequate vector, except that the latter contains unused precision.  Monotonicity lemmas transport observations from the larger requests down to the requested tolerance.  The least vector is preferred for proof size and executable cost, not for logical strength.
