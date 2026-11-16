@@ -167,7 +167,7 @@ incremental replay of `PA194Leibniz` against those objects passed with four axio
 reports and no `sorryAx`. The dispatcher, source theory and other listed overlays
 were prebuilt; these checks do not rebuild the full transitive dependency closure.
 The first replay used the preceding six-module version of `check-incremental.sh`;
-the current eleven-module script has not been run as a whole. To replay the later
+the current fourteen-module script has not been run as a whole. To replay the later
 module alone against the same checked staged dependencies:
 
 ```sh
@@ -207,4 +207,16 @@ fresh output directory:
 
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-name-forms.sh "$PWD" NEW_EMPTY_OUTPUT
+```
+
+A separate repository-source replay of `PA194NameSchema`, `PA194NameSemantics`
+and `PA194NameFactsProof` passed their eight, nine and fifteen axiom audits
+without `sorryAx`. It retains the independently replayed schematic/name-form
+objects and other prebuilt dependencies; it does not rebuild their full transitive
+closure. The result derives the naming fields from the twelve explicit
+`SourceFacts` and variable-name existence, which remain assumptions of the
+generic theorem. Reproduce with a fresh output directory:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-name-facts.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
