@@ -79,3 +79,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Siegel.siegel_nonneg
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Siegel.siegel_nonpos
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Siegel.power_gap
+#print axioms LeanProofs.IPRA.half_par
+#print axioms LeanProofs.IPRA.even_ne_odd
+#print axioms LeanProofs.IPRA.sum_zero_elim
+#print axioms LeanProofs.IPRA.sum_zero_of_all
+#print axioms LeanProofs.IPRA.Algebra.CubeRootTwo.double_cancel
+#print axioms LeanProofs.IPRA.Algebra.CubeRootTwo.descent_open
+#print axioms LeanProofs.IPRA.Algebra.CubeRootTwo.no_rational_cube_root_of_two

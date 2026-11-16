@@ -10,7 +10,10 @@ import IPRADerivations.Core.Monus
 import IPRADerivations.Core.Order
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.Powers
+import IPRADerivations.Core.Parity
+import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Algebra.CayleyHamilton
+import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.DiophantineNumberTheory.Identities
