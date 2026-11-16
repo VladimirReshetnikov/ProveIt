@@ -475,16 +475,22 @@ internal refutation of arithmetic. The literal machine and modeled scheduler agr
 model-level proof above.
 
 Most of the other delivered candidates change the source program, so the arithmetic half
-above does not apply to them unchanged. The first case treated is the controller of PA194N,
-whose successful modus ponens does not push a zero.
+above does not apply to them unchanged. The first change treated is the command controller.
+The packets describe four: the primary one; PA194N, whose successful modus ponens does not
+push a zero; PA194C and PA194CS, which return the result of modus ponens in the cache and
+halt a SHIFT on `h = 1`; and PA194H and PA194HS, which combine the no-push modus ponens with
+that halting test.
 [`pa194-command-controllers`](pa194-work/pa194-command-controllers/README.md) restates the
-command-word theory of `pa194-model-fairness` with that choice as a parameter, and
-[`pa194n-scheduler`](pa194-work/pa194n-scheduler/README.md) defines the scheduler with the
-no-push modus ponens and proves that, in every candidate-PRA model whose arithmetic reduct
-satisfies `𝗜𝚺₁`, it halts exactly when the numerical calculus proves the contradiction code,
-hence exactly when the modeled scheduler of the primary table halts. This is a statement
-about a scheduler defined at the level of commands; it is not connected with the literal
-PA194N table or its source program.
+command-word theory of `pa194-model-fairness` with the controller as a parameter, and
+[`pa194-controller-schedulers`](pa194-work/pa194-controller-schedulers/README.md) defines a
+scheduler for each controller by PRA codes and proves that, in every candidate-PRA model
+whose arithmetic reduct satisfies `𝗜𝚺₁`, it halts exactly when the numerical calculus proves
+the contradiction code, hence exactly when the modeled scheduler of the primary table halts
+and exactly when arithmetic has an internal refutation; the corresponding equivalence with
+the consistency sentence is derived in iPRA. These are statements about schedulers defined
+at the level of commands. They are not connected with the literal tables or their source
+programs, and they do not cover the candidates that also change the axiom emitter, the AX
+command or the coding of formulas.
 
 [`isigma1-machine`](shared/isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation

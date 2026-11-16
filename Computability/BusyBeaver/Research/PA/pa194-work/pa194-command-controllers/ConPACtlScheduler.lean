@@ -159,9 +159,10 @@ def sstep (x : V) : V :=
       ⟪(if l = 0 then n + 1 else n), nextL (seed n l), S.cstep (cmd (seed n l)) σ⟫ := by
   simp [sstep]
 
-/-- The step at `x` is a SHIFT that finds `t + h = 1`. -/
+/-- The step at `x` is a SHIFT whose halting test succeeds. -/
 def shalt (x : V) : Prop :=
-  first (seed (π₁ x) (π₁ (π₂ x))) = 0 ∧ π₁ (π₂ (π₂ x)) + π₂ (π₂ (π₂ (π₂ (π₂ x)))) = 1
+  first (seed (π₁ x) (π₁ (π₂ x))) = 0 ∧
+    S.Halts (π₁ (π₂ (π₂ x))) (π₂ (π₂ (π₂ (π₂ (π₂ x)))))
 
 /-- The state `x` continues at the seed `p - 1`. -/
 def PtIs (x p : V) : Prop :=
@@ -191,7 +192,8 @@ lemma tstep_store (c σ δ : V) (hf : flg(tstep S c ⟪σ, δ, 0⟫) = 0) :
   split_ifs at hf ⊢ <;> simp_all
 
 lemma tstep_halt (c σ δ : V) (hf : flg(tstep S c ⟪σ, δ, 0⟫) = 1) :
-    π₁ c = 0 ∧ π₁ σ + π₂ (π₂ (π₂ σ)) = 1 := by
+    π₁ c = 0 ∧ S.Halts (π₁ σ) (π₂ (π₂ (π₂ σ))) := by
+  unfold Sem.Halts
   unfold tstep at hf
   simp only [pi₁_pair, pi₂_pair, if_true] at hf
   split_ifs at hf with h0 hh <;> simp_all
@@ -207,7 +209,7 @@ lemma inv_step_pure (c q' n l σ δ : V) (hq' : q' ≠ 0) (hp : PtIs ⟪n, l, σ
   · simp
 
 lemma halt_step_pure (c q' n l σ δ : V) (hp : PtIs ⟪n, l, σ⟫ (encC c q' + 1))
-    (hf1 : flg(tstep S c ⟪σ, δ, 0⟫) = 1) : shalt ⟪n, l, σ⟫ := by
+    (hf1 : flg(tstep S c ⟪σ, δ, 0⟫) = 1) : shalt S ⟪n, l, σ⟫ := by
   have hs := seed_of_ptIs hp
   obtain ⟨h0, h1⟩ := tstep_halt S c σ δ hf1
   refine ⟨?_, ?_⟩
@@ -287,7 +289,7 @@ theorem run_inv (W q σ₀ δ₀ x₀ : V) (hq : q ≠ 0) (hpt : PtIs x₀ (ptr 
 /-- If the tracked run of `W` halts, the scheduler meets a halting SHIFT. -/
 theorem word_halts (W q σ₀ x₀ : V) (hq : q ≠ 0) (hpt : PtIs x₀ (ptr W q (len W)))
     (hst : π₂ (π₂ x₀) = σ₀) (hfin : flg(texec S W ⟪σ₀, 0, 0⟫) = 1) :
-    ∃ j, shalt (R.run j x₀) := by
+    ∃ j, shalt S (R.run j x₀) := by
   have hsw : ∀ j, len W < j ∨ flg(texec S (takeLast W j) ⟪σ₀, 0, 0⟫) = 0 ∨
       1 < flg(texec S (takeLast W j) ⟪σ₀, 0, 0⟫) ∨
       ∃ i < j, flg(texec S (takeLast W i) ⟪σ₀, 0, 0⟫) = 0 ∧

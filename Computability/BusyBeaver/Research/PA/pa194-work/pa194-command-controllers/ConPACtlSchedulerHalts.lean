@@ -85,27 +85,43 @@ lemma reach (x₀ : V) (h0 : π₁ (π₂ x₀) = 0) (m : V) :
       exact hil
 
 variable (S) in
-lemma tail_halts {W : V} (hW : Good S W 1) (v δ : V) :
-    flg(tstep S SH (texec S W ⟪⟪0, v, 0, 0⟫, δ, 0⟫)) = 1 := by
-  rcases good_run S hW v δ with (hh | he)
-  · rw [tstep_of_flag S SH _ (by rw [hh]; simp)]
-    exact hh
-  · rw [he, tstep_SH_halt S 1 0 v 0 δ (by simp)]
+/-- The word that tests whether the top is the contradiction code `1`. With the halting test
+`t + h = 1` it is one SHIFT. With the test `h = 1` it is POP, whose last SHIFT has the top in
+the cache. -/
+def TEST : V := if S.cacheTest then POP else snoc 0 SH
+
+variable (S) in
+lemma test_halts (v δ : V) : flg(texec S (TEST S) ⟪⟪1, v, 0, 0⟫, δ, 0⟫) = 1 := by
+  unfold TEST
+  cases hc : S.cacheTest
+  · simp only [Bool.false_eq_true, if_false]
+    rw [texec_snoc, texec_nil,
+      tstep_SH_halt S 1 0 v 0 δ (by unfold Sem.Halts Sem.k; simp [hc])]
     simp
+  · simp only [if_true]
+    exact pop_halt S hc v 0 0 δ
+
+variable (S) in
+lemma tail_halts {W : V} (hW : Good S W 1) (v δ : V) :
+    flg(texec S (TEST S) (texec S W ⟪⟪0, v, 0, 0⟫, δ, 0⟫)) = 1 := by
+  rcases good_run S hW v δ with (hh | he)
+  · exact halted_exec S _ _ hh
+  · rw [he]
+    exact test_halts S v δ
 
 variable (S) in
 /-- Reset by an AX, clear the top, compute `1`, test it. -/
 lemma final_word_halts {W : V} (hW : Good S W 1) (σ : V) :
-    flg(texec S (snoc ((snoc 0 (AX 0 0 0) ⧺ DISCARD) ⧺ W) SH) ⟪σ, 0, 0⟫) = 1 := by
+    flg(texec S (((snoc 0 (AX 0 0 0) ⧺ DISCARD) ⧺ W) ⧺ TEST S) ⟪σ, 0, 0⟫) = 1 := by
   obtain ⟨t, w, d, h, rfl⟩ : ∃ t w d h : V, σ = ⟪t, w, d, h⟫ :=
     ⟨π₁ σ, π₁ (π₂ σ), π₁ (π₂ (π₂ σ)), π₂ (π₂ (π₂ σ)), by simp⟩
-  rw [texec_snoc, texec_seqApp, texec_seqApp, texec_snoc, texec_nil, tstep_AX, discard_run]
+  rw [texec_seqApp, texec_seqApp, texec_seqApp, texec_snoc, texec_nil, tstep_AX, discard_run]
   exact tail_halts S hW _ _
 
 /-- **If some word computes the formula `1`, the scheduler halts.** -/
-theorem derivation_halts (σ : V) (h1 : G S 1) : ∃ k, shalt (R.run k ⟪2, 0, σ⟫) := by
+theorem derivation_halts (σ : V) (h1 : G S 1) : ∃ k, shalt S (R.run k ⟪2, 0, σ⟫) := by
   obtain ⟨W, hW⟩ := h1
-  obtain ⟨Wf, hWf⟩ : ∃ Wf : V, Wf = snoc ((snoc 0 (AX 0 0 0) ⧺ DISCARD) ⧺ W) SH := ⟨_, rfl⟩
+  obtain ⟨Wf, hWf⟩ : ∃ Wf : V, Wf = ((snoc 0 (AX 0 0 0) ⧺ DISCARD) ⧺ W) ⧺ TEST S := ⟨_, rfl⟩
   have hc3 : (3 : V) ≤ ptr Wf 3 (len Wf) := le_ptr Wf 3 (len Wf)
   obtain ⟨m, hm⟩ : ∃ m : V, ptr Wf 3 (len Wf) = m + 3 :=
     ⟨ptr Wf 3 (len Wf) - 3, (sub_add_self_of_le hc3).symm⟩

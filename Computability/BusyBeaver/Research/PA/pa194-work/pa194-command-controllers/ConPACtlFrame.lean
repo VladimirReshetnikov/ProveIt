@@ -30,21 +30,24 @@ lemma tstep_of_flag (c τ : V) (hf : π₂ (π₂ τ) ≠ 0) : tstep S c τ = τ
 lemma tstep_final (c σ δ f : V) (hf : f ≠ 0) : tstep S c ⟪σ, δ, f⟫ = ⟪σ, δ, f⟫ :=
   tstep_of_flag S c _ (by simpa using hf)
 
-lemma tstep_shift_halt (y x t w d h δ : V) (hh : t + h = 1) :
+lemma tstep_shift_halt (y x t w d h δ : V) (hh : S.Halts t h) :
     tstep S ⟪0, y, x⟫ ⟪⟪t, w, d, h⟫, δ, 0⟫ = ⟪⟪t, w, d, h⟫, δ, 1⟫ := by
+  unfold Sem.Halts at hh
   simp [tstep, hh]
 
-lemma tstep_shift_under (y x t w d h : V) (hh : t + h ≠ 1) :
+lemma tstep_shift_under (y x t w d h : V) (hh : ¬S.Halts t h) :
     tstep S ⟪0, y, x⟫ ⟪⟪t, w, d, h⟫, 0, 0⟫ = ⟪⟪t, w, d, h⟫, 0, 2⟫ := by
+  unfold Sem.Halts at hh
   simp [tstep, hh]
 
-lemma tstep_shift (y x t w d h δ : V) (hh : t + h ≠ 1) :
+lemma tstep_shift (y x t w d h δ : V) (hh : ¬S.Halts t h) :
     tstep S ⟪0, y, x⟫ ⟪⟪t, w, d, h⟫, δ + 1, 0⟫ = ⟪⟪h, second w, d, first w⟫, δ, 0⟫ := by
+  unfold Sem.Halts at hh
   simp [tstep, hh, S.shift_eq]
 
 lemma tstep_mp_yes (y x t w d h δ : V) (hm : 4 * cantor t (d + y) = h) :
-    tstep S ⟪1, y, x⟫ ⟪⟪t, w, d, h⟫, δ, 0⟫ = ⟪⟪d + y, S.mpW w, d + y, 0⟫, δ + (S.up : V), 0⟫ := by
-  simp [tstep, hm, S.mp_eq, Sem.mpW]
+    tstep S ⟪1, y, x⟫ ⟪⟪t, w, d, h⟫, δ, 0⟫ = ⟪mpStore S.mp (d + y) w, δ + (S.up : V), 0⟫ := by
+  simp [tstep, hm, S.mp_eq]
 
 lemma tstep_mp_no (y x t w d h δ : V) (hm : 4 * cantor t (d + y) ≠ h) :
     tstep S ⟪1, y, x⟫ ⟪⟪t, w, d, h⟫, δ, 0⟫ = ⟪⟪0, w, d + y, 0⟫, δ, 0⟫ := by
@@ -109,13 +112,6 @@ lemma sameTop_stack10 {δ u v v₀ : V} (f : ℕ → V) (g t : V) (h : SameTop �
   exact sameTop_push _ (sameTop_push _ (sameTop_push _ (sameTop_push _ (sameTop_push _
     (sameTop_push _ (sameTop_push _ (sameTop_push _ (sameTop_push _ (sameTop_push _ h)))))))))
 
-/-- The stack effect of a successful MP, with or without its push, respects the base. -/
-lemma sameTop_mp {δ u v v₀ : V} (h : SameTop δ u v v₀) :
-    SameTop (δ + (S.up : V)) (S.mpW u) (S.mpW v) v₀ := by
-  unfold Sem.up Sem.mpW
-  cases S.push
-  · simpa using h
-  · simpa using sameTop_push 0 h
 
 /-- `B` is `A` on the base `v₀` at the additional height `δ₀`. -/
 def Follows (δ₀ v₀ A B : V) : Prop :=
@@ -140,6 +136,20 @@ lemma follows_iff {δ₀ v₀ t u d h δ f B : V} :
   · rintro ⟨v, rfl, hs⟩
     exact follows_mk hs
 
+/-- The store after a successful MP, of any of the three kinds, respects the base. -/
+lemma follows_mp {δ₀ v₀ δ u v : V} (b : V) (hs : SameTop δ u v v₀) :
+    Follows δ₀ v₀ ⟪mpStore S.mp b u, δ + (S.up : V), 0⟫
+      ⟪mpStore S.mp b v, δ₀ + (δ + (S.up : V)), 0⟫ := by
+  unfold Sem.up mpStore
+  cases S.mp
+  · have h := follows_mk (δ₀ := δ₀) (t := b) (d := b) (h := (0 : V)) (f := (0 : V))
+      (sameTop_push 0 hs)
+    simpa using h
+  · have h := follows_mk (δ₀ := δ₀) (t := b) (d := b) (h := (0 : V)) (f := (0 : V)) hs
+    simpa using h
+  · have h := follows_mk (δ₀ := δ₀) (t := (0 : V)) (d := (0 : V)) (h := b) (f := (0 : V)) hs
+    simpa using h
+
 lemma follows_step {δ₀ v₀ A B : V} (c : V) (hf : flg(tstep S c A) ≠ 2)
     (hF : Follows δ₀ v₀ A B) : Follows δ₀ v₀ (tstep S c A) (tstep S c B) := by
   obtain ⟨t, u, d, h, δ, f, rfl⟩ : ∃ t u d h δ f : V, A = ⟪⟪t, u, d, h⟫, δ, f⟫ :=
@@ -152,7 +162,7 @@ lemma follows_step {δ₀ v₀ A B : V} (c : V) (hf : flg(tstep S c A) ≠ 2)
     generalize π₂ (π₂ c) = x at hf ⊢
     rcases zero_or_succ (π₁ c) with (h0 | ⟨a, ha⟩)
     · rw [h0] at hf ⊢
-      by_cases hh : t + h = 1
+      by_cases hh : S.Halts t h
       · rw [tstep_shift_halt S y x t u d h δ hh, tstep_shift_halt S y x t v d h (δ₀ + δ) hh]
         exact follows_mk hs
       · rcases zero_or_succ δ with (rfl | ⟨δ', rfl⟩)
@@ -167,7 +177,7 @@ lemma follows_step {δ₀ v₀ A B : V} (c : V) (hf : flg(tstep S c A) ≠ 2)
         rw [h1] at hf ⊢
         by_cases hm : 4 * cantor t (d + y) = h
         · rw [tstep_mp_yes S y x t u d h δ hm, tstep_mp_yes S y x t v d h (δ₀ + δ) hm, add_assoc]
-          exact follows_mk (sameTop_mp S hs)
+          exact follows_mp S (d + y) hs
         · rw [tstep_mp_no S y x t u d h δ hm, tstep_mp_no S y x t v d h (δ₀ + δ) hm]
           exact follows_mk hs
       · rw [ha] at hf ⊢
