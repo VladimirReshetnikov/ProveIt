@@ -35,6 +35,7 @@ import IPRADerivations.DiophantineNumberTheory.Recurrences
 import IPRADerivations.DiophantineNumberTheory.Siegel
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
+import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Geometry.EulerRodrigues
 import IPRADerivations.Geometry.Morley
 import IPRADerivations.Geometry.PlatonicSolids
