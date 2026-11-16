@@ -1,0 +1,126 @@
+\section{Algebraic branches, root clusters, and exact-choice barriers}
+\label{sec:algebraic}
+
+\subsection{Three distinct input regimes}
+
+Statements about polynomial roots must distinguish three representations.
+
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Exact finite coefficients.}  Integer, rational, or exact algebraic codes provide decidable equality, coefficient normalization, and finite splitting data.  Exact factorization and Newton polygon algorithms can be expressed as bounded certificate computations.
+\item \textbf{Regular coefficients with separation data.}  Coefficients are Cauchy names, but the input includes a positive discriminant, derivative, or root-separation witness.  A local exact branch can be named because the selected stratum is quantitatively stable.
+\item \textbf{Arbitrary Cauchy coefficients.}  Equality and collisions are not decidable.  A global exact branch labeling is generally discontinuous.  The correct uniform outputs are residual approximations, finite root clusters, multisets, or branch-invariant observations.
+\end{enumerate}
+
+Conflating these regimes is a frequent source of overstated constructive claims.
+
+\subsection{Simple-root branches}
+
+Let $P(x,y)$ be a polynomial whose coefficients have regular names.  Suppose the input supplies a center $(x_0,y_0)$, a radius box $B$, a residual bound
+\[
+  \abs{P(x_0,y_0)}\le\eta,
+\]
+a derivative gap
+\[
+  \abs{\partial_yP(x_0,y_0)}\ge\gamma>0,
+\]
+and finite Lipschitz bounds ensuring that the Newton or contraction map preserves $B$ and has contraction ratio $q<1$.
+
+\begin{theorem}[Certified regular branch]
+\label{thm:regular-branch}
+From the preceding finite certificate there is a primitive-recursive evaluator for a local branch $y(x)$ on a rational sub-box, with an explicit convergence radius and precision transformer.  iPRA proves each requested residual and uniqueness observation by a finite contraction trace.
+\end{theorem}
+
+\begin{proof}
+At requested precision $k$, choose the number of contraction steps $N$ so that $q^N R\le2^{-k-c}$.  A bounded doubling/search computation finds such $N$ from the rational certificate.  Evaluate $N$ iterates with input coefficient precision determined by the error-DAG of \Cref{thm:error-dag}.  The invariant states that the current iterate stays in $B$, its distance to any fixed point is at most $q^nR$ plus the accumulated coefficient error, and every denominator guard holds.  This invariant is a Boolean conjunction of rational inequalities.  Quantifier-free induction verifies the trace.  The contraction estimate gives the output observation.  Uniqueness follows from
+\[
+ d(y_1,y_2)=d(Ty_1,Ty_2)\le qd(y_1,y_2),
+\]
+so $(1-q)d(y_1,y_2)\le0$, an exact rational inequality.
+\end{proof}
+
+The theorem does not discover a regular chart from arbitrary singular input.  Chart discovery is a separate relational or exact-algebraic problem.
+
+\subsection{Finite root clusters}
+
+For an integer or rational polynomial $f$, a \emph{root-cluster certificate} at precision $k$ consists of finitely many rational boxes/disks $D_j$, multiplicities $m_j$, and a finite verification trace proving:
+\begin{enumerate}[label=(\alph*)]
+\item the regions are pairwise separated by a rational gap;
+\item each boundary is root-free according to a chosen exact certificate, such as a Sturm count in the real case or an argument/Rouch\'e certificate in a complex rational setting;
+\item $D_j$ contains exactly $m_j$ roots counting multiplicity;
+\item the sum of multiplicities is $\deg f$;
+\item the diameters satisfy the requested bound.
+\end{enumerate}
+For Cauchy coefficients, replace exact root counts by robust certificates whose margins dominate coefficient uncertainty.
+
+\begin{theorem}[Cluster refinement as a relational producer]
+\label{thm:cluster-refine}
+Assume a finite cluster certificate at level $k$.  A bounded subdivision procedure produces a finite relation of valid level-$k+1$ refinements.  Any bounded consumer of root data can be composed with this relation by \Cref{thm:finite-use-compose}.  No global ordering of roots is required.
+\end{theorem}
+
+\begin{proof}
+Subdivide each rational region into a fixed finite family of children.  Enumerate bounded assignments of multiplicities to children and retain those passing the local count, separation, and coverage checks.  The candidate bound is primitive recursive in the number of children and degree.  The local relation verifies that child multiplicities sum to the parent multiplicity and that each child certificate is sound.  A valid exact or robust subdivision theorem establishes initial viability.  The finite-use composition theorem then supplies exactly the refinement transcript demanded by the consumer.
+\end{proof}
+
+The theorem factors the problem cleanly: the generic framework verifies and composes refinements; a domain-specific theorem must prove that an admissible refinement exists.
+
+\subsection{Symmetric and quotient outputs}
+
+Let a consumer take approximate roots $z_1,\ldots,z_d$ but produce a polynomial symmetric in them, a factor product, a power sum, or a multiset predicate.  Different cluster refinements may permute or merge labels, yet the final observation is invariant.
+
+\begin{corollary}[Unordered-root elimination]
+\label{cor:unordered-root}
+If the consumer output is invariant under every permutation and under every relabeling allowed by the cluster compatibility relation, then the least-viable transcript produces the same final output as any admissible root labeling.  The theorem can be stated without a root-ordering function.
+\end{corollary}
+
+\begin{proof}
+Take $E$ in \Cref{thm:branch-invariant} to be coded equality of the invariant output.  The algebraic symmetry proof supplies observational confluence.
+\end{proof}
+
+This is especially useful for Vieta identities, resultants, discriminants, characteristic polynomials, spectral projectors for separated clusters, and products over all roots.
+
+\subsection{The Puiseux boundary}
+
+Consider
+\[
+  P_a(X,Y)=Y^2-X^2-a
+\]
+with a nonnegative represented real $a$.  A uniform operation returning a ramification index and individually accessible exact Puiseux coefficients would reveal whether $a=0$: at the operation's own relevant coefficient index, the branch behavior differs by a fixed positive amount between $a=0$ and $a>0$.  A primitive-recursive Cauchy family may encode nonhalting as $a=0$ and halting as $a>0$.  Hence such an exact selector would decide the encoded halting problem.
+
+\begin{warning}[Exact Puiseux coefficients from arbitrary names]
+\label{warn:puiseux}
+The relational framework does not, and cannot by finite bookkeeping alone, turn arbitrary Cauchy coefficients into a uniformly named exact Puiseux expansion.  Exact algebraic coefficients, a certified stratum, or additional splitting/separation data are required for that conclusion.
+\end{warning}
+
+What can be recovered uniformly is weaker but often sufficient:
+\begin{itemize}
+\item for each finite $(X,Y)$ precision, a finite list of approximate solution germs with residual bounds;
+\item cluster multiplicities and branch-invariant polynomial data;
+\item exact local series on a supplied simple-root chart;
+\item finite truncations under exact algebraic Newton-polygon certificates.
+\end{itemize}
+
+\subsection{A worked relational repair for a singular quadratic family}
+
+Fix rational samples $A(n)$ of $a\ge0$ with error at most $2^{-n}$.  At output precision $k$, select a rational grid for coefficients of a truncated polynomial $y(t)=\sum_{j\le N}c_jt^j$.  A candidate is locally valid when interval arithmetic proves
+\[
+  \norm{y(t)^2-t^2-A(n)}_{\le N}\le2^{-k}
+\]
+coefficientwise, with enough slack to dominate the coefficient-name error.  Compatibility between levels means that overlapping coefficients differ by the sum of their error radii.  The candidate set is finite, and a certificate producer may show nonemptiness by interval subdivision.
+
+A consumer that only asks for the residual, for the square $y^2$, or for a symmetric union of branches is branch invariant and therefore composes.  A consumer asking for ``the coefficient that distinguishes $a=0$ from $a>0$'' is intentionally not branch invariant and cannot be justified without stronger input.
+
+\subsection{Factorization and degree-uniformity}
+
+For each fixed coefficient evaluator and input degree $d$, complete approximate factorization may be implemented by a bounded descent on a finite coefficient grid.  Degree-uniformity means that $d$ is an ordinary numerical input to one fixed primitive-recursive evaluator; it does not mean evaluating arbitrary encoded programs.  The trace invariant records:
+\begin{enumerate}[label=(\roman*)]
+\item the current residual polynomial;
+\item the product of extracted factors;
+\item a coefficientwise telescoping error bound;
+\item a strictly decreasing degree/energy measure;
+\item all separation and deflation guards used so far.
+\end{enumerate}
+Relational clusters permit the factor order to remain arbitrary.  The final product identity is permutation invariant, so \Cref{cor:unordered-root} erases the internal choices.
+
+\subsection{Abel--Ruffini and impossibility statements}
+
+Negative algebraic theorems are often easier to internalize because their finite core is exact: finite groups, explicit resolvent identities, degree arguments, and bounded straightedge-and-compass towers.  The framework contribution is not to reprove these theorems automatically but to make their induction discipline explicit.  A certificate contains the finite field/tower/group data; a checker verifies each algebraic identity; the final contradiction is a quantifier-free arithmetic conclusion.  Any transcendental input, such as $\pi$ in squaring the circle, still needs an explicit apartness/transcendence bound rather than a purely qualitative nonalgebraicity assertion.

@@ -239,7 +239,9 @@ files, and four `lean/upstream_inspected/` files that are byte-identical to Conc
 sources. `ipra_stable_observables.zip` was placed the same way, under `algebra/`, and then
 deleted. It leaves out one ignored `.log` file, and three `lean/ConciseIPRA/` files that are
 byte-identical to the `lean/upstream/` copies in
-`foundations/ipra_coherent_methods_2026-11-15`.
+`foundations/ipra_coherent_methods_2026-11-15`. `ipra_finite_use_framework_2026-11-15.zip`
+was placed the same way, under `foundations/`, and then deleted. All 37 of its members are
+placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

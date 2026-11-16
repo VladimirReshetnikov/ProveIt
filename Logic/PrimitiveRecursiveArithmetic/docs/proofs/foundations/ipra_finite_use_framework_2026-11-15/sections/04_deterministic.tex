@@ -1,0 +1,108 @@
+\section{Deterministic finite traces}
+\label{sec:deterministic}
+
+\subsection{Trace systems}
+
+A deterministic finite trace system is a tuple of fixed primitive-recursive functions
+\[
+\begin{array}{lll}
+  \Good(u)\in\B, & \mathsf{init}(u), & \mathsf{bound}(u),\\
+  \mathsf{step}(u,i,s), & \Inv(u,i,s)\in\B, & \Accept(u,s)\in\B.
+\end{array}
+\]
+All theorem parameters, the requested output precision, and all finite external certificates are paired into $u$.  Define
+\[
+\Run(u,0)=\mathsf{init}(u),\qquad
+\Run(u,i+1)=\mathsf{step}(u,i,\Run(u,i)).
+\]
+The local obligations are
+\begin{align}
+ \Good(u)=1&\to \Inv(u,0,\mathsf{init}(u))=1, \tag{D0}\label{eq:D0}\\
+ \Good(u)=1\wedge \Inv(u,i,s)=1&\to
+   \Inv(u,i+1,\mathsf{step}(u,i,s))=1, \tag{D1}\label{eq:D1}\\
+ \Good(u)=1\wedge \Inv(u,\mathsf{bound}(u),s)=1&\to
+   \Accept(u,s)=1. \tag{D2}\label{eq:D2}
+\end{align}
+Each formula is quantifier free after Boolean compilation.
+
+\begin{theorem}[Deterministic trace reflection]
+\label{thm:det-trace}
+If iPRA proves \eqref{eq:D0}--\eqref{eq:D2}, then it proves
+\[
+ \forall u\;\bigl(\Good(u)=1\to
+ \Accept(u,\Run(u,\mathsf{bound}(u)))=1\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Keep $u$ free and apply quantifier-free induction to
+\[
+ A(i)\;\equiv\;\Good(u)=1\to\Inv(u,i,\Run(u,i))=1.
+\]
+For $i=0$, rewrite the defining equation for $\Run$ and use \eqref{eq:D0}.  For the successor step, assume $A(i)$ and $\Good(u)=1$.  Modus ponens gives the invariant for $\Run(u,i)$; instantiate \eqref{eq:D1} at $s=\Run(u,i)$; then rewrite $\Run(u,i+1)$ by its defining equation.  Specialize the resulting universal formula at $\mathsf{bound}(u)$ and use \eqref{eq:D2}.  Finally introduce $u$ universally.
+\end{proof}
+
+The theorem is deliberately a proof-composition result, not a completeness theorem.  It does not prove \eqref{eq:D0}--\eqref{eq:D2}.  Those are precisely the theorem-specific arithmetic obligations.
+
+\subsection{Trace certificates}
+
+An external producer may return an encoded list $c=(s_0,\ldots,s_B)$.  A fixed Boolean checker $\mathsf{TraceOK}(u,c)$ verifies
+\[
+\begin{gathered}
+B=\mathsf{bound}(u),\qquad s_0=\mathsf{init}(u),\\
+s_{i+1}=\mathsf{step}(u,i,s_i)\quad(i<B),\qquad
+\Inv(u,i,s_i)=1\quad(i\le B),\\
+\Accept(u,s_B)=1.
+\end{gathered}
+\]
+All bounded conjunctions are Boolean folds.
+
+\begin{proposition}[Certificate reflection]
+\label{prop:det-cert-reflection}
+For a fixed trace language, iPRA proves
+\[
+ \mathsf{TraceOK}(u,c)=1\to\Accept(u,\mathsf{last}(c))=1,
+\]
+and, if the transitions are included, also proves
+$\mathsf{last}(c)=\Run(u,\mathsf{bound}(u))$.
+\end{proposition}
+
+\begin{proof}
+Fold elimination yields each checked field.  The acceptance conclusion is immediate.  For equality with the recomputed run, use quantifier-free induction on the list index with invariant $s_i=\Run(u,i)$.  The base is the checked initialization equation.  The step combines the checked transition with congruence and the defining equation of $\Run$.
+\end{proof}
+
+Certificate mode separates a possibly expensive search from a small trusted checker.  It is suitable for polynomial identities, interval subdivisions, finite covers, and numerical constant tables.  It never turns an unverified certificate producer into a theorem.
+
+\subsection{Adaptive finite queries to global hypotheses}
+
+Suppose a represented input is given by an evaluator $a(p,n)$ and a global regularity formula
+\[
+ \mathsf{Regular}(p)\;\equiv\;\forall m\,\forall n\;R(p,m,n,a(p,m),a(p,n)).
+\]
+The trace may compute its next query from earlier samples.  Let the state contain a table of all queried indices and answers.  At stage $i$, the query term $q(u,i,s)$ is a primitive-recursive function of the current state.  Universal elimination instantiates $\mathsf{Regular}(p)$ at the numerical terms appearing in the state.  The invariant stores the resulting finite Boolean facts.
+
+\begin{lemma}[Adaptive finite instantiation]
+\label{lem:adaptive-instantiation}
+Let a bounded trace make at most $B(u)$ adaptive queries to a universally quantified PR-decidable contract.  There is a quantifier-free table invariant asserting all contract instances used so far, and iPRA proves that the global contract preserves this invariant at every trace step.
+\end{lemma}
+
+\begin{proof}
+At stage zero the table is empty.  Assume the table is correct for the processed queries.  The next index is a term in the current numerical state, so universal elimination may instantiate the global contract at that term and at every previously stored term with which it must be compared.  Insert the new Boolean instances into the encoded table.  A bounded fold checks that old entries are unchanged and new entries satisfy the instantiated contract.  This update is primitive recursive, and the invariant is one Boolean equation.  Quantifier-free induction proves it for all stages below $B(u)$.
+\end{proof}
+
+The lemma explains why a global all-precision hypothesis is compatible with a finite proof.  The proof consumes only the finite portion demanded by the trace.
+
+\subsection{Sequential composition}
+
+Two deterministic trace systems compose by adding a phase tag.  Phase zero runs the first system.  At its terminal state, the second system is initialized from the first output and from certified metadata such as magnitude bounds or domain guards.  Phase one runs the second system.
+
+\begin{theorem}[Deterministic transducer composition]
+\label{thm:det-compose}
+If $T_1$ and $T_2$ have iPRA-verified local obligations, and the terminal certificate of $T_1$ implies the input guard of $T_2$, then their sequential composition is a deterministic trace system with an iPRA-verified soundness theorem.  Its bound is the sum of the component bounds plus one switch step.
+\end{theorem}
+
+\begin{proof}
+Encode the composite state as $(\mathsf{phase},s_1,s_2,m)$, where $m$ is frozen metadata.  The invariant is a Boolean case split.  In phase zero it is the first invariant.  At the switch it contains first acceptance and second input validity.  In phase one it is the second invariant conjoined with preservation of $m$.  Every branch is quantifier free.  The local proof is a finite case analysis on the phase and on whether the current counter is the switch point.  Apply \Cref{thm:det-trace}.
+\end{proof}
+
+This theorem handles deterministic proof networks.  It does not yet handle a producer whose mathematically correct output is a finite set of alternatives.  Forcing such a producer into a function is exactly where many discontinuous choices enter.  The next section removes that restriction.
