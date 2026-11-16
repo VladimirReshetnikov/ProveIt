@@ -42,6 +42,7 @@ import IPRADerivations.AnalyticNumberTheory.OrderPower
 import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.AnalyticNumberTheory.SumPhi
+import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
