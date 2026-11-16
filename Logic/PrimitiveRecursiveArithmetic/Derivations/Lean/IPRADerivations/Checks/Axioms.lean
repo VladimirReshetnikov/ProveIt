@@ -309,6 +309,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiUpper.phi_add_quo
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiUpper.quo_sq
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiUpper.phi_upper
+#print axioms LeanProofs.IPRA.Combinatorics.Bell.iS_pair
+#print axioms LeanProofs.IPRA.Combinatorics.Bell.nth_pair_succ
+#print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_zero
+#print axioms LeanProofs.IPRA.Combinatorics.Bell.nth_BL
+#print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_rec
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
