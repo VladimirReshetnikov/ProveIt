@@ -1,0 +1,87 @@
+\section{Computability barriers and honest theorem boundaries}\label{sec:barriers}
+
+The framework is useful partly because it states where finite compilation stops.  The following barriers are not deficiencies of coding; they show that certain stronger outputs would decide noncomputable information.
+
+\subsection{Cardinality does not give a search cutoff}
+
+Fix a standard machine enumeration.  Let \(P(e,t)=1\) exactly when machine \(e\) halts for the first time at step \(t\).  The predicate is primitive recursive: simulate for \(t\) steps and check that no earlier step halted.  For every \(e\), there is at most one \(t\) with \(P(e,t)=1\).
+
+\begin{barrier}[No uniform cutoff from a cardinality bound]\label{bar:cardinality}
+There is no computable, hence no primitive-recursive, transformation that takes only the fact ``\(P(e,\cdot)\) has at most one solution'' and returns a bound \(B(e)\) satisfying
+\[
+  P(e,t)=1\longrightarrow t\leq B(e).
+\]
+\end{barrier}
+
+\begin{proof}
+If such \(B\) existed, simulate machine \(e\) for \(B(e)\) steps.  If it has not halted by then, the bound implies it never halts; if it has halted, report yes.  This decides the halting problem, a contradiction.
+\end{proof}
+
+Thus a theorem asserting that a curve has at most \(N\) rational points cannot by itself drive bounded enumeration.  A height bound or complete-list certificate is strictly stronger effective data.
+
+\subsection{Exact sign and branch selection for arbitrary names}
+
+For a machine \(e\), define rational samples
+\[
+ a_e(n)=
+ \begin{cases}
+  2^{-t},&\text{if }e\text{ first halts at some }t\leq n,\\
+  0,&\text{if no halt is seen in the first }n\text{ steps}.
+ \end{cases}
+\]
+This is primitive recursive in \((e,n)\).  It is a regular Cauchy name: if a first halt appears between stages \(m<n\), the change is \(2^{-t}\leq2^{-m-1}\); otherwise the samples agree.  Its limit is zero when \(e\) never halts and positive when \(e\) halts.
+
+\begin{barrier}[No exact zero/positive selector]
+A total uniform operation that, from an arbitrary regular name known only to be nonnegative, decides whether its value is exactly zero or strictly positive would decide the halting problem.  The same obstruction applies to exact sign, exact collision strata, and branch labels that change discontinuously at zero.
+\end{barrier}
+
+The constructive replacements are overlapping robust branches, a finite relation of candidates, a quotient-valued output, or an exact branch theorem conditional on a supplied positive gap.
+
+\subsection{Metastability does not yield a convergence rate}
+
+Consider the computable monotone binary sequence
+\[
+ x_e(n)=
+ \begin{cases}
+  1,&\text{if machine }e\text{ halts within }n\text{ steps},\\
+  0,&\text{otherwise}.
+ \end{cases}
+\]
+For every challenge function \(g\), a stable window at tolerance less than \(1/2\) is computable by one finite simulation: test whether \(e\) halts by \(g(0)\).  If not, the window \([0,g(0)]\) is all zero.  If it halts at \(t\leq g(0)\), the window beginning at \(t\) is all one.  Thus this family has a uniform finite-window selector.
+
+\begin{barrier}[No generic metastability-to-rate upgrade]
+There is no computable transformation taking such a finite-window selector and returning a Cauchy tail modulus \(N(e)\) for all \(e\).
+\end{barrier}
+
+\begin{proof}
+At tolerance less than \(1/2\), a valid tail modulus \(N(e)\) guarantees that all later terms equal \(x_e(N(e))\).  If that value is zero, the machine can never halt later; if it is one, it has already halted.  Computing the value therefore decides halting.
+\end{proof}
+
+A final rate requires extra structure: a tail majorant, summable variation with a tail modulus, a contraction, or a rank whose exhaustion implies permanent rather than local stability.
+
+\subsection{Finite viability does not create a coherent infinite selector}
+
+Even at an elementary level, independently successful horizons need not be compatible.  Let the only accepted transcript of length \(h\geq1\) be \(0^{h-1}1\).  Every finite horizon is viable, but the selected transcripts are not nested prefixes, so they do not define one infinite sequence.
+
+If compatibility is strengthened so that admissible transcripts form a finitely branching infinite tree, classical compactness gives a path, but there is still no uniform computable path selector for all computable trees; computable infinite trees with no computable path are standard.  Therefore a CBIP may conclude a finite-use observation at every free horizon, but a coherent infinite name requires an additional producer theorem such as nested isolation, contraction, quantitative uniqueness, or exact algebraic splitting.
+
+\subsection{Nonzero is not an apartness resource}
+
+The formula \(\neg(x=0)\) is negative logical information.  A numerical trace that must choose a denominator precision needs positive data: an index and rational lower bound.  In many constructive settings, extracting such a bound from a bare negative premise is equivalent to an additional semi-classical principle.  The framework therefore does not attempt the extraction.  It exposes apartness as an explicit input type and proves the guarded operation relative to it.
+
+\subsection{A finite verifier is not a producer}
+
+A checker theorem has the form
+\[
+  \CertCheck(x,c)=1\longrightarrow \Phi(x,\mathsf{out}(c)).
+\]
+This is valuable even when certificates are found by an untrusted solver.  It does not prove \(\exists c\,\CertCheck(x,c)=1\).  In particular, the following remain separate mathematical obligations when used:
+\begin{itemize}
+\item a uniform height bound or finite covering list;
+\item a zero-free region, density estimate, or explicit analytic constant;
+\item a root-count or robust subdivision existence theorem;
+\item Mordell--Weil generators or descent covers;
+\item an exact branch-separation or apartness witness.
+\end{itemize}
+
+The producer/verifier distinction is part of the theorem statement, not merely project metadata.

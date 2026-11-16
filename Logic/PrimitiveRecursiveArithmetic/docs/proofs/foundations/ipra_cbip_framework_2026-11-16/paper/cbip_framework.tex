@@ -1,0 +1,175 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.misc,fit,calc}
+\usepackage{caption}
+\usepackage{url}
+
+\definecolor{linkblue}{RGB}{25,76,135}
+\definecolor{codegray}{RGB}{247,247,247}
+\definecolor{deepgreen}{RGB}{22,94,72}
+\definecolor{warmred}{RGB}{148,54,43}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Certified Bounded Interaction Programs for iPRA},
+  pdfauthor={OpenAI research synthesis for the ProveIt project}
+}
+\setlist[itemize,enumerate]{leftmargin=*,topsep=0.3em,itemsep=0.18em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.56em}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Certified Bounded Interaction Programs for iPRA}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  keywordstyle=\bfseries\color{linkblue},
+  commentstyle=\itshape\color{deepgreen},
+  numbers=left,
+  numberstyle=\tiny,
+  xleftmargin=1.5em,
+  framexleftmargin=1.2em
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{barrier}[theorem]{Barrier}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{status}[theorem]{Status}
+
+\newcommand{\iPRA}{\mathrm{iPRA}}
+\newcommand{\PRA}{\mathrm{PRA}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\Bool}{\mathbb{B}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\CBIP}{\mathsf{CBIP}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\PTm}{\mathsf{PTm}}
+\newcommand{\Fm}{\mathsf{Fm}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\Inv}{\mathsf{Inv}}
+\newcommand{\Run}{\mathsf{Run}}
+\newcommand{\Accept}{\mathsf{Accept}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\Viable}{\mathsf{Viable}}
+\newcommand{\Local}{\mathsf{Local}}
+\newcommand{\Next}{\mathsf{Next}}
+\newcommand{\Post}{\mathsf{Post}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Need}{\mathsf{Need}}
+\newcommand{\CertCheck}{\mathsf{Check}}
+\newcommand{\Val}{\mathsf{Val}}
+\newcommand{\eqv}{\mathrel{\simeq}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+
+\title{\textbf{Certified Bounded Interaction Programs}\\[0.25em]
+A General Proof-Producing Framework for Mathematics\\
+in Intuitionistic Primitive Recursive Arithmetic}
+\author{Research synthesis prepared for Vladimir Reshetnikov\\
+and the ProveIt iPRA development}
+\date{16 November 2026\\Repository snapshot: \texttt{210616e660a7ab5f0d706761c12bba673174cec9}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The ProveIt repository now contains two sharply different layers: a kernel-checked object theory and a large collection of mathematically ambitious but mostly unverified proof packets.  Existing foundation packets already develop bounded Booleanization, finite traces, precision contracts, relational certificates, contract DAGs, and stable observers.  Their common remaining bottleneck is not another representation of computable mathematics, but a reusable route from local certificates to actual derivations of type \(\Prf\ \PRAAx\ \Gamma\ \varphi\).
+
+This report develops \emph{Certified Bounded Interaction Programs} (CBIPs), a fixed-program intermediate language for finitary mathematical arguments.  CBIPs combine exact primitive-recursive transducers, queries to universally stated input contracts, bounded loops and searches, alternating finite challenges, relational producers, guarded partial operations, and quotient- or error-stable observers.  Every fixed CBIP normalizes to one bounded primitive-recursive trace with a quantifier-free invariant.  A small normalized reflection kernel then turns object-language base, step, and terminal derivations into the desired closed \(\Prf\ \PRAAx\) theorem.  The crucial compiler is metatheoretic and syntax directed: it generates explicit primitive-recursive symbols and proof terms for each fixed program, so it never assumes an impossible unclocked universal evaluator inside iPRA.
+
+We give complete human proofs of bounded strategy determinacy with dual success/failure certificates, trace normalization, finite-use relational composition, stable witness erasure, adaptive finite use of global hypotheses, precision-DAG soundness, guarded arithmetic on represented objects, finite-net search, and height-bounded enumeration.  We also give explicit computability barriers showing why cardinality bounds do not yield search cutoffs, why horizonwise viability does not create a coherent infinite selector, why metastability does not yield a convergence rate, and why exact sign or branch selection is unavailable for arbitrary regular names.  The Lean plan is aligned with the current \code{PR}, \code{PTm}, \code{PRAAx}, \code{PRA.qfInd}, and checked \code{IPRADerivations} interfaces.  The archive includes a no-placeholder normalized trace-reflection candidate, detailed blueprints for the remaining compiler layers, and exact Python regression tests.  No completed Lean build or new kernel-checked theorem is claimed by this artifact.
+\end{abstract}
+
+\vspace{0.4em}
+\noindent\textbf{Verification status.}
+The report's mathematical arguments are intended to be complete at the stated level.  The Python reference algorithms were executed on exact integers and rational numbers.  The PDF was compiled, rendered, and inspected.  Lean is not installed in the artifact runtime and the repository cannot be cloned there; consequently, the Lean sources are source-oriented candidates and blueprints, not a claimed kernel check.  The status ledger separates proved-on-paper claims, executable finite evidence, checked upstream dependencies, and unfinished object-language work.
+
+\tableofcontents
+\newpage
+
+\input{sections/01_scope_audit}
+\input{sections/02_finitary_interfaces}
+\input{sections/03_cbip_language}
+\input{sections/04_bounded_games}
+\input{sections/05_trace_compiler}
+\input{sections/06_relational_stability}
+\input{sections/07_quantitative_objects}
+\input{sections/08_domain_patterns}
+\input{sections/09_barriers}
+\input{sections/10_resolution_matrix}
+\input{sections/11_lean_plan}
+\input{sections/12_worked_examples}
+\input{sections/13_status_questions}
+\input{sections/appendix_normal_forms}
+
+\begin{thebibliography}{99}
+\bibitem{proveit-readme}
+V.~Reshetnikov, \emph{ProveIt: Primitive Recursive Arithmetic README}, repository snapshot \texttt{210616e660a7ab5f0d706761c12bba673174cec9}, 2026.
+
+\bibitem{concise-ipra}
+V.~Reshetnikov, \emph{ConciseIPRA: checked mutually bi-interpretable presentations of iPRA}, ProveIt repository, 2026.
+
+\bibitem{ipra-derivations}
+V.~Reshetnikov, \emph{IPRADerivations: kernel-checked object-language derivations}, ProveIt repository, 2026.
+
+\bibitem{finite-use}
+V.~Reshetnikov and collaborators, \emph{Demand-Driven Relational Certificates for Mathematics in iPRA}, ProveIt research packet, 2026.
+
+\bibitem{contract-dag}
+V.~Reshetnikov and collaborators, \emph{Certified Finitary Presentations and a Contract-DAG Compiler}, ProveIt research packet, 2026.
+
+\bibitem{finitary-compiler}
+V.~Reshetnikov and collaborators, \emph{Finitary Interfaces and Proof-Producing Compilation for iPRA}, ProveIt research packet, 2026.
+
+\bibitem{bishop}
+E.~Bishop and D.~Bridges, \emph{Constructive Analysis}, Springer, 1985.
+
+\bibitem{bridges-richman}
+D.~Bridges and F.~Richman, \emph{Varieties of Constructive Mathematics}, Cambridge University Press, 1987.
+
+\bibitem{troelstra}
+A.~S.~Troelstra and D.~van Dalen, \emph{Constructivism in Mathematics}, North-Holland, 1988.
+
+\bibitem{kleene}
+S.~C.~Kleene, \emph{Introduction to Metamathematics}, North-Holland, 1952.
+
+\bibitem{kohlenbach}
+U.~Kohlenbach, \emph{Applied Proof Theory: Proof Interpretations and Their Use in Mathematics}, Springer, 2008.
+\end{thebibliography}
+
+\end{document}

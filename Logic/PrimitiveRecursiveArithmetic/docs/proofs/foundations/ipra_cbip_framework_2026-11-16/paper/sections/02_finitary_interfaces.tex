@@ -1,0 +1,90 @@
+\section{Mathematical concepts as finitary interfaces}\label{sec:interfaces}
+
+\subsection{Why an interface is more useful than a completed infinite object}
+
+An ordinary mathematical proof may speak about a real number, a continuous function, a compact space, a multiset of algebraic roots, a probability distribution, or a finitely generated group.  None of these need be inserted into iPRA as a completed set-theoretic object.  What a finite proof actually uses is a finite collection of observations: rational approximations, coefficient values, residual inequalities, chart membership, finite sums, or answers to bounded searches.
+
+This motivates a uniform observation interface.
+
+\begin{definition}[Finitary presentation]
+A finitary presentation \(\mathcal A\) consists of fixed primitive-recursive data
+\[
+  \mathsf{Par}_{\mathcal A},\qquad
+  B_{\mathcal A}(p,q),\qquad
+  \Valid_{\mathcal A}(p,q,a),\qquad
+  \mathsf{Compat}_{\mathcal A}(p,q,a,q',a'),
+\]
+where \(p\) is a parameter code, \(q\) is a finite query, and \(a<B_{\mathcal A}(p,q)\) is a bounded answer.  All predicates are numerical Booleans.  Optionally the presentation supplies:
+\begin{itemize}
+\item an observational equivalence \(E_{\mathcal A}(p,q,a,a')\);
+\item a coded distance or diameter bound;
+\item a refinement relation between levels;
+\item a producer certificate showing that a valid answer exists for the queried level.
+\end{itemize}
+\end{definition}
+
+The bound may be enormous; only primitive recursiveness and explicitness matter.  A presentation can be deterministic by having exactly one valid answer, relational by allowing several, or adversarial by exposing all bounded challenges that a proof must survive.
+
+\subsection{Examples of the interface}
+
+\paragraph{Exact finite algebra.}
+An integer polynomial is a finite coefficient code.  A query asks for a coefficient, degree, product coefficient, resultant entry, or evaluation at a coded integer.  Validity is exact equality.  No approximation or relational choice is needed.
+
+\paragraph{Regular real names.}
+The parameter \(p\) codes a fixed evaluator \(a(p,n)\in\Q\).  A query is a precision index \(n\), and the answer is the uniquely encoded rational sample.  A global regularity contract supplies the finite inequalities used to compare requested samples.  Extensional equality is itself an all-precision observation, but any particular theorem uses only finitely many instances before universally introducing its requested output precision.
+
+\paragraph{Root clusters.}
+A query is a requested diameter.  An answer is a finite list of rational boxes or disks with multiplicities and root-count certificates.  Several refinements may be valid.  Compatibility asserts that a finer clustering refines the coarser one.  Symmetric polynomials or factor products are stable observations even when individual labels are not.
+
+\paragraph{Projective and geometric data.}
+A projective point is represented by a nonzero vector modulo scaling, not by a globally normalized vector.  Queries ask for a chart, determinant, incidence test, or bounded-precision coordinate ratio.  Several overlapping charts may be valid.  Exact normalization is guarded by an explicit pivot or norm lower bound.
+
+\paragraph{Effective compact domains.}
+A query \(k\) asks for a finite \(2^{-k}\)-net and a coverage certificate.  The answer is a finite point list plus finite witnesses for the relevant cells.  Compactness is not an axiom; it is a family of finite presentations whose coverage theorem is a producer obligation.
+
+\paragraph{Diophantine solution sets.}
+Given a height bound \(H(p)\), the answer to the sole query is the boundedly filtered list of all codes below \(H(p)\) satisfying the equation.  The verifier and enumerator are generic.  The difficult mathematical content is the producer proving that every solution has height at most \(H(p)\).
+
+\subsection{Observation and realization}
+
+A theorem about a presented object should be stated at the level actually observed.  A deterministic observation has the form
+\[
+  \forall p\,\forall k\; \Good(p,k)=1\;\longrightarrow\;
+  \Obs(p,k,F(p,k))=1,
+\]
+where \(F\) is a fixed primitive-recursive evaluator.  A relational observation has the form
+\[
+  \forall p,k,c\; \CertCheck(p,k,c)=1\;\longrightarrow\;
+  \Obs(p,k,\mathsf{out}(c))=1.
+\]
+A quotient-valued observation replaces literal equality of outputs by a decidable relation \(E\).  An approximate observation replaces equality by a rational diameter bound.
+
+This formulation has three advantages.
+
+\begin{enumerate}
+\item It never requires the object theory to quantify over functions or completed infinite objects.
+\item It exposes exactly which samples, bounds, and certificates are consumed.
+\item It makes nonuniqueness harmless when the conclusion is invariant or stable under the allowed relation.
+\end{enumerate}
+
+\subsection{Finite use of global contracts}
+
+Suppose a name or structure is supplied by a global formula
+\[
+  \mathsf{Reg}(p)\;\equiv\;\forall m\,\forall n\;R(p,m,n,a(p,m),a(p,n)).
+\]
+A bounded computation may choose its next query adaptively from earlier answers.  The correct invariant does not include the whole universal formula.  It contains a finite table of the instances already used.  At a successor step, the proof uses universal elimination at the computed terms, inserts the resulting Boolean fact into the table, and continues.
+
+\begin{lemma}[Adaptive finite instantiation]
+For every fixed bounded computation making at most \(N(u)\) adaptive queries to a universally quantified primitive-recursive contract, there is a primitive-recursive table update and a quantifier-free invariant saying that every stored contract instance is valid.  iPRA proves preservation of this invariant by quantifier-free induction.
+\end{lemma}
+
+\begin{proof}
+Encode the finite list of queries and answers in the state.  At step \(i\), the next query \(q_i\) is a term in the current state.  Universal elimination of the external contract at \(q_i\), and at any previously stored index with which it must be compared, produces the new finite facts.  A bounded Boolean fold verifies old entries and the new row.  The invariant is one equation asserting that this fold equals one.  Its base case is the empty table; its successor case follows from the instantiated contract and the defining equation of the table update.  No universal quantifier occurs in the induction formula.
+\end{proof}
+
+\subsection{Interface composition}
+
+Let \(F:\mathcal A\to\mathcal B\) and \(G:\mathcal B\to\mathcal C\) be finite interfaces.  A query to \(G\) induces finitely many queries to the output of \(F\); these in turn induce finitely many queries to the original input.  The composed demand is found by a backward pass, while the actual answers are generated by a forward trace.
+
+If all interfaces are deterministic, composition is ordinary substitution of primitive-recursive programs.  If an intermediate interface is relational, composition is valid only relative to the finite consumer's actual interaction tree.  That case is developed in \Cref{sec:relational}.  If an intermediate operation is partial, its interface contains a Boolean guard and the composition proof must show that the preceding component supplies the guard.  This prevents totalized default branches from being used as though they were mathematically valid.

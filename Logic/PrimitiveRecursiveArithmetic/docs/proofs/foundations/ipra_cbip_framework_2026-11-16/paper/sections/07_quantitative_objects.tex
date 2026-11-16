@@ -1,0 +1,127 @@
+\section{Quantitative represented objects and precision compilation}\label{sec:quantitative}
+
+\subsection{Regular rational names}
+
+For concreteness, represent a rational by a signed numerator and positive denominator code, and represent a real-like object by a fixed evaluator \(a(p,n)\in\Q\).  A convenient regularity contract is
+\begin{equation}
+ |a(p,m)-a(p,n)|\leq 2^{-m}+2^{-n}. \tag{R}\label{eq:regular}
+\end{equation}
+All comparisons are reduced to signed-integer cross products.  The semantic completed real is explanatory; the object theorem concerns only finite rational samples and inequalities.
+
+Two names may be treated as extensionally equal when their corresponding samples are uniformly close after a fixed precision shift.  An apartness witness is positive numerical data, for example a sign \(\sigma\in\{-1,1\}\) and an index \(j\) such that
+\[
+  \sigma a(p,j)\geq 2^{-j+c}
+\]
+for fixed slack \(c\).  Regularity then yields a verified lower bound away from zero.
+
+\begin{lemma}[Finite sample stability]
+Under \eqref{eq:regular}, if \(m,n\geq k+3\), then
+\[
+  |a(p,m)-a(p,n)|\leq 2^{-k-2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Each summand in \eqref{eq:regular} is at most \(2^{-k-3}\).  Add them and clear the power-of-two denominator.  The object proof is an exact natural/integer inequality.
+\end{proof}
+
+\subsection{Demand transformers}
+
+Every finite operation should advertise both an output program and the input observations it needs.  A deterministic precision contract has the form
+\[
+  \Need_F(p,k),\qquad F(p,k,\text{queried data}),\qquad
+  \mathsf{Err}_F(p,k)\leq 2^{-k}.
+\]
+For several inputs, \(\Need_F\) is a finite tuple.  It is useful to replace a nonmonotone demand by the monotone closure
+\[
+  \Need_F^{\uparrow}(k)=\max_{j\leq k}\Need_F(j),
+\]
+a bounded maximum.
+
+\begin{theorem}[Precision-contract composition]
+Suppose \(F\) produces a represented intermediate object together with all magnitude and guard metadata required by \(G\).  Then \(G\circ F\) has a primitive-recursive demand transformer obtained by backward substitution of \(G\)'s demand into \(F\)'s demand, enlarged by finitely many metadata queries.  The object proof is the cut/composition of the two finite contracts.
+\end{theorem}
+
+\begin{proof}
+For desired output precision \(k\), compute \(n=\Need_G(k,m)\), where \(m\) denotes certified metadata about the intermediate value.  Ask \(F\) for an \(n\)-accurate output and for the samples used to establish \(m\).  The \(F\) contract supplies the exact hypotheses of the \(G\) contract.  If \(G\) is merely Lipschitz, allocate its input budget according to the supplied Lipschitz constant.  Primitive-recursive closure under composition and bounded maximum gives the demand transformer; proof substitution gives the iPRA derivation.
+\end{proof}
+
+\subsection{Addition, multiplication, and magnitude data}
+
+Addition and negation use only a fixed precision shift and the triangle inequality.  Products require magnitude bounds because
+\[
+  ab-a'b'=(a-a')b+a'(b-b').
+\]
+A coarse magnitude bound may be supplied directly or derived from one coarse sample and regularity.  Given \(|a|,|b|\leq M\), choose an input precision shift \(c(M)\) satisfying
+\[
+  2M\,2^{-(k+c(M))}\leq 2^{-k-2}.
+\]
+A bounded doubling search computes such an exponent.  The product error is then split between the two summands.  All calculations are rational and are compiled into integer inequalities.
+
+\subsection{Guarded reciprocal}
+
+Define a total rational reciprocal \(\mathsf{inv}_0\) that returns zero when its numerator is zero.  This makes the program primitive recursive but does not justify the default branch mathematically.
+
+\begin{theorem}[Apartness-guarded inverse]
+Let a regular name represent \(x\), and suppose a rational certificate gives \(|x|\geq\alpha>0\).  There is a primitive-recursive query planner and output evaluator using \(\mathsf{inv}_0\) such that iPRA proves:
+\begin{enumerate}
+\item every queried rational sample has nonzero numerator, so the default branch is not taken;
+\item the output samples form a regular name;
+\item the finite reciprocal error is within the requested budget.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Request a sample \(q\) with \(|q-x|\leq\alpha/2\), so \(|q|\geq\alpha/2\).  For two sufficiently accurate samples \(q,q'\),
+\[
+ |q^{-1}-(q')^{-1}|=\frac{|q-q'|}{|qq'|}
+ \leq \frac{4|q-q'|}{\alpha^2}.
+\]
+Choose the input precision so that the right side fits the output regularity budget.  Cross multiplication by the positive denominators and by a code for \(\alpha^2\) turns every step into an exact integer inequality.  The apartness certificate proves the nonzero guard.  Universal introduction over the free output precision is the final logical step.
+\end{proof}
+
+The theorem illustrates the general discipline: a qualitative formula \(\neg(x=0)\) is not a numerical resource consumed by a primitive-recursive trace.  The interface uses explicit positive data.
+
+\subsection{Error-budget DAGs}
+
+Let a finite acyclic graph compute quantities \(z_v\).  A local certificate at node \(v\) gives
+\[
+  |\Delta z_v|\leq \eta_v+\sum_{w\to v}L_{v,w}|\Delta z_w|,
+\]
+where \(\eta_v\) is local truncation/rounding error and \(L_{v,w}\geq0\) is a rational sensitivity bound.  Define propagated budgets in topological order by
+\[
+  E_v=\eta_v+\sum_{w\to v}L_{v,w}E_w.
+\]
+
+\begin{theorem}[Error-DAG soundness]\label{thm:error-dag}
+For a fixed bounded graph code, all budgets \(E_v\) are primitive-recursively computable.  If each source error and each local certificate satisfies its assigned inequality, iPRA proves \(|\Delta z_v|\leq E_v\) for every processed node, in particular the output node.
+\end{theorem}
+
+\begin{proof}
+The forward state stores the table of computed budgets and a Boolean fold saying that every processed node satisfies its budget.  At the next node, all predecessors have smaller topological indices.  Substitute their induction bounds into the local inequality, evaluate the finite sum, and rewrite by the defining equation of \(E_v\).  This preserves the Boolean invariant.  Quantifier-free induction on the number of processed nodes proves the result.
+\end{proof}
+
+An untrusted scheduler may propose node tolerances, magnitude bounds, and query indices.  A trusted certificate checker verifies acyclicity, every local inequality, the budget recurrence, and the final budget.  Optimal numerical scheduling is unnecessary; a coarse verified allocation is often cheaper to formalize.
+
+\subsection{Ranked metastability}
+
+For a sequence \(x_n\), a challenge \(g\), and tolerance \(2^{-k}\), a window beginning at \(n\) is stable when
+\[
+  \forall i,j\in[n,n+g(n)]\quad d(x_i,x_j)\leq 2^{-k}.
+\]
+This is a bounded Boolean property.  A rank certificate supplies \(\rho(n)\leq R(k,g)\) such that failure at \(n\) makes the next candidate \(n'=n+g(n)+1\) satisfy \(\rho(n')<\rho(n)\).
+
+\begin{theorem}[Rank-to-metastability]
+The primitive-recursive iteration \(n_0=0\), \(n_{t+1}=n_t+g(n_t)+1\) finds a stable window for some \(t\leq R(k,g)\).  The theorem is provable in iPRA.
+\end{theorem}
+
+\begin{proof}
+Maintain the quantifier-free implication
+\[
+  \bigl(\text{the first }t\text{ windows fail}\bigr)
+  \longrightarrow \rho(n_t)+t\leq R.
+\]
+The antecedent is a bounded fold.  A failed next window decreases the rank and preserves the inequality.  At \(t=R+1\), the consequent is impossible.  Least bounded search returns the first stable window.
+\end{proof}
+
+The output is one challenged stable window, not a tail cutoff.  \Cref{sec:barriers} gives a direct computability separation.

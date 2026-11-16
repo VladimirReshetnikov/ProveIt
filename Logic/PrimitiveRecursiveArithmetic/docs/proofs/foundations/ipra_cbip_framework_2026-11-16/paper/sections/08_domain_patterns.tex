@@ -1,0 +1,93 @@
+\section{Reusable domain patterns}
+
+\subsection{Exact algebra and combinatorics}
+
+Finite identities are the easiest class.  Polynomial evaluation, coefficient extraction, determinants, finite sums and products, recurrences, and finite group tables are all fixed primitive-recursive computations.  A CBIP proof should:
+\begin{enumerate}
+\item define the relevant term or recurrence as a \code{PR} symbol;
+\item prove its defining equations once;
+\item state the induction invariant as an equality or finite conjunction of equalities;
+\item use the checked semiring, integer, order, sum, product, and matrix libraries.
+\end{enumerate}
+
+The current derivation library already demonstrates this pattern for polynomial formulas, Cayley--Hamilton instances, finite sums, number-theoretic recurrences, gcd, RSA, totients, and many inequalities.  The framework adds little conceptual strength here; its value is modular proof generation and status tracking.
+
+\subsection{Algebraic roots and spectral data}
+
+Root and eigenvector theorems must distinguish input regimes.
+
+\begin{enumerate}
+\item \textbf{Exact finite coefficients.}  Integer, rational, or exact algebraic codes permit exact factorization certificates, Sturm counts, Newton polygons, and finite splitting data.
+\item \textbf{Approximate coefficients plus separation.}  A derivative, discriminant, spectral gap, or root-separation witness stabilizes a local branch.  Newton or contraction iteration has a finite trace and a computable precision transformer.
+\item \textbf{Arbitrary regular coefficients.}  Equality and collisions are not decidable.  Uniform outputs should be root clusters, multisets, projective eigenspaces, residual approximations, or symmetric observations rather than globally labeled exact branches.
+\end{enumerate}
+
+A root-cluster certificate contains rational regions, multiplicities, pairwise separation, root-free boundary evidence, root counts, and a diameter bound.  Subdivision is relational because several child clusterings may be valid.  A bounded consumer composes with the refinement relation by backward viability.  Vieta expressions, characteristic polynomials, factor products, traces, and separated spectral projectors are stable observations and can erase the internal labels.
+
+\subsection{Geometry and topology}
+
+Coordinate identities should be proved before normalization.  Points, lines, axes, and subspaces are preferably represented by homogeneous coordinates, projectors, Pluecker coordinates, or row-space certificates.  Every claimed nonzero determinant or pivot carries an explicit margin.
+
+Finite atlases use overlapping robust guards.  At a chart boundary, retain every chart whose enlarged guard passes.  The local theorem is proved in each chart, and overlap agreement or a diameter estimate exports a chart-independent conclusion.  This applies to spheres, projective spaces, rotation groups, matrix manifolds, contour subdivisions, and piecewise analytic arguments.
+
+Topological existence arguments are compiled through a mesh or simplicial presentation.  Sperner parity, winding on a finite polygon, discrete degree, and finite Jordan separation have bounded combinatorial invariants.  The producer obligation is the quantitative theorem connecting the mesh to the represented geometric input: separation from the boundary, a modulus, or a certified cover.
+
+\subsection{Real and complex analysis}
+
+An analytic theorem is suitable for iPRA when every limiting step is replaced by a finite remainder contract.
+
+\begin{itemize}
+\item Integration uses a rational partition, a modulus of continuity, and finite upper/lower sums.
+\item Differentiation uses finite differences and a quantified remainder; division by the increment is guarded.
+\item Power series use coefficient majorants and explicit tail bounds.
+\item Contour integration uses rational polygonal contours, finite cell estimates, denominator separation, and winding/root-count certificates.
+\item Special-function identities use finite products or sums together with explicit truncation schedules.
+\end{itemize}
+
+Several contours, saddle regions, or local branches may be retained relationally.  The framework verifies a supplied zero-free region or remainder table and composes it with finite arithmetic.  It does not produce missing analytic constants merely by packaging them in a record.
+
+\subsection{Probability and asymptotics}
+
+Finite rational probability laws are naturally coded.  Expectations, moments, convolutions, and characteristic-function values on rational grids are finite sums.  A quantitative central-limit or concentration proof can be organized as:
+\begin{enumerate}
+\item normalize under a positive variance certificate;
+\item compute a finite transform or smoothing trace;
+\item use explicit Taylor remainders and moment bounds;
+\item evaluate a finite integral or grid estimate;
+\item combine the errors in an error DAG.
+\end{enumerate}
+
+For martingales or non-identically distributed laws, the state records accumulated variance, conditional finite tables, and the current error budget.  Conditioning over an arbitrary infinite probability space is outside the interface unless a finite presentation or approximation contract is supplied.
+
+\subsection{Analytic number theory}
+
+A robust packet separates four layers:
+\begin{enumerate}
+\item exact finite identities, such as convolutions, divisor sums, and Euler factors;
+\item truncation and tail estimates;
+\item substantive zero-free, density, exceptional-zero, or contour data;
+\item the final finite numerical inequality.
+\end{enumerate}
+The checked derivation library is already strong at the first and fourth layers.  The framework treats the middle layers as explicit producer certificates.  A proof packet must not define a field called ``zero-free certificate'' and then count the record type as a proof that such a certificate exists.
+
+\subsection{Diophantine geometry}
+
+Let \(P(x,z)\) be a decidable coded point predicate and \(h(z)\) a height.  A primitive-recursive bound \(B(x)\) gives a finite complete-list program:
+\[
+  L(x)=\{z:\ h(z)\leq B(x)\text{ and }P(x,z)=1\}.
+\]
+
+\begin{theorem}[Height/list equivalence]
+For a fixed point coding and height:
+\begin{enumerate}
+\item an explicit primitive-recursive height bound yields a primitive-recursive complete finite list by bounded filtering;
+\item a primitive-recursive complete finite list yields a height bound by taking the maximum listed height.
+\end{enumerate}
+Both directions are provable in iPRA using finite-list induction.
+\end{theorem}
+
+This cleanly separates generic verification from deep producers.  Runge, Baker, descent, Chabauty, Mordell--Weil sieve, and local-cover arguments can all be viewed as producers of bounds or finite covers followed by a shared checker.  General effective versions are not obtained from the checker alone.
+
+\subsection{Finite categories and abstract structures}
+
+Finite categorical diagrams, rewriting systems, term algebras, and finitely presented structures fit the exact layer.  Objects and morphisms are codes; composition tables and relations are finite; commutativity and universal properties over a supplied finite candidate list are bounded formulas.  Infinite universal properties require a presentation restricting the quantified arrows to a finite searchable interface, or else they remain external schemas.  This illustrates the general rule: abstract language is harmless when its uses are compiled to finite observations, but it does not erase unbounded quantification.

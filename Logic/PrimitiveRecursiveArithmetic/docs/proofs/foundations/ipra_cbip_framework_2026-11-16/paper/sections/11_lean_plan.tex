@@ -1,0 +1,184 @@
+\section{Lean formalization architecture}\label{sec:lean}
+
+\subsection{Target the existing checked objects}
+
+The implementation should live in the current ProveIt workspace and use the ordinary object-language presentation first.  The essential checked declarations are:
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Declaration & Role \\
+\midrule
+\code{PR k} & fixed primitive-recursive symbols of arity \(k\) \\
+\code{PTm n} & terms with \(n\) free numerical variables \\
+\code{Fm PTm n} & first-order formulas over those terms \\
+\code{PRAAx} & defining equations, successor axioms, and quantifier-free induction \\
+\code{Prf PRAAx Gamma phi} & required object-level endpoint \\
+\code{PRA.precZero}, \code{PRA.precSucc} & equations for concrete primitive recursions \\
+\code{PRA.qfInd} & induction on a syntactically quantifier-free invariant \\
+\code{Prf.subst}, \code{Prf.weaken}, \code{Prf.trans} & structural proof composition \\
+\code{Prf.allE}, \code{Prf.allI} & specialization and universal closure \\
+\code{Prf.eqCongr}, \code{Prf.eqSubst1} & equality transport \\
+\code{pra_iff_native} & optional export after an ordinary object proof exists \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The checked \code{IPRADerivations} library adds crucial conveniences: \code{inst} for using closed derivations at arbitrary terms, \code{ind} for open quantifier-free induction, concrete arithmetic and order symbols, pairing, finite sums/products, and a proved least bounded search.  Reuse of these modules avoids much of the formalization debt identified by earlier packets.
+
+\subsection{The normalized reflection kernel}
+
+The archive's \code{lean/NormalizedTraceReflection.lean} follows this record shape:
+
+\begin{lstlisting}[language={}] 
+structure PRTraceSystem where
+  good   : PR 1
+  init   : PR 1
+  bound  : PR 1
+  step   : PR 3       -- counter, state, input
+  inv    : PR 3       -- Boolean invariant
+  accept : PR 2       -- final state, input
+
+structure NormalizedTraceProofs (T : PRTraceSystem) where
+  base : [GoodFm T] |-[PRAAx]
+    (InvRunFm T).subst (inst PTm.zero)
+  step : InvRunFm T :: [GoodFm T].map Fm.shift |-[PRAAx]
+    (InvRunFm T).subst (repl (PTm.succ (var 0)))
+  finish : [GoodFm T] |-[PRAAx]
+    ((InvRunFm T).subst (inst (boundTerm T)) --> AcceptAtBoundFm T)
+\end{lstlisting}
+
+The theorem body is only:
+
+\begin{lstlisting}[language={}] 
+have hall : [GoodFm T] |-[PRAAx] Fm.all (InvRunFm T) :=
+  PRA.qfInd (InvRunFm T) (invRun_qf T) h.base h.step
+have hat := Prf.allE (boundTerm T) hall
+have hacc := Prf.impE h.finish hat
+exact Prf.allI (Prf.impI hacc)
+\end{lstlisting}
+
+Minor \code{simpa} normalization may be required by the exact elaborator, but there is no remaining mathematical idea in the kernel.  This record deliberately accepts normalized obligations.  A separate raw-contract elaborator is responsible for run equations and substitutions.
+
+\subsection{Raw local contracts}
+
+A convenient second record contains readable local formulas:
+
+\begin{lstlisting}[language={}] 
+structure RawTraceProofs (T : PRTraceSystem) where
+  base  : ([] : List (Fm PTm 1)) |-[PRAAx] BaseFm T
+  step  : ([] : List (Fm PTm 3)) |-[PRAAx] StepFm T
+  final : ([] : List (Fm PTm 2)) |-[PRAAx] FinalFm T
+\end{lstlisting}
+
+The function \code{normalizeRaw} should construct \code{NormalizedTraceProofs}.  Its proof obligations are local and explicit:
+
+\begin{enumerate}
+\item instantiate \code{base} at \(u\), eliminate its implication under \code{GoodFm}, and transport the state along \code{run_zero};
+\item instantiate \code{step} at \((i,\Run(i,u),u)\), eliminate its implications using the induction and good-input hypotheses, and transport along \code{run_succ};
+\item specialize the invariant at the bound, instantiate \code{final} at \((\Run(\mathsf{bound}(u),u),u)\), and form the terminal implication.
+\end{enumerate}
+
+The existing checked \code{IPRADerivations.Core.Basic.inst} theorem removes much context/substitution boilerplate.  The remaining term congruence follows the pattern of \code{congrApp}; the logical steps are \code{Prf.impE}, \code{Prf.impI}, \code{Prf.hyp0}, and weakening.  This is the first recommended Lean milestone.
+
+\subsection{Bounded formulas and strategy certificates}
+
+Do not create a universal object-language evaluator for arbitrary formulas.  Instead define a metatheoretic syntax whose atoms and bounds carry concrete \code{PR} expressions, and compile each fixed formula to concrete symbols.
+
+\begin{lstlisting}[language={}] 
+inductive BForm (n : Nat)
+  | atom   (test : PR n)
+  | and    (p q : BForm n)
+  | or     (p q : BForm n)
+  | exists (bound : PR n) (body : BForm (n+1))
+  | forall (bound : PR n) (body : BForm (n+1))
+\end{lstlisting}
+
+In an initial implementation, it may be simpler for \code{BForm} to exist only in the host metatheory and for the compiler to emit fixed \code{PR} symbols directly.  Prove checked object lemmas for Boolean \code{allBelow}, \code{anyBelow}, and least search.  Then define certificate encodings and a deterministic checker.  The soundness theorem is generated by structural recursion on the fixed formula, with all object inductions delegated to the fold lemmas.
+
+The negative certificate is essential.  At an existential node, failure checks all children; at a universal node, failure gives one counterexample.  This makes failed proof automation auditable and supports the finite challenge decomposition of \Cref{sec:games}.
+
+\subsection{Relational viability}
+
+Use a first object-level implementation with a rectangular bounded state space:
+
+\begin{lstlisting}[language={}] 
+structure PRRelMachine where
+  start       : PR 1
+  answerBound : PR 3
+  halt        : PR 3
+  local       : PR 4
+  next        : PR 4
+  post        : PR 3
+  stateBound  : PR 2
+\end{lstlisting}
+
+Pair \((r,s,x)\) into the trace state.  The development order is:
+
+\begin{enumerate}
+\item define Boolean all/any folds and bounded table lookup/update;
+\item define the reverse row recurrence and prove its equation;
+\item prove viability correctness by open quantifier-free induction on \(r\);
+\item define the least viable answer using checked bounded search;
+\item define forward replay and normalize it to a trace;
+\item prove transcript soundness and terminal postcondition;
+\item add confluence/diameter theorems and export only stable observations.
+\end{enumerate}
+
+A sparse external-certificate mode should follow after the rectangular version is checked.  It has a smaller execution footprint but a more elaborate pointer checker.
+
+\subsection{Recommended module graph}
+
+\begin{center}
+\begin{tikzpicture}[
+ node distance=5mm and 13mm,
+ box/.style={draw,rounded corners,align=center,fill=codegray,inner sep=4pt,font=\small},
+ arr/.style={-{Latex[length=2mm]},thick}
+]
+\node[box] (up) {ConciseIPRA\\IPRADerivations Core};
+\node[box,below=of up] (codes) {CBIP/Codes\\CBIP/BooleanFold};
+\node[box,below left=of codes] (trace) {CBIP/TraceReflection\\CBIP/RawNormalize};
+\node[box,below right=of codes] (game) {CBIP/BoundedGame\\CBIP/StrategyCert};
+\node[box,below=of trace] (rel) {CBIP/Relational\\CBIP/Stability};
+\node[box,below=of game] (err) {CBIP/DemandDAG\\CBIP/ErrorDAG};
+\node[box,below=12mm of $(rel)!0.5!(err)$] (obj) {CBIP/RegularNames, FiniteNet, RootCluster, HeightSearch};
+\node[box,below=of obj] (apps) {Packet adapters and end-to-end checked theorems};
+\draw[arr] (up)--(codes);
+\draw[arr] (codes)--(trace);
+\draw[arr] (codes)--(game);
+\draw[arr] (trace)--(rel);
+\draw[arr] (game)--(err);
+\draw[arr] (rel)--(obj);
+\draw[arr] (err)--(obj);
+\draw[arr] (obj)--(apps);
+\end{tikzpicture}
+\end{center}
+
+\subsection{Dependency-ordered completion plan}
+
+\begin{enumerate}
+\item Compile the no-placeholder normalized reflection kernel.
+\item Complete \code{normalizeRaw} using \code{inst}, \code{run_zero}, \code{run_succ}, and equality transport.
+\item Reuse or promote checked Boolean, pairing, and search modules into a stable public API.
+\item Prove \code{allBelow}/\code{anyBelow} elimination and introduction lemmas.
+\item Complete one fixed \(\forall\exists\forall\) strategy certificate end to end.
+\item Implement rectangular viability and least-viable replay.
+\item Implement stable quotient/diameter erasure using the already compiled observable-glue pattern.
+\item Add regular-name addition, product, and guarded reciprocal.
+\item Add error-DAG and finite-net argmin.
+\item Port one substantial packet end to end; good candidates are a separated rotation theorem, a finite-law probability estimate, or a root-cluster symmetric identity.
+\item Only after correctness, optimize proof size or target the compressed native calculi.
+\end{enumerate}
+
+\subsection{Audits for every exported theorem}
+
+A completed module should pass all of the following:
+
+\begin{itemize}
+\item clean \code{lake build};
+\item source scan for \code{sorry}, \code{admit}, and newly introduced axioms;
+\item \code{#print axioms} on each public theorem;
+\item theorem type is visibly \code{Prf PRAAx} before any native export;
+\item exact finite regression tests for the associated evaluator/checker;
+\item a ledger entry naming every unresolved external producer.
+\end{itemize}

@@ -1,0 +1,111 @@
+\section{Normalization to one trace and object-level reflection}\label{sec:compiler}
+
+\subsection{Deterministic trace reflection}
+
+A normalized trace system consists of fixed primitive-recursive symbols
+\[
+  \Good(u),\quad \mathsf{init}(u),\quad \mathsf{fuel}(u),\quad
+  \mathsf{step}(i,s,u),\quad \Inv(i,s,u),\quad \Accept(s,u).
+\]
+Define \(\Run\) by primitive recursion on \(i\).  The local obligations are
+\begin{align}
+ \Good(u)=1 &\longrightarrow \Inv(0,\mathsf{init}(u),u)=1, \tag{B}\label{eq:base}\\
+ \Good(u)=1\wedge \Inv(i,s,u)=1
+   &\longrightarrow \Inv(i+1,\mathsf{step}(i,s,u),u)=1, \tag{S}\label{eq:step}\\
+ \Good(u)=1\wedge \Inv(\mathsf{fuel}(u),s,u)=1
+   &\longrightarrow \Accept(s,u)=1. \tag{F}\label{eq:finish}
+\end{align}
+All are quantifier-free formulas after Booleanization.
+
+\begin{theorem}[Normalized trace reflection]\label{thm:trace-reflection}
+If the object theory contains derivations of the normalized base, successor, and terminal obligations, then it contains a derivation
+\[
+  \vdash_{\PRAAx}\forall u\,
+  \bigl(\Good(u)=1\to
+    \Accept(\Run(\mathsf{fuel}(u),u),u)=1\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Keep \(u\) free.  Use the quantifier-free induction formula
+\[
+ I(i,u)\equiv \Inv(i,\Run(i,u),u)=1.
+\]
+The normalized base derivation proves \(I(0,u)\) under \(\Good(u)=1\).  The normalized successor derivation already includes the rewrite
+\[
+ \Run(i+1,u)=\mathsf{step}(i,\Run(i,u),u),
+\]
+so it proves \(I(i+1,u)\) from \(I(i,u)\) in the shifted context.  Apply \code{PRA.qfInd} to obtain \(\forall i\,I(i,u)\), then apply \code{Prf.allE} at \(\mathsf{fuel}(u)\).  The terminal implication gives acceptance.  Finally apply implication introduction to discharge \(\Good(u)=1\) and universal introduction to close \(u\).
+\end{proof}
+
+The proof is intentionally smaller than earlier raw-contract compilers.  Run-zero, run-successor, and equality transport are not hidden inside this kernel.  They belong to the local normalization layer, where theorem-specific terms can be rewritten by the checked \code{PRA.precZero}, \code{PRA.precSucc}, \code{Prf.eqCongr}, and \code{Prf.eqSubst1} lemmas.  The accompanying \code{NormalizedTraceReflection.lean} is a source-level candidate for this exact theorem and contains no placeholder proof.
+
+\subsection{The CBIP normalization theorem}
+
+\begin{theorem}[Fixed-program normalization]\label{thm:normalization}
+For every fixed CBIP \(P\) whose loops and bounded interactions have primitive-recursive bounds, one can construct a normalized trace system \(T_P\) such that:
+\begin{enumerate}
+\item the run of \(T_P\) simulates the operational semantics of \(P\);
+\item \(\Inv_P\) is quantifier free;
+\item the fuel \(F_P(u)\) is primitive recursive;
+\item every accepting terminal state yields the declared observation of \(P\);
+\item from object-language local contracts for the primitive commands, the compiler constructs normalized base, successor, and terminal derivations for \(T_P\).
+\end{enumerate}
+Therefore \Cref{thm:trace-reflection} produces the closed object-iPRA theorem for \(P\).
+\end{theorem}
+
+\begin{proof}
+The construction is by structural recursion on the fixed syntax of \(P\).  The state contains a program counter, all live variables, finite tables, loop counters, and a status tag.  The invariant is a Boolean case split on the program counter.  We describe each constructor.
+
+\emph{Exact update.}  The step replaces the designated register by the fixed term.  The invariant's next clause follows from the defining equation of that term and congruence.
+
+\emph{Assertion and guard.}  The numerical Boolean is decidable.  The step enters the success or failure tag.  In the success branch, the checked equality is stored in the invariant; in the failure branch, the state is frozen.  The global theorem is conditional on reaching acceptance, so no false mathematical conclusion is extracted from the rejected branch.
+
+\emph{Sequential composition.}  Add a phase tag.  In the first phase use the first component invariant.  At the switch, store its terminal certificate and initialize the second component.  In the second phase use the second invariant together with the frozen first certificate.  The fuel is the sum of the component fuels plus one switch step.
+
+\emph{Finite parallel composition.}  Schedule the components sequentially in a product state.  The invariant is the conjunction of completed component certificates and the current component invariant.  Since the number of components is fixed or primitively bounded by input data, this is a bounded loop.
+
+\emph{Bounded loop.}  Store the outer counter and the inner local state.  The compiler either assigns a static block of fuel to each iteration or flattens the pair of counters lexicographically.  The invariant says that all completed iterations satisfy their postconditions and that the active iteration satisfies its local invariant.  A finite fold replaces the phrase ``all completed iterations.''
+
+\emph{Least bounded search.}  Use the checked least-search recurrence or an equivalent sentinel register.  Its invariant is \Cref{lem:first}.  The terminal state contains either a least witness or a proof that every candidate failed.
+
+\emph{Global-contract query.}  The next query is a term in the current state.  Universal elimination instantiates the external hypothesis at that term.  A bounded table update stores the resulting Boolean fact, preserving the finite-query invariant.
+
+\emph{Existential and universal challenge.}  Compile the fixed bounded subformula by \Cref{thm:strategy}.  Certificate verification is itself a deterministic bounded trace.  The invariant records the checked prefix of the strategy tree.
+
+\emph{Relational query.}  First run a backward viability-table trace, then a forward least-viable replay trace.  The switch certificate states that the initial state is viable.  Detailed correctness appears in \Cref{sec:relational}.
+
+\emph{Stable observation.}  The terminal extraction proof combines the generated certificate with a supplied confluence, quotient-invariance, or diameter estimate.  Internal witnesses do not appear in the closed conclusion.
+
+Every constructor introduces only fixed primitive-recursive terms, bounded folds, or primitive recursion.  Every invariant clause is an equation or Boolean combination of equations.  The proof compiler composes local \code{Prf PRAAx} derivations using substitution, weakening, implication elimination/introduction, equality transport, and finite case splits.  This yields the three normalized derivations required by \Cref{thm:trace-reflection}.
+\end{proof}
+
+\subsection{Why the compiler theorem is a schema}
+
+The normalization proof does not assert that iPRA itself evaluates arbitrary program syntax.  A Lean metaprogram or ordinary definition traverses the fixed CBIP and emits:
+\begin{itemize}
+\item one concrete \code{PR} runner;
+\item one concrete quantifier-free formula;
+\item concrete local proof terms assembled from a finite library.
+\end{itemize}
+The emitted theorem is then checked by Lean's kernel.  This is analogous to a verified macro expansion: correctness is expressed by the generated object proof, not by trusting the generator.
+
+\subsection{Contract DAGs and reverse demand propagation}
+
+For a finite acyclic computation graph, each node advertises its local input demands and output contract.  Given a requested output precision \(k\), a reverse topological pass computes every predecessor demand.  A forward trace then evaluates nodes in topological order.  The global invariant says:
+\begin{enumerate}
+\item all processed nodes satisfy their local contracts;
+\item the stored demand table equals the reverse recurrence;
+\item every guard and magnitude bound required downstream has been established;
+\item the accumulated error budget is below the assigned node budget.
+\end{enumerate}
+The reverse pass and forward pass may be two traces combined by the compiled stable-observer glue, or one trace with a phase tag.  This subsumes prior contract-DAG proposals while making their final reflection step explicit.
+
+\subsection{Certificate reflection}
+
+An external producer may supply the entire trace \(c=(s_0,\dots,s_N)\).  A checker verifies the initial state, every transition, every invariant row, and terminal acceptance.  A separate bounded induction proves \(s_i=\Run(i,u)\).  Hence
+\[
+  \CertCheck_{\mathrm{trace}}(u,c)=1\longrightarrow
+  \Accept(\mathsf{last}(c),u)=1.
+\]
+The certificate may omit redundant states if it contains a DAG with replay pointers; the checker then follows a decreasing resource or topological index.  This permits large searches to be performed externally while retaining a small trusted arithmetic core.

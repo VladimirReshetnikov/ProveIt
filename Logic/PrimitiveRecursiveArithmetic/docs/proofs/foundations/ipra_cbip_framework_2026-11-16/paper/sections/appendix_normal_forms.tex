@@ -1,0 +1,88 @@
+\appendix
+\section{Auditable normal forms for theorem statements}
+
+\subsection{Deterministic finite construction}
+
+A deterministic theorem should be presented as
+\[
+  \forall x\quad \Good(x)=1\longrightarrow
+  \Post(x,F(x))=1,
+\]
+where \(F\), \(\Good\), and \(\Post\) are fixed primitive-recursive symbols or finite-observation predicates.  The artifact names the trace, invariant, fuel, and local derivations.
+
+\subsection{Precision-indexed construction}
+
+A represented theorem should be presented as
+\[
+  \forall p\quad H(p)\longrightarrow
+  \forall k\quad \Obs(p,k,A(p,k))=1.
+\]
+The proof keeps \(p,k\) free, computes a finite query plan, proves the observation, and only then universally introduces \(k\).  The interface lists every modulus, magnitude bound, and guard consumed.
+
+\subsection{Relational finite-use theorem}
+
+A multivalued producer should expose
+\[
+  \forall x,h\quad \mathsf{Evidence}(x,h)=1\longrightarrow
+  \Viable(x,h,\mathsf{start}(x))=1.
+\]
+A consumer theorem concludes a successful finite transcript, a quotient-invariant observation, or a diameter-stable output.  It must not silently replace finite viability by one infinite coherent selector.
+
+\subsection{Alternating bounded contract}
+
+A finite challenge theorem should expose both sides:
+\[
+ \CertCheck_A(x,1,c)=1\to A(x),\qquad
+ \CertCheck_A(x,0,c)=1\to\neg A(x).
+\]
+The canonical evaluator produces one of the two certificates.  This makes failed finite stages auditable and separates logical failure from a missing external producer.
+
+\subsection{Conditional certificate theorem}
+
+For an external certificate \(c\), state
+\[
+  \forall x,c\quad \CertCheck(x,c)=1\longrightarrow
+  \Phi(x,\mathsf{out}(c)).
+\]
+Record separately whether a producer is known for all admissible \(x\), for a special family, or only experimentally.
+
+\subsection{Exact branch under a gap}
+
+An exact selector should have the guarded form
+\[
+  \mathsf{Gap}(x,m)=1\longrightarrow
+  \mathsf{ExactBranch}(x,\mathsf{select}(x,m))=1.
+\]
+Without a gap, use overlapping branches, a finite relation, a cluster, a projective class, or a stable observation.
+
+\subsection{Height and complete-list theorem}
+
+A Diophantine enumeration theorem should name the effective producer:
+\[
+  \mathsf{CurveHyp}(x)\longrightarrow
+  \forall z\bigl(P(x,z)=1\to h(z)\leq B(x)\bigr),
+\]
+with concrete primitive-recursive \(B\), or else accept a supplied height certificate.  Only after this premise is available does the generic bounded enumerator yield a complete list.
+
+\section{Notation and implementation conventions}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Notation & Meaning \\
+\midrule
+\code{PR} & fixed primitive-recursive definition, never an unclocked universal evaluator \\
+\(u,x,p\) & paired numerical input, parameter, or certificate codes \\
+\(k\) & requested output precision \\
+\(h,r\) & finite interaction horizon or remaining resource \\
+\(s\) & encoded machine/consumer state \\
+\(\Viable(x,r,s)\) & backward Boolean saying a successful finite continuation exists \\
+\(\Local(x,r,s,a)\) & local admissibility of answer \(a\) \\
+\(E\) & observational equivalence, not necessarily literal equality \\
+\(\delta\) & output diameter or error bound \\
+\(\Prf\ \PRAAx\ \Gamma\ \varphi\) & object-level derivability in ordinary iPRA \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+All finite sequences and graphs may use any standard primitive-recursive coding with explicit bounds.  Implementations should nonetheless share one canonical repository encoding to avoid repeated conversion theorems.  Rational inequalities are reduced to signed-integer cross products with positive denominators.  Every order decision is therefore an exact decision on finite codes, not an order decision on an arbitrary represented real.

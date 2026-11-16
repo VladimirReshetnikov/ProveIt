@@ -1,0 +1,76 @@
+\section{Scope, repository audit, and novelty boundary}
+
+\subsection{The present repository situation}
+
+The relevant ProveIt tree contains three logically distinct kinds of artifact.
+
+\begin{enumerate}
+\item \textbf{A checked foundation.}  \code{ConciseIPRA} defines ordinary first-order intuitionistic primitive recursive arithmetic by the types \code{PR}, \code{PTm}, the theory \code{PRAAx}, and the derivability relation \code{Prf PRAAx}.  Its checked bridges relate this ordinary presentation to the native scalar calculi.
+\item \textbf{A checked derivation library.}  \code{IPRADerivations} contains explicit closed derivations
+\[
+   ([] : \mathsf{List}(\Fm\ \PTm\ 0))\;\vdash_{\PRAAx}\;\varphi
+\]
+for concrete arithmetic, algebraic, combinatorial, and number-theoretic statements.  Its reusable core already provides open induction, instantiation, equality congruence, semiring arithmetic, order, pairing, bounded sums and products, bounded search, division, gcd, finite matrices, and other infrastructure.
+\item \textbf{Research packets.}  The packet collection contains broad human arguments, semantic Lean prototypes, numerical experiments, and formalization plans.  The repository explicitly distinguishes these from checked object-language derivations.  A report, a compiled host theorem, or a passing numerical test is therefore not automatically a theorem of iPRA.
+\end{enumerate}
+
+The close-out head was \texttt{210616e660a7ab5f0d706761c12bba673174cec9}.  Its latest commit added a fully object-level power-cleared Euler-product estimate, registered it in the checked derivation suite, and reported 432 checks with no \code{sorryAx}.  The core interfaces used by this report---\code{PR.lean}, \code{Deduction.lean}, \code{Core/Basic.lean}, and \code{Core/Search.lean}---were re-read at that head.  This is important methodologically: substantial finite inequalities are already being proved directly in the existing \code{Prf PRAAx} backend, so a new framework should reuse that backend rather than define a parallel logic.
+
+\subsection{What the preceding frameworks already accomplish}
+
+The foundation packets are unusually rich.  Collectively they already contain:
+
+\begin{itemize}
+\item bounded Booleanization and least bounded search;
+\item deterministic trace reflection and certificate checking;
+\item finite-observation semantics for represented objects;
+\item precision-demand propagation and error-budget DAGs;
+\item finite relational witnesses, backward viability, and finite-use composition;
+\item stable or quotient-valued elimination of internal choices;
+\item finite nets, explicit compact presentations, nested isolating regions, and metastability;
+\item height-bound/complete-list conversion and careful separation of verifiers from difficult producers;
+\item contract-DAG and proof-producing interface compiler architectures;
+\item a source-level trace compiler outline whose remaining holes are precisely the de Bruijn and equality-transport steps needed to derive normalized base, successor, and terminal obligations.
+\end{itemize}
+
+It would be misleading to relabel those ideas and call them new.  The present contribution instead reorganizes them around the smallest missing trusted interface.
+
+\subsection{The remaining common bottleneck}
+
+Most packet-level proofs stop at one of the following boundaries.
+
+\begin{enumerate}
+\item A finite algorithm and invariant are described semantically, but no concrete \code{PR} symbol and no \code{Prf PRAAx} proof are produced.
+\item A generic trace compiler is proposed, but it simultaneously handles program normalization, substitutions, recursion equations, and logical reflection.  The resulting theorem has a few difficult generic holes even though the final induction step is simple.
+\item Bounded existential choices are handled, but arbitrary finite alternation---for example \(\forall q<Q\,\exists z<Z\,\forall e<E\)—is not integrated with relational and precision-aware computation.
+\item A packet proves a finite verifier but does not identify whether the missing producer is routine engineering, an omitted quantitative hypothesis, or genuinely unavailable mathematics.
+\end{enumerate}
+
+The key design decision of this report is to split compilation into two layers.
+
+\begin{definition}[Local normalization layer]
+For a fixed program, the local layer elaborates each command into explicit primitive-recursive state updates and produces three derivations in the exact syntactic forms required by quantifier-free induction: a base derivation, a successor derivation, and a terminal extraction implication.
+\end{definition}
+
+\begin{definition}[Normalized reflection kernel]
+The reflection kernel accepts only those already-normalized derivations.  It applies \code{PRA.qfInd}, specializes the resulting universal invariant at the computed fuel, applies terminal extraction, discharges the input guard, and universally closes the input variable.
+\end{definition}
+
+The second layer is tiny and independent of the mathematics.  All de Bruijn and equality rewriting is moved into local elaborators, where the relevant terms are visible and where the checked \code{IPRADerivations} lemmas can be used directly.  This split is both a mathematical normalization theorem and a practical Lean engineering strategy.
+
+\subsection{Claim discipline}
+
+We use four status labels throughout.
+
+\begin{description}
+\item[Human theorem.] A full mathematical argument is given, including finite bounds and the admissibility of each induction.
+\item[Executable reference.] Exact finite code was run on representative instances.  This is regression evidence, not an iPRA proof.
+\item[Object-level target.] A precise \code{Prf PRAAx} statement, dependencies, and proof-construction path are supplied.
+\item[Checked upstream result.] The statement is already in the repository's checked libraries at the audited snapshot.  This package does not independently rebuild the repository.
+\end{description}
+
+No generic theorem in this report is to be read as creating a difficult mathematical producer.  A finite checker can validate a height certificate, a zero-free region, a root-count table, or a modulus.  It cannot manufacture such data merely because the downstream verification is finite.
+
+\subsection{Road map}
+
+\Cref{sec:interfaces} describes mathematical concepts by finitary interfaces.  \Cref{sec:cbip} defines the bounded interaction language.  \Cref{sec:games} handles arbitrary fixed bounded alternation.  \Cref{sec:compiler} proves trace normalization and reflection.  \Cref{sec:relational} adds finite relational evidence and stable witness erasure.  \Cref{sec:quantitative} develops represented arithmetic and precision contracts.  Later sections give domain patterns, impossibility boundaries, a difficulty-resolution matrix, and a Lean implementation plan.

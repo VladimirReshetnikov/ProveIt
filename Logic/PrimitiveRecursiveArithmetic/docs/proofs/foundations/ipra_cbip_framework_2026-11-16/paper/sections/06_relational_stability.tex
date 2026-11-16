@@ -1,0 +1,98 @@
+\section{Finite relational evidence and stable witness erasure}\label{sec:relational}
+
+\subsection{Bounded evidence machines}
+
+A relational producer need not return one globally coherent object.  For a finite consumer, it is enough to expose finitely many locally valid responses.  Fix an input \(x\), a remaining resource \(r\), and a consumer state \(s\).  A bounded evidence machine has primitive-recursive fields
+\[
+ \mathsf{halt}(x,r,s),\quad \Post(x,r,s),\quad
+ A(x,r,s),\quad \Local(x,r,s,a),\quad \Next(x,r,s,a).
+\]
+If the state is terminal, \(\Post\) is the desired finite conclusion.  Otherwise an answer \(a<A(x,r,s)\) is admissible when \(\Local=1\), and the consumer continues at \(\Next\) with one less unit of resource.  The state stores all history needed for compatibility.
+
+\subsection{Backward viability}
+
+Define the Boolean \(\Viable(x,r,s)\) by primitive recursion on \(r\).  To keep the recurrence readable, put
+\begin{align*}
+ T(x,r,s)&:=\mathsf{halt}(x,r,s)\cdot\Post(x,r,s),\\
+ D(x,r+1,s)&:=\max_{a<A(x,r+1,s)}\!\Bigl(
+   \Local(x,r+1,s,a)\cdot
+   \Viable(x,r,\Next(x,r+1,s,a))\Bigr),\\
+ C(x,r+1,s)&:=(1-\mathsf{halt}(x,r+1,s))\cdot D(x,r+1,s).
+\end{align*}
+Then
+\[
+ \Viable(x,0,s)=T(x,0,s),\qquad
+ \Viable(x,r+1,s)=\max\bigl(T(x,r+1,s),C(x,r+1,s)\bigr).
+\]
+Every maximum is a bounded Boolean fold.
+
+\begin{theorem}[Finite viability correctness]\label{thm:viability}
+For every fixed evidence machine, iPRA proves that \(\Viable(x,r,s)=1\) exactly when there is a successful transcript of length at most \(r\) from \(s\).  The transcript predicate is bounded and can itself be Booleanized.
+\end{theorem}
+
+\begin{proof}
+Induct on \(r\).  At zero, success means immediate termination with the postcondition, which is the defining equation.  At \(r+1\), split on the numerical halt Boolean.  In the terminal branch, viability is exactly \(\Post\).  In the nonterminal branch, success consists of an answer below the finite bound satisfying \(\Local\) and a successful continuation at resource \(r\).  Apply the induction hypothesis to the continuation and the bounded-existential fold theorem to the answer.  The induction predicate is an equality of numerical Booleans, hence quantifier free.
+\end{proof}
+
+\subsection{Least viable execution}
+
+At a nonterminal viable state, choose the least answer satisfying
+\[
+ \Local(x,r,s,a)=1\quad\text{and}\quad
+ \Viable(x,r-1,\Next(x,r,s,a))=1.
+\]
+The least-success theorem gives such an answer.  Define forward execution by primitive recursion, appending the selected answer and decrementing the resource.
+
+\begin{theorem}[Finite-use relational composition]\label{thm:rel-compose}
+If \(\Viable(x,h,\mathsf{start}(x))=1\), the least-viable execution returns within \(h\) answer steps a transcript whose edges satisfy \(\Local\) and whose terminal state satisfies \(\Post\).  The theorem is provable in iPRA by quantifier-free induction.
+\end{theorem}
+
+\begin{proof}
+The invariant at executed-step count \(i\) says:
+\begin{enumerate}
+\item the stored transcript has length \(i\);
+\item replaying \(\Next\) along it gives the current state;
+\item every stored edge satisfies \(\Local\);
+\item the current state is viable for the remaining resource \(h-i\).
+\end{enumerate}
+All list and bounded-universal claims are Boolean folds.  The base is the empty transcript and the assumed initial viability.  At a nonterminal state, unfold the viability equation.  Its existential fold is one, so least search returns a locally valid answer with viable successor.  Append it and preserve the invariant.  The resource strictly decreases, so after at most \(h\) answer steps either a terminal state has been reached or the zero-resource viability equation forces one.  The terminal invariant yields \(\Post=1\).
+\end{proof}
+
+This theorem composes a multivalued producer with one bounded adaptive consumer.  It does not choose an infinite branch and does not assert that executions selected for different horizons agree.
+
+\subsection{Strategy and relational choice are one mechanism}
+
+The game compiler of \Cref{sec:games} is a special case of backward viability.  At a prover node, locally valid answers are candidate moves; at an adversary node, the certificate state requires all children to be checked.  Conversely, relational viability may be viewed as a game in which the producer proposes a local answer and the checker challenges compatibility and terminal postconditions.  A unified Lean library can therefore share Boolean folds, state encodings, certificate tables, and replay lemmas.
+
+\subsection{Exact branch-invariant elimination}
+
+Let \(o(t)\) be the output of a successful terminal transcript and let \(E(x,y,z)\) be a primitive-recursive equivalence relation appropriate to the theorem: literal equality, permutation equivalence, projective equivalence, equality of a symmetric polynomial, or equality of encoded finite sets.
+
+\begin{theorem}[Stable quotient output]\label{thm:stable-quotient}
+Assume initial viability and an object-iPRA proof that any two successful terminal states reachable within the finite horizon have \(E\)-equivalent outputs.  Then the output of the least-viable execution is \(E\)-equivalent to every successful output.  If \(E\) is equality, the chosen code is unique; otherwise the theorem exports the quotient-level observation without exposing the internal branch.
+\end{theorem}
+
+\begin{proof}
+By \Cref{thm:rel-compose}, the selected execution is successful.  Instantiate the finite confluence theorem with the selected terminal state and an arbitrary successful one.  The resulting \(E\)-proof is exactly the desired conclusion.  No compatibility between choices at different horizons is required.
+\end{proof}
+
+\subsection{Quantitative witness erasure}
+
+Exact confluence is often stronger than needed.  Suppose a coded metric \(d\) and rational \(\delta\) satisfy
+\[
+ \mathsf{Success}(t_1)\wedge \mathsf{Success}(t_2)
+ \longrightarrow d(o(t_1),o(t_2))\leq\delta.
+\]
+Then the selected output is within \(\delta\) of every admissible output.  If a downstream observer is \(L\)-Lipschitz, its values differ by at most \(L\delta\).  At requested precision \(k\), choose the relational level so that this final diameter fits the allocated error budget.  Thus separate finite choices at separate precisions can still prove one universally quantified observation theorem.
+
+\subsection{Certificate mode for viability}
+
+Computing an entire dynamic-programming table internally may be expensive.  A certificate can instead list a finite DAG of states, their resources, viability labels, selected edges, and terminal checks.  The checker verifies:
+\begin{enumerate}
+\item every selected live edge is in bounds and locally valid;
+\item it points to a state with smaller resource labeled viable;
+\item terminal viable nodes satisfy the postcondition;
+\item the root is the requested initial state and is viable;
+\item replay of selected edges reaches a terminal node.
+\end{enumerate}
+Induction on the decreasing resource proves checker soundness.  This format is suitable for root clustering, chart selection, interval subdivision, finite covers, and external dynamic programming.
