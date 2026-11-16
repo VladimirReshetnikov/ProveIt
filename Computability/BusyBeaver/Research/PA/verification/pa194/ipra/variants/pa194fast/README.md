@@ -15,12 +15,13 @@ resulting bytes against the [archive catalogue](../../../../../docs/MACHINE_FILE
 | PA194SEL with both shortcuts | `e93b8634951bf934569e43e418b4b2bfcb329d61c3720f6880bf05003b112be1` | [`PA194SELFastNative.consistency_iff_literal_nonhalt`](PA194SELFastNative.lean) |
 | `AD_fast` | `d13760e39edeac19cb3312635b22aa29c3182668fac6fb97256e08a9ce626332` | [`PA194ADFastNative.consistency_iff_literal_nonhalt`](PA194ADFastNative.lean) |
 | `HX_fast` | `88015058bd168c277130c7d804193f41302a6e031647da7fc39065458577c75c` | [`PA194HXFastNative.consistency_iff_literal_nonhalt`](PA194HXFastNative.lean) |
+| `LC_fast` | `dc03de52a78d09f016c6b16346fd4b93f20c87a44dc1e9efb6b7c6a8e6f5fc9f` | [`PA194LCFastNative.consistency_iff_literal_nonhalt`](PA194LCFastNative.lean) |
 
 [`PA194GuardedShortcuts.sameHalt`](PA194GuardedShortcuts.lean) proves a
 tape invariant along each blank run using kernel checks of the incoming
 rows. Each fast step matches one or three parent steps. The segment
 argument compares halting at arbitrary clocks in models of `IΣ₁`.
-The five native endpoints derive `Con(PA) ↔ ¬Halt` in standard iPRA.
+The six native endpoints derive `Con(PA) ↔ ¬Halt` in standard iPRA.
 Their Lean axiom audits report `propext`, `Classical.choice`, and `Quot.sound`.
 
 Run with the [primary literal](../../native-endpoint/README.md),
@@ -36,12 +37,14 @@ The fourth argument enables the two companion replays. With the first
 three arguments the checker replays `primary_fast`. Each invocation
 regenerates the selected native bytes and finite Lean certificates.
 
-Replay `AD_fast` and `HX_fast` using the checked controller and coverage
-stages for [PA194AD](../pa194ad/README.md) and [PA194HX](../pa194hx/README.md).
+Replay each companion using the checked controller and coverage stages for
+[PA194AD](../pa194ad/README.md), [PA194HX](../pa194hx/README.md), and
+[PA194LC](../pa194lc/README.md).
 
 ```sh
 pa=Computability/BusyBeaver/Research/PA/verification
 fast="$pa/pa194/ipra/variants/pa194fast"
 bash "$fast/check-companion.sh" AD "$ad_controller" "$ad_coverage" /dev/shm/pa194ad-fast "$PWD"
 bash "$fast/check-companion.sh" HX "$hx_controller" "$hx_coverage" /dev/shm/pa194hx-fast "$PWD"
+bash "$fast/check-companion.sh" LC "$lc_controller" "$lc_coverage" /dev/shm/pa194lc-fast "$PWD"
 ```
