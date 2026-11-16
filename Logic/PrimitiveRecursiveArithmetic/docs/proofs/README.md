@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives from 14 to
-16 November 2026: 33 to `docs/drafts`, and 60 to
+16 November 2026: 33 to `docs/drafts`, and 61 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -62,7 +62,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 93 archives hold 2,896 members: 2,745 placed here, 104 ignored, 21 in bundled copies of
+The 94 archives hold 2,910 members: 2,759 placed here, 104 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -212,6 +212,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 |---|---|---|---|---:|---:|
 | [`central_limit_ipra_2026-11-15`](probability/central_limit_ipra_2026-11-15/) | *not committed* 2026-11-15 | `central_limit_ipra_2026-11-15` | Central limit theorems with explicit Berry–Esseen-type bounds for finite rational laws, and effective iid, Lindeberg, Lyapunov, de Moivre–Laplace, local, multivariate and martingale versions. Its Lean files are uncompiled blueprints. | 17 | 1 |
 | [`expected_value_ipra_2026-11-16`](probability/expected_value_ipra_2026-11-16/) | `6ac70b5fcb` 2026-11-16 | `expected_value_ipra` | Expected value: for finite weighted laws with natural weights and rational-valued observables, expectation, the law of the unconscious statistician, linearity, monotonicity, indicator expectations, tail sums, variance, Cauchy–Schwarz, Markov and Chebyshev, independence and product formulas, finite conditional expectation, unbiasedness and variance reduction of the sample mean, and a quantitative finitary strong law, all by bounded sums and quantifier-free induction. Countable and continuous claims use primitive-recursive approximants with explicit tail, integration or L1 moduli. Its Lean files are uncompiled blueprints. | 30 | 1 |
+| [`median_ipra_constructive_proofs`](probability/median_ipra_constructive_proofs/) | `6ac70b5fcb` 2026-11-16 | `median_ipra_constructive_proofs` | Medians: with the division-free balance predicate `2·#{x_i < t} ≤ n` and `2·#{x_i > t} ≤ n`, the medians of sorted data are exactly the interval between the two middle entries, which gives the odd and even formulas, existence, uniqueness, quantile identifications, order invariance, robust rank bounds and the minimisers of total absolute deviation. For a finite weighted law it proves `(2S − MW)² ≤ 4(WQ − S²)`, the cleared form of the bound of the distance between mean and median by the standard deviation, and the exact law of an odd sample median by multinomial counting. Continuous and asymptotic claims are stated with explicit moduli. Its Lean blueprint states no `sorry`; the `Prf PRAAx` endpoint is a target, not a compiled proof. | 14 | 0 |
 
 ### Topology
 

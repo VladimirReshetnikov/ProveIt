@@ -1,0 +1,1521 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalize,noabbrev]{cleveref}
+\usepackage{bookmark}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!55!black,
+  pdftitle={Median Mathematics in Intuitionistic Primitive Recursive Arithmetic},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist{nosep,leftmargin=2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Median mathematics in iPRA}
+\fancyhead[R]{16 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{black!3},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{construction}[theorem]{Construction}
+
+\newcommand{\iPRA}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\Nat}{\mathbb N}
+\newcommand{\Int}{\mathbb Z}
+\newcommand{\Rat}{\mathbb Q}
+\newcommand{\Real}{\mathbb R}
+\newcommand{\Med}{\operatorname{Med}}
+\newcommand{\card}{\operatorname{card}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\statusA}{\textbf{Finitary theorem}}
+\newcommand{\statusB}{\textbf{Effective analytic schema}}
+\newcommand{\statusC}{\textbf{Formalization route}}
+\newcommand{\statusX}{\textbf{Correction}}
+
+\title{\textbf{Median Mathematics in Intuitionistic\\Primitive Recursive Arithmetic}\\[0.5em]
+\large Finitary proofs, effective analytic extensions, and a Lean formalization plan}
+\author{Prepared for Vladimir Reshetnikov}
+\date{16 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report reconstructs as much as possible of the mathematical content of the
+English Wikipedia article \emph{Median} inside intuitionistic primitive
+recursive arithmetic (\iPRA).  The finite core is unusually favorable to this
+weak constructive setting.  A median of a nonempty finite sequence is defined
+without division by two bounded counts.  For a sorted sequence
+$x_0\leq\cdots\leq x_{n-1}$, the complete set of such medians is exactly
+\[
+  \left[x_{\floor{(n-1)/2}},\,x_{\floor{n/2}}\right].
+\]
+This theorem yields the odd and even formulas, existence, uniqueness,
+quantile terminology, invariance under order transformations, robustness, and
+the exact minimizers of total absolute deviation.  For even samples we work
+with twice the conventional median, so no division is needed in the arithmetic
+theory.
+
+For finite weighted rational laws we prove the cumulative-distribution
+characterization, existence, symmetry results, conditional-median optimality,
+and exact odd-sample median distributions.  We give a denominator- and
+square-root-free proof of the mean--median inequality
+\[
+  (2S-MW)^2\leq 4(WQ-S^2),
+\]
+where $W,S,Q$ are the total weight and first two raw moment numerators and $M$
+is twice a median.  We also prove finite forms of Jensen's inequality for
+medians, rank robustness, the replacement breakdown point, properties of
+median filters, one-dimensional $k$-medians, Hodges--Lehmann and Theil--Sen
+estimators, marginal medians, and the centerpoint theorem route.
+
+Continuous distributions, logarithms, square roots, geometric medians, and
+asymptotic normality are treated only through primitive-recursive regular
+names and explicit moduli.  Several statements on the source page require
+additional hypotheses; the report supplies corrections and exact finite
+counterexamples.  The accompanying Lean files are explicit blueprints, not a
+completed kernel-checked \texttt{Prf PRAAx} development.
+\end{abstract}
+
+\begin{center}
+\fbox{\begin{minipage}{0.93\textwidth}
+\textbf{Trust boundary.}  The arguments below are fully developed human
+proofs.  ``Internal to \iPRA'' means that every object is finitely coded, every
+algorithm is primitive recursive, and the indicated correctness proof can be
+organized as quantifier-free induction.  It does \emph{not} mean that this
+archive already contains completed Lean proof terms.  The Lean files contain
+no \texttt{sorry} and introduce no theorem axiom, but they remain blueprints.
+\end{minipage}}
+\end{center}
+
+\tableofcontents
+\newpage
+
+\section{Source scope and classification}
+
+The target article ranges from elementary order statistics through robust
+statistics, exact and asymptotic sampling distributions, multivariate
+optimization, regression, filtering, clustering, and historical remarks
+\cite{wiki-median}.  These topics have very different constructive strength.
+We use four categories.
+
+\begin{description}[style=nextline]
+\item[Category A: finite exact mathematics.]  Lists, finite weighted laws,
+bounded counts, sorting, finite sums, factorials, binomial coefficients, and
+rational inequalities are primitive recursive.  Their proofs can be reduced
+to quantifier-free induction.
+\item[Category B: effective analysis.]  A real number or function is supplied
+by rational interval approximations, together with primitive-recursive
+precision, continuity, tail, and integrability moduli.  Claims become
+$\varepsilon$--$N$ statements with computable witnesses.
+\item[Category C: imported finite geometry or asymptotic theory.]  The
+mathematical route is constructive, but a substantial library theorem---for
+example fixed-dimensional Helly, effective resampling theory, or a strong
+unimodal inequality---still has to be formalized.
+\item[Category X: correction.]  Some informal sentences are false without
+extra hypotheses.  We state and prove the corrected theorem, often with a
+small counterexample to the unrestricted reading.
+\end{description}
+
+The separate \texttt{THEOREM\_LEDGER.md} records seventy article claims and
+their status.
+
+\section{The constructive arithmetic setting}
+
+\subsection{What \iPRA supplies}
+
+The ProveIt development presents primitive recursive arithmetic in
+first-order intuitionistic logic.  Its language has a symbol for every
+primitive-recursive function, defining equations for those symbols, equality,
+successor axioms, and induction restricted to quantifier-free formulas
+\cite{proveit-ipra}.  The checked derivation library already contains semiring
+algebra, truncated subtraction, order, parity, bounded sums, pairing, search,
+division, permutations, binomial coefficients, and related tools
+\cite{proveit-derivations}.
+
+A recurring formalization pattern is this.  A bounded loop is packaged as a
+primitive-recursive function $h$.  The desired invariant is then a
+quantifier-free equation or inequality involving $h$.  Induction on the loop
+counter proves it.  Existential objects are not selected by an unbounded
+choice principle: a sorting trace, index list, or bounded-search result is
+computed explicitly and checked.
+
+\subsection{Finite sequence coding}
+
+A sequence code stores a length and a nested pairing of entries.  The
+functions
+\[
+  \operatorname{len}(v),\qquad \operatorname{nth}(v,i),\qquad
+  \operatorname{valid}(v)
+\]
+are total primitive-recursive functions; malformed inputs receive a harmless
+default.  Bounded folds define counts and sums, for example
+\[
+ \operatorname{ltCount}(v,t)
+   =\sum_{i<\operatorname{len}(v)}
+      \ind[\operatorname{nth}(v,i)<t].
+\]
+The boolean comparison is decidable because arithmetic order is decidable.
+The equation for the successor length is a direct bounded-sum recursion
+identity.
+
+The existing PA list-coding project already uses the right median design: a
+nondecreasing permutation plus separate odd and even length equations for
+\texttt{TwiceMedian}, avoiding division and parity-sensitive quotients
+\cite{proveit-listcoding}.  We reuse that design, but the requested endpoint
+is a new \iPRA\ derivation, not merely the existing PA semantic theorem.
+
+\subsection{Integers and rationals}
+
+Signed integers may be represented by pairs $(a,b)$ denoting $a-b$.  A
+rational is a signed numerator and a positive denominator.  Equality and order
+are tested by cross multiplication.  For a finite list of rationals one can
+also multiply by the product $D$ of all positive denominators.  The map
+$x\mapsto Dx$ is strictly increasing, so every order-statistic statement
+reduces to signed integers.  At the end, division by $D$ is restored in the
+external interpretation.
+
+This scaling observation is important.  The finite median theory itself needs
+no field axioms, no completed real line, and no choice.  Even the conventional
+median is represented internally by its doubled value.
+
+\section{The central finite theorem}
+
+Let $x=(x_0,\ldots,x_{n-1})$ be a nonempty finite sequence in a linearly
+ordered set with decidable comparison.  Let
+\[
+  y_0\leq y_1\leq\cdots\leq y_{n-1}
+\]
+be the output of an explicit insertion sort.  Define
+\[
+ \ell=\floor{\frac{n-1}{2}},\qquad
+ u=\floor{\frac n2},\qquad L=y_\ell,\qquad U=y_u.
+\]
+For a candidate $t$, put
+\[
+ B_x(t)=\#\{i<n:x_i<t\},\qquad
+ A_x(t)=\#\{i<n:t<x_i\}.
+\]
+
+\begin{definition}[Balance median]
+A value $t$ is a balance median of $x$ if
+\begin{equation}\label{eq:balance}
+  2B_x(t)\leq n\quad\text{and}\quad 2A_x(t)\leq n.
+\end{equation}
+\end{definition}
+
+This formulation is division-free and quantifier-free after the two counts
+are made primitive-recursive symbols.
+
+\begin{theorem}[Middle-interval theorem]\label{thm:middle-interval}
+For every $t$,
+\[
+ t\text{ satisfies \eqref{eq:balance}}
+ \quad\Longleftrightarrow\quad L\leq t\leq U.
+\]
+Consequently, the complete set of medians is the closed interval $[L,U]$.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $L\leq t\leq U$.  Because $t\leq y_u$, every entry strictly
+below $t$ occurs before index $u$.  Hence $B_x(t)\leq u$, and
+$2u\leq n$.  Similarly, because $y_\ell\leq t$, every entry strictly above
+$t$ occurs after index $\ell$.  Thus
+\[
+ A_x(t)\leq n-\ell-1.
+\]
+A direct parity check gives $2(n-\ell-1)\leq n$.  Both balance inequalities
+follow.
+
+Conversely, assume $t<L$.  Every entry from index $\ell$ onward is strictly
+above $t$, so
+\[
+ A_x(t)\geq n-\ell.
+\]
+For $n=2q+1$, this lower bound is $q+1$; for $n=2q$, it is also $q+1$.
+In either case $2A_x(t)>n$, contradicting \eqref{eq:balance}.  The case $t>U$
+is symmetric: the entries through index $u$ are strictly below $t$, so
+$B_x(t)\geq u+1$ and $2B_x(t)>n$.
+\end{proof}
+
+Every inequality used in this proof is a polynomial or truncated-subtraction
+identity in $n,q,\ell,u$.  The sortedness arguments are bounded.  Therefore
+the proof has a direct quantifier-free-induction realization.
+
+\begin{corollary}[Odd and even formulas]\label{cor:odd-even}
+If $n=2q+1$, then $\ell=u=q$ and the median is uniquely $y_q$.  If $n=2q$,
+then $\ell=q-1$ and $u=q$, and every $t\in[y_{q-1},y_q]$ is a median.  The
+usual conventional choice is
+\[
+ m=\frac{y_{q-1}+y_q}{2}.
+\]
+Internally we define the unique doubled conventional median
+\[
+ M=2m=y_{q-1}+y_q.
+\]
+\end{corollary}
+
+\begin{corollary}[Existence and uniqueness criterion]
+Every nonempty finite sequence has a median.  Its median is unique exactly
+when $L=U$; in particular every odd-length sequence has a unique median.
+\end{corollary}
+
+\begin{proof}
+Insertion sort is primitive recursive and returns a sorted permutation.  The
+value $L$ is therefore an explicit witness.  The uniqueness statement follows
+from \cref{thm:middle-interval}.
+\end{proof}
+
+\subsection{Why sorting is constructively harmless}
+
+Insertion sort is defined by primitive recursion on the input code.  Inserting
+$a$ into a sorted list scans from the left until the first entry not below
+$a$.  The correctness invariant has two finite components:
+
+\begin{enumerate}
+\item the result is nondecreasing;
+\item a list of source indices witnesses that the result is a permutation of
+the input.
+\end{enumerate}
+
+Both components are preserved by one insertion.  No appeal to ``there exists a
+sorting permutation'' is needed.  The permutation certificate is useful later
+because counts, sums, and products can be transported by a checked reindexing
+lemma.
+
+\section{Order, quantiles, and transformations}
+
+\begin{theorem}[Order-only character]
+The median predicate depends only on the comparison relation.  It is
+independent of any distance or arithmetic structure.
+\end{theorem}
+
+\begin{proof}
+The balance definition uses only $<$, finite counting, multiplication by two,
+and comparison with the length.  The middle-interval characterization uses
+only sorted order.  Therefore any finite ordinal scale---for example
+$\mathrm F<\mathrm D<\mathrm C<\mathrm B<\mathrm A$---can be coded by ranks
+and treated identically.
+\end{proof}
+
+For even ordinal data, the balance median is an interval between two adjacent
+or separated grades.  A numerical midpoint is an extra convention, not an
+order-theoretic object.
+
+\begin{corollary}[Quantile names]
+The median interval is the set of one-half quantiles.  The lower endpoint is
+the lower $1/2$-quantile and the upper endpoint is the upper $1/2$-quantile.
+Thus the same object is the second quartile, fifth decile, and fiftieth
+percentile, once the lower/upper convention is fixed.
+\end{corollary}
+
+\begin{theorem}[Monotone transport]\label{thm:monotone}
+Let $f$ be strictly increasing.  Then
+\[
+ t\in\Med(x)\quad\Longleftrightarrow\quad
+ f(t)\in\Med(f(x_0),\ldots,f(x_{n-1})).
+\]
+If $f$ is strictly decreasing, the same conclusion holds, with the two count
+inequalities exchanged.
+\end{theorem}
+
+\begin{proof}
+For increasing $f$,
+$x_i<t$ iff $f(x_i)<f(t)$ and $t<x_i$ iff $f(t)<f(x_i)$, so both counts are
+unchanged.  For decreasing $f$, the first relation becomes
+$f(t)<f(x_i)$ and the second becomes $f(x_i)<f(t)$; the balance conjunction is
+symmetric in the two counts.
+\end{proof}
+
+\begin{remark}
+The conventional midpoint of two even-sample middle values commutes with
+\emph{affine} maps, including decreasing affine maps.  It does not commute
+with an arbitrary nonlinear monotone map, although the full median interval
+transports correctly.
+\end{remark}
+
+\section{Robustness and breakdown}
+
+The phrase ``the median ignores extreme values'' admits an exact rank theorem.
+Let $x$ and $z$ be samples of the same length, and suppose at most $r$
+coordinates have been replaced.  Write $x_{(k)}$ and $z_{(k)}$ for their
+zero-based order statistics.
+
+\begin{theorem}[Rank perturbation]\label{thm:rank-perturbation}
+For every $k<n$,
+\begin{align*}
+ r\leq k &\implies x_{(k-r)}\leq z_{(k)},\\
+ k+r<n &\implies z_{(k)}\leq x_{(k+r)}.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+Assume $r\leq k$ and, toward a contradiction,
+$z_{(k)}<x_{(k-r)}$.  At least $k+1$ entries of $z$ are then strictly below
+$x_{(k-r)}$.  At most $r$ of them can be replacements, so at least
+$k+1-r$ unchanged entries of $x$ are strictly below $x_{(k-r)}$.  But an order
+statistic at index $k-r$ has at most $k-r$ entries strictly below it, a
+contradiction.  The upper inequality follows by reversing the order.
+\end{proof}
+
+The proof is purely a bounded pigeonhole argument.  It does not assume the
+values are numeric.
+
+\begin{corollary}[Median rank envelope]
+If fewer than half the observations are replaced, each middle order statistic
+of the contaminated sample is trapped between two explicitly indexed order
+statistics of the original sample.  In particular, changing values already
+known to remain outside those ranks cannot change the median.
+\end{corollary}
+
+This explains censored observations.  If a small number of failures is known
+only to exceed every completed time, their exact magnitudes are irrelevant as
+long as they do not occupy a middle rank.
+
+\begin{theorem}[Finite-sample replacement breakdown]\label{thm:breakdown}
+For the conventional sample median of $n$ observations, the minimum number of
+arbitrary replacements that can drive the estimate without bound is
+$\ceil{n/2}$.  Hence the replacement breakdown fraction is
+\[
+  \frac{\ceil{n/2}}{n}.
+\]
+\end{theorem}
+
+\begin{proof}
+If $n=2q$, replace the largest $q$ chosen coordinates by a common value $H$.
+The upper middle order statistic is then $H$, so the conventional median grows
+like $H/2$.  With only $q-1$ replacements, \cref{thm:rank-perturbation} bounds
+both middle order statistics by fixed original order statistics, so the
+median cannot diverge.
+
+If $n=2q+1$, replacing $q+1$ coordinates by $H$ makes the unique middle order
+statistic equal to $H$.  With at most $q$ replacements, the rank perturbation
+bound traps that order statistic between the original minimum and maximum.
+\end{proof}
+
+\section{Absolute-deviation optimality}
+
+\subsection{Unweighted samples}
+
+Define
+\[
+  D_x(t)=\sum_{i<n}\abs{x_i-t}.
+\]
+
+\begin{theorem}[Complete $L^1$ minimizer theorem]\label{thm:l1}
+For a nonempty finite sample,
+\[
+ D_x(t)\leq D_x(a)\quad\text{for every }a
+ \quad\Longleftrightarrow\quad t\in[L,U].
+\]
+Thus the minimizers of total, mean, or weighted-by-$1/n$ absolute deviation are
+exactly the medians.
+\end{theorem}
+
+\begin{proof}
+Sort the sample.  For $a\leq b$, the triangle inequality gives
+\[
+  \abs{a-t}+\abs{b-t}\geq b-a,
+\]
+with equality exactly when $a\leq t\leq b$.
+
+If $n=2q$, pair $y_i$ with $y_{n-1-i}$ for $i<q$.  Summing the pairwise lower
+bounds gives a constant lower bound for $D_x(t)$.  Equality in every pair
+holds precisely when
+\[
+  t\in\bigcap_{i<q}[y_i,y_{n-1-i}]
+   =[y_{q-1},y_q]=[L,U].
+\]
+If $n=2q+1$, the same $q$ outer pairs leave the central term
+$\abs{y_q-t}$.  The outer-pair equalities permit an interval containing
+$y_q$, and the central term is minimized uniquely at $t=y_q$.  Hence the
+minimizer set is again $[L,U]$, now a singleton.
+\end{proof}
+
+The argument consists solely of finite pairing and an absolute-value case
+split.  In the object theory, absolute value on signed integers is primitive
+recursive, and the pair sum is a bounded fold.
+
+\subsection{Weighted laws}
+
+Let distinct support points $a_0<\cdots<a_{s-1}$ carry natural weights
+$w_j$, with total $W=\sum_jw_j>0$.  Define
+\[
+ B(t)=\sum_{a_j<t}w_j,\qquad A(t)=\sum_{t<a_j}w_j,
+ \qquad D(t)=\sum_jw_j\abs{a_j-t}.
+\]
+A weighted median satisfies $2B(t)\leq W$ and $2A(t)\leq W$.
+
+\begin{theorem}[Weighted $L^1$ theorem]\label{thm:weighted-l1}
+The weighted medians are exactly the minimizers of $D(t)$.
+\end{theorem}
+
+\begin{proof}
+Expand the finite list by repeating $a_j$ exactly $w_j$ times.  This expansion
+is primitive recursive and has length $W$.  Its ordinary counts and absolute
+deviation sum are precisely $B,A,D$.  Apply \cref{thm:middle-interval,thm:l1}.
+\end{proof}
+
+An implementation need not materialize the expanded list.  It may instead use
+weighted prefix sums.  Expansion is only a clean correctness proof.
+
+\section{The mean--median inequality without square roots}
+
+Let
+\[
+ W=\sum_jw_j,\qquad S=\sum_jw_ja_j,\qquad
+ Q=\sum_jw_ja_j^2,
+\]
+and let $m$ be a weighted median.  Externally the mean and variance are
+\[
+ \mu=\frac SW,\qquad \sigma^2=\frac QW-\mu^2.
+\]
+
+\begin{theorem}[Cleared mean--median bound]\label{thm:mean-median}
+For every weighted median $m$,
+\begin{equation}\label{eq:mean-median-cleared}
+  (S-Wm)^2\leq WQ-S^2.
+\end{equation}
+Equivalently, if $M=2m$ is a doubled median,
+\begin{equation}\label{eq:mean-median-doubled}
+  (2S-MW)^2\leq 4(WQ-S^2).
+\end{equation}
+Whenever division and square roots are interpreted, this is
+$\abs{\mu-m}\leq\sigma$.
+\end{theorem}
+
+\begin{proof}
+First,
+\[
+ \abs{S-Wm}
+ =\abs{\sum_jw_j(a_j-m)}
+ \leq\sum_jw_j\abs{a_j-m}.
+\]
+By \cref{thm:weighted-l1}, the right side is no larger than
+$\sum_jw_j\abs{a_j-\mu}$.  Weighted Cauchy--Schwarz gives
+\[
+ \left(\sum_jw_j\abs{a_j-\mu}\right)^2
+ \leq W\sum_jw_j(a_j-\mu)^2.
+\]
+No classical square-root theorem is needed for this step.  After clearing
+denominators, Cauchy--Schwarz follows from the exact sum-of-squares identity
+\[
+ W\sum_jw_jd_j^2-\left(\sum_jw_j\abs{d_j}\right)^2
+ =\sum_{i<j}w_iw_j\bigl(\abs{d_i}-\abs{d_j}\bigr)^2\geq0.
+\]
+Finally,
+\[
+ W\sum_jw_j(a_j-\mu)^2=WQ-S^2.
+\]
+Combining the three inequalities proves \eqref{eq:mean-median-cleared};
+substituting $M=2m$ gives \eqref{eq:mean-median-doubled}.
+\end{proof}
+
+Every term in \eqref{eq:mean-median-doubled} is an integer or rational
+numerator.  This is the preferred \iPRA\ statement.
+
+\section{Finite probability distributions}
+
+A finite rational law is a support list $a_0<\cdots<a_{s-1}$ with natural
+weights $w_j$ and denominator $W$.  Its probability of an event is the event's
+weight divided by $W$.  Since denominators are positive, all probability
+inequalities can be cross-multiplied.
+
+\begin{theorem}[CDF characterization]\label{thm:cdf}
+Let
+\[
+ F(t)=\frac1W\sum_{a_j\leq t}w_j,
+ \qquad F(t^-)=\frac1W\sum_{a_j<t}w_j.
+\]
+Then $t$ is a median iff
+\[
+  F(t^-)\leq\frac12\leq F(t).
+\]
+Equivalently,
+$\Pr(X<t)\leq1/2$ and $\Pr(X>t)\leq1/2$.
+\end{theorem}
+
+\begin{proof}
+The left inequality is $2B(t)\leq W$.  The right inequality is
+$W\leq2(W-A(t))$, which simplifies to $2A(t)\leq W$.
+\end{proof}
+
+\begin{theorem}[Existence and median interval for a finite law]
+Let $r$ be the least index with
+$2\sum_{j\leq r}w_j\geq W$, and let $s$ be the greatest index with
+$2\sum_{j\geq s}w_j\geq W$.  Then the complete median set is
+$[a_r,a_s]$.
+\end{theorem}
+
+\begin{proof}
+Minimality of $r$ gives strictly less than half the weight below $a_r$, while
+the defining inequality gives at most half above it.  Thus $a_r$ is a median.
+The symmetric argument proves that $a_s$ is a median.  Between the endpoints,
+neither strict-side mass can increase past half.  Outside, one of the endpoint
+arguments fails exactly as in \cref{thm:middle-interval}.
+\end{proof}
+
+The two endpoints differ exactly when cumulative mass is one half throughout
+a gap.  Thus the familiar nonuniqueness of a distribution median is already a
+finite rational phenomenon.
+
+\section{Symmetry and named distributions}
+
+\subsection{Finite symmetry}
+
+A finite weighted law is symmetric about $c$ if its support admits an
+involution $j\mapsto j^*$ such that
+\[
+ a_j+a_{j^*}=2c,\qquad w_j=w_{j^*}.
+\]
+
+\begin{theorem}[Symmetry center]\label{thm:symmetry}
+For a finite symmetric law, $c$ is a median.  Its mean also equals $c$.  If
+the law is given on a consecutive symmetric grid and its weights are unimodal,
+the central grid point (or the two central grid points) belongs to the mode
+plateau.  If a unique mode exists, it is the symmetry center and therefore the
+grid must contain $c$.
+\end{theorem}
+
+\begin{proof}
+The involution pairs every support point below $c$ with an equally weighted
+point above $c$.  Hence the two strict-side masses are equal and each is at
+most $W/2$, proving the median claim.  Pairwise cancellation gives
+\[
+ \sum_jw_j(a_j-c)=0,
+\]
+so the mean is $c$.  On a consecutive symmetric grid, symmetry carries every modal grid point to
+another modal grid point.  Unimodality forces the modal set to be a central
+block.  A unique mode makes that block a singleton fixed by reflection, hence
+located at $c$.
+\end{proof}
+
+Finite uniform arithmetic progressions are immediate examples: their doubled
+median and doubled mean are the sum of the endpoints.
+
+\subsection{Effective real distributions}
+
+For a continuous law we do not quantify over an arbitrary set-theoretic real
+function.  We assume a regular CDF name: at precision $p$, primitive-recursive
+functions return rational lower and upper bounds of width at most $2^{-p}$,
+with monotonicity and a tail modulus.  A median name is a nested rational
+interval whose CDF values are certified to straddle $1/2$.
+
+Under that presentation, the standard formulas have constructive proofs:
+
+\begin{itemize}
+\item A symmetric normal or Cauchy law has its location parameter as median by
+reflection of the CDF.  The Cauchy conclusion needs no mean.
+\item For the uniform law on $[a,b]$, solving
+$(m-a)/(b-a)=1/2$ gives $m=(a+b)/2$.
+\item For an exponential law,
+$1-e^{-\lambda m}=1/2$, hence $m=(\log2)/\lambda$.
+\item For a Weibull law,
+$1-e^{-(m/\lambda)^k}=1/2$, hence
+$m=\lambda(\log2)^{1/k}$.
+\item For the normalized power-law tail
+$\Pr(X\geq x)=(x_{\min}/x)^{a-1}$, the half-tail equation gives
+$m=2^{1/(a-1)}x_{\min}$.
+\end{itemize}
+
+In each transcendental case, ``equals'' means equality of regular names.  A
+completed proof constructs logarithm, exponential, power, and root interval
+evaluators and proves their defining inequalities.  The existing constructive
+CLT packet supplies the appropriate regular-name architecture
+\cite{proveit-clt}.
+
+\section{Corrections concerning skew and unimodality}
+
+\subsection{A finite skew counterexample}
+
+The informal heuristic ``positive skew implies mean greater than median'' is
+not a theorem.  The following counterexample is entirely finite.
+
+\begin{proposition}\label{prop:skew-counterexample}
+For the equally weighted sample
+\[
+  0,0,1,1,2,
+\]
+the mean is $4/5$, the median is $1$, and the third central moment is
+$18/125>0$.
+\end{proposition}
+
+\begin{proof}
+The mean is $(0+0+1+1+2)/5=4/5$, while the central order statistic is $1$.
+Writing deviations from $4/5$ and cubing,
+\[
+ \frac15\left(2\left(-\frac45\right)^3
+ +2\left(\frac15\right)^3
+ +\left(\frac65\right)^3\right)
+ =\frac{18}{125}>0.
+\]
+Thus even positive third central moment does not force mean above median.
+\end{proof}
+
+\subsection{The sharper unimodal bound needs hypotheses}
+
+The article states a $\sqrt{3/5}$ improvement for unimodal distributions.  An
+unrestricted discrete reading is false.  Put weight $2$ at $0$ and weight $3$
+at $1$.  This law is unimodal, has median $1$, mean $3/5$, and variance
+$6/25$.  Therefore
+\[
+ \frac{(m-\mu)^2}{\sigma^2}
+ =\frac{4/25}{6/25}=\frac23>\frac35.
+\]
+The stronger bound must be tied to the precise continuous-unimodality
+hypotheses of its source theorem.  Formalizing that version requires an
+effective Gauss-type inequality and is classified as Category C.  The general
+one-standard-deviation bound of \cref{thm:mean-median} is valid for all finite
+laws.
+
+Likewise, a statement about a monotonically decreasing \emph{density} is not
+a statement about every finite decreasing probability table.  Its effective
+continuous proof requires a regular density and an integrable-tail modulus.
+
+\section{Jensen's inequality for medians}
+
+A function $f$ on a linearly ordered domain is a C-function if every sublevel
+set
+\[
+  \{x:f(x)\leq t\}
+\]
+is an interval (possibly empty or a singleton).  Convex functions are
+C-functions, but convexity is stronger than necessary.
+
+For a finite sample, let $U=x_{(\floor{n/2})}$ be the upper median, and let
+$V$ be the upper median of the transformed sample $f(x_i)$.
+
+\begin{theorem}[Finite Jensen inequality for medians]\label{thm:jensen-median}
+If every relevant sublevel set of $f$ is an interval, then
+\[
+  f(U)\leq V.
+\]
+Equivalently, taking the suprema when median intervals are non-singletons,
+\[
+ f(\sup\Med(x))\leq \sup\Med(f(x)).
+\]
+\end{theorem}
+
+\begin{proof}
+Fix $t<f(U)$ and consider the interval
+$C_t=\{x:f(x)\leq t\}$.  Since $U\notin C_t$, an interval $C_t$ lies wholly
+below $U$ or wholly above $U$.  In the first case, it contains at most the
+entries strictly below $U$; in the second, at most the entries strictly above
+$U$.  Each count is at most $\floor{n/2}$.  Therefore no more than
+$\floor{n/2}$ transformed observations are at most $t$.
+
+But if the upper median $V$ were at most $t$, at least
+$\floor{n/2}+1$ transformed observations would be at most $t$.  This is a
+contradiction.  Hence $t<V$ for every $t<f(U)$, which in the finite rational
+setting implies $f(U)\leq V$.
+\end{proof}
+
+For \iPRA, one does not quantify over arbitrary functions.  A finite table of
+values $f(x_i)$ is accompanied by a certificate that, after sorting the
+$x_i$, the indices satisfying $f(x_i)\leq t$ form a contiguous block for each
+threshold drawn from the finite image.  The proof is then bounded counting.
+Polynomial and piecewise-rational convex functions can obtain this certificate
+from their usual monotonicity proof.
+
+\section{Algorithms and complexity}
+
+\subsection{Sorting versus selection}
+
+Insertion sort gives the simplest correctness proof but costs quadratic time.
+A median can be selected in linear comparison time by the deterministic
+groups-of-five algorithm.
+
+\begin{construction}[Median of medians]
+Partition the input into groups of at most five, sort each group by a fixed
+comparison network, recursively select the median of the group medians, use it
+as a pivot, and recurse only into the side containing the desired rank.
+\end{construction}
+
+At least half of the group medians are no smaller than the pivot.  Except for
+at most one incomplete group and the pivot group, each such median certifies
+three elements no smaller than the pivot.  Symmetrically, at least roughly
+$3n/10$ elements lie on each side.  With explicit ceiling terms, the cost
+satisfies
+\[
+ T(n)\leq T(\ceil{n/5})+T(\ceil{7n/10}+6)+cn.
+\]
+Choose a constant $K$ large enough for the finitely many small cases and for
+$K(1/5+7/10)n+K\cdot 8+cn\leq Kn$.  Strong induction then proves
+$T(n)\leq Kn$.  The recursion tree, partition trace, and comparison count are
+primitive-recursive; the inequality is a quantifier-free induction after the
+cost function is defined.
+
+A linear lower bound follows from an adversary argument: until an observation
+has participated in a comparison chain, its possible rank cannot be excluded
+from the middle.  Thus selection is $\Theta(n)$ in the comparison model.
+
+\subsection{Sorting lower bound}
+
+For distinct inputs, a correct comparison sort has at least $n!$ possible
+output permutations.  A binary decision tree of depth $d$ has at most $2^d$
+leaves, so $2^d\geq n!$.  This implication is finite and arithmetical.
+
+For an explicit asymptotic lower bound, let $n=2m$.  The final $m$ factors of
+$n!$ are at least $m$, hence $n!\geq m^m$.  If $m\geq2^r$, then
+$n!\geq2^{mr}$ and therefore $d\geq mr$.  Taking
+$r=\floor{\log_2m}$ gives the usual $\Omega(n\log n)$ bound without using real
+logarithms inside the theory.
+
+\subsection{Median of three and Tukey's ninther}
+
+Median-of-three is a fixed compare-swap network and is therefore a
+primitive-recursive exact median for three inputs.
+
+\begin{theorem}[Nine-input ninther rank]\label{thm:ninther}
+Divide nine distinct inputs into three triples, take each triple's median, and
+then take the median of those three medians.  The output has global rank $4$,
+$5$, or $6$ in one-based indexing.
+\end{theorem}
+
+\begin{proof}
+The selected value is the median of its own triple, so that triple contributes
+at least two values no greater than it.  One of the other triple medians is no
+greater than it, and that triple contributes at least two more values no
+greater than it.  Thus at least four inputs are no greater than the output.
+The symmetric argument gives at least four no smaller.  Its rank is therefore
+between $4$ and $6$.
+\end{proof}
+
+The exact checker exhausts all $9!$ permutations.  It finds ranks $4,5,6$ in
+$77{,}760$, $207{,}360$, and $77{,}760$ cases respectively.
+
+\subsection{Remedian resource bounds}
+
+Fix an odd buffer size $b$.  Level zero stores incoming values until $b$ are
+available, replaces them by their median, and promotes that value to level
+one; levels repeat the rule.  Processing $n$ inputs performs at most
+\[
+ n+n/b+n/b^2+\cdots < \frac{b}{b-1}n
+\]
+buffer insertions, hence linear work for fixed $b$.  With
+$k=\ceil{\log_b n}$ levels, at most $bk=O(b\log_b n)$ values are resident.
+All buffers and promotions are bounded finite states, so the algorithm and its
+resource counter are primitive recursive.  The remedian is an estimator, not
+in general the exact sample median.
+
+\section{Exact sampling distributions}
+
+Let a finite law have ordered support $v_0<\cdots<v_{s-1}$ and weights
+$w_j$, total $W$.  Draw $N=2n+1$ independent observations.  Independence is
+represented by the finite product space, whose outcome weights are products
+of the coordinate weights.
+
+For a fixed $j$, put
+\[
+ A_j=\sum_{h<j}w_h,\qquad B_j=w_j,\qquad C_j=\sum_{h>j}w_h.
+\]
+
+\begin{theorem}[Exact odd-sample median mass]\label{thm:sample-pmf}
+The numerator of $\Pr(M_N=v_j)$ over denominator $W^N$ is
+\begin{equation}\label{eq:sample-pmf}
+ \sum_{i=0}^{n}\sum_{k=0}^{n}
+ \frac{N!}{i!\,k!\,(N-i-k)!}
+ A_j^i C_j^k B_j^{N-i-k},
+\end{equation}
+where terms with $N-i-k\leq0$ are omitted.
+\end{theorem}
+
+\begin{proof}
+The sample median equals $v_j$ exactly when at most $n$ observations are
+strictly below $v_j$, at most $n$ are strictly above, and the remaining
+$N-i-k$ observations equal $v_j$.  For fixed $i,k$, the multinomial
+coefficient chooses the three classes, and the product of class weights gives
+the displayed monomial.  The cases are disjoint and exhaustive.
+\end{proof}
+
+\begin{theorem}[Exact odd-sample CDF]\label{thm:sample-cdf}
+Let $P_j=\sum_{h\leq j}w_h$.  Then
+\begin{equation}\label{eq:sample-cdf}
+ \Pr(M_N\leq v_j)
+ =\frac1{W^N}\sum_{r=n+1}^{N}\binom Nr P_j^r(W-P_j)^{N-r}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The median is at most $v_j$ exactly when at least $n+1$ of the $N$
+observations are at most $v_j$.  Their count has the finite binomial law with
+success weight $P_j$.
+\end{proof}
+
+Both formulas use only factorials, powers, bounded sums, and integer
+arithmetic.  They are direct \iPRA\ targets.
+
+\subsection{Continuous density as an effective limit}
+
+For a continuous CDF $F$, \cref{eq:sample-cdf} defines the polynomial
+\[
+ H_N(p)=\sum_{r=n+1}^{N}\binom Nr p^r(1-p)^{N-r}.
+\]
+Thus
+\[
+ \Pr(v<M_N\leq v+h)=H_N(F(v+h))-H_N(F(v)).
+\]
+If a regular density name supplies
+\[
+ F(v+h)-F(v)=f(v)h+R(v,h),
+ \qquad \abs{R(v,h)}\leq\omega(\abs h)\abs h,
+\]
+with primitive-recursive $\omega(r)\to0$, a finite polynomial difference
+identity yields the density
+\[
+ \frac{(2n+1)!}{n!n!}F(v)^n(1-F(v))^nf(v)
+\]
+with an explicit interval error.  This replaces informal differentials by a
+finite difference and a modulus.
+
+If $U=F(M_N)$ and $F$ is effectively continuous and strictly increasing, then
+$U$ has the beta density
+\[
+ \frac{u^n(1-u)^n}{B(n+1,n+1)}.
+\]
+Finite beta-integral identities give
+\[
+ \mathbb E U=\frac12,
+ \qquad \operatorname{Var}(U)=\frac1{4(2n+3)}
+ =\frac1{4(N+2)}.
+\]
+These identities are polynomial/factorial calculations once integration of
+polynomials on $[0,1]$ is represented by exact rational antiderivatives.
+
+\subsection{Effective asymptotic normality}
+
+The usual asymptotic theorem requires more than the mere existence of a
+density.  Assume:
+
+\begin{enumerate}
+\item $m$ is a unique median;
+\item $f(m)=c>0$ is a positive regular real with a rational lower bound;
+\item a primitive-recursive local modulus certifies
+$F(m+h)=1/2+ch+o(h)$;
+\item the finite binomial CLT is available with an explicit error modulus.
+\end{enumerate}
+
+For fixed rational $z$, set $h_N=z/(2c\sqrt N)$ using regular square-root and
+reciprocal names.  Then
+\[
+ F(m+h_N)=\frac12+\frac{z}{2\sqrt N}+o(N^{-1/2}).
+\]
+By \cref{thm:sample-cdf}, the event $M_N\leq m+h_N$ is a binomial tail.
+Standardizing that binomial count and applying the effective CLT gives
+\[
+ 2c\sqrt N\,(M_N-m)\Longrightarrow N(0,1),
+\]
+with an explicit rational error bound at rational thresholds.  Consequently
+\[
+ \operatorname{Var}(M_N)\sim\frac1{4Nc^2}
+\]
+when the required uniform-integrability modulus is supplied.
+
+For a normal law of variance $\sigma^2$,
+$c=1/(\sqrt{2\pi}\sigma)$, so the asymptotic median variance is
+$\pi\sigma^2/(2N)$.  The mean variance is $\sigma^2/N$; their ratio tends to
+$2/\pi$.  Every transcendental constant here is a regular name, and the limit
+is an effective $\varepsilon$--$N$ theorem.
+
+Delete-one jackknife inconsistency, delete-$k$ consistency, bootstrap
+consistency, and the quoted $N^{-1/4}$ rate require a separate effective
+resampling theory.  Their finite estimators are primitive recursive, but this
+packet does not claim the asymptotic theorems.
+
+\section{Derived estimators and regression}
+
+\subsection{Hodges--Lehmann and pseudomedians}
+
+For a sample $x_0,\ldots,x_{n-1}$, form the Walsh-average list
+\[
+ \left\{\frac{x_i+x_j}{2}:0\leq i\leq j<n\right\}.
+\]
+Its median is the one-sample Hodges--Lehmann estimator.  The population
+pseudomedian is the median of $(X+X')/2$ for an independent copy $X'$.
+
+If the original finite law is symmetric about $c$, reflection sends a pair
+$(x_i,x_j)$ to a pair whose average is $2c-(x_i+x_j)/2$, preserving
+multiplicity.  Hence the Walsh-average law is symmetric about $c$ and
+\cref{thm:symmetry} makes $c$ a pseudomedian.  Positive affine equivariance is
+immediate from the formula; negative affine maps use
+\cref{thm:monotone}.
+
+Robustness and asymptotic efficiency of the estimator are analytic extensions,
+not consequences of this finite symmetry argument alone.
+
+\subsection{Theil--Sen slopes}
+
+For pairs with $x_i\neq x_j$, form
+\[
+ s_{ij}=\frac{y_j-y_i}{x_j-x_i}.
+\]
+The Theil--Sen slope is a median of this finite rational list.  It is invariant
+under permutation of the observations.  Under
+$x'=cx+d$, $y'=ay+b$ with $ac\neq0$, every slope becomes $(a/c)s_{ij}$, so
+its median transforms accordingly.
+
+If all points lie on $y=\alpha x+\beta$, every defined pairwise slope is
+$\alpha$; therefore the Theil--Sen estimator recovers the exact slope.  This
+is a one-line consequence of the median of a constant list and is fully
+finitary.
+
+\subsection{Median--median lines}
+
+Sort bivariate observations by $x$, divide them into three consecutive groups,
+and form the coordinatewise median point of each group.  If all observations
+lie on an affine line $y=\alpha x+\beta$, affine monotone transport shows that
+each group-median point lies on the same line, even when $\alpha<0$.  The line
+through the outer group medians therefore recovers the original line; any
+usual adjustment toward the middle median is zero.  General robustness claims
+are algorithm-specific and are not asserted here.
+
+\section{Multivariate medians}
+
+\subsection{Marginal medians and the $\ell^1$ objective}
+
+For points $x_i=(x_{i1},\ldots,x_{id})\in\Rat^d$, a marginal median is a
+vector $m$ whose $j$th coordinate is a median of
+$x_{1j},\ldots,x_{nj}$.
+
+\begin{theorem}[Coordinatewise optimality]\label{thm:marginal}
+The marginal median vectors are exactly the minimizers of
+\[
+  \sum_{i<n}\norm{x_i-a}_1.
+\]
+\end{theorem}
+
+\begin{proof}
+Expand the objective by coordinates:
+\[
+ \sum_i\norm{x_i-a}_1
+ =\sum_{j<d}\sum_i\abs{x_{ij}-a_j}.
+\]
+The coordinates are independent optimization variables.  Apply
+\cref{thm:l1} to each inner sum.
+\end{proof}
+
+This theorem is finite rational arithmetic and is directly internalizable for
+fixed or coded dimension.
+
+\subsection{Geometric median}
+
+The geometric median minimizes
+\[
+ G(a)=\sum_i\norm{x_i-a}_2.
+\]
+Euclidean square roots require regular names, but several structural proofs
+are constructive.
+
+\begin{proposition}[Similarity equivariance]
+If $T(a)=cRa+b$, where $c>0$ and $R$ preserves the Euclidean norm, then
+$G_{T(x)}(T(a))=cG_x(a)$.  Thus $T$ carries geometric medians to geometric
+medians.
+\end{proposition}
+
+\begin{proof}
+For each $i$,
+$\norm{T(x_i)-T(a)}_2=c\norm{R(x_i-a)}_2=c\norm{x_i-a}_2$.  Sum over $i$.
+\end{proof}
+
+\begin{theorem}[Correct uniqueness condition]\label{thm:geom-unique}
+If the sample points are not all collinear, the geometric median is unique.
+The hypothesis cannot be replaced merely by ``ambient dimension at least
+two.''
+\end{theorem}
+
+\begin{proof}
+Suppose distinct points $p,q$ both minimize $G$.  Convexity gives
+\[
+ G\left(\frac{p+q}{2}\right)
+ \leq\frac{G(p)+G(q)}2=\min G,
+\]
+so equality holds.  Equality must hold term by term in the triangle
+inequality
+\[
+ \norm{x_i-\frac{p+q}{2}}_2
+ \leq\frac12\norm{x_i-p}_2+\frac12\norm{x_i-q}_2.
+\]
+Equality in the Euclidean triangle inequality forces $x_i,p,q$ to be
+collinear.  Thus every sample point lies on the line through $p,q$, contrary
+to the hypothesis.
+
+For the counterexample to the unrestricted claim, take only
+$(-1,0)$ and $(1,0)$.  Every point on the segment between them has total
+distance $2$ and is a geometric median.
+\end{proof}
+
+Existence can be expressed effectively without compactness.  A minimizer lies
+in the coordinate bounding box: clipping any coordinate to that box cannot
+increase any distance.  For requested error $\varepsilon>0$, search a rational
+grid of mesh $\delta\leq\varepsilon/(nd)$.  Moving by at most $\delta$ in each
+coordinate changes each Euclidean distance by at most the $\ell^1$ movement,
+so the total objective changes by at most $nd\delta\leq\varepsilon$.
+Regular square-root intervals let a bounded search choose a certified
+$\varepsilon$-minimizer.  This produces a primitive-recursive approximation
+schema; an exact geometric median is the nested limit name.
+
+The multivariate mean--spatial-median inequality follows by the same chain as
+\cref{thm:mean-median}, with absolute value replaced by a norm, provided the
+spatial median and norm are supplied by regular names.
+
+\subsection{Centerpoints}
+
+A centerpoint of $n$ points in $\Rat^d$ is a point such that every closed
+halfspace containing it contains at least $n/(d+1)$ sample points.
+
+\begin{theorem}[Centerpoint theorem, finite rational form]\label{thm:centerpoint}
+For each fixed $d$, every nonempty finite rational point multiset has a
+centerpoint.  A rational centerpoint can be chosen.
+\end{theorem}
+
+\begin{proof}
+For every subset $S$ of more than $dn/(d+1)$ sample indices, consider its
+convex hull $C_S$.  Any $d+1$ such subsets have a common sample index: each
+complement has fewer than $n/(d+1)$ indices, so the union of the $d+1$
+complements has fewer than $n$ indices.  Hence the corresponding convex hulls
+intersect.
+
+By finite Helly in $\Real^d$, all the convex hulls $C_S$ intersect.  Choose
+$c$ in their intersection.  Suppose an open halfspace $H$ not containing $c$
+contained more than $dn/(d+1)$ sample points.  Taking those indices as $S$
+would give $c\in C_S\subseteq H$, a contradiction.  Therefore every open
+halfspace not containing $c$ has at most $dn/(d+1)$ points, which is equivalent
+to the centerpoint property for closed halfspaces through $c$.
+
+All defining points are rational polytopes.  A nonempty finite rational
+polytope has a rational point: enumerate a feasible basic subsystem and solve
+it by determinant identities.  Thus $c$ can be rational.
+\end{proof}
+
+For fixed $d$, finite Helly can be formalized constructively through Radon's
+lemma and determinant signs, or by a Farkas certificate.  Determinant bounds
+give a finite search range for numerator and denominator.  This makes
+\cref{thm:centerpoint} an \iPRA\ theorem schema for each fixed dimension, but
+the required geometry library is not yet present in the supplied Lean
+blueprint.
+
+The ``median in all directions'' statement requires a separate projection and
+subgradient development and remains Category C.
+
+\section{Conditional medians}
+
+Let a finite joint law on values $x$ and observations $y$ have natural weights
+$w_{xy}$.  For each $y$ with positive fiber weight
+$W_y=\sum_xw_{xy}$, choose a median $m_y$ of the conditional weighted list.
+
+\begin{theorem}[Finite conditional median is Bayes $L^1$ optimal]\label{thm:conditional}
+For every function $g$ on the finite $y$-support,
+\[
+ \sum_{x,y}w_{xy}\abs{x-m_y}
+ \leq
+ \sum_{x,y}w_{xy}\abs{x-g(y)}.
+\]
+\end{theorem}
+
+\begin{proof}
+For each fixed $y$, \cref{thm:weighted-l1} gives
+\[
+ \sum_xw_{xy}\abs{x-m_y}
+ \leq\sum_xw_{xy}\abs{x-g(y)}.
+\]
+Sum these finitely many inequalities over $y$.
+\end{proof}
+
+Thus the article's conditional-median optimality is fully valid for finite
+laws.  The characterization that a conditional median under additive Gaussian
+noise is linear only for Gaussian priors is a deep analytic theorem and is not
+proved here.
+
+\section{Interpolated medians}
+
+Suppose a median category has center $m$, width $w$, and contains $j>0$
+observations.  Let $i$ observations lie below it and $k$ above it, so
+$N=i+j+k$.  Assume the observations within the category are uniformly spread
+across $[m-w/2,m+w/2]$.
+
+\begin{theorem}[Interpolated-median identity]\label{thm:interpolated}
+The interpolated median is
+\[
+ m_{\mathrm{int}}
+ =m-\frac w2+w\frac{N/2-i}{j}
+ =m+\frac w2\frac{k-i}{j}.
+\]
+It is equivalent to the CDF formula
+\[
+ m+w\left[\frac12-\frac{F(m)-1/2}{f(m)}\right].
+\]
+\end{theorem}
+
+\begin{proof}
+A fraction $(N/2-i)/j$ of the median category is needed to raise cumulative
+mass from $i$ to $N/2$.  Starting at the lower category edge gives the first
+formula.  Since $N=i+j+k$, elementary algebra gives
+\[
+ -\frac12+\frac{N/2-i}{j}=\frac{k-i}{2j}.
+\]
+For empirical proportions, $F(m)=(i+j)/N$ and $f(m)=j/N$; substitution gives
+the same expression.
+\end{proof}
+
+For the article's $i=22$, $j=33$, $k=45$, $m=3$, $w=1$ example,
+\[
+ m_{\mathrm{int}}=3+\frac{45-22}{66}=\frac{221}{66}
+ =3.34848\ldots,
+\]
+which rounds to $3.35$.  This is exact rational arithmetic in \iPRA.
+
+\section{Median filters and clustering}
+
+\subsection{Median filter}
+
+\begin{theorem}[Majority interval theorem]\label{thm:majority-filter}
+Let an odd window contain $n$ values.  If more than $n/2$ of them lie in an
+interval $[a,b]$, then its median lies in $[a,b]$.  In particular, if more than
+half equal $c$, the median equals $c$.
+\end{theorem}
+
+\begin{proof}
+If the median were below $a$, then every one of the more-than-half inlier
+values would be strictly above it, violating the upper balance count.  The
+case above $b$ is symmetric.
+\end{proof}
+
+Therefore a median filter exactly removes salt-and-pepper corruption on a
+constant odd window whenever fewer than half the pixels are corrupted.  More
+general claims about image quality or edge preservation are empirical, not
+unconditional theorems.
+
+\subsection{One-dimensional and coordinatewise $k$-medians}
+
+The correct $k$-medians objective is
+\[
+ \Phi(c_1,\ldots,c_k)=\sum_i\min_j\norm{x_i-c_j}_1.
+\]
+It minimizes within-cluster $\ell^1$ distance; it does not maximize distances
+between cluster medians.
+
+Given centers, assign each point to a nearest center using a deterministic tie
+rule.  This cannot increase $\Phi$.  Given assignments, replace each center by
+a coordinatewise median of its cluster.  By \cref{thm:marginal}, this also
+cannot increase $\Phi$.  If centers are chosen from the finite set of input
+coordinate values and ties are canonical, only finitely many states exist.
+A strict lexicographic tie-break on equal-objective states prevents cycles, so
+the alternating process terminates at a local optimum.  Every step and its
+objective comparison is primitive recursive.
+
+\section{Median-unbiased estimators}
+
+Let a finite estimator $T$ have a weighted distribution depending on a
+parameter $\theta$.
+
+\begin{theorem}[Loss characterization]
+The estimator is median-unbiased at $\theta$ exactly when $\theta$ minimizes
+\[
+ a\longmapsto \mathbb E_\theta\abs{T-a}.
+\]
+If it is mean-unbiased, so that $\mathbb E_\theta T=\theta$, then $\theta$
+minimizes $\mathbb E_\theta(T-a)^2$.
+\end{theorem}
+
+\begin{proof}
+The first assertion is \cref{thm:weighted-l1}.  For the second, expand
+\[
+ \mathbb E(T-a)^2
+ =\mathbb E(T-\theta)^2+(a-\theta)^2
+ +2(a-\theta)\mathbb E(\theta-T).
+\]
+The last term is zero under mean-unbiasedness, leaving a nonnegative square.
+\end{proof}
+
+Strictly monotone transformations preserve median-unbiasedness by
+\cref{thm:monotone}.  Arbitrary one-to-one transformations do not.  For the
+equally weighted values $0,1,2$, the median is $1$.  The injection
+$0\mapsto0$, $1\mapsto100$, $2\mapsto1$ produces transformed values
+$0,100,1$, whose median is $1$, not $100$.  Thus order preservation, not mere
+injectivity, is the correct hypothesis.
+
+\section{Formalization in Lean and ProveIt}
+
+\subsection{Repository baseline}
+
+The repository baseline inspected for this packet is commit
+\texttt{df3ff8cc28be5eb713a14809a9df167e9aa94ab1}, with Lean toolchain
+\texttt{v4.32.0}.  The most relevant checked modules are the core definitions,
+order, bounded sums, pairing, search, permutations, division, and binomial
+identities in \texttt{IPRADerivations}.  The PA list-coding development already
+contains a division-free median relation, an ordinary-list specification,
+existence, functionality, and examples.
+
+\subsection{Two formalization layers}
+
+The archive separates two layers.
+
+\begin{enumerate}
+\item \texttt{MedianFiniteBlueprint.lean} gives readable ambient definitions
+for finite rational lists and laws, plus records of theorem obligations.  This
+layer is useful for testing and for reusing Mathlib finite combinatorics.
+\item \texttt{MedianObjectLanguageTarget.lean} states the actual endpoint.
+Each public result must be a closed formula $\varphi$ with a term of type
+\[
+ ([]:\operatorname{List}(\operatorname{Fm}\ \operatorname{PTm}\ 0))
+ \ \vdash[\mathrm{PRAAx}]\ \varphi.
+\]
+\end{enumerate}
+
+An ambient theorem about \texttt{List} or \texttt{Real} is not a substitute
+for the second layer.
+
+\subsection{Dependency-ordered construction}
+
+\begin{enumerate}
+\item Define valid sequence codes, length, bounded projection, signed integer
+and rational comparison.
+\item Define less-than and greater-than counts by bounded sums.
+\item Define compare-swap, insertion, and insertion sort.  Prove sortedness and
+permutation certificates.
+\item Define lower and upper middle projections and prove
+\cref{thm:middle-interval}.
+\item Derive odd/even formulas, existence, functionality of twice the median,
+quantile names, and monotone transport.
+\item Define absolute-deviation folds and formalize the pairwise lower-bound
+proof.  Add the weighted expansion or direct prefix-mass proof.
+\item Prove the cleared mean--median inequality through the finite
+sum-of-squares identity.
+\item Add rank perturbation, breakdown, and majority interval theorems.
+\item Define finite laws and product samples; prove
+\cref{thm:sample-pmf,thm:sample-cdf} using the binomial library.
+\item Build the estimator applications by mapping a finite source list to a
+finite derived list and invoking the core median theorem.
+\item Add regular names and moduli only after the exact finite layer is
+kernel-checked.
+\end{enumerate}
+
+The completed modules should be imported from
+\texttt{IPRADerivations.lean}, audited in \texttt{Checks/Axioms.lean}, and
+transported through the repository's \texttt{pra\_iff\_native} theorem.
+
+\section{Exact executable validation}
+
+The supplied Python checker is not a proof oracle.  It is a regression suite
+using only integers and \texttt{fractions.Fraction}.  The recorded run passes
+$1{,}662{,}266$ exact cases, summarized below.
+
+\begin{longtable}{@{}p{0.31\textwidth}r p{0.47\textwidth}@{}}
+\toprule
+Check & Cases & Coverage\\
+\midrule
+\endhead
+finite balance and $L^1$ & 791 & All multisets of size at most seven over
+$\{0,1,2,3,4\}$\\
+weighted medians and mean bound & 1,359 & Weights $0,\ldots,3$ on supports of
+width at most five\\
+rank perturbation & 1,118,480 & All pairs of samples of size at most five over
+four values\\
+exact odd sample law & 1,278 & Supports of size at most four, weights at most
+three, $N=1,3,5$\\
+ninther rank & 362,880 & Every permutation of nine distinct ranks\\
+median-filter majority & 174,760 & All odd windows through size seven over four
+gray levels\\
+interpolated median & 660 & Exact algebra and the $221/66$ example\\
+symmetry and skew & 1,793 & Symmetric samples and the positive-third-moment
+counterexample\\
+Theil--Sen collinear recovery & 35 & Seven rational points on each of thirty-five
+lines\\
+replacement breakdown & 230 & Sample sizes through twenty\\
+\bottomrule
+\end{longtable}
+
+Floating point is used only to print a decimal approximation to $221/66$.
+Every assertion is exact.
+
+\section{What remains genuinely open in this packet}
+
+The following article claims are not presented as completed \iPRA\ proofs:
+
+\begin{itemize}
+\item the precise continuous unimodal $\sqrt{3/5}$ and median--mode bounds;
+\item delete-one jackknife inconsistency, delete-$k$ consistency, bootstrap
+consistency, and their rates;
+\item the Gaussian-noise linear conditional-median characterization;
+\item a complete median-in-all-directions development;
+\item a checked fixed-dimensional Helly/Radon library;
+\item a fully compiled effective sample-median CLT and regular geometric
+median library.
+\end{itemize}
+
+For each, the report identifies the missing effective hypotheses and a route
+to a formal proof.  Omitting them from Category A is deliberate: qualitative
+classical existence, an ambient real theorem, or a hidden appeal to choice
+would not satisfy the requested \iPRA\ standard.
+
+\section{Conclusion}
+
+The median article is dominated by a very strong finitary core.  Once the
+median is expressed by two bounded counts, the central middle-interval theorem
+organizes nearly every elementary claim.  Pairing proves $L^1$ optimality;
+weighted expansion proves the finite probability version; a sum-of-squares
+identity proves the mean--median bound without division or square roots;
+finite multinomial counting gives the exact sample law; and many statistical
+applications reduce to constructing a derived finite list.
+
+The analytic claims are not discarded.  They are reformulated as effective
+theorem schemas whose inputs carry primitive-recursive regular names and
+moduli.  This separation makes the trust boundary explicit and provides a
+clear path from the present human proof to a complete Lean
+\texttt{Prf PRAAx} development.
+
+\appendix
+\section{Object-language formulas}
+
+The following schematic formulas are the principal targets after sequence
+operations are represented by primitive-recursive terms.  Here $v$ is a valid
+sequence code and $n=\operatorname{len}(v)$.
+
+\paragraph{Balance median.}
+\[
+ \operatorname{Median}(v,t):\equiv
+  2\operatorname{ltCount}(v,t)\leq n\ \wedge\
+  2\operatorname{gtCount}(v,t)\leq n.
+\]
+
+\paragraph{Twice conventional median.}
+\[
+ \operatorname{TwiceMedian}(v,M):\equiv
+ M=\operatorname{lowerMiddle}(\operatorname{sort}(v))
+  +\operatorname{upperMiddle}(\operatorname{sort}(v)).
+\]
+
+\paragraph{Weighted finite law.}
+For weight code $w$ and value code $a$,
+\[
+ 2\sum_{j<s}w_j\ind[a_j<t]\leq\sum_{j<s}w_j,
+ \qquad
+ 2\sum_{j<s}w_j\ind[t<a_j]\leq\sum_{j<s}w_j.
+\]
+
+\paragraph{Cleared mean--median inequality.}
+\[
+ (2S-MW)^2\leq4(WQ-S^2).
+\]
+
+\paragraph{Exact odd-sample mass.}
+For $N=2n+1$,
+\[
+ W^N\Pr(M_N=v_j)=
+ \sum_{i\leq n}\sum_{k\leq n}
+ \operatorname{Mult}(N;i,N-i-k,k)
+ A_j^iB_j^{N-i-k}C_j^k.
+\]
+All divisions in the displayed multinomial coefficient are implemented by the
+already-proved exact factorial divisibility identity, or the coefficient is
+computed by Pascal recursion.
+
+\section{Primitive-recursive pseudocode}
+
+\begin{lstlisting}[language={}]
+ltCount(v,t):
+  c := 0
+  for i < len(v):
+    c := c + if nth(v,i) < t then 1 else 0
+  return c
+
+insert(a, sorted):
+  scan from the left;
+  place a before the first entry >= a;
+  return the new code and an index-permutation certificate
+
+sort(v):
+  out := empty
+  for i < len(v):
+    out := insert(nth(v,i), out)
+  return out
+
+medianInterval(v):
+  s := sort(v)
+  return (nth(s,(len(v)-1)/2), nth(s,len(v)/2))
+
+oddMedianCDFNum(weights,j,n):
+  N := 2*n+1
+  A := sum_{h<=j} weights[h]
+  W := sum weights
+  return sum_{r=n+1}^N choose(N,r)*A^r*(W-A)^(N-r)
+\end{lstlisting}
+
+The loops are bounded by input-derived natural numbers.  Each can therefore be
+compiled to primitive recursion and verified by quantifier-free induction.
+
+\section{Source and provenance notes}
+
+The source article was consulted on 16 November 2026.  Wikipedia is used as a
+statement inventory, not as the authority for proofs.  The arguments in this
+report are self-contained or explicitly labeled as effective schemas and
+formalization routes.
+
+The ProveIt repository was inspected through its current main branch at the
+commit recorded above.  Relevant design references are the iPRA README and
+derivation library, the PA list-coding median implementation, and the finite
+CLT packet.  Exact paths and commit metadata are listed in
+\texttt{provenance/SOURCES.md}.
+
+\begin{thebibliography}{9}
+\bibitem{wiki-median}
+Wikipedia contributors, \emph{Median}, English Wikipedia,
+\url{https://en.wikipedia.org/wiki/Median}, accessed 16 November 2026.
+
+\bibitem{proveit-ipra}
+V. Reshetnikov, \emph{ProveIt: Primitive Recursive Arithmetic},
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic},
+repository inspected 16 November 2026.
+
+\bibitem{proveit-derivations}
+V. Reshetnikov, \emph{IPRADerivations},
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/Derivations},
+repository inspected 16 November 2026.
+
+\bibitem{proveit-listcoding}
+V. Reshetnikov, \emph{PA List Coding: Predicates and Aggregates},
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PeanoArithmetic/ListCoding},
+repository inspected 16 November 2026.
+
+\bibitem{proveit-clt}
+V. Reshetnikov, \emph{Constructive central limit theorems in iPRA},
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/central_limit_ipra_2026-11-15},
+repository inspected 16 November 2026.
+\end{thebibliography}
+
+\end{document}

@@ -58,7 +58,7 @@ Euclid's theorem, Bézout's identity, `C(2n, n) ≤ 2^{2n}` and the Catalan iden
 
 ## Proof packets
 
-[`docs/proofs/`](docs/proofs/README.md) files 93 research packets, delivered from 14 to
+[`docs/proofs/`](docs/proofs/README.md) files 94 research packets, delivered from 14 to
 16 November 2026. Each gives a human-readable proof of a classical theorem in a finitary,
 quantitative form intended for iPRA. Most add exact-arithmetic reference code and a Lean plan
 or scaffold aimed at `ConciseIPRA`.
@@ -74,7 +74,7 @@ The packets are grouped by area:
 | [`diophantine-number-theory/`](docs/proofs/diophantine-number-theory/) | 12 | Pell equations, transcendence of e and π, Fermat for exponents divisible by 3, 4, 5 or 7, Siegel and Faltings analyses |
 | [`foundations/`](docs/proofs/foundations/) | 34 | cross-domain frameworks of certificates, moduli and finite contracts |
 | [`geometry/`](docs/proofs/geometry/) | 13 | isoperimetric inequality, Platonic solids, spherical trigonometry, Zariski descent |
-| [`probability/`](docs/proofs/probability/) | 2 | central limit theorems, expected value |
+| [`probability/`](docs/proofs/probability/) | 3 | central limit theorems, expected value, medians |
 | [`topology/`](docs/proofs/topology/) | 3 | Jordan curve theorem, invariance of dimension, observation towers |
 
 **None of these packets has been verified.** The summaries in the
