@@ -1,0 +1,26 @@
+\section{Notation and implementation conventions}
+\label{app:notation}
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.67\textwidth}@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+\endhead
+$\PR$ & Primitive-recursive, always for a fixed definition unless a bounded program table is explicitly supplied \\
+$\B$ & Numerical Booleans $\{0,1\}$ \\
+$u,x,p$ & Paired numerical input/certificate/representation codes \\
+$k$ & Requested output precision \\
+$h,r$ & Interaction horizon or remaining resource \\
+$s$ & Encoded deterministic or consumer state \\
+$\Viable(x,r,s)$ & Backward Boolean saying a successful finite continuation exists \\
+$\Local(x,r,s,a)$ & Local admissibility of answer $a$ \\
+$E$ & Observational equivalence, not necessarily literal equality \\
+$\delta$ & Diameter/error bound for stable relational outputs \\
+$\Prf\ \PRAAx\ \Gamma\ \varphi$ & Object-level derivability in ordinary iPRA \\
+$\NPrf$ & Derivability in the native scalar calculus \\
+\bottomrule
+\end{longtable}
+
+All finite sequences and graphs may be encoded by any standard primitive-recursive pairing/list scheme with explicit bounds.  Proofs use only closure properties and bounded lookup; no specific optimal coding is mathematically essential.  Implementations should nevertheless share one canonical repository library to avoid repeated conversion proofs.
+
+Rational inequalities are intended to be reduced to signed-integer cross products with positive denominators.  Every use of an order decision is therefore a decision about exact integers, not an arbitrary represented real.

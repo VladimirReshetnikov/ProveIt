@@ -1,0 +1,190 @@
+\section{Demand-driven relational certificates}
+\label{sec:relational}
+
+\subsection{Bounded evidence machines}
+
+A \emph{bounded evidence machine} describes a finite interaction between a consumer and a relational producer.  Fix an input code $x$ and a resource bound $h$.  The machine has fixed primitive-recursive functions
+\[
+\begin{array}{ll}
+  \mathsf{start}(x), & \Halt(x,r,s)\in\B,\\
+  \mathsf{answerBound}(x,r,s), & \Local(x,r,s,a)\in\B,\\
+  \Next(x,r,s,a), & \Post(x,r,s)\in\B,
+\end{array}
+\]
+where $r$ is the number of remaining interaction steps and $s$ is the complete finite consumer state, including any history needed to check compatibility.  If $\Halt(x,r,s)=1$, the consumer is finished and $\Post$ is the desired finite conclusion.  Otherwise it accepts an answer $a<\mathsf{answerBound}(x,r,s)$ satisfying $\Local=1$ and moves to $\Next(x,r,s,a)$.
+
+The relation $\Local$ may include several kinds of evidence:
+\begin{itemize}
+\item residual bounds for an approximate root;
+\item compatibility with earlier answers stored in $s$;
+\item chart or pivot validity;
+\item an apartness margin for a denominator;
+\item membership in a finite cover or net cell;
+\item a certificate fragment supplied by an external producer.
+\end{itemize}
+No assumption is made that there is a single answer function valid for all states or all horizons.
+
+\begin{definition}[Backward viability]
+\label{def:viability}
+Write $A_{r,s}=\mathsf{answerBound}(x,r+1,s)$ and
+$s_a=\Next(x,r+1,s,a)$.  Define the Boolean $\Viable(x,r,s)$ by primitive recursion on $r$:
+\[
+\Viable(x,0,s)=\Halt(x,0,s)\cdot\Post(x,0,s),
+\]
+and
+\[
+\begin{aligned}
+\Viable(x,r+1,s)=\max\bigl\{&\Halt(x,r+1,s)\cdot\Post(x,r+1,s),\\
+ &(1-\Halt(x,r+1,s))
+   \max_{a<A_{r,s}}
+   \bigl(\Local(x,r+1,s,a)\cdot\Viable(x,r,s_a)\bigr)\bigr\}.
+\end{aligned}
+\]
+Every maximum is a bounded Boolean fold.
+\end{definition}
+
+The use of a state rather than a bare level makes the theorem adaptive.  The next query and answer set may depend on all previous replies, provided that history has a bounded numerical code.
+
+\subsection{Semantic correctness of viability}
+
+Call a finite transcript from $(r,s)$ \emph{successful} if it either halts immediately with $\Post=1$, or begins with a locally valid answer and continues successfully from the next state with one fewer remaining step.
+
+\begin{theorem}[Finite-use viability]
+\label{thm:viability}
+For every fixed bounded evidence machine, iPRA proves, uniformly in $x,r,s$,
+\[
+ \Viable(x,r,s)=1
+ \quad\leftrightarrow\quad
+ \text{there is a successful transcript of length at most $r$ from $s$}.
+\]
+The right side is a bounded formula and may be replaced by its Booleanization.
+\end{theorem}
+
+\begin{proof}
+Induct on $r$.  At $r=0$, the only permitted transcript has no answer steps, so success is exactly $\Halt(x,0,s)=1$ and $\Post(x,0,s)=1$, the defining equation for viability.
+
+For $r+1$, split on the numerical Boolean $\Halt(x,r+1,s)$.  If it is $1$, success is exactly the terminal postcondition, represented by the first term in the outer maximum.  If it is $0$, a successful transcript must choose an answer $a<A(x,r+1,s)$ for which $\Local=1$, followed by a successful transcript from $\Next(x,r+1,s,a)$ with resource $r$.  By the induction hypothesis, the latter condition is equivalent to the corresponding viability Boolean.  Bounded Booleanization converts the existential over $a$ into the inner maximum.  The converse reconstructs the first answer and appends the inductively supplied tail.  The induction predicate is an equality between Boolean terms, hence quantifier free.
+\end{proof}
+
+\subsection{A primitive-recursive transcript selector}
+
+Define $\mathsf{choose}(x,r,s)$ to be the least $a<A(x,r,s)$ satisfying
+\[
+ \Local(x,r,s,a)=1\quad\text{and}\quad
+ \Viable(x,r-1,\Next(x,r,s,a))=1,
+\]
+with a default when no such $a$ exists.  Define $\mathsf{exec}$ by primitive recursion, halting when the terminal branch is selected and otherwise appending the chosen answer.
+
+\begin{theorem}[Finite-use relational composition]
+\label{thm:finite-use-compose}
+If
+\[
+ \Viable(x,h,\mathsf{start}(x))=1,
+\]
+then the primitive-recursive execution $\mathsf{exec}(x,h)$ returns a finite transcript whose every answer satisfies the advertised local relation and whose terminal state satisfies $\Post=1$.  The theorem is provable in iPRA by quantifier-free induction.  Consequently, a relational producer can be composed with any bounded adaptive consumer once initial viability has been certified.
+\end{theorem}
+
+\begin{proof}
+The least-witness theorem supplies a chosen answer whenever the nonterminal viability equation is $1$.  Use induction on the number of executed steps, with invariant:
+\begin{enumerate}[label=(\roman*)]
+\item the encoded transcript length is the number of processed answer steps;
+\item every stored edge satisfies $\Local=1$;
+\item the current state is obtained by replaying $\Next$ along that transcript;
+\item the current state is viable for the remaining resource.
+\end{enumerate}
+All four clauses are bounded equations or Boolean folds.  Initially the transcript is empty and viability is the hypothesis.  At a terminal state, viability implies $\Post=1$.  At a nonterminal state, unfold viability.  The bounded existential fold is $1$, so the least-witness selector returns a locally valid answer whose successor is viable.  Append it and preserve the invariant.  Because the resource decreases at every answer step, the execution halts within $h$ steps.  The final invariant and the terminal case give the postcondition.
+\end{proof}
+
+This theorem is the relational analogue of deterministic transducer composition.  It does not construct an infinite branch, nor does it assert that choices made for two different resource bounds agree.
+
+\subsection{Certificate reflection for interaction trees}
+
+Computing the whole viability table inside a proof can be large.  A certificate may instead contain a finite directed acyclic graph of visited states, one Boolean viability label per node, a selected outgoing edge for each live node, and terminal postcondition checks.
+
+\begin{definition}[Viability certificate]
+A code $c$ is valid for $(x,h)$ when a Boolean checker verifies:
+\begin{enumerate}[label=(\alph*)]
+\item every node carries a resource $r\le h$ and a state code;
+\item terminal labels agree with $\Halt\cdot\Post$;
+\item every node labeled viable and nonterminal has a listed answer satisfying $\Local$, pointing to a node with resource $r-1$ labeled viable;
+\item the root is $(h,\mathsf{start}(x))$ and is labeled viable;
+\item replay of the selected edges terminates at a postcondition node.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}[Relational certificate reflection]
+\label{prop:rel-cert}
+For a fixed evidence-machine language, iPRA proves
+\[
+ \mathsf{RelCertOK}(x,h,c)=1\to
+ \mathsf{TranscriptOK}(x,h,\mathsf{extract}(c))=1.
+\]
+\end{proposition}
+
+\begin{proof}
+Every clause is a bounded Boolean fold over the finite certificate.  Extract the root path by following the selected edge.  Induct on the decreasing resource.  The checker supplies local validity and the pointer to the next viable node.  At resource zero or at a marked terminal node, the checker supplies $\Post=1$.  No search beyond the certificate is required.
+\end{proof}
+
+This mode lets an untrusted external solver perform dynamic programming, root clustering, or finite cover search while the object theory checks only a bounded graph.
+
+\subsection{Branch-invariant elimination}
+
+Many theorems do not care which successful transcript was used.  Let $\mathsf{output}(s)$ be a code read from a terminal state, and let $E(x,y,z)$ be a PR-decidable observational equivalence.
+
+\begin{definition}[Observational confluence]
+A machine is observationally confluent for $E$ when every pair of successful terminal states reachable from the same input has equivalent outputs:
+\[
+ \mathsf{TerminalReach}(x,h,t_1)=1\wedge
+ \mathsf{TerminalReach}(x,h,t_2)=1
+ \to E(x,\mathsf{output}(t_1),\mathsf{output}(t_2))=1.
+\]
+The reachability predicates are bounded and Booleanized.
+\end{definition}
+
+\begin{theorem}[Branch-invariant output]
+\label{thm:branch-invariant}
+Assume initial viability and observational confluence.  Then the output returned by the least-viable execution is $E$-equivalent to the output of every successful transcript.  If $E$ is coded equality, the final output is unique and the internal choice can be erased from the theorem statement.
+\end{theorem}
+
+\begin{proof}
+\Cref{thm:finite-use-compose} shows that the selected execution reaches a successful terminal state.  Instantiate observational confluence with this terminal state and an arbitrary successful terminal state.  If $E$ is equality, symmetry and transitivity give a unique code.  If $E$ is projective equivalence, permutation equivalence, or equality up to a requested error, the theorem exports exactly that quotient observation.
+\end{proof}
+
+Examples include symmetric polynomials of an unordered root list, a projective line independent of vector scaling, a finite set independent of enumeration order, and an interval enclosure independent of the chosen chart.
+
+\subsection{Quantitative elimination without confluence}
+
+Exact confluence is stronger than necessary for approximate conclusions.  Let $d$ be a coded metric and suppose every successful terminal output lies in a set of diameter at most $\delta(x,h)$.
+
+\begin{theorem}[Stable finite-use output]
+\label{thm:stable-output}
+If initial viability holds and iPRA proves
+\[
+ \mathsf{TerminalReach}(t_1)=1\wedge\mathsf{TerminalReach}(t_2)=1
+ \to d(\mathsf{output}(t_1),\mathsf{output}(t_2))\le\delta,
+\]
+then the selected output is within $\delta$ of every admissible output.  If a downstream map has a certified Lipschitz bound $L$, all downstream values differ by at most $L\delta$.
+\end{theorem}
+
+\begin{proof}
+The selected terminal state is successful.  Apply the diameter hypothesis to it and any other terminal state.  The Lipschitz conclusion is the supplied finite inequality.
+\end{proof}
+
+This theorem is often the appropriate constructive substitute for a coherent exact branch.  A finite proof at precision $k$ only needs the diameter to be below its error budget.  Choices at different precisions may differ without affecting the universally quantified finite-observation theorem.
+
+\subsection{The exact limitation}
+
+\begin{warning}[No infinite path principle]
+\label{warn:no-infinite-path}
+The assertions
+\[
+ \forall h\;\Viable(x,h,\mathsf{start}(x))=1
+\]
+and ``there exists one primitive-recursive infinite answer sequence compatible at every level'' are not interchangeable.  The finite-use theorem proves the former type of statement, one free horizon at a time.  It does not derive the latter.
+\end{warning}
+
+Lexicographically least transcripts at successive horizons need not be prefix-compatible.  Enforcing compatibility across all horizons is an additional theorem, typically supplied by quantitative uniqueness, nested isolating regions, a contraction, or exact algebraic splitting data.  Where such structure exists, it should be stated as a producer theorem; where it does not, a relational or branch-invariant conclusion is the correct endpoint.
+
+\subsection{Kleisli-style composition law}
+
+It is useful to view a deterministic certificate as a singleton relation and a relational producer as a finite nondeterministic computation.  The bounded consumer theorem defines a finite-use composition operation.  Associativity holds up to transcript re-encoding: flattening two nested bounded interactions into one state machine gives the same set of terminal observations.  The proof is a finite induction on the sum of the resource bounds and uses no choice.  Identity is the one-step relation returning its input.  Thus certified finite relations form a practical compositional layer between raw finite certificates and exact mathematical objects.

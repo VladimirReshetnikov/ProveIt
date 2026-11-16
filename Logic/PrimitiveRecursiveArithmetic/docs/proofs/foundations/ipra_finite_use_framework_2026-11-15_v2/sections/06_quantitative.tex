@@ -1,0 +1,141 @@
+\section{Quantitative represented objects and guarded operations}
+\label{sec:quantitative}
+
+\subsection{Dyadic regular names}
+
+For concreteness, represent a rational by a normalized integer pair and a real by a fixed evaluator $a(p,n)$ returning a rational code.  A convenient regularity convention is
+\[
+  \abs{a(p,m)-a(p,n)}\le 2^{-m}+2^{-n}.
+  \tag{R}\label{eq:regular-name}
+\]
+All inequalities are implemented by integer cross-multiplication.  A global hypothesis $\mathsf{Regular}_a(p)$ is the universal closure of \eqref{eq:regular-name}.  The semantic real is only explanatory; internal theorems are stated directly in terms of rational samples and error bounds.
+
+Two regular names $a(p,\cdot)$ and $b(q,\cdot)$ are extensionally equal when
+\[
+  \forall n\;\abs{a(p,n)-b(q,n)}\le 2^{1-n}.
+  \tag{E}\label{eq:name-eq}
+\]
+The constant is chosen with slack so that reflexivity and transitivity are proved by the triangle inequality and a precision shift.  An apartness certificate is a pair $(m,\sigma)$ with $\sigma\in\{-1,+1\}$ such that
+\[
+  \sigma\,a(p,m)\ge 2^{-m+2}.
+  \tag{A}\label{eq:apartness}
+\]
+Regularity then gives a fixed positive lower bound on the represented value.  The exact numerical constants may be optimized; their role is to leave a rational verification margin.
+
+\begin{lemma}[Finite sample stability]
+\label{lem:sample-stability}
+Assume \eqref{eq:regular-name}.  If $m,n\ge k+3$, then
+\[
+ \abs{a(p,m)-a(p,n)}\le 2^{-k-2}.
+\]
+Consequently, any finite trace whose query planner requests only indices at least $k+3$ may replace one queried sample by another at a cost within the displayed rational budget.
+\end{lemma}
+
+\begin{proof}
+By regularity, the difference is at most $2^{-m}+2^{-n}\le2\cdot2^{-k-3}=2^{-k-2}$.  This is an integer power-of-two inequality and can be checked by multiplication.
+\end{proof}
+
+\subsection{Addition and negation}
+
+Define the output sample for a sum by
+\[
+  c(k)=a(k+2)+b(k+2).
+\]
+Then each input contributes at most $2^{-k-2}$ uncertainty relative to a later sample, so the output is a regular name with the desired $2^{-k}$ scale.  Negation is exact on rational codes.
+
+\begin{proposition}[Addition contract]
+\label{prop:add-contract}
+There is a fixed primitive-recursive evaluator $\mathsf{addName}$ such that iPRA proves: from the regularity of $a$ and $b$, the evaluator is regular, respects extensional equality, and its $k$th sample differs from the sum of any sufficiently precise input samples by the explicit triangle-inequality budget.
+\end{proposition}
+
+\begin{proof}
+Keep $k$ free.  Instantiate each global regularity formula at the finitely many indices $k+2,m,n$ occurring in the desired inequality.  Expand the rational addition code and apply the finite triangle inequality.  No induction is needed beyond the arithmetic library; universal introduction over $k$ is the last step.
+\end{proof}
+
+\subsection{Products require magnitude bounds}
+
+For products,
+\[
+  ab-a'b'=(a-a')b+a'(b-b').
+\]
+A finite error contract therefore needs bounds $\abs{a'},\abs{b}\le M$.  These may be supplied externally or derived from one coarse sample and regularity.  For example, if $\abs{a(0)}\le M_0$, then every later sample is at most $M_0+2$ in magnitude under convention \eqref{eq:regular-name}.  Choose a primitive-recursive integer bound $M$ and request input precision $k+c(M)$ so that
+\[
+  2M\,2^{-(k+c(M))}\le2^{-k-2}.
+\]
+A simple choice uses a dyadic exponent exceeding $\log_2(4M+4)$, found by bounded doubling.
+
+\begin{proposition}[Product contract]
+\label{prop:product-contract}
+From regular names and certified rational magnitude bounds, one can primitive-recursively synthesize an input precision and a rational multiplication trace whose iPRA proof yields a regular product name.  The precision transformer is monotone in the output precision and in the magnitude bounds.
+\end{proposition}
+
+\begin{proof}
+Use the displayed telescoping identity.  Every factor and error is rational.  The precision transformer ensures that each of the two summands is at most half the allocated budget.  Cross-multiply to eliminate division by powers of two.  Monotonicity follows from monotonicity of the doubling search and of the input error bounds.
+\end{proof}
+
+\subsection{Guarded reciprocal}
+
+A qualitative premise $\neg(x=0)$ does not supply a usable numerical denominator.  Let a regular name $a$ carry an apartness certificate proving
+\[
+  \abs{x}\ge\alpha>0
+\]
+for a rational $\alpha$.  Request a sample $q$ with $\abs{q-x}\le\alpha/2$.  Then $\abs{q}\ge\alpha/2$.  For another approximation $q'$ to $x$,
+\[
+ \abs{q^{-1}-(q')^{-1}}
+ =\frac{\abs{q-q'}}{\abs{q q'}}
+ \le \frac{4\abs{q-q'}}{\alpha^2}.
+\]
+
+\begin{theorem}[Apartness-guarded inverse]
+\label{thm:guarded-inverse}
+There is a total primitive-recursive rational operation $\mathsf{inv}_0$ that returns $0$ at a zero numerator and the exact reciprocal otherwise.  From a regular name and a rational apartness witness $\alpha$, iPRA proves that a suitable precision-shifted application of $\mathsf{inv}_0$ is a regular name of the reciprocal and that the zero-default branch is never taken.
+\end{theorem}
+
+\begin{proof}
+The query planner chooses an index $n(k,\alpha)$ making the input error at most both $\alpha/2$ and $2^{-k}\alpha^2/16$.  Regularity and the apartness witness imply $\abs{a(n)}\ge\alpha/2$, so the rational numerator is nonzero and the guarded operation uses the reciprocal branch.  For two output samples, apply the displayed difference identity and the lower bounds on both denominators.  The chosen precision makes the result at most the regularity budget.  Every premise is a finite rational comparison; the all-precision theorem is obtained by universal introduction over $k$.
+\end{proof}
+
+\subsection{Polynomial evaluation}
+
+Let $P(z)=\sum_{j=0}^d c_jz^j$ and suppose $\abs{z},\abs{w}\le M$.  The identity
+\[
+ z^j-w^j=(z-w)\sum_{t=0}^{j-1}z^tw^{j-1-t}
+\]
+gives
+\[
+ \abs{P(z)-P(w)}
+ \le \abs{z-w}\sum_{j=1}^d j\abs{c_j}\max(1,M)^{j-1}.
+ \tag{P-Lip}\label{eq:poly-lip}
+\]
+The right side is a finite integer/rational expression.
+
+\begin{lemma}[Polynomial observation contract]
+\label{lem:poly-observation}
+For a fixed degree bound and coded coefficients, the Lipschitz majorant in \eqref{eq:poly-lip}, the required input precision, and the rational evaluation trace are primitive recursive.  iPRA proves the resulting residual estimate by finite sum and product induction.
+\end{lemma}
+
+\begin{proof}
+Prove the power-difference identity by induction on $j$, then the polynomial estimate by induction on the coefficient list.  Both induction predicates are quantifier-free identities/inequalities over coded rationals.  A bounded maximum produces $\max(1,M)$, and a finite fold produces the majorant.
+\end{proof}
+
+\subsection{Quotient-aware data}
+
+Several mathematical objects should not be represented by normalized exact coordinates.
+
+\begin{itemize}
+\item A projective point is a nonzero vector together with scaling equivalence.  Exact normalization is performed only under an apartness witness for a pivot or norm.
+\item A root cluster is a finite region with a root-count certificate, not an ordered list of roots.
+\item A subspace is represented by a projector, Pl\"ucker coordinates, or a row-space certificate rather than a chosen basis when eigenvalues collide.
+\item A finite set is represented modulo permutation and duplicate removal; downstream functions should state permutation invariance.
+\end{itemize}
+The branch-invariant theorem of \Cref{thm:branch-invariant} then removes internal finite choices at the correct quotient level.
+
+\subsection{Object-theory interface}
+
+A reusable represented-object module should expose three layers:
+\begin{enumerate}[label=\arabic*.]
+\item \emph{codes and total evaluators}, all fixed \code{PR} symbols;
+\item \emph{Boolean finite observations}, such as regularity instances, interval membership, residuals, and apartness;
+\item \emph{embedded contracts}, each a \code{Prf PRAAx} theorem consuming precisely the observations used by the algorithm.
+\end{enumerate}
+It should not expose a metatheoretic real type as an object-language value.  Semantic real numbers are useful for explaining the theorem, but the formal endpoint is always an arithmetic formula about finite samples.

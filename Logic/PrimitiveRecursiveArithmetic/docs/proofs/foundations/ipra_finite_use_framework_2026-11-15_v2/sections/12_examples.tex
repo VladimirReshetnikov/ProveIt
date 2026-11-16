@@ -1,0 +1,123 @@
+\section{Worked finite examples}
+\label{sec:examples}
+
+The examples in this section are intentionally small.  Their purpose is to show the shape of a certificate and its invariant, not to replace the larger domain theorems.
+
+\subsection{A relational square-root approximation}
+
+Let $a=2$ and let level $n$ use dyadic candidates
+\[
+ C_n=\left\{\frac{j}{2^n}:0\le j\le 2^{n+2},\quad
+ \abs{\left(\frac{j}{2^n}\right)^2-2}\le 4\cdot2^{-n}\right\}.
+\]
+Compatibility between $q\in C_n$ and $r\in C_{n+1}$ is
+\[
+ \abs{q-r}\le 2^{1-n}.
+\]
+All tests use integer arithmetic after multiplying by $2^{2n}$.
+
+\begin{proposition}
+For every finite horizon $h$, the levels $0,\ldots,h$ admit a compatible chain.
+\end{proposition}
+
+\begin{proof}
+Let $j_n$ be the least integer with $j_n^2\ge2^{2n+1}$ and put $q_n=(j_n-1)/2^n$.  The least-crossing definition is a bounded search because $(2^{n+2})^2$ exceeds the target.  We have
+\[
+ q_n^2<2\le(q_n+2^{-n})^2,
+\]
+so
+\[
+ 0<2-q_n^2\le 2q_n2^{-n}+2^{-2n}\le4\cdot2^{-n}
+\]
+using $q_n<2$.  Thus $q_n\in C_n$.  The intervals
+$[q_n,q_n+2^{-n}]$ and $[q_{n+1},q_{n+1}+2^{-(n+1)}]$ both contain $\sqrt2$ in the explanatory metatheory; internally, the same conclusion follows by comparing the crossing integers.  Hence $\abs{q_n-q_{n+1}}\le2^{-n}+2^{-(n+1)}<2^{1-n}$.
+\end{proof}
+
+A relational certificate lists the finite candidate sets and the compatible edges.  Backward viability marks candidates that reach level $h$.  Forward selection returns the least viable chain.  A consumer needing only a $2^{-k}$ approximation asks for one sufficiently fine level; it does not need a global exact square-root selector.  The Python kernel in the archive computes these chains with exact \code{Fraction} arithmetic.
+
+\subsection{Robust overlapping branch}
+
+Suppose a represented real $x$ is approximated by a rational $r$ with
+$\abs{x-r}\le d/4$, where $d>0$, and a downstream proof has two valid local rules:
+\[
+  x\le q+3d/4\Rightarrow A,
+  \qquad
+  x\ge q+d/4\Rightarrow B.
+\]
+Compare $r$ with $q+d/2$.
+
+\begin{itemize}
+\item If $r\le q+d/2$, then $x\le r+d/4\le q+3d/4$, so rule $A$ applies.
+\item If $r>q+d/2$, then $x\ge r-d/4>q+d/4$, so rule $B$ applies.
+\end{itemize}
+
+The true-input ranges overlap.  No decision of $x\le q$ versus $x>q$ is made.  If both branches produce the same observation on the overlap, branch-invariant elimination gives a single theorem.  If they produce values within $\delta$, stable-output elimination gives an error-$\delta$ theorem.
+
+With an additional gap promise
+\[
+  x\le q-d\quad\text{or}\quad x\ge q+d,
+\]
+an approximation within $d/3$ decides the exact side.  This is the correct constructive location of exact branching: the gap is part of the input contract.
+
+\subsection{A monotone metastability bound}
+
+Let $(x_n)$ be a nondecreasing rational sequence with $0\le x_n\le M$.  Fix $\eps>0$ and a challenge $g$.  Put
+\[
+ n_0=0,\qquad n_{t+1}=n_t+g(n_t)+1.
+\]
+If the window $[n_t,n_t+g(n_t)]$ is not $\eps$-stable, monotonicity gives
+\[
+ x_{n_{t+1}}-x_{n_t}>\eps.
+\]
+After $R=\lfloor M/\eps\rfloor+1$ failures, telescoping would give
+$x_{n_R}>M$, contradiction.  Thus one of the first $R$ windows is stable.
+
+A quantifier-free invariant is
+\[
+ \bigl(\text{the first $t$ windows all fail}\bigr)
+ \to x_{n_t}>t\eps,
+\]
+where the finite conjunction of failures is a Boolean fold.  This proves a primitive-recursive stable-window selector.  It does not prove that all windows after the selected one are stable.
+
+\subsection{Finite-net residual minimization}
+
+On $[0,2]$, consider $R(y)=\abs{y^2-2}$.  On this interval,
+\[
+ \abs{R(y)-R(z)}\le\abs{y^2-z^2}
+ \le4\abs{y-z}.
+\]
+Use the dyadic grid of mesh $2^{-n}$ and choose the least point minimizing the exact rational residual.  Since some grid point is within $2^{-n}$ of $\sqrt2$ (proved internally by least crossing), its residual is at most $4\cdot2^{-n}$.  Hence the argmin has residual no larger.  This is an instance of \Cref{thm:approx-witness}.  Strong monotonicity of $y^2$ on a separated positive interval can additionally turn small residual into a small distance to the positive root.
+
+\subsection{Height-bounded enumeration}
+
+Consider the integer equation
+\[
+ x^2+y^2=5.
+\]
+A supplied bound $\max(\abs{x},\abs{y})\le3$ reduces completeness to the finite box $[-3,3]^2$.  A primitive-recursive enumerator tests the equation and returns
+\[
+ (\pm1,\pm2),\qquad(\pm2,\pm1).
+\]
+The checker verifies each point, duplicate-freedom under a chosen canonical order, and the completeness implication from the height bound.  The example is elementary, but the architecture is exactly the same for a Runge or Baker height certificate: the hard theorem supplies $B$; the generic bounded filter supplies the complete list.
+
+\subsection{Branch-invariant root data}
+
+For $f(T)=T^2-2$, the two roots cannot be globally ordered by a continuous sign-free operation if coefficients are allowed to pass through collisions in larger families.  Yet the power sum
+\[
+ s_2=z_1^2+z_2^2
+\]
+and product $z_1z_2$ are permutation invariant.  A finite relational root-cluster certificate may return either labeling.  Vieta's identities prove that every successful transcript yields $s_2=4$ and $z_1z_2=-2$ (for the exact roots), or the corresponding rational error enclosures for approximations.  \Cref{thm:branch-invariant} removes the label.  This illustrates the general rule: ask for the quotient-level object that the theorem actually uses.
+
+\subsection{Reference implementation coverage}
+
+The included Python tests exercise:
+\begin{itemize}
+\item bounded first-success search;
+\item backward viability and replayed transcript soundness;
+\item relational square-root chains at several horizons;
+\item branch-invariant terminal outputs;
+\item rational error-DAG propagation;
+\item monotone metastability search;
+\item height/list conversion and finite enumeration.
+\end{itemize}
+The tests are exact finite checks.  They do not prove the universal theorems and are not an iPRA proof checker.
