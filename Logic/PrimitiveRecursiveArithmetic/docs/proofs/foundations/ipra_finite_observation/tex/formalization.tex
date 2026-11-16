@@ -1,0 +1,258 @@
+\section{Lean formalization: definitions, checked kernel, and deep targets}
+\label{sec:formalization}
+
+The formalization path has a useful small completed component and a much
+larger explicitly specified endpoint. The completed component checks
+finite-table locality and compilation. The endpoint is a family of
+object-language \texttt{PRAAx} derivations. We do not identify the two.
+
+\subsection{The checked finite-table kernel}
+
+The file \texttt{lean/FiniteObservation.lean} imports \texttt{Std}, not
+Mathlib, and was checked with Lean 4.32.0. Its central definitions are:
+\begin{lstlisting}
+abbrev Stream := Nat -> Nat
+abbrev Table := List Nat
+
+def PrefixEq (h : Nat) (a b : Stream) : Prop :=
+  forall i, i <= h -> a i = b i
+
+def tabulate (a : Stream) (h : Nat) : Table :=
+  (List.range (h + 1)).map a
+
+def demand (u : Nat -> Nat) : Nat -> Nat -> Nat
+  | 0, k => k
+  | n + 1, k => u (demand u n k)
+
+def Local (u : Nat -> Nat)
+    (t : Nat -> Stream -> Stream) : Prop :=
+  forall s k a b,
+    PrefixEq (u k) a b -> PrefixEq k (t s a) (t s b)
+
+def ofBody (u : Nat -> Nat)
+    (body : Nat -> Nat -> Table -> Nat)
+    (s : Nat) (a : Stream) (p : Nat) : Nat :=
+  body s p (tabulate a (u p))
+\end{lstlisting}
+
+The theorem \texttt{ofBody\_local} proves that a monotone numerical query
+bound makes this table body local. The numerical budget at stage $s$ is
+\[
+ \mathtt{horizon}(u,N,k,s)=\mathtt{demand}(u,N-s,k).
+\]
+The executable \texttt{build} fixes $N,k$ and recurses on the stage,
+storing a \texttt{List Nat}. The semantic \texttt{iter} recurses into
+\texttt{Stream}; it is explicitly a reference specification, not a
+claimed first-order implementation. The main checked theorem is
+\begin{lstlisting}
+theorem compiled_correct
+    (ht : Local u t) (a : Stream) (N k : Nat) :
+  lookup (build u t a N k N) k = iter t a N k
+\end{lstlisting}
+with the implicit parameters and types as in the file.
+
+The inductive proof uses a stronger finite-prefix assertion at every
+stage. At a successor, the budget identity
+$h_s=u(h_{s+1})$ supplies exactly the input agreement needed by locality.
+This is a real verification of the generic compilation mechanism, not a
+theorem whose premise is the same as its conclusion.
+
+The same file proves \texttt{allBelow\_iff}, the exact interpretation of
+a finite Boolean conjunction; \texttt{finite\_safety}, a finite invariant
+lemma; and \texttt{descent\_fuel}, a scalar strict-descent bound. The
+latter is auxiliary infrastructure rather than a new Mordell--Weil
+result. It states that a natural rank which decreases at every step for
+$H$ steps satisfies $H\le\operatorname{rank}(0)$.
+
+The axiom printouts for the four principal checked theorems contain
+\texttt{propext} and \texttt{Quot.sound}. They contain neither
+\texttt{Classical.choice} nor \texttt{sorryAx}. These are Lean's ambient
+foundational dependencies; they are not axioms added to \iPRA. An axiom
+audit alone would not establish the object-theory claim in either case.
+
+\subsection{Type-checked mathematical specifications}
+
+The separate file \texttt{lean/Targets.lean} defines the numerical and
+rational interfaces for the main analytic and algebraic targets. Its
+structures and predicates are specifications of proof obligations;
+constructing a type or a structure with unfilled obligations is not a
+proof that it is inhabited. No opaque theorem, new axiom, or
+\texttt{sorry} is used to assert those conclusions. The file's comments
+mark that status explicitly.
+
+At this semantic specification layer it is convenient to use
+\texttt{Rat}, lists, and Lean functions. Their object-language
+counterparts must be natural codes and the fixed \texttt{PR} terms for
+the algorithms in the manuscript. An arbitrary Lean function
+\texttt{Nat -> Nat} carries no automatic evidence of primitive
+recursiveness. That evidence is a separate deliverable at the next layer.
+
+\subsection{The existing deep backend}
+
+The inspected source files provide the following exact interfaces:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.35\linewidth}>{\raggedright\arraybackslash}p{0.59\linewidth}@{}}
+\toprule
+Object & Meaning\\
+\midrule
+\endhead
+\texttt{PR k} & Syntax for $k$-ary primitive recursive functions,
+with constructors \texttt{zero}, \texttt{succ}, \texttt{proj},
+\texttt{comp}, \texttt{prec}.\\
+\texttt{PTm n} & Terms in $n$ free numerical variables, with
+\texttt{var} and \texttt{app}.\\
+\texttt{Fm PTm n} & First-order formulas over these terms; formulas
+are not Lean predicates in this layer.\\
+\texttt{Prf PRAAx Gamma phi} & Intuitionistic derivability of the
+encoded formula from the encoded context.\\
+\texttt{PRA.qfInd} & Constructs an induction proof from an encoded
+formula, a syntactic \texttt{QF} witness, and object-level base/step proofs.\\
+\texttt{Prf.subst}, \texttt{Prf.weaken}, \texttt{Prf.trans} &
+Capture-avoiding substitution, weakening, and simultaneous cut.\\
+\texttt{pra\_iff\_native} & Transfers completed arithmetic proofs to
+the native scalar calculus.\\
+\bottomrule
+\end{longtable}
+These are read from the pinned sources \cite{repo-pr,repo-deduction,repo-native};
+we have not rebuilt the full repository dependency closure in this run.
+
+\subsection{The object-language plan, with no semantic shortcut}
+
+\paragraph{Stage 1: numerical representations and PR definitions.}
+Implement the pair, list, integer, and rational codes from
+Section~\ref{sec:foundations}, including total default branches. For each
+operation construct its actual syntax in \texttt{PR k}. A semantic
+function interpreting these syntax trees can be defined in Lean to state
+correctness, but it is a metatheoretic function. Do not postulate an
+object-level PR evaluator for arbitrary \texttt{PR} syntax.
+
+Define addition, truncated subtraction, products, powers, list lookup,
+bounded folds, rational order, finite determinants, and polynomial
+convolution through \texttt{comp} and \texttt{prec}. This is repetitive
+syntax construction and can be generated, but the output terms and their
+arithmetic defining-equation proofs must remain inspectable. The
+universal object-level facts come from those proofs, not from running a
+finite set of examples.
+
+\paragraph{Stage 2: Boolean reflection as an object theorem.}
+For a chosen finite predicate $B$, build a specific Boolean PR term
+$\chi_B$. Encode $B\leftrightarrow\chi_B=1$ in
+\texttt{Fm PTm n} and prove it using the fixed-formula construction of
+Lemma~\ref{lem:reflection}. The careful two-direction proof of bounded
+universal reflection avoids circularly using bounded induction before
+establishing it. A syntactic QF checker certifies the formulas on which
+\texttt{PRA.qfInd} is called.
+
+\paragraph{Stage 3: finite safety and contracts.}
+For each selected numerical invariant, form the exact formula
+\[
+ j\le H(\mathbf x)\longrightarrow
+   I(\mathbf x,j,s_j(\mathbf x))=1.
+\]
+Its order test is a Boolean PR term, so the encoded formula is
+quantifier-free. Supply the object derivations of the base and step,
+then apply \texttt{PRA.qfInd}. Global name or continuity assumptions
+may remain in the context. No rule infers the base or step merely from
+an ambient Lean proof about standard natural numbers.
+
+The generic compiler's local verification obligation is a single
+arithmetic theorem with the stage, horizon, and metadata as free
+numerical variables. This distinguishes a uniform theorem from a
+metatheoretic family of proofs for separately fixed stages. Metadata
+bounds must be monotone or replaced by bounded maxima, as in the
+construction of $U_N$.
+
+\paragraph{Stage 4: the table compiler.}
+Construct PR syntax for the demand list, the initial observation table,
+and the forward stage fold. Prove prefix locality for its fixed body,
+then mirror the finite proof of \texttt{build\_correct}. At the deep
+level its invariant is a Boolean conjunction over the finite rows,
+not the semantic proposition about \texttt{Stream}s. Include the
+initial-contract derivation. Include Cauchy regularity among the finite
+checks whenever the output is supposed to be a regular name.
+
+The resulting generic proof is a compiler \emph{for supplied arithmetic
+proof packets}: numerical function definitions, formula definitions,
+QF witnesses, and uniform local proof terms. It is not an unrestricted
+reflection principle for arbitrary Lean mathematics.
+
+\paragraph{Stage 5: factorization.}
+The mathematical statements to encode are
+Lemmas~\ref{lem:fta-descent-contract}, \ref{lem:fta-root-table}, and
+\ref{lem:fta-deflation-table}. The imported descent algorithm requires
+its own deep rational-arithmetic proof; a Lean section variable stating
+its correctness is an explicit assumption until that work is done.
+The additional tasks are dyadic rounding, the monic trajectory
+invariant, normalized root regularity, deflation regularity, and the
+four-term polynomial defect estimate. All function symbols and bounds
+are displayed in Section~\ref{sec:fta-extension}.
+
+After these local proofs, encode the cap and backward-horizon
+recursions and apply the finite-table compiler. Prove the finite
+coefficient telescoping identity and its $dWG^d2^{-t}$ bound. Fix $k$
+before the stage induction and introduce its universal quantifier only
+at the end. The final formula is exactly the rational coefficient
+inequality \eqref{eq:fta-uniform-factorization}, together with the
+regularity assertions, rather than an invocation of Lean's
+\texttt{IsAlgClosed} for the ordinary complex field.
+
+\paragraph{Stage 6: convexity and finite nets.}
+Define dyadic grids as finite tuples, rational rounding, first-index
+minimization, interval intersection, and the explicit schedules
+$\mu(k+2)$, $v(k)$, and $2k+c$. Prove the finite sampled minimum
+inequality first. Instantiate the continuity premise only at the rounded
+point and the required finite precisions. The two endpoint secant
+inequalities yield the Bohr--Mollerup modulus once finite AM--GM and
+positive-power comparison have their arithmetic proofs.
+
+The positivity witness is part of the original presentation. Rational
+non-strict inequalities between names are verified by explicit finite
+error bounds and Lemma~\ref{lem:vanishing-error}, not by assuming real
+trichotomy. The canonical extension is constructed through the derived
+modulus; separately assigned irrational values remain outside the claim.
+
+\paragraph{Stage 7: finite algebraic sections.}
+Define the rational polynomial and point-list predicates, synthetic
+division, determinant enumeration, maximal-minor rank, and the explicit
+annihilator. The finite polynomial root bound is an induction over a
+supplied distinct root list. Then split on the decidable last coordinate
+of the annihilator and prove the two branches of
+Theorem~\ref{thm:superelliptic-section}. Implement subset-mask cover
+verification and first-cover assignment. The cover theorem becomes an
+arithmetic implication from a successful finite test. Its success on
+all intended point tuples is a separate future mathematical theorem.
+
+\paragraph{Stage 8: integration and proof audit.}
+Only after the \texttt{Prf PRAAx} terms exist transfer them through
+\texttt{pra\_iff\_native}. Record axiom printouts of the complete
+endpoints and a build of their transitive dependencies. An integration
+that leaves the desired conclusion in a structure field, an assumption,
+an \texttt{opaque} declaration, or a \texttt{sorry} has not completed
+this stage. The current archive explicitly stops before claiming it.
+
+\subsection{Concrete proof targets and completion criteria}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\linewidth}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}p{0.25\linewidth}@{}}
+\toprule
+Target & Required mathematical invariant & Current status\\
+\midrule
+\endhead
+Prefix locality and table compilation & Equality on the scheduled
+finite input prefixes implies equality of the output rows. & Ambient
+Lean proof checked; deep coding pending.\\[4pt]
+Finite Boolean reflection & Fold value one iff all bounded tests
+succeed, with the noncircular induction proof. & Ambient finite-fold
+lemma checked; general deep reflection pending.\\[4pt]
+Uniform factorization & Good finite tables, degree/cap facts, local
+coefficient defects, finite telescope. & Human proof from stated
+Descent dependency; full Lean proof pending.\\[4pt]
+Candidate continuity modulus & Finite AM--GM, witnessed positivity,
+two rational secant inequalities. & Human proof; typed targets and
+concrete arithmetic roadmap.\\[4pt]
+Infimum and coherent optimizer & Finite minimum and cross-interval
+checks; quantitative uniqueness at fixed precisions. & Human proof;
+exact examples and typed targets.\\[4pt]
+Superelliptic section bound & Quotient degree and remaining listed
+roots; annihilator identity; finite grouping. & Human proof;
+exact examples and typed targets.\\
+\bottomrule
+\end{longtable}

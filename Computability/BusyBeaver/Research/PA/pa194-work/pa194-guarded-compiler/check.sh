@@ -33,3 +33,7 @@ if command -v py >/dev/null 2>&1; then py=py; else py=python3; fi
   --top "$here/PA194NameSemantics.lean" --reports 9 "$@"
 "$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
   --top "$here/PA194NameFactsProof.lean" --reports 17 "$@"
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194InductionForms.lean" --reports 7 "$@"
+"$py" -X utf8 -B "$here/../pa194-model-fairness/check_bridge.py" \
+  --top "$here/PA194InductionSchema.lean" --reports 9 "$@"

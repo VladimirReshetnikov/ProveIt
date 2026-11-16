@@ -1,0 +1,84 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Finite observations and uniform constructions in iPRA},
+ pdfauthor={Prepared for Vladimir Reshetnikov},bookmarksnumbered=true}
+\urlstyle{same}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Finite observations in iPRA}
+\fancyhead[R]{\small Research framework and applications}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist{topsep=5pt,itemsep=3pt,parsep=2pt}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+ frame=single,rulecolor=\color{black!20},showstringspaces=false}
+\newcommand{\iPRA}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\PR}{\mathrm{PR}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\title{\textbf{Finite observations and uniform\\constructions in iPRA}\\[7pt]
+\large A compositional framework, degree-uniform factorization,\\
+convexity moduli, and finite algebraic sections}
+\author{Prepared for Vladimir Reshetnikov}
+\date{November 15, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a common method for translating presented mathematical objects
+and quantitative proofs into intuitionistic primitive recursive arithmetic.
+The central construction replaces a variable-depth chain of operations on
+infinite names by backward numerical demand bounds and forward finite
+tables. Evaluation demands and verification demands are kept distinct;
+finite Boolean invariants justify the permitted induction.
+
+The framework yields three concrete advances relative to the inspected
+ProveIt reports. First, using the existing finite rational descent lemma,
+we obtain one full-factorization program uniform in the numerical degree
+for each fixed primitive recursive coefficient evaluator. Second,
+positive rational multiplicative convexity supplies the candidate's local
+continuity modulus in the Bohr--Mollerup argument, from two coarse
+endpoint evaluations. Third, for $y^r=f(x)$ with $m=\deg f>rs$, every
+proper linear subspace contains feature images of at most $m$ distinct
+rational points under $(1,x,\ldots,x^s,y)$; this supplies an explicit
+zero-count input to a finite-cover route toward Diophantine finiteness.
+
+Additional theorems construct infimum names from finite nets and coherent
+minimizers from quantitative uniqueness, including a complete strong
+convexity instance. Exact-input, apartness, uniformity, and ineffective-bound
+obstructions are retained explicitly. The archive includes a checked Lean
+finite-table kernel, type-checked mathematical target specifications,
+exact arithmetic examples, and a detailed path to deeply embedded
+\texttt{PRAAx} derivations. It does not claim that those full object-theory
+derivations have already been completed.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+\input{tex/overview}
+\input{tex/foundations}
+\input{tex/compiler}
+\input{tex/factorization}
+\input{tex/analysis}
+\input{tex/sections}
+\input{tex/audit}
+\input{tex/formalization}
+\input{tex/verification}
+\input{tex/references}
+\end{document}

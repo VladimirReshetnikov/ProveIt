@@ -1,0 +1,392 @@
+\section{Finite algebraic sections: a concrete repair of the Diophantine interface}
+\label{sec:finite-sections}
+
+The repository's general Siegel route already separates two assertions:
+every supplied finite tuple has a cover by a bounded number of proper
+linear subspaces, and each such subspace contains only a bounded number
+of curve points. Its unresolved geometric input is a zero-count theorem
+for functions with controlled poles. We now prove an elementary substitute
+for a substantial explicit family. The resulting theorem supplies the
+second assertion without a theory of divisors or Riemann--Roch spaces.
+The quantitative approximation theorem supplying the first assertion
+remains a separate, unproved input \cite{repo-siegel}.
+
+All rational numbers in this section have canonical signed-numerator,
+positive-denominator codes. Equality and order are decidable integer
+tests. A polynomial is a finite coefficient array, with trailing zero
+coefficients removed when its degree is computed. A point is a pair of
+such rational codes. These choices make distinctness, substitution,
+matrix rank, and list membership primitive recursive predicates.
+
+\subsection{A finite polynomial zero-count lemma}
+
+\begin{lemma}[Zeros in a supplied finite list]
+\label{lem:section-root-count}
+Let $h\in\Q[X]$ be nonzero of degree $D$. A finite list of distinct
+rational roots of $h$ has length at most $D$. This statement has a proof
+in $\iPRA$, uniformly in the coefficient and root lists.
+\end{lemma}
+\begin{proof}
+We first give the division operation, including its bound. If
+$h(X)=a_0+\cdots+a_DX^D$ with $D>0$, and $z\in\Q$, define
+$q_{D-1}=a_D$ and, going downwards, $q_{j-1}=a_j+zq_j$ for
+$1\le j<D$. Put $q(X)=\sum_{j<D}q_jX^j$. Comparing coefficients gives
+\[
+ h(X)=(X-z)q(X)+a_0+zq_0,
+ \qquad a_0+zq_0=h(z).
+\]
+The computation uses exactly $D$ coefficient updates. If $h(z)=0$,
+the remainder vanishes and $q$ has degree $D-1$ with the same nonzero
+leading coefficient. If $w\ne z$ is another root, evaluation gives
+$0=(w-z)q(w)$; cancellation in $\Q$ gives $q(w)=0$.
+
+Suppose a supplied root list has at least $D+1$ entries, and retain its
+first $D+1$ entries $z_0,\ldots,z_D$. Divide successively by
+$X-z_0,\ldots,X-z_{D-1}$. After $j$ divisions the quotient has degree
+$D-j$, has the original nonzero leading coefficient, and vanishes at
+each of the remaining listed roots. At $j=D$ it is a nonzero constant
+which vanishes at $z_D$, a contradiction. If $D=0$, the first root
+already gives this contradiction.
+
+This is finite induction, not induction on an assertion about all
+rational roots. The remaining-root condition is a bounded conjunction
+over the fixed input list. Its characteristic Boolean, the polynomial
+coefficient identity, and the leading-coefficient equality form a
+quantifier-free invariant. All divisions just described are by a monic
+linear factor and require no search. The proof therefore uses only the
+allowed induction instances.
+\end{proof}
+
+\subsection{An explicit annihilator of a proper span}
+
+We describe the required linear algebra so that the word ``proper''
+does not conceal an infinite-dimensional selection principle. For a
+$t$ by $n$ rational matrix $W$, define its rank to be the largest size
+of a nonzero minor, with rank zero when every entry is zero. This is
+a bounded finite test. A proper span in $\Q^n$ can be represented by
+such a matrix with rank less than $n$.
+
+\begin{lemma}[A bounded, fraction-free annihilator]
+\label{lem:section-annihilator}
+For $n\ge1$, from a rational $t$ by $n$ matrix $W$ of rank less than
+$n$, a primitive recursive operation constructs a nonzero integer
+vector $\lambda\in\mathbb Z^n$ satisfying $W\lambda=0$.
+Its correctness has a quantifier-free finite-arithmetic proof.
+\end{lemma}
+\begin{proof}
+Clear all denominators using their positive product $D_0$ and put
+$V=D_0W$. This does not change which minors vanish. By bounded
+enumeration choose a nonzero minor of maximum size $k<n$, with row
+set $I$ and column set $J$; let its matrix be $A$. For $k=0$ use the
+empty minor, whose determinant is one. Choose the least column
+$c\notin J$, and let $b$ be column $c$ restricted to the rows in $I$.
+Define
+\[
+ \lambda_c=\det A,\qquad
+ \lambda_J=-\operatorname{adj}(A)b,\qquad
+ \lambda_j=0\quad(j\notin J\cup\{c\}).
+\]
+When $k=0$ this simply means $\lambda_c=1$ and all other entries zero.
+In every case $\lambda$ is nonzero.
+
+The selected rows annihilate $\lambda$ because cofactor expansion gives
+$A\operatorname{adj}(A)=(\det A)I_k$. For any other row $v$ of $V$,
+the block-determinant identity is
+\[
+ \det\begin{pmatrix} A&b\\v_J&v_c\end{pmatrix}
+       =v_c\det A-v_J\operatorname{adj}(A)b=v\lambda.
+\]
+This identity follows by expansion along the last row; equivalently,
+multiply the usual row-subtraction computation by $\det A$ and use
+the adjugate identity. The displayed determinant is a minor of size
+$k+1$, up to row and column ordering. It vanishes by maximality of
+$k$. Thus every row annihilates $\lambda$. For $k=0$, maximality says
+that all matrix entries are zero, which gives the same conclusion.
+Since $D_0>0$, $V\lambda=0$ implies $W\lambda=0$.
+
+There are at most $2^{t+n}$ row-mask/column-mask pairs to inspect.
+Each determinant is the signed sum over permutations, enumerated by
+a bounded loop (even a scan of all tuples below $n^n$, retaining the
+permutations, suffices). The cofactor identities follow by finite
+expansion: terms with repeated columns cancel in pairs, and the
+remaining terms are exactly the determinant terms. The block identity
+is the same finite expansion. All matrix entries and identities are
+finite arrays of rational or integer codes.
+
+For a numerical size bound, if all input numerators in absolute value
+and denominators are at most $H\ge1$, then
+$D_0\le H^{tn}$ and every entry of $V$ has absolute value at most
+$C=H^{tn+1}$. Every coordinate constructed above has absolute value
+at most $n!C^n$: a $k$-minor has bound $k!C^k$, and the adjugate
+product has that same bound. This is a uniform primitive recursive
+majorant. No arbitrary rational kernel vector is selected.
+\end{proof}
+
+\subsection{A zero-count theorem for superelliptic curves}
+
+Fix integers $r\ge1$ and $s\ge0$, and a nonzero rational polynomial
+$f$ of degree $m$ satisfying
+\[
+                         m>rs.
+\]
+Consider the affine point predicate and feature vector
+\[
+ \mathcal C_{f,r}(x,y)\;:\Longleftrightarrow\;y^r=f(x),
+ \qquad
+ \Phi_s(x,y)=(1,x,\ldots,x^s,y)\in\Q^{s+2}.
+\]
+No smoothness, irreducibility, or genus hypothesis is needed for the
+following finite assertion.
+
+\begin{theorem}[Uniform finite section bound]
+\label{thm:superelliptic-section}
+For every nonzero rational vector
+$\lambda=(\lambda_0,\ldots,\lambda_s,a)$, a finite list of distinct
+points satisfying
+\[
+             y^r=f(x),\qquad \lambda\cdot\Phi_s(x,y)=0
+\]
+has at most $m$ entries. Consequently the same bound holds for points
+whose feature vectors lie in any supplied proper rational linear
+subspace. Both statements have proofs in $\iPRA$.
+\end{theorem}
+\begin{proof}
+Put $P(X)=\sum_{j=0}^s\lambda_jX^j$. The second equation is
+$P(x)+ay=0$. The rational test $a=0$ gives two decidable cases.
+
+If $a\ne0$, every such point has $y=-P(x)/a$. Substituting this
+into the first equation gives
+\[
+             H(x)=0,\qquad H(X)=(-P(X))^r-a^rf(X).
+\]
+The first summand has degree at most $rs<m$, whereas the second has
+degree exactly $m$ and nonzero leading coefficient. Hence $H$ is
+nonzero of degree exactly $m$. Distinct points in this branch have
+distinct $x$ coordinates, because $x$ determines $y$. Applying
+Lemma~\ref{lem:section-root-count} to those coordinates gives the
+bound $m$.
+
+If $a=0$, the vector's nonzeroness says that $P$ is a nonzero
+polynomial of degree at most $s$. Group the input points by equal
+$x$ coordinates, assigning each point to the first earlier equal
+coordinate, or starting a new group. There are at most $s$ groups,
+by Lemma~\ref{lem:section-root-count}. In each group, the distinct
+$y$ coordinates are roots of $Y^r-f(x)$, a polynomial of degree
+exactly $r$. Thus each group has at most $r$ entries. The entire
+list has at most $rs<m$ entries. This also handles $s=0$: a
+nonzero constant $P$ has no roots, so there are no groups.
+
+For a proper subspace supplied by a spanning matrix of rank less
+than $s+2$, Lemma~\ref{lem:section-annihilator} supplies a nonzero
+annihilator. Every vector in its span satisfies the resulting
+linear equation. Thus the already proved hyperplane bound applies.
+
+The polynomial powers use finite convolution of coefficient lists.
+The degree statements are leading-coefficient statements; the
+condition $m>rs$ makes the relevant coefficient survive without
+cancellation. Grouping a list of length $t$ requires at most $t^2$
+equality tests. The group-size assertion is a bounded conjunction,
+and its sum is a primitive recursive fold. Together with the two
+lemmas, this gives an explicit reduction of the whole proof to
+quantifier-free induction on bounded arrays and loops.
+\end{proof}
+
+\begin{remark}[The constant is sharp]
+For any $r,s,m$ with $m>rs$, choose a rational polynomial $Q$ of
+degree at most $s$ and set
+\[
+          f(X)=Q(X)^r+\prod_{j=1}^{m}(X-j).
+\]
+It has degree $m$. The $m$ distinct points $(j,Q(j))$ lie on
+$y^r=f(x)$ and on the feature hyperplane $y-Q(x)=0$. Thus a
+smaller uniform bound cannot hold for this family as stated.
+\end{remark}
+
+\paragraph{The quintic instance.}
+For any quintic $f$, take $r=2$, $s=2$. Then
+\[
+                  \Phi_2(x,y)=(1,x,x^2,y),
+\]
+and every proper subspace contains feature images of at most five
+distinct affine rational points of $y^2=f(x)$. This includes the
+monic squarefree quintic family used in the repository's Faltings
+report \cite{repo-faltings}, but the proof does not need squarefreeness.
+For a sharp numerical example take
+\[
+ f(X)=X^5-14X^4+85X^3-223X^2+274X-119
+      =(X^2+1)^2+\prod_{j=1}^{5}(X-j).
+\]
+The points $(1,2),(2,5),(3,10),(4,17),(5,26)$ all lie in the
+hyperplane $y-x^2-1=0$. The companion exact-arithmetic program
+constructs an annihilator by minors and verifies the polynomial
+identities for this example; the general proof is the argument above.
+
+\subsection{Tuple-local covers and the remaining arithmetic theorem}
+
+Let $\mathcal A$ be any additional decidable condition on the
+points of $\mathcal C_{f,r}$. Examples might impose integrality,
+congruence restrictions, or a particular approximation inequality.
+We make no automatic assertion that these conditions yield a
+small-subspace cover.
+
+\begin{theorem}[The explicit finite cover interface]
+\label{thm:superelliptic-cover}
+Suppose that, for every finite list $L$ of distinct
+$\mathcal C_{f,r}$-points satisfying $\mathcal A$, the feature
+vectors $\Phi_s(L)$ admit a supplied cover by at most $M$ proper
+rational linear subspaces. Then every such list has length at most
+$mM$. It is enough to assume the cover assertion only for lists
+of length $mM+1$. The covering subspaces may depend on the entire
+input list; no global collection of exceptional subspaces is required.
+\end{theorem}
+\begin{proof}
+For a supplied cover replace each subspace by the hyperplane from
+Lemma~\ref{lem:section-annihilator}. Assign each point to the first
+covering hyperplane by a bounded scan. The covering premise ensures
+that an index is found. Each assigned sublist is distinct and
+satisfies the corresponding hyperplane equation, so
+Theorem~\ref{thm:superelliptic-section} bounds its length by $m$.
+Summing over at most $M$ sublists gives $|L|\le mM$.
+If the premise was stated only for length $mM+1$, any longer list
+has a prefix of that length. The same argument would give
+$mM+1\le mM$, a contradiction. The sum, assignment, and prefix
+operations are bounded finite algorithms.
+\end{proof}
+
+The cover premise itself can be presented as a bounded arithmetic
+predicate, without arbitrary subspace codes. For a list of $t$ feature
+vectors, enumerate every subset of those vectors, compute its span,
+and retain subsets of rank less than $s+2$. A span of vectors in a
+proper supplied subspace remains proper: a nonzero annihilator of that
+subspace also annihilates every linear combination of these vectors. A proper subspace
+covering some of the tuple can be replaced by the span of the
+points assigned to it. Thus one only needs $M$ subset masks, each
+less than $2^t$, allowing the empty subset for padding. At most
+$2^{tM}$ tuples of masks need be tested. All ranks and membership
+conditions are decidable finite linear algebra. Equivalently,
+replace each candidate span by its explicitly computed annihilator
+hyperplane; this can only enlarge a covering set and remains proper.
+This gives a fixed primitive recursive test
+\[
+       \operatorname{Cover}_{M,s}(L)\in\{0,1\}.
+\]
+The new theorem proves, in arithmetic,
+\[
+ \operatorname{ValidCurveList}_{f,r}(L)\ \wedge\
+ \operatorname{Nodup}(L)\ \wedge\
+ \operatorname{Cover}_{M,s}(L)=1
+       \quad\Longrightarrow\quad |L|\le mM.
+\]
+It does not prove that the cover test succeeds for all lists with
+$\mathcal A$. Proving that assertion is exactly where the requisite
+quantitative approximation theorem must enter. This bounded
+formulation identifies a precise interface for that future work.
+
+If an explicitly listed exceptional set has at most $E$ points,
+and the cover assertion applies outside it, the identical assignment
+argument gives $E+mM$. For finitely many disjointly assigned
+conditions with respective cover bounds $M_i$, the bound is
+$E+m\sum_i M_i$. These are cardinality conclusions. They contain
+no assertion locating all the exceptional points.
+
+\subsection{Why a cardinality or gap bound still supplies no cutoff}
+
+The repository correctly separates cardinality from a positive
+height bound. Here is the exact general obstruction, including an
+often tempting extra assumption. Let $T(e,n)$ mean that the fixed
+universal machine with program/input code $e$ halts for the first
+time at step $n$. Bounded simulation makes $T$ a fixed primitive
+recursive predicate. For each $e$ it has at most one solution.
+Consequently it satisfies every pairwise gap condition of the form
+\[
+ T(e,n)\wedge T(e,n')\wedge n<n'
+             \quad\Longrightarrow\quad n'>G(e,n),
+\]
+for any proposed primitive recursive growth function $G$: there
+are no two distinct solutions.
+
+If a computable $B(e)$ bounded every solution of $T(e,n)$, simulate
+the machine for $B(e)$ steps. This would decide whether it ever
+halts. Such a decision procedure is impossible: a program which
+halts exactly when that procedure predicts it will not halt,
+applied to its own code, yields an immediate contradiction.
+Therefore cardinality bounds, even together with arbitrarily strong
+pairwise gap information, do not admit a general computable
+conversion into height cutoffs. This argument uses one fixed bounded
+simulator; it does not postulate a primitive recursive evaluator
+for all primitive recursive functions.
+
+Nothing here shows that a particular Diophantine cutoff is
+unprovable. It shows why the finite-cover theorem must retain its
+cardinality conclusion. Additional theorem-specific mathematics is
+required to upgrade that conclusion
+to a complete list or a uniform height bound.
+
+\subsection{Lean definitions and proof obligations}
+
+The following definitions suffice for a complete formalization path.
+At the semantic level use \texttt{Rat}, finite coefficient arrays,
+and finite lists of pairs. At the object level replace these by
+the natural-number codes already described and use the same
+bounded algorithms. The semantic and object-theoretic obligations
+are distinct.
+
+\begin{enumerate}
+\item Define \texttt{QPoly} as a coefficient list, with
+\texttt{coeff}, \texttt{eval}, \texttt{trim}, \texttt{degree},
+\texttt{add}, \texttt{mul}, and \texttt{pow}. Zero is tested by a
+Boolean fold over the coefficients. Implement
+\texttt{syntheticDiv (p : QPoly) (z : Rat)} by the reverse coefficient
+fold used in Lemma~\ref{lem:section-root-count}. Prove its coefficient
+identity, the evaluation identity, and preservation of the leading
+coefficient. Then prove \texttt{distinctRoots\_length\_le\_degree}
+by iterating this operation over an input list, with the explicit
+bounded invariant in that lemma.
+\item Define rational matrices as dimensions plus flat arrays.
+Implement minors, permutation determinants, bounded maximum-minor
+rank, and \texttt{annihilator}. Prove determinant cofactor expansion
+by finite sums, then the two identities used in
+Lemma~\ref{lem:section-annihilator}. The target specification is
+\texttt{rank W < n -> nonzero (annihilator W) = true}
+together with \texttt{mulVec W (annihilator W) = zeroVec}.
+The input $n>0$ is explicit.
+\item Define
+the curve, feature, and annihilator predicates by the finite operations
+just described:
+\begin{lstlisting}
+onCurve f r (x,y) := (y^r == eval f x)
+features s (x,y) := [1,x,...,x^s,y]
+annihilates lam p := (dot lam (features s p) == 0)
+\end{lstlisting}
+The main specification quantifies over coefficient arrays and
+finite lists:
+if $r>0$, $\deg f=m>rs$, $\lambda$ has length $s+2$ and is
+nonzero, and a duplicate-free list passes both Boolean tests, then
+its length is at most $m$. Prove it by the decidable final-coefficient
+split. In the nonzero case construct $(-P)^r-a^rf$; in the zero
+case use a stable grouping operation with a proved partition-count
+identity. No algebraic closure, real numbers, or abstract
+finite-dimensional choice theorem is required.
+\item Define \texttt{coverTest M s L} by the finite mask enumeration
+above. Prove soundness by extracting the successful masks and their
+annihilators. Prove completeness relative to supplied proper
+subspaces by assigning each input point and replacing each group
+by its span. Combine soundness with the section theorem to obtain
+\texttt{coverTest\_implies\_length\_le}. A future quantitative
+approximation development must separately prove that this Boolean
+test is one on the required valid tuples.
+\item Reify the rational arithmetic, coefficient folds, matrix
+operations, and list grouping as particular primitive recursive
+definitions. For every loop record its Boolean invariant and
+compile its induction into a quantifier-free induction instance.
+The human proofs above identify those instances. A compiled
+semantic Lean theorem alone would not certify this final
+object-theory translation.
+\end{enumerate}
+
+The root-count theorem, annihilator construction, superelliptic
+section theorem, and finite-cover implication are proved
+mathematically here. Their complete embedded Lean derivations are
+formalization work. The uniform success of the quantitative
+cover test is a further mathematical hypothesis, not part of that
+formalization work and not claimed by this package.

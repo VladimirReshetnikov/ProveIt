@@ -1,0 +1,296 @@
+\section{A compositional finite-observation framework}
+\label{sec:compiler}
+
+\subsection{Finite safety under infinite hypotheses}
+
+A frequent mistake is to justify an induction by saying that every
+individual computation is finite. The induction formula itself must be
+permitted. The following lemma gives the needed shape.
+
+\begin{theorem}[Finite safety compilation]
+\label{thm:safety}
+Fix primitive recursive functions $\operatorname{step}(\mathbf x,j,s)$,
+$s_0(\mathbf x)$, a horizon $H(\mathbf x)$, and a Boolean invariant
+$I(\mathbf x,j,s)$. Let $\Gamma(\mathbf x)$ be any fixed collection of
+first-order assumptions. Suppose there are \iPRA{} derivations, under
+$\Gamma$, of
+\[
+ I(\mathbf x,0,s_0)=1,
+ \qquad
+ j<H\ \wedge\ I(\mathbf x,j,s)=1
+ \ \longrightarrow\ I(\mathbf x,j+1,\operatorname{step}(\mathbf x,j,s))=1.
+\]
+Define $s_{j+1}=\operatorname{step}(\mathbf x,j,s_j)$ by primitive
+recursion. Then there is an \iPRA{} derivation under $\Gamma$ of
+\[
+ \forall j\le H\quad I(\mathbf x,j,s_j)=1.
+\]
+This is a proof-transformation theorem: the base and step derivations
+are required, not inferred merely from their truth in $\N$.
+\end{theorem}
+\begin{proof}
+Keep $\mathbf x,H$ fixed. Induct on the quantifier-free formula
+\[
+ j\le H\ \longrightarrow\ I(\mathbf x,j,s_j)=1.
+\]
+At a successor, a rational/numerical case split first checks $j+1\le H$.
+If it fails the implication follows. If it holds, $j<H$ and $j\le H$;
+the induction hypothesis and the supplied step derivation give the
+conclusion. The hypotheses $\Gamma$ remain in the context. Quantifier-free
+induction does not require the other context formulas to be quantifier-free.
+Ordinary universal introduction subsequently closes the numerical
+parameters. Syntactically, encode this guarded formula as a
+\texttt{Fm PTm}; its \texttt{QF} proof permits the single application
+of \texttt{PRA.qfInd}.
+\end{proof}
+
+A finite contract can accumulate many facts: bounds on a state,
+well-formedness of a list, every earlier local transition check,
+a polynomial coefficient identity, and every relevant approximation
+inequality. A bounded conjunction of those facts becomes one Boolean
+invariant by Lemma~\ref{lem:reflection}. A universal name hypothesis is
+used only to verify the finitely many input observations required by that
+particular run.
+
+\subsection{Two different budgets}
+
+An observation procedure has two potentially different resource bounds:
+\begin{enumerate}
+\item its \emph{evaluation demand} is the largest input observation needed
+      to compute an output observation;
+\item its \emph{verification demand} is the largest input observation and
+      contract instance needed to prove the desired finite output facts.
+\end{enumerate}
+The second can be larger. A root approximation at precision $k$ might
+query one finite prefix, whereas comparing it to another approximation or
+proving a residual inequality asks for additional rows. An implementation
+trace alone does not bound its mathematical proof obligations. We carry
+both bounds and use their maximum when composing certified operations.
+
+For simplicity write all observations as one sequence indexed by $j$.
+A tuple index $(i,k)$ can be flattened using a fixed numerical coding, or
+one can keep rectangular tables with the same argument. Let
+$\operatorname{Tab}(a,h)=[a(0),\ldots,a(h)]$. The zero extension of a
+finite table gives a total input to any numerical program; correctness
+conditions guarantee that no relevant access uses the extension.
+
+\begin{definition}[Finite local contract]
+\label{def:contract}
+A stage $s$ of a construction is specified by:
+\begin{itemize}
+\item a primitive recursive numerical table program $F(s,p,X)$;
+\item an evaluation bound $u(s,p)$ such that observation $p$ uses only the
+      input entries indexed at most $u(s,p)$;
+\item a Boolean finite property $C_s(h,X)$, using only the prefix through
+      $h$ and downward closed under restriction to shorter prefixes;
+\item a primitive recursive verification bound $v(s,h)$ and a proved
+      finite implication
+\begin{equation}
+ C_s(v(s,h),X)=1
+ \quad\Longrightarrow\quad
+ C_{s+1}\bigl(h,T_s^h(X)\bigr)=1.             \label{eq:contract}
+\end{equation}
+\end{itemize}
+Here $T_s^h(X)$ is the table of outputs $0\le p\le h$, evaluated from the
+appropriate prefixes of $X$. The bound $v$ dominates the evaluation
+bounds for those outputs. The predicates $C_s$ are values of one fixed
+primitive recursive predicate $C(s,h,X)$. There is one \iPRA{}
+derivation of \eqref{eq:contract} with $s,h$ and the metadata as free
+numerical parameters, ordinarily obtained by Theorem~\ref{thm:safety}.
+A separate external proof for every fixed $s$ does not meet this
+uniformity requirement.
+\end{definition}
+
+Metadata can vary with the stage. It is included among the numerical
+parameters and either computed exactly in advance or bounded by a fixed
+primitive recursive recurrence. Metadata affecting the outputs is fixed
+canonically from the original inputs and stage, independently of the
+requested horizon, or is covered by the same prefix-locality condition.
+In the bounded-metadata case replace the demands
+by their bounded maxima over all metadata codes below the supplied cap;
+substituting a cap into a nonmonotone demand is not sufficient.
+If a particular interface requires extra output facts,
+include their finite tests in $C_s$. We do not claim that every mathematical
+property automatically has such a finite contract.
+
+\begin{theorem}[Compilation of variable-depth observation constructions]
+\label{thm:demand}
+Suppose a fixed family of stages has the data of
+Definition~\ref{def:contract}, uniformly primitive recursive in its
+numerical stage and metadata. For any numerical number $N$ of stages
+and desired final observation horizon $k$, there is one primitive
+recursive table computation producing all final observations through
+$k$ from a bounded prefix of the initial presentation. If that prefix
+satisfies its initial finite contract, the output satisfies its final
+finite contract. In applications a uniform derivation from the original
+assumptions verifies the initial contract. The statement is uniform
+in $N$ and $k$.
+
+In particular, repeated application of \emph{one fixed} certified
+operation does not require primitive recursion at function type, or a
+universal evaluator for all primitive recursive programs.
+\end{theorem}
+\begin{proof}
+With the starting metadata and $N$ fixed as numerical parameters, define
+\[
+ U_N(h)=\max\bigl( h,\{u(s,p):s<N,\ p\le h\},
+                         \{v(s,p):s<N,\ p\le h\}\bigr).
+\]
+For $N=0$ the empty maxima contribute zero. This is a primitive recursive
+function, nondecreasing in $h$, with $U_N(h)\ge h$. Stage-dependent metadata
+is first computed by its fixed numerical bound recurrence and included in
+the corresponding values of $u,v$.
+
+Compute $d_0=k$ and $d_{r+1}=U_N(d_r)$ for $r<N$. For stage $s$ put
+\begin{equation}
+ h_s=d_{N-s}\qquad(0\le s\le N).               \label{eq:budgets}
+\end{equation}
+Thus $h_N=k$ and $h_s=U_N(h_{s+1})$. Initially tabulate the fixed input
+observation function through $h_0$. Inductively form a new table
+\begin{equation}
+ X_{s+1}[p]=F\bigl(s,p,
+          \operatorname{restrict}(X_s,u(s,p))\bigr),
+ \qquad 0\le p\le h_{s+1}.                   \label{eq:table-build}
+\end{equation}
+The complete table is built by a bounded loop; the outer recursion is on
+$s$ with $N,k$ and the already computed list of budgets fixed. Its state
+is a \emph{number coding a finite table}. Every requested entry exists
+since $u(s,p)\le h_s$.
+
+All these operations are first-order primitive recursive. Nested
+precision requests have become a forward computation of numerical
+budgets followed by a forward computation of numerical tables. Even if
+$U_N$ produces enormous exponent towers, its $N$-fold numerical iterate
+is a primitive recursive function of $N,k$ and the starting metadata.
+The number of stored observations is at most
+$(N+1)(d_N+1)$. We do not claim a useful polynomial running time.
+
+For the contract proof, use as the bounded invariant
+\[
+ s\le N\ \longrightarrow\ C_s(h_s,X_s)=1.
+\]
+The initial contract is a finite consequence of the input hypotheses.
+Restriction supplies $C_s(v(s,h_{s+1}),\cdot)=1$ and
+\eqref{eq:contract} gives the next row. Both the row construction and the
+invariant are numerical. Theorem~\ref{thm:safety} applies, so there is
+no induction on an unbounded statement about an entire output name.
+\end{proof}
+
+\paragraph{Coherence across requested horizons.}
+Computing with two different final horizons must not change an output
+already computed. This follows from deterministic prefix locality: if
+$X,X'$ agree on every entry through $u(s,p)$, then their computed output
+at $p$ is identical. An induction on the finite stage count shows
+agreement of two table runs on their common relevant rows. Consequently
+\[
+ A_N(p):=X_N^{(N,p)}[p]
+\]
+is a single primitive recursive observation function. When a proof needs
+several of its values simultaneously, compute one table at the maximum
+verification horizon; locality identifies its entries with the individual
+definition. This last step is essential: unrelated finite output tables
+would not define a single observation procedure. Prefix consistency by
+itself is not Cauchy regularity. When a regular name is required, its
+pairwise finite regularity inequalities must be included in $C_N$;
+arbitrary-horizon introduction then yields the full regularity schema.
+
+The checked Lean theorem \texttt{compiled\_correct} verifies precisely
+this comparison between the finite table implementation and the nested
+semantic construction. Its companion \texttt{ofBody\_local} derives
+locality from a numerical prefix-table body. The semantic construction
+uses function-valued recursion only as an ambient Lean specification;
+\eqref{eq:table-build} is the first-order arithmetic implementation.
+
+\begin{corollary}[Eliminating function-valued iteration in a certified fragment]
+\label{cor:first-order}
+A construction written informally as
+$A_{s+1}=T_s(A_s)$ admits a uniform first-order primitive recursive
+implementation whenever its stage programs, metadata bounds, evaluation
+demands, and finite verification contracts satisfy the theorem. Exact
+algebraic operations, finite probability transformations, formal-series
+coefficient operations, and precision-indexed analytic constructions can
+share this same compiler.
+\end{corollary}
+
+\subsection{Finite error transport through a chain}
+
+Many operations are verified only up to an arbitrarily small rational
+error. A single error estimate can prevent induction on exact equality
+of represented objects.
+
+\begin{lemma}[Telescoping defects]
+\label{lem:defects}
+In a normed ring of finite rational data with a submultiplicative norm,
+let $P_0,\ldots,P_N$ and $A_0,\ldots,A_{N-1}$ satisfy
+\[
+ \|P_s-A_sP_{s+1}\|\le\varepsilon_s,
+ \qquad \|A_s\|\le G_s.
+\]
+Then
+\begin{equation}
+ \left\|P_0-\left(\prod_{s<N}A_s\right)P_N\right\|
+ \le \sum_{s<N}\varepsilon_s\prod_{j<s}G_j.     \label{eq:defectsum}
+\end{equation}
+If every $\varepsilon_s\le\varepsilon$ and $G_s\le G$ with $G\ge1$,
+the right side is at most $NG^N\varepsilon$.
+\end{lemma}
+\begin{proof}
+For each $r\le N$, let $B_r=A_0\cdots A_{r-1}$, with $B_0=1$.
+Subtract consecutive terms in $B_rP_r$:
+\[
+ B_rP_r-B_{r+1}P_{r+1}=B_r(P_r-A_rP_{r+1}).
+\]
+Summing this exact finite identity gives the difference on the left of
+\eqref{eq:defectsum}. Repeated triangle inequality and
+submultiplicativity give the asserted bound. The proof is induction on
+finite coefficient lists, finite products, and finite sums; at no point
+is the induction formula an equality of infinite names. For polynomials
+use the coefficient $\ell^1$ norm, whose submultiplicativity is just the
+finite convolution triangle inequality. If complex magnitudes are used
+in explanatory notation, rational upper bounds or squared-norm
+certificates give the finite numerical formulation.
+\end{proof}
+
+To prove an exact represented identity, first fix an output precision
+$p$, then select a local tolerance satisfying
+$NG^N\varepsilon\le2^{-p}$ and compile only the observations required at
+that tolerance. Universal introduction in $p$, or
+Lemma~\ref{lem:vanishing-error}, supplies the exact relation. This order
+of operations also works for matrix products, compositions of approximate
+isometries, telescoping integrals, and finite sums of probabilistic errors.
+
+\subsection{Why the conditions are a real restriction}
+
+There cannot be a total primitive recursive function $E(e,n)$ which
+evaluates every unary primitive recursive function coded by $e$: if there
+were, $d(n)=E(n,n)+1$ would itself be primitive recursive, with a code
+$e_d$, and $d(e_d)=E(e_d,e_d)+1=d(e_d)+1$ would be impossible.
+This is an external diagonal argument, not an assertion that \iPRA{}
+proves its own soundness.
+
+A uniformly bounded machine-step interpreter is different. Given a
+program, its input, and an explicit fuel bound, one can perform that many
+primitive recursive steps and return either an answer or a timeout. For
+an individual fixed primitive recursive program, its numerical resource
+bounds can be proved by its particular finite construction. Neither fact
+creates a primitive recursive universal total evaluator.
+
+Likewise, a merely pointwise statement that every stage eventually stops
+does not satisfy Theorem~\ref{thm:demand}. The crucial input is the
+\emph{uniform primitive recursive} numerical demand recurrence and its
+proof. There is also no automatic conversion of an arbitrary Lean
+correctness proof into a \texttt{PRAAx} proof. The finite safety theorem
+requires actual base and step derivations in the object theory.
+
+\subsection{Relation to proof interpretation}
+
+The framework follows the established idea of extracting quantitative
+content and majorants, but specializes it to explicit first-order
+numerical compilation. Functional interpretation and majorization have a
+much broader literature \cite{kohlenbach-notes,kohlenbach-point}. Their
+higher-type settings must not be imported silently. In particular,
+Kohlenbach's analysis of uniform weak K\"onig's lemma shows that apparently
+small changes involving uniform selection and extensionality can greatly
+increase proof-theoretic strength \cite{kohlenbach-uwkl}. Our applications
+below exhibit the finite contracts directly and do not appeal to an
+unspecified conservation theorem.

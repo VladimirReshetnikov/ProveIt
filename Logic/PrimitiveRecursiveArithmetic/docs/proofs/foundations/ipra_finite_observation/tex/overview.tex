@@ -1,0 +1,100 @@
+\section{Results, scope, and the repository baseline}
+\label{sec:overview}
+
+The useful common framework is not a blanket principle saying that
+computable mathematics belongs to \iPRA. It is a disciplined interface
+between finite observations, numerical bounds, and proofs. Many of the
+repository's reports already use parts of this interface. We consolidate
+those parts into compositional theorems, strengthen the interface where
+nested constructions need it, and use it to prove specific new extensions.
+
+The inspected repository revision is
+\begin{center}
+\texttt{94000996e69ab0c527393a1d02a4a037a4eb0493}.
+\end{center}
+The directory inventory contains 48 delivered proof packets. Its own
+README explicitly says that placement did not rerun or validate all the
+packets, and that many Lean files are outlines \cite{repo-index}. Our
+audit likewise does not certify every theorem in that collection. The
+provenance ledger records the particular files used, their repository
+blob hashes, and the source locations of the obstacles addressed below.
+
+\subsection{What is established here}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\linewidth}>{\raggedright\arraybackslash}p{0.46\linewidth}>{\raggedright\arraybackslash}p{0.24\linewidth}@{}}
+\toprule
+Result & Mathematical content & Dependence and status\\
+\midrule
+\endhead
+Finite observation compilation & Variable-depth operations are evaluated
+by a bounded input table, a backward demand schedule, and a forward
+numerical recursion. Finite contracts propagate by quantifier-free
+induction. & General human proof; selected locality and compilation
+lemmas checked in Lean.\\[5pt]
+Uniform polynomial factorization & For each fixed PR coefficient evaluator,
+one PR program factors monic polynomials uniformly in numerical degree,
+returning coherent complex names and explicit coefficient-error bounds.
+& Uses the existing finite rational descent lemma; all new normalization,
+deflation, and iteration estimates proved here.\\[5pt]
+Derived Bohr--Mollerup modulus & Positive rational multiplicative convexity
+gives a local Lipschitz bound from two endpoint samples, so the candidate
+modulus is no longer independent input. & Direct elementary proof;
+canonical extension of the rational presentation.\\[5pt]
+Finite-net extrema and coherent minimizers & A net and a supplied modulus
+give an infimum name; quantitative uniqueness gives a coherent optimizer.
+Strong convexity provides an explicit uniqueness modulus. & Direct
+finite constructions and complete quantitative proofs.\\[5pt]
+Superelliptic section bound & For $y^r=f(x)$, $\deg f=m>rs$, a proper
+subspace meets $(1,x,\ldots,x^s,y)$ in at most $m$ distinct point images.
+& Unconditional finite algebra. A tuple-local $M$-subspace cover then
+gives the conditional cardinality bound $mM$.\\
+\bottomrule
+\end{longtable}
+
+The new factorization theorem closes the fixed-degree restriction in the
+existing FTA discussion, with its coefficient evaluator still fixed in the
+correct first-order sense. The new convexity argument answers an explicit
+further-research question in the Bohr--Mollerup report. The Diophantine
+result discharges one geometric input for a defined family; it does not
+supply the quantitative approximation theorem that must produce the
+covers.
+
+\subsection{The central organization}
+
+The following separation makes mathematical reuse safe.
+\begin{enumerate}
+\item \textbf{Representation.} State exactly what finite observations
+      are available. Exact algebraic data, Cauchy names, formal
+      coefficients, and names with apartness certificates are distinct
+      interfaces.
+\item \textbf{Construction.} Give primitive recursive numerical
+      procedures with an explicit demand on their input observations.
+\item \textbf{Verification.} State which finitely many input contracts
+      establish the requested output facts, and bound their demand
+      separately from the construction's own queries.
+\item \textbf{Arithmetic proof.} Fix the numerical output challenge,
+      compile all its verification demands, and induct on a Boolean
+      property of the resulting finite data.
+\item \textbf{Interpretation.} Only after this finite argument quantify
+      over the arbitrary output challenge and read the result as an
+      identity, a continuous object, a root, or a finiteness assertion.
+\end{enumerate}
+
+This organization is useful even when it does not remove a hypothesis.
+For example, it pinpoints the analytic estimate still needed for a
+stronger prime-distribution theorem, instead of hiding that estimate
+inside an interface called ``effective asymptotics.'' It also explains
+why a finite cardinality theorem does not automatically enumerate all
+solutions.
+
+\subsection{How to read the report}
+
+Sections~\ref{sec:foundations} and~\ref{sec:compiler} give the shared
+arithmetic language and the compilation theorem.
+Section~\ref{sec:fta-extension} is the most detailed variable-depth
+application. Section~\ref{sec:quantitative-analysis} treats precision,
+extrema, uniqueness, and convexity. Section~\ref{sec:finite-sections}
+provides the elementary algebraic zero count and its conditional
+Diophantine interface. The final sections explain exactly which reported
+obstacles remain, how to complete the Lean development, and what was
+actually checked in this archive.

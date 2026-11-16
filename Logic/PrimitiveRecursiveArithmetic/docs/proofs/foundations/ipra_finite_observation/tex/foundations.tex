@@ -1,0 +1,238 @@
+\section{The arithmetic boundary and the representation discipline}
+\label{sec:foundations}
+
+\subsection{The precise base theory}
+
+Throughout, \iPRA{} means intuitionistic first-order arithmetic in the
+language containing a symbol for every primitive recursive numerical
+function, with their defining equations, successor injectivity and
+separation, and induction for quantifier-free formulas. All variables in
+an internal theorem range over natural numbers. The repository implements
+exactly this theory as \texttt{PRAAx}; its primitive recursive symbols are
+\texttt{PR k}, its arithmetic terms are \texttt{PTm n}, and its derivations
+are \texttt{Prf PRAAx}. The native scalar presentation is connected to it by
+\texttt{pra\_iff\_native} \cite{repo-pr,repo-native}.
+
+An assertion about a primitive recursive presentation $A$ is a
+\emph{schema}: fix its finite primitive recursive definition externally,
+then substitute that definition into a first-order formula. Numerical
+parameters of $A$, including degree, dimension, precision, and a finite
+input polynomial, remain ordinary quantified variables. We will never
+infer that a total computable function is primitive recursive, nor that a
+primitive recursive predicate has its universal truth provable in
+\iPRA. The latter would confuse representation with proof.
+
+We use natural codes for signed integers, rational numbers with positive
+denominator, finite tuples, and finite lists. One explicit list coding
+suffices: let
+\[
+ \langle a,b\rangle=(a+b)^2+a+1,
+ \qquad []=0,\qquad [a;L]=\langle a,L\rangle.
+\]
+Both components of a nonzero pair are less than its code. Recover them
+by a search bounded by the code, with a default value on malformed
+inputs. Injectivity follows by separating successive squares and then
+subtracting. A traversal can be bounded by the initial code; an explicitly
+stored length permits a sharper bound. All accesses, finite maxima,
+appends, rational cross-multiplication tests, and their totalized default
+branches are primitive recursive. These facts concern the numerical
+algorithms; their algebraic laws follow by the corresponding bounded
+inductions. Nothing depends on efficient binary encodings.
+
+\begin{lemma}[Boolean reflection and bounded induction]
+\label{lem:reflection}
+For each bounded first-order formula $B(\mathbf x)$ built from primitive
+recursive predicates there is a primitive recursive Boolean
+$\chi_B(\mathbf x)\in\{0,1\}$ such that
+\[
+ \iPRA\vdash B(\mathbf x)\leftrightarrow \chi_B(\mathbf x)=1.
+\]
+Consequently induction on $B$ is derivable using quantifier-free induction.
+The formula $B$ is fixed externally; this is not a uniform truth predicate
+for all bounded formulas with arbitrary primitive recursive symbols.
+\end{lemma}
+\begin{proof}
+Equality and numerical order have primitive recursive characteristic
+functions. For example compare two numbers by simultaneous truncated
+subtraction. Their defining recursions prove decidability by
+quantifier-free induction. Use Boolean complement, conjunction, and
+disjunction for the corresponding connectives. Since the already
+reflected subformulas are decidable, implication is represented by
+$\max(1-\chi_C,\chi_D)$; this use of Boolean implication makes no assertion
+of excluded middle for arbitrary formulas.
+
+A bounded universal quantifier is represented by the fold
+\[
+ F(0)=1,\qquad F(j+1)=F(j)\chi_C(j,\mathbf x).
+\]
+Here is a noncircular proof of its reflection law. With $i$ free,
+quantifier-free induction on $j$ proves
+$i<j\wedge F(j)=1\longrightarrow\chi_C(i,\mathbf x)=1$; the successor
+step uses the cases $i<j$ and $i=j$. Conversely fix a final $n$ and
+keep $\forall i<n\ \chi_C(i,\mathbf x)=1$ as a context assumption.
+Induction on the quantifier-free formula $j\le n\longrightarrow F(j)=1$
+proves $F(n)=1$. Thus bounded induction is not presupposed in this
+proof of bounded reflection. The existential fold uses
+$1-\prod(1-\chi_C)$. Its witness direction can also use the bounded
+first-success scan described below. Formula induction here is an external
+induction on a fixed syntax tree; only the folds' numerical inductions
+occur inside \iPRA. Finally replace $B$ in its base and step by the
+provably equivalent equation $\chi_B=1$, apply the permitted induction,
+and replace back.
+\end{proof}
+
+\begin{lemma}[Bounded witness extraction]
+\label{lem:bounded-choice}
+Let $R(\mathbf x,i,y)$ be a fixed primitive recursive relation and
+$b(\mathbf x,i)$ a fixed primitive recursive bound. There is a primitive
+recursive $w(\mathbf x,i)$ such that \iPRA{} proves
+\[
+ (\exists y\le b(\mathbf x,i)\ R(\mathbf x,i,y))
+ \ \longrightarrow\ R(\mathbf x,i,w(\mathbf x,i))
+       \ \wedge\ w(\mathbf x,i)\le b(\mathbf x,i).
+\]
+For any numerical $m$, the list of these witnesses for $i<m$ is primitive
+recursive and satisfies every required relation whenever the $m$ bounded
+existences hold.
+\end{lemma}
+\begin{proof}
+Scan $0,\ldots,b$, keeping a flag indicating whether a successful test
+has occurred and, if so, its first index. The invariant says that either
+no scanned test succeeds, or the saved index is in the scanned range,
+satisfies $R$, and precedes every other success. All its quantifiers have
+bounds supplied by the scan counter. Lemma~\ref{lem:reflection} permits
+induction on this invariant. A supplied success forces the second case
+at the end. In the no-success case return zero; this makes the operation
+total. A second bounded fold appends the $m$ outputs. This is a construction
+of a list, not an invocation of a choice axiom.
+\end{proof}
+
+\subsection{What a presented infinite object is}
+
+A \emph{presentation} has three parts:
+\begin{enumerate}
+\item a fixed primitive recursive observation function
+      $A(\mathbf a,j)$ with numerical parameters $\mathbf a$;
+\item finite metadata, such as an amplitude bound, a dimension, a
+      separation witness, or a primitive recursively supplied modulus;
+\item arithmetic contracts on its observations. Frequently these have the
+      form $\forall\mathbf u\ R(\mathbf a,\mathbf u)$ for a primitive
+      recursive relation $R$.
+\end{enumerate}
+Examples include a finite matrix, an exact algebraic presentation, a
+rational approximation to a complex number, the coefficients of a formal
+power series, a finite probability law, and a rational sampling routine
+for a function. A fixed function can have several parameters; that does
+not turn it into a universal evaluator of arbitrary programs.
+
+Different contracts express different mathematical content. A formal
+power series needs no convergence modulus to state identities of finitely
+many coefficients. Evaluation at a point additionally needs a quantitative
+tail estimate. A Cauchy name permits approximate equality tests, but an
+exact algebraic presentation can provide a decidable zero test. The
+framework keeps these interfaces distinct because algorithms really do
+use different information.
+
+\begin{definition}[Regular rational names]
+A fixed rational observation function $a(k)$ is regular when
+\begin{equation}
+ |a(k)-a(\ell)|\le 2^{-k}+2^{-\ell}
+ \qquad(k,\ell\in\N).                         \tag{RN}\label{eq:RN}
+\end{equation}
+Complex names use pairs of rational observations and the rational
+squared-norm version of the same estimate. We write $a\sim b$ when
+\[
+ \forall k\quad |a(k)-b(k)|\le 2^{1-k}.
+\]
+This is an arithmetic relation on two fixed presentations, not a
+quotient type assumed as an object of first-order arithmetic. Its
+usual real-number reading is explanatory notation.
+\end{definition}
+
+\begin{lemma}[Eliminating an arbitrary precision error]
+\label{lem:vanishing-error}
+For rational $q,c$ and nonnegative rational $C$, if
+$q\le c+C2^{-r}$ for every $r$, then $q\le c$.
+This implication is provable in \iPRA{} as a schema and requires neither
+Markov's principle nor an unbounded minimization.
+\end{lemma}
+\begin{proof}
+Compare the rational numbers $q,c$. If $q\le c$, finish. Otherwise write
+$q-c=v/w$ with positive integers $v,w$, and write $C=a/b$ with $b\ge1$.
+Choose, for example, $r=aw+2$. Then $2^r>aw$ (including $a=0$), so
+$C2^{-r}<1/w\le v/w$. Substitution of this particular $r$ contradicts
+the assumed inequality. The exponential inequality follows by ordinary
+quantifier-free induction. The case distinction is rational and decidable.
+\end{proof}
+
+This lemma supplies elementary passages to exact name equality. For
+example, transitivity of $\sim$ follows by comparing $a(k)$ and $c(k)$
+through $a(r),b(r),c(r)$: regularity and the two equivalences give
+\[
+ |a(k)-c(k)|\le 2^{1-k}+6\,2^{-r}.
+\]
+Eliminate the last term by Lemma~\ref{lem:vanishing-error}. Thus no real
+completion theorem is required for this equivalence law.
+
+\begin{proposition}[Arithmetic on names with budgets]
+\label{prop:name-arithmetic}
+Regular names admit primitive recursive addition and multiplication with
+explicit precision shifts. Inversion admits such a construction when a
+positive apartness certificate is supplied.
+\end{proposition}
+\begin{proof}
+For addition use $c(k)=a(k+2)+b(k+2)$ and add the two regularity bounds.
+For multiplication suppose every sample of each input has absolute value
+at most the supplied integer $M\ge1$. Choose $s$ with $2^s\ge2M$ and set
+$c(k)=a(k+s)b(k+s)$. The identity
+\[
+ ab-a'b'=a(b-b')+b'(a-a')
+\]
+bounds the difference by $2M(2^{-k-s}+2^{-\ell-s})$, as required.
+A cap can itself be derived from a zero-th sample and regularity:
+$|a(k)|\le|a(0)|+2$.
+
+For inversion suppose $|a(h+2)|\ge2^{-h}$. Every sample of index
+$j\ge h+2$ then has $|a(j)|\ge2^{-h-1}$. Put $s=2h+3$ and
+$c(k)=1/a(k+s)$, with a default zero value if a denominator test fails.
+On valid inputs it does not fail, and
+\[
+ |c(k)-c(\ell)|\le
+   2^{2h+2}(2^{-k-s}+2^{-\ell-s})
+   \le2^{-k}+2^{-\ell}.
+\]
+The same finite difference identities show extensionality under $\sim$;
+any remaining error is removed by Lemma~\ref{lem:vanishing-error}.
+All regularity proofs fix the two requested precisions before any
+induction on a finite sum or product.
+\end{proof}
+
+The apartness witness is substantive. The premise $\neg(a\sim0)$ does
+not itself specify one. Likewise, a root-producing procedure may depend
+on the presentation and choose different valid roots from equivalent
+coefficient names. We demand extensionality of the asserted mathematical
+relation, not an impossible global continuous choice of a preferred root.
+
+\subsection{Three claims that must not be conflated}
+
+We use the following status vocabulary throughout the report.
+\begin{description}[style=nextline]
+\item[Mathematical derivation in the stated arithmetic.]
+A human-readable argument with primitive recursive constructions and
+identified quantifier-free induction invariants. This is the main level
+of the present contribution.
+\item[Ambient Lean verification.]
+A theorem checked by Lean about finite tables, streams, or arithmetic.
+This checks that theorem in Lean's foundations. It does not by itself
+produce a proof in the much weaker object theory.
+\item[Deep iPRA verification.]
+An actual term of type $\Gamma\mathbin{\vdash}[\mathtt{PRAAx}]\varphi$,
+with the primitive recursive definitions and the formula $\varphi$
+explicitly encoded. The repository already provides the logical backend;
+the new mathematical compilation layer is not yet fully formalized.
+\end{description}
+
+The distinction is constructive, not merely terminological: a Lean proof
+by induction on an arbitrary proposition does not authorize that induction
+inside \iPRA. The next section gives the finite invariant that makes
+specific uses legitimate.

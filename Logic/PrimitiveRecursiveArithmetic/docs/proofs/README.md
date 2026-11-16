@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 23 to
+15 November 2026: 33 to `docs/drafts`, and 24 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -32,7 +32,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 53 | The member matches the repository's `.gitignore`: 39 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 13 `.log` files from LaTeX and Lean builds, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
+| `ignored` | 54 | The member matches the repository's `.gitignore`: 40 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 13 `.log` files from LaTeX and Lean builds, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
 | `sibling-packet` | 13 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 17 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`, byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). `isoperimetric_ipra_constructive_2026-11-15` bundles, under `reused/`, the earlier packet [`geometry/isoperimetric_ipra`](geometry/isoperimetric_ipra/) as filed here at `22afac4c9d`; 14 of its files are byte-identical to that packet. The reference column gives that file, relative to the repository root. |
@@ -61,7 +61,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 56 archives hold 1,282 members: 1,198 placed here, 53 ignored, 13 in the bundled copy of
+The 57 archives hold 1,318 members: 1,233 placed here, 54 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -146,6 +146,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 |---|---|---|---|---:|---:|
 | [`ipra_embedding_framework`](foundations/ipra_embedding_framework/) | *not committed* 2026-11-15 | `ipra_embedding_framework` | Mathematics in iPRA through finite observations: bounded-formula compilation, simple analytic branches with Cauchy coefficients, simultaneous finite-window stability, a hyperelliptic zero count for the Siegel strategy, and finite algebra certificates. It calls itself a targeted audit of the collection, not a verification of the packets. | 28 | 1 |
 | [`ipra_evidence_framework`](foundations/ipra_evidence_framework/) | *not committed* 2026-11-15 | none | Evidence-indexed finite mathematics: a finite relational-output and compatibility interface for cases where only approximate witness families are justified, with a backward finite dynamic program for witness amalgamation. It credits the earlier frameworks here. Its Lean blueprint is not compiled. | 6 | 0 |
+| [`ipra_finite_observation`](foundations/ipra_finite_observation/) | *not committed* 2026-11-15 | `ipra_finite_observation` | Finite observations and uniform constructions: a finite observation compiler, degree-uniform complete polynomial factorization, a derived continuity modulus for the Bohr–Mollerup candidate, and finite-net infimum names and coherent minimizers. It states that its finite-table Lean proofs are checked and its further targets type-check. | 35 | 1 |
 | [`ipra_framework`](foundations/ipra_framework/) | *not committed* 2026-11-15 | `ipra_framework` | Finite contracts for mathematics in iPRA, a different packet from `ipra_framework_2026-11-15`: bounded-formula Booleanization and guarded induction, then stable finite windows, coherent approximate witnesses, local analytic branches, and integral power-gap certificates for y^m = f(x). It says it gives no final convergence moduli. | 64 | 1 |
 | [`ipra_framework_2026-11-15`](foundations/ipra_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_framework` | A cross-domain certificate-and-modulus framework for the packets here: bounded primitive recursive search and descent, certificate composition, arithmetic of quantitative real names and apartness-conditioned inverses. It says it is not a verified solution of the other packets. Its Lean files have not been typechecked. | 6 | 0 |
 | [`ipra_uniform_certificates`](foundations/ipra_uniform_certificates/) | *not committed* 2026-11-15 | `ipra_uniform_certificates` | Uniform certificates complementing the finite-contract frameworks here: finite-net lifting with an explicit modulus and rational error budgets, uniform root names from sign brackets and algebraic separation, and composition of precision contracts. Its Lean blueprint is not compiled. | 6 | 0 |

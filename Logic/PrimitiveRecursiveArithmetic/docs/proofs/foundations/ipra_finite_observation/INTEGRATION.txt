@@ -1,0 +1,52 @@
+SUGGESTED PROVEIT INTEGRATION
+
+Baseline:
+  Repository VladimirReshetnikov/ProveIt
+  Commit 94000996e69ab0c527393a1d02a4a037a4eb0493
+
+Suggested research packet location:
+  Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_finite_observation/
+
+Suggested future shared Lean location:
+  Logic/PrimitiveRecursiveArithmetic/FiniteObservation/Lean/FiniteObservation/
+
+This archive does not change the repository or open a pull request.
+
+REUSE, WITH PRECISE STATUS
+
+The mathematical FTA dependency is the finite rational Descent lemma in:
+  docs/proofs/algebra/FTA_iPRA/FTA_iPRA.tex
+It is a human-readable proof, not a deep Lean proof verified by this archive.
+The new report provides its complete contract and proves the new monic-root,
+deflation, and uniform-iteration layers. A formal endpoint taking Descent
+as a hypothesis remains conditional until the Descent proof is formalized.
+
+The Bohr--Mollerup report to update is:
+  docs/proofs/analysis/bohr_mollerup_ipra_2026-11-15/paper/bohr_mollerup_ipra.tex
+Its independent candidate modulus M_F can be replaced by the derived
+endpoint formula, in the rational-presentation setting. Keep its fixed PR
+positivity witness. Do not extend the claim to arbitrary separately supplied
+irrational values without a compatibility proof.
+
+The finite-section interface belongs with:
+  docs/proofs/diophantine-number-theory/siegel_ipra/paper/05_general_route.tex
+It supplies the geometric bound for the specified superelliptic feature map.
+It does not construct the quantitative approximation covers. For the
+quintic target in the Faltings report, the new fibre bound is five.
+
+MILESTONES
+
+A. Promote the checked Std finite-table kernel to reusable infrastructure.
+B. Build actual PR syntax for the coding and table algorithms.
+C. Prove Boolean reflection in the existing Prf PRAAx backend, with QF
+   witnesses and uniform stage parameters.
+D. Encode the finite contracts and prove their base and step derivations.
+E. Complete the finite Descent proof, then instantiate the factorization
+   schedule and finite polynomial telescope.
+F. Formalize the finite AM--GM/secant and finite-net contracts.
+G. Formalize synthetic division, the annihilator, and the section bound.
+H. Construct the actual Prf PRAAx endpoints, then transfer via
+   pra_iff_native and audit the full dependency builds.
+
+The supplied Targets.lean is a concrete semantic statement reference for
+D--G. Its Spec fields are obligations, not proved theorem dependencies.

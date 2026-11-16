@@ -1,0 +1,98 @@
+\section{Verification evidence and reproducibility}
+\label{sec:verification}
+
+\subsection{What was executed}
+
+The checked Lean kernel was run with Lean 4.32.0. The package includes
+its source and the actual compiler/axiom output. The target specification
+file is separately type-checked; its acceptance verifies the definitions
+and statement types, not the pending mathematical conclusions.
+The build scripts use only Lean's standard library for these supplied
+files. The deeper integration plan targets the repository's Mathlib-based
+\texttt{ConciseIPRA} development.
+
+All Python examples use exact integers and \texttt{fractions.Fraction}.
+They do not use floating-point numerical agreement as evidence for a
+universal claim. Three independent example programs were executed:
+\begin{itemize}
+\item \texttt{finite\_observations.py}: 588 comparisons with the nested
+      reference evaluator, 147 prefix-compatibility comparisons, and
+      eight exact defect-telescoping examples. The table runs visit
+      11,424 observations in total. The same program checks the displayed
+      FTA budget inequalities for degrees one through four.
+\item \texttt{analysis\_exact\_checks.py}: 4,097 grid evaluations,
+      81 cross-interval comparisons, 16 strong-convex point comparisons,
+      2,794 AM--GM binary nodes, 3,240 rational Lipschitz comparisons,
+      and 303 finite one-jump/metastability cases.
+\item \texttt{finite\_curve\_sections.py}: two exact curve/section examples,
+      including the sharp five-point quintic example and the
+      zero-$y$-coefficient branch with two $x$-values and four points.
+      It computes the annihilators by minors and checks the polynomial
+      identities by rational arithmetic.
+\end{itemize}
+
+These are implementation and example checks. They are not proof checking
+for the universal \iPRA{} assertions. The manuscript supplies the human
+proofs, and the finite Lean kernel proves its own stated universal lemmas.
+The full FTA descent at the enormous displayed schedules was not executed.
+
+\subsection{The cost of a deliberately generous bound}
+
+The factorization bounds are designed to establish primitive
+recursiveness, not practical root-finding performance. The exact budget
+program, with initial normalized coefficient cap two and target accuracy
+$2^{-4}$, gives the following sizes. The final local precision is $4+c$;
+``initial horizon bits'' is the binary length of the numerical index
+through which the original coefficient table is requested.
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Degree & Precision shift $c$ & Initial horizon bits & Final cap bits\\
+\midrule
+1 & 39 & 15 & 14\\
+2 & 307 & 40 & 117\\
+3 & 2,917 & 86 & 966\\
+4 & 29,109 & 163 & 8,310\\
+\bottomrule
+\end{tabular}
+\end{center}
+These values were computed exactly from the stated recurrences. They
+are not measured runtimes and are not offered as competitive complexity
+bounds. Improving them is compatible with, but not required by, the
+logical objective of this report.
+
+\subsection{Rebuilding the archive's outputs}
+
+From the archive root:
+\begin{lstlisting}
+./build_pdf.sh
+python3 code/finite_observations.py
+python3 code/analysis_exact_checks.py
+python3 code/finite_curve_sections.py
+cd lean
+./check.sh
+\end{lstlisting}
+The PDF build uses ordinary LaTeX packages and requires no network,
+shell escape, or externally generated figures. The script has a local
+format-generation fallback for a TeX installation whose format cache is
+missing. The source is split by topic under \texttt{tex/}; rebuilding
+requires those files as well as \texttt{report.tex}.
+
+The provenance ledger pins every cited repository file to the inspected
+commit and records its Git blob identifier. The theorem ledger records
+which conclusions are human proofs, which reuse the finite descent
+lemma, which remain conditional on a cover, and which have checked Lean
+components. The checksum manifest covers the delivered files and allows
+the archive to be compared after extraction.
+
+\subsection{The remaining work is identified, not suppressed}
+
+The large remaining formalization task is to construct the deep
+arithmetic proof terms for the local mathematical contracts and the
+numerical coding library, then instantiate the compiler. The remaining
+mathematical task in the general Diophantine route is to prove the
+quantitative cover assertion. The analytic-number-theory contracts listed
+in Section~\ref{sec:audit} also remain substantive separate inputs.
+None of these gaps is filled by the fact that an example program runs,
+that a specification type checks, or that a generic conditional theorem
+has been accepted by Lean.

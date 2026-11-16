@@ -1,0 +1,201 @@
+# Repository audit for a general iPRA embedding framework
+
+Snapshot: `VladimirReshetnikov/ProveIt`, commit
+`94000996e69ab0c527393a1d02a4a037a4eb0493`.
+All paths below are relative to
+`Logic/PrimitiveRecursiveArithmetic/docs/proofs/`.
+Line references identify source text, not a claim that the entire cited
+proof package has been independently reverified.
+
+## Main positive result developed during this audit
+
+`work/fta_extension.tex` closes the explicit **variable-degree factorization
+gap for one fixed input coefficient evaluator**. It uses the repository's
+finite rational descent lemma, then supplies every additional construction:
+
+- Monic root constants `B=M+2`, `D=2^n*4^(2n²)`, `K=8nD`, `R=BK+1`,
+  `L=2+bl(16D(n+1)R^n)`, `H=bl(BK)`, `J(t)=K(t+H+2)`.
+- Raw root query horizon `U(n,M,t)=L+J(t)`.
+- Rounded roots, coefficient normalization, explicit coefficient-cap growth,
+  a deflation precision shift, and a local polynomial defect bound.
+- A separate verification horizon `V(n,M,h)` covering all shifted input
+  name comparisons and residual checks.
+- Backward horizon planning followed by forward finite-table evaluation;
+  no evaluation of growing PR program codes.
+- A finite coefficient telescoping identity and error `d W G^d 2^(-t)`;
+  this proves the final represented polynomial equality with only
+  quantifier-free numerical induction.
+
+The exact baseline request is
+`algebra/FTA_iPRA/FTA_iPRA.tex`, lines 992–1028, and
+`algebra/FTA_iPRA/LEAN_PLAN.md`, line 195. The baseline already proves a
+uniform one-root result; this extension is not a new proof of that entire
+descent argument. It fills the missing uniform iteration argument and
+tracks the first-order schema boundary accurately.
+
+## Ten issue-to-framework mappings
+
+| Issue and exact source | Framework response | Status after response |
+|---|---|---|
+| **Variable degree versus fixed degree.** `algebra/FTA_iPRA/FTA_iPRA.tex:992–1028`; `LEAN_PLAN.md:195`. The fixed-degree deflation paragraph does not justify evaluating a variable chain of root transformations. | Extract the root routine's explicit finite query bound, normalize deflated coefficients, compose verification horizons backward, evaluate finite tables forward. The local roots and coefficient tables remain prefix compatible. | **Resolved mathematically for a fixed base PR evaluator**, by `fta_extension.tex`; the deeply embedded Lean implementation remains work. This is stronger than the rational-polynomial-only workaround elsewhere. |
+| **No PR universal evaluator.** `analytic-number-theory/zeta_functional_equation_ipra/formalization_plan.md:63–93`; `algebra/FTA_iPRA/FTA_iPRA.tex:145–173`. | The framework must accept either one externally fixed PR evaluator, finite numeric tables, or a restricted fixed evaluator with explicit numeric fuel. A code for an arbitrary PR function is not an executable datum with a PR universal semantics. | **Representation boundary retained**, with a usable generic finite-table composition theorem. A uniform evaluator for all PR codes cannot be supplied. |
+| **Induction on Cauchy predicates/equality of names is illegal.** `zeta_functional_equation_ipra/formalization_plan.md:95–121`; `brun_ipra_2026-11-15/sections/06_ipra.tex:69–104`. | Fix the numerical challenge and all backward-derived verification horizons before induction; Booleanize the finite table conditions. Retain global hypotheses as assumptions, but instantiate them only at finitely many known indices. | **General proof discipline proved**; repeated local instructions become a reusable theorem. Merely saying 'fix the final precision' is insufficient unless dependencies at larger precisions are also included. |
+| **Computation horizon need not be a proof horizon.** `algebra/FTA_iPRA/FTA_iPRA.tex:903–934`; the finite root proof needs anchor/adjacent rows and separate later-sample comparisons. `zeta_ipra_proof_package/paper/sections/08_formalization.tex:158–165` needs a tree of checks. | Attach two explicit bounds to a routine: rows read to calculate an answer, and rows whose contracts justify the answer. Composition uses the second. In the factorization application the normalized root reads through `U(t+2)`, while a deflation is verified through `V(h)=U(h+a+2)`. | **Resolved as an architectural and mathematical distinction.** It prevents a seemingly correct but under-specified finite-observation compiler. |
+| **Exact output may require exact presentation.** `algebra/puiseux_ipra/puiseux_ipra.tex:151–188` proves a halting obstruction for arbitrary PR Cauchy coefficient names, already for `Y²−X²−a`. Every encoded `a` happens to be dyadic rational, so algebraicity as an abstract promise is not enough. | Retain a distinction between exact algebraic data and approximate names. A request for exact Puiseux coefficients must include finite exact presentation or additional discrete branch/rank data. The uniform factorization extension returns coherent Cauchy root names; it does not decide Puiseux leading coefficients. | **Genuine obstruction, not removed.** The corrected data interface is useful, but there is no unconditional stronger theorem to claim. |
+| **Mere nonzero is weaker than positive apartness.** `algebra/FTA_iPRA/FTA_iPRA.tex:181–194`. The equation `az−1=0` turns a produced root into quantitative lower separation for `a`. | Treat positive separation as explicit data for inverses and divisions. Prefer polynomial identities, pole-cleared quantities, or monic presentations when possible. | **Some unnecessary divisions eliminated; general boundary retained.** The framework must not silently extract a rational lower bound from a negated equality. |
+| **Uniform rational-root engine already exists as a workaround.** `zeta_zeros_ipra_2026-11-15/sections/polynomial_algebra.tex:1–13` explicitly identifies the FTA fixed-degree gap and builds a separate winding-based rational-polynomial engine. | The new generic factorization result can serve as another root-existence backend, including Cauchy coefficient schemas. It does not automatically provide squarefree decomposition, exact multiplicity decisions, or positive root separation for arbitrary Cauchy coefficients. | **Reuse opportunity, not replacement of every hypothesis.** The zeta engine's exact Euclidean gcd and Bézout separation data still have a separate role. |
+| **Stronger PNT rate needs stronger analytic input.** `pnt_li_ipra_2026-11-15/tex/analytic.tex:417–424`: the report derives a nonoptimal `exp(-c(log x)^(1/10))` rate, not the square-root logarithmic rate. | Finite contour arithmetic, backward precision allocation, and exact error accounting can standardize its implementation. They do not manufacture the stronger zero-free region. | **Formalization infrastructure improved; stronger mathematical theorem remains unproved here.** |
+| **Siegel–Walfisz/Bombieri–Vinogradov uniformity.** `prime_distribution_ipra/paper/sections/07_sw_bv.tex:256–293`. The exceptional-zero formula is itself an unproved input, and the desired uniformity needs stronger separation than `q^(-1/2)`. Removing one modulus does not remove all multiples of an exceptional conductor. | Put analytic estimates and exceptional-zero separation into explicitly quantified contracts. Show exact reductions, preserving their dependence on field/modulus data. | **Not resolved by the framework.** An effective Siegel-type input is substantive missing mathematics, not a coding defect. |
+| **Chebotarev and general CLTs have domain-specific missing mathematics.** `prime_distribution_ipra/paper/sections/06_chebotarev.tex:167–189`; `probability/central_limit_ipra_2026-11-15/THEOREM_LEDGER.md:13,32–47,50`. | Separate finite certified number-field algorithms, analytic-function estimates, and field-dependent exceptional separation. For probability, finite laws transfer only with supplied PR tail/quantization/Lindeberg moduli; high-dimensional convex smoothing, entropy-power arguments, and stable-law classification need their own proofs. | **Cleanly exposed remaining obligations.** Do not describe these as established merely because finite-law CLT routines or effective classical theorems exist. |
+
+## Existing strengths to preserve rather than rediscover
+
+- `brun_ipra_2026-11-15/sections/06_ipra.tex:108–144` gives explicit finite
+  coding and factorization bounds. Its report already distinguishes finite
+  computations from the unconstructed object derivation.
+- `brun_ipra_2026-11-15/sections/07_lean.tex:160–188` requires an actual
+  `Prf PRAAx [] brunFormula`, syntactic QF witnesses, and axiom inspection.
+  A proved conditional wrapper is not that result.
+- `zeta_ipra_proof_package/paper/sections/08_formalization.tex:78–84,158–165`
+  already describes backward precision propagation through a finite tree
+  replacing an abstract identity theorem. The new framework should cite
+  this as a motivating instance, not claim that the basic idea first
+  appears here.
+- `algebra/puiseux_ipra/README.md` explicitly distinguishes an exact algebraic
+  backend from arbitrary Cauchy inputs and acknowledges the incomplete
+  Lean work. Its obstacle is information-theoretic, not fixed by a more
+  compressed checker.
+
+## Suggested claim wording
+
+“We prove a general finite-table composition method and apply it to obtain
+one primitive recursive full-factorization program, uniform in polynomial
+degree, for each fixed primitive recursive coefficient-name evaluator.
+This closes the fixed-degree restriction explicitly left in the repository's
+FTA discussion. We preserve the exact-presentation and quantitative
+separation hypotheses that the Puiseux and analytic-number-theory reports
+show cannot simply be dropped. The new formal artifacts verify selected
+generic lemmas; constructing the complete object-language arithmetic
+derivations remains separately identified work.”
+
+## Source URLs
+
+Use the prefix
+`https://github.com/VladimirReshetnikov/ProveIt/blob/94000996e69ab0c527393a1d02a4a037a4eb0493/Logic/PrimitiveRecursiveArithmetic/docs/proofs/`
+followed by the exact relative paths above. The most useful primary
+citations are the FTA source, Puiseux source, zeta functional-equation
+formalization plan, and the prime-distribution sections 6 and 7.
+
+
+# Analysis framework: source audit and contribution map
+
+All paths below are relative to `Logic/PrimitiveRecursiveArithmetic/docs/proofs` in ProveIt at commit `94000996e69ab0c527393a1d02a4a037a4eb0493`. The local snapshot was independently checked by the parent against GitHub blob hashes.
+
+## Directly resolved open question
+
+- `analysis/bohr_mollerup_ipra_2026-11-15/paper/bohr_mollerup_ipra.tex`, lines 183–202, describes the rational presentation with a separately supplied local modulus `M_F`.
+- Same file, lines 216–239, defines RLC only at positive rational arguments and says `M_F` is extra data for the real-domain corollary.
+- Same file, lines 712–789, derives a modulus for the constructed gamma presentation and uses candidate `M_F` for completion uniqueness.
+- Same file, lines 989–993, explicitly asks whether candidate `M_F` follows from recurrence and RLC.
+
+The new theorem answers yes for exactly this rational-presentation setting. Positive RLC implies ordinary rational convexity by finite weighted AM–GM. Let `a=alpha/2`, `b=beta+1`, `delta=min(alpha/2,1)`, and let `M` be a coarse integer upper bound on `F(a)` and `F(b)`. The two rational secant inequalities show
+
+`|F(x)-F(y)| <= (M/delta)|x-y|` on `[alpha,beta]`.
+
+Thus `mu_F(alpha,beta,k) = k + ceil(M/delta)` is an explicit PR modulus. Recurrence and normalization are not used for this implication. Candidate `M_F` can be deleted as independent input and replaced by this definition. Strong positivity and RLC remain assumptions.
+
+Scope: this gives the canonical continuous extension of the rational presentation. Conditions imposed only at rational arguments do not establish compatibility of independently supplied values at irrational arguments. Do not claim such a stronger theorem.
+
+## Additional simplification of the finite AM–GM subroutine
+
+Same Bohr–Mollerup source, approximately lines 245–284, gives a doubling/descent construction; lines 998–1001 ask about a shorter AM–GM certificate generator.
+
+For `s` positive entries, set `m` to the least power of two >= `s` and `a` to the mean of the original entries. Pad once with `m-s` copies of `a`. A binary AM–GM tree on at most `2s` entries gives `(prod u_i)*a^(m-s) <= a^m`; one cancellation yields `prod u_i <= a^s`. This eliminates the separate descent through intervening lengths. We prove the arithmetic construction and its PR bounds. We do not claim a measured reduction in checker byte count or native proof size because no baseline implementation was compared.
+
+## General framework improvements, not repairs of claimed false results
+
+- `analysis/calculus_ipra/README.md`, lines 25–29: FTC II uses a supplied uniform derivative modulus, and such data are not silently extracted from qualitative differentiability/compactness.
+- `analysis/calculus_ipra/lean/ROADMAP.md`, lines 143–180: finite FTC, supplied derivative moduli, avoidance of general mean-value/compactness/Cousin principles.
+- `analysis/taylor_cauchy_ipra/report.tex`, lines 286–308: rational samplers, coherence and continuity modulus contracts.
+- Same Taylor file, lines 698–721: supplied uniform holomorphy data; no derivation of a PR modulus from bare qualitative holomorphy.
+- Same Taylor file, lines 1149–1151: no arbitrary-real compactness, extremum attainment or mean-value theorem imported.
+
+The finite-net infimum theorem supplies a common constructive extremum-value module wherever these packages already have a domain net and modulus. It gives exact nested interval names for extrema values and explicit approximate minimizers, not arbitrary exact argmin selection. A quantitative uniqueness modulus supplies coherent minimizers; midpoint strong convexity provides such a modulus with schedule `2k+c`, `lambda*2^c >= 8`.
+
+The convexity theorem proves a modulus for a substantial special class; it does not remove the Taylor/Cauchy package's derivative-modulus assumptions for arbitrary holomorphic or differentiable inputs.
+
+## Boundary respected
+
+- `algebra/FTA_iPRA/FTA_iPRA.tex`, lines 780–867: the FTA package already constructs an exact coherent root name by movement-controlled descent, and expressly rejects inference from unrelated approximate zeros. Our generic isolated-root/coherent-minimum mechanism is complementary. It does not solve the multiple-root case by silently assuming quantitative uniqueness.
+- `topology/dimension_invariance_ipra/dimension_invariance.tex`, lines 595–663 and 744–792: finite samplers and continuity/inverse moduli are explicitly supplied. The net interface unifies this presentation style but does not prove missing moduli for arbitrary continuous maps.
+
+## Citations required by the LaTeX section
+
+- `repo-bm`: Bohr–Mollerup source above.
+- `repo-calculus`: calculus README / report and roadmap above.
+- `repo-taylor`: Taylor–Cauchy report above.
+- `repo-fta`: FTA manuscript above.
+
+These are the only external references used in `analysis_framework.tex`. All new inequalities and algorithms are proved in the section. The halting/metastability example uses standard bounded simulation and undecidability of halting as background; no new proof-theoretic conservation theorem is assumed.
+
+## Lean objects and proof targets
+
+1. A fixed `QSampler` with rational `eval : Vec d Rat -> Nat -> Rat`, PR definability evidence at the coded level, coherence and a fixed PR modulus.
+2. `grid d n`, `roundDown x n`, `firstArgmin`, `gridSampleMin`.
+3. Finite theorems: `roundDown_dist`, `sampleMin_lower`, `argmin_upper`, `cross_interval`, `running_intersection_width`.
+4. The regular interval name constructor for `V` is built from these arithmetic operations; a semantic Real infimum is optional and not used by the object-language proof.
+5. `ApproxMin f V eps x`, a quantitative uniqueness contract, `coherent_argmin`, and `midpoint_drop_distance`.
+6. `RLC`, `OrdinaryConvexQ`, `rlc_implies_convex`, `secant_right_bound`, `secant_left_bound`, `positive_convex_local_modulus`.
+7. No theorem is proved by structural induction on a predicate universally quantifying over real names. QF invariants cover finite min/max folds and binary AM–GM nodes; precision-indexed contracts are instantiated at finite demands.
+
+## Mathematical QA notes
+
+- Infimum interval endpoints are `L_k=m_k-2^(-k-1)`, `U_k=m_k+2^(-k-2)`, width `3*2^(-k)/4`. Cross-compatibility follows from `L_i <= f(a_j) <= U_j`.
+- `v(k)=k+max_{j<=k}u(j)` is monotone and exceeds both `u(k)` and `k`. The latter fact is needed for optimum-gap convergence in the canonical evaluation proof.
+- The direct strong-convex schedule `2k+c` also has both properties and is enough by itself.
+- The construction of infimum values does not need uniqueness. The construction of a coherent optimizer does.
+- The AM–GM padding proof uses positivity only for its final cancellation. Named inputs have finite positive lower witnesses and upper bounds; the manuscript supplies a concrete dyadic precision demand.
+- Metastability counterexample: a halting bit has at most one jump; two disjoint windows guarantee one constant window. A uniform Cauchy rate at tolerance `1/2` would decide halting. This establishes a failure of *uniform* rate extraction, not that each one-jump sequence lacks some individual modulus.
+
+
+# Contribution: finite algebraic sections
+
+## Files ready for integration
+
+- `work/descent_framework.tex`: self-contained section, about 2,600 words excluding displayed mathematics, with finite root-count proof, explicit annihilator by maximal minors, sharp superelliptic zero-count theorem, tuple-local cover interface, cardinality/gap barrier, and Lean definitions/roadmap.
+- `work/finite_curve_sections.py`: Python standard-library-only implementation of polynomial operations, synthetic division, maximal-minor annihilator, and two exact examples.
+- `work/finite_curve_sections_output.json`: actual successful program output.
+
+No custom LaTeX macros beyond `\Q`, `\N`, `\iPRA`; uses theorem, lemma, remark, proof environments. No bibliography keys inserted, so root can attach its own audit references. The section does not require an external mathematical theorem: its results are proved directly.
+
+## New main result
+
+For any rational polynomial `f` of exact degree `m`, integers `r >= 1`, `s >= 0` with `m > r*s`, put `Phi(x,y) = (1,x,...,x^s,y)` on `y^r=f(x)`. Every proper rational linear subspace contains feature images of at most `m` distinct rational points. This is a sharp bound for the stated family.
+
+The proof is elementary and supports a uniform iPRA derivation with only bounded, decidable invariants. A nonzero annihilator has form `P_s(x) + a*y`. If `a != 0`, substitution gives nonzero degree-`m` polynomial `(-P_s)^r - a^r*f`, and each x determines y. If `a = 0`, at most s x-values, and at most r y-values per x. No smoothness, irreducibility, genus, divisor, real, or algebraic-closure premise.
+
+Thus, for the monic quintic family `y^2=f_5(x)`, choose `(1,x,x^2,y)`; the fibre bound is **five**, independently of coefficient heights. Given a tuple-local cover by M proper subspaces, one gets cardinality <= 5M. The cover can depend on the input tuple; no global exception list is claimed. All candidate tuple-local covers are reduced to bounded masks of the input list; the success of this bounded search is still the missing approximation theorem.
+
+## Exact source audit and novelty relative to supplied repository
+
+All paths below are relative to `Logic/PrimitiveRecursiveArithmetic/docs/proofs/diophantine-number-theory/` at verified commit `94000996e69ab0c527393a1d02a4a037a4eb0493`.
+
+1. `siegel_ipra/paper/05_general_route.tex`, lines 97-112: the exact unresolved geometric fibre bound via divisor degrees. Lines 116-123 list it among missing steps. Our elementary theorem supplies this contract for the specified superelliptic features. It does **not** replace the Riemann–Roch construction or cover-and-lift theorem for arbitrary curves.
+2. Same file, lines 34-61: finite cover to cardinality already proved. We reuse its architecture; our novelty relative to the source is proving a nontrivial uniform zero-count contract explicitly instead of assuming it.
+3. Same file, lines 74-95: finite cover canonicalization and bounded candidate search already present. We give explicit maximal-minor annihilator and proof so that the new result can be compiled without a separate abstract vector-space library. Do not market bounded mask search itself as new.
+4. `faltings_ipra/faltings_ipra.tex`, section “An explicit genus-two arithmetic target” (starts line 186), defines monic quintics and canonical rational points. Our unconditional fibre theorem applies to this exact affine family. It does not prove Faltings or generate the required subspace covers.
+5. `diophantine_ipra_2026-11-15/paper/02_roth.tex`, lines 4-27: cardinality vs cutoff and singleton halting barrier already established. Our section reproduces this essential boundary and notes that arbitrary pairwise gap conditions do not fix it, because singleton predicates satisfy them vacuously.
+6. `mordell_weil_ipra/paper/02_descent.tex`: existing full contracting descent theorem already gives logarithmic fuel and explicit coefficient bounds. No separate “new” MW descent theorem is claimed here.
+7. `diophantine_ipra_2026-11-15/paper/03_stormer.tex`: source already claims a full bounded Størmer algorithm, with three cases in its prime-index lemma. No general primitive-divisor theorem is needed in that source, and this contribution does not call it unresolved.
+
+Permanent source URLs for root citations can be formed as
+`https://github.com/VladimirReshetnikov/ProveIt/blob/94000996e69ab0c527393a1d02a4a037a4eb0493/Logic/PrimitiveRecursiveArithmetic/docs/proofs/diophantine-number-theory/` plus each exact relative path.
+
+## Exact validation
+
+Ran `python3 work/finite_curve_sections.py` successfully. First example computes
+`f=[-119,274,-223,85,-14,1]`, points `(1,2),(2,5),(3,10),(4,17),(5,26)`, rank 3, and annihilator `[-1,0,-1,1]` in dimension 4. Successive synthetic division of the degree-five section polynomial at all five x-values leaves nonzero constant -1. This attains the bound.
+
+Second example checks the `a=0` branch on `y^2=1+x^3(x-1)(x-2)`: four points `(1,±1),(2,±1)`, annihilator `[2,-3,1,0]`, two x-groups of two y-values, attaining the branch bound `r*s=4`.
+
+These are implementation/example checks, not a machine proof of the universal theorem. The LaTeX section clearly distinguishes human proofs from the remaining embedded Lean derivations and the separate mathematical cover hypothesis.

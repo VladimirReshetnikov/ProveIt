@@ -1,0 +1,569 @@
+\section{Quantitative compactness without a compactness axiom}
+\label{sec:quantitative-analysis}
+
+This section supplies a reusable replacement for three recurring analytical
+steps: taking an extremal value on a compact set, obtaining an actual point
+from approximate solutions, and inferring local continuity from convexity.
+The input data and the precision schedules are part of the theorems.  The
+results do not infer a primitive-recursive modulus from arbitrary qualitative
+continuity.  The distinction matters in the calculus and Taylor--Cauchy
+packages, which explicitly supply their continuity and derivative contracts
+\cite{repo-calculus,repo-taylor}.
+
+\subsection{The presentation convention}
+
+For definiteness work on
+\[
+ K_d=[0,1]^d\cap\Q^d,\qquad
+ d_\infty(x,y)=\max_{i<d}|x_i-y_i|.
+\]
+For $d=0$ the domain contains one empty tuple and its distance is zero.
+The same arguments apply to other rational domains when finite nets and
+their rounding maps are supplied.  A scalar presentation consists of fixed
+primitive-recursive rational functions
+\[
+ A(x,p),\qquad \mu(k),
+\]
+with the following two contracts, for rational points in $K_d$:
+\begin{align}
+ |A(x,p)-A(x,q)|&\le 2^{-p}+2^{-q},
+       \label{eq:analysis-coherence}\\
+ d_\infty(x,y)\le2^{-\mu(k)}
+ &\ \Longrightarrow\ 
+ |A(x,p)-A(y,q)|\le2^{-k}+2^{-p}+2^{-q}.
+       \label{eq:analysis-continuity}
+\end{align}
+We write $f(x)$ for this coherent rational name.  Expressions involving
+$f(x)$ are notation for rational inequalities at arbitrary requested
+precisions, rather than a new sort of completed real numbers in \iPRA.
+For example, $f(x)\le r$ means
+$A(x,p)\le r+2^{-p}$ for every $p$.  For sums and products one first
+allocates the finite error budget and then obtains an equivalent family of
+rational inequalities.
+
+Whenever we remove an arbitrarily small positive error from a rational
+inequality, the operation has an elementary finite explanation.  If a
+positive rational gap is $u/v$, with positive integers $u,v$, a dyadic error
+smaller than $1/v$ contradicts that gap.  A suitable exponent is obtained by
+bounded search below $v+1$.  Thus arguments such as ``for every precision,
+therefore the limiting inequality holds'' can be translated into a
+particular rational contradiction at a computable precision.  They are not
+applications of a completeness principle.
+
+The functions $A$ and $\mu$ are fixed syntax in the object theory, or are
+specific functions already present in a definitional extension.  The
+theorem is a schema over such presentations.  In particular, there is no
+primitive-recursive universal evaluator for arbitrary primitive-recursive
+program codes hidden in the phrase ``evaluate $A$''.
+
+\subsection{A finite-net extremum theorem}
+
+\begin{theorem}[A primitive-recursive infimum name]
+\label{thm:finite-net-infimum}
+From \eqref{eq:analysis-coherence}--\eqref{eq:analysis-continuity} one can
+construct a primitive-recursive sequence of rational points $a_k\in K_d$
+and nested rational intervals $[L^*_k,U^*_k]$ satisfying
+\begin{align}
+ 0\le U^*_k-L^*_k&\le\tfrac34\,2^{-k},
+       \label{eq:infimum-width}\\
+ L^*_k&\le f(x)\quad(x\in K_d),
+       \label{eq:infimum-lower}\\
+ f(a_k)&\le V+\tfrac34\,2^{-k},
+       \label{eq:approx-minimizer}
+\end{align}
+where $V$ is the name given by these nested intervals.  The name $V$ is a
+lower bound for all $f(x)$ and is the unique named value with this lower
+bound and approximate-attainment property.
+
+The construction uses
+\[
+ n_k=\mu(k+2),\qquad
+ N_k=(2^{n_k}+1)^d
+\]
+grid evaluations, all at precision $k+2$.  It does not assert that the
+points $a_k$ form a Cauchy name.
+\end{theorem}
+
+\begin{proof}
+Let $G_n$ be the full dyadic grid whose coordinates are
+$0,2^{-n},\ldots,1$.  Enumerate it in a fixed lexicographic order.
+For $x\in K_d$, rounding each coordinate down gives a grid point
+$\pi_n(x)$ with
+\[
+ d_\infty(x,\pi_n(x))\le2^{-n}.
+\]
+Both the enumeration and rounding are rational, bounded computations.
+
+Put $\varepsilon_k=2^{-k}$.  Evaluate every $g\in G_{n_k}$ at
+precision $k+2$, let $m_k$ be the least sampled value, and let $a_k$ be
+the first point attaining it.  Rational order makes the tie-breaking
+decidable.  For every rational $x\in K_d$,
+\begin{align*}
+ m_k
+ &\le A(\pi_{n_k}(x),k+2)\\
+ &\le f(\pi_{n_k}(x))+\tfrac14\varepsilon_k\\
+ &\le f(x)+\tfrac12\varepsilon_k.
+\end{align*}
+Also
+$f(a_k)\le m_k+\varepsilon_k/4$.
+Define
+\[
+ L_k=m_k-\tfrac12\varepsilon_k,
+ \qquad U_k=m_k+\tfrac14\varepsilon_k.
+\]
+Consequently $L_k\le f(x)$ for every rational $x$, whereas
+$f(a_k)\le U_k$.  In particular, for every $i,j$,
+\[
+ L_i\le f(a_j)\le U_j.
+\]
+The endpoints are rational, so removing the arbitrarily small evaluation
+errors gives the literal rational inequality $L_i\le U_j$.
+
+Now take finite running intersections:
+\[
+ L^*_k=\max_{i\le k}L_i,
+ \qquad U^*_k=\min_{i\le k}U_i.
+\]
+The cross inequalities just proved show $L^*_k\le U^*_k$.  The
+intervals are nested, and their width is at most
+$U_k-L_k=3\varepsilon_k/4$.  This proves
+\eqref{eq:infimum-width} and defines the name $V$ without choosing a
+limit. Explicitly, a scalar sampler for this name is
+$V(k)=(L^*_k+U^*_k)/2$. For $l\ge k$ both midpoints are in the
+$k$th interval, so $|V(l)-V(k)|\le3\,2^{-k}/4\le2^{-k}+2^{-l}$.
+Thus it is regular in the sense of \eqref{eq:RN}.
+All its lower endpoints are lower bounds for $f$. In particular,
+$V(q)\le f(x)+3\,2^{-q}/8$; after allowing the sampling error of
+$f(x)$, this is the regular-name lower-bound inequality at index $q$.
+Moreover,
+as $V\ge L_k$ and $f(a_k)\le U_k$,
+\[
+ f(a_k)\le V+(U_k-L_k)
+          =V+\tfrac34\varepsilon_k.
+\]
+These relations can each be unfolded at any finite requested precision.
+
+Finally suppose $W$ is another lower-bound name with approximate
+attainment.  Since $W\le f(a_k)\le V+3\varepsilon_k/4$ for every
+$k$, we have $W\le V$ as a named inequality.  Apply the corresponding
+approximate-attainment property of $W$ to obtain $V\le W$.  No
+extremizing point or subsequence is used in this comparison.
+\end{proof}
+
+The maximum is obtained by applying the construction to $-f$.  A
+rational box other than $[0,1]^d$ is handled by an affine change of
+variables with its explicit distance factor.  More generally, only a
+primitive-recursive finite net, a rounding map, and a modulus were used.
+Thus the result is a general finite-net theorem rather than a special
+property of cubes.
+
+The construction resolves a useful part of an appeal to the extreme-value
+theorem: a supremum or infimum \emph{value}, together with points as close
+to the value as requested, has a direct finite realization.  It does not
+resolve the separate task of returning a coherent extremizing point.
+For example, choosing alternating points $0,1$ for the constant function
+returns exact minimizers at every stage, but those choices are not a
+Cauchy sequence.  A rule that identifies approximate solutions at nearby
+precisions is necessary for the next step.
+
+\subsection{Quantitative uniqueness makes approximate witnesses coherent}
+
+\begin{theorem}[Coherent extraction from approximate minima]
+\label{thm:coherent-minimizer}
+In the setting of Theorem~\ref{thm:finite-net-infimum}, suppose a fixed
+primitive-recursive function $u$ satisfies the quantitative uniqueness
+contract
+\begin{equation}
+ \left.
+ \begin{array}{c}
+ f(x)\le V+2^{-u(k)}\\
+ f(y)\le V+2^{-u(k)}
+ \end{array}\right\}
+ \quad\Longrightarrow\quad d_\infty(x,y)\le2^{-k}.
+ \label{eq:quantitative-uniqueness}
+\end{equation}
+Set $v(k)=k+\max_{j\le k}u(j)$ and $x_k=a_{v(k)}$.
+Then
+\[
+ d_\infty(x_k,x_l)\le2^{-\min(k,l)}
+                    \le2^{-k}+2^{-l}.
+\]
+The $x_k$ therefore give a primitive-recursive point name $X$ in the
+closed cube.  Its canonical evaluation satisfies $f(X)=V$, and it is
+the unique point name with that property.
+\end{theorem}
+
+\begin{proof}
+If $k\le l$, both $v(k)$ and $v(l)$ are at least $u(k)$.
+Equation~\eqref{eq:approx-minimizer} shows that $x_k,x_l$ both meet
+the hypotheses of \eqref{eq:quantitative-uniqueness} at precision $k$.
+This proves the displayed Cauchy estimate.  All coordinates of all
+approximants lie between zero and one, so the same closed inequalities
+hold of the point name.
+
+For completeness, a canonical evaluation procedure is explicit.  Replace
+$\mu$ by its monotone majorant if necessary and put
+\[
+ r(p)=p+2+\max_{j\le p+2}\mu(j),\qquad
+ B(p)=A(x_{r(p)},p+2).
+\]
+The distance bound between $x_{r(p)}$ and $x_{r(q)}$, followed by
+\eqref{eq:analysis-continuity}, proves coherence of $B$ with ample
+dyadic slack.  This defines $f(X)$.  Further,
+$v(r(p))\ge r(p)\ge p+2$, so the optimum gap of $x_{r(p)}$ is at
+most $2^{-p-2}$.  The evaluation error is also $2^{-p-2}$.
+Hence $B(p)$ differs from $V$ by at most $2^{-p-1}$, interpreted using
+the interval name for $V$.  This proves equality.
+
+If another point name $Y$ has value $V$, choose rational approximants
+to $X,Y$ fine enough for the continuity modulus and for the tolerance in
+\eqref{eq:quantitative-uniqueness}.  The equality of the values supplies
+the required approximate-minimum premises.  The uniqueness contract and
+the coordinate errors show $d_\infty(X,Y)$ is below any prescribed
+dyadic tolerance.  Thus $X=Y$ as point names.
+\end{proof}
+
+\begin{corollary}[A complete strongly convex minimization scheme]
+\label{cor:strong-convexity}
+Suppose a positive rational $\lambda$ is supplied and
+\begin{equation}
+ f\!\left(\frac{x+y}{2}\right)
+ \le\frac{f(x)+f(y)}2
+       -\frac{\lambda}{8}\,d_\infty(x,y)^2
+ \quad(x,y\in K_d).
+ \label{eq:midpoint-drop}
+\end{equation}
+Let $c$ be a natural number with $\lambda2^c\ge8$.
+Then $u(k)=2k+c$ satisfies \eqref{eq:quantitative-uniqueness}.
+In particular the simpler sequence
+\[
+ x_k=a_{2k+c}
+\]
+already gives a coherent name of the unique minimizer.
+\end{corollary}
+
+\begin{proof}
+The midpoint belongs to $K_d$, so the lower-bound property of $V$
+and \eqref{eq:midpoint-drop} give
+\[
+ V\le f\!\left(\frac{x+y}{2}\right)
+   \le V+2^{-u(k)}
+                 -\frac{\lambda}{8}d_\infty(x,y)^2.
+\]
+Thus
+\[
+ d_\infty(x,y)^2
+ \le\frac8\lambda\,2^{-2k-c}\le2^{-2k}.
+\]
+The distance is rational and nonnegative.  Rational order therefore
+gives $d_\infty(x,y)\le2^{-k}$; a positive contrary gap would remain
+positive after squaring.  This is precisely the uniqueness contract.
+The schedule $2k+c$ is already monotone, and the approximate minima
+on this schedule have a vanishing value gap, so the preceding proof
+applies directly.
+
+The integer $c$ need not be found by unbounded logarithmic search.
+Write $\lambda=a/b$ with positive integers $a,b$.  Searching
+$0\le c\le8b$ suffices, since $2^{8b}\ge8b\ge8b/a$.
+Consequently every step of the stated schedule is primitive recursive.
+\end{proof}
+
+The usual Euclidean $\lambda$-strong-convexity inequality implies
+\eqref{eq:midpoint-drop}, because
+$\|x-y\|_2^2\ge d_\infty(x,y)^2$.  One may also prove
+\eqref{eq:midpoint-drop} directly for a particular rationally presented
+objective, without introducing derivatives or Hessians.  For example,
+$f(x)=\sum_{i<d}(x_i-b_i)^2$ has $\lambda=2$, by expansion of squares.
+The theorem then supplies a complete construction of the minimizing
+point, including boundary cases, from finite rational minimization.
+This is stronger than merely replacing an extremum by a finite
+certificate: it constructs the coherent point and proves its optimality.
+
+For equations one can use the same pattern with a nonnegative residual
+$\rho$.  A finite algorithm producing $\rho(a_k)\le2^{-k}$ supplies
+approximate witnesses.  A quantitative isolation contract
+\[
+ \rho(x),\rho(y)\le2^{-u(k)}
+ \ \Longrightarrow\ d(x,y)\le2^{-k}
+\]
+supplies coherence.  Neither ingredient follows from the other.  In
+particular, multiple roots may violate this isolation contract.  The
+existing FTA package instead controls the movement of its descent
+sequence and already distinguishes that argument from unrelated
+approximate zeros \cite{repo-fta}.  Our theorem does not replace its
+multiple-root construction by an unjustified uniqueness assumption.
+
+\subsection{Removing the extra candidate modulus in Bohr--Mollerup}
+\label{sec:bm-modulus-repair}
+
+The Bohr--Mollerup report asks whether the primitive-recursive local
+modulus of the candidate can be derived rather than supplied
+\cite{repo-bm}.  For its rationally presented functions, the answer is
+yes.  In fact, recurrence is unnecessary for this part.
+
+\begin{lemma}[Positive multiplicative convexity implies ordinary convexity]
+\label{lem:positive-convexity}
+Let $F$ assign strongly positive regular names to positive rationals.
+Here strong positivity includes a fixed primitive recursive witness
+function giving a positive rational lower bound at each rational
+argument, as in the repository's presentation; it is not merely an
+unwitnessed assertion of pointwise positivity.
+Suppose that, for $s\ge1$, $0\le j\le s$, and
+$z=((s-j)x+jy)/s$,
+\begin{equation}
+ F(z)^s\le F(x)^{s-j}F(y)^j.
+ \label{eq:rlc-framework}
+\end{equation}
+Then
+\[
+ F(z)\le\frac{s-j}{s}F(x)+\frac{j}{s}F(y).
+\]
+The implication has a finite arithmetic proof with
+primitive-recursive precision demands.
+\end{lemma}
+
+\begin{proof}
+Finite weighted arithmetic--geometric mean gives
+\[
+ F(x)^{s-j}F(y)^j
+ \le\left(\frac{(s-j)F(x)+jF(y)}s\right)^s.
+\]
+This is the finite AM--GM theorem already developed in the same
+Bohr--Mollerup package, applied to a list with $s-j$ copies of $F(x)$
+and $j$ copies of $F(y)$.  Its elementary argument can be recalled
+briefly.  For two positive entries, $(u-v)^2\ge0$ proves the result.
+For a list of power-of-two length, repeatedly split it into two equal
+blocks.  Applying the same inequality to the means of the two blocks,
+and raising it to their common length, proves the next level of the
+binary product tree.  For a list of arbitrary length $s$, let $m$ be
+the least power of two at least $s$, and let $a$ be the mean of the
+original list.  Pad the list by $m-s$ copies of $a$.  Its mean is still
+$a$, so the power-of-two case gives
+$\bigl(\prod_{i<s}u_i\bigr)a^{m-s}\le a^m$.
+Cancellation of the positive factor $a^{m-s}$ proves the required
+$s$-entry inequality.  There are at most $2s$ leaves in the binary
+product tree.  This padding construction avoids a separate downward
+induction through all intervening lengths.  At every node the
+invariant is an inequality of finite products and rational means;
+its finite arithmetic version is proved by a Boolean prefix invariant
+over the tree in postorder.
+
+Combine AM--GM with \eqref{eq:rlc-framework} and cancel the common
+positive power.  This last step does not decide the order of two real
+names.  To verify the desired order at tolerance $\varepsilon>0$,
+a putative contrary rational gap of that size forces a positive gap
+of at least $\varepsilon^s$ between the $s$th powers, by the finite
+factorization of $u^s-v^s$ or the binomial theorem.  Requesting the
+power evaluations to error less than half that gap gives a rational
+contradiction.  The magnitude bounds needed to evaluate the powers
+come from coarse input intervals; $s$, $\varepsilon$, and those
+bounds give a primitive-recursive precision demand.  Thus this is
+a positive-power monotonicity argument, not real trichotomy.
+
+Here is one explicit demand that also explains the passage from
+rational AM--GM to names.  Suppose all relevant values lie in
+$[\ell,B]$ with positive rational $\ell$ and integer $B\ge1$.
+Approximating each value to error $\eta\le\min(1,\ell/2)$ changes
+a product of $s$ factors, and also an $s$th power of their mean,
+by at most $s(B+1)^{s-1}\eta$, by telescoping the product.
+For a target order tolerance $\varepsilon\le1$, it therefore
+suffices to choose a dyadic $\eta$ with
+\[
+ \eta\le\min\left(1,\frac\ell2,
+       \frac{\varepsilon^s}{8s(B+1)^{s-1}}\right).
+\]
+All quantities on the right are positive rationals.  A dyadic
+satisfying the bound is found by a search bounded by their encoded
+denominators.  This supplies a concrete primitive-recursive
+precision demand for both finite products and the positive-power
+comparison; strong positivity supplies $\ell$ for the finitely
+many values used in this instance.
+\end{proof}
+
+\begin{theorem}[A local Lipschitz bound from two endpoint samples]
+\label{thm:convex-local-modulus}
+Assume the hypotheses of Lemma~\ref{lem:positive-convexity}.  Fix
+positive rationals $\alpha\le\beta$.  Put
+\[
+ a=\frac\alpha2,\qquad b=\beta+1,\qquad
+ \delta=\min\left(\frac\alpha2,1\right).
+\]
+Let $M\ge1$ be an integer upper bound for $F(a)$ and $F(b)$,
+obtained from their precision-zero intervals.  Then, for rational
+$x,y\in[\alpha,\beta]$,
+\begin{equation}
+ |F(x)-F(y)|\le\frac M\delta\,|x-y|.
+ \label{eq:convex-lipschitz}
+\end{equation}
+In particular, with $H=\lceil M/\delta\rceil$,
+\begin{equation}
+ \mu_F(\alpha,\beta,k)=k+H
+ \label{eq:explicit-bm-modulus}
+\end{equation}
+is a primitive-recursive local uniform-continuity modulus.
+\end{theorem}
+
+\begin{proof}
+The case $x=y$ is immediate; rational order allows us otherwise to
+assume $x<y$.  Express $y$ as the rational convex combination of
+$x$ and $b$:
+\[
+ y=\frac{b-y}{b-x}x+\frac{y-x}{b-x}b.
+\]
+Lemma~\ref{lem:positive-convexity} gives
+\begin{align*}
+ F(y)-F(x)
+ &\le\frac{y-x}{b-x}\bigl(F(b)-F(x)\bigr)\\
+ &\le\frac{M}{\delta}(y-x).
+\end{align*}
+Here positivity gives $F(x)\ge0$, and $b-x\ge\delta$.
+Likewise express $x$ as a rational convex combination of $a$ and
+$y$:
+\[
+ x=\frac{y-x}{y-a}a+\frac{x-a}{y-a}y.
+\]
+The resulting inequality is
+\[
+ F(x)-F(y)
+ \le\frac{y-x}{y-a}\bigl(F(a)-F(y)\bigr)
+ \le\frac M\delta(y-x).
+\]
+Together these are \eqref{eq:convex-lipschitz}.  The denominators
+are positive rationals with the displayed lower bound, so all
+division is quantitatively justified.
+
+For a Cauchy sampler $A_F$, rather than nested input intervals, one
+may take
+\[
+ M=1+\left\lceil\max\bigl(|A_F(a,0)|,|A_F(b,0)|\bigr)\right\rceil.
+\]
+Coherence gives $F(a)\le A_F(a,0)+1\le M$ and the same for $b$.
+Thus $M$ uses only two fixed-precision evaluations.
+Since $H\ge1$ and $H\le2^H$, the hypothesis
+$|x-y|\le2^{-(k+H)}$ gives
+\[
+ |F(x)-F(y)|\le H\,2^{-(k+H)}\le2^{-k}.
+\]
+This proves \eqref{eq:explicit-bm-modulus}.  All operations are
+integer or rational arithmetic, a ceiling, and the two evaluations.
+\end{proof}
+
+This removes $M_F$ from the \emph{independent input data} for the
+Bohr--Mollerup candidate on positive rationals.  Its strong positivity,
+normalization, recurrence, and rational multiplicative convexity now
+suffice to derive both its rational uniqueness theorem and the modulus
+needed for its canonical extension to regular positive real names.
+One can then use the repository's completion argument with the
+derived modulus.
+
+The scope of this repair is precise.  A rational presentation determines
+its canonical continuous extension.  Assumptions imposed only at rational
+arguments do not, by themselves, constrain arbitrary separately specified
+values on irrational arguments.  If $F$ is presented on real names from
+the outset, one must require that this presentation is the canonical
+extension, or prove its compatibility with the rational presentation.
+The theorem supplies the previously missing modulus in the stated
+rational-presentation setting; it is not an extension theorem for an
+unrestricted set-theoretic function.
+
+\subsection{Why metastability does not supply a Cauchy rate}
+
+There is a useful obstruction which can itself be stated with finite
+arithmetic.  Let $h_e(n)$ be zero if machine $e$ has not halted in its
+first $n$ steps, and one otherwise.  Bounded simulation is primitive
+recursive, and $h_e$ is nondecreasing with at most one jump.
+
+Fix a primitive-recursive control function $g$ with $g(n)\ge n$.
+For any $e$, one of the two disjoint integer windows
+\[
+ [0,g(0)]\quad\hbox{and}\quad
+ [g(0)+1,g(g(0)+1)]
+\]
+has no jump.  Indeed, each nonconstant window contains a jump strictly
+between its first and last sampled index, and these windows cannot
+both contain the unique jump.  Inspecting both finite windows therefore
+finds an $N\in\{0,g(0)+1\}$ such that
+\[
+ |h_e(i)-h_e(j)|=0
+ \quad\hbox{for all }i,j\in[N,g(N)].
+\]
+This is a uniform primitive-recursive metastability procedure for
+every requested positive tolerance.
+
+On the other hand, a uniform computable Cauchy rate $R(e)$ for tolerance
+$1/2$ would decide halting: simulate $e$ for $R(e)$ steps.  If it has
+not halted by then, it cannot halt later, because the values at
+$R(e)$ and at the later halting time would differ by one.  Hence no
+such computable rate, and in particular no primitive-recursive rate,
+exists uniformly in $e$.  This is a metamathematical obstruction; it
+does not add a machine-halting principle to \iPRA.
+
+Consequently a finite fluctuation bound, or a theorem giving a good
+finite window for every control function, cannot be silently substituted
+for the modulus needed to construct a regular name.  In the positive
+results above the modulus comes from an explicit continuity or
+uniqueness inequality, and its dependence on the requested precision
+is displayed.
+
+\subsection{Arithmetic induction and the Lean implementation path}
+
+For Theorem~\ref{thm:finite-net-infimum}, encode rational tuples and
+the grid as finite natural-number codes.  The minimum loop maintains
+the current smallest sampled rational, its first index, and the
+Boolean conjunction of comparisons against all samples visited so
+far.  The invariant is quantifier-free after replacing a bounded
+conjunction by its primitive-recursive Boolean fold.  The running
+maximum and minimum used for interval intersection have the same
+kind of invariant.  Grid correctness is proved coordinate by coordinate
+using the quotient/remainder identity for rational rounding.  The
+continuity contract is instantiated at the one rounded point; one
+never inducts on a formula asserting a property of all real points.
+
+For Theorem~\ref{thm:coherent-minimizer}, the finite maximum defining
+$v$ is another bounded fold.  Having fixed $k,l$, the proof calls the
+uniqueness contract only once, at $\min(k,l)$.  The strong-convexity
+corollary uses a midpoint, two value comparisons, and an inequality
+of rational squares.  None of these steps uses induction on a
+formula quantifying over all names or all precisions.
+
+For Theorem~\ref{thm:convex-local-modulus}, rational convexity is a
+theorem schema for each displayed finite pair of arguments and
+rational weight.  The finite AM--GM arithmetic has loop bounds at
+most $2s$ and finite product-error contracts.  Once ordinary
+convexity is available, the modulus proof uses exactly two convexity
+instances.  The choice of $M$ is a primitive-recursive expression
+in two coarse samples; there is no search for an unknown neighborhood
+or a positive real gap.
+
+A useful Lean implementation order is the following.
+\begin{enumerate}
+\item Define rational codes, tuple lookup, $d_\infty$, dyadic grids,
+      rounding, the first-index minimum fold, and running intersections.
+      Prove their elementary finite specifications.  At the semantic
+      level a structure may collect $A$, $\mu$, coherence and continuity,
+      but the object-language theorem uses their fixed PR definitions.
+\item Prove the \emph{finite} lemma
+      \[
+      m_k\le A(x,q)+\tfrac12\,2^{-k}+2^{-q}
+      \]
+      directly for arbitrary rational $x$ and precision $q$.  Prove
+      $A(a_k,q)\le U_k+2^{-q}$ and the cross-interval inequality
+      $L_i\le U_j$.  These are the mathematical core of the infimum
+      constructor, and give its object-language targets without
+      importing Lean's real compactness theorems.
+\item Prove a generic rational lemma saying that two approximate
+      minimizers under \eqref{eq:midpoint-drop} have squared distance
+      at most $8\varepsilon/\lambda$.  Instantiate it with
+      $\varepsilon=2^{-2k-c}$ to verify the point constructor.
+\item Formalize weighted AM--GM, positive-power order reflection with
+      an explicit precision demand, the two secant inequalities, and
+      $H2^{-H}\le1$.  The candidate modulus then follows by composition.
+\item Provide the arithmetic derivations of these fixed schemas and
+      feed them to the common finite-contract compiler.  A Lean theorem
+      about ordinary $\mathbb R$ is useful as a semantic check, but
+      is not the object-language \iPRA proof.
+\end{enumerate}
+
+The contracts above identify the exact remaining formalization work.
+They are definitions and proved mathematical specifications, rather
+than unexplained assumptions named after the desired conclusion.
