@@ -35,3 +35,6 @@ The push stage rebuilds the local candidate chain and the
 [paused primary push](README-paused-primary.md). The second command builds
 the [primary field result](README-paused-field.md). The checkers audit the
 Lean axioms and record the source hashes and provider paths for replay.
+
+The [gate-window stage](README-gate.md) compares the revised and primary source
+steps at sites 3519–3552 and identifies the sole gate exit at site 3553.
