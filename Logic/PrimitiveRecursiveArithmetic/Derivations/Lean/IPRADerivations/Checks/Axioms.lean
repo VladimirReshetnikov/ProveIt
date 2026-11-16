@@ -172,6 +172,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.RSA.fermat_unit
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.RSA.gcd_distinct_primes
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.RSA.rsa
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totient.coprime_pow
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totient.indicator_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totient.count_multiples
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totient.totient_prime_power
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
