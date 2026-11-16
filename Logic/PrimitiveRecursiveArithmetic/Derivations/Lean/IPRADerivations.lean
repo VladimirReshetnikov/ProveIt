@@ -55,6 +55,7 @@ import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.PhiTwo
 import IPRADerivations.AnalyticNumberTheory.PhiLowerSharp
+import IPRADerivations.AnalyticNumberTheory.PhiUpper
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
