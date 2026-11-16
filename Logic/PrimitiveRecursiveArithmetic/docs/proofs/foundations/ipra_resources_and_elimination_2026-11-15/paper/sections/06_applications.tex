@@ -1,0 +1,246 @@
+\section{Which difficulties are resolved, and which data are still missing}
+\label{sec:applications}
+
+The new results make two kinds of progress. They turn certain informal
+resource arguments into actual PR programs, and they turn particular
+geometric certificates into complete point lists. They do not supply
+every certificate that an existing application would need. This section
+states the resulting interfaces precisely.
+
+\subsection{Finite exhaustive witnesses as a general interface}
+
+The auxiliary-polynomial construction is an instance of a useful
+general rule. It applies to finite chart families, bounded algebraic
+certificates, bounded collections of exact matrices, and finite
+geometric decompositions, provided each candidate has a certified
+complete finite output.
+
+\begin{theorem}[Elimination of a bounded auxiliary choice]
+\label{thm:exhaustive}
+Let \(P(a,p)\), \(\Good(a,c)\), and \(R(a,c,p)\) be fixed PR
+predicates on natural codes. Let \(B(a)\) and the finite list
+\(L(a,c)\) be fixed PR programs. Suppose \(\ipra\) proves, for every
+good candidate,
+\[
+ \Good(a,c)\ \longrightarrow\
+ \bigl(p\in L(a,c)\ \longleftrightarrow\ R(a,c,p)\bigr).
+\]
+Suppose also that it proves the pointwise coverage assertion
+\begin{equation}\label{eq:bounded-witness-cover}
+ P(a,p)\ \longrightarrow\
+ \exists c\le B(a)\,
+       \bigl(\Good(a,c)\wedge R(a,c,p)\bigr).
+\end{equation}
+Then a fixed PR program produces a duplicate-free complete list of
+all \(p\) satisfying \(P(a,p)\), and \(\ipra\) proves its completeness.
+No chosen function sending \(p\) to a candidate \(c\) is required.
+\end{theorem}
+
+\begin{proof}
+Scan \(c=0,\ldots,B(a)\). For good candidates concatenate \(L(a,c)\),
+retain precisely entries satisfying \(P(a,\cdot)\), and remove
+duplicates by a bounded scan through the accumulated list.
+All loops have PR bounds: the outer counter is explicit and each
+inner list has a PR length. The scan invariant says, for a fixed
+parameter \(p\), that membership in the accumulated list is
+equivalent to
+\[
+ P(a,p)\wedge\exists c<i\,
+       (\Good(a,c)\wedge p\in L(a,c)).
+\]
+This is a bounded formula; its quantifier-free compilation is the
+induction formula. At the end, every retained entry satisfies \(P\)
+by the filter. Conversely, given \(P(a,p)\), eliminate the existential
+in \eqref{eq:bounded-witness-cover}. Its witness is an enumerated good
+candidate, and the candidate-completeness theorem puts \(p\) into
+the corresponding list. The invariant places it in the final list.
+Universal introduction over \(p\) follows after the finite induction.
+\end{proof}
+
+If \(P\) is not decidable, omit the filter. The same argument yields
+a finite list containing every target point, hence a height or code
+bound, but not necessarily an exact list of target points. This is
+often the correct output contract when the remaining property is
+not an arithmetic Boolean test.
+
+Theorem~\ref{thm:exhaustive} does not require an explicit bound on
+the \emph{number} of successful candidates smaller than \(B(a)+1\).
+It relies instead on a finite bound on their possible codes. This is
+why a coefficient bound on auxiliary equations can do more than a
+cardinality bound on exceptional subspaces.
+
+\subsection{A precise obstruction to converting cardinality into a list}
+
+The distinction above is not only a bookkeeping concern. There is an
+elementary computability counterexample, already anticipated by the
+repository's height/list warnings~\cite{repo-faltings,repo-framework}.
+
+\begin{proposition}[Uniform singleton bounds do not locate their member]
+\label{prop:singleton}
+There is one fixed PR predicate \(P(e,t)\) such that \(\ipra\) proves
+that every duplicate-free list satisfying \(P(e,\cdot)\) has length
+at most one, uniformly in \(e\), but there is no total computable
+procedure producing a complete finite list for every \(e\). Nor is
+there a total computable bound \(H(e)\) such that
+\(P(e,t)\to t\le H(e)\) for all \(e,t\).
+\end{proposition}
+
+\begin{proof}
+Fix an ordinary effective enumeration of machines and let \(P(e,t)\)
+say that machine \(e\) first halts at step \(t\). A bounded machine
+simulation is PR, and ``first'' is a bounded test. If \(s<t\) and
+\(P(e,s)\), then the negative earlier-halting condition in \(P(e,t)\)
+fails. Decidable comparison of \(s,t\) therefore proves
+\(P(e,s)\wedge P(e,t)\to s=t\) in \(\ipra\). Applying that fact
+to two distinct positions proves the list bound.
+
+A total computable complete-list procedure would decide whether the
+machine halts by testing whether its output list is empty. A total
+computable bound \(H(e)\) would decide the same question by running
+the machine through that many steps and checking the finite trace.
+Either conclusion contradicts the elementary undecidability of the
+halting problem. The simulator is bounded; no total universal
+primitive-recursive evaluator is being postulated.
+\end{proof}
+
+The example can be placed directly inside the auxiliary-polynomial
+interface. Take the fixed curve \(F(X,Y)=Y\) and the target points
+\((t,0)\) with \(P(e,t)\). Every target point admits the linear
+auxiliary equation \(G_t(X,Y)=X-t\), and \(F,G_t\) have a nonzero
+resultant. Every finite target list is covered by one such auxiliary
+equation (use \(X\) for an empty list). Degrees are uniformly one,
+and target cardinality is uniformly at most one. Nevertheless a
+computable bound on the necessary coefficient heights would contradict
+Proposition~\ref{prop:singleton}, because the bounded-envelope theorem
+would then produce the forbidden complete-list algorithm.
+Indeed, writing a linear auxiliary as \(aX+bY+c\), its good
+intersection with \(Y=0\) forces \(a\ne0\) and hence
+\(t=-c/a\). If the reduced coefficient heights are at most \(H\),
+then \(|a|\ge1/H\) and \(|c|\le H\), giving \(t\le H^2\).
+Thus the missing coefficient bound would directly locate the halting
+time. This example shows exactly what a degree-only cover omits.
+
+\subsection{The Siegel and Faltings routes}
+
+The inspected Siegel report separates a finite-tuple approximation
+cover from a geometric bound on the number of curve points in each
+covering subspace~\cite{repo-siegel}. Earlier framework packets replace
+some abstract divisor arguments by explicit norm calculations.
+The plane-elimination theorem broadens that geometric part: if a
+subspace's annihilating function is represented by an auxiliary plane
+polynomial \(G\), and \(\Good(F,G)\) holds, then a finite list in
+that intersection has at most \(\deg F\deg G\) points. Neither
+smoothness nor a special weight shape is needed. A rational function
+presentation must first clear denominators and separately account for
+points where those denominators vanish; that conversion is an
+additional contract, not implicit in the theorem.
+
+For an actually supplied finite global cover by such \(G\)'s, one can
+now compute all the intersection lists and obtain a complete target
+list after a decidable filter. More generally, a uniform degree and
+coefficient envelope for pointwise auxiliaries suffices. This gives
+a concrete alternative target for an arithmetic-geometric proof:
+produce the finite envelope, rather than a distinguished cover.
+
+What is not supplied is a proof that every curve in the general Siegel
+or Faltings classes admits the required envelope with PR bounds.
+The existing tuple-local covering proposal, even if proved, need not
+imply that stronger assertion. Likewise, nonvanishing of a particular
+resultant is a check on one exact auxiliary; it is not a construction
+of an auxiliary for every target point. General positive height
+bounds and complete rational-point algorithms for those classes
+remain outside this report. No unprovability or independence claim
+about those general arithmetic sentences follows from this limitation.
+
+\subsection{Mordell--Weil descent}
+
+The inspected Mordell--Weil packet already gives explicit contracting
+height descent, coefficient extraction, and bounded selection from
+\emph{supplied} quotient representatives~\cite{repo-mw}. We do not
+present these again as new results. The reset-counter theorem can
+organize a refinement process that alternates finitely many ranked
+tasks, once its local PR transition and rank contracts are available.
+The plane-intersection procedure can solve zero-dimensional rational
+subproblems arising in a particular presentation. Neither construction
+produces the missing arbitrary rational quotient representatives or
+proves a uniform generation theorem. Those are separate mathematical
+inputs, not a loop scheduling issue.
+
+\subsection{Analytic names, Puiseux data, and exact coefficient tests}
+
+The new arithmetic programs use exact rational coefficient arrays.
+This restriction matters. The predicate \(\Good(F,G)\) compares
+finitely many exact rational coefficients with zero. If coefficients
+were supplied only by arbitrary Cauchy names, a negative result from
+a finite precision test would not certify exact zero. For example,
+\(F=Y^2-X^2-a\) and \(G=Y-X\) have elimination behavior depending
+on whether \(a=0\). Treating an arbitrary name for \(a\) as an
+exact rational code would import a zero test that the input does not
+provide.
+
+The Puiseux obstruction report makes the stronger point that exact
+singular coefficient data can encode zero detection even when each
+individual represented value happens to be rational~\cite{repo-puiseux}.
+The current framework respects that obstruction. It supports exact
+algebraic codes, approximate observations, or local constructions with
+positive separation certificates. It does not infer exact singular
+Puiseux coefficients from arbitrary Cauchy data, and it does not add
+root multiplicity matching or a globally continuous branch label.
+
+The demand compiler does resolve a different analytic difficulty:
+iterating a fixed operation while its required input accuracy changes
+can be performed with a first-order PR program. The correctness proof
+fixes the final precision and uses the finite horizon invariant.
+Whether the local analytic estimate is valid remains a mathematical
+lemma to prove, just as before.
+
+\subsection{Prime-distribution constants and all-future claims}
+
+The prime-distribution packet gives exact arithmetic targets for
+Siegel--Walfisz and Bombieri--Vinogradov with existential constants
+\emph{before} the universal range of \(X\), and isolates the missing
+effective uniform information~\cite{repo-primes}. The present
+framework makes finite sums, rational approximation, and their
+precision schedules easier to compile. It does not move a finite
+search success at each tested \(X\) in front of the universal
+quantifier. Nor does the reset theorem produce a stopping rank for
+searching for a constant whose correctness is an unbounded
+all-future property.
+
+The same distinction applies to metastability. A program that returns
+a stable finite window for each requested control function does not
+thereby return a final convergence modulus. These are different output
+contracts. Our new resource theorem proves termination only after
+the finite rank condition itself has an internal proof; it is not a
+general mechanism for converting an unbounded mathematical promise
+into a computable certificate.
+
+\subsection{A practical dependency table}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}}
+\toprule
+Difficulty & Available resolution here & Remaining input\\
+\midrule\endhead
+Changing precision inside recursion
+& Explicit \code{PR 2} compiler; checked semantic laws and partial internal equations
+& Finish the stated arithmetic coherence proofs in Lean.\\
+Lower counters reset during descent
+& Fixed-dimensional lexicographic fuel, including an automatic trajectory envelope
+& Internal local invariant and strict-rank proofs for the application.\\
+Curve fibre count lacks monic or weight form
+& Bounded shear and Sylvester fibre multiplicity, giving the degree-product bound
+& A verified nonzero resultant for the actual auxiliary equation.\\
+Finite auxiliaries exist pointwise but no cover was selected
+& Exhaust all auxiliaries within a supplied degree and coefficient envelope
+& Proof of a uniform coefficient envelope.\\
+Only a tuple-local cover or a cardinality bound is known
+& Correct finite-list cardinality consequence
+& Positive location data for a complete list or height bound.\\
+Arbitrary Cauchy coefficient equality
+& Approximate or apartness-guarded interfaces remain usable
+& Exact input codes or a specific separation witness.\\
+General MW, Siegel, Faltings, and prime estimates
+& Explicit finite components and a narrower list of obligations
+& The substantive general arithmetic or analytic theorem.\\
+\bottomrule
+\end{longtable}

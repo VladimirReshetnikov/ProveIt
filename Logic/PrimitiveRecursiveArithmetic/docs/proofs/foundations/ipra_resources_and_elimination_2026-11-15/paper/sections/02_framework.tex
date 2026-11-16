@@ -1,0 +1,262 @@
+\section{A general framework of finite interfaces and resources}
+\label{sec:framework}
+
+The method has two layers. A mathematical object is described by finite
+observations and laws about them. A computation is justified by an
+arithmetic program, a finite demand for the observations it uses, and a
+bounded invariant. The program's termination resource is kept separate
+from its mathematical correctness. This separation lets the same
+representation support a predetermined recursion, an adaptive ranked
+search, or an exhaustive certificate enumeration.
+
+\subsection{Coding conventions}
+
+Natural numbers are the only object-theory sort. Signed integers may be
+coded by \(0\mapsto0\), \(n>0\mapsto2n\), and
+\(-n\mapsto2n-1\). A rational is a pair consisting of an integer numerator
+and a positive denominator; reduce by a bounded Euclidean algorithm when
+a canonical code is needed. Invalid denominator codes are assigned a
+fixed default value, while every mathematical theorem retains the
+positive-denominator guard. Complex rational numbers are pairs of
+rationals. The coding of finite lists supplies total primitive-recursive
+length, lookup, append, and bounded fold functions. Values outside a
+list's range have a default value and are never used without a range
+test in a mathematical contract.
+
+For definiteness, pairing can be coded by
+\(\langle a,b\rangle=2^a(2b+1)-1\). Its projections use bounded search
+below the code plus one. A list can be a length and a nested pairing,
+with list traversal bounded by that length. Every concrete loop below
+has a primitive-recursive bound; efficient binary encodings can replace
+these without changing the arguments. Rational arithmetic, coefficient
+arrays, determinant permutation sums, polynomial substitution, and
+finite coefficient comparison are consequently primitive recursive.
+There is no appeal here to a universal evaluator for arbitrary programs.
+
+\begin{lemma}[Boolean compilation of fixed bounded formulas]
+\label{lem:boolean}
+For each fixed bounded formula \(A(\vec x)\) over primitive-recursive
+symbols, there is a primitive-recursive \(a(\vec x)\in\bool\) such that
+\(\ipra\) proves
+\[
+             A(\vec x)\ \longleftrightarrow\ a(\vec x)=1.
+\]
+The construction also supplies proofs of the range condition and of the
+equivalence. It is a transformation on a fixed formula, not an internal
+truth predicate for all arithmetic formulas.
+\end{lemma}
+
+\begin{proof}
+Equality has a primitive-recursive comparison test, whose correctness
+follows from the defining equations and induction on subtraction or
+simultaneous predecessor comparisons. Atomic predicates are treated by
+their fixed characteristic definitions. For Boolean values, conjunction
+is multiplication, disjunction is the capped sum, and negation is
+\(1-a\). Since the induction hypothesis proves the subformulas
+decidable, implication is represented by
+\(\max(1-a,b)\). This use of decidability is restricted to these
+subformulas; no excluded-middle schema is introduced.
+
+For \(\forall i<t(\vec x)\,B(i,\vec x)\), define the prefix product
+\[
+ u(0,\vec x)=1,\qquad
+ u(n+1,\vec x)=u(n,\vec x)b(n,\vec x).
+\]
+Quantifier-free induction proves that the product remains Boolean.
+To obtain a particular factor from \(u(n)=1\), fix its index \(i\)
+as a parameter and induct on \(n\) with the quantifier-free formula
+\(u(n)=1\to(i<n\to b(i)=1)\). In the successor case, a product
+of two Boolean factors equals one only when both factors equal one;
+compare the fixed index with the preceding prefix length.
+For the converse, retain \(\forall i<t\,B(i)\) in the fixed context;
+induct on \(n\) with \(n\le t\to u(n)=1\), using just the instance
+at \(i=n\) in the successor case. This proves the required equivalence
+without induction on the bounded universal formula itself.
+
+For a bounded existential, use the capped prefix sum, or the
+primitive-recursive first-success selector with a success bit. An
+induction on the scan length maintains the Boolean equation saying
+that the success bit agrees with the capped sum, and, when successful,
+that the selected index is below the scan length and satisfies the
+characteristic test. The forward existential implication instantiates
+the product or sum at a supplied witness; the reverse implication uses
+the selected index. The formula induction is a finite metatheoretic
+construction, and all numerical inductions it emits are quantifier-free.
+\end{proof}
+
+\begin{corollary}[Bounded induction and bounded choice]
+\label{cor:bounded}
+Induction on any fixed bounded formula is derivable in \(\ipra\).
+If \(\exists y\le B(\vec x)\,R(\vec x,y)\) is proved with bounded
+\(R\), the bounded first-success scan supplies a fixed
+primitive-recursive witness with an internal correctness proof.
+Finite products of such scans give finite choice over bounded domains.
+\end{corollary}
+
+\begin{proof}
+Replace the induction formula by the equation in
+Lemma~\ref{lem:boolean}, perform quantifier-free induction, and replace
+back. For choice, use the scan invariant just proved; the supplied
+existence theorem forces its success bit to be one. Default outputs
+make the function total even when the premise is false.
+\end{proof}
+
+\subsection{Finite observations}
+
+\begin{definition}[An arithmetic observation interface]
+Fix a primitive-recursive producer \(O(\vec a,k)\) of finite codes,
+a bounded validity predicate \(V(\vec a,k,z)\), and bounded relations
+for comparing or restricting observations. The parameters \(\vec a\)
+describe an input presentation; \(k\) is an observation demand, not
+necessarily a decimal or binary precision. An object assertion is an
+ordinary first-order formula built from these contracts, for example
+\[
+   \forall k\,V(\vec a,k,O(\vec a,k)).
+\]
+No object of an infinite set or function space is thereby added to the
+arithmetic domain.
+\end{definition}
+
+An observation may be a jet through degree \(k\), a matrix entry table,
+a rational approximation with error \(2^{-k}\), a finite graph, a finite
+list of roots without labels, or a polynomial identity certificate.
+An equality of represented objects can be a family of bounded
+observational equalities. An apartness assertion must carry an explicit
+positive lower bound when an inverse is computed.
+
+For instance, a real presentation can use a fixed rational-valued
+program \(A(\vec a,k)\) and the regularity contract
+\[
+ |A(\vec a,p)-A(\vec a,q)|\le 2^{-p}+2^{-q}.
+\]
+Each instance is an integer inequality after clearing positive
+denominators. One may reason under its universal closure, but cannot use
+that universal closure as a quantifier-free induction formula. For a
+fixed requested accuracy, the proof records exactly the finitely many
+instances required. An equality test between arbitrary such names is
+not a Boolean operation; approximate comparison with a specified margin
+or a supplied exact algebraic code is a different interface.
+
+\subsection{Operations and proof-bearing contracts}
+
+An operation consists of fixed PR syntax for its numerical output,
+fixed PR syntax for its finite input demands, and a derivation of its
+local contract. For one input a typical contract is
+\begin{equation}\label{eq:local-operation}
+ V_A(\vec a,D(\vec a,k),z)
+ \ \longrightarrow\
+ V_B(\vec a,k,T(\vec a,k,z)).
+\end{equation}
+If several predecessor observations are needed, use a bounded list of
+queries and the bounded conjunction of their contracts. If the producer
+needs one demand for computing its output and a larger one for checking
+the output, record both. Neither demand is inferred from the fact that
+an ambient mathematical operation exists.
+
+\begin{proposition}[Proof-producing composition]
+\label{prop:composition}
+Two operations of the form \eqref{eq:local-operation} compose. The
+composite demand is obtained by substituting the second demand into the
+first; the composite output is ordinary PR composition. Substitution
+and implication elimination compose the two supplied internal proofs.
+For a finite family of queries, a prefix maximum covers all demanded
+indices, provided the validity interface explicitly supports the
+corresponding prefix restriction.
+\end{proposition}
+
+\begin{proof}
+If \(D_1\) supplies the input needed to produce an intermediate
+observation at demand \(r\), and \(D_2\) is the demand for the final
+request \(k\), use the first contract at \(r=D_2(k)\). Its conclusion
+is exactly the premise of the second contract. PR syntax is closed
+under the displayed substitutions. These are operations on given proof
+terms; they do not use the semantic truth of an arbitrary input
+certificate. For multiple queries the finite maximum dominates each
+listed index by its defining recursion. Apply the restriction proof
+before the local contract; absent that proof, a maximum is not a valid
+replacement for several nonmonotone demands.
+\end{proof}
+
+\subsection{Execution resources and bounded invariants}
+
+\begin{lemma}[Guarded finite execution]
+\label{lem:execution}
+Let \(u(0)=u_0\) and \(u(t+1)=T(\vec a,t,u(t))\) be an ordinary
+primitive recursion, and let \(B(\vec a)\) be PR. Suppose a fixed context
+\(\Gamma\), independent of the induction variable, proves a bounded
+invariant \(I(\vec a,0,u_0)\) and the bounded-range step
+\[
+ t<B(\vec a),\ I(\vec a,t,u(t))
+       \ \longrightarrow\ I(\vec a,t+1,u(t+1)).
+\]
+Then \(\Gamma\) proves \(I(\vec a,B(\vec a),u(B(\vec a)))\).
+The context itself need not consist of bounded formulas.
+\end{lemma}
+
+\begin{proof}
+Booleanize \(I\), keeping \(\vec a\) fixed. Induct on
+\(t\le B(\vec a)\to I(\vec a,t,u(t))\), expressed by the corresponding
+quantifier-free Boolean implication. From \(t+1\le B\) obtain \(t<B\)
+and the preceding invariant; outside that range the implication has no
+obligation. Instantiate the resulting universal formula at \(t=B\).
+\end{proof}
+
+There are three ways to supply \(B\) in this report. A bounded search
+comes with its enumeration bound. A predetermined observation recursion
+comes with its requested terminal stage, while its changing observation
+parameters are compiled backwards. An adaptive computation with a
+fixed-dimensional lexicographic rank receives a bound from
+Section~\ref{sec:descent}. This third case permits output-dependent
+control flow, provided the transition itself is fixed PR and the local
+rank and invariant proofs are supplied.
+
+\begin{theorem}[Restricted compilation principle]
+\label{thm:compilation}
+Consider a finite mathematical development whose representations and
+operations have the above interfaces. Allow PR composition, bounded
+folds and scans, the predetermined demand recursions of
+Section~\ref{sec:demand}, and the fixed-depth ranked executions of
+Section~\ref{sec:descent}. Require internal local proofs for each
+primitive contract, proofs of initialization and preservation of a bounded
+invariant for every numerical loop, and a proof that its terminal
+invariant implies the requested output contract.
+Then every output contract obtained by these composition, induction, and
+output rules has an \(\ipra\) derivation under the supplied input
+hypotheses. Every output witness
+has fixed PR syntax. The transformation is a metatheoretic construction
+from this finite development and its local derivations.
+\end{theorem}
+
+\begin{proof}
+Proceed through the finite construction. Composition uses
+Proposition~\ref{prop:composition}; scans and folds use
+Corollary~\ref{cor:bounded} and Lemma~\ref{lem:execution}; a changing
+parameter is replaced by the explicit two-recursion program of
+Section~\ref{sec:demand}; a ranked loop is replaced by a fixed-fuel
+simulation using Section~\ref{sec:descent}. Every generated invariant
+is bounded, and Lemma~\ref{lem:boolean} supplies its quantifier-free
+form. Existential introduction uses the explicitly generated witness
+term. Universal introduction over numerical parameters is performed
+only after their finite proof has been constructed and only when those
+parameters do not occur freely in the retained context (otherwise the
+relevant assumptions must first be discharged). No other induction
+principle, soundness reflection, or uniform evaluator is used.
+\end{proof}
+
+The principle is deliberately restricted. It does not say that every
+true specification of a PR program is provable in \(\ipra\), nor that
+every Lean program is PR, nor that all constructive mathematics falls
+inside arithmetic. Those claims would conceal exactly the obligations
+the framework is meant to expose.
+
+\subsection{A useful test for a proposed embedding}
+
+The following four questions are a compact mathematical review tool.
+What finite code is returned? Which observations of the input justify
+it? What fixed PR construction bounds its execution? Which bounded
+invariant proves its contract? A fifth question is needed for a
+completeness theorem: why must every solution be represented by a code
+the finite procedure examines? Sections~\ref{sec:elimination} and
+\ref{sec:applications} answer the fifth question using elimination
+polynomials and bounded auxiliary equations. Mere cardinality does not
+answer it.

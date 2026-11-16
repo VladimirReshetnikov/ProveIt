@@ -1,0 +1,605 @@
+\section{Elimination certificates that produce complete affine rational-point lists}
+\label{sec:elimination}
+
+The preceding proof-transport discipline becomes particularly useful when
+a classical finiteness argument has supplied auxiliary equations.  Existing
+packets already contain complete rational-root scans
+\cite{repo-geometry}, determinant norms for monic plane equations
+\cite{repo-demand}, and sharp weighted refinements for several curve
+families \cite{repo-coherent}.  We combine those finite mechanisms in a
+different way: an arbitrary plane presentation is put into a suitable
+coordinate system by a bounded search, and its elimination polynomial
+produces a \emph{complete list} of rational intersection points.  A uniform
+coefficient envelope on auxiliary equations then suffices to produce a
+complete list for the target set, without choosing an auxiliary equation
+for each point.  This makes explicit a stronger interface than the
+finite-tuple covering premise in the Siegel packet \cite{repo-siegel}.
+
+The algebra is standard elimination theory in origin
+\cite{sturmfels}.  The contribution here is the full arithmetic
+construction, its exact guards, its quantifier-sensitive composition, and
+its induction audit.  No general Siegel or Faltings theorem is asserted.
+
+\subsection{Exact inputs, guards, and bounded coordinates}
+
+A bivariate rational polynomial is a finite coefficient array
+\(F=(f_{ij})\), with default value zero outside the encoded array.  Its
+value is the finite sum
+\[
+ F(x,y)=\sum_{i,j}f_{ij}x^iy^j.
+\]
+Rationals have canonical signed numerators and positive denominators.
+Equality, order, polynomial evaluation, and every array operation used
+below are primitive recursive.  The total degree of a nonzero polynomial
+is the largest \(i+j\) having \(f_{ij}\ne0\); a separate Boolean flag
+recognizes the zero polynomial.  All degrees below are total degrees
+unless the variable is displayed explicitly.
+
+The final algorithm is total and returns either a successful list or an
+\emph{unsupported} flag.  If either polynomial is a nonzero constant, it
+returns the empty list successfully.  If one is the zero polynomial and
+neither is a nonzero constant, it returns unsupported.  Thus its main
+branch has nonzero polynomials \(F,G\) of degrees \(d,e\ge1\).
+The unsupported flag is never interpreted as an empty solution set.
+
+For an integer \(c\ge0\), make the shear
+\[
+ U=X+cY,\qquad V=Y,\qquad
+ F_c(U,V)=F(U-cV,V),\quad G_c(U,V)=G(U-cV,V).
+ \tag{E1}\label{eq:elim-shear}
+\]
+The inverse map is \((U,V)\mapsto(U-cV,V)\); both maps preserve rational
+coordinates and are mutually inverse by direct substitution.  Binomial
+expansion computes the coefficient arrays.
+
+\begin{lemma}[A bounded generic direction]\label{lem:elim-shear}
+Let \(F_d,G_e\) be the nonzero highest homogeneous parts of \(F,G\).
+There is a \(c\in\{0,\ldots,d+e\}\) such that
+\[
+ a(c):=F_d(-c,1)\ne0,\qquad b(c):=G_e(-c,1)\ne0.
+ \tag{E2}\label{eq:elim-leading}
+\]
+The first such \(c\) is a primitive recursive function of the coefficient
+arrays.  For that choice,
+\[
+ F_c=\sum_{i=0}^d f_i(U)V^i,\quad
+ G_c=\sum_{j=0}^e g_j(U)V^j,
+\]
+where
+\[
+ f_d=a(c),\quad g_e=b(c),\quad
+ \deg_U f_i\le d-i,\quad \deg_U g_j\le e-j
+ \tag{E3}\label{eq:elim-degree-rows}
+\]
+for nonzero coefficients.  In particular, every rational specialization
+\(F_c(u,V)\) has degree exactly \(d\).
+\end{lemma}
+
+\begin{proof}
+The coefficients of the polynomial \(a(T)=F_d(-T,1)\) are the coefficients
+of \(F_d\), with their signs changed according to the exponent of \(X\).
+Thus \(a\) is nonzero and has degree at most \(d\).  Similarly \(b\) is
+nonzero of degree at most \(e\).  Their product is nonzero: the product of
+their leading coefficients is nonzero in \(\Q\).
+
+We recall the finite root bound in the form needed here.  If a nonzero
+degree-\(r\) rational polynomial vanishes at distinct supplied numbers
+\(t_1,\ldots,t_s\), synthetic division gives
+\(P(T)=(T-t_1)P_1(T)\).  Evaluating at \(t_j\ne t_1\) shows
+\(P_1(t_j)=0\), because \(t_j-t_1\ne0\).  Continue along the finite
+list.  A nonzero polynomial cannot lose more than its degree in these
+divisions, so \(s\le r\).  Each quotient and division identity is finite
+coefficient data; no search for an unspecified root is involved.
+
+Consequently \(a(T)b(T)\) cannot vanish at all \(d+e+1\) candidates
+\(0,\ldots,d+e\).  A scan with a success flag, frozen at the first passing
+candidate, returns the required \(c\).  Finally the shear preserves the
+bound on total degree.  A term containing \(V^d\) in \(F_c\) cannot
+contain a positive power of \(U\), and its coefficient is
+\(F_d(-c,1)\).  Every coefficient of \(V^i\) has \(U\)-degree at most
+\(d-i\).  This proves all the assertions.
+\end{proof}
+
+Henceforth \(c\) always denotes this canonical first passing value.  The
+constant leading coefficient is useful twice: it controls the elimination
+degree, and it prevents the polynomial in the second coordinate from
+vanishing identically at an exceptional value of the first coordinate.
+
+\subsection{The finite elimination certificate and its degree}
+
+Put \(N=d+e\).  Let \(S(U)\) be the \(N\)-by-\(N\) matrix whose rows
+are coefficient vectors, in columns \(V^0,\ldots,V^{N-1}\), of
+\[
+ F_c,VF_c,\ldots,V^{e-1}F_c,
+ \qquad G_c,VG_c,\ldots,V^{d-1}G_c.
+\]
+Define the elimination polynomial
+\[
+ R(U)=\det S(U).
+ \tag{E4}\label{eq:elim-resultant}
+\]
+This is a Sylvester determinant; other conventional row orders change at
+most its sign.  We use the permutation-sum definition, so the certificate
+can be checked by finite rational polynomial arithmetic.  In the main
+branch, \(\Good(F,G)\) means that the coefficient array of \(R\) is
+nonzero.  It is a decidable primitive recursive test.  It is not presumed
+to succeed on every pair.
+
+\begin{lemma}[The total-degree audit]\label{lem:elim-degree}
+If \(R\ne0\), then \(\deg R\le de\).
+\end{lemma}
+
+\begin{proof}
+Consider one nonzero term of the determinant expansion.  In the row
+\(V^rF_c\), an entry selected from column \(k\) is \(f_{k-r}\), and
+its degree is at most \(d-(k-r)\).  In the row \(V^sG_c\), the
+corresponding bound is \(e-(k-s)\).  A permutation uses each column
+\(0,\ldots,d+e-1\) once.  Therefore the degree of the selected product
+is at most
+\begin{align*}
+ 2de-\sum_{k=0}^{d+e-1}k
+       +\sum_{r=0}^{e-1}r+\sum_{s=0}^{d-1}s
+ &=2de-\frac{(d+e)(d+e-1)}2
+          +\frac{e(e-1)+d(d-1)}2\\
+ &=de.
+\end{align*}
+A zero selected entry makes the determinant term zero and requires no
+degree calculation.  Finite addition cannot create a coefficient above
+the maximum support bound.  This proves the claim without any assumption
+that leading determinant terms do not cancel.
+\end{proof}
+
+\begin{lemma}[A common point gives an elimination root]
+\label{lem:elim-root}
+If \(F(x,y)=G(x,y)=0\), then \(R(x+cy)=0\).
+\end{lemma}
+
+\begin{proof}
+Write \(u=x+cy\), \(v=y\).  The column
+\(w=(1,v,\ldots,v^{N-1})^{\mathsf T}\) satisfies \(S(u)w=0\): each
+row evaluates a shifted copy of \(F_c\) or \(G_c\) at \(v\).
+Multiply by the adjugate of \(S(u)\).  The finite adjugate identity gives
+\(R(u)w=0\), and its first component is \(R(u)=0\).
+Determinant specialization and the adjugate identity follow from their
+finite polynomial expansions, so no assertion about a completed
+algebraic closure is used.
+\end{proof}
+
+For complete enumeration this is already enough.  For the sharp
+cardinality bound one must account for several points with the same
+\(u\)-coordinate.  Counting only distinct roots of \(R\) would omit
+that information.
+
+\begin{lemma}[A fibre contributes its full multiplicity]
+\label{lem:elim-fibre}
+If \(v_1,\ldots,v_r\) are distinct rationals and
+\(F_c(u,v_j)=G_c(u,v_j)=0\) for every \(j\), then
+\[
+ (U-u)^r\mid R(U).
+ \tag{E5}\label{eq:elim-fibre-power}
+\]
+\end{lemma}
+
+\begin{proof}
+The polynomial \(F_c(u,V)\) has degree exactly \(d\), so the finite
+root bound gives \(r\le d\le N\).  Form a constant \(N\)-by-\(N\)
+matrix \(W\).  Its first \(r\) columns are
+\[
+ (1,v_j,\ldots,v_j^{N-1})^{\mathsf T},\qquad 1\le j\le r;
+\]
+its remaining columns are the standard basis columns
+\(e_r,\ldots,e_{N-1}\), numbering coordinates from zero.  The
+upper-left block is a Vandermonde matrix, the upper-right block is zero,
+and the lower-right block is the identity.  Thus
+\[
+ \det W=\prod_{i<j}(v_j-v_i)\ne0.
+\]
+The Vandermonde formula is itself a finite polynomial identity: as a
+polynomial in the last ordinate its determinant has the previous
+ordinates as roots and the preceding Vandermonde determinant as its
+leading coefficient; induction proves the displayed product.
+
+Each of the first \(r\) columns of \(S(U)W\) vanishes entrywise at
+\(U=u\).  Synthetic division therefore factors \(U-u\) from every
+entry in each such column.  Factoring a scalar polynomial from these
+\(r\) columns in the permutation-sum determinant proves
+\((U-u)^r\mid\det(S(U)W)\).  Multiplicativity of the finite determinant
+gives \(\det(S(U)W)=R(U)\det W\).  Dividing the quotient polynomial by
+the nonzero rational \(\det W\) proves \eqref{eq:elim-fibre-power}.
+\end{proof}
+
+\begin{theorem}[Finite arithmetic B\'ezout bound]\label{thm:elim-bezout}
+Assume \(\Good(F,G)\).  Every finite list of pairwise distinct rational
+common zeros of \(F,G\) has length at most \(de\).
+\end{theorem}
+
+\begin{proof}
+Apply the shear to the list and group entries by their first coordinate,
+using decidable equality of canonical rationals.  Let the distinct first
+coordinates be \(u_1,\ldots,u_t\), with group sizes
+\(r_1,\ldots,r_t\).  Within a group the second coordinates are distinct,
+because the shear is injective.  Lemma~\ref{lem:elim-fibre} gives
+\((U-u_j)^{r_j}\mid R\) for every \(j\).
+
+For completeness, coprimeness of these powers has explicit finite
+witnesses.  If \(a\ne b\), put
+\[
+ L=\frac{U-a}{b-a},\qquad M=-\frac{U-b}{b-a},\qquad L+M=1.
+\]
+Expand \(1=(L+M)^{r+s-1}\).  A term whose exponent of \(L\) is at
+least \(r\) is divisible by \((U-a)^r\); every other term has exponent
+of \(M\) at least \(s\) and is divisible by \((U-b)^s\).  Grouping
+the terms gives polynomial B\'ezout coefficients for the two powers.
+Multiplying such identities supplies coprime cancellation for a finite
+product.  Hence
+\[
+ \prod_{j=1}^t(U-u_j)^{r_j}\mid R(U).
+\]
+The product is monic of degree \(\sum_jr_j\).  Since \(R\ne0\),
+degree comparison and Lemma~\ref{lem:elim-degree} yield
+\[
+ \operatorname{length}(\text{list})
+     =\sum_jr_j\le\deg R\le de.
+\]
+All factorization witnesses and grouped lists are finite coded data.
+\end{proof}
+
+The statement needs neither an irreducibility oracle nor an unproved
+claim about common components.  In classical algebra, absence of a common
+nonconstant factor implies the good-shear resultant is nonzero.  That
+characterization is unnecessary here: \(R\ne0\) is checked directly.
+When it fails, even a finite or empty rational intersection may be
+unsupported.  Completeness is asserted on the explicitly recognized
+successful domain, not for all pairs of equations.
+
+\subsection{From elimination to a complete list and height bound}
+
+We include the rational-root argument to make the resulting positive
+finiteness theorem self-contained.  This ingredient is already available
+in the repository \cite{repo-geometry}; the new step is its composition
+with the uniformly chosen two-coordinate elimination.
+
+\begin{lemma}[Complete bounded rational-root scan]
+\label{lem:elim-rational-roots}
+For each nonzero rational polynomial \(P(T)\), a fixed primitive
+recursive program returns exactly its rational roots, without duplicates.
+\end{lemma}
+
+\begin{proof}
+Multiply all coefficients by their positive denominator product.  This
+gives a nonzero integer polynomial with the same roots.  By bounded scans
+find its least and greatest nonzero coefficient indices \(k,n\).  If
+\(k>0\), record the root zero.  Write
+\[
+ P(T)=T^kQ(T),\qquad
+ Q(T)=a_0+a_1T+\cdots+a_mT^m,
+ \quad a_0a_m\ne0,quad m=n-k.
+\]
+If \(m=0\), there are no further roots.  Otherwise take a nonzero root
+\(p/q\) in lowest terms, with \(q>0\).  Multiplication by \(q^m\)
+gives the integer identity
+\[
+ a_mp^m+a_{m-1}p^{m-1}q+\cdots+a_0q^m=0.
+ \tag{E6}\label{eq:elim-root-identity}
+\]
+It follows that \(p\mid a_0q^m\) and \(q\mid a_mp^m\).
+The Euclidean algorithm gives a B\'ezout equation for the coprime
+\(p,q\).  If an integer is coprime to two integers separately, multiplying
+their B\'ezout equations proves it coprime to their product; induction
+therefore proves coprimeness with the required powers.  Coprime
+cancellation in \eqref{eq:elim-root-identity} now gives
+\[
+ p\mid a_0,\qquad q\mid a_m,
+ \qquad 0<|p|\le|a_0|,quad 1\le q\le|a_m|.
+ \tag{E7}\label{eq:elim-root-box}
+\]
+Scan this finite integer rectangle, retain coprime pairs whose exact
+substitution into \(P\) is zero, and canonicalize.  The final equation
+test proves soundness, and \eqref{eq:elim-root-box} proves that every
+nonzero rational root is tested.  The separately recorded zero is a root
+exactly when \(k>0\).  Canonical deduplication preserves membership.
+
+A nonzero constant returns the empty list.  The zero polynomial has no
+finite root-list contract and receives a failure flag in the total
+wrapper.  Every scan bound is a numerical function of already computed
+coefficients, so all operations are primitive recursive.
+\end{proof}
+
+\begin{theorem}[A positive plane-intersection theorem]
+\label{thm:elim-complete}
+There is a fixed primitive recursive function \(\operatorname{Intersect}\)
+such that, if \(\Good(F,G)\), its output is a duplicate-free list \(L\)
+with
+\[
+ (x,y)\in L\quad\Longleftrightarrow\quad F(x,y)=G(x,y)=0
+ \quad\text{for all }x,y\in\Q.
+ \tag{E8}\label{eq:elim-complete}
+\]
+Moreover \(|L|\le de\).  It also computes an upper bound on the canonical
+codes, and on the naive coordinate heights, of all these points.
+\end{theorem}
+
+\begin{proof}
+The algorithm is explicit:
+\begin{enumerate}
+\item Compute the canonical shear \(c\) and its nonzero polynomial \(R\).
+\item Enumerate all rational roots \(u\) of \(R\), using
+Lemma~\ref{lem:elim-rational-roots}.
+\item For each \(u\), enumerate all rational roots \(v\) of
+\(F_c(u,V)\).  Its leading coefficient is the fixed nonzero rational
+\(a(c)\), so this call never encounters the zero polynomial.
+\item Retain the pairs satisfying \(G_c(u,v)=0\), replace them by
+\((u-cv,v)\), and remove duplicates.
+\end{enumerate}
+Every retained point satisfies both original equations by the inverse
+shear.  Conversely let \(F(x,y)=G(x,y)=0\).  Put \(u=x+cy\) and
+\(v=y\).  Lemma~\ref{lem:elim-root} puts \(u\) in the first complete
+root list.  The equation \(F_c(u,v)=0\) puts \(v\) in that fibre's
+complete list.  The other equation passes the final filter, and the
+inverse shear returns \((x,y)\).  This proves
+\eqref{eq:elim-complete}.  Theorem~\ref{thm:elim-bezout} applies to the
+duplicate-free output and gives its length bound.
+
+For a canonical rational \(z=p/q\), put \(h(z)=\max(|p|,q)\), and
+for a pair put \(h(x,y)=\max(h(x),h(y))\).  The maximum of these heights
+over \(L\), with zero for an empty list, bounds every rational common
+point by completeness.  Taking the maximum of the point codes works in
+the same way.  Neither maximum is an unbounded search.
+
+The outer root rectangle is determined by \(R\); each inner rectangle
+is determined by the coefficients of \(F_c(u,V)\) already computed for
+that outer entry.  Nesting loops with such primitive recursive bounds
+again gives a primitive recursive program.  Thus the conclusion includes
+an actual list and height producer, rather than only a cardinality bound.
+\end{proof}
+
+The theorem is a zero-dimensional result: successful elimination has
+proved that the relevant intersection has a finite rational list.  It
+does not bound all rational points on a curve in the absence of auxiliary
+equations.
+
+\subsection{Two cover interfaces and a bounded-envelope theorem}
+
+Fix a nonzero nonconstant \(F\), and a fixed primitive recursive
+decidable predicate \(A(x,y)\) on rational codes.  Ordinary numerical
+parameters of this predicate may be carried through every program and
+proof below; they are suppressed in the notation.  Integrality of both
+coordinates is one example.  Define the target set by
+\[
+ S(x,y)\quad:\Longleftrightarrow\quad F(x,y)=0\ \wedge\ A(x,y).
+\]
+This is notation for a numerical predicate, not an additional set sort.
+
+\begin{corollary}[A supplied global auxiliary cover]
+\label{cor:elim-global-cover}
+Suppose a finite list \(G_1,\ldots,G_m\) is supplied, each pair
+\((F,G_i)\) passes the good-resultant test, and the following mathematical
+premise has been proved:
+\[
+ \forall x,y\in\Q\quad
+ S(x,y)\ \longrightarrow\ \bigvee_{i=1}^mG_i(x,y)=0.
+ \tag{E9}\label{eq:elim-global-cover}
+\]
+Then a primitive recursive function of these data produces a complete
+list of the target points and a height bound.  Its length is at most
+\(\sum_i d\deg G_i\).
+\end{corollary}
+
+\begin{proof}
+Concatenate the lists \(\operatorname{Intersect}(F,G_i)\), filter by
+\(A\), and deduplicate.  A retained point satisfies \(F=0\) and \(A\).
+If \(S(x,y)\), eliminate the supplied finite disjunction
+\eqref{eq:elim-global-cover}.  In each branch the corresponding
+intersection theorem puts \((x,y)\) in the union.  Its length is bounded
+by the sum of the intersection length bounds; its height maximum is a
+bound for all target points.
+
+No finite computation is said to decide the universal cover premise.
+That premise is used with a proof, or retained as a hypothesis.  The
+program only computes the lists justified by the displayed contracts.
+\end{proof}
+
+A pointwise auxiliary-existence assertion suffices when all its witnesses
+belong to one explicitly bounded coefficient space.  This observation is
+useful because no choice function or globally selected cover is needed.
+
+For \(e,H\ge1\), let \(\mathcal B(e,H)\) be the finite list of nonzero
+rational polynomials of total degree at most \(e\), with every reduced
+coefficient numerator bounded in magnitude by \(H\) and every positive
+denominator bounded by \(H\).  Zero coefficients are represented by
+\(0/1\).  There are
+\[
+ K=\frac{(e+1)(e+2)}2
+\]
+monomials of degree at most \(e\).  Listing all numerator-denominator
+pairs and then all coefficient vectors gives at most
+\[
+ B(e,H)=\bigl((2H+1)H\bigr)^K
+ \tag{E10}\label{eq:elim-box-size}
+\]
+raw vectors; normalization and removal of zero polynomials can only
+decrease that number.  Nonzero constants may also be removed, since they
+cannot vanish at a target point.  A radix-vector scan implements this
+enumeration by one fixed primitive recursive definition even when \(e\)
+is an input.
+
+\begin{theorem}[A bounded auxiliary envelope gives positive finiteness]
+\label{thm:elim-envelope}
+Assume
+\[
+ \forall x,y\in\Q\quad S(x,y)\ \longrightarrow\
+ \exists G\in\mathcal B(e,H)\,
+       \bigl(\Good(F,G)\ \wedge\ G(x,y)=0\bigr).
+ \tag{E11}\label{eq:elim-pointwise-envelope}
+\]
+There is a fixed primitive recursive algorithm, depending on the fixed
+predicate \(A\), which takes \(F,e,H\) and produces a complete list of
+target points and a height or code bound.  A coarse bound on the number
+of points is
+\[
+ d e\, B(e,H).
+ \tag{E12}\label{eq:elim-envelope-card}
+\]
+In particular, the conclusion does not require a selector taking a point
+to its auxiliary polynomial.
+\end{theorem}
+
+\begin{proof}
+Enumerate the entire finite coefficient box.  Retain every \(G\) for
+which the good-resultant test succeeds, and concatenate all corresponding
+lists \(\operatorname{Intersect}(F,G)\).  Filter the concatenation by
+\(A\) and remove duplicates.  Every retained point satisfies \(S\).
+
+Conversely, given \(S(x,y)\), eliminate the bounded existential in
+\eqref{eq:elim-pointwise-envelope}.  Its witness occurs in the enumerated
+box, passes the test, and has \(G(x,y)=0\).  The complete intersection
+list for that witness therefore contains \((x,y)\).  Hence the union
+contains it, and the true predicate \(A(x,y)\) retains it.  This proves
+completeness without selecting witnesses as a function of points.
+
+There are at most \(B(e,H)\) candidates and each successful candidate
+has degree at most \(e\), so its list has at most \(de\) entries.
+This proves \eqref{eq:elim-envelope-card}.  Taking a maximum over the
+computed complete list gives the height or code bound.  The bound on the
+coefficient box is explicit, and every subsequent list-producing call is
+primitive recursive; their composition is primitive recursive as well.
+\end{proof}
+
+The degree \emph{and coefficient} bounds are doing different jobs.  The
+degree controls intersection cardinality.  The coefficient bound makes
+the space of all possible witnesses a finite searchable list, which
+produces a height bound and complete enumeration.
+
+For comparison, suppose only that every finite list of target points can
+be covered by at most \(M\) auxiliary equations of degree at most \(e\),
+each with a nonzero elimination certificate.  The auxiliaries may depend
+on the whole finite list and their coefficients may be unbounded.
+Assign every list entry to its first covering equation.  Each group has
+at most \(de\) points by Theorem~\ref{thm:elim-bezout}, hence every
+distinct target list has length at most \(Mde\).  This is a valid finite
+cardinality argument.  It supplies neither a global cover to use in
+Corollary~\ref{cor:elim-global-cover} nor a coefficient envelope to use
+in Theorem~\ref{thm:elim-envelope}.  In particular, changing auxiliary
+equations along larger and larger lists does not give a stopping rule for
+enumerating all target points.  The missing uniformity has been located,
+not inferred away.
+
+\subsection{Exact examples and what the construction repairs}
+
+Take
+\[
+ F=X^2+Y^2-5,\qquad G=XY-2.
+\]
+The first passing shear has \(c=1\), giving
+\[
+ F_c=U^2-2UV+2V^2-5,\qquad G_c=UV-V^2-2,
+ \qquad R(U)=(U^2-9)^2.
+\]
+For \(u=3\) the retained ordinates are \(1,2\); for \(u=-3\) they
+are \(-1,-2\).  The inverse shear returns precisely
+\[
+ (1,2),\ (2,1),\ (-1,-2),\ (-2,-1).
+\]
+There are four points, attaining \(de=4\), although only two first
+coordinates after the canonical shear.  Thus fibre multiplicity is
+necessary for the sharp count in this example.
+
+For \(F=XY-2\) and \(G=X+Y-3\), the candidate \(c=0\) fails the
+leading-coefficient test for \(F\), and \(c=1\) fails it for \(G\).
+The scan chooses \(c=2\).  Here
+\[
+ F_c=UV-2V^2-2,\qquad G_c=U-V-3,
+ \qquad R(U)=-(U-4)(U-5)
+\]
+with our row convention.  The complete list is \((1,2),(2,1)\),
+attaining \(de=2\).  This illustrates a presentation in which the
+bounded shear is genuinely needed.
+
+If \(F=Y-X\) and \(G=2Y-2X\), the resultant is zero and the algorithm
+returns unsupported.  Returning an empty list would be false: the
+intersection contains every rational point on that line.  The code also
+handles elimination roots at zero by stripping the initial polynomial
+power before the rational-root scan.
+
+Relative to the audited packets, the construction adds three concrete
+interfaces: a bounded conversion from arbitrary plane coordinates to
+constant leading coefficients, a complete rational-point producer for
+every successful intersection certificate, and a finite-envelope route
+from bounded auxiliary existence to positive finiteness.  It does not
+provide the quantitative approximation theorem or coefficient bounds
+needed to apply that route to all curves in the general Siegel or
+Faltings statements.  It also does not provide actual rational
+Mordell--Weil quotient representatives or effective exceptional-zero
+estimates for prime-distribution arguments.
+
+\subsection{Quantifier-free induction audit and Lean completion}
+
+All claims above have a direct first-order arithmetic form over natural
+codes.  A displayed bounded conjunction means the corresponding
+primitive recursive Boolean fold equals one.  Validity guards on rational
+and polynomial codes prevent division by zero; invalid input branches
+receive fixed defaults.  The following are the main proof obligations.
+
+\begin{enumerate}
+\item \textbf{Polynomial operations.}  Implement coefficient arrays,
+finite evaluation, multiplication, shear, and synthetic division.  Prove
+the division identity by induction on the remaining coefficient count.
+The invariant is a coefficientwise equality of coded polynomials, with
+finite support and degree bounds compiled into Boolean tests.
+\item \textbf{Determinants.}  Enumerate length-\(N\) vectors over
+\(\{0,\ldots,N-1\}\), retain vectors with distinct entries, and sum
+their signed products.  The loop bound \(N^N\) is primitive recursive.
+Prove specialization, the adjugate identity, determinant multiplication,
+and column factor extraction by finite expansion and reindexing.  The
+degree audit records the sum of selected column indices; it needs no
+unbounded algebraic assertion.
+\item \textbf{Root scans.}  Compute denominator products, first and last
+nonzero indices, gcds, and the rectangles
+\eqref{eq:elim-root-box}.  The scan invariant says that every stored
+entry passes the exact equation test and that every passing candidate in
+the processed prefix is stored.  Both assertions are bounded Boolean
+predicates.  Instantiate the separately proved divisibility bound after
+the scan to obtain completeness for an arbitrary rational root.
+\item \textbf{Intersection lists.}  The nested-loop invariant expresses
+membership in the accumulated union of the processed finite root
+fibres.  Completeness for an arbitrary point follows by two instances of
+the root-list theorem and Lemma~\ref{lem:elim-root}.  The sharp length
+bound additionally needs Vandermonde and the finite grouped-factor
+invariant \(R=P_jQ_j\), with all quotient coefficients stored.
+\item \textbf{Coefficient envelopes.}  The coefficient-box enumeration
+has an explicit radix bound.  The union invariant identifies stored
+points with passing intersections in the processed prefix.  The
+unbounded cover premise is held in the proof context and instantiated
+only after this induction.  It is never an induction formula.
+\end{enumerate}
+
+In Lean, the native specification may use rational coefficient lists and
+finite arrays.  The essential definitions are
+\texttt{shear}, \texttt{canonicalShear}, \texttt{sylvester},
+\texttt{elimination}, \texttt{good}, \texttt{rationalRoots},
+\texttt{intersect}, \texttt{auxiliaryBox}, and
+\texttt{envelopeList}.  Define
+\[
+\begin{split}
+ \operatorname{Common}(F,G,p)&:
+       F(p_1,p_2)=0\wedge G(p_1,p_2)=0,\\
+ \operatorname{Complete}(L,P)&:
+       \forall p\,(p\in L\leftrightarrow P(p)).
+\end{split}
+\]
+The principal native theorem targets are precisely the statements of
+Lemmas~\ref{lem:elim-shear}--\ref{lem:elim-rational-roots} and
+Theorems~\ref{thm:elim-complete}, \ref{thm:elim-envelope}.  The
+complete-list theorem can be finished before the fibre-multiplicity
+module: it uses the common-point root lemma, not the sharp cardinality
+bound.  Thus that longer determinant argument need not block the positive
+enumeration result.
+
+The object-language phase uses the same fixed arithmetic programs,
+their compiled Boolean predicates, and the displayed quantifier-free
+invariants to construct actual \texttt{Prf PRAAx} derivations.  A native
+Lean theorem about rational arrays is not yet such a derivation, and
+\texttt{pra\_iff\_native} is applied only after that object proof has
+been built.  The accompanying exact Python code checks the concrete
+examples and exceptional branches; it is a reference implementation, not
+a proof of the universal statements or an iPRA proof checker.

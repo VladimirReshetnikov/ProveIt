@@ -1,0 +1,139 @@
+\section{The problem exposed by the repository}
+\label{sec:scope}
+
+The root arithmetic README makes a decisive distinction. The
+\code{ConciseIPRA} library supplies kernel-checked equivalences between
+presentations of intuitionistic primitive recursive arithmetic. The
+\code{docs/proofs} directory contains 60 delivered research packets,
+including nine framework packets, whose claims were filed as delivered;
+the index does not certify them. In particular, the root README says that
+none of those packets supplies a completed derivation of its main
+application in \code{Prf PRAAx}~\cite{repo-root,repo-index}.
+This report uses that distinction throughout. An excellent mathematical
+outline, a total Lean function, a successful exact computation, and an
+embedded arithmetic proof are four different forms of evidence.
+
+\subsection{What can actually be improved}
+
+The earlier frameworks already supply bounded Booleanization, finite
+contracts, precision budgets, conditional inverses, finite nets,
+metastability, and several kinds of coherent approximation.
+The finite-demand packet treats nonmonotone backward precision schedules
+and aggregate root supports. The coherent-methods packet supplies filtered
+lifting, Hurwitz coefficients, and weighted determinant norms. The
+finite-observation packet contains degree-uniform approximate
+factorization, convexity-based continuity bounds, and finite-net
+minimization~\cite{repo-demand,repo-coherent,repo-observation}.
+Repeating these methods under a new name would not resolve a new difficulty.
+
+The present extension concentrates on the following three gaps.
+
+\begin{enumerate}
+\item \textbf{A missing executable syntax bridge.}
+The earlier \code{BackwardDemand.lean} defines a semantic
+\code{compiledRecursion} and proves its recurrence equations, but explicitly
+leaves the construction of its \code{PR} syntax and the object-theory
+compiler unimplemented. We supply actual syntax for that program, checked
+semantic correctness of the generated syntax, and a general checked
+term-to-symbol correctness theorem inside \code{Prf PRAAx}. The remaining
+internal proofs are identified individually.
+\item \textbf{Termination arguments with resets.}
+A single decreasing natural number is often too restrictive for an
+algorithm that finishes one task, lowers a more significant counter, and
+restarts a lower counter. A fixed finite lexicographic rank suffices. We
+derive its execution bound from a primitive-recursive finite simulation,
+so a separate numerical runtime bound need not be guessed. The distinction
+between a fixed number of counter levels and an input-dependent number is
+essential.
+\item \textbf{General plane intersections and auxiliary equations.}
+The earlier zero-count repairs use monic plane norms, hyperelliptic
+curves, or particular weighted leading forms. A bounded shear removes the
+coordinate restriction. A Sylvester determinant supplies both the sharp
+degree-product count and a complete rational-point procedure for every
+intersection passing its nonvanishing test. A finite coefficient envelope
+then upgrades pointwise auxiliary witnesses into a uniform complete list.
+\end{enumerate}
+
+These contributions extend standard ideas in primitive recursion,
+termination analysis, and elimination theory; no claim of historical
+priority is made. The gain is an explicit constructive formulation,
+quantifier and resource accounting, an executable syntax bridge, and a
+precise comparison with the inspected repository proposals.
+
+\subsection{A targeted comparison}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}}
+\toprule
+Existing packet & Reused achievement & Addition or retained boundary\\
+\midrule\endhead
+\code{ipra_embedding_framework}
+& Finite observations; simple analytic branches; hyperelliptic zero counts
+& Arbitrary plane intersections passing a resultant test; complete rational lists.\\
+\code{ipra_embedding_framework_2026-11-15}
+& Finite traces, guarded operations, finite nets, height/list distinction
+& A resource hierarchy that constructs fuel for fixed-depth ranked runs.\\
+\code{ipra_framework}
+& Finite contracts; explicit power-gap families; object-theory infrastructure
+& No repetition of the power-gap application; polynomial elimination supplies a different finite-list producer.\\
+\code{ipra_framework_2026-11-15}
+& Certificates, moduli, elementary bounded descent
+& Resetting counters and fixed-versus-variable depth are made explicit.\\
+\code{ipra_finite_demand}
+& Backward demands; semantic parameter-changing recursion; root supports
+& Actual \code{PR} syntax for its recursion. Exact singular Puiseux coefficients and multiplicity matching remain outside this report.\\
+\code{ipra_finite_observation}
+& Variable-depth tables; complete approximate factorization; restricted curve section bounds
+& Finite auxiliary equations yield effective point lists when their coefficient heights are bounded.\\
+\code{ipra_coherent_methods_2026-11-15}
+& Filtered lifting, coherent towers, weighted norms
+& No weight or smoothness assumption in the plane-intersection theorem.\\
+\code{ipra_evidence_framework}
+& Relational finite outputs and finite compatibility
+& Finite exhaustive envelopes remove a pointwise auxiliary choice; no compactness is inferred.\\
+\code{ipra_uniform_certificates}
+& Uniform finite-net and root certificates
+& A syntax-level bridge and a separate termination resource layer.\\
+\bottomrule
+\end{longtable}
+
+The other four framework notes are indexed together in~\cite{repo-other};
+the earlier embedding and contract packages are also consulted directly
+\cite{repo-embedding,repo-framework}.
+This is a targeted comparison of framework sources and selected difficulty
+reports. It is not a proof audit of all 60 application packets.
+The provenance inventory records exact paths and hashes for the inspected
+sources. Where a prior result is needed, its status remains visible; a
+README's self-description is not silently promoted to a verified theorem.
+
+\subsection{The object theory and the ambient metatheory}
+
+We use the standard first-order presentation of \(\ipra\): intuitionistic
+first-order logic with equality; symbols for primitive-recursive
+definitions, including composition and primitive recursion, with their
+defining equations; successor injectivity and separation from zero; and
+induction for quantifier-free formulas. Quantifier-free includes the
+intuitionistic propositional connectives. Bounded formulas below are
+admissible abbreviations after the Booleanization proof in
+Section~\ref{sec:framework}.
+
+The metatheory is ordinary mathematics, and Lean is used to check selected
+metatheorems and to construct selected object proofs. Thus the following
+statements must not be confused:
+\[
+  \text{Lean proves }\forall n\,P(n),
+  \qquad
+  \text{Lean constructs }\code{Prf PRAAx []}\,\ulcorner\forall n\,P(n)\urcorner.
+\]
+Only the second statement directly establishes derivability in the
+embedded arithmetic theory. A semantic proof can help discover a finite
+arithmetic proof, but no general reflection principle is available to
+convert it automatically.
+
+Similarly, \(\forall f\) in a theorem about all primitive-recursive
+functions normally belongs to the metatheory: for each fixed definition
+of \(f\), construct an arithmetic symbol and proof. It is not a
+first-order quantification over an internal type of total functions.
+Numerical parameters of a fixed definition, matrix sizes, polynomial
+degrees, and lengths of finite lists may vary inside arithmetic.
+The permitted variation must be established by the program construction,
+not inferred merely from the notation.

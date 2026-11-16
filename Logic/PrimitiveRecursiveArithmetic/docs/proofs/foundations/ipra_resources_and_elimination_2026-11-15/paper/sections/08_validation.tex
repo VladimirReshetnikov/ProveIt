@@ -1,0 +1,71 @@
+\section{Reproduction, evidence, and remaining work}
+\label{sec:validation}
+
+\subsection{What the executable checks establish}
+
+The Python companions use exact integers and \code{fractions.Fraction}
+with the standard library. They are reference implementations and
+finite regression diagnostics, not an iPRA proof checker. Their results
+supplement the universal arguments in this report.
+
+The lexicographic program checks 55 explicitly constructed maximal
+controlled chains, 23 monotonicity comparisons, and eight resetting
+counter runs. For \(h(t)=t+1\), the exact three-dimensional chain
+starting at zero has 2,046 terms. The reset example beginning at
+\((3,0,0)\) halts after 136 steps; its automatically derived
+trajectory-envelope fuel is 267. Larger hierarchy values are
+deliberately not evaluated; their mathematical treatment is symbolic.
+
+The plane program verifies five exact classifications, including
+nontrivial rational denominators and zero roots. It also performs
+independent bounded rational-box scans and checks the unsupported
+branches. The example
+\[
+             X^2+Y^2=5,\qquad XY=2
+\]
+returns exactly \((1,2),(2,1),(-1,-2),(-2,-1)\), while its canonical
+elimination polynomial is \((U^2-9)^2\). The repeated fibres exercise
+the part of the proof that a simple distinct-projection count misses.
+
+The auxiliary-envelope example enumerates all 24 positive-degree
+polynomials in the degree-one, coefficient-height-one box, before
+discarding no good candidates. For the target
+\(X^2+Y^2=1\) with the filter \(XY=0\), it returns the four axis
+points and height bound one. Coverage in this example is justified
+mathematically by the two auxiliaries \(X\) and \(Y\), both of which
+are in the box; the execution does not claim to discover a proof of
+coverage for an arbitrary target set.
+
+\subsection{Rebuild commands}
+
+From the archive's top directory:
+\begin{lstlisting}
+python3 verify.py
+LEAN_BIN=/absolute/path/to/lean-4.32.0/bin/lean bash lean/build.sh
+bash paper/build.sh
+\end{lstlisting}
+The Lean distribution and a normal TeX Live installation must be
+available locally. The Python checks have no third-party dependency.
+The supplied PDF can be read without installing either toolchain.
+Build logs, the exact Lean version, per-claim status, source hashes,
+and SHA-256 hashes of delivered files are included in the archive.
+
+\subsection{What remains before the main results are kernel checked in iPRA}
+
+The full object demand theorem still needs the internal arithmetic
+coherence lemmas listed in Section~\ref{sec:lean}. The lexicographic
+chain and bounded-termination theorems still need their Lean proofs,
+followed by object-theory lowering for each fixed dimension. The
+elimination, rational-root completeness, and auxiliary-envelope
+theorems have fully specified concrete algorithms and complete human
+arguments, but their general Lean correctness proofs and embedded
+\code{Prf PRAAx} derivations are not supplied here.
+
+These remaining tasks are different from the unresolved general
+mathematical inputs. Proving the supplied algorithm's correctness in
+Lean will not prove a uniform auxiliary coefficient bound for every
+curve, locate arbitrary Mordell--Weil representatives, or produce the
+missing effective analytic constants. Conversely, those open inputs
+do not invalidate the finite theorems proved here. The framework
+provides explicit interfaces at which a future result can be inserted
+and its exact constructive consequence read off.

@@ -1,0 +1,313 @@
+\section{Lean definitions, checked results, and the completion path}
+\label{sec:lean}
+
+The archive contains a standalone Lean 4.32.0 development using \code{Std}
+only. Ten modules were compiled, including the concrete definitions of
+all main new programs and their unproved targets. Eleven selected theorem
+declarations were audited with \texttt{\#print axioms}. Their dependencies
+are contained in \code{propext} and \code{Quot.sound}; none uses
+\code{sorryAx} or \code{Classical.choice}. These are facts about the
+supplied Lean development, not a claim that all the report's application
+theorems have already been formalized.
+
+\subsection{The actual object-language backend}
+
+The namespace \code{LeanProofs.ConciseIPRA} is the repository's namespace.
+The reused standalone \code{ObjectKernel.lean} contains the actual
+\code{Syntax}, \code{Deduction}, and \code{PR} declarations with their
+imports arranged for \code{Std}. The bodies were compared with the
+pinned current upstream sources after removing import lines and
+boundary whitespace; the source audit records the hashes and equality
+checks. The original MIT-0 license is included.
+
+The central types and constructor interfaces are
+\begin{lstlisting}
+PR : Nat -> Type
+PTm : Nat -> Type
+Fm PTm n
+PRAAx : Theory PTm
+Prf PRAAx Gamma phi
+\end{lstlisting}
+Here \(n\) is the number of free variables. \code{PR k} has constructors
+\code{zero}, \code{succ}, \code{proj}, \code{comp}, and \code{prec}.
+The last has input symbols of arities \(k\) and \(k+2\), and returns
+a symbol of arity \(k+1\). The step's arguments are the recursion index,
+the accumulator, and the \(k\) parameters.
+
+The formulas in \code{PRAAx} include the defining equations, successor
+separation and injectivity, and quantifier-free induction. The supplied
+\code{PRA.qfInd} rule expects a proof that the formula is
+\code{Fm.QF}, a base proof, and a step proof in the correctly shifted
+context. Equality and substitution are handled by
+\code{Prf.eqCongr}, \code{Prf.eqTrans}, \code{Prf.subst}, and
+\code{Prf.trans}. The code therefore uses the real proof relation
+instead of introducing a new predicate named ``provable'' and assuming
+its soundness~\cite{repo-pr}.
+
+\subsection{Status at declaration level}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.28\textwidth}}
+\toprule
+Module & Supplied result & Status and logical level\\
+\midrule\endhead
+\code{ObjectKernel}
+& Arithmetic syntax and intuitionistic deduction
+& Reused backend; compiled.\\
+\code{BackwardDemand}
+& Horizon, replay, and finite-query lemmas
+& Reused unchanged; checked host theorems.\\
+\code{TermCompiler}
+& \code{symbol_correct}, \code{transport_equation}
+& New checked \code{Prf PRAAx} constructions.\\
+\code{DemandCompiler}
+& \code{compiled : PR 2}; \code{denote_compiled}; recurrence laws
+& New checked syntax and host semantic proofs.\\
+\code{ObjectDemand}
+& Generic backward zero and successor equations
+& New checked \code{Prf PRAAx} constructions.\\
+\code{ObjectTargets}
+& Internal monus, horizon, replay, and full recurrence statements
+& Compiled definitions of unproved propositions.\\
+\code{LexFuel}
+& PR fuel syntax, including a variable input parameter; checked denotation
+& Syntax/semantics checked. Chain and termination theorems are targets.\\
+\code{RationalRoots}
+& Complete-root candidate program with zero-polynomial failure flag
+& Executable definitions; correctness is an unproved target.\\
+\code{EliminationTargets}
+& Shear, Sylvester determinant, intersection and auxiliary-envelope programs
+& Executable definitions; fourteen unproved target propositions.\\
+\code{AxiomAudit}
+& Dependency reports for eleven selected proved declarations
+& Checked audit, not an additional mathematical theorem.\\
+\bottomrule
+\end{longtable}
+
+All unproved targets are \code{def ... : Prop := ...}, not \code{axiom}
+declarations or theorems closed by \code{sorry}. Type checking a target
+verifies the well-formedness of its statement and definitions; it does
+not prove that statement. The new program definitions can consequently
+be inspected and tested without confusing an unfinished theorem with
+a trusted assumption.
+
+\subsection{Completing the internal demand theorem}
+
+The first new compiler has an entirely internal correctness conclusion:
+\begin{lstlisting}
+symbol_correct (t : PTm k) (sigma : Fin k -> PTm n) :
+  Prf PRAAx Gamma
+    (Fm.eq (PTm.app (symbol t) sigma) (Syn.subst sigma t))
+\end{lstlisting}
+This theorem is already proved. The two-pass compiler is also a
+concrete syntax constructor, but its complete internal correctness
+still requires the following named targets.
+
+\begin{enumerate}
+\item \code{MonusSelfTarget}. Derive the predecessor and truncated
+subtraction equations from \code{PRA.precZero} and
+\code{PRA.precSucc}. Use equation induction to prove
+\(N\dotminus N=0\) and the elementary successor cancellation laws.
+\item \code{BackwardCoherenceTarget}. Use the already checked
+\code{object_backward_zero} and \code{object_backward_succ} to prove
+\eqref{eq:back-coherent} by QF induction on the reverse index. The
+base and step have no order side condition.
+\item \code{HorizonFinalTarget}. Substitute the monus-self equation
+and the backward zero equation. Define a PR Boolean comparison symbol
+and prove the guarded horizon-coherence equation for \(t\le N\).
+\item \code{ForwardBaseTarget} and \code{ForwardStepTarget}. Unfold
+the exact \code{PR.prec} symbols. Apply the term compiler to the
+composite step body, just as in the completed backward proof.
+\item Compare the two forward runs with the QF invariant
+\(t\le N\to V(t;N+1,K)=V(t;N,D(N,K))\). This is the internal
+replacement for the host theorem \code{advance_congr}.
+\item \code{CompiledZeroTarget} and \code{CompiledSuccessorTarget}.
+Unfold the final composition and apply the preceding equations.
+The full human proof appears in Theorem~\ref{thm:demand}.
+\end{enumerate}
+
+Every step has a defined numerical term and an exact object formula.
+There is no remaining appeal to an arbitrary host induction theorem or
+an uninterpreted ``compiler correctness'' axiom. What remains is the
+construction of the corresponding finite proof terms.
+
+\subsection{Fixed-dimensional fuel: the uniformity distinction in types}
+
+In \code{LeanProofs.ConciseIPRA.LexFuel},
+\code{Rank d := Fin d -> Nat}; \code{lexDropB} implements the
+lexicographic comparison. \code{run}, \code{coordMax},
+\code{prefixMax}, and \code{trajectoryEnvelope} implement the finite
+simulation and the envelope used in the human proof. The host
+\code{fuel} definition is exactly \(F_d\).
+
+The checked syntax constructors have types
+\begin{lstlisting}
+fuelSymbol      : Nat -> PR 1 -> PR 1
+fuelParamSymbol : Nat -> PR 2 -> PR 2
+boundSymbol     : Nat -> PR 2 -> PR 1
+\end{lstlisting}
+In the parameterized version, the input symbol \(h\) denotes
+\(h(x,t)\), and the output denotes \(F_d(x,s)\). The checked theorem
+\code{denote_boundSymbol} proves
+\[
+ \operatorname{evalB}(\code{boundSymbol}\ d\ h,x)
+       =F_d(x,0).
+\]
+The input \(x\) remains a variable of one PR symbol for every fixed
+\(d\); it has not been specialized separately to each numeral.
+On the other hand, these constructors do not assert that evaluation of
+their generated syntax is a PR function jointly in arbitrary \(d,x,s\).
+The non-PR diagonal proved in Section~\ref{sec:descent} explains why.
+
+The exact remaining targets are \code{FuelGrowthTarget},
+\code{ControlledChainBoundTarget}, \code{BoundedTerminationTarget},
+and \code{WitnessTarget}. Their proof order is:
+
+\begin{enumerate}
+\item Prove iterator monotonicity in its starting point and iteration
+count. Then prove the fuel growth and monotonicity properties.
+\item Implement bounded block boundaries and slices of a finite
+controlled chain. The first coordinate drops at each boundary;
+within a block apply the preceding-dimensional suffix theorem.
+Accumulate the endpoint inequality by induction on the finite number
+of blocks.
+\item Prove initialization and preservation of the given Boolean
+invariant along \code{run}, and persistence of inactivity for the
+absorbing transition. An active state at time \(B\) yields the
+forbidden \(B+1\)-state chain.
+\item Apply the supplied exit implication to the resulting inactive
+state. For the internal version, encode tuple and list data by
+natural numbers and Booleanize every finite condition. Supply actual
+object proofs of the particular transition's local assumptions.
+\end{enumerate}
+
+The host \code{Machine} structure deliberately contains data fields,
+not unproved correctness axioms. Its arbitrary host functions must
+still be replaced by fixed PR syntax before the internal theorem is
+instantiated. In particular, well-foundedness of an abstract Lean
+relation is not being used as an arithmetic termination certificate.
+
+\subsection{Exact finite polynomial data and executable definitions}
+
+The algebraic specification layer uses
+\begin{lstlisting}
+QPoly     := List Rat
+PlanePoly := List (List Rat)
+QPoint    := Rat x Rat
+\end{lstlisting}
+Coefficients increase with degree; row \(i\), column \(j\) is the
+coefficient of \(X^iY^j\). Trailing zeros are permitted. Default reads
+return zero. \code{eval} and \code{evalPlane} are Horner evaluation.
+The arithmetic layer will encode these finite lists and canonical
+rationals by natural numbers; the report's PR constructions provide
+the required fixed programs.
+
+\code{RationalRoots.lean} includes the actual denominator product,
+integer coefficients, first/last nonzero coefficient selection,
+bounded numerator and denominator boxes, evaluation filter, and
+duplicate removal. Zero is included as a candidate and tested, which
+handles initial powers of the variable. The zero polynomial returns
+\code{none}; a nonzero polynomial with no rational roots returns
+\code{some []}. Its unproved targets are
+\code{RationalRootsTarget}, \code{DegreeBoundTarget}, and
+\code{HeightBoundTarget}.
+
+\code{EliminationTargets.lean} supplies actual programs for
+\code{shear}, \code{goodShear}, \code{canonicalShear},
+\code{sylvester}, \code{determinant}, \code{elimination},
+\code{good}, \code{intersect}, \code{auxiliaryBox}, and
+\code{envelopeList}. The determinant enumerates the \(N^N\) vectors
+of length \(N\) over \(\{0,\ldots,N-1\}\), retains permutations,
+computes their signs, and sums their polynomial products. This
+inefficient but transparent definition makes its finite bound explicit.
+The auxiliary box similarly enumerates finite coefficient vectors.
+No polynomial operation in the target module is an opaque oracle.
+
+The mathematical specifications are literal propositions, for example
+\begin{lstlisting}
+Good F G := good F G = true
+common F G p := eval2 F p.1 p.2 = 0 /\ eval2 G p.1 p.2 = 0
+\end{lstlisting}
+and
+\begin{lstlisting}
+IntersectCompleteTarget :=
+  forall F G, Good F G -> exists points,
+    intersect F G = some points /\ points.Nodup /\
+    (forall p, p in points <-> common F G p)
+\end{lstlisting}
+The displayed snippets use ASCII mathematical notation for readability;
+the accompanying Lean source contains the checked syntax. The target is
+not supplied as a theorem.
+
+\subsection{Dependency order for the plane theorems}
+
+A complete formalization should follow the mathematical dependencies,
+which allow the complete-list theorem to be finished before the sharp
+count theorem.
+
+\begin{enumerate}
+\item \textbf{Rational arithmetic and polynomial identities.}
+Prove denominator clearing preserves evaluation, gcd cancellation,
+the finite rational-root bound, and correctness of the root scan.
+Develop coefficientwise addition, multiplication, evaluation, degree
+support, and synthetic division for the finite arrays.
+\item \textbf{Shear correctness.}
+Prove the binomial coefficient identity for \code{shearCoeff}, then
+\code{ShearEvalTarget}. A nonzero polynomial of degree at most
+\(d+e\) cannot vanish at all \(d+e+1\) candidate directions; this
+proves \code{CanonicalShearTarget} and constant leading coefficients.
+\item \textbf{Elimination and complete lists.}
+Prove determinant specialization and the adjugate identity. Apply
+the evaluation vector \((1,v,\ldots,v^{N-1})\) to establish
+\code{CommonGivesRootTarget}. Every specialized first equation has
+the same nonzero leading coefficient, so its root routine succeeds.
+These facts and the two finite membership scans prove
+\code{IntersectCompleteTarget}, followed by
+\code{IntersectHeightTarget}.
+\item \textbf{Sharp cardinality.}
+Prove \code{ResultantDegreeTarget} using the permutation weight
+identity from Lemma~\ref{lem:elim-degree}. Prove the Vandermonde
+determinant and column factor extraction to obtain
+\code{FibreDivisibilityTarget}. Combine distinct linear-factor
+powers and apply the degree bound, giving
+\code{IntersectCardinalityTarget}.
+\item \textbf{Auxiliary exhaustion.}
+Prove \code{MonomialCountTarget}, \code{AuxiliaryBoxCountTarget},
+and \code{AuxiliaryBoxCoverageTarget}. The last permits a padded
+coefficient array different from the input array but coefficientwise
+equal to it. Establish invariance of the polynomial programs under
+that equality. Finite union membership and the supplied coverage
+premise then give \code{EnvelopeCompleteTarget}; the length and
+maximum lemmas give \code{EnvelopeCardinalityTarget} and
+\code{EnvelopeHeightTarget}.
+\end{enumerate}
+
+For the embedded arithmetic layer, every polynomial identity becomes
+a bounded conjunction over its finite coefficient support. The support
+bound is produced by the same array operations. Every divisibility
+argument carries its explicit quotient array. Rational cancellation
+carries gcd or B\'ezout data when needed. In the enumeration proofs,
+fix the arbitrary point code as a parameter and induct on processed
+prefixes with a bounded membership invariant. A universal coverage
+assumption remains in the fixed context and is instantiated after the
+finite program invariant has been proved; it is never an induction
+formula.
+
+\subsection{The final native transfer and integration boundary}
+
+The actual upstream theorem is
+\begin{lstlisting}
+pra_iff_native :
+  (Prf PRAAx Gamma phi) <->
+  NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+\end{lstlisting}
+in \code{ConciseIPRA.NativeBiInterpretation}~\cite{repo-native}.
+It is applied after the object proof has been constructed. It does
+not accept an ambient equality of denotations in place of its left-hand
+proof object.
+
+To integrate, replace the standalone kernel import with
+\code{import ConciseIPRA.PR}, retain the new modules in their own
+namespaces, complete the pending object targets, and use this bridge
+for the final theorem. The standalone development was compiled.
+A build against the full Mathlib-backed repository dependency closure
+was not run, and no remote repository files were modified.

@@ -1,0 +1,249 @@
+\section{Compiling a changing observation parameter into PR syntax}
+\label{sec:demand}
+
+The finite-demand packet already gives the mathematical construction in
+this section~\cite{repo-demand}. Its explicit outstanding task was to
+construct the \code{PR} syntax and connect it to object arithmetic.
+We reproduce the argument so that this report is self-contained, then
+describe the new checked implementation. The distinction between the
+inherited theorem and the new formalization is intentional.
+
+\subsection{The equations that need compilation}
+
+Let \(D:\N^2\to\N\), \(b:\N\to\N\), and
+\(F:\N^3\to\N\) be fixed PR functions. We want
+\begin{align}
+ X(0,k)&=b(k),\label{eq:demand-zero}\\
+ X(n+1,k)&=F\bigl(n,k,X(n,D(n,k))\bigr).
+ \label{eq:demand-successor}
+\end{align}
+The recursive call changes \(k\). It is therefore not the ordinary PR
+constructor with \(k\) held fixed. Treating \(X(n,\cdot)\) as an
+accumulator of function type would also leave the first-order PR algebra.
+Nevertheless, the future requests are determined by \(D\) before the
+recursive answers are known. This gives a direct first-order solution.
+
+For terminal data \((N,K)\), define
+\begin{align}
+ B(0;N,K)&=K,\nonumber\\
+ B(j+1;N,K)&=D\bigl(N\dotminus(j+1),B(j;N,K)\bigr),
+ \label{eq:backward}\\
+ H(t;N,K)&=B(N\dotminus t;N,K).
+ \label{eq:horizon}
+\end{align}
+Truncated subtraction makes the definitions total at every input.
+Only \(t\le N\) is used in the correctness argument.
+Then perform a forward recursion with the terminal data fixed:
+\begin{align}
+ V(0;N,K)&=b(H(0;N,K)),\nonumber\\
+ V(t+1;N,K)&=F\bigl(t,H(t+1;N,K),V(t;N,K)\bigr),
+ \label{eq:forward}\\
+ X(N,K)&=V(N;N,K).
+ \label{eq:compiled}
+\end{align}
+Both passes use ordinary primitive recursion. The forward pass may
+recompute a demanded horizon instead of storing a whole table; either
+choice has fixed PR syntax.
+
+\begin{lemma}[Horizon identities]
+\label{lem:horizon}
+The definitions satisfy
+\[
+ H(N;N,K)=K,\qquad
+ H(t;N,K)=D(t,H(t+1;N,K))\quad(t<N).
+\]
+They also satisfy the coherence identities
+\begin{align}
+ B(j+1;N+1,K)&=B(j;N,D(N,K)),\label{eq:back-coherent}\\
+ H(t;N+1,K)&=H(t;N,D(N,K))\quad(t\le N).
+ \label{eq:horizon-coherent}
+\end{align}
+These equations have quantifier-free induction proofs in \(\ipra\).
+\end{lemma}
+
+\begin{proof}
+The terminal equation follows from \(N\dotminus N=0\) and the base
+equation for \(B\). If \(t<N\), then
+\[
+ N\dotminus t=(N\dotminus(t+1))+1,
+ \quad
+ N\dotminus((N\dotminus(t+1))+1)=t.
+\]
+Substitute these into the successor equation for \(B\).
+
+For \eqref{eq:back-coherent}, induct on \(j\). At \(j=0\), the left
+side is \(D(N,K)\), which is the right base value. In the successor
+case use the previous equality and the elementary identity
+\[
+ (N+1)\dotminus(j+2)=N\dotminus(j+1).
+\]
+This identity is valid even beyond the requested horizon. The resulting
+equations have identical outer \(D\) arguments. Finally, for \(t\le N\),
+\((N+1)\dotminus t=(N\dotminus t)+1\); substituting this value for
+\(j+1\) in \eqref{eq:back-coherent} proves
+\eqref{eq:horizon-coherent}. All numerical side conditions are Boolean
+comparisons, and the induction formulas are equations or guarded equations.
+\end{proof}
+
+\begin{theorem}[Predetermined demand recursion]
+\label{thm:demand}
+The fixed PR function \(X\) of \eqref{eq:compiled} satisfies
+\eqref{eq:demand-zero} and \eqref{eq:demand-successor}. Its construction
+and the two equations have \(\ipra\) proofs for each fixed triple of
+input PR definitions.
+\end{theorem}
+
+\begin{proof}
+At \(N=0\), the horizon is \(K\) and the forward base is \(b(K)\).
+For the successor equation compare the forward executions for
+\((N+1,K)\) and \((N,D(N,K))\). Their initial values are equal by
+\eqref{eq:horizon-coherent}. At every step \(t<N\), their horizon
+values at \(t+1\) are equal by the same equation. Quantifier-free
+induction on the guarded numerical equality
+\[
+ t\le N\ \longrightarrow\
+ V(t;N+1,K)=V(t;N,D(N,K))
+\]
+therefore makes their values equal through time \(N\). The final step
+of the longer execution is
+\begin{align*}
+ X(N+1,K)
+ &=F(N,H(N+1;N+1,K),V(N;N+1,K))\\
+ &=F(N,K,V(N;N,D(N,K)))\\
+ &=F(N,K,X(N,D(N,K))).
+\end{align*}
+The middle equality is the terminal horizon equation and the guarded
+forward equality just proved. No induction hypothesis quantifies over
+all demands or over an infinite family of completed objects.
+\end{proof}
+
+\subsection{Correctness at a requested observation}
+
+Suppose \(C(n,k)\) is bounded and \(\ipra\) proves
+\[
+ C(0,H(0;N,K)),\qquad
+ n<N,\ C(n,D(n,k))\ \longrightarrow\ C(n+1,k)
+\]
+under a fixed context. Booleanize \(C\), hold \(N,K\) fixed, and
+induct on
+\[
+             t\le N\ \longrightarrow\ C(t,H(t;N,K)).
+\]
+Lemma~\ref{lem:horizon} makes the previous observation exactly the
+premise required by the local step. At \(t=N\), the terminal horizon
+is \(K\), giving \(C(N,K)\). If the base theorem is available for
+every demand and the retained context has no free \(N,K\), universal introduction over the independently fixed
+\(N,K\) yields \(\forall N\forall K\,C(N,K)\).
+The induction itself never uses \(\forall k\,C(t,k)\) as its invariant.
+
+For example, if \(D(n,k)=2k+1\), elementary induction gives
+\[
+            H(t;N,K)=2^{N-t}(K+1)-1\qquad(t\le N).
+\]
+The resulting exponential precision demand is harmless for PR
+definability. If \(D\) is nonmonotone, the original backward recurrence
+still works; no maximum or monotonicity assertion is substituted for
+its exact values. Several simultaneous queries are handled by the
+bounded-prefix construction from the earlier packet, provided the
+prefix validity interface is used explicitly.
+
+\subsection{The new term-to-symbol compiler}
+
+The repository represents a primitive-recursive function by an inductive
+type \code{PR k}, with constructors for zero, successor, projections,
+composition, and primitive recursion. A term \code{PTm k} may contain
+variables and applications of these symbols. Define a compiler
+\(S:\code{PTm k}\to\code{PR k}\) by
+\[
+ S(x_i)=\operatorname{proj}_i,
+ \qquad
+ S(f(t_0,\ldots,t_{m-1}))
+   =\operatorname{comp}(f,S(t_0),\ldots,S(t_{m-1})).
+\]
+
+\begin{theorem}[Internal correctness of term compilation]
+\label{thm:term-compile}
+For every term \(t\), arbitrary tuple of substituted terms \(\sigma\),
+and arbitrary context \(\Gamma\), there is an embedded arithmetic proof
+\[
+ \Gamma\vdash_{\mathrm{PRAAx}}
+      \operatorname{app}(S(t),\sigma)=t[\sigma].
+\]
+The supplied Lean theorem \code{TermCompiler.symbol_correct} constructs
+this proof and was checked by the Lean kernel.
+\end{theorem}
+
+\begin{proof}
+Induct on the finite syntax of \(t\) in the metatheory. For a variable,
+the projection axiom gives the equation. For an application, the
+composition axiom gives
+\[
+ \operatorname{app}(S(t),\sigma)
+   =f(\operatorname{app}(S(t_0),\sigma),\ldots,
+       \operatorname{app}(S(t_{m-1}),\sigma)).
+\]
+The induction hypotheses are already object proofs for its argument
+equations. Equality congruence and transitivity replace those arguments
+by \(t_i[\sigma]\), yielding the desired equation. This proof consumes
+only defining axioms and equality rules; no theorem about the truth of
+arbitrary denotations is used.
+\end{proof}
+
+\subsection{The concrete compiler and the exact completed boundary}
+
+In \code{DemandCompiler.lean}, the input types are
+\code{D : PR 2}, \code{b : PR 1}, and \code{F : PR 3}; the output is
+\code{compiled D b F : PR 2}. The intermediate symbols are:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Symbol & Arity & Arguments\\
+\midrule
+\code{backwardSymbol D} & 3 & reverse count, terminal time, demand\\
+\code{horizonSymbol D} & 3 & terminal time, demand, forward time\\
+\code{forwardSymbol D b F} & 3 & forward count, terminal time, demand\\
+\code{compiled D b F} & 2 & terminal time, demand\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The primitive-recursion convention is the actual upstream convention:
+the recursion counter comes first, and a step symbol receives
+\((\text{index},\text{accumulator},\text{parameters})\).
+Predecessor and truncated subtraction are themselves explicitly built
+from \code{PR.prec}. This avoids any unverified claim that a host
+function is primitive recursive.
+
+The checked theorem \code{denote_compiled} identifies the generated
+syntax with the earlier semantic two-pass program. The checked host
+theorems \code{compiled_zero} and \code{compiled_succ} establish the
+desired recurrence equations for its denotation. In addition,
+\code{object_backward_zero} and \code{object_backward_succ} construct
+actual \code{Prf PRAAx} proofs of the generic backward pass equations
+for arbitrary fixed \(D\). They use Theorem~\ref{thm:term-compile} to
+handle the composite step body.
+
+The full object-theory versions of
+\eqref{eq:demand-zero}--\eqref{eq:demand-successor} are stated as
+concrete target propositions in \code{ObjectTargets.lean}; they are
+\emph{not yet implemented as Lean proofs}. Their human proof is
+Theorem~\ref{thm:demand}. The remaining Lean work is finite and explicit:
+derive the required subtraction equations internally, prove backward
+coherence by equation induction, prove guarded horizon and forward
+coherence, and unfold the final composition. Section~\ref{sec:lean}
+records the exact order and the upstream APIs involved.
+
+\subsection{The boundary with nested adaptive demands}
+
+The theorem permits a changing parameter because \(D(n,k)\) does not
+depend on the as-yet-uncomputed value \(X(n,\cdot)\). It does not
+license an arbitrary nested recursion in which the next recursive
+argument is obtained from a previous recursive answer. For a branching
+request tree whose child parameters are fixed PR functions of the
+parent and whose depth is \(N\), a supplied PR branching and parameter
+envelope makes bounded bottom-up evaluation available. For a genuinely
+adaptive algorithm, a fixed PR transition and the lexicographic
+criterion in the next section provide another route. Without such a
+resource argument, a total host definition or a familiar termination
+proof does not establish PR implementability.
