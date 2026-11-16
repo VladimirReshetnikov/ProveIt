@@ -176,6 +176,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totient.indicator_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totient.count_multiples
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totient.totient_prime_power
+#print axioms LeanProofs.IPRA.prod2_delta
+#print axioms LeanProofs.IPRA.sum2_delta
+#print axioms LeanProofs.IPRA.Permutation.fiber
+#print axioms LeanProofs.IPRA.Permutation.prod_perm
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero

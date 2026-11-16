@@ -34,6 +34,8 @@ import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.Totient
+import IPRADerivations.Core.MultiSums
+import IPRADerivations.Core.Permutation
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
