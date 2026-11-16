@@ -24,6 +24,10 @@ SHA-256 is `27613aa92da79ba2ec6e2e88e0ac909fda218e06495ecc0af27201eac0e26c8f`.
   steps in every PRA model. The [standard clock bridge](PA194ADPackedStandard.lean)
   identifies its numerical run at every standard time, and Lean verifies
   the fifteen numerical startup checkpoints.
+- [`PA194ADGenericRun.clock_run`](PA194ADGenericRun.lean) proves that the packed
+  clock agrees with the generic arithmetic run at every clock in the `IΣ₁`
+  reducts of the covered PRA models. Its `startup_seed` places the same
+  finite initialization theorem directly on that arithmetic run.
 
 The physical simulation across the changed rows is still needed for the
 halting equivalence and the derivation in iPRA.
@@ -40,3 +44,9 @@ primary row data and startup checkpoints, verifies all companion row
 literals, and builds the proofs in one output directory. It uses the
 retained primary scheduler dependency path, which can be passed as the
 second argument.
+
+The model-run replay also takes the checked primary and PA194B stages.
+
+```sh
+bash "$dir/check-model-run.sh" "$literal" "$shared" /dev/shm/pa194ad-replay /dev/shm/pa194ad-model-run
+```
