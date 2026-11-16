@@ -19,6 +19,9 @@ source addresses match the primary 3,673-site program.
   controller, conditional on the 3,673 finite site checks.
 - [`PA194TDYNative.consistency_iff_literal_nonhalt`](PA194TDYNative.lean)
   derives both iPRA directions from those finite checks.
+- [`PA194TDYFinal.consistency_iff_literal_nonhalt`](PA194TDYFinal.lean)
+  applies the checked certificate for all 3,673 sites to prove the
+  unconditional iPRA equivalence for the literal table.
 
 From the repository root, use the checked
 [PA194P5 model stage](../pa194p5/README.md).
@@ -27,7 +30,10 @@ From the repository root, use the checked
 pa=Computability/BusyBeaver/Research/PA/verification
 tdy="$pa/pa194/ipra/variants/pa194tdy"
 tdy_model=/dev/shm/pa194tdy-model
+tdy_native=/dev/shm/pa194tdy-native
+tdy_coverage=/dev/shm/pa194tdy-coverage
 bash "$tdy/check.sh" "$p5_model" "$tdy_model"
-bash "$tdy/../check-selector-native.sh" PA194TDY "$tdy_model" /dev/shm/pa194tdy-native
-bash "$tdy/../check-selector-coverage.sh" PA194TDY "$tdy_model" /dev/shm/pa194tdy-coverage
+bash "$tdy/../check-selector-native.sh" PA194TDY "$tdy_model" "$tdy_native"
+bash "$tdy/../check-selector-coverage.sh" PA194TDY "$tdy_model" "$tdy_coverage"
+bash "$tdy/../check-controller-final.sh" PA194TDY "$tdy_native" "$tdy_coverage" /dev/shm/pa194tdy-final
 ```
