@@ -30,9 +30,10 @@ It has 194 working states, start state 0, halt label 194, and 388 transitions.
 Its SHA-256 is
 `4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f`.
 The primary table is a seven-fold quotient of a 201-control parent with
-a ten-entry source interface. The packet also proposes PA194-AD. Lean has
-checked [its changed rows and register layout](pa194/ipra/variants/pa194ad/README.md).
-The simulation for its altered routing is still open.
+a ten-entry source interface. Lean has checked the exact packed seed reached
+from blank by [PA194-AD](pa194/ipra/variants/pa194ad/README.md) after 58,122
+steps and by [PA194HX](pa194/ipra/variants/pa194hx/README.md) after 56,134
+steps. The simulations through their altered routers remain open.
 
 The [14 November incoming reports](INCOMING-2026-11-14.md) include another
 194-state candidate and do not report a verified sub-194 blank-start machine.
