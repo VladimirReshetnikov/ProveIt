@@ -52,6 +52,17 @@ The [Lean entry point](Lean/IPRABridge.lean) exposes closed and open transports.
 The [symbol table](SYMBOLS.md) gives checked comparisons for existing Foundation
 arithmetic codes and their shared Concise counterparts.
 
+For finite PR codes and indexed argument lists, import
+`DiophantineConsistency.PRAFiniteCodeSyntax`. For code, term and formula
+translation, import `IPRABridge.Syntax`. The latter uses the equality-only
+`IPRAReferenceLanguage` and the intuitionistic quantifier-free predicate from
+`IPRAOpenSyntax`. The closure check sees 1,162 source modules for finite code
+syntax, compared with 2,224 through the former evaluator import, and 2,366 for
+syntax translation, down from 2,544. These counts include Lean and Mathlib
+sources. Existing imports of `PRAFiniteFunctionCodes`, `PRATheory`,
+`IPRAQuantifierFree` and `IPRAEqualityOnlyReference` still supply the original
+declarations and their accompanying results.
+
 ## Choosing an iPRA interface
 
 State new reusable arithmetic results in ordinary ConciseIPRA and place the

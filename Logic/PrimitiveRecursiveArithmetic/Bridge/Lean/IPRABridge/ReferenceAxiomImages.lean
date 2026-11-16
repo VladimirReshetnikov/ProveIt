@@ -1,4 +1,5 @@
 import IPRABridge.Syntax
+import DiophantineConsistency.IPRAEqualityOnlyReference
 
 /-! Every axiom of Foundation's equality-only reference theory has an
 intuitionistic derivation from the ordinary ConciseIPRA axioms. -/

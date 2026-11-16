@@ -34,8 +34,8 @@ both can import a small bridge module and the specific arithmetic lemma.
 Application endpoints, tables, polynomial data, coding-specific proofs, and
 their replay drivers sit above that join.
 
-The existing `IPRABridge` imports Foundation arithmetic currently housed in
-`DiophantineConsistency`. The path through `IPRAStandardTheory`,
+`IPRABridge` imports Foundation arithmetic currently housed in
+`DiophantineConsistency`. At baseline, the path through `IPRAStandardTheory`,
 `IPRASuccessorInductionConverse`, `IPRASuccessorInduction`, and
 `IPRAOpenDisjunctionWitness` reaches the deep witness development and
 eventually `BusyBeaver.ZFC.WFTheory` and `ZFCinPA.ZFDelta1`. In the other
@@ -47,8 +47,9 @@ implementation files.
 
 ## Baseline and migration scope
 
-The [endpoint inventory](ENDPOINTS.md) records the theorem types, data
-bindings, and replay commands for the first clients.
+The [endpoint inventory](ENDPOINTS.md) records theorem types, data bindings,
+and replay commands. The [dependency inventory](DEPENDENCIES.md) traces
+the standalone and root source paths and the pinned providers.
 
 | Area | Existing interface and evidence | Migration boundary |
 | --- | --- | --- |
@@ -122,7 +123,7 @@ encoding rules below.
   `standardTheory` for new Foundation iPRA endpoints. State the precise
   theory when discussing `nativeTheory`, classical PRA, HA, PA, or fragments
   such as `IΣ₁`.
-- [ ] Separate Foundation's finite PR codes, language, defining equations,
+- [x] Separate Foundation's finite PR codes, language, defining equations,
   quantifier-free syntax, and generic intuitionistic proof transfer from
   ZFC/PA equation and machine modules where the dependency graph permits.
   Start with the smallest importable slice and keep old module paths usable
@@ -136,6 +137,10 @@ encoding rules below.
   the `standardTheory` statements and keep the native equivalence
   available through its old import. Check whether the standard transport
   can go directly through the equality-only reference axioms.
+  The [smaller syntax providers](Bridge/README.md) and the standard axiom
+  layer now have independent imports. The bridge goes through the
+  equality-only reference proof rules, and the PA replay checks keep the
+  original declaration owners when loading pinned objects.
 - [ ] Keep syntax translation, reference proof transport, standard Foundation
   transport, and application examples at separately importable boundaries.
   Keep the root and standalone Lake build targets usable on their existing
@@ -322,6 +327,7 @@ LAKE_JOBS=1 lake build IPRADerivations
 LAKE_JOBS=1 lake build +IPRADerivations.Checks.Axioms
 LAKE_JOBS=1 lake build IPRABridge
 LAKE_JOBS=1 lake build +IPRABridge.Checks.Arithmetic
+LAKE_JOBS=1 lake build +IPRABridge.Checks.ComparisonBits
 LAKE_JOBS=1 lake build Diophantine
 lake env lean Computability/HilbertTenthProblem/Lean/checks/MRDPAxioms.lean
 ```

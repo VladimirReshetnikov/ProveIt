@@ -46,9 +46,13 @@ the same Foundation PA refutation predicate and the same halting
 sentence for the literal 194-state machine.
 
 Build `IPRABridge.Standard`, then supply the output of the literal replay
-above. The export rebuilds the standard bridge in the recorded provider
-order and records the hashes of the bridge and selected standard-theory
-objects alongside the endpoint.
+above. The export rebuilds the syntax translator, the reference axiom
+translation and the standard bridge in the recorded provider order. Older
+Foundation objects can still declare the syntax in their original modules.
+The export reads declaration ownership from those objects and supplies
+import-only modules at the corresponding new paths. It records the hashes
+of the rebuilt bridge and selected syntax and standard-theory objects
+alongside the endpoint.
 
 ```sh
 lake build +IPRABridge.Standard

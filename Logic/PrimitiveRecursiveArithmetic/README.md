@@ -3,6 +3,8 @@
 The [iPRA unification plan](UNIFICATION-PLAN.md)
 tracks the shared theorem interface, bridge work, and
 adoption across the repository.
+The [source and provider inventory](DEPENDENCIES.md) and the
+[endpoint receipts](ENDPOINTS.md) document the checked boundaries.
 
 This directory holds ProveIt's work on intuitionistic primitive recursive arithmetic
 (iPRA): first-order intuitionistic logic with equality, a function symbol for every

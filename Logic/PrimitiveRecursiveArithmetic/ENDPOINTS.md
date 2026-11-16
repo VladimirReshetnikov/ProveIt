@@ -81,6 +81,11 @@ target's 603 transitive imports and resolved the standalone `Core` and
   launcher also replayed the primary export after the standard-theory
   split, compiling the closed bridge against the original ordered
   PA194 providers. It reported the same axioms.
+  The syntax extraction replay selected the same pinned native object
+  and freshly compiled the bridge through import-only modules for the old
+  declaration owners. The check passed with the same axiom set, and the
+  export object had SHA-256
+  `582b08696ee1cbe20754ea374bf8e228c5c15f57ff803f613aa072dedf802993`.
 - **Separate PA1944L pilot.** [`PA1944LFinal.consistency_iff_literal_nonhalt`](../../Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants/pa1944l/PA1944LFinal.lean)
   proves `standardTheory ⊢ nativePAConsistency 🡘 ∼machineHaltSentence PA1944LData.table 194`.
   The table hash is
@@ -105,6 +110,9 @@ target's 603 transitive imports and resolved the standalone `Core` and
   With the model and coverage stages already compiled, the replay took
   6 minutes 53 seconds, used 2,595 MiB peak resident memory, and wrote
   24 MiB of replay artifacts including the selected provider snapshot.
+  After the syntax split, a second full replay used the source-current
+  bridge and arithmetic overlay with the same pinned model and coverage
+  providers. The checks passed, with both endpoint object hashes unchanged.
 - **Original PA195.** The
   [emitter and scheduler proof](../../Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-controller-schedulers/README.md)
   gives `PA194EmitterSchedulerPA.consistency_iff_scheduler_nonhalt`, a

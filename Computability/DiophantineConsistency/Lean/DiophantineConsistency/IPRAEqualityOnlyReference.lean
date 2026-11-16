@@ -1,4 +1,5 @@
 import DiophantineConsistency.IPRAQuantifierFree
+import DiophantineConsistency.IPRAReferenceLanguage
 
 /-!
 An explicit equality-only intuitionistic first-order reference theory.
@@ -24,16 +25,6 @@ namespace DiophantineConsistency.IPRAEqualityOnlyReference
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder
 open PRAFiniteFunctionCodes PRATheory IPRAQuantifierFree
-
-inductive EqualityRel : ℕ → Type
-  | eq : EqualityRel 2
-  deriving DecidableEq
-
-def language : Language where
-  Func := Code
-  Rel := EqualityRel
-
-abbrev TermN (n : ℕ) := Semiterm language Empty n
 
 def applyCode {n m : ℕ} (c : Code m) (v : Fin m → TermN n) : TermN n := .func c v
 def vars (n : ℕ) : Fin n → TermN n := fun i => .bvar i

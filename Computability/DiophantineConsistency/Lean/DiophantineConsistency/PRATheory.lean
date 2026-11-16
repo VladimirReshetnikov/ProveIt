@@ -1,3 +1,4 @@
+import DiophantineConsistency.PRAFiniteCodeSyntax
 import DiophantineConsistency.PRALanguage
 import Foundation.FirstOrder.Arithmetic.Schemata
 
@@ -7,11 +8,6 @@ namespace DiophantineConsistency.PRATheory
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 open PRAFiniteFunctionCodes PRALanguage
-
-/-- A positional member of a finite code list. -/
-def getCode : {n m : ℕ} → Codes n m → Fin m → Code n
-  | _, _, .nil _, i => Fin.elim0 i
-  | _, _, .cons h t, i => Fin.cases h (getCode t) i
 
 abbrev TermN (n : ℕ) := Semiterm language Empty n
 

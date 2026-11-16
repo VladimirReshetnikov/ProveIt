@@ -1,5 +1,7 @@
 import ConciseIPRA.PR
-import DiophantineConsistency.IPRAEqualityOnlyReference
+import DiophantineConsistency.IPRAOpenSyntax
+import DiophantineConsistency.IPRAReferenceLanguage
+import Foundation.FirstOrder.Intuitionistic.Rew
 
 /-! Translations of primitive-recursive symbols, terms and formulas between
 Foundation's equality-only reference language and ordinary ConciseIPRA. -/

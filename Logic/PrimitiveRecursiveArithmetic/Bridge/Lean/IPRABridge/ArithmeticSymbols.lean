@@ -1,5 +1,6 @@
 import IPRABridge.Syntax
 import IPRADerivations.Core.Semiring
+import DiophantineConsistency.PRALanguage
 
 /-! The designated Foundation arithmetic symbols agree with the shared
 ConciseIPRA operations at arbitrary terms in the object theory. -/

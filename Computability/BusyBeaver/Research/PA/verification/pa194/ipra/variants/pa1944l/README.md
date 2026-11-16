@@ -64,6 +64,10 @@ bash "$variants/pa1944l/check-shared-arithmetic.sh" "$four_l" "$four_l_coverage"
 This replay snapshots the selected arithmetic and bridge objects and records
 their hashes. It checks the unconditional Foundation theorem and its arithmetic
 dependency and exports the same literal sentence to ConciseIPRA.
+An optional fourth argument selects a compiled current arithmetic and bridge
+provider instead of the workspace's `.lake/build/lib/lean`. The mixed replay
+with the pinned model and coverage stages checked the source-current syntax
+split in this way.
 
 ## Shared startup for LC_A and M4R
 

@@ -8,6 +8,7 @@ repo=$(git -C "$here" rev-parse --show-toplevel)
 model=$(cd -- "${1:?checked PA1944L model stage required}" && pwd)
 coverage=$(cd -- "${2:?checked PA1944L coverage stage required}" && pwd)
 out=${3:?fresh output directory required}
+current=$(cd -- "${4:-$repo/.lake/build/lib/lean}" && pwd)
 test ! -e "$out"
 mkdir -p "$out/providers"
 out=$(cd -- "$out" && pwd)
@@ -15,16 +16,16 @@ cd "$repo"
 
 # Select the current declaration and proof modules together. Retain the
 # checked machine providers and their order for the rest of the replay.
-python3 -I - "$out/providers" "$model" "$coverage" "$(lake env printenv LEAN_PATH)" <<'PY'
+python3 -I - "$out/providers" "$model" "$coverage" "$current" "$(lake env printenv LEAN_PATH)" <<'PY'
 from hashlib import sha256
 from pathlib import Path
 from shutil import copy2
 import sys
 
-out, model, coverage, workspace_path = sys.argv[1:]
+out, model, coverage, current, workspace_path = sys.argv[1:]
 out = Path(out)
 namespace = "DiophantineConsistency"
-current = Path(".lake/build/lib/lean").resolve()
+current = Path(current)
 latest = (
     "IPRAStandardAxioms", "IPRAStandardTheory", "IPRAArithmeticTerms",
     "IPRAArithmeticInstantiation", "IPRASuccessorInduction",
@@ -34,7 +35,7 @@ latest = (
 )
 legacy = [p for stage in (coverage, model) for p in
           (Path(stage) / "leanpath.txt").read_text().strip().split(":") if p]
-paths = dict.fromkeys([out, *map(Path, legacy), *map(Path, workspace_path.split(":"))])
+paths = dict.fromkeys([out, *map(Path, legacy), current, *map(Path, workspace_path.split(":"))])
 
 def place(source, target, snapshot=False):
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -66,6 +67,11 @@ for path in list(paths)[1:]:
             place(source, target)
 (out / "leanpath.txt").write_text(":".join(map(str, paths)) + "\n")
 PY
+
+LEAN_PATH=$(cat "$out/providers/leanpath.txt") \
+  bash "$here/../../native-endpoint/prepare-bridge-syntax.sh" "$out/providers"
+sha256sum "$out/providers/DiophantineConsistency/"{PRAFiniteCodeSyntax,IPRAOpenSyntax,IPRAReferenceLanguage}.olean \
+  >>"$out/providers/sha256.txt"
 
 bash "$here/../check-controller-final.sh" PA1944L "$model" "$out/providers" "$out/native"
 export LEAN_PATH=$(cat "$out/native/leanpath.txt")

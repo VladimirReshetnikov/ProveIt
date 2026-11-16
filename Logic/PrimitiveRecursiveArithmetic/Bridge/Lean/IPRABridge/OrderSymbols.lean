@@ -1,5 +1,6 @@
 import IPRABridge.ArithmeticSymbols
 import IPRADerivations.Core.Order
+import DiophantineConsistency.PRATheory
 
 /-! The characteristic function for Foundation's strict order and the ordinary
 ConciseIPRA order formula agree at arbitrary terms. -/
