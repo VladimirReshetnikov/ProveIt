@@ -1,0 +1,75 @@
+\section{Consequences and reusable patterns}
+\label{sec:applications}
+
+\subsection{Polynomial matrix functions}
+
+Let $p(X)=\sum_{k=0}^d a_kX^k$ have rational coefficients. If a diagonalization certificate reconstructs $C=Q\diag(d)Q^{\mathsf T}$ with residual $\eta$, and $\bound(A,M),\bound(C,M)$ for $M\ge1$, then
+\begin{equation}
+ \norm{p(A)-Q\diag(p(d_i))Q^{\mathsf T}}
+ \le\eta\sum_{k=1}^d k|a_k|M^{k-1}.
+ \label{eq:polycalc}
+\end{equation}
+Indeed $p(C)=Qp(\diag(d))Q^{\mathsf T}$ by exact finite multiplication. The noncommuting telescoping identity
+\[
+ A^k-C^k=\sum_{j=0}^{k-1} A^j(A-C)C^{k-1-j}
+\]
+follows by cancellation of successive terms. Repeated left or right multiplication by $A,C$ costs at most a factor $M$ per multiplication. Thus each summand has Frobenius bound $M^{k-1}\eta$, including the endpoint cases in which one of the powers is the identity. Summing proves \eqref{eq:polycalc}. There is no erroneous Frobenius bound $\norm I=1$ in this argument: identity multiplication simply leaves the matrix unchanged.
+
+The coefficient constant in \eqref{eq:polycalc} is a primitive recursive precision transformer. It gives stable matrix-polynomial observations despite changing diagonalization witnesses. Trace changes by at most $n$ times the Frobenius error, since each diagonal entry has at most that error. Therefore finite sums of polynomial eigenvalue values also recover the corresponding trace identities with explicit budgets.
+
+An analytic matrix function can be handled if supplied with rational polynomial approximants, a primitive recursive uniform approximation modulus on a known interval, and the relevant finite error proof. The framework propagates those inputs. It does not manufacture the scalar approximation theorem or its modulus.
+
+\subsection{Singular values and absolute values}
+
+For a rational rectangular matrix $V$, its Gram matrix $A=V^{\mathsf T}V$ is positive because
+\[
+ x^{\mathsf T}Ax=\sum_j(Vx)_j^2\ge0.
+\]
+Finite elimination therefore supplies the positive certificate used above. The ordered eigenvalue names of $A$ and bounded scalar square-root searches give $n$ right-Gram singular-value names for an $m\times n$ input, with multiplicities and zeros, without any choice of singular vectors. This convention retains the additional forced zeros when $n>m$, whereas a common convention lists only $\min(m,n)$ values. The elementary scalar inequality
+\[
+ |\sqrt u-\sqrt v|^2\le|u-v|\qquad(u,v\ge0)
+\]
+is interpreted through the same rational square-root certificates; its proof is $(s-t)^2\le|s^2-t^2|$ plus the finite-slack argument.
+
+For two finite matrices $V,W$,
+\[
+ V^{\mathsf T}V-W^{\mathsf T}W
+ =V^{\mathsf T}(V-W)+(V-W)^{\mathsf T}W.
+\]
+Hence a common magnitude bound and Frobenius input error give an explicit Gram-matrix error, then Theorem~\ref{thm:weyl} gives eigenvalue errors, and the square-root comparison gives singular-value errors. This is a concrete composition of three certificate interfaces.
+
+For symmetric represented $A$, define its matrix absolute value by
+$|A|=(A^2)^{1/2}$. The preceding finite constructions supply its name without making a sign decision on any eigenvalue. The expressions $(|A|+A)/2$ and $(|A|-A)/2$ are likewise computable matrix names. By comparison with the scalar functions in arbitrarily fine diagonalization certificates, both are positive and their difference is $A$; the finite polynomial and root moduli justify this interpretation. For an explicit positivity budget, let $C=QDQ^{\mathsf T}$ approximate $A$ within $\eta$, with both Frobenius bounds at most $M$, and put $T=Q\diag(|d_i|)Q^{\mathsf T}$. Then $T^2=C^2$ and $\norm{T^2-A^2}\le2M\eta$. If $S$ is a positive spectral root certificate for $A^2$ of residual $\rho$, Theorem~\ref{thm:sqrtstable} gives
+\[
+ \F(S-T)\le n(\rho+2M\eta).
+\]
+Whenever $\sigma^2\ge n(\rho+2M\eta)$, each $(S\pm A)/2$ lies within $(\sigma+\eta)/2$ of the exactly positive matrix $Q\diag((|d_i|\pm d_i)/2)Q^{\mathsf T}$. This supplies the claimed positivity contract at every finite tolerance. A support projector or a polar factor at zero would require a separate gap contract and is not inferred from these names.
+
+\subsection{What has been resolved}
+
+The existing frameworks already distinguish approximate witnesses from coherent points. This report supplies a concrete method for resolving some cases where insisting on coherent witnesses would be too strong:
+\begin{itemize}
+\item \emph{Colliding roots in a structured subclass.} Real symmetric characteristic polynomials have ordered, multiplicity-preserving root names with a cross-input comparison theorem. This goes beyond their root supports.
+\item \emph{Unstable bases.} The intrinsic square root and gap projectors have coherent names even if every finite diagonalizer selects a different basis. A global eigenbasis is not an intermediate premise.
+\item \emph{Hidden finite-dimensional existence.} Rational elimination gives explicit witnesses for subspace intersection and positive certificates. Their uniform dimension bounds are part of the proof.
+\item \emph{Loss of positivity during approximation.} The $A_r+e_rI$ correction and finite positivity alternative give an explicit repair with an error budget, rather than presuming that rational samples preserve a closed condition.
+\item \emph{Unexplained convergence.} The spectral computation has an additive rational energy invariant and explicit fuel. The resulting name coherence follows from a separate certificate comparison theorem.
+\end{itemize}
+
+The general lesson is operational. First ask for a finite output at one tolerance. Next determine the observation that should be independent of this finite choice. Prove a comparison estimate for arbitrary certificates and distinct nearby inputs. Only then define the infinite mathematical object by its regular observations. If a discrete selection is required, isolate the numerical separation needed to make that selection stable.
+
+\subsection{A small exact example}
+
+For
+\[
+ A=\begin{pmatrix}1&1\\1&1\end{pmatrix}
+\]
+the first pivot has $h=0,b=1$. Taking $(c,s)=(3/5,4/5)$ gives
+\[
+ Q=\frac15\begin{pmatrix}3&-4\\4&3\end{pmatrix},\qquad
+ Q^{\mathsf T}AQ=
+ \begin{pmatrix}49/25&-7/25\\-7/25&1/25\end{pmatrix}.
+\]
+The original off-diagonal energy is $2$; the new energy is $98/625$. After sorting, the diagonal observations are $(1/25,49/25)$. Both orthogonality identities are exact. Further finite stages improve the residual to any prescribed rational tolerance, while the ordered observations name $(0,2)$.
+
+The positive square root is represented without requiring the irrational eigenvector normalization to appear as an exact rational witness. Its finite certificates satisfy the explicitly checked equation $S_r^2\approx A$. At a threshold strictly between $0$ and $2$, the lower spectral projector is also a coherent matrix observation. At threshold zero there is no positive separation from the spectrum, so the same gap theorem makes no claim.

@@ -1,0 +1,17 @@
+'LeanProofs.ConciseIPRA.ObservableGlue.boundedInvariantAt' depends on axioms: [propext, Quot.sound]
+'LeanProofs.ConciseIPRA.ObservableGlue.loopProducesCertificate' depends on axioms: [propext, Quot.sound]
+'LeanProofs.ConciseIPRA.ObservableGlue.observableOfIndependentCertificates' depends on axioms: [propext, Quot.sound]
+'LeanProofs.ConciseIPRA.ObservableGlue.observableFromLocalStability' depends on axioms: [propext, Quot.sound]
+'LeanProofs.ConciseIPRA.ObservableGlue.twoLoopsStableObservable' depends on axioms: [propext, Quot.sound]
+LeanProofs.ConciseIPRA.PRA.qfInd {n : ℕ} {Γ : List (LeanProofs.ConciseIPRA.Fm LeanProofs.ConciseIPRA.PTm n)}
+  (φ : LeanProofs.ConciseIPRA.Fm LeanProofs.ConciseIPRA.PTm (n + 1)) (hφ : φ.QF)
+  (h0 :
+    LeanProofs.ConciseIPRA.Prf LeanProofs.ConciseIPRA.PRAAx Γ
+      (φ.subst (LeanProofs.ConciseIPRA.Syn.inst LeanProofs.ConciseIPRA.PTm.zero)))
+  (hS :
+    LeanProofs.ConciseIPRA.Prf LeanProofs.ConciseIPRA.PRAAx (φ :: List.map LeanProofs.ConciseIPRA.Fm.shift Γ)
+      (φ.subst (LeanProofs.ConciseIPRA.Syn.repl (LeanProofs.ConciseIPRA.Syn.var 0).succ))) :
+  LeanProofs.ConciseIPRA.Prf LeanProofs.ConciseIPRA.PRAAx Γ φ.all
+LeanProofs.ConciseIPRA.Prf {T : ℕ → Type} [LeanProofs.ConciseIPRA.Syn T] (Ax : LeanProofs.ConciseIPRA.Theory T)
+  {n : ℕ} : List (LeanProofs.ConciseIPRA.Fm T n) → LeanProofs.ConciseIPRA.Fm T n → Prop
+LeanProofs.ConciseIPRA.PRAAx : LeanProofs.ConciseIPRA.Theory LeanProofs.ConciseIPRA.PTm

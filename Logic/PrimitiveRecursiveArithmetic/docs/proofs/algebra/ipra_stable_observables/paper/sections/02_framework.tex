@@ -1,0 +1,101 @@
+\section{Arithmetic presentations and stable observations}
+\label{sec:framework}
+
+\subsection{The base theory and the status of infinite objects}
+
+The base theory is first-order intuitionistic logic with equality, a function symbol for every fixed primitive recursive definition, its defining equations, the successor axioms, and induction for quantifier-free formulas. This is the repository's \code{PRAAx} presentation \cite{prsource}. We use the ordinary numerical domain. Rational numbers, finite arrays, matrices and certificates are numerical codes.
+
+Signed integers may be coded by a sign and a magnitude. A rational is a signed numerator and a positive denominator; reduction to lowest terms is optional. Invalid inputs receive fixed default values, making every primitive recursive operation total. On valid codes, addition, multiplication, order, equality, and guarded reciprocal are the familiar cross-multiplication operations. Division at zero is assigned a default and is never used in the mathematical branch requiring a genuine reciprocal.
+
+Finite lists can be coded by a length and iterated pairing. An array records its dimensions and row-major list. All loops over array entries have bounds computed from these dimensions. Bounded least search returns a designated default if no candidate passes. Sorting uses insertion or selection with rational comparison and a fixed tie break. These are direct primitive recursive definitions.
+
+There is no numerical primitive recursive evaluator for all primitive recursive program codes. Every construction below is one fixed program, or a metatheoretic schema for a fixed family of input programs. For example, a represented matrix may use a fixed primitive recursive symbol $a(x,r,i,j)$, with numerical parameters $x,r,i,j$. We do not quantify inside arithmetic over arbitrary real-valued functions or assume that a code for an arbitrary PR definition can be evaluated by one universal PR function.
+
+\begin{lemma}[Bounded formulas have Boolean presentations]
+\label{lem:boolean}
+For each fixed formula made from primitive recursive atomic predicates, propositional connectives, and bounded numerical quantifiers, one can construct a primitive recursive Boolean function $b$ and an $\ipra$ proof that the formula is equivalent to $b=1$.
+\end{lemma}
+\begin{proof}
+Natural equality has a primitive recursive zero-test, and the defining equations and quantifier-free induction prove its correctness. Rational comparisons reduce to integer comparisons. Use Boolean multiplication for conjunction, maximum for disjunction, and Boolean negation for negation. Since the component predicates are decidable, implication is represented by the Boolean expression $\neg p\lor q$; this equivalence is intuitionistically valid for a decidable antecedent.
+
+For a bounded universal quantifier use the product of the Boolean values over the stated finite range. For a bounded existential use their maximum, or the flag returned by a bounded scan. For the universal fold, fix the final bound as a parameter. Prove that a fold equal to one forces each indexed bit to equal one by quantifier-free prefix induction with that index free. Conversely, work under the fixed hypothesis that all bits below the final bound equal one, and prove by quantifier-free prefix induction that the partial product is one. Generalize the free index only after the induction. The existential case uses a bounded scan together with its stored witness or its all-zero flag. Thus the proof does not induct on the quantified formula whose Boolean presentation is being established. Nested bounded quantifiers are handled by composing the folds, not by adding an induction scheme for unbounded formulas.
+\end{proof}
+
+Consequently assertions such as ``the matrix is symmetric'', ``the rational array is sorted'', and ``every recorded transition obeys its update rule'' are admissible induction predicates after compilation. The fact that a paper writes a bounded assertion with $\forall i<n$ does not add logical strength. By contrast, ``all future precisions work'' or ``all rational points have already been found'' cannot simply be inserted into the invariant.
+
+\subsection{A certificate interface}
+
+\begin{definition}[Finite presentation with observable comparison]
+\label{def:interface}
+Fix primitive recursive numerical functions and predicates:
+\begin{enumerate}
+\item an input-validity predicate $V(x)$;
+\item a finite certificate predicate $C(x,r,w)$;
+\item a producer $P(x,r)$ and observation $o(x,r,w)$;
+\item a finite input-comparison predicate $D(x,y,d)$ and an output-comparison predicate $R(u,v,e)$;
+\item a primitive recursive rational error budget $\omega(d,r,s)$.
+\end{enumerate}
+The interface includes actual arithmetic proofs of
+\begin{align}
+ V(x)&\longrightarrow C(x,r,P(x,r)), \label{eq:producer}\\
+ D(x,y,d)\wedge C(x,r,w)\wedge C(y,s,z)
+ &\longrightarrow R(o(x,r,w),o(y,s,z),\omega(d,r,s)).
+ \label{eq:comparison}
+\end{align}
+All displayed quantifiers over free numerical variables may be closed universally after the finite argument. The comparison concerns arbitrary accepted certificates, not merely one favored execution.
+\end{definition}
+
+\begin{theorem}[Stable-observation composition]
+\label{thm:observable}
+Under the two proved interface clauses, define $O(x,r)=o(x,r,P(x,r))$. Then $\ipra$ proves the same comparison for $O(x,r),O(y,s)$ whenever the two inputs are valid and satisfy $D(x,y,d)$.
+\end{theorem}
+\begin{proof}
+Instantiate producer correctness separately at $(x,r)$ and $(y,s)$, substitute the two resulting certificates in the comparison theorem, and apply implication elimination twice. Every witness is an explicit primitive recursive term. No choice, infinite compatibility assertion, or new induction is involved.
+\end{proof}
+
+The proof is deliberately elementary. The difficulty of using the theorem is entirely in proving the producer and the comparison estimates. Same-input comparison establishes independence from witness selection for that input. Cross-input comparison is additionally required for perturbation bounds and independence from the chosen name of the input. It is a material error to infer the second from the first without proof.
+
+For a rational metric presentation a typical comparison is
+\[
+ d_Y(O(x,r),O(y,s))\le Ld_X(x,y)+e_r+e_s,
+ \qquad e_r=2^{-r}.
+\]
+For square roots the comparison is naturally expressed by squared errors instead of a Lipschitz constant. A precision transformer then chooses certificate tolerances sufficiently small to meet the requested observation tolerance. The framework does not require a uniform exponent or one metric for every application.
+
+\subsection{Regular names and finite meaning}
+
+A regular rational matrix name is a fixed primitive recursive family $A_r$ with the arithmetic contract
+\[
+ \bound(A_r-A_s,e_r+e_s)\qquad(r,s\in\N),
+ \qquad e_r=2^{-r}.
+\]
+Here $\bound(X,a)$ means $a\ge0$ and $\F(X)\le a^2$. For scalar or vector observations use the analogous absolute-value or coordinatewise comparison. The represented object is a useful semantic interpretation of this family; the internal theorem consists of the finite rational inequalities for arbitrary numerical $r,s$.
+
+Two regular names represent the same matrix when
+\[
+ \bound(A_r-B_s,e_r+e_s)\qquad\text{for all }r,s.
+\]
+This is a formula with unbounded universal quantifiers, not a decidable test on names. Its transitivity follows by comparing through a common arbitrarily fine observation. There is a fully arithmetic justification: if the proposed rational squared bound fails, the positive rational gap determines a concrete later precision for which the intermediate error is too small to allow the failure. Thus no unrestricted limiting principle is needed.
+
+We will use this finite-slack argument repeatedly. For a positive rational $a=p/q$, with $p,q\ge1$, one can ensure $2^{-k}<a$ by the deliberately excessive primitive recursive choice $k=q+1$, since $2^{q+1}>q$. More efficient binary-length choices are optional. Whenever a finite bound contains a rational coefficient $K$, choose a precision with $K2^{-k}$ below the prescribed positive rational gap. The witness is numerical and primitive recursive.
+
+\subsection{Explicit fuel and quantifier-free invariants}
+
+Let $s_0(x)$ and $\operatorname{step}(x,s)$ be fixed primitive recursive functions. Define their iteration by primitive recursion in $t$. A proof of a finite computation should exhibit a Boolean invariant $I(x,t,s_t)$, prove its base and step cases, and specialize quantifier-free induction at a primitive recursive fuel $T(x)$.
+
+For the spectral computation the decisive numerical part is
+\[
+ \E(A_t)\le\eps^2
+ \quad\lor\quad
+ m\E(A_t)+t\eps^2\le m\F(A),
+ \qquad m=n(n-1).
+\]
+All values are rational finite sums. Orthogonality, symmetry and the relation between the current matrix and the initial matrix join this invariant by finite Boolean conjunction. Once the left alternative holds the transition freezes, so the invariant remains valid without recording a least stopping time.
+
+An ambient statement that an algorithm terminates does not supply this object-theory proof. Similarly, a certificate checker and a semantic proof of its soundness do not supply a total producer. These distinctions are part of the interface, not optional documentation. Section~\ref{sec:certificate-boundary} shows a setting where no general complete certificate producer can exist.
+
+\subsection{Composition across domains}
+
+Suppose one stage produces an observation used as the input to a second stage. To compose them, request the first stage's output at the tolerance required by the second stage's input-comparison theorem, then add or otherwise combine their error budgets using that theorem. The requested precision must be an explicit primitive recursive function of the final demand and the finite input bounds.
+
+This applies to algebraic identities, norms, finite geometry, matrix functions and analytic estimates equally. What varies is the object being observed and the modulus. For example: a factorization can yield a root support; a minimization can yield an infimum value; a diagonalization can yield ordered eigenvalues; a noncanonical basis for a separated spectral block can yield a canonical projector. The interface organizes these differences instead of asserting that every mathematical object has a computable canonical representative.

@@ -1,0 +1,104 @@
+\section{Ordered spectra that remain coherent through collisions}
+\label{sec:spectra}
+
+\subsection{Comparison of arbitrary certificates}
+
+\begin{theorem}[Finite spectral comparison]
+\label{thm:weyl}
+Let $A,B$ be rational symmetric $n\times n$ matrices. Suppose $(Q,d)$ and $(R,e)$ are diagonalization certificates with errors $\eta,\theta$, respectively, and $\bound(A-B,\delta)$. Then for every $k<n$,
+\begin{equation}
+ |d_k-e_k|\le\delta+\eta+\theta. \label{eq:weyl}
+\end{equation}
+No comparison between $Q$ and $R$ is assumed.
+\end{theorem}
+\begin{proof}
+For $n=0$ there is no coordinate to check. Otherwise use Lemma~\ref{lem:intersection} to construct a nonzero rational vector $x$ in the span of the first $k+1$ columns of $Q$ and the last $n-k$ columns of $R$.
+
+In the first coordinates the sortedness of $d$ gives
+\[
+ x^{\mathsf T}Q\diag(d)Q^{\mathsf T}x\le d_k x^{\mathsf T}x.
+\]
+The residual changes this quadratic form by at most $\eta x^{\mathsf T}x$, by Lemma~\ref{lem:qform}. Similarly the second coordinate representation gives
+\[
+ x^{\mathsf T}Ax\le(d_k+\eta)x^{\mathsf T}x,
+ \qquad
+ x^{\mathsf T}Bx\ge(e_k-\theta)x^{\mathsf T}x.
+\]
+Subtract and apply Lemma~\ref{lem:qform} to $B-A$:
+\[
+ (e_k-d_k-\eta-\theta)x^{\mathsf T}x
+ \le x^{\mathsf T}(B-A)x\le\delta x^{\mathsf T}x.
+\]
+Because $x\ne0$, the rational $x^{\mathsf T}x$ is strictly positive. Divide by it to obtain $e_k-d_k\le\delta+\eta+\theta$. Interchange the two certificates and repeat the argument for the reverse inequality.
+
+The proof used only bounded elimination, finite sums and rational order. The construction of $x$ is not an invocation of a real-vector-space dimension theorem with an unexamined witness principle.
+\end{proof}
+
+This is the main comparison theorem demanded by the framework. It is stronger than a statement that the diagonalizer happens to converge along one selected execution. It applies to independently produced certificates at different precisions, with different rotations and tie breaks, and to different rational approximants of the input.
+
+\subsection{Regular eigenvalue names}
+
+Suppose a symmetric represented matrix has fixed primitive recursive entry names $a_{ij}(r)$ satisfying
+\[
+ |a_{ij}(r)-a_{ij}(s)|\le2^{-r}+2^{-s},
+\]
+and satisfy the arithmetic symmetry contract $|a_{ij}(r)-a_{ji}(s)|\le2^{-r}+2^{-s}$ for every pair of indices and precisions. To simplify the finite contract one may require the supplied rational arrays to be symmetric. Otherwise replace a sample by its average with its transpose; the entrywise error budget is preserved.
+
+For an output precision $r$, sample at $r+n+4$, symmetrize, and call the result $A[r]$. Since $n\le2^n$ for $n\ge1$, its pairwise Frobenius comparison has budget
+\[
+ \bound\bigl(A[r]-A[s],\,2^{-r-4}+2^{-s-4}\bigr).
+\]
+Run Theorem~\ref{thm:jacobi} with tolerance $2^{-r-4}$ and denote the sorted diagonal by $d[r]$. Theorem~\ref{thm:weyl} yields
+\begin{equation}
+ |d[r]_i-d[s]_i|\le2^{-r-3}+2^{-s-3}. \label{eq:name}
+\end{equation}
+Thus every coordinate is a regular primitive recursive real name with spare precision margin. Dimension zero gives the empty family. A matrix already given by a Frobenius-regular name needs only a fixed precision shift rather than the entrywise dimension shift.
+
+The names are ordered, count multiplicity, and are extensional with respect to the input names. For the last assertion compare the two rational input samples in Theorem~\ref{thm:weyl}, use their equality contract, and request sufficiently fine finite indices. There is no need to synchronize the bases. For represented matrices a Frobenius perturbation of at most $\delta$ gives
+\[
+ |\lambda_i(A)-\lambda_i(B)|\le\delta
+\]
+in the finite-slack interpretation. The full arithmetic theorem is \eqref{eq:weyl} together with the explicit precision shifts, rather than an added axiom about real limits.
+
+\subsection{Why these names are eigenvalues}
+
+One must identify the stable observations mathematically, not merely call them eigenvalues. This follows from a finite determinant estimate.
+
+\begin{lemma}[Coefficient residual]
+\label{lem:coeff}
+Suppose $\bound(A,M)$ with $M\ge1$ and $(Q,d)$ is a diagonalization certificate of error $\eps$. For $1\le j\le n$, the coefficient of $X^{n-j}$ in $\det(XI-A)$ differs from that in $\prod_i(X-d_i)$ by at most
+\begin{equation}
+ K_j(M,n)\eps,
+ \qquad K_j(M,n)=\binom nj j!\,j M^{j-1}. \label{eq:coefficient}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $C=Q^{\mathsf T}AQ$ and $D=\diag(d)$. Every entry of $C,D$ has absolute value at most $M$, because $\F(C)=\F(A)$ and $D$ retains only the diagonal. Every entry of $C-D$ has absolute value at most $\eps$.
+
+The coefficient in question is a signed sum of the $\binom nj$ principal minors of size $j$. Expand each determinant into its $j!$ signed products. Compare a product for $C$ with its product for $D$ by replacing one factor at a time. Each replacement costs at most $\eps M^{j-1}$, and there are $j$ replacements. Sum these bounds over the products and minors. Finally
+\[
+ \det(XI-Q^{\mathsf T}AQ)=\det(XI-A)
+\]
+follows from determinant multiplication and both exact orthogonality identities. These determinant identities themselves have finite permutation-sum proofs; their variable-size sums are bounded folds. The leading coefficients are both one.
+\end{proof}
+
+For represented input, a uniform magnitude bound is available from the stage-zero samples: choose an integer
+\[
+ M\ge1+n\left(\max_{i,j}|a_{ij}(0)|+2\right).
+\]
+Every later sample then has Frobenius bound $M$. All coefficient constants in \eqref{eq:coefficient} are explicit primitive recursive rational data. Request a precision at which these constants times the input and diagonalization errors are below the desired coefficient tolerance. Polynomial coefficients in the diagonal observations also have finite product moduli, obtained by the same telescoping argument. We obtain equality of represented coefficient names:
+\begin{equation}
+ \det(XI-A)=\prod_{i<n}(X-\lambda_i(A)). \label{eq:factorization}
+\end{equation}
+
+This supplies $n$ ordered real root names and their coefficient factorization, retaining repetitions. Every complex characteristic root is real as well: positive apartness of its imaginary part would give the same positive lower bound for the modulus of every factor, making their finite product apart from zero. Decidable rational approximation comparisons then force its imaginary part to be zero. We do not assert the disjunctive statement that every separately supplied exact root comes with an index identifying it with one of the ordered names. For $X^2-t^2$, selecting a matching index for the root $t$ from the list $(-|t|,|t|)$ would already give the generally unavailable comparison $t\le0\lor t\ge0$. We did not assume a fundamental theorem of algebra or an exact orthogonal eigenbasis in obtaining it. The theorem concerns the factorization and stable eigenvalue names; it does not assert a primitive recursive choice of an exact eigenbasis for arbitrary real names.
+
+\subsection{Multiplicity information and the remaining decision problem}
+
+For
+\[
+ A(t)=\begin{pmatrix}t&0\\0&-t\end{pmatrix},
+\]
+the ordered spectral observations name $(-|t|,|t|)$. At $t=0$ the two entries coincide, and the family remains continuous. A rule that assigns the first eigenvector to the smaller eigenvalue must exchange coordinate axes as the sign of $t$ changes. The matrix of witnesses can therefore fail to be continuous even though the ordered observations are stable.
+
+Retaining multiplicity means producing $n$ ordered names, including repeated values in the factorization. It does \emph{not} mean deciding whether two represented values are equal, deciding a rank, or computing a partition of the index set into equal-eigenvalue blocks. Those tasks require additional information. A supplied gap allows a finite block decision, developed in Section~\ref{sec:projectors}; no gap is needed for the names themselves.

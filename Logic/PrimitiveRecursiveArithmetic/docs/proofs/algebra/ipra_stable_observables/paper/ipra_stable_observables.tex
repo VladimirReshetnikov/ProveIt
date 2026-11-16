@@ -1,0 +1,91 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage{listings}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black,breaklinks=true]{hyperref}
+\usepackage{xurl}
+\definecolor{ink}{RGB}{24,43,65}
+\definecolor{accent}{RGB}{19,91,105}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{Stable observables in iPRA}}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\F}{\mathcal F}
+\newcommand{\E}{\mathcal E}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_F}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\bound}{\operatorname{FB}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\repo}[1]{\url{https://github.com/VladimirReshetnikov/ProveIt/blob/c39c388d4f87220ab9e758ae457520bbc0d74341/Logic/PrimitiveRecursiveArithmetic/#1}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},backgroundcolor=\color{black!2},showstringspaces=false}
+\hypersetup{pdftitle={Stable observables from finite witnesses: an iPRA spectral framework},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={Constructive arithmetic, rational spectral certificates, Lean formalization plan}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{16mm}
+{\Large\color{accent} CONSTRUCTIVE MATHEMATICS / ARITHMETIC FOUNDATIONS\par}
+\vspace{12mm}
+{\huge\bfseries\color{ink} Stable observables\par from finite witnesses\par}
+\vspace{7mm}
+{\Large An iPRA framework with rational spectral constructions\par}
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 15 November 2026\par}
+\vspace{13mm}
+\begin{minipage}{0.94\textwidth}
+\textbf{Main results.} A uniform rational approximate spectral theorem; ordered eigenvalue names retaining multiplicities through collisions; a constructive principal matrix square root; and spectral projectors at a certified gap. Every construction has explicit finite data and primitive recursive control. The report also proves a precise limitation on complete numerical-bound certificate systems.
+
+\textbf{Verification status.} The mathematical arguments are developed in full below. Five generic inference combinators have been compiled against the actual embedded \code{Prf PRAAx} calculus. The matrix-specific object-language proofs are specified and planned, but are not claimed as completed Lean formalizations. Exact rational reference programs and their verification records accompany the report.
+
+\textbf{Source baseline.} ProveIt revision
+\code{c39c388d4f87220ab9e758ae457520bbc0d74341}.
+This is a targeted extension of the existing frameworks, not an independent verification of all 61 source packets or a claim of historical priority for spectral mathematics.
+\end{minipage}
+\vfill
+{\small\color{accent} Complete source, executable artifacts, provenance, and a reproducible Lean subproject are included in the archive.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\begin{abstract}
+Finite mathematical witnesses can be nonunique and unstable even when the quantity they determine is canonical. We organize embeddings into intuitionistic primitive recursive arithmetic around finite certificate producers and comparison estimates for the observations extracted from any two certificates. The abstract composition rule refines mechanisms already present in ProveIt's finite-contract, aggregate, and coherent-presentation packets. Its substantive new application here is a complete finite spectral construction for rational symmetric matrices, uniform in dimension.
+
+A two-branch rational Jacobi step reduces an explicit off-diagonal energy without radicals. An elementary fuel bound yields exact rational orthogonal approximate diagonalizations. Rational subspace intersection then proves a perturbation estimate for their sorted diagonals, independent of the chosen bases. This produces extensional real eigenvalue names with multiplicities through collisions. Further finite comparison arguments give principal positive square roots and spectral projectors under a numerical gap, including the qualifications needed for represented positive inputs. The proof architecture exposes the precise quantifier-free invariants and the route to \code{Prf PRAAx}. Finally, a diagonal argument rules out a sound, complete effective system of numerical height-bound certificates for arbitrary primitive recursive fibers of cardinality at most one. General arithmetic difficulties that require new global bounds remain explicitly open.
+\end{abstract}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+\input{sections/01_scope}
+\input{sections/02_framework}
+\input{sections/03_linear_algebra}
+\input{sections/04_jacobi}
+\input{sections/05_spectra}
+\input{sections/06_square_roots}
+\input{sections/07_projectors}
+\input{sections/08_applications}
+\input{sections/09_boundaries}
+\input{sections/10_formalization}
+\input{sections/11_validation}
+\input{references}
+\end{document}

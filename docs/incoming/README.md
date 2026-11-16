@@ -236,7 +236,10 @@ files and `lean/BackwardDemand.lean`, which is byte-identical to the file of tha
 `foundations/ipra_finite_demand`. `four_metrics_ipra_2026-11-15.zip` was placed the same way,
 under `geometry/`, and then deleted. It leaves out its ignored `SHA256SUMS` and 8 `.log`
 files, and four `lean/upstream_inspected/` files that are byte-identical to ConciseIPRA
-sources.
+sources. `ipra_stable_observables.zip` was placed the same way, under `algebra/`, and then
+deleted. It leaves out one ignored `.log` file, and three `lean/ConciseIPRA/` files that are
+byte-identical to the `lean/upstream/` copies in
+`foundations/ipra_coherent_methods_2026-11-15`.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

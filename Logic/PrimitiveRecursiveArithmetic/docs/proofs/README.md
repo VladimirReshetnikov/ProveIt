@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 31 to
+15 November 2026: 33 to `docs/drafts`, and 32 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -32,8 +32,8 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 76 | The member matches the repository's `.gitignore`: 43 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 32 `.log` files from LaTeX and Lean builds, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
-| `sibling-packet` | 18 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/) (13 members). `ipra_finite_demand` bundles four of its files under the same path (4 members). `ipra_resources_and_elimination_2026-11-15` bundles `lean/BackwardDemand.lean` of [`foundations/ipra_finite_demand`](foundations/ipra_finite_demand/) (1 member). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
+| `ignored` | 77 | The member matches the repository's `.gitignore`: 43 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 33 `.log` files from LaTeX and Lean builds, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
+| `sibling-packet` | 21 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/) (13 members). `ipra_finite_demand` bundles four of its files under the same path (4 members). `ipra_resources_and_elimination_2026-11-15` bundles `lean/BackwardDemand.lean` of [`foundations/ipra_finite_demand`](foundations/ipra_finite_demand/) (1 member). `ipra_stable_observables` bundles three `lean/ConciseIPRA/` files byte-identical to the `lean/upstream/` copies in [`foundations/ipra_coherent_methods_2026-11-15`](foundations/ipra_coherent_methods_2026-11-15/) (3 members). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 25 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`; `ipra_presentations_to_witnesses` and `four_metrics_ipra_2026-11-15` bundle those three and `Syntax.lean`, under `lean/upstream/` and `lean/upstream_inspected/`; all byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). `isoperimetric_ipra_constructive_2026-11-15` bundles, under `reused/`, the earlier packet [`geometry/isoperimetric_ipra`](geometry/isoperimetric_ipra/) as filed here at `22afac4c9d`; 14 of its files are byte-identical to that packet. The reference column gives that file, relative to the repository root. |
 
@@ -61,7 +61,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 64 archives hold 1,663 members: 1,543 placed here, 76 ignored, 18 in bundled copies of
+The 65 archives hold 1,710 members: 1,586 placed here, 77 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -75,6 +75,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`FTA_iPRA`](algebra/FTA_iPRA/) | `ea3f6066cf` 2026-11-14 | `FTA_iPRA` | An arithmetized constructive fundamental theorem of algebra, with a Lean formalization blueprint and exact rational reference programs. | 12 | 1 |
 | [`cayley_hamilton_ipra`](algebra/cayley_hamilton_ipra/) | *not committed* 2026-11-15 | `cayley_hamilton_ipra` | The Cayley–Hamilton theorem as the uniform primitive recursive identity for the generic n×n matrix, specialized to any commutative ring, with trace identities, minimal polynomials, integrality and quaternionic extensions. Its Lean files are uncompiled specifications and an outline. | 24 | 0 |
 | [`ipra_polynomial_formulas_abel_ruffini`](algebra/ipra_polynomial_formulas_abel_ruffini/) | `6800f2d21a` 2026-11-15 | `ipra_polynomial_formulas_abel_ruffini` | Radical formulae for polynomials through degree four, and the Abel–Ruffini theorem for the generic quintic, with an iPRA arithmetization plan. Its Lean file is a blueprint whose `opaque` declarations are not yet defined. | 27 | 1 |
+| [`ipra_stable_observables`](algebra/ipra_stable_observables/) | *not committed* 2026-11-15 | `ipra_stable_observables` | Stable observables from finite witnesses, applied to rational spectral theory uniform in dimension: Jacobi rotations with explicit fuel, stable ordered eigenvalue names through collisions, principal square roots and gap-dependent spectral projectors. It states that five Lean combinators return the `Prf PRAAx` type. Its `lean/lakefile.toml` needs `lean/ConciseIPRA/`, omitted here as copies from `ipra_coherent_methods_2026-11-15`. | 43 | 4 |
 | [`lagrange_inversion_ipra`](algebra/lagrange_inversion_ipra/) | *not committed* 2026-11-15 | `lagrange_inversion_ipra` | Lagrange inversion coefficientwise in truncated power series: the Lagrange–Bürmann formulas, Bell-polynomial and Good's multivariate forms, Puiseux-type inversion, explicit inverse radii, Lambert W and Catalan expansions. Its Lean file is a blueprint, not a kernel-checked proof. | 18 | 0 |
 | [`puiseux_ipra`](algebra/puiseux_ipra/) | `8c135f6f2a` 2026-11-15 | `puiseux_ipra` | Puiseux expansions for exactly presented algebraic coefficients, with explicit convergence radii and tail bounds. It bundles the FTA packet as a dependency. | 17 | 14 |
 | [`three_impossibilities_ipra`](algebra/three_impossibilities_ipra/) | `a28886c88e` 2026-11-15 | `three_impossibilities_ipra` | The impossibility of doubling the cube, trisecting 60° and squaring the circle by straightedge and compass. It is stated as a proof architecture. | 12 | 1 |
