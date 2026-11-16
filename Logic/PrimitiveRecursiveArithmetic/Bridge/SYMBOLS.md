@@ -6,7 +6,8 @@ in `Prf PRAAx Γ` at arbitrary terms in the common finite scope. “Syntax”
 means the translated terms agree in Lean before deriving their reflexivity.
 The [arithmetic comparisons](Lean/IPRABridge/ArithmeticSymbols.lean) and
 [order comparisons](Lean/IPRABridge/OrderSymbols.lean) and
-[comparison bits](Lean/IPRABridge/ComparisonBits.lean) are separately importable.
+[comparison bits](Lean/IPRABridge/ComparisonBits.lean) and
+[bounded search](Lean/IPRABridge/BoundedSearch.lean) are separately importable.
 
 | Foundation name | Arity and argument convention | Concise counterpart | Checked relation |
 | --- | --- | --- | --- |
@@ -22,6 +23,7 @@ The [arithmetic comparisons](Lean/IPRABridge/ArithmeticSymbols.lean) and
 | `PRATheory.subCode` | Binary, minuend first | `a ∸ b` | Object equality, `translated_subCode`. |
 | `PRATheory.ltBitCode` | Binary, nonzero test of `b ∸ a` | `LeanProofs.IPRA.lt a b`, meaning `S a ∸ b = 0` | Provable biconditional for the comparison bit equal to `oneCode`, `translated_ltBitCode`. The module also checks strictness at zero and at equal arguments. |
 | `PRAIsZero.isZeroCode` | Unary. Returns `oneCode` at zero and zero at successors. | `LeanProofs.IPRA.eqb a PTm.zero` | Object equality, `translated_isZeroCode`. `IPRANotBit.notBitConvention` uses it after composing the code with an arbitrary PR function. |
+| `PRABoundedSearchCode.searchCode good` | Bound first, then any finite family of parameters. Recurses on the bound and returns the first zero of `good` strictly below it, or the bound when no such zero exists. | `Search.Finite.mu (translatedSearchBody good) N xs` | Object equality at arbitrary terms, `translatedSearch_eq`. `translatedSearch_found` supplies the original Foundation witness at `IPRABoundedSelector.selectorOpen`. |
 
 The translated order comparison uses the exact code which erases the native
 `<` relation. At a Foundation call site, compose it with the checked
@@ -34,7 +36,11 @@ extended native theory, for arbitrary Foundation term assignments. The
 bounded-child proof uses it both for the free witness and for the selector's
 assigned witness.
 
+The bounded-search comparison covers `N = 0` and the failed-search result.
+It follows the original Foundation recursion and the portable least-witness
+invariant, including the case where a previous witness must be retained.
+
 Further code families to compare at their first migrated uses include
-division and remainder, bounded search, pairing, sequence coding, and
+division and remainder, pairing, sequence coding, and
 finite sums/products. Record output conventions at zero and the empty or
 failed-search case before using a comparison in a reduction.

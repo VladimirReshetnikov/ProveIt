@@ -62,7 +62,8 @@ private def checkPortableLayers (searchPath : SearchPath) : IO Unit := do
      `DiophantineConsistency.IPRASuccessorInduction,
      `DiophantineConsistency.IPRASuccessorInductionConverse,
      `DiophantineConsistency.IPRAStandardTheory])
-  check searchPath [`IPRABridge, `IPRABridge.OrderSymbols, `IPRABridge.ComparisonBits] (applications ++
+  check searchPath [`IPRABridge, `IPRABridge.OrderSymbols, `IPRABridge.ComparisonBits,
+    `IPRABridge.BoundedSearch] (applications ++
     [`DiophantineConsistency.IPRAOpenDisjunctionWitness,
      `DiophantineConsistency.IPRADeepEqualityJoin,
      `DiophantineConsistency.IPRAExplicitZFCReduction,
