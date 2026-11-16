@@ -58,7 +58,7 @@ Euclid's theorem, Bézout's identity, `C(2n, n) ≤ 2^{2n}` and the Catalan iden
 
 ## Proof packets
 
-[`docs/proofs/`](docs/proofs/README.md) files 84 research packets, delivered from 14 to
+[`docs/proofs/`](docs/proofs/README.md) files 85 research packets, delivered from 14 to
 16 November 2026. Each gives a human-readable proof of a classical theorem in a finitary,
 quantitative form intended for iPRA. Most add exact-arithmetic reference code and a Lean plan
 or scaffold aimed at `ConciseIPRA`.
@@ -67,7 +67,7 @@ The packets are grouped by area:
 
 | Area | Packets | Examples |
 |---|---:|---|
-| [`algebra/`](docs/proofs/algebra/) | 7 | fundamental theorem of algebra, Puiseux expansions, Abel–Ruffini, Cayley–Hamilton |
+| [`algebra/`](docs/proofs/algebra/) | 8 | fundamental theorem of algebra, Puiseux expansions, Abel–Ruffini, Cayley–Hamilton |
 | [`analysis/`](docs/proofs/analysis/) | 8 | fundamental theorem of calculus, Stirling's formula, the Gamma function, residues |
 | [`analytic-number-theory/`](docs/proofs/analytic-number-theory/) | 10 | prime number theorem, Dirichlet's theorem, the zeta functional equation |
 | [`combinatorics/`](docs/proofs/combinatorics/) | 1 | Bell numbers |

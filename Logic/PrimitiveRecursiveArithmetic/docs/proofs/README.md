@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives from 14 to
-16 November 2026: 33 to `docs/drafts`, and 51 to
+16 November 2026: 33 to `docs/drafts`, and 52 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -62,7 +62,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 84 archives hold 2,525 members: 2,382 placed here, 96 ignored, 21 in bundled copies of
+The 85 archives hold 2,532 members: 2,389 placed here, 96 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -75,6 +75,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 |---|---|---|---|---:|---:|
 | [`FTA_iPRA`](algebra/FTA_iPRA/) | `ea3f6066cf` 2026-11-14 | `FTA_iPRA` | An arithmetized constructive fundamental theorem of algebra, with a Lean formalization blueprint and exact rational reference programs. | 12 | 1 |
 | [`cayley_hamilton_ipra`](algebra/cayley_hamilton_ipra/) | *not committed* 2026-11-15 | `cayley_hamilton_ipra` | The Cayley–Hamilton theorem as the uniform primitive recursive identity for the generic n×n matrix, specialized to any commutative ring, with trace identities, minimal polynomials, integrality and quaternionic extensions. Its Lean files are uncompiled specifications and an outline. | 24 | 0 |
+| [`ipra_observation_algebra_2026-11-16`](algebra/ipra_observation_algebra_2026-11-16/) | *not committed* 2026-11-16 | `ipra_observation_algebra` | Branch-free finite observation algebra: a monic finite-algebra normal form, matrix observations and their resultant representation, functoriality under substitution and quotients, Newton identities without division, conditional stability, and a branch-free workaround for Puiseux families. Its Lean file is an uncompiled blueprint, not a  formalization; no general Puiseux branch selection or Faltings/Siegel height bound is claimed. | 7 | 0 |
 | [`ipra_polynomial_formulas_abel_ruffini`](algebra/ipra_polynomial_formulas_abel_ruffini/) | `6800f2d21a` 2026-11-15 | `ipra_polynomial_formulas_abel_ruffini` | Radical formulae for polynomials through degree four, and the Abel–Ruffini theorem for the generic quintic, with an iPRA arithmetization plan. Its Lean file is a blueprint whose `opaque` declarations are not yet defined. | 27 | 1 |
 | [`ipra_stable_observables`](algebra/ipra_stable_observables/) | *not committed* 2026-11-15 | `ipra_stable_observables` | Stable observables from finite witnesses, applied to rational spectral theory uniform in dimension: Jacobi rotations with explicit fuel, stable ordered eigenvalue names through collisions, principal square roots and gap-dependent spectral projectors. It states that five Lean combinators return the `Prf PRAAx` type. Its `lean/lakefile.toml` needs `lean/ConciseIPRA/`, omitted here as copies from `ipra_coherent_methods_2026-11-15`. | 43 | 4 |
 | [`lagrange_inversion_ipra`](algebra/lagrange_inversion_ipra/) | *not committed* 2026-11-15 | `lagrange_inversion_ipra` | Lagrange inversion coefficientwise in truncated power series: the Lagrange–Bürmann formulas, Bell-polynomial and Good's multivariate forms, Puiseux-type inversion, explicit inverse radii, Lambert W and Catalan expansions. Its Lean file is a blueprint, not a kernel-checked proof. | 18 | 0 |
