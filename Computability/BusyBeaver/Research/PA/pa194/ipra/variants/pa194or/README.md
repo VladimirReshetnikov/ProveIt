@@ -33,6 +33,11 @@ while preserving the resolved 3,673-instruction program.
   controller halts in every PRA expansion with an `IΣ₁) arithmetic reduct.
   The proof uses the literal register engine and 51 generated certificate
   modules covering all 3,673 source sites and their branches.
+- [`PA194ORFinal.consistency_iff_literal_nonhalt`](PA194ORFinal.lean)
+  derives `Con(PA) ↔ ¬Halt(PA194OR)` in standard iPRA. The relative
+  transfer first proves the equivalence of the PA194 and PA194OR
+  nonhalting sentences inside iPRA, then composes it with the primary
+  PA194 consistency derivation.
 
 Run from the repository root with fresh output directories.
 
@@ -44,17 +49,20 @@ execution=/dev/shm/pa194-execution-for-or
 or_base=/dev/shm/pa194or-replay
 or_controller=/dev/shm/pa194or-controller
 or_coverage=/dev/shm/pa194or-coverage
+or_native=/dev/shm/pa194or-native
 bash "$pa/pa194/ipra/native-endpoint/check-literal.sh" "$PWD" "$literal"
 bash "$pa/pa194/ipra/variants/pa194b/check.sh" "$literal" "$shared"
 bash "$pa/shared/isigma1-machine/check-execution.sh" "$literal" "$shared" "$execution"
 bash "$pa/pa194/ipra/variants/pa194or/check.sh" "$literal" "$shared" "$execution" "$or_base"
 bash "$pa/pa194/ipra/variants/pa194or/check-controller.sh" "$literal" "$shared" "$execution" "$or_base" "$or_controller"
 bash "$pa/pa194/ipra/variants/pa194or/check-coverage.sh" "$or_controller" "$or_coverage"
+bash "$pa/pa194/ipra/variants/pa194or/check-native.sh" "$or_coverage" "$or_native"
 ```
 
 The replay regenerates the data from the pinned delivered table, labels,
 source sites and instruction list. Lean checks the finite startup in 15
 chunks, the exact row correspondence, and the moved-site certificates.
 It also rebuilds the arithmetic root, register-engine proofs, full source
-coverage, and model-level equivalence. The checker uses the retained lower
-dependencies of the primary stages.
+coverage, and both equivalences. The checker uses the retained lower
+dependencies of the primary stages. The final theorem's axiom audit reports
+`propext`, `Classical.choice` and `Quot.sound`.
