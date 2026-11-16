@@ -432,6 +432,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.sum_luc
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fibonacci_lucas
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fibonacci_sums
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciGcd.fibS_pos
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciGcd.fib_pos
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciGcd.cop_fib
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciGcd.fib_dvd_mul
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciGcd.fib_gcd_at
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciGcd.fib_gcd
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciGcd.docagne
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciGcd.docagne_closed
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY

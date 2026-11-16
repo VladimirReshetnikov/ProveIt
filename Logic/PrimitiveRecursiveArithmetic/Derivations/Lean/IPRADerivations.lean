@@ -70,6 +70,7 @@ import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.Combinatorics.BellTriangle
 import IPRADerivations.Combinatorics.Fibonacci
+import IPRADerivations.Combinatorics.FibonacciGcd
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.DiophantineNumberTheory.PellModular
