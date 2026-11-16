@@ -1,0 +1,131 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\newcolumntype{Y}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{cleveref}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit}
+
+\definecolor{codebg}{RGB}{247,247,247}
+\definecolor{codeframe}{RGB}{210,210,210}
+\definecolor{linkblue}{RGB}{24,74,140}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,pdftitle={FIBER-iPRA},pdfauthor={OpenAI}}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{codebg},frame=single,rulecolor=\color{codeframe},breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{FIBER-iPRA}
+\rhead{16 November 2026}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlist{itemsep=2pt,topsep=4pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{warning}[theorem]{Warning}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{observation}[theorem]{Observation}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\Nat}{\mathbb N}
+\newcommand{\Bool}{\{0,1\}}
+\newcommand{\qf}{\mathsf{QF}}
+\newcommand{\cert}{\mathsf{Cert}}
+\newcommand{\checkb}{\mathsf{check}}
+\newcommand{\obs}{\mathsf{obs}}
+\newcommand{\res}{\mathsf{Res}}
+\newcommand{\dem}{\mathsf{dem}}
+\newcommand{\code}{\ulcorner\!\cdot\!\urcorner}
+\newcommand{\seq}{\mathsf{Seq}}
+\newcommand{\true}{\mathsf{tt}}
+\newcommand{\false}{\mathsf{ff}}
+\newcommand{\leqprf}[2]{#1\;\vdash_{\PRAAx}\;#2}
+
+\title{\textbf{FIBER-iPRA}\\[3pt]
+\large A Fibered Interface Calculus for Compiling Finitary Mathematics into Intuitionistic Primitive Recursive Arithmetic}
+\author{Research report prepared for the ProveIt repository}
+\date{16 November 2026\\Repository baseline: \texttt{58627ed89814ba122e1f0f012f1aba103cda267b}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The ProveIt repository contains a checked ordinary presentation of intuitionistic primitive recursive arithmetic, a substantial checked arithmetic library, a bridge to the Foundation presentation, and more than one hundred research packets that reformulate mathematics in finite quantitative terms.  The recurring gap is no longer the absence of isolated encodings.  It is the absence of one compositional interface that distinguishes object-theory derivations from host computations, controls the scope of finite certificates, turns bounded quantifiers into quantifier-free loop invariants, and records genuinely missing effective information as explicit residual assumptions.
+
+This report develops \emph{FIBER-iPRA} (Finite-query Interfaces with Bounded Evidence and Realizers).  A mathematical object is represented by a family of finite certificate spaces indexed by a query.  A morphism carries an explicit finite demand map, a certificate transformer, an observation map, and a derivation in the literal judgment \(\Prf\;\PRAAx\;\Gamma\;\varphi\).  Local certificates are eliminated by existential elimination; least bounded search is used only when a public result must name a canonical code.  Composition is proved by substitution and simultaneous cut.  Cyclic resource requirements are resolved by a finite monotone closure theorem.  Fixed bounded quantifier alternations are handled by finite strategy certificates.  Missing constants, cutoffs, moduli, and representatives are exposed as residual producer formulas, with a precise hierarchy of cases in which the residual can be eliminated inside \(\ipra\).
+
+The framework is applied to several difficulties reported in the repository.  We give constructive proofs of a dyadic adjacent-motion theorem that upgrades compatible approximants to a Cauchy name, a finite-net lifting theorem replacing abstract compactness, guarded exact branch selection, stable cluster-valued observations at collisions, finite master-certificate formation without hidden choice, and bounded-game realization.  We also prove two useful impossibility results: there is no primitive-recursive universal evaluator for all primitive-recursive functions, and no finite-use exact sign or branch selector can work on arbitrary Cauchy names without a separation guard.  A dependency-ordered Lean plan and source-oriented Lean modules use the current \texttt{ConciseIPRA}, \texttt{IPRADerivations}, and \texttt{IPRABridge} interfaces.  No new kernel-checked theorem is claimed by this archive; the report states exactly which declarations must be completed and how each reduces to existing checked infrastructure.
+\end{abstract}
+
+\paragraph{Verification status.}
+The mathematical arguments in this report are human proofs.  The Python reference implementation and tests exercise only finite algorithms.  The Lean files are an integration blueprint tied to the current repository API; Lean was unavailable in the artifact runtime, so those files were not elaborated.  A theorem is counted as formally established only when the repository contains a compiled declaration of literal type \texttt{Prf PRAAx ...} and its axiom audit passes.
+
+\tableofcontents
+\newpage
+
+\input{sections/01_audit}
+\input{sections/02_boundary}
+\input{sections/03_interfaces}
+\input{sections/04_kernel}
+\input{sections/05_compiler}
+\input{sections/06_residuals}
+\input{sections/07_analysis}
+\input{sections/08_algebra}
+\input{sections/09_domains}
+\input{sections/10_lean}
+\input{sections/11_status}
+\input{sections/12_conclusion}
+
+\appendix
+\input{sections/A_proof_language}
+\input{sections/B_signatures}
+\input{sections/C_difficulty_matrix}
+
+\begin{thebibliography}{99}
+\bibitem{BishopBridges}
+E. Bishop and D. Bridges, \emph{Constructive Analysis}, Springer, 1985.
+
+\bibitem{Kohlenbach}
+U. Kohlenbach, \emph{Applied Proof Theory: Proof Interpretations and their Use in Mathematics}, Springer, 2008.
+
+\bibitem{KohlenbachOliva}
+U. Kohlenbach and P. Oliva, ``Proof mining: a systematic way of analysing proofs in mathematics,'' \emph{Proceedings of the Steklov Institute of Mathematics} 242 (2003), 136--164.
+
+\bibitem{EscardoOliva}
+M. Escard\'o and P. Oliva, ``Selection functions, bar recursion and backward induction,'' \emph{Mathematical Structures in Computer Science} 20 (2010), 127--168.
+
+\bibitem{Salehi}
+S. Salehi, ``Decidable formulas of intuitionistic primitive recursive arithmetic,'' \emph{Journal of Logic and Computation} 12 (2002), 101--114.
+
+\bibitem{ProveItPRA}
+V. Reshetnikov, \emph{ProveIt: Logic/PrimitiveRecursiveArithmetic}, repository snapshot at commit \texttt{58627ed89814ba122e1f0f012f1aba103cda267b}, 16 November 2026.  \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic}.
+
+\bibitem{ConciseIPRA}
+V. Reshetnikov, \emph{ConciseIPRA}, checked Lean presentation and bi-interpretation, in \cite{ProveItPRA}.
+
+\bibitem{IPRADerivations}
+V. Reshetnikov, \emph{IPRADerivations}, checked object-theory arithmetic library, in \cite{ProveItPRA}.
+
+\bibitem{IPRABridge}
+V. Reshetnikov, \emph{IPRABridge}, checked transport between the ordinary and Foundation presentations, in \cite{ProveItPRA}.
+\end{thebibliography}
+
+\end{document}

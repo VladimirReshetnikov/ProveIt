@@ -1,0 +1,198 @@
+\section{The FIBER compiler and its main theorem}
+\label{sec:compiler}
+
+\subsection{A small proof-producing intermediate language}
+
+The source language is not intended to replace Lean or the mathematical prose
+of a packet.  It records only the finite-use structure needed for compilation.
+A program is a finite directed graph whose nodes have one of the following
+forms.
+
+\begin{longtable}{p{0.18\linewidth}p{0.72\linewidth}}
+\toprule
+Node & Meaning\\
+\midrule
+\endfirsthead
+\toprule
+Node & Meaning\\
+\midrule
+\endhead
+\textsf{primitive} & Apply a fixed primitive-recursive operation and a local checked contract.\\
+\textsf{pair}/\textsf{project} & Form or read a finite tuple or encoded sequence.\\
+\textsf{map}/\textsf{fold} & Execute a bounded loop with a quantifier-free state invariant.\\
+\textsf{search} & Use checked bounded least search for a reflected verifier.\\
+\textsf{case} & Branch on a reflected Boolean atom and join the two derivations by disjunction elimination.\\
+\textsf{exists} & Open a local certificate and seal it by existential elimination.\\
+\textsf{strategy} & Verify and realize a fixed bounded quantifier game.\\
+\textsf{observe} & Export an equivalence-invariant or metric-stable observation.\\
+\textsf{residual} & Add an exact producer formula to the local context.\\
+\textsf{call} & Invoke another compiled interface at a finite list of demanded queries.\\
+\bottomrule
+\end{longtable}
+
+Each node declares its input and output arities, query transformer, certificate
+bound, verifier bit, formula template, and local proof theorem.  Acyclic graphs
+are topologically scheduled.  A graph with monotone cyclic demand first invokes
+\cref{thm:demand-closure}; the resulting finite demand is then unrolled into an
+acyclic schedule.
+
+\subsection{The compiler invariant}
+
+For every scheduled node \(v\), the compiler maintains:
+
+\begin{enumerate}
+\item a term tuple \(s_v\) containing the node state;
+\item a quantifier-free state formula \(I_v(s_v)\);
+\item a finite list \(\Gamma_v\) of residual and input formulas;
+\item a derivation \(\Gamma_v\vdash_{\PRAAx}I_v(s_v)\);
+\item a map from local certificate variables to their lexical scopes;
+\item an observation relation guaranteeing that no noninvariant local code
+      escapes.
+\end{enumerate}
+
+Bounded logical content is reflected into bits before entering a loop.
+Quantifiers may occur in the external contract of a node, but the formula on
+which the \(\ipra\) induction rule acts is always quantifier-free.
+
+\subsection{Compilation theorem}
+
+\begin{theorem}[FIBER compilation]
+\label{thm:compilation}
+Let \(P\) be a fixed well-formed FIBER program from interfaces
+\(X_1,\ldots,X_m\) to \(Y\).  Suppose:
+
+\begin{enumerate}
+\item every primitive node is supplied with a local derivation in
+      \(\Prf\;\PRAAx\);
+\item every bounded formula used by a checker has a reflection derivation;
+\item every loop carries a quantifier-free invariant with base and step
+      derivations;
+\item every cyclic demand operator is monotone and has explicit finite caps;
+\item every exported operation respects the declared observation relation;
+\item every external requirement is named by a residual formula.
+\end{enumerate}
+
+Then an effective metalevel compiler constructs:
+
+\begin{enumerate}
+\item fixed primitive-recursive symbols for demand, master-certificate bounds,
+      verification, transformation, and observation;
+\item a finite list of residual formulas \(R_P(p,q)\);
+\item a Lean proof term of the literal type
+\[
+ R_P(p,q),\;\mathsf{Inputs}_P(p,q)
+ \;\vdash_{\PRAAx}\;
+ \mathsf{Output}_Y(p,q);
+\]
+\item and, when the output is certificate-independent, a proof in which all
+      local and master certificates have been existentially eliminated.
+\end{enumerate}
+
+If derivations of all formulas in \(R_P(p,q)\) are later supplied, the closed
+or client-context conclusion follows by \texttt{Prf.trans}.
+\end{theorem}
+
+\begin{proof}
+The proof is by external induction over the finite schedule.
+
+At a primitive node, instantiate its closed local theorem at the actual input
+terms using \texttt{LeanProofs.IPRA.inst}, then weaken to the current context.
+At a pairing or projection node, use the checked pairing equations.  At a
+bounded map or fold, apply quantifier-free induction to the declared state
+formula; the base and step derivations are part of the node contract.  At a
+search node, instantiate \cref{thm:least}.  At a case node, reflect the bit,
+derive the finite decidable disjunction, compile each branch, and join them by
+\texttt{Prf.orE}.  At an existential node, compile the body under the shifted
+certificate hypothesis and apply \texttt{Prf.exE}.  At a strategy node, use
+\cref{thm:strategy}.  At an observation node, apply the operation congruence
+or metric stability theorem and then seal the local certificate.
+
+A call node first computes the finite demanded queries.  For each demand it
+instantiates the called interface theorem.  The input derivations are then
+substituted into the caller's local theorem using \texttt{Prf.trans}.  If a
+single code is required, \cref{thm:master} forms the master certificate; if
+not, the certificates are opened one at a time and sealed.
+
+For monotone cyclic demand, \cref{thm:demand-closure} computes the least finite
+closure.  The graph is unrolled for the resulting bounded number of instances,
+so the remaining schedule is finite and acyclic.
+
+The induction maintains the lexical-scope invariant.  A certificate variable
+can disappear only through existential elimination; an exported term may
+mention it only if the node is marked canonical and least search has produced
+a closed term.  Therefore the final conclusion contains no accidental witness
+escape.  Every unresolved producer encountered by the schedule is inserted as
+a hypothesis, yielding exactly \(R_P(p,q)\).  Finally simultaneous cut
+combines all node derivations and, when available, discharges residuals.
+\end{proof}
+
+\subsection{Composition}
+
+\begin{theorem}[Compositionality]
+\label{thm:composition}
+If \(R:X\to Y\) and \(S:Y\to Z\) are FIBER realizers, then there is a FIBER
+realizer \(S\circ R:X\to Z\).  Its demand is obtained by flattening the
+\(R\)-demands for each \(Y\)-query demanded by \(S\); its residual list is the
+union of the specialized residuals of \(R\) and \(S\); and its soundness proof
+is obtained by substitution and simultaneous cut.
+\end{theorem}
+
+\begin{proof}
+For a target query \(q\), compute \(\dem_S(q)=\langle y_0,\ldots,y_{k-1}\rangle\).
+For each \(y_i\), compute \(\dem_R(y_i)\), concatenate the lists, and remove
+no duplicates unless a proved normalization theorem is available.  A master
+certificate supplies the required \(X\)-certificates.  The transformer first
+runs \(T_R\) at each \(y_i\), bundles the resulting \(Y\)-certificates, and
+then runs \(T_S\).  Bounds and all operations are primitive recursive.
+
+In the object theory, instantiate the soundness theorem for \(R\) at every
+\(y_i\).  Use these derivations to discharge the \(Y\)-validity hypotheses of
+the soundness theorem for \(S\) by \texttt{Prf.trans}.  Extensionality or
+metric stability composes by transitivity or the triangle inequality.  Local
+certificates are sealed.  The remaining hypotheses are precisely the
+specialized residuals.  Sequence concatenation may make associativity hold
+only up to a provable coding equality, but the exported observation is
+unchanged; normalizing all flattened demands to one canonical sequence code
+makes composition strictly associative at the metadata level.
+\end{proof}
+
+\begin{corollary}[Reuse under arbitrary terms and contexts]
+A compiled closed interface theorem can be specialized at arbitrary object
+terms and used under arbitrary client hypotheses.
+\end{corollary}
+
+\begin{proof}
+Apply \texttt{LeanProofs.IPRA.inst} to substitute the terms and then
+\texttt{Prf.ofNil} or weakening to add the client context.  This is why reusable
+lemmas should be stated either at arbitrary terms or in an explicitly
+universally closed form.
+\end{proof}
+
+\subsection{Soundness versus completeness}
+
+The compilation theorem is a soundness theorem: every accepted program yields
+an \(\ipra\) derivation from its explicit residuals.  It does not assert that
+every \(\ipra\) theorem has a convenient FIBER presentation, nor that every
+classical proof can be mined automatically.  This asymmetry is intentional.
+The source language is a disciplined fragment optimized for finite,
+quantitative mathematics and auditability.
+
+\subsection{Why the framework is not merely a checker generator}
+
+A checker alone proves only a conditional statement of the form ``if this
+finite code verifies, then the local conclusion holds.''  The compiler also
+tracks:
+
+\begin{itemize}
+\item where the certificate comes from;
+\item whether its existence is local, canonical, or residual;
+\item how a downstream query changes upstream precision demand;
+\item whether two independently produced certificates are compatible;
+\item which observations are stable under representation changes;
+\item which formulas are actually used as quantifier-free induction
+      invariants;
+\item and how all local proofs are assembled into the final object sequent.
+\end{itemize}
+
+These are exactly the points at which the existing packet outlines most often
+stop.

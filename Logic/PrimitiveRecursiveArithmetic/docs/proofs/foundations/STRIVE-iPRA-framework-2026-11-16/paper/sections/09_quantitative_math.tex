@@ -1,0 +1,163 @@
+\section{Embedding quantitative and analytic mathematics}
+
+\subsection{Rational coding and error predicates}
+
+The native domain is \(\N\), so signed integers, rationals, finite vectors, and
+matrices are represented by primitive-recursive codes.  A rational may be a
+pair \((z,d)\) with a signed-integer code \(z\) and positive denominator
+\(d+1\).  Equality can be checked by cross multiplication, and order by the
+corresponding signed comparison.  Approximation statements use integer-scaled
+inequalities, avoiding division in the proposition itself.
+
+For example, the assertion that rational code \(r\) approximates a real-like
+object \(x\) within \(2^{-n}\) is represented by a certificate predicate
+\[
+ \mathsf{Approx}(x,n,r,c)=1,
+\]
+where \(c\) contains the finite evidence appropriate to the chosen
+representation.  The framework never quantifies over a completed real number
+as a set of rationals.  It reasons about finite observations at requested
+precisions.
+
+\subsection{Finite-use real interfaces}
+
+A real-like object is supplied through a query contract
+\[
+ \forall n<N\;\exists c<B(x,n)\;
+   \mathsf{Approx}(x,n,c)=1.
+\]
+For a theorem with an arbitrary precision parameter \(N\), the theorem is
+proved uniformly in \(N\), but each instance uses finitely many queries.  A
+reverse demand pass computes how accurate each input observation must be to
+obtain the requested output precision.
+
+This resolves a common apparent conflict: iPRA can prove a formula for every
+natural precision parameter without constructing an infinitary object.  What
+it cannot do automatically is derive the modulus that tells the finite
+algorithm which input precision suffices.  The modulus is a primitive-
+recursive producer and must be proved from theorem-specific estimates.
+
+\subsection{Reverse error-demand propagation}
+
+Consider a fixed finite computation graph.  Each node \(v\) has an output error
+budget \(e_v\), and each edge carries a monotone local demand transformer
+\(D_{u\leftarrow v}(e_v)\).  Starting from the requested final budget, propagate
+requirements backward and take coordinatewise maxima.  If dependencies are
+acyclic, one reverse traversal suffices.  If they are cyclic but bounded and
+monotone, use the finite closure theorem of Section~7.
+
+The forward proof then checks a local estimate at every node.  Typical local
+contracts are
+\begin{align*}
+ |x+y-(\tilde x+\tilde y)|&\le e_x+e_y,\\
+ |xy-\tilde x\tilde y|&\le M_xe_y+M_ye_x+e_xe_y,\\
+ |f(x)-f(\tilde x)|&\le\omega_f(e_x),\\
+ d(O(c),O(c'))&\le\varepsilon.
+\end{align*}
+All quantities are rational codes, and inequalities are reduced to natural
+arithmetic.  Magnitude bounds \(M_x,M_y\) and moduli \(\omega_f\) are explicit
+inputs or derived local lemmas.
+
+\subsection{Division and apartness}
+
+A bare negated equality is usually not a usable numerical resource for
+approximate inversion.  Knowing \(x\ne0\) does not provide a rational
+\(\lambda>0\) with \(|x|\ge\lambda\).  Without such a lower bound, an error in
+\(x\) can be amplified arbitrarily by inversion.
+
+\begin{contract}[Approximate inverse]
+To compute an inverse with output error \(\varepsilon\), require:
+\begin{enumerate}
+\item an approximation \(\tilde x\) to \(x\);
+\item a positive rational lower bound \(\lambda\le |x|\);
+\item input error small enough, for example \(|x-\tilde x|\le\lambda/2\).
+\end{enumerate}
+Then \(|\tilde x|\ge\lambda/2\), and elementary rational algebra gives an
+explicit inverse error bound.
+\end{contract}
+
+This requirement is not a weakness of iPRA; it is the constructive content of
+numerical inversion.  In a discrete bounded natural-number problem the
+situation is different.  If \(d<M\) and \(d\ne0\), finite numerical
+case analysis yields \(1\le d\), which is a usable lower bound.  STRIVE keeps
+these cases separate.
+
+\subsection{Finite nets instead of abstract compactness}
+
+An abstract compactness theorem is not directly a primitive-recursive
+algorithm.  The useful finite contract is a net certificate:
+\[
+ \mathsf{Cover}(X,n,L)=1,
+\]
+where \(L\) is a finite list of sample points and every admissible input is
+within radius \(2^{-n}\) of some member.  If a function has a supplied modulus
+of continuity, evaluate it on the net, choose a least finite optimum, and add
+the modulus error.
+
+\begin{theorem}[Finite-net optimization schema]
+Assume a checked \(\delta\)-net \(L\) for a domain, a bounded evaluator for
+\(f\) on members of \(L\), and a modulus proving
+\(d(x,y)\le\delta\to |f(x)-f(y)|\le\varepsilon\).  Then finite search returns a
+sample whose value is within the evaluation error plus \(\varepsilon\) of the
+global optimum.
+\end{theorem}
+
+\begin{proof}
+Let \(x^*\) be an arbitrary admissible point.  Coverage supplies a sample
+\(y\in L\) within \(\delta\).  The modulus compares \(f(x^*)\) and \(f(y)\).
+The selected finite optimum is no worse than \(y\), up to its verified
+evaluation error.  Combining the inequalities yields the stated bound.  The
+sample selection and its failure alternative are instances of the signed
+bounded-formula compiler.  If the theorem does not already provide a net or
+modulus, those remain residuals.
+\end{proof}
+
+\subsection{Metastability and finite windows}
+
+A full convergence modulus may not exist or may be hard to obtain.  Many finite
+uses need only a metastable window:
+\[
+ \forall g<G\;\exists n<N(g,k)\;
+ \forall i,j\in[n,n+g(n)]\;d(x_i,x_j)\le2^{-k}.
+\]
+When \(g\), \(k\), and a rank bound are finite-coded, this is a bounded formula
+and receives positive or negative strategy certificates.  A positive strategy
+returns a stable window for each bounded challenge.  A negative strategy
+identifies a challenge and closes every candidate window with a violating pair.
+This is a genuine constructive result even when no tail convergence rate is
+claimed.
+
+\subsection{Algebraic branches and clusters}
+
+Exact branch selection is replaced by a hierarchy of finite contracts.
+
+\begin{enumerate}
+\item A local root certificate verifies that a finite box contains the claimed
+number of roots or that a sign/argument condition holds.
+\item A cluster observer returns symmetric data, such as coefficient
+approximations or power sums, invariant under permutation.
+\item A separation certificate upgrades the cluster to uniquely labeled
+branches.
+\item A compatibility trace is used only when a downstream theorem needs the
+same branch across several precisions.
+\end{enumerate}
+
+The framework can verify and compose all these certificates.  It does not
+produce a global separation theorem from the mere existence of roots.
+
+\subsection{Diophantine enumeration}
+
+Given a polynomial equation and a height cutoff \(H\), enumeration of all
+integer tuples of height below \(H\) is a fixed bounded search.  STRIVE produces
+both a solution certificate and a counterstrategy showing that every bounded
+candidate fails.  What it cannot infer is a cutoff containing all solutions
+from a non-effective finiteness assertion.
+
+Thus the generic theorem has the conditional form
+\[
+ \mathsf{AllSolutionsBelow}(H)
+ \;\longrightarrow\;
+ \mathsf{EnumerationComplete}(H,L).
+\]
+The verifier and every consequence of a supplied \(H\) can be fully formalized.
+The height producer is an exact, theorem-specific residual.

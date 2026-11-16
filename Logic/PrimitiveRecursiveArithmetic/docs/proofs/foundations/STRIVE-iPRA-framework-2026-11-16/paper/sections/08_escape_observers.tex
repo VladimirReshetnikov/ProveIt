@@ -1,0 +1,158 @@
+\section{Certificate escape analysis and stable observers}
+
+\subsection{Three escape modes}
+
+Every certificate-producing node receives one of three explicit modes.
+
+\begin{description}[leftmargin=2.2cm,style=nextline]
+\item[Local]
+The public conclusion does not mention the certificate.  Use existential
+elimination and erase it immediately.
+
+\item[Observed]
+The public conclusion depends only on \(O(c)\), and all accepted certificates
+have the same observation, equivalent observations, or observations within a
+specified diameter.  Expose the observation contract, not the raw code.
+
+\item[Named]
+The public theorem genuinely requires a particular numerical code.  Prove a
+finite bound and existence, then define the least accepted code by bounded
+search.
+\end{description}
+
+This classification is more than documentation.  It determines the required
+proof obligations and prevents accidental global choice.
+
+\subsection{Exact observers}
+
+Let \(C(a,c)=1\) be a certificate checker and \(O(a,c)\) an observation term.
+Assume pairwise stability:
+\[
+ C(a,c)=1\wedge C(a,c')=1
+ \;\longrightarrow\;
+ O(a,c)=O(a,c').
+\]
+
+\begin{theorem}[Exact observation erasure]
+Suppose \(\exists c<B(a)\,C(a,c)=1\).  Then there exists an observation \(o\)
+realized by an accepted certificate, and any two such observations are equal.
+Any downstream formula congruent under equality of \(o\) can be proved without
+naming a certificate.
+\end{theorem}
+
+\begin{proof}
+Open the producer existential.  Introduce \(o=O(a,c)\) and prove the downstream
+property from the local certificate.  Close the existential elimination; the
+raw certificate disappears.  For uniqueness, open two certificates and apply
+pairwise stability.  A downstream predicate is transported by equality using
+the calculus's simultaneous Leibniz rule.  At no point is a selector over all
+inputs constructed.
+\end{proof}
+
+If a concrete term for \(o\) must appear outside an existential, one may use the
+least accepted certificate.  The point is that naming is an additional public
+requirement, not a prerequisite for ordinary proof composition.
+
+\subsection{Quotient observers without quotient types}
+
+Exact equality is often too strong.  Bases differ by a change-of-basis matrix,
+root lists differ by permutation, paths differ by stuttering, and local charts
+differ on overlap.  Let \(E(x,y)=1\) be a reflected equivalence relation and
+assume
+\[
+ C(a,c)=1\wedge C(a,c')=1
+ \;\longrightarrow\;
+ E(O(a,c),O(a,c'))=1.
+\]
+A consumer supplies an \(E\)-congruence theorem for its predicate.  This is
+enough; no quotient type need be constructed inside arithmetic.
+
+\begin{proposition}[Quotient observation principle]
+If \(P(x)\) is stable under \(E\), then proving \(P(O(a,c))\) from one accepted
+certificate proves an invariant public statement independent of the
+certificate representation.
+\end{proposition}
+
+\begin{proof}
+Given any other accepted \(c'\), observer stability gives \(E(O(c),O(c'))\).
+The consumer's congruence implication transports \(P\) to \(O(c')\).  Because
+the original certificate remains under existential elimination, the public
+statement is the invariant property, not a chosen equivalence class object.
+\end{proof}
+
+This is particularly useful for unordered root clusters, finite sets represented
+by duplicate-permitting lists, and geometric objects represented in overlapping
+coordinate patches.
+
+\subsection{Metric observers}
+
+Approximation problems rarely have exact certificate independence.  Let
+\(d(x,y)\) be a primitive-recursive rational pseudo-distance and let
+\(\varepsilon(a,q)\) be an explicit error bound.  Assume
+\[
+ C(a,q,c)=1\wedge C(a,q,c')=1
+ \;\longrightarrow\;
+ d(O(a,q,c),O(a,q,c'))\le\varepsilon(a,q).
+\]
+Then any selected observation is representative up to the declared diameter.
+If a consumer is \(L\)-Lipschitz, certificate choice contributes at most
+\(L\varepsilon\) to the output error.
+
+The key discipline is that \(\varepsilon\) is data, not a slogan such as
+``sufficiently close.''  Its derivation may depend on separation, a modulus,
+or a finite-cover certificate, each retained as a residual when unavailable.
+
+\subsection{Independent certificates versus compatible paths}
+
+There are two distinct ways to use a family of certificates.
+
+\begin{enumerate}
+\item If later stages require the actual state produced earlier, use relational
+viability and a compatible replay.
+\item If the final output is stable across all accepted certificates at each
+query, select certificates independently.  Compatibility is unnecessary.
+\end{enumerate}
+
+The second method can be much cheaper.  For example, to approximate a symmetric
+polynomial of all roots in a cluster, each precision may use a different list
+ordering or a different isolating box.  Stable observation proves that the
+symmetric output is consistent.  Constructing an infinite coherent branch
+would solve a harder problem with no benefit to the requested theorem.
+
+\subsection{Least naming}
+
+Suppose a public API demands a code-valued function.  Given
+\[
+ \exists c<B(a)\;C(a,c)=1,
+\]
+define
+\[
+ \mu(a)=\min\{c<B(a):C(a,c)=1\}.
+\]
+The existing bounded-search theorem yields
+\[
+ \mu(a)<B(a),\qquad C(a,\mu(a))=1,
+\]
+and minimality.  This produces a canonical total primitive-recursive term
+under the existence hypothesis.
+
+A least code is representation dependent.  It should not be confused with a
+mathematically canonical object.  Observer theorems ensure that public
+invariant outputs do not depend on arbitrary details of the code ordering.
+
+\subsection{Branch labels and discontinuity}
+
+A uniform exact label for a root, eigenvector, or analytic branch may be
+discontinuous at collisions or symmetries.  STRIVE does not force such a label.
+It offers three safer interfaces:
+
+\begin{itemize}
+\item return the whole finite cluster;
+\item return a symmetric or quotient-invariant observation;
+\item return an approximate branch only under an explicit separation
+certificate.
+\end{itemize}
+
+When separation is supplied, finite search can select the unique isolated
+candidate and the observer becomes exact.  Without it, the residual accurately
+records the missing mathematical resource.

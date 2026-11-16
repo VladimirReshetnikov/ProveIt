@@ -1,0 +1,176 @@
+\section{Lean formalization architecture}
+\label{sec:lean-plan}
+
+\subsection{Integration target}
+
+The ordinary implementation should live under
+\begin{center}
+\code{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/}\allowbreak
+\code{IPRADerivations/Framework/SCOPE/}.
+\end{center}
+It should be exposed by an umbrella import only after every module builds.  Foundation adapters belong in \code{IPRABridge} and should reuse the already checked open-sequent transports.
+
+\subsection{Structural kernel}
+
+The archive's \code{lean/SCOPE/StructuralKernel.lean} is a no-placeholder source-level candidate.  Its core declarations have the following shapes:
+
+\begin{lstlisting}
+theorem replaceContext (h : Gamma |- A)
+    (supply : forall C in Gamma, Delta |- C) : Delta |- A :=
+  h.trans supply
+
+structure Contract (n) (Gamma) (goal) where
+  valid   : Fm PTm (n + 1)
+  extract : valid :: Gamma.map Fm.shift |- goal.shift
+
+theorem Contract.close
+    (producer : Gamma |- Fm.ex C.valid) : Gamma |- goal :=
+  .exE producer C.extract
+
+structure ResidualResult (n) (Gamma) (goal) where
+  residuals : List (Fm PTm n)
+  derivation : residuals ++ Gamma |- goal
+\end{lstlisting}
+
+The actual file uses the repository notation \code{Gamma |- [PRAAx] A}.  It adds residual closure, weakening, specialization, boundary introduction, and direct sealing.  It contains no \code{sorry} or new axiom.  It was not elaborated in this runtime because the repository workspace was unavailable locally, so it is not reported as checked.
+
+\subsection{Bounded formula module}
+
+The first substantial module should define the fixed syntax:
+
+\begin{lstlisting}
+inductive BForm : Nat -> Type
+  | eq    (s t : PTm n)
+  | bot
+  | and   (A B : BForm n)
+  | or    (A B : BForm n)
+  | imp   (A B : BForm n)
+  | allLt (bound : PTm n) (body : BForm (n+1))
+  | exLt  (bound : PTm n) (body : BForm (n+1))
+\end{lstlisting}
+
+Define \code{denote} in \(\Fm\) and \code{bit} in \(\PTm\).  The key arbitrary-arity fold construction is:
+
+\begin{lstlisting}
+def liftFoldBody (body : PTm (n+1)) : PTm (n+2) :=
+  Syn.subst (Fin.cases (var 0) (fun j => var j.succ.succ)) body
+
+def allFoldPR (body : PTm (n+1)) : PR (n+1) :=
+  recDef (num 1) (band (var 1) (liftFoldBody body))
+\end{lstlisting}
+
+This explicitly resolves the parameter-arity problem.  The compiler should return a package:
+
+\begin{lstlisting}
+structure Reflection (A : Fm PTm n) where
+  bit      : PTm n
+  boolean  : [] |- (bit = 0 or bit = 1)
+  forward  : [] |- (A -> bit = 1)
+  backward : [] |- (bit = 1 -> A)
+\end{lstlisting}
+
+The implementation order is Boolean algebra, fold equations, search adapters, fold reflection, then structural recursion on \code{BForm}.  Nested binder tests must substitute non-variable terms through at least two alternating quantifiers.
+
+\subsection{Least accepted adapter}
+
+Wrap the existing search API in the accepted-bit convention.  A useful structure is:
+
+\begin{lstlisting}
+structure LeastAccepted (accepted : PTm (n+1)) (bound : PTm n) where
+  witness  : PTm n
+  foundBit : PTm n
+  boolean  : ...
+  sound    : ...
+  minimal  : ...
+  sentinel : ...
+\end{lstlisting}
+
+The implementation should reuse \code{Search.search_found}, \code{search_minimal}, and \code{search_spec}; it should not reprove least search from scratch.
+
+\subsection{Codes and demand closure}
+
+Select one vector representation and prove it before implementing closure.  Mixed radix is attractive because total capacity and lexicographic code order are explicit.  Required modules are:
+
+\begin{enumerate}
+\item \code{MixedRadix}: digit, encode, decode, range, and round trip;
+\item \code{CappedVector}: coordinate order, join, rank, and cap sum;
+\item \code{DemandClosure}: inflationary iteration, strict rank, fixedness, and leastness.
+\end{enumerate}
+
+The finite dimension is a Lean parameter or a fixed structure index; object iteration is on the natural step counter.  Coordinatewise boundedness is represented by a reflected fold bit so the induction formula remains QF.
+
+\subsection{Trace module}
+
+A reusable trace package should accept fixed terms/symbols and local derivations rather than a semantic Lean function alone.  One possible interface is:
+
+\begin{lstlisting}
+structure TraceContract (n : Nat) where
+  statePR  : PR (n+1)
+  init     : PTm n
+  inv      : Fm PTm (n+1)
+  invQF    : inv.QF
+  base     : Gamma |- inv[init]
+  step     : inv :: Gamma.shift |- inv[next]
+\end{lstlisting}
+
+The precise indexing should be chosen to minimize rewrites with \code{recDef}.  The result theorem applies \code{IPRA.ind} and then \code{Prf.subst} at arbitrary fuel.
+
+\subsection{Finite strategies and viability}
+
+Begin with the \(\forall\exists\) case.  Encode a table by mixed radix and prove table lookup equations.  Then add a host-level datatype for fixed quantifier shapes and compile it recursively.
+
+Viability should be a separate module.  Its acceptance test must include the dead-end example from \cref{sec:viability}.  Soundness and completeness should be stated as ordinary object derivations of reflected path predicates, not merely as Lean propositions over lists.
+
+\subsection{Observers and scope effects}
+
+Define structures for:
+
+\begin{itemize}
+\item exact observer to a fixed outer term;
+\item explicit congruence observer;
+\item rational metric diameter observer;
+\item gap-guarded finite label observer.
+\end{itemize}
+
+The scope compiler can use a host enum
+\begin{lstlisting}
+inductive Escape
+  | private | existential | stable | canonical | residual
+\end{lstlisting}
+but each constructor must require the proof payload corresponding to its semantics.  In particular, \code{stable} is not a Boolean annotation; it carries an observer derivation.
+
+\subsection{Graph compiler}
+
+The graph compiler is a Lean metaprogram or ordinary recursive function over a fixed typed graph.  Every node returns a term, formula, and derivation package.  The final result is a \code{ResidualResult}.  The compiler may fail with a structured diagnostic when a resource cap, observer proof, or producer is missing.
+
+A useful diagnostic is the minimal residual frontier: traverse backward from the goal, remove producers discharged internally, and report only reachable unsupplied leaves.  This makes failed compilation mathematically informative.
+
+\subsection{Acceptance gates}
+
+The formalization plan in the archive lists the complete gates.  The most important are:
+
+\begin{itemize}
+\item focused and full \code{lake build} success;
+\item no \code{sorry}, \code{admit}, new \code{axiom}, or unsafe Boolean reflection;
+\item \code{#print axioms} audit consistent with repository policy;
+\item substitution at compound terms;
+\item nested bounded alternation;
+\item a cyclic demand example requiring multiple passes;
+\item a greedy-dead-end viability example;
+\item two distinct valid certificates with one stable public observation;
+\item an exact residual visible in the final theorem type;
+\item replay through both scoped bridge directions.
+\end{itemize}
+
+\subsection{Four staged pilots}
+
+After the core builds, migrate:
+
+\begin{enumerate}
+\item a finite arithmetic theorem with a bounded certificate;
+\item the quantitative bisection contract of \cref{sec:trace};
+\item a finite complex or cover example using tree descent;
+\item a height-bounded Diophantine list with the height theorem left residual.
+\end{enumerate}
+
+These pilots exercise every layer without requiring an immediate attack on the hardest analytic or Diophantine producers.

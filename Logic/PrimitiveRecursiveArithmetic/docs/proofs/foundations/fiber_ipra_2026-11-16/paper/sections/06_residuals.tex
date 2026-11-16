@@ -1,0 +1,162 @@
+\section{Residual producer calculus}
+\label{sec:residuals}
+
+A residual is not an informal promise that ``some effective constant exists.''
+It is a fixed formula in the final object-language context.  This section gives
+a normal form and a hierarchy of eliminations.
+
+\subsection{Residual normal form}
+
+A producer residual is written
+\[
+ \mathsf{Produce}_j(p,q)\;:\equiv\;
+ \exists z<B_j(p,q)\;W_j(p,q,z)=1
+\]
+when a finite bound and verifier are known.  When no bound is known, the exact
+formula records what is missing, for example:
+
+\begin{align*}
+&\exists H\;\forall P\;(
+       \mathsf{Solution}(P)\to\mathsf{Height}(P)\le H),\\
+&\exists N\;\forall n\ge N\;\mathsf{Error}(n)\le 2^{-k},\\
+&\exists \eta>0\;\mathsf{Sep}(p,\eta),\\
+&\exists L\;\mathsf{CompleteRepresentativeList}(p,L),\\
+&\exists C,N_0\;\forall n\ge N_0\;\mathsf{Remainder}(n)\le C\rho(n).
+\end{align*}
+
+The residual formula must expose all parameters and conventions: strict versus
+nonstrict bounds, zero-divisor behavior, representation of height, requested
+precision, and whether the output is a list, a bound, or a named witness.
+
+\subsection{Classes of residuals}
+
+\begin{longtable}{p{0.18\linewidth}p{0.42\linewidth}p{0.31\linewidth}}
+\toprule
+Class & Available data & FIBER treatment\\
+\midrule
+\endfirsthead
+\toprule
+Class & Available data & FIBER treatment\\
+\midrule
+\endhead
+R0: structural & Only substitution, weakening, conjunction, or finite cut is missing. & Eliminate directly with checked \texttt{Prf} combinators.\\
+R1: bounded decidable & A bound \(B\), verifier bit \(W\), and object proof of existence are available. & Use checked least search; produce a canonical witness if needed.\\
+R2: finite family & For each \(i<N\), an R1 producer is available. & Form one master certificate by \cref{thm:master}.\\
+R3: monotone demand & A finite product of caps and a monotone demand operator are available. & Compute the least closure by \cref{thm:demand-closure}.\\
+R4: metric coherence & Adjacent error bounds and a primitive-recursive summable tail majorant are available. & Derive a global Cauchy modulus by finite summation; see \cref{sec:analysis}.\\
+R5: compactness substitute & A finite net, coverage checker, and continuity modulus are available. & Seal the local covering point and lift the finite calculation.\\
+R6: bounded classical & A fixed bounded game or finite decidable case split is available. & Verify a finite strategy certificate and realize it intuitionistically.\\
+R7: guarded selector & A positive separation or apartness margin is available. & Define a stable exact label or partial operation under the guard.\\
+R8: genuinely external & No effective bound, modulus, representative theorem, or finite presentation is known. & Leave the exact producer formula in the final sequent.\\
+\bottomrule
+\end{longtable}
+
+The hierarchy is not a scale of mathematical importance.  It separates
+engineering omissions from genuine strength.  R0--R7 often disappear once the
+correct finite formulation is chosen.  R8 is the honest boundary of the
+application.
+
+\subsection{Eliminating bounded residuals}
+
+\begin{proposition}[Bounded producer elimination]
+Suppose a compiled theorem has endpoint
+\[
+ \mathsf{Produce}(p,q),\Gamma\vdash_{\PRAAx}\Phi(p,q)
+\]
+with
+\(\mathsf{Produce}(p,q)\equiv\exists z<B(p,q)\,W(p,q,z)=1\), and suppose
+\(\Gamma\vdash_{\PRAAx}\mathsf{Produce}(p,q)\).  Then
+\(\Gamma\vdash_{\PRAAx}\Phi(p,q)\).  If \(\Phi\) names the witness, replace
+existential elimination by the least selector from \cref{thm:least}.
+\end{proposition}
+
+\begin{proof}
+For a witness-independent conclusion, apply simultaneous cut or existential
+elimination.  For a named witness, derive validity of the least accepted code
+and substitute that term in the endpoint.  Both constructions are checked
+object derivations.
+\end{proof}
+
+\subsection{From finite totality to a producer program}
+
+A common packet proves, for arbitrary \(i<N\), that some local certificate
+exists, but stops before constructing a uniform certificate array.  The
+master-certificate theorem closes this gap when the verifier is bounded and
+decidable.  In source-language terms the residual
+\[
+   \forall i<N\,\exists c<B(i)\;V(i,c)=1
+\]
+is compiled to the primitive-recursive producer
+\[
+   C(i)=\mu c<B(i)\,[V(i,c)=1],
+\]
+followed by sequence recursion.  This is a valid finite choice principle
+because the least search is definable and its correctness is proved.  It
+should not be generalized to unbounded or nondecidable relations.
+
+\subsection{Residual factoring}
+
+Residuals should be factored at the lowest reusable level.  For example, a
+``root branch theorem'' may appear to require one monolithic residual, but it
+usually decomposes into:
+
+\begin{enumerate}
+\item exact coefficient presentation;
+\item a rational isolating box;
+\item a derivative or resultant separation margin;
+\item a polynomial interval-evaluation certificate;
+\item and a requested precision.
+\end{enumerate}
+
+The last three may be bounded decidable data once the first two are supplied.
+Factoring lets a later theorem discharge only the genuinely new producer and
+reuse the finite checker.  The same principle applies to analytic constants,
+finite covers, representatives of descent classes, and topological carriers.
+
+\subsection{Non-eliminable examples}
+
+The framework does not manufacture missing effective mathematics.  In
+particular:
+
+\begin{itemize}
+\item Finiteness of a Diophantine set does not supply a computable height
+      cutoff.  A complete bounded enumeration requires an effective height
+      theorem or a complete list theorem.
+\item Finiteness of a Selmer set does not supply rational points representing
+      all locally soluble covering classes.  Representative production and
+      compatibility remain separate formulas.
+\item Compactness in an abstract completed space does not supply a finite net
+      in the chosen coding.  A net and a coverage modulus must be produced.
+\item Metastability for every control function does not by itself give a
+      Cauchy rate.  A tail modulus or summable adjacent-motion estimate is new
+      data.
+\item A classical proof of \(\neg\neg\exists x A(x)\) does not yield a witness
+      unless the conclusion is stable, bounded decidable, or accompanied by a
+      producer.
+\end{itemize}
+
+In each case FIBER still contributes something useful: it turns the remainder
+of the proof into a verified finite consumer and states the missing theorem in
+a form that can be attacked independently.
+
+\subsection{A theorem-status discipline}
+
+Each theorem in an implementation should receive one of the following labels.
+
+\begin{description}
+\item[Checked object theorem.] A compiled \texttt{Prf PRAAx} declaration.
+\item[Inherited checked theorem.] A named declaration from ConciseIPRA,
+      IPRADerivations, or IPRABridge, with a pinned import path.
+\item[Human-complete schema.] A full mathematical proof whose generic Lean
+      implementation remains to be completed.
+\item[Executable evidence.] Finite tests or exact computations; never a
+      substitute for an object derivation.
+\item[Conditional theorem.] A compiled or human proof with displayed residual
+      producer formulas.
+\item[Obstructed formulation.] A stronger requested interface is false or
+      impossible; a corrected relational, metric, or guarded statement is
+      supplied.
+\item[Open.] Neither proof nor adequate residual reduction is available.
+\end{description}
+
+This vocabulary is used in the theorem ledger shipped with the archive.

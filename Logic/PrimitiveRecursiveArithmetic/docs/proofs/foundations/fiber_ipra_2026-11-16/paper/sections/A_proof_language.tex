@@ -1,0 +1,79 @@
+\section{Formal source-language sketch}
+\label{app:language}
+
+This appendix gives a compact mathematical specification of the proposed
+source language.  It is intentionally first-order and finite.
+
+\subsection{Types}
+
+Base types are \(\mathsf{Nat}\), \(\mathsf{Bit}\), and bounded sequences
+\(\mathsf{Seq}(B,L)\).  Product types are encoded by pairing.  A metric
+observation type adds a discrepancy program; a quotient observation type adds
+an equivalence verifier and congruence proofs.  Types are metadata only: after
+compilation every value is a natural-number term.
+
+\subsection{Terms}
+
+\[
+\begin{array}{rcl}
+t &::=& x \mid 0 \mid S(t) \mid f(t_1,\ldots,t_k)\\
+  &\mid& \mathsf{pair}(t,u) \mid \mathsf{get}(t,i)\\
+  &\mid& \mathsf{fold}(N,s_0,\lambda i\,s.\,h(i,s))\\
+  &\mid& \mathsf{least}(N,\lambda i.\,b(i)).
+\end{array}
+\]
+Every function symbol is a fixed \(\mathsf{PR}\) code generated externally or
+imported from the checked library.
+
+\subsection{Commands}
+
+\[
+\begin{array}{rcl}
+P &::=& \mathsf{return}\;t\\
+  &\mid& \mathsf{let}\;x=t\;\mathsf{in}\;P\\
+  &\mid& \mathsf{call}\;R(q)\;\mathsf{as}\;x\;\mathsf{in}\;P\\
+  &\mid& \mathsf{open}\;\exists x\,A(x)\;\mathsf{as}\;x\;\mathsf{in}\;P\\
+  &\mid& \mathsf{if}\;b\;\mathsf{then}\;P\;\mathsf{else}\;P\\
+  &\mid& \mathsf{loop}\;N\;\mathsf{state}\;s\;\mathsf{invariant}\;I\;\mathsf{do}\;P\\
+  &\mid& \mathsf{require}\;R\;\mathsf{in}\;P\\
+  &\mid& \mathsf{observe}\;o\;\mathsf{mod}\;E.
+\end{array}
+\]
+
+A typing judgment has the form
+\[
+   \Sigma;\Lambda;\mathcal R\vdash P:(Y,q),
+\]
+where \(\Sigma\) is the term environment, \(\Lambda\) is the stack of local
+certificate scopes, and \(\mathcal R\) is the residual list.  The key escape
+rule is:
+\[
+ \frac{\Sigma,x;\Lambda,x;\mathcal R\vdash P:B
+       \qquad x\notin\mathrm{FV}(B)}
+      {\Sigma;\Lambda;\mathcal R\vdash
+       \mathsf{open}\;\exists x A\;\mathsf{as}\;x\;\mathsf{in}\;P:B}.
+\]
+An observation may mention \(x\) only if an equivalence/stability theorem
+proves independence, in which case the compiled conclusion is phrased through
+the observation relation rather than code equality.
+
+\subsection{Compilation judgment}
+
+The compiler returns
+\[
+ \mathsf{compile}(P)=
+ (\dem_P,B_P,V_P,T_P,O_P,\mathcal R_P,\pi_P),
+\]
+where \(\pi_P\) is a Lean value whose type is the appropriate
+\(\Prf\;\PRAAx\) sequent.  The correctness theorem is therefore intrinsic:
+there is no separate untrusted claim that the generated proof is valid.  Lean
+accepts or rejects \(\pi_P\).
+
+\subsection{Operational reference semantics}
+
+A standard natural-number evaluator is useful for tests.  It maps a query and
+certificate to either rejection or an observation.  The evaluator has no
+logical authority.  The object soundness theorem is generated independently
+from local derivations.  Keeping the executable semantics and proof compiler
+separate makes it easier to detect a checker whose host behavior is correct but
+whose object reflection theorem is missing.

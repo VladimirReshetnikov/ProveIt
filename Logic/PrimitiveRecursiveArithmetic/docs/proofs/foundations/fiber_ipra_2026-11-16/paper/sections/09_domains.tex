@@ -1,0 +1,220 @@
+\section{Application patterns and repaired proof obligations}
+\label{sec:domains}
+
+The framework is useful only if it turns reported obstacles into precise local
+tasks.  This section records the normal form for the main domains represented
+in the repository.
+
+\subsection{Combinatorics and finite algebra}
+
+Finite identities, recurrences, and inequalities are the easiest class.  A
+proof normally needs:
+
+\begin{enumerate}
+\item a primitive-recursive symbol for the sequence or finite object;
+\item defining equations at arbitrary object terms;
+\item a quantifier-free induction invariant;
+\item a ring, order, finite-sum, or bounded-search derivation;
+\item an explicitly universally closed endpoint.
+\end{enumerate}
+
+The checked library already supplies most of this.  FIBER adds value when a
+packet uses a large finite certificate or several independently generated
+witnesses.  The certificate is encoded, its checker reflected, and local
+witnesses sealed.  Examples include finite graph colorings, tiling boundary
+checks, coefficient identities, truncated series, recurrence tables, and
+finite matrix calculations.
+
+\subsection{Real and complex analysis}
+
+An analytic object is represented by a family of finite queries.  A typical
+interface contains:
+
+\begin{itemize}
+\item a precision or derivative-order query;
+\item rational or dyadic approximation data;
+\item a residual, interval, or coefficient verifier;
+\item a local modulus or tail bound;
+\item an observation relation identifying independent valid certificates;
+\item guarded operations for division, logarithms, branches, and inverses.
+\end{itemize}
+
+The compiler never assumes that a pointwise family is coherent.  Coherence is
+proved by adjacent motion, a summable tail, nested intervals, or a viable path.
+Finite-net lifting replaces compactness.  Contour and quadrature arguments are
+finite polygonal or mesh calculations plus explicit local error bounds.
+Analytic continuation is represented by a finite chain of overlapping discs,
+with transition certificates and a spanning-tree compatibility proof.
+
+For special functions, identities divide into three layers:
+
+\begin{description}
+\item[Exact finite algebra.] Coefficient recurrences, truncated products,
+      differential equations after coefficient comparison, and polynomial
+      transformations.  These should be the first object-theory milestones.
+\item[Effective local analysis.] Convergence in a guarded domain, with a
+      displayed majorant and tail modulus.
+\item[Global continuation or asymptotics.] A finite path/sector certificate
+      plus effective constants.  Missing constants remain residuals rather
+      than being imported as opaque host data.
+\end{description}
+
+This layering gives a realistic route for the Gamma, Beta, Barnes G,
+hypergeometric, Meijer G, Lambert W, and normal-distribution packets.  It also
+prevents a successful finite-series check from being reported as a complete
+object proof of the analytic function.
+
+\subsection{Probability}
+
+General measure spaces conceal both infinitary data and discontinuity.
+FIBER begins with finite rational laws:
+
+\[
+   \{(x_i,w_i):i<L\},\qquad w_i\in\mathbb Q_{\ge0},
+   \qquad \sum_{i<L}w_i=1.
+\]
+
+Expectation, moments, convolution, and distribution functions at rational
+thresholds are finite sums.  Approximation of an external law requires a
+quantization certificate, tail-moment bounds, and, for discontinuous events,
+an anti-concentration or boundary-mass modulus.  A central limit theorem at a
+fixed error and threshold is then a finite query: truncate tails, discretize,
+verify a characteristic-function or smoothing estimate, and account for all
+errors.  A general measure-theoretic statement is not silently inferred from
+the finite law.
+
+For medians and quantiles, exact labels are unstable when an interval of
+medians exists.  Export the median interval or a finite relation; choose a
+canonical endpoint only when the theorem actually needs one and its bounded
+search contract is proved.
+
+\subsection{Topology and geometry}
+
+Completed spaces are replaced by finite carriers:
+
+\begin{itemize}
+\item simplicial or cubical complexes;
+\item rational polygonal curves;
+\item finite covers and nerves;
+\item grid approximations with refinement maps;
+\item crossing, orientation, or winding certificates;
+\item local chart tuples with overlap checks.
+\end{itemize}
+
+A topology theorem at a fixed query becomes a finite combinatorial theorem plus
+an approximation producer.  For example, a Jordan-curve query may request a
+grid fine enough relative to a separation modulus; a flood-fill certificate
+then proves the finite inside/outside claim.  Invariance under refinement is an
+observation theorem.  The existence of the required separation or approximation
+modulus is a distinct producer.
+
+Finite gluing does not require a global sheaf object.  Given local data on a
+finite cover and equality or error certificates on overlaps, choose a spanning
+tree of the overlap graph.  Transport observations to a root along the tree.
+Exact cocycle compatibility gives equality; metric edge errors add along the
+path.  Remaining cycle edges are consistency checks.  This is the
+``observational descent'' principle in a form directly compilable by FIBER.
+
+\subsection{Diophantine and arithmetic geometry}
+
+A bounded search can verify all solutions below a supplied height.  It cannot
+prove that there are no larger solutions without an effective height or
+complete-list theorem.  The correct interface has two parts:
+
+\begin{enumerate}
+\item a finite enumerator and verifier parameterized by a bound \(H\);
+\item a residual producer asserting that every relevant solution has height
+      at most \(H\), or that a supplied list is complete.
+\end{enumerate}
+
+Once the producer is available, least search and master-certificate formation
+can construct canonical lists, counts, and finite invariants.  Without it, the
+finite consumer is still reusable and the missing arithmetic theorem is
+isolated exactly.
+
+For descent methods, class codes and rational representatives are separated.
+A finite relation records which representatives realize which class.  A
+backward viability certificate chooses a compatible path through a finite
+relation only when every node has a certified continuation.  This resolves
+nonunique local witnesses; it does not prove that every abstract class has a
+rational representative.
+
+\subsection{Prime distribution and ineffective constants}
+
+An asymptotic theorem used at a concrete input should expose:
+
+\begin{itemize}
+\item the threshold \(N_0\);
+\item all constants in the error bound;
+\item the range of moduli or parameters;
+\item and the arithmetic checker for the final inequality.
+\end{itemize}
+
+If a classical proof establishes existence of constants but gives no
+primitive-recursive producer or bound, those constants are residuals.  A
+finite computation that finds plausible constants for a range is evidence for
+an instance, not a uniform proof.  When a verified explicit estimate is
+available, its constants become ordinary input terms and the downstream
+argument is compiled by order and bounded-sum lemmas.
+
+\subsection{Computability and proof coding}
+
+The checked bridge and endpoint inventory already emphasize exact theories,
+exact formulas, literal tables, and replay provenance.  FIBER applies the same
+discipline to proof-coding reductions:
+
+\begin{enumerate}
+\item keep the exact outer theory in the theorem type;
+\item separate semantic equivalence from an object-theory derivation;
+\item treat a machine table, polynomial, or proof predicate as pinned data;
+\item prove local arithmetic in the ordinary portable calculus;
+\item translate at the Foundation or application boundary;
+\item record directions, premises, and double-negation strength exactly.
+\end{enumerate}
+
+A semantic Lean theorem about a machine and an \(\ipra\) proof of a coded
+nonhalting statement are different endpoints.  The framework does not merge
+them in a status ledger.
+
+\subsection{Classical arguments}
+
+FIBER supports three constructive replacements for classical reasoning.
+
+\begin{enumerate}
+\item \textbf{Reflected bounded cases.}  A decidable finite atom yields an
+      object proof of the finite disjunction; branches are joined by
+      \texttt{orE}.
+\item \textbf{Finite strategy certificates.}  Fixed bounded alternation is
+      realized by \cref{thm:strategy}.
+\item \textbf{Stable negative conclusions.}  A negative translation can be
+      used when the target is stable and the translated assumptions are
+      supplied; no witness extraction is claimed.
+\end{enumerate}
+
+An unbounded classical existence theorem that is neither stable nor equipped
+with a producer remains outside these mechanisms.  This is an honest logical
+boundary, not an implementation inconvenience.
+
+\subsection{Representative repaired endpoints}
+
+The following endpoints illustrate how a packet should be restated.
+
+\begin{longtable}{p{0.24\linewidth}p{0.33\linewidth}p{0.34\linewidth}}
+\toprule
+Informal claim & Unsafe formulation & FIBER endpoint\\
+\midrule
+\endfirsthead
+\toprule
+Informal claim & Unsafe formulation & FIBER endpoint\\
+\midrule
+\endhead
+A root has a branch & Return an exact global label from arbitrary Cauchy coefficients & Return a verified cluster; under a separation residual, refine to a label.\\
+Approximants define a real & Prove each precision independently & Add adjacent-motion or nested-interval certificates and derive a Cauchy modulus.\\
+Compactness gives a minimizer & Select a point from an abstract compact space & Supply a finite net, coverage and continuity moduli; return an approximate minimizer, with exactness only under a gap.\\
+A finite set can be enumerated & Use finiteness to invent a height cutoff & Parameterize the verifier by \(H\); retain a complete-height/list residual.\\
+A nonzero pivot can be divided by & Treat \(d\ne0\) as a numerical modulus & Require \(|d|\ge\eta>0\), or return a branch relation that avoids division.\\
+A bounded proof graph has witnesses & Choose one witness at each node & Use least bounded search and one master certificate, or seal local witnesses.\\
+A finite class has a representative & Identify class codes with rational points & Use a representative relation and retain representative totality as a producer.\\
+A metastable sequence converges with rate & Infer a Cauchy modulus from finite windows & Export metastability; add a summable tail or explicit rate producer for a Cauchy name.\\
+\bottomrule
+\end{longtable}

@@ -1,0 +1,142 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{etoolbox}
+
+\definecolor{scopeblue}{RGB}{31,78,121}
+\definecolor{scopegray}{RGB}{245,247,249}
+\definecolor{scopegreen}{RGB}{34,110,74}
+\definecolor{scopered}{RGB}{140,45,45}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=scopeblue,
+  citecolor=scopegreen,
+  urlcolor=scopeblue,
+  pdftitle={SCOPE-iPRA: Scoped Certificates, Observational Projection, and Explicit Residuals},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small SCOPE--iPRA}
+\fancyhead[R]{\small 16 November 2026}
+\fancyfoot[C]{\small \thepage\ of \pageref*{LastPage}}
+
+\setlist{nosep,leftmargin=2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{warning}[theorem]{Warning}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\SCOPE}{\mathsf{SCOPE}}
+\newcommand{\PTm}{\mathsf{PTm}}
+\newcommand{\Fm}{\mathsf{Fm}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Goal}{\mathsf{Goal}}
+\newcommand{\Res}{\mathsf{Res}}
+\newcommand{\bit}{\mathsf{bit}}
+\newcommand{\rank}{\mathsf{rank}}
+\newcommand{\Nat}{\mathbb N}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\seq}[3][]{#2\;\vdash_{\PRAAx}^{#1}\;#3}
+\newcommand{\checked}{\textcolor{scopegreen}{\textbf{inherited checked}}}
+\newcommand{\human}{\textcolor{scopeblue}{\textbf{new human proof}}}
+\newcommand{\blueprint}{\textcolor{scopered}{\textbf{Lean blueprint}}}
+
+\lstdefinelanguage{Lean}{
+  morekeywords={theorem,def,structure,inductive,namespace,end,variable,open,import,where,by,exact,apply,have,let,match,with,if,then,else,fun,forall,exists},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  morestring=[b]"
+}
+\lstset{
+  language=Lean,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{scopeblue}\bfseries,
+  commentstyle=\color{scopegreen},
+  stringstyle=\color{scopered},
+  backgroundcolor=\color{scopegray},
+  frame=single,
+  framerule=0.2pt,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false
+}
+
+\title{\textbf{SCOPE--iPRA}\\[2mm]
+\Large Scoped Certificates, Observational Projection, and Explicit Residuals\\[2mm]
+\large A general framework for embedding mathematics and proofs into intuitionistic primitive recursive arithmetic}
+\author{Prepared for Vladimir Reshetnikov\\OpenAI}
+\date{16 November 2026\\Repository baseline: \code{58627ed89814ba122e1f0f012f1aba103cda267b}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The ProveIt development now contains a kernel-checked ordinary presentation of intuitionistic primitive recursive arithmetic, a substantial library of checked object-theory derivations, and more than one hundred research packets that translate classical mathematics into finite quantitative claims.  The remaining general difficulty is not a lack of encodings.  It is the absence of one discipline that says exactly when a finite witness may escape its proof scope, how cyclic precision requirements are closed before induction, how bounded quantifier alternation is reflected without quantified induction predicates, and how unresolved mathematical producers remain visible in the final sequent.
+
+This report develops \emph{SCOPE--iPRA}: Scoped Certificates, Observational Projection, and Explicit Residuals.  Every fixed mathematical argument is compiled at a finite query.  Fixed bounded formulas are translated to primitive-recursive characteristic terms; finite loops are reflected by quantifier-free induction; cyclic demand networks are closed by an explicit least-fixed-point iteration on a capped product; non-unique witnesses are handled by backward viability; and proof-local certificates are eliminated by ordinary existential elimination.  A certificate may become public only as an existential output, through a certificate-independent exact/quotient/metric observation, by least bounded canonical naming, or as an explicit residual producer obligation.  These five escape modes yield a scope-normal-form theorem whose endpoint is a literal object derivation
+\[
+  B_1,\ldots,B_r,\Gamma\ \vdash_{\PRAAx}\ \Phi.
+\]
+Supplying derivations of the residuals closes the theorem by the already checked simultaneous-cut rule.
+
+The report gives complete human proofs of bounded reflection, guarded least choice, fixed-trace reflection, capped cyclic demand closure, finite strategy extraction, backward viability, observer elimination, finite observational descent, height-bound/list equivalence, and the SCOPE normalization theorem.  It maps each construction to the current \code{ConciseIPRA}, \code{IPRADerivations}, and \code{IPRABridge} APIs.  The archive also contains a no-placeholder structural Lean candidate, detailed Lean blueprints, exact Python reference algorithms, fourteen passing tests, a worked certificate, a theorem ledger, and a difficulty matrix.  The new generic theorems are not claimed kernel-checked in this archive.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_executive}
+\input{sections/02_substrate}
+\input{sections/03_embedding_problem}
+\input{sections/04_scope_contracts}
+\input{sections/05_bounded_reflection}
+\input{sections/06_trace_compiler}
+\input{sections/07_demand_closure}
+\input{sections/08_master_certificates}
+\input{sections/09_viability}
+\input{sections/10_observers}
+\input{sections/11_quantitative_presentations}
+\input{sections/12_domains}
+\input{sections/13_difficulties}
+\input{sections/14_examples}
+\input{sections/15_lean_plan}
+\input{sections/16_barriers}
+\input{sections/17_research}
+\input{sections/A_theorem_statements}
+\input{sections/B_source_audit}
+
+\end{document}

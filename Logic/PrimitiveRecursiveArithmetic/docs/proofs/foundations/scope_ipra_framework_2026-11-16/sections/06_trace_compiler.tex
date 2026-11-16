@@ -1,0 +1,111 @@
+\section{Fixed-trace reflection and proof-producing finite programs}
+\label{sec:trace}
+
+\subsection{State machines specialized at the theorem}
+
+Fix a query tuple \(q\), a state code \(s\), and a transition function
+\[
+  T(s,q).
+\]
+All are represented by fixed primitive-recursive symbols.  Define the trace by primitive recursion:
+\[
+  \mathsf{run}(0,q)=s_0(q),
+  \qquad
+  \mathsf{run}(t+1,q)=T(\mathsf{run}(t,q),q).
+\]
+The current library's \code{recDef} gives the symbol and object-theory zero/successor equations at arbitrary terms.
+
+A state may pack several logical components: loop variables, accumulators, a failure bit, table cursors, certificate digits, and resource counters.  Pairing or mixed-radix coding turns the tuple into one natural number.  Fixed-dimensional tuples do not require arrays as primitive objects.
+
+\subsection{Quantifier-free invariants}
+
+Let \(I(s,q)\) be a quantifier-free formula or, preferably, an invariant bit equation \(\iota(s,q)=1\).  Assume object derivations
+\[
+\begin{aligned}
+&\Gamma(q)\vdash_{\PRAAx} I(s_0(q),q),\\
+&I(s,q),\Gamma(q)^{+}\vdash_{\PRAAx} I(T(s,q),q).
+\end{aligned}
+\]
+The fresh variable in the step sequent is the induction counter/state parameter as arranged by \code{IPRA.ind}.
+
+\begin{theorem}[Fixed-trace reflection]
+\label{thm:trace-reflection}
+For every fuel term \(N(q)\), iPRA derives
+\[
+  \Gamma(q)\vdash_{\PRAAx} I(\mathsf{run}(N(q),q),q).
+\]
+If an object derivation extracts a terminal formula \(F(q)\) from that invariant, then \(\Gamma(q)\vdash_{\PRAAx}F(q)\).
+\end{theorem}
+\begin{proof}
+Form the open induction formula
+\[
+  \phi(t,q):=I(\mathsf{run}(t,q),q).
+\]
+It is quantifier-free because \(I\) is and \(\mathsf{run}\) is a term.  The base case reduces by the zero equation of \(\mathsf{run}\) to the supplied base derivation.  The successor case reduces by the successor equation to the supplied step derivation.  Apply \code{IPRA.ind}, then instantiate the induction variable with \(N(q)\) by \code{Prf.subst}.  Compose the terminal extractor by simultaneous cut or implication elimination.
+\end{proof}
+
+\subsection{Booleanizing prefix properties}
+
+An informal loop invariant often says ``all entries processed so far satisfy \(P\).''  The literal formula \(\forall i<t\,P(i)\) is not quantifier-free.  SCOPE instead extends the state with
+\[
+  a(0)=1,
+  \qquad
+  a(t+1)=a(t)\wedge_b \bit_P(t).
+\]
+The invariant contains the equation \(a(t)=1\).  After induction, bounded reflection identifies it with the intended prefix property.  A failure accumulator is dual:
+\[
+  f(0)=0,
+  \qquad
+  f(t+1)=f(t)\vee_b\neg_b\bit_P(t).
+\]
+
+This pattern handles table verification, finite covers, path checks, proof traces, and bounded universal side conditions.  It also makes counterexamples extractable by least search.
+
+\subsection{Adaptive finite interactions}
+
+A consumer may ask its next finite question based on previous answers.  Such adaptivity is still a fixed trace if:
+
+\begin{enumerate}
+\item the interaction horizon is bounded by a primitive-recursive term;
+\item every answer lies in an explicit finite code range;
+\item the next-query function is primitive recursive;
+\item validity of each answer is reflected by a bit.
+\end{enumerate}
+
+The state stores the transcript.  The transition decodes the current answer, verifies it, updates the transcript and next query, and accumulates failure.  A private master certificate can encode the entire answer table in advance; the trace merely reads the demanded row.  This ``offline certificate, online verifier'' view is often easier to formalize than a genuinely interactive object.
+
+\subsection{Phase composition}
+
+Large algorithms are best split into phases with separate invariants.  Suppose phase \(j\) proves a postcondition \(P_j\), and phase \(j+1\) has a base derivation from \(P_j\).  Compile each phase by \cref{thm:trace-reflection} and compose the resulting derivations with \code{Prf.trans}.  There is no need for one enormous invariant carrying all earlier implementation details.
+
+Phases also localize certificate scopes.  A certificate used only to establish \(P_j\) can be existentially eliminated before phase \(j+1\), preventing irrelevant data from polluting the public theorem and subsequent state.
+
+\subsection{Termination and descent}
+
+A loop whose natural description is ``repeat until done'' must expose primitive-recursive fuel.  Typical sources are:
+
+\begin{itemize}
+\item a finite search bound;
+\item a decreasing natural rank;
+\item a lexicographic tuple encoded by a rank;
+\item a finite state-space cardinality together with a no-repeat certificate;
+\item the capped demand budget of \cref{sec:demand-closure}.
+\end{itemize}
+
+The repository already contains generic descent developments.  SCOPE uses them when the step relation is theorem-specific, but retains the same discipline: termination evidence is a finite term and its correctness is an object derivation.
+
+\subsection{A restricted proof-producing DSL}
+
+The fixed-trace theorem suggests a small implementation language with nodes for:
+
+\begin{itemize}
+\item exact term computation;
+\item reflected conditionals;
+\item bounded folds and least search;
+\item clocked recursion with an invariant;
+\item certificate read/verify operations;
+\item local existential scopes;
+\item residual producer calls.
+\end{itemize}
+
+A compiler for this DSL need not be trusted for logical correctness.  It emits \(\PR\) symbols, formulas, and a \(\Prf\,\PRAAx\) term assembled from checked lemmas.  Lean checks the output.  The DSL is deliberately weaker than arbitrary Lean, which is what makes proof production feasible.

@@ -1,0 +1,168 @@
+\section{Scoped contracts, residuals, and certificate escape}
+\label{sec:scope-contracts}
+
+\subsection{Structural lemmas}
+
+We first isolate the proof-theoretic operations.  They are simple, but making them explicit prevents later ambiguity about where a witness lives.
+
+\begin{lemma}[Boundary introduction]
+If \(B,\Gamma\vdash_{\PRAAx} A\), then \(\Gamma\vdash_{\PRAAx} B\to A\).
+\end{lemma}
+\begin{proof}
+Apply implication introduction.  This is exactly the \code{Prf.impI} constructor.
+\end{proof}
+
+\begin{lemma}[Residual discharge]
+If \(\Gamma\vdash_{\PRAAx} B\) and \(B,\Gamma\vdash_{\PRAAx} A\), then \(\Gamma\vdash_{\PRAAx}A\).
+\end{lemma}
+\begin{proof}
+Introduce the conditional by the preceding lemma and apply implication elimination to the proof of \(B\).
+\end{proof}
+
+\begin{lemma}[Simultaneous residual cut]
+Let \(R=[B_1,\ldots,B_r]\).  If \(R,\Gamma\vdash_{\PRAAx}A\), and for every \(B_i\in R\) there is a derivation \(\Gamma\vdash_{\PRAAx}B_i\), then \(\Gamma\vdash_{\PRAAx}A\).
+\end{lemma}
+\begin{proof}
+Use the checked theorem \code{Prf.trans}.  For a hypothesis in \(R\), supply its assumed derivation.  For a hypothesis already in \(\Gamma\), use the hypothesis rule.  The list order is irrelevant because membership, not position, is the premise of \code{Prf.trans}.
+\end{proof}
+
+\begin{lemma}[Specialization]
+If \(\Gamma(\vec x)\vdash_{\PRAAx}A(\vec x)\) and \(\vec t\) is any tuple of object terms, then
+\[
+  \Gamma(\vec t)\vdash_{\PRAAx}A(\vec t).
+\]
+\end{lemma}
+\begin{proof}
+Apply \code{Prf.subst}.  Capture avoidance beneath quantifiers is already established by \code{Syn.up} and the formula substitution lemmas.
+\end{proof}
+
+\subsection{Private certificate sealing}
+
+Let \(V(c,\vec x)\) be a formula with a fresh certificate variable \(c\), and let \(A(\vec x)\) not contain \(c\).
+
+\begin{theorem}[Private sealing]
+If
+\[
+  \Gamma\vdash_{\PRAAx}\exists c\,V(c)
+  \qquad\text{and}\qquad
+  V(c),\Gamma^{+}\vdash_{\PRAAx}A^{+},
+\]
+then \(\Gamma\vdash_{\PRAAx}A\).  Here \({}^{+}\) denotes weakening by the fresh certificate variable.
+\end{theorem}
+\begin{proof}
+This is the existential-elimination constructor \code{Prf.exE}.  Its scope condition is syntactic: the conclusion \(A\) lives outside the certificate scope, so the witness cannot occur in it.  No choice function is created.
+\end{proof}
+
+This theorem is the default SCOPE composition rule.  A producer can use any valid certificate internally, and a consumer can inspect it, as long as the public conclusion is independent of the witness.
+
+\subsection{Existential output escape}
+
+A certificate-dependent object may still escape under an existential quantifier.
+
+\begin{theorem}[Existential output]
+Suppose \(V(c)\) is produced and, under \(V(c)\), one can derive \(P(t(c))\).  Then one can derive \(\exists z\,P(z)\) without naming a global function \(c\mapsto t(c)\).
+\end{theorem}
+\begin{proof}
+Inside the certificate scope, apply existential introduction with witness \(t(c)\), obtaining \(\exists z\,P(z)\).  This formula no longer contains the certificate variable.  Then eliminate \(c\) by private sealing.  The two existential quantifiers have different roles: the inner derivation chooses a result from a local certificate, while the outer theorem states only existence.
+\end{proof}
+
+This rule is often preferable to least search.  Canonical naming should not be introduced merely because a proof assistant can order codes.
+
+\subsection{Stable observation escape}
+
+Suppose the public consumer needs only \(O(c)\), not the full certificate.
+
+\begin{definition}[Stable observer]
+An observer is stable for \(V\) if iPRA proves that any two valid certificates have observations related by the public equality notion.  The relation may be literal equality, an explicit quotient congruence, or a metric bound.
+\end{definition}
+
+For literal equality, one may either prove a certificate-free term \(o(q)\) with \(V(c)\to O(c)=o(q)\), or select one bounded valid certificate internally and prove that all others have the same observation.  The public theorem exposes only \(o\), not the selected certificate.  Quotient and metric variants are treated in \cref{sec:observers}.
+
+\subsection{Canonical escape}
+
+A public theorem sometimes genuinely needs a concrete code: a least counterexample, a normalized finite presentation, or a reproducible table.  Then a bounded order supplies a constructive canonical choice.
+
+\begin{definition}[Canonical bounded certificate]
+Assume \(c<C(q)\) and \(\Valid(q,c)\) is decidable.  Define
+\[
+  \mu(q)=\min\{c<C(q):\Valid(q,c)\},
+\]
+with \(C(q)\) itself as the failure sentinel.
+\end{definition}
+
+The checked bounded-search library proves the soundness and minimality properties needed for this definition.  The producer \(\exists c<C\,\Valid(c)\) implies \(\mu<C\) and \(\Valid(\mu)\).  Canonical escape is therefore not an application of unbounded choice; it is finite least search with an explicit guard.
+
+\subsection{Residual escape}
+
+If a producer cannot be constructed, SCOPE does not insert a fictitious certificate.  The producer formula itself becomes a boundary.  For example, if a finite enumeration needs a height \(H\), the theorem may have the form
+\[
+  \mathsf{AllSolutionsBelow}(H),\Gamma\ \vdash_{\PRAAx}\
+  \mathsf{CompleteList}(\mathsf{enumerate}(H)).
+\]
+This is already useful: later mathematics need prove only the height formula, while the enumeration and completeness checker are generic.
+
+\subsection{Escape effects and composition}
+
+Assign each certificate-producing node one of the effects
+\[
+  \mathsf{Private},\quad \mathsf{Existential},\quad \mathsf{Stable},
+  \quad \mathsf{Canonical},\quad \mathsf{Residual}.
+\]
+The effect is determined by the public dependency of downstream nodes, not by how the certificate was discovered.
+
+Composition follows these rules:
+
+\begin{enumerate}
+\item a private certificate is eliminated as soon as its last consumer has been compiled;
+\item an existential output may depend on the certificate only in the witness term under the public existential;
+\item a stable output must pass through a proved observer interface;
+\item a canonical output must have a finite bound, decidable validity bit, and least-search proof;
+\item a residual output is added to the residual context and never treated as produced data.
+\end{enumerate}
+
+The rules are local and syntax-directed.  They amount to a small effect system for finite mathematical evidence.
+
+\subsection{Scope normal form}
+
+We can now state the central composition theorem.
+
+\begin{theorem}[SCOPE normal form]
+\label{thm:scope-normal-form}
+Fix a finite interaction graph \(G\) and a finite query \(q\).  Assume:
+
+\begin{enumerate}
+\item every deterministic node is a fixed primitive-recursive transducer with an object-theory derivation of its local specification;
+\item every bounded predicate has a reflected characteristic bit;
+\item every loop has a quantifier-free invariant with object-theory base and step derivations;
+\item every cyclic demand component is monotone on an explicitly capped finite product;
+\item every relational node has finite validity and compatibility bounds;
+\item every certificate edge is assigned one of the five escape modes, with the corresponding local proof;
+\item every unavailable producer leaf is labeled by an object formula \(B_i(q)\).
+\end{enumerate}
+
+Then the graph can be compiled, at the meta-level, to a finite list of reachable residuals \(R(q)=[B_1(q),\ldots,B_r(q)]\) and an object derivation
+\[
+  R(q),\Gamma(q)\ \vdash_{\PRAAx}\ \Goal_G(q).
+\]
+No internal certificate occurs free in the public goal.  If every residual is derivable from a context \(\Delta\), then \(\Delta\vdash_{\PRAAx}\Goal_G(q)\).
+\end{theorem}
+
+\begin{proof}
+First close every cyclic demand component by the finite theorem of \cref{sec:demand-closure}.  This produces concrete resource terms and converts the remaining data graph into an acyclic, query-specialized graph.
+
+Topologically order the nodes.  Compile an exact transducer by specializing its local derivation and composing it with the derivations of its inputs.  Compile a Boolean or bounded-search node by the reflection theorems of \cref{sec:bounded-reflection}.  Compile a loop by fixed-trace reflection from \cref{sec:trace}.  Compile a relational path node by backward viability from \cref{sec:viability}.
+
+At a certificate boundary, apply the declared escape rule.  For a private certificate, use existential elimination immediately after its last consumer.  For an existential output, introduce the public existential inside the certificate scope and then eliminate the certificate.  For a stable output, apply its observer theorem and eliminate the certificate.  For a canonical output, instantiate the consumer with the least accepted term.  For a residual, add the producer formula to the local context.
+
+Because the graph is finite, this process terminates.  At each step the compiler holds an actual \(\Prf\,\PRAAx\) value.  Context mismatches are repaired by checked weakening and substitution.  Local derivations are joined by checked simultaneous cut.  All internal certificate variables are discharged at their lexical scopes, so none can occur in the outer goal.
+
+The residual list is the dependency-normal set of producer leaves reachable from the goal.  Leaves not used by the compiled subgraph do not appear.  Finally, if a context \(\Delta\) derives every residual and every original assumption required by \(\Gamma\), apply simultaneous cut once more to obtain the closed or differently contextualized theorem.
+\end{proof}
+
+\begin{remark}
+The theorem is a compilation schema for each fixed graph.  It does not quantify inside iPRA over arbitrary graph codes or arbitrary primitive-recursive programs.  This is why it is compatible with the absence of a universal primitive-recursive evaluator.
+\end{remark}
+
+\subsection{Why scope normalization resolves hidden choice}
+
+Hidden choice occurs when a proof establishes \(\forall p\,\exists c\,V(p,c)\) and then silently treats the independently chosen \(c\)'s as one coherent global name.  SCOPE blocks this move.  At each finite query the certificate is private unless a stronger interface is proved.  A coherent name requires a canonical rule compatible across precisions, or a shrinking-diameter and motion modulus as in \cref{sec:quantitative-presentations}.  Without that data, the correct endpoint remains existential, relational, metric, or residual.

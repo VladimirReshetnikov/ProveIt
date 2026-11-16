@@ -1,0 +1,92 @@
+\appendix
+\section{Consolidated theorem interfaces}
+
+This appendix collects the central interfaces in a form suitable for a formalization ledger.
+
+\subsection{Structural}
+
+\begin{enumerate}
+\item \textbf{Residual cut:}
+\[
+R,\Gamma\vdash A,
+\quad (\forall B\in R\;\Gamma\vdash B)
+\quad\Longrightarrow\quad
+\Gamma\vdash A.
+\]
+\item \textbf{Private seal:}
+\[
+\Gamma\vdash\exists c\,V(c),
+\quad V(c),\Gamma^+\vdash A^+
+\quad\Longrightarrow\quad
+\Gamma\vdash A.
+\]
+\item \textbf{Specialization:}
+\[
+\Gamma(\vec x)\vdash A(\vec x)
+\quad\Longrightarrow\quad
+\Gamma(\vec t)\vdash A(\vec t).
+\]
+\end{enumerate}
+
+\subsection{Bounded reflection}
+
+For every fixed bounded formula \(A\):
+\[
+\vdash \bit_A=0\vee\bit_A=1,
+\qquad
+\vdash A\leftrightarrow\bit_A=1.
+\]
+For a bounded relation \(R(x,y)\), least accepted search provides \(w,h\) with:
+\[
+ h=1\leftrightarrow\exists y<B\,R(x,y),
+\quad h=1\to w<B\wedge R(x,w),
+\quad h=0\to w=B,
+\]
+and leastness below \(w\).
+
+\subsection{Trace reflection}
+
+For a fixed primitive-recursive trace and QF invariant:
+\[
+I(s_0,q),
+\quad I(s,q)\to I(T(s,q),q)
+\quad\Longrightarrow\quad
+I(\mathsf{run}(N,q),q).
+\]
+All displayed implications stand for object derivations under the appropriate contexts.
+
+\subsection{Demand closure}
+
+For monotone \(F\) on \(D=\prod_i[0,C_i]\), with \(H(d)=d\vee F(d)\) and \(K=\sum_iC_i\):
+\[
+H^{K+1}(0)=H^K(0),
+\qquad
+F(e)\le e\to H^K(0)\le e.
+\]
+
+\subsection{Viability}
+
+For finite levels and backward bits \(V_i\):
+\[
+V_i(a)=1
+\quad\leftrightarrow\quad
+\text{there exists a valid compatible suffix beginning at }a.
+\]
+A path exists iff some initial viability bit is one, and bounded least search yields the lexicographically least viable path.
+
+\subsection{Observers}
+
+\begin{enumerate}
+\item Exact: \(V(c)\to O(c)=o\) lets any invariant consumer export \(o\).
+\item Quotient: pairwise congruence lets congruence-respecting consumers eliminate the certificate.
+\item Metric: pairwise diameter \(\le\varepsilon\) yields an existential or canonical center with radius \(\varepsilon\).
+\item Gap: approximation error \(e\) and exact gap \(g>2e\) stabilize the finite label.
+\end{enumerate}
+
+\subsection{Scope normal form}
+
+A fixed finite graph satisfying local contracts compiles to
+\[
+  B_1(q),\ldots,B_r(q),\Gamma(q)\vdash_{\PRAAx}\Goal(q),
+\]
+with every internal certificate private, existential, stable, canonical, or residual.  No other escape is permitted.

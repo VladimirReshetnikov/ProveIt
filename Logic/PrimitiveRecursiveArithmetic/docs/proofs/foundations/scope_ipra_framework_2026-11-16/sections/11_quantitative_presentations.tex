@@ -1,0 +1,160 @@
+\section{Quantitative presentations of mathematical objects}
+\label{sec:quantitative-presentations}
+
+SCOPE does not prescribe one universal encoding of all mathematics.  It prescribes the interfaces that make an encoding usable in iPRA: finite queries, primitive-recursive realizers, explicit error or search bounds, and object derivations.
+
+\subsection{Integers and rationals}
+
+Integers may be represented as signed pairs or differences of naturals.  The current derivation library already uses a difference representation and a ring of term classes modulo provable equality.  Rational numbers can be represented by triples \((s,a,b)\) with sign \(s\), numerator \(a\), and positive denominator \(b\), together with a normalization or a cross-multiplication equality relation.
+
+For most quantitative theorems, canonical lowest terms are optional.  Cross multiplication is a stable quotient interface.  Canonical normalization is useful only when exact code equality or least-code comparison is required.
+
+Dyadic rationals are especially convenient for error budgets.  A dyadic \(z/2^p\) can be stored by an integer numerator and precision exponent.  Addition and comparison are primitive recursive after denominator alignment.  Absolute-value inequalities reduce to integer inequalities.
+
+\subsection{Regular real names}
+
+\begin{definition}[Regular name]
+A regular real name is a primitive-recursive rational sequence \(a(p)\) with an explicit law such as
+\[
+  |a(p+1)-a(p)|\le 2^{-p}.
+\]
+More generally, a name may carry a primitive-recursive tail modulus \(M(p)\) satisfying
+\[
+  m,n\ge M(p)\Longrightarrow |a(m)-a(n)|\le 2^{-p}.
+\]
+\end{definition}
+
+The first form is convenient because a geometric-series calculation gives a tail modulus.  The sequence is never treated as a completed set-theoretic real inside iPRA.  A query asks for \(a(p)\), and the law permits error transport.
+
+\subsection{Arithmetic on names}
+
+Each operation is a demand contract.
+
+\paragraph{Addition and subtraction.}
+To output precision \(p\), request both inputs at precision \(p+c\), where \(c\) pays for the triangle inequality and coding convention.  The output term is the rational sum.  The local proof is an integer/rational inequality.
+
+\paragraph{Multiplication.}
+Besides input precision, multiplication needs magnitude bounds \(|x|\le B_x\), \(|y|\le B_y\).  Then
+\[
+|xy-x'y'|\le |x|\,|y-y'|+|y'|\,|x-x'|.
+\]
+The demand transformer chooses input precisions making the right side smaller than the requested error.  Bounds are part of the presentation or residual producer.
+
+\paragraph{Inversion.}
+A represented real is not invertible merely from \(x\ne0\) stated negatively.  The constructive contract requires an apartness witness
+\[
+  |x|\ge 2^{-k}
+\]
+or another positive rational lower bound.  If \(|x-x'|\le 2^{-k-1}\), then \(|x'|\ge2^{-k-1}\), and
+\[
+\left|\frac1x-\frac1{x'}\right|
+=\frac{|x-x'|}{|xx'|}
+\]
+has an explicit bound.  The demand transformer depends monotonically on \(k\) and the output precision.
+
+\paragraph{Composition.}
+To compute \(f(g(x))\), use a modulus of continuity for \(f\) on a bounded range containing the approximations to \(g(x)\).  Reverse demand first asks what input accuracy \(f\) needs, then asks \(g\) for that accuracy.  Cyclic dependencies among range bounds and precision are handled by capped demand closure.
+
+\subsection{Apartness and stable predicates}
+
+Exact equality of real names is generally not decidable.  SCOPE therefore distinguishes:
+
+\begin{itemize}
+\item metric statements \(|x-y|\le\varepsilon\);
+\item apartness statements \(|x-y|\ge\delta>0\);
+\item exact algebraic identities inherited from common defining data;
+\item discrete labels stabilized by a gap.
+\end{itemize}
+
+A sign theorem needs \(|x|\ge\delta\) and an approximation error below \(\delta\).  A branch theorem needs separation.  An exact equality may be proved by an algebraic certificate even when arbitrary equality of represented reals is undecidable.
+
+\subsection{From finite clouds to coherent names}
+
+Non-unique finite approximants do not automatically form one sequence.  A sufficient constructive interface is the following.
+
+For each precision \(p\), let \(C_p\) be a nonempty finite cloud of valid rational codes.  Let \(E_p(a,b)\) be a compatibility relation from \(C_p\) to \(C_{p+1}\).  Assume:
+
+\begin{enumerate}
+\item a bounded valid element of \(C_0\) exists;
+\item every valid \(a\in C_p\) has a bounded valid \(E_p\)-successor in \(C_{p+1}\);
+\item \(E_p(a,b)\) implies \(|a-b|\le m(p)\);
+\item a primitive-recursive tail bound satisfies \(\sum_{j\ge p}m(j)\le 2^{-p}\) in the chosen rational coding.
+\end{enumerate}
+
+\begin{theorem}[Primitive-recursive coherent selector]
+Under these assumptions, the recursion that chooses the least valid initial code and then the least valid compatible successor is primitive recursive and forms a regular Cauchy name.
+\end{theorem}
+\begin{proof}
+Bounded least search supplies the initial code.  Given the current code, the total-extension assumption and bounded search supply a successor.  Primitive recursion therefore defines the sequence.  For \(m>n\), repeatedly apply the edge motion bounds and the triangle inequality:
+\[
+  |a(m)-a(n)|\le\sum_{j=n}^{m-1}m(j)\le\sum_{j\ge n}m(j)\le2^{-n}.
+\]
+All sums are finite at each query, and the tail estimate is an explicit object-theory inequality.
+\end{proof}
+
+If only ``every finite horizon has some path'' is known, this theorem does not apply.  One must either remain at finite-horizon relational outputs, prove a total extension rule, or supply a shrinking-diameter argument strong enough to make independent finite choices Cauchy.  SCOPE never smuggles an infinite branch out of finite path existence.
+
+\subsection{Metastability versus a Cauchy modulus}
+
+A metastable theorem has the form
+\[
+  \forall p\,\forall g\,\exists N\le\Phi(p,g)\;
+  \forall m,n\in[N,N+g(N)]\ |a_m-a_n|\le2^{-p}.
+\]
+This is a finite-window theorem and is naturally expressible by bounded reflection and strategy certificates.  It is not a tail modulus
+\[
+  \forall p\,\exists M\,\forall m,n\ge M\ |a_m-a_n|\le2^{-p}.
+\]
+No generic SCOPE rule converts the first to the second.  Applications must either use metastability directly or provide additional structure yielding a genuine modulus.
+
+\subsection{Finite compactness interfaces}
+
+Constructive uses of compactness should expose finite data.
+
+\begin{definition}[Net contract]
+At mesh \(\eta\), a net contract provides a finite list \(x_0,\ldots,x_{N-1}\) and a coverage verifier proving every represented input is within \(\eta\) of some \(x_i\).  A modulus of uniform continuity transfers a property checked on the net to the full domain with an explicit error.
+\end{definition}
+
+The coverage producer may be straightforward for a rational box, or a substantial residual for a complicated space.  Once the net and modulus are supplied, the lifting proof is finite and generic.  The same pattern covers finite subcovers, partitions, triangulations, and quadrature meshes.
+
+\subsection{Finite sums, integrals, and limits}
+
+A Riemann or quadrature argument has three layers:
+
+\begin{enumerate}
+\item a finite sum identity or estimate, handled by checked bounded sums and arithmetic;
+\item a mesh-error theorem with an explicit modulus;
+\item a query compiler choosing mesh size from output precision.
+\end{enumerate}
+
+Improper integrals and infinite series need a tail producer.  The finite partial sum is generic; the theorem-specific work is the primitive-recursive tail bound.  SCOPE records it as a residual until proved.
+
+\subsection{Height bounds and complete finite lists}
+
+Let \(P(x)\) be a decidable predicate on natural codes.
+
+\begin{theorem}[Height bound--list equivalence]
+\label{thm:height-list}
+The following forms of effective finiteness are constructively interconvertible:
+
+\begin{enumerate}
+\item an explicit bound \(H\) with \(P(x)\to x<H\);
+\item a complete finite list \(L\) such that \(P(x)\) iff \(x\) occurs in \(L\).
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+From a bound \(H\), enumerate \(0,\ldots,H-1\) and retain exactly the codes with reflected bit \(P=1\).  Every retained code satisfies \(P\), and every \(P\)-code lies below \(H\) and is retained.  Filtering a bounded list is primitive recursive.
+
+From a complete list, let \(H=0\) for the empty list and otherwise one plus the maximum entry.  Every list member lies below \(H\).  Completeness then gives \(P(x)\to x<H\).  Maximum and membership are primitive recursive, and the proof is finite induction on the list code.
+\end{proof}
+
+A bound on the \emph{number} of solutions does not imply either form.  The single solution could have arbitrarily large code.  This is why a cardinality theorem cannot be used as a search cutoff without an additional height argument.
+
+\subsection{Conditional enumerations}
+
+For a Diophantine equation, algebraic variety, finite-state system, or proof search, SCOPE commonly produces
+\[
+  \mathsf{HeightBound}(H),\Gamma\vdash_{\PRAAx}
+  \mathsf{CompleteList}(\mathsf{filter}_{x<H}P(x)).
+\]
+This separates the deep producer from the routine enumeration and verification.  A later bound theorem closes the residual by simultaneous cut.

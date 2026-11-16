@@ -1,0 +1,135 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit}
+
+\definecolor{deepblue}{RGB}{28,62,104}
+\definecolor{softblue}{RGB}{231,239,248}
+\definecolor{softgray}{RGB}{245,246,248}
+\definecolor{darkgreen}{RGB}{31,103,72}
+\definecolor{darkred}{RGB}{145,47,47}
+\hypersetup{colorlinks=true,linkcolor=deepblue,citecolor=darkgreen,urlcolor=deepblue,
+  pdftitle={STRIVE-iPRA},pdfauthor={OpenAI}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{STRIVE-iPRA}
+\rhead{Finite strategy-table realization in iPRA}
+\cfoot{\thepage}
+
+\setlist[itemize]{leftmargin=1.6em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0.15em}
+\setcounter{tocdepth}{2}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{contract}[theorem]{Contract}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\True}{\mathbf 1}
+\newcommand{\False}{\mathbf 0}
+\newcommand{\Val}{\mathsf{Val}}
+\newcommand{\Chk}{\mathsf{Check}}
+\newcommand{\Pos}{\mathsf{Pos}}
+\newcommand{\Neg}{\mathsf{Neg}}
+\newcommand{\pack}{\mathsf{pack}}
+\newcommand{\digit}{\mathsf{digit}}
+\newcommand{\pref}{\mathsf{pref}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\Res}{\mathsf{Res}}
+\newcommand{\Goal}{\mathsf{Goal}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\sequent}[3]{#1\;\vdash_{#2}\;#3}
+
+\lstdefinestyle{lean}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{softgray},
+  frame=single,
+  rulecolor=\color{gray!35},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  keywordstyle=\color{deepblue}\bfseries,
+  commentstyle=\color{darkgreen},
+  stringstyle=\color{darkred}
+}
+\lstset{style=lean}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{1.2cm}
+{\Huge\bfseries STRIVE-iPRA\par}
+\vspace{0.35cm}
+{\LARGE Strategy-Table Realization with Interface Verification and Elimination\par}
+\vspace{0.9cm}
+{\large A kernel-facing framework for embedding finite mathematical interactions in intuitionistic primitive recursive arithmetic\par}
+\vfill
+\begin{tabular}{rl}
+Repository baseline: & \code{VladimirReshetnikov/ProveIt} \\
+Pinned commit: & \code{58627ed89814ba122e1f0f012f1aba103cda267b} \\
+Date: & 16 November 2026 \\
+Primary target: & \code{Prf PRAAx Gamma phi}
+\end{tabular}
+\vfill
+{\small Research artifact prepared by OpenAI.  The mathematical arguments are
+human-readable proofs.  The packet claims no new Lean-kernel-checked theorem;
+formalization status is stated theorem by theorem.\par}
+\end{titlepage}
+\pagenumbering{roman}
+
+\input{sections/00_abstract}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_baseline}
+\input{sections/02_architecture}
+\input{sections/03_contracts}
+\input{sections/04_mixed_radix}
+\input{sections/05_signed_games}
+\input{sections/06_compiler_proof}
+\input{sections/07_demand_trace}
+\input{sections/08_escape_observers}
+\input{sections/09_quantitative_math}
+\input{sections/10_difficulties}
+\input{sections/11_examples}
+\input{sections/12_lean}
+\input{sections/13_limits}
+\input{sections/14_conclusion}
+\appendix
+\input{sections/A_signatures}
+\input{sections/B_ledger}
+\input{sections/C_reproduction}
+\input{sections/D_sources}
+
+\end{document}

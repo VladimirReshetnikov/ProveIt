@@ -1,0 +1,2685 @@
+FIBER-iPRA
+A Fibered Interface Calculus for Compiling Finitary Mathematics into Intuitionistic
+Primitive Recursive Arithmetic
+Research report prepared for the ProveIt repository
+16 November 2026
+Repository baseline: 58627ed89814ba122e1f0f012f1aba103cda267b
+
+Abstract
+The ProveIt repository contains a checked ordinary presentation of intuitionistic primitive
+recursive arithmetic, a substantial checked arithmetic library, a bridge to the Foundation
+presentation, and more than one hundred research packets that reformulate mathematics in
+finite quantitative terms. The recurring gap is no longer the absence of isolated encodings.
+It is the absence of one compositional interface that distinguishes object-theory derivations
+from host computations, controls the scope of finite certificates, turns bounded quantifiers into
+quantifier-free loop invariants, and records genuinely missing effective information as explicit
+residual assumptions.
+This report develops FIBER-iPRA (Finite-query Interfaces with Bounded Evidence and
+Realizers). A mathematical object is represented by a family of finite certificate spaces indexed
+by a query. A morphism carries an explicit finite demand map, a certificate transformer, an
+observation map, and a derivation in the literal judgment Prf PRAAx Γ φ. Local certificates are
+eliminated by existential elimination; least bounded search is used only when a public result
+must name a canonical code. Composition is proved by substitution and simultaneous cut.
+Cyclic resource requirements are resolved by a finite monotone closure theorem. Fixed bounded
+quantifier alternations are handled by finite strategy certificates. Missing constants, cutoffs,
+moduli, and representatives are exposed as residual producer formulas, with a precise hierarchy
+of cases in which the residual can be eliminated inside iPRA.
+The framework is applied to several difficulties reported in the repository. We give constructive
+proofs of a dyadic adjacent-motion theorem that upgrades compatible approximants to a Cauchy
+name, a finite-net lifting theorem replacing abstract compactness, guarded exact branch selection,
+stable cluster-valued observations at collisions, finite master-certificate formation without hidden
+choice, and bounded-game realization. We also prove two useful impossibility results: there is
+no primitive-recursive universal evaluator for all primitive-recursive functions, and no finite-use
+exact sign or branch selector can work on arbitrary Cauchy names without a separation guard. A
+dependency-ordered Lean plan and source-oriented Lean modules use the current ConciseIPRA,
+IPRADerivations, and IPRABridge interfaces. No new kernel-checked theorem is claimed by
+this archive; the report states exactly which declarations must be completed and how each
+reduces to existing checked infrastructure.
+
+Verification status. The mathematical arguments in this report are human proofs. The Python
+reference implementation and tests exercise only finite algorithms. The Lean files are an integration
+blueprint tied to the current repository API; Lean was unavailable in the artifact runtime, so those
+files were not elaborated. A theorem is counted as formally established only when the repository
+contains a compiled declaration of literal type Prf PRAAx ... and its axiom audit passes.
+
+1
+
+FIBER-iPRA
+
+16 November 2026
+
+Contents
+1 Repository audit and the actual problem
+1.1 Audited baseline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.2 What the existing foundation packets already solve . . . . . . . . . . . . . . . . . . .
+1.3 Why another framework is justified . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.4 Conservative design rule . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+5
+5
+5
+6
+7
+
+2 The formal boundary: ordinary iPRA and finite specialization
+2.1 The object theory used in the report . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.2 Four levels that must not be conflated . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.3 Why the compiler is specialized . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.4 Finite-use discipline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+2.5 Portable versus backend-specific statements . . . . . . . . . . . . . . . . . . . . . . .
+
+7
+7
+7
+8
+8
+8
+
+3 Fibered finite-query interfaces
+3.1 Encoded finite data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.2 Interfaces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.3 Realizers and demand . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.4 Local, public, and residual evidence . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.5 Herbrand capsules . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.6 Metric and quotient fibers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.7 A schematic example: rational root clusters . . . . . . . . . . . . . . . . . . . . . . .
+
+9
+9
+9
+10
+10
+10
+11
+11
+
+4 The finite proof kernel
+4.1 Certificate sealing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.2 Simultaneous residual discharge . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.3 Booleanization of fixed bounded formulas . . . . . . . . . . . . . . . . . . . . . . . .
+4.4 Bounded least selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.5 Finite master certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.6 Finite monotone demand closure . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.7 Finite strategy certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+11
+11
+12
+12
+13
+13
+14
+14
+
+5 The FIBER compiler and its main theorem
+5.1 A small proof-producing intermediate language . . . . . . . . . . . . . . . . . . . . .
+5.2 The compiler invariant . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.3 Compilation theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.4 Composition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.5 Soundness versus completeness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.6 Why the framework is not merely a checker generator . . . . . . . . . . . . . . . . .
+
+15
+15
+15
+16
+17
+17
+17
+
+6 Residual producer calculus
+6.1 Residual normal form . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.2 Classes of residuals . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.3 Eliminating bounded residuals . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.4 From finite totality to a producer program . . . . . . . . . . . . . . . . . . . . . . . .
+6.5 Residual factoring . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.6 Non-eliminable examples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.7 A theorem-status discipline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+18
+18
+18
+19
+19
+20
+20
+20
+
+2
+
+FIBER-iPRA
+
+16 November 2026
+
+7 Effective analysis: from local certificates to coherent names
+7.1 Dyadic names and adjacent motion . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.2 General summable-tail theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.3 Metastability is a separate interface . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.4 Finite-net lifting . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.5 Guarded partial operations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.6 Modulus calculus . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.7 Worked analytic pattern: certified bisection . . . . . . . . . . . . . . . . . . . . . . .
+
+21
+21
+22
+22
+22
+23
+23
+24
+
+8 Algebraic objects, branches, and stable observations
+8.1 A finite-use obstruction to exact sign . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.2 Root clusters instead of global labels . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.3 Guarded exact labels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.4 Finite algebra certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.5 Exact versus approximate Puiseux output . . . . . . . . . . . . . . . . . . . . . . . .
+8.6 Descent and representative relations . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+24
+24
+24
+25
+25
+26
+26
+
+9 Application patterns and repaired proof obligations
+9.1 Combinatorics and finite algebra . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.2 Real and complex analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.3 Probability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.4 Topology and geometry . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.5 Diophantine and arithmetic geometry . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.6 Prime distribution and ineffective constants . . . . . . . . . . . . . . . . . . . . . . .
+9.7 Computability and proof coding . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.8 Classical arguments . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.9 Representative repaired endpoints . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+26
+27
+27
+28
+28
+28
+29
+29
+29
+30
+
+10 Lean formalization architecture
+10.1 Target repository location . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.2 Existing declarations to reuse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.3 Module dependency order . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.4 Structural kernel signatures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.5 One-success search adapter . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.6 Bounded formula syntax . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.7 Interface metadata versus object theorems . . . . . . . . . . . . . . . . . . . . . . . .
+10.8 Demand closure target . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.9 Dyadic theorem target . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.10Compiler implementation strategy . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+10.11Required checks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+30
+30
+31
+31
+32
+33
+33
+34
+34
+34
+35
+35
+
+11 Claim ledger and remaining work
+11.1 What is established in this report . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.2 What is inherited, not reproved . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.3 What is not yet kernel-checked . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.4 Research boundaries not removed by the framework . . . . . . . . . . . . . . . . . .
+11.5 Recommended first integration slice . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.6 Acceptance criteria for a packet migrated to FIBER . . . . . . . . . . . . . . . . . .
+
+35
+35
+36
+36
+37
+37
+37
+
+3
+
+FIBER-iPRA
+
+16 November 2026
+
+12 Conclusion
+
+38
+
+A Formal source-language sketch
+A.1 Types . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.2 Terms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.3 Commands . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.4 Compilation judgment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+A.5 Operational reference semantics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+38
+38
+39
+39
+39
+39
+
+B Lean theorem target catalogue
+40
+B.1 Small regression examples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 40
+C Consolidated difficulty matrix
+
+41
+
+4
+
+FIBER-iPRA
+
+16 November 2026
+
+1
+
+Repository audit and the actual problem
+
+1.1
+
+Audited baseline
+
+The report was prepared against the public main branch of VladimirReshetnikov/ProveIt at
+commit 58627ed89814ba122e1f0f012f1aba103cda267b. At that snapshot the Logic/PrimitiveR
+ecursiveArithmetic directory has four logically distinct layers.
+Layer
+
+Role
+
+Status at the audited
+snapshot
+
+ConciseIPRA
+
+Ordinary first-order iPRA, its small native
+scalar core, and a bi-interpretation. The
+portable judgment is Γ ⊢PRAAx φ, written in
+Lean as Prf PRAAx Gamma phi.
+Reusable arithmetic and theorem-specific
+derivations: semiring laws, order, monus, pairing, bounded search, division, gcd, Bézout, finite sums, descent, linear algebra, and many
+completed packet theorems.
+Translation between ordinary ConciseIPRA
+and the Foundation iPRA used by several
+computability projects, including open-sequent
+transport and arithmetic symbol comparison.
+107 delivered packets in algebra, analysis, number theory, geometry, probability, topology, and
+foundations. They contain human arguments,
+executable checks, and many Lean blueprints.
+
+Lean library checked by
+the kernel.
+
+Derivations
+
+Bridge
+
+docs/proofs
+
+Lean library checked by
+the kernel.
+
+Lean library checked by
+the kernel.
+Filed as delivered; the
+directory README explicitly says that packets were not rerun or
+compiled on intake.
+
+The distinction is decisive. A theorem of Lean about Nat, a Python calculation, a verified
+polynomial identity in the host, or a structure whose field asks for a proof is not yet an iPRA
+theorem. The acceptance test is literal: after all adapters have been expanded, the endpoint must
+have type
+Γ ⊢PRAAx φ.
+The repository’s checked Derivations library meets this test. Most new proof packets do not, and
+their own status notes are generally careful about that fact.
+
+1.2
+
+What the existing foundation packets already solve
+
+The most recent foundation packets converge on a strong common picture. Finite-query normal
+form packs all evidence for a fixed query into one bounded certificate. KIFC-R and FINER add
+explicit residual producers and finite demand closure. CBIP isolates bounded interaction programs
+and finite strategy certificates. Scoped Certificate Realization observes that most certificates should
+remain local and be eliminated by existential elimination. The observation-algebra packets replace
+discontinuous labels by stable invariants or guarded labels. These are genuine advances, and the
+present work deliberately reuses them rather than renaming them.
+Their recurring unresolved obligations are also remarkably stable:
+5
+
+FIBER-iPRA
+
+16 November 2026
+
+1. a host-level finite algorithm has not been turned into an object-level derivation;
+2. a bounded formula is placed inside an induction predicate, making the predicate non-quantifierfree;
+3. finite witnesses are chosen independently without a compatibility proof;
+4. a missing modulus, separation bound, height cutoff, effective constant, or representative is
+hidden in host data;
+5. a noncanonical witness escapes into a public conclusion;
+6. an infinitary object (a completion, compact space, quotient, sheaf, or probability space) is
+invoked where the actual proof uses only finitely many observations;
+7. metastability or pointwise approximation is silently promoted to a coherent name or a global
+rate;
+8. a uniform evaluator or exact selector is demanded even though the proposed interface cannot
+exist.
+The current repository already contains the arithmetic ingredients needed for most of the finite
+part: arbitrary-term defining equations, quantifier-free induction, substitution, simultaneous cut,
+order, bounded search, pairing, simultaneous recursion, bounded sums and products, and finite
+linear algebra. The missing shared layer is therefore not a larger arithmetic library. It is a disciplined
+compiler interface connecting a finite mathematical argument to those checked derivations.
+
+1.3
+
+Why another framework is justified
+
+A new framework is useful only if it removes a repeated source of work rather than adding another
+vocabulary. FIBER-iPRA makes three changes.
+First, interfaces are query-indexed and typed. A “real number”, “root”, “finite cover”, or
+“cohomology class” is not represented by one global code. It is represented by what can be verified
+at a requested precision, degree, horizon, mesh, or finite diagram. The certificate space is allowed to
+vary with that query. This makes resource flow explicit and prevents a proof at one precision from
+being confused with a coherent name at every precision.
+Second, composition is an object-theory theorem. Every reusable node comes with a local
+derivation. The compiler specializes these derivations, substitutes actual terms, and composes them
+using the checked Prf.subst, Prf.weaken, Prf.exE, and Prf.trans operations. “The checker is
+correct” is not left as an informal bridge from executable truth to iPRA.
+Third, residuals have a calculus. A missing producer is neither concealed nor automatically
+fatal. It is a formula in the final sequent. The report classifies when it can be eliminated by bounded
+search, master-certificate formation, finite-net construction, adjacent-motion estimates, or finite
+strategy realization. Residuals that encode genuinely unavailable effective mathematics remain
+explicit.
+
+6
+
+FIBER-iPRA
+
+1.4
+
+16 November 2026
+
+Conservative design rule
+
+FIBER-iPRA does not add axioms to iPRA and does not propose an internal universal interpreter.
+A fixed external source generator produces fixed primitive-recursive symbols, formulas, and proof
+terms. Lean checks the resulting derivations. This is exactly the same trusted-boundary pattern
+used successfully by the checked arithmetic library: metatheory may help construct a proof, but the
+object theorem is accepted only through the inductive Prf datatype.
+
+2
+
+The formal boundary: ordinary iPRA and finite specialization
+
+2.1
+
+The object theory used in the report
+
+We use the ordinary presentation already selected by the repository unification plan. Its terms are
+built from a symbol for every primitive recursive function. Its formulas use intuitionistic first-order
+logic with equality. The theory PRAAx contains the defining equations for primitive recursive
+symbols, the successor axioms, and induction for quantifier-free formulas. In Lean the central
+judgment is
+Prf PRAAx Γ φ,
+with notation Γ ⊢PRAAx φ.
+The checked deduction layer provides, among other rules:
+• substitution of arbitrary terms for free variables;
+• weakening of the hypothesis list;
+• simultaneous cut, called Prf.trans;
+• universal and existential introduction and elimination;
+• simultaneous equality substitution;
+• quantifier-free induction through PRA.qfInd;
+• the convenient open induction wrapper LeanProofs.IPRA.ind;
+• instantiation of closed derivations at arbitrary terms through LeanProofs.IPRA.inst.
+The framework never reasons by saying that a primitive recursive function has the intended
+standard value and then applying a semantic completeness principle. Instead, every use of a program
+is mediated by its defining equations and an object derivation.
+
+2.2
+
+Four levels that must not be conflated
+
+For a fixed algorithm f , formula A, and certificate c, there are four different statements.
+1. Host computation: a Python or Lean evaluator returns a value.
+2. Host theorem: Lean proves a proposition about the standard natural-number interpretation
+of f .
+3. Object equation: iPRA derives the defining or correctness equation for the term denoting f .
+4. Object conclusion: iPRA derives A, perhaps after eliminating the certificate and discharging
+residual assumptions.
+Levels 1 and 2 are useful for discovering invariants and regression testing, but only levels 3 and
+4 prove the requested theorem. FIBER metadata records all four separately.
+7
+
+FIBER-iPRA
+
+2.3
+
+16 November 2026
+
+Why the compiler is specialized
+
+One might try to internalize the entire framework by adding a primitive-recursive universal evaluator
+U (e, x) for codes of arbitrary primitive-recursive functions. This cannot work.
+Theorem 2.1 (No primitive-recursive universal evaluator). There is no binary primitive-recursive
+function U such that for every unary primitive-recursive function f there is an index e satisfying
+U (e, x) = f (x) for every x.
+Proof. If such U existed, the diagonal function
+g(x) = U (x, x) + 1
+would be primitive recursive. Hence g(x) = U (e, x) for some e. Setting x = e gives U (e, e) + 1 =
+U (e, e), impossible. The argument is constructive and uses only closure of primitive recursive
+functions under composition and successor.
+Consequently a framework that quantifies internally over all primitive recursive source programs
+is asking for the wrong interface. FIBER uses metalevel specialization: a finite source description is
+compiled to specific PR terms, specific formulas, and a specific proof term. For a bounded dynamic
+trace, the trace checker itself is a fixed primitive recursive symbol. The generated proof is then
+checked by Lean’s kernel.
+
+2.4
+
+Finite-use discipline
+
+A proof of a fixed finite-query conclusion can inspect only finitely much source data. FIBER makes
+that finite use explicit through a demand map. This is not merely an implementation optimization.
+It is the logical reason that objects such as Cauchy reals, analytic functions, compact spaces, and
+quotient objects can be handled in weak arithmetic: the theorem does not need the completed
+infinitary object; it needs a finite observation and a proof that this observation is stable under the
+chosen representation.
+The discipline has two forms.
+Static finite use. The compiler knows a finite list of source queries from the target query.
+Adaptive finite use. A bounded interaction program chooses its next query from previous answers,
+but a primitive-recursive fuel or a finite monotone closure bounds the complete trace.
+Both forms produce one finite master certificate. No appeal to countable choice or bar induction
+is needed for the compiled theorem.
+
+2.5
+
+Portable versus backend-specific statements
+
+The canonical portable conclusion is an ordinary Prf PRAAx sequent. When an application is stated
+in the Foundation syntax, the checked bridge transports the resulting open or closed sequent. This
+separation avoids two common mistakes:
+1. proving the right mathematics in a nonportable host representation and never obtaining an
+object theorem;
+2. rebuilding arithmetic inside every application-specific Foundation development.
+The framework therefore compiles first to the ordinary calculus, imports the checked arithmetic
+library, and translates only at the application boundary.
+8
+
+FIBER-iPRA
+
+16 November 2026
+
+3
+
+Fibered finite-query interfaces
+
+3.1
+
+Encoded finite data
+
+All finite collections are represented by natural numbers using a fixed primitive-recursive sequence
+coding. We write Seq(C, i) for the i-th entry and ℓ(C) for the declared length. A code is accepted
+only under an explicit bound. The concrete implementation may use the pairing and simultaneousrecursion infrastructure already checked in IPRADerivations.Core.Pairing, or mixed-radix coding
+when component bounds are known. The mathematical statements below are independent of that
+choice.
+Every Boolean predicate is represented by a primitive-recursive bit. Thus b(⃗x) = 1 is an
+atomic equality in the object language. A checker is never trusted merely because it executes; it is
+accompanied by a reflection or soundness derivation.
+
+3.2
+
+Interfaces
+
+Definition 3.1 (FIBER interface). A finite-query interface X, with parameter code p, consists of
+fixed primitive-recursive data:
+QX (p, q)
+BX (p, q)
+VX (p, q, c)
+OX (p, q, c)
+EX (p, q, o, o′ )
+DX (p, q, o, o′ )
+
+∈ {0, 1},
+∈ N,
+∈ {0, 1},
+∈ N,
+∈ {0, 1},
+∈ N,
+
+well-formed query bit,
+exclusive certificate bound,
+certificate verifier,
+observation code,
+observational equivalence,
+optional quantitative discrepancy.
+
+It also contains object-theory derivations for verifier soundness, observational equivalence, and
+congruence of every exported operation.
+The certificate fiber over q is the finite set
+CertX (p, q) = {c < BX (p, q) : VX (p, q, c) = 1}.
+The point of the word “fiber” is that both the admissible evidence and its bound may depend on
+the query. A degree-d polynomial calculation, a precision-n approximation, and a horizon-T trace
+need not share a single global witness.
+Definition 3.2 (Validity and totality). The interface formula
+ValidX (p, q, c) :≡ c < BX (p, q) ∧ VX (p, q, c) = 1
+is quantifier-free. The totality formula is
+TotalX (p, q) :≡ ∃c ValidX (p, q, c).
+Totality may be a theorem, a hypothesis inherited from another interface, or an explicit residual
+producer.
+Definition 3.3 (Certificate-independent observation). An observation is certificate-independent
+when iPRA derives
+ValidX (p, q, c) ∧ ValidX (p, q, c′ ) −→ EX (p, q, OX (p, q, c), OX (p, q, c′ )) = 1.
+For a metric interface one may instead derive a discrepancy bound depending only on the query.
+This weaker notion is often exactly what mathematics supplies. Different root isolations may
+yield the same cluster, different finite covers may yield the same stable count, and different cocycle
+representatives may yield the same finite invariant. Code equality is neither required nor desirable.
+9
+
+FIBER-iPRA
+
+3.3
+
+16 November 2026
+
+Realizers and demand
+
+Definition 3.4 (FIBER realizer). A realizer R : X → Y consists of:
+1. a primitive-recursive demand list demR (p, q) of X-queries needed to answer the Y -query q;
+2. a primitive-recursive bound for a master input certificate;
+3. a master verifier asserting that every demanded query has a valid certificate;
+4. a certificate transformer TR (p, q, C) producing a Y -certificate;
+5. an observation transformer, when the public output is an observation;
+6. a literal object derivation of the local soundness sequent;
+7. extensionality or stability derivations showing that equivalent input observations give equivalent
+output observations;
+8. a list of residual producer formulas not supplied by X.
+The local soundness sequent has the schematic form
+ResR (p, q), ValidX (p, qi , ci ) : qi ∈ demR (p, q)
+
+
+⊢PRAAx ValidY (p, q, TR (p, q, C)).
+
+Here ResR (p, q) abbreviates a finite list of exact object-language formulas. There is no semantic
+leap from the fact that a host transformer returns a certificate.
+
+3.4
+
+Local, public, and residual evidence
+
+The interface records the escape class of each witness.
+Local. The witness is introduced to prove an intermediate statement and eliminated before the
+node returns. It is never named by a public term.
+Observational. The code may vary, but all valid codes yield equivalent or quantitatively close
+observations. The code is eliminated; only the observation class escapes.
+Canonical. A downstream theorem genuinely needs one code. A least valid code is selected by
+bounded search, after totality has been proved.
+Residual. Existence of the witness is not established by the current finite library. Its exact producer
+formula remains in the final sequent.
+This classification prevents a subtle but frequent strengthening. From ∀q ∃c V (q, c) one may
+use c locally for a fixed q. One may not silently obtain a global function q 7→ cq . FIBER obtains
+such a function only when the verifier is bounded and decidable, so checked least search defines it
+primitively recursively.
+
+3.5
+
+Herbrand capsules
+
+Definition 3.5 (Herbrand capsule). A capsule for a relation A(q, w) is a bounded list W =
+⟨w0 , . . . , wk−1 ⟩, together with a verifier proving
+_
+
+A(q, wi ).
+
+i<k
+
+The list, its length, and the finite disjunction are encoded by primitive recursive data and a fixed
+proof schedule.
+10
+
+FIBER-iPRA
+
+16 November 2026
+
+A capsule is the preferred output when a proof establishes a bounded finite set of possibilities
+but no stable reason to select one. If a downstream operation is compatible across all valid members,
+the capsule can be mapped pointwise and eliminated. If a canonical member is required and A is
+a reflected bounded predicate, least search selects the first valid member. Thus capsules isolate
+exactly where finite choice is harmless and where a selection theorem is required.
+
+3.6
+
+Metric and quotient fibers
+
+Two especially useful interface flavors are built into the framework.
+Metric fibers. For precision query n, valid certificates yield observations within an explicit error
+ϵ(n). Composition adds or otherwise transforms the errors. No equality of approximants is expected.
+Quotient fibers. An equivalence bit EX is reflexive, symmetric, transitive, and respected by
+exported operations, all by object derivations. Public statements are phrased in terms of invariant
+observations. A global quotient type need not be constructed inside iPRA.
+These two forms cover many apparent obstacles involving real numbers, projective directions,
+unordered roots, eigenspaces, local coordinates, finite covers, and cohomology classes.
+
+3.7
+
+A schematic example: rational root clusters
+
+Let p code a monic rational polynomial and let the query q = (N, r) request information about roots
+in a rational box at mesh 2−N , with multiplicity cutoff r. A certificate can contain a list of rational
+boxes, Sturm or resultant signs, and multiplicities. The verifier checks coverage, disjointness at
+the requested mesh, and the coefficient identities. The observation is the multiset of boxes and
+multiplicities, or the first r elementary symmetric functions. At a collision there is no exact ordered
+root label, but the multiset observation remains stable. Under an additional separation residual,
+the same interface refines to ordered labels. Nothing in the representation requires a discontinuous
+global branch selector.
+
+4
+
+The finite proof kernel
+
+This section states the reusable lemmas from which the compiler is built. They are intentionally
+small. Each either follows directly from the checked natural-deduction calculus or reduces to
+quantifier-free induction and checked arithmetic.
+
+4.1
+
+Certificate sealing
+
+Theorem 4.1 (Local certificate sealing). Let A(c, ⃗x) and B(⃗x) be formulas, with c absent from B.
+If
+Γ ⊢PRAAx ∃c A(c, ⃗x)
+and
+A(c, ⃗x), Γ+ ⊢PRAAx B(⃗x)+ ,
+then Γ ⊢PRAAx B(⃗x).
+Proof. This is exactly the existential-elimination constructor Prf.exE of ConciseIPRA.Deduction.
+The shifts in the displayed second premise express that the fresh certificate variable is in scope only
+in the branch. No choice function is created.
+
+11
+
+FIBER-iPRA
+
+16 November 2026
+
+Corollary 4.2 (Observational escape). Suppose every valid certificate c gives a conclusion B(o) for
+o = O(q, c), and valid certificates give equivalent observations. If the public conclusion is invariant
+under that equivalence, the certificate can be sealed and only the invariant conclusion escapes.
+Proof. Open the totality witness with theorem 4.1, derive the invariant conclusion from its observation, and close the witness. Equivalence is needed only when two independently generated
+certificates are compared.
+
+4.2
+
+Simultaneous residual discharge
+
+Theorem 4.3 (Finite residual discharge). If Γ ⊢PRAAx φ and for every ψ ∈ Γ one has ∆ ⊢PRAAx ψ,
+then ∆ ⊢PRAAx φ.
+Proof. This is the checked theorem Prf.trans. Its proof repeatedly applies implication introduction
+and modus ponens, and therefore requires no cut rule as a new primitive.
+This theorem is the formal meaning of “plugging producers into a compiled proof”. A framework
+report that lists residual assumptions but does not produce this sequent has not yet specified
+composition at the object level.
+
+4.3
+
+Booleanization of fixed bounded formulas
+
+For each fixed bounded formula A(⃗x), FIBER generates a primitive recursive bit [A](⃗x). Atomic
+equalities and inequalities use the checked equality/order bits. Connectives use Boolean operations.
+A bounded existential is a finite disjunction fold, and a bounded universal is a finite conjunction
+fold.
+Theorem 4.4 (Fixed-formula Boolean reflection schema). For every fixed bounded formula A(⃗x),
+there is a primitive-recursive bit [A] and a generated object derivation
+[] ⊢PRAAx ∀⃗x [A](⃗x) = 1 ↔ A(⃗x) .
+
+
+The construction is effective in the external syntax of A; it does not require an internal universal
+formula evaluator.
+Human proof and induction accounting. Proceed by structural recursion on the fixed syntax.
+For equality and order atoms, use the existing checked reflection lemmas for equality tests,
+monus order, and comparison bits. Boolean conjunction, disjunction, and implication are proved by
+the finite truth tables, each a fixed collection of arithmetic cases.
+For a bounded existential ∃i < N A(i, ⃗x), define
+e(0, ⃗x) = 0,
+
+e(k + 1, ⃗x) = max(e(k, ⃗x), [A](k, ⃗x)).
+
+The formula used in induction is not the quantified formula. It is a quantifier-free state equation
+about e, a candidate index, and the reflected bit. The forward direction from e(N ) = 1 obtains
+the first stage at which the bit becomes one by checked bounded search, then applies the inductive
+reflection theorem for A. The reverse direction takes an explicit existential witness i < N , proves
+by a quantifier-free loop lemma that its bit contributes to e(N ), and concludes e(N ) = 1.
+For a bounded universal, define the conjunction fold
+a(0, ⃗x) = 1,
+
+a(k + 1, ⃗x) = min(a(k, ⃗x), [A](k, ⃗x)).
+12
+
+FIBER-iPRA
+
+16 November 2026
+
+From a(N ) = 1 and an arbitrary i < N , a quantifier-free indexing lemma proves [A](i, ⃗x) = 1, then
+reflection yields A(i, ⃗x). Conversely, under the universal hypothesis, quantifier-free induction proves
+the state formula a(k) = 1 for k ≤ N ; the successor step instantiates the universal hypothesis at
+k. The induction predicate itself remains the atomic equation a(k) = 1, optionally guarded by the
+quantifier-free inequality k ≤ N .
+All recursion symbols and formulas are fixed before the derivation is constructed. Thus no truth
+predicate and no universal evaluator is used.
+Remark 4.5. The repository already contains most arithmetic pieces of this proof, but the complete
+generic generated reflection library is one of the central Lean milestones. The report claims the
+mathematical schema, not an already compiled implementation.
+
+4.4
+
+Bounded least selection
+
+Let v(q, c) be a primitive-recursive bit. The checked bounded-search module finds the least index
+below a bound at which a chosen bit convention succeeds. A small adapter converts between “zero
+means success” and “one means success”.
+Theorem 4.6 (Canonical bounded selection). There is a primitive-recursive function µv (q, B) such
+that iPRA derives
+µv (q, B) < B,
+.
+∃c < B v(q, c) = 1 −→  v(q, µv (q, B)) = 1,
+∀j < µv (q, B) v(q, j) = 0
+
+
+
+
+
+
+Proof. Apply the checked least-zero search to the complement bit 1 −̇ v. Its specification supplies
+an accepted index no later than any supplied accepted witness and rules out all earlier successes.
+The remaining steps are Boolean arithmetic and the existing order lemmas.
+Principle 4.7 (Use search only at an escape boundary). If a certificate is used only in a proof
+branch, apply existential elimination. Invoke theorem 4.6 only when a downstream term or public
+theorem must name a code. This avoids unnecessary normalization burdens and prevents a local
+existence proof from being mistaken for global choice.
+
+4.5
+
+Finite master certificates
+
+Suppose that for each i < N a bounded decidable verifier v(i, c) has a witness below B(i). A
+common informal step says “choose all witnesses”. In intuitionistic arithmetic this should be made
+explicit.
+Theorem 4.8 (Master-certificate theorem). Assume iPRA derives
+∀i < N ∃c < B(i) v(i, c) = 1.
+Then there is a primitive-recursive sequence code C(N ) for which iPRA derives
+∀i < N Seq(C(N ), i) < B(i) ∧ v(i, Seq(C(N ), i)) = 1 .
+
+
+The construction uses no choice principle.
+
+13
+
+FIBER-iPRA
+
+16 November 2026
+
+Proof. Define m(i) = µv(i,·) (B(i)) by bounded least search. The premise and theorem 4.6 prove
+the validity of m(i) for arbitrary i < N . Define C(0) as the empty sequence and append m(k)
+at stage k + 1. The sequence equations are primitive recursive. Quantifier-free induction on k
+proves the decoding equations for entries already appended. For an arbitrary i < N , instantiate the
+decoding lemma and the validity theorem for m(i). Mixed-radix coding gives an alternative when
+all component bounds are available in advance.
+The theorem resolves hidden finite choice in proof graphs, finite covers, strategy tables, and
+compatibility diagrams. Notice that decidability and a bound are essential; an unbounded family of
+arbitrary existential statements would be stronger.
+
+4.6
+
+Finite monotone demand closure
+
+Adaptive proofs can have cyclic precision requirements: node i asks for a resource determined by
+the resources requested by other nodes. Unbounded fixed-point language is unnecessary when each
+coordinate has a cap.
+Theorem 4.9 (Least finite demand closure). Let
+P =
+
+Y
+
+{0, 1, . . . , Ci }
+
+i<r
+
+with coordinatewise order, and let F : P → P be monotone. Define
+d0 = 0,
+
+dn+1 = dn ∨ F (dn ),
+
+where ∨ is coordinatewise maximum. Put K =
+
+P
+
+i<r Ci . Then:
+
+1. dK = dK+1 , so dK is a prefixed point of F ;
+2. if e ∈ P satisfies F (e) ≤ e, then dK ≤ e;
+3. consequently dK is the least prefixed point of F .
+Proof. The sequence is increasing. If dn+1 =
+̸ dn , at least one coordinate increases by at least one,
+P
+so the potential Φ(d) = i<r di strictly increases. The potential starts at zero and is at most K.
+Hence a strict increase cannot occur at all of the first K + 1 stages, and monotonicity of the update
+makes the first equality permanent. This proves stabilization by stage K.
+For minimality, prove by induction on n that dn ≤ e. It is true for zero. If dn ≤ e, monotonicity
+gives F (dn ) ≤ F (e) ≤ e, and hence dn+1 = dn ∨ F (dn ) ≤ e. In particular dK ≤ e.
+Every operation is finite and primitive recursive. The formal proof uses encoded arrays, bounded
+sums, order, and quantifier-free induction on the iteration counter. The strict-increase argument
+can be expressed by the potential equation and the checked order library.
+
+4.7
+
+Finite strategy certificates
+
+A fixed bounded quantifier alternation can be represented without classical choice.
+Definition 4.10 (Strategy certificate). For a fixed formula
+Q0 x0 < B0 Q1 x1 < B1 (⃗x<1 ) · · · Qs xs < Bs (⃗x<s ) A(⃗x),
+where A is reflected and each Qi is ∀ or ∃, a strategy certificate contains, at every existential node,
+a response as a function of the preceding universal moves, and enough finite table data to verify
+every leaf.
+14
+
+FIBER-iPRA
+
+16 November 2026
+
+Theorem 4.11 (Bounded strategy realization). For each fixed bounded quantifier pattern there is a
+primitive-recursive strategy verifier and a generated iPRA derivation from “the strategy verifies” to
+the bounded formula.
+Proof. Induct externally on the fixed quantifier pattern. At an existential node, decode the response
+selected by the strategy, verify its bound, and apply existential introduction. At a universal node,
+introduce an arbitrary bounded move and select the corresponding certified subtree. At a leaf, apply
+theorem 4.4. The only induction internal to iPRA checks finite table lookup and bounds, so its
+invariant is quantifier-free. No law of excluded middle is used beyond reflected decidability of the
+bounded atoms.
+The theorem covers finite games, bounded minimax arguments, finite adversarial verification,
+and many bounded classical case analyses. It does not turn an unbounded classical proof into a
+witness-producing intuitionistic proof.
+
+5
+
+The FIBER compiler and its main theorem
+
+5.1
+
+A small proof-producing intermediate language
+
+The source language is not intended to replace Lean or the mathematical prose of a packet. It
+records only the finite-use structure needed for compilation. A program is a finite directed graph
+whose nodes have one of the following forms.
+Node
+
+Meaning
+
+primitive
+pair/project
+map/fold
+search
+case
+
+Apply a fixed primitive-recursive operation and a local checked contract.
+Form or read a finite tuple or encoded sequence.
+Execute a bounded loop with a quantifier-free state invariant.
+Use checked bounded least search for a reflected verifier.
+Branch on a reflected Boolean atom and join the two derivations by
+disjunction elimination.
+Open a local certificate and seal it by existential elimination.
+Verify and realize a fixed bounded quantifier game.
+Export an equivalence-invariant or metric-stable observation.
+Add an exact producer formula to the local context.
+Invoke another compiled interface at a finite list of demanded queries.
+
+exists
+strategy
+observe
+residual
+call
+
+Each node declares its input and output arities, query transformer, certificate bound, verifier bit,
+formula template, and local proof theorem. Acyclic graphs are topologically scheduled. A graph
+with monotone cyclic demand first invokes theorem 4.9; the resulting finite demand is then unrolled
+into an acyclic schedule.
+
+5.2
+
+The compiler invariant
+
+For every scheduled node v, the compiler maintains:
+1. a term tuple sv containing the node state;
+2. a quantifier-free state formula Iv (sv );
+3. a finite list Γv of residual and input formulas;
+15
+
+FIBER-iPRA
+
+16 November 2026
+
+4. a derivation Γv ⊢PRAAx Iv (sv );
+5. a map from local certificate variables to their lexical scopes;
+6. an observation relation guaranteeing that no noninvariant local code escapes.
+Bounded logical content is reflected into bits before entering a loop. Quantifiers may occur in
+the external contract of a node, but the formula on which the iPRA induction rule acts is always
+quantifier-free.
+
+5.3
+
+Compilation theorem
+
+Theorem 5.1 (FIBER compilation). Let P be a fixed well-formed FIBER program from interfaces
+X1 , . . . , Xm to Y . Suppose:
+1. every primitive node is supplied with a local derivation in Prf PRAAx;
+2. every bounded formula used by a checker has a reflection derivation;
+3. every loop carries a quantifier-free invariant with base and step derivations;
+4. every cyclic demand operator is monotone and has explicit finite caps;
+5. every exported operation respects the declared observation relation;
+6. every external requirement is named by a residual formula.
+Then an effective metalevel compiler constructs:
+1. fixed primitive-recursive symbols for demand, master-certificate bounds, verification, transformation, and observation;
+2. a finite list of residual formulas RP (p, q);
+3. a Lean proof term of the literal type
+RP (p, q), InputsP (p, q) ⊢PRAAx OutputY (p, q);
+4. and, when the output is certificate-independent, a proof in which all local and master certificates
+have been existentially eliminated.
+If derivations of all formulas in RP (p, q) are later supplied, the closed or client-context conclusion
+follows by Prf.trans.
+Proof. The proof is by external induction over the finite schedule.
+At a primitive node, instantiate its closed local theorem at the actual input terms using
+LeanProofs.IPRA.inst, then weaken to the current context. At a pairing or projection node, use
+the checked pairing equations. At a bounded map or fold, apply quantifier-free induction to the
+declared state formula; the base and step derivations are part of the node contract. At a search
+node, instantiate theorem 4.6. At a case node, reflect the bit, derive the finite decidable disjunction,
+compile each branch, and join them by Prf.orE. At an existential node, compile the body under
+the shifted certificate hypothesis and apply Prf.exE. At a strategy node, use theorem 4.11. At an
+observation node, apply the operation congruence or metric stability theorem and then seal the
+local certificate.
+A call node first computes the finite demanded queries. For each demand it instantiates the
+called interface theorem. The input derivations are then substituted into the caller’s local theorem
+16
+
+FIBER-iPRA
+
+16 November 2026
+
+using Prf.trans. If a single code is required, theorem 4.8 forms the master certificate; if not, the
+certificates are opened one at a time and sealed.
+For monotone cyclic demand, theorem 4.9 computes the least finite closure. The graph is unrolled
+for the resulting bounded number of instances, so the remaining schedule is finite and acyclic.
+The induction maintains the lexical-scope invariant. A certificate variable can disappear only
+through existential elimination; an exported term may mention it only if the node is marked
+canonical and least search has produced a closed term. Therefore the final conclusion contains no
+accidental witness escape. Every unresolved producer encountered by the schedule is inserted as a
+hypothesis, yielding exactly RP (p, q). Finally simultaneous cut combines all node derivations and,
+when available, discharges residuals.
+
+5.4
+
+Composition
+
+Theorem 5.2 (Compositionality). If R : X → Y and S : Y → Z are FIBER realizers, then there
+is a FIBER realizer S ◦ R : X → Z. Its demand is obtained by flattening the R-demands for each
+Y -query demanded by S; its residual list is the union of the specialized residuals of R and S; and its
+soundness proof is obtained by substitution and simultaneous cut.
+Proof. For a target query q, compute demS (q) = ⟨y0 , . . . , yk−1 ⟩. For each yi , compute demR (yi ),
+concatenate the lists, and remove no duplicates unless a proved normalization theorem is available.
+A master certificate supplies the required X-certificates. The transformer first runs TR at each yi ,
+bundles the resulting Y -certificates, and then runs TS . Bounds and all operations are primitive
+recursive.
+In the object theory, instantiate the soundness theorem for R at every yi . Use these derivations
+to discharge the Y -validity hypotheses of the soundness theorem for S by Prf.trans. Extensionality
+or metric stability composes by transitivity or the triangle inequality. Local certificates are sealed.
+The remaining hypotheses are precisely the specialized residuals. Sequence concatenation may
+make associativity hold only up to a provable coding equality, but the exported observation is
+unchanged; normalizing all flattened demands to one canonical sequence code makes composition
+strictly associative at the metadata level.
+Corollary 5.3 (Reuse under arbitrary terms and contexts). A compiled closed interface theorem
+can be specialized at arbitrary object terms and used under arbitrary client hypotheses.
+Proof. Apply LeanProofs.IPRA.inst to substitute the terms and then Prf.ofNil or weakening
+to add the client context. This is why reusable lemmas should be stated either at arbitrary terms or
+in an explicitly universally closed form.
+
+5.5
+
+Soundness versus completeness
+
+The compilation theorem is a soundness theorem: every accepted program yields an iPRA derivation
+from its explicit residuals. It does not assert that every iPRA theorem has a convenient FIBER
+presentation, nor that every classical proof can be mined automatically. This asymmetry is intentional.
+The source language is a disciplined fragment optimized for finite, quantitative mathematics and
+auditability.
+
+5.6
+
+Why the framework is not merely a checker generator
+
+A checker alone proves only a conditional statement of the form “if this finite code verifies, then the
+local conclusion holds.” The compiler also tracks:
+17
+
+FIBER-iPRA
+
+16 November 2026
+
+• where the certificate comes from;
+• whether its existence is local, canonical, or residual;
+• how a downstream query changes upstream precision demand;
+• whether two independently produced certificates are compatible;
+• which observations are stable under representation changes;
+• which formulas are actually used as quantifier-free induction invariants;
+• and how all local proofs are assembled into the final object sequent.
+These are exactly the points at which the existing packet outlines most often stop.
+
+6
+
+Residual producer calculus
+
+A residual is not an informal promise that “some effective constant exists.” It is a fixed formula in
+the final object-language context. This section gives a normal form and a hierarchy of eliminations.
+
+6.1
+
+Residual normal form
+
+A producer residual is written
+Producej (p, q) :≡ ∃z < Bj (p, q) Wj (p, q, z) = 1
+when a finite bound and verifier are known. When no bound is known, the exact formula records
+what is missing, for example:
+∃H ∀P (Solution(P ) → Height(P ) ≤ H),
+∃N ∀n ≥ N Error(n) ≤ 2−k ,
+∃η > 0 Sep(p, η),
+∃L CompleteRepresentativeList(p, L),
+∃C, N0 ∀n ≥ N0 Remainder(n) ≤ Cρ(n).
+The residual formula must expose all parameters and conventions: strict versus nonstrict bounds,
+zero-divisor behavior, representation of height, requested precision, and whether the output is a list,
+a bound, or a named witness.
+
+6.2
+
+Classes of residuals
+
+Class
+
+Available data
+
+FIBER treatment
+
+R0: structural
+
+Only substitution, weakening, conjunction,
+or finite cut is missing.
+R1: bounded de- A bound B, verifier bit W , and object
+cidable
+proof of existence are available.
+
+18
+
+Eliminate directly with checked
+Prf combinators.
+Use checked least search; produce a canonical witness if
+needed.
+
+FIBER-iPRA
+
+Class
+
+16 November 2026
+
+Available data
+
+FIBER treatment
+
+R2: finite family
+
+For each i < N , an R1 producer is available.
+R3: monotone de- A finite product of caps and a monotone
+mand
+demand operator are available.
+R4: metric coher- Adjacent error bounds and a primitiveence
+recursive summable tail majorant are available.
+R5: compactness A finite net, coverage checker, and contisubstitute
+nuity modulus are available.
+R6: bounded clas- A fixed bounded game or finite decidable
+sical
+case split is available.
+
+Form one master certificate by
+theorem 4.8.
+Compute the least closure by
+theorem 4.9.
+Derive a global Cauchy modulus by finite summation; see
+section 7.
+Seal the local covering point
+and lift the finite calculation.
+Verify a finite strategy certificate and realize it intuitionistically.
+R7: guarded selec- A positive separation or apartness margin Define a stable exact label or
+tor
+is available.
+partial operation under the
+guard.
+R8: genuinely ex- No effective bound, modulus, represen- Leave the exact producer forternal
+tative theorem, or finite presentation is mula in the final sequent.
+known.
+The hierarchy is not a scale of mathematical importance. It separates engineering omissions
+from genuine strength. R0–R7 often disappear once the correct finite formulation is chosen. R8 is
+the honest boundary of the application.
+
+6.3
+
+Eliminating bounded residuals
+
+Proposition 6.1 (Bounded producer elimination). Suppose a compiled theorem has endpoint
+Produce(p, q), Γ ⊢PRAAx Φ(p, q)
+with Produce(p, q) ≡ ∃z < B(p, q) W (p, q, z) = 1, and suppose Γ ⊢PRAAx Produce(p, q). Then
+Γ ⊢PRAAx Φ(p, q). If Φ names the witness, replace existential elimination by the least selector from
+theorem 4.6.
+Proof. For a witness-independent conclusion, apply simultaneous cut or existential elimination. For
+a named witness, derive validity of the least accepted code and substitute that term in the endpoint.
+Both constructions are checked object derivations.
+
+6.4
+
+From finite totality to a producer program
+
+A common packet proves, for arbitrary i < N , that some local certificate exists, but stops before
+constructing a uniform certificate array. The master-certificate theorem closes this gap when the
+verifier is bounded and decidable. In source-language terms the residual
+∀i < N ∃c < B(i) V (i, c) = 1
+is compiled to the primitive-recursive producer
+C(i) = µc < B(i) [V (i, c) = 1],
+19
+
+FIBER-iPRA
+
+16 November 2026
+
+followed by sequence recursion. This is a valid finite choice principle because the least search is
+definable and its correctness is proved. It should not be generalized to unbounded or nondecidable
+relations.
+
+6.5
+
+Residual factoring
+
+Residuals should be factored at the lowest reusable level. For example, a “root branch theorem”
+may appear to require one monolithic residual, but it usually decomposes into:
+1. exact coefficient presentation;
+2. a rational isolating box;
+3. a derivative or resultant separation margin;
+4. a polynomial interval-evaluation certificate;
+5. and a requested precision.
+The last three may be bounded decidable data once the first two are supplied. Factoring lets
+a later theorem discharge only the genuinely new producer and reuse the finite checker. The
+same principle applies to analytic constants, finite covers, representatives of descent classes, and
+topological carriers.
+
+6.6
+
+Non-eliminable examples
+
+The framework does not manufacture missing effective mathematics. In particular:
+• Finiteness of a Diophantine set does not supply a computable height cutoff. A complete
+bounded enumeration requires an effective height theorem or a complete list theorem.
+• Finiteness of a Selmer set does not supply rational points representing all locally soluble
+covering classes. Representative production and compatibility remain separate formulas.
+• Compactness in an abstract completed space does not supply a finite net in the chosen coding.
+A net and a coverage modulus must be produced.
+• Metastability for every control function does not by itself give a Cauchy rate. A tail modulus
+or summable adjacent-motion estimate is new data.
+• A classical proof of ¬¬∃xA(x) does not yield a witness unless the conclusion is stable, bounded
+decidable, or accompanied by a producer.
+In each case FIBER still contributes something useful: it turns the remainder of the proof into a
+verified finite consumer and states the missing theorem in a form that can be attacked independently.
+
+6.7
+
+A theorem-status discipline
+
+Each theorem in an implementation should receive one of the following labels.
+Checked object theorem. A compiled Prf PRAAx declaration.
+Inherited checked theorem. A named declaration from ConciseIPRA, IPRADerivations, or
+IPRABridge, with a pinned import path.
+Human-complete schema. A full mathematical proof whose generic Lean implementation remains to be completed.
+20
+
+FIBER-iPRA
+
+16 November 2026
+
+Executable evidence. Finite tests or exact computations; never a substitute for an object derivation.
+Conditional theorem. A compiled or human proof with displayed residual producer formulas.
+Obstructed formulation. A stronger requested interface is false or impossible; a corrected relational, metric, or guarded statement is supplied.
+Open. Neither proof nor adequate residual reduction is available.
+This vocabulary is used in the theorem ledger shipped with the archive.
+
+7
+
+Effective analysis: from local certificates to coherent names
+
+Many analysis packets correctly replace limits by rational approximants and error bounds, but a
+repeated gap remains: separately certified approximants are treated as one coherent real name.
+FIBER distinguishes three levels: pointwise approximation, finite-window stability, and a global
+Cauchy modulus. Only the third is a completed name.
+
+7.1
+
+Dyadic names and adjacent motion
+
+Represent a dyadic rational at precision n by a signed integer an , interpreted as an /2n . Signed
+integers can be represented by the existing difference terms in IPRADerivations.Core.Integers.
+Define the scaled discrepancy, for m ≥ n, by
+∆(n, m) = 2m−n an − am .
+This is an integer quantity and therefore avoids division in the object language.
+Theorem 7.1 (Dyadic adjacent-motion theorem). Suppose a sequence of signed integers satisfies
+|2ak − ak+1 | ≤ 1
+
+for every k.
+
+Then for all m ≥ n,
+∆(n, m) ≤ 2m−n − 1.
+Consequently
+an am
+− m < 2−n .
+2n
+2
+n
+Thus n →
+7 an /2 is a Cauchy name with modulus n 7→ n.
+Proof. Write r = m − n and induct on r. For r = 0, the discrepancy is zero, which equals 20 − 1.
+For the successor step, use
+∆(n, m + 1) = |2m+1−n an − am+1 |
+= |2(2m−n an − am ) + (2am − am+1 )|
+≤ 2∆(n, m) + |2am − am+1 |
+≤ 2(2m−n − 1) + 1
+= 2m+1−n − 1.
+The induction invariant is an inequality between integer-coded terms, hence quantifier-free. The
+object proof uses integer triangle inequality, powers of two, order monotonicity, and quantifier-free
+induction.
+21
+
+FIBER-iPRA
+
+16 November 2026
+
+Dividing the scaled inequality by 2m is only an explanatory interpretation. The formal endpoint
+can remain ∆(n, m) < 2m−n , an integer inequality. This is exactly the usual Cauchy estimate after
+clearing denominators.
+Corollary 7.2 (Independent certificates become coherent). Suppose that for each precision n a
+local certificate produces an , and a pair certificate proves |2an − an+1 | ≤ 1. Then the certificates
+may be sealed while the sequence of observations exports a Cauchy name.
+Proof. Use local existential elimination to obtain each adjacent pair only inside the proof of its
+inequality. The public conclusion depends solely on the observations an , an+1 . Apply theorem 7.1.
+No single global certificate choosing all pointwise witnesses is necessary unless the name itself must
+be returned as a code; in that case bounded least selection and a master certificate provide one.
+
+7.2
+
+General summable-tail theorem
+
+The dyadic estimate is a special case of a finite telescoping principle. Let ek ≥ 0 be integer or
+rational error majorants, and let T (n) be a primitive-recursive tail certificate satisfying, for every
+m ≥ n,
+m−1
+X
+
+ek ≤ T (n).
+
+k=n
+
+If |xk+1 − xk | ≤ ek , then
+
+|xm − xn | ≤ T (n).
+
+The proof is finite induction using the triangle inequality and the bounded sum equations. A global
+rate therefore follows from an explicit summable tail majorant; it does not follow from pointwise
+convergence or metastability alone.
+
+7.3
+
+Metastability is a separate interface
+
+A metastable contract has the form
+∀k, g ∃N ≤ Φ(k, g) ∀i, j ∈ [N, N + g(N )] d(xi , xj ) ≤ 2−k .
+For fixed k, g this is a finite query and fits FIBER directly: a certificate contains N and a finite
+table or checker for the window. It is often provable when no useful global rate is known. The
+framework keeps it as a metastable interface. Converting it to a Cauchy name requires additional
+data, such as a summable adjacent-motion estimate or an independently supplied tail modulus.
+This prevents an invalid strengthening found in several informal proof plans.
+
+7.4
+
+Finite-net lifting
+
+Abstract compactness should be replaced by the finite data actually consumed at a target precision.
+Theorem 7.3 (Finite-net lifting). Fix encoded domains X, Y , discrepancy functions dX , dY , a
+function f : X → Y , and a predicate P (y). For a target query suppose there are:
+1. a finite list z0 , . . . , zL−1 and a coverage certificate
+∀x ∈ X ∃i < L dX (x, zi ) ≤ ϵ;
+2. a modulus certificate
+dX (x, z) ≤ ϵ −→ dY (f (x), f (z)) ≤ δ;
+22
+
+FIBER-iPRA
+
+16 November 2026
+
+3. a stability theorem
+P (f (z)) ∧ dY (f (x), f (z)) ≤ δ −→ Pδ (f (x));
+4. finite proofs of P (f (zi )) for all i < L.
+Then iPRA proves Pδ (f (x)) for every encoded x ∈ X. The chosen net point is local and need
+not be exported.
+Proof. Introduce an arbitrary x satisfying the domain predicate. Open the coverage existential to
+obtain an index i < L with the distance bound. Instantiate the finite net theorem at i, apply the
+modulus, then apply stability. The conclusion does not mention i, so existential elimination seals it.
+The finite family of net-point proofs can be represented by a master certificate or by a reflected
+bounded universal. Every induction used to verify list lookup or the finite family is quantifier-free
+after Booleanization.
+Remark 7.4. This theorem does not assert that an arbitrary compact metric space has an effective
+net in the selected coding. Net production and coverage are explicit hypotheses or residuals. Once
+supplied, the remainder of the usual compactness argument is a finite object-theory proof.
+
+7.5
+
+Guarded partial operations
+
+A statement such as d ̸= 0 is generally too weak for stable numerical division. The useful interface
+is a positive apartness margin:
+|d| ≥ η > 0.
+At target precision n, the demand transformer requests enough precision on d and the numerator
+to keep interval error below a fixed fraction of η. Interval or Newton certificates then verify the
+reciprocal and the quotient. The same pattern applies to pivots, logarithms, square roots away from
+zero, normalized eigenvectors, and branch labels. The guard is a residual if no effective lower bound
+is known.
+
+7.6
+
+Modulus calculus
+
+FIBER realizers carry a demand map, which functions as a compositional modulus. For metric
+interfaces, common operations have the following finite rules.
+Operation
+
+Sufficient upstream demand
+
+addition
+multiplication on a bounded
+box
+composition g ◦ f
+finite sum of L terms
+division
+root label
+finite integral or quadrature
+
+enough precision that the two errors sum below the target
+input errors divided by a certified magnitude bound
+first apply the modulus of g, then that of f
+target precision plus a binary-length allowance for L
+target precision plus an apartness margin for the denominator
+cluster precision plus a positive separation gap
+mesh and local error sufficient for the requested total error
+
+These are not semantic continuity assumptions hidden in a typeclass. Each is a finite arithmetic
+contract with an object derivation. Composition of the demand maps is the proof-mining content of
+the framework.
+
+23
+
+FIBER-iPRA
+
+7.7
+
+16 November 2026
+
+Worked analytic pattern: certified bisection
+
+For a rational polynomial p, an interval [l0 , r0 ], and a target precision n, a certificate contains the
+bisection trace (lk , rk )k≤n . The verifier checks:
+p(lk ) ≤ 0 ≤ p(rk ),
+
+rk − lk = 2−k (r0 − l0 ),
+
+and verifies that (lk+1 , rk+1 ) is the half selected by the exact rational sign of the midpoint. These
+are finite polynomial and order calculations. A uniqueness claim additionally requires a guard: for
+example, a certificate that
+p(y) − p(x) = (y − x)Q(x, y)
+
+and Q(x, y) ≥ λ > 0
+
+throughout the interval. Then two zeros satisfy (y − x)Q(x, y) = 0, and positive cancellation gives
+x = y. This avoids an appeal to the classical mean-value theorem and fits the checked ring/order
+library.
+
+8
+
+Algebraic objects, branches, and stable observations
+
+Several packet difficulties are caused not by weak arithmetic but by asking for a discontinuous name.
+Ordered roots at a collision, a normalized eigenvector for a repeated eigenvalue, a rotation axis at
+the identity, and an exact sign for an arbitrary Cauchy real are not stable observations. FIBER
+separates the finite relation from a guarded label.
+
+8.1
+
+A finite-use obstruction to exact sign
+
+Theorem 8.1 (No unguarded finite-use exact sign selector). No deterministic procedure that, on
+each input Cauchy name, inspects only finitely many approximants can return the exact trichotomy
+−1, 0, +1 correctly for every real represented by an arbitrary rapidly convergent rational name.
+Proof. Run the procedure on the zero name. During this computation it inspects a finite set of
+indices; let N exceed all of them. Construct a valid name for the positive real 2−N −3 whose first N
+queried approximants are identical to those of the zero name and whose later approximants converge
+with the required rate. The procedure follows the same finite computation and returns the same
+output on both names, so it is wrong on one of them. The same argument works for a negative
+perturbation.
+The theorem is a continuity argument about representations, not a statement that signs can
+never be decided. A positive separation witness |x| ≥ 2−k makes the sign decidable from sufficiently
+precise approximants. Therefore the correct interface is
+Sign(x, k, s) : |x| ≥ 2−k −→ s = sign(x),
+or a relational output “x lies in this interval” when no gap is known.
+
+8.2
+
+Root clusters instead of global labels
+
+Let P (T ) be a monic polynomial of fixed degree d. The coefficient vector is stable under perturbation;
+an ordered list of roots is not stable at collisions. FIBER therefore uses one of three outputs.
+Symmetric observation. Elementary symmetric functions, power sums, resultants, or the companion matrix. These remain exact at collisions.
+24
+
+FIBER-iPRA
+
+16 November 2026
+
+Cluster observation. A finite list of disjoint boxes with multiplicities and a coverage verifier. The
+ordering of boxes is irrelevant.
+Guarded labels. Under a positive separation residual between clusters, a canonical ordering and
+individual root names can be selected.
+Theorem 8.2 (Stable cluster transport). Suppose two valid certificates for a polynomial at mesh ϵ
+give cluster families C and C ′ . If both certificates prove complete coverage with multiplicity and every
+cluster has diameter at most ϵ, then the bipartite overlap relation has a finite multiplicity-preserving
+matching after clusters within distance 2ϵ are merged. Every symmetric or 2ϵ-stable observation
+therefore agrees.
+Proof. Form the finite incidence graph whose vertices are clusters from the two certificates and
+whose edges record nonempty overlap of their inflated boxes. A root counted by one complete
+certificate must be counted by the other, and multiplicity is conserved on each connected component.
+The component totals therefore agree. Merging each component gives a common coarsening with
+the same multiplicities. A stable observation changes by at most the prescribed modulus under the
+diameter and inflation bounds. The graph, component labels, and multiplicity equations are finite
+objects; a certificate can contain a spanning forest and the checker can verify every equation.
+This theorem is deliberately relational. It does not construct a globally ordered root list at a
+collision.
+
+8.3
+
+Guarded exact labels
+
+Proposition 8.3 (Gap-guarded labeling). Suppose a cluster certificate gives d singleton clusters
+and a rational gap η > 0 such that distinct clusters are separated by at least η. At any precision
+finer than η/4, lexicographic ordering of the rational boxes is independent of the valid certificate.
+Hence individual labels are certificate-independent and may be exported.
+Proof. Two valid boxes for the same root overlap after inflation by their error radius. Boxes for
+different roots cannot cross or exchange order because the total uncertainty is less than half the
+certified gap. Thus the overlap matching is unique and preserves lexicographic order. The proof
+consists of rational order inequalities and finite matching verification.
+The same pattern applies to eigenvalues. Without a gap, export the characteristic polynomial,
+spectral clusters, or projectors onto a cluster. With a gap and a normalization guard, export a
+labeled eigenvector. For rotations, export a unit quaternion modulo sign or a projective axis relation;
+only away from the identity should an exact axis label be requested.
+
+8.4
+
+Finite algebra certificates
+
+A powerful branch-free representation of a zero-dimensional algebra is a finite spanning certificate.
+Let
+A = R[x1 , . . . , xn ]/(f1 , . . . , fs )
+and suppose a certificate gives polynomials b0 = 1, b1 , . . . , bD−1 and, for every i, j, coefficients mi,j,k
+and quotient polynomials witnessing
+xi bj −
+
+X
+
+mi,j,k bk ∈ (f1 , . . . , fs ).
+
+k<D
+
+All equalities are finite polynomial identities and can be checked by ring normalization with supplied
+quotient witnesses.
+25
+
+FIBER-iPRA
+
+16 November 2026
+
+Theorem 8.4 (Finite-algebra observation). From such a certificate, multiplication by each xi is
+represented by a D × D matrix. Every polynomial observation is represented by a matrix polynomial.
+Traces, determinants, characteristic polynomials, resultants, and Newton power sums are finite,
+functorial observations. If the certificate is transported under a coefficient substitution or quotient
+map, these observations transport by the corresponding matrix identities.
+Proof. Closure under multiplication by the generators implies closure under every monomial and
+hence every polynomial, by induction on term construction. The supplied quotient identities
+show that the action descends modulo the ideal. Matrix multiplication represents composition of
+multiplication operators. The determinant, trace, and characteristic polynomial are finite polynomial
+expressions in the matrix entries. Substitution preserves all verified polynomial identities, so it
+preserves the matrix representation and its polynomial observations. No basis independence is
+needed for the spanning claim; if a basis or exact dimension is required, add a linear-independence
+certificate.
+This representation addresses several Puiseux, elimination, and algebraic geometry packets. It
+gives stable finite observations before any branch is selected.
+
+8.5
+
+Exact versus approximate Puiseux output
+
+A uniform exact Puiseux branch selector from arbitrary Cauchy coefficient names is obstructed
+for the same reason as exact sign: arbitrarily small coefficient perturbations can split or permute
+branches. Three corrected interfaces are available.
+1. With exact algebraic or splitting data, output a finite list of Puiseux expansions and a
+permutation-invariant certificate.
+2. With approximate coefficients, output clusters of truncated expansions and residual bounds.
+3. Under a discriminant or resultant separation guard, refine clusters to labeled branches.
+At each finite truncation the Newton polygon, coefficient equations, and residual checks are
+finite. What fails without additional data is not the finite algebra; it is stable global naming.
+
+8.6
+
+Descent and representative relations
+
+Arithmetic geometry often produces a finite class set but then informally chooses rational representatives. FIBER uses a relation R(c, w) between a class code and a representative witness. A finite
+strategy or viability certificate verifies compatibility along the proof graph. Public conclusions that
+depend only on the class seal the witness. Conclusions that require an actual rational point retain
+∃w R(c, w) as a residual unless a representative producer is proved. This prevents Selmer classes
+from being silently identified with rational covering points.
+
+9
+
+Application patterns and repaired proof obligations
+
+The framework is useful only if it turns reported obstacles into precise local tasks. This section
+records the normal form for the main domains represented in the repository.
+
+26
+
+FIBER-iPRA
+
+9.1
+
+16 November 2026
+
+Combinatorics and finite algebra
+
+Finite identities, recurrences, and inequalities are the easiest class. A proof normally needs:
+1. a primitive-recursive symbol for the sequence or finite object;
+2. defining equations at arbitrary object terms;
+3. a quantifier-free induction invariant;
+4. a ring, order, finite-sum, or bounded-search derivation;
+5. an explicitly universally closed endpoint.
+The checked library already supplies most of this. FIBER adds value when a packet uses a large
+finite certificate or several independently generated witnesses. The certificate is encoded, its checker
+reflected, and local witnesses sealed. Examples include finite graph colorings, tiling boundary checks,
+coefficient identities, truncated series, recurrence tables, and finite matrix calculations.
+
+9.2
+
+Real and complex analysis
+
+An analytic object is represented by a family of finite queries. A typical interface contains:
+• a precision or derivative-order query;
+• rational or dyadic approximation data;
+• a residual, interval, or coefficient verifier;
+• a local modulus or tail bound;
+• an observation relation identifying independent valid certificates;
+• guarded operations for division, logarithms, branches, and inverses.
+The compiler never assumes that a pointwise family is coherent. Coherence is proved by adjacent
+motion, a summable tail, nested intervals, or a viable path. Finite-net lifting replaces compactness.
+Contour and quadrature arguments are finite polygonal or mesh calculations plus explicit local error
+bounds. Analytic continuation is represented by a finite chain of overlapping discs, with transition
+certificates and a spanning-tree compatibility proof.
+For special functions, identities divide into three layers:
+Exact finite algebra. Coefficient recurrences, truncated products, differential equations after
+coefficient comparison, and polynomial transformations. These should be the first objecttheory milestones.
+Effective local analysis. Convergence in a guarded domain, with a displayed majorant and tail
+modulus.
+Global continuation or asymptotics. A finite path/sector certificate plus effective constants.
+Missing constants remain residuals rather than being imported as opaque host data.
+This layering gives a realistic route for the Gamma, Beta, Barnes G, hypergeometric, Meijer G,
+Lambert W, and normal-distribution packets. It also prevents a successful finite-series check from
+being reported as a complete object proof of the analytic function.
+
+27
+
+FIBER-iPRA
+
+9.3
+
+16 November 2026
+
+Probability
+
+General measure spaces conceal both infinitary data and discontinuity. FIBER begins with finite
+rational laws:
+{(xi , wi ) : i < L},
+
+wi ∈ Q≥0 ,
+
+X
+
+wi = 1.
+
+i<L
+
+Expectation, moments, convolution, and distribution functions at rational thresholds are finite
+sums. Approximation of an external law requires a quantization certificate, tail-moment bounds,
+and, for discontinuous events, an anti-concentration or boundary-mass modulus. A central limit
+theorem at a fixed error and threshold is then a finite query: truncate tails, discretize, verify a
+characteristic-function or smoothing estimate, and account for all errors. A general measure-theoretic
+statement is not silently inferred from the finite law.
+For medians and quantiles, exact labels are unstable when an interval of medians exists. Export
+the median interval or a finite relation; choose a canonical endpoint only when the theorem actually
+needs one and its bounded search contract is proved.
+
+9.4
+
+Topology and geometry
+
+Completed spaces are replaced by finite carriers:
+• simplicial or cubical complexes;
+• rational polygonal curves;
+• finite covers and nerves;
+• grid approximations with refinement maps;
+• crossing, orientation, or winding certificates;
+• local chart tuples with overlap checks.
+A topology theorem at a fixed query becomes a finite combinatorial theorem plus an approximation producer. For example, a Jordan-curve query may request a grid fine enough relative to a
+separation modulus; a flood-fill certificate then proves the finite inside/outside claim. Invariance under refinement is an observation theorem. The existence of the required separation or approximation
+modulus is a distinct producer.
+Finite gluing does not require a global sheaf object. Given local data on a finite cover and
+equality or error certificates on overlaps, choose a spanning tree of the overlap graph. Transport
+observations to a root along the tree. Exact cocycle compatibility gives equality; metric edge errors
+add along the path. Remaining cycle edges are consistency checks. This is the “observational
+descent” principle in a form directly compilable by FIBER.
+
+9.5
+
+Diophantine and arithmetic geometry
+
+A bounded search can verify all solutions below a supplied height. It cannot prove that there are no
+larger solutions without an effective height or complete-list theorem. The correct interface has two
+parts:
+1. a finite enumerator and verifier parameterized by a bound H;
+2. a residual producer asserting that every relevant solution has height at most H, or that a
+supplied list is complete.
+28
+
+FIBER-iPRA
+
+16 November 2026
+
+Once the producer is available, least search and master-certificate formation can construct
+canonical lists, counts, and finite invariants. Without it, the finite consumer is still reusable and the
+missing arithmetic theorem is isolated exactly.
+For descent methods, class codes and rational representatives are separated. A finite relation
+records which representatives realize which class. A backward viability certificate chooses a
+compatible path through a finite relation only when every node has a certified continuation.
+This resolves nonunique local witnesses; it does not prove that every abstract class has a rational
+representative.
+
+9.6
+
+Prime distribution and ineffective constants
+
+An asymptotic theorem used at a concrete input should expose:
+• the threshold N0 ;
+• all constants in the error bound;
+• the range of moduli or parameters;
+• and the arithmetic checker for the final inequality.
+If a classical proof establishes existence of constants but gives no primitive-recursive producer
+or bound, those constants are residuals. A finite computation that finds plausible constants for a
+range is evidence for an instance, not a uniform proof. When a verified explicit estimate is available,
+its constants become ordinary input terms and the downstream argument is compiled by order and
+bounded-sum lemmas.
+
+9.7
+
+Computability and proof coding
+
+The checked bridge and endpoint inventory already emphasize exact theories, exact formulas, literal
+tables, and replay provenance. FIBER applies the same discipline to proof-coding reductions:
+1. keep the exact outer theory in the theorem type;
+2. separate semantic equivalence from an object-theory derivation;
+3. treat a machine table, polynomial, or proof predicate as pinned data;
+4. prove local arithmetic in the ordinary portable calculus;
+5. translate at the Foundation or application boundary;
+6. record directions, premises, and double-negation strength exactly.
+A semantic Lean theorem about a machine and an iPRA proof of a coded nonhalting statement
+are different endpoints. The framework does not merge them in a status ledger.
+
+9.8
+
+Classical arguments
+
+FIBER supports three constructive replacements for classical reasoning.
+1. Reflected bounded cases. A decidable finite atom yields an object proof of the finite
+disjunction; branches are joined by orE.
+2. Finite strategy certificates. Fixed bounded alternation is realized by theorem 4.11.
+
+29
+
+FIBER-iPRA
+
+16 November 2026
+
+3. Stable negative conclusions. A negative translation can be used when the target is stable
+and the translated assumptions are supplied; no witness extraction is claimed.
+An unbounded classical existence theorem that is neither stable nor equipped with a producer
+remains outside these mechanisms. This is an honest logical boundary, not an implementation
+inconvenience.
+
+9.9
+
+Representative repaired endpoints
+
+The following endpoints illustrate how a packet should be restated.
+Informal claim
+
+Unsafe formulation
+
+FIBER endpoint
+
+A root has a branch
+
+Return an exact global label from
+arbitrary Cauchy coefficients
+
+Return a verified cluster; under
+a separation residual, refine to a
+label.
+Approximants define a Prove each precision indepen- Add adjacent-motion or nestedreal
+dently
+interval certificates and derive a
+Cauchy modulus.
+Compactness gives a Select a point from an abstract Supply a finite net, coverage and
+minimizer
+compact space
+continuity moduli; return an approximate minimizer, with exactness only under a gap.
+A finite set can be enu- Use finiteness to invent a height Parameterize the verifier by H; remerated
+cutoff
+tain a complete-height/list residual.
+A nonzero pivot can be Treat d ̸= 0 as a numerical mod- Require |d| ≥ η > 0, or return a
+divided by
+ulus
+branch relation that avoids division.
+A bounded proof graph Choose one witness at each node Use least bounded search and one
+has witnesses
+master certificate, or seal local witnesses.
+A finite class has a rep- Identify class codes with rational Use a representative relation and
+resentative
+points
+retain representative totality as a
+producer.
+A metastable sequence Infer a Cauchy modulus from fi- Export metastability; add a
+converges with rate
+nite windows
+summable tail or explicit rate producer for a Cauchy name.
+
+10
+
+Lean formalization architecture
+
+10.1
+
+Target repository location
+
+A complete implementation should live under
+Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/FIBER/
+with a small public import IPRADerivations.FIBER. The compiler metadata and source generator
+may live under Tools/, but every accepted theorem must end in the ordinary Prf PRAAx calcu30
+
+FIBER-iPRA
+
+16 November 2026
+
+lus. Foundation translations belong in a separate bridge module so the portable library remains
+independent of application closures.
+
+10.2
+
+Existing declarations to reuse
+
+The implementation should import, rather than duplicate, the following checked components.
+Module/declaration
+
+Use in FIBER
+
+Prf.subst, weaken, trans, exE, logical constructors,
+equality substitution.
+IPRADerivations.Core.Basic
+inst, open quantifier-free induction ind, arithmetic symbols and congruence.
+Core.Order, State arithmetic, bounds, comparison, monotonicity,
+Core.Semiring,
+Core.Monus
+cancellation.
+Core.Pairing
+Pairing, projections, and simultaneous recursion for sequence coding.
+Core.Search
+Search.mu,
+search_spec,
+search_found,
+and
+search_minimal.
+Core.BoundedSums,
+Boolean folds, finite potentials, and master-verifier agCore.MultiSums
+gregation.
+Core.Integers, Core.Powers
+Dyadic names and the adjacent-motion theorem.
+Core.LinearAlgebra
+Matrix observations for finite algebras and spectral clusters.
+IPRABridge.OpenSequents,
+Transport of completed open interface theorems to FounScopedSequents
+dation clients.
+ConciseIPRA.Deduction
+
+10.3
+
+Module dependency order
+
+1. FIBER/Kernel.lean: structural aliases for residual discharge, specialization, local sealing, and
+context replacement. This file should contain no arithmetic.
+2. FIBER/Bool.lean: Boolean operations and reflection for atomic equality/order predicates.
+3. FIBER/Fold.lean: bounded conjunction/disjunction folds and indexing lemmas.
+4. FIBER/BoundedFormula.lean: external syntax for a restricted bounded formula language,
+generated checker terms, and reflection.
+5. FIBER/Sequence.lean: one canonical bounded sequence coding, append, lookup, concatenation, and mixed-radix alternative.
+6. FIBER/SearchAdapter.lean: one-success adapter on top of Core.Search.
+7. FIBER/Master.lean: least local witnesses and the master-certificate theorem.
+8. FIBER/Demand.lean: capped product orders, potential, monotone closure, and least prefixed
+point.
+9. FIBER/Strategy.lean: fixed bounded games and strategy realization.
+10. FIBER/Interface.lean: metadata structures at the Lean metalevel and corresponding object
+formula constructors.
+31
+
+FIBER-iPRA
+
+16 November 2026
+
+11. FIBER/Compile.lean: proof-producing recursion over the finite source graph.
+12. FIBER/Analysis/Dyadic.lean and FiniteNet.lean: the two principal cross-domain examples.
+13. FIBER/Algebra/Clusters.lean: stable cluster observations and gap-guarded labels.
+14. FIBER/Checks/*.lean: small closed examples, #print axioms, and bridge round trips.
+This order deliberately completes the object kernel before a large metadata language is introduced.
+
+10.4
+
+Structural kernel signatures
+
+The first file can use the current API almost verbatim.
+Listing 1: Core structural targets
+import IPRADerivations.Core.Basic
+namespace LeanProofs.IPRA.FIBER
+open LeanProofs.ConciseIPRA
+open LeanProofs.IPRA
+open Syn
+open scoped Fm
+variable {n : Nat}
+variable {Gamma Delta : List (Fm PTm n)}
+variable {phi : Fm PTm n}
+/-- Simultaneous residual discharge. -/
+theorem discharge
+(h : Gamma |- [PRAAx] phi)
+(hs : forall psi, psi in Gamma -> Delta |- [PRAAx] psi) :
+Delta |- [PRAAx] phi :=
+h.trans hs
+/-- Reuse a closed theorem at arbitrary terms and hypotheses. -/
+theorem specialize
+{k : Nat} {theta : Fm PTm k}
+(h : ([] : List (Fm PTm k)) |- [PRAAx] theta)
+(sigma : Fin k -> PTm n) :
+Gamma |- [PRAAx] theta.subst sigma :=
+LeanProofs.IPRA.inst h sigma
+/-- Certificate sealing is the native existential-elimination rule. -/
+theorem seal
+{A : Fm PTm (n + 1)} {B : Fm PTm n}
+(hex : Gamma |- [PRAAx] Fm.ex A)
+(hbody : A :: Gamma.map Fm.shift |- [PRAAx] B.shift) :
+Gamma |- [PRAAx] B :=
+Prf.exE hex hbody
+end LeanProofs.IPRA.FIBER
+
+32
+
+FIBER-iPRA
+
+16 November 2026
+
+The ASCII notation in the distributed Lean file uses the repository’s actual Unicode/scoped
+notation. The proof terms are direct aliases, so this is the first file to elaborate and audit.
+
+10.5
+
+One-success search adapter
+
+Core.Search searches for a zero of a binary term f (i, x). FIBER verifiers conventionally accept
+when v(i, x) = 1. Define
+fv (i, x) = 1 −̇ v(i, x).
+Then instantiate Search.search_found and prove:
+Listing 2: Target theorem for the search adapter
+theorem leastAccepted_found
+{v : PTm 2} {N i x : PTm n}
+(hvBit : BitValued v)
+(hi : Gamma |- [PRAAx] lt i N)
+(hacc : Gamma |- [PRAAx] inst2 v i x == num 1) :
+Gamma |- [PRAAx]
+lt (leastAccepted v N x) N /\
+(inst2 v (leastAccepted v N x) x == num 1 /\
+le (leastAccepted v N x) i)
+
+Here BitValued should be a proved object formula, not a host proposition silently used to
+rewrite values. The implementation needs the existing monus and parity/Boolean lemmas to show
+that the complement is zero exactly when v = 1.
+
+10.6
+
+Bounded formula syntax
+
+A convenient external datatype is:
+Listing 3: Metalevel fixed bounded formulas
+inductive BFm (n : Nat)
+| eq
+: PTm n -> PTm n -> BFm n
+| lt
+: PTm n -> PTm n -> BFm n
+| and : BFm n -> BFm n -> BFm n
+| or
+: BFm n -> BFm n -> BFm n
+| imp : BFm n -> BFm n -> BFm n
+| bEx : PTm n -> BFm (n+1) -> BFm n
+| bAll : PTm n -> BFm (n+1) -> BFm n
+
+Define BFm.toFm and a compiler BFm.bit :
+recursion producing a proof:
+
+BFm n -> PTm n. The main theorem is an external
+
+Listing 4: Reflection endpoint
+def BFm.reflect (A : BFm n) :
+([] : List (Fm PTm n)) |- [PRAAx]
+(A.bit == num 1 <-> A.toFm)
+
+The bounded-quantifier cases should call fixed fold theorems rather than place A.toFm in an
+induction predicate. The generated proof is accepted because BFm is a Lean metatype; there is no
+object-level universal truth predicate.
+
+33
+
+FIBER-iPRA
+
+10.7
+
+16 November 2026
+
+Interface metadata versus object theorems
+
+A Lean structure may organize the generator, but proof fields must be genuine Prf values.
+Listing 5: Schematic interface record
+structure Interface where
+arity
+: Nat
+queryOK
+: PR (arity + 1)
+certBound : PR (arity + 1)
+verifier
+: PR (arity + 2)
+observe
+: PR (arity + 2)
+validFm
+: Fm PTm (arity + 2)
+soundFm
+: Fm PTm (arity + 2)
+sound
+: ([] : List (Fm PTm (arity + 2)))
+|- [PRAAx] soundFm
+-- plus equivalence/stability and substitution equations
+
+Merely declaring a field named sound is not a proof of a concrete instance. Every instance must
+construct it without sorry, an unproved axiom, or a host-level semantic cast.
+
+10.8
+
+Demand closure target
+
+Use a fixed number of coordinates in the first implementation. Encode a vector by nested pairing or
+a bounded sequence. Define:
+Listing 6: Demand closure theorem shape
+structure DemandSystem (r : Nat) where
+cap
+: Fin r -> PTm n
+step
+: Fin r -> PTm (n + r)
+monotone : ObjectMonotoneProof step
+theorem closure_fixed
+(S : DemandSystem r) :
+([] : List (Fm PTm n)) |- [PRAAx]
+IsLeastPrefixedPoint S (iterate S (sumCaps S))
+
+For a first checked milestone, take r = 2. This exercises pairing, coordinatewise maximum, the
+potential argument, and open induction without requiring a generic variable-length array library.
+Generalize only after the fixed-arity proof is stable.
+
+10.9
+
+Dyadic theorem target
+
+The formal endpoint should avoid rational division:
+Listing 7: Cleared-denominator Cauchy endpoint
+/-- a : precision and parameter |-> signed numerator -/
+theorem dyadic_scaled_cauchy
+(a : ZTerm 2)
+(hstep : AdjacentUnitProof a) :
+([] : List (Fm PTm 3)) |- [PRAAx]
+(le (var 0) (var 1) -->
+zabs (zsub (zscalePow2 a (var 0) (var 1))
+(a.at (var 1) (var 2)))
+< pow two (monus (var 1) (var 0)))
+
+34
+
+FIBER-iPRA
+
+16 November 2026
+
+The implementation should first prove the exact geometric bound 2m−n − 1, then derive the
+strict inequality. This module provides a small but meaningful demonstration that a framework
+theorem closes a reported coherence gap in the object theory.
+
+10.10
+
+Compiler implementation strategy
+
+There are two reasonable stages.
+Stage A: trusted Lean generator. Represent a well-formed finite program as an inductive Lean
+datatype whose constructors contain the local Prf proofs. Define compile by recursion, returning
+a Prf term. Lean’s kernel checks the result; the generator itself need not be verified as an object
+program.
+Stage B: certificate-producing external frontend. A Python or Lean elaborator may parse
+JSON metadata, synthesize primitive recursive terms, and emit Lean source. Its output is still
+checked by Lean. The external tool is not in the trusted base. Keep generated formulas and node
+IDs deterministic so proof artifacts can be diffed and replayed.
+Do not begin with an internal self-interpreter. The diagonal obstruction and the size of syntaxsubstitution proofs make that interface both impossible in the strongest form and unnecessary for
+the repository’s goals.
+
+10.11
+
+Required checks
+
+Each completed module should pass:
+1. lake build +IPRADerivations.FIBER.<Module>;
+2. a no-placeholder scan for sorry, admit, and new theorem-specific axioms;
+3. #print axioms on every public endpoint;
+4. at least one open-term specialization test;
+5. at least one nonempty-context test;
+6. a native-scalar transfer test via pra_iff_native;
+7. and, for a Foundation client, an open-sequent bridge round trip.
+Lean’s standard metatheoretic axioms may appear in the report. The current checked repository
+already uses propext, Classical.choice, and Quot.sound.
+The important audit is that no new object axiom or placeholder enters the theorem.
+
+11
+
+Claim ledger and remaining work
+
+11.1
+
+What is established in this report
+
+The following results are supplied with complete human proofs or proof reductions:
+1. the fibered finite-query interface and realizer definitions;
+2. local certificate sealing through existential elimination;
+3. composition through substitution and simultaneous cut;
+35
+
+FIBER-iPRA
+
+16 November 2026
+
+4. the fixed-formula Boolean reflection construction, with explicit quantifier-free induction
+accounting;
+5. bounded least accepted-certificate selection from the checked search theorem;
+6. master-certificate formation for finite bounded decidable families;
+7. least finite monotone demand closure with a sharp potential bound;
+8. realization of fixed bounded strategy certificates;
+9. the FIBER compilation theorem by induction over the source schedule;
+10. the residual-elimination hierarchy;
+11. the dyadic adjacent-motion/Cauchy theorem;
+12. finite-net lifting with local witness sealing;
+13. guarded bisection and exact branch uniqueness from a positive factor bound;
+14. the finite-use impossibility of unguarded exact sign selection;
+15. the diagonal impossibility of a primitive-recursive universal evaluator;
+16. stable cluster, finite-algebra, and representative-relation interfaces.
+The exact reference algorithms included in the archive test mixed-radix bundling, least selection,
+demand closure, strategy trees, dyadic bounds, finite-net lifting, and certificate escape behavior.
+
+11.2
+
+What is inherited, not reproved
+
+The report relies on checked repository declarations for the object calculus, substitution, weakening,
+simultaneous cut, quantifier-free induction, arithmetic, order, search, pairing, bounded sums, powers,
+integers, and several linear-algebra constructions. It also relies on the checked bridge for transport
+to Foundation clients. These dependencies are named in the source audit. They were inspected
+through the GitHub snapshot but were not rebuilt inside this artifact environment.
+
+11.3
+
+What is not yet kernel-checked
+
+No new Lean theorem in this archive was compiled. In particular, the following remain implementation milestones:
+1. a complete object proof of the bounded conjunction/disjunction fold reflection theorems;
+2. the external BFm.reflect proof generator;
+3. the one-success adapter over Core.Search;
+4. a canonical sequence coding suitable for generated master certificates;
+5. the generic master-certificate theorem;
+6. fixed-arity and then variable-arity demand closure;
+7. the bounded strategy compiler;
+8. the typed graph compiler returning literal Prf PRAAx terms;
+9. the integer absolute-value and scaling lemmas needed for the dyadic theorem;
+36
+
+FIBER-iPRA
+
+16 November 2026
+
+10. finite-net and cluster examples in the object theory;
+11. integration builds and axiom audits.
+The distributed Lean files therefore use comments and theorem targets for unfinished arithmetic.
+They contain no claim that a source file without sorry has been elaborated.
+
+11.4
+
+Research boundaries not removed by the framework
+
+FIBER resolves representational and compositional obstacles. It does not by itself prove:
+• general effective Faltings, Siegel, Roth, or Mordell–Weil generation;
+• effective Chebotarev, Siegel–Walfisz, or Bombieri–Vinogradov constants beyond what is
+explicitly supplied;
+• a finite presentation or modulus for every abstract compact space;
+• a Cauchy rate from metastability alone;
+• an exact branch, sign, eigenvector, or axis selector at degeneracy;
+• rational representatives for arbitrary abstract descent classes;
+• a universal primitive-recursive evaluator;
+• or automatic extraction from every classical proof.
+For each boundary the framework gives either a corrected theorem or an exact producer formula.
+
+11.5
+
+Recommended first integration slice
+
+A realistic first pull request should be intentionally small:
+1. add FIBER/Kernel.lean and compile its structural aliases;
+2. add the one-success search adapter and a two-query master certificate;
+3. prove a fixed two-coordinate demand closure theorem;
+4. prove the dyadic adjacent-motion theorem for one explicit signed-integer encoding;
+5. compile a miniature example that consumes two independently certified approximants and
+exports a Cauchy estimate;
+6. run #print axioms, native transfer, and an open-sequent bridge check.
+This slice exercises the distinctive contribution of the framework without first requiring a generic
+formula compiler. Once it is checked, the bounded formula and source-graph generators can be built
+against a stable kernel.
+
+11.6
+
+Acceptance criteria for a packet migrated to FIBER
+
+A packet should count as migrated only when:
+1. its main target is stated as an explicit ordinary iPRA formula;
+2. every primitive symbol and representation convention is fixed;
+3. the finite query and demand map are explicit;
+37
+
+FIBER-iPRA
+
+16 November 2026
+
+4. every checker has an object soundness/reflection derivation;
+5. every induction predicate is displayed and quantifier-free;
+6. all certificate scopes are classified and enforced;
+7. all missing data appear as residual formulas;
+8. the endpoint is a compiled Prf PRAAx declaration;
+9. its axiom audit and build command are recorded;
+10. and any Foundation or application endpoint is obtained through a checked bridge or an
+independently stated theorem.
+
+12
+
+Conclusion
+
+The ProveIt iPRA development has reached a point where the central problem is architectural
+rather than foundational. The ordinary calculus, its small native core, a bridge to Foundation, and
+a substantial object arithmetic library already exist. The proof packets show that a large range of
+mathematics can be reorganized into finite quantitative claims. What is needed is a reliable path
+from those claims to literal object derivations.
+FIBER-iPRA supplies that path in a deliberately conservative form. Queries index finite
+certificate fibers. Demand maps expose finite use. Local certificates are sealed. Public codes are
+selected only by proved bounded search. Noncanonical objects export stable observations rather than
+impossible labels. Bounded loops use quantifier-free state invariants. Composition is substitution
+and simultaneous cut, not semantic wishful thinking. Missing effective information is a formula, not
+an unstated host parameter.
+The framework also clarifies why several difficult-looking requests should be reformulated. A
+global exact branch at a collision, a Cauchy rate from mere metastability, a height cutoff from abstract
+finiteness, and an internal universal primitive-recursive evaluator are not reasonable implementation
+milestones. Cluster observations, summable-tail contracts, explicit height producers, and metalevel
+specialization are the correct replacements.
+The next decisive step is not another broad packet. It is a small checked kernel: search adaptation,
+finite certificate bundling, demand closure, and the dyadic coherence theorem, all as Prf PRAAx.
+Once these are in place, the repository’s many finite proof plans can share one audited compilation
+route, and the remaining deep residuals will stand out as the mathematics they genuinely are.
+
+A
+
+Formal source-language sketch
+
+This appendix gives a compact mathematical specification of the proposed source language. It is
+intentionally first-order and finite.
+
+A.1
+
+Types
+
+Base types are Nat, Bit, and bounded sequences Seq(B, L). Product types are encoded by pairing.
+A metric observation type adds a discrepancy program; a quotient observation type adds an
+equivalence verifier and congruence proofs. Types are metadata only: after compilation every value
+is a natural-number term.
+
+38
+
+FIBER-iPRA
+
+A.2
+
+16 November 2026
+
+Terms
+t ::=
+|
+|
+|
+
+x | 0 | S(t) | f (t1 , . . . , tk )
+pair(t, u) | get(t, i)
+fold(N, s0 , λi s. h(i, s))
+least(N, λi. b(i)).
+
+Every function symbol is a fixed PR code generated externally or imported from the checked library.
+
+A.3
+
+Commands
+P
+
+::=
+|
+|
+|
+|
+|
+|
+|
+
+return t
+let x = t in P
+call R(q) as x in P
+open ∃x A(x) as x in P
+if b then P else P
+loop N state s invariant I do P
+require R in P
+observe o mod E.
+
+A typing judgment has the form
+Σ; Λ; R ⊢ P : (Y, q),
+where Σ is the term environment, Λ is the stack of local certificate scopes, and R is the residual list.
+The key escape rule is:
+Σ, x; Λ, x; R ⊢ P : B
+x∈
+/ FV(B)
+.
+Σ; Λ; R ⊢ open ∃xA as x in P : B
+An observation may mention x only if an equivalence/stability theorem proves independence, in
+which case the compiled conclusion is phrased through the observation relation rather than code
+equality.
+
+A.4
+
+Compilation judgment
+
+The compiler returns
+
+compile(P ) = (demP , BP , VP , TP , OP , RP , πP ),
+
+where πP is a Lean value whose type is the appropriate Prf PRAAx sequent. The correctness theorem
+is therefore intrinsic: there is no separate untrusted claim that the generated proof is valid. Lean
+accepts or rejects πP .
+
+A.5
+
+Operational reference semantics
+
+A standard natural-number evaluator is useful for tests. It maps a query and certificate to either
+rejection or an observation. The evaluator has no logical authority. The object soundness theorem
+is generated independently from local derivations. Keeping the executable semantics and proof
+compiler separate makes it easier to detect a checker whose host behavior is correct but whose
+object reflection theorem is missing.
+
+39
+
+FIBER-iPRA
+
+B
+
+16 November 2026
+
+Lean theorem target catalogue
+
+The following catalogue is a dependency-ordered checklist. Names are provisional, but the conclusion
+type of every proof theorem should contain Prf PRAAx explicitly.
+Target
+
+Intended statement
+
+Kernel.discharge
+Kernel.specialize
+
+Alias of Prf.trans specialized to ordinary iPRA.
+Alias of IPRA.inst: closed open-formula theorem
+specialized at arbitrary terms and context.
+Alias of Prf.exE.
+A bit-valued term is zero or one, with object derivation.
+Accepted bounded disjunction fold yields an index and
+reflected body.
+A supplied bounded witness forces the disjunction fold to
+one.
+Conjunction fold one implies every bounded reflected
+body.
+Bounded universal body implies conjunction fold one.
+For fixed bounded syntax A, [A] = 1 ↔ A.
+One-success wrapper over Search.search_found.
+No earlier accepted index.
+Appended entry and prior entries decode correctly.
+Pointwise bounded totality yields one valid master code.
+Demand iteration is increasing.
+A nonfixed update strictly raises the coordinate sum.
+Iteration stabilizes by the sum of caps.
+Stabilized vector is below every prefixed point.
+Verified fixed bounded strategy implies its quantified
+formula.
+Valid demanded inputs and residuals imply valid output.
+Two valid output certificates give equivalent observations.
+Compiled program returns the final Prf PRAAx sequent.
+Composition of realizers and proof terms.
+Adjacent unit discrepancies imply ∆(n, m) ≤ 2m−n − 1.
+Cleared-denominator Cauchy inequality.
+Coverage, modulus, stability, and finite checks imply the
+global approximate property.
+Two complete cluster certificates admit a verified
+common coarsening.
+Positive gap makes labels certificate-independent.
+Transport a compiled open FIBER sequent to Foundation
+syntax.
+
+Kernel.seal
+Bool.bit_cases
+Fold.any_sound
+Fold.any_complete
+Fold.all_sound
+Fold.all_complete
+BFm.reflect
+Search.leastAccepted_found
+Search.leastAccepted_minimal
+Sequence.lookup_append
+Master.valid
+Demand.iter_mono
+Demand.potential_strict
+Demand.stabilizes
+Demand.least
+Strategy.realize
+Interface.localSound
+Interface.obsIndependent
+Compile.sound
+Compile.compose
+Dyadic.scaledBound
+Dyadic.cauchy
+FiniteNet.lift
+Clusters.commonCoarsening
+Clusters.labelUnderGap
+Bridge.fiberOpen
+
+B.1
+
+Small regression examples
+
+Before a domain-scale application, the implementation should close these examples:
+1. choose the least even number in a supplied bounded interval;
+2. combine two local divisibility witnesses into a certificate-independent gcd observation;
+3. compute a two-coordinate cyclic demand closure;
+4. verify a depth-two ∀∃ finite strategy;
+40
+
+FIBER-iPRA
+
+16 November 2026
+
+5. form a master certificate for three independent polynomial evaluations;
+6. export a dyadic Cauchy estimate from independently certified adjacent approximants;
+7. lift an inequality from a rational finite net to all points represented by a coverage certificate;
+8. transport one open theorem through IPRABridge and back.
+
+C
+
+Consolidated difficulty matrix
+Difficulty
+
+Invalid shortcut
+
+FIBER repair
+
+Require literal local and final
+Prf PRAAx; compose by
+substitution and cut
+Reflect to Boolean folds; induct
+on a quantifier-free state
+equation
+Hidden finite choice Pick one witness for every
+Least bounded search plus
+node
+master certificate, or seal local
+witnesses
+Nonunique
+Concatenate arbitrary local Backward viability, finite
+witnesses
+witnesses into a run
+strategy, or stable observation
+Host truth versus
+object proof
+
+Treat a Lean/Python
+theorem as iPRA
+derivability
+Bounded quantifiers Induct on the quantified
+in induction
+contract
+
+Residual
+boundary
+Theorem-specific
+local derivations
+Generic
+fold/reflection
+implementation
+Bound and
+decidable verifier
+
+Continuation and
+compatibility
+certificate
+Cyclic precision
+Iterate until host code
+Capped monotone closure with Monotonicity and
+finite caps
+demand
+happens to settle
+potential bound
+Pointwise
+Call independent
+Adjacent motion/nested
+Tail producer if
+approximation
+approximants a real name
+intervals plus a tail modulus
+not derivable
+Metastability
+Infer a global Cauchy rate
+Keep a metastable interface;
+Global rate is
+add summable tail for a name additional data
+Exact sign/branch Decide from arbitrary
+Gap-guarded label or
+Positive
+Cauchy names
+relation/cluster output
+separation
+Repeated
+Select eigenvector/axis
+Projector, subspace,
+Spectral or
+eigenvalue/identity globally
+quaternion/projective
+distance guard
+rotation
+observation
+for label
+Division by nonzero Use mere d ̸= 0 numerically Totalize and require |d| ≥ η > 0 Apartness margin
+Abstract
+Select a minimizer or finite Finite net, coverage, modulus, Effective net and
+compactness
+subcover
+local witness sealing
+modulus
+Diophantine
+Convert finiteness into a
+Bounded enumerator plus
+Effective height
+finiteness
+height cutoff
+complete-height/list residual
+or list theorem
+Mordell–
+Treat classes as rational
+Representative relation and
+Representative
+Weil/Selmer
+representatives
+finite viability
+totality
+Ineffective
+Store constants in host
+Put constants and thresholds in Effective estimate
+constants
+metadata
+producer formulas
+theorem
+General probability Hide approximation and
+Finite rational laws,
+Quantitative
+space
+boundary mass
+quantization, tails,
+approximation
+anti-concentration
+data
+Completed topology Reason directly with points Finite complexes, nets, carriers, Approximation
+of a completion
+refinement observations
+or separation
+producer
+Code equality
+Require canonical
+Observational setoids and
+Operation
+representatives
+congruence
+compatibility
+proofs
+Finite gluing
+Construct an infinitary
+Local tuples, overlap checks,
+Finite cover
+quotient/sheaf
+spanning-tree descent
+producer
+
+41
+
+FIBER-iPRA
+
+16 November 2026
+
+Difficulty
+
+Invalid shortcut
+
+FIBER repair
+
+Residual
+boundary
+
+Classical existence
+
+Apply negative translation
+and claim a witness
+
+Bounded strategies, reflected
+cases, or stable negative target
+
+Universal evaluator
+
+Internalize all PR source
+programs
+
+External finite specialization
+and generated proofs
+
+Explicit witness
+producer
+otherwise
+Strong universal
+interface is
+impossible
+
+References
+[1] E. Bishop and D. Bridges, Constructive Analysis, Springer, 1985.
+[2] U. Kohlenbach, Applied Proof Theory: Proof Interpretations and their Use in Mathematics,
+Springer, 2008.
+[3] U. Kohlenbach and P. Oliva, “Proof mining: a systematic way of analysing proofs in mathematics,” Proceedings of the Steklov Institute of Mathematics 242 (2003), 136–164.
+[4] M. Escardó and P. Oliva, “Selection functions, bar recursion and backward induction,” Mathematical Structures in Computer Science 20 (2010), 127–168.
+[5] S. Salehi, “Decidable formulas of intuitionistic primitive recursive arithmetic,” Journal of Logic
+and Computation 12 (2002), 101–114.
+[6] V. Reshetnikov, ProveIt: Logic/PrimitiveRecursiveArithmetic, repository snapshot at commit
+58627ed89814ba122e1f0f012f1aba103cda267b, 16 November 2026. https://github.com/V
+ladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic.
+[7] V. Reshetnikov, ConciseIPRA, checked Lean presentation and bi-interpretation, in [6].
+[8] V. Reshetnikov, IPRADerivations, checked object-theory arithmetic library, in [6].
+[9] V. Reshetnikov, IPRABridge, checked transport between the ordinary and Foundation presentations, in [6].
+
+42
+
+

@@ -1,0 +1,106 @@
+\section{Core theorem signatures}
+
+This appendix collects concise target signatures.  They are mathematical
+schemas; the supplied Lean blueprints give the scoped repository syntax.
+
+\subsection{Arithmetic tables}
+
+For primitive-recursive digit and radix bodies \(a(i,p)\), \(B(i,p)\):
+\begin{align*}
+ \pref_B(0,p)&=1,\\
+ \pref_B(i+1,p)&=\pref_B(i,p)B(i,p),\\
+ \pack_{a,B}(0,p)&=0,\\
+ \pack_{a,B}(N+1,p)&=\pack_{a,B}(N,p)+a(N,p)\pref_B(N,p),\\
+ \digit_{B}(c,i,p)&=
+   \operatorname{rem}(\operatorname{quo}(c,\pref_B(i,p)),B(i,p)).
+\end{align*}
+Required derivations:
+\begin{align*}
+ &\bigl[\forall i<N\;(0<B_i\wedge a_i<B_i)\bigr]
+   \to \pack_N<\pref_B(N),\\
+ &i<N\wedge\bigl[\forall j<N\;(0<B_j\wedge a_j<B_j)\bigr]
+   \to \digit_B(\pack_N,i)=a_i,\\
+ &\bigl[\forall i<N\;a_i=a'_i\bigr]
+   \to \pack_{a,B}(N)=\pack_{a',B}(N).
+\end{align*}
+
+For disjoint bounds \(B_i\), define \(S_N=\sum_{i<N}B_i\) and prove:
+\begin{align*}
+ &i<N\wedge c<B_i\to S_i+c<S_N,\\
+ &x<S_N\to \exists i<N\;\exists c<B_i\;(x=S_i+c),\\
+ &\mathsf{owner}(S_i+c)=i\quad(c<B_i).
+\end{align*}
+The existential in the second line is bounded and should be implemented by a
+least-owner term plus its correctness theorem.
+
+\subsection{Compiled formula package}
+
+For every fixed \(A(\vec a)\):
+\begin{align*}
+ &\Val_A\in\{0,1\},\\
+ &\Val_A=1\leftrightarrow A,\\
+ &C_A^+(\vec a,c)=1\to c<P_A^+(\vec a),\\
+ &C_A^-(\vec a,c)=1\to c<P_A^-(\vec a),\\
+ &C_A^+(\vec a,c)=1\to A,\\
+ &C_A^-(\vec a,c)=1\to\neg A,\\
+ &\Val_A=1\to C_A^+(\vec a,\kappa_A^+)=1,\\
+ &\Val_A=0\to C_A^-(\vec a,\kappa_A^-)=1.
+\end{align*}
+Optional but useful completeness corollaries are
+\begin{align*}
+ A&\to\exists c<P_A^+\;C_A^+(c)=1,\\
+ \neg A&\to\exists c<P_A^-\;C_A^-(c)=1,
+\end{align*}
+where the second implication uses the formula's derived decidability to convert
+\(\neg A\) to \(\Val_A=0\).  The primary API should retain canonical acceptance
+rather than require consumers to reconstruct this conversion.
+
+\subsection{Contract composition}
+
+For a proof-local validity formula \(V(c)\):
+\[
+ \Gamma\vdash\exists c\,V(c),
+ \qquad
+ V(c),\Gamma^\uparrow\vdash A^\uparrow
+ \quad\Longrightarrow\quad
+ \Gamma\vdash A.
+\]
+For a compiled residual list \(R\):
+\[
+ R\vdash A,
+ \qquad
+ \forall B\in R\;(\Delta\vdash B)
+ \quad\Longrightarrow\quad
+ \Delta\vdash A.
+\]
+
+\subsection{Observers}
+
+Exact:
+\[
+ C(c)=1\wedge C(c')=1\to O(c)=O(c').
+\]
+Quotient:
+\[
+ C(c)=1\wedge C(c')=1\to E(O(c),O(c'))=1.
+\]
+Metric:
+\[
+ C(q,c)=1\wedge C(q,c')=1
+ \to d(O(q,c),O(q,c'))\le\varepsilon(q).
+\]
+Each consumer supplies the corresponding equality, equivalence, or Lipschitz
+congruence theorem.
+
+\subsection{Demand closure}
+
+For a fixed bounded monotone \(F\):
+\begin{align*}
+ d_{0}&=s,\\
+ d_{t+1}&=d_t\vee F(d_t),\\
+ d_C&=d_{C+1},\qquad C=\sum_i c_i,\\
+ s\le d_C,&\qquad F(d_C)\le d_C,\\
+ [s\le e\wedge F(e)\le e]&\to d_C\le e.
+\end{align*}
+Use a packed state and coordinate-sum rank so that the clock induction formula
+is quantifier-free.

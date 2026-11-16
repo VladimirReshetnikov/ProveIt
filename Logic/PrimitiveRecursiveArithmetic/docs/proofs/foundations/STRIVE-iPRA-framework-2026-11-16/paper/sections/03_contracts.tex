@@ -1,0 +1,153 @@
+\section{Boundary-aware contracts and proof composition}
+
+\subsection{Open sequents are the correct output format}
+
+A framework theorem should not silently assume that every mathematical
+producer is available.  Suppose a finite argument needs a height bound, a
+finite cover, a local root-separation estimate, and an arithmetic lemma.  The
+right endpoint is
+\[
+  H(a),\;K(a),\;S(a),\;\Gamma(a)
+  \;\vdash_{\PRAAx}\;\Phi(a),
+\]
+not a closed theorem whose prose says that these inputs are ``standard.''  Each
+boundary is an ordinary formula in the same finite variable scope as the goal.
+The existing structural rule \(\Prf.\mathsf{trans}\) then replaces every
+boundary by a derivation of it.
+
+\begin{theorem}[Boundary composition]
+Let \(\Gamma=[B_1,\ldots,B_r]\) and suppose
+\(\Gamma\vdash_{\PRAAx}A\).  If a context \(\Delta\) derives each
+\(B_i\), then \(\Delta\vdash_{\PRAAx}A\).
+\end{theorem}
+
+\begin{proof}
+The natural-deduction derivation may use a hypothesis rule at any occurrence of
+some \(B_i\).  Simultaneous cut replaces that occurrence by the supplied
+derivation.  Formally this is exactly the checked theorem
+\(h.\mathsf{trans}(\mathsf{supply})\).  It is proved in the repository by
+induction over the hypothesis list, repeatedly introducing an implication and
+applying modus ponens.  No classical principle is involved.
+\end{proof}
+
+This theorem gives contract graphs a simple semantics.  A node is not a new
+logical connective.  It is an ordinary derivation under a list of formulas.
+Graph composition is simultaneous cut; parameter instantiation is
+\(\Prf.\mathsf{subst}\); and graph reuse under more assumptions is weakening.
+
+\subsection{Proof-local certificates}
+
+The most common certificate should never cross a public boundary.  Let
+\(V(\vec a,c)\) mean that \(c\) is a valid certificate and suppose the consumer
+has a derivation
+\[
+ V(\vec a,c),\;\Gamma(\vec a)
+ \;\vdash_{\PRAAx}\; A(\vec a),
+\]
+where the goal does not contain the bound certificate variable.  If the
+producer proves
+\[
+ \Gamma(\vec a)\;\vdash_{\PRAAx}\;\exists c\,V(\vec a,c),
+\]
+then existential elimination gives \(\Gamma\vdash A\).
+
+\begin{theorem}[Local certificate sealing]
+A proof-local certificate requires neither a canonical choice nor a least
+search.  Existential production and a certificate-parametric consumer suffice.
+\end{theorem}
+
+\begin{proof}
+Open the producer's existential with a fresh variable \(c\), apply the consumer,
+and close the existential elimination.  The eigenvariable condition is exactly
+that \(A\) and the outer context are shifted from the smaller scope and hence do
+not mention \(c\).  This is the checked \(\Prf.\mathsf{exE}\) rule.
+\end{proof}
+
+This observation removes a great deal of unnecessary canonicalization.  A
+proof that merely needs a local path, basis, chart, root box, or finite cover
+may consume whichever valid certificate the producer supplies.
+
+\subsection{Exact residuals}
+
+If the producer is not known, the same consumer gives the conditional theorem
+\[
+ \Gamma\vdash_{\PRAAx}
+   (\exists c\,V(\vec a,c))\to A(\vec a).
+\]
+This formula is an \emph{exact residual}: it states precisely what remains to
+be proved, in the object language and at the correct scope.  Exact residuals
+are preferable to labels such as ``compactness'' or ``effective finiteness.''
+They reveal whether the missing input is
+
+\begin{itemize}
+\item a numerical bound;
+\item a finite list or table satisfying a checker;
+\item a local implication used at each index;
+\item a modulus mapping requested output precision to input precision;
+\item a separation or lower-bound estimate;
+\item or an actual unbounded theorem.
+\end{itemize}
+
+The distinction matters.  A checker for a proposed height bound may be fully
+formalized even when no theorem produces such a bound in general.  The
+framework can therefore finish the verifier and every downstream consequence
+without pretending to solve the producer theorem.
+
+\subsection{Contract normal form}
+
+For practical composition, normalize every local component to the following
+shape.
+
+\begin{contract}[Finite contract node]
+A node with parameters \(\vec a\) consists of:
+\begin{enumerate}
+\item a finite list of prerequisite formulas \(R_1(\vec a),\ldots,R_s(\vec a)\);
+\item a bounded certificate predicate \(C(\vec a,c)=1\), optionally with an
+explicit code bound \(c<B(\vec a)\);
+\item a local derivation from the prerequisites and certificate validity to a
+postcondition \(P(\vec a,c)\);
+\item an escape declaration saying whether \(c\) is local, observed, or named.
+\end{enumerate}
+\end{contract}
+
+A node with no certificate is the special case \(B=1\) and \(c=0\).  A node
+with a table certificate uses the mixed-radix layer.  A node with an unresolved
+producer includes \(\exists c<B\,C=1\) among its residuals.
+
+\subsection{Acyclic composition}
+
+If the dependency graph is acyclic, order its nodes topologically.  Start with
+the derivation of the final node under all residuals.  Replace each internal
+postcondition assumption by the derivation exported from its producer node.
+Proof-local certificates are sealed as soon as the last consumer in their
+scope has been processed.  The result is one ordinary open sequent under only
+external residuals.
+
+There is no need to internalize the graph structure in iPRA.  The graph is
+metalevel compilation data.  The generated proof term is a finite nest of
+\(\mathsf{trans}\), substitution, implication, and existential-elimination
+steps.  Cyclic numerical demand dependencies are handled separately by finite
+closure and a clock, not by circular proof terms.
+
+\subsection{Scope discipline}
+
+Several subtle errors are prevented by requiring a scope annotation on every
+contract.
+
+\begin{enumerate}
+\item A certificate variable opened by existential elimination is fresh and
+cannot occur in the outer goal.
+\item A quantified body lives in scope \(n+1\), while its bound lives in scope
+\(n\).  Substitution uses the repository's \(\mathsf{inst}\) and
+\(\mathsf{shift}\) operations rather than informal renaming.
+\item A formula transported through the Foundation bridge is first proved in a
+common finite ConciseIPRA scope.  Distinct free variables are not collapsed by
+an accidental assignment.
+\item A metalevel callback is never inserted as though it were a \(PR\) symbol.
+Every generated evaluator, bound, and checker has a concrete primitive-
+recursive definition.
+\end{enumerate}
+
+The supplied \code{Kernel.lean} packages the first layer of this discipline in
+small source-compatible declarations.  The larger compiler must preserve the
+same explicit scoping throughout.

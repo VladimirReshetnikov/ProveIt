@@ -1,0 +1,135 @@
+\section{Observational projection and finite descent}
+\label{sec:observers}
+
+Certificates may be noncanonical while the mathematical observation of interest is canonical or quantitatively stable.  Observer interfaces permit the observation to escape without exposing the certificate.
+
+\subsection{Exact stable observations}
+
+\begin{theorem}[Exact observer elimination]
+Let \(V(c,q)\) be a certificate relation, \(O(c,q)\) an observation term, and \(o(q)\) a certificate-free term.  If iPRA proves
+\[
+  \forall c\,[V(c,q)\to O(c,q)=o(q)]
+\]
+and a local consumer derives \(P(O(c,q),q)\) from \(V(c,q)\), then
+\[
+  \exists c\,V(c,q)\quad\Longrightarrow\quad P(o(q),q).
+\]
+\end{theorem}
+\begin{proof}
+Open the certificate existential.  The stability equation transports the local proof from \(P(O(c,q),q)\) to \(P(o(q),q)\) by equality substitution.  The result no longer mentions \(c\), so existential elimination closes the scope.
+\end{proof}
+
+If only pairwise stability is known,
+\[
+  V(c)\wedge V(c')\to O(c)=O(c'),
+\]
+use the least bounded valid certificate \(\mu\) internally and define \(o=O(\mu)\).  This names a canonical observation but still does not publish the certificate unless needed.
+
+\subsection{Existential observations need no stability}
+
+If the public conclusion is \(\exists z\,P(z)\), then stability is unnecessary.  Under a private certificate, prove \(P(O(c))\), introduce \(z=O(c)\), and eliminate \(c\).  This simple rule resolves many apparent choice problems: the mathematical theorem asked only for existence, not for a uniform selector.
+
+\subsection{Quotient observations}
+
+A quotient should not be introduced as an opaque classical object if the finite theorem needs only an explicit congruence.
+
+Let \(\sim\) be a reflected equivalence relation on observation codes.  Assume every valid certificate yields an observation, and any two valid observations are congruent:
+\[
+  V(c)\wedge V(c')\to O(c)\sim O(c').
+\]
+Then one may export:
+
+\begin{itemize}
+\item an existential representative together with proofs that all valid observations are congruent to it;
+\item a canonical normal form if a bounded normalizer is available;
+\item any predicate proved invariant under \(\sim\).
+\end{itemize}
+
+The proof is the exact observer argument with equality transport replaced by an explicit congruence-respect theorem for the consumer.  No quotient type or quotient choice is logically necessary.
+
+\subsection{Metric diameter observers}
+
+Let observations be rational codes with a reflected metric \(d\).  Suppose iPRA proves
+\[
+  V(c)\wedge V(c')\to d(O(c),O(c'))\le\varepsilon(q).
+\]
+
+\begin{theorem}[Metric observer elimination]
+From a valid certificate one can export a center \(z\) existentially such that every valid observation lies in the ball \(B(z,\varepsilon)\).  If a least bounded certificate is chosen internally, one can export the canonical center \(O(\mu)\) and the same bound.
+\end{theorem}
+\begin{proof}
+For the existential version, open one valid certificate \(c\), choose \(z=O(c)\), and use the pairwise-diameter theorem with arbitrary \(c'\).  Then close \(c\).  For the canonical version, least search gives a fixed valid \(\mu\); instantiate pairwise diameter at \(\mu,c'\).
+\end{proof}
+
+Metric output is often the constructively correct replacement for an unstable exact choice.  It retains enough information for continuous downstream consumers.
+
+\subsection{Gap-guarded exact labels}
+
+Approximate data determines an exact discrete label only with a positive gap.
+
+\begin{theorem}[Finite gap stabilization]
+Let \(L< M\) range over finite labels.  Suppose exact scores \(s_L\) have a unique minimizer \(L_*\) with
+\[
+  s_L\ge s_{L_*}+g\qquad(L\ne L_*),
+\]
+where \(g>0\).  Suppose certified approximations \(\tilde s_L\) satisfy
+\[
+  |\tilde s_L-s_L|\le e,
+  \qquad 2e<g.
+\]
+Then the least minimizer of the approximate scores is exactly \(L_*\).
+\end{theorem}
+\begin{proof}
+For \(L\ne L_*\),
+\[
+\tilde s_L\ge s_L-e\ge s_{L_*}+g-e
+> s_{L_*}+e\ge\tilde s_{L_*}.
+\]
+Thus \(L_*\) is the unique approximate minimizer.  All comparisons are rational inequalities and finite least search names the label.  The strict inequality \(2e<g\) is the essential producer boundary.
+\end{proof}
+
+This theorem underlies robust root labels, eigenvector normalizations, branch selection, nearest-point decisions, and sign extraction.  Without a gap, SCOPE exports an unordered or relational object instead.
+
+\subsection{Finite observational descent on a tree}
+
+Local data are often attached to overlapping patches.  Global gluing can be stronger than the theorem requires.  A supplied finite spanning tree is enough to compare all local observations with a root.
+
+Let \(T\) be a rooted finite tree.  At every vertex \(v\) there is an observation \(O_v\).  For each nonroot vertex, let \(p(v)\) be its parent.
+
+\begin{theorem}[Exact tree descent]
+If every edge has a proof \(O_v=O_{p(v)}\), then every vertex observation equals the root observation.
+\end{theorem}
+\begin{proof}
+Induct on the primitive-recursive parent-depth of \(v\).  At depth zero, \(v\) is the root.  At successor depth, compose the edge equality with the induction hypothesis for the parent.  Because the tree is finite and rooted, depth is bounded and primitive recursive from a supplied parent table.
+\end{proof}
+
+\begin{theorem}[Metric tree descent]
+If every edge has
+\[
+  d(O_v,O_{p(v)})\le e_v,
+\]
+then
+\[
+  d(O_v,O_{\mathrm{root}})\le
+  \sum_{u\text{ on the path }v\to\mathrm{root}}e_u.
+\]
+\end{theorem}
+\begin{proof}
+Use the same depth induction and the triangle inequality.  The path-error sum is computed by primitive recursion along the parent map.  The theorem exposes the accumulated finite error instead of asserting exact global gluing.
+\end{proof}
+
+Tree descent applies to local coordinate charts, finite covers, Cech-style data, patchwise polynomial identities, and distributed certificates.  If the consumer needs only a root observation or an explicit error ball, constructing an infinitary quotient or a globally selected section is unnecessary.
+
+\subsection{Symmetric and unordered outputs}
+
+When labels collide, stable observations are usually symmetric:
+
+\begin{itemize}
+\item coefficients rather than ordered roots;
+\item an unordered multiset of root intervals;
+\item elementary symmetric functions;
+\item an approximate spectral projector rather than a signed eigenvector;
+\item a finite relation of local branches rather than one branch name.
+\end{itemize}
+
+SCOPE treats these as first-class public interfaces.  Exact labels are a later, gap-guarded refinement rather than the default representation.

@@ -1,0 +1,199 @@
+\section{The signed compiler theorem}
+
+\subsection{Statement}
+
+\begin{theorem}[STRIVE bounded-formula compilation]
+For every fixed bounded formula \(A(\vec a)\) over reflected primitive-recursive
+atoms, one can effectively construct primitive-recursive terms
+\[
+ \Val_A,\quad P_A^+,P_A^-,\quad C_A^+,C_A^-,
+ \quad \kappa_A^+,\kappa_A^-
+\]
+and ordinary iPRA derivations of
+\begin{align}
+ &\Val_A=0\vee\Val_A=1, \tag{6.1}\\
+ &\Val_A=1\leftrightarrow A, \tag{6.2}\\
+ &C_A^+(\vec a,c)=1\to A, \tag{6.3}\\
+ &C_A^-(\vec a,c)=1\to\neg A, \tag{6.4}\\
+ &C_A^\pm(\vec a,c)=1\to c<P_A^\pm(\vec a), \tag{6.5}\\
+ &\Val_A=1\to C_A^+(\vec a,\kappa_A^+)=1, \tag{6.6}\\
+ &\Val_A=0\to C_A^-(\vec a,\kappa_A^-)=1. \tag{6.7}
+\end{align}
+All derivations are uniform in the free numerical parameters of this fixed
+formula.  The construction does not provide an object-language evaluator for
+arbitrary formula codes.
+\end{theorem}
+
+\subsection{Metatheoretic induction}
+
+The proof is a structural induction on the fixed syntax tree.  This induction
+is performed by the compiler, not inside iPRA.  At each node, the compiler
+combines already generated child symbols and child derivations with a finite
+library lemma.  The result is a concrete finite Lean term.
+
+Object-level induction occurs only inside bounded folds and searches.  Its
+invariants are equations and order comparisons of primitive-recursive terms,
+so the \(\PRAAx\) quantifier-free induction scheme applies.
+
+We now give every constructor in enough detail to determine the Lean proof.
+
+\subsection{Atoms}
+
+Let \(r\) be a Boolean term reflecting \(R\).  Set
+\[
+ \Val_R=r,
+ \qquad P_R^+=P_R^-=1,
+ \qquad \kappa_R^+=\kappa_R^-=0.
+\]
+Define
+\[
+ C_R^+(c)= [c=0]\,[r=1],
+ \qquad
+ C_R^-(c)= [c=0]\,[r=0].
+\]
+Booleanity is supplied by the atom package.  The value equivalence is the
+reflection theorem.  Positive and negative checker soundness are immediate,
+and both canonical acceptance theorems reduce to reflexivity and the relevant
+value hypothesis.
+
+\subsection{Conjunction}
+
+Assume packages for \(A\) and \(B\).
+
+For the positive side, use radices \(P_A^+,P_B^+\).  A code is the pair
+\((c_A,c_B)\), and the checker requires both child checks.  Positive soundness
+uses conjunction introduction.
+
+For the negative side, use the disjoint sum of \(P_A^-\) and \(P_B^-\).  If the
+code lies in the first interval, check a negative certificate for \(A\); if it
+lies in the second, check one for \(B\).  From \(\neg A\) derive
+\(\neg(A\wedge B)\) by assuming the conjunction and projecting \(A\); the
+right case is symmetric.
+
+The canonical positive code packs the two child canonical positive codes.  The
+canonical negative code selects the least false child.  Since
+\(\Val_{A\wedge B}=1\) exactly when both child values are one, and value zero
+means at least one child value is zero for Boolean child values, the acceptance
+proof follows by a two-way finite case split.
+
+\subsection{Disjunction}
+
+The construction is dual.  A positive code is a disjoint choice of a child
+positive certificate, and positive soundness uses the corresponding
+introduction rule.  A negative code is a pair of child negative certificates.
+Given \(\neg A\) and \(\neg B\), assume \(A\vee B\), eliminate the disjunction,
+and derive bottom in either branch.  This proves \(\neg(A\vee B)\)
+intuitionistically.
+
+The canonical positive code chooses the least true child; the canonical
+negative code packs both child negative codes.
+
+\subsection{Bounded existential}
+
+Let
+\[
+ E(\vec a)\equiv\exists x<b(\vec a)\,A(\vec a,x).
+\]
+Write \(B_x^\pm=P_{A_x}^\pm\), let \(S_i^+=\sum_{j<i}B_j^+\), and let
+\(P_i^-=\prod_{j<i}B_j^-\).
+
+A positive code has the form \(S_x^++c_x\).  The checker finds the owner
+\(x<b\), obtains \(c_x<B_x^+\), and checks \(C_{A_x}^+(c_x)=1\).  Child
+soundness gives \(A_x\), and existential introduction gives \(E\).
+
+A negative code is a mixed-radix table with digit
+\(c_x<B_x^-\) for every \(x<b\).  Its checker is the finite conjunction
+\[
+ \prod_{x<b} C_{A_x}^-(c_x).
+\]
+To prove negative soundness, assume the checker and assume \(E\).  Existential
+elimination opens a witness \(x<b\) and a proof of \(A_x\).  Finite-fold
+elimination at index \(x\), mixed-radix decoding, and child negative soundness
+produce \(\neg A_x\), hence bottom.  Thus \(\neg E\).
+
+For the canonical positive code, if \(\Val_E=1\), bounded least search finds
+the least \(x<b\) with \(\Val_{A_x}=1\).  Add the prefix sum to the canonical
+child code.  Disjoint decoding recovers the same \(x\), and child acceptance
+proves the check.  If \(\Val_E=0\), every child value is zero.  Pack all
+canonical negative child codes.  The digit theorem and child acceptance prove
+every factor of the negative checker, so the finite product is one.
+
+The empty case is automatic.  The positive bound is the empty sum zero and no
+positive code is accepted.  The negative bound is the empty product one, the
+canonical code is zero, and the empty checker product is one; its soundness is
+the proof that an empty existential implies bottom.
+
+\subsection{Bounded universal}
+
+Let
+\[
+ U(\vec a)\equiv\forall x<b(\vec a)\,A(\vec a,x).
+\]
+The positive side is now the table.  An accepted table checks every
+\(A_x\).  To prove \(U\), introduce an arbitrary \(x\), assume \(x<b\),
+extract the \(x\)-th digit, and apply child positive soundness.  The exact Lean
+shape may encode bounded universal quantification as
+\(\forall x\,(x<b\to A_x)\); all index arithmetic remains quantifier-free.
+
+The negative side is a disjoint choice of one \(x<b\) with a negative child
+certificate.  Assuming \(U\), universal elimination gives \(A_x\), contradicting
+child negative soundness.  Hence the certificate proves \(\neg U\).
+
+Canonical acceptance is dual to the existential case.  When all child values
+are one, pack all positive canonical codes.  Otherwise least search finds the
+least zero child and produces a negative disjoint code.  At bound zero, the
+positive empty table is accepted and the negative code space is empty.
+
+\subsection{Value correctness}
+
+Equations (6.1) and (6.2) are proved alongside certificate soundness.  For
+binary connectives, use child Booleanity and a finite case split on their
+values.  For bounded quantifiers, prove by quantifier-free induction the fold
+invariants
+\begin{align*}
+ \mathsf{any}(N)=1
+ &\leftrightarrow \exists x<N\;\Val_{A_x}=1,\\
+ \mathsf{all}(N)=1
+ &\leftrightarrow \forall x<N\;\Val_{A_x}=1.
+\end{align*}
+The displayed bounded quantifiers are the human reading.  In the actual
+induction predicate, both sides are represented by primitive-recursive Boolean
+folds or by the corresponding scoped formula whose matrix is quantifier-free.
+The step uses the defining equation at \(N+1\) and the child value equivalence.
+
+\subsection{Checker code bounds}
+
+Each checker begins with its code-bound test.  Soundness of the bound field is
+therefore immediate after atomic reflection of order.  More importantly, the
+bound test supplies the hypotheses needed by decoding.
+
+At a disjoint node, \(c<\sum B_i\) ensures an owner interval exists.  At a table
+node, \(c<\prod B_i\).  If the product is zero, the inequality is impossible.
+Thus in the soundness branch the product is positive, which implies every
+required radix is positive.  Mixed-radix decoding is therefore invoked only
+under its correct hypotheses.
+
+\subsection{Constructivity}
+
+The proof uses finite case analysis on decidable numerical equalities and finite
+bounded search.  It does not use unrestricted excluded middle, countable
+choice, dependent choice, or a global selection function.  The negative
+certificate theorem is stronger than mere decidability in the useful sense
+that it returns bounded finite evidence of why the positive statement fails.
+
+\subsection{Compiler correctness as a proof-producing algorithm}
+
+The structural proof above defines an algorithm on syntax trees.  For each
+node it emits
+
+\begin{itemize}
+\item concrete \(PR\) symbol definitions;
+\item their defining-equation lemmas at arbitrary terms;
+\item a \code{CompiledFormula} record whose fields are \(\Prf\;\PRAAx\)
+derivations;
+\item theorem names and status metadata.
+\end{itemize}
+
+The generator itself need not be trusted.  A malformed generated proof term
+fails to elaborate.  The final check is the same Lean kernel and axiom audit as
+for handwritten \code{IPRADerivations} modules.

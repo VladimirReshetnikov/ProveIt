@@ -1,0 +1,180 @@
+\section{Fibered finite-query interfaces}
+\label{sec:interfaces}
+
+\subsection{Encoded finite data}
+
+All finite collections are represented by natural numbers using a fixed
+primitive-recursive sequence coding.  We write
+\(\seq(C,i)\) for the \(i\)-th entry and \(\ell(C)\) for the declared length.
+A code is accepted only under an explicit bound.  The concrete implementation
+may use the pairing and simultaneous-recursion infrastructure already checked
+in \texttt{IPRADerivations.Core.Pairing}, or mixed-radix coding when component
+bounds are known.  The mathematical statements below are independent of that
+choice.
+
+Every Boolean predicate is represented by a primitive-recursive bit.  Thus
+\(b(\vec x)=1\) is an atomic equality in the object language.  A checker is
+never trusted merely because it executes; it is accompanied by a reflection
+or soundness derivation.
+
+\subsection{Interfaces}
+
+\begin{definition}[FIBER interface]
+A finite-query interface \(X\), with parameter code \(p\), consists of fixed
+primitive-recursive data:
+\[
+\begin{array}{lll}
+Q_X(p,q) &\in \Bool, &\text{well-formed query bit},\\
+B_X(p,q) &\in \Nat, &\text{exclusive certificate bound},\\
+V_X(p,q,c) &\in \Bool, &\text{certificate verifier},\\
+O_X(p,q,c) &\in \Nat, &\text{observation code},\\
+E_X(p,q,o,o') &\in \Bool, &\text{observational equivalence},\\
+D_X(p,q,o,o') &\in \Nat, &\text{optional quantitative discrepancy}.
+\end{array}
+\]
+It also contains object-theory derivations for verifier soundness,
+observational equivalence, and congruence of every exported operation.
+\end{definition}
+
+The certificate fiber over \(q\) is the finite set
+\[
+  \cert_X(p,q)=\{c<B_X(p,q):V_X(p,q,c)=1\}.
+\]
+The point of the word ``fiber'' is that both the admissible evidence and its
+bound may depend on the query.  A degree-\(d\) polynomial calculation, a
+precision-\(n\) approximation, and a horizon-\(T\) trace need not share a
+single global witness.
+
+\begin{definition}[Validity and totality]
+The interface formula
+\[
+  \mathsf{Valid}_X(p,q,c)\;:\equiv\;c<B_X(p,q)\wedge V_X(p,q,c)=1
+\]
+is quantifier-free.  The totality formula is
+\[
+  \mathsf{Total}_X(p,q)\;:\equiv\;
+  \exists c\,\mathsf{Valid}_X(p,q,c).
+\]
+Totality may be a theorem, a hypothesis inherited from another interface, or
+an explicit residual producer.
+\end{definition}
+
+\begin{definition}[Certificate-independent observation]
+An observation is certificate-independent when \(\ipra\) derives
+\[
+  \mathsf{Valid}_X(p,q,c)\wedge\mathsf{Valid}_X(p,q,c')
+  \longrightarrow E_X(p,q,O_X(p,q,c),O_X(p,q,c'))=1.
+\]
+For a metric interface one may instead derive a discrepancy bound depending
+only on the query.
+\end{definition}
+
+This weaker notion is often exactly what mathematics supplies.  Different
+root isolations may yield the same cluster, different finite covers may yield
+the same stable count, and different cocycle representatives may yield the
+same finite invariant.  Code equality is neither required nor desirable.
+
+\subsection{Realizers and demand}
+
+\begin{definition}[FIBER realizer]
+A realizer \(R:X\to Y\) consists of:
+
+\begin{enumerate}
+\item a primitive-recursive demand list \(\dem_R(p,q)\) of \(X\)-queries
+      needed to answer the \(Y\)-query \(q\);
+\item a primitive-recursive bound for a master input certificate;
+\item a master verifier asserting that every demanded query has a valid
+      certificate;
+\item a certificate transformer \(T_R(p,q,C)\) producing a \(Y\)-certificate;
+\item an observation transformer, when the public output is an observation;
+\item a literal object derivation of the local soundness sequent;
+\item extensionality or stability derivations showing that equivalent input
+      observations give equivalent output observations;
+\item a list of residual producer formulas not supplied by \(X\).
+\end{enumerate}
+\end{definition}
+
+The local soundness sequent has the schematic form
+\[
+  \res_R(p,q),\;
+  \bigl\{\mathsf{Valid}_X(p,q_i,c_i):q_i\in\dem_R(p,q)\bigr\}
+  \;\vdash_{\PRAAx}\;
+  \mathsf{Valid}_Y(p,q,T_R(p,q,C)).
+\]
+Here \(\res_R(p,q)\) abbreviates a finite list of exact object-language
+formulas.  There is no semantic leap from the fact that a host transformer
+returns a certificate.
+
+\subsection{Local, public, and residual evidence}
+
+The interface records the \emph{escape class} of each witness.
+
+\begin{description}
+\item[Local.] The witness is introduced to prove an intermediate statement and
+      eliminated before the node returns.  It is never named by a public term.
+\item[Observational.] The code may vary, but all valid codes yield equivalent
+      or quantitatively close observations.  The code is eliminated; only the
+      observation class escapes.
+\item[Canonical.] A downstream theorem genuinely needs one code.  A least
+      valid code is selected by bounded search, after totality has been proved.
+\item[Residual.] Existence of the witness is not established by the current
+      finite library.  Its exact producer formula remains in the final sequent.
+\end{description}
+
+This classification prevents a subtle but frequent strengthening.  From
+\(\forall q\,\exists c\,V(q,c)\) one may use \(c\) locally for a fixed \(q\).
+One may not silently obtain a global function \(q\mapsto c_q\).  FIBER obtains
+such a function only when the verifier is bounded and decidable, so checked
+least search defines it primitively recursively.
+
+\subsection{Herbrand capsules}
+
+\begin{definition}[Herbrand capsule]
+A capsule for a relation \(A(q,w)\) is a bounded list
+\(W=\langle w_0,\ldots,w_{k-1}\rangle\), together with a verifier proving
+\[
+     \bigvee_{i<k} A(q,w_i).
+\]
+The list, its length, and the finite disjunction are encoded by primitive
+recursive data and a fixed proof schedule.
+\end{definition}
+
+A capsule is the preferred output when a proof establishes a bounded finite
+set of possibilities but no stable reason to select one.  If a downstream
+operation is compatible across all valid members, the capsule can be mapped
+pointwise and eliminated.  If a canonical member is required and \(A\) is a
+reflected bounded predicate, least search selects the first valid member.
+Thus capsules isolate exactly where finite choice is harmless and where a
+selection theorem is required.
+
+\subsection{Metric and quotient fibers}
+
+Two especially useful interface flavors are built into the framework.
+
+\paragraph{Metric fibers.}
+For precision query \(n\), valid certificates yield observations within an
+explicit error \(\epsilon(n)\).  Composition adds or otherwise transforms the
+errors.  No equality of approximants is expected.
+
+\paragraph{Quotient fibers.}
+An equivalence bit \(E_X\) is reflexive, symmetric, transitive, and respected
+by exported operations, all by object derivations.  Public statements are
+phrased in terms of invariant observations.  A global quotient type need not
+be constructed inside \(\ipra\).
+
+These two forms cover many apparent obstacles involving real numbers,
+projective directions, unordered roots, eigenspaces, local coordinates,
+finite covers, and cohomology classes.
+
+\subsection{A schematic example: rational root clusters}
+
+Let \(p\) code a monic rational polynomial and let the query \(q=(N,r)\)
+request information about roots in a rational box at mesh \(2^{-N}\), with
+multiplicity cutoff \(r\).  A certificate can contain a list of rational boxes,
+Sturm or resultant signs, and multiplicities.  The verifier checks coverage,
+disjointness at the requested mesh, and the coefficient identities.  The
+observation is the multiset of boxes and multiplicities, or the first \(r\)
+elementary symmetric functions.  At a collision there is no exact ordered
+root label, but the multiset observation remains stable.  Under an additional
+separation residual, the same interface refines to ordered labels.  Nothing in
+the representation requires a discontinuous global branch selector.

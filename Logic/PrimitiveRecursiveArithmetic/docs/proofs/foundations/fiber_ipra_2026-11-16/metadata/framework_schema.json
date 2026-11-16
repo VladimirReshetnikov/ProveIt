@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FIBER-iPRA finite program metadata",
+  "type": "object",
+  "required": ["name", "query", "nodes", "output", "residuals"],
+  "properties": {
+    "name": {"type": "string"},
+    "query": {
+      "type": "object",
+      "required": ["arity", "well_formed_bit"],
+      "properties": {
+        "arity": {"type": "integer", "minimum": 0},
+        "well_formed_bit": {"type": "string"}
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "inputs", "escape", "local_theorem"],
+        "properties": {
+          "id": {"type": "string"},
+          "kind": {
+            "enum": ["primitive", "pair", "project", "fold", "search", "case", "exists", "strategy", "observe", "residual", "call"]
+          },
+          "inputs": {"type": "array", "items": {"type": "string"}},
+          "escape": {"enum": ["local", "observational", "canonical", "residual"]},
+          "demand": {"type": "string"},
+          "certificate_bound": {"type": "string"},
+          "verifier_bit": {"type": "string"},
+          "local_theorem": {"type": "string"}
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "required": ["formula", "observation"],
+      "properties": {
+        "formula": {"type": "string"},
+        "observation": {"type": "string"},
+        "equivalence_or_metric": {"type": "string"}
+      }
+    },
+    "residuals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "formula", "class"],
+        "properties": {
+          "name": {"type": "string"},
+          "formula": {"type": "string"},
+          "class": {"enum": ["R0", "R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8"]}
+        }
+      }
+    }
+  }
+}

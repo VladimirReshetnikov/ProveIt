@@ -1,0 +1,59 @@
+\section{Repository baseline and artifact inventory}
+
+\subsection{Pinned source snapshot}
+
+The report was prepared from the public ProveIt \code{main} commit
+\[
+\code{58627ed89814ba122e1f0f012f1aba103cda267b}
+\]
+dated 16 November 2026 at 20:33:53 UTC.
+
+The principal inspected files were:
+
+\begin{itemize}
+\item \code{ConciseIPRA/Lean/ConciseIPRA/Syntax.lean};
+\item \code{ConciseIPRA/Lean/ConciseIPRA/Deduction.lean};
+\item \code{ConciseIPRA/Lean/ConciseIPRA/PR.lean};
+\item \code{Derivations/Lean/IPRADerivations/Core/Basic.lean};
+\item \code{Core/Definitions.lean}, \code{Core/Pairing.lean}, and \code{Core/Search.lean};
+\item \code{Derivations/README.md} and \code{UNIFICATION-PLAN.md};
+\item \code{Bridge/README.md};
+\item the foundations catalog in \code{docs/proofs/README.md};
+\item the bounded-reflection and scoped-certificate packets of 16 November 2026;
+\item earlier unified, PFIG, KIFC-R, and FINER framework packets.
+\end{itemize}
+
+The complete path-level audit is in \code{metadata/source_audit.md}.
+
+\subsection{Archive inventory}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Path & Role \\
+\midrule
+\code{scope_ipra_framework.tex} & Main editable report source. \\
+\code{sections/*.tex} & Section sources. \\
+\code{scope_ipra_framework.pdf} & Compiled report. \\
+\code{lean/SCOPE/StructuralKernel.lean} & No-placeholder structural candidate. \\
+\code{lean/SCOPE/*Blueprint.lean} & Main definitions and theorem targets. \\
+\code{lean/FORMALIZATION_PLAN.md} & Dependency-ordered implementation plan and gates. \\
+\code{reference/scope_reference.py} & Exact finite reference algorithms. \\
+\code{reference/test_scope_reference.py} & Fourteen unit tests. \\
+\code{examples/demo_certificate.json} & Deterministic worked evidence. \\
+\code{metadata/theorem_ledger.csv} & Status of every principal theorem. \\
+\code{metadata/difficulty_matrix.csv} & Resolution/barrier classification. \\
+\code{metadata/claims.md} & Formal-status and nonclaim policy. \\
+\code{metadata/integration_map.md} & Mapping to current ProveIt modules. \\
+\code{validation/} & Captured test, preflight, and render outputs. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Reproduction}
+
+Run \code{bash build.sh}.  It executes the Python test suite, regenerates the demo JSON, compiles the PDF, runs PDF preflight, and renders every page for visual inspection.  Lean integration requires a ProveIt checkout and follows \code{lean/FORMALIZATION_PLAN.md}.
+
+\subsection{Final status statement}
+
+The archive supplies a complete human mathematical framework, exact finite executable evidence, and a clear path to checked implementation.  It deliberately does not conflate those layers.  Existing repository theorems are inherited as checked; all new generic results remain human proofs and Lean targets until elaborated in the ProveIt workspace.

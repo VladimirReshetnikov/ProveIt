@@ -1,0 +1,15 @@
+id,title,status,object_theory_target,main_dependency,artifact_evidence
+S1,Residual simultaneous cut,source-level Lean candidate,"Residuals ++ Gamma |- goal","Prf.trans; Prf.weaken",lean/SCOPE/StructuralKernel.lean
+S2,Private certificate sealing,source-level Lean candidate,"Gamma |- exists valid; valid,Gamma^+ |- goal^+ => Gamma |- goal","Prf.exE",lean/SCOPE/StructuralKernel.lean
+S3,Scoped conditional boundary,source-level Lean candidate,"Gamma |- (exists valid) -> goal","Prf.impI; Prf.exE",lean/SCOPE/StructuralKernel.lean
+S4,Fixed bounded-formula reflection,new human proof and Lean blueprint,"Gamma |- A iff bit(A)=1","eqb; Search.mu; recDef; IPRA.ind",sections/05_bounded_reflection.tex
+S5,Canonical guarded bounded choice,new human proof and Lean blueprint,"exists y<B R(y) => R(mu) and mu<B","Search.search_found; search_minimal",sections/05_bounded_reflection.tex
+S6,Capped cyclic demand closure,new human proof and tested reference,"H^K(0) is the least fixed point; K=sum caps","QF rank induction; Core.Division",sections/07_demand_closure.tex
+S7,Fixed-trace reflection,new human proof and Lean blueprint,"base and step imply invariant at PR fuel","recDef; IPRA.ind",sections/06_trace_compiler.tex
+S8,Finite strategy soundness/completeness,new human proof and tested reference,"finite bounded game has verified winning strategy or counterstrategy","bounded reflection; Search.mu",sections/08_master_certificates.tex
+S9,Backward viability,new human proof and tested reference,"a finite compatible path exists iff initial viability bit is 1","bounded search; finite recursion",sections/09_viability.tex
+S10,Scope normal form,new human metatheorem,"residuals,Gamma |- public goal with every certificate escape classified","S1-S9",sections/04_scope_contracts.tex
+S11,Exact stable-observer elimination,new human proof and Lean blueprint,"certificate-independent observation escapes; certificate does not","Prf.exE; equality transport",sections/10_observers.tex
+S12,Metric observational descent,new human proof and tested reference,"root error bounded by sum of edge errors on supplied tree","finite path recursion; triangle inequality",sections/10_observers.tex
+S13,Height-bound/list equivalence,new human proof,"decidable coded set has complete finite list iff it has an explicit height bound","bounded reflection; finite search",sections/11_quantitative_presentations.tex
+S14,Open-sequent transport,inherited checked repository result,"ordinary and Foundation scoped sequents translate both ways","IPRABridge open/scoped APIs",metadata/source_audit.md

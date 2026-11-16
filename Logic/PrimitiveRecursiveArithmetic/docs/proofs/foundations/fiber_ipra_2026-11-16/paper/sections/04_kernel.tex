@@ -1,0 +1,282 @@
+\section{The finite proof kernel}
+\label{sec:kernel}
+
+This section states the reusable lemmas from which the compiler is built.
+They are intentionally small.  Each either follows directly from the checked
+natural-deduction calculus or reduces to quantifier-free induction and checked
+arithmetic.
+
+\subsection{Certificate sealing}
+
+\begin{theorem}[Local certificate sealing]
+\label{thm:sealing}
+Let \(A(c,\vec x)\) and \(B(\vec x)\) be formulas, with \(c\) absent from
+\(B\).  If
+\[
+ \Gamma\vdash_{\PRAAx}\exists c\,A(c,\vec x)
+ \qquad\text{and}\qquad
+ A(c,\vec x),\Gamma^+\vdash_{\PRAAx}B(\vec x)^+,
+\]
+then \(\Gamma\vdash_{\PRAAx}B(\vec x)\).
+\end{theorem}
+
+\begin{proof}
+This is exactly the existential-elimination constructor \texttt{Prf.exE} of
+\texttt{ConciseIPRA.Deduction}.  The shifts in the displayed second premise
+express that the fresh certificate variable is in scope only in the branch.
+No choice function is created.
+\end{proof}
+
+\begin{corollary}[Observational escape]
+Suppose every valid certificate \(c\) gives a conclusion \(B(o)\) for
+\(o=O(q,c)\), and valid certificates give equivalent observations.  If the
+public conclusion is invariant under that equivalence, the certificate can be
+sealed and only the invariant conclusion escapes.
+\end{corollary}
+
+\begin{proof}
+Open the totality witness with \cref{thm:sealing}, derive the invariant
+conclusion from its observation, and close the witness.  Equivalence is needed
+only when two independently generated certificates are compared.
+\end{proof}
+
+\subsection{Simultaneous residual discharge}
+
+\begin{theorem}[Finite residual discharge]
+\label{thm:cut}
+If \(\Gamma\vdash_{\PRAAx}\varphi\) and for every \(\psi\in\Gamma\) one has
+\(\Delta\vdash_{\PRAAx}\psi\), then
+\(\Delta\vdash_{\PRAAx}\varphi\).
+\end{theorem}
+
+\begin{proof}
+This is the checked theorem \texttt{Prf.trans}.  Its proof repeatedly applies
+implication introduction and modus ponens, and therefore requires no cut rule
+as a new primitive.
+\end{proof}
+
+This theorem is the formal meaning of ``plugging producers into a compiled
+proof''.  A framework report that lists residual assumptions but does not
+produce this sequent has not yet specified composition at the object level.
+
+\subsection{Booleanization of fixed bounded formulas}
+
+For each fixed bounded formula \(A(\vec x)\), FIBER generates a primitive
+recursive bit \([A](\vec x)\).  Atomic equalities and inequalities use the
+checked equality/order bits.  Connectives use Boolean operations.  A bounded
+existential is a finite disjunction fold, and a bounded universal is a finite
+conjunction fold.
+
+\begin{theorem}[Fixed-formula Boolean reflection schema]
+\label{thm:boolean-reflection}
+For every fixed bounded formula \(A(\vec x)\), there is a primitive-recursive
+bit \([A]\) and a generated object derivation
+\[
+  []\vdash_{\PRAAx}\forall\vec x\,
+       \bigl([A](\vec x)=1\leftrightarrow A(\vec x)\bigr).
+\]
+The construction is effective in the external syntax of \(A\); it does not
+require an internal universal formula evaluator.
+\end{theorem}
+
+\begin{proof}[Human proof and induction accounting]
+Proceed by structural recursion on the fixed syntax.
+
+For equality and order atoms, use the existing checked reflection lemmas for
+equality tests, monus order, and comparison bits.  Boolean conjunction,
+disjunction, and implication are proved by the finite truth tables, each a
+fixed collection of arithmetic cases.
+
+For a bounded existential \(\exists i<N\,A(i,\vec x)\), define
+\[
+ e(0,\vec x)=0,\qquad
+ e(k+1,\vec x)=\max(e(k,\vec x),[A](k,\vec x)).
+\]
+The formula used in induction is not the quantified formula.  It is a
+quantifier-free state equation about \(e\), a candidate index, and the
+reflected bit.  The forward direction from \(e(N)=1\) obtains the first stage
+at which the bit becomes one by checked bounded search, then applies the
+inductive reflection theorem for \(A\).  The reverse direction takes an
+explicit existential witness \(i<N\), proves by a quantifier-free loop lemma
+that its bit contributes to \(e(N)\), and concludes \(e(N)=1\).
+
+For a bounded universal, define the conjunction fold
+\[
+ a(0,\vec x)=1,\qquad
+ a(k+1,\vec x)=\min(a(k,\vec x),[A](k,\vec x)).
+\]
+From \(a(N)=1\) and an arbitrary \(i<N\), a quantifier-free indexing lemma
+proves \([A](i,\vec x)=1\), then reflection yields \(A(i,\vec x)\).  Conversely,
+under the universal hypothesis, quantifier-free induction proves the state
+formula \(a(k)=1\) for \(k\le N\); the successor step instantiates the
+universal hypothesis at \(k\).  The induction predicate itself remains the
+atomic equation \(a(k)=1\), optionally guarded by the quantifier-free
+inequality \(k\le N\).
+
+All recursion symbols and formulas are fixed before the derivation is
+constructed.  Thus no truth predicate and no universal evaluator is used.
+\end{proof}
+
+\begin{remark}
+The repository already contains most arithmetic pieces of this proof, but the
+complete generic generated reflection library is one of the central Lean
+milestones.  The report claims the mathematical schema, not an already
+compiled implementation.
+\end{remark}
+
+\subsection{Bounded least selection}
+
+Let \(v(q,c)\) be a primitive-recursive bit.  The checked bounded-search module
+finds the least index below a bound at which a chosen bit convention succeeds.
+A small adapter converts between ``zero means success'' and ``one means
+success''.
+
+\begin{theorem}[Canonical bounded selection]
+\label{thm:least}
+There is a primitive-recursive function \(\mu_v(q,B)\) such that \(\ipra\)
+derives
+\[
+ \bigl(\exists c<B\;v(q,c)=1\bigr)
+ \longrightarrow
+ \left(
+ \begin{array}{l}
+ \mu_v(q,B)<B,\\[-2pt]
+ v(q,\mu_v(q,B))=1,\\[-2pt]
+ \forall j<\mu_v(q,B)\;v(q,j)=0
+ \end{array}
+ \right).
+\]
+\end{theorem}
+
+\begin{proof}
+Apply the checked least-zero search to the complement bit
+\(1\mathbin{\dot-}v\).  Its specification supplies an accepted index no later
+than any supplied accepted witness and rules out all earlier successes.  The
+remaining steps are Boolean arithmetic and the existing order lemmas.
+\end{proof}
+
+\begin{principle}[Use search only at an escape boundary]
+If a certificate is used only in a proof branch, apply existential elimination.
+Invoke \cref{thm:least} only when a downstream term or public theorem must name
+a code.  This avoids unnecessary normalization burdens and prevents a local
+existence proof from being mistaken for global choice.
+\end{principle}
+
+\subsection{Finite master certificates}
+
+Suppose that for each \(i<N\) a bounded decidable verifier \(v(i,c)\) has a
+witness below \(B(i)\).  A common informal step says ``choose all witnesses''.
+In intuitionistic arithmetic this should be made explicit.
+
+\begin{theorem}[Master-certificate theorem]
+\label{thm:master}
+Assume \(\ipra\) derives
+\[
+       \forall i<N\;\exists c<B(i)\;v(i,c)=1.
+\]
+Then there is a primitive-recursive sequence code \(C(N)\) for which \(\ipra\)
+derives
+\[
+       \forall i<N\;
+       \bigl(\seq(C(N),i)<B(i)\wedge
+             v(i,\seq(C(N),i))=1\bigr).
+\]
+The construction uses no choice principle.
+\end{theorem}
+
+\begin{proof}
+Define \(m(i)=\mu_{v(i,\cdot)}(B(i))\) by bounded least search.  The premise and
+\cref{thm:least} prove the validity of \(m(i)\) for arbitrary \(i<N\).  Define
+\(C(0)\) as the empty sequence and append \(m(k)\) at stage \(k+1\).  The
+sequence equations are primitive recursive.  Quantifier-free induction on
+\(k\) proves the decoding equations for entries already appended.  For an
+arbitrary \(i<N\), instantiate the decoding lemma and the validity theorem for
+\(m(i)\).  Mixed-radix coding gives an alternative when all component bounds
+are available in advance.
+\end{proof}
+
+The theorem resolves hidden finite choice in proof graphs, finite covers,
+strategy tables, and compatibility diagrams.  Notice that decidability and a
+bound are essential; an unbounded family of arbitrary existential statements
+would be stronger.
+
+\subsection{Finite monotone demand closure}
+
+Adaptive proofs can have cyclic precision requirements: node \(i\) asks for a
+resource determined by the resources requested by other nodes.  Unbounded
+fixed-point language is unnecessary when each coordinate has a cap.
+
+\begin{theorem}[Least finite demand closure]
+\label{thm:demand-closure}
+Let
+\[
+      P=\prod_{i<r}\{0,1,\ldots,C_i\}
+\]
+with coordinatewise order, and let \(F:P\to P\) be monotone.  Define
+\[
+ d^0=0,\qquad d^{n+1}=d^n\vee F(d^n),
+\]
+where \(\vee\) is coordinatewise maximum.  Put \(K=\sum_{i<r}C_i\).  Then:
+
+\begin{enumerate}
+\item \(d^K=d^{K+1}\), so \(d^K\) is a prefixed point of \(F\);
+\item if \(e\in P\) satisfies \(F(e)\le e\), then \(d^K\le e\);
+\item consequently \(d^K\) is the least prefixed point of \(F\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The sequence is increasing.  If \(d^{n+1}\ne d^n\), at least one coordinate
+increases by at least one, so the potential
+\(\Phi(d)=\sum_{i<r}d_i\) strictly increases.  The potential starts at zero
+and is at most \(K\).  Hence a strict increase cannot occur at all of the first
+\(K+1\) stages, and monotonicity of the update makes the first equality
+permanent.  This proves stabilization by stage \(K\).
+
+For minimality, prove by induction on \(n\) that \(d^n\le e\).  It is true for
+zero.  If \(d^n\le e\), monotonicity gives \(F(d^n)\le F(e)\le e\), and hence
+\(d^{n+1}=d^n\vee F(d^n)\le e\).  In particular \(d^K\le e\).
+
+Every operation is finite and primitive recursive.  The formal proof uses
+encoded arrays, bounded sums, order, and quantifier-free induction on the
+iteration counter.  The strict-increase argument can be expressed by the
+potential equation and the checked order library.
+\end{proof}
+
+\subsection{Finite strategy certificates}
+
+A fixed bounded quantifier alternation can be represented without classical
+choice.
+
+\begin{definition}[Strategy certificate]
+For a fixed formula
+\[
+ Q_0x_0<B_0\;Q_1x_1<B_1(\vec x_{<1})\cdots
+ Q_sx_s<B_s(\vec x_{<s})\;A(\vec x),
+\]
+where \(A\) is reflected and each \(Q_i\) is \(\forall\) or \(\exists\), a
+strategy certificate contains, at every existential node, a response as a
+function of the preceding universal moves, and enough finite table data to
+verify every leaf.
+\end{definition}
+
+\begin{theorem}[Bounded strategy realization]
+\label{thm:strategy}
+For each fixed bounded quantifier pattern there is a primitive-recursive
+strategy verifier and a generated \(\ipra\) derivation from ``the strategy
+verifies'' to the bounded formula.
+\end{theorem}
+
+\begin{proof}
+Induct externally on the fixed quantifier pattern.  At an existential node,
+decode the response selected by the strategy, verify its bound, and apply
+existential introduction.  At a universal node, introduce an arbitrary bounded
+move and select the corresponding certified subtree.  At a leaf, apply
+\cref{thm:boolean-reflection}.  The only induction internal to \(\ipra\) checks
+finite table lookup and bounds, so its invariant is quantifier-free.  No law of
+excluded middle is used beyond reflected decidability of the bounded atoms.
+\end{proof}
+
+The theorem covers finite games, bounded minimax arguments, finite adversarial
+verification, and many bounded classical case analyses.  It does not turn an
+unbounded classical proof into a witness-producing intuitionistic proof.
