@@ -16,6 +16,14 @@ SHA-256 is `27613aa92da79ba2ec6e2e88e0ac909fda218e06495ecc0af27201eac0e26c8f`.
 - [`PA194ADFile`](PA194ADFile.lean) and [`PA194ADFrame`](PA194ADFrame.lean)
   transport the packed register file and the encoded source frame for
   arbitrary values in PRA models. They preserve the spare register and suffix.
+- [`PA194ADDispatch`](PA194ADDispatch.lean) and [`PA194ADClock`](PA194ADClock.lean)
+  define the companion's table lookup and packed clock. The model step
+  agrees with the primary step at working rows outside the three changes.
+- [`PA194ADStartupModel.startup_seed`](PA194ADStartupModel.lean) proves that
+  the packed AD clock reaches the exact existing source seed after 58,122
+  steps in every PRA model. The [standard clock bridge](PA194ADPackedStandard.lean)
+  identifies its numerical run at every standard time, and Lean verifies
+  the fifteen numerical startup checkpoints.
 
 The physical simulation across the changed rows is still needed for the
 halting equivalence and the derivation in iPRA.
@@ -28,6 +36,7 @@ bash "$dir/check.sh" /dev/shm/pa194ad-replay
 ```
 
 The checker pins both delivered tables and label lists, regenerates the
-primary row data, verifies all companion row literals, and builds the
-proofs in one output directory. It uses the retained primary scheduler
-dependency path, which can be passed as the second argument.
+primary row data and startup checkpoints, verifies all companion row
+literals, and builds the proofs in one output directory. It uses the
+retained primary scheduler dependency path, which can be passed as the
+second argument.

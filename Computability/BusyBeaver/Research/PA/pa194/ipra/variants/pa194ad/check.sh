@@ -32,6 +32,15 @@ check() {
 
 check "$out/PA194Rows.lean"
 check "$machine/PA194RegisterPermutation.lean"
-for module in Table Ordinary Step Bounded Store File Frame; do
+for module in Table Ordinary Step Bounded Store File Frame Seed Dispatch Next Clock NumericStandard NumericTape PackedStandard; do
   check "$here/PA194AD$module.lean"
 done
+
+python3 -I "$here/generate-startup.py" "$repo" "$out"
+for chunk in "$out"/PA194ADStartupChunk*.lean; do
+  check "$chunk"
+done
+check "$out/PA194ADStartupComplete.lean"
+check "$here/PA194ADStartupModel.lean"
+rg -Fxq "'PA194ADStartupModel.startup_seed' depends on axioms: [propext, Classical.choice, Quot.sound]" \
+  "$out/PA194ADStartupModel.log"
