@@ -36,6 +36,7 @@ import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.Algebra.TrisectionCubic
 import IPRADerivations.Algebra.Quintic
+import IPRADerivations.Algebra.QuadraticExtension
 import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Combinatorics.BinomialTheorem
@@ -120,6 +121,8 @@ import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
 import IPRADerivations.Geometry.ConwayAlgebra
 import IPRADerivations.Geometry.PentagonArithmetic
+import IPRADerivations.Geometry.PappusSegment
+import IPRADerivations.Geometry.KerrNewmanAlgebra
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation

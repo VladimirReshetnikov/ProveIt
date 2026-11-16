@@ -33,6 +33,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.type15_angle_sum
 #print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.dual_angle_sums
 #print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.dodecahedron_euler
+#print axioms LeanProofs.IPRA.Geometry.PappusSegment.affine_sum
+#print axioms LeanProofs.IPRA.Geometry.PappusSegment.sum_odd
+#print axioms LeanProofs.IPRA.Geometry.PappusSegment.midpoint_moment
+#print axioms LeanProofs.IPRA.Geometry.KerrNewmanAlgebra.sigma_identity
+#print axioms LeanProofs.IPRA.Geometry.KerrNewmanAlgebra.radial_solution
+#print axioms LeanProofs.IPRA.Geometry.KerrNewmanAlgebra.block_det
+#print axioms LeanProofs.IPRA.Geometry.KerrNewmanAlgebra.radial_unique
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.mul_adjugate
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.det_mul
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.cayleyHamilton2
@@ -190,6 +197,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.Quintic.bring_scaling
 #print axioms LeanProofs.IPRA.Algebra.Quintic.de_moivre_root
 #print axioms LeanProofs.IPRA.Algebra.Quintic.reducible_example
+#print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.mul_comm
+#print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.mul_assoc
+#print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.distrib
+#print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.one_mul
+#print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.root_sq
+#print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.conj_mul
+#print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.norm_mul
 #print axioms LeanProofs.IPRA.Topology.Sperner.parity_invariant
 #print axioms LeanProofs.IPRA.Topology.Sperner.sperner_1d
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
