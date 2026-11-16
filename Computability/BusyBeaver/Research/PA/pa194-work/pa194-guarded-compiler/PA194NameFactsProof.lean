@@ -263,6 +263,50 @@ structure SourceFacts : Prop where
 
 variable {T}
 
+/-- The standard source formulas of the fixed letters; a value letter is sent to `⊤`. -/
+def tau0 : (l : Letter) → Semiproposition SourceL l.ar
+  | .dom => (domainTemplate : Semiproposition SourceL 1)
+  | .eq => (equalityTemplate : Semiproposition SourceL 2)
+  | .iso => (orderIsoTemplate : Semiproposition SourceL 2)
+  | .zero => (zeroTemplate : Semiproposition SourceL 1)
+  | .succ => (successorTemplate : Semiproposition SourceL 2)
+  | .add => (additionTemplate : Semiproposition SourceL 3)
+  | .mul => (multiplicationTemplate : Semiproposition SourceL 3)
+  | .val _ => (⊤ : Semiproposition SourceL 1)
+
+theorem sig_top_eq :
+    sig (fun _ => (⊤ : Bootstrapping.Semiformula V SourceL 1)) =
+      fun l => (⌜tau0 l⌝ : Bootstrapping.Semiformula V SourceL l.ar) := by
+  funext l
+  cases l <;> rfl
+
+/-- Each hypothesis instance is the typed quote of an explicit standard formula of the
+source language: the hypothesis sentence with the source templates for its letters. -/
+theorem tHyp_eq_quote (φ : SF 0) :
+    (tHyp φ : Bootstrapping.Semiformula V SourceL 0) = ⌜sinst tau0 φ⌝ := by
+  unfold tHyp
+  rw [sig_top_eq, quote_sinst]
+
+/-- `SourceFacts T` from internal provability of the quotes of twelve standard formulas. -/
+theorem sourceFacts_of_quotes
+    (h : ∀ φ ∈ [sE1, sEI, sIs, sIt, sZ1, sZ2, sS1, sS2, sA1, sA2, sM1, sM2],
+      Provable T (⌜sinst tau0 φ⌝ : V)) : SourceFacts (V := V) T where
+  e1 := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sE1 (by simp))
+  ei := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sEI (by simp))
+  is := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sIs (by simp))
+  it := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sIt (by simp))
+  z1 := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sZ1 (by simp))
+  z2 := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sZ2 (by simp))
+  s1 := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sS1 (by simp))
+  s2 := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sS2 (by simp))
+  a1 := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sA1 (by simp))
+  a2 := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sA2 (by simp))
+  m1 := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sM1 (by simp))
+  m2 := by rw [tHyp_eq_quote]; exact tprovable_tquote_iff_provable_quote.mpr (h sM2 (by simp))
+
+#print axioms tHyp_eq_quote
+#print axioms sourceFacts_of_quotes
+
 theorem tmp {φ ψ : Bootstrapping.Semiformula V SourceL 0} (h : T.internalize V ⊢ φ 🡒 ψ)
     (h' : T.internalize V ⊢ φ) : T.internalize V ⊢ ψ := ⟨TProof.modusPonens h.get h'.get⟩
 
