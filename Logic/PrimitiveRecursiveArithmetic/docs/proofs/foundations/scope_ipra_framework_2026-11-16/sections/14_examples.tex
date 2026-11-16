@@ -1,0 +1,148 @@
+\section{Worked finite compilations}
+
+The examples in this section are small enough to inspect manually, but each exercises a distinct generic layer.  Their exact host-level computations are recorded in \path{examples/demo_certificate.json}.
+
+\subsection[A bounded forall-exists strategy]{A bounded \(\forall\exists\) strategy}
+
+Consider
+\[
+  \forall x<6\;\exists y<4\quad (x+y)\bmod 3=0.
+\]
+The matrix is decidable by the checked division/remainder arithmetic.  For each \(x\), bounded least search returns the least \(y<4\) satisfying the congruence.  The resulting table is
+\[
+  \sigma=[0,2,1,0,2,1].
+\]
+Indeed,
+\[
+0+0,\ 1+2,\ 2+1,\ 3+0,\ 4+2,\ 5+1
+\]
+are all divisible by three.  The table verifier checks six bounds and six remainder equations.  By finite strategy soundness, the verifier implies the quantified formula.
+
+There are several possible public endpoints:
+
+\begin{itemize}
+\item prove the bounded formula and keep \(\sigma\) private;
+\item return \(\exists\sigma\,\mathsf{Verifies}(\sigma)\);
+\item return the least strategy table by canonical search;
+\item export only a stable statistic of the table.
+\end{itemize}
+
+The choice among them is a theorem-design decision, not an implementation accident.
+
+\subsection{A cyclic precision network}
+
+Take caps \((5,6,5)\) and demand transformer
+\[
+F(d_0,d_1,d_2)=
+\bigl(\min(5,d_1+1),\min(6,d_2+2),\min(5,d_0)\bigr).
+\]
+It is monotone.  Starting at zero and applying \(H(d)=d\vee F(d)\) gives
+\[
+\begin{array}{c|c|c}
+ t & d_t & \rank(d_t)\\
+\hline
+0&(0,0,0)&0\\
+1&(1,2,0)&3\\
+2&(3,2,1)&6\\
+3&(3,3,3)&9\\
+4&(4,5,3)&12\\
+5&(5,5,4)&14\\
+6&(5,6,5)&16\\
+7&(5,6,5)&16.
+\end{array}
+\]
+The total cap rank is \(5+6+5=16\), and the fixed point is reached after six strict iterations.  The example demonstrates why one reverse pass is insufficient and why the rank budget gives a uniform stopping bound.
+
+In an analytic graph, the coordinates could represent input precision, range-bound precision, and a denominator-separation precision.  The fixed point is computed before the forward numerical trace, so the trace invariant mentions only concrete resource terms.
+
+\subsection{Viability versus greedy choice}
+
+Let
+\[
+A_0=\{0,1\},\qquad A_1=\{0,1\},\qquad A_2=\{0\}.
+\]
+All nodes are locally valid.  The compatibility edges are
+\[
+  0\to0,\quad 1\to1
+  \qquad\text{between }A_0,A_1,
+\]
+and only
+\[
+  1\to0
+  \qquad\text{between }A_1,A_2.
+\]
+Greedy least local choice starts with \(0\), moves to \(0\), and fails.  Backward viability yields
+\[
+  V_2=\{0\},\qquad V_1=\{1\},\qquad V_0=\{1\}.
+\]
+The least viable path is \((1,1,0)\).  The example is deliberately included in the formalization acceptance gates because it catches a subtle but common incorrect selector.
+
+\subsection{Metric observation on a finite tree}
+
+Take a rooted tree with edges \(r\to a\), \(r\to b\), and \(a\to c\).  Suppose certified edge errors are
+\[
+ e_a=2,\qquad e_b=1,\qquad e_c=3.
+\]
+Metric tree descent gives root-distance bounds
+\[
+  E_r=0,
+  \quad E_a=2,
+  \quad E_b=1,
+  \quad E_c=e_a+e_c=5.
+\]
+The public result can expose the root observation and these explicit error radii.  It need not choose globally compatible representatives on every cycle of a larger cover unless the downstream theorem actually requires them.
+
+\subsection{Height-bounded Diophantine enumeration}
+
+Let \(P(x)\) be the reflected equation predicate for a fixed Diophantine problem under a natural code.  Assume a residual formula
+\[
+  \mathsf{HB}(H):=\forall x\,[P(x)\to x<H].
+\]
+The compiler filters \(0,\ldots,H-1\), producing a list \(L_H\).  Bounded reflection proves:
+\[
+  x\in L_H\leftrightarrow x<H\wedge P(x).
+\]
+Under \(\mathsf{HB}(H)\), this becomes \(x\in L_H\leftrightarrow P(x)\).  The result is the conditional object theorem
+\[
+  \mathsf{HB}(H)\vdash_{\PRAAx}\mathsf{Complete}(L_H,P).
+\]
+
+Nothing in the finite compiler claims to produce \(H\).  A theorem-specific descent, Runge estimate, Baker bound, or other effective argument can later discharge the residual.
+
+\subsection{A quantitative bisection contract}
+
+Let \(f\) be a fixed primitive-recursive rational function on a rational interval \([a,b]\).  Suppose the residual context supplies:
+
+\begin{enumerate}
+\item opposite endpoint signs;
+\item a monotonicity certificate on the interval;
+\item a denominator/apartness guard for every rational operation;
+\item a primitive-recursive bound \(N(p)\) such that \((b-a)/2^{N(p)}\le2^{-p}\).
+\end{enumerate}
+
+A trace stores endpoints \((\ell_t,r_t)\).  At each step it computes the midpoint and uses the reflected sign bit to retain a bracketing half.  The quantifier-free invariant states:
+\[
+ a\le\ell_t\le r_t\le b,
+ \quad f(\ell_t)\le0\le f(r_t),
+ \quad 2^t(r_t-\ell_t)=b-a.
+\]
+After \(N(p)\) steps, return the midpoint and radius \(2^{-p}\).  Monotonicity proves every exact root in the bracket lies in the output ball; a separation/strict-monotonicity modulus can strengthen this to uniqueness.  The theorem constructs a certified finite approximation without postulating a completed real root.
+
+\subsection{End-to-end composition}
+
+A representative SCOPE compilation has the following order:
+
+\begin{enumerate}
+\item specialize the theorem graph to query \(q\);
+\item compute capped cyclic demand closure;
+\item decode or produce a bounded master certificate;
+\item reflect all bounded validity conditions;
+\item compute viability for nonunique paths;
+\item run fixed forward traces at the closed resources;
+\item project through an exact or metric observer;
+\item eliminate private certificates;
+\item retain only reachable producer residuals;
+\item emit the final \(\Prf\,\PRAAx\) derivation.
+\end{enumerate}
+
+The demo JSON records finite evidence for steps 2, 5, 6 in strategy form, and 7 in metric-tree form.  It is executable evidence for the algorithms, not a substitute for the object derivations described above.

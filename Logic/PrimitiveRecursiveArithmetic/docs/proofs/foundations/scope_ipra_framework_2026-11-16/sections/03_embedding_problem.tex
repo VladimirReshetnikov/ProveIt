@@ -1,0 +1,109 @@
+\section{What an embedding of mathematics into iPRA must provide}
+
+\subsection{Finite queries rather than completed infinite objects}
+
+An ordinary mathematical object may be infinite: a real number, a function, a compact space, a probability distribution, a formal power series, or a sheaf.  An iPRA theorem does not need to internalize the completed object if every concrete use asks only a finite question.
+
+A \emph{query} \(q\) records the finite observation requested by a consumer.  Typical components are:
+
+\begin{itemize}
+\item a precision \(p\);
+\item a finite domain bound \(N\);
+\item a requested derivative order or truncation degree;
+\item a mesh, cover, or search height;
+\item a finite list of evaluation points;
+\item a resource budget or proof horizon.
+\end{itemize}
+
+The producer responds with finite coded data \(c<C(q)\) and a decidable validity relation \(\Valid(q,c)\).  The theorem may then return a finite observation, a relation of acceptable observations, or a conditional result with explicit producer assumptions.
+
+\subsection{Representations, realizers, and observations}
+
+\begin{definition}[Finitary presentation]
+A finitary presentation consists of:
+\begin{enumerate}
+\item a primitive-recursive query code space;
+\item for each query, a bounded certificate space \(c<C(q)\);
+\item a fixed bounded or quantifier-free validity formula \(\Valid(q,c)\);
+\item a primitive-recursive observation map \(\Obs(q,c)\), possibly relational;
+\item object-theory derivations connecting validity to the advertised mathematical specification.
+\end{enumerate}
+\end{definition}
+
+The presentation need not choose one representative globally.  For a root with colliding branches, \(c\) may encode an unordered interval multiset.  For an eigenspace, it may encode an approximate projector rather than a signed eigenvector.  For a compactness argument, it may encode a finite net and its coverage certificate.  The observation interface should match what is stable under the available data.
+
+\subsection{Residual producers}
+
+Many finite verifiers are elementary once a quantitative producer is supplied.  The difficult mathematical content often lies in proving that the producer exists uniformly.  SCOPE records this distinction in the final sequent.
+
+\begin{definition}[Residual producer]
+A residual producer is an object-language formula \(B(q)\) asserting the existence or correctness of quantitative data required by the finite compiler but not constructed by the generic framework.  Examples include:
+\begin{itemize}
+\item a height cutoff containing all solutions;
+\item a finite cover of prescribed mesh;
+\item an apartness or branch-separation margin;
+\item a convergence or tail modulus;
+\item an explicit analytic constant or zero-free region;
+\item a rational representative of a descent class.
+\end{itemize}
+\end{definition}
+
+The generic result has type
+\[
+  B_1(q),\ldots,B_r(q),\Gamma(q)\ \vdash_{\PRAAx}\ \Goal(q).
+\]
+If later work proves each \(B_i\), simultaneous cut closes the result.  Until then, the theorem remains a precise conditional theorem rather than an overstated unconditional one.
+
+\subsection{Finite interaction graphs}
+
+A large proof is organized as a fixed finite graph.  Its nodes may be:
+
+\begin{enumerate}
+\item exact primitive-recursive transducers;
+\item Boolean decision nodes;
+\item bounded searches;
+\item clocked loops with quantifier-free invariants;
+\item finite relational producers;
+\item observer or quotient nodes;
+\item residual producer leaves.
+\end{enumerate}
+
+Edges carry finite data and backward resource demands.  Acyclic data flow is topologically scheduled.  Cyclic precision dependencies are not executed as an unbounded feedback loop; they are first closed in a finite capped demand lattice, as proved in \cref{sec:demand-closure}.  After closure, the forward computation is again a fixed finite trace.
+
+\subsection{The five public endpoint modes}
+
+The same mathematical theorem may have several constructively distinct endpoints.
+
+\paragraph{Exact endpoint.}
+Return a concrete term and an exact equation or predicate.  This is appropriate for finite arithmetic, canonical least witnesses, and robustly isolated branches.
+
+\paragraph{Existential endpoint.}
+Prove \(\exists z\,P(q,z)\) while allowing the chosen \(z\) to depend on a private certificate.  No global selector is exposed.
+
+\paragraph{Relational endpoint.}
+Return a finite cloud \(R(q,z)\) of acceptable answers or a statement that every valid answer has a desired stable property.  This is appropriate near degeneracies.
+
+\paragraph{Metric endpoint.}
+Return a rational ball, interval, finite net, or pairwise diameter bound.  This exposes exactly the quantitative stability that is proved.
+
+\paragraph{Residual endpoint.}
+Return a theorem conditional on a producer formula.  The finite checker and the deep producer remain separate modules.
+
+A useful framework must preserve the distinction among these modes all the way to the final object-language type.
+
+\subsection{The embedding contract}
+
+For each fixed theorem and query, a successful SCOPE embedding supplies:
+
+\begin{enumerate}
+\item explicit codes and bounds;
+\item fixed primitive-recursive algorithms;
+\item characteristic bits for all bounded conditions;
+\item quantifier-free loop invariants;
+\item object derivations for local steps;
+\item a justified certificate escape mode;
+\item exact residual formulas for unavailable producers;
+\item a final composition producing \(\Prf\,\PRAAx\).
+\end{enumerate}
+
+This contract is deliberately stricter than ``the algorithm terminates'' or ``Lean proves the semantic proposition.''  It is what makes the result portable, auditable, and reusable by other iPRA developments.

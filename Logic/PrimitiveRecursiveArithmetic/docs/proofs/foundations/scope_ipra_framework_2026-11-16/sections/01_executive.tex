@@ -1,0 +1,84 @@
+\section{Executive summary and exact status}
+
+\subsection{The repository situation}
+
+The inspected ProveIt snapshot separates three kinds of material that must not be conflated.
+
+\begin{enumerate}
+\item \textbf{Checked logical substrate.}  \code{ConciseIPRA} defines scoped terms, formulas, intuitionistic natural deduction with equality, primitive-recursive function symbols, the ordinary axiom family \(\PRAAx\), and checked translations to smaller native calculi.
+\item \textbf{Checked object-theory mathematics.}  \code{IPRADerivations} contains Lean-kernel-checked values of types such as
+\[
+  ([] : \mathsf{List}(\Fm\,\PTm\,0))\ \vdash_{\PRAAx}\ \varphi,
+\]
+and open variants under arbitrary finite contexts.  Its reusable core already includes arithmetic, order, pairing, bounded search, division, finite sums and products, descent, and finite-dimensional linear algebra.
+\item \textbf{Research packets.}  \code{docs/proofs} contains a much larger set of delivered human proofs, executable finite checkers, and Lean plans.  The catalog explicitly records that these packets were not collectively elaborated or verified.  Their conceptual content is valuable, but a prose theorem or a semantic Lean proposition is not silently promoted to a \(\Prf\,\PRAAx\) derivation.
+\end{enumerate}
+
+The foundations packets already identify most of the right ingredients: finite proof graphs, bounded reflection, least search, reverse demand propagation, trace reflection, relational witness clouds, stable observations, explicit residuals, and scoped certificate elimination.  Their overlap is substantial.  The current problem is to consolidate them into one normal form aligned with the checked library, remove obsolete open tasks, and make the remaining producer boundaries mathematically exact.
+
+\subsection{The SCOPE contribution}
+
+SCOPE stands for \emph{Scoped Certificates, Observational Projection, and Explicit Residuals}.  It adds one organizing principle to the earlier finite-contract frameworks:
+
+\begin{quote}
+A certificate is a local proof resource.  It is not public mathematical data unless the final theorem explicitly chooses one of five justified escape modes.
+\end{quote}
+
+The five modes are:
+
+\begin{enumerate}
+\item \emph{private}: eliminate the certificate by existential elimination;
+\item \emph{existential}: use certificate-dependent data only as the witness of an outer existential;
+\item \emph{stable}: export an exact, quotient, metric, or gap-stabilized observation proved independent of the certificate in the required sense;
+\item \emph{canonical}: name the least accepted code by checked bounded search;
+\item \emph{residual}: if no producer is available, retain its exact existence or quantitative data formula as a hypothesis.
+\end{enumerate}
+
+This classification is not cosmetic.  It separates four notions that are repeatedly confused in constructive formalization: existence of a witness, the right to name a witness, invariance of a finite observation, and availability of a theorem-specific producer.
+
+\subsection{Principal theorems}
+
+The report proves the following generic results at the human mathematical level.
+
+\begin{description}[style=nextline]
+\item[Bounded reflection.] Every fixed bounded arithmetic formula built from primitive-recursive terms has a primitive-recursive characteristic bit.  iPRA proves the formula equivalent to the bit being one, and proves its decidability.  Nested bounded quantifiers are handled by finite folds and least counterexample/witness search; induction is only on quantifier-free equations.
+
+\item[Guarded canonical choice.] A bounded existential has a primitive-recursive least witness together with a success bit and the bound as failure sentinel.  Naming is therefore available exactly when a finite bound is supplied.
+
+\item[Fixed-trace reflection.] A fixed primitive-recursive state machine with a quantifier-free invariant, object-theory base proof, step proof, and terminal extractor yields an object-theory theorem at arbitrary primitive-recursive fuel.
+
+\item[Capped cyclic demand closure.] For a monotone demand transformer on a finite product \(\prod_{i<k}[0,C_i]\), iteration of \(d\mapsto d\vee F(d)\) from zero reaches the least prefixed point after at most \(\sum_i C_i\) strict increases.  A rank proof is directly arithmetizable by quantifier-free induction.
+
+\item[Finite strategy extraction.] Every fixed bounded quantifier game admits a finite strategy verifier and a dual counterstrategy verifier.  Backward evaluation constructs one of them constructively; no appeal to infinite game determinacy is involved.
+
+\item[Backward viability.] For finite levels of non-unique approximants, a compatible path exists exactly when the initial backward-viability bit is one.  The lexicographically least \emph{viable} path is primitive recursive.  Choosing the least local witness before viability is unsound because it may select a dead end.
+
+\item[Observer elimination.] Exact certificate-independent observations descend by equality; quotient observations descend through witnessed congruences; metric observations descend with an explicit diameter; and exact branch labels descend only under an explicit separation gap.
+
+\item[Scope normal form.] Every fixed finite interaction graph satisfying the local contracts compiles to a derivation from precisely its reachable residual producers.  All internal certificates have one of the five escape modes, and no hidden choice remains.
+\end{description}
+
+\subsection{What is resolved and what remains conditional}
+
+The framework completely resolves recurring proof-engineering difficulties: context composition, binder-safe specialization, bounded quantifier reflection, least bounded naming, cyclic finite demand closure, finite relational path selection, and certificate scoping.  It also gives principled reformulations of several overstrong requests.  A represented nonzero real is not invertible without apartness; colliding roots do not have continuous ordered labels; metastability is not a Cauchy modulus; and a cardinality bound is not a height cutoff.
+
+The framework deliberately does not manufacture deep mathematical producer data.  General effective height bounds, zero-free regions, exceptional-zero constants, finite covers, branch gaps, or convergence moduli remain theorem-specific residuals until they are proved.  Once supplied, their finite verification and use are generic.
+
+\subsection{Verification labels used in this report}
+
+Four statuses are kept separate throughout:
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Label & Meaning \\
+\midrule
+\checked & The cited declaration is already checked in the inspected ProveIt repository. \\
+\human & The present report supplies a complete mathematical argument, but not a new kernel check. \\
+\blueprint & The archive supplies definitions and a dependency-ordered Lean target; it was not elaborated here. \\
+Executable reference & Python code exactly implements a finite algorithm and its tests pass; it is not an iPRA proof. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The archive makes no claim stronger than these labels permit.

@@ -1,0 +1,75 @@
+\section{Resolution of recurring difficulties}
+
+The repository's reports identify both proof-engineering gaps and genuine mathematical barriers.  SCOPE resolves the former and makes the latter explicit.
+
+\small
+\begin{longtable}{@{}p{0.22\textwidth}p{0.18\textwidth}p{0.50\textwidth}@{}}
+\toprule
+Difficulty & Status & Resolution or exact boundary \\
+\midrule
+\endfirsthead
+\toprule
+Difficulty & Status & Resolution or exact boundary \\
+\midrule
+\endhead
+Semantic Lean theorem mistaken for an iPRA proof & Resolved & Public endpoints are values of \(\Prf\,\PRAAx\).  Every graph node carries an object derivation builder; Python and semantic Lean code are discovery or test layers only. \\
+
+Quantifiers occur in an induction invariant & Resolved & Compile bounded properties to characteristic terms.  Induct on equations about bits, traces, ranks, and accumulators.  Reflect back before or after induction. \\
+
+Nested bounded quantifier alternation & Resolved & Fixed bounded formulas have reflected bits.  When choices are needed, finite strategy and counterstrategy tables are checked by bounded games. \\
+
+An all-precision invariant is demanded in one loop & Resolved by reformulation & Fix the terminal query first, close finite backward demands, and run one forward trace.  Do not quantify over all future precisions inside the induction matrix. \\
+
+Cyclic precision dependencies & Resolved & Iterate the monotone inflationary demand map on an explicitly capped product.  Rank gives a fixed point by total capacity and proves leastness. \\
+
+Least local witness is a dead end & Resolved & Compute backward viability before selecting the least forward continuation. \\
+
+Proof-local certificate leaks into a public theorem & Resolved & Apply the five-mode escape analysis: private, existential, stable, canonical, or residual. \\
+
+Nonunique approximants are treated as one coherent infinite name & Conditional & Keep a relational finite output.  A coherent name requires a total extension rule with a summable motion budget, or another explicit shrinking-diameter construction. \\
+
+Exact ordering of colliding roots or eigenvectors & Barrier with correct replacement & Export an unordered multiset, symmetric invariant, projector, or finite relation.  Exact labels require a separation gap. \\
+
+Division by a merely nonzero represented real & Barrier with correct replacement & Require an apartness witness \(|x|\ge\delta>0\).  Negative nonzeroness alone gives no modulus for inversion. \\
+
+Compactness invoked without finite data & Conditional & Supply a finite net or cover, a coverage verifier, and a modulus transferring local checks to the domain. \\
+
+Metastability is treated as a convergence rate & Barrier & Preserve the finite-window theorem.  A Cauchy name needs a separate tail modulus or stronger structure. \\
+
+Cardinality bound is used as a search cutoff & Barrier & A cardinality bound gives no height.  Require a height cutoff or complete finite list; these are constructively interconvertible for decidable codes. \\
+
+Qualitative uniqueness is treated as computable selection & Barrier & Require quantitative determinacy: isolation, contraction, strict convexity with a modulus, or a finite gap. \\
+
+A classical proof is silently imported & Conditional & Use a finite checkable certificate, or formalize a negative translation for the precise fragment and stable conclusion.  Classical discovery does not itself produce an object proof. \\
+
+Open hypotheses are lost in backend translation & Resolved in the current repository & Use the checked open and scoped \code{IPRABridge} transports.  Develop reusable results in ordinary \(\Prf\,\PRAAx\). \\
+
+Arity-indexed abstraction of open terms & Resolved in the current repository & Reuse \code{PTm.toPR} and \code{toPR_eq}; use \code{recDef} for parameterized folds. \\
+
+A universal evaluator for arbitrary PR codes is requested & Rejected as unnecessary & Specialize every fixed program in Lean's metatheory.  SCOPE is a schema, not an internal universal interpreter. \\
+
+Deep effective Diophantine finiteness & Not generically solved & The finite enumeration/checker is generic once a height producer exists.  The effective height theorem remains the residual. \\
+
+Analytic constants or zero-free regions are missing & Not generically solved & The finite analytic trace accepts explicit constants and moduli.  Producing them is theorem-specific mathematics. \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Classical-to-intuitionistic transfer}
+
+Some classical proofs can be transferred by negative translation, especially when their atoms are decidable and their conclusions are stable.  This is useful but should not be overgeneralized.
+
+For a fixed finite bounded argument, direct Boolean reflection is usually simpler: it supplies positive witnesses, least counterexamples, and executable verifiers.  A negative translation is better suited to an already formalized proof in a compatible classical arithmetic where the translated axioms and induction rules have been checked.  SCOPE treats this as a separate compiler path with its own correctness theorem.
+
+\subsection{Why the barriers are mathematically informative}
+
+The barriers identify the missing modulus or producer that a future proof must deliver.  They are not reasons to abandon the theorem.  For example:
+
+\begin{itemize}
+\item replacing root labels by multisets may reveal the invariant actually used downstream;
+\item isolating an apartness margin may turn a qualitative proof into a quantitative algorithm;
+\item asking for a height cutoff exposes the exact effective content of a finiteness theorem;
+\item preserving metastability may be enough for the intended finite computation.
+\end{itemize}
+
+A framework is successful when failed compilation produces a mathematically precise missing contract rather than an opaque proof-assistant obstacle.

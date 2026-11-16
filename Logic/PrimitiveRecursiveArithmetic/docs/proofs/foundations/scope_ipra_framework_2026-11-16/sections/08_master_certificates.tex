@@ -1,0 +1,134 @@
+\section{Master certificates, canonical naming, and finite strategies}
+
+\subsection{Packing finite evidence into one code}
+
+A fixed proof graph may need many finite pieces of evidence: table rows, path nodes, local witnesses, branch flags, and trace annotations.  Suppose component \(j\) has range \(0\le c_j<R_j(q)\).  Define the mixed-radix code
+\[
+  c=c_0+R_0c_1+R_0R_1c_2+\cdots.
+\]
+The total capacity is \(C(q)=\prod_jR_j(q)\).  Quotient and remainder recover every digit.
+
+\begin{lemma}[Mixed-radix correctness]
+For fixed finitely many radices \(R_j\ge1\), encoding maps the product of digit ranges injectively into \([0,C)\), and decoding is its inverse.  All functions and bounds are primitive recursive, and their equations are provable in iPRA.
+\end{lemma}
+\begin{proof}
+The arithmetic proof is the standard repeated quotient--remainder argument.  For one radix, \(c=R q+r\) with \(r<R\) has unique \(q,r\).  Iterate this decomposition through the fixed list of radices.  The checked division theorem supplies existence and uniqueness at every step; finite induction over the fixed number of components can be expanded at the meta-level or represented by a bounded trace.
+\end{proof}
+
+A \emph{master certificate} is such a code together with a verifier bit \(V(q,c)\).  The verifier decodes only the finite fields required by the graph and checks local relations.  There is no semantic need for the certificate format to mirror the source mathematics exactly; its purpose is to support a small object verifier.
+
+\subsection{One verifier, many local contracts}
+
+Let \(V_j(q,c)\) be the bit for the \(j\)-th local contract.  Define
+\[
+  V(q,c)=\bigwedge_j V_j(q,c)
+\]
+by a fixed finite conjunction or a Boolean fold.  Bounded reflection proves that \(V=1\) is equivalent to every checked local condition.  The extractor can then use the decoded fields under one certificate scope.
+
+Packing evidence has three benefits:
+
+\begin{enumerate}
+\item one existential producer formula replaces a long nest of dependent witnesses;
+\item one least bounded search can canonically name the entire evidence package if necessary;
+\item the final theorem can keep the certificate private and expose only stable observations.
+\end{enumerate}
+
+It does not force canonical naming.  The default remains private existential elimination.
+
+\subsection{Least accepted master certificate}
+
+\begin{theorem}[Canonical master certificate]
+Let \(V(q,c)\) be a reflected validity bit and \(C(q)\) an explicit bound.  There is a primitive-recursive term \(\mu(q)\) such that iPRA proves:
+\[
+\begin{aligned}
+&\mu\le C,\\
+&\mu<C\to V(q,\mu)=1,\\
+&j<\mu\to V(q,j)=0,\\
+&\bigl(\exists c<C\;V(q,c)=1\bigr)\to \mu<C,\\
+&\neg\exists c<C\;V(q,c)=1\to\mu=C.
+\end{aligned}
+\]
+\end{theorem}
+\begin{proof}
+Apply the checked least-zero search to \(1\mathbin{\dot-}V(q,c)\).  The search term uses \(C\) as its sentinel.  Soundness, minimality, foundness, and the sentinel conclusion are exactly the checked search specification translated through Booleanity of \(V\).
+\end{proof}
+
+This theorem resolves reproducibility requirements without adding a global choice principle.  It should be used only when the public theorem needs the code or data derived from a canonical code.  If the goal is certificate-independent, private sealing is smaller and mathematically cleaner.
+
+\subsection{Finite bounded games}
+
+Nested bounded quantifiers can be evaluated as a finite game.  Consider a fixed prefix
+\[
+  Q_0x_0<B_0\;Q_1x_1<B_1(x_0)\;\cdots\;
+  Q_{d-1}x_{d-1}<B_{d-1}(\vec x_{<d-1})\;R(\vec x),
+\]
+where each \(Q_i\) is \(\exists\) or \(\forall\), and \(R\) is decidable.  At existential nodes the Proponent chooses a child; at universal nodes the Opponent chooses.
+
+Define the winning bit backward from the leaves:
+\[
+\begin{aligned}
+W_d(\vec x)&=\bit_R(\vec x),\\
+W_i(\vec x_{<i})&=
+\begin{cases}
+\mathsf{Any}_{x_i<B_i} W_{i+1}(\vec x_{\le i}),&Q_i=\exists,\\
+\mathsf{All}_{x_i<B_i} W_{i+1}(\vec x_{\le i}),&Q_i=\forall.
+\end{cases}
+\end{aligned}
+\]
+Because the prefix depth is fixed, these are concrete primitive-recursive terms.
+
+\begin{definition}[Finite strategy certificate]
+A Proponent strategy records one child at each reachable existential history.  An Opponent counterstrategy records one child at each reachable universal history.  A table is encoded in mixed radix, and a verifier checks bounds, table lookup, and every terminal play induced by the opposing choices.
+\end{definition}
+
+\begin{theorem}[Finite strategy dichotomy]
+\label{thm:finite-strategy}
+For every fixed bounded game, iPRA proves a decidable dichotomy:
+
+\begin{enumerate}
+\item if \(W_0=1\), there exists a bounded Proponent strategy whose verifier is one, and every play consistent with it ends at a true leaf;
+\item if \(W_0=0\), there exists a bounded Opponent counterstrategy whose verifier is one, and every play consistent with it ends at a false leaf.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Induct backward on the fixed game depth in the metatheory while constructing object derivations.
+
+At a leaf, the reflected matrix bit decides which trivial certificate is valid.  At an existential node with \(W_i=1\), finite existential reflection supplies the least winning child.  Store that child and recursively store the winning strategy below it.  If \(W_i=0\), every child has losing bit zero; collect the recursively constructed counterstrategies for all children in one bounded table.
+
+At a universal node the roles reverse.  If \(W_i=1\), every child is winning, so collect a winning strategy for each child.  If \(W_i=0\), finite universal reflection supplies a least losing child; store it and its counterstrategy.
+
+All collections are finite and bounded.  Soundness of a strategy verifier is proved by forward induction on the fixed remaining depth, reading the appropriate table row at each history.  Completeness follows from the backward construction.  The two alternatives are decidable because \(W_0\) is a bit.
+\end{proof}
+
+For the common shape \(\forall x<B\,\exists y<C(x)\,R(x,y)\), a winning strategy is simply a finite table \(\sigma(x)\).  The reference implementation constructs the least valid \(y\) for each \(x\) and verifies the table.
+
+\subsection{Strategies versus formulas}
+
+The characteristic bit of \cref{thm:bounded-reflection} is enough to prove a bounded formula.  A strategy certificate is useful when downstream computation needs the choices or when a compact externally generated certificate should be checked.  SCOPE therefore treats strategy extraction as an optional strengthening, not as the definition of bounded truth.
+
+\subsection{Producer boundaries}
+
+A master verifier can be fully generic while its producer is difficult.  For example:
+
+\begin{itemize}
+\item a SAT solver may produce a finite combinatorial certificate;
+\item a computer algebra system may produce a factorization or Nullstellensatz witness;
+\item an analytic argument may produce a rational contour bound;
+\item a Diophantine theorem may produce a height cutoff.
+\end{itemize}
+
+The SCOPE endpoint may retain \(\exists c<C\;V(q,c)=1\) as a residual.  This is often the correct modular theorem: it proves that any valid finite producer suffices, without claiming a generic method for finding one.
+
+\subsection{Proof-size considerations}
+
+Expanding a large master verifier into propositional syntax can create huge proof terms.  The preferred implementation shares fixed reflected lemmas:
+
+\begin{itemize}
+\item one theorem for each Boolean operation;
+\item one theorem for digit extraction and table lookup;
+\item one trace theorem parameterized by local step derivations;
+\item one least-search adapter;
+\item one certificate-sealing theorem.
+\end{itemize}
+
+A future compact certificate calculus is acceptable only if its checker soundness produces an ordinary \(\Prf\,\PRAAx\) derivation.  Reducing serialization size must not enlarge the trusted logical kernel.

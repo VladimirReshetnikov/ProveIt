@@ -1,0 +1,102 @@
+\section{Capped cyclic demand closure}
+\label{sec:demand-closure}
+
+Many quantitative proofs have backward dependencies.  An output precision asks one input for more precision; that input's construction asks another component for more; and a cycle may return to the first component.  Running such a cycle dynamically obscures the induction bound.  SCOPE closes all demands first in a finite lattice.
+
+\subsection{The finite demand lattice}
+
+Fix \(k\) coordinates and caps \(C_0,\ldots,C_{k-1}\).  Let
+\[
+  D=\prod_{i<k}\{0,1,\ldots,C_i\}
+\]
+with coordinatewise order.  Let \(F:D\to D\) be monotone.  Define the inflationary transformer
+\[
+  H(d)=d\vee F(d),
+\]
+where the join is coordinatewise maximum.  Starting from \(d_0=0\), put \(d_{t+1}=H(d_t)\).
+
+\begin{lemma}[Monotone bounded iteration]
+The sequence \((d_t)\) is nondecreasing and remains in \(D\).
+\end{lemma}
+\begin{proof}
+By definition, \(d_t\le d_t\vee F(d_t)=d_{t+1}\).  Both operands of the join are in \(D\), so each coordinate remains below its cap.  Induction on \(t\) proves the claim.
+\end{proof}
+
+Define
+\[
+  \rank(d)=\sum_{i<k}d_i,
+  \qquad
+  K=\sum_{i<k}C_i.
+\]
+Then \(0\le\rank(d)\le K\).
+
+\begin{lemma}[Strict rank increase]
+If \(H(d)\ne d\), then \(\rank(H(d))\ge\rank(d)+1\).
+\end{lemma}
+\begin{proof}
+Since \(d\le H(d)\) and the vectors are unequal, at least one coordinate strictly increases.  Natural coordinates are integral, so that coordinate increases by at least one.  Every other coordinate is nondecreasing.  Summing gives the inequality.
+\end{proof}
+
+\begin{theorem}[Finite cyclic closure]
+\label{thm:demand-closure}
+The iterate \(d_K\) is a fixed point of \(H\).  It is the least prefixed point of \(F\), equivalently the least fixed point of \(H\):
+\[
+ H(d_K)=d_K,
+ \qquad
+ F(e)\le e\Longrightarrow d_K\le e.
+\]
+\end{theorem}
+\begin{proof}
+Suppose \(d_K\) were not fixed.  Once an iterate is fixed, every later iterate is the same, so none of \(d_0,\ldots,d_K\) could have been fixed.  By strict rank increase at each of the \(K+1\) transitions from \(d_0\) through \(d_{K+1}\), and \(\rank(d_0)=0\), we would have \(\rank(d_{K+1})\ge K+1\).  This contradicts the bound \(\rank(d_{K+1})\le K\).  Hence \(d_K\) is fixed.
+
+For leastness, let \(e\) satisfy \(F(e)\le e\).  Then \(H(e)=e\).  We prove \(d_t\le e\) by induction.  It holds at zero.  If \(d_t\le e\), monotonicity of \(F\) gives \(F(d_t)\le F(e)\le e\), and also \(d_t\le e\); therefore their join \(d_{t+1}\le e\).  In particular \(d_K\le e\).
+\end{proof}
+
+\subsection{Query-dependent caps}
+
+The caps may depend on the finite query \(q\).  Then
+\[
+  K(q)=\sum_{i<k}C_i(q)
+\]
+is primitive recursive, and the same proof is uniform in \(q\).  The dimension \(k\) is fixed by the theorem graph; it is not an object-level unbounded parameter unless a separate coding theorem is supplied.
+
+The cap is part of the contract.  A demand transformer without a cap does not automatically have a primitive-recursive fixed-point modulus.  In applications the cap comes from the terminal precision, a maximum finite search height, an explicit degree bound, or a finite resource policy.
+
+\subsection{Object-theory arithmetization}
+
+For a fixed \(k\), encode vectors by mixed radix with bases \(C_i+1\).  Digit extraction is implemented by quotient and remainder.  The checked division library supplies the defining equations and uniqueness properties.  Alternatively, for small \(k\), nested pairing may be simpler.
+
+The object proof needs the following reflected terms:
+
+\begin{itemize}
+\item \(\mathsf{digit}_i(d,q)\);
+\item the code of \(F(d,q)\) and \(H(d,q)\);
+\item \(\rank(d,q)\) and \(K(q)\);
+\item a fixed-point bit \(\mathsf{eqb}(H(d),d)\);
+\item coordinate-bound and monotonicity bits.
+\end{itemize}
+
+The central induction invariant is quantifier-free.  It states that the trace code is the prescribed iterate, each digit is bounded, rank is bounded, and a ``seen fixed point'' bit is persistent.  Strict rank increase is a local arithmetic implication derived from reflected coordinate comparison.  The contradiction after \(K+1\) nonfixed steps is an inequality of natural terms.
+
+Thus the human proof above translates directly to \code{IPRA.ind}; no induction over a completed lattice or an object-language universal quantifier is required.
+
+\subsection{Acyclic and cyclic demand compilation}
+
+For an acyclic graph, demands are propagated once in reverse topological order.  Each node has a primitive-recursive transformer from output requests to input requests.  Taking coordinatewise maxima combines multiple consumers.
+
+For a cyclic strongly connected component, collect its local transformers into \(F\), apply \cref{thm:demand-closure}, and replace every internal demand by the resulting fixed vector.  Collapse the component to one acyclic supernode.  Repeating this for all strongly connected components yields a global finite schedule.
+
+\subsection{Correctness of reverse demand}
+
+A demand transformer is meaningful only with a local theorem of the form:
+\begin{quote}
+If every input is valid at the demanded resources computed from output request \(p\), then the node's output is valid at \(p\).
+\end{quote}
+
+At a fixed point, every cyclic edge receives at least the resource requested by its consumer.  Compose the local theorems around the component, then run the forward trace once at the closed resources.  Demand closure therefore separates termination/scheduling from numerical correctness.
+
+\subsection{Why monotonicity is essential}
+
+If a transformer is not monotone, iteration from zero need not compute a least solution, and increasing one resource could perversely reduce another requirement.  Such a contract is unsuitable for modular quantitative reasoning.  The remedy is usually to replace exact demands by monotone upper envelopes.  This may over-approximate resources, but the proof remains finite and compositional.
+
+The executable reference implementation checks monotonicity exhaustively for small examples and records every iterate.  In Lean, monotonicity is an object derivation or a host theorem used to construct the object derivation for the fixed transformer.

@@ -5,7 +5,7 @@ gives the target interface for future verified
 derivations of these delivered proofs.
 
 This directory holds the research packets that were delivered as archives from 14 to
-16 November 2026: 33 to `docs/drafts`, and 77 to
+16 November 2026: 33 to `docs/drafts`, and 78 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -70,7 +70,7 @@ manifests, ignored build logs and `build/` files.
 
 ## Packets
 
-The 110 archives hold 3,559 members: 3,345 placed here, 119 ignored, 48 checksum manifests that are not kept, 21 in bundled copies of
+The 111 archives hold 3,602 members: 3,388 placed here, 119 ignored, 48 checksum manifests that are not kept, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -202,6 +202,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`ipra_uniformity_framework_2026-11-15`](foundations/ipra_uniformity_framework_2026-11-15/) | *not committed* 2026-11-16 | `ipra_uniformity_framework` | Uniformity gates: conditional finitary framework lemmas, obstructions to uniformity and applications to gaps in the repository's packets, with a host Lean seed for finite list filtering and a roadmap for internal `Prf PRAAx` proofs. It claims no general Faltings, Siegel or prime-asymptotic result. | 6 | 0 |
 | [`ocipra_framework_2026-11-15`](foundations/ocipra_framework_2026-11-15/) | `7c91b67347` 2026-11-15 | `ocipra_framework_2026-11-15` | Observation-contract internalisation (OCiPRA): one statement calculus with four theorem classes (deterministic contracts, bounded relational contracts, branch-independent or diameter-stable observables, and conditional theorems with explicit producer data), with proofs of bounded-formula Booleanisation, least bounded search, contract-DAG composition, clocked trace reflection, demand closure and backward viability. Its Lean outline has no `sorry` and was not compiled. | 43 | 6 |
 | [`pcfm_ipra_framework_2026-11-16`](foundations/pcfm_ipra_framework_2026-11-16/) | *not committed* 2026-11-16 | `pcfm_ipra_framework_2026-11-16` | Proof-carrying finitary modules, a shallow framework in which a module stores a literal object-theory proof of its output from its requirements: specialization is substitution, composition and discharge are simultaneous cut, loops are compiled through a quantifier-free invariant, and missing moduli, height bounds, separation gaps and finite-cover margins stay explicit residual formulas; with Boolean and trace reflection, graph compilation, relational stability and an open bridge. A theorem-specific assembler returns derivations directly, with no universal evaluator. It comes with exact reference algorithms and regression tests. Its Lean files are skeletons with commented target theorems that were not compiled; no kernel-checked derivation is claimed. | 46 | 3 |
+| [`scope_ipra_framework_2026-11-16`](foundations/scope_ipra_framework_2026-11-16/) | *not committed* 2026-11-16 | `scope_ipra_framework_2026-11-16` | SCOPE-iPRA, scoped certificates with observational projection and explicit residuals: a finite witness is a scoped proof resource that may leave its scope in only five ways (private existential elimination, an outer existential output, a certificate-independent observation, a canonical name by least bounded search, or an explicit residual hypothesis for its missing producer), which prevents hidden choice and separates generic finite verification from theorem-specific producers such as height bounds, analytic constants, finite covers and separation margins. It comes with exact reference algorithms and a worked certificate. Its Lean files are a structural candidate that was not compiled and blueprints; no kernel-checked derivation is claimed. | 43 | 0 |
 | [`scoped_certificate_realization_ipra_2026-11-16`](foundations/scoped_certificate_realization_ipra_2026-11-16/) | `8b808bf99a` 2026-11-16 | `scoped_certificate_realization_ipra_2026-11-16` | Scoped certificate realization, with certificate escape analysis: a proof-local certificate is eliminated by ordinary existential elimination, only certificate-independent observations escape from noncanonical data, and bounded least search is used only when a certificate or canonical code must be named in the public result. It refines the earlier finite-query, CBIP, observation-graph and native-clause frameworks, with generic composition, trace, strategy, observer and boundary theorems, exact reference programs and a metadata schema. Its Lean files are a structural-kernel candidate that was not elaborated and a blueprint; no kernel-checked derivation is claimed. | 51 | 2 |
 
 ### Geometry

@@ -1,0 +1,88 @@
+\section{Relational witnesses and backward viability}
+\label{sec:viability}
+
+\subsection{Why local least choice is insufficient}
+
+Suppose a proof proceeds through finite levels of approximants.  At level \(i\) there are finitely many locally valid candidates, and compatibility constrains consecutive levels.  Choosing the least locally valid candidate can fail even when a global path exists: the least candidate may have no continuation.
+
+This is a constructive issue, not merely an efficiency issue.  A local selector does not prove the existence of a compatible future.  SCOPE therefore computes viability backward before selecting forward.
+
+\subsection{Finite relational system}
+
+Fix a horizon \(h\).  At level \(i\le h\), candidates are codes \(a<M_i(q)\).  Let \(L_i(q,a)\) be the local validity bit, and for \(i<h\) let \(E_i(q,a,b)\) be the compatibility bit from level \(i\) to \(i+1\).
+
+Define viability bits backward:
+\[
+\begin{aligned}
+V_h(a)&=L_h(a),\\
+V_i(a)&=L_i(a)\wedge_b
+  \mathsf{Any}_{b<M_{i+1}}\bigl(V_{i+1}(b)\wedge_b E_i(a,b)\bigr).
+\end{aligned}
+\]
+All parameters and bounds are primitive recursive.  Since \(h\) is a finite query or a primitive-recursive horizon, the table can be computed by a bounded trace.
+
+\begin{theorem}[Finite path equivalence]
+\label{thm:viable-path}
+There exists a locally valid compatible path \(a_0,\ldots,a_h\) exactly when
+\[
+  \exists a_0<M_0\;V_0(a_0)=1.
+\]
+More generally, \(V_i(a)=1\) exactly when \(a\) extends to a valid compatible suffix through level \(h\).
+\end{theorem}
+\begin{proof}
+Use backward induction on \(h-i\).
+
+At the final level, \(V_h(a)=L_h(a)\), so the claim is immediate.  Assume the claim for \(i+1\).  If \(V_i(a)=1\), Boolean reflection gives \(L_i(a)=1\) and a candidate \(b<M_{i+1}\) with \(V_{i+1}(b)=1\) and \(E_i(a,b)=1\).  By the induction hypothesis, \(b\) has a valid suffix; prefixing \(a\) gives a suffix from level \(i\).
+
+Conversely, suppose \(a\) begins a valid suffix.  Let \(b\) be its next element.  Local validity and compatibility hold, and the remaining tail makes \(V_{i+1}(b)=1\) by the induction hypothesis.  Finite existential reflection therefore makes the second conjunct of \(V_i(a)\) equal one, so \(V_i(a)=1\).
+\end{proof}
+
+\subsection{Least viable path}
+
+\begin{theorem}[Canonical viable path]
+If a compatible path exists, there is a primitive-recursive lexicographically least viable path.  It is obtained by choosing the least \(a_0\) with \(V_0(a_0)=1\), then at each level choosing the least compatible \(a_{i+1}\) with \(V_{i+1}(a_{i+1})=1\).
+\end{theorem}
+\begin{proof}
+The initial choice exists by \cref{thm:viable-path} and is made by bounded least search.  If \(a_i\) is viable, the defining existential in \(V_i(a_i)\) supplies at least one compatible viable successor; bounded least search names the least one.  Induction on the finite horizon constructs the path.  Soundness follows from the stored validity and compatibility bits.  Lexicographic minimality follows at the first position where another path differs: the algorithm chose the least viable extension at that prefix.
+\end{proof}
+
+The word \emph{viable} is essential.  The least merely local successor need not be extendable.
+
+\subsection{Object-theory compilation}
+
+There are two useful implementations.
+
+\paragraph{Explicit viability table.}
+Encode all bits \(V_i(a)\) in one master certificate and verify the backward recurrence.  This is attractive when an external solver supplies the table.
+
+\paragraph{Computed viability trace.}
+Run a primitive-recursive backward dynamic program whose state contains the current level and next-level bit table.  A Boolean fold computes each row.  The invariant states that the stored suffix table equals the recurrence and that every entry is a bit.  The matrix is quantifier-free because row correctness is represented by a fold equation.
+
+After the table is available, a forward trace performs least viable selection.  The terminal extractor proves path validity.  Every step is an instance of bounded reflection, least search, or fixed-trace reflection.
+
+\subsection{Relational outputs without path selection}
+
+Not every theorem needs a path.  A consumer may depend only on a stable property shared by every viable endpoint.  Then the viability table can remain private and SCOPE exports the stable observation.  This is often preferable near branching singularities.
+
+Alternatively, the public theorem may state the existence of a compatible path.  Inside the private certificate scope, introduce the existentially quantified path code and then eliminate the certificate.  Again no global selector is required.
+
+\subsection{Changing horizons}
+
+For each finite horizon \(h\), the least viable path may begin differently.  It is generally invalid to identify these finite choices as prefixes of one infinite branch.  Two quantitative conditions repair the situation:
+
+\begin{enumerate}
+\item a diameter bound saying all viable observations at requested precision \(p\) lie within \(\delta(p)\), with \(\delta(p)\to0\) at a primitive-recursive rate;
+\item a motion budget bounding the distance between selected observations when the horizon or precision changes, with a primitive-recursive summable tail.
+\end{enumerate}
+
+Under these conditions, the selected finite observations form a regular Cauchy name even if the underlying certificate path is not literally coherent.  The construction is developed in \cref{sec:quantitative-presentations}.  Without such data, the correct result remains a family of finite-horizon relational theorems.
+
+\subsection{Worked dead-end pattern}
+
+The reference example has levels
+\[
+  A_0=\{0,1\},\quad A_1=\{0,1\},\quad A_2=\{0\}.
+\]
+Edges are \(0\to0\) and \(1\to1\) from level zero, but only \(1\to0\) from level one.  Candidate \(0\) is locally valid and least at level zero, yet it is a dead end.  Backward viability marks only \(1\) viable at levels zero and one, producing the path \((1,1,0)\).
+
+This tiny example is an acceptance test for the Lean implementation: any purported generic selector that returns \(0\) before computing viability is wrong.

@@ -1,0 +1,99 @@
+\section{Domain-specific embedding blueprints}
+
+The same SCOPE kernel supports different representations.  This section records what the generic framework supplies and what remains domain-specific.
+
+\subsection{Finite algebra and polynomial computation}
+
+Polynomial identities over integers or rationals reduce to finite coefficient equations.  The existing quotient-ring and tactic support can prove many such identities directly in the object theory.
+
+Factorizations, resultants, determinants, and finite Groebner-style reductions are natural certificate nodes.  A certificate contains coefficient arrays and reduction multipliers; the verifier recomputes the identity.  A Nullstellensatz certificate proves infeasibility by checking a finite polynomial combination equal to one.
+
+Roots require care.  Stable public outputs include:
+
+\begin{itemize}
+\item isolating intervals with sign-change or derivative certificates;
+\item unordered lists or multisets of intervals;
+\item symmetric functions of roots;
+\item a labeled root only under a separation gap.
+\end{itemize}
+
+A complete list of rational or integral solutions additionally needs a height bound.  The finite enumeration thereafter is an instance of \cref{thm:height-list}.
+
+\subsection{Analysis and special functions}
+
+A special function should be presented by one or more certified finite algorithms: a convergent series with tail bound, a continued fraction with error estimate, a differential equation integrator with local truncation bound, or a monotone root bracket.
+
+The SCOPE query records the point, branch region, and output precision.  Reverse demand selects input precision, truncation length, mesh, and internal arithmetic bounds.  Branch-sensitive algorithms carry explicit domain and gap guards.  Overlapping algorithms are combined by a finite cover plus stable-observer agreement on overlaps.
+
+Derivative and integral statements are quantitative.  For example, a differentiability contract supplies a modulus bounding the remainder
+\[
+  |f(x+h)-f(x)-h f'(x)|\le |h|\,\omega(|h|),
+\]
+with a primitive-recursive \(\omega\).  An integral contract supplies finite sums and a mesh modulus.  Qualitative phrases such as ``sufficiently small'' or ``uniformly on compacta'' must be replaced by explicit producers.
+
+\subsection{Geometry and tilings}
+
+Finite Euclidean geometry can use integer or rational coordinates, determinant signs, squared distances, and incidence bits.  Degenerate cases are handled relationally rather than by unstable orientation choices.
+
+For tilings and local configurations, a finite patch is a bounded code.  Local matching, coverage of a requested ball, and finite-torus periodicity are decidable verifiers.  Aperiodicity is naturally expressed as rejection of every bounded period code, one finite query at a time.  Coherent patch growth requires compatibility or substitution certificates; a global infinite tiling object need not be internalized if the theorem asks for arbitrarily large patches.
+
+Finite complexes and meshes fit the same pattern.  Homology matrices, incidence relations, and chain certificates are finite algebra.  Topological conclusions requiring compactness or local-to-global passage need a finite cover and explicit overlap data.
+
+\subsection{Probability and expectation}
+
+A finite distribution is a rational weight table with nonnegative entries summing to one.  Expectation, variance, and finite moments are bounded sums.  Conditional expectation on a finite partition is a table computation with guards for zero denominators.
+
+For infinite distributions, a query uses a truncation plus a tail-mass bound.  Concentration inequalities become finite algebraic estimates once moment or exponential-moment producers are supplied.  Almost-sure or measure-theoretic statements should be reformulated as quantitative bounds on finite bad-event probabilities unless a separate constructive measure presentation is formalized.
+
+Randomized algorithms can be treated by finite seed spaces at a query.  A strategy certificate may encode a good seed, while expectation or success probability is a finite rational sum.  Derandomization by least good seed is legitimate only with an explicit finite seed bound and a proof that a good seed exists.
+
+\subsection{Elementary and analytic number theory}
+
+Divisibility, congruences, bounded prime searches, sums, products, and finite combinatorial identities are already close to the checked arithmetic core.  The framework mainly contributes modular certificate composition and finite strategy extraction.
+
+Analytic number theory separates finite identities from analytic producers.  A prime-counting estimate at \(x\) may use a finite combinatorial identity plus explicit remainder constants.  Zero-free regions, exceptional-zero exclusions, and effective constants remain residuals until proved in iPRA.  SCOPE prevents a qualitative classical theorem from being cited as though it supplied those constants.
+
+\subsection{Diophantine geometry}
+
+For a fixed height \(H\), rational or integral points are finitely enumerable and their defining equations are decidable.  Descent certificates, local solubility tables, and finite coverings can be verified.  The generic endpoint is:
+\[
+  \mathsf{CompleteHeightBound}(H),\mathsf{CoverData}(c),\Gamma
+  \vdash_{\PRAAx}\mathsf{CompletePointList}(L).
+\]
+
+The hard theorem is typically the uniform production of \(H\) or the complete covering data.  SCOPE does not hide this boundary.  Special families with explicit descent or Runge bounds can close it; general Faltings-, Siegel-, or Mordell--Weil-type producers remain separate research programs.
+
+\subsection{Combinatorics and finite structures}
+
+Finite structures are ideal SCOPE objects.  A graph, poset, matroid, finite category, or automaton is a bounded relation table.  Isomorphisms, colorings, matchings, flows, and decompositions have finite certificate verifiers.  Extremal statements can be represented as bounded games or SAT-style unsatisfiability certificates.
+
+Asymptotic combinatorics needs explicit thresholds and error functions.  A proof that an inequality eventually holds is useful to iPRA only when the threshold is primitive recursive or retained as a residual.
+
+\subsection{Finite category and local-to-global methods}
+
+A fixed finite category is encoded by object and morphism bounds, source/target maps, identity codes, and a composition table with associativity certificates.  Functors, natural transformations, finite limits, and colimits become finite table verifiers.
+
+For local-to-global arguments, one should ask what observation is actually needed.  A full sheaf object may be unnecessary.  A finite cover, overlap compatibility, and spanning-tree descent can establish a root observation or an existential global representative.  Non-tree cycle conditions are additional finite certificate fields.  Exact gluing without canonical representatives should remain existential or quotient-valued.
+
+\subsection{Computability and machine verification}
+
+A finite Turing machine, register machine, or proof checker is a fixed transition table.  Bounded execution is a trace-reflection theorem.  Nonhalting equivalences to consistency statements require a separate metamathematical reduction, but the literal machine transition verification is finite.
+
+When compressing a machine or proof checker, SCOPE recommends keeping the logical endpoint in ordinary iPRA and treating the low-level implementation as a certificate-producing transducer.  State-sharing tricks should be accompanied by a local simulation invariant and a checked translation of traces.
+
+\subsection{A domain checklist}
+
+For each application, answer:
+
+\begin{enumerate}
+\item What is the finite query?
+\item What codes the input and output?
+\item Which predicates are reflected bits?
+\item Which loops have QF invariants?
+\item What are the resource demands and caps?
+\item Are witnesses private, existential, stable, canonical, or residual?
+\item What gap, modulus, cover, or height data is genuinely needed?
+\item What exact \(\Prf\,\PRAAx\) sequent is the endpoint?
+\end{enumerate}
+
+A packet that answers these questions has a clear path to complete formalization.
