@@ -1,0 +1,44 @@
+{
+  "name": "rotation-axis-output-classes",
+  "permanent_context": ["ValidRepresentedRotation(R)"],
+  "target": "gap-conditional-exact-axis",
+  "nodes": [
+    {
+      "name": "rotation-input",
+      "kind": "input",
+      "statement": "R is a valid represented proper rotation",
+      "deps": [],
+      "evidence_kind": "none"
+    },
+    {
+      "name": "axis-cloud",
+      "kind": "local",
+      "statement": "at precision q produce a nonempty finite cloud of rational axis-angle candidates",
+      "deps": ["rotation-input"],
+      "evidence_kind": "relational"
+    },
+    {
+      "name": "rotation-observation",
+      "kind": "local",
+      "statement": "all candidates induce rotations within the requested matrix error",
+      "deps": ["axis-cloud"],
+      "evidence_kind": "observation"
+    },
+    {
+      "name": "separation-gap",
+      "kind": "boundary",
+      "statement": "a positive gap separates R from the identity and singular branch cases",
+      "deps": [],
+      "evidence_kind": "boundary"
+    },
+    {
+      "name": "gap-conditional-exact-axis",
+      "kind": "final",
+      "statement": "the cloud collapses to one exact represented unit axis",
+      "deps": ["axis-cloud", "separation-gap"],
+      "evidence_kind": "observation"
+    }
+  ],
+  "expected_residual": ["separation-gap"],
+  "closed_alternative_target": "rotation-observation"
+}

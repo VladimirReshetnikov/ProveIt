@@ -1,0 +1,230 @@
+\section{Lean formalization architecture}
+
+\subsection{Design goal}
+
+The formalization should make it difficult to confuse three kinds of theorem:
+
+\begin{enumerate}
+\item a host theorem about an executable function;
+\item a theorem that a finite certificate verifier is correct;
+\item an embedded derivation in \iPRA.
+\end{enumerate}
+
+All three are useful, but the public endpoint for an iPRA application must have type \code{Prf PRAAx}.  The architecture below organizes modules so that the transition between layers is explicit.
+
+\subsection{Proposed module graph}
+
+\begin{description}[style=nextline]
+\item[\code{CIFER.ObjectCompiler}] Common-context proof schedules, residual discharge, bounded-loop composition, stable-observer composition, and native export.
+\item[\code{CIFER.ResidualGraph}] Host graph syntax, topological validation, reachability, and residual extraction.
+\item[\code{CIFER.Boolean}] Boolean terms, truth tables, fixed-formula reflection, and bounded folds.
+\item[\code{CIFER.BoundedSearch}] Least witness, complete enumeration, finite extrema, and list membership reflection.
+\item[\code{CIFER.Coding}] Fixed tuple, bounded sequence, finite map, and certified-setoid support.
+\item[\code{CIFER.DemandClosure}] Finite vectors, monotone inflationary iteration, rank stabilization, and object trace.
+\item[\code{CIFER.Relational}] Layered finite clouds, viability, least paths, stable observers, diameter, and gap collapse.
+\item[\code{CIFER.Represented}] Regular rational names, intervals, extensionality, and finite-use operators.
+\item[\code{CIFER.Applications.*}] Domain-specific interface instantiations.
+\end{description}
+
+The delivered artifact includes the first, second, demand, relational, and application-interface outlines.  Boolean and coding modules are listed as completion milestones because they should preferably reuse existing repository arithmetic rather than duplicate it.
+
+\subsection{ResidualBuild}
+
+The key structure is:
+
+\begin{lstlisting}
+structure ResidualBuild (Gamma boundary done : List (Fm PTm n)) where
+  derive : forall A, A in done ->
+    boundary ++ Gamma |- [PRAAx] A
+\end{lstlisting}
+
+The empty build is vacuous.  \code{step} accepts a local derivation from all prior nodes plus the permanent context; \code{stepFrom} restricts the local proof to an explicit dependency sublist.  Both use \code{Prf.trans} to replace dependency hypotheses by stored derivations.  \code{close} replaces every boundary hypothesis by a supplied proof from \(\Gamma\).
+
+This structure is deliberately small.  It depends only on the checked deduction API, not on graph algorithms or arithmetic semantics.  It can therefore be elaborated and audited before the rest of the framework.
+
+\subsection{Exact scoped syntax}
+
+The upstream library indexes terms and formulas by the number of free variables.  Every module must preserve this discipline.  Recommended conventions are:
+
+\begin{itemize}
+\item use existing \code{Syn.subst}, \code{Fm.subst}, \code{Fm.shift}, \code{inst}, and \code{repl};
+\item prove formula-constructor substitution lemmas once;
+\item avoid unscoped integer indices in generated syntax;
+\item package application substitutions as \code{Fin k -> PTm n};
+\item use upstream shift/substitution identities rather than local simplifier folklore.
+\end{itemize}
+
+Generated code should keep an explicit mapping from human variable names to \code{Fin} indices in metadata.  This is not part of the proof but prevents source-audit mistakes.
+
+\subsection{Formula Booleanization strategy}
+
+There are two implementation routes.
+
+\paragraph{Typed fixed syntax.}
+Define a host inductive \code{BForm n} containing equations, conjunction, disjunction, implication, and strictly bounded quantifiers.  A compiler returns:
+\begin{itemize}
+\item a \code{PR} Boolean checker;
+\item a formula in \code{Fm PTm n};
+\item embedded reflection derivations.
+\end{itemize}
+This route provides one reusable compiler and is recommended.
+
+\paragraph{Application-specific generation.}
+Generate Boolean terms and proofs directly from application formulas.  This is simpler for a first benchmark but duplicates logical cases.
+
+The typed route still does not create an object-level universal evaluator.  \code{BForm} recursion runs in Lean and emits fixed \code{PR} syntax.
+
+\subsection{Representing proof-producing compilation}
+
+A fully typed node can be represented by dependent records, but dependent arrays indexed by dynamically computed graph positions become cumbersome.  A practical two-stage design is:
+
+\begin{enumerate}
+\item validate and normalize an untyped metadata graph;
+\item generate a Lean declaration for each node with its exact formula and local proof;
+\item generate a topological fold expression using \code{ResidualBuild.stepFrom}.
+\end{enumerate}
+
+The generated Lean source is the proof-carrying artifact.  This avoids implementing a large dependent graph interpreter inside Lean while retaining kernel checking of every local proof and composition step.
+
+For hand-written graphs, a typed heterogeneous list can be introduced later.  It is not required for soundness.
+
+\subsection{Demand closure formalization}
+
+At the host level, \code{Demand n := Fin n -> Nat}.  Prove:
+\begin{align*}
+ a&\le a\vee F(a),\\
+ a\vee F(a)\ne a&\to \rho(a)<\rho(a\vee F(a)),\\
+ a\le C&\to\rho(a)\le\rho(C).
+\end{align*}
+The stabilization theorem follows by natural induction.
+
+For the object version, fixed dimension is compiled to tuple-coded natural terms.  The cap and seed are terms.  A primitive-recursive transition returns the componentwise maximum.  The invariant includes the current rank and fixed flag.  The host theorem about finite vectors guides the object proof but does not replace it.
+
+\subsection{Relational viability formalization}
+
+Encode a layered system by:
+\begin{itemize}
+\item the number of levels;
+\item a length for each level;
+\item an entry function \(L(k,i)\);
+\item a Boolean edge checker \(E(k,i,j)\).
+\end{itemize}
+The backwards table is a bounded Boolean array.  Reverse time \(r=0,\ldots,h\) corresponds to level \(h-r\), making the recurrence a standard primitive recursion.
+
+The invariant states that the table after \(r\) steps agrees with path existence to the last \(r\) levels.  Path existence is itself represented by a bounded Boolean fold or by a stored successor table.  To construct the least path, maintain the current index and use least bounded search in the next viable row.
+
+A stable observer theorem should take object formulas proving nonemptiness and pairwise equality, then derive the observation of the least member.  Approximate diameter uses finite maxima of rational distances.
+
+\subsection{Boundary interfaces as structures, not axioms}
+
+The application file defines structures such as:
+
+\begin{lstlisting}
+structure HeightListInterface (Gamma : List (Fm PTm n)) where
+  heightBound : Fm PTm n
+  completeList : Fm PTm n
+  enumerate : heightBound :: Gamma |- [PRAAx] completeList
+\end{lstlisting}
+
+This is safe because a value of the structure must contain the downstream derivation.  It does not assert that \code{heightBound} is provable.  A separate producer structure may contain a term and proof of the boundary.  Closing the theorem requires both values.
+
+Unproved targets should be represented as definitions of formulas or propositions, comments, or data fields.  They should not be declared as \code{axiom} and should not receive a theorem with a placeholder proof.
+
+\subsection{Application endpoint pattern}
+
+A closed application should expose declarations resembling:
+
+\begin{lstlisting}
+def graph : ... := ...
+
+theorem residual_result :
+    boundary ++ Gamma |- [PRAAx] goal := by
+  -- generated topological fold
+
+theorem producer_1 : Gamma |- [PRAAx] boundary[0] := ...
+...
+
+theorem closed_result : Gamma |- [PRAAx] goal :=
+  residualBuild.close ...
+
+def native_result : NPrf ... :=
+  pra_iff_native.mp closed_result
+\end{lstlisting}
+
+The separate names make status transparent.  During development, \code{residual\_result} may compile before the producer theorems.  The public README can then report exactly which layer is complete.
+
+\subsection{Automation boundaries}
+
+Tactics may assist with:
+\begin{itemize}
+\item formula substitution simplification;
+\item propositional natural-deduction plumbing;
+\item ring-normalization certificate generation;
+\item bounded arithmetic normalization;
+\item construction of repetitive proof-graph folds.
+\end{itemize}
+
+Every tactic should produce ordinary proof terms checked by Lean.  The framework should not add an unverified oracle.  Expensive external algebra systems may produce finite certificates -- polynomial identities, factorizations, interval inequalities -- which small verified checkers consume.
+
+\subsection{Testing strategy}
+
+Use four independent layers of tests.
+
+\begin{enumerate}
+\item \textbf{Reference tests:} exact Python computations for graph algorithms and numerical examples.
+\item \textbf{Native Lean tests:} finite algorithms and semantic invariants over Lean data types.
+\item \textbf{Embedded unit proofs:} small \code{Prf PRAAx} examples for each generic combinator.
+\item \textbf{End-to-end endpoint:} at least one nontrivial closed application with a printed axiom report.
+\end{enumerate}
+
+Passing the first two does not imply the fourth.  They are debugging and regression layers.
+
+\subsection{Build and audit workflow}
+
+The pinned repository toolchain is Lean 4.32.0.  A formalization run should:
+
+\begin{enumerate}
+\item place \code{CIFER} on the same import path as \code{ConciseIPRA};
+\item build the composition core first;
+\item record compiler output and hashes;
+\item run source searches for admissions and new axioms;
+\item use \code{\#print axioms} on public endpoints;
+\item save the exact theorem type;
+\item regenerate the residual and graph manifests;
+\item compare finite reference output with object-level numeral instances where feasible.
+\end{enumerate}
+
+A generated package should keep build logs out of the mathematical source tree or clearly mark them as environment-specific.
+
+\subsection{Suggested implementation order}
+
+The following order minimizes risk.
+
+\begin{enumerate}
+\item Elaborate \code{ObjectCompiler.lean} against current upstream APIs.
+\item Close a propositional three-node residual example.
+\item Add one natural-number loop and prove a closed bounded-search instance.
+\item Implement Boolean reflection and generic bounded search.
+\item Implement rational coding and the cubic benchmark.
+\item Prove residual graph soundness and generate a proof schedule automatically.
+\item Add finite viability and stable observers.
+\item Add capped demand closure only after a real application needs a cycle.
+\item Migrate height/list and gap-conditional application interfaces.
+\end{enumerate}
+
+This order ensures that the actual embedded endpoint is tested before the framework grows broad.
+
+\subsection{Expected proof bottlenecks}
+
+The most likely engineering bottlenecks are not the mathematical metatheorems.  They are:
+
+\begin{itemize}
+\item scoped substitution under bounded quantifier encodings;
+\item reusable arithmetic reflection for signed and rational codes;
+\item keeping invariants syntactically quantifier-free;
+\item proof-term size for generated finite folds;
+\item normalization of contexts and list membership proofs;
+\item connecting existing native arithmetic lemmas to newly built embedded derivations without assuming a reflection principle that has not been proved.
+\end{itemize}
+
+Each bottleneck has a local remedy: stronger syntax utilities, proof-generating reflection lemmas, Boolean accumulators, shared definitions, context combinators, and explicit object proofs.

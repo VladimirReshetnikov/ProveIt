@@ -1,0 +1,217 @@
+\section{Precision and resource demand as a finite effect calculus}
+
+\subsection{Demand vectors}
+
+A scalar precision is often insufficient.  A rational operation may need
+numerator bits, denominator separation, and normalization fuel; a root routine
+may need coefficient precision, disk radius, derivative gap, and branch depth.
+We therefore use a fixed-dimensional demand vector
+\[
+      d=(d_0,\ldots,d_{k-1})\in\N^k
+\]
+ordered componentwise, with join given by componentwise maximum.  The dimension
+\(k\) is fixed by the application, so tuple coding and all operations are
+primitive recursive.
+
+Each node has a monotone pullback map
+\[
+       T_{v\leftarrow u}:D_v\to D_u
+\]
+for every incoming edge \(u\to v\).  It states the demand on \(u\)'s output
+needed to satisfy a demand on \(v\)'s output.
+
+\subsection{Acyclic backward propagation}
+
+Let the graph be topologically ordered.  Initialize every demand to zero and
+set the terminal demand to the requested value.  Traverse nodes in reverse
+order.  At node \(v\), join
+\(T_{v\leftarrow u}(d_v)\) into each predecessor demand \(d_u\).
+
+\begin{theorem}[Least acyclic demand]\label{thm:acyclic-demand}
+For a finite acyclic graph with monotone edge pullbacks, the reverse pass
+computes the least demand assignment satisfying the terminal request and every
+edge constraint
+\[
+       d_u\ge T_{v\leftarrow u}(d_v).
+\]
+\end{theorem}
+
+\begin{proof}
+Soundness follows immediately when each edge is processed: the predecessor is
+updated by a join containing the required value.  For minimality, let \(e\) be
+any satisfying assignment.  Proceed in reverse topological order.  The terminal
+demand computed by the algorithm is at most \(e\) by the terminal constraint.
+If \(d_v\le e_v\), monotonicity gives
+\(T_{v\leftarrow u}(d_v)\le T_{v\leftarrow u}(e_v)\le e_u\).
+Every join inserted into \(d_u\) is therefore below \(e_u\), so the final
+\(d_u\le e_u\).  This proves leastness.
+\end{proof}
+
+The algorithm is a single bounded reverse loop over a coded edge table.  Its
+proof uses a quantifier-free table invariant and therefore fits
+Theorem~\ref{thm:trace}.
+
+\subsection{Why cyclic demands arise}
+
+Cycles occur when two representations mutually constrain precision.  Examples
+include:
+
+\begin{itemize}
+\item normalization of a rational expression needs a denominator gap, while
+proving the gap needs a sharper approximation of the expression;
+\item a chart transition requires coordinate precision determined by a local
+Lipschitz bound, and the bound is selected from the chart reached at that
+precision;
+\item a Newton step needs derivative precision based on the current root disk,
+while shrinking the disk uses the derivative estimate;
+\item a network of mutually recursive finite observations shares error budgets.
+\end{itemize}
+
+The repair is not unbounded fixed-point iteration.  The theorem request already
+imposes finite maximum resources.  Work in a finite product lattice and compute
+the least closure there.
+
+\subsection{Bounded least fixed points}
+
+Let
+\[
+     L=\prod_{i<k}\{0,1,\ldots,B_i\}
+\]
+and let \(F:L\to L\) be monotone.  Define the inflationary closure operator
+\(G(x)=x\join F(x)\) and the sequence
+\[
+       x_0=a,\qquad x_{t+1}=G(x_t).
+\]
+Here \(a\) is the externally requested minimum demand.
+
+\begin{theorem}[Finite monotone closure]\label{thm:finite-closure}
+The sequence stabilizes after at most
+\[
+      H=1+\sum_{i<k}(B_i-a_i)
+\]
+iterations.  Its stable value \(x^*\) is the least prefixed point of \(F\) above
+\(a\):
+\[
+  a\le x^*,\quad F(x^*)\le x^*,
+  \quad\text{and}\quad
+  (a\le y\ \wedge\ F(y)\le y)\Rightarrow x^*\le y.
+\]
+\end{theorem}
+
+\begin{proof}
+The sequence is nondecreasing because \(x_t\le G(x_t)\).  Give the box the rank
+\(\rank(x)=\sum_i x_i\).  If \(x_{t+1}\ne x_t\), some coordinate increases by
+at least one, so \(\rank(x_{t+1})>\rank(x_t)\).  The rank can increase at most
+\(\sum_i(B_i-a_i)\) times.  Thus a repeated value, hence a fixed point of
+\(G\), occurs within the stated number of evaluated steps.  At a fixed point,
+\(F(x^*)\le x^*\).
+
+For leastness, let \(y\) be any prefixed point above \(a\).  Induct on \(t\).
+The base \(x_0=a\le y\) holds.  If \(x_t\le y\), monotonicity gives
+\(F(x_t)\le F(y)\le y\), and therefore
+\(x_{t+1}=x_t\join F(x_t)\le y\).  Hence every iterate, including \(x^*\), is
+below \(y\).
+\end{proof}
+
+Every quantity in this proof is a fixed-dimensional tuple operation.  The
+iteration is primitive recursive with fuel \(H\), and the invariant
+\[
+ x_t\in L,\quad a\le x_t,\quad x_t\le x_{t+1},\quad
+ \rank(x_t)\ge\rank(a)+\min(t,\text{number of strict steps})
+\]
+can be Booleanized.  This gives a direct path to an iPRA proof.
+
+\subsection{Cycles with failure}
+
+A demand transformer may detect that the finite box is too small: a required
+precision exceeds \(B_i\), a denominator gap certificate is unavailable, or a
+resource budget is exhausted.  Totalize the transformer with a failure flag.
+The closure theorem then proves one of two finite outcomes:
+
+\begin{enumerate}
+\item a least closed demand inside the box; or
+\item a certified failing node and coordinate, showing that the requested
+contract cannot be discharged under the supplied resource envelope.
+\end{enumerate}
+
+This is preferable to silently clipping demands at the bound.  Clipping would
+produce a total function but an invalid correctness theorem.
+
+\subsection{Changing-parameter recursion}
+
+Some recurrences change their own parameters.  For example, an approximation
+at stage \(t+1\) may request stage-dependent precision \(p(t,s_t)\).  A naive
+formalization attempts induction over a family whose formula changes with
+\(t\), producing difficult substitutions.
+
+The framework uses a backward-demand/forward-replay transformation.
+
+\begin{construction}[Backward-demand/forward-replay]
+For a fixed horizon \(T\):
+\begin{enumerate}
+\item run a reverse trace from the terminal request, computing the demand and
+auxiliary parameters needed at every time;
+\item code this finite schedule in one natural number;
+\item run the original recurrence forward while reading the precomputed
+schedule;
+\item use one invariant saying that the schedule entry is valid and the
+current state satisfies the corresponding contract.
+\end{enumerate}
+\end{construction}
+
+The induction formula is now fixed: it refers to table lookup at the current
+clock, not to a syntactically changing family.  The reverse pass is itself a
+clocked PR trace and can be proved correct separately.
+
+\begin{theorem}[Scheduled recurrence]
+Assume each local step contract is monotone in its declared demand and is
+proved in \(\KPrf\).  Then a finite changing-parameter recurrence with an
+explicit horizon compiles to one reverse demand trace, one forward execution
+trace, and a terminal \(\KPrf\) derivation.
+\end{theorem}
+
+\begin{proof}
+The reverse trace produces demands satisfying every local edge constraint by
+Theorem~\ref{thm:acyclic-demand} or
+Theorem~\ref{thm:finite-closure} when local cycles are present.  During forward
+replay, specialize each local step theorem at the scheduled demand and current
+state.  The trace invariant supplies the step's assumptions.  At the host
+proof-graph level, Theorem~\ref{thm:dag-compile} composes the reverse-trace
+proof, local step proofs, and terminal finalizer.
+\end{proof}
+
+\subsection{Error budgets}
+
+For approximate mathematics, demands are dual to error budgets.  If a node has
+an output tolerance \(\varepsilon\), it computes input tolerances
+\(\varepsilon_i\) and proves an inequality such as
+\[
+    E_{\mathrm{out}}
+       \le c_0E_0+\cdots+c_rE_r+E_{\mathrm{round}}
+       \le\varepsilon.
+\]
+All quantities are encoded rationals.  The inequality is decidable after
+clearing positive denominators.  Polynomial parts may be discharged by the
+ring backend; positivity and order side conditions remain explicit clauses.
+
+A useful normalization is to store dyadic exponents instead of arbitrary
+rational tolerances.  Addition of error terms then uses a conservative minimum
+precision plus a small overhead.  The exact rational representation remains
+available when sharp constants matter.
+
+\subsection{Resource provenance}
+
+Every bound should carry a provenance tag in the artifact metadata:
+
+\begin{itemize}
+\item \emph{structural}: derived from code size or a finite state count;
+\item \emph{analytic}: derived from a modulus, Lipschitz constant, or gap;
+\item \emph{algebraic}: derived from degree, coefficient height, or elimination
+bounds;
+\item \emph{external}: supplied as a theorem hypothesis or imported theorem;
+\item \emph{experimental}: used only in tests and not in the proof statement.
+\end{itemize}
+
+The proof term need not mention the tag, but the research package should.  This
+prevents an experimentally observed cutoff from being mistaken for a proved
+height bound.

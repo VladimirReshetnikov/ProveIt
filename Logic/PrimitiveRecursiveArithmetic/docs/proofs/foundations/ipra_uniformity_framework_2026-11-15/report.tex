@@ -1,0 +1,124 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,hyperref,enumitem,longtable}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}\newtheorem{definition}[theorem]{Definition}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\PR}{\mathrm{PR}}\newcommand{\Good}{\mathrm{Good}}\newcommand{\Bad}{\mathrm{Bad}}\newcommand{\obs}{\mathrm{obs}}
+\title{Uniformity Gates and Bounded Refutation Frontiers\\A Reusable Finitary Interface for Mathematical Proofs in iPRA}
+\author{Research note, 15 November 2026}
+\date{}
+\begin{document}\maketitle
+\begin{abstract}
+We develop a precise interface separating (i) finite computations and their correctness proofs, (ii) a primitive-recursive \emph{uniformity certificate}, and (iii) a derivation in intuitionistic primitive recursive arithmetic. This separation prevents the common erroneous step from finite evidence or point-count bounds to complete search, or from pointwise convergence to a computable modulus. The main results are a proof-producing bounded-frontier induction principle, a uniform-search completeness theorem, a closure rule for quantitative observation interfaces, and a sharp obstruction to automatic modulus extraction. The mathematical arguments below are finitary and use only quantifier-free induction once the explicitly stipulated arithmetic contracts are established. We give concrete Lean 4 definitions, a proof ordering, and a precise distinction between host-level validation and object-iPRA certificates. This is an extension and synthesis, not a claim to settle general Faltings, Siegel, or any unsupplied uniformity theorem.
+\end{abstract}
+\tableofcontents
+\section{Repository audit and intended contribution}
+The repository \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic} distinguishes the kernel-checked calculus in \texttt{ConciseIPRA} from research packets in \texttt{docs/proofs}. The README of the latter reports 78 packets and warns that these files were filed without a global rebuild or verification. The \texttt{faltings\_ipra} packet explicitly distinguishes a \emph{number} of rational points from an effective height bound; the \texttt{ipra\_finite\_demand} and \texttt{ipra\_resources\_and\_elimination} packets already treat changing-parameter recursion, finite observations, norm certificates, and controlled lexicographic descent. We do not rename those achievements as new results. Our new organizational device is a \emph{uniformity gate}: a theorem cannot be advertised as a complete iPRA search or an effective limiting object until the relevant bound, modulus, or finite cover is separately represented as a fixed PR term and proved correct internally.
+
+The distinction is substantial. A mathematically sound classical proof can furnish \(\forall x\,\exists n\,P(x,n)\), or even a finite cardinality bound, without furnishing the PR witness selector required for the particular proposed iPRA realization. Conversely, the gate allows many finite algebraic, numerical, and combinatorial statements to be composed safely, with no invocation of unrestricted choice, excluded middle, or unbounded minimization.
+
+\section{Logical and computational discipline}
+By iPRA we mean intuitionistic first-order arithmetic with all primitive-recursive function symbols and their defining equations, successor axioms, and induction for quantifier-free formulas. A bounded universal assertion \(\forall i<b\,R(i)\) is treated as a PR Boolean term, computed by bounded iteration, \emph{not} as an unrestricted induction formula. A coded finite sequence is represented by a fixed PR encoding with PR length and indexing operations; quantification over its entries is bounded. The external mathematical prose can employ convenient finite products and record types, but an object-level formalization must exhibit the corresponding PR symbols and derivations.
+
+A \emph{uniformity gate} on parameter \(p\) consists of (G1) a PR bound \(B(p)\); (G2) a PR decidable inspection predicate \(R(p,x)\); (G3) a theorem in iPRA that every relevant object is in the inspected region \(x\le B(p)\), or that every uninspected object is redundant under a certified reduction; and (G4) PR Boolean certificates of the local checks. The distinction between existence of a bound and the explicit term \(B\) is not cosmetic: it is exactly the difference between abstract finiteness and an executable exhaustive algorithm.
+
+\section{A bounded-refutation-frontier calculus}
+\begin{definition}[Ranked frontier]\label{def:frontier}
+Fix coded parameters \(p\), states \(s\le S(p)\), and a PR Boolean predicate \(P(p,s)\) meaning that the desired property holds at state \(s\). Let \(\rho(p,s)\in\N\) be a PR rank, \(T(p,s,i)\) a PR successor map for \(i<d(p,s)\), with PR branching bound \(d\). Let \(A(p,s)\) be the PR Boolean assertion ``this state is an accepted terminal''. A finite frontier certificate is the conjunction, over \(s\le S(p)\), of
+\begin{align*}
+ A(p,s)=1&\Longrightarrow P(p,s)=1,\\
+ A(p,s)=0&\Longrightarrow \left[d(p,s)>0\ \wedge\ \forall i<d(p,s):\ T(p,s,i)\le S(p),\ \rho(p,T(p,s,i))<\rho(p,s)\right],\\
+ A(p,s)=0\ \wedge\ \bigwedge_{i<d(p,s)}P(p,T(p,s,i))&\Longrightarrow P(p,s).
+\end{align*}
+This is an intentionally \emph{universal-successor} convention; existential branch search requires a separate PR selector and a different local implication.
+\end{definition}
+\begin{theorem}[Frontier soundness]\label{thm:frontier}
+For fixed PR data as above, iPRA proves that a valid frontier certificate implies \(\forall s\le S(p)\,P(p,s)=1\). The proof uses only quantifier-free induction on \(r\le R(p)\), where \(R(p)=\max_{s\le S(p)}\rho(p,s)\).
+\end{theorem}
+\begin{proof}
+Write \(I(r)\) for the bounded Boolean assertion
+\[ \bigwedge_{s\le S(p)}\bigl(\rho(p,s)\le r\Rightarrow P(p,s)=1\bigr).\]
+The Boolean encoding is a single PR numerical equation, hence an allowed quantifier-free induction predicate. At \(r=0\), a nonterminal would require a successor with natural rank strictly below zero; since \(d>0\), this is impossible by arithmetic, so every rank-zero state is accepted. Assume \(I(r)\). If \(\rho(s)\le r+1\), then either \(\rho(s)\le r\), handled by the hypothesis, or \(\rho(s)=r+1\). In the latter case terminal soundness settles the terminal case; otherwise all successors have rank at most \(r\), so the hypothesis establishes their \(P\) values and the local soundness implication proves \(P(s)\). All uses of conjunction are bounded Boolean operations; no induction on a formula with an unbounded quantifier is invoked. Finally, \(\rho(s)\le R\) for every bounded state, so \(I(R)\) yields the conclusion.
+\end{proof}
+\begin{remark}[Why the envelope matters]
+An arbitrarily presented well-founded relation is not sufficient. Both \(S\) and \(R\) must be PR terms in \(p\), and bounded closure of the transition map must be certified. A measure that strictly decreases but whose coordinates have unconstrained input-dependent dimension does not automatically yield PR fuel; this is consistent with the obstruction already documented by \texttt{ipra\_resources\_and\_elimination}.
+\end{remark}
+\begin{corollary}[DAG certificate reuse]
+A fixed finite dependency graph with PR-coded nodes, acyclic edges, and a topological rank admits a uniform iPRA proof of the validity of all its nodes, provided the local Boolean proof obligations are established. The same lemma can validate polynomial identity rewrites, truncated power-series computations, and interval refinements.
+\end{corollary}
+\begin{proof}Set the predecessor nodes as the successors in Definition~\ref{def:frontier}; use the topological index for the rank. The terminal nodes are exact identity checks. Apply Theorem~\ref{thm:frontier}.\end{proof}
+
+\section{Complete finite search and what it does not prove}
+Let \(W(p,x)\) be a PR Boolean predicate and \(h(p,x)\) a PR complexity/height measure; assume a PR inverse enumeration \(E(p,j)\) is proved to cover \emph{every} code of height at most \(B(p)\) with \(j<N(p)\). Define a finite list by scanning \(j<N(p)\) and retaining those with \(W(p,E(p,j))=1\). One may deduplicate using PR equality, without presupposing a choice principle.
+\begin{theorem}[Uniform search completeness]\label{thm:search}
+If iPRA proves
+\[\forall x\,[W(p,x)=1\Rightarrow h(p,x)\le B(p)]\]
+and proves the bounded enumeration-cover equation, then it proves that \(W(p,x)=1\) exactly when \(x\) occurs on the computed finite list, with the usual additional restriction to valid canonical codes. The list and its length are PR in \(p\).
+\end{theorem}
+\begin{proof}The scanning function is a bounded primitive recursion on \(N(p)\). Membership of a retained element entails \(W=1\) by construction. Conversely, if \(W(p,x)=1\), the bound gives \(h(p,x)\le B\); the cover theorem supplies \(j<N\) with \(E(p,j)=x\). Induction on the scan index verifies that a qualifying entry has been retained by the time its index is processed. The \(\exists j<N\) is a bounded PR Boolean disjunction, so its use can be reduced to finite case analysis in iPRA.\end{proof}
+\begin{proposition}[A point-count bound is insufficient]\label{prop:count}
+There is no total computable operator which, given a code for a PR decidable predicate \(W_e(x)\) and the promise that it has at most one solution, always returns a bound above all its solutions.
+\end{proposition}
+\begin{proof}Let \(W_e(t)=1\) exactly when Turing machine \(e\) halts for the \emph{first} time at step \(t\). Bounded machine simulation is PR as a function of \((e,t)\), and the ``first time'' clause is a bounded Boolean conjunction. There is at most one such \(t\). If an operator returned a total bound \(B(e)\), we could simulate \(e\) up to \(B(e)\) and decide the halting problem: no halting by the asserted bound would imply no halting at all. Contradiction. This is a metamathematical impossibility for a \emph{uniform operator}; it is not an unprovability theorem about any specific Faltings or Siegel instance.\end{proof}
+\begin{remark}[Application to rational points]
+For a rational plane curve with canonical height and decidable polynomial equality, a height bound plus a complete enumeration of bounded rational tuples gives a PR list of rational points. An upper bound on their number supplies neither the height bound nor an effective stopping rule. Thus the difficult missing step in the repository's general Faltings packet cannot be removed by replacing ``height'' with ``cardinality''. A finite-exhaustion theorem is a conditional reduction, not a general proof of Faltings.\end{remark}
+
+\section{Quantitative observations and stable global assertions}
+\begin{definition}[Exact observation interface]
+A PR observation of an object parameter \(p\) at precision \(n\) is a finite code \(a(p,n)\). For a numerical target use rational approximations \(q(p,n)\in\mathbb Q\), encoded by numerator and positive denominator. A \emph{strong modulus} is a PR \(M(p,k)\) with an iPRA proof of
+\[ \forall m,n\ge M(p,k)\quad |q(p,m)-q(p,n)|\le 2^{-k}.\tag{C}\]
+The unbounded quantifiers in (C) are the \emph{conclusion} of the proof, not its induction predicate. Constructively encoded real names may be used instead when a full modulus is provided as part of the representation.
+\end{definition}
+\begin{theorem}[Composition of observation moduli]\label{thm:mod}
+Let \(q(p,n)\) and \(r(p,n)\) satisfy (C) with moduli \(M_q,M_r\). Then the pair-name \((q,r)\) with sup metric has PR modulus \(M_{\times}(p,k)=\max(M_q(p,k),M_r(p,k))\). The sum \(q+r\) has PR modulus \(\max(M_q(p,k+1),M_r(p,k+1))\).
+\end{theorem}
+\begin{proof}For the pair, each coordinate difference is at most \(2^{-k}\) after the maximum index, so their maximum is bounded by \(2^{-k}\). For the sum, the triangle inequality makes the difference at most \(2^{-(k+1)}+2^{-(k+1)}=2^{-k}\). Integer cross multiplication certifies each rational inequality; therefore these are algebraic finite contracts suitable for internalization.\end{proof}
+\begin{theorem}[Controlled evaluation]\label{thm:lipschitz}
+Suppose rational approximations \(q(p,n)\) have a PR strong modulus \(M_q\), and a PR rational transformation \(f_p\) obeys a proved rational Lipschitz inequality
+\[ |f_p(x)-f_p(y)|\le L(p)|x-y|,\quad L(p)\in\N_{\ge1}, \]
+on a PR-decidable invariant region containing all approximants. Then \(f_p(q(p,n))\) has PR modulus \(M_f(p,k)=M_q(p,k+\lceil\log_2 L(p)\rceil)\). The integer ceiling-log is computed by bounded search up to \(L\).
+\end{theorem}
+\begin{proof}Let \(d=\lceil\log_2 L\rceil\); then \(L\le 2^d\). After \(M_q(p,k+d)\), the difference of inputs is at most \(2^{-(k+d)}\), hence the difference of outputs is at most \(L2^{-(k+d)}\le2^{-k}\). A bounded case split proves the rational invariant-region guard and the inequality without appeal to a completed continuum.\end{proof}
+\begin{proposition}[No uniform modulus from monotonicity]\label{prop:no-mod}
+There is no computable procedure mapping every index \(e\) to a stabilization index for the PR sequence
+\[a_e(n)=\begin{cases}1&\text{if machine }e\text{ halts in at most }n\text{ steps},\\0&\text{otherwise}.\end{cases}\]
+These sequences are monotone nondecreasing and bounded by 1; each is eventually constant, but no uniform computable stabilization bound exists.
+\end{proposition}
+\begin{proof}If \(M(e)\) were a stabilization index, \(a_e(M(e))=1\) would mean halting, and \(a_e(M(e))=0\) would mean never halting, contrary to undecidability. A putative uniform Cauchy modulus at precision \(1/2\) would likewise be a stabilization index, since the values belong to \(\{0,1\}\). Note that we have \emph{not} asserted that every such sequence has an iPRA proof of eventual constancy uniformly in \(e\). The argument separates external pointwise mathematical truth from an effective uniform producer.\end{proof}
+\section{Applications to existing difficulties}
+\paragraph{Algebraic roots and collisions.} A root \emph{support} may be represented by finite sets with Hausdorff approximation bounds rather than by globally named branches. Certificates can propagate symmetric observations without selecting individual roots at collisions. Recovering a branch through a singularity is a strictly stronger contract, requiring additional separation or monodromy information. This agrees with the restricted scope documented by the repository's finite-demand packet.
+\paragraph{Diophantine geometry.} Exact bounded rational-point enumeration is routine once a height gate is supplied; no finite graph or counting certificate can manufacture that gate. In particular neither the general Faltings nor Siegel height problem is resolved here. For restricted curves where a descent gives an explicit PR height bound, Theorem~\ref{thm:search} does produce completeness.
+\paragraph{Analysis and topology.} Finite polygonal observations with a certified modulus give stable approximations for continuous quantities under explicit Lipschitz bounds. A qualitative limiting statement without a PR modulus must be tracked as an \emph{open gate}, not passed into an object-theory assertion about a uniform algorithm. Degree, winding, and intersection claims can be verified from rational transversality certificates on finite meshes; upgrading to all approximations requires proved stability margins and a mesh-size modulus, not visual similarity.
+\paragraph{Prime distribution.} A finite exact sieve produces correct counts below any supplied cutoff. This does not by itself provide a PR \(\varepsilon\)-threshold for a distributional asymptotic. An asserted asymptotic should have its own explicit threshold gate \(N(k,\text{parameters})\) and a proof of the corresponding rational inequality for all larger arguments. The gate isolates precisely where a nontrivial analytic theorem enters.
+\section{Object-language formalization and trustworthy proof architecture}
+There are three separate validation levels:
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{Reference execution}: Python and native Lean compute examples, test encodings, and check small certificates. Finite testing never establishes a universal theorem.
+\item \textbf{Host Lean proof}: a theorem over \texttt{Nat} proves the finite combinator correct. A host theorem can use ambient logical principles not derivable in iPRA; therefore \texttt{\#print axioms} and explicit constructive proofs are useful audits but not substitutes for item (3).
+\item \textbf{Object iPRA derivation}: construct a term of \texttt{Prf PRAAx formula} in the existing \texttt{ConciseIPRA} syntax, or use the checked \texttt{pra\_iff\_native} bridge to transfer an established derivation. The PR symbol compilation and quantifier-free induction proof are required, not assumed automatically from host Lean correctness.
+\end{enumerate}
+For Theorem~\ref{thm:frontier}, first implement \texttt{allBelow} as a primitive-recursive Boolean fold, then show the arithmetized validity conditions entail \texttt{I 0} and \texttt{I r -> I (r+1)}. Derive the induction sequent with the repository's \texttt{Prf PRAAx} quantifier-free induction rule. Finally use bounded maximum to instantiate \texttt{I (R p)}. The parameter \(p\) remains free through the induction; it is not quantified over by the induction formula. For Theorem~\ref{thm:search}, implement the bounded filter and prove its invariant by another equation-induction. For Theorems~\ref{thm:mod} and \ref{thm:lipschitz}, compile rational arithmetic to signed-pair natural codes and reduce inequalities to cross-products of natural numbers. Bounded division and logarithm computations must be defined via PR recurrences.
+
+A suggested Lean development sequence is:
+\begin{enumerate}[label=(\arabic*)]
+\item Define \texttt{Bounded.all}, \texttt{Bounded.any}, \texttt{Bounded.max}, coded lists, and rational pairs, with equations and native correctness lemmas.
+\item Prove \texttt{rank\_zero\_terminal}, \texttt{frontier\_step}, \texttt{frontier\_sound} at host level using explicit Boolean folds (no classical reasoning).
+\item Prove \texttt{search\_sound} and \texttt{search\_complete} for explicit bounded enumeration, and their proof terms in \texttt{Prf PRAAx}.
+\item Prove exact rational interval composition and Lipschitz contracts; reify the definitions as PR syntax.
+\item Build an explicit translation of finite certificate rules into object formulas; demonstrate one small nontrivial dependency DAG whose root is a concrete numeral identity.
+\item Run the ProveIt Lake workspace build and inspect object-proof dependency graphs. The present delivery does not claim these steps have all been executed.
+\end{enumerate}
+
+\section{A minimal native Lean outline and limitations}
+The included \texttt{lean/UniformityGate.lean} supplies executable bounded filters and theorem statements/proofs for finite-list membership and a count-vs-bound counterexample in the specific finite setting. It is deliberately independent of Mathlib and the repository's changing Lean API. It is a \emph{host-level seed}, not a fabricated object-iPRA derivation. A separate \texttt{lean/OBJECT\_ROADMAP.md} specifies the exact remaining proof obligations.
+
+\section{Conclusion}
+The framework's main contribution is a uniform proof discipline: the difficult theorem is displayed as a named arithmetic \emph{gate} between correct finite computation and an advertised global iPRA theorem. The ranked-frontier principle and quantitative composition lemmas then supply a reusable path for problems whose gates can actually be proved. The halting reductions establish that this gate cannot be eliminated by a general-purpose compiler. Consequently the approach gives genuine progress in reusable architecture, while refusing to confuse finite evidence, native Lean success, or an unproved modulus with a complete internal iPRA theorem.
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt: PrimitiveRecursiveArithmetic}, repository README and \texttt{docs/proofs/README.md}, accessed 15 November 2026. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic}.
+\bibitem{concise} \emph{ConciseIPRA}, README and Lean development, same repository.
+\bibitem{faltings} \emph{Faltings' theorem and intuitionistic PRA}, \texttt{docs/proofs/diophantine-number-theory/faltings\_ipra/README.md}, same repository.
+\bibitem{demand} \emph{Mathematics in iPRA: finite demands, root supports, and norm certificates}, \texttt{docs/proofs/foundations/ipra\_finite\_demand/README.md}, same repository.
+\bibitem{resources} \emph{Finite mathematical interfaces in iPRA}, \texttt{docs/proofs/foundations/ipra\_resources\_and\_elimination\_2026-11-15/README.md}, same repository.
+\end{thebibliography}
+\end{document}

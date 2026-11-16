@@ -94,7 +94,9 @@ import IPRADerivations.Geometry.Morley
 import IPRADerivations.Geometry.PlatonicSolids
 import IPRADerivations.Geometry.Projective
 import IPRADerivations.Geometry.SphericalTrigonometry
+import IPRADerivations.Geometry.SphericalCore
 import IPRADerivations.Geometry.TriangleFormulas
+import IPRADerivations.Geometry.Circumcircle
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Topology.Sperner

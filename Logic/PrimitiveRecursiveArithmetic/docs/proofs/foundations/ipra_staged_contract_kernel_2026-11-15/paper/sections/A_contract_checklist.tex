@@ -1,0 +1,91 @@
+\section{Application contract checklist}
+\label{app:checklist}
+
+Before an application packet claims an iPRA theorem, it should answer every item below.  A negative answer
+is not necessarily a defect; it may identify a legitimate boundary-conditional theorem.  An omitted answer
+is a formalization risk.
+
+\subsection*{A. Object and representation}
+\begin{enumerate}
+  \item What natural-number code represents each input, output, certificate, and resource?
+  \item Is code validity primitive-recursively decidable?
+  \item Are all constructors, projections, equality or compatibility tests, and bounded folds fixed
+        primitive-recursive functions?
+  \item Is an apparent infinite object replaced by a finite name and explicit modulus?
+  \item Does the public theorem ask only for information consumed at a finite demand?
+\end{enumerate}
+
+\subsection*{B. Statement classification}
+\begin{enumerate}
+  \item Is the theorem deterministic, relational, stable-observable, or boundary-conditional?
+  \item If a selector is used internally, is its arbitrary nature erased by branch independence or a
+        diameter theorem?
+  \item If an exact branch is returned, where is the separation or apartness certificate?
+  \item Are approximate and exact conclusions clearly distinguished?
+\end{enumerate}
+
+\subsection*{C. Producer, verifier, and proof}
+\begin{enumerate}
+  \item What fixed primitive-recursive producer returns the candidate data?
+  \item What Boolean verifier checks the data?
+  \item What object-theory derivation proves verifier soundness?
+  \item If no producer is known, is the candidate explicit boundary data rather than an implicit choice?
+  \item Does the Lean endpoint have type \(\Prf\,\PRAAx\), rather than a host proposition?
+\end{enumerate}
+
+\subsection*{D. Search and resources}
+\begin{enumerate}
+  \item What is the explicit bound for every search and list?
+  \item What is the fuel for every loop?
+  \item If termination uses descent, what numerical rank decreases?
+  \item Is the rank dimension fixed, or is a variable-dimensional bound supplied?
+  \item Does a claimed finite set have a height/list producer, rather than merely a cardinality bound?
+\end{enumerate}
+
+\subsection*{E. Precision and demand}
+\begin{enumerate}
+  \item What output demand is requested?
+  \item What primitive-recursive transformer computes each upstream demand?
+  \item Is the dependency graph acyclic?  If not, what finite cap proves demand closure terminates?
+  \item Are all demands fixed before quantifier-free induction begins?
+  \item Are magnitude, denominator, condition-number, or gap envelopes included when operations need them?
+\end{enumerate}
+
+\subsection*{F. Trace and invariant}
+\begin{enumerate}
+  \item What packed state is iterated?
+  \item Is every changing parameter part of the state?
+  \item Is the induction invariant quantifier-free after bounded Booleanization?
+  \item Are base, successor, and final extraction proofs actual object derivations?
+  \item Are bounded universal/existential claims stored as Boolean fold equations?
+\end{enumerate}
+
+\subsection*{G. Relational coherence}
+\begin{enumerate}
+  \item Are candidate levels finite and bounded?
+  \item What compatibility relation connects adjacent levels?
+  \item Is nonemptiness strengthened to backward viability?
+  \item For a represented output, what diameter or summable-motion theorem gives coherence across
+        precision levels?
+  \item Does the proof avoid inferring an infinite path from finite-horizon nonemptiness alone?
+\end{enumerate}
+
+\subsection*{H. Staged compilation}
+\begin{enumerate}
+  \item What is the global free-variable frame of the final theorem?
+  \item For every local theorem, what is its local arity and substitution into the global frame?
+  \item Does the availability certificate identify every instantiated local hypothesis with a base
+        assumption or earlier node conclusion?
+  \item Is the graph topologically ordered?
+  \item Are recursive nodes first compiled to local implication theorems?
+  \item Is native export performed only after the ordinary-iPRA proof is complete?
+\end{enumerate}
+
+\subsection*{I. Status and reproducibility}
+\begin{enumerate}
+  \item Which claims are human proofs, executable tests, host Lean theorems, or object Lean theorems?
+  \item Were the Lean files actually compiled in the pinned workspace?
+  \item Were \texttt{\#print axioms} results recorded?
+  \item Are source commit, toolchain, build command, checksums, and validation logs included?
+  \item Are unsupported generalizations and missing producer inputs listed explicitly?
+\end{enumerate}

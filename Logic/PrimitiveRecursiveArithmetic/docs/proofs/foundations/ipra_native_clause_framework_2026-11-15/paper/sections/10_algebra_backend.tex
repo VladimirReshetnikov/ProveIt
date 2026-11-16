@@ -1,0 +1,177 @@
+\section{The direct algebra backend and proof exchange}
+
+\subsection{What the checked library now provides}
+
+The new \path{Logic/PrimitiveRecursiveArithmetic/Derivations} library changes
+the practical starting point for algebraic formalization.  It is not another
+research packet: its README states that every listed theorem has a concrete
+closed type \([]\vdash_{\PRAAx}\varphi\), is checked by Lean's kernel, and has no
+\path{sorry}.  Its reusable layers include:
+
+\begin{itemize}
+\item PR symbols and defining equations for \(+\), \(\cdot\), predecessor, and
+truncated subtraction;
+\item arbitrary-term congruence;
+\item open quantifier-free induction \path{ind};
+\item instantiation of closed derivations \path{inst};
+\item commutative-semiring laws and additive cancellation;
+\item a quotient \(Q\Gamma\) of terms by derivable equality;
+\item integer terms as differences and the ring \(\mathsf{Groth}(Q\Gamma)\);
+\item \path{ipra_ring}, which turns a ring-normalization proof in the
+metatheory into an object-level derivation.
+\end{itemize}
+
+The first checked applications are polynomial identities behind Heron's formula
+and the law of cosines.  The method is more general than those examples.
+
+\subsection{Why metatheoretic ring normalization is legitimate}
+
+The tactic does not add Mathlib's ring theorem as an axiom of iPRA.  The object
+level already proves the required semiring and cancellation laws.  Terms modulo
+provable equality form a cancellative commutative semiring.  Integer pairs map
+injectively into its Grothendieck ring.  Mathlib's \path{ring} tactic proves an
+equality in that metatheoretic ring; the library then uses the proved
+injectivity and quotient soundness to construct the corresponding
+\(\Prf\;\PRAAx\) derivation.
+
+Thus the tactic is a proof-term generator.  Lean checks the generated object
+proof.  This is exactly the right use of a powerful host tactic.
+
+\subsection{Polynomial identity node}
+
+A polynomial identity node has:
+
+\begin{enumerate}
+\item a finite list of natural or integer variables;
+\item two expression trees using addition, multiplication, numerals, and
+integer pair operations;
+\item the equation formula between their compiled \(\PTm\) terms;
+\item a direct \(\Prf\;\PRAAx\) derivation produced by \path{ipra_ring}.
+\end{enumerate}
+
+Theorem~\ref{thm:import} imports the result into the native graph.  Side
+conditions such as denominator positivity, divisibility, nonzeroness, or order
+are not ring identities.  They remain separate clauses and are combined by the
+graph compiler.
+
+\subsection{A proof-exchange normal form}
+
+To make direct and native developments interoperable, use the following normal
+form for a local lemma.
+
+\begin{definition}[Exchange package]
+An exchange package consists of an ordinary formula \(\varphi\), its native
+translation \(A=\NFm.\mathsf{unQ}(\NFm.\mathsf{ofPRA}(\varphi))\), and one of:
+\begin{enumerate}
+\item a direct derivation \(h:\Gamma\vdash_{\PRAAx}\varphi\), to be imported by
+Theorem~\ref{thm:import}; or
+\item a native derivation \(k:\KPrf(\Delta,A)\), to be exported by
+Theorem~\ref{thm:export}.
+\end{enumerate}
+The package records the round-trip equivalence supplied by
+\path{pra_native_roundTrip} or the native round-trip theorem.
+\end{definition}
+
+Application libraries may expose both forms, but only one proof need be
+maintained.  The compiler can choose whichever form is more convenient.
+
+\subsection{Inequalities and order}
+
+Polynomial equality is only one part of quantitative mathematics.  Natural
+order may be encoded by truncated subtraction or by an existential difference:
+\[
+   a\le b\quad\Longleftrightarrow\quad a\mathbin{\dot-}b=0,
+   \qquad\text{or}\qquad \exists c\;a+c=b.
+\]
+For bounded calculations, the first is convenient and decidable.  For algebraic
+reasoning, the second may compose better with addition.
+
+A practical next layer for \path{IPRADerivations} should include:
+
+\begin{itemize}
+\item reflexivity, transitivity, antisymmetry, and totality of natural order;
+\item monotonicity of addition and multiplication by nonnegative terms;
+\item strict order and positive-product lemmas;
+\item clearing denominators under positivity guards;
+\item square nonnegativity and sum-of-squares arguments;
+\item bounded linear arithmetic proof generation.
+\end{itemize}
+
+Until that layer exists, the present framework treats these as explicit local
+node obligations.  Many can be proved by quantifier-free induction using
+\path{Core/Basic} and \path{Core/Semiring}.
+
+\subsection{Finite sums and products}
+
+A large class of identities uses bounded sums and products.  Define PR folds
+\[
+ \Sigma_f(0)=0,\quad \Sigma_f(n+1)=\Sigma_f(n)+f(n),
+\]
+\[
+ \Pi_f(0)=1,\quad \Pi_f(n+1)=\Pi_f(n)f(n).
+\]
+The needed library lemmas include splitting an interval, reindexing by a bounded
+bijection, distributivity over sums, telescoping, and finite double-sum swaps.
+Each is proved by quantifier-free induction.
+
+Once these lemmas are available, the ring backend can discharge the local
+polynomial step while induction handles the bound.  This division mirrors
+ordinary mathematical practice: induction establishes the finite combinatorial
+shape, and ring normalization establishes each algebraic identity.
+
+\subsection{Fixed-dimensional determinant example}
+
+For a fixed dimension \(d\), define the determinant by the Leibniz formula
+\[
+  \det A=\sum_{\sigma\in S_d}\operatorname{sgn}(\sigma)
+           \prod_{i<d}a_{i,\sigma(i)}.
+\]
+The permutation list and all products have constant finite size.  Determinant
+multilinearity, alternation, and Laplace expansion become finite polynomial
+identities.  They can be proved directly by \path{ipra_ring} after the finite
+sum has been expanded, or modularly using a bounded-sum library.
+
+For a concrete \(d\), code generation can expand the entire identity and let
+the ring tactic produce the proof.  For variable \(d\), a generic permutation
+and sign library is preferable.  The native graph compiler handles the finite
+loop and table dependencies in either approach.
+
+\subsection{Certificate checking versus symbolic derivation}
+
+Two complementary strategies are useful.
+
+\paragraph{Symbolic derivation.}
+Prove the identity for variables.  This gives a small reusable theorem and is
+ideal for polynomial algebra.
+
+\paragraph{Certificate checking.}
+For a concrete input, provide a witness such as an inverse matrix, factorization,
+Smith form, root-count chain, or Groebner reduction and verify it by finite
+arithmetic.  This often avoids formalizing the algorithm that found the
+certificate.
+
+A general framework should support both.  The producer may be sophisticated or
+external; the verifier and finalizer remain object-level.  A symbolic theorem
+can also prove the verifier sound once for all certificates.
+
+\subsection{Recommended extension modules}
+
+The direct derivation library would gain the most leverage from the following
+next modules, in dependency order.
+
+\begin{enumerate}
+\item \path{Core/Order}: natural order, positivity, monotonicity, and denominator
+clearing.
+\item \path{Core/Pairing}: a fixed pair/list code with projection equations and
+bounded table operations.
+\item \path{Core/FiniteFold}: sums, products, bounded Boolean folds, and
+reindexing.
+\item \path{Core/Rationals}: extensional rational arithmetic and order.
+\item \path{Core/Matrix}: fixed and variable finite matrices, dot products, and
+matrix identities.
+\item \path{Core/NativeExchange}: the import/export lemmas of this report.
+\item \path{Core/Trace}: a reusable object-level clocked-trace theorem.
+\end{enumerate}
+
+These modules would turn many proof packets from isolated blueprints into
+applications of a shared checked stack.

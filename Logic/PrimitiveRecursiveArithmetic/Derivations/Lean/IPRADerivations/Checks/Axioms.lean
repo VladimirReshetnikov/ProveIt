@@ -11,6 +11,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.TriangleFormulas.heronFactor
 #print axioms LeanProofs.IPRA.Geometry.TriangleFormulas.heron
 #print axioms LeanProofs.IPRA.Geometry.TriangleFormulas.lawOfCosines
+#print axioms LeanProofs.IPRA.Geometry.Circumcircle.equidistB
+#print axioms LeanProofs.IPRA.Geometry.Circumcircle.equidistC
+#print axioms LeanProofs.IPRA.Geometry.Circumcircle.radius
+#print axioms LeanProofs.IPRA.Geometry.Circumcircle.square_compare
+#print axioms LeanProofs.IPRA.Geometry.Circumcircle.square_compare_closed
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.mul_adjugate
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.det_mul
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.cayleyHamilton2
@@ -31,6 +36,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.gram_identity
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.lagrange_identity
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.gram_factor
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.angle_unit
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.sine_law
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.angle_cosine
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.cagnoli
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.five_part
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.four_part
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.right_rules
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.quadratic
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.cardano
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.ferrari

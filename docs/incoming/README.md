@@ -264,7 +264,20 @@ deleted. All 46 of its members are placed.
 `ipra_proof_carrying_observation_graphs_2026-11-15.zip` was placed the same way, under
 `foundations/`, and then deleted. All 50 of its members are placed.
 `ocipra_framework_2026-11-15.zip` was placed the same way, under `foundations/`, and then
-deleted. It leaves out five ignored `.log` files.
+deleted. It leaves out five ignored `.log` files. `cifer_ipra_framework_2026-11-15.zip` was
+placed the same way, under `foundations/`, and then deleted. All 55 of its members are
+placed. `ipra_kifc_framework_2026-11-15.zip` was placed the same way, under `foundations/`,
+and then deleted. It leaves out three ignored `.log` files.
+`ipra_native_clause_framework_2026-11-15.zip` was placed the same way, under `foundations/`,
+and then deleted. All 53 of its members are placed.
+`ipra_staged_contract_kernel_2026-11-15.zip` was placed the same way, under `foundations/`,
+and then deleted. It leaves out six ignored `.log` files. `ipra_strategy_framework.zip` was
+placed the same way, under `foundations/`, and then deleted. All 6 of its members are
+placed. `ipra_uniformity_framework_2026-11-15.zip` was placed the same way, under
+`foundations/`, and then deleted. All 6 of its members are placed; its wrapper directory is
+`ipra_uniformity_framework`. `ipra_observation_algebra_2026-11-16.zip` was placed the same
+way, under `algebra/`, and then deleted. All 7 of its members are placed; its wrapper
+directory is `ipra_observation_algebra`.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

@@ -1,0 +1,103 @@
+\section{Guarded operations, extensionality, and finite gluing}\label{sec:guarded}
+
+\subsection{Nonzero is not positive apartness}
+
+In constructive arithmetic, the proposition \(x\ne0\) does not generally provide an integer \(g\) such that \(|x|\ge2^{-g}\).  Algorithms for division, matrix inversion, Newton iteration, branch selection, and chart changes need such quantitative data to choose a finite input precision.
+
+A guarded operation therefore has two layers:
+\begin{enumerate}[label=(\arabic*)]
+  \item a total primitive-recursive program, defined on every code and permitted to return a default outside the intended domain;
+  \item a correctness theorem under a positive rational margin certificate.
+\end{enumerate}
+For inversion, a typical contract is
+\[
+ |x|\ge2^{-g},\quad |\tilde x-x|\le2^{-m}
+ \quad\Longrightarrow\quad
+ \left|\operatorname{inv}_{m,g}(\tilde x)-x^{-1}\right|\le2^{-q}
+\]
+when \(m\ge q+2g+c\).  The exact constant depends on the rational coding.  The backward demand edge for inversion is therefore \(q\mapsto q+2g+c\).
+
+\subsection{Totalization theorem}
+
+\begin{theorem}[Guarded totalization]\label{thm:totalization}
+Let a partial mathematical operation \(f\) have a finite approximation algorithm whose correctness proof uses only a decidable guard \(G(x,g)\) and a primitive-recursive demand \(d(q,g)\).  Define the program on all codes by returning a fixed default when the finite guard checker fails.  Then the program is primitive recursive and \iPRA\ proves
+\[
+ G(x,g)\wedge\Valid_X(x,d(q,g),a)
+ \longrightarrow
+ \Valid_Y(fx,q,\Run_f(x,q,g,a)).
+\]
+No correctness claim is made when \(G\) fails.
+\end{theorem}
+
+\begin{proof}
+The guard checker and branch selector are primitive recursive, so totalization preserves primitive recursiveness.  Under the guard hypothesis, reflection shows that the successful branch is taken.  The theorem-specific quantitative estimate proves output validity.  The failed branch is irrelevant under the hypothesis.  This pattern permits total terms in the language without weakening the mathematical domain condition.
+\end{proof}
+
+\subsection{Observational setoids}
+
+A code presentation \(X\) becomes extensional by equipping it with a family of finite observational equivalences
+\[
+ c\approx_q d.
+\]
+The intended properties are reflexivity, symmetry, a precision-degrading transitivity law, and congruence for every exported operation.  Global code equality is neither required nor desirable.
+
+For regular Cauchy names, \(c\approx_qd\) may assert that their dyadic approximants at a sufficiently high common precision are within \(2^{-q}\).  For algebraic objects, it may be equality modulo a supplied ideal-combination witness.  For finite covers, it may be overlap compatibility.  For root sets, it may be existence of a bounded matching between boxes.
+
+\begin{theorem}[Extensional contract composition]
+If \(C:X\to Y\) and \(D:Y\to Z\) have congruence moduli
+\[
+ c\approx_{d_C(q)}c'\Rightarrow C(c)\approx_q C(c'),
+ \qquad
+ y\approx_{d_D(r)}y'\Rightarrow D(y)\approx_rD(y'),
+\]
+then \(D\circ C\) has demand \(d_C(d_D(r))\) and the composed congruence proof.
+\end{theorem}
+
+\begin{proof}
+Apply the first congruence theorem at precision \(d_D(r)\), then the second at precision \(r\).  At the object level, instantiate both derivations and compose them by cut.
+\end{proof}
+
+\subsection{Finite nets in place of compactness}
+
+An effective compactness contract for a presented domain \(K\) consists of:
+\begin{itemize}
+  \item a primitive-recursive finite net \(N(K,q)\);
+  \item a coverage certificate proving that every admissible point has a net point within \(2^{-q}\);
+  \item a modulus transporting local estimates from net points to nearby points.
+\end{itemize}
+A minimum or finite subcover is then found by bounded search.  The theorem is conditional on the net and modulus producer; no completed compact space or arbitrary finite-subcover choice is required.
+
+\begin{theorem}[Certified finite-net transfer]
+Suppose \(f\) has a modulus \(m\) on \(K\), and a finite \(m(q+c)\)-net has been certified.  If a rational bound \(f(z)\le M-2^{-q-c'}\) is verified at every net point with enough evaluation precision, then \(f(x)\le M\) for every admissible \(x\in K\).  The constants \(c,c'\) are chosen so that evaluation and transport errors fit the slack.
+\end{theorem}
+
+\begin{proof}
+Given \(x\), the coverage certificate supplies a net point \(z\) within the modulus threshold.  The modulus bounds \(|f(x)-f(z)|\); the certified net inequality and the allocated error budget yield \(f(x)\le M\).  In the object proof, the arbitrary point is an open parameter, while the net search and all verification are bounded Boolean folds.
+\end{proof}
+
+\subsection{Finite-cover gluing}
+
+Let \(U_0,\ldots,U_{r-1}\) be a fixed finite cover.  A gluing certificate contains local codes \(s_i\), validity proofs on each \(U_i\), and compatibility witnesses on every overlap \(U_i\cap U_j\).  A global observer is computed from the finite tuple \((s_i)\).  Exact gluing requires a uniqueness theorem; approximate gluing requires an overlap diameter and a partition/selection stability estimate.
+
+\begin{theorem}[Finite gluing by stable observation]\label{thm:finite-gluing}
+Assume the local tuple relation is bounded and total, overlap compatibility is decidable, and every two compatible tuples have the same global observer.  Then least bounded search over tuple codes followed by the observer yields a canonical global output.  If equality is replaced by a diameter bound, the output is canonical up to that diameter.
+\end{theorem}
+
+\begin{proof}
+The tuple relation is a finite product relation.  Use bounded search to find the least valid compatible tuple.  Apply exact or approximate stable-observer elimination.  No quotient object needs to be constructed unless later theorems genuinely consume it.
+\end{proof}
+
+\subsection{Projective and quotient data}
+
+Many singular choices disappear when the output is represented invariantly:
+\begin{itemize}
+  \item a line is a primitive integer or rational vector modulo nonzero scaling, with equality witnessed by cross-multiplication;
+  \item a rotation axis is a projective vector or quaternionic relation, not a normalized signed unit vector at the identity;
+  \item an eigenobject at a repeated eigenvalue is a projector or invariant-subspace relation, not a chosen basis vector;
+  \item a divisor or sheaf section is represented by finite local data and explicit overlap witnesses.
+\end{itemize}
+Normalization is added only under a guard proving that a selected coordinate or norm is bounded away from zero.
+
+\subsection{Exact branch data}
+
+Exact Puiseux coefficients or analytic branches require more than arbitrary Cauchy coefficients.  A sound interface supplies an exact algebraic presentation, a factor/splitting certificate, and a separation or discriminant condition.  Without these data, the general output is a finite relation of approximate branches.  Stable symmetric observations may still be exact; individual labels are guarded.

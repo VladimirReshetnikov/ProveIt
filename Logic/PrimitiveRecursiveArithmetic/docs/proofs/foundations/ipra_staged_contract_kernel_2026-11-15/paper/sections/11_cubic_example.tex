@@ -1,0 +1,179 @@
+\section{Worked example: exact rational bisection for \texorpdfstring{$y^3+y=x$}{y3+y=x}}
+\label{sec:cubic}
+
+A framework report should include at least one complete cross-layer example.  We use the monotone cubic
+\[
+ f(y)=y^3+y.
+\]
+For rational input \(x\) and requested step count \(N\), the goal is to produce an exact rational bracket
+\([\ell_N,h_N]\) satisfying
+\[
+ f(\ell_N)\le x\le f(h_N),
+ \qquad
+ h_N-\ell_N=2^{-N}(h_0-\ell_0).
+\]
+This is a finite theorem requiring no completed real root.  Its ordinary interpretation yields a canonical
+Cauchy name for the unique real solution, but the iPRA theorem is the displayed rational contract.
+
+\subsection{Coding rational arithmetic}
+
+Represent a rational by an integer numerator and positive denominator.  Every comparison is decided by
+cross multiplication:
+\[
+ \frac ab\le\frac cd
+ \quad\Longleftrightarrow\quad
+ ad\le cb
+ \qquad(b,d>0).
+\]
+Addition, multiplication, negation, midpoint, and cubic evaluation are primitive recursive on signed
+integer codes.  Normalization by gcd is optional for correctness; unreduced fractions keep the program
+simpler.  The verifier carries denominator-positivity equations and uses exact integer inequalities.
+
+\subsection{Initial bracket}
+
+Set
+\[
+ B=|x|+1,
+ \qquad \ell_0=-B,
+ \qquad h_0=B.
+\]
+Then
+\[
+ f(B)=B^3+B\ge B>|x|\ge x,
+\]
+and
+\[
+ f(-B)=-B^3-B\le -B<-|x|\le x.
+\]
+Thus \([\ell_0,h_0]\) brackets the equation.  These are elementary integer inequalities formalizable with
+quantifier-free induction for multiplication and exponentiation, or by a small library of ordered-ring
+lemmas already instantiated for coded integers.
+
+\subsection{One bisection step}
+
+Given a valid bracket \((\ell,h)\), define the midpoint
+\[
+ m=\frac{\ell+h}{2}.
+\]
+The comparison \(f(m)\le x\) is decidable by rational cross multiplication.  Set
+\[
+ (\ell',h')=
+ \begin{cases}
+   (m,h),& f(m)\le x,\\
+   (\ell,m),& f(m)>x.
+ \end{cases}
+\]
+
+\begin{lemma}[Bisection preservation]
+If \(\ell\le h\) and \(f(\ell)\le x\le f(h)\), then the updated pair satisfies the same bracket
+inequalities and
+\[
+ h'-\ell'=\frac{h-\ell}{2}.
+\]
+\end{lemma}
+\begin{proof}
+In the first branch, \(f(m)\le x\le f(h)\), so \((m,h)\) is a bracket.  In the second branch, the decidable
+comparison gives \(x<f(m)\), while \(f(\ell)\le x\), so \((\ell,m)\) is a bracket.  In both cases midpoint
+arithmetic gives the width identity.  No monotonicity theorem is needed merely to preserve a sign bracket;
+monotonicity is used later for uniqueness and error interpretation.
+\end{proof}
+
+\subsection{Primitive recursion and invariant}
+
+Pack the rational pair as a state.  Define
+\[
+  s(0,x)=\langle\ell_0,h_0\rangle,
+  \qquad
+  s(Si,x)=\operatorname{bisect}(x,s(i,x)).
+\]
+Use the quantifier-free invariant
+\[
+ I(i):
+ \operatorname{ValidRat}(\ell_i)\wedge
+ \operatorname{ValidRat}(h_i)\wedge
+ \ell_i\le h_i\wedge
+ f(\ell_i)\le x\wedge x\le f(h_i)
+ \wedge 2^i(h_i-\ell_i)=h_0-\ell_0.
+\]
+All rational equalities and inequalities are Booleanized integer equations.  The base proof is the initial
+bracket calculation.  The step proof is bisection preservation plus
+\[
+  2^{i+1}(h_{i+1}-\ell_{i+1})
+  =2^{i+1}\frac{h_i-\ell_i}{2}
+  =2^i(h_i-\ell_i).
+\]
+Quantifier-free induction gives \(I(N)\) for arbitrary input step count \(N\).
+
+\begin{theorem}[Finite cubic bisection]
+There are fixed primitive-recursive rational functions \(\ell(x,N),h(x,N)\) such that iPRA proves, for
+all rational \(x\) and natural \(N\),
+\[
+ f(\ell(x,N))\le x\le f(h(x,N)).
+\]
+after decoding the rational inequalities, and
+\[
+ 2^N\bigl(h(x,N)-\ell(x,N)\bigr)=2(|x|+1).
+\]
+\end{theorem}
+\begin{proof}
+Compile the trace and invariant above using Theorem~\ref{thm:trace-reflection}.
+\end{proof}
+
+\subsection{Uniqueness and represented-root interpretation}
+
+For rationals \(u<v\),
+\[
+ f(v)-f(u)
+ =(v-u)(v^2+uv+u^2+1)>0.
+\]
+The quadratic factor is positive because
+\[
+ v^2+uv+u^2
+ =\left(v+\frac u2\right)^2+\frac{3u^2}{4}\ge0.
+\]
+After clearing denominators, this is a finite ordered-ring identity.  Hence \(f\) is strictly increasing
+on rational codes, and any two exact roots are equal.  More quantitatively,
+\[
+ f(v)-f(u)=(v-u)(v^2+uv+u^2+1)\ge v-u
+\]
+when \(u<v\).  Thus the inverse has the elementary modulus
+\[
+ |u-v|\le |f(u)-f(v)|
+\]
+for ordered rationals in the appropriate direction.
+
+Choose the midpoint name
+\[
+ a(q)=\frac{\ell(x,q+c)+h(x,q+c)}2
+\]
+with a fixed offset \(c\) large enough to absorb the initial width encoding.  The finite width identity
+proves a Cauchy modulus.  Any represented real satisfying \(y^3+y=x\) lies in every bracket and is within
+half the bracket width of the midpoint.  The ideal root is therefore a shorthand for the finite bracket
+name, not an additional object postulated in iPRA.
+
+\subsection{The staged graph}
+
+The example decomposes into reusable nodes:
+\begin{enumerate}
+  \item decode and validate the rational input;
+  \item compute \(B=|x|+1\) and prove the initial bracket;
+  \item define exact midpoint and cubic comparison;
+  \item compile the bisection loop from its quantifier-free invariant;
+  \item extract the final bracket and width theorem;
+  \item optionally prove monotonicity and construct the represented midpoint name.
+\end{enumerate}
+Each node has a small local arity.  The global theorem may use only the input rational code and \(N\).
+Arity-normalized specialization maps each local variable to its concrete global term and composes the
+proofs by the static graph theorem.
+
+\subsection{Executable evidence}
+
+The companion file \texttt{code/staged\_contracts.py} implements the exact rational algorithm using
+Python's \texttt{Fraction}.  The tests check bracket validity and exact width halving after every step.  The
+demo runs ten steps for \(x=7/3\) and writes a replayable JSON record.  The final bracket is
+\[
+ \frac{275}{256}\le y\le\frac{415}{384},
+ \qquad h-\ell=\frac{5}{768}.
+\]
+These computations are implementation evidence, not the proof of the universal theorem.  Their role is to
+exercise the same finite state transition and expose mistakes before the Lean object proof is completed.

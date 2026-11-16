@@ -1,0 +1,100 @@
+\section{One-loop normalization and trace reflection}\label{sec:loop-normal}
+
+\subsection{Certified iteration}
+
+A loop node is specified by:
+\begin{itemize}
+  \item a packed state code \(s\);
+  \item an initializer \(s_0(\vec x)\);
+  \item a transition \(T(i,s,\vec x)\);
+  \item a fuel term \(F(\vec x)\);
+  \item a quantifier-free invariant \(I(i,s,\vec x)\);
+  \item an output projection \(O(s)\).
+\end{itemize}
+All numerical maps are primitive recursive.  The state trace is the primitive recursion
+\[
+ S(0,\vec x)=s_0(\vec x),
+ \qquad
+ S(i+1,\vec x)=T(i,S(i,\vec x),\vec x).
+\]
+
+\begin{theorem}[Object trace reflection]\label{thm:trace-reflection}
+Assume object-level derivations of
+\begin{align*}
+ &I(0,s_0(\vec x),\vec x),\\
+ &I(i,s,\vec x)\longrightarrow I(i+1,T(i,s,\vec x),\vec x).
+\end{align*}
+Then \iPRA\ derives \(I(i,S(i,\vec x),\vec x)\) for all open \(i\), and in particular at the fuel term \(F(\vec x)\).  If a terminal derivation proves
+\[
+ I(F,S(F),\vec x)\longrightarrow Q(O(S(F)),\vec x),
+\]
+then \(Q\) is derivable.
+\end{theorem}
+
+\begin{proof}
+Substitute the trace term into the invariant to obtain the QF formula
+\[
+ J(i,\vec x)\equiv I(i,S(i,\vec x),\vec x).
+\]
+The base derivation is the supplied base proof followed by the zero computation equation for \(S\).  For the step, assume \(J(i,\vec x)\), use the supplied transition-preservation proof, and rewrite \(S(i+1)\) by the successor computation equation.  Apply quantifier-free induction to \(J\).  Substitution instantiates the resulting open theorem at \(F(\vec x)\), and modus ponens with the terminal derivation yields \(Q\).
+\end{proof}
+
+This theorem is already very close to the current \texttt{LeanProofs.IPRA.ind} API.  The accompanying \texttt{KernelCore.lean} packages exactly the base, step, and QF fields needed to invoke it.
+
+\subsection{Why all precision must be fixed before induction}
+
+A common invalid pattern is to put into the invariant the assertion
+\[
+  \forall q\; \text{``the state is correct to precision }q\text{''}.
+\]
+This is not quantifier-free.  Even when every individual precision computation is finite, the displayed invariant is stronger than the induction rule permits.
+
+The correct transformation is:
+\begin{enumerate}[label=(\arabic*)]
+  \item fix the terminal precision \(q_*\) as an open parameter;
+  \item run the reverse demand pass to calculate every intermediate request from \(q_*\);
+  \item allocate in the state only the finite observations required at those requests;
+  \item prove one QF invariant about this finite table;
+  \item after obtaining the open theorem for arbitrary \(q_*\), universally quantify over \(q_*\) if the final theorem needs all precisions.
+\end{enumerate}
+The universal quantifier is introduced after induction, not inside its matrix.
+
+\subsection{Collapsing nested bounded constructions}
+
+A fixed theorem may contain many loops, searches, and finite table passes.  They can be combined into one state recursion.
+
+\begin{theorem}[One-loop normal form]\label{thm:one-loop}
+Every fixed program generated from primitive-recursive assignments, finite conditionals, bounded loops, bounded searches, finite-table folds, and acyclic calls to previously generated routines can be transformed into:
+\begin{enumerate}[label=(\roman*)]
+  \item one primitive-recursive fuel term \(F(\vec x)\);
+  \item one packed state \(s\) containing a program counter, local registers, and loop counters;
+  \item one primitive-recursive transition \(T\);
+  \item primitive-recursive projections recovering the original outputs.
+\end{enumerate}
+If every source loop has a QF invariant and every source command has a local preservation derivation, the combined machine has a QF invariant and an object-level base and step derivation.
+\end{theorem}
+
+\begin{proof}
+Because the source program is fixed, its control-flow graph has finitely many labels.  Allocate a numerical program counter \(pc<L\).  Allocate a fixed tuple of registers large enough to hold every live local variable; registers not live at the current label are ignored.  Replace each atomic command by one branch of a finite selector on \(pc\).  A loop header tests its counter and jumps either to the body or the successor label.  A bounded search is its explicit \((found,witness,index)\) loop.  A finite table fold is an index/accumulator loop.
+
+Define a structural cost function in the metatheory.  An atomic command costs one step; sequential costs add; a loop with bound \(B\) costs a primitive-recursive expression obtained from \(B\) and a bound on the body cost; fixed nesting preserves primitive recursiveness.  Add a small constant for control transfers.  This gives total fuel \(F\).  Alternatively, include a halting flag and allow idle transitions after the source program halts; then any certified upper bound on the runtime is sufficient.
+
+The combined invariant is a finite conjunction indexed by control labels:
+\[
+  \bigwedge_{\ell<L}\bigl(pc=\ell\to I_\ell(\text{live registers})\bigr),
+\]
+together with range equations for the program counter, flags, and bounded indices.  Since \(L\) is fixed and every \(I_\ell\) is QF, the conjunction is QF.  The base proof establishes the invariant at the entry label.  The step proof performs a finite case split on the reflected value of \(pc\), invokes the local preservation derivation for that command, and establishes the invariant at the successor label.  Apply \cref{thm:trace-reflection}.  Output projection equations show that the packed final state agrees with the source program.
+\end{proof}
+\subsection{Clocked traces as an alternative}
+Sometimes it is easier to let an external producer supply a trace and have \iPRA\ verify it.  A trace certificate contains \(s_0,\ldots,s_F\).  A primitive-recursive checker verifies the initial state, every adjacent transition, and the terminal predicate.  Boolean fold reflection turns checker acceptance into the conjunction of local facts.
+This route is useful when the producer is complex but the transition is simple.  However, the checker still needs an object-level reflection theorem, and the trace length must have an explicit bound.  ``Python produced a valid trace'' is not itself the desired derivation; the checked acceptance equation and its reflection proof are.
+\subsection{Lexicographic descent and fuel}
+Algorithms are often justified by a decreasing tuple rather than an obvious loop bound.  Let
+\[
+ \rho(s)=(r_0(s),\ldots,r_{k-1}(s))
+\]
+take values in a bounded box \(0\le r_j<M_j\), and assume every nonterminal transition decreases \(\rho\) lexicographically.  Encode the tuple by the mixed-radix rank
+\[
+ R(\rho)=r_0\prod_{j>0}M_j+r_1\prod_{j>1}M_j+\cdots+r_{k-1}.
+\]
+Lexicographic decrease implies strict numerical decrease of \(R\).  Therefore the initial rank plus one is a primitive-recursive fuel bound.  The proof uses only finite arithmetic and is suitable for the algebraic backend.  This resolves many ``well-founded recursion'' uses in the packets without introducing transfinite induction.

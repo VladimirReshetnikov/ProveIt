@@ -1,0 +1,72 @@
+\section{Theorem catalog and dependency map}
+
+This appendix lists the generic results in dependency order.  ``Upstream'' means
+that the named theorem already occurs in the pinned repository.  ``Report''
+means that a complete human proof is given here and a Lean target is specified.
+
+\begin{longtable}{L{0.08\textwidth}L{0.30\textwidth}L{0.16\textwidth}L{0.35\textwidth}}
+\toprule
+ID & Result & Status & Dependencies and role \\
+\midrule
+U1 & \path{KPrf.subst} & Upstream checked & Specializes local native proofs and clause contexts.\\
+U2 & \path{KPrf.cut} & Upstream checked & Discharges retained or proved assumption clauses.\\
+U3 & \path{KPrf.toNPrf} & Upstream checked & Maps clause derivations to native scalar-core derivations.\\
+U4 & \path{kprf_iff_nprf} & Upstream checked & Completeness/equivalence after \path{unQ}.\\
+U5 & \path{native_iff_pra} & Upstream checked & Exports native proofs to ordinary iPRA.\\
+U6 & \path{pra_iff_native} & Upstream checked & Imports ordinary iPRA proofs into the native core.\\
+U7 & \path{IPRADerivations.ind} & Upstream checked & Open quantifier-free induction.\\
+U8 & \path{IPRADerivations.inst} & Upstream checked & Instantiates closed direct derivations.\\
+U9 & \path{ipra_ring} & Upstream checked tactic & Generates polynomial identity derivations.\\
+C1 & List cut & Report, Lean candidate & U2; discharges a list of generated assumptions.\\
+C2 & Native DAG compilation & Report, blueprint & C1; topological fold of local \(\KPrf\) proofs.\\
+C3 & Clause-to-iPRA export & Report, Lean candidate & U3 and U5.\\
+C4 & iPRA-to-clause import & Report, Lean candidate & U6 and U4.\\
+B1 & QF Booleanization & Report, blueprint & Structural syntax recursion; bounded folds.\\
+B2 & Finite trace reflection & Report, blueprint & B1 and U7.\\
+B3 & Least bounded search & Report, executable & B2 and B1.\\
+B4 & Complete bounded enumeration & Report, executable & B2 and B1.\\
+B5 & Finite lexicographic fuel & Report, executable & Mixed-radix rank.\\
+B6 & Common good finite window & Report, executable & Finite union bound and B3.\\
+D1 & Least acyclic demand & Report, executable & Reverse topological induction.\\
+D2 & Finite monotone closure & Report, executable & Rank sum on product of chains.\\
+D3 & Scheduled recurrence & Report, blueprint & D1/D2, B2, C2.\\
+R1 & Backward viability & Report, executable & Reverse Boolean dynamic program and B3.\\
+R2 & Exact observer elimination & Report, blueprint & R1 and bounded invariance.\\
+R3 & Approximate observer elimination & Report, executable & R1 and rational diameter.\\
+R4 & Motion-tail Cauchy bound & Report, executable & Finite triangle inequality.\\
+R5 & Gap-based exact recovery & Report, executable & Separation and B3.\\
+H1 & Height--list conversion & Report, executable & B4 and finite maximum.\\
+P1 & Producer--verifier--finalizer factorization & Design theorem & C2, explicit interfaces.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Minimal trusted path for a closed theorem}
+
+For a closed terminal formula \(A\), the proposed new code contributes only the
+program fold and bridge composition:
+\[
+\begin{array}{c}
+  h_i:\KPrf(\text{predecessor assumptions},A_i)\\[2mm]
+  \Downarrow\;\text{C1, C2}\\[2mm]
+  h:\KPrf([],A)\\[2mm]
+  \Downarrow\;\text{U3}\\[2mm]
+  \NPrf([],A)\\[2mm]
+  \Downarrow\;\text{U5}\\[2mm]
+  []\vdash_{\PRAAx}A.\mathsf{toPRA}.
+\end{array}
+\]
+All domain-specific computation occurs in the local proofs \(h_i\).  The
+compiler itself does not evaluate formulas or assert their truth.
+
+\subsection{Suggested first checked theorem}
+
+A useful smoke theorem is a two-node program.  Node 0 derives a simple iterator
+equation.  Node 1 assumes that equation and derives its symmetric form using a
+checked equality lemma.  The program compiler should derive the symmetric form
+from the empty context.  Export should produce a closed iPRA equality.  This
+example exercises clause assumptions, cut, and the bridge without requiring a
+new coding library.
+
+The second theorem should import one existing direct polynomial identity,
+compose it with a native substitution/equality node, and export it.  This tests
+the two-backend exchange.

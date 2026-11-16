@@ -1,0 +1,89 @@
+\section{Executive result and use of the framework}
+
+\subsection{The central problem}
+
+A mathematical proof can fail to become a proof in \iPRA\ for at least four very different reasons.
+
+First, the underlying theorem may be available in an ordinary mathematical language but its operations have not been compiled to primitive-recursive syntax.  Second, an algorithm may be primitive recursive and tested, while its invariant has not been turned into a quantifier-free object-language formula and proved by the induction rule of \iPRA.  Third, the mathematics may determine only a finite relation of acceptable approximate witnesses, while the attempted statement asks for one exact, continuously chosen witness.  Fourth, the proof may genuinely require quantitative information that has not been produced: a height cutoff, a modulus, a list of rational representatives, a zero-free region, or a separation gap.
+
+These cases should not be conflated.  In particular, an executable host program is not an object-theory proof; a finite cardinality bound is not a search cutoff; a finite cloud is not a canonical branch; and an unproved producer should not be hidden inside a definition called ``data.''  The purpose of \CIFER\ is to enforce these distinctions while retaining as much of each proof as is already constructive and finitary.
+
+\subsection{One output type instead of many informal statuses}
+
+Fix a number \(n\) of free numerical variables and a permanent input context \(\Gamma\) of formulas over those variables.  A \CIFER\ compilation has the following formal endpoint:
+\begin{equation}\label{eq:residual-endpoint}
+ B_1,\ldots,B_r,\Gamma\ \vdash_{\PRAAx}\ G.
+\end{equation}
+Here \(G\) is the requested theorem and the formulas \(B_i\) are the residual producer obligations.  Every step from the \(B_i\) and \(\Gamma\) to \(G\) is intended to be represented by a concrete Lean value of type \code{Prf PRAAx}.  The residual list is computed from the dependency graph of the selected query, so unused global assumptions do not appear.
+
+There are then three clean outcomes.
+
+\begin{enumerate}
+\item If \(r=0\), the result is a closed theorem of \iPRA.
+\item If object-language derivations \(\Gamma\vdash B_i\) are later supplied, simultaneous cut closes \eqref{eq:residual-endpoint} without changing the downstream proof.
+\item If some \(B_i\) remains unavailable, the package still contains a mathematically meaningful conditional theorem and an exact account of what is missing.
+\end{enumerate}
+
+This is more informative than a binary ``proved/not proved'' flag.  It also makes progress monotone: improving a producer removes a boundary node, while all verified consumers remain reusable.
+
+\subsection{The framework in six passes}
+
+A query-specific \CIFER\ build proceeds through six finite passes.
+
+\paragraph{Pass 1: representation audit.}
+Each ideal object is replaced by the finite information actually consumed by the theorem.  Exact integers and rationals use canonical codes.  Reals use precision-indexed rational enclosures or approximants.  Roots, eigenvectors, local branches, and geometric choices may use finite verified clouds instead of a global selector.  Quotient objects carry explicit equality certificates.
+
+\paragraph{Pass 2: graph specialization.}
+The host system constructs a fixed finite graph for the selected theorem.  It specializes all operations to concrete primitive-recursive syntax.  There is no object-theory interpreter for arbitrary encoded programs.  This avoids the impossible demand for a total primitive-recursive universal evaluator.
+
+\paragraph{Pass 3: backward residual and demand analysis.}
+Backward traversal identifies exactly the unresolved boundary leaves used by the goal.  A separate monotone closure computes precision, fuel, list, and search demands.  Cyclic precision dependencies are resolved on a finite capped lattice before any induction is invoked.
+
+\paragraph{Pass 4: forward finite evidence.}
+Primitive-recursive transducers, bounded loops, bounded searches, and finite relational viability tables are evaluated with the fixed demands.  This pass produces traces and certificates.  It is useful for testing, but it is not yet the proof.
+
+\paragraph{Pass 5: object-proof composition.}
+Each node carries a local derivation from its declared dependencies.  Quantifier-free loop invariants are proved by \code{PRA.qfInd}; local results are composed in topological order by \code{Prf.trans}.  The output is exactly \eqref{eq:residual-endpoint}.
+
+\paragraph{Pass 6: closure or honest export.}
+Available producer proofs discharge the residual context.  The resulting usual-iPRA derivation may then be transported through the checked \code{pra\_iff\_native} bridge.  Otherwise, the conditional result and residual report are exported together.
+
+\subsection{What is new relative to the existing finite-interface proposals}
+
+The existing repository contains several strong and mutually compatible ideas: certified finitary presentations, finite-use relations, proof-carrying observation graphs, query-specialized state machines, demand closure, stable observables, and local-to-global certificates.  \CIFER\ does not replace these ideas.  Its new organizing principle is that an unavailable producer is a first-class formula in the output sequent.
+
+This residualization has five consequences.
+
+\begin{enumerate}
+\item \textbf{A generic compiler can be complete without pretending to solve deep mathematics.}  Completeness means that it derives the target from the exact unresolved boundaries, not that every boundary is automatically inhabited.
+\item \textbf{Difficulty reports become compositional artifacts.}  A report can name a formula, verifier, and downstream theorem.  Later work needs only to prove that formula.
+\item \textbf{Irrelevant assumptions disappear.}  Residual extraction is query-local.  A height bound for one family does not contaminate an unrelated finite algebra theorem merely because both live in the same library.
+\item \textbf{Alternative constructive conclusions are explicit.}  If an exact selector needs a gap, the no-gap output can remain a finite relation, a stable observable, or an approximation theorem rather than being silently strengthened.
+\item \textbf{Proof status is machine-auditable.}  A closed endpoint has type \code{Prf PRAAx [] goal}; a conditional endpoint has a nonempty boundary context; a host test has neither type.
+\end{enumerate}
+
+\subsection{Main generic theorems}
+
+The human arguments in this report establish the following generic results.
+
+\begin{description}[style=nextline]
+\item[Residual compilation.] Every finite acyclic proof graph with local embedded derivations yields a derivation of the target from the dependency-normal set of reachable boundary leaves.
+\item[Fixed bounded reflection.] Every fixed quantifier-free or strictly bounded formula can be compiled to a primitive-recursive Boolean checker, with truth and falsity reflected in \iPRA.
+\item[Least bounded search.] A bounded scan returns the least witness and proves soundness, minimality, and the no-witness case by one quantifier-free invariant.
+\item[Capped demand closure.] An inflationary monotone precision transformer on a finite product of capped natural orders reaches its least fixed point after an explicit number of strict rank increases.
+\item[Finite-trace reflection.] A fixed primitive-recursive trace with a quantifier-free invariant yields the invariant at arbitrary primitive-recursive fuel and an unrestricted final formula through a terminal extractor.
+\item[Finite relational viability.] Backward dynamic programming decides whether a finite compatible path exists and constructs the lexicographically least path without invoking infinite choice.
+\item[Stable-observable elimination.] If all valid witnesses have the same finite observation, or observations lie in an explicitly small diameter, the theorem can eliminate internal witness choice.
+\item[Shrinking finite-horizon coherence.] Least viable choices at changing horizons form a Cauchy name under a shrinking-diameter modulus and a summable motion budget; no infinite branch object is required.
+\item[Height/list conversion.] For a decidable coded predicate, a height bound yields a complete finite list, and a complete finite list yields a height bound.  A mere cardinality bound supplies neither a stopping criterion nor the missing codes.
+\end{description}
+
+\subsection{Scope of the claimed resolution}
+
+The report resolves architectural and logical difficulties, not every theorem-specific mathematical difficulty.  For example, once a correct height bound is supplied, the conversion to complete finite enumeration is routine, uniform, and formalizable.  The framework does not manufacture a general effective Faltings or Siegel bound.  Once rational covering representatives for a Mordell--Weil descent are supplied, the finite descent and generator extraction are routine.  The framework does not turn Selmer classes into rational representatives without proof.  Once explicit analytic constants are supplied, finite prime-sum estimates can be compiled.  The framework does not conjure a zero-free region or an effective exceptional-zero bound.
+
+This boundary is a feature.  A general framework should solve the recurring proof-engineering problem completely and expose irreducible theorem-specific inputs exactly.
+
+\subsection{Artifact status}
+
+The generic arguments are fully written at the mathematical level.  The accompanying Python implementation is an exact finite reference and its regression tests are executed in this package.  The Lean files use the present repository names and include an object-language composition core, host graph definitions, demand and relational blueprints, and application interfaces.  They contain no admitted theorem, but the package does not claim that they were elaborated: no Lean executable was available in the artifact runtime.  Consequently, no new theorem in this report is labeled kernel-checked.

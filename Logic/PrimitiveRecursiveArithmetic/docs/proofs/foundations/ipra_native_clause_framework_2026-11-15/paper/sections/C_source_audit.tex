@@ -1,0 +1,88 @@
+\section{Source audit and comparison with prior frameworks}
+
+\subsection{Pinned repository state}
+
+The research audit used ProveIt commit
+\path{8649990597d73657bde480b6c389de7f85bc0cb0}, committed on
+16 November 2026 UTC, which is still 15 November in America/Los\_Angeles at the
+time of this work.  The commit itself concerns another project, but includes the
+recently placed iPRA framework packets and the new direct derivation library
+from preceding commits.
+
+Key source files and roles are:
+
+\begin{longtable}{L{0.48\textwidth}L{0.43\textwidth}}
+\toprule
+Path & Audited role \\
+\midrule
+\path{Logic/PrimitiveRecursiveArithmetic/README.md} & Defines iPRA used by the repository and records that proof packets were filed without verification.\\
+\path{ConciseIPRA/Lean/ConciseIPRA/NativeClausal.lean} & Defines \(\NFm.\mathsf{QFree}\), \path{unQ}, clauses, and the raw clause calculus.\\
+\path{ConciseIPRA/Lean/ConciseIPRA/NativeClausalDiagonal.lean} & Defines \(\KPrf\); proves substitution, cut, soundness to \(\NPrf\), and equivalence with the native kernel.\\
+\path{ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean} & Defines \path{NFm.toPRA}, \path{NFm.ofPRA}, \path{native_iff_pra}, \path{pra_iff_native}, and round trips.\\
+\path{Derivations/README.md} & States the checked status and architecture of direct theorem derivations.\\
+\path{Derivations/Lean/IPRADerivations/Core/Basic.lean} & Arithmetic symbols, equations, congruence, \path{ind}, and \path{inst}.\\
+\path{Derivations/Lean/IPRADerivations/Core/Tactic.lean} & Universal closure and \path{ipra_ring}.\\
+\path{docs/proofs/foundations/ocipra_framework_2026-11-15} & Observation contracts, theorem classes, demand closure, and producer/verifier distinctions.\\
+\path{docs/proofs/foundations/ipra_pfig_framework_2026-11-15} & Backward-demand/forward-execution proof graphs and compiler blueprint.\\
+\path{docs/proofs/foundations/ipra_proof_carrying_observation_graphs_2026-11-15} & Proof-carrying node architecture, relational paths, and stable observers.\\
+\bottomrule
+\end{longtable}
+
+\subsection{What is reused}
+
+This report reuses the finite-observation and explicit-resource discipline of
+the earlier packets.  In particular, it retains:
+
+\begin{itemize}
+\item deterministic, relational, stable-observer, and conditional theorem
+classes;
+\item backward precision demand and forward replay;
+\item bounded trace reflection and relational viability;
+\item the separation between producers, verifiers, and finalizers;
+\item the warning that cardinality is not a height bound;
+\item strict separation of semantic host theorems from object derivations.
+\end{itemize}
+
+These ideas are not rebranded as new discoveries.
+
+\subsection{What is new in the present synthesis}
+
+The principal new synthesis is to use the current five-rule \(\KPrf\) clause
+calculus as the compiler intermediate representation and to connect it
+bidirectionally with the newly checked direct derivation backend.  Earlier
+packets generally target \(\Prf\;\PRAAx\) directly or define their own contract
+structures.  The present design observes that:
+
+\begin{enumerate}
+\item graph composition is exactly \path{KPrf.cut};
+\item specialization is exactly \path{KPrf.subst};
+\item arbitrary native formulas can be normalized by \path{unQ};
+\item export is \path{KPrf.toNPrf} followed by \path{native_iff_pra};
+\item direct polynomial derivations can be imported by
+\path{pra_iff_native} and \path{kprf_iff_nprf}.
+\end{enumerate}
+
+This does not by itself complete the Lean compiler, but it removes most of its
+logical burden and gives a sharply bounded implementation project.
+
+\subsection{Environment audit}
+
+The artifact environment contained Python, \path{pdflatex}, \path{latexmk},
+\path{pdftoppm}, and PDF inspection tools.  It did not contain \path{lean} or
+\path{lake}.  No Lean compilation is therefore claimed.  The package includes
+candidate source and a completion plan, and all status files repeat this
+limitation.
+
+\subsection{Reproducibility}
+
+From the package root:
+
+\begin{lstlisting}[language={}]
+python3 verify.py
+./build.sh
+\end{lstlisting}
+
+The first command runs standard-library Python tests and checks the manifest.
+The second runs tests, regenerates the demo, compiles the PDF, records metadata,
+and refreshes checksums.  The build is offline and does not modify the ProveIt
+repository.

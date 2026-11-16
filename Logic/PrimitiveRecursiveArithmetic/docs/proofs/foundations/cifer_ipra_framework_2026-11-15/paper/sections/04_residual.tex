@@ -1,0 +1,201 @@
+\section{Residual compilation theorem}
+\label{sec:residual-compilation}
+
+\subsection{Finite proof graphs}
+
+Fix a permanent context \(\Gamma\).  A finite proof graph is a sequence of nodes
+\[
+ v_0,v_1,\ldots,v_{m-1}
+\]
+in topological order.  Node \(v_i\) carries a formula \(A_i\) and has one of three relevant kinds:
+
+\begin{enumerate}
+\item \emph{input}: \(A_i\in\Gamma\);
+\item \emph{boundary}: no local derivation is supplied;
+\item \emph{derived}: a finite predecessor list \(D_i\subseteq\{0,\ldots,i-1\}\) and a local derivation
+\begin{equation}\label{eq:local-node-proof}
+ (A_j)_{j\in D_i},\Gamma\vdash_{\PRAAx} A_i.
+\end{equation}
+\end{enumerate}
+A final node is simply a designated derived or boundary node whose formula is the query target.  A boundary final is permitted: it states that the query itself remains an unresolved producer.
+
+For clarity, predecessor lists are ordered and may contain repeated indices in raw input.  Normalization removes repetitions.  The proof does not depend on the order except for the exact list representation of the context.
+
+\subsection{Recursive residual sets}
+
+Define the dependency residual \(R(i)\) recursively along the topological order:
+\[
+ R(i)=
+ \begin{cases}
+  \varnothing,&v_i\text{ is input},\\
+  \{i\},&v_i\text{ is boundary},\\
+  \displaystyle\bigcup_{j\in D_i}R(j),&v_i\text{ is derived}.
+ \end{cases}
+\]
+The union is stable and duplicate-free in graph order.  Let \(\mathcal B_i\) be the list of formulas \(A_j\) with \(j\in R(i)\).
+
+\begin{remark}
+The set \(R(i)\) is a syntactic dependency normal form.  It removes unreachable and internally derived assumptions.  It is not claimed to decide whether one arbitrary boundary formula is intuitionistically derivable from the others.
+\end{remark}
+
+\subsection{Main theorem}
+
+\begin{theorem}[Residual compilation]\label{thm:residual-compilation}
+For every node \(v_i\) of a finite proof graph,
+\begin{equation}\label{eq:residual-node-sequent}
+ \mathcal B_i,\Gamma\vdash_{\PRAAx} A_i.
+\end{equation}
+Consequently, if \(t\) is the target node, the graph compiles to
+\[
+ \mathcal B_t,\Gamma\vdash_{\PRAAx} A_t.
+\]
+\end{theorem}
+
+\begin{proof}
+Proceed by induction on \(i\).
+
+If \(v_i\) is an input node, then \(R(i)=\varnothing\), and \(A_i\in\Gamma\).  Thus \eqref{eq:residual-node-sequent} is the hypothesis rule.
+
+If \(v_i\) is a boundary node, then \(\mathcal B_i=[A_i]\).  Again the conclusion follows by the hypothesis rule.
+
+Suppose \(v_i\) is derived.  For each \(j\in D_i\), the induction hypothesis gives
+\[
+ \mathcal B_j,\Gamma\vdash A_j.
+\]
+By weakening, each of these derivations is valid in the common context \(\mathcal B_i,\Gamma\), because \(R(j)\subseteq R(i)\).  The local proof \eqref{eq:local-node-proof} is a derivation from the predecessor formulas and \(\Gamma\).  Apply simultaneous cut, replacing every predecessor hypothesis \(A_j\) by its induction-hypothesis derivation and every permanent hypothesis by the hypothesis rule.  This yields
+\[
+ \mathcal B_i,\Gamma\vdash A_i.
+\]
+The three cases exhaust the node kinds.
+\end{proof}
+
+The proof is entirely intuitionistic and uses no semantic completeness theorem.  Its Lean realization is a fold of \code{ResidualBuild.stepFrom}; simultaneous cut is \code{Prf.trans}.
+
+\subsection{Closure theorem}
+
+\begin{corollary}[Boundary discharge]\label{cor:boundary-discharge}
+Let the target residual be \(\mathcal B_t=[B_1,\ldots,B_r]\).  If
+\[
+ \Gamma\vdash B_k
+\]
+for every \(k\le r\), then \(\Gamma\vdash A_t\).
+\end{corollary}
+
+\begin{proof}
+Apply simultaneous cut to the target derivation of \cref{thm:residual-compilation}, replacing each boundary hypothesis by its supplied derivation and each member of \(\Gamma\) by the hypothesis rule.
+\end{proof}
+
+This corollary is the modular closure point.  A downstream packet need not be regenerated when a producer is improved.  It is enough to supply a proof of the boundary formula with the same interface.
+
+\subsection{Curried form}
+
+Natural-deduction introduction yields a closed implication form:
+\[
+ \Gamma\vdash B_1\to(B_2\to\cdots(B_r\to A_t)\cdots).
+\]
+The context form is preferable for proof-graph composition because dependencies are unordered resources, while the curried form is convenient for statement export.  Both are intuitionistically equivalent by repeated implication introduction and elimination.
+
+\subsection{Correctness of backward extraction}
+
+The executable extractor starts at a target \(t\), marks it, and repeatedly marks every predecessor of a marked node.  After at most \(m\) sweeps, no new node can be marked.  On a topologically ordered graph, a single descending sweep suffices, but the repeated form is easier to implement generically.
+
+\begin{lemma}[Reachability correctness]\label{lem:reachability}
+After \(m\) sweeps, a node \(j\) is marked exactly when there is a directed dependency path from \(t\) to \(j\), allowing the empty path at \(t\).
+\end{lemma}
+
+\begin{proof}
+For soundness, marks are introduced only at the target or by following one dependency edge from an already marked node.  Induction on the sweep number therefore turns every mark into a path.
+
+For completeness, let \(j\) be at path distance \(d\) from \(t\).  Induction on \(d\) shows that \(j\) is marked after at most \(d\) sweeps.  A simple path has length below \(m\), because the graph is acyclic.  Hence \(m\) sweeps suffice.
+\end{proof}
+
+Filtering the marked nodes by boundary kind gives exactly \(R(t)\).  Inputs are not residuals, and derived nodes are expanded to their predecessors.
+
+\subsection{Irrelevance and monotonicity}
+
+\begin{proposition}[Irrelevant boundaries are absent]
+If a boundary node \(b\) is not reachable from the target, then \(b\notin R(t)\) and its formula is not needed in the compiled target sequent.
+\end{proposition}
+
+\begin{proof}
+Immediate from the recursive definition of \(R\), or from \cref{lem:reachability}.
+\end{proof}
+
+\begin{proposition}[Monotonic progress]
+Replacing a boundary node by a derived node whose predecessors have residual set \(S\) replaces that boundary in every downstream residual by \(S\), leaving all local proofs downstream unchanged.
+\end{proposition}
+
+\begin{proof}
+The recursive equation for the improved node changes from \(R(b)=\{b\}\) to \(R(b)=S\).  Every downstream residual is obtained by finite union, so substitution propagates mechanically.  The formulas and local derivations of downstream nodes are unchanged; only the context from which the same composed proof is read changes.
+\end{proof}
+
+This is the formal sense in which work on producers is modular.
+
+\subsection{Declared boundary implications}
+
+Sometimes a library knows that one boundary implies another.  For example, a complete finite list implies a height bound by taking a maximum, or a stronger modulus implies a weaker one.  Such knowledge should not be hard-coded into residual extraction.  Instead, add a derived node carrying the embedded implication proof.  Dependency expansion will then select the stronger primitive assumption and eliminate the derived one.
+
+This design keeps normalization auditable.  Every nontrivial reduction between boundaries is itself a theorem, not a meta-level heuristic.
+
+\subsection{Alternative producers}
+
+A target may have two independent proof routes.  A plain DAG whose node requires all predecessors cannot represent disjunctive availability directly.  \CIFER\ provides two safe encodings.
+
+\paragraph{Finite route selection.}
+Create one derived target for each route, then a final node whose local proof uses an explicit route certificate \(r\) and bounded case analysis.  The producer boundary says that one route certificate and its evidence are available.  This is appropriate when the route is decidable from finite input data.
+
+\paragraph{Relational route cloud.}
+Return all successful routes as a finite relation and apply a stable observer to their common conclusion.  This is appropriate when selecting a canonical route is unnecessary or unstable.
+
+What is not permitted is an implicit meta-level choice of whichever unproved route happens to be convenient.
+
+\subsection{Cyclic theorem dependencies}
+
+The proof graph itself must remain acyclic.  A logical cycle
+\[
+ A\text{ from }B,\qquad B\text{ from }A
+\]
+contains no proof unless one direction has an independent base, an induction principle, or a least-fixed-point theorem already represented in the object theory.  Such cycles must be packaged as one trace node with an invariant or resolved by an explicit induction.  Only the demand graph may use the finite fixed-point construction of \cref{sec:demand-closure}.
+
+\subsection{Producer/verifier factorization theorem}
+
+Residual compilation makes the following common pattern precise.
+
+\begin{theorem}[Producer--verifier factorization]\label{thm:producer-verifier}
+Suppose a verifier graph compiles to
+\[
+ B(x,e),\Gamma(x)\vdash G(x,e),
+\]
+and a producer has an embedded proof
+\[
+ \Gamma(x)\vdash B(x,p(x))
+\]
+for a primitive-recursive term \(p\).  Then
+\[
+ \Gamma(x)\vdash G(x,p(x)).
+\]
+\end{theorem}
+
+\begin{proof}
+Instantiate the verifier theorem at \(e=p(x)\), then cut in the producer proof.
+\end{proof}
+
+The theorem is elementary, but it captures a crucial engineering boundary.  A difficult producer can be developed and audited independently from a large downstream verification library.
+
+\subsection{Residuals as research questions}
+
+A residual formula should be stated at the strongest reusable level justified by the consumer.  For example, a Diophantine consumer may not need ``the general effective Faltings theorem.''  It may need:
+\begin{quote}
+Given the code of this fixed curve family and parameter \(u\), return a natural number \(H(u)\) and prove that every rational point has canonical numerator and denominator height at most \(H(u)\).
+\end{quote}
+This formula is narrower, computationally explicit, and directly connectable to finite enumeration.  The residual report thus becomes a list of concrete research questions with exact downstream consequences.
+
+\subsection{Implementation invariant}
+
+At every prefix of a topological fold, maintain:
+\[
+ \forall A\in\textit{done},\quad \mathcal B_t,\Gamma\vdash A,
+\]
+where \(\mathcal B_t\) is the already computed target residual.  A new node's local derivation has context \(\textit{deps}\mathbin{++}(\mathcal B_t\mathbin{++}\Gamma)\).  Simultaneous cut replaces the dependency hypotheses with stored derivations.  This is the invariant implemented by \code{ResidualBuild} in the accompanying Lean outline.
+
+One could instead store the smaller node-specific residual \(\mathcal B_i\) for each node.  That representation is more precise but requires context transport when composing nodes.  The target-residual schedule is simpler: every reachable node is proved under one common context, and weakening supplies unused boundaries.  The paper's mathematical theorem justifies both implementations.

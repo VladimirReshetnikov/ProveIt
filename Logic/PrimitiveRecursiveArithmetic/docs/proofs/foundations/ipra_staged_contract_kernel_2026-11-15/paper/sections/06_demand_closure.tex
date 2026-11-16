@@ -1,0 +1,179 @@
+\section{Backward demands and finite cyclic closure}
+\label{sec:demand}
+
+Demand propagation is the bridge between a consumer-facing theorem and the producer precisions or resources
+needed to prove it.  It should be a finite calculation, not an appeal to an unspecified continuity
+principle.  This section gives exact algorithms for acyclic graphs and for monotone cyclic requirements
+inside an explicit finite cap.
+
+\subsection{Acyclic reverse propagation}
+
+Let a finite computation graph have nodes \(0,\ldots,m-1\) in topological order.  Each edge
+\(u\to v\) carries a primitive-recursive transformer
+\[
+  D_{u\leftarrow v}(q_v,x)
+\]
+which states how much of node \(u\)'s output is required to produce node \(v\)'s output at demand \(q_v\).
+If node \(u\) has several consumers, combine their requests by a primitive-recursive join, usually maximum
+coordinatewise.  Starting from the public demand at the final nodes, traverse the graph in reverse order:
+\[
+ q_u = q_u^{\mathrm{external}}\vee
+       \bigvee_{u\to v}D_{u\leftarrow v}(q_v,x).
+\]
+Because the graph is finite and fixed, this reverse traversal is either unrolled into a concrete term or
+implemented as a primitive recursion over a coded node table.  The output is a complete vector of demands.
+
+\begin{theorem}[Acyclic demand soundness]
+Suppose every local contract proves that inputs satisfying the edge demands yield the requested output
+demand.  Then the reverse pass followed by the forward computation proves the final public contract.
+\end{theorem}
+\begin{proof}
+Induct forward over the topological order.  At node \(v\), the reverse pass guarantees that every predecessor
+was computed at least to \(D_{u\leftarrow v}(q_v,x)\).  Specialize the local continuity or correctness
+contract at these demands, align its hypotheses with the already compiled predecessor contracts, and cut.
+The staged graph theorem performs exactly this composition.  The final node has the public demand by
+construction.
+\end{proof}
+
+For many applications this simple reverse pass is enough.  Addition of represented reals asks both inputs
+for roughly the output precision.  Multiplication asks additionally for magnitude bounds.  Evaluation of a
+truncated series propagates a coefficient cutoff and input precision to its coefficient and argument
+producers.  A finite cover propagates the list of chart intersections that the final check will inspect.
+
+\subsection{Why cycles arise}
+
+Cycles appear even when the forward computation is acyclic.  An operation may need an input magnitude bound
+to determine a precision, while that magnitude bound is itself certified at a precision depending on the
+operation.  A branch-selection procedure may need a gap estimate, whose verifier uses a refined branch
+approximation.  A local adaptive method may revise the requested radius after observing a finite error
+certificate.
+
+One must not simply say ``take a fixed point'' unless a finite constructive method is given.  The framework
+uses a finite lattice with an explicit cap.
+
+\subsection{Monotone closure in a finite box}
+
+Fix \(r\) demand coordinates and caps \(M_0,\ldots,M_{r-1}\).  Let
+\[
+ L=\prod_{i<r}[0,M_i]
+\]
+with coordinatewise order.  A transformer \(F:L\to L\) is
+\emph{inflationary} if \(q\le F(q)\), and monotone if \(q\le q'\) implies
+\(F(q)\le F(q')\).  Starting from an initial request \(q^0\), define
+\[
+ q^{t+1}=F(q^t).
+\]
+
+\begin{theorem}[Bounded demand closure]
+\label{thm:demand-closure}
+If \(F\) is inflationary and maps the explicit finite box \(L\) into itself, then the iteration reaches a
+fixed point after at most
+\[
+  1+\sum_{i<r}(M_i-q_i^0)
+\]
+steps.  The result is the least fixed point of \(F\) above \(q^0\).
+\end{theorem}
+
+\begin{proof}
+As long as \(q^{t+1}\ne q^t\), inflationarity implies that at least one coordinate strictly increases, so
+\(
+ S(q)=\sum_i q_i
+\)
+increases by at least one.  It is bounded by \(\sum_i M_i\).  Hence a fixed point appears within the stated
+fuel.  For leastness, let \(p\ge q^0\) be any fixed point.  By induction and monotonicity,
+\(q^t\le p\) for every \(t\): the base is the assumption, and
+\(q^{t+1}=F(q^t)\le F(p)=p\).  At stabilization, the computed fixed point is therefore below every such
+\(p\).
+\end{proof}
+
+The execution is primitive recursive: the vector has fixed length, \(F\) is fixed, and the fuel is a
+primitive-recursive sum.  A quantifier-free invariant records that every coordinate lies below its cap,
+that the sequence is inflationary, and that the current state equals the \(t\)-fold iterate.  Leastness can
+be exposed as a separate theorem parameterized by a candidate fixed point \(p\).
+
+\subsection{Obtaining the cap}
+
+The cap is not decorative.  It is a resource theorem.  There are several legitimate sources.
+
+\begin{enumerate}
+  \item A direct analytic bound: for example, every internal precision needed for output precision \(q\)
+        is at most \(aq+b\) for fixed integers \(a,b\).
+  \item A finite state space: demands are subsets of a fixed finite observation set, so the cap is its
+        cardinality or bit mask.
+  \item A supplied boundary datum: a condition number, separation bound, coefficient height, or finite
+        cover determines the cap.
+  \item A syntactic graph bound: a fixed number of nodes and local transformers with known affine growth
+        yield a primitive-recursive global upper bound by repeated composition.
+\end{enumerate}
+
+Without a cap, monotone iteration over \(\Nat^r\) need not stabilize.  The framework therefore classifies a
+claim of cyclic demand closure without a cap as incomplete.
+
+\subsection{Noninflationary transformers}
+
+A raw system of equations may give a monotone but not inflationary transformer \(G\).  Replace it by
+\[
+ F(q)=q\vee G(q).
+\]
+Fixed points of \(F\) are post-fixed points of \(G\), which is exactly what demand soundness requires: the
+allocated resource dominates every locally requested resource.  The least \(F\)-fixed point above the
+external request is the least closed allocation.  This transformation is primitive recursive and makes the
+termination argument transparent.
+
+\subsection{Demand closure as a loop node}
+
+The closure computation becomes a local loop contract:
+\begin{itemize}
+  \item precondition: the initial request and cap are valid, and \(F\) maps the box into itself;
+  \item state: \((t,q^t,\mathit{stable})\);
+  \item invariant: validity, box membership, inflationarity along the trace, and correctness of the iterate;
+  \item fuel: \(1+\sum_i(M_i-q_i^0)\);
+  \item postcondition: \(F(q)=q\) and \(q\) dominates the initial request.
+\end{itemize}
+The loop compiles by Theorem~\ref{thm:loop-compile}, and the resulting implication is inserted as a node in
+the static proof graph.  The forward computation then uses the closed demands as ordinary parameters.
+
+\subsection{Backward demand for changing-parameter recursion}
+
+Consider a forward recurrence
+\[
+ s_{i+1}=T(i,s_i,p_i),
+ \qquad p_{i+1}=U(i,s_i,p_i),
+\]
+and suppose a request on the final state at time \(N\) induces requests on earlier states and parameters.
+For a fixed horizon, compute demands backward:
+\[
+ d_N=q,
+ \qquad d_i=B(i,d_{i+1},\widehat s_i,\widehat p_i),
+\]
+where \(\widehat s_i,\widehat p_i\) are coarse envelopes known before the precise run.  Then replay forward
+at the allocated demands.  The proof has two layers:
+\begin{enumerate}
+  \item a reverse finite induction or trace proves that each \(d_i\) is sufficient for the next local step;
+  \item a forward quantifier-free induction proves that the actual approximations meet those demands.
+\end{enumerate}
+If the backward transformer itself needs information refined by the forward run, enclose both in the finite
+cyclic closure above.  The cap must include both precision and envelope coordinates.
+
+\subsection{Metastable consumers}
+
+Some theorems do not need a global convergence modulus.  A finite consumer inspects only a window
+\([N,N+g(N)]\) and asks for approximate constancy there.  The demand is then the finite function code for
+\(g\), an error \(q\), and a search bound for \(N\).  A bounded search through candidate windows, with a
+Boolean verifier for all pairs in the window, is a deterministic finite contract once the search bound is
+available.  This form is often substantially weaker than a Cauchy modulus and is compatible with iPRA.
+The framework keeps the two statements distinct: a metastable witness does not silently become a full
+modulus.
+
+\subsection{A failure mode exposed by the framework}
+
+Suppose a draft defines demands by equations
+\[
+ q_1=q+q_2,
+ \qquad q_2=q_1+1.
+\]
+No finite solution exists.  A vague instruction to ``iterate until stable'' hides the contradiction.  The
+finite-box method catches it: either the transformer escapes every proposed cap, or it reaches the cap
+without a fixed point.  Likewise, a discontinuous branch selector may create an unbounded demand near a
+collision.  The correct repair is not a larger arbitrary cap but a relational output or an explicit gap
+assumption.  Demand analysis is therefore also a diagnostic tool.

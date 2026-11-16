@@ -1,0 +1,44 @@
+{
+  "name": "cubic_bisection_y3_plus_y",
+  "global_arity": 2,
+  "base_context": ["ValidRational(x)", "Nat(N)"],
+  "nodes": [
+    {
+      "name": "initial_bracket",
+      "kind": "deterministic",
+      "local_arity": 1,
+      "local_context": ["ValidRational(u)"],
+      "local_goal": "Bracket(u,-(|u|+1),|u|+1)",
+      "substitution": ["x"],
+      "dependencies": [],
+      "proof_constant": "Cubic.initialBracket",
+      "status": "human_proved"
+    },
+    {
+      "name": "bisection_trace",
+      "kind": "loop",
+      "local_arity": 2,
+      "local_context": ["Bracket(u,lo0,hi0)", "Nat(k)"],
+      "local_goal": "BracketWidthAfter(u,k)",
+      "substitution": ["x", "N"],
+      "dependencies": ["initial_bracket"],
+      "proof_constant": "Cubic.bisectionLoop",
+      "resource_bound": "N",
+      "invariant": "bracket validity and 2^i*(hi_i-lo_i)=hi_0-lo_0",
+      "status": "human_proved"
+    },
+    {
+      "name": "final",
+      "kind": "deterministic",
+      "local_arity": 2,
+      "local_context": ["BracketWidthAfter(u,k)"],
+      "local_goal": "CubicBisectionTheorem(u,k)",
+      "substitution": ["x", "N"],
+      "dependencies": ["bisection_trace"],
+      "proof_constant": "Cubic.finish",
+      "status": "human_proved"
+    }
+  ],
+  "final_node": "final",
+  "boundary_data": []
+}

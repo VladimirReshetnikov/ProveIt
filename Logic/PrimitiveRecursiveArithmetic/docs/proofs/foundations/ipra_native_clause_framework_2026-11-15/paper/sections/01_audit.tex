@@ -1,0 +1,163 @@
+\section{Repository audit and the actual remaining layer}
+
+\subsection{Pinned source baseline}
+
+The audit was made against ProveIt commit
+\path{8649990597d73657bde480b6c389de7f85bc0cb0}.  The relevant directory has
+three logically different strata.
+
+\begin{enumerate}
+\item \path{ConciseIPRA} is a kernel-checked formalization of a small native
+calculus, an equality calculus, and ordinary iPRA, together with
+bi-interpretations.
+\item \path{docs/proofs} is a large research corpus.  The packets contain
+human proofs, code, and Lean plans, but the repository explicitly records that
+they were filed without rerunning or checking them.
+\item \path{Derivations} is a new checked library of actual
+\(\Prf\;\PRAAx\) derivations.  Its first domain backend develops arithmetic,
+a quotient semiring, integer differences, and a ring tactic, and applies them
+to triangle identities.
+\end{enumerate}
+
+The distinction matters.  A packet may contain a correct mathematical
+argument, a tested exact program, and a native Lean theorem while still lacking
+a term of the type demanded by the embedded calculus.  The present framework
+is designed to turn local embedded derivations into larger embedded
+derivations; it does not reclassify evidence from one stratum as evidence in
+another.
+
+\subsection{What the earlier frameworks established}
+
+The most mature foundation packets converge on a strong common discipline.
+Infinite mathematical objects are accessed through finite observations;
+algorithms declare backward precision demands; recursion is bounded and carries
+a quantifier-free invariant; nonunique witnesses may be retained as finite
+relations; and final exact branching is guarded by an apartness or gap
+certificate.  PCOG and PFIG further formulate finite proof graphs and propose
+compilers that fold local proofs in topological order.  OCiPRA classifies
+statements into deterministic, relational, stable-observable, and conditional
+producer forms.
+
+These are substantial achievements.  The issue is not that another vocabulary
+for ``certificate'' is needed.  The issue is that the generic compiler layer in
+those packets is predominantly a blueprint.  In particular, many constructions
+end at one of the following levels:
+
+\begin{itemize}
+\item a host function is proved correct as a function on natural numbers;
+\item an exact Python program accepts all supplied examples;
+\item a Lean structure contains a field whose type is the required derivation;
+\item a local loop lemma is stated, but the substitutions, contexts, and cuts
+needed to compose an application are left open;
+\item a semantic theorem is proved about the interpretation of a formula, but
+no derivation of the formula is built.
+\end{itemize}
+
+The new observation in this report is that current \path{ConciseIPRA} already
+contains an intermediate proof language tailored to remove much of that work.
+
+\subsection{The native clause calculus as an overlooked compiler IR}
+
+A clause in \path{NativeClausal.lean} is a pair
+\[
+  [A;y.B(y)] \quad\text{read as}\quad A\to\forall y\,B(y).
+\]
+The calculus \(\KPrf\) has equation formulas and the native \(D\)-binder, and
+five rule families: reflexivity, two evaluation cases, clause use, elimination,
+and introduction.  The checked library proves, among other facts,
+\[
+\begin{aligned}
+&\KPrf.\mathsf{subst},\qquad
+  \KPrf.\mathsf{cut},\qquad
+  \KPrf.\mathsf{toNPrf},\\
+&\mathsf{kprf\_iff\_nprf},\qquad
+  \mathsf{kprf\_iff\_nprf\_of\_qfree},\qquad
+  \mathsf{native\_iff\_pra}.
+\end{aligned}
+\]
+Thus the two operations that dominate a proof-graph compiler---specializing a
+local theorem and discharging already proved dependencies---are not new
+metatheorems to be built from scratch.  They are checked operations of the
+intended object-level proof system.
+
+This changes the recommended architecture.  Instead of defining a rich host
+record \path{Contract} and later proving that every record field can be turned
+into a derivation, we use an actual \(\KPrf\) derivation as the proof-carrying
+field from the beginning.  A compiler fold then produces a larger \(\KPrf\)
+derivation by cut.  Only at the boundary is the checked bridge to ordinary iPRA
+applied.
+
+\subsection{The new direct derivation backend}
+
+The current \path{IPRADerivations} library fills another repeated gap.  Its
+\path{Core/Basic.lean} supplies concrete primitive-recursive symbols for
+addition, multiplication, predecessor, and truncated subtraction, together
+with their equations, congruence rules, open quantifier-free induction
+\path{ind}, and instantiation \path{inst}.  The subsequent files construct a
+cancellative semiring of terms modulo provable equality, a ring of integer
+differences, and the tactic \path{ipra_ring}.  The result of the tactic is not
+merely a Mathlib equality: it is a derivation in \(\Prf\;\PRAAx\).
+
+Accordingly, the present framework has two mutually connected backends:
+
+\begin{center}
+\begin{tikzpicture}[
+  every node/.style={draw,rounded corners,align=center,inner sep=6pt,font=\small},
+  every edge quotes/.style={draw=none,font=\footnotesize}, >=Latex]
+\node (math) {domain mathematics\\finite presentations};
+\node (pra) [below left=13mm and 14mm of math] {direct algebra backend\\$\Prf\;\PRAAx$};
+\node (k) [below right=13mm and 14mm of math] {native control backend\\$\KPrf$ clause programs};
+\node (out) [below=37mm of math] {closed iPRA theorem\\$[]\vdash_{\PRAAx}\Phi$};
+\draw[->] (math) -- node[left,draw=none,font=\footnotesize]{polynomial identities} (pra);
+\draw[->] (math) -- node[right,draw=none,font=\footnotesize]{search, traces, relations} (k);
+\draw[<->] (pra) -- node[above,draw=none,font=\footnotesize]{checked translations} (k);
+\draw[->] (pra) -- node[left,draw=none,font=\footnotesize]{export} (out);
+\draw[->] (k) -- node[right,draw=none,font=\footnotesize]{export} (out);
+\end{tikzpicture}
+\end{center}
+
+A polynomial identity should go through the first backend.  A bounded search,
+finite branch tree, demand scheduler, or relational observer should go through
+the second.  A theorem may use both.
+
+\subsection{Recurring failure modes}
+
+The source audit identifies nine recurring failure modes that a general
+framework must address explicitly.
+
+\begin{longtable}{L{0.25\textwidth}L{0.66\textwidth}}
+\toprule
+Failure mode & Required repair \\
+\midrule
+Host correctness only & Carry an actual \(\KPrf\) or \(\Prf\;\PRAAx\) local proof and compose it in the embedded calculus.\\
+Universal evaluator assumption & Specialize each fixed finite program to concrete primitive-recursive syntax before internalization.\\
+Hidden precision choices & Propagate an explicit demand vector backward; for cycles compute a bounded least fixed point.\\
+Unstable exact selector & Keep a finite relation or cloud and extract only a stable observation.\\
+Approximate equality used as exact equality & Require a positive gap or retain an error-bearing statement.\\
+Cardinality used as cutoff & Require a code-height bound or a complete finite list.\\
+Classical compactness used silently & Replace it by a finite cover, finite subcover certificate, or metastable finite window.\\
+Deep producer renamed ``certificate'' & State the producer as a separate interface and prove only the verifier and compiler generically.\\
+One large theorem with unclear status & Maintain a theorem ledger separating human proof, executable check, Lean outline, and kernel-checked derivation.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Objective of the present report}
+
+The objective is not to assert that all mathematics is primitive recursive in
+an unqualified sense.  It is the following conditional but useful compiler
+theorem.
+
+\begin{principle}[Native proof-producing compilation]
+For a fixed mathematical construction, suppose all ideal objects are replaced
+by finite observations; all searches, loops, and branch sets have explicit
+bounds; all non-total operations are guarded by certificates; and every local
+operation carries a derivation in either the native clause calculus or ordinary
+iPRA.  Then the finite dependency graph can be compiled, by checked
+substitution and cut, into an ordinary iPRA derivation of its exported finite
+contract.
+\end{principle}
+
+The statement deliberately has hypotheses.  Those hypotheses are where a deep
+mathematical theorem contributes its effective content.  The value of the
+framework is that, once the content is present, the remaining encoding,
+resource accounting, finite search, and proof composition are uniform.

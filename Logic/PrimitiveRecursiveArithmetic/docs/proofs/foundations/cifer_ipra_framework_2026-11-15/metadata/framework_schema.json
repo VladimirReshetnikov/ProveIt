@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CIFER query-specialized proof graph",
+  "type": "object",
+  "required": ["name", "target", "nodes"],
+  "properties": {
+    "name": {"type": "string"},
+    "permanent_context": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "target": {"type": "string"},
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "kind", "statement"],
+        "properties": {
+          "name": {"type": "string"},
+          "kind": {
+            "enum": ["input", "local", "boundary", "final"]
+          },
+          "statement": {"type": "string"},
+          "deps": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "producer": {"type": ["string", "null"]},
+          "verifier": {"type": ["string", "null"]},
+          "local_object_derivation": {"type": ["string", "null"]},
+          "demand_transform": {"type": ["string", "null"]},
+          "evidence_kind": {
+            "enum": [
+              "exact",
+              "trace",
+              "certificate",
+              "relational",
+              "observation",
+              "boundary",
+              "none"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true,
+  "notes": [
+    "Nodes must be listed in proof-topological order.",
+    "Primitive boundary nodes have no dependencies.",
+    "Demand dependencies may be cyclic and are solved separately under an explicit cap.",
+    "A closed formal result requires actual Prf PRAAx values for every local derivation and every residual boundary."
+  ]
+}

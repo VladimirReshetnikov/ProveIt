@@ -1,0 +1,211 @@
+\section{Worked closed benchmark: the inverse of \(y^3+y\)}
+
+\subsection{Purpose of the benchmark}
+
+A general framework should close at least one nontrivial theorem end to end.  The equation
+\begin{equation}\label{eq:cubic-equation}
+ y^3+y=x
+\end{equation}
+is a useful benchmark because it combines signed rational coding, inequalities, a bounded trace, precision demand, a represented-real output, and uniqueness, yet it needs no deep residual producer.
+
+The input is a rational code \(x=a/b\) with \(b>0\).  The output is a primitive-recursive regular name for the unique real solution, together with rational intervals certified to contain it at every requested precision.
+
+\subsection{Strict monotonicity}
+
+Let \(F(t)=t^3+t\).  For rationals \(r<s\),
+\begin{align*}
+ F(s)-F(r)
+ &= (s-r)(r^2+rs+s^2+1).
+\end{align*}
+The second factor is positive.  Indeed,
+\[
+ 4(r^2+rs+s^2)=(2r+s)^2+3s^2\ge0,
+\]
+so \(r^2+rs+s^2+1\ge1\).  Hence \(F(s)>F(r)\).
+
+All inequalities can be checked by clearing positive denominators.  The identity is polynomial and can be proved by ring normalization or a short sequence of distributive rewrites in the object arithmetic library.
+
+\begin{lemma}[Cubic monotonicity]\label{lem:cubic-monotone}
+For rational codes \(r\le s\), \iPRA\ proves \(F(r)\le F(s)\); if \(r<s\), it proves \(F(r)<F(s)\).
+\end{lemma}
+
+The lemma supplies both preservation of the bisection bracket and uniqueness of the represented root.
+
+\subsection{Initial bracket}
+
+Set
+\[
+ M=|x|+1.
+\]
+Then
+\begin{align*}
+ F(M)-x &\ge M-x = |x|+1-x\ge1,\\
+ F(-M)-x &\le -M-x =-(|x|+x+1)\le-1.
+\end{align*}
+Thus
+\[
+ F(-M)\le x\le F(M).
+\]
+The interval \(I_0=[-M,M]\) is a certified bracket.  Its width is \(2M\).
+
+\subsection{Exact rational bisection}
+
+Given a bracket \(I_k=[l_k,u_k]\), let
+\[
+ m_k=\frac{l_k+u_k}{2}.
+\]
+Use the decidable rational comparison \(F(m_k)\le x\).  If true, set
+\[
+ I_{k+1}=[m_k,u_k];
+\]
+otherwise set
+\[
+ I_{k+1}=[l_k,m_k].
+\]
+Every operation is primitive recursive on rational codes.  The interval state contains \((l,u)\); an implementation may also cache denominator and height bounds.
+
+The invariant is
+\begin{equation}\label{eq:cubic-invariant}
+ l\le u,
+ \qquad F(l)\le x\le F(u),
+ \qquad u-l=2M/2^k,
+ \qquad -M\le l\le u\le M.
+\end{equation}
+Each clause is quantifier-free after rational comparisons are expanded to integer cross products.
+
+\begin{lemma}[Bisection invariant]\label{lem:cubic-bisect}
+The initial interval satisfies \eqref{eq:cubic-invariant}.  If a state at stage \(k\) satisfies it, the bisection transition produces a state at stage \(k+1\) satisfying it.
+\end{lemma}
+
+\begin{proof}
+The base bracket was proved above.  For the step, the midpoint lies between the endpoints.  If \(F(m)\le x\), then \([m,u]\) has the required sign bracket; otherwise decidability gives \(x<F(m)\), so \([l,m]\) has the bracket.  Both new intervals lie inside the old one and have half its width.  The outer bound by \([-M,M]\) is preserved.
+\end{proof}
+
+This is exactly one application of quantifier-free induction.
+
+\subsection{Primitive-recursive precision fuel}
+
+Write the rational input as \(a/b\) with \(b>0\).  Since
+\[
+ M=\frac{|a|+b}{b}\le |a|+b,
+\]
+the initial width satisfies \(2M\le 2(|a|+b)\).  Let \(H=|a|+b\).  A deliberately coarse fuel is
+\[
+ N(q,a,b)=q+2H+3.
+\]
+Using \(2^n\ge n+1\), we have \(2^{2H+3}\ge 2H\) for all \(H\ge1\).  Therefore
+\[
+ \frac{2M}{2^{N(q,a,b)}}\le 2^{-q}.
+\]
+The function \(N\) is primitive recursive and monotone in \(q\).  A tighter implementation may use bit length, but tightness is irrelevant to the logical benchmark.
+
+\begin{theorem}[Certified enclosure]\label{thm:cubic-enclosure}
+There are primitive-recursive rational terms \(l(x,q),u(x,q)\) such that \iPRA\ proves
+\begin{align*}
+ &l(x,q)\le u(x,q),\\
+ &F(l(x,q))\le x\le F(u(x,q)),\\
+ &u(x,q)-l(x,q)\le2^{-q},\\
+ &[l(x,q+1),u(x,q+1)]\subseteq[l(x,q),u(x,q)].
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+Run the bisection trace for \(N(q,a,b)\) steps and apply \cref{lem:cubic-bisect}.  The width estimate follows from the fuel inequality.  Monotonicity of \(N\) and the deterministic recurrence show that the longer trace extends the shorter one, hence the intervals are nested.
+\end{proof}
+
+\subsection{Regular midpoint name}
+
+Define
+\[
+ c(q)=\frac{l(x,q+2)+u(x,q+2)}2.
+\]
+Nestedness implies that for \(p\ge q\), both \(c(p)\) and \(c(q)\) lie in \(I_{q+2}\).  Therefore
+\[
+ |c(p)-c(q)|\le \operatorname{width}(I_{q+2})\le2^{-(q+2)}.
+\]
+By symmetry,
+\[
+ |c(p)-c(q)|\le2^{-(\min(p,q)+2)}
+ \le2^{-p}+2^{-q}.
+\]
+Thus \(c\) is a regular primitive-recursive rational name.
+
+\subsection{The equation in represented form}
+
+To show that the represented real named by \(c\) satisfies \eqref{eq:cubic-equation}, bound the variation of \(F\) on \([-M,M]\).  For \(r,s\) in this interval,
+\begin{align*}
+ |F(s)-F(r)|
+ &=|s-r|\,|r^2+rs+s^2+1|\\
+ &\le |s-r|(3M^2+1).
+\end{align*}
+Let \(K\) be any primitive-recursive natural bound with
+\[
+ 3M^2+1\le2^K.
+\]
+A coarse bound obtained from \(|a|+b\) suffices.  Compute the bracket at internal precision \(q+K+3\).  Since \(x\) lies between \(F(l)\) and \(F(u)\), and the midpoint lies between \(l\) and \(u\), monotonicity and the Lipschitz bound give
+\[
+ |F(c(q+K+3))-x|\le (3M^2+1)(u-l)\le2^{-q-3}.
+\]
+After aligning the regular-name convention, this proves equality of the represented reals \(F(c)=x\).
+
+The internal precision shift is a simple demand transformer.  In this example there is no demand cycle: the input height determines \(K\), and the requested equation precision determines the bisection depth.
+
+\subsection{Uniqueness}
+
+Suppose regular names \(y,z\) both satisfy \(F(y)=x=F(z)\).  If they were apart by a positive rational gap \(\varepsilon\), sufficiently fine approximants would preserve an order gap, say \(y_q+\varepsilon/2<z_q\).  Strict monotonicity would then give a positive lower gap between \(F(y_q)\) and \(F(z_q)\), while equality to \(x\) makes both arbitrarily close to the same rational approximant.  This is a contradiction.  Quantitatively, the factor in \cref{lem:cubic-monotone} is at least \(1\), so
+\[
+ |F(s)-F(r)|\ge |s-r|
+\]
+for rationals \(r,s\).  Therefore equality of function values directly implies equality of represented inputs with no inverse modulus loss.
+
+\begin{theorem}[Constructive cubic inverse]\label{thm:cubic-inverse}
+For every rational \(x\), the primitive-recursive midpoint name above is the unique represented real \(y\) satisfying \(y^3+y=x\).  At precision \(q\), its certified interval is produced by a closed finite \CIFER\ graph with no residual boundary.
+\end{theorem}
+
+\begin{proof}
+Existence is the enclosure, regularity, and equation argument.  Uniqueness follows from the quantitative strict monotonicity inequality.
+\end{proof}
+
+\subsection{Proof graph}
+
+A concrete graph can use the following nodes:
+
+\begin{longtable}{r p{0.22\textwidth} p{0.57\textwidth}}
+\toprule
+ID & Node & Local content \\
+\midrule
+\endhead
+0 & input validity & denominator positive and rational code well formed \\
+1 & size bound & compute \(M,H,K,N\) and prove coarse inequalities \\
+2 & initial bracket & prove \(F(-M)\le x\le F(M)\) \\
+3 & transition algebra & midpoint and branch equations \\
+4 & invariant step & preserve bracket, nesting, and width \\
+5 & trace theorem & apply quantifier-free induction for fuel \(N\) \\
+6 & precision theorem & derive width \(\le2^{-q}\) \\
+7 & regularity & compare nested midpoint intervals \\
+8 & equation & apply the variation bound at shifted precision \\
+9 & uniqueness & use inverse Lipschitz monotonicity \\
+10 & final & package the represented root theorem \\
+\bottomrule
+\end{longtable}
+
+Every node is local arithmetic or one bounded trace.  There is no boundary node and no infinite choice.
+
+\subsection{Lean completion path for the benchmark}
+
+The recommended order is:
+
+\begin{enumerate}
+\item reuse or define signed-integer and positive-denominator rational codes;
+\item prove cross-multiplied equality and order reflection;
+\item define \code{cubic}, midpoint, absolute-value bound, and one bisection step as \code{PR} syntax;
+\item define the invariant formula and prove \code{Fm.QF};
+\item prove the polynomial factorization and positivity lemmas;
+\item construct base and step derivations and invoke \code{CIFER.loop};
+\item prove the coarse exponential fuel inequality;
+\item package interval output and regular midpoint name as fixed \code{PR} symbols;
+\item prove the equation and uniqueness at the formula level;
+\item expose a theorem whose type is literally \code{[] |- [PRAAx] cubicInverseFormula} and export it to \code{NPrf}.
+\end{enumerate}
+
+The supplied Python example uses exact \code{Fraction} arithmetic and checks the bracket and width invariant for several rational inputs.  These tests validate the reference transition, not the universal theorem; the object proof remains the decisive milestone.

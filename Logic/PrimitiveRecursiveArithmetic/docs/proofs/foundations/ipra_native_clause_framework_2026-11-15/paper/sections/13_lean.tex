@@ -1,0 +1,291 @@
+\section{Lean formalization architecture}\label{sec:lean-plan}
+
+\subsection{Integration target}
+
+The proposed Lean namespace is
+\path{LeanProofs.IPRA.NativeClauseFramework}.  It depends on two checked
+libraries in the root workspace:
+
+\begin{itemize}
+\item \path{ConciseIPRA.NativeClausalDiagonal} and
+\path{ConciseIPRA.NativeBiInterpretation};
+\item \path{IPRADerivations.Core.Tactic} and later domain modules.
+\end{itemize}
+
+The implementation should be added to the existing
+\path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean} Lake library rather
+than maintained as a disconnected packet.  This allows every new application
+to end in the same embedded \(\Prf\;\PRAAx\) calculus and reuse the checked
+arithmetic stack.
+
+\subsection{Module graph}
+
+\begin{center}
+\begin{tikzpicture}[node distance=9mm and 18mm, every node/.style={draw,rounded corners,align=center,inner sep=4pt,font=\small}, >=Latex]
+\node (up) {upstream\\KPrf + bridges};
+\node (bridge) [below=of up] {Bridge};
+\node (program) [below left=of bridge] {Program};
+\node (bool) [below right=of bridge] {Boolean};
+\node (trace) [below=of bool] {Trace/Search};
+\node (demand) [below=of program] {Demand};
+\node (rel) [below=of trace] {Relational};
+\node (domain) [below left=of rel] {Domains};
+\node (apps) [below right=of rel] {Applications};
+\draw[->] (up) -- (bridge);
+\draw[->] (bridge) -- (program);
+\draw[->] (bridge) -- (bool);
+\draw[->] (bool) -- (trace);
+\draw[->] (program) -- (demand);
+\draw[->] (program) -- (rel);
+\draw[->] (trace) -- (rel);
+\draw[->] (demand) -- (domain);
+\draw[->] (rel) -- (domain);
+\draw[->] (domain) -- (apps);
+\draw[->] (rel) -- (apps);
+\end{tikzpicture}
+\end{center}
+
+The archive includes files with these names.  \path{Bridge.lean} is written as
+candidate direct code using current upstream declarations.  The other files are
+blueprints with explicit theorem signatures and \path{sorry}; they are not
+presented as compiled modules.
+
+\subsection{Bridge module}
+
+The first module should prove only four small theorems:
+
+\begin{enumerate}
+\item \path{cutAsmList}: discharge a list of ordinary assumptions using
+\path{KPrf.cut};
+\item \path{cutOne}: one-output specialization of list cut;
+\item \path{exportPRA}: compose \path{KPrf.toNPrf} with
+\path{native_iff_pra};
+\item \path{importPRA}: compose \path{pra_iff_native} with
+\path{kprf_iff_nprf}.
+\end{enumerate}
+
+The intended declarations are:
+
+\begin{lstlisting}[language={},caption={Core proof-exchange API}]
+theorem cutAsmList
+    (h : KPrf (Delta.map Cl.asm ++ Gamma) A)
+    (hs : forall X in Delta, KPrf Gamma X) : KPrf Gamma A
+
+theorem exportPRA (h : KPrf Gamma A) :
+    Gamma.map (fun c => c.toN.toPRA) |- [PRAAx] A.toPRA
+
+theorem importPRA (h : Gamma |- [PRAAx] phi) :
+    KPrf ((Gamma.map NFm.ofPRA).map
+      (fun X => Cl.asm (NFm.unQ X)))
+      (NFm.unQ (NFm.ofPRA phi))
+\end{lstlisting}
+
+The exact notation in the artifact follows upstream syntax.  Because no Lean
+binary was present, even these short declarations are labeled ``candidate''
+until checked in the repository workspace.
+
+\subsection{Dependent program datatype}
+
+A program should record the earlier outputs available to each node.
+One possible datatype is:
+
+\begin{lstlisting}[language={},caption={Suggested dependent schedule}]
+structure Node (n : Nat) (Gamma : List (Cl n))
+    (available : List (NFm n)) where
+  out : NFm n
+  local : KPrf (available.map Cl.asm ++ Gamma) out
+
+inductive Program (n : Nat) (Gamma : List (Cl n)) :
+    List (NFm n) -> Type
+  | nil : Program n Gamma []
+  | snoc {outs} : Program n Gamma outs ->
+      Node n Gamma outs -> Program n Gamma (node.out :: outs)
+\end{lstlisting}
+
+The order of \path{outs} can be newest-first to make extension constant-time.
+The compiler returns a proof environment:
+
+\begin{lstlisting}[language={}]
+def Compiled (Gamma : List (Cl n)) (outs : List (NFm n)) : Prop :=
+  forall A, A in outs -> KPrf Gamma A
+
+theorem Program.compile (p : Program n Gamma outs) :
+  Compiled Gamma outs
+\end{lstlisting}
+
+The proof is induction on \path{p}; the step is \path{cutAsmList}.  A terminal
+method extracts the proof of the newest output.  This theorem should be the
+first new kernel-checked milestone, because it validates the architecture with
+minimal domain machinery.
+
+\subsection{Sparse dependencies}
+
+For large graphs, a node should not assume every previous output.  Store a list
+of indices \path{deps : List (Fin available.length)} and define the dependency
+formula list by lookup.  The compiler maps each index to the corresponding
+compiled proof.  Correctness is still list cut.
+
+An alternative is a named finite map.  Indices are preferable in the kernel
+layer because membership and lookup are structurally simple; human-readable
+names belong in generated metadata.
+
+\subsection{Formula builders}
+
+Application code should not manipulate raw de Bruijn indices everywhere.
+Create typed builders for common forms:
+
+\begin{itemize}
+\item equations and Boolean equations;
+\item bounded predicates compiled to characteristic terms;
+\item tuple/list access equations;
+\item guarded clauses;
+\item trace-state invariants;
+\item rational error inequalities;
+\item relation and observer formulas.
+\end{itemize}
+
+Each builder should come with substitution lemmas and, where possible,
+\path{simp} theorems.  The builders elaborate to ordinary \(\NFm\) or
+\(\mathrm{Fm}\;\PTm\), so they do not enlarge the trusted kernel.
+
+\subsection{Booleanization module}
+
+There are two implementation strategies.
+
+\paragraph{Reuse existing reflection.}
+Audit \path{TeqReflect.lean} and related files for characteristic terms and
+quantifier-free induction.  Add adapters to the \path{IPRADerivations} term
+symbols and native formulas.
+
+\paragraph{A small dedicated AST.}
+Define a restricted Boolean formula syntax with equality, not, and, or, and
+bounded folds.  Compile it to a PR characteristic term and to an ordinary
+formula, then prove equivalence by structural induction.  This is easier to use
+for generated verifiers and avoids proving reflection for arbitrary syntax.
+
+The second route is recommended for the first milestone.  General reflection
+can be integrated later.
+
+\subsection{Trace module}
+
+A direct ordinary-iPRA API can build on \path{IPRADerivations.ind}:
+
+\begin{lstlisting}[language={}]
+structure TraceSpec (k : Nat) where
+  state : PTm (k + 1)
+  inv : Fm PTm (k + 1)
+  qf : inv.QF
+  base : [] |- [PRAAx] inv.subst (inst zero)
+  step : [inv] |- [PRAAx] inv.subst (repl (succ (var 0)))
+
+theorem TraceSpec.closed (S : TraceSpec k) :
+  [] |- [PRAAx] S.inv := ind S.inv S.qf S.base S.step
+\end{lstlisting}
+
+A higher-level builder constructs the state term from an initializer and step
+PR symbol and constructs \path{base} and \path{step} from local equations.
+Search, bounded folds, table construction, and demand passes are specializations.
+
+\subsection{Demand module}
+
+The pure metatheoretic layer can first be implemented over
+\path{Vector Nat k} or \path{Fin k -> Nat} to prove the finite lattice theorems.
+The object layer then chooses a concrete tuple code and PR functions.  Required
+theorems are:
+
+\begin{enumerate}
+\item componentwise order and join laws;
+\item rank strictness for a strict componentwise increase;
+\item bounded closure termination;
+\item fixed-point and leastness;
+\item reverse DAG propagation correctness and minimality;
+\item schedule lookup and replay correctness.
+\end{enumerate}
+
+Do not stop at the metatheoretic theorem.  The endpoint is a
+\(\Prf\;\PRAAx\) trace theorem for the encoded closure algorithm.  The
+metatheory guides the proof and tests the definitions.
+
+\subsection{Relational module}
+
+Define bounded clouds by a bound and Boolean predicate rather than by Mathlib
+finite sets.  This representation maps directly to PR terms.  The module should
+provide:
+
+\begin{itemize}
+\item reverse viability table;
+\item least viable witness and least successor;
+\item path coding and edge correctness;
+\item exact observer invariance;
+\item rational diameter check;
+\item motion-tail Cauchy estimate;
+\item gap-based exact recovery.
+\end{itemize}
+
+The general theorems should be proved once in ordinary iPRA and imported into
+the native graph as needed.
+
+\subsection{Algebra-node import}
+
+A small adapter should turn an \path{IPRADerivations} theorem into a native node.
+For a direct theorem \path{h}, define the node output to be
+\path{NFm.unQ (NFm.ofPRA phi)} and the local proof to be
+\path{importPRA h}.  The node's predecessor formulas are the translations of
+\path{h}'s assumptions.
+
+The reverse adapter exports a terminal node with \path{exportPRA}.  Round-trip
+theorems can be used to rewrite the result to the human-facing formula rather
+than leaving a translated formula in the public API.
+
+\subsection{Suggested completion sequence}
+
+\begin{longtable}{L{0.09\textwidth}L{0.42\textwidth}L{0.39\textwidth}}
+\toprule
+Step & Deliverable & Acceptance criterion \\
+\midrule
+1 & \path{Bridge.lean} & Compiles; no \path{sorry}; axiom audit no stronger than upstream metatheory.\\
+2 & \path{Program.lean} & A two-node and a five-node graph compile to closed \(\KPrf\) proofs.\\
+3 & Algebra exchange demo & Import one checked Heron-related identity, compose a native equality node, export to the same ordinary formula.\\
+4 & Boolean formulas & Characteristic-term compiler for the restricted verifier language, with object-level equivalence.\\
+5 & Trace and search & Closed derivations for a counter trace, least bounded search, and complete enumeration.\\
+6 & Demand & Object-level finite monotone closure and a small cyclic example.\\
+7 & Relational & Object-level three-layer viability and stable observer example.\\
+8 & Domain library & Rational arithmetic, finite lists/tables, and dyadic errors.\\
+9 & Packet migration & Convert one existing proof packet end to end, keeping a claim ledger.\\
+10 & Automation & Generate node syntax and proof schedules from a declarative JSON or Lean DSL.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Testing and axiom audits}
+
+Every checked theorem module should have an audit file using \path{#print axioms}
+or the repository's established mechanism.  Every generated graph should have:
+
+\begin{itemize}
+\item a small executable reference example;
+\item a test that deliberately corrupts one local certificate and is rejected;
+\item a theorem statement snapshot to detect accidental weakening;
+\item a count of \path{sorry}, expected to be zero in checked modules;
+\item a comparison between the public ordinary formula and the exported
+translation.
+\end{itemize}
+
+The proof kernel, not the tests, remains the authority.  Tests protect the code
+generator and theorem statement.
+
+\subsection{Avoiding common Lean traps}
+
+\begin{enumerate}
+\item Do not define the main theorem as a structure field and then count the
+structure constructor as a proof.
+\item Do not use a host theorem \path{eval spec = true} as the final endpoint
+unless a proved reflection theorem constructs the object derivation.
+\item Keep semantic interpretations and syntactic derivations in different
+namespaces.
+\item Normalize contexts before invoking bridge theorems; most failures are
+list-map or \path{unQ} mismatches.
+\item Prefer checked structural lemmas to rewriting under binders by hand.
+\item Expose all conditional producer assumptions in the public theorem type.
+\item Pin the upstream commit because the native calculus is under active
+research and names may change.
+\end{enumerate}

@@ -1,0 +1,216 @@
+\section{Arity-normalized staged proof compilation}
+\label{sec:compiler}
+
+This section contains the central contribution.  The mathematical graph machinery in the existing packets
+is sound in spirit; the persistent engineering obstacle is turning local theorems with different free
+variables and contexts into one final \(\Prf\,\PRAAx\) term.  The solution uses only three structural
+theorems already proved in \texttt{Deduction.lean}: substitution, weakening, and simultaneous cut.
+
+\subsection{Local theorems and a global parameter frame}
+
+A domain library naturally proves lemmas in small local frames.  For example,
+\begin{itemize}
+  \item a Boolean comparison lemma may have arity two;
+  \item a matrix multiplication lemma may have arity containing dimension, two matrices, and an index;
+  \item a trace step lemma may bind a time counter and a packed state;
+  \item a final theorem may expose only a code for the original input and a requested precision.
+\end{itemize}
+Forcing all lemmas to be stated from the beginning in the largest global frame is possible but makes every
+formula unreadable and every binder manipulation fragile.
+
+Let a local theorem be
+\[
+  d:\quad \Delta(u_0,\ldots,u_{k-1})\vdash A(u_0,\ldots,u_{k-1}).
+\]
+Let the final theorem have global variables \(x_0,\ldots,x_{n-1}\), and let
+\(\sigma=(t_0(\vec x),\ldots,t_{k-1}(\vec x))\) be a substitution of global terms for the local variables.
+The checked substitution theorem gives
+\[
+  d[\sigma]:\quad \Delta[\sigma]\vdash A[\sigma].
+\]
+If every formula of \(\Delta[\sigma]\) is available in a larger current context \(\Theta\), weakening gives
+\(\Theta\vdash A[\sigma]\).
+
+\begin{lemma}[Instantiation and context alignment]
+\label{lem:instantiate-into}
+For every local object derivation \(d:\Delta\vdash A\), term substitution \(\sigma\), and context
+inclusion \(\Delta[\sigma]\subseteq\Theta\), there is an object derivation
+\[
+  \Theta\vdash A[\sigma].
+\]
+\end{lemma}
+\begin{proof}
+Apply \texttt{Prf.subst} to \(d\), obtaining
+\(\Delta[\sigma]\vdash A[\sigma]\).  Apply \texttt{Prf.weaken} with the supplied list-inclusion proof.
+No induction on formulas or derivations is repeated here; both operations are already checked generically.
+\end{proof}
+
+The supplied Lean file names this theorem \texttt{instantiateInto}.  Its code is essentially one line:
+\begin{lstlisting}[language={}]
+(local.subst sigma).weaken available
+\end{lstlisting}
+This compactness is important.  The trusted compiler kernel should be boring.
+
+\subsection{Proof-carrying schedules}
+
+Fix a permanent base context \(\Gamma\) over the global arity \(n\).  A reverse-topological proof schedule
+with completed goals \(D=[A_{r-1},\ldots,A_0]\) carries the invariant
+\[
+  \forall A\in D,\quad \Gamma\vdash A.
+\]
+This is the structure \texttt{ProofBuild Gamma done} in the Lean outline.
+
+Suppose a new local proof has already been aligned to
+\[
+  D+\!+\Gamma\vdash B.
+\]
+For every hypothesis of this derivation, either it is a prior goal in \(D\), in which case the schedule
+contains a proof from \(\Gamma\), or it is a base formula in \(\Gamma\), in which case the hypothesis rule
+proves it.  Simultaneous cut replaces all these hypotheses at once and produces \(\Gamma\vdash B\).
+The schedule extends to \(B::D\).
+
+\begin{lemma}[One schedule step]
+If every formula in \(D\) is derivable from \(\Gamma\) and
+\(D+\!+\Gamma\vdash B\), then every formula in \(B::D\) is derivable from \(\Gamma\).
+\end{lemma}
+\begin{proof}
+For the new head \(B\), apply \texttt{Prf.trans} to the local derivation.  Map a hypothesis in \(D\) to the
+stored schedule proof and a hypothesis in \(\Gamma\) to \texttt{Prf.hyp}.  Old members use the original
+schedule invariant.
+\end{proof}
+
+An application node now has exactly the following data:
+\begin{enumerate}
+  \item a local arity \(k\);
+  \item a local context \(\Delta\) and local goal \(A\) over \(k\) variables;
+  \item a substitution \(\sigma:\mathrm{Fin}(k)\to\PTm(n)\);
+  \item a local proof \(\Delta\vdash A\);
+  \item an availability proof \(\Delta[\sigma]\subseteq D+\!+\Gamma\).
+\end{enumerate}
+The compiler applies Lemma~\ref{lem:instantiate-into} and then one schedule step.  All domain-specific
+content is in the local proof and availability certificate; all structural content is in the generic
+kernel.
+
+\subsection{The static graph theorem}
+
+\begin{definition}[Static proof graph]
+A static proof graph over \(\Gamma\) is a finite sequence of nodes \(v=0,\ldots,m-1\).  Node \(v\) has
+local data \((k_v,\Delta_v,A_v,\sigma_v,d_v)\).  Its availability condition says that every formula in
+\(\Delta_v[\sigma_v]\) is either in \(\Gamma\) or equals \(A_u[\sigma_u]\) for some \(u<v\).
+\end{definition}
+
+\begin{theorem}[Staged graph compilation]
+\label{thm:staged-graph}
+For every static proof graph over \(\Gamma\), and every node \(v<m\),
+\[
+  \Gamma\vdash A_v[\sigma_v].
+\]
+In particular, the designated final node yields an object-iPRA derivation of the graph's public theorem.
+\end{theorem}
+
+\begin{proof}
+Induct externally on the finite node sequence.  The empty sequence has the vacuous schedule.  At node
+\(v\), the induction hypothesis is the proof-carrying schedule for all earlier nodes.  Apply
+Lemma~\ref{lem:instantiate-into} to \(d_v\) and \(\sigma_v\), weakening to the concatenation of earlier
+node goals and \(\Gamma\) using the availability certificate.  Apply one schedule step, whose simultaneous
+cut discharges every earlier goal by the induction-hypothesis schedule and every base formula by a
+hypothesis proof.  The extended schedule proves the claim for all nodes through \(v\).
+\end{proof}
+
+This induction occurs in the Lean metatheory while constructing a finite proof term.  It is not an
+induction axiom added to iPRA, and the graph is not interpreted by an arithmetic universal machine.  Once
+the finite graph is fixed, Lean elaboration produces a nested term made from substitution, weakening, cut,
+and the local proof terms.
+
+\subsection{Why topological order is the right certificate}
+
+A graph description may use symbolic names and dependency edges.  The host compiler first checks that all
+dependencies point backward in a supplied ordering.  This check is finite and decidable.  It then produces
+an availability proof for each node.  There are two implementation styles.
+
+\begin{enumerate}
+  \item \emph{Typed construction.}  Build the graph incrementally with a dependent type whose constructor
+        accepts only dependencies in the current list.  Ill-ordered graphs cannot be represented.
+  \item \emph{Validated data.}  Parse a simpler JSON or Lean structure, run a topological sort, and use the
+        result to generate a sequence of \texttt{NodeObligation} terms.  The generated Lean file contains
+        the concrete list-inclusion proofs, so the kernel does not trust the parser.
+\end{enumerate}
+The second style is more convenient for large applications.  The final trust boundary remains Lean's
+kernel checking the generated source.
+
+\subsection{Recursive nodes}
+
+Acyclic composition alone does not express a bounded iteration.  A loop node is compiled locally before it
+is inserted into the graph.  Let \(P\) be a precondition, \(Q\) a postcondition, \(I(t,s,\vec x)\) a
+quantifier-free invariant, and \(F(\vec x)\) a fuel term.  The local obligations are
+\begin{align*}
+  &P,\Gamma\vdash I(0,s_0,\vec x),\\
+  &I(t,s_t,\vec x),(P,\Gamma)^{\uparrow}
+        \vdash I(St,s_{St},\vec x),\\
+  &I(F,s_F,\vec x),P,\Gamma\vdash Q.
+\end{align*}
+The shift on the permanent context is the ordinary binder shift required by universal introduction.  The
+checked \texttt{PRA.qfInd} produces \(P,\Gamma\vdash\forall t\,I(t,s_t,\vec x)\); universal elimination at
+\(F\) gives the final invariant; one cut with the finish proof yields \(P,\Gamma\vdash Q\), and implication
+introduction gives \(\Gamma\vdash P\to Q\).
+
+\begin{theorem}[Loop compilation]
+\label{thm:loop-compile}
+Every loop package with a quantifier-free invariant, base proof, step proof, and finish proof compiles to an
+actual object derivation \(\Gamma\vdash P\to Q\).
+\end{theorem}
+\begin{proof}
+The preceding paragraph is exactly the proof.  The supplied \texttt{LoopObligation.compile} follows this
+sequence using \texttt{PRA.qfInd}, \texttt{Prf.allE}, and \texttt{Prf.trans}.
+\end{proof}
+
+A loop contract is then just another local theorem for the static graph.  Nested loops are handled by first
+compiling the inner loop to a local implication theorem and using it in the outer step proof.  This
+hierarchical strategy keeps each invariant small.  A compiler may flatten several loops into one packed
+state, but flattening is an optimization, not a logical requirement.
+
+\subsection{Substitution under binders and the reason to reuse the checked library}
+
+Many earlier outlines become vague precisely at quantifier boundaries.  If a local theorem contains a
+universal or existential formula, substituting global terms for its free variables must lift the
+substitution under the binder.  The checked \texttt{Prf.substWeaken} proof already handles this.  In its
+universal-introduction case it uses the lifted substitution \texttt{up sigma}; in its existential-
+elimination case it aligns the shifted contexts and proves the relevant substitution identity.  Reusing
+this theorem avoids a large class of de Bruijn-index errors.
+
+The staged compiler therefore never manually rewrites a proof under a binder.  It asks
+\texttt{Prf.subst} to specialize the entire derivation.  Domain libraries may state lemmas in their natural
+local arity, and the compiler handles all binders uniformly.
+
+\subsection{Native export is the final step}
+
+After graph compilation yields
+\[
+  h:\Gamma\vdash_{\PRAAx}A,
+\]
+the checked bridge gives
+\[
+ \texttt{pra\_iff\_native.mp}(h):
+ \NPrf(\Gamma^{\mathrm{native}},A^{\mathrm{native}}).
+\]
+Developing the graph directly in the very small native syntax would make application proofs needlessly
+opaque.  Ordinary iPRA has convenient logical connectives and quantifiers; the bi-interpretation is already
+proved.  The correct workflow is therefore: formalize the mathematics in ordinary \(\Prf\,\PRAAx\), audit
+the endpoint, and export once.
+
+\subsection{Trusted-code and proof-size accounting}
+
+The generic logical kernel consists of:
+\begin{itemize}
+  \item one specialization-and-alignment theorem;
+  \item the proof-schedule invariant;
+  \item one simultaneous-cut step;
+  \item one quantifier-free loop compiler;
+  \item small wrappers for witnesses, stable outputs, boundary assumptions, and gap-based exactness.
+\end{itemize}
+All heavy programs and formulas are data supplied by application modules.  A graph with \(m\) nodes
+produces a proof term with \(O(m+e)\) structural combinators, where \(e\) is the total number of dependency
+uses, plus the sizes of the local proofs.  Repeatedly expanding a prior proof can create a tree larger than
+this textual bound, but Lean's term sharing and named theorem constants avoid physical duplication.
+The Python companion's \texttt{ProofTerm} trees are explanatory evidence only; the Lean kernel checks the
+actual generated terms.

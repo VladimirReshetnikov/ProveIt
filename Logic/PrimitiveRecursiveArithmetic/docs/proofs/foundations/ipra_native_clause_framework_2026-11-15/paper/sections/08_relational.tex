@@ -1,0 +1,236 @@
+\section{Relational witnesses and stable observations}
+
+\subsection{Why exact selectors are often the wrong theorem}
+
+Several proof packets encounter the same obstacle under different names.
+Roots collide, eigenspaces merge, chart representatives overlap, decompositions
+are nonunique, or a quotient has no canonical normal form.  A classical proof
+may say ``choose one'' and continue.  A uniform primitive-recursive selector
+may nevertheless be discontinuous or unavailable at the singular locus.
+
+The framework does not force a selector.  It keeps a finite cloud of valid
+witnesses and proves either that a compatible finite path exists or that the
+requested observation is independent of the witness.
+
+\subsection{Finite clouds and compatibility}
+
+For precisions \(q=0,\ldots,Q\), let \(C_q\) be a finite coded set of witnesses.
+Let \(G_q(w)\) be a decidable goodness predicate and let
+\(E_q(w,v)\) be a decidable compatibility relation from level \(q\) to level
+\(q+1\).  All sets are given by explicit bounds, so universal and existential
+checks over them are bounded.
+
+Define viability backward:
+\[
+\begin{aligned}
+ V_Q(w)&\equiv G_Q(w),\\
+ V_q(w)&\equiv G_q(w)\wedge
+          \exists v\in C_{q+1}\bigl(E_q(w,v)\wedge V_{q+1}(v)\bigr).
+\end{aligned}
+\]
+The recurrence is evaluated by a reverse finite trace.
+
+\begin{theorem}[Backward viability]\label{thm:viability}
+For every finite cloud tower, viability is primitive recursive.  If some
+\(w_0\in C_0\) is viable, bounded least search constructs a compatible path
+\((w_0,\ldots,w_Q)\) of good witnesses.  Conversely, the first node of every
+compatible good path is viable.
+\end{theorem}
+
+\begin{proof}
+At level \(Q\), viability is the Boolean value of \(G_Q\).  Given the Boolean
+viability table for level \(q+1\), compute \(V_q(w)\) by a bounded OR over the
+finite next cloud.  Reverse induction proves that \(V_q(w)=1\) exactly when a
+good suffix path from \(w\) exists.  If an initial witness is viable, choose the
+least one; then at each level choose the least viable compatible successor.
+The defining equivalence guarantees that the successor search succeeds.
+Conversely, read the path backward and apply the same equivalence.
+\end{proof}
+
+This theorem provides finite-horizon dependent choice, which is all a requested
+precision needs.  It makes no claim of a single infinite path living as an
+object in iPRA.
+
+\subsection{Exact branch-independent observations}
+
+Let \(O_q:C_q\to D_q\) be a decidable finite observation.  Suppose every viable
+witness at level \(q\) has the same observation.
+
+\begin{theorem}[Exact observer elimination]\label{thm:exact-observer}
+Assume \(C_q\) has at least one viable witness and
+\[
+    V_q(w)\wedge V_q(w')\quad\Longrightarrow\quad O_q(w)=O_q(w').
+\]
+Then bounded least search may choose any viable witness and the resulting
+\(O_q\) is independent of that choice.  The output theorem need not expose a
+selector.
+\end{theorem}
+
+\begin{proof}
+Choose the least viable witness \(w_*\), which exists by bounded search.  For
+any viable \(w\), the invariance hypothesis gives \(O_q(w)=O_q(w_*)\).  Define
+the exported observation to be \(O_q(w_*)\).  The final theorem can quantify
+over an arbitrary viable witness and prove equality to the exported value,
+thereby eliminating the implementation choice.
+\end{proof}
+
+Examples include the multiset of roots rather than an ordering of roots, the
+characteristic polynomial rather than eigenvectors, a homology rank rather than
+a basis, and a quotient class invariant rather than a representative.
+
+\subsection{Approximate stable observers}
+
+Exact equality is often too strong.  Let observations lie in a rational metric
+space with decidable distance.  Suppose the viable cloud has small diameter:
+\[
+   V_q(w)\wedge V_q(w')
+       \Longrightarrow d(O_q(w),O_q(w'))\le\eta(q).
+\]
+
+\begin{theorem}[Approximate observer elimination]\label{thm:approx-observer}
+If a viable witness exists at level \(q\), then the observation of the least
+viable witness is within \(\eta(q)\) of the observation of every viable witness.
+If \(\eta(q)\le2^{-q}\), the exported value is a valid precision-\(q\)
+approximation to the branch-independent observable represented by the cloud.
+\end{theorem}
+
+\begin{proof}
+The least viable witness exists by Theorem~\ref{thm:viability}.  Substitute it
+for one of the two witnesses in the diameter hypothesis.  No further choice is
+needed.
+\end{proof}
+
+The phrase ``represented by the cloud'' has a precise external adequacy
+condition: every ideal branch has a valid code in the cloud, every valid code is
+within the prescribed error of some ideal branch, and the observer is uniformly
+stable across the represented branch set.
+
+\subsection{Motion tails and coherent names}
+
+To obtain a coherent approximation sequence, control motion along edges.  Let
+\(a_q=O_q(w_q)\) for a viable path and suppose
+\[
+       E_q(w_q,w_{q+1})
+          \Longrightarrow d(a_q,a_{q+1})\le\mu(q).
+\]
+Assume an explicit tail bound
+\[
+       \sum_{j=q}^{r-1}\mu(j)\le\tau(q)
+       \quad\text{for all }r>q,
+       \qquad \tau(q)\to0
+\]
+with PR \(\tau\).
+
+\begin{theorem}[Finite coherent Cauchy bound]\label{thm:motion-tail}
+For every finite viable path and \(q<r\le Q\),
+\[
+      d(a_q,a_r)\le\sum_{j=q}^{r-1}\mu(j)\le\tau(q).
+\]
+If \(\tau(q)\le2^{-q}\), the path observations form a regular finite Cauchy
+name to every requested horizon.
+\end{theorem}
+
+\begin{proof}
+Induct on \(r-q\) and use the triangle inequality and the edge motion bound.
+The sum is a finite rational sum, so the proof is a quantifier-free induction
+after clearing denominators.  Apply the supplied tail inequality at the end.
+\end{proof}
+
+An infinite real can be reconstructed externally from the regular name.  The
+object theorem remains the finite statement for arbitrary requested \(Q\).
+
+\subsection{Branch independence across different paths}
+
+Suppose two viable paths \(w_0,\ldots,w_Q\) and
+\(w'_0,\ldots,w'_Q\) are chosen.  If each level has observer diameter at most
+\(\eta(q)\), then
+\[
+     d(O_q(w_q),O_q(w'_q))\le\eta(q).
+\]
+Thus all bounded selectors compute extensionally equivalent names.  The formal
+output may be a quotient-style presentation whose equality at precision \(q\)
+is distance at most \(\eta(q)\).
+
+This is the appropriate replacement for a claim that the selector itself is
+canonical.
+
+\subsection{Exact recovery from a gap}
+
+A positive gap allows approximate information to become exact.
+
+\begin{theorem}[Gap-based exact recovery]\label{thm:gap}
+Let \(L=\{\ell_0,\ldots,\ell_{m-1}\}\) be a finite family in a rational metric
+space satisfying
+\[
+      i\ne j\Longrightarrow d(\ell_i,\ell_j)\ge\delta>0.
+\]
+If a certified approximation \(a\) satisfies
+\(d(a,\ell_i)\le\varepsilon\) for some \(i\) and
+\(2\varepsilon<\delta\), then that index \(i\) is unique and is found by
+bounded search.
+\end{theorem}
+
+\begin{proof}
+If both \(i\) and \(j\) satisfy the error bound, the triangle inequality gives
+\(d(\ell_i,\ell_j)\le2\varepsilon<\delta\), contradicting separation.
+Existence is part of the approximation certificate.  Search the finite list for
+the unique index whose decidable rational distance is at most \(\varepsilon\).
+\end{proof}
+
+This theorem is the legitimate way to label simple roots, isolated eigenvalues,
+separated connected components, or discrete topological invariants from
+numerical data.  At a collision, \(\delta\) vanishes and exact labeling should
+be removed from the theorem or replaced by a cluster label.
+
+\subsection{Root and spectral clusters}
+
+For a polynomial, a cluster observation may contain:
+\begin{itemize}
+\item a rational disk or rectangle;
+\item a multiplicity count certified by an argument-principle, Sturm, or
+subresultant computation;
+\item pairwise disjointness from other cluster regions;
+\item a refinement relation to the next precision.
+\end{itemize}
+A cluster tree is finite at every requested precision.  Symmetric polynomial
+observers are exact across all orderings.  Individual roots are exported only
+when a separation certificate isolates a singleton cluster.
+
+For a matrix, use rational spectral enclosures and cluster projectors or
+characteristic-factor data.  A basis of an eigenspace is not stable at repeated
+eigenvalues, but the dimension, invariant factor, characteristic polynomial,
+and sufficiently separated spectral subspace are stable observers.
+
+\subsection{Finite covers and local-to-global reasoning}
+
+Relational clouds also encode finite covers.  A local theorem is proved for
+each chart or patch code.  Overlap nodes carry compatibility clauses.  A finite
+nerve or refinement graph records how local evidence is assembled.
+
+A global theorem requires one of the following explicit ingredients:
+\begin{enumerate}
+\item a finite cover supplied in the input;
+\item a primitive-recursive construction of such a cover with a proved bound;
+\item a finite subcover certificate extracted from a bounded candidate family;
+\item a Lebesgue-number or mesh certificate ensuring the requested finite
+observation lies in some patch.
+\end{enumerate}
+Topological compactness without one of these finite witnesses is not a
+primitive-recursive algorithm.
+
+\subsection{Relational composition}
+
+If \(R:X\rightrightarrows Y\) and \(S:Y\rightrightarrows Z\) are finite
+relational contracts, their composite cloud is
+\[
+   (S\circ R)(x,z)\equiv
+      \exists y\le B_Y\;(R(x,y)\wedge S(y,z)).
+\]
+The bound is explicit, so the relation and complete output cloud are primitive
+recursive.  Associativity holds extensionally.  In proof terms, the existential
+witness is handled by native \(D\)-elimination; a final stable observer may
+remove it.
+
+The framework therefore supports a category of finite relations internally and
+a category of extensional stable observations externally.  Deterministic
+contracts embed as singleton relations.

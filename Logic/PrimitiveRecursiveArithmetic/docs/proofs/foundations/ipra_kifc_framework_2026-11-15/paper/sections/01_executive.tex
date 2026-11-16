@@ -1,0 +1,89 @@
+\section{Executive summary}
+
+\subsection{The problem exposed by the repository}
+
+The central logical target is not the ambient statement that a finite program returns the expected value.  It is the construction of a term of the embedded derivability type
+\[
+  (\Gamma : \operatorname{List}(\Fm\,\PTm\,n))\ \vdash[\PRAAx]\ \varphi.
+\]
+The distinction is decisive.  A Lean theorem about \texttt{Nat}, a successful exact-arithmetic computation, or an uncompiled declaration with the intended proposition does not by itself inhabit this type.  Conversely, once a derivation of this type exists, the current bi-interpretation theorem transfers it to the repository's native scalar core without adding mathematical assumptions.
+
+The proof packets repeatedly use the right mathematical idea---replace infinitary objects by finite observations, replace compactness by finite nets, replace arbitrary choices by searches, and replace limiting arguments by explicit moduli---but they often stop at one of three boundaries:
+\begin{enumerate}[label=(\roman*)]
+  \item a semantic finite theorem is proved in the metalanguage but not reflected into \(\Prf\,\PRAAx\);
+  \item a loop invariant still contains bounded quantifiers or an all-precision assertion, so it is not eligible for quantifier-free induction;
+  \item the claimed output requires a discontinuous or ineffective choice that the supplied representation cannot support.
+\end{enumerate}
+\KIFC treats these not as unrelated defects but as failures to normalize the proof interface.
+
+\subsection{The proposed normal form}
+
+A \KIFC development has three levels.
+
+\paragraph{Level 1: finite mathematical interface.}
+Every mathematical object is presented only through the observations consumed by the theorem.  A query \(q\) has a primitive-recursive answer bound \(B(q,x)\), a primitive-recursive validity test \(V(x,q,a)\), and a proof that at least one bounded answer is valid whenever the precondition holds.  Deterministic presentations are the special case in which all valid answers are provably equal.  Approximate or non-canonical presentations retain a finite cloud of valid answers.
+
+\paragraph{Level 2: kernel-normal computation graph.}
+The theorem-specific construction is a fixed finite graph whose nodes belong to six classes:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Node class & Object-level obligation \\
+\midrule
+Exact algebra & a term equality, normally discharged in the checked quotient/ring backend \\
+Boolean decision & a Boolean term reflected to a fixed bounded formula \\
+Bounded search & validity and leastness of a witness below an explicit bound \\
+Certified iteration & base and step derivations for one quantifier-free invariant \\
+Finite relation & bounded nonemptiness and compatibility of a witness cloud \\
+Stable observation & independence, diameter, or guarded uniqueness of the consumed output \\
+\bottomrule
+\end{tabular}
+\end{center}
+The graph is specialized at the metalevel.  Its program counter, state tuple, tests, and transitions become fixed primitive-recursive symbols; code is never interpreted inside \iPRA.
+
+\paragraph{Level 3: proof production.}
+A reverse pass computes every precision, fuel, and finite-use demand from the terminal request.  The forward computation is collapsed to one primitive recursion over a packed state.  Its invariant is a quantifier-free conjunction of Boolean equations and certificate equalities.  The checked induction rule proves the trace invariant.  Local node derivations are then composed in topological order using substitution and simultaneous cut.  The terminal result is an actual embedded derivation.
+
+\subsection{Main results}
+
+The mathematical contribution is summarized by the following theorem.  Its statement is intentionally relative to local certificates: this is exactly the boundary at which theorem-specific mathematics enters.
+
+\begin{theorem}[Kernel-integrated graph compilation]\label{thm:main-compilation}
+Let \(G\) be a fixed well-formed \KIFC graph.  Assume:
+\begin{enumerate}[label=(\alph*)]
+  \item every numerical operation in \(G\) is given by a primitive-recursive symbol or a fixed composition of such symbols;
+  \item every finite predicate is equipped with an object-level Boolean reflection derivation;
+  \item every loop node is equipped with object-level base and step derivations for a quantifier-free invariant;
+  \item every relational node is bounded and is equipped with object-level validity, nonemptiness, and compatibility derivations;
+  \item every terminal observer is exact-stable, diameter-stable, or guarded by an explicit positive separation certificate;
+  \item every graph edge carries a primitive-recursive demand transformer whose local adequacy is proved in the object theory.
+\end{enumerate}
+Then, for every fixed terminal query, the graph can be specialized into a primitive-recursive state term, a quantifier-free trace invariant, and a derivation
+\[
+  \Gamma_G \vdash[\PRAAx] \Phi_G
+\]
+where \(\Gamma_G\) is the list of external producer assumptions and \(\Phi_G\) is the terminal contract.  The construction uses only instances of \(\PRAAx\), intuitionistic logical rules, equality substitution, simultaneous cut, and quantifier-free induction.  No universal evaluator or global choice function is required.
+\end{theorem}
+
+The proof is spread across \cref{sec:boolean-search,sec:loop-normal,sec:graph,sec:relational,sec:observations}.  The important point is that the theorem is a metatheorem producing an embedded derivation.  It does not assert inside \iPRA\ that arbitrary graphs are sound, and therefore it does not smuggle in a universal interpreter.
+
+The following companion result controls non-unique witnesses.
+
+\begin{theorem}[Finite relational elimination]\label{thm:relational-summary}
+For a finite tower of bounded candidate relations, backward viability is equivalent to the existence of a compatible suffix.  If a viable start exists, bounded least search constructs a compatible finite path.  If an observer is constant on all valid terminal candidates, the observer has a canonical exact value without a canonical witness.  If the observer has diameter at most \(\delta(q)\), then every selected value is \(\delta(q)\)-close to every other selected value.  A regular Cauchy name follows only after adding an explicit summable adjacent-motion budget with a primitive-recursive tail modulus.
+\end{theorem}
+
+\subsection{What is resolved, reformulated, and still open}
+
+\paragraph{Resolved at the framework level.}
+Bounded quantifiers can be compiled to Boolean folds; least bounded search is primitive recursive and constructively valid; finite dependent choice is replaced by backward viability; all-precision loop invariants are replaced by a fixed terminal request and reverse demand; fixed graph execution needs no universal evaluator; exact algebraic identities can use the repository's checked \texttt{ipra\_ring} route; finite covers and bounded-height lists admit direct certificate checkers.
+
+\paragraph{Reformulated under the correct data.}
+Root labels become multisets or clusters at collisions and exact labels under a separation gap.  Eigenvectors become invariant-subspace or projector data at repeated eigenvalues.  A rotation axis becomes projective/quaternionic relation data at the identity and an exact axis away from it.  Division, pivots, inverse functions, and chart changes consume explicit apartness margins.  General real objects are replaced by query/answer contracts, not completed sets of codes modulo an unproved extensional equality.
+
+\paragraph{Open producer obligations.}
+The framework does not manufacture an effective Faltings or Siegel height bound, rational representatives of arbitrary Selmer classes, effective constants hidden in an ineffective analytic theorem, or a modulus from metastability alone.  It isolates these as producer interfaces and proves that, once the quantitative data are supplied, the remaining search, checking, composition, and object-theory proof are finitary.
+
+\subsection{How to use the packet}
+
+The report is written to support two parallel uses.  A mathematician can use the domain recipes and difficulty matrix to restate a target theorem in an admissible finitary form.  A formalizer can follow the Lean plan: first build shared Boolean reflection and bounded search, then a checked loop compiler, then relational viability, and only after several generated examples define a typed graph elaborator.  The included Python code is an exact reference implementation of the finite algorithms; it is not presented as an \iPRA\ proof checker.

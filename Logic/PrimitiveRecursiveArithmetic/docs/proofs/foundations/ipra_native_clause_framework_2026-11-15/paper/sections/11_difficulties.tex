@@ -1,0 +1,243 @@
+\section{Resolution of the recurrent difficulties}
+
+This section revisits the main obstacles reported across the proof packets.  A
+``resolution'' means either a complete generic lemma or a precise reduction to
+an application-specific producer.  It does not mean that every deep theorem
+has thereby been proved.
+
+\subsection{Semantic algorithm versus object-language derivation}
+
+\paragraph{Difficulty.}
+A Lean function is shown to return a correct answer, but the target is a term of
+\(\Prf\;\PRAAx\).  Re-running the function inside Lean does not create such a
+term.
+
+\paragraph{Resolution.}
+Require every graph node to carry a local \(\KPrf\) or direct
+\(\Prf\;\PRAAx\) derivation.  Compose native nodes with
+Theorem~\ref{thm:dag-compile}; import direct nodes by
+Theorem~\ref{thm:import}; export the terminal result by
+Theorem~\ref{thm:export}.  Reference execution remains useful for generating
+terms and detecting errors, but it is not the logical bridge.
+
+\subsection{Substitution and de Bruijn bookkeeping}
+
+\paragraph{Difficulty.}
+Generic local lemmas must be specialized under binders, and hand-written
+renaming equations dominate the Lean work.
+
+\paragraph{Resolution.}
+Target \(\KPrf\), where \path{KPrf.subst}, shifting, weakening, and cut have
+already been proved.  Normalize arbitrary native formulas with \path{unQ}.
+Keep application nodes at a small number of free variables and specialize them
+before graph folding.  The remaining work is defining the correct substitution,
+not re-proving its admissibility.
+
+\subsection{A generic graph compiler}
+
+\paragraph{Difficulty.}
+Earlier frameworks define a proof graph but leave the compiler soundness theorem
+or object-level fold unfinished.
+
+\paragraph{Resolution.}
+Theorem~\ref{thm:list-cut} and Theorem~\ref{thm:dag-compile} reduce the compiler
+to checked \(\KPrf\) cut.  The graph is a metalevel finite list, not an encoded
+object-level program.  A Lean implementation needs a dependent schedule type,
+a membership router, and the direct list-cut proof; no new logical soundness
+theorem is required.
+
+\subsection{Bounded formulas inside quantifier-free induction}
+
+\paragraph{Difficulty.}
+An invariant is written with bounded universal or existential quantifiers and
+therefore is not syntactically quantifier-free.
+
+\paragraph{Resolution.}
+Compile each fixed bounded formula to a Boolean fold and use the equation
+\(\chi=1\) as the invariant.  Prove the Booleanization theorem once.  When a
+witness is needed later, store it in the state rather than relying on an
+existential inside the induction formula.
+
+\subsection{Changing parameters and changing precision}
+
+\paragraph{Difficulty.}
+The statement to be proved at stage \(t\) depends on a precision or domain
+parameter computed from later stages, so a direct induction has a changing
+formula.
+
+\paragraph{Resolution.}
+Use the backward-demand/forward-replay construction.  The reverse trace computes
+and codes the whole finite schedule.  The forward invariant refers to a lookup
+in that fixed schedule.  Cyclic local requirements are closed first by
+Theorem~\ref{thm:finite-closure}.
+
+\subsection{Cyclic demand constraints}
+
+\paragraph{Difficulty.}
+Precision requirements depend mutually on one another, and naive iteration has
+no termination proof.
+
+\paragraph{Resolution.}
+Work in the explicit finite box imposed by the theorem's resource envelope.
+Iterate \(x\mapsto x\join F(x)\).  The rank sum strictly increases at each
+nonfixed step, giving a primitive-recursive fuel and the least prefixed point.
+If the transformer leaves the box, return a certified resource failure rather
+than clipping.
+
+\subsection{Noncanonical witnesses and singularities}
+
+\paragraph{Difficulty.}
+A proof asks for a root, eigenvector, chart, decomposition, or quotient
+representative that cannot be selected continuously or uniformly at singular
+inputs.
+
+\paragraph{Resolution.}
+Use finite relational clouds and backward viability.  Export only an invariant
+observer, or an approximate observer with a diameter bound.  Introduce an exact
+label only with a positive gap certificate.  At a collision, export cluster
+information instead of a fictitious canonical branch.
+
+\subsection{From finite cardinality to a search cutoff}
+
+\paragraph{Difficulty.}
+A theorem says that a solution set is finite or has at most \(m\) elements, and
+a later algorithm treats this as a bound on the numerical codes of solutions.
+
+\paragraph{Resolution and limitation.}
+A cardinality bound alone is not a code-height bound.  The framework proves the
+following exact equivalence at the right level.
+
+\begin{theorem}[Height--list conversion]\label{thm:height-list}
+Let \(P(x)\) be decidable.
+\begin{enumerate}
+\item If \(H\) satisfies \(P(x)\to x\le H\), then bounded enumeration through
+\(H\) produces a complete finite list of all solutions.
+\item If a coded finite list \(L\) is sound and complete for \(P\), then
+\(H=\max(L)\) is a code-height bound, with \(H=0\) for the empty list.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The first part is Theorem~\ref{thm:enumeration}.  For the second, completeness
+gives membership of every solution in \(L\); a bounded fold proves every list
+entry is at most its maximum.
+\end{proof}
+
+A bare statement ``there are at most \(m\) solutions'' supplies neither object.
+General Faltings or Siegel arguments therefore remain conditional until a
+suitable effective height theorem or complete-list producer is provided.
+
+\subsection{Ineffective constants}
+
+\paragraph{Difficulty.}
+An analytic or number-theoretic theorem uses ``for sufficiently large \(x\)''
+with a constant whose proof is ineffective or whose value is not extracted.
+
+\paragraph{Resolution and limitation.}
+Separate the theorem into:
+
+\begin{enumerate}
+\item a uniform verifier/finalizer theorem parameterized by a proposed threshold
+\(X_0\), constants, and finite proof certificates;
+\item a producer theorem asserting that suitable data exist and are supplied.
+\end{enumerate}
+
+The first can often be proved in iPRA.  The second is not solved by calling its
+output a certificate.  For finite exceptional sets with explicit budgets,
+Theorem~\ref{thm:common-window} gives a common search window.  Without explicit
+budgets or thresholds, the framework records an open producer obligation.
+
+\subsection{Classical compactness and local-to-global arguments}
+
+\paragraph{Difficulty.}
+A proof uses compactness to choose a finite subcover, a Lebesgue number, or a
+uniform modulus, but the formal statement provides no finite data.
+
+\paragraph{Resolution.}
+Use one of four interfaces: supplied finite cover, bounded cover enumerator,
+finite subcover certificate, or explicit mesh/Lebesgue-number bound.  Compile
+local proofs as clause nodes and overlaps as compatibility nodes.  A nerve or
+partition data structure is finite.  The framework does not claim that every
+classically compact presentation has a PR cover producer.
+
+\subsection{Completed limits and infinite paths}
+
+\paragraph{Difficulty.}
+A classical proof forms an infinite sequence of choices or passes to a limit.
+
+\paragraph{Resolution.}
+State the theorem at arbitrary finite precision or horizon.  Use finite
+viability for paths and a motion-tail bound for Cauchy coherence.  External
+adequacy reconstructs the ideal limit.  When no modulus is available, use an
+explicit metastable formulation.  Do not assert a uniform Cauchy modulus merely
+because a classical limit exists.
+
+\subsection{Quotients and canonical forms}
+
+\paragraph{Difficulty.}
+The development tries to normalize every quotient representative, leading to a
+large and sometimes impossible canonicalization problem.
+
+\paragraph{Resolution.}
+Use an equivalence relation and stable observers.  Normalize only where a
+verified PR normalizer is useful.  The clause graph can transport an observer
+through equivalence without choosing a representative.  This is particularly
+effective for rational fractions, polynomial roots up to permutation, bases of
+modules, and isomorphism classes of finite structures.
+
+\subsection{Proof-size explosion}
+
+\paragraph{Difficulty.}
+Expanding a finite computation into individual logical steps produces enormous
+proof terms.
+
+\paragraph{Resolution.}
+Prove generic trace, fold, and algebra lemmas once.  Represent long computations
+by PR functions plus their defining equations and one induction.  Use symbolic
+ring derivations for variable identities and certificate checking for concrete
+large objects.  The graph compiler reuses local lemmas by substitution instead
+of duplicating their proofs.
+
+\subsection{What remains genuinely open}
+
+The framework does not currently supply:
+
+\begin{itemize}
+\item a kernel-checked generic graph compiler implementation in the repository;
+\item a complete checked library for pair/list coding, bounded Booleanization,
+finite tables, rational order, and analytic error arithmetic in
+\(\Prf\;\PRAAx\);
+\item general effective Faltings or Siegel bounds;
+\item uniform primitive-recursive Mordell--Weil representatives for arbitrary
+input curves;
+\item effective constants for every classical prime-distribution theorem;
+\item exact selectors through arbitrary root or spectral collisions;
+\item a bridge from other PRA formalizations in the repository to
+\path{ConciseIPRA}'s \(\Prf\;\PRAAx\).
+\end{itemize}
+
+These are now localized obligations.  They no longer block the general finite
+control and composition architecture.
+
+\subsection{Status table}
+
+\begin{longtable}{L{0.29\textwidth}L{0.18\textwidth}L{0.44\textwidth}}
+\toprule
+Issue & Framework status & Exact endpoint \\
+\midrule
+Graph composition & Resolved mathematically & List cut plus topological induction.\\
+Parameter specialization & Checked upstream & \path{KPrf.subst}.\\
+Native-to-iPRA export & Checked upstream plus one-line composition & \path{KPrf.toNPrf}; \path{native_iff_pra}.\\
+Direct algebra import & Checked upstream plus one-line composition & \path{pra_iff_native}; \path{kprf_iff_nprf}.\\
+Bounded search/enumeration & Resolved mathematically & Clocked trace with Boolean invariant.\\
+Cyclic demand & Resolved mathematically & Finite monotone closure theorem.\\
+Finite relational choice & Resolved mathematically & Backward viability and least path.\\
+Stable observables & Resolved mathematically & Diameter and motion-tail theorems.\\
+Exact branch labels & Conditional & Positive separation gap required.\\
+Finite-set synchronization & Resolved with budgets & Common good finite window.\\
+Finiteness to enumeration & Conditional & Code height or complete list required.\\
+General deep Diophantine producers & Open/application-specific & Explicit producer interface.\\
+Ineffective analytic constants & Open/application-specific & Explicit threshold/certificate interface.\\
+New Lean compiler & Outlined, not checked here & Dependency plan in Section~\ref{sec:lean-plan}.\\
+\bottomrule
+\end{longtable}

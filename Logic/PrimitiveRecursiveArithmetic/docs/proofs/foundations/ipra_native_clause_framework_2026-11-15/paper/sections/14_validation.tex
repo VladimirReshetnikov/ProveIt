@@ -1,0 +1,117 @@
+\section{Executable evidence, reproducibility, and claim discipline}
+
+\subsection{Reference implementation}
+
+The archive contains \path{code/native_clause_framework.py}.  It implements,
+with exact integer and rational arithmetic:
+
+\begin{itemize}
+\item bounded least search and complete enumeration;
+\item least closure of a monotone transformer on a finite product of chains;
+\item exhaustive monotonicity checks for small test boxes;
+\item reverse demand propagation on a DAG;
+\item clocked trace execution and invariant checking;
+\item backward relational viability and least viable paths;
+\item stable-observer diameter checks and motion tails;
+\item exact label recovery from a separation gap;
+\item conversion between a height bound and a finite list;
+\item common good windows for finite exceptional sets;
+\item lexicographic descent fuel;
+\item execution of a finite contract graph with local host-level checkers.
+\end{itemize}
+
+The final item is deliberately documented as an executable analogue, not an
+object proof.  The distinction is enforced in the module docstring.
+
+\subsection{Regression tests}
+
+The accompanying test suite has fourteen tests.  It covers success and failure
+cases, exact rational stability, cyclic demand closure, demand minimality in a
+small graph, trace invariants, relational failure, gap recovery, and graph
+certificate rejection.  The recorded run in
+\path{validation/python_tests.txt} reports all tests passing.
+
+These tests provide three kinds of evidence:
+
+\begin{enumerate}
+\item the finite algorithms are specified precisely enough to execute;
+\item examples in the report match the implementation;
+\item later refactoring can detect changes in behavior.
+\end{enumerate}
+
+They do not prove the general theorems and do not check the Lean outline.
+
+\subsection{Machine-readable schema}
+
+\path{schema/native_clause_program.schema.json} describes a declarative program
+format.  A node records its identifier, kind, dependencies, output formula
+name, demand/resource metadata, and the provenance of its local proof.  The
+schema does not serialize Lean proof terms.  It is intended for generators and
+audits: the generated Lean source must still be elaborated and kernel-checked.
+
+\subsection{Theorem ledger}
+
+\path{metadata/THEOREM_LEDGER.md} classifies every main result as one of:
+
+\begin{itemize}
+\item \textbf{upstream checked}: a theorem already present in the pinned
+repository;
+\item \textbf{human complete}: a proof is given in this report;
+\item \textbf{executable evidence}: exact reference code and tests exist;
+\item \textbf{Lean candidate}: code is supplied but not compiled here;
+\item \textbf{blueprint}: definitions and theorem signatures give a clear path,
+with proof holes explicitly counted;
+\item \textbf{conditional/application-specific}: the generic finalizer is
+proved but a deep producer is not supplied.
+\end{itemize}
+
+This vocabulary is intentionally conservative.  ``Formalized'' is reserved for
+kernel-checked source in the target calculus.
+
+\subsection{Source provenance}
+
+The source audit records:
+
+\begin{itemize}
+\item the pinned repository commit;
+\item paths and blob hashes of the key upstream files;
+\item the status statement in the parent iPRA README;
+\item the earlier foundation packets compared;
+\item the newly added direct derivation library;
+\item the exact absence of Lean executables in the artifact environment.
+\end{itemize}
+
+The build does not download dependencies.  It compiles the PDF, runs the Python
+tests, produces the demo JSON, and refreshes checksums.  Lean checking must be
+performed in the pinned ProveIt workspace.
+
+\subsection{PDF validation}
+
+The report is compiled twice with \path{pdflatex}, inspected with
+\path{pdfinfo}, preflighted, rendered to PNG at high resolution, and sampled
+across the document for visual defects.  The validation directory records page
+count, metadata, preflight output, and the pages inspected.  Intermediate
+renders are not included in the final ZIP.
+
+\subsection{Negative claims}
+
+This package does not claim:
+
+\begin{itemize}
+\item that its new Lean files compile;
+\item that the Python program is an iPRA proof checker;
+\item that every proof packet in the repository is correct;
+\item a universal primitive-recursive evaluator;
+\item a general effective proof of Faltings, Siegel, or every stated
+prime-distribution theorem;
+\item a canonical selector for singular roots, spectra, quotient
+representatives, or compatible infinite paths;
+\item that classical finiteness by itself yields a search cutoff;
+\item that a semantic Lean theorem is interchangeable with
+\(\Prf\;\PRAAx\).
+\end{itemize}
+
+The positive claim is narrower and more actionable: current checked
+\path{ConciseIPRA} already exposes a proof language in which a genuine generic
+finite graph compiler can be very small, and the current checked direct
+arithmetic library can exchange theorems with that compiler.

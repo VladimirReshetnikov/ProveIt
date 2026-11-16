@@ -1,0 +1,140 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,hyperref,xurl}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\bforall}{\mathop{\forall}\limits^{<}}
+\newcommand{\bexists}{\mathop{\exists}\limits^{<}}
+\title{Finite Strategy Certificates for Mathematical Arguments in Intuitionistic Primitive Recursive Arithmetic\\\large A complementary quantifier-game interface and an auditable Lean migration plan}
+\author{Research note, 15 November 2026}
+\date{}
+\begin{document}\maketitle
+\begin{abstract}
+We give a compositional translation of any \emph{fixed} bounded arithmetical formula, including arbitrary finite alternation of bounded existential and universal quantifiers, to a primitive-recursive decision program and a pair of finite strategy certificates. The certificates record the strategy for the winning side, rather than merely a true/false output. Every verification condition is an equation or quantifier-free predicate, so each induction can be carried out inside intuitionistic primitive recursive arithmetic (iPRA). We show how the construction interfaces with bounded finite covers and with nonconstructive-looking claims about finite searches. We carefully isolate why it cannot manufacture a uniform global height bound, a Cauchy modulus, or an unbounded witness. A Lean formalization plan distinguishes executable metatheory from actual terms of ProveIt's checked \texttt{Prf PRAAx} calculus.
+\end{abstract}
+\tableofcontents
+\section{Source audit and scope}
+The inspected public ProveIt directory is \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic}. Its root \texttt{README.md} says the \texttt{ConciseIPRA} native-scalar, equality, and PRA encodings are mutually bi-interpretable via checked Lean proofs, whereas 78 proof packets in \texttt{docs/proofs} are filed without a common verification run. The existing \texttt{ipra\_embedding\_framework}, \texttt{ipra\_unified\_finitary\_framework\_2026-11-15}, and \texttt{ipra\_certified\_finitary\_framework\_2026-11-15} already develop Boolean bounded search, demand, certificate reflection, stability, and finite relational viability. Therefore this note does \emph{not} claim those as new. Its narrower contribution is an explicit \emph{two-sided strategy extraction} for any fixed alternating bounded-quantifier statement, with a uniform proof tree and a failure explanation. The main examples are (i) finite precision-constrained selection and (ii) the exact distinction between a supplied search bound and an open global search claim.
+
+In particular, the \texttt{faltings\_ipra} and \texttt{siegel\_ipra} packets explicitly do not prove the general theorems. Neither does this report. The existing repository already considers finite game/viability methods; our emphasis is a direct \emph{formula-to-bounded-game compiler} and its counterstrategy interface, not a replacement for those methods.
+
+\section{Language, bounds and primitive recursive realization}
+Fix a finite formula $\Phi(\vec a)$, generated from decidable atomic primitive-recursive relations $R(\vec t)$ by $\wedge,\vee,\neg$ and bounded quantifiers
+\[\exists x<b(\vec a,\vec z)\,\Psi(\vec a,\vec z,x),\qquad
+\forall x<b(\vec a,\vec z)\,\Psi(\vec a,\vec z,x).\]
+The bound $b$ is a primitive-recursive term depending on earlier variables $\vec z$ but not on the bound variable $x$. Throughout, the \emph{formula is fixed}; its depth is a numeral at code-generation time. Negation may be pushed to leaves because all atomic relations are decidable. This operation is justified constructively by decidability of each subformula; it does not invoke unrestricted excluded middle.
+
+An atomic test is a numerical Boolean $r\in\{0,1\}$ (1 means true). Define
+\[\operatorname{all}(b,f)=\prod_{i<b} f(i),\qquad
+\operatorname{any}(b,f)=1-\prod_{i<b}(1-f(i)).\]
+Products here are Boolean conjunction, each implemented with primitive recursion; the empty product is 1. For fully general numerical Booleans, first normalize $f$ to $[f\ne0]$. Define the bounded least success
+\[\operatorname{first}(b,f)=\begin{cases}\min\{i<b:f(i)=1\}&\text{if such }i\text{ exists},\\b&\text{otherwise}.\end{cases}\]
+This is computed by maintaining $s_i\le i$, initialized $s_0=0$, and updating
+\[s_{i+1}=\begin{cases}s_i &s_i<i,\\i& s_i=i\ \land\ f(i)=1,\\ i+1&\text{otherwise}.\end{cases}\]
+All cases use numerical equality and an if/then/else function, hence primitive recursion. This exact sentinel invariant is important: the marker $b$ is not confused with a valid witness, including when $b=0$.
+
+\begin{lemma}[bounded first-choice invariant]\label{first}
+For every $i\le b$, $s_i\le i$ and
+\[s_i<i\iff\exists j<i\ f(j)=1,\qquad s_i<i\implies f(s_i)=1\ \wedge\ (\forall j<s_i\ f(j)=0).\]
+All quantifiers in the displayed invariant are bounded; they can be represented by primitive-recursive Boolean conjunctions and disjunctions.
+\end{lemma}
+\begin{proof}
+At $i=0$ no candidate exists and $s_0=0$. If $s_i<i$, the earlier least success persists, and the same least-success statement holds after enlarging the domain to $i+1$. Otherwise every $j<i$ fails, so the first success at $i+1$ is $i$ if $f(i)=1$, and no success exists if $f(i)=0$, giving sentinel $i+1$. These are exhaustive cases because numerical equality and $f(i)$ are decidable. The induction invariant is a conjunction of equations of primitive-recursive functions; it is admissible for quantifier-free induction in iPRA once the bounded products have been made explicit.
+\end{proof}
+
+\section{Alternating bounded games and two-sided certificates}
+Normalize $\Phi$ to negation-normal form. At each $\exists$ node the existential player chooses an integer $i<b$; at each $\forall$ node the universal player chooses one. A leaf is won by the existential player exactly when its numerical test is 1. Empty choice sets follow the usual conventions: $\exists x<0$ is false, $\forall x<0$ true. Conjunction is a universal choice between its two children, disjunction an existential choice; equivalently use binary coded choice nodes. The resulting rooted game tree is finite for every input, though its branching varies with earlier choices.
+
+Assign a Boolean $V(v)$ to every node $v$ in bottom-up order: atomic values at leaves, $\operatorname{any}$ at existential nodes, and $\operatorname{all}$ at universal nodes. To extract a \emph{winning-strategy certificate}, assign a winning side $w(v)=V(v)$ (1 existential, 0 universal). At a node controlled by that side, store the least winning child: the least $i$ with $V(i)=1$ when existential wins, or the least $i$ with $V(i)=0$ when universal wins. At a node controlled by the other side, store the assertion that \emph{every} child has winner $w(v)$. At an empty node no move is stored. A certificate may be encoded as a finite table of node values and choice indices, or generated on demand. Its size may be very large but is primitive recursive for fixed $\Phi$ and input data.
+
+\begin{theorem}[constructive finite determinacy with verifiable strategies]\label{det}
+For every fixed bounded formula $\Phi(\vec a)$ there are primitive-recursive numerical functions $V_\Phi(\vec a)$, $C_\Phi(\vec a)$ and a primitive-recursive certificate-verification predicate $\operatorname{Check}_\Phi(\vec a,w,c)$ such that iPRA proves:
+\begin{align*}
+& V_\Phi(\vec a)\in\{0,1\},\\
+&\operatorname{Check}_\Phi(\vec a,V_\Phi(\vec a),C_\Phi(\vec a))=1,\\
+& V_\Phi(\vec a)=1\quad\longleftrightarrow\quad \Phi(\vec a),\\
+& \operatorname{Check}_\Phi(\vec a,1,c)=1\implies \Phi(\vec a),\\
+& \operatorname{Check}_\Phi(\vec a,0,c)=1\implies \neg\Phi(\vec a).
+\end{align*}
+Here the final two implications use a \emph{recursive certificate checker} which audits every branch on which the adversary may move. The formula $\Phi$ on the right is the \emph{object-language bounded formula}, not an arbitrary unbounded first-order formula.
+\end{theorem}
+\begin{proof}
+Proceed by structural induction on the fixed formula (a metatheoretic finite induction used to generate a particular object-theoretic derivation). At a leaf the verifier computes the atomic Boolean and checks that it equals the claimed winner; decidability proves soundness. For an existential node with winner 1, checking a claimed choice $i<b$ together with a child certificate of winner 1 gives a witness to the existential statement. With winner 0, the verifier loops over all $i<b$ and checks child certificates with winner 0. By the finite conjunction invariant, each child is false, and hence the existential statement is false. For a universal node the roles reverse: winner 1 requires checking every child, and winner 0 requires one losing child. The two binary propositional node types are handled analogously. In empty domains the prescribed truth values are directly verified.
+
+For completeness, bottom-up evaluation yields at every node a winner. When the controlling player wins, the corresponding $\operatorname{first}$ call finds a legal child: at an existential node with $V=1$, some child must evaluate to 1 by the \texttt{any} invariant; at a universal node with $V=0$, some child evaluates to 0 by the \texttt{all} invariant. When the controlling player loses, every child has the winner recorded at the parent by the same product identities. Thus the recursively constructed certificate passes the verifier.
+
+The constructed game tree, recursive checker, and certificate builder can be compiled into primitive-recursive functions. For fixed syntactic depth, nested bounded loops are compositions and primitive recursions, not general recursion on arbitrary formulas. Each loop invariant is quantifier-free after replacing bounded quantifiers with \texttt{all}/\texttt{any}; the proof of the displayed assertions uses only equality reasoning, decidable numerical cases, and quantifier-free induction. This establishes the requisite \emph{individual} iPRA derivations for each fixed $\Phi$. It does \emph{not} assert that iPRA proves a single universal reflection theorem for an unrestricted code of all primitive-recursive functions or all proofs.
+\end{proof}
+
+\begin{corollary}[bounded functional choice]\label{choice}
+Let $R(a,i)$ be primitive-recursive and $b(a)$ primitive-recursive. The total primitive-recursive function $W(a)=\operatorname{first}(b(a),\lambda i.[R(a,i)])$ satisfies in iPRA
+\[\bigl(\exists i<b(a)\ R(a,i)\bigr)\to\bigl(W(a)<b(a)\wedge R(a,W(a))\bigr).\]
+Furthermore the numerical certificate $W(a)=b(a)$ proves $\forall i<b(a)\neg R(a,i)$.
+\end{corollary}
+\begin{proof}
+Apply Lemma~\ref{first} at $i=b(a)$. The proof is uniform in the parameter $a$ because the invariant contains only bounded Boolean reductions.
+\end{proof}
+
+\section{A new practical interface: failure-producing finite contracts}
+Write a contract as a fixed bounded formula in prenex game form
+\[\mathcal C(a)\equiv \forall q<Q(a)\;\exists z<Z(a,q)\;\forall e<E(a,q,z)\; R(a,q,z,e).\]
+Think of $q$ as a demanded precision, $z$ as a chosen finite computational witness, and $e$ as a verifier's possible local test. The compiler yields a PR function $z(a,q)$ \emph{on inputs satisfying the contract}; if the contract fails it instead produces a concrete $q$ for which every $z$ has a violating $e=e(a,q,z)$. The latter is a \emph{counterstrategy} rather than an opaque false result. All three loops are bounded by the displayed PR functions, even when the bound on $e$ depends on the proposed witness.
+
+\begin{proposition}[finite challenge decomposition]\label{challenge}
+For the contract above, iPRA proves that exactly one of the following numerical certificates is generated: (A) for each $q<Q(a)$ a selected $z(a,q)<Z(a,q)$ satisfying every $e<E(a,q,z(a,q))$; or (B) a selected $q_0<Q(a)$ together with a bounded function $e_0(z)<E(a,q_0,z)$ witnessing $\neg R(a,q_0,z,e_0(z))$ for every $z<Z(a,q_0)$. Both certificates have primitive-recursive constructors and checkers.
+\end{proposition}
+\begin{proof}
+For each $(a,q,z)$ compute $T(a,q,z)=\operatorname{all}_{e<E(a,q,z)}[R(a,q,z,e)]$. Put $U(a,q)=\operatorname{any}_{z<Z(a,q)}T(a,q,z)$. If $\operatorname{all}_{q<Q(a)}U(a,q)=1$, choose the first $z$ with $T=1$ for each $q$; the definition of $T$ checks all tests. Otherwise choose the first $q_0$ with $U=0$. Then every candidate $z$ has $T=0$, so $e_0(z)$ is the first test with $R=0$. Every selection is a bounded least-success operation. The cases are disjoint because the original Boolean is either zero or one, and their verification is by the same fold invariants. No constructive choice over an infinite family occurs.
+\end{proof}
+
+This interface improves proof engineering in four ways: it gives reproducible counterexamples at failed finite stages; it prevents existential witnesses from being confused with arbitrary choices; it exposes a syntactic dependency graph for demanded bounds; and it makes a conditional theorem usable even if its deep producer has not been supplied. By design, all precision demands are \emph{finite numerical inputs}, not implicit universally quantified precision predicates inside an induction hypothesis.
+
+\section{Application I: finite-net optimization without compactness axioms}
+Let $X$ be any finite rational grid with PR enumeration $x_0,\dots,x_{N-1}$, and let $f(x_i)$ be PR rational values. Suppose there is a PR rational metric $d$, a rational $L\ge0$ with
+\[|f(x)-f(y)|\le Ld(x,y)\quad(x,y\text{ in the desired domain}),\]
+and a \emph{supplied} finite-cover certificate saying that for every target point $x$ there is an index $i<N$ with $d(x,x_i)\le\delta$. Select the first minimal grid value $m=f(x_j)$ by finite rational comparison. Then
+\[f(x_j)\le f(x_i)\le f(x)+L\delta\quad\text{for the covering }i.\]
+Therefore $f(x_j)\le f(x)+L\delta$ for every target point, and a concrete $\varepsilon$-minimizer is produced whenever $L\delta\le\varepsilon$. If $N=0$, the asserted cover is impossible for any inhabited domain; the verifier must reject it rather than returning an arbitrary index. When a point is represented only by a precision name, its evaluation contract must separately provide a rational approximation error, which is added to the budget. The proof uses only cross multiplication on integer-coded rationals, finite search and the supplied cover. A \emph{continuous function without a quantitative modulus} does not satisfy these premises automatically.
+
+\section{Application II: why global Diophantine finiteness remains open}
+Let $P(a,h)$ be a primitive-recursive predicate saying that $h$ encodes a rational or integral solution of bounded height $h$ to equations with parameter $a$. Define $L(a,B)$ as the finite PR list of all $h\le B$ with $P(a,h)=1$. Elementary bounded-search correctness gives
+\[h\le B\ \wedge\ P(a,h)\ \Rightarrow\ h\in L(a,B),\]
+and every entry of $L$ is a solution. A \emph{separate positive height producer} $H(a)$ with proof $\forall h\,(P(a,h)\to h\le H(a))$ makes $L(a,H(a))$ a complete list. Conversely, a supplied complete finite list gives a maximum height, after finite maximum extraction. Neither bound is synthesized by the strategy compiler, since an unbounded $h$ lies outside its syntax. A bound on the \emph{number} of solutions does not give such a producer: knowing there are at most $k$ solutions does not decide whether another occurs beyond any searched cutoff. This is the bottleneck emphasized by the repository's \texttt{faltings\_ipra} and \texttt{siegel\_ipra} packages; it remains unresolved here.
+
+A related distinction concerns quantitative convergence: an input-specific PR procedure finding a good finite window for each requested \emph{finite} test does not give a Cauchy modulus uniform in all future indices. Our game compiler preserves this distinction by keeping the test horizon an explicit input.
+
+\section{Lean 4 formalization architecture and object-iPRA migration}
+The accompanying \texttt{lean/FiniteGameBlueprint.lean} contains standalone syntactic definitions of bounded Boolean quantifiers and least-choice evaluation, with statement-level targets documented as comments. It is a \emph{source blueprint}, not a claimed successful Lean build. An executable cross-check of the three-layer contract is in \texttt{code/finite\_game.py}.
+
+A robust Lean implementation should use these layers:
+\begin{enumerate}
+\item \textbf{Concrete PR folds.} Implement \texttt{allB : Nat -> (Nat -> Bool) -> Bool}, \texttt{anyB}, and \texttt{firstB}, preferably replacing function arguments with codes for \emph{fixed} PR terms when embedding into iPRA. Prove \texttt{firstB\_spec} by numerical induction using the invariant of Lemma~\ref{first}. A Lean meta-level arbitrary function argument is not itself a primitive-recursive function symbol.
+\item \textbf{Fixed formula compiler.} Define an inductive syntax of atomic tests, \texttt{And/Or/Exists/Forall}, with a \emph{closed finite menu} of PR atoms and bounds. Interpret formulas as Boolean programs by structural recursion. Prove \texttt{eval\_correct} by structural induction, \emph{external to the object theory}. Negative atoms use numerical Boolean complements.
+\item \textbf{Certificates.} Define \texttt{Cert} with constructors \texttt{leaf}, \texttt{pick i subcert}, and \texttt{all children}. The checker must require all children at adversarial nodes and must verify supplied indices and bounds. Prove soundness by structural recursion on certificates and completeness by recursion on the \emph{fixed} formula and bounded numerical loops; provide explicit empty-domain cases.
+\item \textbf{PR symbol compilation.} Replace higher-order Lean numerical functions with first-order symbols from \texttt{ConciseIPRA/Lean/ConciseIPRA/PR.lean}, using composition and primitive recursion to introduce folds, searches, and certificate coding. The compiler is indexed by each fixed formula; do not postulate a universal PR evaluator.
+\item \textbf{Internal derivations.} Import \texttt{ConciseIPRA.Syntax}, \texttt{ConciseIPRA.PR}, \texttt{ConciseIPRA.Deduction}, and \texttt{ConciseIPRA.NativeBiInterpretation}; construct object-level \texttt{Prf PRAAx} proof terms for \texttt{firstB\_spec}, each fixed Boolean connective/quantifier compiler instance, and the finite challenge proposition. Use exactly the checked bridge \texttt{pra\_iff\_native} only \emph{after} a full \texttt{Prf PRAAx} witness is constructed. A metatheoretic Lean theorem is not automatically such a witness.
+\item \textbf{Audit.} Check the generated derivations with the kernel, run \texttt{\#print axioms} on exported results, and separately record all unproved producer premises, e.g. height bounds, cover certificates, and analytic moduli.
+\end{enumerate}
+
+The principal proof obligation still requiring engineering is a \emph{quantifier-free induction reflection combinator} for the explicitly defined numerical loop invariants, built out of the repository's recursion/induction derivation constructors. The earlier packages report individual such combinators, but no generic end-to-end compiler is established by our standalone file. No custom axiom is introduced in this report.
+
+\section{A guarded extension to unbounded claims}
+One may use the finite contract as a \emph{conditional}, at arbitrary input horizon $n$, by proving $\forall n\,\operatorname{Good}(a,n)$ via an external separately supplied mathematical argument. This induction is allowed only when the actual induction formula is quantifier-free after numerical coding: generally a statement asserting a global existential witness or a pointwise universal future property is \emph{not} admissible as an induction invariant. To move from horizonwise existence to a single compatible infinite object one needs a separate coherence or modulus premise. Finite strategy extraction is therefore a sound organizing interface, not a device to eliminate mathematical strength requirements.
+
+\section{Conclusions and precise status}
+The substantive proved-on-paper results are Lemma~\ref{first}, Theorem~\ref{det}, Corollary~\ref{choice}, and Proposition~\ref{challenge}, plus the finite-net and bounded-height conditional consequences. They are stated as theorem \emph{schemas for each fixed bounded formula}, with explicit primitive-recursive implementations and induction plans. This paper supplies no general Faltings/Siegel theorem, no uniform singular Puiseux algorithm, no effective Roth bound, and no completed embedded Lean derivation for its new main theorem. The native Lean file is uncompiled; the Python tests cover only finite instances. Their separation is intentional, since verifying executable tests alone is not proof in iPRA.
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt, Logic/PrimitiveRecursiveArithmetic}, \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic}, accessed 15 November 2026.
+\bibitem{concise} \emph{ConciseIPRA README and checked Lean library}, \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\bibitem{unified} \emph{ipra\_unified\_finitary\_framework\_2026-11-15}, \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_unified_finitary_framework_2026-11-15}.
+\bibitem{certified} \emph{ipra\_certified\_finitary\_framework\_2026-11-15}, \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_certified_finitary_framework_2026-11-15}.
+\bibitem{faltings} \emph{faltings\_ipra README}, \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/diophantine-number-theory/faltings_ipra}.
+\bibitem{siegel} \emph{siegel\_ipra README}, \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/diophantine-number-theory/siegel_ipra}.
+\end{thebibliography}
+\end{document}

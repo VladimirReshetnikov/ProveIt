@@ -1,0 +1,47 @@
+{
+  "name": "height-bound-to-complete-list",
+  "permanent_context": [
+    "CurveCode(u)",
+    "DecidablePointPredicate(u,z)",
+    "CanonicalHeightCoding(u,z)"
+  ],
+  "target": "complete-point-list",
+  "nodes": [
+    {
+      "name": "curve-input",
+      "kind": "input",
+      "statement": "the input is a valid coded curve and point predicate",
+      "deps": [],
+      "evidence_kind": "none"
+    },
+    {
+      "name": "height-bound-producer",
+      "kind": "boundary",
+      "statement": "H is a primitive-recursive cutoff and every rational point has height at most H",
+      "deps": [],
+      "evidence_kind": "boundary"
+    },
+    {
+      "name": "code-cutoff",
+      "kind": "local",
+      "statement": "every canonical point code of height at most H is below C(u,H)",
+      "deps": ["curve-input", "height-bound-producer"],
+      "evidence_kind": "exact"
+    },
+    {
+      "name": "bounded-filter",
+      "kind": "local",
+      "statement": "filter all codes below C by the decidable point checker",
+      "deps": ["code-cutoff"],
+      "evidence_kind": "trace"
+    },
+    {
+      "name": "complete-point-list",
+      "kind": "final",
+      "statement": "the filtered list contains exactly all rational points",
+      "deps": ["height-bound-producer", "bounded-filter"],
+      "evidence_kind": "observation"
+    }
+  ],
+  "expected_residual": ["height-bound-producer"]
+}

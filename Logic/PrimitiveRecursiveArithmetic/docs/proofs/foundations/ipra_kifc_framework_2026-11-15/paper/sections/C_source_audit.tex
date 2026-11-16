@@ -1,0 +1,45 @@
+\section{Source audit}
+
+\subsection{Pinned repository snapshot}
+
+The report was developed against the main-branch snapshot
+\[
+\texttt{8649990597d73657bde480b6c389de7f85bc0cb0},
+\]
+observed through the GitHub repository interface during this task.  The repository is active; later commits may change paths or APIs.  The Lean plan should therefore pin this commit or explicitly re-audit a newer one.
+
+\subsection{Primary inspected paths}
+
+\begin{sloppypar}
+\small
+\begin{itemize}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/README.md}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Deduction.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/README.md}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Basic.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Tactic.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Geometry/TriangleFormulas.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Checks/Axioms.lean}
+  \item \path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md}
+\end{itemize}
+\normalsize
+\end{sloppypar}
+
+\subsection{Earlier framework packets consolidated}
+
+The design was compared with the following prior artifacts from the user's library and the corresponding foundations entries in the repository:
+\begin{itemize}
+  \item \texttt{ipra\_pfig\_framework\_2026-11-15};
+  \item \texttt{ipra\_unified\_finitary\_framework\_2026-11-15};
+  \item \texttt{ipra\_finite\_use\_framework\_2026-11-15\_v2};
+  \item \texttt{ipra\_certified\_finitary\_framework\_2026-11-15};
+  \item \texttt{ocipra\_framework\_2026-11-15}.
+\end{itemize}
+Their demand propagation, relational viability, stable-observer, finite-net, and producer/verifier ideas are retained.  The present report's main changes are: anchoring the architecture in the new checked \texttt{IPRADerivations} backend; making a small kernel proof schedule the universal composition primitive; sharpening the six-node normal form; and separating finite-use relational composition from the stronger hypotheses needed for coherent infinite names.
+
+\subsection{Audit limitations}
+
+The repository contains many proof packets and changes rapidly.  This task inspected the central indexes, current logical APIs, checked derivation core, representative theorem files, and the prior general-framework artifacts.  It did not independently rebuild every packet or verify every theorem claimed in their prose.  Status statements about those packets are based on their own repository index and source notes.  The generated report therefore treats packet-specific deep results as targets or producer obligations unless an actual checked derivation was inspected.

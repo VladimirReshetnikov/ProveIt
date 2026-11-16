@@ -1,0 +1,110 @@
+\section{Limits, research program, and conclusions}
+
+\subsection{What is proved at the human level}
+
+The generic arguments in this report are finitary and constructive.  They establish:
+
+\begin{itemize}
+\item residual compilation and boundary discharge for fixed finite proof DAGs;
+\item Boolean reflection for fixed quantifier-free and strictly bounded formulas;
+\item least bounded search and complete bounded enumeration;
+\item capped monotone demand closure with an explicit rank fuel;
+\item finite-trace reflection by quantifier-free induction;
+\item backward viability and least paths at fixed finite horizons;
+\item exact and approximate stable-observer elimination;
+\item finite-horizon Cauchy coherence under explicit shrinking and motion moduli;
+\item height/list conversion for decidable coded predicates;
+\item a closed rational bisection construction for the inverse of \(y^3+y\).
+\end{itemize}
+
+These are mathematical theorem schemas for every fixed collection of primitive-recursive symbols satisfying the stated local premises.  The proofs do not rely on excluded middle for arbitrary formulas or on countable choice.
+
+\subsection{What remains to be formalized}
+
+The Lean package is an integration-oriented outline.  The object composition core is written against the inspected API, but this artifact environment did not contain Lean or Lake, so it was not elaborated.  The bounded-formula compiler, rational arithmetic reflection, object demand trace, relational viability proof, and cubic endpoint remain implementation milestones.
+
+Accordingly, the report makes no new kernel-checking claim.  The first decisive formal result should be the cubic benchmark ending in a declaration of type \code{Prf PRAAx}.  Until that endpoint builds, the framework should be described as a detailed formalization plan with source-level combinators, not as a completed embedded library.
+
+\subsection{What a general framework cannot manufacture}
+
+Residualization is not a mechanism for proving arbitrary missing theorems.  It exposes them.  The following remain theorem-specific:
+
+\begin{itemize}
+\item effective height bounds for general curve families where none is presently supplied;
+\item rational representatives for general Mordell--Weil quotient data;
+\item explicit analytic constants for strong uniform prime-distribution estimates;
+\item positive separation gaps in collision-prone exact-selection problems;
+\item triangulation, cover, or compactness moduli not derivable from the given representation;
+\item convergence rates for asymptotic theorems stated without quantitative data.
+\end{itemize}
+
+The framework may still improve these research problems by giving each one a precise input/output type and by proving every elementary consequence once the input is available.
+
+\subsection{No generic logical minimality claim}
+
+The residual list is canonical under graph reachability, duplicate removal, and declared internal derivations.  It is not guaranteed to be a smallest logically sufficient subset of formulas.  Such minimization would require solving arbitrary theorem-proving problems and would be unstable under reformulation.
+
+This limitation is acceptable.  Dependency-normal residuals are reproducible and explainable.  Domain experts may add explicit implication nodes to eliminate dominated assumptions.
+
+\subsection{No internal universal compiler}
+
+The host software may accept many graph descriptions, but each object proof is specialized to one finite graph.  The report does not assert a primitive-recursive evaluator for arbitrary \code{PR} syntax, an internal proof compiler for arbitrary encoded derivations, or a reflection theorem saying that successful host computation implies object derivability.
+
+This boundary is required by the computational strength of PRA and by the design of a small trusted core.
+
+\subsection{Potential improvements}
+
+Several refinements are promising after the first kernel-checked benchmark.
+
+\paragraph{Proof-preserving graph optimization.}
+Fuse adjacent deterministic nodes, share repeated subproofs, and remove unused formulas while preserving a generated equivalence proof between original and optimized schedules.
+
+\paragraph{Residual equivalence libraries.}
+Collect embedded implications between common boundary forms: modulus strengths, list and height interfaces, alternative norm bounds, and gap certificates.  Residual normalization can then use proved dominance rather than heuristics.
+
+\paragraph{Certified code generation.}
+Define a small host IR whose compiler emits both \code{PR} syntax and local proof templates.  Prove the compiler correct once at the host theorem level, while continuing to kernel-check every emitted object derivation.
+
+\paragraph{Domain-specific invariant combinators.}
+Provide libraries for scan invariants, finite extrema, frozen descent, interval refinement, dynamic programming, and table replay.  These should reduce application proofs to local arithmetic obligations.
+
+\paragraph{Proof-cost accounting.}
+Record graph size, number of cuts, invariant size, and generated proof-term size.  This would make the ``simplest proof checker implementation'' objective measurable alongside mathematical generality.
+
+\paragraph{Residual-driven research planning.}
+Aggregate residual reports across packets.  A producer that discharges many high-impact residuals should receive priority.  This turns the repository into a dependency map of open quantitative lemmas.
+
+\subsection{Recommended repository integration}
+
+The new framework should be integrated as a small library rather than another isolated packet.
+
+\begin{enumerate}
+\item Put the generic object compiler under \code{ConciseIPRA} or a sibling checked directory after it elaborates.
+\item Keep research reports and generated examples under \code{docs/proofs/foundations}.
+\item Give every application packet a machine-readable boundary manifest.
+\item Add a CI check that distinguishes native Lean theorems from \code{Prf PRAAx} endpoints.
+\item Maintain one catalog table with columns for human proof, reference tests, native Lean, embedded Lean, residuals, and upstream commit.
+\end{enumerate}
+
+This would reduce repeated status prose and make it easier to see which generic infrastructure is truly shared.
+
+\subsection{Further research questions}
+
+\begin{enumerate}
+\item Can a small, checked collection of proof-producing invariant combinators cover most current packets without a large tactic framework?
+\item Which existing arithmetic modules already contain enough embedded rational and bounded-list infrastructure for the cubic benchmark, and where is native-only duplication occurring?
+\item Can generated proof graphs be normalized to a compact sequent calculus representation and then translated to the current natural-deduction \code{Prf} with a checked compiler?
+\item What is the best finite relational interface for polynomial roots that remains stable at multiplicity changes and supports common algebraic consumers?
+\item Which Diophantine packets share the same height-bound residual after canonicalization of curve and point codes?
+\item Can explicit ``count plus isolation oracle'' assumptions be factored into a weaker reusable boundary than a full height bound?
+\item Which analytic number theory estimates have effective constants that are elementary enough to close within PRA, and which require stronger constructive systems?
+\item Can finite-horizon coherence be generalized from metric observations to certified uniform spaces or apartness spaces while remaining first-order arithmetic after coding?
+\item How much proof-term compression is achieved by one fused trace versus a modular proof DAG on representative applications?
+\item Can the residual graph drive automatic generation of theorem statements, READMEs, and status ledgers without weakening human review?
+\end{enumerate}
+
+\subsection{Conclusion}
+
+The main lesson is methodological.  Mathematics in \iPRA\ should not begin with an ideal object and ask how to force all of it into one numerical sort.  It should begin with the finite observation required by one theorem.  Exact computations become primitive-recursive terms; bounded processes become traces with quantifier-free invariants; nonunique data become finite relations; stable consumers eliminate unnecessary choice; and genuinely missing quantitative producers remain visible as residual formulas.
+
+Under this discipline, a general framework can be both ambitious and honest.  It can compile large classes of finite mathematics to actual object-language derivations, reuse those derivations across domains, and still state precisely where current mathematics has not supplied an effective bound or selector.  The resulting endpoint is not merely an executable program or a semantic Lean theorem.  It is a sequent of \iPRA, closed exactly when its producer obligations have been proved.

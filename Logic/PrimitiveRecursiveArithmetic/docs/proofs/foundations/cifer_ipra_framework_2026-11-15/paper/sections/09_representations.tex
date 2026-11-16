@@ -1,0 +1,132 @@
+\section{Reusable mathematical representations}
+
+\subsection{Natural numbers, integers, and rationals}
+
+Natural numbers are the ambient domain.  Signed integers can be represented by pairs \((p,n)\) denoting \(p-n\), with equality by cross addition.  A normalized sign-magnitude code is smaller for output, but pair-difference coding often simplifies primitive recursion because addition and multiplication are polynomial operations on naturals.
+
+A rational code consists of a signed numerator and positive denominator.  Validity checks positivity of the denominator.  Equality and order use cross multiplication.  Arithmetic operations return valid but not necessarily reduced codes; reduction by the Euclidean algorithm is a separate bounded trace when canonical output is required.  This separation avoids inserting gcd normalization into every rational operation.
+
+For a fixed proof, all denominator growth is bounded by primitive-recursive expressions in the input codes and loop fuel.  The demand pass records the bit or height bounds needed by finite inequalities.
+
+\subsection{Finite-dimensional algebra}
+
+Vectors and matrices of fixed dimensions are nested tuples.  Every coordinate operation is primitive recursive.  Matrix multiplication uses a fixed finite sum, determinant uses a fixed permutation sum or elimination trace, and polynomial evaluation uses Horner recursion.
+
+This representation is especially effective for theorem families with externally fixed dimension: Euclidean and projective geometry, small matrix identities, finite Markov chains, finite group tables, and fixed-degree polynomial algebra.  There is no need for an internal type universe of dimensions.  The host compiler specializes the dimension and generates the finite formulas.
+
+For variable but bounded dimension, encode arrays and use bounded loops.  The invariant must include array length and index safety.  A determinant can then be verified from a supplied permutation expansion or elimination certificate; production and verification remain separate.
+
+\subsection{Polynomials and formal power series}
+
+A polynomial of degree at most \(d\) is a coefficient list of length \(d+1\).  Addition, multiplication, derivative, evaluation, and coefficient extraction are bounded operations.  Identities are proved coefficientwise up to an explicit degree cap.  This is often simpler than reasoning extensionally about polynomial functions.
+
+A formal power series theorem usually consumes only finitely many coefficients.  Represent a series by a primitive-recursive coefficient function or a finite prefix producer.  At query order \(N\), all algebra is performed modulo \(X^{N+1}\).  Composition and inversion require explicit constant-term side conditions; Lagrange inversion and recurrence arguments become finite coefficient identities.  No completed infinite series object is needed unless the theorem asks for one.
+
+\subsection{Represented real numbers}
+
+A regular rational name for a real is a primitive-recursive function \(a(q)\) satisfying a fixed Cauchy condition such as
+\[
+ |a(p)-a(q)|\le 2^{-p}+2^{-q}.
+\]
+In the object language, one does not quantify over arbitrary functions.  A theorem is a schema for each fixed \code{PR} symbol representing the name, together with embedded proofs of its regularity equations or inequalities.
+
+An interval name uses rational endpoints \(l(q)\le u(q)\), nested or approximately nested, with width at most \(2^{-q}\).  Interval names are often better for inequalities, root enclosures, and branch stability.  Operations carry demand transformers and interval correctness theorems.
+
+Two names represent the same real when their approximants become close at an explicit common precision.  Consumers should prove extensionality: replacing a name by an equivalent one changes the output by no more than the requested tolerance or leaves a finite observation unchanged.
+
+\subsection{Continuous functions on compact domains}
+
+A constructive finite-use interface for \(f:[a,b]\to\mathbb R\) contains:
+\begin{enumerate}
+\item a pointwise approximation producer for rational inputs;
+\item a modulus of uniform continuity on the declared compact interval;
+\item optional range or Lipschitz bounds;
+\item extensionality certificates.
+\end{enumerate}
+To compute a uniform bound or approximate extremum at precision \(q\), choose a rational mesh from the modulus, evaluate a finite net, and take a finite maximum or minimum.  The proof combines the net extremum with the continuity error.
+
+The modulus is often the decisive producer.  If it is unavailable, the finite-net theorem remains valid conditionally with the modulus formula in the residual context.
+
+\subsection{Integration and finite sums}
+
+Riemann-style integration on a compact interval uses a finite partition whose mesh is selected from a modulus.  The evidence is a rational sum and an error bound.  Algebraic identities between integrals are proved first for finite sums and then transported through the error estimates.
+
+Probability distributions with finite support are even simpler: expectations, variances, transforms, and convolutions are finite rational sums.  Limit theorems require explicit quantitative approximation statements; the finite distribution algebra itself is fully primitive recursive.
+
+\subsection{Roots and algebraic numbers}
+
+A robust root interface returns a finite list of rational boxes or discs together with:
+\begin{itemize}
+\item a verifier that each box contains the claimed number of roots, expressed through an appropriate finite certificate;
+\item a cover theorem saying all relevant roots lie in the union;
+\item optional disjointness or separation data;
+\item coefficient and evaluation bounds.
+\end{itemize}
+At multiple-root collisions, labels need not be stable.  Symmetric functions of roots, total multiplicities, cluster sums, and polynomial remainders are stable observables.  An exact ordered root can be recovered only under a separation certificate.
+
+Algebraic numbers may be represented by a polynomial plus an isolating interval.  Equality is a certified relation, not literal code equality.  Arithmetic operations produce a resultant polynomial and a finite root cloud; a gap or isolating certificate selects the desired component when possible.
+
+\subsection{Linear algebra and spectral data}
+
+For rational matrices in fixed dimension, row reduction, rank, determinant, kernel bases, and characteristic polynomials are finite.  For represented real matrices, use interval entries and finite precision.
+
+Eigenvectors are collision-prone.  Better interfaces include:
+\begin{itemize}
+\item the characteristic polynomial;
+\item clusters of approximate eigenvalues;
+\item invariant-subspace projectors under a spectral gap;
+\item symmetric spectral observables such as trace, determinant, or cluster sums;
+\item finite clouds of normalized approximate eigenvectors.
+\end{itemize}
+A unique normalized eigenvector requires a simple eigenvalue and a phase/sign convention separated from zero.  Those are gap boundaries, not automatic consequences of approximate matrix data.
+
+\subsection{Geometry}
+
+Rational or algebraic coordinate geometry is particularly well suited to \iPRA.  Incidence, orientation, determinant identities, squared distances, barycentric coordinates, and projective relations reduce to polynomial equalities and inequalities.  Degenerate cases should be stated explicitly as side formulas.
+
+Trigonometric geometry can often be recast algebraically through dot products, Gram matrices, complex unit pairs, or finite polynomial approximations with error bounds.  An angle is not always the best constructive primitive.  For rotations, unit quaternions or orthogonal matrices avoid the unstable exact axis at the identity.
+
+A geometric construction that uses intersections should return a finite relation when parallelism, tangency, or multiplicity can occur.  Gap conditions recover the classical unique point in nondegenerate cases.
+
+\subsection{Finite combinatorics and graph theory}
+
+Finite graphs, hypergraphs, simplicial complexes, automata, and game trees are direct bounded structures.  Existence claims become bounded search with certificate verification.  Dynamic programs and exhaustive searches compile through trace invariants.  Symmetry reduction may be performed by a host canonicalizer, provided the object proof verifies the canonical representative or the final certificate independently.
+
+For large finite computations, a supplied proof certificate is often preferable to internal search.  Examples include a coloring, matching, flow, elimination order, unsatisfiability trace, or decomposition tree.  The object theorem is then ``accepted certificate implies property.''
+
+\subsection{Algebraic structures by finite laws}
+
+A finite group, ring, field, category, or module is represented by operation tables and Boolean law checkers.  Once associativity, identity, inverses, and distributive laws are verified over the finite carrier, all elementwise reasoning is bounded.  A theorem about a specific finite structure can therefore be closed by exhaustive verification plus an embedded reflection proof.
+
+For infinite structures generated by finite data, use a presentation plus a certified normalizer or relational equality.  A global decision procedure is not assumed unless its termination and correctness are proved by a trace.
+
+\subsection{Topology and homology through finite carriers}
+
+Many topological applications in the repository are best understood as finite-combinatorial theorems plus a representation theorem.  A finite simplicial complex, chain group in fixed degree, boundary matrix, and homology certificate are primitive recursive.  Subdivision and simplicial approximation are bounded traces when a subdivision depth is supplied.
+
+The difficult producer may be a finite cover, Lebesgue number, triangulation, or approximation depth.  Once supplied, chain-level calculations and local-to-global gluing can be compiled.  Homology classes use certified setoid equality witnessed by boundaries.
+
+\subsection{Local-to-global interfaces}
+
+A local-to-global theorem starts with a finite cover \(U_0,\ldots,U_{r-1}\), local evidence \(e_i\), and overlap certificates \(c_{ij}\).  A finite gluing verifier checks:
+\begin{enumerate}
+\item each local object is valid;
+\item overlap restrictions agree under the certified equality relation;
+\item higher overlap conditions required by the chosen construction hold;
+\item the cover is complete for the finite carrier or represented domain at the demanded scale.
+\end{enumerate}
+The finalizer constructs or verifies a global code and proves its restrictions.  In sheaf-like applications, the exact cover or Lebesgue number may be the residual producer; the gluing algebra is finite.
+
+\subsection{A representation selection rule}
+
+Before formalization, ask what the final consumer observes.  Choose the weakest representation that makes that observation primitive-recursive and extensional.
+
+\begin{itemize}
+\item If only a finite truth value is needed, do not construct an exact real witness.
+\item If only a symmetric root expression is needed, do not order roots.
+\item If only a homology class is needed, retain chain representatives with boundary certificates.
+\item If only a numerical bound is needed, use interval enclosures rather than exact radicals.
+\item If the theorem needs a complete list, demand a cutoff, not merely a count.
+\end{itemize}
+
+This rule is the main practical source of simplification.  It removes unnecessary selectors before they become logical obstacles.
