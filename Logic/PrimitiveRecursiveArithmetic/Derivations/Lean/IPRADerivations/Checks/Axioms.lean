@@ -69,3 +69,6 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Recurrences.det_step
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Recurrences.det_sq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Recurrences.fibonacci_norm
+#print axioms LeanProofs.IPRA.Analysis.Chebyshev.chebyshev_pell
+#print axioms LeanProofs.IPRA.Analysis.Chebyshev.chebyshev_recurrence
+#print axioms LeanProofs.IPRA.Geometry.PlatonicSolids.platonic_solids

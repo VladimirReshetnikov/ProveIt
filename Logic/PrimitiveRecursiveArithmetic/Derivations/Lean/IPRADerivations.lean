@@ -10,6 +10,7 @@ import IPRADerivations.Core.Monus
 import IPRADerivations.Core.Order
 import IPRADerivations.Core.Pairing
 import IPRADerivations.Algebra.CayleyHamilton
+import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
@@ -17,6 +18,7 @@ import IPRADerivations.DiophantineNumberTheory.Recurrences
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Geometry.EulerRodrigues
 import IPRADerivations.Geometry.Morley
+import IPRADerivations.Geometry.PlatonicSolids
 import IPRADerivations.Geometry.Projective
 import IPRADerivations.Geometry.SphericalTrigonometry
 import IPRADerivations.Geometry.TriangleFormulas
