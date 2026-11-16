@@ -196,6 +196,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BoundedReflection.ex_least
 #print axioms LeanProofs.IPRA.Foundations.BoundedReflection.ex_none
 #print axioms LeanProofs.IPRA.Foundations.BoundedReflection.bounded_choice
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bitAt_subst
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.fmAt_subst
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.reflect
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_reflect
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_cases
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_dec
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_choice
+#print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_least
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz.denominator_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
