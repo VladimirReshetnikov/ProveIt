@@ -1,0 +1,207 @@
+\section{The checked compiler spine}
+
+\subsection{Simultaneous discharge of generated assumptions}
+
+The central structural lemma is a finite list form of cut.  It is almost a
+direct call to the checked theorem \path{KPrf.cut}.
+
+\begin{theorem}[List cut]\label{thm:list-cut}
+Let \(\Gamma\) be a base clause context, let
+\(\Delta=[B_0,\ldots,B_{r-1}]\) be native formulas, and let \(A\) be a native
+formula.  If
+\[
+  h:\KPrf(\Delta^{\mathsf{asm}}\mathbin{++}\Gamma,A)
+\]
+and for every \(B_i\in\Delta\) there is
+\(h_i:\KPrf(\Gamma,B_i)\), then \(\KPrf(\Gamma,A)\).
+\end{theorem}
+
+\begin{proof}
+Apply \path{KPrf.cut} to \(h\) with target context \(\Gamma\).  Every source
+clause belongs either to \(\Gamma\), in which case it is retained, or to
+\(\Delta^{\mathsf{asm}}\), in which case it has the form
+\(\Cl.\mathsf{asm}(B_i)\) and is discharged by \(h_i\).  These are exactly the
+two alternatives required by the checked cut theorem.  The argument is a
+finite list-membership decomposition and does not inspect the internal
+structure of \(h\).
+\end{proof}
+
+A candidate Lean proof is included in \path{lean/NativeClauseFramework/Bridge.lean}:
+
+\begin{lstlisting}[language={},caption={Candidate direct proof of list cut}]
+theorem cutAsmList
+    (h : KPrf (Delta.map Cl.asm ++ Gamma) A)
+    (hs : forall X, X in Delta -> KPrf Gamma X) : KPrf Gamma A := by
+  apply h.cut
+  intro c hc
+  rw [List.mem_append] at hc
+  rcases hc with hc | hc
+  case left => obtain <X, hX, rfl> := List.mem_map.1 hc
+    exact .inr <X, rfl, hs X hX>
+  case right => exact .inl hc
+\end{lstlisting}
+The archive uses ASCII approximations in explanatory snippets where convenient;
+the actual Lean file uses Lean syntax.
+
+\subsection{Acyclic program compilation}
+
+A program is given in topological order.  Node \(i\) may depend on any subset
+of outputs \(A_0,\ldots,A_{i-1}\), and its local proof is allowed to assume all
+previous outputs for simplicity:
+\[
+ h_i:\KPrf([A_0,\ldots,A_{i-1}]^{\mathsf{asm}}
+                 \mathbin{++}\Gamma,A_i).
+\]
+Unused assumptions are harmless.
+
+\begin{theorem}[Native DAG compilation]\label{thm:dag-compile}
+For every topologically ordered finite list of native clause nodes over
+\(\Gamma\), the compiler constructs a derivation
+\(\KPrf(\Gamma,A_i)\) for every node output.  In particular it constructs a
+derivation of the designated terminal output.
+\end{theorem}
+
+\begin{proof}
+Induct on the node list.  The empty list is immediate.  At node \(i\), the
+induction hypothesis supplies derivations of every earlier \(A_j\) from
+\(\Gamma\).  Apply Theorem~\ref{thm:list-cut} to the node's local derivation
+\(h_i\).  This yields \(\KPrf(\Gamma,A_i)\), which is appended to the compiled
+proof environment.  No semantic property of the executable node is used.
+\end{proof}
+
+The theorem remains true when a node lists only its actual predecessors: map
+those predecessors into a temporary assumption list and apply list cut.  A
+reverse index or membership proof is metadata used to route the corresponding
+compiled derivations.
+
+\subsection{Specialization and parameter families}
+
+A local theorem is normally proved with free variables and reused at many
+concrete terms.  The checked theorem \path{KPrf.subst} states that substitution
+of terms for all free variables transports both the clause context and the
+conclusion.
+
+\begin{theorem}[Specialization]
+If \(h:\KPrf(\Gamma,A)\) and
+\(\sigma:\mathrm{Fin}(n)\to\mathrm{Tm}(m)\), then
+\[
+ \KPrf(\Gamma[\sigma],A[\sigma]).
+\]
+\end{theorem}
+
+\begin{proof}
+This is exactly \path{KPrf.subst}.  Its checked proof is by induction on the
+five rule families and includes the nontrivial binder bookkeeping for
+elimination and introduction.
+\end{proof}
+
+This theorem is the formal reason to compile a library of generic node lemmas.
+For example, a generic rational-addition contract with variables for four
+numerators and denominators can be specialized to every occurrence in a graph
+without redoing its proof.
+
+\subsection{Export to ordinary iPRA}
+
+The checked method \path{KPrf.toNPrf} maps a clause derivation to a native
+scalar-core derivation whose assumptions are the ordinary native readings of
+the clauses.  The theorem \path{native_iff_pra} maps that derivation to ordinary
+iPRA.
+
+\begin{theorem}[Clause-to-iPRA export]\label{thm:export}
+For \(h:\KPrf(\Gamma,A)\), there is a derivation
+\[
+  \Gamma.\mathsf{map}(c\mapsto (c.\mathsf{toN}).\mathsf{toPRA})
+  \ \vdash_{\PRAAx}\ A.\mathsf{toPRA}.
+\]
+In particular, a closed \(\KPrf([],A)\) yields a closed ordinary iPRA theorem.
+\end{theorem}
+
+\begin{proof}
+Apply \path{KPrf.toNPrf} to obtain
+\(\NPrf(\Gamma.\mathsf{map}(\Cl.\mathsf{toN}),A)\).  Apply the forward
+direction of \path{native_iff_pra}.  The resulting assumption list is the
+stated list after associativity of \path{List.map}.
+\end{proof}
+
+This theorem gives the complete trusted route
+\[
+  \text{local }\KPrf
+   \xrightarrow{\text{cut/subst}}
+  \text{terminal }\KPrf
+   \xrightarrow{\mathsf{toNPrf}}
+  \NPrf
+   \xrightarrow{\mathsf{native\_iff\_pra}}
+  \Prf\;\PRAAx.
+\]
+
+\subsection{Import of direct iPRA derivations}
+
+The route also runs in the opposite direction.  The theorem
+\path{pra_iff_native} converts an ordinary derivation to a native derivation,
+and \path{kprf_iff_nprf} converts the native derivation to the clause calculus
+after \path{unQ} normalization.
+
+\begin{theorem}[iPRA-to-clause import]\label{thm:import}
+If \(h:\Gamma\vdash_{\PRAAx}\varphi\), then
+\[
+ \KPrf\left(
+  (\Gamma.\mathsf{map}\,\NFm.\mathsf{ofPRA}).
+      \mathsf{map}(X\mapsto\Cl.\mathsf{asm}(\NFm.\mathsf{unQ}(X))),
+  \NFm.\mathsf{unQ}(\NFm.\mathsf{ofPRA}(\varphi))\right).
+\]
+\end{theorem}
+
+\begin{proof}
+The forward direction of \path{pra_iff_native} gives
+\(\NPrf(\Gamma.\mathsf{map}\,\NFm.\mathsf{ofPRA},
+\NFm.\mathsf{ofPRA}(\varphi))\).  Apply the reverse direction of
+\path{kprf_iff_nprf}.
+\end{proof}
+
+Thus a theorem produced by \path{ipra_ring} may be inserted as a local native
+node, used by search or branching code, and exported again after composition.
+This is the main bridge between the new direct derivation library and the
+finite-control framework.
+
+\subsection{Compiler correctness is syntactic}
+
+The compiler theorem is stronger than a semantic soundness statement in one
+respect and weaker in another.
+
+It is stronger because the output is an actual derivation, not merely a proof
+that every model satisfying the inputs satisfies the output.  It is weaker
+because the compiler assumes local derivations rather than inferring them from
+arbitrary successful computations.  That is the correct boundary.  A small
+trusted proof calculus should not contain a general rule ``verified by external
+program.''
+
+\subsection{Demand compilation and proof compilation are separate}
+
+The host compiler performs two passes.
+
+\begin{enumerate}
+\item The \emph{demand pass} computes the finite precision, fuel, and resource
+requirements needed by each node.  Its correctness is a theorem about finite
+natural-number algorithms.
+\item The \emph{proof pass} instantiates local node theorems at the computed
+terms and folds them with list cut.
+\end{enumerate}
+
+The separation prevents circularity.  The demand pass may be executed in the
+host to generate concrete numerals, but if the theorem quantifies over the
+requested precision, the demand function itself is represented by a PR symbol
+and its defining equations are used in the object proof.  In either case, the
+proof pass never assumes the semantic correctness of an opaque host result.
+
+\subsection{No need to encode the graph as a number}
+
+The general theorem is implemented at the Lean metalevel over a finite list of
+nodes.  For a particular application, Lean elaborates the list and constructs a
+proof term.  The object theory sees only the resulting formulas, PR terms, and
+proof.  Encoding the graph and writing an internal graph interpreter would add
+substantial machinery and would approach the forbidden universal-evaluator
+problem without providing additional mathematical strength.
+
+This staged approach is analogous to a verified macro expansion: generic Lean
+code produces a concrete object-language derivation, and the small inductive
+proof kernel checks the result.

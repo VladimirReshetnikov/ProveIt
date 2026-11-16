@@ -1,0 +1,86 @@
+\begin{abstract}
+The ProveIt collection contains dozens of detailed finitary reconstructions of
+mathematical arguments, together with several general frameworks based on finite
+observations, contracts, demand propagation, relational witnesses, and stable
+observables.  The persistent gap is now sharply identifiable: a terminating
+algorithm or a host-level Lean theorem is not yet an object-language derivation
+\[
+             \Prf\;\PRAAx\;[]\;\Phi.
+\]
+This report proposes a general framework that targets the repository's
+kernel-checked five-rule clause calculus \(\KPrf\) as an intermediate proof
+language.  A mathematical development is compiled into a finite \emph{native
+clause program}: every node exports a quantifier-free native formula or clause,
+every edge is an explicit finite dependency, and every node carries a local
+\(\KPrf\) derivation.  Program composition is then not justified by semantic
+reflection; it is ordinary \(\KPrf\) cut.  Parameter specialization is ordinary
+\(\KPrf\) substitution.  The checked map \(\KPrf\to\NPrf\) followed by
+\path{native_iff_pra} exports the result to ordinary iPRA.  Conversely, checked
+\(\Prf\;\PRAAx\) derivations---notably the new polynomial identity backend in
+\path{IPRADerivations}---can be imported as native clause nodes.
+
+The report develops full human proofs of the compiler theorem, bounded trace
+reflection, least bounded search, acyclic backward demand propagation, bounded
+least fixed points for cyclic precision constraints, relational viability,
+stable-observer elimination of noncanonical witnesses, exact recovery under a
+positive gap, finite exceptional-set synchronization, lexicographic descent
+fuel, and the equivalence between an explicit code-height bound and complete
+finite enumeration.  It gives reusable presentations for integers, rationals,
+represented reals and complex numbers, finite algebraic structures, matrices,
+polynomials, simplicial data, and finite categories.  Representative
+applications explain how the method handles polynomial identities,
+fixed-dimensional Cayley--Hamilton, numerical analysis with moduli, root
+clusters, spectral labels, finite topology, and conditional Diophantine
+arguments.
+
+The framework resolves several recurring repository difficulties: hidden host
+computation, substitution bookkeeping, graph composition, changing precision,
+cyclic resource requirements, and unstable witness selection.  It does not
+manufacture absent deep quantitative producers.  General effective height
+bounds, uniform Mordell--Weil covering representatives, ineffective
+prime-distribution constants, and singular exact branch selectors remain
+explicit interfaces rather than being renamed as certificates.
+\end{abstract}
+
+\section*{Executive conclusions}
+
+The central recommendation is to standardize future developments on a
+\emph{two-backend proof pipeline}.
+
+\begin{enumerate}[label=\textbf{E\arabic*.}]
+\item \textbf{Use ordinary \(\Prf\;\PRAAx\) for domain algebra.}
+The new \path{IPRADerivations} library already supplies checked arithmetic,
+semiring, integer, and polynomial-identity infrastructure.  A ring identity
+should be proved there rather than reimplemented inside every packet.
+
+\item \textbf{Use \(\KPrf\) for finite control and composition.}
+The clause calculus is closed under substitution and has a proved cut theorem.
+It is therefore a better intermediate representation for bounded loops,
+search, finite branching, and proof graphs than an ad hoc host structure whose
+soundness is still to be formalized.
+
+\item \textbf{Compile concrete syntax, not encoded programs.}
+A theorem-specific finite graph is specialized to actual terms, formulas, and
+proof constructors before it is internalized.  No total primitive-recursive
+universal evaluator and no truth-to-provability reflection principle is used.
+
+\item \textbf{Keep relations when selection is unstable.}
+Approximate roots, local charts, spectral subspaces, and compatible finite
+models are represented by finite witness clouds.  A selector is introduced only
+when bounded viability is needed; branch-independent information is extracted
+by a stable observer without pretending that a canonical witness exists.
+
+\item \textbf{Make quantitative producers visible.}
+A search cutoff, convergence modulus, denominator bound, separation gap,
+finite-cover certificate, or height bound is part of the theorem statement or
+is produced by a separately proved node.  A cardinality statement is not a
+search bound, and a terminating metaprogram is not an iPRA derivation.
+\end{enumerate}
+
+The package includes a dependency-ordered Lean plan, candidate bridge code,
+exact finite reference algorithms, fourteen passing regression tests, a theorem
+ledger, and a difficulty matrix.  The intended first implementation milestone
+is small: kernel-check the list-cut and graph-fold layer against current
+\path{NativeClausalDiagonal.lean}; then connect one existing
+\path{IPRADerivations} polynomial theorem and one bounded trace example through
+the complete import--compile--export route.

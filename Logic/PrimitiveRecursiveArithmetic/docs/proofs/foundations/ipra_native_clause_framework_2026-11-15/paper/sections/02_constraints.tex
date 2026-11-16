@@ -1,0 +1,140 @@
+\section{The target theory and nonnegotiable constraints}
+
+\subsection{What counts as an iPRA theorem}
+
+The ordinary target has terms built from primitive-recursive symbols and
+formulas of intuitionistic first-order logic with equality.  Its arithmetic
+axioms are the defining equations for those symbols, the successor axioms, and
+induction restricted to quantifier-free formulas.  In the repository the
+judgment is represented by
+\[
+       \Gamma\ \vdash_{\PRAAx}\ \varphi,
+\]
+that is, a term of the inductive type \(\Prf\;\PRAAx\;\Gamma\;\varphi\).
+A closed theorem therefore ends at a concrete type
+\[
+       ([]:\mathrm{List}(\mathrm{Fm}\;\PTm\;0))
+           \ \vdash_{\PRAAx}\ \Phi.
+\]
+A proof in ordinary Lean of the semantic proposition represented by \(\Phi\)
+is valuable but is not the same object.
+
+The native scalar core is a smaller, bi-interpretable presentation.  Native
+terms have an iterator; native formulas are equations and two binders \(Q,D\).
+The theorem \path{native_iff_pra} states the exact equivalence between native
+derivability and derivability of the ordinary reading.  This permits the
+compiler to work in the clause-friendly native language without changing the
+ultimate theory.
+
+\subsection{Induction discipline}
+
+Only quantifier-free induction is primitive.  Consequently every recursive
+proof must expose a quantifier-free state invariant.  Quantified mathematical
+content can still occur in the theorem, but it must not be hidden in the
+induction formula.  There are three standard repairs.
+
+\begin{enumerate}
+\item Replace a bounded quantified assertion by a characteristic primitive-
+recursive term and induct on the equation saying that the characteristic value
+is one.
+\item Store all witnesses needed up to time \(t\) in one coded finite state, so
+that the invariant is a quantifier-free predicate of that state.
+\item Prove the recursive computational lemma quantifier-freely first and apply
+ordinary logical rules only after the recursion has terminated.
+\end{enumerate}
+
+This ``compute first, quantify later'' separation is not merely stylistic.  It
+prevents a common invalid argument in which a perfectly ordinary induction in
+Heyting arithmetic is assumed to be available in iPRA.
+
+\subsection{No universal primitive-recursive interpreter}
+
+The class of primitive-recursive functions is effectively enumerable, but a
+total primitive-recursive evaluator for arbitrary encoded primitive-recursive
+programs cannot exist with the expected universal property: diagonalization
+would produce a primitive-recursive function outside the enumeration.  A
+generic framework must therefore not postulate a term
+\(\mathsf{eval}(e,x)\) that internally executes every encoded PR program.
+
+The permitted compiler is staged.  At the host level it receives a fixed finite
+program graph and constructs concrete syntax for each primitive-recursive
+operation in that graph.  The generated object theorem concerns those concrete
+symbols.  Genericity belongs to the host theorem about the compiler; execution
+inside iPRA remains theorem-specific syntax.
+
+\subsection{Finite use rather than completed infinity}
+
+A real number, function, space, group, sheaf, probability law, or category is
+not inserted into first-order arithmetic as a new set-theoretic object.  It is
+presented by codes for finite observations and laws governing those
+observations.  A theorem must specify which finite observations it consumes for
+a requested output observation.
+
+For example, a represented real \(x\) is accessed through a primitive-
+recursive rational name \(a_x(q)\) and a modulus statement such as
+\[
+       |a_x(q)-x|\le 2^{-q}.
+\]
+Inside the arithmetic theorem, the ideal symbol \(x\) is normally absent.  The
+actual statement compares rational codes at explicit precisions.  The ideal
+real appears only in the external adequacy theorem explaining the intended
+meaning of the representation.
+
+\subsection{Guarded partial operations}
+
+Division, normalization, chart inversion, root labeling, and elimination of a
+pivot are not total operations on codes.  They become total primitive-
+recursive operations on a larger input containing a guard.  Typical guards are
+\[
+   |d|\ge 2^{-g},\qquad \det M\ne0,\qquad
+   \diam C\le 2^{-q},\qquad \operatorname{dist}(A,B)\ge\delta>0.
+\]
+The computational function may return a default value when the guard fails;
+the local proof contract states correctness under the guard.  This is the
+correct way to reconcile total primitive recursion with mathematically partial
+operations.
+
+\subsection{Intuitionistic existence and data}
+
+An existential theorem in an intuitionistic calculus carries evidence, but the
+form of that evidence may be relational rather than a globally canonical
+function.  If a bounded finite cloud has at least one valid witness, bounded
+least search can choose one.  If compatibility through all precisions is only
+known relationally, a finite-horizon path can be selected for each requested
+horizon.  If the desired output is invariant across all witnesses, no selector
+is needed at all.
+
+The framework therefore distinguishes:
+
+\begin{itemize}
+\item \emph{deterministic producer}: computes one certified code;
+\item \emph{bounded relation}: computes a finite set of certified codes;
+\item \emph{stable observer}: computes information common to all certified
+codes up to a stated error;
+\item \emph{conditional producer}: accepts nonuniform quantitative data as an
+explicit theorem hypothesis.
+\end{itemize}
+
+Collapsing these classes is a source of false uniformity claims.
+
+\subsection{Statement-design checklist}
+
+Before formalization, every headline theorem should pass the following test.
+
+\begin{enumerate}
+\item Every ideal object has a fixed numerical presentation.
+\item Every finite structure has an explicit code bound or coded list.
+\item Every analytic output has a rational tolerance and a modulus or
+certificate from which the required input precision is computed.
+\item Every recursive component has a clock and a quantifier-free invariant.
+\item Every search has a cutoff with recorded provenance.
+\item Every exact comparison has decidable coded data or an apartness witness.
+\item Every nonunique intermediate is either kept relational or eliminated by
+an observer-stability theorem.
+\item Every deep nonuniform input is visible in the theorem interface.
+\item The final endpoint is written as a concrete \(\KPrf\), \(\NPrf\), or
+\(\Prf\;\PRAAx\) type.
+\end{enumerate}
+
+A theorem that fails this checklist may still be mathematically true, but its
+present form is not yet ready for iPRA compilation.

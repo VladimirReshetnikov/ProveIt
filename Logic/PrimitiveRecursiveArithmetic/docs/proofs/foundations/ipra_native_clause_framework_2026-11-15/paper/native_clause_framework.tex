@@ -1,0 +1,184 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{makecell}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit}
+
+\definecolor{linkblue}{RGB}{30,74,120}
+\definecolor{codegray}{RGB}{246,247,249}
+\definecolor{darkgreen}{RGB}{30,100,60}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Native Clause Programs for iPRA},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.58em}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Native Clause Programs}
+\rhead{Mathematics in iPRA}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\lstdefinestyle{lean}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  framerule=0.3pt,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  tabsize=2
+}
+\lstset{style=lean}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{barrier}[theorem]{Barrier}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\KPrf}{\mathsf{KPrf}}
+\newcommand{\NPrf}{\mathsf{NPrf}}
+\newcommand{\Cl}{\mathsf{Cl}}
+\newcommand{\NFm}{\mathsf{NFm}}
+\newcommand{\PTm}{\mathsf{PTm}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\Demand}{\mathsf{Demand}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\rank}{\operatorname{rk}}
+\newcommand{\code}{\operatorname{code}}
+\newcommand{\height}{\operatorname{ht}}
+\newcommand{\join}{\mathbin{\vee}}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\pathcode}[1]{\texttt{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\title{\textbf{Native Clause Programs for iPRA}\\[0.35em]
+\large A General Proof-Producing Framework for Embedding Mathematical Concepts and Arguments}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026 (America/Los\_Angeles)}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.93\textwidth}
+\textbf{Formal status.}
+The mathematical arguments in this report are human proofs.  The source audit is
+pinned to ProveIt commit
+\path{8649990597d73657bde480b6c389de7f85bc0cb0}.  The report reuses Lean theorems
+already present in \path{ConciseIPRA}, including the clause calculus \path{KPrf},
+its substitution and cut theorems, its translation to \path{NPrf}, and the
+native/iPRA equivalence.  It also incorporates the newly checked
+\path{IPRADerivations} arithmetic and ring backend.  The accompanying Lean files
+are an integration-oriented outline; no Lean executable was available in the
+artifact environment, so no new theorem in this package is claimed to have been
+kernel-checked.  The exact Python tests are regression evidence for finite
+algorithms only, not proofs in iPRA.
+\end{minipage}}
+\end{center}
+
+\input{sections/00_abstract}
+\tableofcontents
+\clearpage
+\input{sections/01_audit}
+\input{sections/02_constraints}
+\input{sections/03_presentations}
+\input{sections/04_native_clause_ir}
+\input{sections/05_compiler}
+\input{sections/06_bounded_control}
+\input{sections/07_demand}
+\input{sections/08_relational}
+\input{sections/09_domains}
+\input{sections/10_algebra_backend}
+\input{sections/11_difficulties}
+\input{sections/12_applications}
+\input{sections/13_lean}
+\input{sections/14_validation}
+\input{sections/15_conclusion}
+\appendix
+\input{sections/A_theorem_catalog}
+\input{sections/B_templates}
+\input{sections/C_source_audit}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\begin{thebibliography}{30}
+\setlength{\itemsep}{0.25em}
+\bibitem{ProveItPRA}
+V.~Reshetnikov, \emph{Primitive recursive arithmetic},
+\path{Logic/PrimitiveRecursiveArithmetic/README.md}, ProveIt repository,
+commit \path{8649990597d73657bde480b6c389de7f85bc0cb0}, 2026.
+
+\bibitem{ConciseIPRA}
+V.~Reshetnikov, \emph{Concise presentations of intuitionistic primitive recursive arithmetic},
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}, ProveIt repository, 2026.
+
+\bibitem{NativeClausal}
+V.~Reshetnikov, \emph{Five rules, closed under substitution},
+\path{ConciseIPRA/Lean/ConciseIPRA/NativeClausalDiagonal.lean}, 2026.
+
+\bibitem{NativeBi}
+V.~Reshetnikov, \emph{Bi-interpretability of the native scalar core with iPRA},
+\path{ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}, 2026.
+
+\bibitem{Derivations}
+V.~Reshetnikov, \emph{iPRA derivations of theorems from the proof packets},
+\path{Logic/PrimitiveRecursiveArithmetic/Derivations}, 2026.
+
+\bibitem{OCiPRA}
+\emph{OCiPRA: Observation-Contract Internalization for iPRA},
+\path{docs/proofs/foundations/ocipra_framework_2026-11-15}, 2026.
+
+\bibitem{PCOG}
+\emph{Proof-Carrying Observation Graphs for iPRA},
+\path{docs/proofs/foundations/ipra_proof_carrying_observation_graphs_2026-11-15}, 2026.
+
+\bibitem{PFIG}
+\emph{Proof-Producing Finitary Interface Graphs for iPRA},
+\path{docs/proofs/foundations/ipra_pfig_framework_2026-11-15}, 2026.
+
+\bibitem{ProofIndex}
+V.~Reshetnikov, \emph{iPRA proof-packet index},
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md}, 2026.
+\end{thebibliography}
+\endgroup
+\end{document}

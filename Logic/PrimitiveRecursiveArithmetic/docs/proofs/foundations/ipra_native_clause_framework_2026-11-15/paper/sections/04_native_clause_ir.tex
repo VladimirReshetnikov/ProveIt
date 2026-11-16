@@ -1,0 +1,160 @@
+\section{The native clause intermediate representation}
+
+\subsection{Why clauses are the right granularity}
+
+A proof graph repeatedly uses statements of the form
+\[
+       \text{when a finite precondition holds, every requested instance of a
+       local invariant holds.}
+\]
+This is precisely the shape of a clause
+\([A;y.B(y)]\), read \(A\to\forall y B(y)\).  In the checked Lean source the
+structure is
+\begin{lstlisting}[language={},caption={The upstream clause datatype, schematically}]
+structure Cl (n : Nat) where
+  ante : NFm n
+  cons : NFm (n + 1)
+\end{lstlisting}
+The clause calculus stores such clauses in the context.  Its \path{use} rule
+proves an instance \(B(t)\) after proving the antecedent \(A\).
+
+A plain assumption \(X\) is represented by \path{Cl.asm X}, whose antecedent is
+\(0=0\) and whose consequent is the shifted formula \(X\).  This representation
+is important for program compilation: predecessor outputs are inserted as
+ordinary assumption clauses, and \(\KPrf.\mathsf{cut}\) can discharge them with
+already compiled proofs.
+
+\subsection{Formula discipline}
+
+The raw clause calculus is optimized for \(Q\)-free native formulas: equations
+and the native \(D\)-binder.  Arbitrary native formulas are translated by
+\path{NFm.unQ}, which rewrites \(Q_y B\) as a \(D\)-formula whose witness
+coordinate is unused.  The checked theorems state
+\[
+\begin{aligned}
+\KPrf(\Gamma^{\mathsf{asm}},A)&\iff\NPrf(\Gamma,A)
+    &&\text{for \(Q\)-free sequents},\\
+\KPrf((\mathsf{unQ}\,\Gamma)^{\mathsf{asm}},\mathsf{unQ}\,A)
+    &\iff\NPrf(\Gamma,A)
+    &&\text{in general}.
+\end{aligned}
+\]
+Hence a compiler may normalize all exported node formulas to \(Q\)-free form
+without loss of provability.
+
+The native language has no primitive conjunction or implication, but this is
+not a limitation on expressiveness: the scalar core defines the usual logical
+connectives as macros and is bi-interpretable with ordinary iPRA.  At the
+compiler level it is often simpler to split a conjunction into several node
+outputs or package several equations into one coded Boolean equation.
+
+\subsection{The five rule families}
+
+The calculus has the following operations.
+
+\begin{enumerate}
+\item \textbf{Refl}: derive \(t=t\).
+\item \textbf{Eval}: the two iterator computation cases, expressed so that an
+existing equation about the counter and one about the iterator produce the
+next equation.
+\item \textbf{Use}: instantiate a clause after proving its antecedent.
+\item \textbf{Elim}: open a \(D\)-formula at a fresh witness and continue under
+the corresponding clause.
+\item \textbf{Intro}: prove a \(D\)-formula from a progress derivation.  Its
+start mode is read from the diagonal shape of the matrix.
+\end{enumerate}
+
+For framework design, the crucial checked derived operations are weakening,
+renaming, substitution, and cut.  These operations are proved by structural
+induction on \(\KPrf\) derivations.  Consequently, a proof compiler may treat
+them as trusted library combinators rather than re-proving capture-avoidance and
+context transport for every node class.
+
+\subsection{Clause-carrying nodes}
+
+\begin{definition}[Native clause node]
+Fix a base clause context \(\Gamma\) and a list \(\Delta\) of predecessor
+outputs, each a native formula with \(n\) free variables.  A native clause node
+consists of:
+\begin{enumerate}
+\item an output formula \(A\in\NFm(n)\);
+\item a proof that \(A\) is \(Q\)-free, or a prescribed \path{unQ}
+normalization;
+\item an actual local derivation
+\[
+   h:\KPrf\bigl(\Delta.\mathsf{map}(\Cl.\mathsf{asm})\mathbin{++}\Gamma,A\bigr);
+\]
+\item optional executable metadata: demand transformers, resource bounds,
+trace descriptions, witness-cloud bounds, or observer tolerances.
+\end{enumerate}
+\end{definition}
+
+The executable metadata does not justify the node.  The field \(h\) does.  The
+metadata is used to generate concrete terms and to make the theorem auditable.
+
+\subsection{Normalized node classes}
+
+Most applications can be normalized to six classes.
+
+\paragraph{Equation nodes.}
+These export an equation between concrete PR terms.  Examples include tuple
+projection, polynomial evaluation, finite table lookup, rational normalization,
+substitution, and fixed-dimensional matrix multiplication.  Their proofs use
+computation equations, congruence, and algebraic lemmas.
+
+\paragraph{Clause nodes.}
+These add reusable implications of the form \([A;y.B(y)]\).  They encode local
+invariants, guarded operations, or universal finite families.  The antecedent
+is a guard, not an invitation to use an undecidable partial function.
+
+\paragraph{Trace nodes.}
+A trace node contains an initializer, PR step, fuel, quantifier-free invariant,
+base derivation, and step derivation.  It exports the terminal invariant or a
+clause giving every bounded instance.
+
+\paragraph{Search nodes.}
+A search node contains a finite bound and a Booleanized predicate.  It exports a
+least witness, a complete list, or the equation recording that no witness was
+found.  Search correctness is a trace theorem.
+
+\paragraph{Relational nodes.}
+These export a finite witness cloud and compatibility edges.  They avoid
+constructing a global selector.  Bounded viability may later select a path, or
+a stable observer may eliminate the witness.
+
+\paragraph{Finalizer nodes.}
+A finalizer converts verified finite evidence into the exact headline formula.
+It is the only place where theorem-specific logical packaging should occur.
+Keeping finalization separate makes it clear which part of the development is
+uniform and which part encodes the mathematical statement.
+
+\subsection{Effects as data, not proof rules}
+
+Each node may carry an effect record
+\[
+  (\text{precision},\text{fuel},\text{height},\text{denominator},
+    \text{gap},\text{cover},\text{exception budget}).
+\]
+Effects are natural-number terms and finite certificates.  They guide the host
+compiler and appear in contracts.  They are not new logical rules.  For
+example, a gap effect is a formula proving a positive rational lower bound; a
+height effect is a numeral or PR term bounding every candidate code; a cover
+effect is a coded finite list together with a bounded covering check.
+
+This design keeps the trusted proof kernel small while permitting a rich
+application-level interface.
+
+\subsection{No semantic reflection}
+
+A native clause program is proof-producing in the literal sense: each node
+contains a derivation.  The graph compiler never proves
+``the checker returned true, therefore the formula is provable.''  It instead
+constructs the formula's derivation from the node's local derivation and the
+compiled predecessor derivations.  The checker may be used to generate or
+validate data, but the proof term remains the authority.
+
+This distinction is especially important for generated arithmetic.  A Python
+program may confirm a million finite cases; unless the cases are compiled into
+a bounded trace theorem or a closed proof term, that confirmation is not an
+iPRA proof.  Conversely, a short \(\KPrf\) derivation may prove all cases even
+when the reference program is present only for regression testing.

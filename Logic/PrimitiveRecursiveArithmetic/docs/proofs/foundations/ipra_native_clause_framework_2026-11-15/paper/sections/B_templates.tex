@@ -1,0 +1,148 @@
+\section{Reusable proof templates}
+
+\subsection{Template: deterministic numerical operation}
+
+\textbf{Data.}
+PR terms \(f\) and \(d\), input validity formula \(V_X(x,d(q),o)\), output
+validity formula \(V_Y(f(x),q,f_o(x,q,o))\).
+
+\textbf{Local theorem.}
+A \(Q\)-free native derivation of
+\[
+    V_X(x,d(q),o)\to V_Y(f(x),q,f_o(x,q,o)).
+\]
+Encode the implication as a clause or import its ordinary derivation.
+
+\textbf{Graph use.}
+The predecessor node exports input validity.  Specialize the local theorem at
+the concrete terms.  List cut discharges the predecessor assumption.
+
+\subsection{Template: guarded division}
+
+\textbf{Data.}
+Rational codes \(a,b\), a guard \(G(b,g)\) certifying
+\(|b|\ge2^{-g}\), and requested precision \(q\).
+
+\textbf{Demand.}
+Choose \(r=q+c(g,M_a,M_b)\) so that input errors preserve
+\(|b_r|\ge2^{-g-1}\) and the reciprocal error is below the budget.
+
+\textbf{Verifier.}
+Check denominator positivity, the rational lower bound, and the final cleared-
+denominator error inequality.
+
+\textbf{Output.}
+A rational code \(a_r/b_r\) and an error certificate.  The totalized function
+returns zero if the guard fails; the correctness clause has \(G\) as
+antecedent.
+
+\subsection{Template: bounded search with negative result}
+
+\textbf{State.}
+Clock, found flag, least witness, and Boolean prefix verifier.
+
+\textbf{Invariant.}
+If found, the witness is below the clock, satisfies the predicate, and all
+smaller candidates fail.  If not found, every candidate below the clock fails.
+
+\textbf{Output.}
+A disjoint finite result: \path{found(w)} or \path{none}, each with its exact
+contract.  Do not use a sentinel value without a status flag.
+
+\subsection{Template: finite descent}
+
+\textbf{Data.}
+A fixed-dimensional bounded measure \(m(s)\), a step that either halts or
+strictly lowers the measure, and a bound vector \(B\).
+
+\textbf{Fuel.}
+Use the mixed-radix state count \(\prod_i(B_i+1)\), or a sharper rank bound.
+
+\textbf{Invariant.}
+The current state is valid; the measure lies in the box; every nonhalt step
+strictly lowers rank; once halted, the result is preserved.
+
+\textbf{Conclusion.}
+The trace halts within the fuel and the terminal certificate is valid.
+
+\subsection{Template: cyclic precision contract}
+
+\textbf{Data.}
+A finite box \(L\), monotone demand transformer \(F\), and initial request
+\(a\).
+
+\textbf{Algorithm.}
+Iterate \(x\mapsto x\join F(x)\) for
+\(1+\sum_i(B_i-a_i)\) steps, recording a failure if \(F(x)\notin L\).
+
+\textbf{Invariant.}
+The sequence is monotone, remains in the box, and is below every prefixed point
+above \(a\).
+
+\textbf{Conclusion.}
+Either a least closed demand is returned or a resource-coordinate overflow is
+certified.
+
+\subsection{Template: relational cloud}
+
+\textbf{Data.}
+Finite bounds \(B(q)\), validity \(G(q,w)\), and edge relation \(E(q,w,v)\).
+
+\textbf{Algorithm.}
+Build viability tables backward; select a least finite path only if a concrete
+path is needed.
+
+\textbf{Observer.}
+Supply exact invariance, a diameter bound, or a motion-tail bound.  Export the
+observer, not the implementation path.
+
+\textbf{Exact labels.}
+Add a finite label family and a positive separation certificate, then use
+Theorem~\ref{thm:gap}.
+
+\subsection{Template: certificate-only theorem}
+
+\textbf{Producer interface.}
+A code \(c\) and a bounded checker \(\mathsf{ok}(x,c)=1\).
+
+\textbf{Soundness theorem.}
+A local object derivation of
+\[
+       \mathsf{ok}(x,c)=1\to\Phi(x,\mathsf{out}(c)).
+\]
+
+\textbf{Completeness options.}
+Either prove a PR producer \(p(x)\) with \(\mathsf{ok}(x,p(x))=1\), accept
+\(c\) as explicit input/hypothesis, or state a bounded relation of all accepted
+certificates.  Do not infer completeness from successful tests.
+
+\subsection{Template: finite local-to-global argument}
+
+\textbf{Data.}
+A coded finite cover, local observations, overlap graph, and compatibility
+clauses.
+
+\textbf{Control.}
+Use a spanning tree or finite nerve traversal.  At each edge, transport the
+local invariant.  Cycles are checked by bounded commutativity conditions.
+
+\textbf{Global output.}
+A glued observation or stable quotient class.  A unique global representative
+requires a separate uniqueness theorem; otherwise retain the equivalence class.
+
+\subsection{Template: direct algebra plus control}
+
+\textbf{Algebra phase.}
+Use \path{ipra_ring} or a direct \(\Prf\;\PRAAx\) lemma to prove an open
+identity.
+
+\textbf{Import.}
+Apply Theorem~\ref{thm:import} and store the resulting native formula as a node.
+
+\textbf{Control phase.}
+Use bounded cases, search, or a trace in \(\KPrf\), specializing the algebra
+node as needed.
+
+\textbf{Export.}
+Apply Theorem~\ref{thm:export}, then use round-trip equivalence to present the
+ordinary formula in its original syntax.

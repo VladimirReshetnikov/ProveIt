@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ipra/native-clause-program.schema.json",
+  "title": "Native Clause Program Audit Schema",
+  "description": "Metadata for a finite proof-producing iPRA graph. Lean proof terms are generated separately and must be kernel-checked.",
+  "type": "object",
+  "required": ["name", "pinnedCommit", "baseContext", "nodes", "terminal"],
+  "properties": {
+    "name": {"type": "string", "minLength": 1},
+    "pinnedCommit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "baseContext": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "terminal": {"type": "string", "minLength": 1},
+    "nodes": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/node"}
+    }
+  },
+  "$defs": {
+    "naturalVector": {
+      "type": "array",
+      "items": {"type": "integer", "minimum": 0}
+    },
+    "proofProvenance": {
+      "type": "object",
+      "required": ["backend", "status"],
+      "properties": {
+        "backend": {"enum": ["KPrf", "PrfPRAAx", "conditional"]},
+        "status": {"enum": ["upstream-checked", "generated-candidate", "blueprint", "hypothesis"]},
+        "declaration": {"type": "string"},
+        "sourcePath": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "node": {
+      "type": "object",
+      "required": ["id", "kind", "dependencies", "output", "proof"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "kind": {
+          "enum": ["equation", "clause", "trace", "search", "relation", "observer", "finalizer"]
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "output": {"type": "string", "minLength": 1},
+        "demand": {"$ref": "#/$defs/naturalVector"},
+        "resourceEnvelope": {"$ref": "#/$defs/naturalVector"},
+        "guards": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "proof": {"$ref": "#/$defs/proofProvenance"},
+        "producerProvenance": {
+          "enum": ["structural", "analytic", "algebraic", "external", "experimental"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

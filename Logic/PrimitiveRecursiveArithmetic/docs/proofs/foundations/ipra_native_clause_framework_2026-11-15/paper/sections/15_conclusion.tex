@@ -1,0 +1,41 @@
+\section{Conclusion}
+
+The repository's finitary proof packets have largely converged on the right
+mathematical ideas: finite observations, explicit moduli and resource bounds,
+clocked recursion, bounded search, relational witnesses, and stable outputs.
+The main remaining difficulty is no longer conceptual breadth.  It is proof
+composition in the actual embedded calculus.
+
+The native clause calculus \(\KPrf\) supplies the missing intermediate
+representation.  Its checked substitution theorem specializes local contracts;
+its checked cut theorem composes a finite graph; its translation to
+\(\NPrf\) and the checked native/iPRA equivalence export the result to ordinary
+\(\Prf\;\PRAAx\).  The newly checked \path{IPRADerivations} library supplies a
+second backend for symbolic arithmetic and polynomial identities, and the
+bridges run in both directions.
+
+The proposed workflow is therefore concrete:
+
+\begin{enumerate}
+\item formulate the theorem as finite observation contracts;
+\item make every modulus, height, gap, cover, fuel, and threshold explicit;
+\item prove local algebra directly in \(\Prf\;\PRAAx\);
+\item prove local control contracts in \(\KPrf\);
+\item retain unstable data as bounded relations and observe only stable
+information;
+\item compute demands, including cyclic closure, in a bounded finite effect
+system;
+\item fold the graph by checked cut and export the terminal theorem.
+\end{enumerate}
+
+This architecture resolves the generic encoding and composition problems while
+leaving deep mathematics where it belongs: in explicit producer theorems.
+That boundary is a strength.  It makes completed results genuinely checkable
+and makes remaining obstacles precise enough to attack one at a time.
+
+The highest-value next step is not another broad packet.  It is a small checked
+implementation of \path{Bridge.lean} and \path{Program.lean}, followed by one
+end-to-end example that imports an existing \path{ipra_ring} theorem, composes a
+bounded trace or search node, and exports the exact ordinary iPRA sentence.  A
+successful example would turn the present framework from a detailed blueprint
+into shared infrastructure for the entire proof corpus.

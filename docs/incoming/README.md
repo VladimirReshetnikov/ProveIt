@@ -268,6 +268,8 @@ deleted. It leaves out five ignored `.log` files. `cifer_ipra_framework_2026-11-
 placed the same way, under `foundations/`, and then deleted. All 55 of its members are
 placed. `ipra_kifc_framework_2026-11-15.zip` was placed the same way, under `foundations/`,
 and then deleted. It leaves out three ignored `.log` files.
+`ipra_native_clause_framework_2026-11-15.zip` was placed the same way, under `foundations/`,
+and then deleted. All 53 of its members are placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

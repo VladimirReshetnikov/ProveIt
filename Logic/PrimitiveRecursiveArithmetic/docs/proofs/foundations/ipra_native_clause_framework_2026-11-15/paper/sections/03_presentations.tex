@@ -1,0 +1,214 @@
+\section{Finite presentations and observation contracts}
+
+\subsection{Presentations}
+
+The framework starts before proof syntax.  A mathematical object must first be
+replaced by a finite-use presentation.
+
+\begin{definition}[Finitary presentation]
+A finitary presentation \(X\) consists of primitive-recursive data
+\[
+ (\mathsf{Code}_X,\mathsf{Query}_X,\mathsf{Obs}_X,
+   \mathsf{valid}_X,\mathsf{restrict}_X)
+\]
+with the following intended meanings.
+\begin{enumerate}
+\item \(x\in\mathsf{Code}_X\subseteq\N\) is a code or name for an input.
+\item \(q\in\mathsf{Query}_X\) is a finite request: precision, radius, degree,
+finite subdiagram, support bound, or resource level.
+\item \(o\in\mathsf{Obs}_X(x,q)\) is a finite observation code.
+\item \(\mathsf{valid}_X(x,q,o)\in\{0,1\}\) is a decidable validity predicate.
+\item If \(q\preceq q'\), the restriction operation maps a valid observation at
+\(q'\) to one at \(q\).
+\end{enumerate}
+All domains may be represented by natural-number bounds and characteristic
+terms; the typed notation is explanatory.
+\end{definition}
+
+The coherence law is
+\[
+  q\preceq q'\preceq q'',\quad
+  \mathsf{valid}(x,q'',o'')
+  \quad\Longrightarrow\quad
+  \mathsf{restrict}_{q'',q}(o'')
+  =\mathsf{restrict}_{q',q}
+      (\mathsf{restrict}_{q'',q'}(o'')).
+\]
+This law is an equation between PR terms or a bounded formula, hence suitable
+for the object theory.  It prevents the presentation from offering unrelated
+answers at different precisions.
+
+A presentation need not have a unique observation.  This is essential.  An
+algebraic number may be represented by an isolating disk; a root at a collision
+may have several compatible disks; a compact space may have many finite nets;
+a quotient object may have many representatives.  The validity relation is
+therefore primary, and a deterministic name is a special case.
+
+\subsection{Deterministic and relational names}
+
+\begin{definition}[Deterministic name]
+A deterministic name is a primitive-recursive function
+\(a_X(x,q)\) with a proof of
+\(\mathsf{valid}_X(x,q,a_X(x,q))\) and restriction coherence.
+\end{definition}
+
+\begin{definition}[Finite relational name]
+A finite relational name supplies a primitive-recursive bound \(B_X(x,q)\) and
+a validity predicate such that
+\[
+        \exists o\le B_X(x,q)\;\mathsf{valid}_X(x,q,o).
+\]
+The cloud at \(q\) is the finite set of all valid \(o\le B_X(x,q)\).
+\end{definition}
+
+The existential statement may itself be produced constructively, or it may be
+a hypothesis supplied by a deep theorem.  Once the bound and validity relation
+are available, complete enumeration, least search, and all universal checks
+over the cloud are primitive recursive.
+
+\subsection{Observation contracts}
+
+An operation is specified by what it must observe, not by an unbounded semantic
+function.
+
+\begin{definition}[Deterministic observation contract]
+A deterministic contract \(F:X\to Y\) consists of:
+\begin{enumerate}
+\item a backward demand transformer
+\(d_F(x,r)\in\mathsf{Query}_X\);
+\item a primitive-recursive transformer
+\(f_F(x,r,o)\in\mathsf{Obs}_Y\);
+\item a local proof that
+\[
+ \mathsf{valid}_X(x,d_F(x,r),o)
+ \longrightarrow
+ \mathsf{valid}_Y(Fx,r,f_F(x,r,o)).
+\]
+\end{enumerate}
+The displayed implication is ultimately encoded as a native clause or ordinary
+iPRA formula.
+\end{definition}
+
+\begin{definition}[Relational observation contract]
+A relational contract replaces \(f_F\) by a finite output bound and relation
+\(R_F(x,r,o,v)\).  Its local proof states that every valid demanded input
+observation has at least one valid related output and that every related output
+satisfies the advertised \(Y\)-contract.
+\end{definition}
+
+A contract is not a semantic assertion that a host function is continuous.  It
+is a finite theorem: a particular input observation at a computed demand
+suffices to verify a particular output observation.
+
+\subsection{Composition of deterministic contracts}
+
+Let \(F:X\to Y\) and \(G:Y\to Z\) be deterministic contracts.  For a requested
+query \(s\) on \(Z\), first compute the \(Y\)-query
+\(r=d_G(Fx,s)\), then the \(X\)-query
+\[
+     d_{G\circ F}(x,s)=d_F(x,r).
+\]
+Given an observation \(o\) at this demand, form
+\[
+   u=f_F(x,r,o),\qquad v=f_G(Fx,s,u).
+\]
+The local proof for \(F\) gives validity of \(u\), and the local proof for
+\(G\) gives validity of \(v\).  In the proof compiler the corresponding
+operation is cut.
+
+\begin{theorem}[Deterministic contract composition]
+Deterministic observation contracts are closed under identity and composition.
+Demand transformers and realizers remain primitive recursive, and local
+object-language proofs compose by cut.
+\end{theorem}
+
+\begin{proof}
+The identity demand is the requested query and the identity realizer is
+restriction or literal identity.  For composition, the formulas above are
+primitive-recursive compositions.  The proof of the composite contract is the
+first local derivation followed by the second, discharging the intermediate
+validity formula.  The formal version is Theorem~\ref{thm:list-cut} below.
+Associativity holds extensionally because primitive-recursive composition and
+proof cut are associative up to derivability; no equality of proof terms is
+needed.
+\end{proof}
+
+\subsection{Adaptive finite use}
+
+Many algorithms do not know all input requests in advance.  A bisection routine
+chooses its next interval from a sign test; a pivoting algorithm asks for a gap
+after inspecting a candidate pivot; a continuation method changes precision
+when an error estimate is large.  Such an algorithm is still finitely
+presentable when it is clocked.
+
+A state \(s_t\) contains both mathematical data and a finite request log.  At
+step \(t\), a primitive-recursive rule computes the next query from \(s_t\),
+reads the corresponding input observation, and produces \(s_{t+1}\).  For a
+fixed fuel \(T\), the total demand is the maximum of the finitely many queries
+recorded in the trace.  Rather than pretending that the adaptive algorithm is a
+single nonadaptive contract, the framework compiles its trace and proves the
+invariant that every query was answered correctly.
+
+\subsection{Products, sums, subobjects, and quotients}
+
+Finite presentations are closed under the ordinary constructions needed by
+mathematics.
+
+\paragraph{Products.}
+A query for \(X\times Y\) is a pair of queries, an observation is a pair of
+observations, and validity is conjunction.  Pairing functions code the pair by
+a natural number.  Projections are exact PR operations.
+
+\paragraph{Finite sums.}
+An observation has a tag and a payload.  Validity checks the tag and invokes
+the relevant component predicate.  Exact case analysis is permitted because
+the tag is a decidable natural number.
+
+\paragraph{Subobjects.}
+A subpresentation is a presentation plus a decidable or explicitly certified
+property.  The property is carried as part of validity.  For an open property,
+one must decide whether the theorem uses it as a hypothesis or supplies a
+finite certificate.
+
+\paragraph{Quotients.}
+A quotient should generally not choose canonical representatives.  It is
+presented by representatives, a bounded equivalence relation on the demanded
+finite data, and observers invariant under that relation.  A normal form may be
+added when a primitive-recursive normalization theorem is available, but it is
+not part of the general quotient interface.
+
+\subsection{Adequacy without reflection}
+
+Each presentation has an external adequacy theorem connecting its finite codes
+to the intended mathematical object.  For represented reals, adequacy says
+that a coherent rapidly Cauchy rational name determines a real.  For finite
+simplicial complexes, the code decodes to an abstract complex.  For matrices,
+the code decodes to a fixed finite table.
+
+Adequacy is not used as a truth-to-provability rule.  The object theorem is
+stated directly about codes and validity predicates.  Adequacy explains why
+that theorem is the desired mathematical statement.  This separation permits
+classical mathematics to be used in a metatheoretic interpretation without
+silently importing classical axioms into the derivation.
+
+\subsection{Producers, verifiers, and finalizers}
+
+A recurring source of overclaim is failure to separate three roles.
+
+\begin{definition}[Producer--verifier--finalizer factorization]
+A theorem pipeline is factored as follows.
+\begin{enumerate}
+\item A \emph{producer} supplies candidate finite data and quantitative bounds.
+It may be a primitive-recursive algorithm, an explicit theorem hypothesis, or a
+separately established deep result.
+\item A \emph{verifier} is a primitive-recursive bounded checker for the local
+contract.
+\item A \emph{finalizer} turns verified finite data into the stated output and
+carries the object-language derivation of correctness.
+\end{enumerate}
+\end{definition}
+
+The general framework proves closure of verifiers and finalizers.  It proves a
+producer only when an actual mathematical construction and its quantitative
+analysis are supplied.  In particular, saying ``let the certificate contain a
+height bound'' does not prove a height bound.

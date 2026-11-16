@@ -1,0 +1,219 @@
+\section{Bounded control: Booleanization, traces, search, and descent}
+
+\subsection{Characteristic terms for fixed quantifier-free formulas}
+
+A fixed quantifier-free formula over decidable arithmetic can be compiled into
+a primitive-recursive characteristic term.  This fact is repeatedly used to
+replace bounded logical control by equations.
+
+\begin{theorem}[Quantifier-free Booleanization]\label{thm:booleanization}
+For every fixed quantifier-free formula \(\theta(\vec x)\) whose atomic
+predicates are equations or decidable relations represented by PR
+characteristic functions, there is a PR term \(\chi_\theta(\vec x)\in\{0,1\}\)
+such that iPRA derives
+\[
+   \chi_\theta(\vec x)=1\ \leftrightarrow\ \theta(\vec x)
+   \qquad\text{and}\qquad
+   \chi_\theta(\vec x)=0\ \leftrightarrow\ \neg\theta(\vec x).
+\]
+\end{theorem}
+
+\begin{proof}
+Proceed by structural induction on the fixed formula.  For equality, use the
+PR equality test on natural-number codes and prove its defining equations by
+quantifier-free induction.  Negation is Boolean complement, conjunction is
+multiplication, and disjunction may be represented by truncated Boolean sum or
+\(\max\).  Implication between decidable formulas is
+\((1-a)\vee b\).  Bounded quantifiers, when present as abbreviations, are
+compiled by bounded products or bounded sums using primitive recursion.  Each
+correctness proof is quantifier-free induction on the finite bound.  The
+formula is fixed, so this is syntax-directed compilation, not an internal
+truth predicate for arbitrary formulas.
+\end{proof}
+
+The existing \path{ConciseIPRA} reflection files provide related
+characteristic-term infrastructure.  The theorem above specifies the interface
+needed by the graph compiler: every branch condition and bounded verifier is
+reduced to an equation of PR terms.
+
+\subsection{Clocked traces}
+
+Let \(S:\N\times\N\to\N\) be a PR step function, where the first input is the
+clock and the second is a coded state.  Let
+\[
+  s(0)=s_0,\qquad s(t+1)=S(t,s(t)).
+\]
+Because \(S\) is primitive recursive, the trace function \(s(t)\) is primitive
+recursive.  It may be expressed directly by a PR symbol in ordinary iPRA or by
+the native iterator after pairing the time and state when the step depends on
+both.
+
+\begin{theorem}[Finite trace reflection]\label{thm:trace}
+Let \(J(t,s)\) be a fixed quantifier-free invariant.  Suppose iPRA derives
+\[
+   J(0,s_0)
+   \quad\text{and}\quad
+   J(t,s(t))\to J(t+1,S(t,s(t))).
+\]
+Then iPRA derives \(J(T,s(T))\) for every term \(T\), and derives the universal
+closure \(\forall t\,J(t,s(t))\) when the free-variable form is used.
+\end{theorem}
+
+\begin{proof}
+Apply quantifier-free induction to the formula \(J(t,s(t))\).  The base is the
+first hypothesis.  The step uses the defining equation for the trace and the
+second hypothesis.  If only the terminal instance is required, instantiate the
+open induction theorem at \(T\).  In the native backend the same closure is
+obtained via the introduction rule and the existing translation from ordinary
+quantifier-free induction to \(\KPrf\).
+\end{proof}
+
+A trace node stores not only the final state but also the proof-relevant fields
+needed by \(J\): flags that every array access was in bounds, accumulated error
+budgets, query logs, and a certificate status.  This ``single state, single
+invariant'' form avoids a separate induction for each component.
+
+\subsection{Least bounded search}
+
+Given a PR predicate \(P(x)\in\{0,1\}\) and a bound \(B\), define a state
+\((f,w)\), where \(f\) records whether a witness has been found and \(w\) stores
+the first one.  At time \(t\), if \(f=0\) and \(P(t)=1\), set
+\((f,w)=(1,t)\); otherwise retain the state.  Iterate through \(B\).
+
+\begin{theorem}[Least bounded search]\label{thm:bounded-search}
+There is a primitive-recursive function \(\mu_{\le B}P\) with a status flag such
+that iPRA proves:
+\begin{enumerate}
+\item if the flag is one, then \(w\le B\), \(P(w)=1\), and
+\(P(v)=0\) for every \(v<w\);
+\item if the flag is zero, then \(P(v)=0\) for every \(v\le B\);
+\item if \(\exists v\le B\,P(v)=1\), the flag is one.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Use the clocked search above.  The quantifier-free invariant says: (i) the flag
+is Boolean; (ii) if set, the stored value is less than the clock, satisfies
+\(P\), and all earlier values fail; (iii) if unset, all values below the clock
+fail.  Bounded universal assertions in the invariant are Booleanized by finite
+products.  The step is a finite case split on two Boolean equations.  At clock
+\(B+1\), the invariant yields the three conclusions.
+\end{proof}
+
+The theorem supplies a selector only because the candidate space is explicitly
+finite.  It is not countable choice and does not select from an unbounded
+sequence of arbitrary inhabited sets.
+
+\subsection{Complete bounded enumeration}
+
+A similar trace builds a bit vector or coded list containing exactly the
+witnesses \(v\le B\) with \(P(v)=1\).  The invariant states that the list is
+strictly increasing, all its entries satisfy \(P\), and every satisfying value
+below the clock occurs in the list.
+
+\begin{theorem}[Complete enumeration]\label{thm:enumeration}
+For every bounded decidable predicate, there is a PR list constructor and an
+iPRA proof that its output is sound, duplicate-free, ordered, and complete
+within the bound.
+\end{theorem}
+
+Complete enumeration is often preferable to least selection.  It preserves all
+branches for later invariant observation and makes the source of finiteness
+visible.
+
+\subsection{Finite-state dynamic programming}
+
+Many bounded algorithms are naturally expressed as dynamic programs: Gaussian
+elimination over a fixed matrix size, coefficient recurrences, finite graph
+reachability, subset recursions, or backward viability.  A table of length
+\(M\) is coded by nested pairing or a beta-function representation.  The update
+operation is PR because every lookup and replacement is bounded.
+
+The general proof pattern is:
+\begin{enumerate}
+\item define a table invariant asserting correctness for all indices below the
+current clock;
+\item Booleanize that bounded assertion;
+\item prove the next cell correct from previously established cells;
+\item apply Theorem~\ref{thm:trace}.
+\end{enumerate}
+This is more robust than attempting to reason about a host array and later
+reflecting its output.
+
+\subsection{Lexicographic descent and explicit fuel}
+
+Algorithms in algebra and number theory frequently recurse by descent on a
+fixed tuple of natural measures: degree, valuation, denominator, support size,
+or a pair of dimensions.  A strict lexicographic descent in a bounded box has an
+explicit finite fuel.
+
+\begin{theorem}[Finite lexicographic fuel]\label{thm:lexfuel}
+Let
+\[
+  L=\prod_{i<k}\{0,\ldots,B_i\}
+\]
+with fixed \(k\).  Every strictly descending sequence in lexicographic order
+has length at most
+\[
+       |L|=\prod_{i<k}(B_i+1).
+\]
+Consequently a descent algorithm on \(L\) can be compiled to a clocked trace
+with that fuel.
+\end{theorem}
+
+\begin{proof}
+Lexicographic order is a strict total order on the finite set \(L\).  A strictly
+descending sequence has no repeated state.  There are \(|L|\) states, so its
+length is at most \(|L|\).  Constructively, map a tuple to its mixed-radix rank
+\[
+ r(x_0,\ldots,x_{k-1})
+   =x_0\prod_{j>0}(B_j+1)+x_1\prod_{j>1}(B_j+1)+\cdots+x_{k-1}.
+\]
+Lexicographic decrease implies natural-number rank decrease.  The rank formula
+and its monotonicity proof are primitive recursive and quantifier-free for fixed
+\(k\).
+\end{proof}
+
+If a classical proof says merely that a well-founded measure decreases, the
+iPRA reconstruction must expose a finite bound on the relevant initial segment.
+The mixed-radix construction provides one for fixed-dimensional tuples.
+
+\subsection{Finite exceptional-set synchronization}
+
+Several estimates may each fail at finitely many indices.  One often needs a
+single index where all estimates hold.
+
+\begin{theorem}[Common good finite window]\label{thm:common-window}
+Let \(E_0,\ldots,E_{r-1}\subseteq\N\) be finite sets with
+\(|E_i|\le b_i\).  For every \(N\), the interval
+\[
+       [N,N+\textstyle\sum_i b_i]
+\]
+contains an index outside every \(E_i\).
+\end{theorem}
+
+\begin{proof}
+The interval has \(1+\sum_i b_i\) elements.  The union of the exceptional sets
+contains at most \(\sum_i b_i\) elements, because a coded injection of each
+\(E_i\) into a block of size \(b_i\) gives a coded surjection from a set of that
+size onto the union.  Therefore at least one interval point is not in the
+union.  Bounded least search finds the first.  All counting is over coded finite
+lists and is provable by quantifier-free induction.
+\end{proof}
+
+This theorem resolves a common ``choose a sufficiently large common index''
+gap when explicit exception budgets are available.  Without such budgets,
+finite exceptionality alone does not provide a computable search window.
+
+\subsection{Metastability rather than an unproved modulus}
+
+A sequence may be known classically to converge without a primitive-recursive
+modulus available to the proof.  A valid finite substitute is metastability:
+for every \(q\) and every control function \(g\), produce \(N\le B(q,g)\) such
+that
+\[
+    \forall i,j\in[N,N+g(N)]\quad d(a_i,a_j)\le2^{-q}.
+\]
+When \(B\) is explicit and PR, the finite window can be searched and checked.
+A genuine modulus is stronger and should not be inferred from metastability
+without an additional theorem.

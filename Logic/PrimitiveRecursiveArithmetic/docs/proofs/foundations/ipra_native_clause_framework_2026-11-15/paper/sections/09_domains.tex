@@ -1,0 +1,268 @@
+\section{Reusable presentations for mathematical domains}
+
+The purpose of a general framework is not merely to prove an abstract compiler
+theorem.  It should tell an author how to replace familiar mathematical objects
+by interfaces that the compiler can consume.  This section records a reusable
+library of such presentations.
+
+\subsection{Finite sequences, tables, and trees}
+
+A finite sequence is coded by a length and an access function represented by a
+single natural number.  Any standard primitive-recursive coding works; the
+formalization should fix one globally.  The basic operations are:
+
+\begin{itemize}
+\item length, bounded lookup with a default value, and bounded replacement;
+\item append, map by a fixed PR function, fold, filter by a Boolean predicate;
+\item sorted insertion, duplicate removal, and finite membership;
+\item tree child lists, parent pointers, and depth-first traversal.
+\end{itemize}
+
+Every theorem about such data is proved by a clocked fold with a quantifier-free
+prefix invariant.  A useful design rule is to expose only the abstract laws in
+node contracts and hide the chosen pairing code behind proved equations.  This
+prevents application proofs from becoming arithmetic proofs about a particular
+encoding.
+
+\subsection{Integers and rationals}
+
+Integers may be represented by pairs \((p,n)\) denoting \(p-n\).  Equality is
+the natural-number equation
+\[
+        p+n'=p'+n.
+\]
+Addition and multiplication are polynomial operations on pairs.  The current
+\path{IPRADerivations} library already implements this representation and
+proves its ring laws in the quotient of terms by derivable equality.
+
+Rationals may be represented by signed numerators and positive denominators.
+There are two useful equality notions.
+
+\begin{enumerate}
+\item \emph{Extensional equality}: \((a,b)\sim(c,d)\) iff \(ad=cb\), with
+positivity guards for \(b,d\).  This avoids gcd normalization and is often best
+for proofs.
+\item \emph{Canonical equality}: require positive denominator and gcd one.
+This gives decidable literal equality but needs a verified gcd and
+normalization development.
+\end{enumerate}
+
+For a general framework, use extensional equality in local algebra and invoke a
+canonicalizer only when an external format requires it.  Division by a rational
+is guarded by a nonzero numerator certificate.  Order comparisons are reduced
+to integer inequalities after multiplying by positive denominators.
+
+\subsection{Dyadic error arithmetic}
+
+Approximation proofs frequently need only dyadics \(m/2^q\).  A dyadic is a
+signed integer code and a nonnegative exponent.  Addition aligns exponents;
+multiplication adds exponents.  The inequality
+\(|x|\le2^{-q}\) is decided after shifting integers.
+
+A regular name can therefore be stated entirely with integer equations and
+inequalities:
+\[
+   |2^{q'}a(q)-2^q a(q')|\le 2^{q+q'-\min(q,q')}\,\times\,\text{the chosen tolerance constant}.
+\]
+In practice it is clearer to define a fixed dyadic distance library and prove
+its algebra once.
+
+\subsection{Represented real numbers}
+
+\begin{definition}[Regular rational name]
+A regular name is a PR function \(a:\N\to\Q\) satisfying
+\[
+       |a(q)-a(r)|\le 2^{-q}+2^{-r}
+       \qquad\text{for all }q,r.
+\]
+A faster convention may use \(|a(q)-a(r)|\le2^{-q}\) when \(r\ge q\).
+\end{definition}
+
+The object-language presentation uses only rational codes and the displayed
+finite inequalities.  The external adequacy theorem constructs a Cauchy real.
+Operations are contracts with explicit demands.
+
+\paragraph{Addition.}
+To output precision \(q\), request both inputs at \(q+2\), add the rationals,
+and allocate the two input errors plus exact rational arithmetic error.
+
+\paragraph{Multiplication.}
+Multiplication needs magnitude bounds.  A contract includes integers
+\(M_x,M_y\) with \(|x|\le M_x\), \(|y|\le M_y\).  Choose input precision
+large enough that
+\[
+    M_x\varepsilon_y+M_y\varepsilon_x+
+    \varepsilon_x\varepsilon_y\le2^{-q}.
+\]
+The inequality is checked rationally.
+
+\paragraph{Reciprocal.}
+Require an apartness certificate \(|x|\ge2^{-g}\).  Request enough precision to
+preserve a lower bound on the rational approximation and to meet the standard
+error estimate for inversion.  The operation is totalized with a default when
+the guard fails; correctness is conditional on the guard.
+
+\paragraph{Limits.}
+A sequence of names has a limit contract only when supplied with a Cauchy
+modulus or a metastable bound adequate for the desired conclusion.  Merely
+asserting that the sequence converges classically is insufficient for a
+uniform producer.
+
+\subsection{Complex numbers}
+
+Represent a complex number by a pair of represented reals, or by Gaussian
+rational approximations.  Addition and multiplication are polynomial in the
+components.  Inversion is guarded by a lower bound on
+\(x^2+y^2\).  Absolute value can be represented by a squared norm when square
+roots are unnecessary; this often simplifies polynomial arguments.
+
+Root isolation, argument-principle counts, and contour estimates should use
+rational rectangles or disks with certified separation from zero.  The branch
+of a square root or logarithm is a relational object unless a domain and cut
+certificate select it.
+
+\subsection{Polynomials and formal series}
+
+A polynomial over a coded coefficient domain is a finite coefficient list.
+Degree is bounded by list length; evaluation is a Horner trace.  Addition,
+multiplication, formal derivative, coefficient truncation, and composition to
+a fixed degree are primitive recursive.
+
+A formal power series is not stored as an infinite list.  It is a coefficient
+producer \(a(n)\) together with finite contracts.  A query \(N\) requests the
+prefix \((a(0),\ldots,a(N))\).  Cauchy products and formal composition use
+bounded double sums.  Analytic evaluation additionally needs a radius and a
+remainder bound; formal identities do not.
+
+\begin{proposition}[Finite formal-series algebra]
+Every identity between coefficients up to a requested order \(N\), built from a
+fixed finite expression using addition, multiplication, derivative, integral
+with explicit denominator guards, and composition with zero constant term, is
+computable by a bounded PR trace and reducible to polynomial coefficient
+identities.
+\end{proposition}
+
+\begin{proof}
+At coefficient index \(n\le N\), each operation uses only finitely many indices
+at most \(n\).  Evaluate the expression tree by a topological graph and the
+coefficient recurrences by bounded sums.  Correctness follows by induction on
+the expression and on \(n\).  Denominator divisions use the explicit fact that
+\(n+1>0\).
+\end{proof}
+
+\subsection{Matrices and linear algebra}
+
+For a fixed dimension \(d\), a matrix is a table of \(d^2\) entries.  Matrix
+addition and multiplication are finite sums.  Determinants may be defined by a
+Leibniz sum over the finite permutation list, a Laplace recursion with explicit
+fuel, or a division-free elimination algorithm.  The best representation
+depends on the theorem.
+
+For polynomial identities such as Cayley--Hamilton at fixed \(d\), a
+permutation or adjugate proof is often easiest to compile: all sums are bounded
+by constants depending on \(d\), and the remaining algebra is polynomial.
+For variable \(d\), the theorem remains plausible in iPRA, but the formal
+library needs generic finite permutations, signs, matrices, determinants, and
+polynomial matrices.  The framework supplies the control and proof-composition
+pattern, not those domain lemmas for free.
+
+Gaussian elimination is guarded by pivot nonzeroness.  To avoid branch
+instability, one may enumerate all pivot choices, retain the successful
+relations, and observe rank, determinant, or solution-space dimension rather
+than a particular row-echelon form.  Exact rational elimination is appropriate
+when all entries are exact; approximate matrices require separation bounds.
+
+\subsection{Finite groups, rings, and modules}
+
+A finite algebraic structure is a carrier bound, operation tables, and Boolean
+axiom checks.  A homomorphism is a finite table satisfying bounded equations.
+Subgroups, ideals, kernels, and images are bit vectors with closure checks.
+
+For finitely generated infinite structures, use finite presentations and query-
+dependent normal forms only when an explicit terminating rewriting or bounded
+word problem is available.  A group presentation alone does not supply a PR
+normal-form algorithm.
+
+Modules over exact rings can be represented by finite matrices.  Smith normal
+form is a descent algorithm with explicit coefficient-growth and measure bounds
+needed for a uniform iPRA proof.  For a fixed concrete matrix, a proposed Smith
+form plus unimodular multipliers is a finite certificate easily verified by
+matrix multiplication and determinant checks.
+
+\subsection{Simplicial and cellular data}
+
+A finite simplicial complex is a finite list of vertex subsets closed under
+faces, or a Boolean face predicate on a bounded vertex set.  Chain groups are
+finite free abelian groups, boundary maps are integer matrices, and the
+identity \(\partial^2=0\) is a finite signed cancellation theorem.  Homology
+invariants can be computed from Smith certificates.
+
+A triangulated or cubical approximation to a space is only a finite model.  A
+theorem relating it to an ideal topological space needs explicit approximation
+or equivalence data: a simplicial approximation, deformation retraction,
+nerve-cover certificate, or mesh/regularity theorem.  The framework cleanly
+separates the finite homological computation from this producer.
+
+\subsection{Finite metric and topological observations}
+
+A finite metric observation contains a finite point list and rational upper and
+lower bounds for distances.  Triangle inequalities and separation properties
+are bounded checks.  Nets, covers, Rips complexes, and Cech complexes at a
+rational scale are finite constructions.
+
+For a compact represented space, a query may request a finite
+\(2^{-q}\)-net plus a covering certificate.  A continuous map is represented by
+an observation transformer and a modulus.  Uniform continuity is therefore not
+silently obtained from compactness; the modulus or finite cover argument is
+part of the contract.
+
+\subsection{Finite categories and diagrams}
+
+A finite category is a finite object set, finite morphism set, source and target
+tables, identity table, partial composition table, and bounded proofs of the
+category laws.  A finite functor and natural transformation are finite tables
+with bounded naturality checks.  Commutative diagrams become equations in
+finite hom-sets.
+
+For large or infinite categories, a theorem normally uses only a finite
+diagram.  The presentation should therefore encode the diagram and the local
+universal-property witnesses actually needed.  ``All objects'' statements are
+ordinary quantified formulas, but a construction that searches over all
+objects is not available without a bounded presentation.
+
+Yoneda-style arguments can be expressed extensionally: a natural
+transformation is determined by its component at the representing object, and
+the proof is finite symbolic composition.  Choosing representatives of
+isomorphism classes is unnecessary.
+
+\subsection{Probability distributions}
+
+A finite rational distribution is a finite list of nonnegative rational weights
+summing to one.  Expectation of a bounded rational variable is a finite sum.
+Convolution, moments to a fixed order, and finite Markov chains are PR table
+algorithms.
+
+An infinite law is represented by finite cylinder probabilities or rational
+approximations with consistency and error bounds.  Limit theorems require
+explicit finite error estimates.  A qualitative weak-convergence statement
+without a modulus may be reconstructed metastably, but should not be advertised
+as a uniform rate.
+
+\subsection{A general recipe}
+
+For a new domain, the recommended order is:
+
+\begin{enumerate}
+\item choose the smallest finite observations used by the proof;
+\item define validity and restriction before defining operations;
+\item prove coding and bounded-search lemmas once;
+\item classify each operation as exact, guarded, relational, or approximate;
+\item attach backward demand and resource effects;
+\item prove local contracts in \(\Prf\;\PRAAx\) or \(\KPrf\);
+\item use the graph compiler only after the local library is stable;
+\item state an external adequacy theorem connecting observations to the
+classical object.
+\end{enumerate}
+
+This order keeps representational decisions from being buried inside the proof
+of a headline theorem.
