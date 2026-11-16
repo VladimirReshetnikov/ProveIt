@@ -88,20 +88,26 @@ encoding rules below.
 
 ### Phase 0 · Inventory and reproduce
 
-- [ ] Create a maintained endpoint inventory beside this plan. For each
+- [x] Create a maintained endpoint inventory beside this plan. For each
   public theorem or proof family, record the module and declaration, exact
   judgment and outer theory, direction or biconditional, quantified variables
   and parameters, additional premises, input table or equation identifier,
   and check command. Record whether the result is a current-source Lake
   build, a staged replay with identified providers, an external semantic
   theorem, a conditional derivation, or open work.
-- [ ] Trace source imports, standalone package manifests, generated import
+  The [endpoint inventory](ENDPOINTS.md) covers the bridge and arithmetic
+  proofs, the PA variants and scheduler boundary, the BusyBeaver ZFC
+  clients, the maintained equations, and the adjacent provider APIs.
+- [x] Trace source imports, standalone package manifests, generated import
   headers, and staged `LEAN_PATH` receipts. Use `git grep` over the Git tree so
   the inventory covers sparse checkouts. Start from `ConciseIPRA`,
   `IPRADerivations`, `IPRABridge`, and the Foundation iPRA modules. Follow
   actual import edges rather than inferring them from mentions of PRA or iPRA.
   Identify forwarding modules, old versions used only as replay inputs, and
   duplicate module names across providers.
+  The [dependency inventory](DEPENDENCIES.md) records the parsed import
+  scan, the generated table provider checks, and the ordered pinned replay
+  scope. It also records the input comparison for the literal K215 lane.
 - [ ] Capture reproducible baselines for the bridge, PA194 exact literal
   endpoint, one ZFC equation endpoint, and representative arithmetic modules.
   Record toolchain and package revisions, theorem types, axiom audits, source
@@ -262,11 +268,15 @@ and the [MRDP proof guide](../../Computability/HilbertTenthProblem/Lean/MRDP.md)
 
 ### Phase 5 · Switch defaults and retire duplicates
 
-- [ ] Give new shared lemmas and public examples canonical imports. Document
+- [x] Give new shared lemmas and public examples canonical imports. Document
   how each project obtains its backend statements, including one example
   for closed transport and one for a sequent with hypotheses. Let existing
   public endpoints use their translated proofs without changing the formulas
   or output interfaces that reproduce them.
+  The [bridge guide](Bridge/README.md#choosing-an-ipra-interface) gives the
+  open and closed forms. The native selector, literal PA and equation
+  replays, and the C222 and C254 evaluator checks cover their existing
+  published interfaces.
 - [ ] For each proposed removal, list its active callers, forwarding import
   or theorem alias, replacement proof, and regression check. Remove duplicate
   implementations only when their two logical interfaces, exact published
@@ -333,6 +343,7 @@ LAKE_JOBS=1 lake build +IPRADerivations.Checks.Axioms
 LAKE_JOBS=1 lake build IPRABridge
 LAKE_JOBS=1 lake build +IPRABridge.Checks.Arithmetic
 LAKE_JOBS=1 lake build +IPRABridge.Checks.ComparisonBits
+LAKE_JOBS=1 lake build +IPRABridge.Checks.BoundedSearch
 LAKE_JOBS=1 lake build Diophantine
 lake env lean Computability/HilbertTenthProblem/Lean/checks/MRDPAxioms.lean
 ```

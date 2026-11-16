@@ -62,6 +62,35 @@ value. The source replay compiled the comparison, the native corollary,
 three Lean axioms. The opt-in
 [comparison-bit audit](Bridge/Lean/IPRABridge/Checks/ComparisonBits.lean)
 checks those exact judgments. Run `lake build +IPRABridge.Checks.ComparisonBits`.
+The root build of this audit after the syntax and import changes completed
+all 1,438 jobs in 5 minutes 32 seconds with 1,852 MiB peak resident memory.
+
+The root `+ConciseIPRA.NativeBiInterpretation` target completed all 671 jobs.
+Its exact `pra_iff_native` check audited both sides for arbitrary scope,
+context and formula. The scalar reading applies `NFm.ofPRA` to every
+hypothesis and the conclusion. The proof reports `propext`,
+`Classical.choice`, and `Quot.sound`.
+
+The root `IPRADerivations` build completed 1,678 jobs with the
+finite-parameter search interface. After syncing with upstream arithmetic
+sources, `+IPRADerivations.Checks.Axioms` completed 1,682 jobs at
+`dedd94e853` in 11.42 seconds and peaked at 2,042 MiB. Its five new
+finite-search reports use the standard Lean axioms.
+
+The [Foundation bounded-search comparison](Bridge/Lean/IPRABridge/BoundedSearch.lean)
+relates the original `searchCode good` to `Search.Finite.mu` at arbitrary
+bound and parameter terms in any context. The migrated
+[`selectorOpen`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRABoundedSelector.lean)
+keeps exactly `extended nativeTheory ⊢! native (Rew.embSubsts v ▹ matrix good)`.
+Its assumptions about a witness below the bound and the two conclusions
+about the found witness stay in the original formula. A coherent staged
+rebuild through `IPRABoundedRhoZFC` passed. The explicit ZFC endpoint's
+proof values reach the ordinary `Search.search_found` through its
+bounded-refutation comparison and this selector. The
+[bounded-search audit](Bridge/Lean/IPRABridge/Checks/BoundedSearch.lean)
+reported the standard Lean axioms and checked the zero bound, failed
+search, arbitrary parameters and existing native consumer judgments.
+Run `lake build +IPRABridge.Checks.BoundedSearch`.
 
 ## BusyBeaver PA
 
@@ -96,6 +125,12 @@ target's 603 transitive imports and resolved the standalone `Core` and
   declaration owners. The check passed with the same axiom set, and the
   export object had SHA-256
   `582b08696ee1cbe20754ea374bf8e228c5c15f57ff803f613aa072dedf802993`.
+  A fresh stage run of `check-literal.sh` took 89.04 seconds at 2,563 MiB
+  peak resident memory. `check-concise-export.sh` over that stage took
+  7 minutes 22 seconds at 2,595 MiB. Both used the guide's ordered pinned
+  prerequisites and checked the original literal table. Importing both
+  outputs and printing types and axioms in a warm audit took 44.11 seconds
+  at 2,581 MiB. The fresh replay outputs and their receipts used 6.9 MiB.
 - **Separate PA1944L pilot.** [`PA1944LFinal.consistency_iff_literal_nonhalt`](../../Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants/pa1944l/PA1944LFinal.lean)
   proves `standardTheory ⊢ nativePAConsistency 🡘 ∼machineHaltSentence PA1944LData.table 194`.
   The table hash is
@@ -123,6 +158,13 @@ target's 603 transitive imports and resolved the standalone `Core` and
   After the syntax split, a second full replay used the source-current
   bridge and arithmetic overlay with the same pinned model and coverage
   providers. The checks passed, with both endpoint object hashes unchanged.
+  A further replay after the subtraction cleanup checked the same hashes
+  and proof dependency in 11 minutes 26 seconds at 2,597 MiB peak resident
+  memory. The native `IPRASubSuccSelfNonzero` and its actual difference
+  caller load without `PRASubSuccSelfNonzero.proved`. The old classical
+  term names forward to [`SubSuccSelfNonzeroSyntax`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/SubSuccSelfNonzeroSyntax.lean).
+  The old exact native formula, the separate classical theorem, and the
+  current native proof all passed the focused type and axiom checks.
 - **Original PA195.** The
   [emitter and scheduler proof](../../Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-controller-schedulers/README.md)
   gives `PA194EmitterSchedulerPA.consistency_iff_scheduler_nonhalt`, a
@@ -166,6 +208,9 @@ to check this boundary.
   about the blank start of the exact 215-state machine. The
   [verification record](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md)
   records table binding, pinned replay closures, and axioms for both systems.
+  The [source inventory](DEPENDENCIES.md#pinned-and-experimental-providers)
+  records the input comparison for the unification series and identifies
+  the source closure of the current endpoint separately from those receipts.
 - **Rotation240.** [`BinaryConsistencyRotation240`](../Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean)
   checks `iSigma2_proves_con_ZFC_iff_not_binary_halts` and
   `peano_proves_con_ZFC_iff_not_binary_halts` in the stated object theories,
@@ -188,14 +233,24 @@ to check this boundary.
   environment using `lake build +BusyBeaver.ZFC.ArithmeticHistory222`.
   The focused source replay checked both declarations with `propext`,
   `Classical.choice`, and `Quot.sound`.
-  The historical `ArithmeticRow254` witness statement continues to serve
-  its existing callers. That file is bound by source-hash receipts for
-  ZFCinPA and K215 stages. The focused C222 replay used the migrated
+  The focused C222 replay used the migrated
   evaluator source with SHA-256
   `eab9a10f9cda777f5db0b207c9df60a4491198018bd878f7f2e1bac6b8df9f5e`.
   A later root Lake build of the migrated endpoint completed 1,155 jobs
   in 26 seconds with 800 MiB peak resident memory, reusing compiled
   dependencies.
+- **C254 predecessor forwarding.** The original qualified names
+  `ArithmeticRow254.{pred_add_one,pred_le,predecessor_witness}` now use the
+  shared [IOpen interpretation](../../Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticPredecessorWitness.lean).
+  Their public signatures match byte-for-byte in Lean's audit output. Fresh
+  isolated compilation checked the C254 and C222 history source and the
+  permuted C222 proof-word evaluator, including its call through the old
+  qualified name. The existing historical
+  [validator](../Interpretability/ZFCinPA/validator_quantifier_core254.md)
+  and [R2Gic](../Interpretability/ZFCinPA/r2gic.md) guards retain their
+  frozen row input. Their replay guides name the original source and
+  object hashes, source locations and currently missing historical
+  providers. The literal K215 closure excludes this model arithmetic.
 - **Explicit nine-variable equation.**
   [`IPRAExplicitZFCFinal.standard_equivalence`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
   proves `standardTheory ⊢ nativeNoZero ExplicitZFCSyntax.expression 🡘
@@ -250,6 +305,38 @@ The reduction's backward bounded induction reaches native equality
 decidability, `IPRASubSuccSelfNonzero.native` and the shared ordinary
 `LeanProofs.IPRA.not_succ_le_self`. This is the same arithmetic comparison
 used by the independently replayed literal PA1944L proof.
+
+The next normal root build ran after the syntax, zero-test and subtraction
+changes. It completed 3,353 jobs in 9 minutes with 2,780 MiB peak resident
+memory. Both equation proofs and both exports passed. The root export
+object kept the SHA-256 shown above.
+
+### Maintained fourteen-variable endpoint
+
+[`IPRAStandardCurrentEndpoint`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAStandardCurrentEndpoint.lean)
+has two closed results in `standardTheory`, each with no Lean proof
+premises. `ipra_current_iff_consistency` proves `noZero14 🡘
+∼mappedNativeRefutation PRALanguage.embedding`.
+`ipra_current_iff_translated_consistency` uses the Gödel–Gentzen translation
+of the embedded `FoundationZFCConsistencyNat.sourceSentence` as its right
+side. The statement `noZero14` universally negates equality of the two
+mapped sides of `ObjectCurrentEquation2011.naturalExpression` over the
+fourteen natural variable slots.
+[`IPRAReferenceCurrentEndpoint`](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAReferenceCurrentEndpoint.lean)
+checks both results in the equality-only reference theory after erasing
+the native order atoms to equations of their comparison codes.
+
+The current four wrapper and audit sources replayed against the exact
+November 4 project and package providers of the
+[fresh standard rebuild](../../Computability/DiophantineConsistency/research/current14-standard-fresh-rebuild-preflight/README.md).
+The reference replay also used 19 source-current reference objects and
+one import-only module for the older finite-code owner. All four endpoint
+results and three transfer audits report the standard Lean axioms. The
+standard and reference audit objects had SHA-256
+`a4f9dc7d187c3ba673c9a4bcf4a22d316a116a3fd193132fdf484eef3ceeabc3` and
+`253dd9ed5c5bca4eb1cb39571ef74b8b81174fe430110fa05e5627e18f90a9c4`.
+For a normal Lake build, use the two `CurrentEndpointChecks` targets in
+the [verification routine](UNIFICATION-PLAN.md#verification-routine).
 
 ## Adjacent providers
 

@@ -81,3 +81,12 @@ module names using that order, and record the exact source, `.olean`, and
 companion hashes used by the relevant check. Validate a generated header
 against the source data selected by its generator. The provider order is
 part of the replay receipt.
+
+The K215 portable Lean driver's source walk at `d3b635d18e` selects 168
+project modules and `Init`. All 168 source blobs match the tree at the
+unification plan commit `fab7ff7033`. The published dense and native table
+hashes and `sites215.json` hash also match. The Rocq extension tree and
+undecidability submodule revision match those recorded at the plan commit.
+The [pinned K215 receipts](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md)
+give the compiler evidence for their recorded source closures. The
+earlier phase-15 receipt documents a 176-module Lean endpoint.
