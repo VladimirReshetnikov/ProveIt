@@ -96,3 +96,6 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.Products.pochhammer_shift
 #print axioms LeanProofs.IPRA.Analysis.Products.telescoping_sum
 #print axioms LeanProofs.IPRA.Analysis.Products.wallis_product
+#print axioms LeanProofs.IPRA.div_mod
+#print axioms LeanProofs.IPRA.euclid_unique
+#print axioms LeanProofs.IPRA.div_mod_unique

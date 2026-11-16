@@ -48,6 +48,7 @@ The library is built bottom-up. Reusable layers come first:
 | [`Core/Parity`](Lean/IPRADerivations/Core/Parity.lean) | `par` and `half` by recursion; `x = 2 half x + par x`, `x` even or odd, `par (2k) = 0`, `par (2k + 1) = 1`, and `2k ≠ 2m + 1` |
 | [`Core/BoundedSums`](Lean/IPRADerivations/Core/BoundedSums.lean) | Sums of terms as bounded universal quantifiers: a zero sum has zero terms below its bound, and terms that are zero for every index give a zero sum |
 | [`Core/Descent`](Lean/IPRADerivations/Core/Descent.lean) | Generic infinite descent: an indicator `χ(a, b)` with a solution bound `a < β(b)` and a step from a solution with `b ≠ 0` to a smaller one is refutable; proved by induction on the count of solutions with `b < N` |
+| [`Core/Division`](Lean/IPRADerivations/Core/Division.lean) | Remainder and quotient by recursion on the dividend; for `K ≥ 1`, `z = K quo z + rem z` with `rem z < K`, and uniqueness of quotient and remainder |
 | [`Core/LinearAlgebra`](Lean/IPRADerivations/Core/LinearAlgebra.lean) | Integer vectors and matrices: finite sums, dot and cross products, matrix products, traces, determinants by Laplace expansion and adjugates by cofactors, each evaluated to the corresponding Mathlib operation; matrix equations as finite conjunctions |
 
 The theorem modules are grouped by the areas of `docs/proofs/`:
