@@ -38,3 +38,14 @@ Lean axioms and record the source hashes and provider paths for replay.
 
 The [gate-window stage](README-gate.md) compares the revised and primary source
 steps at sites 3519–3552 and identifies the sole gate exit at site 3553.
+
+`PA194AX11HThroughPrep.through_prep` continues the exact revised AX-tail execution from site 3553 to the comparison input at site 3642. Under the same scratch-register and model assumptions, the endpoint is the complete file `PA194PausedPrep.result (pushed (fieldArgs (pushed a))) 0 (cantor (a 1) (a 2))`. `PA194AX11HThroughPrepValues.output_values` gives its relevant coordinates: T=0, W=`cantor (a 1) (a 2)`, D=`a 4 + fixedFirst(a 8)`, H=`a 5`, X=`impValue 0 D`, Y=0, and the remaining proof stream is `fixedSecond(a 8)`; register 3 is retained. The construction composes the two relocated pushes, field reader, D-copy, implication builder, and comparison setup. The comparison/return branch, complete source-to-scheduler simulation, and literal-machine simulation are separate obligations.
+
+After building the separately documented second-push/double-push prerequisite, rebuild this preparation stage with:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/verification/pa194/ipra/variants/pa194ax11h/check_candidate_prep.sh \
+  /path/to/fresh/prep-output /path/to/double-push-output
+```
+
+The preparation checker regenerates the 37-row source slice from the hash-pinned primary and revised JSONs, checks it byte for byte against the reviewable Lean source, compiles all 17 local modules in a fresh output, and rechecks the source and direct-provider object hashes. It retains the transitive paths recorded by the double-push prerequisite; it does not rebuild the primary/Foundation baseline.
