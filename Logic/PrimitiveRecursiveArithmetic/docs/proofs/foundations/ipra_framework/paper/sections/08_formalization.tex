@@ -1,0 +1,232 @@
+\section{Lean formalization: completed components and a path to completion}
+\label{sec:formalization}
+
+\subsection{The two proof layers}
+
+There are two distinct uses of Lean in this project.  At the semantic layer,
+\texttt{Nat}, \texttt{Int}, \texttt{Rat}, and lists provide convenient
+implementations of the finite mathematics.  Proving a theorem at this
+layer checks its mathematical statement in Lean's ambient foundations.
+At the object layer, \texttt{PR}, \texttt{PTm}, \texttt{Fm}, and
+\texttt{Prf PRAAx} describe the terms, formulas, and derivations of
+\ipra.  A completed object proof must use the permitted induction
+constructors and appropriate encoded formulas.  Moving between these
+layers requires construction of a derivation, not a change of notation.
+
+The standalone \texttt{ObjectKernel.lean} in this archive contains the
+declarations and proofs of the pinned upstream \texttt{Syntax.lean},
+\texttt{Deduction.lean}, and \texttt{PR.lean}.  Their imports are replaced
+by \texttt{Std}, and the natural-number notation is supplied explicitly.
+The declaration blocks were compared byte for byte with the originals.
+This makes the foundational example reproducible without downloading the
+full Mathlib dependency tree.  Upstream licensing and exact hashes are
+recorded alongside it.  It is not intended to be imported simultaneously
+with the original modules, which define the same names.
+
+\subsection{Actual compiled proof objects}
+
+The central object interface has the following shape; the complete scoped
+definition is in \texttt{ObjectBridge.lean}:
+\begin{quote}\small\ttfamily
+pre : Fm PTm n\\
+program : PR n\\
+post : Fm PTm (n + 1)\\
+certified : Prf PRAAx [pre] (post with output replaced by program)
+\end{quote}
+The \texttt{certified} field is an actual object derivation.  It is not a
+Boolean check of a semantic proposition.  The compiled existential
+introduction lemma turns this into an object derivation of
+\(\mathrm{pre}\to\exists y\,\mathrm{post}\).
+
+\texttt{ObjectExamples.lean} defines addition using the literal PR syntax:
+its primitive recursion starts with a projection, and its step composes
+successor with the previous-value projection.  It proves the zero and
+successor equations inside \texttt{PRAAx}, and then constructs an actual
+object induction proof of
+\[
+                         \forall x\ (x+0=x).
+\]
+The induction formula is the equation itself.  This small example is
+useful because it exercises the exact scoping, substitution, induction,
+and proof-object interfaces that larger applications will use.
+
+The semantic modules also contain useful general lemmas:
+\begin{center}\small
+\begin{longtable}{@{}P{.27\linewidth}P{.36\linewidth}P{.28\linewidth}@{}}
+\toprule
+Module & Content & Status\\
+\midrule\endhead
+\texttt{FiniteContracts} & Bounded iteration invariants; least bounded
+search; finite-prefix extensionality; producer composition. & General
+semantic proofs compiled.\\
+\texttt{Metastability} & Finite rise alternative; bounded change;
+constant windows for bounded monotone natural sequences. & General
+semantic proofs compiled.\\
+\texttt{PowerGap} & Natural gap inequalities; signed integer power gap;
+small-perturbation exclusion. & General semantic proofs compiled.\\
+\texttt{ObjectKernel}, \texttt{ObjectBridge}, \texttt{ObjectExamples}
+& Deep arithmetic syntax and deduction; contract interface; genuine
+object induction example. & Compiled object-level infrastructure and
+example.\\
+\texttt{SeriesTargets} & Truncated rational arrays, norms, fixed-point
+iteration, certificate checks, coefficient-name targets. & Definitions,
+definitional lemmas, and closed examples compiled; main targets unproved.\\
+\texttt{PowerGapTargets} & Polynomial list operations, Boolean certificate
+check, height functions, main targets. & Definitions compiled; polynomial
+theorem targets unproved.\\
+\texttt{AnalyticTargets} & Regular names and order, finite arithmetic
+tables, soft endpoint selection, and common analytic targets. & Definitions
+and target statements compiled; main targets unproved.\\
+\texttt{ChartProducerTargets} & Gaussian-rational data, explicit chart
+constants, and simple-root certificate producer targets. & Definitions
+compiled; producer proof targets unproved.\\
+\texttt{SelectionTargets} & Coherent finite witness selection and
+bounded-cardinality empty-window constructions. & Definitions compiled;
+main targets unproved.\\
+\texttt{RepositoryBridge} & Adapter to the original
+\texttt{pra\_iff\_native} interface. & Source outline inspected; not built
+against the full original dependency closure.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+The compiler used is Lean 4.32.0, commit
+\texttt{8c9756b28d64dab099da31a4c09229a9e6a2ef35}.
+The recorded audits distinguish a compiled proposition definition from a
+proved proposition.  They also distinguish Lean's metatheoretic axioms
+from the rules occurring in an embedded arithmetic proof.  Some compiled
+proofs use \texttt{propext} and \texttt{Quot.sound}; the audited new proof
+declarations do not use \texttt{sorryAx} or \texttt{Classical.choice}.
+This fact does not by itself establish an \ipra derivation; the type and
+constructors of the object proof establish that claim.
+
+\subsection{The common missing compiler work}
+
+The broad framework requires a reusable library of syntactic derivations.
+The following implementation sequence makes each missing step concrete.
+\begin{enumerate}
+\item Define named PR symbols for integer coding, pairing, rational
+cross-comparison, list lookup, finite folds, and powers.  Prove their
+equations and elementary algebraic laws using \texttt{PRA.qfInd}.
+Record the domain conditions as Boolean equations.
+\item Define the syntax of bounded formulas over a \emph{fixed} finite
+signature, with bounds stored as terms.  Construct the Booleanization
+function and an object derivation of the equivalence for every constructor.
+The quantified cases must use the guarded-prefix proof in
+Theorem~\ref{logic:booleanization}, not induction on the formula with an
+unbounded quantifier.
+\item Define finite annotated programs: assignment, composition,
+Boolean branch, and bounded loop.  An annotation includes its bounded
+invariant and already constructed base/step derivations.  Compile the
+program to its PR symbol and to its postcondition derivation by
+Theorem~\ref{logic:compilation}.  A checker for the resulting raw proof
+objects should verify syntax and local inference rules without globally
+normalizing arbitrary PR terms.
+\item Build fixed certified lemmas for bounded search, finite maximum,
+minimum with deterministic tie breaking, weighted finite sums, and
+finite convolution.  Each becomes a reusable proof constructor rather
+than an assumed semantic property.
+\item Introduce the name formulas as ordinary first-order abbreviations.
+Every represented theorem should expose the finite precisions it uses,
+then universally generalize the requested accuracy only after completing
+the finite derivation.  The rational separation lemma eliminates any
+remaining limiting phrase in a rational conclusion.
+\end{enumerate}
+The semantic proofs already supplied are convenient guides for these
+proof constructors, but they do not automatically produce them.
+
+\subsection{Completion route for each main mathematical result}
+
+For \textbf{finite precision propagation}, use a list of arithmetic gates
+whose argument indices precede the gate.  Define exact and rounded
+evaluation by a bounded fold.  Store the maximum previous error as an
+auxiliary rational value, and use
+\(e_j\le(2B+3)^j\delta\), together with the operand bounds, as the
+Booleanized invariant.  Prove the product difference identity by ring
+algebra and its inequality by signed integer cases.  This yields the
+gate-error target and, after reification, its object derivation.
+
+For \textbf{integration}, define grid indices as vectors bounded by
+\(2^{\mu(k+3)}\), flattened to a finite list.  Prove finite refinement
+counting and equality of the total weights to one.  A weighted-error
+fold gives the exact rational comparison of two grid sums.  Regularity
+and modulus formulas are used by explicit universal elimination;
+they are not the induction formula.  The continuous extension at named
+points uses the separately specified clipping and precision schedule.
+
+For \textbf{metastability}, the natural change-budget theorem is already
+proved.  The rational theorem adds the PR floor operation and its
+interval property.  The represented theorem can be proved independently:
+construct the candidate endpoints and first minimum of rational
+differences; prove the finite minimum inequality and the telescoping
+identity; insert the two endpoint-error bounds.  The exact rational
+margin \(2^{-k}/(2K)\) supplies the output apartness witness.  The
+empty-window theorem adds bounded search and the invariant of distinct
+stored witnesses.  It uses the supplied cardinality premise only after
+constructing the potentially forbidden finite list.
+
+For \textbf{coherent witness selection}, define finite lists \(D_s\),
+the PR residual evaluator, the first minimum, and
+\(\tau(k)=\max(k,\sigma(k))\).  Prove the two-error estimate for that
+minimum.  Instantiate the isolation contract at the two selected points,
+and then the continuity contract at the resulting fast name.  No
+choice or compactness theorem is needed.
+
+For \textbf{the implicit branch}, prove the six principal finite targets
+in \texttt{SeriesTargets.lean} in dependency order: convolution norm,
+finite power difference, contraction, invariant ball, geometric
+telescoping, and coefficient estimate.  Fix degree and horizon before
+every induction.  Add the explicit clipping maps for scalar coefficients
+and weighted arrays; their error bound is twice the sample error.
+Use the gate lemma to compare two finite polynomial computations.
+The coefficient-name formula, its finite weighted bound, coefficientwise
+fixed-point equation, and explicit tail then follow.  Finally prove the
+finite residual bound for evaluating the series; this avoids assuming
+an infinitary substitution theorem.  Reify the same finite targets before
+transporting the resulting object proofs.  The supplied rational-array
+module is the real scalar prototype; Gaussian pairs use the explicitly
+defined pair arithmetic and the norm $|u|+|v|$.  The finite convolution
+and contraction proofs use only the displayed norm inequalities, so
+the same proof structure applies to those pairs.  The certificate
+producer then needs the finite derivative estimates $M_1,M_2$, the
+explicit functions $U,h,T,p,W,t$, and the sampled upper-bound estimates
+of Corollary~\ref{ana:producer}.  These are additional named targets,
+not consequences of defining a certificate structure.
+
+For \textbf{power-gap certificates}, the signed integer gap is already
+proved semantically.  Formalize polynomial evaluation of a coefficient
+identity, the leading-term and integer-root bounds, and the finite loss
+estimate.  Those lemmas prove the outside-box contradiction and hence
+the two height bounds.  Bounded enumeration is a generic verified filter.
+The power-completion constructor needs its triangular coefficient
+invariant and a positive denominator product.  The zero-remainder branch
+and the parity analysis for the explicit family are finite algebraic
+arguments.  For denominator transport, formalize the three homogenized
+coefficient lists and their coefficient-norm estimates.  All of these
+algorithms and target predicates are specified in the archive.
+
+\subsection{Integration into ProveIt}
+
+A natural integration location is a reusable library such as
+\path{Logic/PrimitiveRecursiveArithmetic/FiniteContracts/}, with the
+application reports pointing to it.  This is a proposed organization,
+not a repository change made by this task.  In an actual integration,
+replace the standalone \texttt{ObjectKernel} import by
+\texttt{ConciseIPRA.PR}; do not load both copies.  Build the native
+adapter against \texttt{ConciseIPRA.NativeBiInterpretation}.  Its last
+step should have the form
+\[
+ h:\operatorname{Prf}\,\mathrm{PRAAx}\,\Gamma\,\varphi
+ \quad\longmapsto\quad
+ (\texttt{pra\_iff\_native}).\texttt{mp}\ h.
+\]
+The arithmetic proof \(h\) is the substantive input, and the equivalence
+does not manufacture it.
+
+Once the Booleanization, rational arithmetic, and bounded-loop constructors
+are in place, the same work benefits a large fraction of the collection:
+finite coefficient identities, exact geometric certificates, contour
+grids, truncated series, arithmetic sums, height searches, and finite
+topological tables all need these operations.  This is the principal
+practical advantage of one common framework over separate ad hoc
+arithmetization sections.

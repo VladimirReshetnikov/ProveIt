@@ -210,7 +210,10 @@ a filename pattern or a path alone (Vladimir, 15 November 2026).
 `analytic-number-theory/`, and then deleted. It leaves out only `build/BUILD_REPORT.md`,
 which the root `.gitignore` rule `build/` ignores. `ipra_embedding_framework.zip`, a second
 cross-domain framework, was placed the same way, under `foundations/`, and then deleted. It
-leaves out only its ignored `SHA256SUMS.txt`.
+leaves out only its ignored `SHA256SUMS.txt`. `ipra_framework.zip` is a different archive
+from `ipra_framework_2026-11-15.zip`: a different SHA-256, and 65 members against 6. It was
+placed the same way, under `foundations/ipra_framework/`, and then deleted. It leaves out only
+its ignored `SHA256SUMS`.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

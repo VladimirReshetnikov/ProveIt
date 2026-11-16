@@ -1,0 +1,171 @@
+\subsection{Producing a certificate from a supplied simple-root chart}
+\label{ana:producersection}
+
+The preceding theorem assumes a finite contraction certificate.  On a
+supplied simple-root chart, that certificate can itself be constructed
+with a primitive recursive precision bound.  The next corollary therefore
+discharges the certificate-existence obligation for this class of inputs.
+As before, all coefficient and point names belong to fixed primitive
+recursive families; no evaluator for arbitrary programs is used.
+Throughout this subsection, a stage-$t$ Gaussian-rational sample has
+error at most $2^{-t}$ in $|\cdot|_1$.  If separate component names
+have that error in each component, read both at stage $t+1$ instead.
+This convention applies equally to coefficient names, root names,
+and inverse names.
+
+Write $P(X,Y)=\sum_{i=0}^e\sum_{l=0}^d p_{il}X^iY^l$ and let
+$C_{il}$ be supplied natural-number bounds for $|p_{il}|_1$.
+For a positive natural number $n$, let $\operatorname{bl}(n)$ denote
+its binary length, so $n<2^{\operatorname{bl}(n)}$.
+This is a bounded primitive recursive function.
+
+\begin{corollary}[Uniform certificate producer on a simple-root chart]
+\label{ana:producer}
+Suppose that fixed primitive recursive names $b,w$ and natural bounds
+$B_0,V$ satisfy
+\[
+ P(0,b)=0,\qquad wP_Y(0,b)=1,\qquad |b|_1\le B_0,
+ \qquad |w|_1\le V.
+\]
+A primitive recursive construction returns rational Gaussian $a,v$,
+with $v\ne0$, dyadic $R,\rho>0$, and rational majorants $u_{ij}$
+which satisfy \eqref{ana:contract} for
+$F(X,Z)=Z-vP(X,a+Z)$.
+Consequently it constructs a convergent branch $Y(X)$ with
+$P(X,Y(X))=0$ and $Y(0)=b$, together with the coefficient and tail
+moduli of Theorem~\ref{ana:series}.
+\end{corollary}
+
+\begin{proof}
+Every coefficient index below ranges over a displayed finite list.
+Extend $C_{il}$ by zero when needed.  Set $A=B_0+1$ and
+\[
+ M_1=\sum_{l=1}^d l C_{0l}A^{l-1},\qquad
+ M_2=\sum_{l=2}^d l(l-1)C_{0l}A^{l-2}.
+\]
+For $0\le i\le e$ and $0\le j\le\max(d,1)$, put
+\[
+ U_{ij}=(V+1)\sum_{l=j}^d C_{il}\binom lj A^{l-j}
+                +\mathbf1_{\{i=0,j=1\}},
+ \qquad
+ U=1+\sum_{i,j}(1+j)U_{ij}.
+\]
+These are natural numbers and $U\ge1$.  Choose
+\[
+ \begin{gathered}
+ h=\operatorname{bl}(8U),\quad \rho=2^{-h},\quad r=2h,
+ \quad R=2^{-r}=\rho^2,\\
+ T=1+(V+1)M_1+M_1+(V+1)M_2,\qquad
+ p=h+\operatorname{bl}(8T).
+ \end{gathered}
+\]
+In particular $U\rho\le1/8$ and $UR\le\rho/8$.
+Take rational samples $a=b_p$, $v=w_p$ whose errors are at most
+$\eta=2^{-p}\le\rho/(8T)$.  If a representation supplies separate
+component-error bounds, increasing the sample index by one supplies the
+required $|\cdot|_1$ error.  It follows that $|a|_1\le A$ and
+$|v|_1\le V+1$.
+
+Let $D_y=P_Y(0,y)$.  Finite differences of powers give, on the ball
+$|y|_1\le A$,
+\[
+ |P(0,a)-P(0,b)|_1\le M_1|a-b|_1,
+ \qquad |D_a-D_b|_1\le M_2|a-b|_1,
+ \qquad |D_b|_1\le M_1.
+\]
+The coefficients of $F$ are
+\[
+ f_{ij}=\mathbf1_{\{i=0,j=1\}}
+       -v\sum_{l=j}^d p_{il}\binom lj a^{l-j}.
+\]
+Thus $|f_{ij}|_1\le U_{ij}$.  Two coefficients have much better
+bounds.  Using the supplied root and inverse identities,
+\begin{align*}
+ |f_{00}|_1
+   &=|vP(0,a)|_1
+     \le (V+1)M_1\eta\le\rho/8,\\
+ |f_{01}|_1
+   &=|1-vD_a|_1\\
+   &\le |(w-v)D_b|_1+|v(D_b-D_a)|_1\\
+   &\le\bigl(M_1+(V+1)M_2\bigr)\eta\le\rho/8.
+\end{align*}
+In particular $v\ne0$: if the rational number $v$ were zero, then
+$f_{01}=1$, contradicting its bound, since $\rho\le1$.
+
+We now construct rational upper bounds for these two small coefficients,
+without testing any represented equality.  Put
+\[
+ W=1+(V+1)\sum_{l=0}^d(l+1)A^l,
+ \qquad t=h+4+\operatorname{bl}(W),\qquad \epsilon=\rho/16.
+\]
+Replace every $p_{0l}$ by its rational stage-$t$ approximation and
+compute
+\[
+ q_0=-v\sum_{l=0}^d(p_{0l})_t a^l,
+ \qquad
+ q_1=1-v\sum_{l=1}^d l(p_{0l})_t a^{l-1}
+\]
+by exact rational arithmetic.  Because $A\ge1$, each of the two
+evaluation errors is at most $W2^{-t}\le\epsilon$.
+Define
+\[
+ u_{00}=\min(U_{00},|q_0|_1+\epsilon),\qquad
+ u_{01}=\min(U_{01},|q_1|_1+\epsilon),
+\]
+and set $u_{ij}=U_{ij}$ at all other indices.  Each minimum is between
+two true upper bounds, so $u_{ij}\ge|f_{ij}|_1$ for every entry.
+Furthermore
+\[
+ u_{00},u_{01}\le \rho/8+2\epsilon=\rho/4.
+\]
+The constant part of the certificate now obeys
+\[
+ A_0\le\rho/4+UR\le3\rho/8\le\rho/2.
+\]
+For the contraction part separate $(i,j)=(0,1)$, the terms $i=0,j\ge2$,
+and the terms $i\ge1,j\ge1$.  Since $R,\rho\le1$,
+\[
+ Q\le1/4+U\rho+UR\le1/4+1/8+1/8=1/2.
+\]
+This is exactly \eqref{ana:contract}.
+
+All steps are bounded computations: binomial coefficients, finite sums,
+binary lengths, fixed-index name evaluations, and exact rational
+operations.  The error bounds choose every precision before evaluation.
+The arbitrary-name correctness premises are used through their finite
+instances; no search for a passing certificate is performed.
+
+Finally $|b-a|_1\le\eta\le\rho$ and
+$F(0,b-a)=b-a$, because $P(0,b)=0$.
+Pointwise contraction uniqueness gives $C(0)=b-a$ for the constructed
+fixed point.  Therefore $Y(0)=a+C(0)=b$.
+\end{proof}
+
+The inverse name can also be constructed from an explicit derivative
+gap.  Suppose $|P_Y(0,b)|_1\ge\beta=2^{-g}$.
+For a nonzero complex number $z=u+iv$,
+\[
+ |z^{-1}|_1=\frac{|u|+|v|}{u^2+v^2}
+ \le\frac{2}{|u|+|v|}.
+\]
+The inequality follows from
+$2(u^2+v^2)\ge(|u|+|v|)^2$.
+Approximate $z=P_Y(0,b)$ by a rational Gaussian $q_s$ to error
+$2^{-s-2g-5}$.  Then $|q_s|_1\ge\beta/2$, so its exact rational
+inverse exists.  The inverse-difference identity gives
+\[
+ |q_s^{-1}-z^{-1}|_1
+ \le (4/\beta)(2/\beta)|q_s-z|_1
+ \le2^{-s-2}.
+\]
+Thus $q_s^{-1}$ is a fast primitive recursive inverse name, with
+$V=2^{g+1}$.  A total implementation returns zero on the rational
+branch $q_s=0$; the gap hypothesis proves that branch is never taken.
+The derivative evaluator itself is a finite polynomial evaluator with
+the arithmetic precision bounds already established.  These estimates
+also prove the inverse identity and bound in the name semantics.
+
+The corollary supplies a producer, not only a verifier, on regular
+simple-root data.  Its root name and positive derivative information are
+substantive inputs.  It neither selects roots uniformly at singular
+parameters nor changes the Puiseux obstruction discussed above.

@@ -1,0 +1,209 @@
+\section{Numerical presentations and finite observations}
+\label{sec:representations}
+
+\subsection{Finite data without quotient or choice axioms}
+
+Fix the list encoding
+\[
+ \operatorname{nil}=0,\qquad
+ \operatorname{cons}(a,b)=2^a(2b+1).
+\]
+The exponent of two in a positive number is found by a bounded search;
+the tail is then recovered by integer division.  A nonzero tail is
+strictly smaller than its cons code.  Bounded iteration for at most the
+original code therefore provides total primitive recursive length,
+lookup, and validity functions, with defaults for malformed inputs.
+This encoding is inefficient but sufficient.  Repeated cons, concatenation,
+finite products, and the tables used below are primitive recursive.
+
+Encode an integer \(z\) by \(2z\) when \(z\ge0\), and by
+\(2|z|-1\) when \(z<0\).  A rational is a pair \((z,d)\) with
+\(d>0\).  Rational equality and order are cross-multiplication predicates:
+\[
+ (z,d)\equiv(w,e)\ \Longleftrightarrow\ ze=wd,
+ \qquad
+ (z,d)\le(w,e)\ \Longleftrightarrow\ ze\le wd.
+\]
+Normalization by a gcd is optional.  No quotient set is added to the
+object theory: a rational-variable statement is an abbreviation for a
+statement about integer and positive-denominator codes, invariant under
+the displayed equivalence relation.  Every comparison in a certificate
+can consequently be replaced by a quantifier-free numerical formula.
+
+Matrices, polynomials, graphs, simplicial complexes, and finite
+presentations are finite lists with bounds on their indices.  A polynomial
+identity is checked coefficient by coefficient, including trailing zero
+coefficients.  A matrix inverse certificate is a pair of finite
+multiplication identities.  A finite enumeration is a list with separate
+soundness and completeness predicates.  In particular, a list of known
+solutions alone is not a complete solution-set certificate.
+
+\subsection{Names are fixed algorithms with numerical parameters}
+
+Fix a primitive recursive rational evaluator \(q(a,k)\).  The parameter
+\(a\) and precision \(k\) range over natural numbers; the evaluator is
+part of the chosen instance of the schema.  One useful validity condition is
+\begin{equation}\label{eq:regular-name}
+ \forall i,j\quad
+ |q(a,i)-q(a,j)|\le 2^{-i}+2^{-j}.
+\end{equation}
+In ordinary real semantics this is a fast Cauchy name whose limit differs
+from stage \(k\) by at most \(2^{-k}\).  Internally it is the displayed
+first-order family of rational inequalities.  There is no separate
+quantifier over a completed real-number domain.
+
+For a finite precision horizon \(t\), define
+\begin{equation}\label{eq:finite-observation}
+ \operatorname{Obs}_q(a,t):=
+ \bigwedge_{i,j\le t}
+ \left(|q(a,i)-q(a,j)|\le 2^{-i}+2^{-j}\right),
+\end{equation}
+together with the required denominator-validity checks.  The conjunction
+is a bounded Boolean fold and is thus a quantifier-free assertion in the
+PR language.  It is monotone in the horizon: observations through \(t\)
+imply observations through every \(u\le t\).
+
+For two valid regular names, define explicitly
+\[
+ q\equiv r\ :\Longleftrightarrow\
+ \forall k\ |q_k-r_k|\le2\cdot2^{-k},\qquad
+ q\preceq r\ :\Longleftrightarrow\
+ \forall k\ q_k\le r_k+2\cdot2^{-k}.
+\]
+A rational lower bound \(\delta\) is the condition
+\(\forall k\ q_k\ge\delta-2^{-k}\).
+These have their expected equality and order properties on valid names.
+For example, transitivity is proved by comparing all three names at a
+finer common stage, transporting back using regularity, and removing the
+remaining error from the rational conclusion by
+Lemma~\ref{lem:rational-separation}.  Under ordinary semantics they are
+exactly equality, order, and lower bounds of the named values.
+Strict positivity is best used with a witness: for example,
+a stage \(s\) and rational \(\delta>0\) satisfying
+\(q(a,s)-2^{-s}\ge\delta\) certify that the represented value is at least
+\(\delta\).  Inversion, orientation tests, rank extraction, and exact
+normalization consume such witnesses.  A premise saying only
+\(x\ne0\) must not silently be replaced by a numerical apartness bound.
+
+Different name conventions are harmless if their conversions are
+explicit.  A one-sided bound
+\(i\le j\Rightarrow|q_i-q_j|\le2^{-i}\) implies
+\eqref{eq:regular-name}.  Shifting precision by a fixed integer changes
+the slack.  Equivalence of two named families is proved by finite
+cross-estimates at an arbitrary requested precision; it is not decided
+by comparing program codes.
+
+\subsection{The finite observation contract}
+
+Suppose \(V(a,t)\) is a monotone bounded validity predicate for a finite
+input presentation.  A construction with output \(F(a,k)\) and desired
+finite guarantee \(W(a,k,F(a,k))\) has a finite observation contract if
+there is a fixed PR resource function \(u(a,k)\) and a derivation
+\begin{equation}\label{eq:observation-contract}
+ \ipra\vdash
+ V(a,u(a,k))\ \longrightarrow\ W(a,k,F(a,k)).
+\end{equation}
+The matrices \(V,W\) are bounded numerical formulas, translated to
+quantifier-free formulas when induction is used.  The result may then be
+universally generalized over \(k\), under the appropriate full input
+validity hypothesis.  This last logical step does not add induction on
+that hypothesis.
+
+The output need not be one finite code for an infinite object.  For a real
+or a series it is the fixed PR family \(k\mapsto F(a,k)\).  A finite code
+for the algorithm can be recorded externally for mechanization, but the
+object theory uses its fixed function symbols.  This distinction avoids
+the impossible uniform PR evaluator discussed in the foundations section.
+
+\begin{theorem}[Composition of observation contracts]
+\label{thm:observation-composition}
+Suppose a second construction needs the first construction's outputs
+\(F(a,j)\) for indices in a PR finite list \(J(a,k)\).  Suppose its local
+correctness proof is an object-\ipra derivation from the bounded Boolean
+fold of their guarantees and a further finite input
+observation \(V(a,v(a,k))\).  Then a sufficient input horizon is
+\[
+ U(a,k)=\max\left(v(a,k),\max_{j\in J(a,k)}u(a,j)\right),
+\]
+with the maximum of an empty list taken as zero.  The composed output is
+PR and has a derivation of its contract from \(V(a,U(a,k))\).
+\end{theorem}
+
+\begin{proof}
+The finite maximum and the finite list of requested outputs are PR.
+By monotonicity, the hypothesis gives each required smaller observation.
+Instantiate \eqref{eq:observation-contract} at the corresponding index,
+obtain each output guarantee, and insert these derivations into the
+second correctness derivation by cut.  When the number of required
+outputs varies with the input, the statement that the first \(i\)
+outputs have their bounded guarantees is a bounded conjunction.
+Quantifier-free induction appends the next guarantee.  The final
+bounded conjunction supplies exactly the local premises needed by the
+second construction.  No claim about all precisions is the induction
+invariant.  The resulting function is a composition of fixed PR functions
+and a bounded list computation.
+\end{proof}
+
+This theorem is deliberately a sufficient syntactic criterion.  It does
+not assert that every proof has a PR observation bound.  Such a bound is
+part of the construction and must be proved.  In particular, a program
+that repeatedly asks for more precision until an undecidable real
+comparison succeeds does not satisfy the criterion without an explicit
+termination bound.
+
+\subsection{Adaptive queries and finite replay}
+
+Precomputed rectangular tables can be wasteful when queries depend on
+previous answers.  A trace gives a second, equally arithmetic interface.
+Fix a deterministic PR transition function on states.  A state either
+performs an ordinary step or requests one oracle entry.  A trace lists
+the successive states, requested indices, and rational answers.  Its
+local transition validity is a bounded conjunction, hence PR.
+
+\begin{lemma}[Finite replay]\label{lem:replay}
+If two input tables agree on every query recorded in a valid trace of
+\(T\) steps, the same trace of states, branches, and output is obtained
+from the second table for those \(T\) steps.
+\end{lemma}
+
+\begin{proof}
+Induct on the step counter \(i\le T\), using the equation between the
+two encoded states as invariant.  Initially the states agree.  An ordinary
+step is the same fixed PR operation on equal states.  At a query step,
+equal states determine the same query, and the recorded agreement makes
+the supplied answers equal.  The next states are therefore equal.
+The invariant and the finite-prefix agreement assumptions are decidable
+equations.  The bounded induction is an instance of quantifier-free
+induction after Boolean coding.
+\end{proof}
+
+Trace verification is total even when a proposed computation would fail
+to terminate.  Producing a successful trace still requires a clock or a
+separate fixed-program termination proof.  A PR one-step universal machine
+and its bounded simulation are legitimate; a total PR evaluator for all
+PR source programs is not.  The difference is the supplied bound on the
+number of simulated steps.
+
+\subsection{Certificates and semantic adequacy}
+
+A useful certificate format has a PR predicate
+\(\operatorname{Check}(a,c)\), and a mathematical theorem
+\[
+ \operatorname{Check}(a,c)\ \Longrightarrow\ \operatorname{Conclusion}(a,c).
+\]
+For a theorem claiming witnesses uniformly in \(a\), a producer
+\(c=C(a)\) and a proof that the check succeeds are additional obligations.
+The local branch theorem below permits the certificate as input; its
+simple-root corollary constructs the certificate from named root and
+derivative-gap data.  The power-gap theorem likewise supplies a producer
+on a stated polynomial class.  The distinction between the soundness
+theorems and these producer theorems is recorded explicitly.
+
+Semantic adequacy is a third obligation.  For a finite polynomial identity
+it is the correctness of the chosen coefficient encoding.  For a
+represented equality it is the interpretation of its finite error
+statements.  For a complete list of integral points it is the proof that
+every solution lies within the enumeration box.  A fast checker does not
+replace any of these proofs.  Conversely, checking finite certificates can
+be far easier than discovering them, and the search strategy for discovery
+need not be trusted by the proof checker.

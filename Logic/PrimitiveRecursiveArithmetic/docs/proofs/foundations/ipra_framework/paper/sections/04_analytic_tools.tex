@@ -1,0 +1,248 @@
+\section{A small common library for represented mathematics}
+\label{sec:analytic-tools}
+
+\subsection{Removing a limiting phrase from a rational conclusion}
+
+\begin{lemma}[Rational separation]\label{lem:rational-separation}
+Let \(a,b\) be rationals, and let \(D\ge1\) be a common positive
+denominator.  If \(a\le b+2^{-p}\) for
+\(p=\operatorname{bl}(D)+1\), where \(\operatorname{bl}(D)\) is binary length,
+then \(a\le b\).
+Consequently, a proof of \(a\le b+2^{-p}\) at every precision implies
+\(a\le b\) by one explicitly selected finite instance.
+\end{lemma}
+
+\begin{proof}
+The comparison of \(a\) and \(b\) is decidable.  If \(a>b\), their
+common-denominator difference is a positive integer divided by \(D\),
+and is at least \(1/D\).  But \(2^{\operatorname{bl}(D)}>D\), so the specified error is
+strictly smaller than \(1/D\), a contradiction.  This uses decidable
+rational cases, not excluded middle for an infinite name.
+\end{proof}
+
+The same argument turns \(|a|\le2^{-p}\) for all \(p\) into an exact
+rational equality.  A related integer argument turns an integer error
+of absolute value smaller than one into zero.  For a represented real
+there is no finite common denominator; its equality remains the family
+of all finite precision statements.  This elementary distinction is what
+justifies the rational limit-elimination steps used throughout the report.
+
+\subsection{Uniform finite precision propagation}
+
+The following lemma removes repeated informal instructions to
+``take the approximation sufficiently accurate.''  It is a theorem about
+rational arithmetic tables; represented values are handled only after
+this finite theorem is available.
+
+\begin{lemma}[A precision budget for a finite arithmetic table]
+\label{core:gate}
+Consider a directed arithmetic table of \(N\) gates, each an addition,
+subtraction, or multiplication of previous entries.  Its inputs and
+constants have supplied rational magnitude bounds.  Assign a bound to
+each gate by adding its input bounds for addition or subtraction, and
+multiplying them for multiplication.  Let the integer \(B\ge1\) dominate
+all these recursively computed bounds.  Put \(L=2B+3\).
+
+Suppose corresponding inputs differ by at most \(\delta\), and the second
+evaluation introduces additional local rounding errors at most
+\(\delta\) per gate.  If
+\[
+ \delta\le \frac{2^{-s}}{L^{N+1}},
+\]
+then the output error is at most \(2^{-s}\), and the error after the first
+\(j\) gates is at most \(L^j\delta\).  All quantities in this prescription
+are primitive recursive in the finite table and its bounds.
+\end{lemma}
+
+\begin{proof}
+Let \(e_j\) be the largest error among inputs and the first \(j\) gates.
+The input hypothesis gives \(e_0\le\delta\).  While \(e_j\le1\), a first
+evaluation operand has magnitude at most \(B\), and its corresponding
+second operand has magnitude at most \(B+1\).  For multiplication,
+\[
+ |ab-a'b'|
+ \le |a|\,|b-b'|+|b'|\,|a-a'|
+ \le(2B+1)e_j.
+\]
+Addition or subtraction gives at most \(2e_j\).  Adding the local
+rounding error, and using \(\delta\le L^j\delta\), shows that the next
+error is at most \(L^{j+1}\delta\).  The hypothesis makes this bound at
+most one throughout the finite table, so the side condition is preserved.
+At \(j=N\), it is at most \(2^{-s}/L\), which is smaller than the stated
+output allowance.  The invariant is the conjunction of finitely many
+rational bounds on the processed entries and their errors.  Its Boolean
+fold is a quantifier-free formula.  Thus the displayed induction is
+available in \ipra.
+\end{proof}
+
+For example, if \(b(t)\) is the binary length, the common input precision
+\[
+ p=s+b(L^{N+1})+2
+\]
+gives a dyadic error smaller than the required \(\delta\).
+This is intentionally generous.  A symbolic error expression obtained
+gate by gate often gives a much smaller precision.  Both schedules are
+PR; no search for a successful precision is involved.  Bounds computed
+from the syntax of a \emph{finite arithmetic table} do not evaluate an
+arbitrary PR source program: producing that table has its own declared
+PR construction or clock.
+
+Guarded division can be added with a separate premise.  For real or complex
+values in the usual absolute-value norm, if
+\(|w|\ge\alpha>0\) and \(|w-w'|\le\eta\le\alpha/2\), then
+\begin{equation}\label{eq:reciprocal-budget}
+ |w'|\ge\alpha/2,\qquad
+ \left|\frac1w-\frac1{w'}\right|\le\frac{2\eta}{\alpha^2}.
+\end{equation}
+The first inequality is the triangle inequality.  The second follows
+from \((w'-w)/(ww')\).  Replace the local multiplier by a rational bound
+on \(2/\alpha^2\), and preserve the denominator guard as part of the loop
+invariant.  For complex computations one can check lower bounds for
+squared Euclidean norms using rational arithmetic.  All denominator
+guards must actually be supplied or proved.
+
+\subsection{Some operations and their explicit resources}
+
+For regular real names with stage error at most \(2^{-p}\), the following
+constructions illustrate the common interface.  The error descriptions
+refer to the usual interpretation; their proofs are the same finite
+rational comparisons at two requested precisions.
+\begin{center}\small
+\begin{tabular}{@{}P{.18\linewidth}P{.25\linewidth}P{.48\linewidth}@{}}
+\toprule
+Operation & Input information & Construction and output error\\
+\midrule
+Addition & Two regular names & Add their stages \(k+2\); error at most
+\(2^{-k-1}\).\\
+Multiplication & \(|x|,|y|\le M\), integer \(M\ge1\) & Multiply their
+stages \(p=k+2+b(2M+1)\).  The error is at most
+\((2M+1)2^{-p}\le2^{-k-2}\).\\
+Reciprocal & \(|x|\ge2^{-g}\) & Invert stage \(p=k+2g+4\).
+It is nonzero, and \eqref{eq:reciprocal-budget} gives error at most
+\(2^{-k-3}\).\\
+Nonnegative square root & \(0\le x\le M\), integer \(M\ge1\) & Clip stage
+\(2k+6\) to \([0,M]\); bisect its rational square root in \([0,M+1]\)
+for \(k+3+b(M+1)\) steps.  Error is at most \(2^{-k-2}\).\\
+Polynomial evaluation & Coefficient and argument bounds & Use the finite
+table and Lemma~\ref{core:gate}; coefficients and degree are finite data.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here is the only nonrational estimate needed for the square-root entry.
+If \(u,v\ge0\), then
+\((\sqrt u-\sqrt v)^2\le |u-v|\), since, after ordering the roots,
+\((a-b)^2\le(a-b)(a+b)\).  It can equally be read as an inequality for
+two rational root brackets.  Clipping cannot increase error from a value
+in \([0,M]\), so the input error contributes at most \(2^{-k-3}\) to
+the root error.  Each bisection halves the rational bracket, and the
+stated number of steps makes its width at most \(2^{-k-3}\).  Rational
+comparison of the squared midpoint decides each step.  This also shows
+why a square root at zero is constructive, whereas normalizing an
+arbitrary vector to a unit vector is not: normalization needs a lower
+bound for its length.
+
+\subsection{Constructing an integral directly from its finite sums}
+
+Fix a PR rational evaluator \(f(a,x,p)\) on rational points of
+\([0,1]^d\), with regular names for its values.  Suppose a nondecreasing
+PR modulus \(\mu\) is supplied and its arithmetic correctness is proved:
+\begin{equation}\label{eq:uc}
+ \|x-y\|_\infty\le2^{-\mu(j)}
+ \quad\Longrightarrow\quad |f(x)-f(y)|\le2^{-j}.
+\end{equation}
+The notation on the right abbreviates finite name comparisons.  Replacing
+\(\mu(j)\) by \(j+\max_{i\le j}\mu(i)\) makes it nondecreasing if
+necessary.  For simplicity take \(d\ge1\); dimension zero is evaluation.
+Set \(m_k=\mu(k+3)\), and define
+\begin{equation}\label{eq:integral-name}
+ S_k=2^{-dm_k}
+ \sum_{0\le i_1,\ldots,i_d<2^{m_k}}
+ f\left(a,(i_1,\ldots,i_d)2^{-m_k},k+3\right).
+\end{equation}
+This is a PR rational computation with exactly \(2^{dm_k}\) summands.
+
+\begin{theorem}[Finite-grid integral]\label{thm:integral}
+For \(k\le l\), the sums \eqref{eq:integral-name} satisfy
+\[
+ |S_k-S_l|\le3\cdot2^{-k-3}<2^{-k}.
+\]
+Thus they directly define a regular integral name.  The construction and
+its correctness are available in \ipra under the stated name and modulus
+contracts.
+\end{theorem}
+
+\begin{proof}
+The finer dyadic grid at level \(m_l\) refines the grid at \(m_k\).
+Group its left-endpoint samples according to their coarse cubes.  Each
+fine sample and the coarse left endpoint have sup distance at most
+\(2^{-m_k}\).  By \eqref{eq:uc} their represented values differ by at
+most \(2^{-k-3}\).  The actual rational evaluations introduce errors at
+most \(2^{-k-3}\) and \(2^{-l-3}\).  The weights are nonnegative and
+sum to one.  Taking their finite weighted sum bounds the difference by
+the sum of those three errors, proving the assertion.
+
+To express the argument entirely with rational observations, fix \(k,l\),
+the two grids, and a further arbitrary accuracy.  Instantiate the modulus
+and name contracts at all the finitely many required points and
+precisions, apply the finite weighted-sum inequality, and then use
+Lemma~\ref{lem:rational-separation} with the common denominator of
+\(S_k,S_l\) and the displayed rational bound.  This removes the
+additional arbitrarily fine error and proves the exact non-strict
+inequality stated.  The invariant is the
+partial weighted-error bound.  No induction on a formula asserting
+continuity at all points or convergence at all precisions is used.
+\end{proof}
+
+Linearity is proved by applying the finite sum identity on a common
+refinement and the same error estimate.  Under ordinary semantics the
+name is the Riemann integral: every tagged partition of sufficiently small
+mesh is compared to a common refinement using \eqref{eq:uc}, giving the
+usual Riemann-sum criterion.  Internally the finite estimate is the
+definition and the theorem.  This construction is reusable by the
+calculus, Gamma, contour, and geometric packets; each still must provide
+the correct modulus and domain bounds for its integrand.
+
+\subsection{Finite positivity and finite cover certificates}
+
+Evaluation at represented points is itself a construction, which must
+first be specified.  If \(X(b,p)\) is a fixed PR coordinate-name family
+for a point of \([0,1]^d\), put
+\[
+ \widetilde f(a,b,k)=
+ f\bigl(a,\operatorname{clip}_{[0,1]^d}
+       X(b,\mu(k+3)+2),k+3\bigr).
+\]
+Clipping is coordinatewise rational maximum and minimum.  For \(k\le l\),
+the two input samples differ by at most
+\(2^{-\mu(k+3)-1}\); the modulus and the two evaluation errors
+therefore give
+\(|\widetilde f_k-\widetilde f_l|\le3\cdot2^{-k-3}\).
+This defines the continuous extension as a regular name.  Two equivalent
+coordinate names give equivalent output names by the same finer-stage
+estimate.  No function sort or choice principle has been introduced.
+
+Given a modulus \eqref{eq:uc}, one can verify positivity throughout a box
+by a finite computation.  For a chosen \(j\), take a dyadic grid with
+mesh \(h=2^{-\mu(j)-1}\), including its boundary vertices.  If every
+grid value sampled at precision \(j\) is at least \(3\cdot2^{-j}\),
+then every represented point in the box has value at least \(2^{-j}\).
+Indeed, approximate the point to within \(h/4\), clamp its coordinates
+to the box, and round to a nearest grid vertex.  Its distance to that
+vertex is at most \(3h/4<2^{-\mu(j)}\).  The modulus loses at most
+\(2^{-j}\), and the grid evaluation loses at most another \(2^{-j}\).
+Everything used to choose the vertex is rational and bounded.
+
+Likewise, a finite list of open sup-norm balls with rational centres and
+rational radii can be certified to cover
+the cube by checking that every vertex of a mesh-\(h\) grid belongs to
+one listed ball with a spare radius greater than \(h\).  Rounding a
+represented point as above and choosing the first successful ball
+produces a PR cover selector.  Finite search verifies the certificate.
+
+These are useful substitutes for particular compactness steps.  They do
+not prove that every qualitatively given open cover has a computable
+certificate, or that pointwise positivity supplies a uniform positive
+lower bound.  The mesh and the margin are mathematical information that
+must be established.  In the branch construction below they are supplied
+by explicit coefficient inequalities.

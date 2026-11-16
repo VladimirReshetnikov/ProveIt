@@ -1,0 +1,466 @@
+\section{A reusable power-gap certificate for integral points}
+\label{dio:section}
+
+The Siegel packet contains an elementary square-completion certificate:
+an identity $D^2f=A^2+R$ with $\deg R<\deg A$ bounds all integral points
+of $y^2=f(x)$ \cite{repoSiegel}.  The following development extends that argument to every
+integer exponent $m\geq2$, retains an equally simple height formula, and
+gives an algorithm constructing the certificate on an explicitly described
+family.  This resolves a class of integral-point problems; it does not
+provide a general height bound for arbitrary curves.
+
+All polynomials in this section are finite lists of integer coefficients
+in ascending order, with trailing zeroes removed.  The zero polynomial is
+the empty list.  Addition, multiplication, evaluation, degree, powers,
+coefficient comparison, and the sum of absolute coefficients are fixed
+primitive recursive functions on these lists.  No algorithm is asked to
+evaluate an arbitrary primitive recursive program supplied as input.
+
+\subsection{The discrete gap that replaces an analytic argument}
+
+\begin{lemma}[Integer power gap]
+\label{dio:gap}
+For integers $a,b$ and $m\geq2$, if $b^m\ne a^m$, then
+\[
+             |b^m-a^m|\geq |a|^{m-1}.
+\]
+\end{lemma}
+\begin{proof}
+First take natural numbers $0\leq u<v$.  Monotonicity of powers gives
+$u^{m-1}\leq v^{m-1}$, hence
+\[
+ u^m=u\,u^{m-1}\leq u\,v^{m-1}
+                 \leq(v-1)v^{m-1}.
+\]
+Consequently $v^m-u^m\geq v^{m-1}$.
+
+If $|a|\ne|b|$, apply this observation to their two absolute values.
+The difference between their $m$th powers has absolute value at least
+$\max(|a|,|b|)^{m-1}$, and the reverse triangle inequality gives
+\[
+ \bigl||b|^m-|a|^m\bigr|\leq |b^m-a^m|.
+\]
+This proves the claim in this case.  If $|a|=|b|$ and the two powers
+are different, the powers are opposites, rather than equal.  They
+are nonzero, and therefore $|a|\geq1$ and
+\[
+             |b^m-a^m|=2|a|^m\geq |a|^{m-1}.
+\]
+These alternatives exhaust the decidable comparisons of integers.
+In particular the argument covers negative $a,b$ and both parities of $m$.
+\end{proof}
+
+The essential datum is discreteness: a nonzero integer has absolute value
+at least one.  The lemma would be false with arbitrary rational $b$.
+For instance a rational $b$ can approach a nonzero integer $a$ arbitrarily
+closely without having $b^m=a^m$.  Thus denominator information must be
+recorded explicitly when this lemma is used after a rational change of
+variables.
+
+\begin{lemma}[A lower bound for a polynomial]
+\label{dio:polynomialbounds}
+Let $A(X)=\sum_{i=0}^r a_iX^i$ be a nonconstant integer polynomial,
+$a_r\ne0$, and put $L=\sum_{i<r}|a_i|$.  For an integer $x$ with
+$X=|x|\geq1$,
+\[
+                |A(x)|\geq(X-L)X^{r-1}.
+\]
+If $G$ is a nonzero integer polynomial and $G(x)=0$, then
+\[
+             |x|\leq\sum_{i<\deg G}|g_i|
+\]
+when $G$ has positive degree; a nonzero constant has no root.
+\end{lemma}
+\begin{proof}
+The leading coefficient has $|a_r|\geq1$.  The triangle inequality and
+$X^i\leq X^{r-1}$ for $i<r$ give
+\[
+ |A(x)|\geq |a_r|X^r-\sum_{i<r}|a_i|X^i
+           \geq X^r-LX^{r-1}.
+\]
+For the root assertion, separate $x=0$.  Otherwise the equation for a
+root yields $X^s\leq(\sum_{i<s}|g_i|)X^{s-1}$, where $s=\deg G$.
+Cancel the positive integer $X^{s-1}$.  No factorization or algebraic
+closure is used.
+\end{proof}
+
+\begin{lemma}[Finite loss estimate]
+\label{dio:loss}
+If $X\geq L\geq0$ and $n\geq1$, then
+\[
+ (X-L)^n\geq X^n-nLX^{n-1}
+            =(X-nL)X^{n-1}.
+\]
+\end{lemma}
+\begin{proof}
+Use the finite difference-of-powers identity
+\[
+ X^n-(X-L)^n
+   =L\sum_{j=0}^{n-1}X^{n-1-j}(X-L)^j.
+\]
+Every summand is at most $X^{n-1}$, so the sum is at most
+$nX^{n-1}$.  The identity itself follows by multiplying out and
+cancelling adjacent terms.  A finite induction proves it uniformly in
+$n$.
+\end{proof}
+
+\subsection{The certificate theorem}
+
+\begin{definition}[Power-gap certificate]
+\label{dio:certificate}
+A certificate for the integral equation $y^m=f(x)$ is a tuple
+$(m,D,f,A,R)$ of integers and coefficient lists satisfying
+\[
+ \begin{gathered}
+ m\geq2,\qquad D\geq1,\qquad r=\deg A\geq1,\qquad R\ne0,\\
+ D^m f=A^m+R,\qquad \deg R<(m-1)r.
+ \end{gathered}
+\]
+The polynomial identity is a coefficientwise identity, not a finite
+sample of values.  Each certificate condition is decidable by a bounded
+calculation on the supplied finite lists.
+\end{definition}
+
+\begin{theorem}[Uniform integral-point bound]
+\label{dio:height}
+Given a power-gap certificate, define
+\[
+ \begin{split}
+ L&=\sum_{i<r}|a_i|,\qquad C=\sum_i|r_i|,\\
+ H&=(m-1)L+C,\qquad K=\sum_i|f_i|H^i.
+ \end{split}
+\]
+Every integer solution of $y^m=f(x)$ satisfies
+\[
+                         |x|\leq H,\qquad |y|\leq K.
+\]
+The complete finite list of solutions is therefore primitive recursively
+computable from the certificate.
+\end{theorem}
+\begin{proof}
+Since $R\ne0$, $C\geq1$ and $H\geq1$.  Suppose $y^m=f(x)$ and put
+$X=|x|$.  We prove that the decidable alternative $X>H$ is impossible.
+First, $R(x)\ne0$.  A nonzero constant cannot vanish; if $R$ has positive
+degree, Lemma~\ref{dio:polynomialbounds} bounds the absolute value of any
+integer root by the sum of its lower coefficients, which is at most
+$C\leq H$.
+
+Put $n=m-1\geq1$.  The inequality $X>nL+C$ implies $X>L$.
+Lemmas~\ref{dio:polynomialbounds} and~\ref{dio:loss} give
+\begin{align*}
+ |A(x)|^n
+ &\geq (X-L)^n X^{n(r-1)}\\
+ &\geq (X-nL)X^{n-1+n(r-1)}\\
+ &> C X^{nr-1}.
+\end{align*}
+All quantities multiplied here are nonnegative, and $X^{nr-1}\geq1$.
+On the other hand, every exponent in $R$ is at most $nr-1$, so
+\[
+                     |R(x)|\leq C X^{nr-1}<|A(x)|^{m-1}.
+\]
+Evaluating the certificate identity at $x$ and using $y^m=f(x)$ gives
+\[
+                    (Dy)^m-A(x)^m=R(x)\ne0.
+\]
+Lemma~\ref{dio:gap} gives the opposite inequality
+$|R(x)|\geq|A(x)|^{m-1}$.  This contradiction rules out $X>H$ and
+establishes $|x|\leq H$.
+
+For the second coordinate, take absolute values in the equation:
+\[
+ |y|^m=|f(x)|\leq\sum_i|f_i||x|^i\leq K.
+\]
+Every natural number $t$ satisfies $t\leq t^m$ for $m\geq1$: the
+case $t=0$ is immediate, and for $t\geq1$ use $t^{m-1}\geq1$.
+Thus $|y|\leq K$.
+
+Finally enumerate the integer rectangle
+$[-H,H]\times[-K,K]$, retaining a pair exactly when its equation holds.
+The equality test makes the list sound, and the proved bounds make it
+complete.  These are bounded loops whose limits were computed before
+the search.  The faster reference implementation scans only $x$ and
+uses a bounded integer-root scan for $y$; its completeness is the same.
+\end{proof}
+
+For $m=2$, the formula is exactly $H=L+C$, recovering the square
+certificate in the Siegel packet.  The extension to arbitrary $m$ does
+not require a new analytic estimate or a real-root algorithm.  Its only
+extra ingredient is the finite loss estimate.
+
+\subsection{Constructing the certificates without an unbounded search}
+
+\begin{theorem}[Polynomial power completion]
+\label{dio:completion}
+Let $m\geq2$, $r\geq1$, and let $f\in\mathbb Z[X]$ have degree $mr$
+and leading coefficient $c^m$, where a nonzero integer $c$ is supplied.
+A primitive recursive algorithm returns one of the following:
+\begin{enumerate}
+ \item a rational polynomial $Q$ with $f=Q^m$;
+ \item a power-gap certificate for $y^m=f(x)$ and the complete finite
+       solution list furnished by Theorem~\ref{dio:height}.
+\end{enumerate}
+The first alternative occurs exactly when $f$ is an $m$th power in
+$\mathbb Q[X]$.
+\end{theorem}
+\begin{proof}
+Start with $Q_0=cX^r$.  At stage $j$, for $1\leq j\leq r$, the
+coefficients in degrees $r-1,\ldots,r-j+1$ have been assigned and all
+lower coefficients are zero.  Let
+\[
+ d_j=[X^{mr-j}]Q_{j-1}^{m},\qquad
+ b_{r-j}=\frac{f_{mr-j}-d_j}{m c^{m-1}},\qquad
+ Q_j=Q_{j-1}+b_{r-j}X^{r-j}.
+\]
+The denominator is a specified nonzero integer.  In degree $mr-j$, the
+new coefficient contributes precisely $m c^{m-1}b_{r-j}$: choose its
+term in one of the $m$ factors and the leading term in every other
+factor.  A term using it twice has degree at most $mr-2j<mr-j$.
+Lower as-yet unassigned coefficients cannot contribute in this or a
+higher degree.  Thus the new choice matches coefficient $mr-j$ and
+preserves all earlier matches.
+
+Finite induction on $j$ proves that $Q=Q_r$ has leading coefficient
+$c$ and
+\[
+             [X^i](f-Q^m)=0\qquad((m-1)r\leq i\leq mr).
+\]
+Choose a positive common denominator $D$ for the coefficients of $Q$;
+their denominator product suffices.  Then
+\[
+                    A=DQ,\qquad R=D^m f-A^m
+\]
+are integer polynomials.  If $R\ne0$, its degree is less than
+$(m-1)r$, and all certificate conditions hold.  Its bounds and its
+complete solution list follow from Theorem~\ref{dio:height}.
+
+If $R=0$, report $f=Q^m$.  Conversely suppose $f=P^m$ for a rational
+polynomial $P$.  Its degree is $r$.  Its leading coefficient equals $c$
+when $m$ is odd, and equals $c$ or $-c$ when $m$ is even.  In the latter
+case replace $P$ by $-P$ if necessary, preserving its $m$th power.
+The coefficients of a root with leading coefficient $c$ must satisfy
+the same triangular recurrence, one coefficient at a time.  Therefore
+$P=Q$, and the algorithm reports the first alternative.
+
+There are exactly $r$ rational coefficient steps.  Polynomial
+convolution, integer powers, rational arithmetic, denominator products,
+and the final zero test are all bounded finite computations.  The last
+enumeration is bounded by the previously computed $H,K$.  In particular,
+the construction is not a search for a height bound whose eventual
+success has been postulated.
+\end{proof}
+
+For example, for $f=X^6+X^5+X+1$ and $m=3$ the construction begins
+$Q=X^2+X/3-1/9$.  The reference code clears its denominators and checks
+the resulting identity coefficient by coefficient.  The finite list
+can be much more expensive to produce than its certificate; no claim
+of polynomial-time complexity is intended.
+
+\subsection{A complete new family}
+
+\begin{theorem}[A uniform superelliptic classification]
+\label{dio:family}
+Let $m\geq3$ and $r\geq1$.  The integer points of
+\[
+                         y^m=x^{mr}+x+1
+\]
+are exactly
+\[
+ \begin{cases}
+ \{(-1,(-1)^r),(0,1)\},&m\text{ odd},\\
+ \{(-1,-1),(-1,1),(0,-1),(0,1)\},&m\text{ even}.
+ \end{cases}
+\]
+\end{theorem}
+\begin{proof}
+Take $D=1$, $A=X^r$, and $R=X+1$.  The degree condition is
+$1<(m-1)r$, which follows from $m\geq3,r\geq1$.  Here $L=0,C=2$,
+so Theorem~\ref{dio:height} gives $|x|\leq2$.
+
+For $x=-2$, the difference from $A(-2)^m$ is $-1$.  This is nonzero
+and has absolute value smaller than
+$|A(-2)|^{m-1}=2^{r(m-1)}\geq4$, contrary to Lemma~\ref{dio:gap}.
+For $x=2$, the difference is $3$, again smaller than the same lower
+bound $4$.  For $x=1$ the equation would be $y^m=3$.
+If $|y|\leq1$, its power has absolute value at most one; if $|y|\geq2$,
+its power has absolute value at least $2^3=8$.  Neither possibility
+gives three.
+
+The remaining values are $x=-1$ and $x=0$.  At $x=0$ the equation is
+$y^m=1$.  It forces $|y|=1$ and permits only $y=1$ for odd $m$, or
+$y=\pm1$ for even $m$.  At $x=-1$ it is
+$y^m=(-1)^{mr}$, again forcing $|y|=1$.  For odd $m$ the sign is
+$(-1)^r$, and for even $m$ both signs are allowed.  Direct substitution
+verifies every point listed.
+\end{proof}
+
+This family includes cubic, quartic, and higher power equations of
+arbitrarily large degree in $x$.  Its proof is uniform in both integer
+parameters.  It extends the square family already treated in the
+Siegel packet, rather than relabelling that earlier result.
+
+\subsection{Transport with an explicit denominator bound}
+
+The integer theorem can also be used for rational points when a bound
+on denominators is part of the input.  This is a useful precise version
+of an otherwise unsafe coordinate change.
+
+\begin{corollary}[Bounded denominator transport]
+\label{dio:denominators}
+Let $(m,D,f,A,R)$ be a power-gap certificate, with $r,L,C$ as above,
+and let $B\geq1$.  Put
+\[
+ \begin{split}
+ H_B&=(m-1)B^{r+1}L+B^{m(r+1)}C,\\
+ K_B&=B^m\sum_i |f_i|H_B^i.
+ \end{split}
+\]
+Suppose integers $u,w$ and positive integers $v,z\leq B$ satisfy
+\[
+                         (w/z)^m=f(u/v).
+\]
+Then $|u|\leq H_B$ and $|w|\leq K_B$.  Reduced fractions are not
+required.
+\end{corollary}
+\begin{proof}
+The certificate identity implies $\deg f=mr$: the leading term of
+$A^m$ cannot be cancelled by the lower-degree polynomial $R$.
+Define integer polynomials in $U$ by
+\[
+ \begin{split}
+ F_{v,z}(U)&=z^m v^{mr}f(U/v),\\
+ A_{v,z}(U)&=zv^r A(U/v),\\
+ R_{v,z}(U)&=z^m v^{mr}R(U/v).
+ \end{split}
+\]
+Every exponent of $v$ after expansion is nonnegative.  The degrees of
+$A_{v,z}$ and $R_{v,z}$ equal those of $A,R$, and $R_{v,z}\ne0$.
+Furthermore
+\[
+       D^mF_{v,z}=A_{v,z}^m+R_{v,z},\qquad
+       (v^r w)^m=F_{v,z}(u).
+\]
+This is another power-gap certificate.  Its lower-coefficient sum is
+at most $B^{r+1}L$, and its remainder norm is at most
+$B^{m(r+1)}C$.  Theorem~\ref{dio:height} therefore gives
+$|u|\leq H_B$.  Finally
+\[
+ |w|^m=z^m|f(u/v)|
+       \leq B^m\sum_i|f_i|H_B^i=K_B,
+\]
+and $|w|\leq|w|^m$ gives the second bound.
+\end{proof}
+
+The denominator parameter is substantive.  Letting $B$ depend on the
+point gives no fixed finite set of rational points.  Thus this corollary
+does not turn the integral theorem into a proof of Faltings' theorem.
+It gives a complete, primitive recursive numerator bound once a single
+denominator bound valid for the intended class of points has separately
+been proved.  A birational transport must also supply the map, its
+exceptional fibers, and its denominator estimate.
+
+\subsection{Induction audit and Lean completion plan}
+
+The certificate theorem has a particularly direct arithmetic translation:
+\[
+ \forall c,x,y\;\bigl(\operatorname{Valid}(c)=1\wedge
+ y^{m(c)}=\operatorname{eval}(f(c),x)\bigr)
+ \longrightarrow |x|\leq H(c)\wedge |y|\leq K(c).
+\]
+Here signed integer variables are natural-number codes.  Validity is a
+primitive recursive Boolean function; the displayed formula uses only
+first-order number quantifiers.  Its proof does not require a separate
+sort of all polynomials or a real-number completion.
+
+The finite sums, convolution identities, power monotonicity, and
+difference-of-powers identity are proved by induction on their finite
+loops.  Each invariant is an equality or inequality between primitive
+recursive terms.  In the power-completion algorithm, the simultaneous
+invariant says that all coefficients already processed agree with those
+of $f$.  The coefficient index is bounded by $mr$; its bounded universal
+quantifier is replaced by a Boolean fold.  Signed rational numerators
+and positive denominators are finite codes, and the known divisor
+$mc^{m-1}\ne0$ is carried through every step.  The final enumeration
+uses the analogous Boolean prefix invariant: exactly the tested pairs
+have been retained.  These are quantifier-free induction invariants
+after the fixed finite data functions have been introduced.  Decidable
+integer case distinctions do not use excluded middle for arbitrary
+formulas.
+
+The delivered \texttt{PowerGap.lean} is a compiled native Lean module
+using only \texttt{Std}.  It proves natural-number upper and lower gap
+lemmas, exclusions of small positive and negative perturbations, and
+the full integer lemma, stated with positive exponent $n+1$:
+\[
+ b^{n+1}\ne a^{n+1}\;\Longrightarrow\;
+ |a|^n\leq|b^{n+1}-a^{n+1}|.
+\]
+The two direct natural-number gap lemmas have no axiom dependencies.
+The integer lemma and the two perturbation lemmas have only
+\texttt{propext} and \texttt{Quot.sound} in their recorded native
+dependency audit.  No new axiom, \texttt{Classical.choice}, or admitted
+proof is used.  These remain native theorems, not embedded iPRA proof
+objects.
+
+The separate compiled file \texttt{PowerGapTargets.lean} supplies
+executable coefficient-list definitions: normalization, coefficient
+lookup, Horner evaluation, convolution, polynomial powers, coefficient
+norms, a certificate record, the Boolean validity checker, and the two
+bounds.  Its \texttt{Target} definitions name propositions and do not
+assert them as theorems.  A complete implementation proceeds in this
+order:
+\begin{enumerate}
+ \item Prove that normalization preserves coefficients and evaluation;
+       prove evaluation respects convolution and powers.
+ \item Prove the root bound and leading-term bound by finite coefficient
+       induction, and the loss estimate by the finite power identity.
+ \item Deduce the \texttt{OutsideBoxTarget}: beyond $H$, the remainder is
+       nonzero and smaller than the allowed integer power gap.
+ \item Combine the already proved integer gap with evaluated certificate
+       identities to prove \texttt{HeightBoundTarget}; then prove exact
+       bounded enumeration.
+ \item Implement the rational coefficient recurrence, prove its bounded
+       coefficient invariant, and prove the two output alternatives.
+ \item Formalize the five possible values $-2,-1,0,1,2$ of $x$ to obtain
+       \path{FamilyClassificationTarget}, with the explicit parity
+       refinement in Theorem~\ref{dio:family}.
+ \item Reify these fixed algorithms in the repository's primitive
+       recursive syntax, replace native induction with the listed
+       quantifier-free invariants, and construct the corresponding
+       \texttt{Prf PRAAx} derivations.  Only after this step is the
+       repository's existing theory-translation theorem applicable.
+\end{enumerate}
+
+This order exposes every remaining mathematical formalization obligation.
+In particular the Boolean checker is not assumed sound merely because
+it accepts examples, and Lean's proof of the integer gap is not silently
+treated as an object-iPRA proof.
+
+\subsection{What this resolves and what it leaves open}
+
+The concrete advance is a certificate theorem and constructor for the
+larger class $y^m=f(x)$ with $\deg f$ a positive multiple of $m$ and
+leading coefficient an integer $m$th power, excluding exact polynomial
+$m$th powers.  It includes a uniform family with a complete point
+classification and a denominator-aware transport theorem.  Its data and
+proof invariants fit the same finite arithmetic framework as the
+existing square certificate.
+
+Several other packets identify different missing information, and this
+argument does not manufacture it.  The Mordell--Weil packet already
+proves a finite height descent conditional on an actual rational list
+covering the quotient; checking a list or a finite Selmer calculation
+does not establish that covering assertion.  The Faltings packet
+distinguishes a complete height bound from a bound on the number of
+points.  The Roth packet similarly distinguishes a denominator cutoff
+from a cardinality estimate or an empty finite window.  The
+prime-distribution packet leaves the field-theoretic and analytic
+contracts for Chebotarev, and the uniform parameter estimates needed
+for Siegel--Walfisz and Bombieri--Vinogradov, unproved.  Recording these
+requirements as input contracts is useful for composing proofs, but
+does not discharge them \cite{repoMordell,repoFaltings,repoRoth,repoPrimes}.
+
+For this reason the present generalization makes no claim to solve the
+general effective Siegel, Faltings, Roth, or Mordell--Weil problems, and
+does not assert that their unresolved iPRA targets are unprovable.  Its
+contribution is an explicit additional family in which the missing
+positive height information is actually constructed.

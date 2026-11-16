@@ -1,0 +1,165 @@
+\section{Purpose, results, and the scope of the source review}
+\label{sec:scope}
+
+The objective is a reusable way of doing mathematics in first-order
+intuitionistic primitive recursive arithmetic, abbreviated \ipra.  The
+objects of this theory are natural numbers.  Its language has the
+primitive recursive function symbols, its logic is intuitionistic
+first-order logic with equality, and induction is restricted to
+quantifier-free formulas.  A mathematical construction therefore has two
+obligations which ordinary mathematical notation can conceal: its objects
+must have appropriate numerical presentations, and its proof must respect
+the restricted induction scheme.
+
+The framework developed here uses \emph{finite contracts}: a specified
+primitive recursive construction, a finite description of the observations
+it needs, and an arithmetic proof that those observations imply its output
+guarantee.  Universal hypotheses about an infinite name are retained as
+hypotheses when needed; each use is reduced to a particular finite
+observation.  In addition to this general organization, we give detailed
+proofs of three substantive applications:
+\begin{enumerate}
+\item A quantitative finite-window theorem for bounded monotone sequences,
+and its bounded-cardinality counterpart.  These give primitive recursive
+metastability bounds without assuming a convergence modulus.  We also
+prove why a general final cutoff cannot be recovered from that information.
+\item A local power-series branch for polynomials with arbitrary fixed
+primitive recursive Cauchy coefficient names, from a finite contraction
+certificate.  The input centre need only be an approximate root.  This
+extends the representation permitted on a regular chart beyond the exact
+algebraic coefficients used in the existing Puiseux package.  From a
+supplied root name and derivative gap, we also construct the certificate
+with a prescribed primitive recursive precision bound.
+\item A uniform \(m\)-th-power gap certificate for integral points.  It
+extends the square-completion Runge argument in the Siegel package to all
+\(m\ge2\), includes an explicit certificate constructor, and gives a
+complete elementary classification for
+\(y^m=x^{mr}+x+1\), \(m\ge3\), \(r\ge1\).
+\end{enumerate}
+The underlying tools---bounded search, contraction, gap estimates, and
+metastability---are established mathematical ideas.  The contribution is
+their precise common arithmetic interface, the explicit extensions of the
+identified packets, and the accompanying implementation and formalization
+work.  No claim of priority over the mathematical literature is intended.
+
+\subsection{The pinned repository and what was inspected}
+
+The source snapshot is ProveIt commit
+\begin{center}\small\ttfamily
+42c64ff3a9f56f2a9edc1525e75ece3b720c7f77.
+\end{center}
+All repository claims in this report refer to this snapshot, whose commit
+timestamp is 15 November 2026 at 16:39:34 UTC$-8$.  The directory
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs} contains 46 packets.
+Its index expressly says they were filed as delivered, without checking or
+recompiling their contents \cite{repoIndex}.  Reading an index entry is not
+a verification of the corresponding proof.
+
+We inspected the common foundational sources and selected packets in
+detail, concentrating on the statements of their interfaces, reported
+obstructions, and relevant proof sections.  The accompanying
+\path{provenance/source_manifest.json} identifies the files and their Git
+blob hashes.  The 46-row \path{provenance/packet_catalog.csv} is a map of
+the collection, not an assertion that all 46 proofs have been audited.
+
+The main findings that determine the design are these.
+\begin{center}\small
+\begin{longtable}{@{}P{.20\linewidth}P{.34\linewidth}P{.37\linewidth}@{}}
+\toprule
+Source & Identified issue & Treatment here\\
+\midrule\endhead
+ConciseIPRA & The native equivalence transports an existing arithmetic
+derivation. & Every object-level target ends in an explicit
+\texttt{Prf PRAAx} obligation.\\
+Calculus; Gamma; zeta & Functions are fixed PR evaluators with moduli;
+host analysis is not itself an arithmetic derivation. & Finite observation,
+precision propagation, rational integration, and bounded invariants.\\
+Puiseux & Exact coefficient selection is discontinuous for arbitrary
+Cauchy coefficients. & A certified regular chart admits an explicit
+convergent branch; the singular obstruction is retained.\\
+Euler--Rodrigues & An exact normalized axis requires more information than
+an approximate axis. & Quantitative isolation is the general sufficient
+condition for coherent selection.  Existing rotation results are not
+counted as new results here.\\
+Roth; Mordell--Weil & A cardinal bound or finite covering list is different
+from a proved global height bound or an algorithm producing the list. &
+Separate finite-window consequences, descent, certificate soundness, and
+certificate production.\\
+Siegel; Faltings & A general positive height/list theorem is absent. &
+Extend one explicit certificate class; leave the general height problem
+open.\\
+Prime distribution & Exceptional-zero data and major analytic estimates
+remain explicit missing inputs for several targets. & Make the remaining
+contracts precise; finite coding does not supply the missing estimates.\\
+\bottomrule
+\end{longtable}
+\end{center}
+The relevant source discussions are in
+\cite{repoCore,repoCalculus,repoGamma,repoZeta,repoPuiseux,repoObstruction,repoRotation,
+repoRoth,repoMordell,repoSiegel,repoFaltings,repoPrimes}.
+
+\subsection{What an embedding means in this report}
+
+There are several legitimate interpretations of a mathematical theorem,
+and they must not be silently interchanged.
+\begin{description}
+\item[Exact finite interpretation.]
+An integer matrix, polynomial, finite group table, rational polytope, or
+finite proof certificate is a natural-number code.  Its equality and
+finite checks are decidable primitive recursive predicates.
+\item[Fixed represented-family interpretation.]
+A real, function, or series is described by a fixed PR family of finite
+approximations.  Parameters and requested precisions are number variables.
+Validity, equality, and continuity may be first-order formulas with
+unbounded universal number quantifiers.  These formulas are not thereby
+eligible as induction invariants.
+\item[Finite-table interpretation.]
+The inputs are finite tables, with a declared bound on their domain and
+finite compatibility checks.  The theorem applies to every passing table.
+A particular represented family supplies such tables by a separate PR
+construction.  Arbitrary infinite objects can also be discussed externally
+through these finite theorems, without adding a function sort to \ipra.
+\item[Certificate-relative interpretation.]
+A finite datum verifies a sufficient condition, such as a contraction
+inequality or a polynomial identity.  Soundness of the certificate is one
+theorem.  Its existence or construction for a proposed input class is a
+different theorem.  A certificate containing the desired universal
+conclusion as an unchecked field has not solved the mathematical problem.
+\end{description}
+
+These interpretations support broad mathematics while preserving the
+actual strength of the theory.  They do not represent every real by a
+natural number, supply arbitrary countable choice, or turn every total
+computable algorithm into a primitive recursive one.  The numerical sort
+of the native concise calculus remains the numerical sort of \ipra.
+
+\subsection{Proof status}
+
+The mathematical arguments in this report are fully developed written
+proofs with explicit algorithms and induction audits.  The archive also
+contains compiled Lean 4.32.0 files for the finite contract lemmas, finite
+change budgets, the all-integer power-gap lemma, and a small genuine
+object-\ipra induction example.  The power-series module defines precise
+finite targets and checks concrete rational examples; it does not supply
+proofs of all its general targets.
+
+The large new mathematics has not been converted into complete
+\texttt{Prf PRAAx} terms.  The formalization section gives the remaining
+definitions, main lemma statements, and a dependency order that leads to
+those terms.  An elementary compiled example demonstrates the intended
+object-theory boundary; it is not a completed compiler for arbitrary
+mathematical proofs.  General effective Siegel, Faltings, Roth,
+Mordell--Weil generation, Chebotarev, Siegel--Walfisz, and
+Bombieri--Vinogradov are not asserted as consequences of this framework.
+
+\subsection{Relation to proof mining}
+
+The emphasis on explicit moduli and finite observations is closely related
+to proof mining.  General metatheorems in that subject have carefully
+specified theories, logical forms, and extensionality restrictions
+\cite{Kohlenbach}.  We use direct finite proofs here, and do not import a
+general extraction theorem with stronger hypotheses than \ipra supports.
+In particular, numerical realizability obtained merely by replacing all
+recursive procedures by primitive recursive procedures is not a sound
+interpretation of full intuitionistic logic \cite{Plisko}.  Our witnesses
+are specified PR terms and our correctness proofs are assembled directly.
