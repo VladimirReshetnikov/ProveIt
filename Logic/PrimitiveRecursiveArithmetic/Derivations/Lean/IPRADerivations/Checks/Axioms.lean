@@ -99,3 +99,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
+#print axioms LeanProofs.IPRA.dvd_sub
+#print axioms LeanProofs.IPRA.mul_le_cancel
+#print axioms LeanProofs.IPRA.common_invariant
+#print axioms LeanProofs.IPRA.euclid_terminates
+#print axioms LeanProofs.IPRA.gcd_greatest
+#print axioms LeanProofs.IPRA.gcd_dvd
