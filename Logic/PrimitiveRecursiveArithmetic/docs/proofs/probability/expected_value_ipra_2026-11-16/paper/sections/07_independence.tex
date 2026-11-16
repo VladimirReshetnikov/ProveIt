@@ -1,0 +1,178 @@
+\section{Independence, products, and conditional expectation}\label{sec:independence}
+
+\subsection{Product laws}
+
+\begin{definition}[Finite product law]\label{def:product-law}
+Let \(L=(m,w,W)\) and \(M=(n,v,V)\).  Their product law has outcomes
+\((i,j)\in\Fin(m)\times\Fin(n)\), weight \(w_iv_j\), and total weight
+\[
+ \sum_{i<m}\sum_{j<n}w_iv_j=WV.
+\]
+An observable depending only on the first coordinate is written \(X(i)\), and
+one depending only on the second is written \(Y(j)\).
+\end{definition}
+
+\begin{theorem}[Multiplicativity under independence]\label{thm:ind-product}
+On the product law,
+\[
+ \E[X(i)Y(j)]=\E_L[X]\E_M[Y].
+\]
+More generally, for finite lists of independent coordinates and rational
+functions \(g_r\) of one coordinate,
+\[
+ \E\left[\prod_{r<k}g_r(X_r)\right]
+ =\prod_{r<k}\E[g_r(X_r)].
+\]
+\end{theorem}
+
+\begin{proof}
+For two coordinates,
+\begin{align*}
+ WV\E[XY]
+ &=\sum_{i<m}\sum_{j<n}w_iv_jX_iY_j\\
+ &=\left(\sum_{i<m}w_iX_i\right)
+   \left(\sum_{j<n}v_jY_j\right),
+\end{align*}
+by finite distributivity and Fubini.  Divide by \(WV>0\).  The multi-coordinate
+formula follows by quantifier-free induction on \(k\), using a mixed-radix code
+for product outcomes and the two-coordinate identity at each successor step.
+\end{proof}
+
+\begin{corollary}[Variance of an independent sum]\label{cor:ind-var-sum}
+If \(X,Y\) are independent, then \(\Cov(X,Y)=0\) and
+\[
+ \Var(X+Y)=\Var(X)+\Var(Y).
+\]
+For a finite independent family,
+\[
+ \Var\left(\sum_{j<r}X_j\right)=\sum_{j<r}\Var(X_j).
+\]
+\end{corollary}
+
+\begin{proof}
+Multiplicativity gives \(\E[XY]=\E[X]\E[Y]\), so covariance is zero.  Insert
+this into the variance expansion.  Induct on the number of summands; a new
+coordinate is independent of every function of the preceding product
+coordinates, a fact verified by another finite product factorization.
+\end{proof}
+
+\begin{example}[Expectation is not multiplicative in general]\label{ex:not-multiplicative}
+Let \(X=Y\) be uniform on \(\{-1,1\}\).  Then
+\(\E[X]=\E[Y]=0\), while \(XY=1\) identically and \(\E[XY]=1\).
+Thus multiplicativity is a consequence of independence, not a basic property
+of expectation.
+\end{example}
+
+\begin{example}[Uncorrelated does not imply independent]\label{ex:uncorrelated}
+Let \(X\) be uniform on \(\{-1,0,1\}\) and let \(Y=X^2\).  Then
+\[
+ \E[X]=0,
+ \qquad \E[XY]=\E[X^3]=0,
+ \qquad \Cov(X,Y)=0.
+\]
+But \(Y\) is a deterministic function of \(X\), and the event \(Y=0\) is
+exactly the event \(X=0\); the joint law does not factor.  All values are
+finite rationals, so this counterexample is internal to \(\ipra\).
+\end{example}
+
+\subsection{Finite partitions and conditional expectation}
+
+\begin{definition}[Finite conditioning partition]\label{def:partition}
+A finite partition is a primitive-recursive map
+\(c:\Fin(m)\to\Fin(r)\).  Its cell masses and weighted \(X\)-sums are
+\[
+ M_j=\sum_{i<m}w_i\ind_{c(i)=j},\qquad
+ S_j=\sum_{i<m}w_iX_i\ind_{c(i)=j}.
+\]
+A conditional-expectation code is a cellwise rational value
+\[
+ h_j=\begin{cases}S_j/M_j,&M_j>0,\\0,&M_j=0.\end{cases}
+\]
+The observable \(\E[X\mid c]\) takes value \(h_{c(i)}\) at outcome \(i\).
+\end{definition}
+
+The arbitrary value on a zero-mass cell is harmless: its total weight is zero.
+The branch \(M_j=0\) is decidable, and division is only performed in the
+positive branch.
+
+\begin{theorem}[Cell integral characterization]\label{thm:cell-characterization}
+For every cell \(j<r\),
+\[
+ \sum_{i<m}w_i\E[X\mid c](i)\ind_{c(i)=j}
+ =\sum_{i<m}w_iX_i\ind_{c(i)=j}.
+\]
+Equivalently,
+\[
+ \E[\E[X\mid c]\ind_{c=j}]=\E[X\ind_{c=j}].
+\]
+\end{theorem}
+
+\begin{proof}
+If \(M_j=0\), zero-sum elimination shows every weight in the cell is zero, so
+both sides vanish.  If \(M_j>0\), the left numerator is
+\(h_jM_j=(S_j/M_j)M_j=S_j\).  The proof is a decidable split on the natural
+number \(M_j\).
+\end{proof}
+
+\begin{theorem}[Law of total expectation]\label{thm:total-expectation}
+For every finite partition,
+\[
+ \E[\E[X\mid c]]=\E[X].
+\]
+More generally, if \(g\) is constant on each cell, then
+\[
+ \E[g\,\E[X\mid c]]=\E[gX].
+\]
+\end{theorem}
+
+\begin{proof}
+Sum the cell characterization over \(j<r\).  For each outcome exactly one cell
+indicator is one, so both double sums collapse to the corresponding full sum.
+For the generalized identity, multiply the equation for cell \(j\) by the
+cell value \(g_j\) before summing.
+\end{proof}
+
+\begin{theorem}[Tower property for nested finite partitions]\label{thm:tower}
+Suppose \(d:\Fin(m)\to\Fin(s)\) refines
+\(c:\Fin(m)\to\Fin(r)\): there is \(q:\Fin(s)\to\Fin(r)\) with
+\(c=q\circ d\).  Then
+\[
+ \E[\E[X\mid d]\mid c]=\E[X\mid c]
+\]
+almost surely.
+\end{theorem}
+
+\begin{proof}
+Both sides are constant on each \(c\)-cell.  By
+\Cref{thm:cell-characterization,thm:total-expectation}, their weighted integral
+on that cell equals the integral of \(X\) on the cell.  If the cell has
+positive mass, equality of integral and constancy imply equality of the two
+cell values after cancellation.  If the cell has zero mass, disagreement is
+confined to a null cell.  The refinement relation makes the regrouping of
+\(d\)-cells into a \(c\)-cell a finite Fubini identity.
+\end{proof}
+
+\begin{theorem}[Conditional Jensen with certificates]\label{thm:conditional-jensen}
+Let \(\phi\) admit a finite Jensen certificate at the conditional mean in each
+positive-mass cell.  Then
+\[
+ \phi(\E[X\mid c])\le \E[\phi(X)\mid c]
+\]
+almost surely.
+\end{theorem}
+
+\begin{proof}
+Apply certified Jensen separately to the normalized finite law on each
+positive-mass cell.  A zero-mass cell may be ignored.  Combining the finite
+list of cellwise inequalities yields the almost-sure statement.
+\end{proof}
+
+\subsection{Fubini and effective products}
+
+Finite Fubini is exact.  For countable or continuous product presentations, a
+Fubini theorem needs an absolute-integrability modulus.  The constructive
+pattern is as follows: truncate both coordinates at stages computed from the
+tail modulus; apply finite Fubini; and bound the discarded absolute mass.
+This will be formalized in \Cref{sec:integration}.  Independence then implies
+multiplicativity whenever the product and the two factors are effectively
+integrable.

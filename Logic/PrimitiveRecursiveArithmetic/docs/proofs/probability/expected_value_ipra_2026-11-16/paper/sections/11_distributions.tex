@@ -1,0 +1,218 @@
+\section{Expected values of common distributions}\label{sec:distributions}
+
+This section follows the article's table.  Finite distributions are exact
+\(\ipra\) theorems.  Infinite and continuous distributions are effective
+schemata whose parameters are rational or regular-real names with the displayed
+positivity certificates.
+
+\begin{proposition}[Bernoulli]\label{prop:bernoulli}
+If \(X\in\{0,1\}\) with \(\Pp(X=1)=p\), then
+\[
+ \E[X]=p.
+\]
+\end{proposition}
+
+\begin{proof}
+The two weighted terms are \(0(1-p)\) and \(1p\).  In a natural-weight
+presentation with weights \(W-r,r\), the equality is
+\((0(W-r)+r)/W=r/W\).
+\end{proof}
+
+\begin{proposition}[Binomial]\label{prop:binomial}
+For \(X\sim\operatorname{Bin}(n,p)\),
+\[
+ \E[X]=np.
+\]
+\end{proposition}
+
+\begin{proof}
+Construct \(X\) as the sum of \(n\) independent Bernoulli coordinates and use
+finite linearity; independence is not actually needed for the mean once the
+marginals are fixed.  Directly from the mass function,
+\[
+ \sum_{k=0}^{n}k\binom nkp^k(1-p)^{n-k}
+ =np\sum_{k=1}^{n}\binom{n-1}{k-1}p^{k-1}(1-p)^{n-k}=np,
+\]
+using \(k\binom nk=n\binom{n-1}{k-1}\) and the finite binomial theorem.  For
+rational \(p\), clear denominators; both combinatorial identities are proved by
+primitive recursion.
+\end{proof}
+
+\begin{proposition}[Poisson]\label{prop:poisson}
+For an effective nonnegative parameter \(\lambda\), the Poisson law
+\[
+ p_k=e^{-\lambda}\frac{\lambda^k}{k!}
+\]
+has expectation \(\lambda\).
+\end{proposition}
+
+\begin{proof}
+At finite stage,
+\[
+ \sum_{k=0}^{N}kp_k
+ =\lambda e^{-\lambda}\sum_{j=0}^{N-1}\frac{\lambda^j}{j!}.
+\]
+This is the exact shift identity \(k/k!=1/(k-1)!\).  Taylor's theorem with a
+rational remainder bound gives a regular name for \(e^\lambda\) and proves
+\(e^{-\lambda}\sum_{j\ge0}\lambda^j/j!=1\).  For a rational upper bound
+\(L\ge\lambda\), choose \(N>2L\).  Successive absolute tail terms then have
+ratio at most \(1/2\), so the tail is bounded by twice its first term.  This is
+a primitive-recursive modulus.  Passing to the regular limit yields
+\(\E[X]=\lambda\).
+\end{proof}
+
+\begin{proposition}[Geometric]\label{prop:geometric}
+For rational \(0<p\le1\), let
+\(\Pp(X=k)=p(1-p)^{k-1}\), \(k\ge1\).  Then
+\[
+ \E[X]=\frac1p.
+\]
+\end{proposition}
+
+\begin{proof}
+Put \(q=1-p\).  The finite polynomial identity
+\[
+ \sum_{k=1}^{N}kq^{k-1}
+ =\frac{1-(N+1)q^N+Nq^{N+1}}{(1-q)^2}
+\]
+is proved by multiplying the sum by \(1-q\) twice and telescoping, with no
+differentiation needed.  Multiplication by \(p=1-q\) gives a partial
+expectation tending to \(1/p\).  Since \(q<1\), a rational separation
+\(q\le1-1/d\) is computable from the rational code for \(p>0\).  The
+finite binomial inequality \((1-1/d)^d\le1/2\) gives
+\(q^{dm}\le2^{-m}\).  Bounded search therefore chooses \(m\) with
+\((dm+d)2^{-m}\le2^{-r}\), yielding a primitive-recursive stage
+\(N=dm\) at which \((N+1)q^N\le2^{-r}\).  This is an explicit tail
+modulus; the case \(p=1\) has \(q=0\) and is immediate.
+\end{proof}
+
+\begin{proposition}[Uniform]\label{prop:uniform}
+For rational \(a<b\), the uniform law on \([a,b]\) has
+\[
+ \E[X]=\frac{a+b}{2}.
+\]
+\end{proposition}
+
+\begin{proof}
+By exact polynomial integration,
+\[
+ \frac1{b-a}\int_a^b x\,dx
+ =\frac{b^2-a^2}{2(b-a)}=\frac{a+b}{2}.
+\]
+Alternatively, the transformation \(x\mapsto a+b-x\) preserves the uniform
+quadrature and pairs values with sum \(a+b\), forcing the mean to be its half.
+The polynomial integral is already exact on every rational mesh.
+\end{proof}
+
+\begin{proposition}[Exponential]\label{prop:exponential}
+For an effective positive parameter \(\lambda\), the density
+\(f(x)=\lambda e^{-\lambda x}\) on \(x\ge0\) has
+\[
+ \E[X]=\frac1\lambda.
+\]
+\end{proposition}
+
+\begin{proof}
+On \([0,R]\), finite integration by parts gives
+\[
+ \int_0^R\lambda xe^{-\lambda x}\,dx
+ =\frac1\lambda-e^{-\lambda R}\left(R+\frac1\lambda\right).
+\]
+The exponential Taylor bounds provide compact quadrature.  A positive rational
+lower bound \(c\le\lambda\) gives
+\(e^{-\lambda R}\le e^{-cR}\), and a primitive-recursive choice of \(R(p)\)
+forces the displayed remainder below \(2^{-p}\).  Thus the improper integral
+has regular value \(1/\lambda\).
+\end{proof}
+
+\begin{proposition}[Normal and standard normal]\label{prop:normal}
+For an effective normal density with parameters \(\mu\) and \(\sigma>0\),
+\[
+ \E[X]=\mu.
+\]
+In particular, the standard normal mean is zero.
+\end{proposition}
+
+\begin{proof}
+Substitute \(x=\mu+\sigma z\).  The expectation becomes
+\[
+ \mu\int_{-\infty}^{\infty}\varphi(z)\,dz
+ +\sigma\int_{-\infty}^{\infty}z\varphi(z)\,dz,
+\]
+where \(\varphi(z)=(2\pi)^{-1/2}e^{-z^2/2}\).  The first integral is one by
+the density certificate.  On every symmetric rational interval the second
+integral is exactly zero because its integrand is odd and paired quadrature
+nodes cancel.  A Gaussian tail certificate bounds the omitted absolute first
+moment, so the improper limit is zero.  The transformation and all constants
+are handled as regular interval names.
+\end{proof}
+
+\begin{proposition}[Pareto]\label{prop:pareto}
+Let \(k>0\), \(\alpha>0\), and
+\(f(x)=\alpha k^\alpha x^{-\alpha-1}\) for \(x\ge k\).  Then
+\[
+ \E[X]=
+ \begin{cases}
+ \dfrac{\alpha k}{\alpha-1},&\alpha>1,\\[4pt]
+ +\infty,&0<\alpha\le1.
+ \end{cases}
+\]
+Here rational powers are interpreted by regular names with monotonicity and
+multiplication certificates.
+\end{proposition}
+
+\begin{proof}
+The truncated mean is
+\[
+ \alpha k^\alpha\int_k^R x^{-\alpha}\,dx.
+\]
+For \(\alpha\ne1\), exact differentiation of the regular power name gives
+\[
+ \frac{\alpha k^\alpha}{1-\alpha}
+   (R^{1-\alpha}-k^{1-\alpha}).
+\]
+If \(\alpha>1\), the first term tends effectively to zero and the remainder
+simplifies to \(\alpha k/(\alpha-1)\).  If \(0<\alpha<1\), the positive term
+\(R^{1-\alpha}\) has an explicit divergence modulus.  If \(\alpha=1\), the
+truncated mean is \(k\log(R/k)\), which diverges by doubling \(R\).  All case
+conditions are decidable for rational parameters; for regular parameters, a
+strict separation certificate from one is required for the finite branch.
+\end{proof}
+
+\begin{proposition}[Cauchy]\label{prop:cauchy}
+For a Cauchy law with location \(x_0\) and scale \(\gamma>0\), the expected
+value is undefined.
+\end{proposition}
+
+\begin{proof}
+Translation does not repair absolute integrability.  On the positive and
+negative tails, \(\abs x\gamma/((x-x_0)^2+\gamma^2)\) is bounded below by a
+positive multiple of \(1/\abs x\) beyond an explicitly computable radius.
+Therefore both part expectations diverge logarithmically.  The signed
+extended expectation is the indeterminate \(+\infty-\infty\), as in
+\Cref{prop:cauchy-trunc}.
+\end{proof}
+
+\subsection{A mixed atom--density model}
+
+\begin{proposition}[Precipitation occurrence and amount]
+\label{prop:precipitation}
+Suppose rain occurs with probability \(\alpha\), and conditional on rain the
+amount is exponential with rate \(\lambda>0\); otherwise the amount is zero.
+Then
+\[
+ \E[X]=\frac{\alpha}{\lambda}.
+\]
+\end{proposition}
+
+\begin{proof}
+Represent the model as a two-cell finite partition: dry with value zero and
+wet with an effective exponential law.  The law of total expectation gives
+\[
+ \E[X]=(1-\alpha)\cdot0
+ +\alpha\E[X\mid\text{wet}]
+ =\alpha/\lambda.
+\]
+This is a direct combination of exact finite conditioning and the effective
+exponential computation.
+\end{proof}

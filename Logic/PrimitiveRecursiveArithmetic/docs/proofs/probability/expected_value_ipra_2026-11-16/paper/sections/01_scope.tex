@@ -1,0 +1,98 @@
+\section{Constructive scope and reading conventions}\label{sec:scope}
+
+\subsection{The base theory}
+
+We use \(\ipra\) in the standard first-order sense: the only individual sort is
+\(\N\); every primitive-recursive operation may be named by a function symbol;
+its defining equations are available; reasoning is intuitionistic; and
+induction is restricted to quantifier-free formulas.  Finite sequences,
+finite trees, signed integers, rationals, and tuples are therefore represented
+by natural-number codes.  Bounded search and bounded sums are primitive
+recursive.  A theorem about a coded finite object is internal when its proof is
+an explicit derivation from those defining equations and quantifier-free
+induction.
+
+The restriction to quantifier-free induction is not an obstacle to the finite
+probability identities in the article.  Each relevant invariant can be
+maintained by an equation or decidable inequality.  For example, the statement
+that the first \(n\) terms of two finite sums agree is an equation between two
+primitive-recursive terms.  Its successor step is one use of the defining
+recurrence for bounded summation.
+
+\begin{remark}[No hidden classical quotient]
+A rational number is not treated as an abstract quotient field.  It is a code
+with a positive denominator, and equalities are proved by
+cross-multiplication.  Likewise, ``almost surely'' on a finite weighted law is
+an equation saying that the total weight of the exceptional outcomes is zero.
+Both are decidable arithmetical relations.
+\end{remark}
+
+\subsection{Three meanings of a theorem}
+
+The article mixes finite algebra, countable series, and general integration.
+We use the following disciplined translations.
+
+\begin{definition}[Exact finite theorem]
+An exact finite theorem quantifies over natural codes for a finite law and
+finite observables.  After denominator clearing, its conclusion is a
+quantifier-free equation or inequality.  The proof uses only primitive
+recursion and quantifier-free induction.
+\end{definition}
+
+\begin{definition}[Effective analytic theorem schema]
+An effective analytic theorem is a uniform family of finite theorems indexed by
+an output precision \(p\).  The input contains primitive-recursive approximants
+and explicit moduli.  From \(p\), the proof computes a finite stage \(N(p)\),
+applies exact finite reasoning there, and proves an error at most \(2^{-p}\).
+For each fixed presentation, the entire checker is primitive recursive.
+\end{definition}
+
+\begin{definition}[Constructive replacement]
+When the article states a classical existence theorem whose data do not contain
+an algorithm or modulus, we replace it by a witnessed version.  We prove the
+forward implications from the witness and record that the non-effective
+converse has not been internalized.
+\end{definition}
+
+\subsection{What ``prove as many statements as possible'' means}
+
+The theorem ledger accompanying this paper separates the article's content
+into mathematical claims, examples, and historical prose.  We prove every
+finite algebraic claim, including the standard inequalities and product-law
+formulas.  We also prove effective versions of the main countable and
+continuous claims.  Some article sentences are definitions rather than
+propositions; in those cases the task is to show that the definition has a
+primitive-recursive realization and interacts correctly with the finite
+kernel.
+
+We do not claim that every classical random variable or measure has an
+\(\ipra\)-usable name.  A bare statement such as ``let \(X\) be an integrable
+random variable'' suppresses both a representation and a convergence rate.
+Our version instead says: let \(X_p\) be a primitive-recursive sequence of
+finite rational simple laws with a certified \(L^1\) Cauchy bound.  This is
+strictly more informative and is exactly what a proof checker can consume.
+
+\subsection{Constructive logic in the proofs}
+
+All finite predicates occurring below are decidable: equality and order of
+coded integers and rationals, membership in a finite event, and comparison of a
+bounded sum with a rational threshold.  Case distinctions on such predicates
+are intuitionistically valid.  We never infer an arbitrary proposition \(A\)
+from \(\neg\neg A\), and we never use an unbounded least counterexample.
+
+Several classical-looking arguments become simpler when written pointwise.
+Markov's inequality is the pointwise inequality
+\(a\ind_{X\ge a}\le X\), summed with nonnegative weights.  The variance identity
+is a polynomial identity.  Cauchy--Schwarz is a sum of squares.  The law of
+total expectation is a finite regrouping of one double sum.  These proofs do
+not require excluded middle beyond decidable comparisons already supplied by
+the codes.
+
+\subsection{Trust boundary}
+
+The trusted mathematical boundary intended by this report is the existing
+ProveIt calculus \code{Prf PRAAx} and Lean's kernel.  The supplied Python script
+is deliberately outside that boundary: it exhaustively and randomly checks
+many small exact instances, but it is only regression evidence.  Similarly,
+ambient Lean structures in the packet are specifications until their fields
+are filled by actual proofs and then translated to object-language derivations.

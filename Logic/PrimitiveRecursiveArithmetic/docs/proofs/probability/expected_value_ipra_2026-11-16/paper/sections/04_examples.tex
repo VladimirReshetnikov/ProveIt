@@ -1,0 +1,55 @@
+\section{Finite examples from the article}\label{sec:examples}
+
+\begin{example}[Fair die]\label{ex:die}
+For a fair six-sided die with outcomes \(1,2,3,4,5,6\),
+\[
+ \E[X]=\frac{1+2+3+4+5+6}{6}=\frac{21}{6}=\frac72.
+\]
+The formal proof is the natural identity \(2\cdot21=7\cdot6\), after evaluating
+six successor recurrences of the bounded sum.
+\end{example}
+
+\begin{example}[American roulette straight-up bet]\label{ex:roulette}
+A one-dollar straight-up bet on an American roulette wheel wins \(35\) dollars
+of net profit on one of \(38\) slots and loses \(1\) dollar on the other
+\(37\).  Hence
+\[
+ \E[G]=\frac{35-37}{38}=-\frac{2}{38}=-\frac1{19}.
+\]
+For \(190\) bets, whether or not the bets are independent, linearity gives
+\[
+ \E\left[\sum_{j<190}G_j\right]
+ =190\left(-\frac1{19}\right)=-10.
+\]
+Independence matters for variance and concentration, not for this expectation
+identity.
+\end{example}
+
+\begin{example}[Expectation need not be an attainable value]\label{ex:not-attained}
+The die expectation \(7/2\) is not one of the possible die outcomes.  Thus the
+word ``expected'' does not mean ``a value that must occur.''  In the finite
+kernel, expectation is a rational barycenter of the support and is guaranteed
+only to lie between its minimum and maximum.
+\end{example}
+
+\begin{example}[A rare large payoff]\label{ex:rare-payoff}
+Let \(X=M\) with weight one and \(X=0\) with weight \(M-1\).  Then
+\(\E[X]=1\) for every positive \(M\), even though the nonzero outcome has
+probability \(1/M\).  This exact family anticipates the pointwise-convergence
+counterexample in \Cref{sec:convergence}: a stable expectation does not by
+itself provide concentration or typicality.
+\end{example}
+
+\begin{audit}[The article's die/Chebyshev percentage]\label{audit:die-cheb}
+For a fair die, \(\mu=7/2\) and \(\sigma^2=35/12\).  Chebyshev with radius
+\(5/2\) gives
+\[
+ \Pp\bigl(\abs{X-7/2}<5/2\bigr)
+ \ge 1-\frac{35/12}{(5/2)^2}
+ =1-\frac7{15}=\frac8{15}\approx53.3\%.
+\]
+The event \(\abs{X-7/2}<5/2\) is \(1<X<6\), whose exact probability is
+\(4/6=2/3\).  By contrast, the inclusive event \(1\le X\le6\) has probability
+one.  Thus the ``about 53 percent'' bound is mathematically valid for the open
+interval but cannot describe the inclusive support event.
+\end{audit}

@@ -1,0 +1,245 @@
+\section{Convergence and interchange of expectation}\label{sec:convergence}
+
+\subsection{Why pointwise convergence is insufficient}
+
+\begin{example}[Moving spike]\label{ex:moving-spike}
+Let the countable sample space be \(\N\) with
+\(\Pp(\{k\})=2^{-k-1}\).  Define
+\[
+ X_n(k)=2^{n+1}\ind_{k=n}.
+\]
+For every fixed \(k\), \(X_n(k)=0\) for all \(n>k\), so \(X_n\to0\)
+pointwise.  Nevertheless,
+\[
+ \E[X_n]=2^{-n-1}2^{n+1}=1
+\]
+for every \(n\).  Hence pointwise convergence alone does not imply convergence
+of expectations.
+\end{example}
+
+This counterexample is fully effective: the geometric law has an exact tail,
+the values are natural numbers, and the pointwise convergence modulus at
+outcome \(k\) is \(k+1\).  What fails is a uniform integrability bound.
+
+\begin{example}[Interchanging an infinite sum and expectation can fail]
+\label{ex:series-interchange}
+Put \(X_{-1}=0\), \(Y_0=X_0\), and
+\(Y_n=X_n-X_{n-1}\) for \(n\ge1\), using the moving spikes above.  Then
+\[
+ \sum_{j=0}^{N}Y_j=X_N\longrightarrow0
+\]
+pointwise, so the pointwise series sum is zero.  But
+\[
+ \sum_{j=0}^{N}\E[Y_j]=\E[X_N]=1
+\]
+for every \(N\).  Thus
+\(\E[\sum_jY_j]=0\ne1=\sum_j\E[Y_j]\).
+Absolute summability or domination hypotheses are essential.
+\end{example}
+
+\subsection{Effective monotone convergence}
+
+\begin{theorem}[Monotone convergence as a lower-real identity]
+\label{thm:monotone-convergence}
+Let \(0\le X_0\le X_1\le\cdots\) be a primitive-recursive sequence of
+nonnegative finite simple-law names on compatible refinements.  Define the
+pointwise supremum by its increasing approximants.  Then
+\[
+ \E[\sup_nX_n]=\sup_n\E[X_n]
+\]
+as equality of lower reals.  If an expectation-tail modulus is supplied, both
+sides are equal as regular reals.
+\end{theorem}
+
+\begin{proof}
+At every finite stage, expectation preserves order, so
+\(\E[X_n]\) is increasing and bounded above by every finite approximation to
+\(\E[\sup X_n]\).  Conversely, the definition of the supremum name uses
+\(X_n\) itself as its increasing simple approximants; therefore its lower-real
+expectation is, by construction, the directed family of the finite
+expectations.  More explicitly, any rational lower bound certified for one
+side occurs at a finite level and is certified for the other side at the same
+level.  If a modulus says the omitted expectation after stage \(N(p)\) is at
+most \(2^{-p}\), the common lower real becomes a regular interval name.
+\end{proof}
+
+\begin{corollary}[Nonnegative series and Tonelli form]
+\label{cor:tonelli}
+For a primitive-recursive sequence of nonnegative observables,
+\[
+ \E\left[\sum_{n=0}^{\infty}X_n\right]
+ =\sum_{n=0}^{\infty}\E[X_n]
+\]
+as lower reals.  With an absolute expectation-tail modulus, the equality is
+one of regular reals and the sum may be effectively regrouped.
+\end{corollary}
+
+\begin{proof}
+Apply \Cref{thm:monotone-convergence} to the finite partial sums and use exact
+finite linearity at every stage.
+\end{proof}
+
+\subsection{Finite Fatou kernel and effective liminf}
+
+\begin{lemma}[Finite Fatou kernel]\label{lem:finite-fatou}
+For nonnegative finite observables \(X_N,\ldots,X_M\),
+\[
+ \E\left[\min_{N\le n\le M}X_n\right]
+ \le \min_{N\le n\le M}\E[X_n].
+\]
+\end{lemma}
+
+\begin{proof}
+The pointwise minimum is at most each \(X_n\).  Monotonicity gives an
+expectation inequality for each \(n\); bounded search takes the least rational
+right side.  The minimum evaluator and the selected index are primitive
+recursive on the finite list.
+\end{proof}
+
+\begin{theorem}[Effective Fatou lemma]\label{thm:fatou}
+Let \(X_n\ge0\) be an effective sequence.  For every \(N\), suppose the
+finite minima
+\[
+ Y_{N,M}=\min_{N\le n\le M}X_n
+\]
+are supplied on compatible simple-law refinements and converge, as
+\(M\to\infty\), to a name \(Y_N\) with an explicit \(L^1\) modulus.  Suppose
+also that the increasing sequence \(Y_N\) presents the pointwise
+\(\liminf\).  Then
+\[
+ \E[\liminfN_{n\to\infty}X_n]
+ \le\liminfN_{n\to\infty}\E[X_n]
+\]
+as a lower-real inequality; with regular moduli it is an inequality of regular
+reals.
+\end{theorem}
+
+\begin{proof}
+For finite \(M\), \Cref{lem:finite-fatou} gives
+\[
+ \E[Y_{N,M}]
+ \le\min_{N\le n\le M}\E[X_n].
+\]
+The supplied \(L^1\) modulus and
+\(\lvert\E U-\E V\rvert\le\E\lvert U-V\rvert\) let \(M\) increase on the
+left, yielding \(\E[Y_N]\).  The finite minima on the right decrease to the
+upper-real tail infimum \(\inf_{n\ge N}\E[X_n]\); a regular version uses the
+corresponding numerical modulus.  Now \(Y_N\) increases with \(N\), so
+effective monotone convergence gives the expectation of the liminf.  Taking
+the increasing supremum over \(N\) on the right gives the numerical liminf.
+At each requested precision only finite minima, one finite expectation theorem,
+and the stated moduli are used.
+\end{proof}
+
+\subsection{Uniform integrability and dominated convergence}
+
+\begin{definition}[Effective uniform integrability]\label{def:ui}
+A sequence \((X_n)\) is effectively uniformly integrable when a
+primitive-recursive threshold \(K(p)\) satisfies
+\[
+ \E\bigl[\abs{X_n}\ind_{\abs{X_n}>K(p)}\bigr]\le2^{-p}
+ \quad\text{for every }n.
+\]
+The universal quantifier is implemented by a proof schema for the fixed
+sequence evaluator, not by bounded search over all \(n\).
+\end{definition}
+
+\begin{lemma}[Truncation estimate]\label{lem:truncation}
+Suppose \(\abs X,\abs Y\le G\), where \(G\ge0\).  For rational
+\(K,\eta>0\),
+\[
+ \E\abs{X-Y}
+ \le \eta+2K\Pp(\abs{X-Y}>\eta)
+      +2\E[G\ind_{G>K}].
+\]
+\end{lemma}
+
+\begin{proof}
+Split the sample space into three decidable regions.  On
+\(\abs{X-Y}\le\eta\), the contribution is at most \(\eta\).  On the remaining
+region with \(G\le K\), we have \(\abs{X-Y}\le\abs X+\abs Y\le2K\), giving the
+middle term.  On \(G>K\), use \(\abs{X-Y}\le2G\).  Indicator linearity and the
+finite union bound produce the displayed inequality.  For effective names,
+apply it on a sufficiently fine common finite refinement and absorb the
+\(L^1\) approximation errors.
+\end{proof}
+
+\begin{theorem}[Effective dominated convergence]\label{thm:dct}
+Let \(X_n,X,G\) be effective \(L^1\) names satisfying
+\(\abs{X_n},\abs X\le G\).  Assume:
+\begin{enumerate}
+\item an integrability-tail modulus for \(G\), and
+\item a convergence-in-probability modulus: given \(p,q\), a
+  primitive-recursive \(N(p,q)\) makes
+  \[
+   n\ge N(p,q)\Longrightarrow
+   \Pp(\abs{X_n-X}>2^{-p})\le2^{-q}.
+  \]
+\end{enumerate}
+Then \(X_n\to X\) in \(L^1\) with a computable modulus, and consequently
+\[
+ \E[X_n]\longrightarrow\E[X].
+\]
+\end{theorem}
+
+\begin{proof}
+Given output precision \(p\), choose \(K\) so that
+\(2\E[G\ind_{G>K}]\le2^{-p-2}\).  Put
+\(\eta=2^{-p-2}\).  Choose \(q\) so that
+\(2K2^{-q}\le2^{-p-2}\), and then choose
+\(n\ge N(p+2,q)\).  The truncation estimate gives
+\(\E\abs{X_n-X}\le3\cdot2^{-p-2}<2^{-p}\), after allowing one additional guard
+bit for name approximation.  Finally,
+\[
+ \abs{\E[X_n]-\E[X]}\le\E\abs{X_n-X}\le2^{-p}.
+\]
+Every choice is primitive recursive from the supplied moduli and rational
+bounds.
+\end{proof}
+
+\begin{corollary}[Bounded convergence]\label{cor:bounded-convergence}
+If \(\abs{X_n},\abs X\le M\) for a fixed rational \(M\) and \(X_n\to X\) in
+probability with a modulus, then expectations converge effectively.
+\end{corollary}
+
+\begin{proof}
+Take \(G=M\).  Its tail above any \(K>M\) is zero, so
+\Cref{thm:dct} applies.  Directly,
+\(\E\abs{X_n-X}\le\eta+2M\Pp(\abs{X_n-X}>\eta)\).
+\end{proof}
+
+\begin{theorem}[Vitali form]\label{thm:vitali}
+Effective convergence in probability plus effective uniform integrability of
+\((X_n)\) and the limit \(X\) implies effective \(L^1\) convergence and hence
+convergence of expectations.
+\end{theorem}
+
+\begin{proof}
+Use \Cref{lem:truncation} with separate tail bounds for \(X_n\) and \(X\):
+\[
+ \abs{X_n-X}\le
+ \abs{X_n-X}\ind_{\abs{X_n}\le K,\abs X\le K}
+ +\abs{X_n}\ind_{\abs{X_n}>K}
+ +\abs X\ind_{\abs X>K}.
+\]
+The first term is bounded by
+\(\eta+2K\ind_{\abs{X_n-X}>\eta}\).  Choose \(K,\eta\), and the probability
+precision exactly as in \Cref{thm:dct}.
+\end{proof}
+
+\subsection{Summary of constructive hypotheses}
+
+The classical convergence theorems remain valid, but their useful
+\(\ipra\) forms expose the missing finite data:
+\begin{itemize}
+\item monotone convergence needs no rate for a lower-real conclusion, but a
+  regular-real value needs a tail modulus;
+\item Fatou needs effective names for the finite minima and the limiting
+  infima;
+\item dominated convergence needs an integrable-tail modulus and a convergence
+  modulus;
+\item exchanging expectation with a signed infinite sum needs absolute
+  expectation tails or another uniform-integrability certificate.
+\end{itemize}
+The moving-spike examples show that these are mathematical requirements, not
+merely artifacts of formalization.

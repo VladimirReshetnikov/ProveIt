@@ -1,0 +1,286 @@
+\section{Inequalities: Markov, Chebyshev, Jensen, and norm bounds}\label{sec:inequalities}
+
+\subsection{Markov and Chebyshev}
+
+\begin{theorem}[Markov inequality]\label{thm:markov}
+Let \(X\ge0\) pointwise and let \(a>0\) be rational.  Then
+\[
+ \Pp(X\ge a)\le\frac{\E[X]}{a}.
+\]
+Equivalently, \(a\Pp(X\ge a)\le\E[X]\).
+\end{theorem}
+
+\begin{proof}
+At each outcome,
+\[
+ a\ind_{X\ge a}\le X.
+\]
+Indeed, outside the event the left side is zero, and on the event it is \(a\),
+which is at most \(X\).  Take expectations, use monotonicity and the indicator
+formula, and divide by the positive \(a\).  The object-language target is the
+cross-multiplied inequality, so no division function is required.
+\end{proof}
+
+\begin{corollary}[Power Markov]\label{cor:power-markov}
+For natural \(r>0\), rational \(a>0\), and any \(X\),
+\[
+ \Pp(\abs X\ge a)\le\frac{\E[\abs X^r]}{a^r}.
+\]
+\end{corollary}
+
+\begin{proof}
+Apply \Cref{thm:markov} to the nonnegative variable \(\abs X^r\).  The events
+\(\abs X^r\ge a^r\) and \(\abs X\ge a\) coincide because exponentiation by a
+positive natural is order preserving on nonnegative rationals.  This last fact
+is proved by induction on \(r\).
+\end{proof}
+
+\begin{theorem}[Chebyshev inequality]\label{thm:chebyshev}
+For \(a>0\),
+\[
+ \Pp(\abs{X-\E[X]}\ge a)\le\frac{\Var(X)}{a^2}.
+\]
+\end{theorem}
+
+\begin{proof}
+Apply power Markov with \(r=2\) to \(X-\E[X]\).  Its second absolute moment is
+exactly the variance.
+\end{proof}
+
+\begin{corollary}[At least three quarters within two standard deviations]
+\label{cor:three-quarters}
+If a positive rational \(s\) satisfies \(s^2=\Var(X)\), then
+\[
+ \Pp(\abs{X-\E[X]}<2s)\ge\frac34.
+\]
+The same denominator-free statement is
+\(4\Var(X)\Pp(\abs{X-\E[X]}\ge2s)\le\Var(X)\), with the zero-variance case
+handled separately.
+\end{corollary}
+
+\begin{proof}
+Chebyshev gives probability at most \(1/4\) to the complementary event.
+Subtract from one using the finite event identity.  A square root need not be
+constructed internally if the theorem is stated with an input \(s\) and the
+certificate \(s^2=\Var(X)\).
+\end{proof}
+
+\subsection{Constructive Jensen by a supporting-line certificate}
+
+A bare classical definition of convexity quantifies over real coefficients.
+For \(\ipra\), the most useful finite formulation is a checkable supporting
+line at the particular mean under consideration.
+
+\begin{definition}[Jensen certificate]\label{def:jensen-cert}
+Let \(\phi\) be a primitive-recursive rational evaluator on the finite list of
+values \(X_i\) and on \(\mu=\E[X]\).  A Jensen certificate at \(\mu\) is a
+rational \(s\) such that for every \(i<m\),
+\[
+ \phi(X_i)\ge \phi(\mu)+s(X_i-\mu).
+\]
+\end{definition}
+
+\begin{theorem}[Certified finite Jensen inequality]\label{thm:jensen}
+If \(s\) is a Jensen certificate for \(\phi\) at \(\mu=\E[X]\), then
+\[
+ \phi(\E[X])\le\E[\phi(X)].
+\]
+\end{theorem}
+
+\begin{proof}
+Multiply the certificate inequality by \(w_i\), sum, and divide by \(W\):
+\[
+ \E[\phi(X)]
+ \ge \phi(\mu)+s\E[X-\mu]
+ =\phi(\mu).
+\]
+The vanishing of the final expectation is linearity and the constant rule.
+All certificate checks are finite rational comparisons.
+\end{proof}
+
+\begin{corollary}[Square and absolute-value Jensen]\label{cor:jensen-basic}
+For every finite rational \(X\),
+\[
+ \E[X]^2\le\E[X^2],\qquad
+ \abs{\E[X]}\le\E[\abs X].
+\]
+\end{corollary}
+
+\begin{proof}
+For \(\phi(x)=x^2\), choose \(s=2\mu\); the certificate difference is
+\[
+ x^2-\mu^2-2\mu(x-\mu)=(x-\mu)^2\ge0.
+\]
+For \(\phi(x)=\abs x\), decide the sign of \(\mu\).  If \(\mu\ge0\), choose
+\(s=1\) and use \(\abs x\ge x\); if \(\mu<0\), choose \(s=-1\) and use
+\(\abs x\ge-x\).
+\end{proof}
+
+\begin{proposition}[Piecewise-linear rational Jensen]\label{prop:polygonal-jensen}
+Suppose \(\phi\) is given by a finite rational convex polygon: rational
+breakpoints \(b_0<\cdots<b_r\) and nondecreasing rational slopes
+\(s_0\le\cdots\le s_{r-1}\).  Then a Jensen certificate at every rational
+\(\mu\) in the domain is primitive-recursively computable, and
+\Cref{thm:jensen} applies.
+\end{proposition}
+
+\begin{proof}
+Bounded search locates the interval containing \(\mu\).  Choose its slope, or
+at a breakpoint either adjacent slope.  On each side of \(\mu\), telescope the
+polygonal increments.  Nondecreasing slopes show that the graph lies above the
+chosen affine line.  The argument is a finite sum of products of nonnegative
+rational segment lengths and slope differences.
+\end{proof}
+
+\begin{remark}[Smooth convex functions]
+For a smooth function represented by regular rational approximants, the same
+proof works with an approximate supporting slope and a certified error term.
+At precision \(p\), use a rational slope whose supporting inequality is within
+\(2^{-p-2}\), apply finite Jensen, and absorb the endpoint errors.  Thus the
+usual Jensen theorem for effectively convex functions is an effective analytic
+schema, not a new logical principle.
+\end{remark}
+
+\subsection{Cauchy--Schwarz as a finite sum of squares}
+
+\begin{lemma}[Weighted Lagrange identity]\label{lem:lagrange}
+For rational lists \(u_i,v_i\) and natural weights \(w_i\), let
+\[
+ A=\sum_iw_iu_i^2,\quad B=\sum_iw_iv_i^2,\quad C=\sum_iw_iu_iv_i.
+\]
+Then
+\[
+ AB-C^2
+ =\sum_{0\le i<j<m}w_iw_j(u_iv_j-u_jv_i)^2.
+\]
+\end{lemma}
+
+\begin{proof}
+Expand the left side as a double sum:
+\[
+ AB-C^2=\sum_{i,j}w_iw_j(u_i^2v_j^2-u_iv_iu_jv_j).
+\]
+The diagonal terms vanish.  Pair the terms \((i,j)\) and \((j,i)\) for
+\(i<j\); their sum is
+\[
+ w_iw_j(u_i^2v_j^2+u_j^2v_i^2-2u_iv_iu_jv_j)
+ =w_iw_j(u_iv_j-u_jv_i)^2.
+\]
+Finite pairing and Fubini are justified by \Cref{cor:finite-fubini}.  The
+identity is polynomial and can also be discharged by the ProveIt ring tool
+after the double-sum lemmas have been instantiated.
+\end{proof}
+
+\begin{theorem}[Cauchy--Schwarz]\label{thm:cauchy-schwarz}
+For finite rational observables,
+\[
+ \E[XY]^2\le\E[X^2]\E[Y^2].
+\]
+Consequently
+\[
+ \abs{\Cov(X,Y)}^2\le\Var(X)\Var(Y).
+\]
+\end{theorem}
+
+\begin{proof}
+Apply \Cref{lem:lagrange} with \(u_i=X_i\) and \(v_i=Y_i\).  The right side is
+nonnegative, so \(C^2\le AB\).  Divide by \(W^2>0\).  For covariance, apply
+the first inequality to \(X-\E[X]\) and \(Y-\E[Y]\).
+\end{proof}
+
+\begin{corollary}[Equality criterion]\label{cor:cs-equality}
+Equality holds in Cauchy--Schwarz precisely when
+\[
+ w_iw_j(X_iY_j-X_jY_i)^2=0
+\]
+for every \(i<j\).  In particular, on the positive-weight support the two
+vectors are rationally proportional unless both vanish in the relevant
+coordinates.
+\end{corollary}
+
+\begin{proof}
+The difference in \Cref{lem:lagrange} is a finite sum of nonnegative rational
+terms.  It is zero exactly when every term is zero, by zero-sum elimination.
+The proportionality reading follows by selecting any positive-weight index
+where one coordinate is nonzero and cross-multiplying.
+\end{proof}
+
+\subsection{Holder, Lyapunov, and Minkowski}
+
+The article lists several norm inequalities.  For integer exponents one can
+prove them in exact algebraic form; for arbitrary computable real exponents we
+state the regular-real version with root and power moduli.
+
+\begin{theorem}[Finite Holder with effective rational exponents]
+\label{thm:holder}
+Let \(p>1\) and \(q>1\) be fixed positive rational exponents satisfying
+\(1/p+1/q=1\).  Assume the presentation includes regular evaluators for the
+rational powers and roots, together with a checked Young-inequality certificate
+at the requested precision.  Then
+\[
+ \E[\abs{XY}]
+ \le \E[\abs X^p]^{1/p}\E[\abs Y^q]^{1/q}.
+\]
+The special case \(p=q=2\) is the exact rational theorem
+\Cref{thm:cauchy-schwarz}.  For general rational conjugates, the statement is
+an effective regular-real schema.  Its finite object-language core says that
+rational upper bounds \(A,B>0\) satisfying
+\(A^p\ge\E\abs X^p\) and \(B^q\ge\E\abs Y^q\), to certified precision, imply
+\(\E\abs{XY}\le AB\) up to the allocated dyadic error.
+\end{theorem}
+
+\begin{proof}
+Normalize by positive rational upper bounds \(A,B\).  Young's inequality
+\(uv\le u^p/p+v^q/q\) for nonnegative inputs is verified at finite precision by
+the supplied power certificates; for fixed integer powers it can instead be
+reduced to a polynomial factorization after clearing denominators.  Apply it to
+\(u=\abs X/A\) and \(v=\abs Y/B\), multiply by \(AB\), and take expectations.
+The normalized moments are at most one, yielding the claimed bound, with the
+certificate errors absorbed by guard bits.  Regular roots are found by
+bisection, so their interval widths provide a primitive-recursive output
+modulus.
+\end{proof}
+
+\begin{corollary}[Lyapunov moment monotonicity]\label{cor:lyapunov}
+For \(0<r<s\) given by fixed positive rational exponents and a finite rational
+observable,
+\[
+ \E[\abs X^r]^{1/r}\le\E[\abs X^s]^{1/s}.
+\]
+\end{corollary}
+
+\begin{proof}
+Apply Holder to \(\abs X^r\cdot1\) with conjugate exponents
+\(s/r\) and \(s/(s-r)\), then use \(\E[1]=1\).  In the denominator-cleared
+form, all roots appear only through certified rational enclosures.
+\end{proof}
+
+\begin{theorem}[Finite Minkowski]\label{thm:minkowski}
+For fixed computable \(p\ge1\),
+\[
+ \E[\abs{X+Y}^p]^{1/p}
+ \le \E[\abs X^p]^{1/p}+\E[\abs Y^p]^{1/p}.
+\]
+For \(p=1\) the theorem is exact rational algebra; for \(p=2\) it follows
+from Cauchy--Schwarz; for general fixed rational \(p\) it is an effective
+regular-real schema based on Holder.
+\end{theorem}
+
+\begin{proof}
+For \(p=1\), use the pointwise triangle inequality and monotonicity.  For
+\(p>1\), put \(q=p/(p-1)\).  The pointwise inequality
+\[
+ \abs{X+Y}^p
+ \le \abs X\abs{X+Y}^{p-1}+\abs Y\abs{X+Y}^{p-1}
+\]
+followed by expectation and Holder gives
+\[
+ M^p\le (A+B)M^{p-1},
+\]
+where \(M=\norm{X+Y}_p\), \(A=\norm X_p\), and \(B=\norm Y_p\).
+If \(M=0\) the claim is immediate; otherwise cancel the positive
+\(M^{p-1}\).  Constructively, cancellation is performed on rational interval
+bounds separated from zero; when separation is unavailable, the target error
+already dominates \(M\), so the approximate inequality closes.  This standard
+case split is decidable at each finite precision.
+\end{proof}

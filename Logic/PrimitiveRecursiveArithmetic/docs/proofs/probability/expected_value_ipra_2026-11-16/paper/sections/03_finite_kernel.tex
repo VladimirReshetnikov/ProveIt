@@ -1,0 +1,180 @@
+\section{The exact finite expectation kernel}\label{sec:finite}
+
+Throughout this section \(L=(m,w,W)\) is a finite law and
+\(X,Y:\Fin(m)\to\Q\) are rational observables.  Every identity is understood
+both as ordinary rational mathematics and as its denominator-cleared coded
+form.
+
+\begin{definition}[Expectation, moment, and event probability]\label{def:expect}
+Define
+\[
+ \E_L[X]\defeq\frac{\sum_{i<m}w_iX_i}{W},\qquad
+ \E_L[X^r]\defeq\frac{\sum_{i<m}w_iX_i^r}{W},
+\]
+and, for a decidable event \(A\),
+\[
+ \Pp_L(A)\defeq\E_L[\ind_A]
+ =\frac{\sum_{i<m}w_i\ind_A(i)}{W}.
+\]
+\end{definition}
+
+\begin{theorem}[Normalization]\label{thm:normalization}
+\(\Pp_L(\Fin(m))=1\), \(\Pp_L(\varnothing)=0\), and
+\(0\le\Pp_L(A)\le1\) for every event \(A\).
+\end{theorem}
+
+\begin{proof}
+For the whole space the indicator is constantly one, so its weighted sum is
+\(\sum_iw_i=W\).  For the empty event it is constantly zero.  Finally,
+\(0\le w_i\ind_A(i)\le w_i\) pointwise; bounded-sum monotonicity gives
+\(0\le\sum_iw_i\ind_A(i)\le W\), and division by the positive \(W\) preserves
+order.  Internally one retains the cross-multiplied numerator inequalities.
+\end{proof}
+
+\begin{theorem}[Weighted-average formula]\label{thm:weighted-average}
+If \(p_i=w_i/W\), then \(p_i\ge0\), \(\sum_i p_i=1\), and
+\[
+ \E_L[X]=\sum_{i<m}p_iX_i.
+\]
+Conversely every finite rational probability vector has such a natural-weight
+presentation.
+\end{theorem}
+
+\begin{proof}
+The forward statements are direct expansion.  For the converse, take the
+product of all positive denominators as a common \(W\) and put \(w_i=Wp_i\).
+The equation \(\sum p_i=1\) becomes \(\sum w_i=W\) after multiplication by
+\(W\).
+\end{proof}
+
+\begin{theorem}[Convex-hull bounds]\label{thm:convex-hull}
+Suppose rational numbers \(a,b\) satisfy
+\(a\le X_i\le b\) for every positive-weight outcome.  Then
+\[
+ a\le\E[X]\le b.
+\]
+If \(\E[X]=a\), then \(X_i=a\) at every positive-weight outcome whenever
+\(X_i\ge a\); similarly at the upper endpoint.
+\end{theorem}
+
+\begin{proof}
+Pointwise, \(w_i a\le w_iX_i\le w_i b\).  Sum and use
+\(\sum_iw_i=W\).  For the endpoint assertion write \(X_i-a\ge0\).  The equality
+\(\E[X]=a\) says \(\sum_iw_i(X_i-a)=0\) after denominator clearing.  Every
+nonnegative summand is therefore zero.  If \(w_i>0\), cancellation yields
+\(X_i=a\).
+\end{proof}
+
+\begin{corollary}[Equiprobable arithmetic mean]\label{cor:equiprobable}
+For equal positive weights,
+\[
+ \E[X]=\frac{X_0+\cdots+X_{m-1}}{m}.
+\]
+In particular, expectation generalizes the ordinary arithmetic mean.
+\end{corollary}
+
+\begin{proof}
+Take \(w_i=1\) and \(W=m\) in \Cref{def:expect}.
+\end{proof}
+
+\subsection{Pushforwards and finite LOTUS}
+
+\begin{definition}[Pushforward law]\label{def:pushforward}
+Let \(f:\Fin(m)\to\Fin(n)\) be primitive recursive.  Its pushforward weights
+are
+\[
+ v_j\defeq\sum_{\substack{i<m\\f(i)=j}}w_i.
+\]
+The total remains \(\sum_{j<n}v_j=W\).
+\end{definition}
+
+\begin{theorem}[Finite law of the unconscious statistician]\label{thm:finite-lotus}
+For every rational \(g:\Fin(n)\to\Q\),
+\[
+ \E_L[g(f(i))]=\frac1W\sum_{j<n}v_jg(j).
+\]
+Equivalently, expectation after applying a function depends only on the
+pushforward distribution.
+\end{theorem}
+
+\begin{proof}
+Insert a decidable partition of unity:
+\[
+ \sum_{i<m}w_i g(f(i))
+ =\sum_{i<m}\sum_{j<n}w_i\ind_{f(i)=j}g(j).
+\]
+For each \(i\), exactly one indicator is one, so the inner sum equals the
+original term.  Apply finite Fubini and factor out \(g(j)\):
+\[
+ \sum_{j<n}g(j)\sum_{i<m}w_i\ind_{f(i)=j}
+ =\sum_{j<n}v_jg(j).
+\]
+Every equality is a bounded-sum identity.  The claim that exactly one fiber
+indicator is one is proved by decidable equality on \(\Fin(n)\).
+\end{proof}
+
+\begin{corollary}[Multidimensional LOTUS]\label{cor:multi-lotus}
+For finite observables \(X_1,\ldots,X_r\) and a rational function \(g\) on
+their finite joint range,
+\[
+ \E[g(X_1,\ldots,X_r)]
+ =\sum_{x_1,\ldots,x_r}g(x_1,\ldots,x_r)
+   \Pp(X_1=x_1,\ldots,X_r=x_r).
+\]
+\end{corollary}
+
+\begin{proof}
+Code the tuple by primitive-recursive pairing and apply
+\Cref{thm:finite-lotus}.  Repeated finite Fubini converts the single paired
+sum to the displayed nested sum.
+\end{proof}
+
+\subsection{Vector and matrix expectation}
+
+\begin{theorem}[Componentwise expectation]\label{thm:componentwise}
+Let \(X(i)=(X_1(i),\ldots,X_r(i))\in\Q^r\).  Define expectation of a vector by
+its finite weighted sum.  Then
+\[
+ \E[X]=(\E[X_1],\ldots,\E[X_r]).
+\]
+For a rational matrix-valued observable, expectation is entrywise.  Rational
+matrix multiplication by a fixed matrix commutes with expectation.
+\end{theorem}
+
+\begin{proof}
+A coded vector or matrix is a finite tuple of rational codes.  Projection onto
+a coordinate commutes definitionally with the bounded weighted sum.  For a
+fixed matrix \(A\), each coordinate of \(AX\) is a finite linear combination
+of coordinates of \(X\); distributivity of bounded sums proves
+\(\E[AX]=A\E[X]\).  No higher-type object is needed: the dimension and all
+coordinate access functions are natural-number parameters.
+\end{proof}
+
+\subsection{Finite distributions as normal forms}
+
+\begin{proposition}[Histogram normal form]\label{prop:histogram}
+Every finite rational observable has a primitive-recursively computed finite
+histogram \((x_j,v_j)_{j<n}\) such that the \(x_j\) are pairwise distinct,
+\(v_j\) is the total weight of outcomes with value \(x_j\), and
+\[
+ \E[X]=\frac1W\sum_{j<n}v_jx_j.
+\]
+The histogram may be obtained without sorting by retaining one slot per input
+outcome and allowing zero duplicate slots.
+\end{proposition}
+
+\begin{proof}
+Use the pushforward map from outcome indices to the least earlier index with
+the same rational value; bounded search computes this representative.
+Alternatively, define
+\(v_j=w_j\ind_{j\text{ is first}}+\sum_{i>j}w_i\ind_{X_i=X_j}\ind_{j\text{ is first}}\).
+Both are primitive-recursive.  Fiber regrouping gives the expectation identity.
+The zero-padding option avoids any need for a variable-length quotient type.
+\end{proof}
+
+\begin{remark}
+The histogram form is useful when translating textbook notation
+\(\sum_x x\Pp(X=x)\).  The sample-space form is usually simpler for formal
+proofs, because no proof of distinctness or enumeration completeness is
+required.
+\end{remark}

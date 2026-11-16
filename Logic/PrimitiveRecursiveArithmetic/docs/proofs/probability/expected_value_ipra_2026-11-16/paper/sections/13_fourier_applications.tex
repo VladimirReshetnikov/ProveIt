@@ -1,0 +1,309 @@
+\section{Characteristic functions, Fourier formulas, and applications}\label{sec:fourier}
+
+\subsection{Characteristic functions and the first moment}
+
+For a finite rational law, define the regular complex name
+\[
+ \phi_X(t)=\E[e^{itX}]
+ =\E[\cos(tX)]+i\E[\sin(tX)].
+\]
+The sine and cosine names are obtained from finite Taylor sums with explicit
+remainders after range reduction.
+
+\begin{theorem}[Derivative of the characteristic function at zero]
+\label{thm:char-derivative}
+If \(\E[X^2]\) is finite with an effective name, then for every nonzero
+rational \(h\),
+\[
+ \left|\frac{\phi_X(h)-1}{h}-i\E[X]\right|
+ \le\frac{\abs h}{2}\E[X^2].
+\]
+Consequently \(\phi_X'(0)=i\E[X]\) effectively.
+\end{theorem}
+
+\begin{proof}
+The elementary Taylor remainder estimate
+\[
+ \abs{e^{iu}-1-iu}\le\frac{u^2}{2}
+\]
+is proved constructively from the integral or alternating-series remainder for
+sine and cosine; at rational precision it is a finite polynomial inequality
+plus a geometric tail bound.  Put \(u=hX_i\), divide by \(\abs h\), and take
+expectations:
+\begin{align*}
+\left|\frac{\phi_X(h)-1}{h}-i\E[X]\right|
+&=\left|\E\left[\frac{e^{ihX}-1-ihX}{h}\right]\right|\\
+&\le\E\left[\frac{\abs{e^{ihX}-1-ihX}}{\abs h}\right]\\
+&\le\frac{\abs h}{2}\E[X^2].
+\end{align*}
+For an effective infinite law, first truncate using the second-moment tail
+modulus.  Given output precision, choose \(h\) small enough that the final
+bound is below it.
+\end{proof}
+
+\subsection{Finite cyclic Fourier inversion}
+
+\begin{theorem}[Finite Fourier expectation identity]\label{thm:finite-fourier}
+Let \(p_x\) be a rational probability mass on \(\Z/N\Z\), let
+\(\omega=e^{2\pi i/N}\), and define
+\[
+ \phi(k)=\sum_{x<N}p_x\omega^{kx},\qquad
+ \widehat g(k)=\sum_{x<N}g(x)\omega^{-kx}.
+\]
+Then
+\[
+ \E[g(X)]=\frac1N\sum_{k<N}\widehat g(k)\phi(k).
+\]
+This identity has an effective \(\ipra\) realization using regular complex
+names, and an exact algebraic realization in a cyclotomic presentation.
+\end{theorem}
+
+\begin{proof}
+Expand the right side and use finite Fubini:
+\[
+ \frac1N\sum_{x,y<N}g(x)p_y
+       \sum_{k<N}\omega^{k(y-x)}.
+\]
+The inner sum is \(N\) if \(x=y\) and zero otherwise.  For \(x\ne y\), this
+is the finite geometric identity
+\[
+ (1-\omega^{y-x})\sum_{k<N}\omega^{k(y-x)}
+ =1-\omega^{N(y-x)}=0,
+\]
+together with a primitive-root certificate that
+\(1-\omega^{y-x}\ne0\).  Thus only diagonal terms remain, giving
+\(\sum_xg(x)p_x\).  With regular complex names, approximate all roots of unity
+with guard bits and use the same exact exponent arithmetic; with a cyclotomic
+algebra code, the orthogonality certificate is symbolic.
+\end{proof}
+
+\subsection{Effective continuous Fourier formula}
+
+\begin{theorem}[Expectation through Fourier inversion]
+\label{thm:continuous-fourier}
+Suppose a density \(f\), its characteristic function \(\phi\), a function
+\(g\), and its Fourier transform
+\[
+ G(t)=\int_{\R}g(x)e^{-itx}\,dx
+\]
+are given by effective integration names.  Assume explicit absolute-tail and
+Fubini moduli for the double integral.  Then, with the article's sign
+convention,
+\[
+ \E[g(X)]=\frac1{2\pi}\int_{\R}G(t)\phi(t)\,dt.
+\]
+\end{theorem}
+
+\begin{proof}
+Truncate both \(x\) and \(t\) to compact rational intervals chosen from the
+absolute-tail modulus.  Approximate both integrals by rational rectangles.
+On the resulting finite double sum, interchange the order by exact finite
+Fubini and substitute the finite Fourier inversion approximation to \(f\).
+The accumulated quadrature, inversion, and tail errors are allocated less than
+\(2^{-p}/4\) each.  Since the moduli compute all truncation radii and mesh
+sizes from \(p\), this is an effective theorem schema.  Without absolute
+Fubini data, the order change is not claimed.
+\end{proof}
+
+\subsection{Moments and finite moment determinacy}
+
+\begin{definition}[Moments]
+The \(r\)-th raw moment is \(m_r=\E[X^r]\), and the \(r\)-th central moment is
+\(\E[(X-\E X)^r]\).  For finite rational laws these are exact rational
+expectations.  Their finite lists are primitive recursive in the law code.
+\end{definition}
+
+\begin{theorem}[Finite-support moment determinacy]\label{thm:moment-determinacy}
+Let \(X\) be supported on \(\{0,1,\ldots,B\}\).  The moments
+\(m_0,m_1,\ldots,m_B\) determine the probability masses uniquely, and the
+masses are primitive-recursively recoverable by rational arithmetic.
+\end{theorem}
+
+\begin{proof}
+Use falling factorials
+\((x)_r=x(x-1)\cdots(x-r+1)\) and factorial moments
+\(f_r=\E[(X)_r]\).  Ordinary powers and falling factorials are related by the
+finite triangular Stirling-number transformations, whose integer coefficients
+are primitive recursive.  Hence \((m_0,\ldots,m_B)\) determines
+\((f_0,\ldots,f_B)\).
+
+If \(p_k=\Pp(X=k)\), then
+\[
+ f_r=\sum_{k=r}^{B}(k)_r p_k.
+\]
+This is upper triangular, with diagonal \((r)_r=r!>0\).  Recover the masses by
+back substitution:
+\[
+ p_B=\frac{f_B}{B!},\qquad
+ p_r=\frac{f_r-\sum_{k=r+1}^{B}(k)_r p_k}{r!}.
+\]
+A downward bounded recursion computes every \(p_r\).  Uniqueness follows from
+the same recursion applied to two candidate vectors.  This is a complete
+\(\ipra\) proof of moment determinacy for known finite support; no analytic
+moment problem is involved.
+\end{proof}
+
+\begin{corollary}[Finite moment generating function]
+For finite support, the formal polynomial/exponential sum
+\(M(t)=\E[e^{tX}]\) determines the law, since its first \(B\) derivatives at
+zero give the moments in \Cref{thm:moment-determinacy}.
+\end{corollary}
+
+\subsection{Expected utility and finite decision problems}
+
+\begin{theorem}[Finite expected-utility maximization]\label{thm:expected-utility}
+Let \(A\) be a finite set of actions, \(S\) a finite weighted state law, and
+\(u(a,s)\in\Q\) a primitive-recursive utility table.  There is a
+primitive-recursively selected action \(a^*\) satisfying
+\[
+ \E[u(a^*,S)]\ge\E[u(a,S)]\quad\text{for every }a\in A.
+\]
+\end{theorem}
+
+\begin{proof}
+Compute the exact rational expected utility for every action.  Bounded search
+selects the least index attaining the maximum, using decidable rational order.
+An induction over the action list proves that the running candidate dominates
+all earlier candidates.  The output includes its comparison certificate.
+\end{proof}
+
+\begin{remark}
+This proves the computational content of finite expected-utility choice.  It
+does not assert that every preference ordering has a utility representation;
+that is a separate representation theorem with its own hypotheses.
+\end{remark}
+
+\subsection{Indicators, Monte Carlo, and empirical means}
+
+\begin{theorem}[Probability as expectation and unbiased frequency]
+\label{thm:monte-carlo}
+For an event \(A\), \(\Pp(A)=\E[\ind_A]\).  For iid repetitions and empirical
+frequency
+\[
+ \widehat p_n=\frac1n\sum_{j<n}\ind_A^{(j)},
+\]
+we have
+\[
+ \E[\widehat p_n]=\Pp(A),\qquad
+ \Var(\widehat p_n)=\frac{p(1-p)}n.
+\]
+Consequently Chebyshev supplies the exact finite Monte Carlo error contract
+\[
+ \Pp(\abs{\widehat p_n-p}\ge\varepsilon)
+ \le\frac{p(1-p)}{n\varepsilon^2}
+ \le\frac1{4n\varepsilon^2}.
+\]
+\end{theorem}
+
+\begin{proof}
+The indicator identity was proved in \Cref{thm:indicator}.  Apply the
+sample-mean and variance theorems to Bernoulli variables, whose variance is
+\(p-p^2=p(1-p)\).  Finally,
+\(p(1-p)\le1/4\) is the square identity
+\(1/4-p(1-p)=(p-1/2)^2\ge0\), interpreted after clearing denominators.
+\end{proof}
+
+\subsection{Center of mass}
+
+\begin{theorem}[Balance point]\label{thm:center-mass}
+Place nonnegative rational masses \(m_i\) at rational positions \(x_i\), with
+positive total mass \(M=\sum_i m_i\).  The unique point \(c\) with zero total
+torque
+\[
+ \sum_i m_i(x_i-c)=0
+\]
+is
+\[
+ c=\frac{\sum_i m_ix_i}{M}.
+\]
+Thus the center of mass is exactly the expectation under probabilities
+\(p_i=m_i/M\).
+\end{theorem}
+
+\begin{proof}
+Expand the torque:
+\[
+ \sum_i m_ix_i-c\sum_i m_i=\sum_i m_ix_i-cM.
+\]
+It vanishes at the displayed \(c\).  Conversely, if it vanishes at \(d\), then
+\(dM=\sum_i m_ix_i=cM\); positive \(M\) permits cancellation.  This is a
+single denominator-cleared linear identity.
+\end{proof}
+
+\begin{proposition}[Beta balance example]\label{prop:beta}
+For positive natural \(\alpha,\beta\), the beta density proportional to
+\(x^{\alpha-1}(1-x)^{\beta-1}\) on \([0,1]\) has mean
+\(\alpha/(\alpha+\beta)\).
+\end{proposition}
+
+\begin{proof}
+For natural parameters, the density is a polynomial times a rational
+normalization.  Integration by parts gives the finite beta recursion
+\[
+ B(\alpha+1,\beta)=\frac{\alpha}{\alpha+\beta}B(\alpha,\beta).
+\]
+The expectation is the ratio of these two exact polynomial integrals.  The
+recursion can alternatively be proved by expanding
+\((1-x)^{\beta-1}\) and integrating monomials rationally.
+\end{proof}
+
+\subsection{A bounded Wald identity}
+
+\begin{theorem}[Wald equation for a bounded stopping time]
+\label{thm:wald}
+Let \(X_0,\ldots,X_{N-1}\) be iid finite rational variables with mean \(\mu\).
+Let \(T\le N\) be a stopping time, meaning the event \(T>j\) depends only on
+\(X_0,\ldots,X_{j-1}\).  Then
+\[
+ \E\left[\sum_{j<T}X_j\right]=\mu\E[T].
+\]
+\end{theorem}
+
+\begin{proof}
+Pointwise,
+\[
+ \sum_{j<T}X_j=\sum_{j<N}X_j\ind_{T>j},
+ \qquad
+ T=\sum_{j<N}\ind_{T>j}.
+\]
+Finite linearity reduces the first expectation to a sum.  By the stopping-time
+condition, \(\ind_{T>j}\) is a function of earlier coordinates and is
+independent of \(X_j\).  Therefore
+\[
+ \E[X_j\ind_{T>j}]=\E[X_j]\Pp(T>j)=\mu\Pp(T>j).
+\]
+Sum over \(j<N\) and use the tail formula for the bounded integer \(T\).
+\end{proof}
+
+\subsection{Finite-dimensional quantum expectation}
+
+\begin{theorem}[Quantum expectation and variance identity]
+\label{thm:quantum}
+Let \(\psi\in\Q(i)^d\) satisfy \(\psi^*\psi=1\), and let
+\(A\in\Q(i)^{d\times d}\) be Hermitian.  Put
+\[
+ \langle A\rangle=\psi^*A\psi.
+\]
+Then \(\langle A\rangle\) is real and
+\[
+ (\Delta A)^2
+ \defeq\psi^*A^2\psi-(\psi^*A\psi)^2
+ =\norm{(A-\langle A\rangle I)\psi}^2\ge0.
+\]
+\end{theorem}
+
+\begin{proof}
+Hermiticity gives
+\((\psi^*A\psi)^*=\psi^*A^*\psi=\psi^*A\psi\), so the scalar is real.  Expand
+the squared norm:
+\begin{align*}
+\psi^*(A-\mu I)^*(A-\mu I)\psi
+ &=\psi^*(A^2-2\mu A+\mu^2I)\psi\\
+ &=\psi^*A^2\psi-2\mu^2+\mu^2
+ =\psi^*A^2\psi-\mu^2,
+\end{align*}
+where \(\mu=\psi^*A\psi\) and \(\psi^*\psi=1\).  The norm square is a finite
+sum of rational squares of real and imaginary parts, hence nonnegative in
+\(\ipra\).  Algebraic or regular complex entries are handled by the same
+finite identity at each precision.
+\end{proof}
