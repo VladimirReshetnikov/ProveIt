@@ -30,7 +30,7 @@ file are counted below; each is the kept table renumbered.
 
 A class is named by the SHA-256 of the transition list of its kept file in the order of a
 traversal from that file's start. For a table whose states are all reachable this is the
-`graph_class_sha256` of [`archive-audit/catalog.py`](../pa196-vs-u208/archive-audit/catalog.py).
+`graph_class_sha256` of [`archive-audit/catalog.py`](../verification/other-machines/pa196-vs-u208/archive-audit/catalog.py).
 A class whose kept file has no start is named `table:` followed by the hash that does not
 depend on the start. [`machine_classes.py`](machine_classes.py) computes both hashes.
 
@@ -63,7 +63,7 @@ The kept file of a class is one with a start if there is one, from the packet th
 arrived first; among several, a file outside census, reference and input directories is
 preferred. A removed table in native numbering therefore has its machine kept in dense
 numbering; the label files of the packet that relate the two numberings are still here.
-The class `43115a87740f` is the table [`../jamesyc-upstream/pa196/data/pa196.tm`](../jamesyc-upstream/pa196/data/pa196.tm) of the upstream snapshot, and every copy of it in the packets is removed.
+The class `43115a87740f` is the [PA196 table](../verification/other-machines/jamesyc-upstream/pa196/data/pa196.tm) of the upstream snapshot, and every copy of it in the packets is removed.
 
 Classes by number of states reachable from the start:
 
@@ -180,7 +180,7 @@ table file in their README.
 | 196 | `8b0e28045992` | [`pa_consistency_reduction/comparison/audit/rebracketed196_dense.tm`](pa_consistency_reduction/comparison/audit/rebracketed196_dense.tm) | `pa_consistency_reduction`: `comparison/audit/rebracketed196_dense.tm` |
 | 196 | `37aa79c9c241` | [`pa_consistency_research_2026-11-13_2/rotated196/machine.tm`](pa_consistency_research_2026-11-13_2/rotated196/machine.tm) | `pa_consistency_research_2026-11-13_2`: `rotated196/machine.tm` |
 | 196 | `6a6c70099fd3` | [`conpa_tm_study_2026-11-13/machines/h_only_mp_h.tm`](conpa_tm_study_2026-11-13/machines/h_only_mp_h.tm) | `conpa_tm_study_2026-11-13`: `machines/h_only_mp_h.tm` |
-| 196 | `43115a87740f` | [`../jamesyc-upstream/pa196/data/pa196.tm`](../jamesyc-upstream/pa196/data/pa196.tm) | `pa_below196_research`: `physical_search/pa196.tm` |
+| 196 | `43115a87740f` | [`jamesyc-upstream/pa196/data/pa196.tm`](../verification/other-machines/jamesyc-upstream/pa196/data/pa196.tm) | `pa_below196_research`: `physical_search/pa196.tm` |
 | 196 | `478a44709797` | [`pa_tm_research_2026-11-13_2/verification/zero_jump_machine/machines/zerojump196.tm`](pa_tm_research_2026-11-13_2/verification/zero_jump_machine/machines/zerojump196.tm) | `pa_tm_research_2026-11-13_2`: `verification/zero_jump_machine/machines/zerojump196.tm` |
 | 196 | `9570bee91984` | [`pa_consistency_comparison_and_new196_2026-11-13/axioms/separate196/machine.tm`](pa_consistency_comparison_and_new196_2026-11-13/axioms/separate196/machine.tm) | `pa_consistency_comparison_and_new196_2026-11-13`: `axioms/separate196/machine.tm` |
 | 196 | `a5a7506acbd5` | [`pa_consistency_comparison_and_new196_2026-11-13/axioms/search/scanner_best196.tm`](pa_consistency_comparison_and_new196_2026-11-13/axioms/search/scanner_best196.tm) | `pa_consistency_comparison_and_new196_2026-11-13`: `axioms/search/scanner_best196.tm` |

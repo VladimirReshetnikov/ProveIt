@@ -18,7 +18,7 @@ machine class   SHA-256 of the transition list in the order in which a traversal
                 have the same machine class exactly when one is the other with its states
                 renamed, start to start, as far as the states reachable from the start go. For a
                 table whose states are all reachable this is the graph_class_sha256 of
-                pa196-vs-u208/archive-audit/catalog.py.
+                verification/other-machines/pa196-vs-u208/archive-audit/catalog.py.
 table class     the least machine class over all choices of the start among the states from
                 which the most states are reachable. Two tables have the same table class
                 exactly when one is the other with its states renamed, whatever the start.
