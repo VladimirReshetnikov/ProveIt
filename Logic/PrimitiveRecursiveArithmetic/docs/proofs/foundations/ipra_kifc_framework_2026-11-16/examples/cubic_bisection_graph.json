@@ -1,0 +1,69 @@
+{
+  "name": "cubic_bisection_y3_plus_y_eq_x",
+  "version": 2,
+  "terminal": "midpoint_observer",
+  "parameters": [
+    "x_num",
+    "x_den",
+    "precision"
+  ],
+  "nodes": [
+    {
+      "id": "monotonicity",
+      "kind": "algebra",
+      "dependencies": [],
+      "demand": null,
+      "state": null,
+      "formula": "f(b)-f(a)=(b-a)(a^2+ab+b^2+1)",
+      "certificate": "generated ipra_ring theorem plus positivity lemma",
+      "guard": "a<b",
+      "status": "inherited_checked",
+      "witness_policy": "deterministic"
+    },
+    {
+      "id": "initial_bracket",
+      "kind": "algebra",
+      "dependencies": [
+        "monotonicity"
+      ],
+      "demand": null,
+      "state": "[-(|x|+1), |x|+1]",
+      "formula": "f(lower)<=0<=f(upper)",
+      "certificate": "rational arithmetic derivation",
+      "guard": null,
+      "status": "lean_interface",
+      "witness_policy": "deterministic"
+    },
+    {
+      "id": "bisection_loop",
+      "kind": "loop",
+      "dependencies": [
+        "initial_bracket"
+      ],
+      "demand": "precision + ceil_log2(2*(|x|+1)) + 1",
+      "state": "lower, upper, halted",
+      "formula": "bracket and dyadic width invariant",
+      "certificate": "LoopCertificate base and step",
+      "guard": null,
+      "status": "lean_interface",
+      "witness_policy": "deterministic"
+    },
+    {
+      "id": "midpoint_observer",
+      "kind": "observer",
+      "dependencies": [
+        "bisection_loop",
+        "monotonicity"
+      ],
+      "demand": "precision",
+      "state": "(lower+upper)/2",
+      "formula": "every exact rational root is within 2^-precision",
+      "certificate": "width plus uniqueness derivation",
+      "guard": null,
+      "status": "lean_interface",
+      "witness_policy": "exact_stable"
+    }
+  ],
+  "repository_snapshot": "7c1f2594117c15a980d24300593d625722812768",
+  "external_producers": []
+}

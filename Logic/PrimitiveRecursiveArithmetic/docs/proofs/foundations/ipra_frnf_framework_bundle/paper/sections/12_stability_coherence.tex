@@ -1,0 +1,143 @@
+\section{Stable observers, shrinking viability, and exact collapse}
+\label{sec:stability}
+
+Backward viability constructs one finite path, but the mathematical result should
+usually not depend on the arbitrary least-code convention.  Stability converts a
+relational witness into a canonical observable without claiming a canonical witness.
+
+\subsection{Finite stable observers}
+
+Let \(C\) be a nonempty finite candidate set and let \(O(c)\) be a rational or coded
+observable.  Suppose
+\[
+   \forall c,c'\in C,
+   \qquad d(O(c),O(c'))\le\eps.
+\]
+Then any bounded selector \(s(C)\in C\) yields an output within \(\eps\) of every other
+valid output.  The selector may depend on enumeration, but its observable is stable.
+
+\begin{theorem}[Stable-observer erasure]
+\label{thm:stable-observer}
+Assume embedded derivations certify that \(C_1,\ldots,C_m\) are valid finite
+certificates and that their joint stability contract implies a goal \(G\).  Then
+simultaneous cut yields an embedded derivation of \(G\) without exposing the internal
+selectors.  In particular, if every valid candidate gives the same exact coded
+observable, the result is exact.
+\end{theorem}
+
+\begin{proof}
+The logical statement is immediate: from derivations of the certificate formulas and a
+local derivation of \(G\) under those formulas, apply simultaneous cut.  The
+mathematical burden is entirely in the stability derivation, which is domain-specific
+but finite.  The \code{stableMany} theorem in the Lean kernel file implements the
+logical step.
+\end{proof}
+
+\subsection{Finite-horizon coherence without an infinite branch}
+
+For an actual represented output, we need a sequence of approximants.  Let the layered
+relation extend indefinitely in the metatheory, but perform only finite viability
+computations.  Choose a nondecreasing primitive-recursive horizon schedule
+\(H(k)\ge k+1\).  Run backward viability through level \(H(k)\), select the least
+viable path, and let \(x_k\) be the observable of its candidate at level \(k\).
+
+Write \(V_{k,h}\) for the candidates at level \(k\) that extend to level \(h\).  These
+sets shrink with \(h\).  Assume quantitative data:
+\[
+\begin{split}
+ &\diam\{O_k(a):a\in V_{k,H(k)}\}\le\delta_k,\\
+ &E_k(a,b)=1\quad\Longrightarrow\quad
+   d(O_k(a),O_{k+1}(b))\le\eta_k.
+\end{split}
+\]
+
+\begin{theorem}[Shrinking-viability coherence]
+\label{thm:shrinking-viability}
+Under the assumptions above,
+\[
+   d(x_k,x_{k+1})\le\delta_k+\eta_k.
+\]
+Consequently, if a primitive-recursive modulus \(M\) satisfies
+\[
+   \sum_{i=m}^{n-1}(\delta_i+\eta_i)\le 2^{-p}
+   \quad\text{whenever}\quad n>m\ge M(p),
+\]
+then \((x_k)\) is a regular Cauchy name with modulus \(M\).  Its construction uses
+only finite viability tables.
+\end{theorem}
+
+\begin{proof}
+The path selected for horizon \(H(k+1)\) reaches at least level \(H(k)\), since the
+schedule is nondecreasing.  Its candidate \(a'_k\) at level \(k\) therefore belongs to
+\(V_{k,H(k)}\).  The candidate \(a_k\) used to define \(x_k\) also belongs to this set.
+The diameter bound gives
+\[
+   d(O_k(a_k),O_k(a'_k))\le\delta_k.
+\]
+The candidate \(a'_{k+1}\) on the longer path is compatible with \(a'_k\), so the
+motion bound gives
+\[
+   d(O_k(a'_k),O_{k+1}(a'_{k+1}))\le\eta_k.
+\]
+The latter observable is \(x_{k+1}\).  The triangle inequality proves the one-step
+bound.  Summing from \(m\) to \(n-1\) and applying the supplied tail modulus proves the
+Cauchy estimate.  Every approximant uses a finite table; no infinite branch is
+selected.
+\end{proof}
+
+The theorem separates two sources of uncertainty.  \(\delta_k\) measures disagreement
+among finite-horizon choices at the same level; \(\eta_k\) measures the movement
+between adjacent levels along one compatible path.  Either can be zero in special
+applications.
+
+\subsection{Metastability is not a rate}
+
+A finite-window theorem may say that for every \(p\) and control function \(g\), there
+is \(N\le B(p,g)\) such that
+\[
+   d(x_i,x_j)\le2^{-p}
+   \quad(N\le i,j\le N+g(N)).
+\]
+This is a useful finite contract, but it does not by itself give a tail modulus
+\(M(p)\) valid for all \(i,j\ge M(p)\).  \(\FRNF\) therefore records metastability and
+Cauchy rates as different interface types.  A downstream finite consumer may use the
+window directly.  A represented limit requires an independent tail argument such as
+the summable-motion bound in \cref{thm:shrinking-viability}.
+
+\subsection{Exact branch collapse under separation}
+
+Stable approximation does not automatically identify an exact discrete label.  A
+separation certificate makes such a collapse legitimate.
+
+\begin{theorem}[Gap collapse]
+\label{thm:gap-collapse}
+Let exact labels \(\lambda_0,\ldots,\lambda_{m-1}\) in a metric presentation satisfy
+\[
+   d(\lambda_i,\lambda_j)\ge\gamma>0
+   \quad(i\ne j).
+\]
+If a candidate observation \(y\) is certified to lie within \(\gamma/3\) of some label,
+then there is a unique such label.  Bounded search over the finite label list recovers
+it, and all valid candidates recover the same label.
+\end{theorem}
+
+\begin{proof}
+If \(y\) were within \(\gamma/3\) of two distinct labels, the triangle inequality
+would give their distance at most \(2\gamma/3<\gamma\), contradicting separation.
+Existence is assumed by the approximation certificate; uniqueness makes the least
+bounded search independent of enumeration among valid witnesses.  The entire argument
+is finite and can be Booleanized.
+\end{proof}
+
+For signs, charts, isolated roots, or simple eigenvalues, \(\gamma\) is an apartness or
+spectral gap.  At collisions no such certificate exists, and the correct output is a
+cluster, symmetric polynomial, spectral subspace, or another branch-invariant object.
+
+\subsection{Equality versus observational equality}
+
+Two finite witnesses need not have equal codes.  Stable-observer theorems derive the
+equality or closeness of the observations actually consumed by later nodes.  This is a
+form of proof-relevant extensionality: equality is established at the interface rather
+than imposed by quotienting all presentations in the metatheory.  It is particularly
+well suited to first-order arithmetic, where finite equality witnesses can be coded and
+checked.

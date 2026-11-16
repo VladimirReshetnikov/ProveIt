@@ -1,0 +1,120 @@
+\section{Finite relational witnesses and backward viability}
+\label{sec:viability}
+
+A deterministic witness is often the wrong intermediate object.  At finite precision,
+there may be several equally valid roots, charts, lifts, combinatorial fillings, or
+approximate optimizers.  Forcing an early choice can make a correct construction
+nonextensional or can smuggle in a discontinuous decision.  \(\FRNF\) therefore treats
+a finite relation as a first-class output.
+
+\subsection{Layered finite relations}
+
+Fix a horizon \(h\).  At level \(i\le h\), candidates are numbered
+\(a<B_i\).  Let \(V_i(a)\in\B\) be the validity predicate and let
+\(E_i(a,b)\in\B\) express compatibility between candidate \(a\) at level \(i\)
+and candidate \(b\) at level \(i+1\).  All bounds and predicates are primitive
+recursive in the external parameters and final demand.
+
+A complete path is a sequence \(a_0,\ldots,a_h\) with
+\[
+  V_i(a_i)=1\quad(i\le h),
+  \qquad E_i(a_i,a_{i+1})=1\quad(i<h).
+\]
+The path need not be unique.
+
+\subsection{Backward viability recurrence}
+
+Define viability masks backward:
+\[
+\begin{split}
+ W_h(a)&=V_h(a),\\
+ W_i(a)&=V_i(a)\cdot
+   \sg\!\left(\sum_{b<B_{i+1}}E_i(a,b)W_{i+1}(b)\right).
+\end{split}
+\]
+Thus \(W_i(a)=1\) exactly when \(a\) can be extended to a valid path through level
+\(h\).  After computing the masks, choose \(a_0\) as the least viable candidate and,
+recursively, choose \(a_{i+1}\) as the least viable successor compatible with
+\(a_i\).
+
+\begin{theorem}[Backward viability]
+\label{thm:backward-viability}
+For every finite layered relation:
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item \(W_i(a)=1\) if and only if \(a\) extends to a valid path from level \(i\) to
+level \(h\);
+\item a complete path exists if and only if some \(a<B_0\) has \(W_0(a)=1\);
+\item if a complete path exists, least bounded search applied to the masks and edges
+constructs a complete path; and
+\item the masks and selected path are primitive recursive and their correctness is
+provable in \(\iPRA\) by quantifier-free induction.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For (i), use backward induction on \(h-i\).  At level \(h\), viability is exactly
+validity, which is the condition for the one-element suffix.  At level \(i<h\), the
+recurrence says that \(a\) is valid and there exists a compatible \(b\) with
+\(W_{i+1}(b)=1\).  By the induction hypothesis, that \(b\) extends to a valid suffix;
+prepending \(a\) gives a valid path.  Conversely, the second element of any valid path
+is a compatible viable successor, so the bounded sum has positive sign.
+
+Clause (ii) is the case \(i=0\) of (i).  For (iii), choose the least viable initial
+candidate.  If \(a_i\) is viable, the defining recurrence guarantees a compatible
+viable successor; least bounded search finds one.  Induction constructs the complete
+path and preserves validity and compatibility.
+
+For (iv), encode the level-candidate table as a finite array.  The backward pass has
+clock \(h+1\), and each mask entry is a bounded sum of Boolean products.  The forward
+pass also has clock \(h+1\) and uses the checked least-search theorem.  The invariant
+states, in Booleanized form, that processed masks satisfy the recurrence and the
+selected prefix is valid, compatible, and viable.  Every quantifier is bounded by the
+encoded table sizes and is therefore replaced by a characteristic equation using
+\cref{thm:booleanization}.  Quantifier-free induction closes both passes.
+\end{proof}
+
+\subsection{Why no infinite choice is used}
+
+The theorem is finite for each requested horizon.  It does not appeal to K\"onig's
+lemma, dependent choice, or an infinite branch through the layered graph.  This is
+crucial.  Many applications consume only a finite horizon, and stable-observer
+arguments can show that the final result is independent of which finite path is used.
+When an actual represented limit is required, coherence is proved quantitatively from
+shrinking diameters and motion budgets, as in \cref{sec:stability}; it is not obtained
+by selecting an abstract infinite branch.
+
+\subsection{Relational composition}
+
+Suppose a producer returns a finite relation \(R(x,a)\), while a consumer at state
+\(s\) may accept several answers and move to \(s'=T(s,a)\).  A locally valid answer
+can lead to a dead end at a later stage.  Backward viability solves this global finite
+constraint problem: candidate \((s,a)\) is retained only when it has a compatible
+continuation to the fixed final horizon.  The forward selector then produces a
+successful interaction trace.
+
+This is the correct finite replacement for a higher-type oracle strategy.  The entire
+answer tree is finite after the final demand and clock are fixed.  The backward pass
+computes a winning region; the forward pass selects one witness.  If the consumer's
+observable is stable over all winning traces, the internal selection is erased.
+
+\subsection{Applications}
+
+The same recurrence covers several apparently different situations.
+
+\begin{itemize}
+\item \textbf{Root clouds.}  Candidates are rational disks or boxes with residual
+certificates; edges express overlap or controlled movement.
+\item \textbf{Charted geometry.}  Candidates are local charts or transition branches;
+edges express overlap compatibility.
+\item \textbf{Simplicial observation.}  Candidates are vertices in a carrier cloud;
+edges express admissible selections.
+\item \textbf{Approximate minimizers.}  Candidates are net points within a tolerance;
+edges enforce motion between refinements.
+\item \textbf{Finite gluing.}  Candidates are local sections; compatibility is equality
+or witnessed equality on overlaps.
+\item \textbf{Adaptive proof search.}  Candidates are local certificates; edges express
+that the next verifier state accepts them.
+\end{itemize}
+
+The domain-specific work lies in defining validity and compatibility and proving
+nonemptiness.  The viability compiler is generic.

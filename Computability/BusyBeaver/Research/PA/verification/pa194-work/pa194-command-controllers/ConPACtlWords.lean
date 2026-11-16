@@ -135,18 +135,22 @@ structure Sem where
   axT : V → V → V → V
   /-- The eight leaf formulas pushed by AX, as functions of `D H A d`. -/
   leaf : ℕ → V → V → V → V → V
+  /-- The label of the generalization pushed by AX, as a function of `A d`: the register `d`
+  for the binder `U(d, h)`, the argument `A` for the binder `U(c, h)`. -/
+  genL : V → V → V
   shift_eq : ∀ y x t w d h : V, cstep ⟪0, y, x⟫ ⟪t, w, d, h⟫ = ⟪h, second w, d, first w⟫
   mp_eq : ∀ y x t w d h : V, cstep ⟪1, y, x⟫ ⟪t, w, d, h⟫ =
     if 4 * cantor t (d + y) = h then mpStore mp (d + y) w else ⟪0, w, d + y, 0⟫
   ax_eq : ∀ A y x z t w d h : V, cstep ⟪A + 1 + 1, y, x, z⟫ ⟪t, w, d, h⟫ =
     if ax11 then
       ⟪0, cantor (axT (h + y) (d + x) A)
-        (stack10 (fun i => leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t w), z, 0⟫
+        (stack10 (fun i => leaf i (d + x) (h + y) A d) (4 * cantor h (genL A d) + 2) t w), z, 0⟫
     else
       ⟪axT (h + y) (d + x) A,
-        stack10 (fun i => leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t w, 0, 0⟫
+        stack10 (fun i => leaf i (d + x) (h + y) A d) (4 * cantor h (genL A d) + 2) t w, 0, 0⟫
   axT_ne_one : ∀ H D A : V, axT H D A ≠ 1
   leaf_ne_one : ∀ (i : ℕ) (D H A d : V), leaf i D H A d ≠ 1
+  genL_self : ∀ i : V, genL i i = i
 
 attribute [instance] Sem.cstep_defined
 

@@ -24,6 +24,12 @@ eleven-entry layout of PA194AX11 (`ax11 = true`,
 leaves the top `0` and sets `d` to a fourth field `z` of the command:
 `⟪0, [G, q₁, …, q₈, U(d, h), t; w], z, 0⟫`.
 
+The leaves and the gate are the fields `Sem.leaf` and `Sem.axT`, of which only `≠ 1` is
+assumed. The label of the pushed generalization is the field `Sem.genL A d`, a function of
+the label argument `A` of the command and of the register `d`: it is `d` above, and `A` for
+the candidates whose AX pushes `U(c, h)` (PA194G and its descendants). The only assumption is
+`genL i i = i`.
+
 [`pa194-model-fairness`](../pa194-model-fairness/README.md) proves, in an arbitrary model `V`
 of `𝗜𝚺₁`, that the scheduler of the primary protocol meets a halting SHIFT whenever some
 command word computes the contradiction code `1`, and that the formulas computed by command
@@ -61,12 +67,15 @@ table is compiled against them. The differences are:
   eleven-entry layout the gate is the first stack entry and two SHIFTs bring it to the top.
 - The seed of a command has a fourth field in the eleven-entry layout: `encCL`, `ptrL`,
   `nextLL` and `cmdL` take the layout as an argument.
+- The generalization word (`GENTAIL`) sets `d` to the label `i` and then uses the command
+  `AX i 0 0`, whose label argument is also `i`. So the pushed generalization is `U(i, a)`
+  for every `genL` with `genL i i = i`, and `G_gen` does not depend on the binder.
 
 ## Modules
 
 | Module | Content |
 | --- | --- |
-| `ConPACtlWords` | `MPKind`, `mpStore`, `Sem V` with the fields `mp`, `cacheTest` and `ax11`, `Sem.Halts`, `Sem.n`; `tstep`, `texec`; concatenation of words. |
+| `ConPACtlWords` | `MPKind`, `mpStore`, `Sem V` with the fields `mp`, `cacheTest`, `ax11` and `genL`, `Sem.Halts`, `Sem.n`; `tstep`, `texec`; concatenation of words. |
 | `ConPACtlFrame` | `follows_exec`, `Good S W r`, `G S r`, `good_run`. |
 | `ConPACtlGadgets` | `not_halts`; `itemsL`, `topL`; POP, PUSH, DISCARD; `ax_shifts`, `ax_all`, `ax_nine`. PUSH and DISCARD use only the failing MP. |
 | `ConPACtlClosure` | `select_run`; `G_leaf`, `G_axT`, `G_gen`, `G_mp`. |

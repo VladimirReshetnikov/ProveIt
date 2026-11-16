@@ -1,0 +1,148 @@
+\section{Boolean reflection and bounded search}\label{sec:boolean-search}
+
+\subsection{Boolean conventions}
+
+Use numerical Booleans \(0,1\).  Define primitive-recursive operations
+\[
+ \neg b,\qquad b\wedge c,\qquad b\vee c,\qquad b\Rightarrow c,
+\]
+by fixed case distinctions, and normalize every Boolean-producing term so that an object-level range theorem proves \(b=0\vee b=1\).  Equality and order on natural numbers are primitive recursive; let
+\[
+ \mathsf{eq}(s,t),\quad \mathsf{lt}(s,t),\quad \mathsf{le}(s,t)
+\]
+denote their Boolean codes.  The basic reflection library proves, for example,
+\[
+ \mathsf{eq}(s,t)=1\ \leftrightarrow\ s=t,
+ \qquad
+ \mathsf{lt}(s,t)=1\ \leftrightarrow\ s<t.
+\]
+The right-hand relations are themselves expressed in the fixed arithmetic language, for instance using truncated subtraction or bounded witnesses.  Once proved, application modules use only the reflected form.
+
+\subsection{Finite folds}
+
+For a Boolean predicate term \(p(i,\vec x)\), define primitive-recursive folds
+\begin{align*}
+ \mathsf{All}(0,\vec x)&=1,
+ &\mathsf{All}(S n,\vec x)&=\mathsf{All}(n,\vec x)\wedge p(n,\vec x),\\
+ \mathsf{Any}(0,\vec x)&=0,
+ &\mathsf{Any}(S n,\vec x)&=\mathsf{Any}(n,\vec x)\vee p(n,\vec x).
+\end{align*}
+These functions carry all bounded quantifier content in a numerical state.
+
+\begin{theorem}[Finite-fold reflection]\label{thm:fold-reflection}
+Assume \(p(i,\vec x)\) is Boolean-valued and reflects a fixed formula \(P(i,\vec x)\).  Then \iPRA\ derives
+\begin{align*}
+ \mathsf{All}(N,\vec x)=1
+   &\leftrightarrow \forall i<N\;P(i,\vec x),\\
+ \mathsf{Any}(N,\vec x)=1
+   &\leftrightarrow \exists i<N\;P(i,\vec x).
+\end{align*}
+Moreover the induction used to establish the fold equations has a quantifier-free matrix.
+\end{theorem}
+
+\begin{proof}
+The executable state is only the accumulator Boolean.  Its defining equations are instances of primitive recursion.  First prove by quantifier-free induction that the accumulator remains Boolean.  For the universal fold, prove the two implications externally to the loop invariant.
+
+For left-to-right reflection, use ordinary induction on \(N\) at the proof-construction level.  At zero the bounded universal statement is vacuous.  At \(S N\), the successor equation and Boolean reflection of conjunction yield both \(\mathsf{All}(N)=1\) and \(p(N)=1\).  Apply the induction hypothesis to the first and predicate reflection to the second.
+
+For right-to-left reflection, again use induction on \(N\).  The successor bounded universal supplies the prefix and the endpoint.  Reflect these to \(\mathsf{All}(N)=1\) and \(p(N)=1\), then use the conjunction equation.  The existential fold is dual: at the successor stage, split a bounded witness into the cases \(i<N\) and \(i=N\), and use reflected disjunction.  All finite case splits are intuitionistically valid because the relevant numerical comparisons have decidable Boolean codes.
+
+A direct Lean implementation may package the prefix assertions as formulas containing bounded quantifiers, but it need not apply the \(\PRAAx\) induction rule to those formulas.  The only object recurrence requiring induction is the quantifier-free equality that defines the fold.  Reflection is then assembled from the fold equations, comparison reflection, and natural-deduction reasoning.
+\end{proof}
+
+\subsection{Structural Booleanization}
+
+A \emph{fixed bounded formula} is generated from atomic equalities and inequalities by propositional connectives and quantifiers of the forms
+\[
+  \forall i<t(\vec x)\;A(i,\vec x),
+  \qquad
+  \exists i<t(\vec x)\;A(i,\vec x),
+\]
+where all terms are primitive recursive and the formula syntax is fixed at compilation time.
+
+\begin{theorem}[Bounded Booleanization]\label{thm:booleanization}
+For every fixed bounded formula \(A(\vec x)\), one can effectively construct a primitive-recursive Boolean term \(\chi_A(\vec x)\) and an object-level derivation
+\[
+  \vdash[\PRAAx] A(\vec x)\leftrightarrow \chi_A(\vec x)=1.
+\]
+The construction is syntax directed and uses no universal evaluator.
+\end{theorem}
+
+\begin{proof}
+Proceed by structural recursion in the metatheory on the fixed formula \(A\).
+\begin{itemize}
+  \item For an atomic equation or comparison, use the corresponding reflected Boolean.
+  \item For \(B\wedge C\), \(B\vee C\), and \(B\to C\), combine the recursively constructed Booleans with fixed Boolean operations and compose their reflection theorems in intuitionistic logic.  Implication is valid because the antecedent Boolean is decidable; its truth table is checked by the four Boolean cases.
+  \item For a bounded universal or existential, recursively Booleanize the matrix and apply \cref{thm:fold-reflection} at the bound term.
+\end{itemize}
+The compiler constructs a dedicated term for this one syntax tree.  It does not code formulas and evaluate their codes inside the object theory.  Thus the construction is compatible with the impossibility of a total universal primitive-recursive evaluator.
+\end{proof}
+
+\subsection{Checked least bounded search}
+
+This component is no longer merely a framework target.  The current module
+\path{Derivations/Lean/IPRADerivations/Core/Search.lean} defines, for a fixed two-variable term \(f(i,x)\), a primitive-recursive term
+\[
+  \mu_f(N,x)\le N
+\]
+that is the least \(i<N\) with \(f(i,x)=0\), and equals the sentinel \(N\) if there is no such index.  Its recurrence is
+\begin{align*}
+  \mu_f(0,x)&=0,\\
+  \mu_f(N+1,x)&=\mu_f(N,x)+
+     \mathsf{eqb}(\mu_f(N,x),N)\cdot \mathsf{sg}(f(N,x)).
+\end{align*}
+Here \(\mathsf{sg}(z)=0\) exactly at zero and \(1\) at successors.  Thus the state increments from \(N\) to \(N+1\) precisely when no earlier zero was found and \(f(N,x)\ne0\); otherwise it freezes at the first zero.
+
+The checked open invariant, with \(N,i,x\) free, is
+\[
+  \mu_f(N,x)\le N
+  \;\wedge\;
+  \bigl(\mu_f(N,x)<N\to f(\mu_f(N,x),x)=0\bigr)
+  \;\wedge\;
+  \bigl(i<\mu_f(N,x)\to f(i,x)\ne0\bigr).
+\]
+Every component is quantifier-free.  The file proves this invariant by one use of \texttt{IPRA.ind}, then exports the following theorems.
+
+\begin{theorem}[Checked least-zero search]\label{thm:least-search}
+For every fixed term \(f(i,x)\), the current derivation library supplies object-level derivations of:
+\begin{enumerate}[label=(\alph*)]
+  \item \(\mu_f(N,x)\le N\);
+  \item if \(\mu_f(N,x)<N\), then \(f(\mu_f(N,x),x)=0\);
+  \item if \(i<\mu_f(N,x)\), then \(f(i,x)\ne0\);
+  \item if \(f(i,x)=0\) and \(i<N\), then \(\mu_f(N,x)<N\), \(f(\mu_f(N,x),x)=0\), and \(\mu_f(N,x)\le i\).
+\end{enumerate}
+These are the checked theorems
+\path{Search.search_spec}, \path{Search.search_minimal}, and
+\path{Search.search_found}, after term instantiation.
+\end{theorem}
+
+A Boolean predicate \(p(i,x)\) that succeeds at value \(1\) is reduced to zero search by
+\[
+  f_p(i,x)=1\mathbin{\dotminus}p(i,x).
+\]
+Once Boolean range and reflection are available, \(f_p=0\) is equivalent to \(p=1\).  The sentinel comparison \(\mu_{f_p}(N,x)<N\) is therefore the canonical bounded-existence Boolean, and the returned term is the least successful witness.  The framework should expose a thin adapter around the checked search module rather than maintain a second search implementation.
+
+\begin{corollary}[Bounded witness adapter]\label{cor:bounded-witness-adapter}
+Let \(p\) be Boolean-valued and let \(P\leftrightarrow p=1\) be proved in the object theory.  Then the term \(w=\mu_{f_p}(N,x)\) satisfies:
+\begin{enumerate}[label=(\roman*)]
+  \item \(w<N\to P(w,x)\);
+  \item \(P(i,x)\wedge i<N\to w<N\wedge P(w,x)\wedge w\le i\);
+  \item \(i<w\to\neg P(i,x)\).
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Instantiate the checked search theorems for \(f_p\).  Use Boolean range to prove \(f_p(i,x)=0\leftrightarrow p(i,x)=1\), then compose with the supplied reflection theorem for \(P\).  Equality substitution transports the statements at the selected term.  No new induction is required.
+\end{proof}
+
+\subsection{Derived finite algorithms}
+
+The same search theorem yields a library of reusable combinators.
+\begin{itemize}
+  \item \textbf{Bounded argmin.}  Search the least index attaining the least value in a finite table; comparison reflection supplies the predicate.
+  \item \textbf{Duplicate-free enumeration.}  Scan a bounded box, append an item only if its verifier succeeds and no earlier appended item is equivalent.
+  \item \textbf{Finite cover selection.}  Search a finite net for the first cell whose certified test covers the current query.
+  \item \textbf{Pivot selection.}  Under a margin certificate asserting that some pivot exceeds a threshold, search the least such pivot.  Without the threshold, do not claim an exact pivot.
+  \item \textbf{Finite path successor.}  Given a viability table, search the least compatible viable successor.
+\end{itemize}
+Each derived algorithm inherits a QF invariant because every finite universal or existential subcondition has first been replaced by a Boolean fold.

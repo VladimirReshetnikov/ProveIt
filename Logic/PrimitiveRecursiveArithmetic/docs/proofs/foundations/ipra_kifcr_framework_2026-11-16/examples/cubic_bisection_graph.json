@@ -1,0 +1,60 @@
+{
+  "name": "cubic_bisection_y3_plus_y_eq_x",
+  "version": 2,
+  "parameters": ["x_code", "precision"],
+  "terminals": ["midpoint_observer"],
+  "nodes": [
+    {
+      "id": "monotonicity",
+      "kind": "algebra",
+      "data_dependencies": [],
+      "proof_dependencies": [],
+      "formula": "(b-a)(f(b)-f(a))=(b-a)^2(a^2+ab+b^2+1)",
+      "certificate": "generated ipra_ring equality plus order lemmas",
+      "demand": null,
+      "cap": null,
+      "residual_key": null,
+      "producer_origin": "IPRADerivations algebra backend",
+      "status": "lean_outline"
+    },
+    {
+      "id": "input_name",
+      "kind": "boundary",
+      "data_dependencies": [],
+      "proof_dependencies": [],
+      "formula": "ValidInputApproximation(x_code, precision+3)",
+      "certificate": null,
+      "demand": "precision+3",
+      "cap": null,
+      "residual_key": "valid-input-name",
+      "producer_origin": "input representation contract",
+      "status": "residual"
+    },
+    {
+      "id": "bisection_loop",
+      "kind": "loop",
+      "data_dependencies": ["input_name"],
+      "proof_dependencies": ["monotonicity", "input_name"],
+      "formula": "bracket and dyadic-width QF invariant",
+      "certificate": "generated LoopCertificate",
+      "demand": "precision+3",
+      "cap": null,
+      "residual_key": null,
+      "producer_origin": "KIFC-R trace compiler",
+      "status": "lean_outline"
+    },
+    {
+      "id": "midpoint_observer",
+      "kind": "observer",
+      "data_dependencies": ["bisection_loop"],
+      "proof_dependencies": ["bisection_loop", "monotonicity"],
+      "formula": "output error <= 2^-precision",
+      "certificate": "bracket width plus parameter stability",
+      "demand": "precision",
+      "cap": null,
+      "residual_key": null,
+      "producer_origin": "KIFC-R observer library",
+      "status": "lean_outline"
+    }
+  ]
+}

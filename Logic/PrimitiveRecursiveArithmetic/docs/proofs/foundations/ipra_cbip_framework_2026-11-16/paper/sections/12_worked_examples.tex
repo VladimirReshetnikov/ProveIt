@@ -1,0 +1,84 @@
+\section{Worked examples}
+
+\subsection{A bounded \texorpdfstring{\(\forall\exists\forall\)}{forall-exists-forall} contract}
+
+Consider the finite statement
+\[
+  \forall q<Q\;\exists z<2Q+1\;\forall e<q+1\quad z+e\geq q.
+\]
+For each \(q<Q\), choose \(z=q\).  Since \(q<2Q+1\) and \(e\geq0\), every local test passes.  The positive strategy certificate stores the table \(z(q)=q\); the checker verifies the bounds and each inequality by finite loops.
+
+The same compiled game also has informative failure behavior when the witness bound is changed to \(z<q\) and the test becomes \(z\geq q\).  It returns the least failing challenge \(q>0\), and for every candidate \(z<q\) it returns the test \(e=0\) witnessing failure.  This small example exercises dependent bounds, adversarial checks, success strategies, and counterstrategies without any unbounded reasoning.
+
+\subsection{Relational square-root approximation}
+
+For \(a=2\), at precision level \(n\) enumerate dyadic candidates
+\[
+  C_n=\left\{\frac{j}{2^n}:0\leq j\leq2^{n+2},\quad
+  \left|\left(\frac{j}{2^n}\right)^2-2\right|\leq 4\cdot2^{-n}\right\}.
+\]
+All tests become integer inequalities after multiplying by \(2^{2n}\).  Let candidates at adjacent levels be compatible when
+\[
+  |q-r|\leq 2^{1-n}.
+\]
+
+A finite-horizon consumer asks only for levels up to \(h\).  The evidence machine's state contains the current level and the last candidate; local validity checks membership in \(C_n\) and compatibility.  Backward viability marks candidates that can reach level \(h\); forward execution chooses the least viable chain.
+
+Nonemptiness can be proved by a bounded least-crossing search.  Let \(j_n\) be the least integer satisfying \(j_n^2\geq2^{2n+1}\), and put \(q_n=(j_n-1)/2^n\).  Then
+\[
+  q_n^2<2\leq(q_n+2^{-n})^2,
+\]
+so
+\[
+  0<2-q_n^2\leq2q_n2^{-n}+2^{-2n}\leq4\cdot2^{-n}.
+\]
+A direct comparison of adjacent crossing integers gives the compatibility bound.  Thus every finite horizon is viable.
+
+A consumer that asks only for a residual bound or for a symmetric expression can use the chain and erase its internal choices.  The framework does not infer that the least chains for all \(h\) are prefixes of one another.  A coherent square-root name is obtained separately from uniqueness/monotonicity, not from viability alone.
+
+\subsection{Guarded reciprocal with an explicit margin}
+
+Suppose samples \(a(n)\) satisfy \eqref{eq:regular}, and the input includes a rational \(\alpha>0\) with \(|x|\geq\alpha\).  To compute an inverse sample of precision \(k\), choose \(n\) so that
+\[
+  2^{-n+1}\leq\alpha/2,
+  \qquad
+  \frac{8\cdot2^{-n}}{\alpha^2}\leq2^{-k-2}.
+\]
+Both inequalities are decided by bounded doubling searches.  Set \(b(k)=1/a(n)\) using the totalized rational reciprocal.
+
+Regularity gives \(|a(n)|\geq\alpha/2\), so the numerator is nonzero.  For later requested samples \(a(m)\),
+\[
+ |b(k)-1/a(m)|\leq \frac{4|a(n)-a(m)|}{\alpha^2}
+ \leq \frac{8\cdot2^{-n}}{\alpha^2}\leq2^{-k-2}.
+\]
+The CBIP state records the selected \(n\), the cross-multiplied guard, and the error inequality.  The terminal observer returns the rational inverse sample; no semantic real or partial function occurs in the object formula.
+
+\subsection{Finite-net approximate minimization}
+
+On \([0,2]\), let \(R(y)=|y^2-2|\).  For \(y,z\in[0,2]\),
+\[
+  |R(y)-R(z)|\leq|y^2-z^2|=|y-z||y+z|\leq4|y-z|.
+\]
+Use the dyadic grid \(G_n=\{j/2^n:0\leq j\leq2^{n+1}\}\).  Evaluate the residual exactly and choose the least grid minimizer by bounded search.  A least-crossing argument supplies a grid point within \(2^{-n}\) of \(\sqrt2\) in the explanatory metatheory, while internally the same integer crossing proves directly that its residual is at most \(4\cdot2^{-n}\).  The selected minimizer has no larger residual.
+
+This proof uses a finite cover, a Lipschitz estimate, exact rational evaluation, and an argmin invariant.  It does not use an abstract extreme-value theorem.  If a coherent positive root name is desired, monotonicity and a separated positive interval turn residual bounds into distance bounds, yielding nested isolating intervals.
+
+\subsection{Height-bounded enumeration}
+
+For the equation \(x^2+y^2=5\), suppose the producer supplies \(\max(|x|,|y|)\leq3\).  Enumerate the finite box \([-3,3]^2\), test the equation, and canonically sort successful pairs.  The list is
+\[
+  (\pm1,\pm2),\qquad(\pm2,\pm1).
+\]
+The checker proves:
+\begin{enumerate}
+\item every listed pair satisfies the equation;
+\item the list has no duplicates under the chosen encoding;
+\item any solution obeying the supplied height bound occurs in the enumerated box and therefore in the list.
+\end{enumerate}
+The same generic program works after replacing the elementary bound by a Runge, Baker, descent, or other verified height certificate.  The generic program does not prove that certificate.
+
+\subsection{A uniform metastability selector without a uniform rate}
+
+For a simulated machine \(e\), use the sequence \(x_e(n)\in\{0,1\}\) from \Cref{sec:barriers}.  Given a finite challenge \(g\), simulate \(e\) for \(g(0)\) steps.  If no halt occurs, return the stable window starting at zero.  If the first halt occurs at \(t\leq g(0)\), return the window starting at \(t\).  The selector is a bounded program, and its certificate checks every term in the chosen interval.
+
+This is a useful regression example because it formally prevents an invalid API design.  A type called \code{Metastable} must expose a challenged window, not a tail modulus.  Any coercion from the former to the latter would contradict the computability argument of \Cref{sec:barriers}.

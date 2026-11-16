@@ -1,0 +1,92 @@
+\section{Claim status, validation, and limitations}\label{sec:status}
+
+\subsection{Theorem ledger}
+
+\begin{longtable}{@{}p{0.055\textwidth}p{0.50\textwidth}p{0.355\textwidth}@{}}
+\toprule
+ID & Claim & Status in this packet \\
+\midrule
+\endhead
+R1 & Local rule composition and proof-schedule compilation by \texttt{Prf.trans} & Human-complete; source-oriented Lean core \\
+R2 & Loop-certificate compilation through current \texttt{IPRA.ind}/\texttt{IPRA.inst} & Human-complete; source-oriented Lean core \\
+R3 & Fixed bounded-formula Booleanization & Human-complete argument; Lean outline; shared checked module not yet present \\
+R4 & Least bounded zero search, soundness, foundness, and minimality & Inherited current checked \texttt{Core.Search}; adapter outlined \\
+R5 & Pairing, projections, integer square root, and two-track simultaneous recursion & Inherited current checked \texttt{Core.Pairing} \\
+R6 & Residual normalization and conditional proof-graph compilation & Human-complete metatheorem; Python-tested metadata algorithm; Lean outline \\
+R7 & Closure of residualized theorem by supplied producer proofs & Human-complete; direct use of \texttt{Prf.trans}; Lean outline \\
+R8 & Least reverse demand for an acyclic graph & Human-complete; exact Python tests \\
+R9 & Capped monotone demand stabilization and least closure & Human-complete; exact Python tests; object-level Lean outline \\
+R10 & One-loop normal form for fixed bounded constructions & Human-complete metaconstruction; generated object proof remains to implement \\
+R11 & Residualized kernel graph compilation relative to local certificates & Human-complete metatheorem; generic Lean generator open \\
+R12 & Viability iff compatible finite suffix & Human-complete; exact/brute-force Python tests; Lean outline \\
+R13 & Least viable finite path & Human-complete; exact Python tests; Lean outline reusing checked search \\
+R14 & Exact stable-observer elimination & Human-complete; Lean outline \\
+R15 & Diameter-stable choice erasure & Human-complete; exact Python tests \\
+R16 & Regular-name extraction from diameter, motion, and tail data & Human-complete conditional theorem; exact budget tests \\
+R17 & Guarded totalization and reverse precision composition & Human-complete conditional theorem \\
+R18 & Finite-net transfer and finite-cover gluing & Human-complete conditional theorems \\
+R19 & Height bound to complete bounded list, and converse bound from a nonempty complete list & Human-complete under explicit coding/canonicalization assumptions; exact Python tests \\
+R20 & Polynomial equality nodes through \texttt{ipra\_ring} & Inherited checked backend; adapter outline \\
+R21 & Native transfer through \texttt{pra\_iff\_native} & Inherited checked theorem \\
+B1 & No total universal primitive-recursive evaluator & Human-complete diagonal argument \\
+B2 & No unguarded exact selector through root/eigenvalue/axis collisions & Constructive computability barrier \\
+B3 & Metastability does not generally yield a Cauchy modulus & Computability barrier \\
+B4 & Finiteness/cardinality alone does not yield a search cutoff & Human-complete reduction; generic enumeration remains conditional on a height producer \\
+B5 & Mere represented nonzeroness does not uniformly yield an apartness modulus & Constructive computability barrier \\
+\bottomrule
+\end{longtable}
+
+\subsection{Validation layers}
+
+The archive distinguishes five kinds of evidence.
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Inherited checked derivations.}  These are existing current-repository theorems whose endpoint is \(\Prf\,\PRAAx\), including search and pairing.  They were inspected through the pinned source interface; this artifact did not rebuild the whole repository.
+  \item \textbf{Human mathematical proofs.}  The PDF gives the finitary arguments and their induction/representation audits.
+  \item \textbf{Source-oriented Lean outlines.}  The archive gives structures, definitions, target signatures, and a dependency order.  Lean is not installed in the artifact environment, so no new-module compilation is claimed.
+  \item \textbf{Exact executable evidence.}  Python uses integers and \texttt{Fraction}, tests success and failure cases, and compares viability/closure algorithms with brute force on finite instances.
+  \item \textbf{Artifact validation.}  The PDF is compiled, preflighted, text-inspected, rendered, and visually audited; JSON and checksums are validated.
+\end{enumerate}
+
+\subsection{What the framework resolves}
+
+At the generic level, the framework resolves:
+\begin{itemize}
+  \item how to keep all bounded content out of QF induction matrices;
+  \item how to reuse checked bounded search and simultaneous recursion;
+  \item how to compose local object proofs into a theorem-specific global derivation;
+  \item how to represent unavailable producers without overstating the result;
+  \item how to compute least acyclic or capped cyclic finite demands;
+  \item how to use a finite relation without global choice;
+  \item how to erase witness choices through exact or metric stability;
+  \item how to isolate guards, finite nets, and height cutoffs as explicit quantitative inputs.
+\end{itemize}
+
+\subsection{What remains theorem-specific or open}
+
+This report does not claim:
+\begin{itemize}
+  \item a general effective Faltings, Siegel, Roth, or Mordell--Weil generator;
+  \item effective Chebotarev, Siegel--Walfisz, or Bombieri--Vinogradov constants beyond whatever explicit estimates are separately supplied;
+  \item exact Puiseux labels from arbitrary Cauchy-presented coefficients across singular fibers;
+  \item a spectral gap or eigenvector label at repeated eigenvalues;
+  \item a Cauchy modulus from metastability alone;
+  \item a universal PR evaluator or internal theorem compiler;
+  \item a completed checked generic \KIFCR\ library in the current repository.
+\end{itemize}
+For these targets, the report identifies the finite verifier/composition theorem and the exact residual producer formula.  This is genuine progress: all avoidable coding and logical ambiguity is removed, while the remaining mathematical content is stated with the right quantifier order.
+
+\subsection{Required ledger for migrated packets}
+
+A packet migrated to the framework should record:
+\begin{enumerate}[label=(\arabic*)]
+  \item the exact object formula and external interpretation;
+  \item every numerical representation and totalization convention;
+  \item the fixed PR symbols or generated terms;
+  \item the local rule list, distinguishing inherited checked proofs, new checked proofs, outlines, and residual boundaries;
+  \item every induction call and its QF witness;
+  \item acyclic and cyclic demand tables, caps, and overflow obligations;
+  \item witness mode: deterministic, relational, exact-stable, diameter-stable, projective/quotient, or gap-guarded;
+  \item all moduli, margins, heights, cover data, and effective constants with their producer/verifier status;
+  \item clean build, absence of \texttt{sorry}, and axiom audit;
+  \item exact tests, labeled as tests rather than proof.
+\end{enumerate}

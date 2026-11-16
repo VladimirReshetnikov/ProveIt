@@ -194,6 +194,7 @@ noncomputable def semK (k : MPKind) (ct a : Bool) : ConPA.Ctl.Sem M where
   ax11 := a
   axT := fun H D A => axTop H D A
   leaf := leafM
+  genL := fun _ d => d
   shift_eq := by
     intro y x t w d h
     rw [cstepK_eval]
@@ -208,6 +209,7 @@ noncomputable def semK (k : MPKind) (ct a : Bool) : ConPA.Ctl.Sem M where
     cases a <;> simp [axStack, ConPA.Ctl.stack10, leafM, allValue, impValue]
   axT_ne_one := axTop_ne_one
   leaf_ne_one := leafM_ne_one
+  genL_self := fun _ => rfl
 
 /-! ## The scheduler step -/
 

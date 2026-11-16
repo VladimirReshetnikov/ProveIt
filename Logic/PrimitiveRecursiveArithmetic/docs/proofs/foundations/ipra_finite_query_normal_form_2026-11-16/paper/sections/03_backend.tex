@@ -1,0 +1,94 @@
+\section{The exact iPRA backend}
+
+This section fixes the object theory used throughout.  The details matter,
+because several tempting shortcuts are invalid in so weak and syntactic a
+setting.
+
+\subsection{Primitive-recursive terms}
+
+For each arity \(k\), the repository datatype \(\mathrm{PR}(k)\) is generated
+by zero, successor, projections, composition, and primitive recursion.  A term
+\(\mathrm{PTm}(n)\) over \(n\) free variables is either a variable or an
+application of a fixed PR symbol.  Simultaneous substitution is defined by
+structural recursion.
+
+The theory \(\PRAAx\) contains the defining equations for every PR constructor,
+successor separation and injectivity, and induction for quantifier-free
+formulas.  Derivability
+\[
+   \Gamma\objectvdash\varphi
+\]
+is the inductive natural-deduction relation \leanname{Prf PRAAx Gamma phi}.
+The logical rules are intuitionistic.  Equality is reflexive and admits
+simultaneous Leibniz substitution.
+
+\subsection{Structural facts used by the framework}
+
+Four checked rules form the logical spine of \(\FQNF\).
+
+\begin{enumerate}
+\item \textbf{Substitution.}
+A derivation may be specialized by arbitrary object terms.
+
+\item \textbf{Weakening.}
+A derivation remains valid under additional assumptions.
+
+\item \textbf{Simultaneous cut.}
+If \(\Delta\objectvdash\varphi\) and every member of \(\Delta\) is derivable
+from \(\Gamma\), then \(\Gamma\objectvdash\varphi\).  This is
+\leanname{Prf.trans}.
+
+\item \textbf{Quantifier-free induction.}
+For a QF formula \(I(z,\vec x)\), object proofs of the base and successor step
+yield \(\forall z\,I(z,\vec x)\).  Parameters \(\vec x\) are allowed and may
+include quantified hypotheses in the surrounding context; only the induction
+matrix must be QF.
+\end{enumerate}
+
+The last point is often misunderstood.  The final theorem may be quantified or
+contain implications and existentials.  What must remain quantifier-free is the
+formula propagated by induction.  A terminal implication can extract an
+arbitrary conclusion after the finite loop.
+
+\subsection{Arithmetic components already available}
+
+The checked derivation library supplies almost all low-level ingredients needed
+for the normal form.
+
+\begin{itemize}
+\item natural addition, multiplication, predecessor, truncated subtraction,
+and order;
+\item finite sums, products, powers, and factorials;
+\item a Boolean equality test \(\mathsf{eqb}\);
+\item pairing with proved projections and simultaneous recursion;
+\item quotient and remainder with Euclidean existence and uniqueness;
+\item bounded least search with correctness and minimality;
+\item bounded-sum reflection for finite universal conditions;
+\item generic recursion-invariant patterns and matrix/ring tools.
+\end{itemize}
+
+The framework therefore does not propose a second arithmetic foundation.  It
+organizes these ingredients into a reusable certificate compiler.
+
+\subsection{Three forbidden inferences}
+
+\begin{warning}[Host truth is not object derivability]
+A Lean proof that a natural-number function has a property does not create a
+\(\Prf\,\PRAAx\) derivation of the encoded formula.  Every semantic lemma used
+by a certificate checker must have a reflected object proof.
+\end{warning}
+
+\begin{warning}[A Lean datatype is not a universal PR evaluator]
+Although \(\mathrm{PR}\) is an inductive datatype in Lean, there is no total
+primitive-recursive evaluator uniformly interpreting arbitrary PR syntax on
+all inputs.  \(\FQNF\) specializes every program before internalization.
+\end{warning}
+
+\begin{warning}[Finiteness is not a cutoff]
+A proposition that a set is finite does not supply a numerical bound below
+which a primitive-recursive search can stop.  The bound is a separate producer
+field and may contain the deepest mathematics in the application.
+\end{warning}
+
+These warnings are not bureaucratic.  They exactly locate the failures in
+several ambitious proof packets.

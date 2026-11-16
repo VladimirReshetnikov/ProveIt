@@ -1,0 +1,104 @@
+\section{Least bounded search and finite choice}
+\label{sec:search}
+
+Bounded search is the canonical way to turn a decidable finite existence statement
+into a primitive-recursive witness.  It is also the basic deterministic selector used
+inside demand passes, viability tables, finite nets, and certificate checkers.  The
+repository already contains a checked object implementation in
+\code{IPRADerivations.Core.Search}; we state the abstract theorem because it is a
+building block of the normal form.
+
+\subsection{Definition by primitive recursion}
+
+Let \(p(i,x)\in\B\) be a primitive-recursive Boolean predicate, with the convention
+that \(p(i,x)=1\) means success.  Define
+\[
+ \mu_p(0,x)=0
+\]
+and, for \(N\ge0\),
+\[
+ \mu_p(N+1,x)=
+ \begin{cases}
+   \mu_p(N,x),&\mu_p(N,x)<N,\\
+   N,&\mu_p(N,x)=N\ \text{and}\ p(N,x)=1,\\
+   N+1,&\mu_p(N,x)=N\ \text{and}\ p(N,x)=0.
+ \end{cases}
+\]
+Every branch is expressible by equality tests and selectors, so \(\mu_p\) is primitive
+recursive.  Equivalently, using a sign convention in which zero means success, one may
+use the recurrence already implemented in the repository.
+
+\begin{theorem}[Least bounded search]
+\label{thm:bounded-search}
+The function \(\mu_p\) satisfies, and \(\iPRA\) proves:
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item \(\mu_p(N,x)\le N\);
+\item if \(\mu_p(N,x)<N\), then \(p(\mu_p(N,x),x)=1\);
+\item if \(i<\mu_p(N,x)\), then \(p(i,x)=0\);
+\item if \(i<N\) and \(p(i,x)=1\), then
+      \(\mu_p(N,x)<N\) and \(\mu_p(N,x)\le i\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Use one induction on \(N\) with a joint quantifier-free invariant encoding (i)--(iii)
+for an arbitrary comparison index \(i\).  The base case is immediate.  For the step,
+there are two cases.  If the old search value is below \(N\), the recurrence freezes
+it; all three clauses follow from the induction hypothesis.  If the old value equals
+\(N\), inspect the Boolean \(p(N,x)\).  A success freezes the new value at \(N\); a
+failure moves it to \(N+1\).  In either case bounded minimality follows by combining
+the old minimality with the value at \(N\).  Clause (iv) is then derived by
+contradiction: if \(i<\mu_p(N,x)\), clause (iii) contradicts \(p(i,x)=1\); otherwise
+\(\mu_p(N,x)\le i<N\), and clause (ii) supplies success.  All case distinctions are on
+numerical equalities or Boolean values, so the invariant is quantifier-free.
+\end{proof}
+
+\subsection{Finite choice is harmless when its bound is explicit}
+
+A common constructive concern is the use of ``choose an \(i\)'' from a finite set.
+In this setting the concern is not finite choice itself.  Once a bound \(N\) and a
+Boolean verifier are available, \cref{thm:bounded-search} gives a canonical least
+witness.  The real questions are:
+
+\begin{itemize}
+\item where the bound \(N\) came from;
+\item whether the verifier captures the intended mathematical property; and
+\item whether choosing the least encoded witness is extensionally legitimate.
+\end{itemize}
+
+The first question leads to producer boundaries and the cardinality-to-cutoff barrier.
+The second is an object-proof obligation.  The third motivates relational outputs:
+least choice is computationally available but may not respect equality of represented
+objects.  One should therefore choose least only after proving that the downstream
+observable is independent of the enumeration, or use least choice merely as an
+internal path selector whose output is later erased by a stability theorem.
+
+\subsection{Bounded searches over coded tuples}
+
+Pairing and simultaneous recursion allow a search over any fixed finite product to be
+reduced to one numerical interval.  For example, to search
+\((i,j)\) with \(i<I\) and \(j<J\), use the code \(k=iJ+j<IJ\), recover
+\(i=k\mathbin{/}J\) and \(j=k\bmod J\), and Booleanize the range conditions.  More
+complex bounded records may be encoded by nested pairing.  The size of the search
+space may be enormous; \(\iPRA\) is concerned with primitive recursiveness and proof,
+not practical efficiency.  Nevertheless, the normal form encourages structured
+loops and dynamic programming when they yield smaller invariants.
+
+\subsection{The selector/finality distinction}
+
+Suppose a finite cloud \(C_d(x)\) contains several valid approximations at precision
+\(d\).  Bounded search yields the least valid code \(c_d\).  This proves existence of a
+primitive-recursive selector for each finite level.  It does \emph{not} prove that
+\((c_d)_d\) is coherent, convergent, or presentation invariant.  Those are separate
+statements about compatibility edges, diameter bounds, and motion budgets.  We will
+therefore use bounded search in two roles:
+
+\begin{enumerate}[label=(\alph*),leftmargin=2.4em]
+\item as an exact selector when equality and ordering of candidates have mathematical
+meaning; and
+\item as a deterministic implementation detail inside backward viability, followed by
+a proof that the final observable does not depend on that detail.
+\end{enumerate}
+
+This distinction prevents a finite-choice theorem from being silently upgraded to a
+choice principle for infinite represented objects.

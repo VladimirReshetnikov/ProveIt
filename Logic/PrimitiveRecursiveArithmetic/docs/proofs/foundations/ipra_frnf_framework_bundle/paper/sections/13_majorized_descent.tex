@@ -1,0 +1,105 @@
+\section{Majorized descent and totalized termination}
+\label{sec:descent}
+
+Many classical proofs say ``repeat until no reduction is possible.''  To live in
+\(\iPRA\), the process needs a primitive-recursive clock.  A decreasing numerical rank
+provides one.
+
+\subsection{Frozen descent}
+
+Let \(S\) be a coded state space, \(T(s)\) a primitive-recursive terminal predicate,
+\(N(s)\) a primitive-recursive next-state function, and
+\(\rank(s)\in\N\) a primitive-recursive rank.  Define the totalized step
+\[
+  \widetilde N(s)=
+  \begin{cases}
+    s,&T(s)=1,\\
+    N(s),&T(s)=0.
+  \end{cases}
+\]
+Assume the local descent contract
+\[
+  T(s)=0\quad\Longrightarrow\quad \rank(N(s))<\rank(s).
+\]
+
+\begin{theorem}[Majorized descent]
+\label{thm:majorized-descent}
+Starting from \(s_0\), the frozen iteration
+\(s_{t+1}=\widetilde N(s_t)\) is terminal by time \(\rank(s_0)+1\).  The terminal state
+and full trace are primitive recursive, and the statement is provable in \(\iPRA\) by
+quantifier-free induction.
+\end{theorem}
+
+\begin{proof}
+Assume for contradiction that none of
+\(s_0,\ldots,s_{\rank(s_0)+1}\) is terminal.  Then the rank strictly decreases at every
+step, giving a descending sequence of \(\rank(s_0)+2\) natural numbers all at most
+\(\rank(s_0)\).  More directly, prove by induction on \(t\) the bounded assertion
+\[
+  \bigl(\forall i<t\;T(s_i)=0\bigr)
+  \longrightarrow
+  \rank(s_t)+t\le\rank(s_0).
+\]
+After Booleanization this is quantifier-free.  At
+\(t=\rank(s_0)+1\), nontermination would imply a natural number plus
+\(\rank(s_0)+1\) is at most \(\rank(s_0)\), impossible.  Once a terminal state is
+reached, freezing preserves it and its output.  Primitive recursiveness follows from
+the fixed bounded iteration.
+\end{proof}
+
+\subsection{Lexicographic and weighted ranks}
+
+A transition may decrease a tuple lexicographically rather than a single obvious
+number.  If components have known bounds \(a_i<B_i\), encode the tuple in mixed radix:
+\[
+  \rho(a_0,\ldots,a_{k-1})
+  =a_0\prod_{j>0}B_j+a_1\prod_{j>1}B_j+\cdots+a_{k-1}.
+\]
+A strict lexicographic decrease decreases \(\rho\).  If bounds vary with parameters,
+they remain primitive-recursive terms.  Alternatively, use a weighted norm
+\(\sum_i w_i a_i\) with weights chosen so that every decrease in an earlier component
+dominates all possible increases in later ones.
+
+The bound information is not optional.  An unbounded lexicographic tuple cannot in
+general be compressed into a rank whose decrease is immediate.  The interface should
+therefore store component bounds together with the transition.
+
+\subsection{Euclidean algorithm}
+
+For the state \((a,b)\) with \(b>0\), the Euclidean step is
+\[
+  (a,b)\longmapsto (b,a\bmod b).
+\]
+The second component strictly decreases, so \(\rank(a,b)=b\) is a rank.  Freezing at
+\(b=0\) yields a clock of at most \(b_0+1\).  The checked ProveIt gcd construction uses
+this pattern, and the reference Python implementation
+\code{euclid_majorized} exposes its trace.
+
+The extended Euclidean algorithm carries additional coefficient fields.  They may grow,
+but termination is still controlled by the remainder rank.  The invariant relates the
+coefficients to the current remainders; only the rank field must decrease.
+
+\subsection{Descent proofs of impossibility}
+
+Infinite descent arguments can be compiled in two related ways.
+
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item A witness transformation sends every nonminimal solution to a smaller solution.
+Bounded search chooses the least solution below an explicit bound, producing a direct
+contradiction.
+\item A solution-count function below rank \(N\) is shown to vanish by induction on
+\(N\): a solution at rank \(N+1\) would yield one at smaller rank, contradicting the
+induction hypothesis.
+\end{enumerate}
+
+The repository's generic descent modules implement both styles.  \(\FRNF\) treats them
+as reusable nodes rather than rebuilding descent for each theorem.
+
+\subsection{When no rank is known}
+
+A semantic proof that a process terminates does not automatically provide a
+primitive-recursive clock provable in \(\iPRA\).  If the only evidence is an abstract
+well-founded relation or a compactness argument, the process is not yet in \(\FRNF\).
+One must supply a numerical majorant, restrict the domain, or expose termination as a
+boundary assumption.  This is another instance of producer/verifier separation: a
+step checker does not produce a stopping bound.

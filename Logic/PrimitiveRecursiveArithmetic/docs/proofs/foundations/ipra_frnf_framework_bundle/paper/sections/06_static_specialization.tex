@@ -1,0 +1,119 @@
+\section{Static specialization and the universal-evaluator barrier}
+\label{sec:static}
+
+Many informal frameworks say that a mathematical object is supplied by ``a code for a
+primitive-recursive function'' and then evaluate that code inside the theory.  This is
+unsafe unless the code language is restricted or the evaluator is externally fixed.
+The obstacle is elementary and exact.
+
+\subsection{No total primitive-recursive universal evaluator}
+
+\begin{barrier}[Diagonal obstruction]
+\label{barrier:no-universal-pr}
+There is no binary primitive-recursive function \(U(e,x)\) such that for every unary
+primitive-recursive function \(f\) there is a code \(e\) with
+\(U(e,x)=f(x)\) for all \(x\).
+\end{barrier}
+
+\begin{proof}
+Assume such a \(U\) exists.  Then
+\[
+    g(x)=U(x,x)+1
+\]
+is primitive recursive, since the class of primitive-recursive functions is closed
+under composition and successor.  By universality, choose \(e\) such that
+\(U(e,x)=g(x)\) for all \(x\).  Evaluating at \(e\) gives
+\[
+    U(e,e)=g(e)=U(e,e)+1,
+\]
+a contradiction in \(\N\).  Hence no such \(U\) exists.
+\end{proof}
+
+The result does not say that primitive-recursive syntax cannot be coded, or that no
+interpreter can evaluate bounded fragments.  It says that a total primitive-recursive
+interpreter cannot be extensionally universal for all primitive-recursive programs.
+A standard evaluator for primitive-recursive codes is partial recursive, and a
+fuel-bounded evaluator is primitive recursive but may return ``unfinished.''
+
+\subsection{Three admissible representation patterns}
+
+\begin{definition}[Static specialization]
+A fixed primitive-recursive evaluator \(f\) is represented in the object theory by its
+own function symbol, defining equations, and derived contract.  A metatheoretic
+compiler may map the external description of \(f\) to this syntax, but the object
+program does not receive the description as data.
+\end{definition}
+
+This yields three sound patterns.
+
+\paragraph{Fixed evaluator.}
+A theorem is uniform in numerical inputs and precision but uses one externally fixed
+coefficient-name evaluator, oracle, or transition function.  The compiler generates a
+symbol for that evaluator.  This is the strongest and simplest pattern.
+
+\paragraph{Finite table.}
+For a fixed final demand, the reverse horizon pass determines a finite set of required
+queries.  Their answers are supplied as a coded table satisfying a finite validity
+formula.  The theorem never evaluates a program code at all.  This pattern is
+particularly useful for extensional composition: only the rows actually consumed by
+the proof are exposed.
+
+\paragraph{Restricted interpreter.}
+A fixed syntax class with an explicit structural or numerical fuel is interpreted by a
+primitive-recursive evaluator.  The contract includes a proof that the supplied code
+belongs to the class and that the fuel suffices.  Examples include straight-line
+arithmetic expressions of bounded depth, fixed-order recurrences, or a bounded
+instruction machine.
+
+\subsection{Static families versus internal quantification}
+
+Suppose \(F_e\) is a family indexed externally by primitive-recursive source code.  A
+valid theorem schema may say:
+
+\begin{quote}
+For every externally fixed source \(e\), the compiler produces a symbol
+\(\widehat F_e\), an object formula \(C_e\), and a derivation
+\(\vdash_{\PRAAx} C_e\).
+\end{quote}
+
+This is a computable metatheoretic transformation if the compiler itself terminates.
+It is not the same as one object formula quantifying over \(e\) and invoking a universal
+\(U(e,x)\).  The distinction is analogous to the difference between an axiom schema
+and a single truth predicate.
+
+\subsection{Application: variable-degree polynomial constructions}
+
+A polynomial degree \(n\) is ordinary numerical data, so a single primitive-recursive
+algorithm may recurse on \(n\).  The subtlety arises when each coefficient is itself
+specified by an arbitrary primitive-recursive evaluator passed by code.  The admissible
+uniform statement is one of the following:
+
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item for each fixed coefficient evaluator, one factorization program works for every
+degree and requested precision;
+\item a finite coefficient table through the computed justification horizon suffices;
+or
+\item a restricted coefficient language is interpreted with explicit fuel.
+\end{enumerate}
+
+The first option closes the practical variable-degree composition gap while respecting
+\cref{barrier:no-universal-pr}.  It is stronger than treating every degree as a
+separate theorem but weaker---necessarily so---than an internal total evaluator for
+all primitive-recursive codes.
+
+\subsection{Lean architecture}
+
+Static specialization should happen before the object syntax is constructed.  A Lean
+metaprogram or ordinary definition receives a host representation of a component and
+returns:
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2.4em]
+\item a concrete \code{PR n} term;
+\item its defining equations as applications of the existing \(\PRAAx\) schemes;
+\item the object contract formula; and
+\item a proof constructor specialized to that syntax.
+\end{enumerate}
+
+The host compiler may be generic and higher-order.  The generated object theorem is
+first-order and static.  This is precisely where higher-type convenience is harmless:
+it constructs syntax but does not become a numerical oracle inside \(\iPRA\).

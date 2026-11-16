@@ -1,0 +1,110 @@
+\section{Composition and graph flattening}
+
+\subsection{Logical composition by cut}
+
+Suppose a fixed proof graph has permanent assumptions \(\Gamma\) and already
+compiled node formulas \(\Delta=[D_1,\ldots,D_m]\).  A new node carries a local
+object derivation
+\[
+  \Delta,\Gamma\objectvdash D_{m+1}.
+\]
+If every \(D_i\) is derivable from \(\Gamma\), simultaneous cut gives
+\(\Gamma\objectvdash D_{m+1}\).
+
+\begin{proposition}[Proof-node compilation]\label{prop:node-cut}
+A reverse-topological sequence of local \(\Prf\,\PRAAx\) derivations compiles
+to object derivations of every graph node from the permanent context.
+\end{proposition}
+
+\begin{proof}
+Induct on the sequence.  The empty bundle is trivial.  At a node, apply
+\leanname{Prf.trans} to replace each earlier-node hypothesis by its compiled
+derivation and retain each permanent hypothesis by \leanname{Prf.hyp}.  Add the
+new derivation to the bundle.
+\end{proof}
+
+The supplied \pathref{KernelCore.lean} implements exactly this proof.  Its
+public constructors are \pathref{compileLocal} and
+\pathref{compileAndExtend}; no custom graph logic is needed.
+
+\subsection{Arithmetic flattening to a master certificate}
+
+Logical cut presupposes that every node's finite arithmetic contract has been
+implemented.  \(\FQNF\) offers a second, orthogonal normalization.
+
+Consider a fixed acyclic graph with node certificates
+\(c_i<B_i(q)\), after backward demand has converted all resource bounds to
+query-only terms.  Pack the tuple \((c_0,\ldots,c_{m-1})\) by mixed radix.  The
+global verifier:
+
+\begin{enumerate}
+\item decodes every \(c_i\);
+\item checks \(c_i<B_i(q)\);
+\item evaluates node \(i\)'s fixed checker using the decoded parent outputs;
+\item checks the terminal specification.
+\end{enumerate}
+
+Because the graph is fixed and finite, these checks form one bounded Boolean
+fold.  The global bound is \(\prod_iB_i(q)\).
+
+\begin{theorem}[Master-certificate flattening]\label{thm:master-cert}
+Let a fixed finite graph have query-only numerical bounds for every node and
+reflected fixed local checkers.  Then the complete family of node certificates
+has a single mixed-radix code with a reflected QF global checker.  If the graph
+contracts have a simultaneous satisfying assignment, bounded search selects a
+least accepted master code.
+\end{theorem}
+
+\begin{proof}
+Mixed-radix coding gives the bound and projection equations.  Substitute the
+projections into each local checker.  Closure of reflected checkers under
+finite conjunction gives the global checker.  A satisfying assignment packs
+to a witness below the product bound; apply \cref{thm:witness-erasure}.
+\end{proof}
+
+\subsection{Relationship between the two compositions}
+
+The cut compiler and master-certificate compiler solve different problems.
+
+\begin{itemize}
+\item \textbf{Cut composition} is proof modularity.  Each node may use a
+specialized algorithm and expose an arbitrary object formula.
+\item \textbf{Master-code composition} is finite-data normalization.  It turns
+all node evidence into one bounded witness and is especially useful before a
+shared coding library is mature.
+\end{itemize}
+
+A practical implementation may combine them: use master codes inside
+arithmetic-heavy regions, then expose concise node formulas and compose those
+by cut.
+
+\subsection{Backward demand}
+
+For approximate or resource-sensitive nodes, a terminal query determines the
+precision or bound required at each predecessor.  Since the graph is fixed,
+this reverse pass is itself a fixed primitive-recursive computation.  It may
+run in the host to generate specialized syntax, or it may be internalized if a
+theorem needs the demand values as object terms.
+
+\begin{proposition}[Demand soundness]
+Suppose every node contract states that inputs meeting demands
+\(d_1(p),\ldots,d_r(p)\) produce an output meeting demand \(p\).  The reverse
+composition of these transformers assigns sufficient demands to every node of
+a fixed DAG.
+\end{proposition}
+
+\begin{proof}
+Induct in topological order during the forward proof.  The reverse pass has
+already assigned each parent at least the demand requested by every child.
+Apply the local contract at each node, then use cut.  No monotonicity is needed
+unless multiple demands are merged by an inequality rather than computed
+exactly; in that case the required monotonicity theorem is an explicit local
+obligation.
+\end{proof}
+
+\subsection{Cycles and loops}
+
+A genuine cycle is not a finite DAG node dependency.  It must be represented by
+a bounded trace, a primitive recursion, or a fixed point with a proved finite
+convergence bound.  Unrolling a query-bounded number of stages produces an
+array certificate; direct recursion uses the next section's invariant theorem.

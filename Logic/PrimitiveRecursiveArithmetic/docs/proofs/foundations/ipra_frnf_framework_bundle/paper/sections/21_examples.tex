@@ -1,0 +1,146 @@
+\section{Worked examples}
+\label{sec:examples}
+
+The examples below show how diverse arguments enter the same normal form.  They are
+chosen to exercise exact descent, approximate compactness, relational ambiguity, and a
+conditional deep theorem.
+
+\subsection{Euclidean algorithm as a majorized trace}
+
+Input: naturals \(a,b\).  State:
+\[
+  s_t=(x_t,y_t),\qquad s_0=(a,b).
+\]
+Transition:
+\[
+  (x,y)\mapsto
+  \begin{cases}
+    (x,0),&y=0,\\
+    (y,x\bmod y),&y>0.
+  \end{cases}
+\]
+Rank: \(\rank(x,y)=y\).  Clock: \(b+1\).  Invariant:
+
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item \(\gcd(x_t,y_t)=\gcd(a,b)\);
+\item if \(y_t>0\), then \(x_t\bmod y_t<y_t\);
+\item once \(y_t=0\), the state is frozen.
+\end{enumerate}
+
+The equality of gcds is expressed through the checked divisibility specification or
+through preservation of common divisors.  The rank theorem gives termination by the
+clock.  The terminal state satisfies \(x_t=\gcd(a,b)\).  Adding coefficient fields and
+a parity bit yields the extended Euclidean algorithm and B\'ezout identity.  The
+reference test on \((1071,462)\) reaches \(21\) and confirms that the trace length is
+bounded by the initial second component plus the frozen step.
+
+This example illustrates that a growing proof state need not have a decreasing total
+size.  Only one certified rank field controls termination.
+
+\subsection{Approximate minimum on a rational interval}
+
+Let \(f:[-1,1]\to\mathbb R\) be represented by a sampler with evaluation error
+\(\eta(k)\) and a Lipschitz bound \(L\).  Use the dyadic net
+\[
+   N_k=\{-1+i2^{-k}:0\le i\le2^{k+1}\},
+\]
+with radius \(\delta(k)=2^{-k}\) and modulus
+\(\omega(k)=L2^{-k}\).  Evaluate every point at error \(\eta(k)\), choose the least
+sample minimum, and apply \cref{thm:finite-net-min}.  The selected point \(p_k\)
+satisfies
+\[
+   f(p_k)\le f(x)+L2^{-k}+2\eta(k)
+   \quad\text{for every }x\in[-1,1].
+\]
+
+For \(f(x)=(x-1/3)^2\), the exact reference implementation on the quarter-grid chooses
+\(1/4\).  An object proof need not mention the real infimum.  It proves the finite
+comparison against any rational input carrying a nearest-grid witness; the semantic
+corollary follows from the sampler interpretation.
+
+If one additionally proves strong convexity, the approximate minimizer clouds have a
+shrinking diameter, and \cref{thm:shrinking-viability} yields a coherent name for the
+unique minimizer.  Without uniqueness, only the value and approximate cloud are
+canonical.
+
+\subsection{Polynomial roots through a collision}
+
+Consider a monic polynomial family \(P_t(z)\) and a finite root routine that returns
+rational disks covering all complex roots with multiplicity.  At a parameter where two
+roots collide, no continuous exact ordering of the individual roots is expected.  The
+\(\FRNF\) presentation stores:
+
+\begin{itemize}
+\item the disk cloud and multiplicity/count certificates;
+\item compatibility edges between overlapping refined disks;
+\item a movement bound between refinements; and
+\item coefficient reconstruction bounds for the product of the disk centers.
+\end{itemize}
+
+Backward viability chooses finite compatible refinements.  The elementary symmetric
+functions of any valid root multiset are stable because they reconstruct the
+coefficients.  Thus the theorem about the factorization identity is exact even though
+internal labels are not.  If a disk is isolated from all others by a rational gap,
+\cref{thm:gap-collapse} recovers an exact branch label for that isolated cluster.
+
+The lesson is that collision is not a failure of the root theorem.  It is a failure of
+an overstrong output type.
+
+\subsection{Variable-degree deflation with dual horizons}
+
+Suppose a fixed coefficient evaluator gives approximations to a monic polynomial of
+numerical degree \(n\).  A one-root routine at output precision \(t\) reads coefficient
+rows through \(U(n,M,t)\).  Deflating by the approximate root shifts coefficient
+precision and the residual proof requires comparisons through a larger bound
+\(V(n,M,t)\).  Repeating the routine \(n\) times creates a changing parameter chain.
+
+Compile it as follows.
+
+\begin{enumerate}[label=\arabic*.,leftmargin=2.2em]
+\item Define the stage state: remaining degree, normalized coefficient table, roots
+already found, and error budget.
+\item Compute all later verification demands backward from the final coefficient
+identity.  At each stage propagate \(V\), not only \(U\).
+\item Materialize the original coefficient name only through the resulting maximum.
+\item Run deflation forward for exactly \(n\) stages.
+\item Prove by QF induction a telescoping coefficient identity and accumulated error
+bound.
+\end{enumerate}
+
+The degree is ordinary data, so this is one primitive recursion uniform in \(n\).  The
+coefficient evaluator is statically fixed, respecting the no-universal-evaluator
+barrier.
+
+\subsection{Stable simplicial maps}
+
+Let a represented map between compact spaces induce, at finite observation levels, a
+carrier cloud: each source vertex maps to a nonempty set of target vertices contained
+in one simplex.  Any selection gives a simplicial map.  Any two selections are
+contiguous, so the explicit prism operator supplies a chain homotopy.  Therefore the
+induced homology map is independent of tie-breaking.
+
+This is a stable observer in algebraic form.  The internal vertex choices are
+relational; the homology map is exact and branch-independent.  A proof requires only
+finite complexes, bounded matrix operations over a finite ring, the carrier
+certificate, and the prism identity.  No exact continuous selector is needed.
+
+\subsection{Height bound implies complete Diophantine list}
+
+Let \(F_p(\vec x)=0\) be a polynomial family and suppose a boundary formula supplies
+\[
+  F_p(\vec x)=0\quad\Longrightarrow\quad H(\vec x)\le B(p).
+\]
+Enumerate every canonical rational/integer tuple of height at most \(B(p)\), evaluate
+\(F_p\) exactly, and retain the zeros.  Soundness is immediate from exact evaluation.
+Completeness follows by the height formula and coverage of the enumeration.  All loops
+are bounded by a primitive-recursive function of \(p\) and \(B(p)\).
+
+The resulting theorem is
+\[
+  \operatorname{HeightBound}(p,B(p))
+  \longrightarrow
+  \operatorname{CompleteZeroList}(p,L(p)).
+\]
+For a special curve family, a descent theorem may provide the height bound and close
+the schedule.  For general Siegel or Faltings, the finite compiler is still complete as
+a conditional result, while the deep producer remains visible.

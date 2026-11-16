@@ -515,9 +515,21 @@ whose arithmetic reduct satisfies `𝗜𝚺₁`, it halts exactly when the numer
 the contradiction code, hence exactly when the modeled scheduler of the primary table halts
 and exactly when arithmetic has an internal refutation; the corresponding equivalence with
 the consistency sentence is derived in iPRA. These are statements about schedulers defined
-at the level of commands. They are not connected with the literal tables or their source
-programs, and they do not cover the candidates that also change the axiom emitter or the
-coding of formulas.
+at the level of commands; a connection with a literal table and its source program is a
+separate proof, which the [PA194AX11H endpoint](verification/pa194/ipra/variants/pa194ax11h/README-final.md)
+supplies for one of them.
+
+The same directory treats four changes of the axiom emitter, independent of each other and
+of the controller: the separate diagonal `Γ(D)` in place of `Γ(A)` (PA194D, PA194DHS, the GD
+family), the sixth head with exchanged premises (the Q families, PA194G, PA194GH), the
+fifth head with an arbitrary consequent (PA194H5X), and the generalization `U(c, h)` in
+place of `U(d, h)` (the G, GH and GD families). The numerical calculus is unchanged: for
+each of the sixteen emitters and each controller, the scheduler halts exactly when the
+calculus of the primary table proves the contradiction code, and iPRA derives the
+equivalence of its non-halting with the consistency sentence. The README of the directory
+lists the emitter and controller that the packets state for ten candidates. Not covered:
+PA194JH5X, the fused head of the FW candidates, the bundled gate of the original PA195, and
+the candidates with another coefficient of the formula constructors.
 
 [`isigma1-machine`](verification/shared/isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation

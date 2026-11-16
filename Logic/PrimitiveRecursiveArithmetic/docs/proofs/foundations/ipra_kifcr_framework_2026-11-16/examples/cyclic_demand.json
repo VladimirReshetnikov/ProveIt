@@ -1,0 +1,12 @@
+{
+  "nodes": ["coeff", "gap", "mesh"],
+  "seed": {"coeff": 1, "gap": 0, "mesh": 2},
+  "cap": {"coeff": 9, "gap": 8, "mesh": 10},
+  "edges": [
+    {"provider": "coeff", "consumer": "gap", "transform": "min(q+1,9)"},
+    {"provider": "gap", "consumer": "mesh", "transform": "min(q+1,8)"},
+    {"provider": "mesh", "consumer": "coeff", "transform": "min(q+1,10)"}
+  ],
+  "expected_closure": {"coeff": 9, "gap": 8, "mesh": 10},
+  "expected_overflow": false
+}

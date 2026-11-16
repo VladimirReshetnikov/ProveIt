@@ -1,0 +1,43 @@
+\section{Notation and representation conventions}
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.70\textwidth}@{}}
+\toprule
+Notation & Meaning \\
+\midrule
+\endhead
+\(\PTm(n)\) & Primitive-recursive arithmetic terms with \(n\) free variables. \\
+\(\Fm(\PTm,n)\) & First-order formulas over \(\PTm\) with \(n\) free variables. \\
+\(\Gamma\vdash[\PRAAx]\varphi\) & Embedded intuitionistic natural-deduction derivability in ordinary iPRA. \\
+QF & Quantifier-free in the repository's \texttt{Fm.QF} sense. \\
+\(V_X(x,q,a)\) & Boolean validity of answer \(a\) to query \(q\) for presentation \(X\). \\
+\(B_X(x,q)\) & Exclusive upper bound on answer codes. \\
+\(\Dem_C\) & Backward demand transformer of contract \(C\). \\
+\(\Run_C\) & Primitive-recursive transducer or selected bounded witness of contract \(C\). \\
+\(W_i(a)\) & Backward viability of candidate \(a\) at level \(i\). \\
+\(\delta_q\) & Within-level observation diameter. \\
+\(\mu_q\) & Bound on motion along a compatible adjacent edge. \\
+\(T(k)\) & Tail modulus or precision-index selector. \\
+\(\Residual(G,q)\) & Canonical list of proof-reachable residual producer formulas. \\
+\(\Close(r)\) & Least capped demand closure of a finite monotone system. \\
+\KIFCR & Kernel-Integrated Finitary Contracts with residual boundaries. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Variable order}
+
+The proposed Lean library should fix conventions globally:
+\begin{itemize}
+  \item loop formulas: variable \(0\) is time/state focus, followed by state components and external parameters;
+  \item relation formulas: variable \(0\) is the current candidate, variable \(1\) the next or comparison candidate, followed by query and parameters;
+  \item observer formulas: two candidate blocks first, then query and parameters;
+  \item rational metric formulas: numerator/denominator components are grouped and accessed through named substitutions.
+\end{itemize}
+Named substitution helpers should be proved once.  Ad hoc \texttt{Fin.cases} expressions are a major source of binder errors.
+
+\subsection{Rational codes}
+
+A convenient exact rational code is a signed integer numerator and a positive natural denominator.  Normalization is optional for arithmetic, but equality is cross multiplication.  Every theorem that divides by a denominator carries its positivity proof.  Dyadic codes may use a signed numerator and exponent; comparisons are reduced to a common exponent.
+
+\subsection{Bounds}
+
+All bounds are exclusive unless explicitly stated.  ``Search below \(B\)'' means candidates \(0,\ldots,B-1\).  A finite relation may totalize invalid out-of-range cells as false.  This convention simplifies rectangular table encoding.

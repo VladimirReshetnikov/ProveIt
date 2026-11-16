@@ -1,0 +1,183 @@
+\section{Domain interfaces and reusable proof recipes}
+\label{sec:domains}
+
+The framework is deliberately domain-neutral, but its value is clearest when the
+abstract nodes are translated into concrete mathematical recipes.  This section gives
+such recipes and identifies the remaining input for each area.
+
+\subsection{Finite algebra and combinatorics}
+
+Exact finite algebra is the easiest case.  Encode tuples, lists, matrices, polynomials,
+permutations, graphs, and finite sets by natural numbers.  Operations are primitive
+recursive, and identities are equations or bounded formulas.  The standard recipe is:
+
+\begin{enumerate}[label=\arabic*.,leftmargin=2.2em]
+\item choose a canonical code or a proof-relevant equality certificate;
+\item define operations by fixed primitive recursion;
+\item prove defining equations and congruence in \(\Prf\,\PRAAx\);
+\item Booleanize bounded side conditions;
+\item prove the main invariant by QF induction on size, degree, or a loop clock; and
+\item use the proof schedule to compose algebraic subroutines.
+\end{enumerate}
+
+Determinants by Laplace expansion, adjugates, bounded sums/products, Bell recurrences,
+finite group actions, and combinatorial bijections fit directly.  Symbolic polynomial
+identities may be proved in a host ring and reflected through a checked object-level
+ring lemma, as the repository's \code{ipra\_ring} tactic already demonstrates.
+
+\subsection{Exact coordinate geometry and general relativity identities}
+
+Incidence and metric identities over rational or integer coordinates reduce to
+polynomial equalities and guarded divisions.  Degenerate configurations are handled by
+explicit nonvanishing hypotheses or by clearing denominators.  For symbolic spacetime
+metrics, one fixes a coordinate chart and rational/algebraic parameter coding, computes
+inverse matrices, Christoffel symbols, curvature, and field tensors by finite sums, and
+proves the resulting polynomial/rational identities under denominator guards.
+
+The framework proves local coordinate identities.  It does not infer global causal or
+manifold statements unless chart coverage, transition maps, and topological
+certificates are supplied as separate nodes.
+
+\subsection{Algebraic numbers, roots, and spectral data}
+
+A robust root interface returns a finite cloud of rational disks or boxes with:
+
+\begin{itemize}
+\item residual bounds;
+\item a coverage/count certificate;
+\item overlap or continuation edges across precision;
+\item symmetric-product or coefficient reconstruction estimates; and
+\item separation data only when exact individual labels are requested.
+\end{itemize}
+
+Multiple roots and eigenvalue collisions are treated relationally.  Stable outputs
+include the unordered multiset, elementary symmetric functions, cluster sums,
+characteristic polynomials, and spectral projectors onto isolated clusters.  An
+ordered eigenvector or individual branch requires a gap and normalization guard.
+
+Variable degree is handled by one clocked recursion on degree after a fixed coefficient
+evaluator has been statically specialized.  Backward dual-horizon planning determines
+all coefficient rows needed for repeated deflation and residual verification.
+
+\subsection{Real analysis and calculus}
+
+A function presentation should contain the quantitative data familiar from constructive analysis \cite{bishopbridges1985,troelstravanDalen1988}:
+
+\begin{itemize}
+\item a rational sampler or regular-name evaluator;
+\item a domain certificate;
+\item a continuity, derivative, variation, or holomorphy modulus appropriate to the
+theorem;
+\item magnitude bounds needed for products and remainders; and
+\item finite algorithms for partitions, sums, or polynomial approximants.
+\end{itemize}
+
+The fundamental theorem of calculus, Taylor bounds, Euler--Maclaurin, and special-
+function identities are then stated as rational inequalities at requested precision.
+One computes a partition size or truncation order from the supplied moduli, verifies a
+finite sum identity, and bounds the remainder.  No induction is performed on the
+predicate ``this is a Cauchy name''; the final precision is frozen and only the finite
+rows selected by the justification horizon occur in the invariant.
+
+Qualitative differentiability or holomorphy is not silently converted to a uniform
+modulus.  For specially constructed functions, a modulus may be derived from explicit
+convexity, coefficient, or derivative bounds and then becomes another compiled node.
+
+\subsection{Complex analysis and contour methods}
+
+Contours are finite polygonal or rational parametrized paths with derivative and
+clearance bounds.  Analytic functions are represented on a certified neighborhood by
+samplers and uniform error/modulus data.  Cauchy and residue arguments become finite
+quadrature plus explicit deformation or local-series estimates.  Poles are guarded by
+separation from the contour.  Winding numbers can be returned as exact integers when a
+positive distance from zero ensures stability under approximation.
+
+An abstract identity theorem or unrestricted contour deformation is not needed for a
+fixed application: backward demand propagation expands the finite tree of local
+comparisons and approximation estimates needed by the final contour calculation.
+
+\subsection{Analytic number theory}
+
+Dirichlet polynomials, finite Euler products, summatory functions, and truncated
+integrals are finite arithmetic.  The difficult inputs are explicit analytic estimates.
+An \(\FRNF\) theorem should state them as contracts with all dependencies visible:
+modulus, conductor, field discriminant, strip, height, or zero-free-region parameters.
+The finite compiler then:
+
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item selects truncation and contour parameters;
+\item allocates precision backward through the finite expression graph;
+\item verifies rational/complex approximations and denominator guards;
+\item carries error numerators by QF induction; and
+\item emits the final explicit inequality.
+\end{enumerate}
+
+This architecture can strengthen reliability and reuse without pretending to improve
+the underlying zero-free region.
+
+\subsection{Diophantine geometry and complete enumeration}
+
+Given a family \(X_p\) and a primitive-recursive height bound \(H(p)\), enumerate every
+rational/integral code of height at most \(H(p)\), test the defining equations, and
+return the filtered list.  The object proof establishes soundness by direct checking
+and completeness by the height theorem.  Descent and local solubility certificates may
+reduce the search or prove the bound in special families.
+
+Without \(H\), a finite verifier remains useful but the complete-list theorem is
+conditional.  A cardinality theorem alone cannot fill the gap by
+\cref{barrier:cardinality-cutoff}.
+
+\subsection{Probability}
+
+Finite rational probability laws are exact tables.  Expectations, moments,
+convolutions, characteristic functions at rational points, and finite-dimensional
+distribution comparisons are bounded sums.  Quantitative limit theorems require
+explicit rates such as Berry--Esseen constants, truncation/tail bounds, Lindeberg
+moduli, or smoothing inequalities.
+
+For an infinite or real-valued law, the interface contains a primitive-recursive
+quantization at precision \(k\), a tail/error bound connecting it to the original law,
+and the finite-law theorem.  The proof schedule composes these.  It does not quantify
+inside first-order arithmetic over arbitrary measures as higher-type objects.
+
+\subsection{Topology}
+
+A finite simplicial complex is exact combinatorial data, so chains, boundaries, cycles,
+homology certificates, and simplicial maps are finite linear algebra.  A represented
+space is observed through a tower of finite complexes.  A map returns a finite carrier
+cloud rather than a forced vertex at ties.  If every selection from the carrier is
+simplicial and any two selections are contiguous, an explicit prism operator gives a
+chain homotopy and makes the induced homology map independent of choices.
+
+Jordan-type and dimension arguments then reduce to finite grid parity, Sperner labels,
+or chain calculations plus supplied sampling and inverse-modulus data.  The observation
+tower unifies the presentation; it does not generate missing continuity moduli.
+
+\subsection{Category theory and algebraic geometry}
+
+For fixed finite presentations, categorical constructions are finite data:
+objects/morphisms have codes, composition is a table or fixed program, and diagrams are
+bounded lists.  Universal properties are represented by explicit witness maps and
+uniqueness derivations.  Yoneda components, finite limits/colimits, adjunction units,
+and finite Kan extensions can therefore be expressed in \(\iPRA\) for specified
+families.
+
+Quotients should be certified setoids, not opaque host quotients.  Equality in a
+quotient is witnessed by a finite certificate---for example an ideal combination,
+localization killing exponent, or rewrite normalization.  Affine gluing uses finite
+covers, overlap maps, and cocycle certificates.  Scheme-theoretic assertions requiring
+unbounded families or non-effective existence remain outside the finite presentation
+unless additional producers are supplied.
+
+\subsection{A common audit question}
+
+Across all areas, the decisive question is:
+
+\begin{quote}
+For the final numerical challenge \(d\), can every object, query, branch, and proof
+obligation actually used by the argument be placed in one primitive-recursively bounded
+finite graph, with local correctness derivations and explicit external producers?
+\end{quote}
+
+If yes, the proof is a candidate for \(\FRNF\).  If no, the failure identifies either a
+missing quantitative theorem or an inappropriate representation.

@@ -1,0 +1,55 @@
+\section{Checklist for converting a proof to FRNF}
+\label{app:checklist}
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=3em]
+\item \textbf{State the exact object theorem.}  Write the intended closed or
+conditional first-order formula, including every modulus, bound, gap, and presentation
+validity hypothesis.
+
+\item \textbf{Classify outputs.}  Is each output exact, an approximate name, a finite
+cloud, a stable observable, or an exact label under separation?  Do not use one type
+for all of them.
+
+\item \textbf{Fix program syntax.}  Replace arbitrary program parameters by static
+specialization, finite tables, or a restricted interpreter with fuel.
+
+\item \textbf{List primitive-recursive symbols.}  Give arities, recurrences, defining
+equations, and required arithmetic lemmas.
+
+\item \textbf{Derive dual horizons.}  For every input edge, compute both read and
+justification bounds.  Apply prefix closure.
+
+\item \textbf{Build the demand graph.}  Topologically order components and propagate
+final demands backward.  Check shared dependencies and changing parameters.
+
+\item \textbf{Materialize finite observations.}  Replace global name properties by
+the finite row instances used within the justification closure.
+
+\item \textbf{Booleanize bounded assertions.}  Generate characteristic terms and prove
+the truth equivalences and substitution laws.
+
+\item \textbf{Clock adaptive routines.}  Supply fuel or a decreasing rank.  Freeze
+terminal states.
+
+\item \textbf{Write QF invariants.}  Include all accumulator equations, range bounds,
+validity bits, and error budgets needed by the successor proof.
+
+\item \textbf{Keep ambiguity relational.}  Define candidate validity and compatibility;
+use backward viability.  Add stability or a gap theorem before deterministic exposure.
+
+\item \textbf{Separate producers from verifiers.}  Mark finite nets, height bounds,
+apartness, zero-free regions, and covering lists as generated nodes or boundary
+formulas.
+
+\item \textbf{Construct local object proofs.}  Each theorem must conclude
+\code{Prf PRAAx}; a host semantic theorem is not a substitute.
+
+\item \textbf{Compose by schedule.}  Declare exact dependencies and apply simultaneous
+cut in topological order.
+
+\item \textbf{Audit.}  Build in the pinned toolchain, search for placeholders, print
+axioms, run executable tests, and compare the final formula with the human statement.
+
+\item \textbf{Export.}  Apply the ordinary-to-native transfer only after the ordinary
+object proof is complete.
+\end{enumerate}

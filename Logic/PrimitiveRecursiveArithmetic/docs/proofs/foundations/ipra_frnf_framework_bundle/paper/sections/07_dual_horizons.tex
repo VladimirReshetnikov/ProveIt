@@ -1,0 +1,127 @@
+\section{Dual horizons: computation versus justification}
+\label{sec:dual-horizons}
+
+\subsection{The under-specification caused by one horizon}
+
+Let \(A\) be a represented object whose finite rows are \(A(0),A(1),\ldots\).  A
+transducer \(F\) produces output row \(F(A)(d)\).  It is customary to give a use
+function \(u_F(d)\) such that the program reads only rows at indices at most
+\(u_F(d)\).  This is enough to run the program, but not necessarily enough to prove
+its result valid.
+
+For example, an output approximation may be computed from \(A(d+2)\), while its error
+proof compares \(A(d+2)\) with an anchor \(A(2d+7)\).  Or a root routine may read a
+rounded coefficient row but justify deflation by checking residuals at a shifted,
+higher precision.  The proof horizon is then larger than the computation horizon.
+
+\begin{definition}[Dual horizon]
+A finite-use interface carries two monotone primitive-recursive functions
+\[
+    r_F,j_F:\N\to\N
+\]
+with \(r_F(d)\le j_F(d)\).  The computation of output row \(d\) reads input rows only
+through \(r_F(d)\).  The embedded proof of the row contract uses input contract
+instances only through \(j_F(d)\).
+\end{definition}
+
+Monotonicity can always be enforced by prefix closure:
+\[
+    \overline h(d)=\max_{q\le d}h(q).
+\]
+We therefore do not require every handwritten local horizon to be monotone; the
+compiler normalizes it.
+
+\subsection{Sequential composition}
+
+Suppose \(F:X\to Y\) and \(G:Y\to Z\) have dual horizons.  To compute row \(d\) of
+\(G(F(x))\), the outer routine may ask for any row \(q\le r_G(d)\) of \(F(x)\).  The
+input rows of \(x\) needed for all such queries are bounded by
+\[
+   r_{G\circ F}(d)
+   =\max_{q\le r_G(d)}r_F(q).
+\]
+For justification, the proof of the outer contract may instantiate input contracts
+for any \(q\le j_G(d)\).  Each such inner contract requires rows through \(j_F(q)\), so
+\[
+   j_{G\circ F}(d)
+   =\max_{q\le j_G(d)}j_F(q).
+\]
+If horizons are prefix-monotone, these simplify to
+\(r_F(r_G(d))\) and \(j_F(j_G(d))\), but the prefix-maximum form is safer and is what
+the reference implementation uses.
+
+\begin{theorem}[Dual-horizon composition]
+\label{thm:dual-compose}
+If \(F\) and \(G\) satisfy their finite-use and correctness contracts with dual
+horizons \((r_F,j_F)\) and \((r_G,j_G)\), then \(G\circ F\) satisfies them with the
+horizons above.  Moreover
+\[
+   r_{G\circ F}(d)\le j_{G\circ F}(d).
+\]
+\end{theorem}
+
+\begin{proof}
+Every query issued by the computation of \(G\) at demand \(d\) has index
+\(q\le r_G(d)\).  By the finite-use contract for \(F\), computing that row reads no
+input above \(r_F(q)\).  Taking the finite maximum over all possible \(q\) proves the
+computation bound.
+
+For correctness, the local proof for \(G\) uses only validity instances of rows
+\(q\le j_G(d)\).  The local proof for each such row of \(F\) uses input validity
+instances only through \(j_F(q)\).  Simultaneous cut substitutes these inner
+proofs into the outer proof, so no input instance above the displayed maximum occurs.
+
+Finally, \(r_G(d)\le j_G(d)\).  For each \(q\le r_G(d)\), we have
+\(r_F(q)\le j_F(q)\), and the latter value is included in the maximum defining
+\(j_{G\circ F}(d)\).  Hence the computation maximum is at most the justification
+maximum.
+\end{proof}
+
+\subsection{Multiple inputs and asymmetric demands}
+
+A component with inputs \(X_1,\ldots,X_k\) carries one dual horizon per input.  Some
+inputs may be exact parameters with constant horizon zero; others may be names queried
+at very different rates.  Composition is performed componentwise.  This matters in
+analysis, where a function name, a derivative modulus, a contour, and an error budget
+have distinct demand behavior.
+
+For a graph edge \(v\to u\), write
+\[
+   r_{v,u}(d),\qquad j_{v,u}(d)
+\]
+for the demand placed on dependency \(u\) when node \(v\) is required through row
+\(d\).  The graph-level closure in \cref{sec:demand-graphs} joins demands arriving
+from several users by componentwise maximum.
+
+\subsection{Proof horizons as a noninterference theorem}
+
+The justification horizon has a useful extensional reading.  If two input
+presentations agree on rows and validity certificates through \(j_F(d)\), then the
+compiled proof of output row \(d\) is the same up to substitution of equal data.  Thus
+\(j_F(d)\) is not just an implementation bound; it is a finite-observation theorem
+about the proof itself.
+
+This permits modular replacement of infinite names by finite tables.  To establish an
+output contract at demand \(d\), it suffices to supply a finite table through
+\(j_F(d)\) satisfying the finitely many input contract instances.  No global object
+representing the entire infinite name need occur inside the induction.
+
+\subsection{Adaptive queries}
+
+If the next query index depends on previous answers, a simple syntactic scan does not
+produce a fixed list.  The solution is to bound the adaptive computation by a clock and
+compute a worst-case demand transformer.  Let a state contain the current query index,
+answer table, and remaining fuel.  A primitive-recursive majorant \(H(d,t)\) bounds
+all queries reachable in \(t\) steps from final demand \(d\).  The dual horizon is the
+prefix maximum of this majorant over the clock, with a separate recurrence for proof
+queries.  The finite trace then records the actual path, while the precomputed horizon
+makes the induction independent of an infinite oracle.
+
+\subsection{Reference artifact}
+
+The class \code{DualHorizon} in \code{reference/frnf.py} implements validation and
+sequential composition.  The regression tests include a case where the justification
+horizon is strictly larger than the read horizon.  The host-level Lean record in
+\code{lean/FRNF/Semantic.lean} mirrors the definition.  Neither artifact by itself is
+an object proof; the object implementation is obtained after horizons are represented
+by fixed \code{PR} symbols and their finite maxima are derived in \(\Prf\,\PRAAx\).

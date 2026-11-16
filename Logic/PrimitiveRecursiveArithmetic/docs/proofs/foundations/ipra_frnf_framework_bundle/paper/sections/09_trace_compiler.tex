@@ -1,0 +1,126 @@
+\section{Clocked traces and quantifier-free internalization}
+\label{sec:trace}
+
+Once all finite demands are known, every adaptive construction is represented as a
+clocked transition system.  This section gives the central object-proof pattern.
+
+\subsection{Trace specification}
+
+Fix primitive-recursive symbols:
+\[
+  \operatorname{init}(x),\quad
+  \operatorname{step}(t,s,x),\quad
+  \operatorname{fuel}(x),\quad
+  \operatorname{out}(s,x).
+\]
+Define the state sequence by primitive recursion:
+\[
+  S(0,x)=\operatorname{init}(x),\qquad
+  S(t+1,x)=\operatorname{step}(t,S(t,x),x).
+\]
+The state is a numerical code for every accumulator, table, flag, and local certificate
+needed by the process.  Let \(I(t,s,x)\) be a bounded formula expressing the invariant,
+and let \(Q(x,\operatorname{out}(S(F,x),x))\) be the desired terminal contract, where
+\(F=\operatorname{fuel}(x)\).
+
+Booleanize \(I\) and abbreviate
+\[
+  \widehat I(t,x)\;:\equiv\;\chi_I(t,S(t,x),x)=1.
+\]
+This is a quantifier-free equation.
+
+\begin{theorem}[QF trace internalization]
+\label{thm:trace-internalization}
+Suppose \(\iPRA\) derives:
+\begin{align*}
+ &\widehat I(0,x),\\
+ &\widehat I(t,x)\longrightarrow\widehat I(t+1,x),\\
+ &\widehat I(F,x)\longrightarrow
+   Q(x,\operatorname{out}(S(F,x),x)).
+\end{align*}
+Then \(\iPRA\) derives
+\[
+  Q(x,\operatorname{out}(S(F,x),x)).
+\]
+The construction is uniform in the fixed primitive-recursive syntax and yields an
+embedded \(\Prf\,\PRAAx\) term from embedded base, step, and finish derivations.
+\end{theorem}
+
+\begin{proof}
+Apply quantifier-free induction to \(\widehat I(t,x)\), using the first two derivations.
+Universal introduction closes the induction variable, and universal elimination
+specializes the result at the term \(F\).  Modus ponens with the terminal derivation
+yields the output contract.  At the level of the embedded calculus, these are exactly
+\code{PRA.qfInd}, \code{Prf.allE}, \code{Prf.impI}, and \code{Prf.impE}.  No semantic
+soundness theorem is needed to construct the proof term.
+\end{proof}
+
+The structure \code{QFLoop} and theorems \code{close}, \code{at}, and \code{finish} in
+\code{lean/FRNF/Kernel.lean} are a direct source-level implementation of this proof.
+
+\subsection{What belongs in the state?}
+
+A robust state code contains enough information that the step invariant is local.  A
+typical record includes:
+
+\begin{itemize}
+\item current clock and active/terminal flag;
+\item current numerical approximation or exact accumulator;
+\item a finite input table or indices into a shared table;
+\item a running maximum of requested proof rows;
+\item a rank or remaining fuel;
+\item local residual, error numerator, or divisibility certificate;
+\item finite candidate masks for relational stages; and
+\item a checksum or defining-equation witness when useful for efficient reflection.
+\end{itemize}
+
+Including more fields can make the invariant simpler.  Since all records are encoded by
+pairing and projections, this is a proof-engineering tradeoff rather than a change of
+logical strength.
+
+\subsection{Frozen terminal states}
+
+Every clocked process should be made total by freezing after termination:
+\[
+  \operatorname{step}(t,s,x)=s
+  \quad\text{when}\quad\operatorname{terminal}(s,x)=1.
+\]
+This eliminates partiality and allows a fixed clock larger than the actual stopping
+time.  The invariant includes ``terminal states remain terminal and preserve their
+output.''  Majorized descent in \cref{sec:descent} supplies a common source of such
+clocks.
+
+\subsection{Local reflection versus global semantics}
+
+The trace theorem requires embedded proofs of the base and step equations.  A host
+proof that the transition is correct can guide these derivations but cannot replace
+them.  In practice the object step proof is assembled from:
+
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item defining equations for the primitive-recursive transition;
+\item Booleanization lemmas for branch guards;
+\item arithmetic library lemmas for the updated fields; and
+\item local component contracts already present in the proof schedule.
+\end{enumerate}
+
+This decomposition is favorable to automation.  The transition itself is fixed and
+finite; the compiler can generate the formula and most congruence steps.  Domain
+lemmas remain explicit.
+
+\subsection{Variable-length recursion}
+
+A loop whose length is a numerical input is not a schema of separate finite proofs.
+It is one primitive recursion and one induction on the clock.  The final theorem may
+therefore be genuinely uniform in a matrix size, polynomial degree, path length, or
+search bound.  The restriction is that the transition and invariant must be fixed
+primitive-recursive syntax.  This is how variable-degree constructions avoid the
+universal-evaluator barrier.
+
+\subsection{Nested finite loops}
+
+Nested loops can be flattened into one state machine by storing both counters, or
+formalized modularly as components whose local contracts are composed.  Flattening
+uses one induction but may produce a large invariant; modularization creates smaller
+proofs but requires a proof schedule.  \(\FRNF\) supports both.  The preferred choice
+is to isolate mathematically meaningful subroutines and flatten only tightly coupled
+adaptive loops.

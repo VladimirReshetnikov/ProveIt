@@ -1,0 +1,57 @@
+\section{Artifact map and reproduction}
+\label{app:artifacts}
+
+The archive has the following layout.
+
+\begin{lstlisting}
+ipra_frnf_framework/
+  README.md
+  BUILD.md
+  build.sh
+  paper/
+    ipra_frnf_framework.tex
+    ipra_frnf_framework.pdf
+    references.bib
+    sections/*.tex
+  lean/
+    lean-toolchain
+    README.md
+    FRNF.lean
+    FRNF/Kernel.lean
+    FRNF/Semantic.lean
+    FRNF/ObjectTargets.lean
+  reference/
+    frnf.py
+    test_frnf.py
+    README.md
+  metadata/
+    obstacle_matrix.csv
+    theorem_ledger.csv
+    interface.schema.json
+    repository_audit.md
+  validation/
+    python_tests.txt
+    lean_placeholders.txt
+    pdfinfo.txt
+    pdftotext.txt
+  SHA256SUMS
+\end{lstlisting}
+
+Run the finite tests with
+
+\begin{lstlisting}[language=bash]
+cd reference
+python -m unittest -v test_frnf.py
+\end{lstlisting}
+
+Build the paper with
+
+\begin{lstlisting}[language=bash]
+cd paper
+latexmk -pdf -interaction=nonstopmode ipra_frnf_framework.tex
+\end{lstlisting}
+
+or run \code{./build.sh} from the archive root.  Lean compilation must be performed
+after copying the proposed modules into, or otherwise linking them against, the ProveIt
+repository at a compatible commit.  The archive does not vendor the repository or
+mathlib.

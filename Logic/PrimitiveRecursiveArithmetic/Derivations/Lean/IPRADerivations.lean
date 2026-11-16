@@ -62,6 +62,8 @@ import IPRADerivations.AnalyticNumberTheory.PhiPowTwo
 import IPRADerivations.AnalyticNumberTheory.Harmonic
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
+import IPRADerivations.AnalyticNumberTheory.SumReindex
+import IPRADerivations.AnalyticNumberTheory.Smooth
 import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.Combinatorics.BellTriangle

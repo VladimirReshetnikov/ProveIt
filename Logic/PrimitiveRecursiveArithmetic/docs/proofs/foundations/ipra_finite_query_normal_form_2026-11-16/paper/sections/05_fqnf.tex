@@ -1,0 +1,122 @@
+\section{Finite-query normal form}
+
+\subsection{The package}
+
+We first state the normal form with one packed query variable.  Multiple
+parameters are encoded before use; this loses no primitive-recursive
+expressivity.
+
+\begin{definition}[FQNF package]
+An \(\FQNF\) package consists of fixed object-language data:
+\begin{align*}
+  &\Pre(q) &&\text{a precondition formula},\\
+  &B(q) &&\text{a primitive-recursive certificate bound},\\
+  &V(c,q) &&\text{a primitive-recursive Boolean verifier},\\
+  &\Goal(c,q) &&\text{the conclusion extracted from an accepted code},
+\end{align*}
+together with object-iPRA derivations of:
+\begin{align}
+  &V(c,q)=0\;\vee\;V(c,q)=1,
+      \tag{B}\label{eq:bool}\\
+  &\Pre(q)\to\exists c\bigl(c<B(q)\wedge V(c,q)=1\bigr),
+      \tag{P}\label{eq:prod}\\
+  &V(c,q)=1\to\Goal(c,q).
+      \tag{E}\label{eq:extract}
+\end{align}
+All free variables in these displays are universally available through the
+usual open-axiom substitution mechanism.
+\end{definition}
+
+The verifier is not required to decide an arbitrary formula.  It is a fixed PR
+program for one theorem family.  Its reflected meaning can be a rich bounded
+formula or merely the local facts needed by the extractor.
+
+\subsection{Selected certificate}
+
+Let
+\[
+  \bad(c,q)=1\mono V(c,q),
+\]
+where \(\mono\) is truncated subtraction.  Under Booleanity,
+\[
+  \bad(c,q)=0 \quad\Longleftrightarrow\quad V(c,q)=1.
+\]
+Define \(\Sel(q)\) by bounded least search below \(B(q)\), returning \(B(q)\)
+when no zero is found.  This is a fixed primitive-recursive term because the
+verifier and bound are fixed.
+
+\begin{theorem}[Finite-query compilation]\label{thm:fqnf-compile}
+Every \(\FQNF\) package admits an object-iPRA derivation
+\[
+  \Pre(q)\to\Goal(\Sel(q),q).
+\]
+Moreover iPRA proves
+\[
+  \Pre(q)\to
+  \bigl(\Sel(q)<B(q)\wedge V(\Sel(q),q)=1\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Assume \(\Pre(q)\).  By the producer derivation
+\eqref{eq:prod}, obtain a witness \(w\) satisfying
+\(w<B(q)\) and \(V(w,q)=1\).  Booleanity and the defining arithmetic of
+truncated subtraction give \(\bad(w,q)=0\).
+
+Apply the checked bounded-search theorem to the body \(\bad(c,q)\), the bound
+\(B(q)\), and witness \(w\).  It yields
+\[
+  \Sel(q)<B(q),\qquad \bad(\Sel(q),q)=0,
+  \qquad \Sel(q)\le w.
+\]
+By Booleanity again, \(\bad(\Sel(q),q)=0\) implies
+\(V(\Sel(q),q)=1\).  The extractor \eqref{eq:extract} gives
+\(\Goal(\Sel(q),q)\).
+
+The conclusion contains no occurrence of \(w\), so intuitionistic existential
+elimination discharges it.  No excluded middle beyond the checker's proved
+finite Boolean cases, and no choice principle, has been used.  Every step is a
+constructor or checked arithmetic theorem of \(\Prf\,\PRAAx\).
+\end{proof}
+
+\begin{corollary}[Explicit witness form]
+If a particular term \(w(q)\) is already proved valid and below the bound, then
+iPRA proves the selected certificate valid and no later than \(w(q)\).
+\end{corollary}
+
+\begin{proof}
+Use the same bounded-search theorem without existential elimination.  Its
+minimality clause gives \(\Sel(q)\le w(q)\).
+\end{proof}
+
+\subsection{Conditional producer form}
+
+Often the reusable verifier is elementary but existence depends on deep data.
+Let \(D(q)\) be a boundary formula and replace the producer by
+\[
+  \Pre(q)\to D(q)\to
+  \exists c<B(q)\;[V(c,q)=1].
+\]
+The same proof gives
+\[
+  \Pre(q)\to D(q)\to\Goal(\Sel(q),q).
+\]
+This is not a weaker engineering outcome.  It is the logically correct
+factorization of, for example, a height-bound theorem from a finite point-list
+checker.
+
+\subsection{Why the theorem is genuinely constructive}
+
+There are three possible sources of hidden classical strength, all absent here.
+
+\begin{enumerate}
+\item The witness is bounded and its predicate is checked by a fixed Boolean PR
+term.
+\item The selected code is a displayed PR term, not an application of an
+abstract choice operator.
+\item Existential elimination is used only to prove a conclusion independent
+of the temporary witness.
+\end{enumerate}
+
+The theorem therefore scales uniformly with the query while remaining within
+ordinary iPRA.

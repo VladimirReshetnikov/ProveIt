@@ -1,0 +1,88 @@
+\section{Limits, nonclaims, and research frontier}
+
+A useful framework should make its limits more precise than its aspirations.
+
+\subsection{The normal form does not prove every theorem in iPRA}
+
+\(\FQNF\) is a compilation theorem.  It says that once a theorem's finite
+producer, verifier, and extractor are available in object iPRA, finite evidence
+can be normalized and selected.  It does not imply that every classical
+mathematical theorem has such a producer, or that iPRA proves the producer's
+existence.
+
+In particular, the framework does not establish general effective forms of:
+
+\begin{itemize}
+\item Faltings' or Siegel's theorem;
+\item Mordell--Weil representative production;
+\item prime-number-theorem constants or zero-free regions;
+\item unrestricted compactness or choice;
+\item exact selectors at discontinuities;
+\item a universal PR evaluator;
+\item arbitrary higher-type comprehension.
+\end{itemize}
+
+It gives a rigorous conditional endpoint for each: an explicit producer field
+whose satisfaction is sufficient for the finite remainder of the proof.
+
+\subsection{Brute-force search may be enormous}
+
+Whole-code search is primitive recursive but can be exponentially or worse
+than specialized algorithms.  It should be treated as a normalization and
+existence compiler.  After formalization, efficient producers can be proved
+accepted by the same checker without changing downstream theorems.
+
+There is also a proof-size tradeoff.  A monolithic global checker can be easier
+to state but harder to reason about.  The cut-based modular interface remains
+important for human proofs and Lean elaboration.
+
+\subsection{A numerical bound is indispensable}
+
+The framework cannot search a merely finite set unless its codes lie below an
+explicit term.  In some applications the code bound itself may be huge but
+elementary; in others its production is equivalent to the main deep theorem.
+The boundary is mathematical, not an artifact of this encoding.
+
+\subsection{Reflection is real work}
+
+Writing a Python verifier or Lean Boolean function is not enough.  The object
+checker must be represented by fixed PR syntax, and its soundness must be a
+\(\Prf\,\PRAAx\) derivation.  The report reduces this work to reusable Boolean,
+digit, fold, and search lemmas, but those lemmas still have to be checked.
+
+\subsection{Coding choices affect engineering}
+
+Uniform base, mixed radix, nested pairing, prime-power coding, and Chinese
+remainder coding are all possible.  Uniform base has the simplest fixed-field
+semantics; mixed radix gives tighter bounds; pairing reuses a mature checked
+module.  The first formal integration should choose whichever minimizes proof
+engineering, not whichever gives the shortest numerical code.
+
+\subsection{Metatheoretic classical axioms}
+
+The existing Lean developments may use ordinary classical principles in the
+metatheory while proving an intuitionistic object theorem.  The meaningful
+audit question is whether the final declaration's object assumptions exceed
+\(\PRAAx\), not whether Lean's implementation language is intuitionistic.
+Nevertheless, every public theorem should have its Lean axioms printed and
+compared with the repository's accepted audit baseline.
+
+\subsection{The immediate research frontier}
+
+The highest-value next results are concrete and modest in number.
+
+\begin{enumerate}
+\item Kernel-check the structural core.
+\item Formalize mixed-radix coding and digit recovery in
+\code{IPRADerivations}.
+\item Prove generic reflected bounded folds.
+\item Complete least-certificate selection from existential production.
+\item Formalize the three-level path benchmark.
+\item Formalize rational bisection and interval stability.
+\item Refactor existing packets to instantiate the package rather than creating
+new parallel frameworks.
+\end{enumerate}
+
+After these steps, many proof packets can be classified cleanly: complete
+instance, missing local arithmetic, missing quantitative producer, or
+constructively obstructed exact statement.

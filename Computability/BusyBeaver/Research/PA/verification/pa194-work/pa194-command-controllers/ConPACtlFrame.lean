@@ -57,10 +57,10 @@ lemma tstep_ax (A y x z t w d h δ : V) :
     tstep S ⟪A + 1 + 1, y, x, z⟫ ⟪⟪t, w, d, h⟫, δ, 0⟫ =
       ⟪(if S.ax11 then
           ⟪0, cantor (S.axT (h + y) (d + x) A)
-            (stack10 (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t w), z, 0⟫
+            (stack10 (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h (S.genL A d) + 2) t w), z, 0⟫
         else
           ⟪S.axT (h + y) (d + x) A,
-            stack10 (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t w, 0, 0⟫),
+            stack10 (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h (S.genL A d) + 2) t w, 0, 0⟫),
         δ + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + (S.g : V), 0⟫ := by
   simp [tstep, S.ax_eq]
 

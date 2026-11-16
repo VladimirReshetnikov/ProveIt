@@ -1,0 +1,118 @@
+\section{Executive statement}
+
+\subsection{The problem after the existing work}
+
+The repository has reached an unusual and productive stage.  Its logical
+backend is not merely a philosophical description of iPRA: the usual
+first-order presentation \(\Prf\,\PRAAx\) is implemented in Lean, related by a
+kernel-checked bi-interpretation to a very small native scalar calculus, and
+used by a substantial \code{Derivations} library.  At the same time, the proof
+packet collection contains quantitative versions of results from algebra,
+analysis, number theory, geometry, probability, topology, category theory, and
+algebraic geometry.  Many packets correctly identify the data that a
+constructive proof would need, but stop before constructing the final embedded
+derivation.
+
+Several general packets already propose finite observations, contracts,
+backward demands, proof-carrying graphs, relational witness clouds, and stable
+observables.  Their overlap is itself evidence that the conceptual direction is
+sound.  It also shows that another graph formalism is not the most useful next
+step.  The remaining common bottleneck is lower level:
+
+\begin{quote}
+Given a fixed finite query, how can all of its finite evidence be represented
+by a small shared arithmetic interface, selected constructively, verified by a
+quantifier-free checker, and connected to a literal \(\Prf\,\PRAAx\)
+derivation?
+\end{quote}
+
+Finite-query normal form answers this question by choosing a deliberately
+strong normal form: one bounded numerical certificate and one reflected fixed
+checker.
+
+\subsection{The normal form in one display}
+
+For a packed query \(q\), an \(\FQNF\) package consists of
+\[
+  \Pre(q),\qquad B(q),\qquad V(c,q)\in\{0,1\},\qquad
+  \Goal(c,q),
+\]
+where \(B\) and \(V\) are fixed primitive-recursive terms or function symbols.
+It carries object-iPRA derivations of
+\begin{align}
+  &\Pre(q)\;\longrightarrow\;
+       \exists c\bigl(c<B(q)\wedge V(c,q)=1\bigr),
+       \tag{producer}\label{eq:producer}\\
+  &V(c,q)=1\;\longrightarrow\;\Goal(c,q),
+       \tag{extractor}\label{eq:extractor}
+\end{align}
+and a Booleanity proof for \(V\).  Define
+\[
+  \bad(c,q)=1\mono V(c,q),
+  \qquad
+  \Sel(q)=\mu_{c<B(q)}[\bad(c,q)=0].
+\]
+The repository's checked bounded-search theorem gives, from any witness in
+\eqref{eq:producer},
+\[
+ \Sel(q)<B(q),\qquad V(\Sel(q),q)=1.
+\]
+Applying \eqref{eq:extractor} yields \(\Goal(\Sel(q),q)\).  The witness from the
+producer is discharged by intuitionistic existential elimination.  The output
+is an explicit primitive-recursive term; no choice principle is used.
+
+\subsection{What is new here}
+
+The report's principal contributions are the following.
+
+\begin{enumerate}[label=\textbf{C\arabic*.}]
+\item \textbf{Single-code finite-data normalization.}
+Uniform-base and mixed-radix encodings turn query-bounded arrays, tables,
+resource vectors, traces, and mixed records into one natural number.  Digit
+recovery is proved from Euclidean division, not delegated to a host language.
+
+\item \textbf{Whole-path elimination of finite dependent choice.}
+When a locally least choice can lead to a dead end, the complete finite path is
+one certificate.  A bounded search selects the least valid path.  This works
+for future-dependent finite relations without coherent infinite witnesses or a
+separate dynamic-programming kernel.
+
+\item \textbf{Master certificates for fixed proof graphs.}
+After the finite query fixes every node bound, all node certificates can be
+packed into one mixed-radix code.  One checker verifies all local contracts and
+the terminal claim.  This supplies a common arithmetic substrate beneath the
+existing contract-graph designs.
+
+\item \textbf{A precise division of labor.}
+The reusable kernel performs coding, bounded search, fixed recursion,
+reflection, cut, and stability.  Domain packets must supply the mathematical
+producer: a height bound, modulus, separation theorem, cover representative,
+analytic constant, or other genuinely deep datum.  Failure to supply it is
+recorded as a theorem boundary, not concealed.
+
+\item \textbf{A concrete Lean route.}
+The report reduces the missing implementation to a short sequence of modules:
+Boolean reflection, digits and mixed radix, least certificate selection,
+whole-path checking, the package compiler, quantitative names, and domain
+adapters.  Each step is tied to existing checked repository lemmas.
+\end{enumerate}
+
+\subsection{Scope and status}
+
+The generic human proofs are complete at the level stated in the theorem
+ledger.  The exact finite Python implementation passes eleven tests, including
+exhaustive small-code round trips.  The PDF has been compiled and rendered for
+inspection.  The Lean files are divided into a structural core without
+placeholders and arithmetic roadmaps with visible \code{sorry} markers.  Lean
+was not available in the artifact environment, so no new declaration in this
+package is called kernel checked.
+
+This distinction is essential.  An ambient Lean theorem about naturals, a
+successful Python test, or a semantically correct checker does not by itself
+construct a value of type
+\[
+  ([]:\operatorname{List}(\mathrm{Fm}\,\mathrm{PTm}\,0))
+  \objectvdash \varphi.
+\]
+The framework is designed precisely so that the remaining distance to this
+type is explicit and modular.

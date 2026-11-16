@@ -1,0 +1,82 @@
+\section{Finite relational witnesses and backward viability}\label{sec:relational}
+
+\subsection{Why local choice is insufficient}
+
+Suppose a computation has finite candidate sets \(A_0,\ldots,A_H\), validity predicates \(V_i(a)\), compatibility relations \(E_i(a,b)\subseteq A_i\times A_{i+1}\), and a terminal acceptance predicate \(T(a)\) on \(A_H\).  Pointwise nonemptiness of every \(A_i\) does not imply the existence of a compatible path.  Choosing the least valid candidate at each level can enter a dead end.
+
+The correct finite analogue of dependent choice is to remove dead ends before selecting anything.
+
+\subsection{Viability recurrence}
+
+Define Boolean viability backward:
+\begin{align*}
+ W_H(a)&=V_H(a)\wedge T(a),\\
+ W_i(a)&=V_i(a)\wedge
+     \mathsf{Any}_{b<B_{i+1}}\bigl(V_{i+1}(b)\wedge E_i(a,b)\wedge W_{i+1}(b)\bigr).
+\end{align*}
+Candidates outside their level bounds are declared invalid.  The entire table is finite and primitive recursive.  Reverse indexing can be implemented by forward recursion on \(j=H-i\).
+
+\begin{theorem}[Viability/path equivalence]\label{thm:viability}
+For every \(0\le i\le H\) and candidate \(a\in A_i\),
+\[
+ W_i(a)=1
+ \quad\leftrightarrow\quad
+ \text{there exists a valid compatible path }a=a_i,a_{i+1},\ldots,a_H
+ \text{ ending in }T.
+\]
+After Booleanizing bounded path assertions, this equivalence is formalizable by quantifier-free induction.
+\end{theorem}
+
+\begin{proof}
+Use reverse induction on \(i\).
+
+At \(i=H\), viability is exactly \(V_H(a)\wedge T(a)\), which says that the length-one path is valid and terminally accepted.
+
+Assume the equivalence at \(i+1\).  If \(W_i(a)=1\), fold reflection provides a bounded candidate \(b\) for which \(V_{i+1}(b)\), \(E_i(a,b)\), and \(W_{i+1}(b)\) hold.  By the induction hypothesis, \(b\) extends to an accepted suffix; prepend \(a\).
+
+Conversely, let \(a,a_{i+1},\ldots,a_H\) be an accepted path.  The suffix beginning at \(a_{i+1}\) gives \(W_{i+1}(a_{i+1})=1\) by the induction hypothesis.  Therefore the bounded existential in the recurrence for \(W_i(a)\) is true, and validity of \(a\) gives \(W_i(a)=1\).
+
+For object formalization, path existence is represented by a bounded coded tuple and a Boolean path checker.  The induction invariant is an equality between the computed viability row and a Boolean table of suffix-check results, hence QF.
+\end{proof}
+
+\subsection{Constructing a path}
+
+\begin{theorem}[Finite dependent choice by least viability]\label{thm:finite-choice}
+If \(\mathsf{Any}_{a<B_0}W_0(a)=1\), a compatible accepted path can be constructed primitive recursively.  Choose the least viable \(a_0\).  Given \(a_i\), choose the least \(a_{i+1}\) satisfying
+\[
+ V_{i+1}(a_{i+1})\wedge E_i(a_i,a_{i+1})\wedge W_{i+1}(a_{i+1})=1.
+\]
+The resulting path is valid, compatible, and terminally accepted.
+\end{theorem}
+
+\begin{proof}
+The initial least witness exists by \cref{thm:least-search}.  If \(a_i\) is viable and \(i<H\), the viability recurrence and fold reflection show that at least one viable compatible successor exists.  Least bounded search returns one and proves its validity.  Induct on \(i\) to obtain the full path.  At the last level, viability includes terminal acceptance.
+\end{proof}
+
+This theorem is fully constructive.  It is finite search guided by a finite dynamic-programming table, not an invocation of countable or dependent choice.
+
+\subsection{Finite-use composition theorem}
+
+Consider a producer whose output at each query is a finite relation rather than a function.  A consumer is \emph{finite use} if, at a fixed terminal query, it asks only finitely many producer questions, and later questions depend on earlier answers through a bounded computation.  Unroll the consumer's interaction to a finite relation tower: a level records the current consumer state and one candidate answer; compatibility records the producer validity condition and the consumer transition.
+
+\begin{theorem}[Finite-use relational composition]\label{thm:finite-use}
+Let a bounded relational producer be total for every query that can arise in a bounded finite-use consumer.  Let the consumer have a bounded accepting trace for at least one compatible sequence of answers.  Then backward viability and least search construct a primitive-recursive accepting interaction trace.  If every local validity and transition fact has an object-level reflection proof, the accepting terminal contract has an object-level derivation.
+\end{theorem}
+
+\begin{proof}
+Encode the consumer state and current answer as the candidate at each interaction step.  The horizon is the consumer's explicit interaction bound.  Apply \cref{thm:viability} and \cref{thm:finite-choice}.  The selected path is primitive recursive because all bounds and predicates are.  Its path checker is a finite Boolean fold.  Reflect checker acceptance to the conjunction of producer-validity and consumer-transition formulas.  Compile the consumer's loop invariant and terminal rule by \cref{thm:trace-reflection} and \cref{thm:schedule}.
+\end{proof}
+
+\subsection{Rectangular table encoding}
+
+Lean formalization is simpler if every row has a common width
+\[
+  B_{\max}=\max_{i\le H}B_i.
+\]
+Cells \(a\ge B_i\) are marked invalid.  A viability table is then one code for \((H+1)B_{\max}\) Booleans.  The reverse recurrence scans rows and columns in a fixed rectangular loop.  This avoids dependent vectors in the object syntax and makes table lookup a fixed primitive-recursive projection.
+
+\subsection{Products and amalgamation}
+
+If a theorem needs several independent relational certificates at the same finite horizon, form the product candidate set and conjunction of validity/compatibility predicates.  The product bound is the product of component bounds and remains primitive recursive.  Backward viability then performs finite witness amalgamation.  This is the appropriate replacement for statements such as ``choose all local branches coherently.''
+
+The construction can be expensive, but proof-theoretic feasibility and computational efficiency are separate.  Sharing, incremental viability, and problem-specific pruning can reduce the state space without changing the theorem.

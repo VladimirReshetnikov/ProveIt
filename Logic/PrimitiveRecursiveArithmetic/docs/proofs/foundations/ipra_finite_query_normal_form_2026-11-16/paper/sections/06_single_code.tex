@@ -1,0 +1,168 @@
+\section{Single-code normalization of finite data}
+
+The compiler theorem becomes useful only after ordinary finite structures are
+reduced to one certificate variable.  This section gives that reduction in a
+form tailored to the existing arithmetic library.
+
+\subsection{Uniform-base arrays}
+
+Fix a base \(b\ge2\).  For a finite array
+\(a_0,\ldots,a_{L-1}\), with \(a_i<b\), define the little-endian code
+\[
+  \Code_b(a_0,\ldots,a_{L-1})
+    =\sum_{i<L} a_i b^i.
+\]
+For any code \(c\), define
+\[
+  \operatorname{dig}_b(c,i)
+    = \operatorname{rem}\!
+       \left(\operatorname{quo}(c,b^i),b\right).
+\]
+Both operations are primitive recursive: powers, bounded sums, quotient, and
+remainder are already present in the repository.
+
+\begin{theorem}[Uniform-base coding]\label{thm:uniform-code}
+If \(b\ge2\) and \(a_i<b\) for every \(i<L\), then iPRA proves
+\begin{align*}
+  &\Code_b(a_0,\ldots,a_{L-1})<b^L,\\
+  &\operatorname{dig}_b(\Code_b(a_0,\ldots,a_{L-1}),i)=a_i
+    \qquad(i<L).
+\end{align*}
+The theorem is uniform when \(L\), \(b\), and the array body are
+primitive-recursive functions of the query.
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+  C_j=\sum_{i<j}a_i b^i.
+\]
+The bound is proved by induction on \(j\).  At zero, \(C_0=0<1=b^0\).
+For the step, \(C_{j+1}=C_j+a_jb^j\).  By induction \(C_j<b^j\), and
+\(a_j<b\), so
+\[
+  C_{j+1}<b^j+(b-1)b^j=b^{j+1}.
+\]
+In natural arithmetic one need not introduce the subtraction \(b-1\): from
+\(a_j<b\) obtain \(a_j+1\le b\), combine
+\(C_j+1\le b^j\) and monotonicity of multiplication, and cancel the harmless
+successor.  All formulas involved are QF inequalities, so the repository's
+open QF induction applies.
+
+For digit recovery, fix \(i<L\) and split the code into lower, current, and
+upper parts:
+\[
+ C_L=R_i+b^i\bigl(a_i+bU_i\bigr),
+ \quad
+ R_i=\sum_{j<i}a_jb^j,
+ \quad
+ U_i=\sum_{i<j<L}a_jb^{j-i-1}.
+\]
+The first part of the proof gives \(R_i<b^i\).  Since \(b^i>0\), Euclidean
+uniqueness for division by \(b^i\) proves
+\[
+  \operatorname{quo}(C_L,b^i)=a_i+bU_i,
+  \qquad
+  \operatorname{rem}(C_L,b^i)=R_i.
+\]
+Now divide the quotient by \(b\).  The displayed expression has quotient
+\(U_i\) and remainder \(a_i\), and \(a_i<b\), so a second application of
+Euclidean uniqueness gives the desired digit equation.
+
+The decomposition identities are finite-sum index manipulations.  They can be
+proved by QF induction using the existing sum shift, congruence, and reflection
+lemmas.  No appeal to an external representation theorem is required.
+\end{proof}
+
+\subsection{Mixed-radix records}
+
+A uniform base can waste an enormous amount of code space when fields have
+very different bounds.  Let \(r_0,\ldots,r_{L-1}\) be positive radices and
+\(a_i<r_i\).  Put
+\[
+  M_0=1,
+  \qquad M_i=\prod_{j<i}r_j,
+  \qquad
+  \Code_{\vec r}(\vec a)=\sum_{i<L}a_iM_i.
+\]
+Define
+\[
+  \operatorname{get}_{\vec r}(c,i)
+   =\operatorname{rem}
+      \left(\operatorname{quo}(c,M_i),r_i\right).
+\]
+
+\begin{theorem}[Mixed-radix coding]\label{thm:mixed-code}
+If \(0<r_i\) and \(a_i<r_i\) for every \(i<L\), then
+\[
+  \Code_{\vec r}(\vec a)<\prod_{i<L}r_i,
+  \qquad
+  \operatorname{get}_{\vec r}(\Code_{\vec r}(\vec a),i)=a_i
+  \quad(i<L).
+\]
+\end{theorem}
+
+\begin{proof}
+The proof is identical to \cref{thm:uniform-code}, replacing \(b^i\) by the
+prefix product \(M_i\).  The lower part is below \(M_i\), and the tail after
+position \(i\) is a multiple of \(M_ir_i=M_{i+1}\).  Two applications of
+Euclidean uniqueness recover the field.  The code bound follows by induction
+from
+\[
+  C_{i+1}=C_i+a_iM_i<M_i+r_iM_i-M_i=M_{i+1},
+\]
+again formalized without subtraction by successor inequalities.
+\end{proof}
+
+\subsection{What can be normalized}
+
+The preceding theorems immediately cover the following finite objects.
+
+\begin{itemize}
+\item A bounded list is an array plus its length.
+\item A rectangular table is an array under a primitive-recursive flattening
+of the indices.
+\item A finite graph is a vertex-bound code plus an adjacency bit vector.
+\item A finite simplicial complex is a bounded list of simplex bit vectors.
+\item A matrix is a coefficient array; fixed dimensions may be compiled away.
+\item A rational record stores signed numerator and positive denominator
+fields.
+\item A trace is an array of states, transitions, or branch bits.
+\item A resource vector is a mixed-radix record.
+\item A finite family of node certificates is one mixed-radix master code.
+\end{itemize}
+
+If a component is itself a bounded array, its code becomes one field in the
+outer mixed-radix record.  The hierarchy can always be flattened because the
+query determines all component bounds.
+
+\subsection{Query-dependent lengths and bounds}
+
+The array length and base may depend on the query.  This causes no problem:
+finite sums, products, and powers are primitive recursive, and the induction
+variable may range to the query-dependent length while the query remains a
+free parameter.  The critical requirement is that the bound be a numerical
+term, not merely a metatheoretic statement that some finite set exists.
+
+\begin{warning}[Dependent component bounds]
+If the bound for a later field depends on the value of an earlier field, the
+master code requires a query-only envelope.  One may prove an upper bound
+\(\widehat r_i(q)\) valid for every accepted prefix, or retain a nested
+certificate whose verifier checks the dependent bounds.  A graph cannot be
+flattened to a fixed mixed-radix interval without some such envelope.
+\end{warning}
+
+\subsection{Why one code is useful despite its size}
+
+A single code has three proof-theoretic advantages.
+
+\begin{enumerate}
+\item Existence of a complicated finite structure becomes an ordinary bounded
+existential over one natural variable.
+\item The least accepted structure is a primitive-recursive term obtained from
+one search theorem.
+\item The verifier's induction invariant is a finite Boolean fold, hence QF.
+\end{enumerate}
+
+The code bound may be huge, but its role is logical normalization.  Efficient
+producers can later prove that their output is accepted by the same verifier.

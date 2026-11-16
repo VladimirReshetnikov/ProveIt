@@ -1,0 +1,41 @@
+The \repo\ development now contains a checked deep embedding of intuitionistic
+primitive recursive arithmetic (iPRA), a growing library of kernel-checked
+object-theory derivations, and many research packets that recast mathematics in
+finitary quantitative form.  The main recurrent gap is no longer the slogan
+``replace infinity by finite approximations.''  It is the last, arithmetic
+step: how to encode bounded tables, traces, witness clouds, and finite proof
+interfaces by primitive-recursive syntax and turn their correctness into a
+literal derivation of type \(\Prf\,\PRAAx\).
+
+This report develops \emph{finite-query normal form} (\(\FQNF\)).  A
+mathematical assertion is first specialized to a finite query---a precision,
+height, mesh, degree, time horizon, or finite diagram.  All finite evidence for
+that query is packed into one natural-number certificate below an explicit
+primitive-recursive bound.  A fixed primitive-recursive Boolean checker
+verifies the certificate, and an object-iPRA extractor turns checker acceptance
+into the requested conclusion.  The least accepted certificate is selected by
+the bounded-search machinery already formalized in the repository.  Thus no
+unbounded choice, universal interpreter, semantic truth-to-provability step, or
+canonical representative is smuggled into the proof.
+
+The central new normal-form theorem shows that query-bounded arrays, mixed
+finite records, complete relational paths, and the node certificates of a fixed
+proof graph may all be flattened to one code.  Uniform-base and mixed-radix
+decoding reduce to the repository's division-with-remainder and power
+libraries.  Future-dependent finite choice is handled by searching complete
+path codes; a faster stepwise least-successor trace is an optional refinement
+when local seriality is available.  Nonunique certificates are eliminated by
+cross-certificate stability, while exact discrete labels are recovered only
+under an explicit separation gap.  Deep or ineffective data---height bounds,
+analytic constants, covering representatives, compactness moduli---remain
+visible producer premises rather than being mislabeled as algorithms.
+
+The report gives full human proofs of the generic normalization, selection,
+path, composition, stability, gap, finite-consumer, and height/list theorems; a
+domain-by-domain representation guide; and a dependency-ordered Lean plan
+against the current \code{ConciseIPRA} and \code{IPRADerivations} APIs.  The
+artifact also includes Lean source scaffolds, exact Python reference
+implementations, eleven passing regression tests, and worked certificates for
+a relational path where greedy choice fails and for exact rational bisection of
+\(y^3+y=x\).  No uncompiled Lean outline is represented as a checked iPRA
+proof.

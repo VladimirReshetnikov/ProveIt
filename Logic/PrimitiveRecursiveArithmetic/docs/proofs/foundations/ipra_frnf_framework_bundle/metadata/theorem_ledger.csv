@@ -1,0 +1,21 @@
+id,theorem,kind,status,artifact,object_ipra_endpoint,notes
+T01,Bounded formula Booleanization,foundational,fully argued; Lean target,Paper Sec. 4; lean/FRNF/ObjectTargets.lean,yes,Structural compiler to PR characteristic symbols
+T02,Least bounded search,foundational,repository implementation already checked,Paper Sec. 5; IPRADerivations/Core/Search.lean,yes,Reuses Search.search_spec and search_found
+T03,No total universal PR evaluator,barrier,fully proved,Paper Sec. 6,no,Diagonal obstruction fixes the representation boundary
+T04,Static specialization,compiler,fully argued; implementation plan,Paper Sec. 6; lean/FRNF/Semantic.lean,yes per specialized graph,Each fixed transducer is compiled as syntax not interpreted as data
+T05,Dual-horizon sequential composition,compiler,fully proved; Python tested,Paper Sec. 7; reference/frnf.py; lean/FRNF/Semantic.lean,yes after table coding,Separates computation and justification demands
+T06,Reverse DAG demand closure,compiler,fully proved; Python tested; Lean target,Paper Sec. 8; reference/frnf.py; lean/FRNF/ObjectTargets.lean,yes,Single reverse pass on fixed topological order
+T07,QF clocked trace internalization,compiler,fully argued; logical kernel source,Paper Sec. 9; lean/FRNF/Kernel.lean,yes,Uses PRA.qfInd with frozen final demand
+T08,Proof schedule composition,compiler,source-level theorem without placeholders; not built,Paper Sec. 10; lean/FRNF/Kernel.lean,yes,Simultaneous cut through Schedule.extend
+T09,Backward viability,relational,fully proved; Python tested; Lean target,Paper Sec. 11; reference/frnf.py; lean/FRNF/ObjectTargets.lean,yes,Finite dynamic program; no infinite choice
+T10,Shrinking viability/coherent finite-horizon names,relational,fully argued,Paper Sec. 12,yes after coded estimates,Uses diameter and summable-motion budgets
+T11,Stable-observer erasure,relational,fully argued; kernel combinator source,Paper Sec. 12; lean/FRNF/Kernel.lean,yes,Eliminates arbitrary internal choices for branch-invariant outputs
+T12,Exact collapse under a gap,relational,fully argued; kernel combinator source,Paper Sec. 12; lean/FRNF/Kernel.lean,yes,Exact label requires separation data
+T13,Majorized descent,algorithmic,fully proved; Python tested,Paper Sec. 13; reference/frnf.py,yes,Strict rank decrease plus frozen terminal state
+T14,Finite-net approximate minimum,analytic,fully proved; Python tested; Lean target,Paper Sec. 14; reference/frnf.py; lean/FRNF/ObjectTargets.lean,yes,No exact argmin claimed without uniqueness data
+T15,Guarded reciprocal,analytic,fully proved; Python tested; Lean target,Paper Sec. 15; reference/frnf.py; lean/FRNF/ObjectTargets.lean,yes,Requires explicit positive apartness
+T16,Cardinality does not uniformly yield a cutoff,barrier,fully proved,Paper Sec. 16,no,Halting-time singleton reduction
+T17,Conditional height-to-complete-list compiler,number theory,fully proved conditionally,Paper Sec. 17,yes,Deep height producer remains an antecedent
+T18,FRNF compilation theorem,main synthesis,fully argued as a schema; Lean roadmap,Paper Sec. 18-20; lean/,yes for each instantiated graph,Depends only on local object proof constructors
+T19,Transfer to native scalar core,integration,repository theorem reused,Paper Sec. 20; lean/FRNF/Kernel.lean,yes,Uses pra_iff_native
+T20,Euclidean descent worked example,example,Python tested; repository object proof exists,Paper Sec. 21; reference/frnf.py,yes,Illustrates rank/freeze/trace normal form

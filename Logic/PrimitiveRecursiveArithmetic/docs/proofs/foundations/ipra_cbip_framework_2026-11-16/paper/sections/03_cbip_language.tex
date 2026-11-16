@@ -1,0 +1,82 @@
+\section{Certified Bounded Interaction Programs}\label{sec:cbip}
+
+\subsection{The fixed-program principle}
+
+A primitive-recursive language may contain one symbol for every fixed program built from zero, successor, projections, composition, and primitive recursion.  It must not contain an unclocked evaluator for arbitrary codes of all primitive-recursive programs: such an evaluator would diagonalize outside the primitive-recursive class.  Accordingly, a CBIP is compiled externally, one fixed syntax tree at a time.  The compiler produces explicit \code{PR} syntax and explicit proof terms; the object theory reasons only about the resulting fixed symbols.
+
+\begin{principle}[No internal universal evaluator]
+Every theorem in the framework is a schema indexed by a fixed CBIP.  Structural recursion on the program is metatheoretic code generation.  Object-theoretic recursion is used only for the finitely many loops occurring in the compiled program.
+\end{principle}
+
+\subsection{Program constructors}
+
+A CBIP state is a bounded numerical code containing a program counter, user parameters, finite stores, certificates, and error metadata.  The core constructors are as follows.
+
+\begin{description}
+\item[Exact update \(\mathsf{emit}(f)\).] Replace a store component by a fixed primitive-recursive term \(f\).
+\item[Assertion \(\mathsf{assert}(r)\).] Check a Boolean relation.  A failed assertion moves to a designated rejecting state; soundness uses only the accepting branch.
+\item[Global-contract query \(\mathsf{query}(H,q)\).] Instantiate an external universally quantified hypothesis at the computed query \(q\) and store the resulting finite fact.
+\item[Bounded loop \(\mathsf{loop}(b,P)\).] Execute \(P\) at most \(b(u)\) times.  The local invariant must be quantifier free after Booleanization.
+\item[Least bounded search \(\mathsf{search}(b,r)\).] Return the least \(i<b\) satisfying \(r(i)=1\), or the sentinel \(b\).
+\item[Existential choice \(\mathsf{pick}(b,r)\).] Consume a certificate for one valid answer below \(b\).  It may be implemented by search when validity is decidable and existence is proved.
+\item[Universal challenge \(\mathsf{challenge}(b,P)\).] Verify the continuation for every \(i<b\), or consume an all-children strategy certificate.
+\item[Relational query \(\mathsf{rel}(b,\Local,\Next)\).] Permit any locally valid answer whose successor state remains viable for the remaining finite horizon.
+\item[Guarded operation \(\mathsf{guard}(g,P,Q)\).] Branch on a decidable numerical guard.  Mathematical uses of a totalized partial operation must prove the intended guard.
+\item[Stable observation \(\mathsf{observe}(E,o)\).] Export an output only modulo a supplied equivalence \(E\), or within a supplied diameter.  This erases internal finite choices when the final theorem does not depend on them.
+\item[Sequential and finite parallel composition.] Combine programs by a phase tag or by a product state.  Parallel computations remain finite and can be scheduled sequentially.
+\end{description}
+
+The language is deliberately first order.  Higher-type-looking behavior, such as querying a real name or a modulus, is compiled into calls to fixed numerical evaluators and finite instances of their contracts.
+
+\subsection{Typing by resources and observations}
+
+A useful implementation assigns each wire an interface type and each command an effect.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lXl@{}}
+\toprule
+Type/effect & Meaning & Typical evidence \\
+\midrule
+\code{Exact C} & exact finite code & defining equations \\
+\code{Name C} & precision-indexed samples & regularity/modulus \\
+\code{Rel C} & finite family of admissible answers & local validity and viability \\
+\code{Guard G C} & operation valid under guard \(G\) & apartness, positivity, isolation \\
+\code{Quot E C} & output used modulo \(E\) & confluence/invariance \\
+\code{Approx d C} & outputs have certified diameter \(d\) & stability/Lipschitz bound \\
+\code{Cert P} & externally generated finite certificate & checker soundness \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Typing prevents several common mistakes.  A \code{Name} cannot be divided without a \code{Guard}; a \code{Rel} cannot silently become \code{Exact}; a metastable window is not a tail modulus; and a \code{Cert} proves only what its checker soundness theorem states.
+
+\subsection{Operational semantics}
+
+For a fixed input \(u\), the normalized machine has primitive-recursive functions
+\[
+  \Good(u),\quad \mathsf{init}(u),\quad \mathsf{fuel}(u),\quad
+  \mathsf{step}(i,s,u),\quad \Inv(i,s,u),\quad \Accept(s,u).
+\]
+The run is
+\[
+  \Run(0,u)=\mathsf{init}(u),\qquad
+  \Run(i+1,u)=\mathsf{step}(i,\Run(i,u),u).
+\]
+The compiler uses a total step function.  Finished and rejected states are frozen.  Thus the fixed fuel need not equal the exact stopping time.  The invariant records a status tag and proves that an accepting terminal state satisfies the desired observation.
+
+\subsection{One trace, not one loop per mathematical paragraph}
+
+Nested loops, finite searches, certificate checks, and local computations can all be flattened into one outer trace.  The state contains the program counter and each live local counter.  A lexicographic schedule or a precomputed static bound gives a single fuel.  This normalization is valuable for iPRA because it concentrates induction into one quantifier-free invariant.
+
+The state may grow, but proof size is not forced to grow in the same way.  Local equations and certificate-checker lemmas are proved separately and invoked in the global successor case.  In Lean, this means the global trace theorem is a short composition of checked local derivations rather than an enormous arithmetic proof reconstructed from first principles.
+
+\subsection{Proof-producing versus proof-carrying execution}
+
+Two modes coexist.
+
+\begin{enumerate}
+\item In \emph{recomputation mode}, the object theory runs the primitive-recursive program and proves its invariant.
+\item In \emph{certificate mode}, an external tool supplies a finite trace, viability table, interval subdivision, or strategy tree.  A smaller primitive-recursive checker validates it, and an object theorem reflects acceptance into the desired conclusion.
+\end{enumerate}
+
+Certificate mode does not weaken trust: the external producer is untrusted.  It often reduces proof-term size and permits sophisticated search to occur outside the kernel.  The trusted content is the fixed checker and its \code{Prf PRAAx} soundness derivation.

@@ -1,0 +1,3313 @@
+KIFC-R: Kernel-Integrated Finitary Contracts with
+             Residual Boundaries
+A current proof-compilation framework for intuitionistic primitive recursive arithmetic
+
+
+                        Prepared for Vladimir Reshetnikov
+        Repository snapshot: 31784f0710fa04ccd8ee863ce9bad91fb1d8cf88
+
+                               16 November 2026 (Pacific time)
+
+                                              Abstract
+      The current ProveIt repository has crossed an important threshold. It no longer contains
+  only a small checked presentation of intuitionistic primitive recursive arithmetic and a collection
+  of prose proof packets: it also contains a substantial kernel-checked derivation library, including
+  arithmetic, bounded search, simultaneous recursion, Euclidean algorithms, finite sums and
+  products, descent, finite-dimensional linear algebra, and many theorem modules. The remaining
+  general problem is therefore more precise. Given a finite mathematical construction and some
+  genuinely theorem-specific quantitative inputs, how can one systematically produce a value of
+  the embedded judgement
+                                            Γ ⊢ [PRAAx]φ
+  without confusing an ambient Lean theorem, a tested program, or an unavailable quantitative
+  producer with an object-theory proof?
+      This report develops KIFC-R, an updated residualized version of the Kernel-Integrated
+  Finitary Contract framework. A theorem is compiled query-by-query into fixed primitive-
+  recursive terms, a finite proof graph, and an explicit list of residual boundary formulas. Checked
+  infrastructure is reused rather than reimplemented: in particular, the present repository already
+  supplies least bounded search and simultaneous recursion inside Prf PRAAx. New generic
+  components are isolated where the checked library is still thin: fixed-formula Booleanization,
+  proof schedules, residual normalization, capped cyclic demand closure, trace reflection, finite
+  relational viability, stable-observer elimination, and quantitative interfaces for guards, nets,
+  names, and height-bounded enumeration.
+      The central output is not an unconditional overstatement but a canonical conditional derivation
+
+                                     B1 , . . . , Br , Γ ⊢ [PRAAx]Φ.
+
+  Each Bi is an exact missing producer obligation: for example a separation gap, a height cutoff,
+  a finite-cover margin, or an effective analytic constant. Supplying derivations of the Bi closes
+  the theorem by simultaneous cut; leaving them open records the precise research boundary.
+  Complete human-readable arguments are given for residualized graph compilation, least fixed
+  points of capped monotone demand systems, one-loop trace normalization, finite path extraction
+  by backward viability, exact and approximate choice erasure, regular-name extraction from
+  shrinking clouds, guarded operations, finite-net transfer, and the equivalence between effective
+  height bounds and complete bounded lists.
+      The archive includes a current-API Lean formalization plan, source-oriented Lean modules,
+  exact Python reference algorithms and tests, a theorem/status ledger, and a compiled PDF. The
+  new Lean modules are explicitly outlines rather than claimed kernel-checked additions; inherited
+  checked results are identified separately. General effective Faltings, Siegel, Roth, Mordell–Weil
+
+
+                                                   1
+KIFC-R for iPRA                                                                                   2026-11-16
+
+
+      generation, Chebotarev, Siegel–Walfisz, and Bombieri–Vinogradov are not asserted. Their finite
+      verification and composition layers are resolved relative to the quantitative producers that those
+      theorems would have to supply.
+
+
+Contents
+1 Executive result and design summary                                                                       7
+  1.1 The current problem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .           7
+  1.2 The KIFC-R endpoint . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .             7
+  1.3 Seven kernel-normal node classes . . . . . . . . . . . . . . . . . . . . . . . . . . . . .            7
+  1.4 Main metatheorems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .             8
+  1.5 What has genuinely improved over the earlier framework packets . . . . . . . . . . .                  9
+  1.6 Scope . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         9
+
+2 Current repository audit and diagnosis                                                                    9
+  2.1 Pinned snapshot and trust boundary . . . . . . . . . . . . . . . . . . . . . . . . . . .              9
+  2.2 The checked logical substrate . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .          10
+  2.3 The current checked derivation library . . . . . . . . . . . . . . . . . . . . . . . . . .           10
+  2.4 Recurring difficulties in the packet corpus . . . . . . . . . . . . . . . . . . . . . . . .          11
+  2.5 Relation to earlier framework packets . . . . . . . . . . . . . . . . . . . . . . . . . . .          12
+  2.6 Five audit principles . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        12
+
+3 Logical substrate and admissible proof engineering                                                       12
+  3.1 The object theory . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        12
+  3.2 Finite data inside one numerical sort . . . . . . . . . . . . . . . . . . . . . . . . . . .          13
+  3.3 Metalevel normalization is legitimate when it produces proof terms . . . . . . . . . .               14
+  3.4 A disciplined status vocabulary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .          14
+
+4 Kernel-Integrated Finitary Contracts with residual boundaries                                            15
+  4.1 Observation presentations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .          15
+  4.2 Deterministic contracts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        15
+  4.3 Relational contracts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         16
+  4.4 Stable observation contracts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         16
+  4.5 Demand transformers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .            16
+  4.6 The seven kernel-normal node classes . . . . . . . . . . . . . . . . . . . . . . . . . . .           17
+
+5 Residual boundaries and conditional proof normal form                                                    18
+  5.1 Why residuals are formulas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .           18
+  5.2 Proof dependencies and data dependencies . . . . . . . . . . . . . . . . . . . . . . . .             18
+  5.3 Canonical residual normalization . . . . . . . . . . . . . . . . . . . . . . . . . . . . .           19
+  5.4 Residualized composition theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . .             19
+  5.5 Alternatives, implications, and partial progress . . . . . . . . . . . . . . . . . . . . .           20
+  5.6 Cyclic proof dependencies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .          20
+
+6 Boolean reflection and bounded search                                                                    21
+  6.1 Boolean conventions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .          21
+  6.2 Finite folds . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       21
+  6.3 Structural Booleanization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .          22
+
+
+                                                      2
+KIFC-R for iPRA                                                                                2026-11-16
+
+
+   6.4   Checked least bounded search . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+   6.5   Derived finite algorithms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+
+7 One-loop normalization and trace reflection                                                            24
+  7.1 Certified iteration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    24
+  7.2 Why all precision must be fixed before induction . . . . . . . . . . . . . . . . . . . .           24
+  7.3 Collapsing nested bounded constructions . . . . . . . . . . . . . . . . . . . . . . . . .          25
+  7.4 Clocked traces as an alternative . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       26
+  7.5 Lexicographic descent and fuel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         26
+
+8 Proof schedules and residualized graph compilation                                                     26
+  8.1 Local rules versus global proofs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       26
+  8.2 Static graph elaboration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       27
+  8.3 The four compiler passes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       27
+  8.4 Soundness theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        28
+  8.5 A relative completeness statement . . . . . . . . . . . . . . . . . . . . . . . . . . . .          28
+  8.6 Why the compiler is not a universal evaluator . . . . . . . . . . . . . . . . . . . . . .          29
+  8.7 Proof provenance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       29
+
+9 Capped cyclic demand closure                                                                           29
+  9.1 Why acyclic propagation is sometimes insufficient . . . . . . . . . . . . . . . . . . . .          29
+  9.2 Demand systems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         30
+  9.3 Overflow as a residual or a diagnostic . . . . . . . . . . . . . . . . . . . . . . . . . .         31
+  9.4 Object-theory realization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        31
+  9.5 Changing-parameter recursion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         32
+  9.6 Commutation with proof compilation . . . . . . . . . . . . . . . . . . . . . . . . . . .           32
+
+10 Finite relational witnesses and backward viability                                                    32
+   10.1 Why local choice is insufficient . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     32
+   10.2 Viability recurrence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   32
+   10.3 Constructing a path . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      33
+   10.4 Finite-use composition theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       33
+   10.5 Rectangular table encoding . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       34
+   10.6 Products and amalgamation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        34
+
+11 Stable observations, shrinking clouds, and finite consumers                                           34
+   11.1 Exact choice erasure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     34
+   11.2 Diameter-stable observations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       35
+   11.3 From clouds to a regular name . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        35
+   11.4 Why a diameter estimate alone is not enough . . . . . . . . . . . . . . . . . . . . . .          36
+   11.5 Metastability as a final interface . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     36
+   11.6 Stable labels under a gap . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      37
+
+12 Guarded operations, extensionality, and finite gluing                                                 37
+   12.1 Nonzero is not positive apartness . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      37
+   12.2 Totalization theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     37
+   12.3 Observational setoids . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    38
+   12.4 Finite nets in place of compactness . . . . . . . . . . . . . . . . . . . . . . . . . . . .      38
+   12.5 Finite-cover gluing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    38
+
+                                                    3
+KIFC-R for iPRA                                                                                2026-11-16
+
+
+   12.6 Projective and quotient data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+   12.7 Exact branch data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+
+13 The checked algebraic backend                                                                         39
+   13.1 Why this backend matters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       39
+   13.2 Provable-equality quotient . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     40
+   13.3 Sound use of metalevel tactics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     40
+   13.4 Algebra node interface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     40
+   13.5 Worked inherited examples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        41
+   13.6 Extending the backend . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      41
+
+14 Domain embedding recipes                                                                              41
+   14.1 Elementary and algebraic number theory . . . . . . . . . . . . . . . . . . . . . . . . .         41
+   14.2 Diophantine geometry . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       42
+   14.3 Real and complex analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      42
+   14.4 Probability and limit theorems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       43
+   14.5 Geometry . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     43
+   14.6 Linear algebra and spectral theory . . . . . . . . . . . . . . . . . . . . . . . . . . . .       44
+   14.7 Combinatorics and finite topology . . . . . . . . . . . . . . . . . . . . . . . . . . . .        44
+   14.8 Algebraic geometry and sheaf-like constructions . . . . . . . . . . . . . . . . . . . . .        44
+   14.9 Classical finite arguments . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     44
+
+15 Resolution of the reported difficulties                                                               44
+   15.1 Proof objects versus semantic theorems . . . . . . . . . . . . . . . . . . . . . . . . .         45
+   15.2 Quantifiers in induction predicates . . . . . . . . . . . . . . . . . . . . . . . . . . . .      45
+   15.3 All-precision invariants . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   45
+   15.4 Coherent choices from approximate witnesses . . . . . . . . . . . . . . . . . . . . . .          45
+   15.5 Root ordering and algebraic branches . . . . . . . . . . . . . . . . . . . . . . . . . . .       45
+   15.6 Spectral vectors and rotation axes . . . . . . . . . . . . . . . . . . . . . . . . . . . .       46
+   15.7 Mere nonzeroness in partial operations . . . . . . . . . . . . . . . . . . . . . . . . . .       46
+   15.8 Compactness and minimization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         46
+   15.9 Faltings and Siegel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    46
+   15.10Mordell–Weil descent . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     47
+   15.11Ineffective analytic constants . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     47
+   15.12Metastability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    47
+   15.13Classical arguments . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      47
+   15.14Summary matrix . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       47
+
+16 Lean formalization architecture against the current API                                               48
+   16.1 Target location and imports . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      48
+   16.2 Proposed module graph . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        49
+   16.3 Kernel-facing core . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     49
+   16.4 Loop certificates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    50
+   16.5 Boolean reflection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   51
+   16.6 Search adapter: reuse, do not reprove . . . . . . . . . . . . . . . . . . . . . . . . . .        52
+   16.7 Finite codes and packed state . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      52
+   16.8 Residual compilation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     53
+   16.9 Capped demand closure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        53
+
+
+                                                    4
+KIFC-R for iPRA                                                                                2026-11-16
+
+
+   16.10Relational viability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   54
+   16.11Stable observers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   54
+   16.12Rational and analytic contracts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      54
+   16.13Benchmark order . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      55
+   16.14Axiom and build gates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      55
+
+17 Worked examples                                                                                       56
+   17.1 Example A: a checked algebra node for Heron’s identity . . . . . . . . . . . . . . . .           56
+   17.2 Example B: exact rational bisection for y 3 + y = x . . . . . . . . . . . . . . . . . . .        56
+   17.3 Example C: finite relational paths with dead ends . . . . . . . . . . . . . . . . . . . .        57
+   17.4 Example D: a stable symmetric root observer . . . . . . . . . . . . . . . . . . . . . .          57
+   17.5 Example E: complete Diophantine enumeration from a height bound . . . . . . . . .                58
+   17.6 Example F: a finite-net maximum bound . . . . . . . . . . . . . . . . . . . . . . . . .          58
+   17.7 Example G: finite-consumer use of metastability . . . . . . . . . . . . . . . . . . . .          58
+   17.8 Example H: a guarded pivot . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       58
+
+18 Claim status, validation, and limitations                                                             59
+   18.1 Theorem ledger . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     59
+   18.2 Validation layers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    60
+   18.3 What the framework resolves . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        60
+   18.4 What remains theorem-specific or open . . . . . . . . . . . . . . . . . . . . . . . . . .        61
+   18.5 Required ledger for migrated packets . . . . . . . . . . . . . . . . . . . . . . . . . . .       61
+
+19 Further research questions                                                                            62
+   19.1 Immediate formalization questions . . . . . . . . . . . . . . . . . . . . . . . . . . . .        62
+   19.2 Mathematical interface questions . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       62
+   19.3 Proof translation and automation . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       62
+   19.4 Foundational questions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     63
+   19.5 A recommended next milestone . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         63
+
+A Notation and representation conventions                                                                63
+  A.1 Variable order . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     64
+  A.2 Rational codes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       64
+  A.3 Bounds . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       64
+
+B Reusable proof templates                                                                               64
+  B.1 Template 1: bounded verifier . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         64
+  B.2 Template 2: least certified witness . . . . . . . . . . . . . . . . . . . . . . . . . . . .        65
+  B.3 Template 3: certified loop . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       65
+  B.4 Template 4: relational finite use . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      65
+  B.5 Template 5: stable observer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        65
+  B.6 Template 6: guarded operation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .          66
+  B.7 Template 7: bounded-height completeness . . . . . . . . . . . . . . . . . . . . . . . .            66
+  B.8 Template 8: finite net . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       66
+  B.9 Template 9: residualized theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         67
+  B.10 Template 10: capped cyclic demand . . . . . . . . . . . . . . . . . . . . . . . . . . .           67
+
+C Source and provenance audit                                                                    67
+  C.1 Pinned repository snapshot . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 67
+
+                                                    5
+KIFC-R for iPRA                                                                                2026-11-16
+
+
+  C.2   Current primary sources inspected . . . . . . . . . . . . . . . . . . . . . . . . . . . .        67
+  C.3   Earlier framework artifacts consolidated . . . . . . . . . . . . . . . . . . . . . . . . .       68
+  C.4   Use of sources . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   68
+  C.5   Audit limitations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    68
+
+
+
+
+                                                    6
+KIFC-R for iPRA                                                                               2026-11-16
+
+
+1     Executive result and design summary
+1.1    The current problem
+A claim that a classical theorem has been embedded into iPRA should separate four logically different
+achievements.
+ (1) The familiar mathematical statement has been replaced by a finite numerical presentation
+     with explicit moduli, bounds, margins, charts, or relations.
+ (2) The finite construction has been compiled to fixed primitive-recursive symbols and quantifier-
+     free loop invariants.
+ (3) Lean has constructed an actual derivation of an explicit object formula from PRAAx.
+ (4) An external interpretation theorem explains how that object formula recovers the familiar
+     statement.
+The current repository provides many successful instances of (2)–(3), but most delivered packets
+remain at (1) or at a semantic version of (2). It also contains hard targets for which a quantitative item
+in (1) is genuinely missing. A useful general framework must therefore do two things simultaneously:
+automate the reusable proof engineering, and expose rather than conceal the missing mathematics.
+
+1.2    The KIFC-R endpoint
+Fix a finite theorem-specific interface graph G, a numerical input x, and a finite query q. Compilation
+produces:
+    • fixed PR symbols for every executable node;
+    • a demand vector fixing all precision, fuel, finite-use, and table bounds before the main
+      induction;
+    • a packed forward trace and one quantifier-free invariant;
+    • a proof schedule containing local derivations and their dependency order;
+    • a duplicate-free list Res(G, q) = [B1 , . . . , Br ] of residual boundary formulas;
+    • an object-theory derivation
+
+                                      B1 , . . . , Br , ΓG ⊢ [PRAAx]ΦG (q, x).
+
+The graph and formula syntax are manipulated only in the Lean metatheory. The object theory
+executes dedicated terms generated from that fixed graph. This distinction avoids the impossible
+demand for a universal unclocked primitive-recursive evaluator.
+
+1.3    Seven kernel-normal node classes
+The updated normal form uses seven classes. The first six are computational; the seventh represents
+a deliberate boundary.
+
+
+
+
+                                                     7
+KIFC-R for iPRA                                                                             2026-11-16
+
+
+Node class              Kernel-facing contract
+Exact algebra           An equality derivation, preferably discharged through the checked quotien-
+                        t/integer/ring backend.
+Boolean reflection      A Boolean-valued term plus derivations connecting value 1 with one fixed
+                        bounded formula.
+Checked search          An instance of the checked Search.mu interface, with foundness and leastness.
+Certified iteration     A primitive-recursive state transition with a QF base/step certificate.
+Finite relation         A bounded cloud or layered relation with validity, nonemptiness, and com-
+                        patibility proofs.
+Stable observation      Exact independence, a rational diameter estimate, or a gap-guarded collapse
+                        theorem.
+Residual boundary       A formula consumed by downstream rules but not presently produced; it
+                        remains an explicit hypothesis.
+
+1.4   Main metatheorems
+Theorem 1.1 (Residualized kernel compilation). Let G be a fixed finite interface graph. Suppose
+every executable node has a fixed primitive-recursive implementation and an object-level local
+soundness derivation; every recursion has a quantifier-free invariant; every finite relation has
+bounded validity and compatibility formulas; and every unresolved input is declared as a residual
+boundary formula. Then a metalevel compiler can construct a finite list Res(G, q) and a derivation
+
+                                   Res(G, q), ΓG ⊢ [PRAAx]ΦG (q).
+
+If each residual formula has a derivation from ∆, simultaneous cut produces
+
+                                       ∆, ΓG ⊢ [PRAAx]ΦG (q).
+
+The construction does not add an object-level graph interpreter, reflection axiom, choice principle,
+or induction scheme.
+
+Proof. Specialize the finite graph at the metalevel. Traverse it backward to compute which assump-
+tions and numerical demands are actually needed. For acyclic resource dependencies, take finite
+maxima in reverse topological order. For monotone cyclic dependencies with supplied caps, iterate
+the capped update map until its rank can no longer rise; theorem 9.3 proves that this yields the
+least closed vector above the seed. Generate a packed forward transition and prove its QF invariant
+by the checked induction interface. Each node’s local rule is instantiated with the generated terms.
+Compose the instantiated rules in topological proof order using Prf.trans; where a premise is not
+produced by an executable node, retain it in the context. Backward reachability removes unused
+residuals and duplicate formulas. The resulting nested cuts are exactly the required derivation. A
+final application of simultaneous cut supplies any residual proofs that later become available.
+Theorem 1.2 (Finite relational elimination). For a bounded layered relation of finite horizon,
+backward viability holds at a candidate exactly when that candidate begins an accepted compatible
+suffix. Hence a viable start yields a primitive-recursively selected finite path. If a terminal observer
+is constant on all accepted candidates, the observed output is canonical without a canonical witness.
+If its diameter is at most δ(q), any selected output is canonical up to δ(q). A coherent infinite name
+follows only from an additional primitive-recursive adjacent-motion budget with a summable tail
+modulus.
+
+                                                   8
+KIFC-R for iPRA                                                                              2026-11-16
+
+
+Proof. The viability equivalence is backward induction on the finite horizon. The path is obtained by
+checked least bounded search at the first level and at each successor level. Exact observer elimination
+instantiates the constancy theorem at the selected witness and an arbitrary valid witness. Diameter
+elimination is the same argument with a metric inequality. For an infinite name, telescoping the
+within-level and adjacent-motion estimates gives a finite tail bound; applying the supplied tail
+modulus turns it into the regular Cauchy estimate. Without the motion and tail hypotheses,
+independently nonempty shrinking clouds need not yield a computable coherent choice.
+
+1.5   What has genuinely improved over the earlier framework packets
+The main update is not another renaming of the same semantic ideas. It changes the formalization
+baseline and the output discipline.
+ (1) The current checked IPRADerivations.Core.Search is treated as inherited infrastructure.
+     Least search no longer appears as an unimplemented generic aspiration.
+ (2) Pairing, projections, integer square root, and two-track simultaneous recursion are inherited
+     from the checked Core.Pairing; generic state encodings can start from proved projection
+     equations.
+ (3) The checked library now contains division, gcd, Bézout, pigeonhole, permutations, multi-sums,
+     finite-dimensional linear algebra, and additional theorem modules. Domain recipes target
+     these actual APIs.
+ (4) Residual obligations are first-class formulas in the final sequent. This prevents a missing height
+     bound or analytic constant from being hidden in a host-language structure.
+ (5) Demand propagation handles capped monotone cycles, not only DAGs. This covers mutually
+     dependent precision schedules after a finite cap is justified.
+ (6) Formalization work is narrowed to the missing shared layer: Boolean formula compilation,
+     residual/proof scheduling, finite tables and traces, viability/observers, and worked application
+     endpoints.
+
+1.6   Scope
+The framework resolves many proof-engineering difficulties and gives correct conditional forms for
+several deep targets. It does not manufacture a height theorem, a spectral gap, an effective zero-free
+region, a branch-separation modulus, or rational covering representatives. Such information must
+either be proved in iPRA, supplied as finite evidence with a verifier, or remain in the residual context.
+This is a feature: the final sequent says exactly what has and has not been established.
+
+
+2     Current repository audit and diagnosis
+2.1   Pinned snapshot and trust boundary
+This report was prepared against the main-branch snapshot
+                          31784f0710fa04ccd8ee863ce9bad91fb1d8cf88
+observed on 16 November 2026. The repository is active, so the commit is part of the specification.
+Claims about the checked substrate refer to files at that snapshot; claims about the delivered packet
+corpus follow the repository’s own status distinction.
+
+                                                   9
+KIFC-R for iPRA                                                                            2026-11-16
+
+
+The root Logic/PrimitiveRecursiveArithmetic/README.md separates three layers.
+ (1) ConciseIPRA/ is a kernel-checked formalization of small calculi bi-interpretable with ordinary
+     iPRA.
+ (2) Derivations/ contains actual Lean-kernel-checked derivations whose public type is
+
+                                    ([] : List(Fm PTm 0)) ⊢ [PRAAx]φ.
+
+ (3) docs/proofs/ files 78 delivered research packets. They are valuable mathematical source
+     material, but the directory explicitly says they were filed as delivered and were not collectively
+     rebuilt or verified.
+The framework respects this classification. A prose proof, native Lean theorem, or executable test
+is not silently promoted to a checked object derivation.
+
+2.2   The checked logical substrate
+The ordinary embedded theory provides primitive-recursive symbols PR(k), terms PTm(n), formulas
+Fm(PTm, n), intuitionistic natural deduction Prf, and the axiom family PRAAx. The principal
+structural operations are simultaneous substitution, weakening, equality transport, logical introduc-
+tion/elimination, and simultaneous cut Prf.trans. Quantifier-free induction is exposed through
+PRA.qfInd; the derivation library packages the open-formula interface as LeanProofs.IPRA.ind
+and closed-theorem instantiation as LeanProofs.IPRA.inst.
+The native scalar core is not the recommended place to develop each mathematical proof directly.
+The transfer theorem pra_iff_native is applied after an ordinary PRAAx derivation has been built.
+This preserves a clear division of labor: theorem-specific arithmetic is written against the convenient
+ordinary syntax, while logical minimality is inherited from the checked bi-interpretation.
+
+2.3   The current checked derivation library
+The present Derivations library is much richer than the substrate assumed by several 15 November
+framework packets. The reusable core currently includes:
+   • arithmetic definitions, semiring laws, truncated subtraction, order, powers, parity, division,
+     gcd, Bézout, Euclid’s lemma, and integer cancellation;
+   • quotient and integer-difference semantics supporting proof-producing polynomial normalization
+     through ipra_ring;
+   • pairing with proved projections, integer square root, and simultaneous recursion of two tracks;
+   • finite sums, products, multi-sums, reflection and reindexing lemmas, permutations, and
+     pigeonhole infrastructure;
+   • a checked least bounded-search routine with an open QF invariant, foundness, soundness, and
+     minimality;
+   • generic infinite descent, a branching existential descent, and finite-dimensional integer linear
+     algebra.
+On top of this core, the import manifest contains checked modules in algebra, analysis, analytic
+number theory, combinatorics, Diophantine number theory, geometry, topology, and foundations.
+
+                                                  10
+KIFC-R for iPRA                                                                         2026-11-16
+
+
+The axiom-audit file lists the exported derivations and reports no sorryAx; the metatheory uses
+Lean’s standard quotient/propositional/classical infrastructure without adding those principles to
+PRAAx.
+Two consequences matter for the present design.
+ (1) The generic framework must reuse Search.search_spec, Search.search_found, pairing, and
+     simultaneous recursion. Re-proposing them as missing work would be obsolete.
+ (2) The remaining bottleneck is composition and representation: compiling bounded formulas,
+     tables, proof graphs, residual assumptions, cyclic demands, relational clouds, and analytic
+     error contracts into the existing derivation calculus.
+
+2.4   Recurring difficulties in the packet corpus
+The 78 packets vary widely, but their failures cluster around a short list.
+
+  Difficulty            Invalid or incomplete move         Correct repair
+  Host/object     mis- Prove a theorem about Nat, Rat, State an explicit Fm formula and con-
+  match                or Real and call it an iPRA struct a Prf PRAAx value; use the host
+                       proof.                             theorem only to guide or generate that
+                                                          derivation.
+ Unbounded preci- Put “correct at every later pre- Fix the terminal query, compute all
+ sion in induction     cision” inside the induction hy- finite demands first, and induct on a
+                       pothesis.                          QF trace invariant.
+ Hidden partiality     Divide, invert, normalize a chart, Totalize the operation and carry a
+                       or select a pivot without an Boolean guard plus a quantitative lower
+                       apartness margin.                  bound.
+ Discontinuous exact Select an ordered root, eigenvec- Return a finite relation, cluster, projec-
+ choice                tor sign, rotation axis, or branch tive object, or invariant observer; col-
+                       through a collision.               lapse only under an explicit positive
+                                                          gap.
+ Finiteness without Enumerate all points after prov- Separate the bounded verifier from a
+ cutoff                ing only that there are finitely height/cutoff producer; expose the lat-
+                       many.                              ter as a residual formula.
+ Pointwise existence Choose one approximant inde- Use finite-horizon viability for finite
+ without coherence     pendently at each precision.       consumers; add shrinking diameter, ad-
+                                                          jacent motion, and a tail modulus be-
+                                                          fore claiming a name.
+ Qualitative     com- Invoke compactness without a Supply a PR net, finite coverage cer-
+ pactness              finite net or cover margin.        tificate, and a Lebesgue-number-type
+                                                          quantitative transport estimate.
+ Ineffective asymp- Use constants whose existence Parameterize by the constants, prove
+ totics                is known but whose values are the verifier/composition theorem, and
+                       unavailable.                       retain their production as a residual
+                                                          boundary.
+
+
+
+
+                                                 11
+KIFC-R for iPRA                                                                           2026-11-16
+
+
+    Difficulty           Invalid or incomplete move        Correct repair
+    Universal    evalua- Treat arbitrary program code as Specialize syntax at the metalevel, or
+    tion                 data for an unclocked PR evalu- use a clocked finite trace with an ex-
+                         ator.                           plicit bound.
+
+
+2.5     Relation to earlier framework packets
+The existing foundations packets already introduced finite contracts, finite observations, proof-
+carrying graphs, backward precision propagation, relational viability, stable observables, finite
+nets, and producer/verifier separation. The prior KIFC and CIFER reports moved closest to an
+object-proof compiler. This report retains those ideas but updates four boundaries.
+ (1) It is rebased on the current checked derivation library rather than an older snapshot.
+ (2) It removes bounded search from the list of missing shared implementations.
+ (3) It gives residual formulas a canonical role in the output sequent rather than leaving unavailable
+     producers as prose annotations or host fields.
+ (4) It extends reverse demand from acyclic graphs to capped monotone cyclic systems with a
+     proved finite convergence bound.
+
+2.6     Five audit principles
+Principle 2.1 (Object-proof boundary). A public theorem is checked only when its endpoint is an
+embedded derivability judgement. Semantic Lean proofs, generated code, and tests may support that
+endpoint but cannot replace it.
+Principle 2.2 (Query specialization). The graph, formulas, and evaluator schemas are fixed in the
+metatheory. Object-level execution sees dedicated primitive-recursive terms, not arbitrary syntax
+codes.
+Principle 2.3 (Finite use before infinity). Prove the finite observation theorem actually consumed
+by the target. Export an infinite name only from explicit regularity and tail data.
+Principle 2.4 (Residual honesty). Every unavailable quantitative producer appears as a formula
+in the antecedent of the compiled theorem. It is never hidden inside a definition whose fields are
+assumed without derivation.
+Principle 2.5 (Reuse checked infrastructure). Generic framework code should wrap current checked
+arithmetic and search modules rather than duplicate them. New abstractions earn their place only
+when they reduce repeated object-level proof construction.
+
+
+3      Logical substrate and admissible proof engineering
+3.1     The object theory
+Fix a number n of free numerical variables. The type PTm(n) contains terms built from variables
+and primitive-recursive function symbols. A formula φ ∈ Fm(PTm, n) is interpreted only through
+the derivability relation
+                                         Γ ⊢ [PRAAx]φ.
+
+
+
+
+                                                 12
+KIFC-R for iPRA                                                                            2026-11-16
+
+
+The metatheory is Lean. The object theory is iPRA. This separation allows the metatheory to use
+finite types, inductive syntax, quotient constructions, and normalization tactics while still exporting
+a derivation whose leaves are exactly the axioms of iPRA.
+The following derived operations are the backbone of the compiler.
+Lemma 3.1 (Substitution). If Γ ⊢ φ and σ substitutes terms for all free variables, then
+
+                                             Γ[σ] ⊢ φ[σ].
+
+Proof. Induct on the given natural-deduction derivation. The only nontrivial cases are binders.
+Under a binder, lift σ by mapping the newly bound variable to itself and shifting every old image.
+The syntax library proves the required substitution identities. The axiom case follows because
+an open axiom is universally instantiated by the axiom rule. This is the content of the current
+Prf.substWeaken and Prf.subst theorems.
+Lemma 3.2 (Simultaneous cut). If h : Γ ⊢ φ and, for every ψ ∈ Γ, one has kψ : ∆ ⊢ ψ, then
+∆ ⊢ φ.
+
+Proof. Induct on the list Γ. The empty case is weakening. For Γ = ψ :: Γ′ , first discharge ψ from h
+by implication introduction, recursively cut all members of Γ′ , and finally apply modus ponens to
+kψ . This is exactly the current theorem Prf.trans. Notice that no cut rule is added to the kernel;
+simultaneous cut is derived in intuitionistic natural deduction.
+Lemma 3.3 (Quantifier-free induction interface). Let I(z, ⃗x) be quantifier-free. If
+
+                              ⊢ I(0, ⃗x)    and        I(z, ⃗x) ⊢ I(Sz, ⃗x),
+
+then ⊢ I(z, ⃗x) as an open theorem, and hence every term instance I(t, ⃗u) is derivable.
+
+Proof. Apply the PRAAx induction axiom to I, use implication introduction for the step, and
+universally eliminate the resulting formula onto the open induction variable. The repository packages
+this as PRA.qfInd and, in the derivation library, as LeanProofs.IPRA.ind. Term instances then
+follow from substitution.
+
+The compiler is designed so that every recursive correctness argument terminates at theorem 3.3.
+This is why Boolean reflection and state packing are not optional optimizations: they are the
+mechanism that makes the invariant quantifier-free.
+
+3.2   Finite data inside one numerical sort
+Every finite data type used by a fixed theorem is encoded by natural numbers together with primitive-
+recursive projections and a bounded well-formedness predicate. There are several interchangeable
+choices:
+   • iterated pairing, with a fixed arity known at compilation time;
+   • mixed-radix tuples when component bounds are available;
+   • tables encoded by bounded products of radices;
+   • finite lists represented by a length and a bounded tuple code.
+
+
+
+                                                  13
+KIFC-R for iPRA                                                                          2026-11-16
+
+
+No coding theorem requires exponentiation as a primitive operation: exponentiation, bounded
+products, pairing, and table lookup are primitive recursive and therefore have symbols in the
+ordinary language.
+A coding package for a type X consists of a predicate WFX (c), projections, constructors, and
+object-level equations showing that projecting a constructed code returns its components. Equality
+of codes is not automatically mathematical equality. When multiple codes represent the same
+object, an explicit primitive-recursive equivalence relation c ∼X d and congruence theorems for all
+observations are part of the interface.
+
+3.3     Metalevel normalization is legitimate when it produces proof terms
+The current algebraic derivation library illustrates a general pattern. The metatheory forms a
+quotient of terms by provable equality, proves that the quotient is a cancellative commutative
+semiring, embeds it in a ring of differences, and invokes a ring normalizer. The final theorem is
+recovered through injectivity as an object-level equality derivation. The normalizer is not an extra
+axiom of iPRA; it is a proof-producing metaprogram.
+The same standard applies to every KIFC-Rcompiler phase:
+ (1) the metaprogram may inspect a fixed graph, calculate a topological order, allocate registers,
+     and synthesize terms;
+ (2) it must also synthesize or invoke derivations of all local equations and implications;
+ (3) the exported theorem must have the embedded derivability type;
+ (4) an axiom audit must show no theorem-specific opaque axiom or sorryAx.
+
+3.4     A disciplined status vocabulary
+To prevent semantic and object-level results from being conflated, this report uses the following
+labels.
+Label                   Meaning
+Inherited checked       Present in the audited repository as a kernel-checked Prf PRAAx theorem.
+Source-complete         Lean source is given with no intentional hole, but was not compiled in this
+                        packet.
+Lean outline            Types, definitions, dependency order, and proof strategy are given; obliga-
+                        tions remain.
+Human-complete          A detailed ordinary mathematical proof is supplied.
+Finite-tested           The exact finite algorithm is covered by executable tests.
+Conditional producer    The verifier/composition theorem is complete assuming explicitly named
+                        quantitative data.
+Open                    A mathematical or formalization problem remains without being hidden in
+                        the interface.
+
+
+
+
+                                                14
+KIFC-R for iPRA                                                                                      2026-11-16
+
+
+4      Kernel-Integrated Finitary Contracts with residual boundaries
+4.1     Observation presentations
+A large mathematical object is useful to a finitary proof only through a finite set of questions. This
+motivates the basic representation.
+Definition 4.1 (Finitary observation presentation). A presentation X with parameters x consists
+of primitive-recursive data:
+    (i) a query code q ∈ N;
+ (ii) an answer bound BX (x, q);
+(iii) a validity Boolean VX (x, q, a) ∈ B, used only for a < BX (x, q);
+ (iv) an object-level totality contract
+
+                                      PX (x) −→ ∃a < BX (x, q) VX (x, q, a) = 1.
+
+The bounded existential is compiled by the Boolean/search machinery of section 6; it is not retained
+inside an induction invariant.
+The presentation is deterministic when valid answers are provably equal. It is observationally
+deterministic for an observer O when O(x, q, a) = O(x, q, b) for all valid a, b. It is diameter bounded
+when a rational-code metric satisfies
+
+                                        d(O(x, q, a), O(x, q, b)) ≤ δX (x, q)
+
+for all valid answers. These distinctions let a theorem consume exactly the amount of uniqueness it
+needs.
+Example 4.2 (Real numbers). A real number need not be introduced as a completed quotient of all
+Cauchy codes. For a theorem asking for precision q, a presentation may return a dyadic rational
+a/2m(q) together with a certified interval of radius 2−q . Two codes represent the same observed value
+at precision q when their intervals overlap within the prescribed tolerance. An operation is proved by
+transforming finite intervals and error budgets.
+Example 4.3 (Polynomial roots). At a fixed precision, the answer may be an unordered finite
+multiset of rational boxes, each carrying a multiplicity and a Rouché, Sturm, or interval certificate.
+Ordered root labels are not part of the general presentation. Under a supplied separation gap,
+matching becomes unique and labels can be recovered as a guarded observer.
+
+4.2     Deterministic contracts
+Suppose X is an input presentation and Y an output presentation. A deterministic contract for a
+fixed output query r consists of:
+  (a) a finite input demand DemC (x, r) = (q0 , . . . , qs−1 );
+ (b) a primitive-recursive transducer RunC from valid answers to an output answer;
+    (c) a local object-level derivation showing that valid demanded answers imply output validity.
+Written schematically,
+
+               PC (x, r) ∧         VX (x, qi , ai ) = 1 ⊢ [PRAAx] VY (Cx, r, RunC (x, r, ⃗a)) = 1.
+                             ^
+
+                             i<s
+
+
+                                                         15
+KIFC-R for iPRA                                                                               2026-11-16
+
+
+The conjunction is finite and, after Booleanization, quantifier-free.
+Theorem 4.4 (Deterministic contract composition). Let C : X → Y and D : Y → Z be determinis-
+tic contracts. The composite demand is obtained by applying the demand of D, then replacing every
+requested Y -observation by the finite X-demand required by C. The composite transducer is ordinary
+substitution of the output terms of C into the transducer of D. The local soundness derivation is
+obtained by substitution followed by simultaneous cut.
+
+Proof. Fix a terminal query r. The contract D requests finitely many observations qj of Y . For each
+qj , the contract C requests a finite list of observations of X. Take the concatenation of these lists,
+retaining multiplicities or deduplicating by a bounded table if desired. Given valid answers to this
+combined demand, instantiate the soundness proof of C separately for every qj . These derivations
+provide every hypothesis needed by the instantiated soundness proof of D. Apply theorem 3.2. All
+index manipulation is metalevel specialization of a fixed finite list, so no object-level list interpreter
+is involved.
+
+4.3   Relational contracts
+Some constructions are total only as finite relations. A relational contract replaces RunC by a
+bounded candidate relation
+                               RC (x, r, ⃗a, b),  b < BC (x, r, ⃗a),
+and proves bounded nonemptiness and validity of every accepted candidate. A downstream consumer
+may depend on a candidate, but only through finitely many later compatibility checks. It is unsound
+to choose candidates independently at each node; a locally valid candidate may lead to a dead end.
+The remedy is not an axiom of choice. It is the finite dynamic program of section 10: propagate
+viability backward from the terminal acceptance condition, then use least bounded search to select
+a path through the viable subrelation.
+
+4.4   Stable observation contracts
+A consumer often does not need the witness itself. It needs an observation that all valid witnesses
+share. A stable observation contract contains:
+  (i) a bounded total relation R(x, q, a);
+ (ii) an observer term O(x, q, a);
+ (iii) either an exact stability proof R(a) ∧ R(b) → O(a) = O(b), a diameter estimate, or a guarded
+       uniqueness proof.
+The observer can then be evaluated at the least valid candidate. Exact stability removes the
+arbitrary internal choice from the theorem statement. Diameter stability produces an approximate
+observation. Guarded uniqueness produces an exact label only when the guard supplies a positive
+gap.
+
+4.5   Demand transformers
+An operation on approximations is accompanied by a backward precision transformer. For example,
+addition of dyadic approximations may require input precision q + 2, while inversion under |x| ≥ 2−g
+may require q + 2g + c. A demand transformer is not merely an implementation hint: its local
+adequacy is a theorem converting input error bounds into the requested output error bound.
+
+                                                   16
+KIFC-R for iPRA                                                                           2026-11-16
+
+
+For a finite acyclic graph, terminal requests are propagated in reverse topological order. When
+several consumers use the same provider, take the maximum of their demands. Since maximum and
+every edge transformer are primitive recursive, the full reverse pass is primitive recursive. Mutually
+dependent monotone requests are handled separately by the capped closure theorem of section 9; a
+cycle is never justified by circular reasoning.
+Lemma 4.5 (Least reverse demand for an acyclic graph). Let the nodes be topologically ordered
+and let every edge u → v carry a monotone demand transformer duv . Define requests backward by
+                                                                  
+                                 qu = max quterminal , max duv (qv ) .
+                                                       u→v
+
+Then the resulting vector satisfies every terminal and edge inequality. Moreover it is componentwise
+least among all satisfying request vectors.
+
+Proof. Satisfaction follows immediately from the defining maximum. For minimality, perform
+reverse induction on the topological order. At a terminal node, every satisfying vector dominates the
+terminal request. Assume every later component of a satisfying vector r dominates the constructed
+component. Monotonicity gives ru ≥ duv (rv ) ≥ duv (qv ) for every outgoing edge, and ru also
+dominates the terminal request at u. Therefore it dominates their maximum, which is qu .
+
+The computed demand is fixed before the forward induction. This is the key move that replaces an
+all-precision invariant by one finite table of observations.
+
+4.6   The seven kernel-normal node classes
+A well-formed KIFC-Rgraph uses only the following classes. The first six execute or verify finite
+data; the seventh records an unavailable producer without pretending to execute it.
+Algebra node.
+    Computes a fixed term expression and carries a derivation of the required equality. Polynomial
+    equalities are routed through the checked quotient/ring backend.
+Boolean node.
+    Computes a Boolean term and carries a reflection theorem relating b = 1 to a fixed bounded
+    formula.
+Search node.
+    Instantiates the checked IPRADerivations.Core.Search construction and carries its validity,
+    foundness, and minimality derivations.
+Loop node.
+    Executes primitive recursion and carries a quantifier-free invariant together with base and step
+    derivations.
+Relation node.
+    Produces or filters a bounded cloud and carries nonemptiness and compatibility derivations;
+    finite towers are solved by viability.
+Observer node.
+    Erases internal witness choice using exact stability, a diameter bound, or an explicit uniqueness
+    gap.
+
+
+
+                                                  17
+KIFC-R for iPRA                                                                              2026-11-16
+
+
+Residual boundary node.
+    Retains an explicit formula for a missing height bound, modulus, separation estimate, repre-
+    sentative list, or effective constant. It contributes a hypothesis to the compiled sequent and is
+    removed only by an actual producer derivation.
+This inventory is expressive enough for the finitary parts of the proof corpus and for honest conditional
+forms of the remaining parts. More elaborate constructions—finite nets, matrix elimination, interval
+Newton methods, chain-complex calculations, height enumeration—are graphs assembled from these
+nodes rather than new logical primitives.
+
+
+5     Residual boundaries and conditional proof normal form
+5.1    Why residuals are formulas
+Suppose a finite verifier can use a height bound H(C), but the present mathematics does not
+construct that bound. A host-language structure
+       structure HeightData where H : Nat; complete :              Point p -> height p <= H
+may be convenient, but it is not yet an iPRA theorem. If the field complete is populated by an
+unproved proposition or an opaque assumption, the apparent construction has merely moved the
+missing theorem into data.
+The object-theory endpoint should instead retain the exact formula
+
+                BH (C, H) ≡ “every represented point on C has height at most H”
+
+as a hypothesis. The generic enumerator then proves
+
+                   BH (C, H), Γ ⊢ [PRAAx]“the filtered list below H is complete.”
+
+This conditional derivation is useful even before BH is solved: it verifies all coding, search, dedupli-
+cation, and transport steps, and it names the remaining mathematical problem exactly.
+Definition 5.1 (Residual boundary). A residual boundary node is a named formula B ∈ Fm(PTm, n)
+together with metadata recording which graph nodes consume it and what mathematical producer
+is expected. It has no local soundness proof. During compilation, every use of B is justified by the
+corresponding retained hypothesis in the context.
+Residual nodes are not axioms of the theory. They are antecedents of one particular conditional
+theorem. If later work derives B from ∆, simultaneous cut removes it. If no derivation is known,
+the theorem remains correctly conditional.
+
+5.2    Proof dependencies and data dependencies
+A graph has two distinct edge relations.
+    • A data edge says that the primitive-recursive output term of one node is an argument of
+      another.
+    • A proof edge says that one formula is a premise of another node’s local derivation.
+These often coincide, but not always. A denominator term may be computed unconditionally
+while its positivity formula is residual. Two branches may share data but consume different gap
+
+
+                                                   18
+KIFC-R for iPRA                                                                             2026-11-16
+
+
+assumptions. A semantic parameter may appear in the external interpretation while not occurring
+in the executable trace.
+The compiler therefore performs reachability in the proof graph from the requested terminal formula.
+A boundary formula belongs to the final residual list exactly when a reachable node consumes it
+and no reachable executable node produces it.
+
+5.3   Canonical residual normalization
+Formula equality is syntactic at the metalevel, after a chosen normalization of variable names and
+definitional abbreviations. Let key(B) be a stable serialization of that normalized syntax. For each
+reachable node v, define its residual set recursively:
+
+                                                           v is a residual boundary,
+                             (
+                               {Bv },
+                    R(v) =
+                                   u∈proofParents(v) R(u), v is executable.
+                               S
+
+
+The output Res(G, q) is the sorted, duplicate-free union for the requested sinks. Sorting is not
+logically significant; it makes generated theorem statements reproducible.
+Lemma 5.2 (Residual irrelevance). Deleting a proof-unreachable node or residual formula does not
+change the compiled terminal derivation, except for weakening or permutation of unused hypotheses.
+
+Proof. The proof schedule is generated only from the backward reachable subgraph. An unreachable
+node is never instantiated and never supplies a premise of a reachable rule. If an unused formula
+occurs in a larger context, natural-deduction weakening embeds the same derivation in that context.
+Conversely, removing an unused hypothesis from the generated context changes no use of Prf.hyp,
+so the same schedule compiles after the corresponding list reindexing. No semantic argument is
+required.
+Lemma 5.3 (Residual monotonicity). If the requested sink set is enlarged, the normalized residual
+set can only enlarge. If a residual boundary is replaced by an executable producer with the same
+conclusion, that boundary disappears from every request whose only uses are supplied by the new
+producer.
+
+Proof. Backward reachability and finite union are monotone in the sink set. Replacing a boundary
+by a producer changes the recursive clause at that node from a singleton to the union of the
+producer’s own dependencies. If those dependencies are already produced or absent, the original
+formula is no longer inserted. Duplicate elimination cannot introduce a new formula.
+
+5.4   Residualized composition theorem
+For a graph node v, write Φv for its conclusion and Γv for permanent external assumptions. The
+local rule of an executable node has the form
+
+                          [Φu0 , . . . , Φuk−1 , Bj0 , . . . , Bjs−1 ], Γv ⊢ [PRAAx]Φv .
+
+The premises may include instantiated demand inequalities and trace facts; these are conclusions of
+earlier generated nodes.
+Theorem 5.4 (Residualized proof-graph compilation). Let the reachable executable proof graph be
+finite and acyclic after strongly connected groups have been discharged by a dedicated loop certificate.
+
+
+
+                                                       19
+KIFC-R for iPRA                                                                              2026-11-16
+
+
+For each executable node, assume a local Prf PRAAx derivation of its conclusion from its listed proof
+parents and boundary formulas. Then the metatheory can construct
+
+                                   Res(G, q), ΓG ⊢ [PRAAx]          Φv ,
+                                                              ^
+
+                                                             v∈Sq
+
+where Sq is the finite requested sink set. In particular, for one sink it constructs the desired terminal
+formula.
+
+Proof. Choose a topological order of the reachable executable nodes. Start with the residual and
+permanent hypotheses. At node v, all executable proof parents occur earlier and therefore already
+have derivations from the base context. Every boundary parent is a hypothesis in the normalized
+residual context. Instantiate the local rule at the generated terms, then apply simultaneous cut
+with the parent derivations and the appropriate hypotheses. Record the resulting derivation as a
+new schedule entry. Finite iteration constructs derivations of all sinks. Conjunction introduction
+combines them if several are requested. The construction is an induction on the finite topological
+list in Lean’s metatheory, not an additional induction axiom in iPRA.
+Corollary 5.5 (Closure by supplied producers). If hi : ∆, ΓG ⊢ [PRAAx]Bi for every Bi ∈ Res(G, q),
+then
+                                    ∆, ΓG ⊢ [PRAAx]ΦG (q).
+
+Proof. Apply Prf.trans to the compiled conditional derivation, supplying hi for residual hypotheses
+and ordinary hypotheses for ΓG .
+
+5.5    Alternatives, implications, and partial progress
+A deep input often has several possible producers. For example, a nonvanishing condition might
+be established by a direct rational lower bound, by a discriminant estimate, or by membership in
+one chart of a finite cover. The graph should represent these as alternative producer nodes whose
+conclusions imply a common boundary formula. Each implication is itself an object-level local rule.
+The residual normal form then retains the common formula only when no alternative producer is
+selected; selecting one producer replaces it by that producer’s own residuals.
+This organization supports meaningful partial results. A packet may close all arithmetic and
+representation obligations while leaving one analytic estimate residual. Another packet may later
+prove precisely that formula and close the theorem without redoing the finite compilation.
+
+5.6    Cyclic proof dependencies
+A raw cycle of the form “A is proved from B, and B from A” is not a proof. Cycles are admissible
+only after they are converted into one of three finite well-founded forms:
+ (1) a primitive-recursive time loop with a QF invariant;
+ (2) a backward induction on a finite horizon, as in viability;
+ (3) a capped monotone fixed-point iteration with a finite rank bound, as in section 9.
+After such a component has a single exported theorem, the quotient proof graph is acyclic and
+theorem 5.4 applies.
+
+
+
+                                                   20
+KIFC-R for iPRA                                                                                   2026-11-16
+
+
+6     Boolean reflection and bounded search
+6.1   Boolean conventions
+Use numerical Booleans 0, 1. Define primitive-recursive operations
+                                     ¬b,       b ∧ c,       b ∨ c,        b ⇒ c,
+by fixed case distinctions, and normalize every Boolean-producing term so that an object-level range
+theorem proves b = 0 ∨ b = 1. Equality and order on natural numbers are primitive recursive; let
+                                           eq(s, t),    lt(s, t),    le(s, t)
+denote their Boolean codes. The basic reflection library proves, for example,
+                           eq(s, t) = 1 ↔ s = t,               lt(s, t) = 1 ↔ s < t.
+The right-hand relations are themselves expressed in the fixed arithmetic language, for instance
+using truncated subtraction or bounded witnesses. Once proved, application modules use only the
+reflected form.
+
+6.2   Finite folds
+For a Boolean predicate term p(i, ⃗x), define primitive-recursive folds
+                   All(0, ⃗x) = 1,                         All(Sn, ⃗x) = All(n, ⃗x) ∧ p(n, ⃗x),
+                  Any(0, ⃗x) = 0,                         Any(Sn, ⃗x) = Any(n, ⃗x) ∨ p(n, ⃗x).
+These functions carry all bounded quantifier content in a numerical state.
+Theorem 6.1 (Finite-fold reflection). Assume p(i, ⃗x) is Boolean-valued and reflects a fixed formula
+P (i, ⃗x). Then iPRA derives
+                                      All(N, ⃗x) = 1 ↔ ∀i < N P (i, ⃗x),
+                                     Any(N, ⃗x) = 1 ↔ ∃i < N P (i, ⃗x).
+Moreover the induction used to establish the fold equations has a quantifier-free matrix.
+
+Proof. The executable state is only the accumulator Boolean. Its defining equations are instances of
+primitive recursion. First prove by quantifier-free induction that the accumulator remains Boolean.
+For the universal fold, prove the two implications externally to the loop invariant.
+For left-to-right reflection, use ordinary induction on N at the proof-construction level. At zero the
+bounded universal statement is vacuous. At SN , the successor equation and Boolean reflection of
+conjunction yield both All(N ) = 1 and p(N ) = 1. Apply the induction hypothesis to the first and
+predicate reflection to the second.
+For right-to-left reflection, again use induction on N . The successor bounded universal supplies
+the prefix and the endpoint. Reflect these to All(N ) = 1 and p(N ) = 1, then use the conjunction
+equation. The existential fold is dual: at the successor stage, split a bounded witness into the cases
+i < N and i = N , and use reflected disjunction. All finite case splits are intuitionistically valid
+because the relevant numerical comparisons have decidable Boolean codes.
+A direct Lean implementation may package the prefix assertions as formulas containing bounded
+quantifiers, but it need not apply the PRAAx induction rule to those formulas. The only object
+recurrence requiring induction is the quantifier-free equality that defines the fold. Reflection is then
+assembled from the fold equations, comparison reflection, and natural-deduction reasoning.
+
+                                                          21
+KIFC-R for iPRA                                                                         2026-11-16
+
+
+6.3    Structural Booleanization
+A fixed bounded formula is generated from atomic equalities and inequalities by propositional
+connectives and quantifiers of the forms
+
+                               ∀i < t(⃗x) A(i, ⃗x),        ∃i < t(⃗x) A(i, ⃗x),
+
+where all terms are primitive recursive and the formula syntax is fixed at compilation time.
+Theorem 6.2 (Bounded Booleanization). For every fixed bounded formula A(⃗x), one can effectively
+construct a primitive-recursive Boolean term χA (⃗x) and an object-level derivation
+
+                                    ⊢ [PRAAx]A(⃗x) ↔ χA (⃗x) = 1.
+
+The construction is syntax directed and uses no universal evaluator.
+
+Proof. Proceed by structural recursion in the metatheory on the fixed formula A.
+   • For an atomic equation or comparison, use the corresponding reflected Boolean.
+   • For B ∧ C, B ∨ C, and B → C, combine the recursively constructed Booleans with fixed
+     Boolean operations and compose their reflection theorems in intuitionistic logic. Implication
+     is valid because the antecedent Boolean is decidable; its truth table is checked by the four
+     Boolean cases.
+   • For a bounded universal or existential, recursively Booleanize the matrix and apply theorem 6.1
+     at the bound term.
+The compiler constructs a dedicated term for this one syntax tree. It does not code formulas
+and evaluate their codes inside the object theory. Thus the construction is compatible with the
+impossibility of a total universal primitive-recursive evaluator.
+
+6.4    Checked least bounded search
+This component is no longer merely a framework target. The current module Derivations/Lean/
+IPRADerivations/Core/Search.lean defines, for a fixed two-variable term f (i, x), a primitive-
+recursive term
+                                         µf (N, x) ≤ N
+that is the least i < N with f (i, x) = 0, and equals the sentinel N if there is no such index. Its
+recurrence is
+
+                          µf (0, x) = 0,
+                     µf (N + 1, x) = µf (N, x) + eqb(µf (N, x), N ) · sg(f (N, x)).
+
+Here sg(z) = 0 exactly at zero and 1 at successors. Thus the state increments from N to N + 1
+precisely when no earlier zero was found and f (N, x) ̸= 0; otherwise it freezes at the first zero.
+The checked open invariant, with N, i, x free, is
+
+      µf (N, x) ≤ N ∧ µf (N, x) < N → f (µf (N, x), x) = 0 ∧ i < µf (N, x) → f (i, x) ̸= 0 .
+                                                                                           
+
+
+Every component is quantifier-free. The file proves this invariant by one use of IPRA.ind, then
+exports the following theorems.
+
+
+                                                      22
+KIFC-R for iPRA                                                                             2026-11-16
+
+
+Theorem 6.3 (Checked least-zero search). For every fixed term f (i, x), the current derivation
+library supplies object-level derivations of:
+ (a) µf (N, x) ≤ N ;
+ (b) if µf (N, x) < N , then f (µf (N, x), x) = 0;
+ (c) if i < µf (N, x), then f (i, x) ̸= 0;
+ (d) if f (i, x) = 0 and i < N , then µf (N, x) < N , f (µf (N, x), x) = 0, and µf (N, x) ≤ i.
+These are the checked theorems Search. search_ spec , Search. search_ minimal , and Search.
+search_ found , after term instantiation.
+A Boolean predicate p(i, x) that succeeds at value 1 is reduced to zero search by
+
+                                             fp (i, x) = 1 −̇ p(i, x).
+
+Once Boolean range and reflection are available, fp = 0 is equivalent to p = 1. The sentinel
+comparison µfp (N, x) < N is therefore the canonical bounded-existence Boolean, and the returned
+term is the least successful witness. The framework should expose a thin adapter around the checked
+search module rather than maintain a second search implementation.
+Corollary 6.4 (Bounded witness adapter). Let p be Boolean-valued and let P ↔ p = 1 be proved in
+the object theory. Then the term w = µfp (N, x) satisfies:
+  (i) w < N → P (w, x);
+ (ii) P (i, x) ∧ i < N → w < N ∧ P (w, x) ∧ w ≤ i;
+(iii) i < w → ¬P (i, x).
+
+Proof. Instantiate the checked search theorems for fp . Use Boolean range to prove fp (i, x) =
+0 ↔ p(i, x) = 1, then compose with the supplied reflection theorem for P . Equality substitution
+transports the statements at the selected term. No new induction is required.
+
+6.5   Derived finite algorithms
+The same search theorem yields a library of reusable combinators.
+  • Bounded argmin. Search the least index attaining the least value in a finite table; comparison
+    reflection supplies the predicate.
+  • Duplicate-free enumeration. Scan a bounded box, append an item only if its verifier
+    succeeds and no earlier appended item is equivalent.
+  • Finite cover selection. Search a finite net for the first cell whose certified test covers the
+    current query.
+  • Pivot selection. Under a margin certificate asserting that some pivot exceeds a threshold,
+    search the least such pivot. Without the threshold, do not claim an exact pivot.
+  • Finite path successor. Given a viability table, search the least compatible viable successor.
+Each derived algorithm inherits a QF invariant because every finite universal or existential subcon-
+dition has first been replaced by a Boolean fold.
+
+
+
+                                                        23
+KIFC-R for iPRA                                                                                  2026-11-16
+
+
+7     One-loop normalization and trace reflection
+7.1     Certified iteration
+A loop node is specified by:
+    • a packed state code s;
+    • an initializer s0 (⃗x);
+    • a transition T (i, s, ⃗x);
+    • a fuel term F (⃗x);
+    • a quantifier-free invariant I(i, s, ⃗x);
+    • an output projection O(s).
+All numerical maps are primitive recursive. The state trace is the primitive recursion
+
+                             S(0, ⃗x) = s0 (⃗x),       S(i + 1, ⃗x) = T (i, S(i, ⃗x), ⃗x).
+
+Theorem 7.1 (Object trace reflection). Assume object-level derivations of
+
+                                      I(0, s0 (⃗x), ⃗x),
+                                      I(i, s, ⃗x) −→ I(i + 1, T (i, s, ⃗x), ⃗x).
+
+Then iPRA derives I(i, S(i, ⃗x), ⃗x) for all open i, and in particular at the fuel term F (⃗x). If a terminal
+derivation proves
+                                     I(F, S(F ), ⃗x) −→ Q(O(S(F )), ⃗x),
+then Q is derivable.
+
+Proof. Substitute the trace term into the invariant to obtain the QF formula
+
+                                            J(i, ⃗x) ≡ I(i, S(i, ⃗x), ⃗x).
+
+The base derivation is the supplied base proof followed by the zero computation equation for S. For
+the step, assume J(i, ⃗x), use the supplied transition-preservation proof, and rewrite S(i + 1) by the
+successor computation equation. Apply quantifier-free induction to J. Substitution instantiates the
+resulting open theorem at F (⃗x), and modus ponens with the terminal derivation yields Q.
+
+This theorem is already very close to the current LeanProofs.IPRA.ind API. The accompanying
+KernelCore.lean packages exactly the base, step, and QF fields needed to invoke it.
+
+7.2     Why all precision must be fixed before induction
+A common invalid pattern is to put into the invariant the assertion
+
+                                   ∀q “the state is correct to precision q”.
+
+This is not quantifier-free. Even when every individual precision computation is finite, the displayed
+invariant is stronger than the induction rule permits.
+The correct transformation is:
+
+                                                           24
+KIFC-R for iPRA                                                                             2026-11-16
+
+
+ (1) fix the terminal precision q∗ as an open parameter;
+ (2) run the reverse demand pass to calculate every intermediate request from q∗ ;
+ (3) allocate in the state only the finite observations required at those requests;
+ (4) prove one QF invariant about this finite table;
+ (5) after obtaining the open theorem for arbitrary q∗ , universally quantify over q∗ if the final
+     theorem needs all precisions.
+The universal quantifier is introduced after induction, not inside its matrix.
+
+7.3   Collapsing nested bounded constructions
+A fixed theorem may contain many loops, searches, and finite table passes. They can be combined
+into one state recursion.
+Theorem 7.2 (One-loop normal form). Every fixed program generated from primitive-recursive
+assignments, finite conditionals, bounded loops, bounded searches, finite-table folds, and acyclic calls
+to previously generated routines can be transformed into:
+  (i) one primitive-recursive fuel term F (⃗x);
+ (ii) one packed state s containing a program counter, local registers, and loop counters;
+(iii) one primitive-recursive transition T ;
+ (iv) primitive-recursive projections recovering the original outputs.
+If every source loop has a QF invariant and every source command has a local preservation derivation,
+the combined machine has a QF invariant and an object-level base and step derivation.
+
+Proof. Because the source program is fixed, its control-flow graph has finitely many labels. Allocate
+a numerical program counter pc < L. Allocate a fixed tuple of registers large enough to hold every
+live local variable; registers not live at the current label are ignored. Replace each atomic command
+by one branch of a finite selector on pc. A loop header tests its counter and jumps either to the
+body or the successor label. A bounded search is its explicit (f ound, witness, index) loop. A finite
+table fold is an index/accumulator loop.
+Define a structural cost function in the metatheory. An atomic command costs one step; sequential
+costs add; a loop with bound B costs a primitive-recursive expression obtained from B and a bound
+on the body cost; fixed nesting preserves primitive recursiveness. Add a small constant for control
+transfers. This gives total fuel F . Alternatively, include a halting flag and allow idle transitions
+after the source program halts; then any certified upper bound on the runtime is sufficient.
+The combined invariant is a finite conjunction indexed by control labels:
+                                         pc = ℓ → Iℓ (live registers) ,
+                                   ^                                 
+
+                                   ℓ<L
+together with range equations for the program counter, flags, and bounded indices. Since L is
+fixed and every Iℓ is QF, the conjunction is QF. The base proof establishes the invariant at the
+entry label. The step proof performs a finite case split on the reflected value of pc, invokes the
+local preservation derivation for that command, and establishes the invariant at the successor label.
+Apply theorem 7.1. Output projection equations show that the packed final state agrees with the
+source program.
+
+                                                    25
+KIFC-R for iPRA                                                                                   2026-11-16
+
+
+7.4     Clocked traces as an alternative
+Sometimes it is easier to let an external producer supply a trace and have iPRA verify it. A trace
+certificate contains s0 , . . . , sF . A primitive-recursive checker verifies the initial state, every adjacent
+transition, and the terminal predicate. Boolean fold reflection turns checker acceptance into the
+conjunction of local facts. This route is useful when the producer is complex but the transition is
+simple. However, the checker still needs an object-level reflection theorem, and the trace length
+must have an explicit bound. “Python produced a valid trace” is not itself the desired derivation;
+the checked acceptance equation and its reflection proof are.
+
+7.5     Lexicographic descent and fuel
+Algorithms are often justified by a decreasing tuple rather than an obvious loop bound. Let
+
+                                        ρ(s) = (r0 (s), . . . , rk−1 (s))
+
+take values in a bounded box 0 ≤ rj < Mj , and assume every nonterminal transition decreases ρ
+lexicographically. Encode the tuple by the mixed-radix rank
+
+                               R(ρ) = r0         Mj + r1         Mj + · · · + rk−1 .
+                                           Y                Y
+
+                                           j>0             j>1
+
+Lexicographic decrease implies strict numerical decrease of R. Therefore the initial rank plus one is a
+primitive-recursive fuel bound. The proof uses only finite arithmetic and is suitable for the algebraic
+backend. This resolves many “well-founded recursion” uses in the packets without introducing
+transfinite induction.
+
+
+8      Proof schedules and residualized graph compilation
+8.1     Local rules versus global proofs
+A normalized graph node does not merely compute a value. It exports a local rule
+
+                                             ∆v ⊢ [PRAAx]ϕv ,
+
+where ∆v is the finite list of predecessor certificates actually used by the node. A topological schedule
+turns these local rules into a global proof. The schedule is a metalevel object, so its dependency
+lists may be ordinary Lean finite lists and its acyclicity may be checked by the elaborator.
+Definition 8.1 (Kernel proof schedule). Fix a context Γ. A proof schedule for φ is generated by:
+    (i) a terminal derivation Γ ⊢ φ; or
+ (ii) a derivation h : Γ ⊢ ψ, followed by a schedule for φ under the enlarged context ψ :: Γ.
+The new formula ψ may be an equation defining a register, a reflected Boolean fact, a loop invariant
+instance, or a validity certificate.
+Theorem 8.2 (Schedule compilation). Every kernel proof schedule compiles to a derivation Γ ⊢ φ.
+
+Proof. Induct on the schedule. A terminal schedule already contains the desired derivation. In the
+extension case, the induction hypothesis gives ψ :: Γ ⊢ φ. Apply simultaneous cut: discharge the
+first hypothesis with h, and discharge each inherited member of Γ by the corresponding hypothesis
+rule. The result is Γ ⊢ φ.
+
+                                                       26
+KIFC-R for iPRA                                                                            2026-11-16
+
+
+This tiny theorem is the object-proof core of the graph compiler. Everything else constructs the
+node formulas and their local derivations.
+
+8.2   Static graph elaboration
+A KIFC-Rgraph carries the following finite metadata:
+   • node identifiers in topological order;
+   • a node class and theorem-specific parameters;
+   • predecessor identifiers;
+   • a demand transformer for each incoming observation;
+   • register widths and state projections;
+   • the local formula exported by the node;
+   • a Lean expression constructing the local derivation;
+   • separate data and proof dependencies;
+   • optional residual boundary formulas with stable names and provenance.
+The elaborator performs only metalevel tasks: arity checking, topological sorting, variable allocation,
+common-subexpression sharing, generation of primitive-recursive symbols, and construction of a
+proof schedule. It is acceptable for the elaborator to fail. Its output, when accepted by Lean, is
+checked independently by the kernel.
+
+8.3   The four compiler passes
+For a terminal query q∗ , compilation has four logically distinct passes.
+
+Residual pass. Traverse proof dependencies backward from the requested sinks. Compute the
+canonical duplicate-free residual list of section 5, discard proof-irrelevant nodes, and collapse every
+certified recursive component to one exported theorem.
+
+Demand pass. Start with the terminal demand. Traverse acyclic resource dependencies backward
+using theorem 4.5. For monotone cycles with supplied caps, compute the least capped closure of
+theorem 9.3 and retain cap adequacy as a proof or residual formula. The result is a finite demand
+table DG (x, q∗ ) fixed before forward induction.
+
+Forward pass. Traverse the graph in topological order. Exact nodes compute terms. Boolean
+nodes compute reflected finite certificates, and search nodes instantiate the checked Search theorems.
+Loop nodes run their specialized state recurrences. Relation nodes compute viability tables for the
+finite horizons demanded by consumers. Observer nodes extract only stable terminal information.
+By theorem 7.2, the entire pass may be represented by one packed state recurrence.
+
+Proof pass. The base and step proofs establish the combined trace invariant. At the final state,
+each executable node’s exported formula is available. The metalevel elaborator instantiates local
+rules and arranges them in a kernel proof schedule. Boundary premises are discharged by hypotheses
+
+
+
+                                                  27
+KIFC-R for iPRA                                                                              2026-11-16
+
+
+from the normalized residual context. Theorem 8.2 therefore produces the conditional terminal
+derivation.
+
+8.4    Soundness theorem
+We can now refine the proof of theorem 1.1 at the trace level.
+
+Trace-level proof of theorem 1.1. Fix the graph, its parameters, and a terminal query.
+Primitive-recursive specialization. Since the graph has finitely many nodes and every numerical
+constituent is primitive recursive, residual reachability and acyclic reverse demand are finite metalevel
+computations; capped cyclic closure is a bounded primitive recursion. Each forward node is primitive
+recursive: exact composition is closed under composition; Boolean folds and viability are bounded
+recursions; checked least search is a fixed primitive recursion already available in the library; each
+loop node is supplied as primitive recursion. The one-loop construction of theorem 7.2 therefore
+yields a specialized primitive-recursive state symbol SG .
+Quantifier-free invariant. Replace every bounded formula appearing in a local certificate by its
+Boolean code using theorem 6.2. Add range equations for every flag, index, and code. Insert the
+supplied loop invariants and local transition equations, guarded by the finite program-counter cases.
+The resulting formula IG (t, SG (t), x, q∗ ) is quantifier-free.
+Trace proof. The initializer equations and local base certificates prove the base case. For the step,
+use Boolean reflection to split on the program counter. In each branch, invoke the corresponding
+local preservation derivation, rewrite by the transition equations, and rebuild the finite conjunction.
+Theorem 7.1 gives the invariant at the terminal fuel.
+Node certificates. Terminal projection equations extract the equations, Boolean facts, search facts,
+relational validity facts, and observer facts exported by each node. Each such fact is appended to a
+kernel proof schedule. Whenever a local rule needs predecessor facts, they are already earlier in the
+schedule by topological ordering. Instantiate its variables by the generated state projections, then
+apply substitution.
+Composition. Compile the schedule by theorem 8.2. This yields Res(G, q∗ ), ΓG ⊢ ΦG . Every
+derivation leaf is one of: a PRAAx instance, a supplied local certificate, a residual hypothesis, or a
+permanent hypothesis from ΓG . The only global principles used are intuitionistic natural deduction,
+equality substitution, simultaneous cut, and QF induction. No arbitrary program code is interpreted
+and no unbounded witness is selected. Supplying proofs of the residual formulas closes the theorem
+by theorem 5.5.
+
+8.5    A relative completeness statement
+The compiler is complete for its declared node language in a modest but useful sense.
+Proposition 8.3 (Structural adequacy). Let a finite proof construction be written using the seven
+node classes, with explicit bounds, demand transformers, local derivations, and QF loop invariants.
+Then there is a KIFC-Rgraph whose terminal formula and derivation are definitionally the same
+construction up to state coding, substitution, and derived cut.
+
+Proof. Introduce one node for each source combinator and preserve the source dependency order.
+Replace each bounded control construct by its corresponding search, fold, relation, or loop node.
+Replace nested control by the one-loop state encoding. The local source derivations become node
+
+
+                                                   28
+KIFC-R for iPRA                                                                             2026-11-16
+
+
+rules. State coding changes terms but not the theorem: constructor/projection equations transport
+every local formula to the packed representation. The proof schedule then reproduces the original
+sequence of local inferences.
+
+This is not a claim that every proof of mathematics belongs to the node language. It says that once
+a proposed finitary proof has been reduced to these standard operations, the remaining passage to
+an embedded derivation is uniform.
+
+8.6    Why the compiler is not a universal evaluator
+It is tempting to define one object-level function U (e, x) that evaluates any encoded primitive-
+recursive program. That cannot be total and primitive recursive while covering all unary primitive-
+recursive functions.
+Barrier 8.4 (No total universal primitive-recursive evaluator). There is no primitive-recursive
+U (e, x) and coding of all unary primitive-recursive functions such that every unary primitive-recursive
+f has a code e with U (e, x) = f (x) for all x.
+
+Proof. If such U existed, the diagonal function g(e) = U (e, e) + 1 would be primitive recursive. Let
+d be its code. Then
+                                   g(d) = U (d, d) + 1 = g(d) + 1,
+a contradiction.
+
+KIFC-Ravoids the premise. Graph syntax is consumed by a metalevel elaborator, and the emitted
+object term is a fixed composition/recursion tree. A clocked evaluator for one finite instruction set
+and one explicit step bound is also harmless, because it verifies only a bounded trace and does not
+enumerate all total primitive-recursive functions extensionally.
+
+8.7    Proof provenance
+A generated theorem should include machine-readable provenance:
+    • repository commit and module imports;
+    • graph schema version and graph hash;
+    • list of local theorem names used by each node;
+    • generated formula name and public theorem name;
+    • #print axioms output;
+    • clean-build result and absence of sorry.
+This turns a large generated proof into an auditable dependency graph rather than an opaque tactic
+success.
+
+
+9     Capped cyclic demand closure
+9.1    Why acyclic propagation is sometimes insufficient
+Most precision graphs are acyclic: the output tolerance determines tolerances of its inputs. Some
+useful interfaces, however, produce mutually dependent finite resource requests. A chart-refinement
+
+                                                  29
+KIFC-R for iPRA                                                                              2026-11-16
+
+
+routine may ask for coefficient precision determined by a separation estimate, while the verified
+separation estimate itself depends on a finite coefficient precision. A relational matching step may
+enlarge both the candidate horizon and the precision used to test compatibility. These are not
+legitimate unbounded recursive definitions, but they can be sound when all coordinates have justified
+finite caps and all updates are monotone.
+The correct object is a least fixed point in a finite product of natural intervals. The finite lattice is
+not invoked abstractly. We compute the fixed point by a bounded primitive recursion and prove
+termination by an explicit integer rank.
+
+9.2   Demand systems
+Fix N coordinates. For each i < N , let si be the seed request and Ci a cap, with si ≤ Ci . Let E
+be a fixed finite edge set. An edge e = (j → i) carries a monotone primitive-recursive transformer
+de : N → N. A raw demand vector r is closed when
+
+                            si ≤ ri ≤ Ci   and de (rj ) ≤ ri             (e : j → i).
+
+The caps are theorem-specific data. They may come from a syntactic upper bound, a deliberately
+overprovisioned precision schedule, or a residual cap-adequacy hypothesis.
+Define the capped update
+                                                                            
+                             Ti (r) = min Ci , max ri , si , max de (rj )          .
+                                                                 e:j→i
+
+The maximum over an empty set is zero. Define an overflow Boolean
+
+                              ov(r) = 1     ⇐⇒       ∃e : j → i de (rj ) > Ci .
+
+Both are fixed finite folds and therefore primitive recursive.
+Let r(0) = s and r(t+1) = T (r(t) ). Set
+
+                                           L=1+           (Ci − si ).
+                                                    X
+
+                                                    i<N
+
+Lemma 9.1 (Monotone inflation). For every t,
+
+                                    s ≤ r(t) ≤ C,           r(t) ≤ r(t+1) ,
+
+componentwise. The map T is monotone on the capped box.
+
+Proof. The seed and current coordinate occur in the maximum, so before capping the proposed
+value is at least both. Since the current coordinate is at most its cap, taking the minimum with that
+cap cannot lower it. This proves inflation and preservation of the lower bound. The outer minimum
+proves the upper bound. If r ≤ r′ , monotonicity of every de , finite maximum, and minimum gives
+T (r) ≤ T (r′ ).
+Lemma 9.2 (Strict rank increase). Let
+
+                                           ρ(r) =         (ri − si ).
+                                                    X
+
+                                                    i<N
+
+If T (r) ̸= r and s ≤ r ≤ C, then ρ(T (r)) ≥ ρ(r) + 1. Moreover ρ(r) ≤ L − 1.
+
+                                                     30
+KIFC-R for iPRA                                                                            2026-11-16
+
+
+Proof. By inflation, every coordinate weakly increases. If the vectors differ, some natural coordinate
+increases strictly and hence by at least one. Summing the coordinate differences gives the first
+inequality. The cap gives ri − si ≤ Ci − si ; summing gives the second.
+Theorem 9.3 (Finite stabilization and least capped closure). The vector r∗ = r(L) satisfies
+T (r∗ ) = r∗ . It is the componentwise least fixed point of T above s. More generally, if u lies in the
+capped box, s ≤ u, and T (u) ≤ u, then r∗ ≤ u.
+
+Proof. Assume for contradiction that T (r(L) ) ̸= r(L) . If any earlier update had already been
+stationary, all later iterates would be equal by determinism, contradicting the assumed final change.
+Thus the first L + 1 updates are strict. Repeated application of theorem 9.2 gives ρ(r(L+1) ) ≥ L + 1,
+while the cap gives ρ(r(L+1) ) ≤ L − 1, impossible. Hence r∗ is fixed.
+For leastness, prove by induction on t that r(t) ≤ u. The seed case is assumed. If r(t) ≤ u,
+monotonicity gives
+                                 r(t+1) = T (r(t) ) ≤ T (u) ≤ u.
+At t = L this yields r∗ ≤ u. A fixed point above the seed is a special case of a pre-fixed point.
+Corollary 9.4 (Raw demand adequacy). If ov(r∗ ) = 0, then r∗ satisfies every uncapped edge
+inequality de (rj∗ ) ≤ ri∗ and is least among all raw closed vectors in the capped box.
+
+Proof. No overflow means every edge demand is at most the receiving cap. At a fixed point, the
+capped maximum equals the current coordinate. Since no demanded value was truncated by the
+cap, each raw demand is at most that coordinate. Any raw closed vector is a pre-fixed point of T ,
+so leastness follows from theorem 9.3.
+
+9.3   Overflow as a residual or a diagnostic
+The compiler must not silently interpret saturation as success. It has two admissible policies.
+ (1) Static cap proof. Prove in the object theory that every edge transformer maps the relevant
+     source cap below the target cap. By monotonicity, overflow is impossible throughout the
+     iteration.
+ (2) Dynamic boundary. Compute r∗ , retain the formula ov(r∗ ) = 0 as a residual boundary, and
+     compile the downstream theorem conditionally on it.
+A failed finite test may suggest a larger cap, but only an object-level cap proof or retained boundary
+justifies the final theorem.
+
+9.4   Object-theory realization
+For a fixed N and edge set, encode the vector in a fixed nested pair or a bounded table. Generate
+primitive-recursive symbols for lookup, update, the finite maxima, T , overflow, rank, and the L-step
+iteration. The main invariant contains only equations and order predicates already represented by
+QF formulas:
+                      Inv(t) : s ≤ r(t) ≤ C ∧ r(t) ≤ r(t+1) ∧ ρ(r(t) ) ≤ L − 1.
+The base and successor cases use the defining equations of the generated folds and the checked
+order/semiring library. Stabilization can be formalized in either of two ways.
+
+
+
+
+                                                  31
+KIFC-R for iPRA                                                                                  2026-11-16
+
+
+   • Prove the rank-increase implication and use QF induction to show that L strict updates
+     contradict the rank cap.
+   • Add a Boolean changed flag and a counter of strict updates to the packed trace; once unchanged,
+     freeze the state. The QF invariant directly shows the counter is bounded by L − 1, so the
+     state is frozen by time L.
+The second form is usually easier for generated proofs because every fact is local to one transition.
+
+9.5    Changing-parameter recursion
+Some cycles are only apparent because a later phase changes a parameter. For example, a horizon h
+may grow while precision q(h) is recomputed. The framework first chooses a single finite terminal cap
+H, then treats (h, q) as coordinates of the same capped closure. This avoids induction hypotheses
+that quantify over all future horizons. If no finite H is known, the theorem is not a finite-use result
+and the missing horizon producer must be made residual.
+
+9.6    Commutation with proof compilation
+Demand closure is computed before term generation and forward proof scheduling. The closed
+vector is substituted into every node’s local contract. Thus resource closure and proof compilation
+commute in the following precise sense: compiling with the least closed vector yields the same
+terminal formula as compiling with any larger adequate vector, except that the latter contains
+unused precision. Monotonicity lemmas transport observations from the larger requests down to the
+requested tolerance. The least vector is preferred for proof size and executable cost, not for logical
+strength.
+
+
+10     Finite relational witnesses and backward viability
+10.1    Why local choice is insufficient
+Suppose a computation has finite candidate sets A0 , . . . , AH , validity predicates Vi (a), compatibility
+relations Ei (a, b) ⊆ Ai × Ai+1 , and a terminal acceptance predicate T (a) on AH . Pointwise
+nonemptiness of every Ai does not imply the existence of a compatible path. Choosing the least
+valid candidate at each level can enter a dead end.
+The correct finite analogue of dependent choice is to remove dead ends before selecting anything.
+
+10.2    Viability recurrence
+Define Boolean viability backward:
+
+                      WH (a) = VH (a) ∧ T (a),
+                        Wi (a) = Vi (a) ∧ Anyb<Bi+1 Vi+1 (b) ∧ Ei (a, b) ∧ Wi+1 (b) .
+                                                                                     
+
+
+Candidates outside their level bounds are declared invalid. The entire table is finite and primitive
+recursive. Reverse indexing can be implemented by forward recursion on j = H − i.
+Theorem 10.1 (Viability/path equivalence). For every 0 ≤ i ≤ H and candidate a ∈ Ai ,
+
+       Wi (a) = 1   ↔      there exists a valid compatible path a = ai , ai+1 , . . . , aH ending in T.
+
+
+                                                     32
+KIFC-R for iPRA                                                                                 2026-11-16
+
+
+After Booleanizing bounded path assertions, this equivalence is formalizable by quantifier-free induc-
+tion.
+
+Proof. Use reverse induction on i.
+At i = H, viability is exactly VH (a) ∧ T (a), which says that the length-one path is valid and
+terminally accepted.
+Assume the equivalence at i + 1. If Wi (a) = 1, fold reflection provides a bounded candidate b for
+which Vi+1 (b), Ei (a, b), and Wi+1 (b) hold. By the induction hypothesis, b extends to an accepted
+suffix; prepend a.
+Conversely, let a, ai+1 , . . . , aH be an accepted path. The suffix beginning at ai+1 gives Wi+1 (ai+1 ) = 1
+by the induction hypothesis. Therefore the bounded existential in the recurrence for Wi (a) is true,
+and validity of a gives Wi (a) = 1.
+For object formalization, path existence is represented by a bounded coded tuple and a Boolean
+path checker. The induction invariant is an equality between the computed viability row and a
+Boolean table of suffix-check results, hence QF.
+
+10.3    Constructing a path
+Theorem 10.2 (Finite dependent choice by least viability). If Anya<B0 W0 (a) = 1, a compatible
+accepted path can be constructed primitive recursively. Choose the least viable a0 . Given ai , choose
+the least ai+1 satisfying
+
+                              Vi+1 (ai+1 ) ∧ Ei (ai , ai+1 ) ∧ Wi+1 (ai+1 ) = 1.
+
+The resulting path is valid, compatible, and terminally accepted.
+
+Proof. The initial least witness exists by theorem 6.3. If ai is viable and i < H, the viability
+recurrence and fold reflection show that at least one viable compatible successor exists. Least
+bounded search returns one and proves its validity. Induct on i to obtain the full path. At the last
+level, viability includes terminal acceptance.
+
+This theorem is fully constructive. It is finite search guided by a finite dynamic-programming table,
+not an invocation of countable or dependent choice.
+
+10.4    Finite-use composition theorem
+Consider a producer whose output at each query is a finite relation rather than a function. A
+consumer is finite use if, at a fixed terminal query, it asks only finitely many producer questions, and
+later questions depend on earlier answers through a bounded computation. Unroll the consumer’s
+interaction to a finite relation tower: a level records the current consumer state and one candidate
+answer; compatibility records the producer validity condition and the consumer transition.
+Theorem 10.3 (Finite-use relational composition). Let a bounded relational producer be total for
+every query that can arise in a bounded finite-use consumer. Let the consumer have a bounded
+accepting trace for at least one compatible sequence of answers. Then backward viability and least
+search construct a primitive-recursive accepting interaction trace. If every local validity and transition
+fact has an object-level reflection proof, the accepting terminal contract has an object-level derivation.
+
+
+
+                                                     33
+KIFC-R for iPRA                                                                          2026-11-16
+
+
+Proof. Encode the consumer state and current answer as the candidate at each interaction step.
+The horizon is the consumer’s explicit interaction bound. Apply theorem 10.1 and theorem 10.2.
+The selected path is primitive recursive because all bounds and predicates are. Its path checker is a
+finite Boolean fold. Reflect checker acceptance to the conjunction of producer-validity and consumer-
+transition formulas. Compile the consumer’s loop invariant and terminal rule by theorem 7.1 and
+theorem 8.2.
+
+10.5    Rectangular table encoding
+Lean formalization is simpler if every row has a common width
+
+                                          Bmax = max Bi .
+                                                    i≤H
+
+Cells a ≥ Bi are marked invalid. A viability table is then one code for (H + 1)Bmax Booleans.
+The reverse recurrence scans rows and columns in a fixed rectangular loop. This avoids dependent
+vectors in the object syntax and makes table lookup a fixed primitive-recursive projection.
+
+10.6    Products and amalgamation
+If a theorem needs several independent relational certificates at the same finite horizon, form the
+product candidate set and conjunction of validity/compatibility predicates. The product bound
+is the product of component bounds and remains primitive recursive. Backward viability then
+performs finite witness amalgamation. This is the appropriate replacement for statements such as
+“choose all local branches coherently.”
+The construction can be expensive, but proof-theoretic feasibility and computational efficiency are
+separate. Sharing, incremental viability, and problem-specific pruning can reduce the state space
+without changing the theorem.
+
+
+11     Stable observations, shrinking clouds, and finite consumers
+11.1    Exact choice erasure
+Let R(x, q, a) be a bounded total relation and O(x, q, a) an observer.
+Theorem 11.1 (Exact stable-observer elimination). Assume iPRA proves:
+
+                                             P (x, q) −→ ∃a < B(x, q) R(x, q, a),
+                    P (x, q) ∧ R(x, q, a) ∧ R(x, q, b) −→ O(x, q, a) = O(x, q, b).
+
+Let a∗ (x, q) be the least bounded valid candidate. Then iPRA proves
+
+                                       P (x, q) −→ R(x, q, a∗ )
+
+and
+                          P (x, q) ∧ R(x, q, a) −→ O(x, q, a∗ ) = O(x, q, a).
+Thus O(x, q, a∗ ) is a canonical primitive-recursive output even when no witness is intrinsically
+canonical.
+
+
+
+
+                                                  34
+KIFC-R for iPRA                                                                          2026-11-16
+
+
+Proof. Booleanize R and apply least bounded search. Totality implies that the found flag is one,
+so search soundness gives R(a∗ ). Instantiate exact stability with a∗ and an arbitrary valid a. The
+internal choice has disappeared from the public theorem: changing the search order or producer
+changes the hidden witness but not the observed value.
+
+A typical example is a symmetric polynomial in an unordered root list. The list order is arbitrary,
+but elementary symmetric functions are stable observers.
+
+11.2    Diameter-stable observations
+Exact equality is often unnecessary. Suppose a rational-code pseudometric d and a bound δ(x, q)
+satisfy
+                        P (x, q) ∧ R(a) ∧ R(b) −→ d(O(a), O(b)) ≤ δ(x, q).
+The least valid candidate again gives a canonical program output. The theorem now says that it is
+within δ of every valid realization, not that all realizations are equal.
+Theorem 11.2 (Approximate choice erasure). Under bounded totality and the diameter hypothesis,
+iPRA derives
+                     P (x, q) ∧ R(x, q, a) −→ d(O(x, q, a∗ ), O(x, q, a)) ≤ δ(x, q).
+If a downstream observer is uniformly stable with modulus m, the composite error is obtained by the
+corresponding demand transformation and triangle inequality.
+
+Proof. Search soundness proves R(a∗ ); instantiate the diameter theorem at (a∗ , a). For composition,
+request enough upstream precision that the observer’s modulus turns the upstream diameter into
+the downstream tolerance, and combine local error inequalities. All sums and comparisons are
+rational-code arithmetic.
+
+11.3    From clouds to a regular name
+Pointwise approximate answers do not automatically form a coherent sequence. Let Cq be a
+nonempty finite cloud of valid observations at level q. Assume:
+ (a) diam(Cq ) ≤ δq ;
+ (b) there exists at least one compatible edge between Cq and Cq+1 , and every valid edge (u, v)
+     satisfies d(u, v) ≤ µq ;
+  (c) a primitive-recursive tail modulus T (k) certifies
+                            m−1
+                                     δq + µq + δq+1 ≤ 2−k       for every m > T (k).
+                            X                       
+
+                           q=T (k)
+
+
+The finite sums are exact rational-code inequalities; a geometric or telescoping closed form normally
+supplies the tail certificate.
+Choose any primitive-recursive valid representative aq ∈ Cq , for example the least one. Independent
+choices at adjacent levels need not form an edge. Nevertheless, select for the proof one valid edge
+(uq , vq+1 ). Then
+                        d(aq , aq+1 ) ≤ d(aq , uq ) + d(uq , vq+1 ) + d(vq+1 , aq+1 )
+                                      ≤ δq + µq + δq+1 .
+
+
+                                                     35
+KIFC-R for iPRA                                                                           2026-11-16
+
+
+The edge is used only existentially in the proof; the output algorithm may keep choosing least
+representatives.
+Theorem 11.3 (Shrinking-cloud name extraction). Under assumptions (a)–(c), the subsequence
+
+                                               rk = aT (k)
+
+is a regular Cauchy name in the sense that, for ℓ ≥ k,
+
+                                            d(rk , rℓ ) ≤ 2−k ,
+
+provided T is nondecreasing. All values and the modulus are primitive recursive.
+
+Proof. For consecutive levels, use the preceding three-term estimate. For n < m, repeatedly apply
+the triangle inequality to obtain
+                                                  m−1
+                                  d(an , am ) ≤         (δq + µq + δq+1 ).
+                                                  X
+
+                                                  q=n
+
+Set n = T (k) and m = T (ℓ); monotonicity gives m ≥ n, and the tail certificate bounds the sum by
+2−k . The finite telescoping proof is a bounded loop with a QF rational-inequality invariant, so it is
+admissible in iPRA.
+
+11.4    Why a diameter estimate alone is not enough
+Even if δq → 0, the centers of the clouds may oscillate. Motion control is required. Conversely, edge
+motion without shrinking diameter does not make independent choices close. The three-term budget
+in theorem 11.3 isolates the exact information needed: within-level ambiguity, one-step motion, and
+the next within-level ambiguity.
+
+11.5    Metastability as a final interface
+A metastable statement has the form
+
+                        ∀k, F ∃n ≤ B(k, F ) ∀i, j ∈ [n, F (n)] d(xi , xj ) ≤ 2−k .
+
+For fixed k, F , the witness n is a bounded search problem. Booleanize the finite window condition
+and use theorem 6.3. This produces a valid finite-use contract.
+It is generally invalid to infer a global Cauchy modulus N (k) from metastability alone. A finite
+consumer, however, only supplies finitely many control functions F and tolerances. The framework
+may propagate these requests backward and search the required windows. Thus metastability is not
+a failure: it is a different, weaker interface that composes with finite consumers.
+Barrier 11.4 (Metastability is not a modulus). There is no general uniform transformation taking
+an arbitrary computable metastability bound for a sequence to a computable Cauchy modulus for
+that sequence.
+
+Reason. Computable sequences can converge without a computable modulus. For each fixed finite
+control function, a finite stable window may still be found effectively. A uniform transformation
+would turn these window procedures into a modulus and contradict the known computability
+separation. In the present framework the conclusion is operational: retain the metastable contract
+unless an explicit tail argument such as theorem 11.3 is supplied.
+
+                                                    36
+KIFC-R for iPRA                                                                             2026-11-16
+
+
+11.6    Stable labels under a gap
+Suppose finitely many true scores si have a unique minimum si∗ and a certified gap
+
+                                       sj − si∗ ≥ γ > 0     (j ̸= i∗ ).
+
+If approximations s̃i have error at most ε with 2ε < γ, then the least approximate minimizer is i∗ .
+Indeed,
+                            s̃j − s̃i∗ ≥ (sj − ε) − (si∗ + ε) ≥ γ − 2ε > 0.
+This elementary estimate is the generic guarded-label theorem. It applies to root matching, eigenvalue
+ordering, pivot choice, chart choice, nearest-cell selection, and sign determination. At γ = 0, the
+exact label is removed from the general interface rather than chosen discontinuously.
+
+
+12     Guarded operations, extensionality, and finite gluing
+12.1    Nonzero is not positive apartness
+In constructive arithmetic, the proposition x ̸= 0 does not generally provide an integer g such that
+|x| ≥ 2−g . Algorithms for division, matrix inversion, Newton iteration, branch selection, and chart
+changes need such quantitative data to choose a finite input precision.
+A guarded operation therefore has two layers:
+ (1) a total primitive-recursive program, defined on every code and permitted to return a default
+     outside the intended domain;
+ (2) a correctness theorem under a positive rational margin certificate.
+For inversion, a typical contract is
+
+                    |x| ≥ 2−g ,   |x̃ − x| ≤ 2−m    =⇒       invm,g (x̃) − x−1 ≤ 2−q
+
+when m ≥ q + 2g + c. The exact constant depends on the rational coding. The backward demand
+edge for inversion is therefore q 7→ q + 2g + c.
+
+12.2    Totalization theorem
+Theorem 12.1 (Guarded totalization). Let a partial mathematical operation f have a finite
+approximation algorithm whose correctness proof uses only a decidable guard G(x, g) and a primitive-
+recursive demand d(q, g). Define the program on all codes by returning a fixed default when the
+finite guard checker fails. Then the program is primitive recursive and iPRA proves
+
+                  G(x, g) ∧ ValidX (x, d(q, g), a) −→ ValidY (f x, q, Runf (x, q, g, a)).
+
+No correctness claim is made when G fails.
+
+Proof. The guard checker and branch selector are primitive recursive, so totalization preserves
+primitive recursiveness. Under the guard hypothesis, reflection shows that the successful branch
+is taken. The theorem-specific quantitative estimate proves output validity. The failed branch is
+irrelevant under the hypothesis. This pattern permits total terms in the language without weakening
+the mathematical domain condition.
+
+
+                                                    37
+KIFC-R for iPRA                                                                                  2026-11-16
+
+
+12.3    Observational setoids
+A code presentation X becomes extensional by equipping it with a family of finite observational
+equivalences
+                                          c ≈q d.
+The intended properties are reflexivity, symmetry, a precision-degrading transitivity law, and
+congruence for every exported operation. Global code equality is neither required nor desirable.
+For regular Cauchy names, c ≈q d may assert that their dyadic approximants at a sufficiently high
+common precision are within 2−q . For algebraic objects, it may be equality modulo a supplied
+ideal-combination witness. For finite covers, it may be overlap compatibility. For root sets, it may
+be existence of a bounded matching between boxes.
+Theorem 12.2 (Extensional contract composition). If C : X → Y and D : Y → Z have congruence
+moduli
+                  c ≈dC (q) c′ ⇒ C(c) ≈q C(c′ ),    y ≈dD (r) y ′ ⇒ D(y) ≈r D(y ′ ),
+then D ◦ C has demand dC (dD (r)) and the composed congruence proof.
+
+Proof. Apply the first congruence theorem at precision dD (r), then the second at precision r. At
+the object level, instantiate both derivations and compose them by cut.
+
+12.4    Finite nets in place of compactness
+An effective compactness contract for a presented domain K consists of:
+   • a primitive-recursive finite net N (K, q);
+   • a coverage certificate proving that every admissible point has a net point within 2−q ;
+   • a modulus transporting local estimates from net points to nearby points.
+A minimum or finite subcover is then found by bounded search. The theorem is conditional on
+the net and modulus producer; no completed compact space or arbitrary finite-subcover choice is
+required.
+Theorem 12.3 (Certified finite-net transfer). Suppose f has a modulus m on K, and a finite
+                                                                      ′
+m(q + c)-net has been certified. If a rational bound f (z) ≤ M − 2−q−c is verified at every net point
+with enough evaluation precision, then f (x) ≤ M for every admissible x ∈ K. The constants c, c′
+are chosen so that evaluation and transport errors fit the slack.
+
+Proof. Given x, the coverage certificate supplies a net point z within the modulus threshold. The
+modulus bounds |f (x) − f (z)|; the certified net inequality and the allocated error budget yield
+f (x) ≤ M . In the object proof, the arbitrary point is an open parameter, while the net search and
+all verification are bounded Boolean folds.
+
+12.5    Finite-cover gluing
+Let U0 , . . . , Ur−1 be a fixed finite cover. A gluing certificate contains local codes si , validity proofs
+on each Ui , and compatibility witnesses on every overlap Ui ∩ Uj . A global observer is computed
+from the finite tuple (si ). Exact gluing requires a uniqueness theorem; approximate gluing requires
+an overlap diameter and a partition/selection stability estimate.
+
+
+
+                                                     38
+KIFC-R for iPRA                                                                             2026-11-16
+
+
+Theorem 12.4 (Finite gluing by stable observation). Assume the local tuple relation is bounded
+and total, overlap compatibility is decidable, and every two compatible tuples have the same global
+observer. Then least bounded search over tuple codes followed by the observer yields a canonical
+global output. If equality is replaced by a diameter bound, the output is canonical up to that diameter.
+
+Proof. The tuple relation is a finite product relation. Use bounded search to find the least valid
+compatible tuple. Apply exact or approximate stable-observer elimination. No quotient object needs
+to be constructed unless later theorems genuinely consume it.
+
+12.6    Projective and quotient data
+Many singular choices disappear when the output is represented invariantly:
+   • a line is a primitive integer or rational vector modulo nonzero scaling, with equality witnessed
+     by cross-multiplication;
+   • a rotation axis is a projective vector or quaternionic relation, not a normalized signed unit
+     vector at the identity;
+   • an eigenobject at a repeated eigenvalue is a projector or invariant-subspace relation, not a
+     chosen basis vector;
+   • a divisor or sheaf section is represented by finite local data and explicit overlap witnesses.
+Normalization is added only under a guard proving that a selected coordinate or norm is bounded
+away from zero.
+
+12.7    Exact branch data
+Exact Puiseux coefficients or analytic branches require more than arbitrary Cauchy coefficients.
+A sound interface supplies an exact algebraic presentation, a factor/splitting certificate, and a
+separation or discriminant condition. Without these data, the general output is a finite relation
+of approximate branches. Stable symmetric observations may still be exact; individual labels are
+guarded.
+
+
+13     The checked algebraic backend
+13.1    Why this backend matters
+Many packets reduce a theorem to a finite polynomial identity but then stop at a semantic ring
+proof. The current Derivations library closes this gap for a substantial class of identities. It
+derives arithmetic laws in the embedded theory, quotients terms by provable equality, embeds the
+quotient semiring into a ring of differences, performs metalevel ring normalization, and reflects the
+normalized equality back to Prf PRAAx.
+This architecture is exactly compatible with KIFC-R. An algebra node stores an output equation
+and a proof-producing tactic invocation. The equation can then be consumed by later search, loop,
+or observer nodes through ordinary equality substitution.
+
+
+
+
+                                                  39
+KIFC-R for iPRA                                                                          2026-11-16
+
+
+13.2    Provable-equality quotient
+Fix a context Γ. Define s ∼Γ t when Γ ⊢ s = t. Reflexivity, symmetry, and transitivity are derived
+in the deduction system; congruence follows from equality substitution. Thus ∼Γ is a congruence
+for the derived addition and multiplication symbols. The quotient QΓ is a cancellative commutative
+semiring because the corresponding laws and cancellation are proved in iPRA.
+Natural-number terms embed into the Grothendieck ring G(QΓ ). Injectivity of the canonical map
+follows from additive cancellation. An integer term is represented by a pair (p, n) denoting p − n,
+and equality of integer terms is translated to the natural equality
+
+                                          p + n′ = p′ + n.
+
+Consequently, if a polynomial identity holds in G(QΓ ), injectivity yields an equality in QΓ , which
+by definition is an object-level derivation.
+
+13.3    Sound use of metalevel tactics
+The tactic ipra_ring does not assert that ring normalization is an axiom of iPRA. Its proof term
+has the following shape:
+ (1) map each object term to its class in QΓ and then to G(QΓ );
+ (2) use Lean’s ring tactic to prove equality in this metalevel ring;
+ (3) apply injectivity to recover equality of quotient classes;
+ (4) unfold quotient equality to obtain Γ ⊢ s = t.
+The current axiom-audit module reports no sorryAx. It lists only Lean’s standard metatheoretic
+axioms for quotients, choice, and propositional extensionality; the object theorem still depends only
+on PRAAx.
+
+13.4    Algebra node interface
+A generic algebra node can be represented by:
+
+                           AlgNode(Γ, s, t, h),    h : Γ ⊢ [PRAAx]s = t.
+
+Its operational output may be one side of the equation; its proof output is h. Common subclasses
+are:
+  • polynomial normalization and factorization;
+  • linear-combination certificates for ideal membership;
+  • determinant and adjugate identities at fixed dimension;
+  • integer-coordinate geometry identities;
+  • finite combinatorial sum identities after recurrence expansion.
+Not every algebraic theorem is a ring identity. Inequalities require order lemmas and often sums of
+squares or explicit witnesses. Divisibility requires a witness term. Matrix statements of variable
+dimension require loop invariants. The node interface is nevertheless useful: these stronger nodes
+may call the ring backend for their local algebraic subgoals.
+
+                                                  40
+KIFC-R for iPRA                                                                                2026-11-16
+
+
+13.5    Worked inherited examples
+The current repository supplies actual embedded derivations for:
+  (i) (xz + yw)2 + (xw − yz)2 = (x2 + y 2 )(z 2 + w2 );
+ (ii) the Heron factorization
+
+                  4b2 c2 − (b2 + c2 − a2 )2 = (a + b + c)(−a + b + c)(a − b + c)(a + b − c);
+
+ (iii) the coordinate identity equivalent to Heron’s formula;
+ (iv) the coordinate law of cosines.
+The accompanying Lean adapter wraps the open two-square and Heron derivations as KIFC-R
+kernel rules. This is an inherited checked component, not a new unverified claim of this packet.
+
+13.6    Extending the backend
+A practical extension order is:
+ (1) derive a reusable ordered-semiring layer and a tactic for polynomial inequalities from explicit
+     nonnegative decompositions;
+ (2) add finite-sum normalization, with a loop invariant connecting recursive sums to closed forms;
+ (3) add fixed-size matrix identities by flattening entries and calling ipra_ring;
+ (4) add variable-size matrix algorithms as certified loops with determinant/minor certificates;
+ (5) add rational-code fields under explicit nonzero denominator guards.
+Each extension should expose object-level theorem constructors rather than a semantic API only.
+
+
+14     Domain embedding recipes
+This section turns the general framework into reusable proof patterns. The recipes are not assertions
+that every named deep theorem has now been proved. They identify the admissible statement, the
+finite data, the object-theory core, and the remaining producer obligations.
+
+14.1    Elementary and algebraic number theory
+Divisibility, gcd, and congruence. Use primitive-recursive bounded search for quotients and
+Bézout coefficients within explicit bounds. Divisibility is witnessed by a term k and an algebra
+equation a = bk. Euclidean descent is a loop with the remainder as a decreasing rank. Congruence
+calculations reduce to polynomial identities and divisibility witnesses.
+
+Finite sums over divisors or primes. Primality and divisibility below n are bounded predicates.
+A sum such as d|n f (d) is a primitive recursion over d < n + 1 with a Boolean guard. Prove the
+                 P
+
+summation recurrence by QF induction; prove identities by rearranging finite double sums through
+explicit bijections or counting certificates. No infinite Dirichlet series is needed for a finite identity.
+
+
+
+
+                                                    41
+KIFC-R for iPRA                                                                             2026-11-16
+
+
+Asymptotic theorems.          State a theorem with explicit constants and threshold:
+
+                               n ≥ N (k) −→ |A(n) − M (n)| ≤ E(k, n).
+
+The verifier is finite arithmetic. The producer must supply N , constants, and any zero-free or
+contour estimate in an effective form. An ineffective existence of constants is not silently converted
+to a PR symbol.
+
+14.2    Diophantine geometry
+Height-bounded enumeration. A rational point is encoded by primitive integer tuples with
+bounded numerator and denominator. For a supplied height bound H(C), enumerate the finite box,
+test the equations, normalize signs/gcd, and remove duplicates by bounded search. Completeness
+follows immediately from the height hypothesis.
+Theorem 14.1 (Height/list equivalence for decidable presentations). Fix a Diophantine presentation
+with a primitive-recursive point verifier and height. The following data are interconvertible by
+primitive-recursive, object-verifiable constructions:
+  (i) a bound H proved to dominate the height of every valid point;
+ (ii) a finite complete duplicate-free list of all valid points.
+The conversion from a list to a bound takes the maximum height (or zero for the empty list); the
+conversion from a bound to a list is bounded enumeration and verification.
+
+Proof. Given H, enumerate every canonical code of height at most H, retain exactly those satisfying
+the verifier, and remove duplicates. Every retained item is valid by reflection. Every valid point has
+height at most H, hence has a canonical code in the enumerated box and appears in the filtered list.
+Conversely, given a complete list, take the maximum of the finitely many heights. Completeness
+implies every valid point occurs and is bounded by that maximum. All operations are bounded
+folds and searches, so their correctness is handled by section 6.
+
+This theorem clarifies the Faltings/Siegel difficulty. The finite part of the proof is not the obstacle.
+The obstacle is the uniform, effective, object-justified height producer.
+
+Mordell–Weil descent. A Selmer class is not automatically a rational point on its covering. The
+interface must return a finite relation of covering representatives with explicit local/global compati-
+bility certificates. Backward viability can amalgamate a finite descent tree once such representatives
+are supplied. A general uniform representative producer remains a separate mathematical problem.
+
+Runge and explicit special cases. When geometry yields an explicit height inequality, the
+complete proof fits the framework: derive the inequality using algebra nodes and guarded estimates,
+compute H, enumerate, and verify. This is why Runge-type cases can be fully constructive even
+when general Siegel remains open.
+
+14.3    Real and complex analysis
+Real names.      Use dyadic rational approximants with a regularity contract
+
+                                       |ak − aℓ | ≤ 2−k   (ℓ ≥ k),
+
+
+                                                    42
+KIFC-R for iPRA                                                                            2026-11-16
+
+
+or a relational cloud plus theorem 11.3. Addition and multiplication have explicit demand trans-
+formers. Inversion, logarithm, square root, and inverse trigonometric functions require guards.
+
+Integration. A Riemann or quadrature approximation is a finite rational sum. The input
+includes a modulus of continuity or derivative bounds and a tail/error theorem. The terminal query
+determines a mesh size. The object proof consists of the finite sum identity, local cell estimates, and
+a finite error sum. An “integrable” proposition without a modulus is insufficient for a uniform PR
+integrator.
+
+Power series. A series is consumed through a partial sum and a tail bound. Composition,
+differentiation, or inversion requires explicit coefficient bounds and a radius/apartness guard.
+Formal power-series identities are exact algebra nodes; analytic equality adds a finite tail estimate.
+
+Contour arguments. Replace a contour by a rational polygonal path or a certified finite
+parametrization, and replace integrals by quadrature with explicit error. Winding numbers are finite
+integer computations under a positive distance-from-pole guard. Residue theorems then separate
+into exact algebraic residue identities and quantitative approximation estimates.
+
+Gamma, zeta, and special functions. Choose one finite representation—Euler products, alter-
+nating series, Euler–Maclaurin sums, or contour quadrature—and attach explicit domain, truncation,
+and error contracts. Functional equations become comparisons of two finite approximations with
+common error budgets plus exact algebraic identities. Any hidden ineffective constant remains a
+producer obligation.
+
+14.4    Probability and limit theorems
+A directly admissible probability object is a finite rational law. Expectations and moments are
+finite sums. For triangular arrays or approximated laws, input data include tail, moment, and
+quantization moduli. A central limit theorem suitable for iPRA states an explicit finite bound, such
+as a Berry–Esseen inequality for rational variables with a displayed constant. CDF comparisons at
+discontinuity points require anti-concentration or smoothing data. Weak convergence without a
+modulus is retained as a finite-test or metastable contract.
+
+14.5    Geometry
+Coordinate algebra. Whenever possible, express the theorem as a polynomial identity in integer
+or rational coordinates. The current ipra_ring backend already handles a meaningful class of
+triangle identities.
+
+Avoiding division. Use homogeneous coordinates, oriented determinants, squared distances, and
+cross-multiplied ratio statements. Introduce a denominator only under a nondegeneracy/apartness
+certificate.
+
+Incidence and conics. A projective incidence theorem is a determinant identity plus rank/nonde-
+generacy guards. Pappus, Pascal, Desargues, Ceva, and Menelaus are natural algebra-node targets
+after suitable coordinate normalization.
+
+
+
+
+                                                  43
+KIFC-R for iPRA                                                                              2026-11-16
+
+
+Spherical and rotational geometry. Trigonometric quantities are finite names with error
+contracts. Exact axes and inverse angles are guarded. At singular configurations, use rotation
+matrices, quaternions modulo sign, or relations of admissible axes rather than a discontinuous
+selected vector.
+
+14.6    Linear algebra and spectral theory
+Fixed-dimension determinant, adjugate, Cayley–Hamilton, and characteristic-polynomial identities
+are algebra nodes. Variable dimension uses loops over indices with QF matrix-entry invariants.
+Gaussian elimination is totalized: pivot search consumes a certified rank/pivot margin, or the output
+is a relation of row-reduction branches.
+For symmetric spectral theory, an unordered multiset of eigenvalue intervals is stable through
+collisions. Ordered labels require a separation certificate. Eigenspaces are represented by approximate
+projectors or finite relations of bases; a normalized eigenvector requires a simple-eigenvalue gap and
+a sign/coordinate normalization guard.
+
+14.7    Combinatorics and finite topology
+Finite combinatorial identities are particularly well suited to KIFC-R. Objects are bounded codes,
+predicates are decidable, and counting is primitive recursion. Bijections can be supplied as mutually
+inverse PR maps with object-level inverse equations. Recurrences use QF induction.
+Topological theorems should first be stated for finite simplicial or cubical complexes. Chains,
+boundaries, parity, homology over finite coefficients, and carrier maps are finite matrix calculations.
+Passage from a represented continuous space to a finite complex requires an approximation/nerve
+producer with explicit mesh and separation data. The finite theorem and the approximation theorem
+remain distinct contracts.
+
+14.8    Algebraic geometry and sheaf-like constructions
+Use finite affine presentations, ideal-membership witnesses, localization equalities with explicit
+killing exponents, finite principal-open covers, and Cech tuples. A section is local finite data plus
+overlap certificates. Gluing follows theorem 12.4; quotient equality is witnessed algebraically rather
+than decided for arbitrary represented reals. General geometric finiteness theorems still require
+effective degree/height bounds before enumeration.
+
+14.9    Classical finite arguments
+A finite decidable argument may be classically discovered and then checked constructively. The best
+route is certificate extraction: a classical search tool produces a finite witness, and iPRA verifies it.
+For theorem schemas whose conclusions are negative or stable, a negative-translation route may
+also apply, but it should be formalized as a separate proof translation and not assumed globally.
+Disjunction and existential conclusions require explicit recoverability, normally supplied here by
+bounded decidability and least search.
+
+
+15     Resolution of the reported difficulties
+This section states what the framework actually resolves. A “resolution” may be a full generic
+theorem, a correct reformulation under additional data, or a proof that the stronger requested
+
+                                                   44
+KIFC-R for iPRA                                                                            2026-11-16
+
+
+interface is unavailable.
+
+15.1    Proof objects versus semantic theorems
+Difficulty. A Lean file defines a proposition expressing the intended theorem and proves a semantic
+fact about natural numbers, but no value of type Γ ⊢ [PRAAx]φ is constructed.
+Resolution. Every node contains a local embedded derivation; theorem 8.2 composes them.
+Loops terminate at IPRA.ind; algebraic identities terminate at the checked quotient/ring backend.
+The verification gates in section 18 reject a theorem whose public conclusion is only a semantic
+proposition.
+
+15.2    Quantifiers in induction predicates
+Difficulty. Correctness is phrased as “all entries processed so far satisfy P ”, leaving a bounded
+universal quantifier in the induction matrix.
+Resolution. Compile the prefix property to All and store the equation All(i) = 1. The recurrence for
+the Boolean accumulator and its state invariant are quantifier-free. Fold reflection is applied outside
+the induction matrix. The same pattern handles bounded existential search, table verification, path
+checking, and finite covers.
+
+15.3    All-precision invariants
+Difficulty. An analytic loop tries to maintain correctness at every precision simultaneously.
+Resolution. Treat the terminal precision as a parameter, propagate it backward through demand
+transformers, and run one finite computation at the resulting requests. Universal quantification over
+the terminal precision is introduced after the open QF-induction theorem has been constructed.
+
+15.4    Coherent choices from approximate witnesses
+Difficulty. For every precision there exists a valid approximant, but independently selected
+approximants may oscillate or be incompatible.
+Resolution. For a finite consumer, build the finite interaction tower and use backward viability.
+For a genuine infinite name, require within-level diameter, adjacent motion, and a summable
+tail modulus; then apply theorem 11.3. Without the tail data, retain a relational or metastable
+conclusion.
+
+15.5    Root ordering and algebraic branches
+Difficulty. Ordered roots and branch labels are discontinuous at collisions. Exact Puiseux branches
+are requested from arbitrary Cauchy coefficients.
+Resolution. The unguarded presentation returns multisets, clusters, or finite relations of approx-
+imate branches. Symmetric functions and cluster projectors are stable observers. Exact labels
+require a certified separation/discriminant gap. Exact Puiseux coefficients require an exact algebraic
+coefficient presentation and splitting data. The unrestricted selector is rejected as a representation
+error rather than left as an unexplained formalization hole.
+
+
+
+
+                                                  45
+KIFC-R for iPRA                                                                            2026-11-16
+
+
+Barrier 15.1 (No total exact branch selector near collision). A total operation that assigns one of
+two colliding branches a persistent discrete label cannot be continuous at the collision. Therefore it
+is not uniformly computable from ordinary Cauchy names, and no finite precision transformer can
+validate it there.
+
+Explanation. Consider the roots {−ε, ε}. At ε = 0 they coincide. Any label that distinguishes “left”
+and “right” must swap when the sign of ε swaps, yet arbitrarily accurate finite observations near
+zero cannot determine that sign without a positive lower bound. A computable operation to a
+discrete label is locally constant on names determined by a finite prefix, contradicting this behavior.
+A gap |ε| ≥ 2−g supplies the missing finite decision point.
+
+15.6    Spectral vectors and rotation axes
+Difficulty. A unique normalized eigenvector is requested at a repeated eigenvalue, or a unique
+rotation axis is requested at the identity.
+Resolution. Return invariant-subspace/projector data or a relation of admissible bases/axes. A
+simple-eigenvalue gap plus a normalization margin recovers an exact eigenvector label. A distance-
+from-identity guard recovers an axis; at the identity, the projective/quaternionic relation is the
+correct object.
+
+15.7    Mere nonzeroness in partial operations
+Difficulty. Division or pivoting assumes x ̸= 0 but needs a finite stage at which nonzeroness is
+visible.
+Resolution. Consume an apartness witness g with |x| ≥ 2−g , totalize the program, and prove
+correctness only under the guard. Mere negative nonzeroness remains a proposition and is not
+treated as an algorithmic modulus.
+Barrier 15.2 (No uniform extraction of apartness from negative nonzeroness). For general repre-
+sented reals, a uniform procedure transforming x ̸= 0 into a numerical lower bound |x| ≥ 2−g would
+validate a form of Markov-style search not available intuitionistically and would decide discontinuous
+sign information.
+
+15.8    Compactness and minimization
+Difficulty. A proof invokes an arbitrary finite subcover, minimum, or convergent subsequence.
+Resolution. Require a finite net producer, a coverage certificate, and a continuity/stability
+modulus. Then finite search finds the least acceptable cell or approximate minimizer. If only
+sequential compactness is available without a modulus, the result remains relational or metastable.
+
+15.9    Faltings and Siegel
+Difficulty. Finiteness of rational or integral points is treated as though it supplied a search cutoff.
+Resolution. Theorem 14.1 proves that an effective height bound is exactly the missing finite-
+search datum for a decidable presentation. The bounded enumerator, duplicate elimination, and
+completeness proof are generic. The general height producer is isolated as an open mathematical
+interface rather than hidden inside the framework.
+
+
+
+                                                  46
+KIFC-R for iPRA                                                                                  2026-11-16
+
+
+Barrier 15.3 (Finiteness alone does not compute a cutoff). There is no computable procedure that,
+from an index for a uniformly computably enumerable set known to contain at most one natural
+number, always returns an upper bound for its possible member.
+
+Proof. Given a program e, enumerate no number unless e halts; if it halts after exactly t steps,
+enumerate t. The resulting set contains at most one number, uniformly in e. If a computable
+bound H(e) were available, simulate e for H(e) steps. If it has not halted, it can never halt later,
+because its halting time would be a member exceeding the bound. This decides the halting problem.
+Therefore a bare cardinality/finiteness theorem is not a uniform height producer.
+
+15.10     Mordell–Weil descent
+Difficulty. A finite Selmer computation is followed by the assumption that every relevant class has
+a rational covering point.
+Resolution. The covering-point step is a bounded or finitely presented relation with explicit local
+and global certificates. If a finite candidate set is supplied, viability and stable observation complete
+the descent. A uniform producer of rational representatives for arbitrary coverings is not implied by
+the Selmer cardinality computation and remains open.
+
+15.11     Ineffective analytic constants
+Difficulty. An asymptotic theorem or compactness argument asserts the existence of constants but
+the algorithm needs them numerically.
+Resolution. Put constants, thresholds, and error orders in the certificate. The generic verifier
+checks the finite inequality. If the literature proof is ineffective, the packet can still state a conditional
+theorem and identify the producer problem, but it cannot claim an unconditional PR algorithm.
+
+15.12     Metastability
+Difficulty. A finite stable-window theorem is silently upgraded to a Cauchy rate.
+Resolution. Keep metastability as a first-class finite-use contract. A regular name is exported
+only after an explicit tail modulus or shrinking-cloud theorem. This both preserves constructive
+validity and lets finite consumers use the available theorem.
+
+15.13     Classical arguments
+Difficulty. A finite proof uses excluded middle, choice, or a contradiction argument without
+explaining recovery of witnesses.
+Resolution. Decidable bounded predicates admit constructive case splits and least witnesses.
+Classical external tools may produce finite certificates that are checked intuitionistically. A general
+negative-translation compiler is a separate formalization target; it recovers negative/stable conclu-
+sions directly, while disjunctions and existentials require bounded decidability or an explicit witness
+extractor.
+
+15.14     Summary matrix
+
+
+
+
+                                                     47
+KIFC-R for iPRA                                                                               2026-11-16
+
+
+Area                    Correct interface                    Framework status       Residual producer
+Object proof bound- Local and terminal Prf PRAAx             composition        re- theorem-specific lo-
+ary                 values                                   solved                 cal derivations
+Bounded induction Boolean folds and QF state                 resolved               shared reflection li-
+                                                                                    brary in Lean
+Precision              fixed terminal query, reverse de-     resolved               operation-specific
+                       mand                                                         moduli
+Nonunique         wit- finite relation + viability           finite case resolved bounds and relation
+nesses                                                                              certificates
+Infinite names          diameter + motion + tail             resolved condition- summable tail pro-
+                                                             ally                   ducer
+Roots/eigenvalues       clusters/projectors; labels un-      reformulated           separation/gap pro-
+                        der gap                                                     ducer
+Division/pivots         total program under apartness        resolved condition- margin producer
+                        guard                                ally
+Compactness             finite net + coverage + modu-        resolved condition- effective net/modu-
+                        lus                                  ally                   lus
+Faltings/Siegel         height bound ↔ complete list         verifier resolved      general      effective
+                                                                                    height bound
+Mordell–Weil            representative relation and          verifier resolved      rational representa-
+                        compatibility                                               tive producer
+Puiseux                 exact algebraic data or approx-      reformulated           splitting/separation
+                        imate branch relation                                       data
+Metastability           finite-window contract               resolved as weaker tail modulus for
+                                                             interface              stronger name
+Analytic constants      explicit certificate fields          verifier resolved      effective constants
+Classical transfer      finite certificate or stable nega-   partial architecture checked proof trans-
+                        tive translation                                            lator
+
+
+16     Lean formalization architecture against the current API
+16.1   Target location and imports
+The implementation should be added under
+
+  Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Framework/
+
+and imported only after the existing core. It should not copy ConciseIPRA syntax or define a
+parallel proof calculus. The proposed root module is IPRADerivations/Framework.lean.
+The minimum current imports are:
+  • IPRADerivations.Core.Basic for PR, PTm, PRAAx, Prf, IPRA.ind, and IPRA.inst;
+  • IPRADerivations.Core.Order and Core.Monus for arithmetic comparisons;
+  • IPRADerivations.Core.Pairing for eqb, pairT, fstT, sndT, and two-track simultaneous
+    recursion;
+  • IPRADerivations.Core.Search for checked least bounded search;
+
+                                                   48
+KIFC-R for iPRA                                                                        2026-11-16
+
+
+   • Core.BoundedSums, Core.SumLemmas, and Core.SumReflect for finite folds;
+   • Core.Tactic, Core.Integers, and Core.LinearAlgebra for algebraic local rules.
+Application modules import additional checked mathematics only as needed.
+
+16.2    Proposed module graph
+ F1. Framework/Kernel.lean: local rules, proof schedules, compiled conditional theorems, loop
+     certificates.
+ F2. Framework/Bool.lean: Boolean range, truth tables, reflected atoms and connectives.
+ F3. Framework/BoundedFormula.lean: generated allB/anyB folds and syntax-directed fixed-
+     formula reflection.
+ F4. Framework/SearchAdapter.lean: thin success-at-one wrapper around checked Search.mu;
+     bounded argmin and first-valid corollaries.
+ F5. Framework/FiniteCode.lean: fixed tuples, sequences, finite tables, lookup/update, and
+     proved equations, built on checked pairing.
+ F6. Framework/Trace.lean: packed state, freeze-after-done, rank-bounded loop certificates.
+ F7. Framework/Residual.lean: residual normalization metadata and proof-schedule closure.
+ F8. Framework/Demand.lean: generated acyclic reverse demand and capped cyclic closure certifi-
+     cates.
+ F9. Framework/Relation.lean: viability table, bounded path checker, least viable path.
+F10. Framework/Observer.lean: exact, diameter, and gap-guarded observer elimination.
+F11. Framework/Rational.lean: signed rational codes, dyadic error predicates, triangle inequali-
+     ties, clipping, and finite error sums.
+F12. Framework/Compiler.lean: metalevel graph records, query specialization, source generation,
+     and provenance.
+F13. Framework/Benchmarks/*.lean: small closed examples, then rational cubic bisection.
+The archive’s Lean files are source-oriented blueprints for these modules. They are not claimed to
+compile in this environment.
+
+16.3    Kernel-facing core
+The principal abstraction should remain small enough that its soundness is transparent.
+namespace LeanProofs.IPRA.Framework
+
+open LeanProofs.ConciseIPRA
+open Syn
+open scoped Fm
+
+structure Rule (n : Nat) where
+  premises : List (Fm PTm n)
+  conclusion : Fm PTm n
+
+
+
+                                               49
+KIFC-R for iPRA                                                                          2026-11-16
+
+
+  sound : premises |- [PRAAx] conclusion
+
+namespace Rule
+
+theorem use {Gamma : List (Fm PTm n)} (r : Rule n)
+    (supply : forall psi, psi in r.premises ->
+      Gamma |- [PRAAx] psi) :
+    Gamma |- [PRAAx] r.conclusion :=
+  r.sound.trans supply
+
+end Rule
+
+inductive Schedule (n : Nat) (Gamma : List (Fm PTm n)) :
+    Fm PTm n -> Type
+  | done (h : Gamma |- [PRAAx] phi) : Schedule n Gamma phi
+  | have_ (hpsi : Gamma |- [PRAAx] psi)
+      (rest : Schedule n (psi :: Gamma) phi) :
+      Schedule n Gamma phi
+
+noncomputable def Schedule.compile :
+    Schedule n Gamma phi -> Gamma |- [PRAAx] phi
+  | .done h => h
+  | .have_ hpsi rest =>
+      (Schedule.compile rest).trans
+        (List.forall_mem_cons.2
+          <| And.intro hpsi (fun chi hchi => Prf.hyp hchi))
+
+end LeanProofs.IPRA.Framework
+
+The exact proof above matches the pattern already used successfully in the earlier source outline. It
+should be the first compilation gate.
+A residualized endpoint is simply a proof-bearing record, not an axiom mechanism:
+structure ConditionalTheorem (n : Nat) where
+  residuals : List (Fm PTm n)
+  permanent : List (Fm PTm n)
+  conclusion : Fm PTm n
+  proof : residuals ++ permanent |- [PRAAx] conclusion
+
+A closure theorem takes derivations of every residual formula and applies Prf.trans. The metalevel
+compiler may store names, keys, and provenance separately; only the formula list and proof enter
+the trusted endpoint.
+
+16.4    Loop certificates
+The checked IPRA.ind interface should be used directly.
+structure LoopCertificate (k : Nat) where
+  inv : Fm PTm (k + 1)
+  qf : inv.QF
+  zeroCase : ([] : List (Fm PTm k)) |- [PRAAx]
+    inv.subst (Syn.inst PTm.zero)
+  succCase : [inv] |- [PRAAx]
+
+                                                 50
+KIFC-R for iPRA                                                                            2026-11-16
+
+
+    inv.subst (Syn.repl (PTm.succ (Syn.var 0)))
+
+namespace LoopCertificate
+
+def compile (c : LoopCertificate k) :
+    ([] : List (Fm PTm (k + 1))) |- [PRAAx] c.inv :=
+  LeanProofs.IPRA.ind c.inv c.qf c.zeroCase c.succCase
+
+theorem at (c : LoopCertificate k)
+    (sigma : Fin (k + 1) -> PTm n) :
+    Gamma |- [PRAAx] c.inv.subst sigma :=
+  LeanProofs.IPRA.inst c.compile sigma
+
+end LoopCertificate
+
+
+The main engineering rule is that the generated invariant contains only equations, order formulas,
+and Boolean equations. Bounded quantifiers are represented by terms before this structure is built.
+
+16.5    Boolean reflection
+A fixed reflected formula can be represented by:
+structure Reflected (n : Nat) where
+  formula : Fm PTm n
+  code : PTm n
+  range : ([] : List (Fm PTm n)) |- [PRAAx]
+    (code = PTm.zero) or (code = PTm.one)
+  iffOne : ([] : List (Fm PTm n)) |- [PRAAx]
+    Fm.iff formula (code = PTm.one)
+
+
+Here PTm.one is a local abbreviation for succ zero. Equality reflection should reuse the checked
+eqb theorem from Core.Pairing. Order reflection should be proved against the current le/lt
+definitions. Boolean connectives are fixed arithmetic selectors with four-case truth-table derivations.
+For a fixed predicate term p(i, x), generate allB and anyB symbols with PR.prec. Prove:
+ (1) zero and successor equations;
+ (2) Boolean range;
+ (3) endpoint introduction/elimination lemmas such as
+
+                                  allB(N, x) = 1 ∧ i < N → p(i, x) = 1;
+
+ (4) witness introduction for anyB; and
+ (5) full bounded-quantifier wrappers by combining those lemmas with checked search.
+The object induction matrices can remain QF because i is a free parameter and the fold is a term.
+The syntax-directed compiler is a Lean metalevel recursion on one concrete Fm value. It returns a
+Reflected; it does not define a universal object-level evaluator for formula codes.
+
+
+
+
+                                                  51
+KIFC-R for iPRA                                                                         2026-11-16
+
+
+16.6   Search adapter: reuse, do not reprove
+The current checked search API has the schematic form:
+namespace LeanProofs.IPRA.Search
+
+abbrev mu (f : PTm 2) (N x : PTm n) : PTm n
+
+theorem search_spec (N i x : PTm n) :
+  Gamma |- [PRAAx]
+    le (mu f N x) N and
+      ((lt (mu f N x) N -> inst2 f (mu f N x) x = zero) and
+       (lt i (mu f N x) -> not (inst2 f i x = zero)))
+
+theorem search_found
+    (hf : Gamma |- [PRAAx] inst2 f i x = zero)
+    (hi : Gamma |- [PRAAx] lt i N) :
+  Gamma |- [PRAAx]
+    lt (mu f N x) N and
+      ((inst2 f (mu f N x) x = zero) and le (mu f N x) i)
+
+end LeanProofs.IPRA.Search
+
+
+The framework module should define only adapters. For a Boolean success predicate p, let f =
+1 −̇ p. Prove once that under the range theorem, f = 0 ↔ p = 1. Then derive firstValid,
+firstValid_sound, firstValid_minimal, bounded argmin, and first covering chart by instantiating
+the checked theorems. The old SearchBlueprint.lean should therefore be replaced, not completed
+as an independent recurrence.
+
+16.7   Finite codes and packed state
+Use the current checked pairing
+                                       ⟨a, b⟩ = (a + b)2 + a
+with fstT/sndT projection theorems. A fixed k-tuple is a right-nested pair; generate named
+projections and prove the projection equations by repeated congruence and fst_pair/snd_pair.
+This is enough for fixed graph states.
+Dynamic finite sequences need a length-tagged list code and PR lookup/update. Implement them
+only after fixed tuples compile. Required public theorems are:
+  • lookup at a written index;
+  • lookup at other indices is unchanged;
+  • update preserves length and out-of-range default;
+  • a bounded fold over lookup agrees with its recursive accumulator;
+  • all formulas used in these theorems have QF matrices.
+For two mutually recursive tracks, reuse checked sim_1/sim_2. For more tracks, either nest the pair
+state into one recursion or prove a generated fixed-arity wrapper. No new simultaneous-recursion
+axiom is needed.
+
+
+
+                                                52
+KIFC-R for iPRA                                                                            2026-11-16
+
+
+16.8    Residual compilation
+The metalevel graph record separates data dependencies, proof dependencies, and residual bound-
+aries:
+structure Boundary (n : Nat) where
+  key : String
+  formula : Fm PTm n
+  origin : String
+
+structure Node (n : Nat) where
+  name : String
+  dataParents : Array Nat
+  proofParents : Array Nat
+  boundaries : Array (Boundary n)
+  conclusion : Fm PTm n
+  build : NodeEnvironment n -> Rule n
+
+
+The precise build type may be syntax-generating rather than an ordinary function, but its
+output must contain a Rule.sound. Normalize residuals by backward reachability and stable
+keys. Generate a Schedule whose base context is residuals ++ permanent. The theorem
+ConditionalTheorem.close supplies boundary proofs by Prf.trans.
+No theorem about syntactic graph correctness has to be trusted initially: the generated proof term
+is independently checked. A verified internal compiler can be a later optimization.
+
+16.9    Capped demand closure
+Implement two levels.
+
+Semantic prototype. Prove in ordinary Lean, for Fin N -> Nat, that a monotone inflationary
+capped update stabilizes after
+                                   1+     (Ci − si )
+                                       X
+
+                                                i
+
+steps and yields the least pre-fixed point. This validates the algorithm and gives executable tests; it
+is not yet an iPRA proof.
+
+Object certificate. For each generated fixed system, emit PR terms for the vector state, update,
+rank, overflow flag, and bounded iteration. The generator supplies a LoopCertificate with:
+  • seed/cap preservation;
+  • componentwise inflation;
+  • changed = 1 implies rank increases;
+  • rank is at most the cap sum;
+  • once changed = 0, the state freezes.
+At terminal fuel derive fixedness. Prove leastness by a second QF induction with an arbitrary
+candidate vector as free parameters. Export raw edge adequacy under an object proof that overflow
+is zero. The cap proof may itself be a residual formula.
+
+
+                                                    53
+KIFC-R for iPRA                                                                           2026-11-16
+
+
+16.10    Relational viability
+The first formal target should have a fixed rectangular width B and variable horizon H. Use a
+coded Boolean table with rows 0, . . . , H. The reverse recurrence is
+
+                           WH (a) = VH (a) ∧ T (a),
+                            Wi (a) = Vi (a) ∧ Anyb<B (Ei (a, b) ∧ Wi+1 (b)).
+
+Generate a reverse loop writing one row per step. Its QF invariant says that all written cells satisfy
+the recurrence and unwritten cells have the default. Prove a bounded coded-path checker and the
+equivalence between Wi (a) = 1 and existence of an accepted suffix code. Use the checked search
+adapter to select the least viable start and successor.
+Suggested theorem endpoints are:
+theorem viable_iff_suffix :
+  Gamma |- [PRAAx] Fm.iff
+    (viable H i a = one)
+    (pathExistsFormula H i a)
+
+theorem selectedPath_valid :
+  (anyStartViable H = one :: Gamma) |- [PRAAx]
+    pathCheck H (selectedPath H) = one
+
+
+The bounded existential formula is optional in internal consumers: the Boolean equation itself is
+often the cleaner certificate.
+
+16.11    Stable observers
+Begin with explicit candidate terms rather than binder-heavy records.
+theorem exactObserver_of_selected
+    (hsel : Gamma |- [PRAAx] valid selected)
+    (hstable : valid selected :: valid arbitrary :: Gamma
+      |- [PRAAx] obs selected = obs arbitrary) :
+    valid arbitrary :: Gamma |- [PRAAx]
+      obs selected = obs arbitrary
+
+
+Then package totality plus checked search to hide selected. For diameter observers, represent
+absolute rational inequalities by cross-multiplied natural equations/order formulas. Prove triangle
+inequality once, then finite telescoping sums through checked sum lemmas. The regular-name
+theorem takes an explicit tail-modulus term; it must not infer one from pointwise shrinking alone.
+
+16.12    Rational and analytic contracts
+Use a total code (p, m, d) representing (p − m)/(d + 1). Addition and multiplication are polynomial.
+Reciprocal returns a default at zero and has a separate apartness guard. Dyadic error
+
+                                              |r| ≤ 2−k
+
+is represented by a cross-multiplied natural inequality, avoiding object-language division. Required
+shared theorems are:
+
+
+                                                  54
+KIFC-R for iPRA                                                                              2026-11-16
+
+
+  • rational equality/order reflection;
+  • triangle and product error inequalities;
+  • clipping to a rational interval and nonexpansiveness;
+  • finite sum/product error accumulation;
+  • guard-strengthening and demand monotonicity.
+These support finite nets, interval methods, series truncations, and the cubic benchmark.
+
+16.13    Benchmark order
+The formalization should proceed through endpoints of increasing strength.
+ (1) Compile Rule.use, Schedule.compile, and ConditionalTheorem.close; audit axioms.
+ (2) Build a Boolean predicate and the checked-search adapter; prove a closed least-witness example.
+ (3) Generate a three-coordinate capped demand closure and prove fixedness/leastness in Prf PRAAx.
+ (4) Build a small layered relation with one dead branch; prove the selected path is valid and an
+     exact observer is choice-independent.
+ (5) Compile a deterministic finite graph combining an inherited algebra theorem, a guard, checked
+     search, and a loop.
+ (6) Implement rational bisection for y 3 + y = x on [0, 1], first for rational x, then for a represented
+     input with an explicit precision schedule.
+Only after steps 1–5 should the generic source generator be generalized.
+
+16.14    Axiom and build gates
+Every completed module should satisfy all of the following.
+ (1) Public mathematical endpoints are explicit formulas and actual Prf PRAAx values.
+ (2) There is no sorry, theorem-specific axiom, or opaque semantic replacement for a derivation.
+ (3) Every induction call supplies an explicit Fm.QF proof.
+ (4) #print axioms shows no sorryAx; metatheoretic axioms are recorded separately from object-
+     theory assumptions.
+ (5) The module builds from the pinned commit or a newly recorded re-audit.
+ (6) Residual assumptions occur in theorem contexts and provenance, not as unproved fields
+     masquerading as data.
+ (7) Native transfer is applied only after the ordinary derivation is complete.
+ (8) Python or semantic Lean tests are labeled as implementation evidence, never as object-level
+     proof.
+
+
+
+
+                                                  55
+KIFC-R for iPRA                                                                          2026-11-16
+
+
+17     Worked examples
+17.1    Example A: a checked algebra node for Heron’s identity
+The coordinate Heron theorem in the current derivation library defines integer-coordinate terms
+for three points, twice the signed area D, and squared side lengths A, B, C. It proves the closed
+universal form of
+                            4D2 = 2AB + 2BC + 2CA − A2 − B 2 − C 2
+by calling ipra_ring on the open identity and then applying universal closure.
+As a KIFC-Rgraph this is a single algebra node. The input registers are the positive and negative
+parts of the six integer coordinates. The output formula is the displayed integer equality translated
+to a natural equality. The local derivation is inherited from Geometry/TriangleFormulas.lean. A
+downstream geometry theorem may use the equality through Prf.eqSubst or wrap it in a guarded
+square-root/area contract.
+This example demonstrates the intended proof boundary: Lean’s ring tactic is used in the metatheory,
+but the graph receives a checked Prf PRAAx derivation, not a semantic equality of Lean integers.
+
+17.2    Example B: exact rational bisection for y 3 + y = x
+Fix a rational input x. Set M = |x| + 1. For
+
+                                         fx (y) = y 3 + y − x
+
+one has fx (−M ) < 0 < fx (M ). Moreover, for a < b,
+
+                           fx (b) − fx (a) = (b − a)(a2 + ab + b2 + 1) > 0.
+
+The positivity of the second factor follows from
+
+                           4(a2 + ab + b2 + 1) = (2a + b)2 + 3b2 + 4 > 0.
+
+Thus there is at most one root and every sign bracket contains the same root in the observational
+sense needed below.
+
+State. Use integer-over-common-denominator codes for endpoints (ℓ, u). At step i, let m =
+(ℓ + u)/2. Evaluate the exact rational sign of fx (m):
+  • if fx (m) < 0, set ℓ := m;
+  • if fx (m) > 0, set u := m;
+  • if fx (m) = 0, set ℓ = u = m and keep the state fixed thereafter.
+All operations are primitive recursive on signed integer/rational codes.
+
+Invariant.   The QF invariant is the conjunction
+
+                        ℓ ≤ u,   fx (ℓ) ≤ 0,   0 ≤ fx (u),   2i (u − ℓ) ≤ 2M,
+
+together with well-formedness of the rational codes and a Boolean halted flag. Comparisons are
+reflected Boolean equations. The base follows from the choice of M . Each step preserves the sign
+bracket and halves the width unless the exact root is found, in which case the width becomes zero.
+
+                                                   56
+KIFC-R for iPRA                                                                              2026-11-16
+
+
+Output contract.       After N = q + ⌈log2 (2M )⌉ + 1 steps, the midpoint rq satisfies
+
+                                            |rq − y∗ | ≤ 2−q
+
+for the unique root y∗ , expressed finitely as: every rational z satisfying fx (z) = 0 lies within 2−q of
+rq . Existence of a completed real root need not be postulated in the loop. The nested intervals
+themselves form a regular name, and completeness can be handled by the chosen representation
+theorem.
+
+Node decomposition. The graph uses algebra nodes for the monotonicity factorization and sign
+arithmetic, Boolean nodes for comparisons, one loop node for bisection, and an observer node for
+the midpoint. No relational choice is needed for exact rational x.
+
+Cauchy input variant. If x is supplied only by approximations, the sign of fx (m) may be
+undecidable near zero. A sound generalization keeps a finite relation of possible child intervals
+whenever the interval evaluation contains zero. Backward viability removes branches incompatible
+with later precision requests; the output midpoint is diameter-stable because all viable intervals
+have certified small width. An exact branch is recovered only under a separation margin.
+
+17.3    Example C: finite relational paths with dead ends
+Let
+                 A0 = {0, 1, 2},   A1 = {10, 11, 12},    A2 = {20, 21},    A3 = {30}.
+Allow edges
+                       0 → 10, 1 → 11, 2 → 12, 10 → 20, 11 → 21, 20 → 30.
+Candidate 12 is an immediate dead end and 21 a later dead end. Local least choice would select 0
+in this ordering and happen to succeed, but a harmless permutation could make it fail. Backward
+viability gives
+                       W3 = {30}, W2 = {20}, W1 = {10}, W0 = {0}.
+The least viable path is forced: (0, 10, 20, 30). The reference test suite checks this example and
+randomized finite towers against brute-force path enumeration.
+In an object proof, each set is a bounded Boolean row. The recurrence is a reverse table loop. The
+path is a bounded tuple code. The public theorem is the reflected path-checker equation, from
+which the downstream terminal rule is cut.
+
+17.4    Example D: a stable symmetric root observer
+Suppose a quadratic certificate returns either ordered pair (a, −a) or (−a, a). The witness order is
+non-canonical. The observer
+                                     O(r1 , r2 ) = (r1 + r2 , r1 r2 )
+is exactly stable: both orders produce (0, −a2 ). Least search may choose either certificate according
+to its code order; theorem 11.1 proves that the public coefficient output is independent of this choice.
+The pattern scales to unordered polynomial roots: elementary symmetric functions, discriminants,
+power sums, and factor coefficients are stable observations even at collisions. Individual roots are
+not.
+
+
+                                                   57
+KIFC-R for iPRA                                                                           2026-11-16
+
+
+17.5    Example E: complete Diophantine enumeration from a height bound
+Let F (X, Y ) ∈ Z[X, Y ] be fixed and suppose a producer proves that every integer solution has
+|x|, |y| ≤ H. Enumerate the square [−H, H]2 , evaluate F , and retain exactly the zeroes. The loop
+invariant records:
+ (a) every stored pair lies in the processed prefix and satisfies F = 0;
+ (b) every processed solution appears in the stored list;
+ (c) the list is duplicate-free.
+Each clause is stored as a Boolean fold/table equality, so the combined invariant is QF. At the end,
+the height hypothesis turns prefix completeness into global completeness.
+For rational points, enumerate primitive triples or normalized numerator/denominator tuples and
+use cross-multiplied polynomial equations. Duplicate elimination uses a decidable normalized-code
+equality.
+
+17.6    Example F: a finite-net maximum bound
+Suppose f : [0, 1] → R has a supplied modulus m, and for target q take the dyadic grid of mesh
+2−m(q+3) . Assume certified evaluations vj with error at most 2−q−3 . Let j∗ be the least index
+maximizing vj , found by bounded argmax. For any x, choose the least covering grid cell j. The
+modulus and evaluation errors give
+
+                                    f (x) ≤ vj + 2−q−2 ≤ vj∗ + 2−q−2 .
+
+Thus vj∗ + 2−q−2 is a certified approximate supremum. A unique maximizer is not claimed. Under
+a strict isolation gap, guarded argmax recovers a stable cell label.
+
+17.7    Example G: finite-consumer use of metastability
+A consumer wishes to compare only the values xn , . . . , xF (n) at tolerance 2−k . Define the bounded
+predicate
+                           P (n) = Alli,j∈[n,F (n)] d(xi , xj ) ≤ 2−k .
+                                                                       
+
+Given a metastability bound B(k, F ), least search below B + 1 finds the first valid n. The consumer
+proceeds with that finite window. Nothing in the theorem asserts a global rate N (k), so the
+construction remains valid for computably convergent sequences lacking a computable modulus.
+
+17.8    Example H: a guarded pivot
+For a rational matrix row (a0 , . . . , ar−1 ), assume a certificate
+
+                                            ∃j < r |aj | ≥ 2−g .
+
+Booleanize the threshold test and choose the least pivot. Search soundness gives a denominator
+margin. All row divisions are totalized and proved correct under this margin. If no such certificate
+is available, the output should be a relation of possible rank/pivot branches or a fraction-free
+elimination trace, not an unjustified exact pivot.
+
+
+
+
+                                                     58
+KIFC-R for iPRA                                                                         2026-11-16
+
+
+18     Claim status, validation, and limitations
+18.1   Theorem ledger
+
+ ID      Claim                                                 Status in this packet
+ R1      Local rule composition and proof-schedule compi-      Human-complete; source-oriented
+         lation by Prf.trans                                   Lean core
+ R2      Loop-certificate compilation through current          Human-complete; source-oriented
+         IPRA.ind/IPRA.inst                                    Lean core
+ R3      Fixed bounded-formula Booleanization                  Human-complete argument; Lean
+                                                               outline; shared checked module not
+                                                               yet present
+ R4      Least bounded zero search, soundness, foundness,      Inherited       current     checked
+         and minimality                                        Core.Search; adapter outlined
+ R5      Pairing, projections, integer square root, and two-   Inherited       current     checked
+         track simultaneous recursion                          Core.Pairing
+ R6      Residual normalization and conditional proof-         Human-complete         metatheorem;
+         graph compilation                                     Python-tested metadata algorithm;
+                                                               Lean outline
+ R7      Closure of residualized theorem by supplied pro-      Human-complete; direct use of
+         ducer proofs                                          Prf.trans; Lean outline
+ R8      Least reverse demand for an acyclic graph             Human-complete; exact Python
+                                                               tests
+ R9      Capped monotone demand stabilization and least        Human-complete; exact Python
+         closure                                               tests; object-level Lean outline
+ R10     One-loop normal form for fixed bounded construc-      Human-complete metaconstruction;
+         tions                                                 generated object proof remains to
+                                                               implement
+ R11     Residualized kernel graph compilation relative to     Human-complete         metatheorem;
+         local certificates                                    generic Lean generator open
+ R12     Viability iff compatible finite suffix                Human-complete; exact/brute-force
+                                                               Python tests; Lean outline
+ R13     Least viable finite path                              Human-complete; exact Python
+                                                               tests; Lean outline reusing checked
+                                                               search
+ R14     Exact stable-observer elimination                     Human-complete; Lean outline
+ R15     Diameter-stable choice erasure                        Human-complete; exact Python
+                                                               tests
+ R16     Regular-name extraction from diameter, motion,        Human-complete conditional theo-
+         and tail data                                         rem; exact budget tests
+ R17     Guarded totalization and reverse precision compo-     Human-complete conditional theo-
+         sition                                                rem
+ R18     Finite-net transfer and finite-cover gluing           Human-complete conditional theo-
+                                                               rems
+ R19     Height bound to complete bounded list, and con-       Human-complete under explicit cod-
+         verse bound from a nonempty complete list             ing/canonicalization assumptions;
+                                                               exact Python tests
+
+
+                                                59
+KIFC-R for iPRA                                                                        2026-11-16
+
+
+  ID      Claim                                              Status in this packet
+  R20     Polynomial equality nodes through ipra_ring          Inherited checked backend; adapter
+                                                               outline
+  R21     Native transfer through pra_iff_native               Inherited checked theorem
+  B1      No total universal primitive-recursive evaluator     Human-complete diagonal argu-
+                                                               ment
+  B2      No unguarded exact selector through root/eigen- Constructive computability barrier
+          value/axis collisions
+  B3      Metastability does not generally yield a Cauchy Computability barrier
+          modulus
+  B4      Finiteness/cardinality alone does not yield a search Human-complete reduction; generic
+          cutoff                                               enumeration remains conditional on
+                                                               a height producer
+  B5      Mere represented nonzeroness does not uniformly Constructive computability barrier
+          yield an apartness modulus
+
+
+18.2    Validation layers
+The archive distinguishes five kinds of evidence.
+ (1) Inherited checked derivations. These are existing current-repository theorems whose
+     endpoint is Prf PRAAx, including search and pairing. They were inspected through the pinned
+     source interface; this artifact did not rebuild the whole repository.
+ (2) Human mathematical proofs. The PDF gives the finitary arguments and their induc-
+     tion/representation audits.
+ (3) Source-oriented Lean outlines. The archive gives structures, definitions, target signatures,
+     and a dependency order. Lean is not installed in the artifact environment, so no new-module
+     compilation is claimed.
+ (4) Exact executable evidence. Python uses integers and Fraction, tests success and failure
+     cases, and compares viability/closure algorithms with brute force on finite instances.
+ (5) Artifact validation. The PDF is compiled, preflighted, text-inspected, rendered, and visually
+     audited; JSON and checksums are validated.
+
+18.3    What the framework resolves
+At the generic level, the framework resolves:
+  • how to keep all bounded content out of QF induction matrices;
+  • how to reuse checked bounded search and simultaneous recursion;
+  • how to compose local object proofs into a theorem-specific global derivation;
+  • how to represent unavailable producers without overstating the result;
+  • how to compute least acyclic or capped cyclic finite demands;
+  • how to use a finite relation without global choice;
+
+
+                                                    60
+KIFC-R for iPRA                                                                            2026-11-16
+
+
+   • how to erase witness choices through exact or metric stability;
+   • how to isolate guards, finite nets, and height cutoffs as explicit quantitative inputs.
+
+18.4    What remains theorem-specific or open
+This report does not claim:
+   • a general effective Faltings, Siegel, Roth, or Mordell–Weil generator;
+   • effective Chebotarev, Siegel–Walfisz, or Bombieri–Vinogradov constants beyond whatever
+     explicit estimates are separately supplied;
+   • exact Puiseux labels from arbitrary Cauchy-presented coefficients across singular fibers;
+   • a spectral gap or eigenvector label at repeated eigenvalues;
+   • a Cauchy modulus from metastability alone;
+   • a universal PR evaluator or internal theorem compiler;
+   • a completed checked generic KIFC-R library in the current repository.
+For these targets, the report identifies the finite verifier/composition theorem and the exact residual
+producer formula. This is genuine progress: all avoidable coding and logical ambiguity is removed,
+while the remaining mathematical content is stated with the right quantifier order.
+
+18.5    Required ledger for migrated packets
+A packet migrated to the framework should record:
+ (1) the exact object formula and external interpretation;
+ (2) every numerical representation and totalization convention;
+ (3) the fixed PR symbols or generated terms;
+ (4) the local rule list, distinguishing inherited checked proofs, new checked proofs, outlines, and
+     residual boundaries;
+ (5) every induction call and its QF witness;
+ (6) acyclic and cyclic demand tables, caps, and overflow obligations;
+ (7) witness mode: deterministic, relational, exact-stable, diameter-stable, projective/quotient, or
+     gap-guarded;
+ (8) all moduli, margins, heights, cover data, and effective constants with their producer/verifier
+     status;
+ (9) clean build, absence of sorry, and axiom audit;
+(10) exact tests, labeled as tests rather than proof.
+
+
+
+
+                                                  61
+KIFC-R for iPRA                                                                           2026-11-16
+
+
+19     Further research questions
+19.1    Immediate formalization questions
+ R1. Can the Boolean reflection library be designed so that generated predicates share one small
+     set of proof combinators rather than duplicating syntax-specific proofs?
+ R2. What tuple/table encoding minimizes substitution overhead in PTm while preserving simple
+     projection equations?
+ R3. Can ipra_ring be extended to certified polynomial inequalities through sums-of-squares or
+     ordered-semiring normal forms?
+ R4. What is the best Lean representation of a topological proof schedule: an inductive family, a
+     list with a dependency predicate, or generated nested cuts?
+ R5. Can generated trace modules expose compact proof terms without stressing elaboration or
+     kernel reduction?
+ R6. Which parts of viability reflection can be proved once for a generic fixed-width table symbol,
+     and which must be regenerated for each relation?
+
+19.2    Mathematical interface questions
+ R7. For which classes of algebraic coefficient presentations can exact Puiseux branch data be
+     generated primitive recursively with explicit separation bounds?
+ R8. Can root-cluster and spectral-projector presentations be unified by one finite matching/observer
+     library?
+ R9. Which constructive compactness principles admit useful finite-net producers in iPRA for
+     common analytic domains?
+R10. Can known effective Runge, Baker, or transcendence estimates be converted into reusable
+     certified height producers for broad Diophantine families?
+R11. Which fragments of Mordell–Weil descent admit uniform finite rational representative relations
+     rather than merely Selmer classes?
+R12. Can proof-mined metastability bounds be composed automatically with finite consumers
+     through the reverse-demand compiler?
+
+19.3    Proof translation and automation
+R13. Implement and audit a negative translation from a classical PRA derivation syntax to
+     Prf PRAAx. Exactly which bounded existential and disjunctive conclusions can be recovered
+     by Boolean decidability?
+R14. Develop a certificate extractor that turns Mathlib proofs of fixed polynomial/rational identities
+     into compact Prf PRAAx scripts, extending the current ring route.
+R15. Build a theorem-specific graph generator and compare generated proof size against hand-
+     written derivations.
+
+
+
+
+                                                  62
+KIFC-R for iPRA                                                                            2026-11-16
+
+
+R16. Investigate proof sharing: can repeated local certificates be represented once and reused by
+     substitution without exponential proof growth?
+R17. Add a machine-readable theorem ledger whose statuses are checked by CI: formula present,
+     proof type correct, no sorry, axiom audit clean, tests passed, PDF built.
+
+19.4     Foundational questions
+R18. Characterize the class of finite-use functionals captured by KIFC-R graphs and compare it
+     with standard proof-theoretic interpretations of iPRA.
+R19. Determine whether the one-loop normal form admits a useful complexity hierarchy internal to
+     iPRA (fuel growth, state width, bounded-search depth).
+R20. Formalize a representation-independent notion of stable observer and prove a universal
+     composition theorem for observational setoids.
+R21. Study lower bounds: which discontinuous mathematical outputs provably require relational or
+     guarded interfaces over regular Cauchy names?
+R22. Relate the finite relational layer to realizability or dialectica interpretations, while retaining
+     the concrete Prf PRAAx compiler.
+
+19.5     A recommended next milestone
+The most informative next artifact would be a fully compiled generated theorem for exact rational
+bisection of y 3 + y = x: reverse precision/fuel calculation, one packed loop, QF bracket invariant,
+algebraic monotonicity proof, terminal interval theorem, native transfer, and axiom audit. It
+exercises every deterministic part of the framework without requiring deep external mathematics.
+The second milestone should add one relational uncertainty branch for Cauchy input and eliminate
+it through a diameter-stable interval observer. Only after both compile should a generic graph AST
+be introduced.
+
+
+A      Notation and representation conventions
+
+    Notation                Meaning
+    PTm(n)                  Primitive-recursive arithmetic terms with n free variables.
+    Fm(PTm, n)              First-order formulas over PTm with n free variables.
+    Γ ⊢ [PRAAx]φ            Embedded intuitionistic natural-deduction derivability in ordinary
+                            iPRA.
+    QF                      Quantifier-free in the repository’s Fm.QF sense.
+    VX (x, q, a)            Boolean validity of answer a to query q for presentation X.
+    BX (x, q)               Exclusive upper bound on answer codes.
+    DemC                    Backward demand transformer of contract C.
+    RunC                    Primitive-recursive transducer or selected bounded witness of contract
+                            C.
+    Wi (a)                  Backward viability of candidate a at level i.
+    δq                      Within-level observation diameter.
+    µq                      Bound on motion along a compatible adjacent edge.
+
+
+                                                  63
+KIFC-R for iPRA                                                                             2026-11-16
+
+
+    Notation                  Meaning
+    T (k)                     Tail modulus or precision-index selector.
+    Res(G, q)                 Canonical list of proof-reachable residual producer formulas.
+    Close(r)                  Least capped demand closure of a finite monotone system.
+    KIFC-R                    Kernel-Integrated Finitary Contracts with residual boundaries.
+
+
+A.1     Variable order
+The proposed Lean library should fix conventions globally:
+    • loop formulas: variable 0 is time/state focus, followed by state components and external
+      parameters;
+    • relation formulas: variable 0 is the current candidate, variable 1 the next or comparison
+      candidate, followed by query and parameters;
+    • observer formulas: two candidate blocks first, then query and parameters;
+    • rational metric formulas: numerator/denominator components are grouped and accessed
+      through named substitutions.
+Named substitution helpers should be proved once. Ad hoc Fin.cases expressions are a major
+source of binder errors.
+
+A.2     Rational codes
+A convenient exact rational code is a signed integer numerator and a positive natural denominator.
+Normalization is optional for arithmetic, but equality is cross multiplication. Every theorem that
+divides by a denominator carries its positivity proof. Dyadic codes may use a signed numerator and
+exponent; comparisons are reduced to a common exponent.
+
+A.3     Bounds
+All bounds are exclusive unless explicitly stated. “Search below B” means candidates 0, . . . , B − 1. A
+finite relation may totalize invalid out-of-range cells as false. This convention simplifies rectangular
+table encoding.
+
+
+B      Reusable proof templates
+B.1     Template 1: bounded verifier
+Input: a fixed Boolean predicate p(i, x), a bound B(x), and a target that all entries satisfy P .
+Construction:
+ (1) generate p and prove p = 1 ↔ P ;
+ (2) generate Allp by primitive recursion;
+ (3) prove its zero/successor equations and Boolean range;
+ (4) prove fold reflection;
+
+
+                                                  64
+KIFC-R for iPRA                                                                      2026-11-16
+
+
+ (5) use the QF equation Allp (B, x) = 1 inside larger invariants.
+
+B.2    Template 2: least certified witness
+Input: bounded total relation R(x, a), a < B(x).
+Construction:
+ (1) Booleanize R;
+ (2) run the (f ound, witness) search loop;
+ (3) prove the QF prefix invariant;
+ (4) cut in bounded totality to derive f ound = 1;
+ (5) export validity and minimality.
+
+B.3    Template 3: certified loop
+Input: initializer, transition, fuel, QF invariant, terminal rule.
+Construction:
+ (1) define the specialized PR.prec symbol;
+ (2) prove computation equations at arbitrary terms;
+ (3) construct LoopCertificate;
+ (4) call IPRA.ind;
+ (5) instantiate at fuel and cut the terminal rule.
+
+B.4    Template 4: relational finite use
+Input: finite candidate bounds, validity, edge compatibility, terminal acceptance.
+Construction:
+ (1) choose a rectangular width;
+ (2) compute viability rows backward;
+ (3) prove row recurrence by QF trace reflection;
+ (4) prove viability/path reflection;
+ (5) search least viable start and successor;
+ (6) verify the selected path by a Boolean fold;
+ (7) feed path certificates to the consumer schedule.
+
+B.5    Template 5: stable observer
+Input: bounded total relation and exact/diameter stability theorem.
+Construction:
+
+
+                                                  65
+KIFC-R for iPRA                                                                          2026-11-16
+
+
+ (1) choose the least valid candidate;
+ (2) derive candidate validity;
+ (3) instantiate stability against an arbitrary valid candidate;
+ (4) export only the observer value, not the witness code.
+
+B.6    Template 6: guarded operation
+Input: total implementation, positive margin guard, precision demand, local estimate.
+Construction:
+ (1) reflect the guard Boolean;
+ (2) compute the upstream demand from output precision and margin;
+ (3) execute the total program;
+ (4) under the guard, prove the successful branch and quantitative estimate;
+ (5) leave behavior outside the guard unspecified in the public mathematical contract.
+
+B.7    Template 7: bounded-height completeness
+Input: point verifier, canonicalization/equivalence, height, global bound.
+Construction:
+ (1) enumerate the bounded code box;
+ (2) filter by well-formedness and the point verifier;
+ (3) canonicalize and deduplicate;
+ (4) prove soundness by verifier reflection;
+ (5) prove completeness by the height hypothesis and enumeration coverage.
+
+B.8    Template 8: finite net
+Input: net generator, coverage checker, operation modulus, local verifier.
+Construction:
+ (1) fix terminal tolerance and compute mesh demand;
+ (2) verify every net point by a finite fold;
+ (3) for an open arbitrary point, search a covering cell using the supplied coverage certificate;
+ (4) transport the local estimate through the modulus;
+ (5) sum explicit error budgets.
+
+
+
+
+                                                 66
+KIFC-R for iPRA                                                                       2026-11-16
+
+
+B.9    Template 9: residualized theorem
+Input: a finite proof graph whose executable nodes have local object proofs and whose missing
+producers are named formulas.
+Construction:
+ (1) traverse proof dependencies backward from the requested sinks;
+ (2) deduplicate residual formulas by normalized syntax/provenance key;
+ (3) topologically schedule executable rules in the residual context;
+ (4) compile the schedule by simultaneous cut;
+ (5) close residuals only with actual producer derivations.
+
+B.10    Template 10: capped cyclic demand
+Input: seeds, finite caps, monotone edge transformers, and either a static cap proof or a dynamic
+no-overflow boundary.
+Construction:
+ (1) iterate the capped inflationary update for 1 +   i (Ci − si ) steps;
+                                                      P
+
+ (2) prove seed/cap preservation and componentwise inflation;
+ (3) prove every strict change raises the rank by at least one;
+ (4) derive terminal fixedness and leastness below every pre-fixed vector;
+ (5) export raw demand adequacy under the no-overflow formula.
+
+
+C      Source and provenance audit
+C.1    Pinned repository snapshot
+The report was developed against the main-branch snapshot
+
+                        31784f0710fa04ccd8ee863ce9bad91fb1d8cf88,
+
+observed through the GitHub repository interface on 16 November 2026. The repository is active;
+later integration must pin this commit or record a fresh API audit.
+
+C.2    Current primary sources inspected
+    • Logic/PrimitiveRecursiveArithmetic/README.md
+    • Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md
+    • Logic/PrimitiveRecursiveArithmetic/Derivations/README.md
+    • Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations.lean
+    • Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Basic.lean
+    • Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Search.lean
+
+
+
+                                                 67
+KIFC-R for iPRA                                                                                2026-11-16
+
+
+   • Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Pairing.
+     lean
+   • Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Checks/Axioms.
+     lean
+   • Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md
+   • Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_framework/README.md
+
+The audit confirms a checked ordinary PRAAx derivation layer, a current checked least-search
+implementation, checked pairing/simultaneous recursion, and a large current import manifest. It
+also confirms the repository’s own warning that the 78 delivered packets are a filed research corpus
+rather than a collectively verified build.
+
+C.3    Earlier framework artifacts consolidated
+The present report was compared with prior artifacts in the user’s library and corresponding
+repository packets, including:
+   • ipra_kifc_framework_2026-11-15;
+   • cfp_contract_compiler;
+   • cifer_ipra_framework;
+   • framework(1) (uniform finite nets and stable implicit roots);
+   • the current repository packet foundations/ipra_framework.
+Their finite-contract, proof-graph, residual, viability, stable-observer, finite-net, and producer/verifier
+ideas are retained with attribution as prior framework work. The main changes here are the rebase
+to the current checked library, removal of search from the missing-work list, explicit residual formulas
+in the final sequent, and capped cyclic demand closure.
+
+C.4    Use of sources
+Repository code was used to identify exact public APIs and checked/inherited results. Prior reports
+were used to avoid duplicating established framework arguments and to locate unresolved boundaries.
+All new claims in this artifact are classified in the theorem ledger. No claim of mathematical priority
+is made.
+
+C.5    Audit limitations
+A full repository clone and Lean build were unavailable in the artifact container. The audit used
+repository API reads of current files and therefore did not independently compile every current
+module or packet. The generated Lean files are consequently marked as outlines. Inherited checked
+claims are based on the current source types and axiom-audit declarations; packet-specific deep
+claims remain targets or residual producers unless an actual checked derivation was inspected.
+
+
+
+
+                                                    68
+

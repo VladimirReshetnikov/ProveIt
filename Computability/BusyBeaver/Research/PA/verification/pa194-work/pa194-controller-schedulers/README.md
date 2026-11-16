@@ -52,13 +52,85 @@ literal table or with the source program of a packet, and the rules of the contr
 taken from the text of the packets; they have not been checked against the packets' source
 graphs. A statement about a machine needs that connection, in the way
 [`pa194/ipra/machine-code`](../../pa194/ipra/machine-code/README.md) supplies it for the
-primary table. The candidates that also change the axiom emitter or the coding of formulas
-are not covered: their numerical calculus is not `TargetProvable`.
+primary table. The same holds for the schedulers with a variant emitter below.
+
+## Variant axiom emitters
+
+Later candidates change entries of the AX command. Four of these changes are independent of
+each other, of the command protocol and of the AX layout; `Emitter` of
+`PA194EmitterSchedulerCore` has one field for each. With `A` the label argument of the
+command, `D = d + x`, `H = h + y` and `W(D,H) = U(D, E(H,D) → 1)`:
+
+| Field | Entry | Primary | Variant |
+| --- | --- | --- | --- |
+| `gd` | separate diagonal | `Γ(A)` | `Γ(D)` |
+| `q` | sixth head | `U(D,A) → (U(D,A→H) → U(D,H))` | `U(D,A→H) → (U(D,A) → U(D,H))` |
+| `x` | fifth head | `W(D,H) → 1` | `W(D,H) → A` |
+| `ga` | generalization | `U(d, h)` | `U(A, h)` |
+
+For every emitter `e`, with `k`, `ct` and `a` as above:
+
+```lean
+theorem halts_iff_provable (e : Emitter) (k : MPKind) (ct a : Bool) :
+    (∃ n : M, F (haltAfterE e k ct a) ![n] = 1) ↔ TargetProvable (1 : M)
+theorem halts_iff_primary (e : Emitter) (k : MPKind) (ct a : Bool) :
+    (∃ n : M, F (haltAfterE e k ct a) ![n] = 1) ↔ ∃ n : M, F haltAfter ![n] = 1
+theorem scheduler_iff_pa_refutation (e : Emitter) (k : MPKind) (ct a : Bool) :
+    (∃ n : M, F (haltAfterE e k ct a) ![n] = 1) ↔ Provable (𝗣𝗔 : ArithmeticTheory) (^⊥ : M)
+theorem consistency_iff_scheduler_nonhalt (e : Emitter) (k : MPKind) (ct a : Bool) :
+    standardTheory ⊢ nativePAConsistency 🡘 ∼haltSentenceE e k ct a
+```
+
+The first two are in `PA194EmitterScheduler`, the last two in `PA194EmitterSchedulerPA`.
+The numerical calculus is not changed: every scheduler is compared with `TargetProvable`,
+the calculus of the primary table.
+
+*Soundness.* Every entry of a variant AX is provable in that calculus: the exchanged sixth
+head by the exchange law `(a → (b → c)) → (b → (a → c))` of the implication basis
+(`PA194ModelPropositional.imp_exchange`), `W → A` from the fifth head and explosion, and
+`U(A, h)` by generalization of the provable cache `h`.
+
+*Completeness.* The formulas that a scheduler computes are closed under modus ponens and
+contain the restricted row, so the generic derivation `M6.Logic.RestrictedImplication`
+applies to them (`rulesG`) and its exchange law gives the sixth head back. The fifth head
+is `W → A` at `A = 1`. `Γ(B)` is the diagonal entry of an AX with `D = A = B`. The
+generalization word of `pa194-command-controllers` uses an AX whose label argument equals
+the register `d`, so it computes `U(i, a)` with either binder.
+
+The table lists the emitter, the kind of MP, the halting test and the layout that the
+proof documents of the packets under `docs/` state for some candidates. The table follows
+the displayed command equations of those documents; it has not been compared with the
+packets' source graphs or tables.
+
+| Candidate | Document | `gd` | `q` | `x` | `ga` | `k` | `ct` | `a` |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| PA194Q | `pa194q_conpa_2026-11-13/report/calibration_q.tex` | | ✓ | | | `cache` | ✓ | |
+| PA194DHS | `pa194dhs_conpa_2026-11-13/report/proof_dhs.tex` | ✓ | | | | `top` | ✓ | |
+| PA194G | `PA194B_PA194G_research_2026-11-14/generalizer/proof.tex` | | ✓ | | ✓ | `top` | | |
+| PA194GH | `pa194gh_research_2026-11-14/machines/PA194GH/proof.tex` | | ✓ | | ✓ | `top` | ✓ | |
+| GD | `pa194_gd_research_2026-11-14/report/gd_calibration.tex` | ✓ | | | ✓ | `top` | | |
+| GDH, GDHS | the same | ✓ | | | ✓ | `top` | ✓ | |
+| PA194AX11G | `pa194_ax11g_research_2026-11-14/proof/ax11g.tex` | | ✓ | | ✓ | `top` | | ✓ |
+| PA194AX11GH | `pa194_ax11gh_research_2026-11-14/proof/ax11gh_preservation.tex` | | ✓ | | ✓ | `top` | ✓ | ✓ |
+| PA194AX11GDH | `pa194_ax11gdh_research_2026-11-15/proof/ax11gdh_preservation.tex` | ✓ | | | ✓ | `top` | ✓ | ✓ |
+| PA194H5X | `pa194_witness_research_2026-11-15/report/implementation_proof.tex` | | | ✓ | ✓ | `top` | ✓ | ✓ |
+
+For example, the scheduler for PA194AX11GH is
+`haltAfterE ⟨false, true, false, true⟩ .top true true`. The emitter with exchanged sixth
+head is also used by PA194QH, PA194QN, PA194QNS and PA194AX11QH, and `Γ(D)` by PA194D;
+their command protocols have not been matched against their packets here.
+
+Not covered: PA194JH5X, which also replaces the first head; the fused head of the FW
+candidates; the bundled gate of the original PA195; and the candidates with another
+coefficient of the formula constructors.
 
 ## Modules
 
 | Module | Content |
 | --- | --- |
+| `PA194EmitterSchedulerCore` | `Emitter`; the codes `head6Q`, `head5X`, `axStackCodeE`, `stepE`, `runE`, `haltAfterE`. Only codes; imports `PA194ControllerSchedulerCore`. |
+| `PA194EmitterScheduler` | `leafE`, `genLE`, `axStackE` and `axStackE_model`; `semE e k ct a`, `stepE_eq`; `rulesG`, `G_head6`, `G_head5`, `G_diagonal`, `G_of_provable`; `leafE_provable`, `axE_preserves`, `runE_sound`; `halts_iff_provable`, `halts_iff_primary`. |
+| `PA194EmitterSchedulerPA` | `scheduler_iff_pa_refutation`; `haltSentenceE` and `consistency_iff_scheduler_nonhalt`. |
 | `PA194ControllerSchedulerCore` | The PRA code definitions for the scheduler step, its iteration, and its halt test, independent of the fairness and PA-interpretation proofs. |
 | `PA194ControllerScheduler` | `cstepCodeK`, `haltAfterK`; imports the shared core. `semK k ct a`: the command semantics of `ConPA.Ctl`; `stepK_eq`: the step code is `ConPA.Ctl.sstep (semK k ct a)`. `G_of_provable`: a target proof gives a command word (`targetProof_sound` with the closure lemmas of `ConPA.Ctl`). `cstepK_sound`, `runK_sound`: top, cache and stack entries stay provable along a run. `halts_iff_provable`, `halts_iff_primary`. |
 | `PA194ControllerSchedulerPA` | `scheduler_iff_pa_refutation`; `haltSentenceK` and `consistency_iff_scheduler_nonhalt`, by the transfers of `ConPAISigma1Directions`. |
@@ -85,10 +157,11 @@ provable when the guard allows it and is `0` otherwise. A halting SHIFT has `t +
 bash Computability/BusyBeaver/Research/PA/verification/pa194-work/pa194-controller-schedulers/check.sh [--out DIR]
 ```
 
-compiles all three modules with every standalone module they import (`check_bridge.py` of
+compiles all six modules with every standalone module they import (`check_bridge.py` of
 `pa194-model-fairness`), one `lean` process at a time, and checks the number of axiom
-reports: three in `PA194ControllerSchedulerCore`, five in `PA194ControllerScheduler`, and four in `PA194ControllerSchedulerPA`. They are
-`propext`, `Classical.choice`, `Quot.sound`.
+reports: three in each `…Core` module, five in `PA194ControllerScheduler` and in
+`PA194EmitterScheduler`, and four in `PA194ControllerSchedulerPA` and in
+`PA194EmitterSchedulerPA`. They are `propext`, `Classical.choice`, `Quot.sound`.
 
 For a staged replay of the lightweight core against already checked providers, run
 `./check-core.sh PROVIDER-LEANPATH-FILE FRESH-OUTPUT` from this directory.

@@ -1,0 +1,103 @@
+\section{Finite-query doctrine}
+
+\subsection{Mathematical concepts as protocols of finite use}
+
+A weak arithmetic theory cannot conveniently manipulate an actual complete
+real line, topological space, scheme, or category as a higher-order object.
+That is not necessary for most concrete proofs.  A proof uses such an object
+through finitely many observations:
+
+\begin{itemize}
+\item an approximation to precision \(p\);
+\item values on a finite list of inputs;
+\item a finite presentation up to degree or height \(H\);
+\item a mesh or simplicial complex at scale \(2^{-p}\);
+\item a finite diagram and a requested universal construction;
+\item a bounded trace of length \(T\);
+\item a finite list of local charts and overlap checks.
+\end{itemize}
+
+\begin{definition}[Finite query]
+A finite query is a natural-number code that determines every finite demand of
+the downstream theorem: precisions, bounds, dimensions, horizons, tolerances,
+mesh sizes, input points, and the requested observable.
+\end{definition}
+
+The query can be a tuple encoded by pairing or mixed radix.  The important
+condition is that it is fixed before the relevant induction or search.
+
+\begin{definition}[Presentation by finite use]
+A presented mathematical object is a family of finite certificate problems
+indexed by queries, together with:
+\begin{enumerate}
+\item a primitive-recursive bound on certificate codes;
+\item a fixed primitive-recursive verifier;
+\item an object-iPRA theorem that accepted certificates answer the query;
+\item producer data showing that an accepted certificate exists;
+\item coherence or stability theorems relating answers to different queries.
+\end{enumerate}
+\end{definition}
+
+This definition deliberately separates \emph{meaning} from
+\emph{representation}.  Two certificate systems may present the same
+observable mathematics if they translate to each other or if their observations
+are provably stable.
+
+\subsection{Four output modes}
+
+Not every construction should be forced into a deterministic exact function.
+The framework recognizes four modes.
+
+\begin{description}[leftmargin=2.8cm,style=nextline]
+\item[Exact deterministic.]
+A fixed PR term computes the output and its equations prove the specification.
+Examples: integer arithmetic, a fixed matrix determinant, or a bounded sum.
+
+\item[Bounded relational.]
+A finite set of codes may be valid.  The least accepted code is selected only
+when a concrete representative is needed.  Otherwise the relation itself is
+the correct output.
+
+\item[Stable observable.]
+Certificates may be unrelated, but every two valid certificates give close or
+equal observations.  The observable is well defined without selecting a
+coherent representative family.
+
+\item[Conditional.]
+The finite verifier is complete only after supplying explicit global data such
+as a height bound, analytic constant, separation margin, or covering
+representative.  The resulting theorem keeps that data as a premise.
+\end{description}
+
+These modes prevent a common constructive error: deriving an exact global
+selector from an existence or approximation theorem that justifies only a
+relation or a stable quotient.
+
+\subsection{Query-first compilation}
+
+The recommended order is:
+
+\begin{enumerate}
+\item state the consumer's finite query;
+\item propagate demands backward through the fixed construction;
+\item choose numerical bounds for every intermediate certificate;
+\item specialize all algorithms and checkers to fixed PR syntax;
+\item pack the finite evidence into one code;
+\item prove the checker QF and reflected;
+\item run bounded search or a direct PR trace;
+\item compose object derivations;
+\item quantify over the original query only after the QF proof is complete.
+\end{enumerate}
+
+This order avoids induction over an ``all precisions at once'' assertion,
+prevents hidden dependence on an unbounded evaluator, and makes every missing
+producer visible before formalization begins.
+
+\subsection{Efficiency is a refinement, not part of soundness}
+
+Searching all codes below a product or exponential bound can be impractical.
+That is acceptable for a normal-form theorem.  Once the specification is fixed,
+a specialized polynomial-time or otherwise efficient producer may replace the
+brute-force search, provided it proves the same accepted-certificate contract.
+The normal form is a proof-theoretic baseline and interoperability layer, not a
+claim about optimal algorithms.

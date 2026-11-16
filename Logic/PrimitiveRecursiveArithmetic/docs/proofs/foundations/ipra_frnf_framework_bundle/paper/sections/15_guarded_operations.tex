@@ -1,0 +1,130 @@
+\section{Guarded operations on represented quantities}
+\label{sec:guarded}
+
+Approximate names support algebraic operations only when error propagation is
+quantified.  Operations with singularities require explicit guards.  This section
+states the generic reciprocal theorem and the broader interface discipline it
+illustrates.
+
+\subsection{Regular rational names}
+
+A convenient real presentation is a rational evaluator \(a(k)\) with a fixed
+coherence estimate, for example
+\[
+  \abs{a(k)-a(\ell)}\le2^{-k}+2^{-\ell}.
+\]
+Equivalent regular-name conventions are possible.  The important point is that a
+finite output demand gives a primitive-recursive input precision through an error
+budget.  Addition uses the sum of errors.  Multiplication additionally needs a bound
+on the magnitudes of the factors.  Polynomial evaluation uses a finite telescoping
+estimate or Horner recurrence with an explicit coefficient/value bound.
+
+\subsection{Nonzero is not apartness}
+
+Constructively, the proposition \(x\ne0\) is negative information.  It does not supply
+a rational \(\lambda>0\) with \(\abs{x}\ge\lambda\).  A uniform operation that turned
+an arbitrary represented nonzero real into such a \(\lambda\) would decide information
+not continuously available from a Cauchy name.  Therefore reciprocal is a guarded
+operation.
+
+\begin{definition}[Apartness witness]
+An apartness witness for a represented real \(x\) is positive rational data
+\(\lambda>0\) together with a certificate \(\abs{x}\ge\lambda\).
+\end{definition}
+
+\begin{theorem}[Guarded reciprocal]
+\label{thm:guarded-reciprocal}
+Assume \(\abs{x}\ge\lambda>0\) and a rational approximation \(q\) satisfies
+\(\abs{x-q}\le\eps\le\lambda/2\).  Then
+\[
+  \abs{q}\ge\lambda/2
+\]
+and
+\[
+  \left|\frac1x-\frac1q\right|
+  \le\frac{2\eps}{\lambda^2}.
+\]
+Consequently a regular name for \(x\), together with \(\lambda\), yields a
+primitive-recursive regular name for \(1/x\).
+\end{theorem}
+
+\begin{proof}
+The reverse triangle inequality gives
+\[
+  \abs{q}\ge\abs{x}-\abs{x-q}
+            \ge\lambda-\eps\ge\lambda/2.
+\]
+Therefore
+\[
+ \left|\frac1x-\frac1q\right|
+ =\frac{\abs{x-q}}{\abs{x}\abs{q}}
+ \le\frac{\eps}{\lambda(\lambda/2)}
+ =\frac{2\eps}{\lambda^2}.
+\]
+All quantities may be replaced by integer numerator inequalities after clearing
+positive denominators.  The object proof uses only ordered-ring arithmetic and the
+apartness certificate.
+\end{proof}
+
+To obtain output error at most \(2^{-p}\), it suffices to request an input approximation
+with
+\[
+  \eps\le\min\left(\frac\lambda2,
+                        \frac{\lambda^2}{2^{p+1}}\right).
+\]
+A dyadic lower approximation to the right-hand side gives a primitive-recursive
+precision transformer.
+
+\subsection{Totalized guarded functions}
+
+Every primitive-recursive symbol must be total.  Define a totalized reciprocal
+approximator that returns a default value when the numerical guard check fails.  Its
+contract has the form
+\[
+  \operatorname{Apart}(x,\lambda)
+  \longrightarrow
+  \operatorname{RecipCorrect}(x,\lambda,\operatorname{recip}(x,\lambda,p),p).
+\]
+The behavior outside the guard is irrelevant.  This is preferable to pretending the
+operation is partial or hiding the guard in a semantic type class.
+
+The same pattern applies to:
+
+\begin{itemize}
+\item division by a determinant or pivot;
+\item normalization of a nonzero vector;
+\item logarithms on a positive interval;
+\item contour integrals away from poles;
+\item projectors separated by a spectral gap; and
+\item local inverse functions with a derivative lower bound.
+\end{itemize}
+
+\subsection{Pole clearing and algebraic reformulation}
+
+Sometimes the guard can be avoided by changing the observable.  Instead of proving an
+identity containing \(1/x\), multiply through by a power of \(x\) and prove a
+polynomial identity.  Instead of selecting a normalized eigenvector, prove a statement
+about the rank-one projector after clearing a norm denominator, or about the invariant
+subspace.  Monic polynomial presentations similarly avoid division by a leading
+coefficient.
+
+This is not merely a workaround.  In a weak constructive theory, polynomial and
+finite-algebra certificates are often the intrinsic content of a theorem, while a
+normalized representative is an additional choice requiring apartness.
+
+\subsection{Branches and exact discrete data}
+
+Square roots, arguments, logarithms, and Puiseux leading terms combine continuous
+approximation with discrete branch data.  A branch interface must include one of:
+
+\begin{enumerate}[label=(\roman*),leftmargin=2.4em]
+\item an exact algebraic presentation that determines the branch;
+\item a rational region separated from every branch boundary;
+\item overlapping relational branches with a stable downstream observable; or
+\item an explicit boundary assumption supplying rank, sign, or monodromy data.
+\end{enumerate}
+
+An arbitrary Cauchy name does not generally determine exact discrete information by a
+uniform finite procedure.  The obstruction is addressed explicitly in
+\cref{sec:barriers}; the correct response is to strengthen the presentation, not to
+hide an undecidable comparison inside a selector.

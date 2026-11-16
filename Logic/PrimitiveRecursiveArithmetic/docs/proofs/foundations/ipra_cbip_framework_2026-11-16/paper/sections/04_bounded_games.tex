@@ -1,0 +1,89 @@
+\section{Bounded formulas as finite strategy games}\label{sec:games}
+
+\subsection{Booleanization with proof-relevant output}
+
+A bounded formula is built from primitive-recursive decidable atoms by propositional connectives and quantifiers
+\[
+  \exists i<b(\vec x,\vec z)\,A(\vec x,\vec z,i),\qquad
+  \forall i<b(\vec x,\vec z)\,A(\vec x,\vec z,i),
+\]
+where the bound may depend on earlier variables but not on \(i\).  Ordinary Booleanization returns only a truth value.  For proof engineering, it is more useful to return a strategy certificate explaining either success or failure.
+
+Define Boolean folds
+\[
+ \mathsf{any}(b,f)=\max_{i<b} f(i),\qquad
+ \mathsf{all}(b,f)=\prod_{i<b} f(i),
+\]
+with empty values zero and one, respectively.  Define \(\mathsf{first}(b,f)\) as the least successful index, or the sentinel \(b\) if none exists.  All three are fixed primitive recursions.
+
+\begin{lemma}[Least-success invariant]\label{lem:first}
+For every Boolean-valued primitive-recursive predicate \(f\), iPRA proves
+\begin{align*}
+  \mathsf{first}(b,f)&\leq b,\\
+  \mathsf{first}(b,f)<b&\longrightarrow f(\mathsf{first}(b,f))=1,\\
+  j<\mathsf{first}(b,f)&\longrightarrow f(j)=0.
+\end{align*}
+If \(\mathsf{first}(b,f)=b\), then every \(j<b\) fails.
+\end{lemma}
+
+\begin{proof}
+Maintain a register \(s_i\leq i\).  Initially \(s_0=0\).  At stage \(i\), if \(s_i<i\), retain the previously found witness.  Otherwise \(s_i=i\), so no earlier index succeeded; set \(s_{i+1}=i\) when \(f(i)=1\), and \(s_{i+1}=i+1\) otherwise.  The invariant says that \(s_i<i\) exactly when a success occurs below \(i\), and in that case \(s_i\) is the least one.  Bounded statements about earlier indices are represented by Boolean folds, so the induction formula is quantifier free.  At \(i=b\) the displayed consequences follow.  The checked \code{IPRADerivations.Core.Search} module already contains a closely related least-zero search and its minimality theorem, so a Lean implementation should adapt that code rather than introduce a second search library.
+\end{proof}
+
+\subsection{The game associated with a bounded formula}
+
+Push negations to atoms, which is intuitionistically valid because every atom is decidable.  Interpret conjunction and bounded universal quantification as moves by an adversary; interpret disjunction and bounded existential quantification as moves by a prover.  A leaf is won by the prover exactly when its Boolean atom is one.  The resulting tree is finite for every numerical input, although its branching bound may depend on earlier moves.
+
+A success certificate stores one winning child at prover-controlled nodes and certificates for every child at adversary-controlled nodes.  A failure certificate does the dual: one losing child at adversary-controlled nodes and failure certificates for every child at prover-controlled nodes.  Thus failure is not an opaque zero; it carries a bounded counterstrategy.
+
+\begin{theorem}[Two-sided bounded strategy compilation]\label{thm:strategy}
+For every fixed bounded formula \(A(\vec x)\), one can primitive-recursively construct:
+\[
+  \Val_A(\vec x)\in\{0,1\},\qquad
+  \mathsf{cert}_A(\vec x),\qquad
+  \CertCheck_A(\vec x,w,c)\in\{0,1\},
+\]
+such that iPRA proves
+\begin{align*}
+ \Val_A(\vec x)=1 &\leftrightarrow A(\vec x),\\
+ \CertCheck_A(\vec x,\Val_A(\vec x),\mathsf{cert}_A(\vec x))&=1,\\
+ \CertCheck_A(\vec x,1,c)=1&\longrightarrow A(\vec x),\\
+ \CertCheck_A(\vec x,0,c)=1&\longrightarrow \neg A(\vec x).
+\end{align*}
+The checker is a bounded primitive-recursive program, and every internal induction is quantifier free after replacing bounded quantifiers by folds.
+\end{theorem}
+
+\begin{proof}
+Proceed by structural recursion on the fixed formula in the metatheory.
+
+For an atom, compute its Boolean value.  The certificate records that value, and the checker recomputes it.  Soundness is the atom's decidability theorem.
+
+For \(B\vee C\), the prover wins when one child has value one.  In the winning case, store the least winning side and its success certificate.  In the losing case, store failure certificates for both children.  The checker verifies the tag and the relevant subcertificates.  Conjunction is dual.
+
+For \(\exists i<b\,B(i)\), compute the bounded \(\mathsf{any}\) fold.  If it is one, \Cref{lem:first} returns the least winning \(i<b\), and the certificate stores \(i\) and a success certificate for \(B(i)\).  If it is zero, the certificate stores a bounded table of failure certificates for every \(i<b\).  The checker iterates through the table; the fold invariant proves every instance false.  For \(\forall i<b\,B(i)\), interchange success and failure roles: success contains all child certificates, while failure contains one least counterexample.
+
+The formula depth is fixed at compile time.  Structural recursion therefore generates a finite nest of concrete primitive recursions; it is not an object-language recursion over arbitrary formula codes.  Correctness of each bounded fold is proved by quantifier-free induction.  Composing those derivations yields the four displayed formulas.
+\end{proof}
+
+\subsection{Failure-producing contracts}
+
+Many mathematical interfaces naturally have the shape
+\[
+ C(a)\equiv \forall q<Q(a)\;\exists z<Z(a,q)\;\forall e<E(a,q,z)\;R(a,q,z,e).
+\]
+Here \(q\) is a demanded precision or challenge, \(z\) is a proposed finite witness, and \(e\) ranges over local verifier tests.  Applying \Cref{thm:strategy} gives more information than a Boolean decision.
+
+\begin{corollary}[Finite challenge decomposition]
+There are primitive-recursive constructors and checkers producing exactly one of the following finite certificates.
+\begin{enumerate}
+\item A strategy assigning each \(q<Q(a)\) a witness \(z(a,q)<Z(a,q)\) that passes every local test \(e<E(a,q,z(a,q))\).
+\item A counterchallenge \(q_0<Q(a)\) and, for every candidate \(z<Z(a,q_0)\), a failing test \(e_0(z)<E(a,q_0,z)\).
+\end{enumerate}
+The corresponding soundness alternatives are provable in iPRA.
+\end{corollary}
+
+This interface is useful even when the positive producer is not known.  It gives a reproducible finite obstruction, prevents arbitrary choice from being mistaken for an existential witness, and localizes which demanded precision or certificate field failed.
+
+\subsection{Classical reasoning on bounded conclusions}
+
+Bounded formulas are decidable because they have Boolean realizers.  Hence iPRA proves \(A\vee\neg A\) and \(\neg\neg A\to A\) for every fixed bounded \(A\).  Consequently, a classical finite argument can often be imported as follows: apply a negative translation to obtain \(\neg\neg A\), then eliminate the double negation using the compiled decidability of \(A\).  This does not transfer arbitrary unbounded classical conclusions.  The elimination is valid precisely because the retained endpoint is a finite Boolean observation.

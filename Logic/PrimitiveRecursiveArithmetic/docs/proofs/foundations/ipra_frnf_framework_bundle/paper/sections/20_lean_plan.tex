@@ -1,0 +1,192 @@
+\section{Lean formalization plan}
+\label{sec:lean-plan}
+
+This section gives a concrete path from the mathematical framework to a complete Lean
+formalization in the repository.  The target environment is Lean 4.32.0 \cite{lean4} with the
+matching mathlib revision, as pinned by the current ProveIt root.  The intended library
+location is
+\[
+\code{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/FRNF/}.
+\]
+
+\subsection{Reuse before abstraction}
+
+The implementation should reuse the checked modules rather than create parallel
+arithmetic:
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.34\textwidth}X@{}}
+\toprule
+Existing module & Reuse \\
+\midrule
+\code{Core/Basic} & \code{inst}, \code{ind}, defining equations, congruence. \\
+\code{Core/Semiring}, \code{Core/Order}, \code{Core/Monus} & Boolean arithmetic,
+max/min, inequalities, error budgets. \\
+\code{Core/Pairing} & Pair codes, projections, equality test, simultaneous recursion. \\
+\code{Core/Search} & Least bounded search and minimality. \\
+\code{Core/BoundedSums}, \code{Core/MultiSums} & Booleanized bounded quantifiers and
+finite folds. \\
+\code{Core/Definitions}, \code{Core/Sums} & Generated primitive-recursive recurrences. \\
+\code{Core/Descent}, \code{Core/DescentEx} & Generic finite/infinite descent endpoints. \\
+\code{Core/Division}, \code{Core/Gcd}, \code{Core/Bezout} & Majorized Euclidean examples
+and denominator arithmetic. \\
+\code{NativeBiInterpretation} & Final \code{pra_iff_native} export. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Proposed module sequence}
+
+\paragraph{1. \code{FRNF/BoundedFormula.lean}.}
+Define the bounded formula syntax independently of host propositions:
+
+\begin{lstlisting}
+inductive BForm : Nat -> Type
+  | eq    (s t : PTm n)
+  | bot
+  | and   (A B : BForm n)
+  | or    (A B : BForm n)
+  | imp   (A B : BForm n)
+  | allLt (bound : PTm n) (body : BForm (n+1))
+  | exLt  (bound : PTm n) (body : BForm (n+1))
+\end{lstlisting}
+
+Implement \code{toFm}, generated characteristic symbols, and substitution.  Prove
+simultaneously:
+
+\begin{lstlisting}
+theorem char_boolean (A : BForm n) :
+  [] |-[(PRAAx)] (charTm A =' 0) \/ (charTm A =' 1)
+
+theorem to_char (A : BForm n) :
+  [A.toFm] |-[(PRAAx)] charTm A =' 1
+
+theorem of_char (A : BForm n) :
+  [charTm A =' 1] |-[(PRAAx)] A.toFm
+\end{lstlisting}
+
+The bounded quantifier cases should invoke generic bounded sums/products.  Prove
+\code{char_subst} early; otherwise every later generated invariant becomes painful.
+
+\paragraph{2. \code{FRNF/Table.lean}.}
+Choose one list/array coding based on pairing and simultaneous recursion.  Define
+\code{len}, \code{get}, \code{set}, \code{append}, \code{foldMax}, and a bounded map.
+Prove object equations for in-range lookup, update, and fold invariants.  Avoid a
+universal function argument: instantiate folds with fixed bodies or a fixed finite
+opcode family.
+
+\paragraph{3. \code{FRNF/Horizon.lean}.}
+Represent each concrete horizon by a \code{PR} symbol.  Define prefix maximum and prove
+monotonicity, domination, and dual-horizon composition.  A useful object record is a
+metatheoretic structure whose fields include the symbols and the embedded derivations:
+
+\begin{lstlisting}
+structure DualHorizonCert (r j : PR 1) where
+  read_le_justify : [] |-[(PRAAx)]
+    allOpen (app r ![var 0] <=' app j ![var 0])
+  read_mono : ...
+  justify_mono : ...
+\end{lstlisting}
+
+The structure itself is host data, but every field used by the compiler is an embedded
+proof.
+
+\paragraph{4. \code{FRNF/Demand.lean}.}
+For a fixed generated graph, first formalize a specialized demand pass.  Then factor a
+generic encoded-graph theorem if worthwhile.  The main endpoint is a QF loop proving
+that the reverse array after \(m\) steps is closed and least.  Separate read and proof
+arrays in the state.
+
+\paragraph{5. \code{FRNF/Trace.lean}.}
+Move the source-level \code{QFLoop} and proof-schedule combinators from this archive
+into the checked library.  Add a record for a concrete transition with:
+\code{state}, \code{init}, \code{step}, \code{fuel}, \code{inv}, and embedded base/step
+proofs.  The compiler theorem should return \code{Prf PRAAx}, not a host predicate.
+
+\paragraph{6. \code{FRNF/Viability.lean}.}
+Encode level offsets, candidate counts, validity bits, edge bits, and viability masks.
+Implement the backward dynamic program and forward least path.  Prove:
+
+\begin{lstlisting}
+theorem viable_iff_suffix_path : ...
+theorem selected_path_valid : ...
+theorem selected_path_compatible : ...
+\end{lstlisting}
+
+The first theorem is most easily proved by QF induction on the reversed level index;
+existence of a suffix path is represented by a bounded Boolean characteristic, not an
+unbounded existential in the invariant.
+
+\paragraph{7. \code{FRNF/Stability.lean}.}
+Define finite diameter, stable observers, gap collapse, and the shrinking-viability
+one-step estimate.  Initially specialize to rational observables encoded by signed
+integer pairs.  General metric presentations can be layered later.
+
+\paragraph{8. \code{FRNF/FiniteNet.lean}.}
+Define a finite rational net interface and exact minimum fold.  Prove the finite
+comparison contract from explicit coverage and modulus formulas.  Keep the semantic
+real infimum theorem in a separate host module; the object endpoint should quantify
+only over coded inputs and witnesses.
+
+\paragraph{9. \code{FRNF/Guarded.lean}.}
+Formalize rational absolute values, positive denominators, and the cleared-denominator
+version of \cref{thm:guarded-reciprocal}.  Export reusable precision transformers for
+reciprocal, quotient, and normalized vectors.
+
+\paragraph{10. \code{FRNF/Compiler.lean}.}
+Define the proof schedule over formulas and a generated node descriptor.  A fully
+generic reflection layer is optional.  It is sufficient that a metaprogram produces
+concrete Lean definitions and applies \code{Schedule.extend}.  Add final native export.
+
+\subsection{Formula generation versus opaque declarations}
+
+The roadmap file in this package uses \code{opaque} formulas to make endpoints
+unambiguous.  The completed implementation must replace every opaque endpoint with an
+explicit \(\Fm\) expression assembled from the actual PR symbols.  Otherwise a proof
+of the opaque formula would not establish the intended theorem.
+
+A useful discipline is to define each object formula immediately next to a human
+pretty-printer and a host evaluation theorem.  The pretty-printer assists review; the
+host theorem assists debugging; only the explicit object formula and its embedded
+proof establish the \(\iPRA\) result.
+
+\subsection{Suggested first end-to-end milestone}
+
+The smallest convincing milestone is not the full generic graph compiler.  It is a
+single integrated theorem:
+
+\begin{quote}
+Given a fixed two-stage transducer with distinct computation and justification
+horizons, compile the reverse demand bounds, materialize a finite table, verify one
+clocked loop, and return a closed \(\Prf\,\PRAAx\) derivation; then export it through
+\code{pra_iff_native}.
+\end{quote}
+
+This exercises every architectural boundary while keeping domain arithmetic trivial.
+The second milestone should add a finite relational cloud and stable observer.
+
+\subsection{Build and audit procedure}
+
+A result should be labeled object-checked only after the following commands succeed in
+the pinned repository environment:
+
+\begin{lstlisting}[language=bash]
+lake build IPRADerivations
+lake env lean Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/\
+  IPRADerivations/FRNF/Audit.lean
+\end{lstlisting}
+
+The audit module should contain \code{#print axioms} for every exported theorem and a
+machine-readable list of declarations containing \code{sorryAx}.  The acceptable
+metatheoretic axioms should match the established repository policy; no result with
+\code{sorryAx} is object-checked.
+
+\subsection{What the accompanying Lean files establish}
+
+\code{lean/FRNF/Kernel.lean} contains the logical schedule, QF-loop closure, stable
+observer, boundary discharge, gap collapse, and native export using the inspected
+repository API.  It contains no \code{axiom} declaration and no \code{sorry}, but it
+was not compiled in this environment.  \code{lean/FRNF/ObjectTargets.lean} deliberately
+contains visible \code{sorry} markers for Booleanization, demand closure, viability,
+stable clouds, finite nets, and guarded reciprocals.  These are a roadmap, not checked
+results.  This status split should be preserved during migration.

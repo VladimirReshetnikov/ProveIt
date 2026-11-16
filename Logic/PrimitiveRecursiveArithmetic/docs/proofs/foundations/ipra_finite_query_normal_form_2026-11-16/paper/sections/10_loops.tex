@@ -1,0 +1,103 @@
+\section{Bounded loops and quantifier-free induction}
+
+\subsection{The terminal-extraction pattern}
+
+Let \(I(t,\vec x)\) be QF, and suppose iPRA proves
+\[
+ I(0,\vec x),
+ \qquad
+ I(t,\vec x)\to I(t+1,\vec x).
+\]
+Quantifier-free induction yields \(I(T(\vec x),\vec x)\).  If a separate object
+proof gives
+\[
+ I(T(\vec x),\vec x)\to C(\vec x),
+\]
+then \(C\) may contain arbitrary quantifiers and connectives.
+
+\begin{proposition}[QF loop, arbitrary finish]\label{prop:qf-loop}
+A bounded computation needs only a QF running invariant.  Its terminal theorem
+need not be QF.
+\end{proposition}
+
+\begin{proof}
+Apply \leanname{PRA.qfInd}, eliminate the universal quantifier at the explicit
+fuel term, and use implication elimination with the terminal extractor.  This
+is the theorem \leanname{loopProduces} in the supplied structural core.
+\end{proof}
+
+\subsection{Fixed precision, quantified last}
+
+An analytic packet often wants to prove
+\[
+  \forall p\;\exists c\;\Valid(p,c).
+\]
+Induction over the whole displayed formula is unavailable because it contains
+quantifiers.  The correct order is:
+
+\begin{enumerate}
+\item treat \(p\) as a free parameter;
+\item define a QF invariant for the finite computation at that precision;
+\item prove the terminal checker equation;
+\item introduce the certificate existential or selected term;
+\item universally quantify \(p\) after the induction.
+\end{enumerate}
+
+The same pattern handles a theorem with several precision levels: pack them
+into the finite query first.
+
+\subsection{Changing parameters}
+
+An iterative algorithm may change not only its state but also its current
+precision, denominator bound, active chart, or remaining resource.  A naive
+invariant with a fixed external parameter is then false.  The remedy is to
+include every changing value in the recursion state.
+
+The repository's pairing and simultaneous-recursion modules give two standard
+encodings:
+
+\begin{itemize}
+\item pack a tuple into one natural state and update all fields;
+\item use simultaneous primitive recursion for a small fixed number of
+sequences.
+\end{itemize}
+
+The QF invariant is stated on the packed current state, time, and immutable
+query parameters.  The checked object theorem
+\leanname{primitiveRecursionInvariant} was designed for exactly this use.
+
+\subsection{Trace certificates versus computed traces}
+
+There are two ways to handle a bounded loop.
+
+\paragraph{Computed trace.}
+A fixed PR transition computes the final state.  Prove an invariant by
+primitive recursion.  This is compact and efficient.
+
+\paragraph{Certified trace.}
+The entire sequence of states or branch bits is a single-code array.  A checker
+verifies the initial state, every transition, and the terminal condition.
+Existence may be established by a producer or by packing the computed trace.
+This version is more flexible when a host tool supplies a trace or when the
+transition is relational.
+
+The two forms are interderivable when the transition is deterministic.  A
+useful engineering policy is to prove the certified-trace checker first, then
+show that the efficient computed trace is accepted.
+
+\subsection{Lexicographic descent}
+
+Nested or lexicographic descent can be reduced to a single natural fuel.  Given
+bounded components \(a_i<M_i(q)\), use their mixed-radix rank
+\[
+  \rho(\vec a)=a_0+M_0a_1+M_0M_1a_2+\cdots.
+\]
+A lexicographic decrease becomes a strict decrease of \(\rho\) after choosing
+the digit order appropriately.  Primitive recursion for at most
+\(\prod_iM_i(q)\) stages then proves termination.
+
+\begin{warning}
+A qualitative statement that a well-founded measure exists is insufficient.
+The rank and its numerical bound must be explicit PR terms, and the decrease
+must be an object-iPRA inequality.
+\end{warning}

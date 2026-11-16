@@ -1,0 +1,126 @@
+\section{Worked examples}\label{sec:examples}
+
+\subsection{Example A: a checked algebra node for Heron's identity}
+
+The coordinate Heron theorem in the current derivation library defines integer-coordinate terms for three points, twice the signed area \(D\), and squared side lengths \(A,B,C\).  It proves the closed universal form of
+\[
+ 4D^2=2AB+2BC+2CA-A^2-B^2-C^2
+\]
+by calling \texttt{ipra\_ring} on the open identity and then applying universal closure.
+
+As a \KIFCR graph this is a single algebra node.  The input registers are the positive and negative parts of the six integer coordinates.  The output formula is the displayed integer equality translated to a natural equality.  The local derivation is inherited from \RepoPath{Geometry/TriangleFormulas.lean}.  A downstream geometry theorem may use the equality through \texttt{Prf.eqSubst} or wrap it in a guarded square-root/area contract.
+
+This example demonstrates the intended proof boundary: Lean's ring tactic is used in the metatheory, but the graph receives a checked \(\Prf\,\PRAAx\) derivation, not a semantic equality of Lean integers.
+
+\subsection{\texorpdfstring{Example B: exact rational bisection for \(y^3+y=x\)}{Example B: exact rational bisection for y cubed plus y equals x}}
+
+Fix a rational input \(x\).  Set \(M=|x|+1\).  For
+\[
+ f_x(y)=y^3+y-x
+\]
+one has \(f_x(-M)<0<f_x(M)\).  Moreover, for \(a<b\),
+\[
+ f_x(b)-f_x(a)
+ =(b-a)(a^2+ab+b^2+1)>0.
+\]
+The positivity of the second factor follows from
+\[
+ 4(a^2+ab+b^2+1)=(2a+b)^2+3b^2+4>0.
+\]
+Thus there is at most one root and every sign bracket contains the same root in the observational sense needed below.
+
+\paragraph{State.}
+Use integer-over-common-denominator codes for endpoints \((\ell,u)\).  At step \(i\), let \(m=(\ell+u)/2\).  Evaluate the exact rational sign of \(f_x(m)\):
+\begin{itemize}
+  \item if \(f_x(m)<0\), set \(\ell:=m\);
+  \item if \(f_x(m)>0\), set \(u:=m\);
+  \item if \(f_x(m)=0\), set \(\ell=u=m\) and keep the state fixed thereafter.
+\end{itemize}
+All operations are primitive recursive on signed integer/rational codes.
+
+\paragraph{Invariant.}
+The QF invariant is the conjunction
+\[
+ \ell\le u,
+ \quad f_x(\ell)\le0,
+ \quad 0\le f_x(u),
+ \quad 2^i(u-\ell)\le2M,
+\]
+together with well-formedness of the rational codes and a Boolean halted flag.  Comparisons are reflected Boolean equations.  The base follows from the choice of \(M\).  Each step preserves the sign bracket and halves the width unless the exact root is found, in which case the width becomes zero.
+\paragraph{Output contract.}
+After \(N=q+\lceil\log_2(2M)\rceil+1\) steps, the midpoint \(r_q\) satisfies
+\[
+ |r_q-y_*|\le2^{-q}
+\]
+for the unique root \(y_*\), expressed finitely as: every rational \(z\) satisfying \(f_x(z)=0\) lies within \(2^{-q}\) of \(r_q\).  Existence of a completed real root need not be postulated in the loop.  The nested intervals themselves form a regular name, and completeness can be handled by the chosen representation theorem.
+
+\paragraph{Node decomposition.}
+The graph uses algebra nodes for the monotonicity factorization and sign arithmetic, Boolean nodes for comparisons, one loop node for bisection, and an observer node for the midpoint.  No relational choice is needed for exact rational \(x\).
+
+\paragraph{Cauchy input variant.}
+If \(x\) is supplied only by approximations, the sign of \(f_x(m)\) may be undecidable near zero.  A sound generalization keeps a finite relation of possible child intervals whenever the interval evaluation contains zero.  Backward viability removes branches incompatible with later precision requests; the output midpoint is diameter-stable because all viable intervals have certified small width.  An exact branch is recovered only under a separation margin.
+
+\subsection{Example C: finite relational paths with dead ends}
+
+Let
+\[
+ A_0=\{0,1,2\},\quad A_1=\{10,11,12\},\quad
+ A_2=\{20,21\},\quad A_3=\{30\}.
+\]
+Allow edges
+\[
+ 0\to10,\ 1\to11,\ 2\to12,\ 10\to20,\ 11\to21,\ 20\to30.
+\]
+Candidate \(12\) is an immediate dead end and \(21\) a later dead end.  Local least choice would select \(0\) in this ordering and happen to succeed, but a harmless permutation could make it fail.  Backward viability gives
+\[
+ W_3=\{30\},\quad W_2=\{20\},\quad W_1=\{10\},\quad W_0=\{0\}.
+\]
+The least viable path is forced: \((0,10,20,30)\).  The reference test suite checks this example and randomized finite towers against brute-force path enumeration.
+
+In an object proof, each set is a bounded Boolean row.  The recurrence is a reverse table loop.  The path is a bounded tuple code.  The public theorem is the reflected path-checker equation, from which the downstream terminal rule is cut.
+
+\subsection{Example D: a stable symmetric root observer}
+
+Suppose a quadratic certificate returns either ordered pair \((a,-a)\) or \((-a,a)\).  The witness order is non-canonical.  The observer
+\[
+ O(r_1,r_2)=(r_1+r_2,r_1r_2)
+\]
+is exactly stable: both orders produce \((0,-a^2)\).  Least search may choose either certificate according to its code order; \cref{thm:stable-exact} proves that the public coefficient output is independent of this choice.
+
+The pattern scales to unordered polynomial roots: elementary symmetric functions, discriminants, power sums, and factor coefficients are stable observations even at collisions.  Individual roots are not.
+
+\subsection{Example E: complete Diophantine enumeration from a height bound}
+
+Let \(F(X,Y)\in\mathbb Z[X,Y]\) be fixed and suppose a producer proves that every integer solution has \(|x|,|y|\le H\).  Enumerate the square \([-H,H]^2\), evaluate \(F\), and retain exactly the zeroes.  The loop invariant records:
+\begin{enumerate}[label=(\alph*)]
+  \item every stored pair lies in the processed prefix and satisfies \(F=0\);
+  \item every processed solution appears in the stored list;
+  \item the list is duplicate-free.
+\end{enumerate}
+Each clause is stored as a Boolean fold/table equality, so the combined invariant is QF.  At the end, the height hypothesis turns prefix completeness into global completeness.
+
+For rational points, enumerate primitive triples or normalized numerator/denominator tuples and use cross-multiplied polynomial equations.  Duplicate elimination uses a decidable normalized-code equality.
+
+\subsection{Example F: a finite-net maximum bound}
+
+Suppose \(f:[0,1]\to\mathbb R\) has a supplied modulus \(m\), and for target \(q\) take the dyadic grid of mesh \(2^{-m(q+3)}\).  Assume certified evaluations \(v_j\) with error at most \(2^{-q-3}\).  Let \(j_*\) be the least index maximizing \(v_j\), found by bounded argmax.  For any \(x\), choose the least covering grid cell \(j\).  The modulus and evaluation errors give
+\[
+ f(x)\le v_j+2^{-q-2}\le v_{j_*}+2^{-q-2}.
+\]
+Thus \(v_{j_*}+2^{-q-2}\) is a certified approximate supremum.  A unique maximizer is not claimed.  Under a strict isolation gap, guarded argmax recovers a stable cell label.
+
+\subsection{Example G: finite-consumer use of metastability}
+
+A consumer wishes to compare only the values \(x_n,\ldots,x_{F(n)}\) at tolerance \(2^{-k}\).  Define the bounded predicate
+\[
+ P(n)=\mathsf{All}_{i,j\in[n,F(n)]}\bigl(d(x_i,x_j)\le2^{-k}\bigr).
+\]
+Given a metastability bound \(B(k,F)\), least search below \(B+1\) finds the first valid \(n\).  The consumer proceeds with that finite window.  Nothing in the theorem asserts a global rate \(N(k)\), so the construction remains valid for computably convergent sequences lacking a computable modulus.
+
+\subsection{Example H: a guarded pivot}
+
+For a rational matrix row \((a_0,\ldots,a_{r-1})\), assume a certificate
+\[
+ \exists j<r\;|a_j|\ge2^{-g}.
+\]
+Booleanize the threshold test and choose the least pivot.  Search soundness gives a denominator margin.  All row divisions are totalized and proved correct under this margin.  If no such certificate is available, the output should be a relation of possible rank/pivot branches or a fraction-free elimination trace, not an unjustified exact pivot.

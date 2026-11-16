@@ -1,0 +1,112 @@
+\section{Residual boundaries and conditional proof normal form}\label{sec:residuals}
+
+\subsection{Why residuals are formulas}
+
+Suppose a finite verifier can use a height bound \(H(C)\), but the present mathematics does not construct that bound.  A host-language structure
+\begin{center}
+\texttt{structure HeightData where H : Nat; complete : Point p -> height p <= H}
+\end{center}
+may be convenient, but it is not yet an \iPRA\ theorem.  If the field \texttt{complete} is populated by an unproved proposition or an opaque assumption, the apparent construction has merely moved the missing theorem into data.
+
+The object-theory endpoint should instead retain the exact formula
+\[
+ B_H(C,H)\;\equiv\;\text{``every represented point on \(C\) has height at most \(H\)''}
+\]
+as a hypothesis.  The generic enumerator then proves
+\[
+ B_H(C,H),\Gamma\vdash[\PRAAx]\text{``the filtered list below \(H\) is complete.''}
+\]
+This conditional derivation is useful even before \(B_H\) is solved: it verifies all coding, search, deduplication, and transport steps, and it names the remaining mathematical problem exactly.
+
+\begin{definition}[Residual boundary]
+A residual boundary node is a named formula \(B\in\Fm(\PTm,n)\) together with metadata recording which graph nodes consume it and what mathematical producer is expected.  It has no local soundness proof.  During compilation, every use of \(B\) is justified by the corresponding retained hypothesis in the context.
+\end{definition}
+
+Residual nodes are not axioms of the theory.  They are antecedents of one particular conditional theorem.  If later work derives \(B\) from \(\Delta\), simultaneous cut removes it.  If no derivation is known, the theorem remains correctly conditional.
+
+\subsection{Proof dependencies and data dependencies}
+
+A graph has two distinct edge relations.
+\begin{itemize}
+  \item A \emph{data edge} says that the primitive-recursive output term of one node is an argument of another.
+  \item A \emph{proof edge} says that one formula is a premise of another node's local derivation.
+\end{itemize}
+These often coincide, but not always.  A denominator term may be computed unconditionally while its positivity formula is residual.  Two branches may share data but consume different gap assumptions.  A semantic parameter may appear in the external interpretation while not occurring in the executable trace.
+
+The compiler therefore performs reachability in the proof graph from the requested terminal formula.  A boundary formula belongs to the final residual list exactly when a reachable node consumes it and no reachable executable node produces it.
+
+\subsection{Canonical residual normalization}
+
+Formula equality is syntactic at the metalevel, after a chosen normalization of variable names and definitional abbreviations.  Let \(\mathsf{key}(B)\) be a stable serialization of that normalized syntax.  For each reachable node \(v\), define its residual set recursively:
+\[
+ \mathcal R(v)=
+ \begin{cases}
+   \{B_v\}, & v\text{ is a residual boundary},\\
+   \bigcup_{u\in\mathsf{proofParents}(v)}\mathcal R(u), & v\text{ is executable}.
+ \end{cases}
+\]
+The output \(\Residual(G,q)\) is the sorted, duplicate-free union for the requested sinks.  Sorting is not logically significant; it makes generated theorem statements reproducible.
+
+\begin{lemma}[Residual irrelevance]\label{lem:residual-irrelevance}
+Deleting a proof-unreachable node or residual formula does not change the compiled terminal derivation, except for weakening or permutation of unused hypotheses.
+\end{lemma}
+
+\begin{proof}
+The proof schedule is generated only from the backward reachable subgraph.  An unreachable node is never instantiated and never supplies a premise of a reachable rule.  If an unused formula occurs in a larger context, natural-deduction weakening embeds the same derivation in that context.  Conversely, removing an unused hypothesis from the generated context changes no use of \texttt{Prf.hyp}, so the same schedule compiles after the corresponding list reindexing.  No semantic argument is required.
+\end{proof}
+
+\begin{lemma}[Residual monotonicity]\label{lem:residual-monotonicity}
+If the requested sink set is enlarged, the normalized residual set can only enlarge.  If a residual boundary is replaced by an executable producer with the same conclusion, that boundary disappears from every request whose only uses are supplied by the new producer.
+\end{lemma}
+
+\begin{proof}
+Backward reachability and finite union are monotone in the sink set.  Replacing a boundary by a producer changes the recursive clause at that node from a singleton to the union of the producer's own dependencies.  If those dependencies are already produced or absent, the original formula is no longer inserted.  Duplicate elimination cannot introduce a new formula.
+\end{proof}
+
+\subsection{Residualized composition theorem}
+
+For a graph node \(v\), write \(\Phi_v\) for its conclusion and \(\Gamma_v\) for permanent external assumptions.  The local rule of an executable node has the form
+\[
+   [\Phi_{u_0},\ldots,\Phi_{u_{k-1}},B_{j_0},\ldots,B_{j_{s-1}}],\Gamma_v
+      \vdash[\PRAAx] \Phi_v.
+\]
+The premises may include instantiated demand inequalities and trace facts; these are conclusions of earlier generated nodes.
+
+\begin{theorem}[Residualized proof-graph compilation]\label{thm:residual-compilation}
+Let the reachable executable proof graph be finite and acyclic after strongly connected groups have been discharged by a dedicated loop certificate.  For each executable node, assume a local \(\Prf\,\PRAAx\) derivation of its conclusion from its listed proof parents and boundary formulas.  Then the metatheory can construct
+\[
+  \Residual(G,q),\Gamma_G\vdash[\PRAAx]\bigwedge_{v\in S_q}\Phi_v,
+\]
+where \(S_q\) is the finite requested sink set.  In particular, for one sink it constructs the desired terminal formula.
+\end{theorem}
+
+\begin{proof}
+Choose a topological order of the reachable executable nodes.  Start with the residual and permanent hypotheses.  At node \(v\), all executable proof parents occur earlier and therefore already have derivations from the base context.  Every boundary parent is a hypothesis in the normalized residual context.  Instantiate the local rule at the generated terms, then apply simultaneous cut with the parent derivations and the appropriate hypotheses.  Record the resulting derivation as a new schedule entry.  Finite iteration constructs derivations of all sinks.  Conjunction introduction combines them if several are requested.  The construction is an induction on the finite topological list in Lean's metatheory, not an additional induction axiom in \iPRA.
+\end{proof}
+
+\begin{corollary}[Closure by supplied producers]\label{cor:residual-closure}
+If \(h_i:\Delta,\Gamma_G\vdash[\PRAAx]B_i\) for every \(B_i\in\Residual(G,q)\), then
+\[
+  \Delta,\Gamma_G\vdash[\PRAAx]\Phi_G(q).
+\]
+\end{corollary}
+
+\begin{proof}
+Apply \texttt{Prf.trans} to the compiled conditional derivation, supplying \(h_i\) for residual hypotheses and ordinary hypotheses for \(\Gamma_G\).
+\end{proof}
+
+\subsection{Alternatives, implications, and partial progress}
+
+A deep input often has several possible producers.  For example, a nonvanishing condition might be established by a direct rational lower bound, by a discriminant estimate, or by membership in one chart of a finite cover.  The graph should represent these as alternative producer nodes whose conclusions imply a common boundary formula.  Each implication is itself an object-level local rule.  The residual normal form then retains the common formula only when no alternative producer is selected; selecting one producer replaces it by that producer's own residuals.
+
+This organization supports meaningful partial results.  A packet may close all arithmetic and representation obligations while leaving one analytic estimate residual.  Another packet may later prove precisely that formula and close the theorem without redoing the finite compilation.
+
+\subsection{Cyclic proof dependencies}
+
+A raw cycle of the form ``\(A\) is proved from \(B\), and \(B\) from \(A\)'' is not a proof.  Cycles are admissible only after they are converted into one of three finite well-founded forms:
+\begin{enumerate}[label=(\arabic*)]
+  \item a primitive-recursive time loop with a QF invariant;
+  \item a backward induction on a finite horizon, as in viability;
+  \item a capped monotone fixed-point iteration with a finite rank bound, as in \cref{sec:cyclic-demand}.
+\end{enumerate}
+After such a component has a single exported theorem, the quotient proof graph is acyclic and \cref{thm:residual-compilation} applies.

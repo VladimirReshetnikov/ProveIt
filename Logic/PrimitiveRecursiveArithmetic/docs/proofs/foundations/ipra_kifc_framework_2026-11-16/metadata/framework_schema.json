@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/kifc-graph.schema.json",
+  "title": "KIFC fixed proof graph - second edition",
+  "description": "Machine-readable metadata for a theorem-specific proof-producing iPRA graph. This describes metalevel generation; it is not interpreted inside iPRA.",
+  "type": "object",
+  "required": ["name", "version", "repository_snapshot", "terminal", "nodes"],
+  "properties": {
+    "name": {"type": "string", "minLength": 1},
+    "version": {"type": "integer", "minimum": 2},
+    "repository_snapshot": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "terminal": {"type": "string", "minLength": 1},
+    "parameters": {"type": "array", "items": {"type": "string"}},
+    "external_producers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "formula", "role"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "formula": {"type": "string", "minLength": 1},
+          "role": {"enum": ["bound", "modulus", "margin", "representative", "finite_cover", "tail"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "dependencies", "certificate", "status"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "kind": {
+            "enum": ["algebra", "boolean", "search", "loop", "relation", "observer"]
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {"type": "string"},
+            "uniqueItems": true
+          },
+          "demand": {"type": ["string", "null"]},
+          "state": {"type": ["string", "null"]},
+          "formula": {"type": ["string", "null"]},
+          "certificate": {"type": "string", "minLength": 1},
+          "guard": {"type": ["string", "null"]},
+          "witness_policy": {
+            "enum": ["deterministic", "least_bounded", "relation", "exact_stable", "diameter_stable", "guarded"]
+          },
+          "status": {
+            "enum": ["inherited_checked", "source_complete_uncompiled", "lean_interface", "placeholder_blueprint", "conditional_producer"]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

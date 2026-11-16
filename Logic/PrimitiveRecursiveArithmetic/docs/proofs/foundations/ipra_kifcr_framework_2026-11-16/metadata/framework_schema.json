@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/kifcr-graph.schema.json",
+  "title": "KIFC-R query-specialized proof graph",
+  "type": "object",
+  "required": ["name", "version", "terminals", "nodes"],
+  "properties": {
+    "name": {"type": "string", "minLength": 1},
+    "version": {"type": "integer", "minimum": 2},
+    "parameters": {"type": "array", "items": {"type": "string"}},
+    "terminals": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "data_dependencies", "proof_dependencies", "status"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "kind": {
+            "enum": ["algebra", "boolean", "checked_search", "loop", "relation", "observer", "boundary"]
+          },
+          "data_dependencies": {
+            "type": "array", "items": {"type": "string"}, "uniqueItems": true
+          },
+          "proof_dependencies": {
+            "type": "array", "items": {"type": "string"}, "uniqueItems": true
+          },
+          "formula": {"type": ["string", "null"]},
+          "certificate": {"type": ["string", "null"]},
+          "demand": {"type": ["string", "null"]},
+          "cap": {"type": ["string", "null"]},
+          "residual_key": {"type": ["string", "null"]},
+          "producer_origin": {"type": ["string", "null"]},
+          "status": {
+            "enum": ["inherited_checked", "new_checked", "lean_outline", "residual"]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

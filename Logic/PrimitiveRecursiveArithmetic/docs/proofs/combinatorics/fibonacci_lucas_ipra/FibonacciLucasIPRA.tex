@@ -1,0 +1,209 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,longtable,booktabs,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\title{Fibonacci and Lucas Identities in Intuitionistic Primitive Recursive Arithmetic\\\large A constructive proof catalogue and Lean implementation programme}
+\author{Research packet for ProveIt}\date{16 November 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We establish a substantial family of Fibonacci and Lucas identities within intuitionistic primitive recursive arithmetic (iPRA): recurrences, matrix and addition formulas, Cassini--Catalan--d'Ocagne identities, Lucas--Fibonacci relations, sums, binomial expansions, parity, divisibility, gcd, periodicity, and prime-index congruences. The key device is a single primitive-recursive matrix iterator, whose quantifier-free invariants prove the identities without appeal to excluded middle or unbounded induction. We separate the fully argued finitary mathematics from the still-unchecked embedding of the arguments into ProveIt's object-language proof calculus. For analytic identities we identify the additional finitary approximation contracts required, rather than silently assuming a theory of the real numbers.
+\end{abstract}
+\tableofcontents
+\section{Foundational scope and status}
+By \emph{iPRA} we mean first-order intuitionistic logic with equality, function symbols and defining equations for primitive-recursive functions, successor axioms and induction restricted to quantifier-free formulas. All algebraic identities below can be expressed as equalities between primitive-recursive terms. Subtraction and negative signs are handled in a primitive-recursive signed-integer encoding, or, equivalently, by rewriting equations into equalities of natural sums. This is a mathematical proof packet, not a claim that its accompanying Lean sketch has been kernel checked in ProveIt's internal \texttt{Prf PRAAx} calculus.
+
+The repository's \texttt{Logic/PrimitiveRecursiveArithmetic/README.md} identifies \texttt{ConciseIPRA} as its checked presentation and \texttt{Derivations} as a kernel-checked library of explicit iPRA derivations, including arithmetic, gcd, bounded sums, division, pairing and simultaneous recursion. That material offers an integration target. No theorem here is asserted to be already present in its internal proof language.
+
+\section{Primitive recursive construction and matrix invariant}
+Define the pair iterator
+\[P(0)=(0,1),\qquad P(n+1)=(P(n)_2,P(n)_1+P(n)_2).\]
+Define $F_n=P(n)_1$, so $P(n)=(F_n,F_{n+1})$. Define $L_n=2F_{n+1}-F_n$, with the subtraction eliminated by the nonnegative equivalent $L_n=F_n+2F_{n-1}$ for $n\ge1$, and $L_0=2$. Alternatively initialize a second pair iterator at $(2,1)$. Thus $F_0=0,F_1=1$ and $L_0=2,L_1=1$, and both satisfy $X_{n+2}=X_{n+1}+X_n$.
+
+Write $Q=\bigl(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\bigr)$ and let $Q^n$ be a primitive-recursive matrix iterator. The entrywise assertion
+\[ Q^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}\qquad(n\ge1)\tag{M}\]
+results by a quantifier-free induction (the matrix-product equations involve only addition and multiplication). The trace of $Q^n$ is $L_n$ for every $n\ge0$. The determinant of $Q$ is $-1$, so multiplication of determinants, proven by polynomial expansion, yields $\det Q^n=(-1)^n$. Integer signs may be encoded by a parity bit, avoiding non-natural subtraction.
+
+\begin{lemma}[Two-vector addition law]\label{lem:add}
+For all $m,n\in\N$,
+\[ F_{m+n}=F_mF_{n+1}+F_{m-1}F_n\quad(m\ge1),\qquad F_{m+n+1}=F_{m+1}F_{n+1}+F_mF_n.\tag{1}\]
+\end{lemma}
+\begin{proof}
+The second equation holds at $n=0$, since $F_1=1,F_0=0$. If it and its predecessor-index counterpart hold at $n$, add the two equations to obtain the next one; equivalently compare the upper row of $Q^mQ^n=Q^{m+n}$. The first equation follows from the lower row at $m\ge1$. Matrix multiplication and the power law are established by simultaneous quantifier-free induction on $n$, treating $m$ as a free parameter.
+\end{proof}
+\begin{theorem}[Cassini and Catalan]
+For $n\ge1$,
+\[F_{n+1}F_{n-1}-F_n^2=(-1)^n.\tag{2}\]
+For $n\ge r\ge0$,
+\[F_n^2-F_{n-r}F_{n+r}=(-1)^{n-r}F_r^2.\tag{3}\]
+\end{theorem}
+\begin{proof}
+Equation (2) is $\det Q^n=(-1)^n$. For (3), let $a=n-r$ and multiply the identity
+\[F_{a+r}^2-F_aF_{a+2r}=(-1)^aF_r^2\]
+obtained from the determinant of the two-column matrix $Q^a\bigl(\begin{smallmatrix}F_{r+1}&F_{2r+1}\\F_r&F_{2r}\end{smallmatrix}\bigr)$, or more directly from the recurrence identity $F_{a+r}=F_aF_{r+1}+F_{a-1}F_r$ and Cassini by expansion. A fully explicit clean route is to write $Q^a$ as a linear recurrence propagator: setting $u=F_a,v=F_{a+1}$, $F_{a+r}=F_rv+F_{r-1}u$ for $r\ge1$, and expand the left side. The coefficient factors are $v^2-uv-u^2=(-1)^a$ by Cassini, yielding the stated result. At $r=0$, both sides vanish. All expansions are polynomial identities.
+\end{proof}
+\begin{theorem}[d'Ocagne and doubling]
+For $m\ge n$, 
+\[F_mF_{n+1}-F_{m+1}F_n=(-1)^nF_{m-n}.\tag{4}\]
+For all $n$, 
+\[F_{2n}=F_nL_n,\quad F_{2n+1}=F_{n+1}^2+F_n^2,\quad L_{2n}=L_n^2-2(-1)^n.\tag{5}\]
+\end{theorem}
+\begin{proof}
+The expression on the left of (4), as a function of $m$, follows the Fibonacci recurrence; at $m=n$ it is zero, at $m=n+1$ it equals $(-1)^n$ by Cassini, so simultaneous induction proves (4). For (5), substitute $m=n$ in (1), use $L_n=F_{n+1}+F_{n-1}$ for $n\ge1$, and use $\operatorname{tr}(Q^{2n})=(\operatorname{tr}Q^n)^2-2\det(Q^n)$, checked by a two-by-two polynomial expansion. Check $n=0$ directly.
+\end{proof}
+\section{Lucas identities from trace and determinant}
+\begin{theorem}[Basic Lucas relations]
+For $n\ge1$,
+\[L_n=F_{n-1}+F_{n+1}=F_n+2F_{n-1},\tag{6}\]
+\[L_n^2-5F_n^2=4(-1)^n,\tag{7}\]
+\[L_{n+1}+L_{n-1}=5F_n,\qquad L_{n+1}-L_{n-1}=L_n,\tag{8}\]
+and for all $n\ge0$, $L_{n+2}=L_{n+1}+L_n$.
+\end{theorem}
+\begin{proof}
+The first follows by the recurrence and trace interpretation. From $F_{n+1}=F_n+F_{n-1}$, expanding $(F_{n+1}+F_{n-1})^2-5F_n^2$ gives $4(F_{n+1}F_{n-1}-F_n^2)$, so (7) follows by Cassini. The first equation in (8) follows by direct substitutions and $F_{n+2}=F_{n+1}+F_n$; the second is precisely the Lucas recurrence in rearranged form. For the first equality, for example, $L_{n+1}+L_{n-1}=F_{n+2}+2F_n+F_{n-2}$ for $n\ge2$, which reduces to $5F_n$ by recurrence (the $n=1$ case is immediate). 
+\end{proof}
+\begin{theorem}[Lucas multiplication and mixed addition]
+For $m\ge n\ge0$,
+\[ L_mL_n=L_{m+n}+(-1)^n L_{m-n},\tag{9}\]
+\[ F_mL_n=F_{m+n}+(-1)^n F_{m-n}.\tag{10}\]
+Moreover, for arbitrary $m,n\ge0$,
+\[L_{m+n}=L_mF_{n+1}+L_{m-1}F_n\quad(m\ge1).\tag{11}\]
+\end{theorem}
+\begin{proof}
+The trace identity $\operatorname{tr}(A)\operatorname{tr}(B)=\operatorname{tr}(AB)+\det(B)\operatorname{tr}(AB^{-1})$ applies to commuting powers $A=Q^m,B=Q^n$, but inverse matrices are avoidable: for $m\ge n$, the right side of (9), as a function of $m$, satisfies the Lucas recurrence; at $m=n$ and $m=n+1$ equality follows from (5), (7), and the initial recurrence. Similarly (10) follows by induction on $m-n$, using the base cases $F_nL_n=F_{2n}$ and $F_{n+1}L_n=F_{2n+1}+(-1)^n$ (the latter follows by Cassini and (1)). Identity (11) is the addition law applied to the Lucas pair iterator.
+\end{proof}
+\begin{remark}A particularly efficient proof of (9)--(10) avoids the two base-case calculations: introduce the signed extension $F_{-k}=(-1)^{k+1}F_k$ and $L_{-k}=(-1)^kL_k$ as finitely encoded formulas, and verify both recurrences algebraically. This is a definitional abbreviation, not a requirement to quantify over all integers in iPRA.\end{remark}
+\section{Finite sums, binomial formulas and generating identities}
+\begin{theorem}[Finite sums]
+For every $n\ge0$,
+\[\sum_{k=0}^n F_k=F_{n+2}-1,\quad \sum_{k=0}^n F_{2k}=F_{2n+1}-1,\quad\sum_{k=0}^n F_{2k+1}=F_{2n+2},\tag{12}\]
+\[\sum_{k=0}^n F_k^2=F_nF_{n+1},\quad \sum_{k=0}^n L_k=L_{n+2}-1,\tag{13}\]
+\[\sum_{k=0}^n (-1)^k F_{k+1}=1+(-1)^n F_n,\qquad
+\sum_{k=0}^n(-1)^kF_k=(-1)^nF_{n-1}-1\quad(n\ge1).\tag{14}\]
+\end{theorem}
+\begin{proof}
+Every equality is proved by quantifier-free induction in $n$ after defining the bounded sum by primitive recursion. For example, $\sum_{k=0}^{n+1}F_k^2=F_nF_{n+1}+F_{n+1}^2=F_{n+1}F_{n+2}$. The other steps telescope using $F_{j+2}-F_{j+1}=F_j$ and their Lucas analogues. The alternating identity is stated only for $n\ge1$ and follows from the same telescoping argument.
+\end{proof}
+
+\begin{theorem}[Binomial convolution]
+For $n\ge0$,
+\[F_{2n}=\sum_{k=0}^n\binom nk F_k,\qquad F_{2n+1}=\sum_{k=0}^n\binom nk F_{k+1},\tag{14}\]
+\[ L_{2n}=\sum_{k=0}^n\binom nk L_k.\tag{15}\]
+\end{theorem}
+\begin{proof}
+The matrix equality $Q^2=Q+I$ implies $Q^{2n}=(Q+I)^n=\sum_{k=0}^n \binom nk Q^k$. The finite binomial theorem for commuting matrices is proved by induction using Pascal's rule, and coefficientwise comparison yields (14)--(15). Binomial coefficients are primitive recursive using Pascal's triangle; no division is needed.
+\end{proof}
+\begin{theorem}[Formal power series, coefficientwise]
+In the semiring of formal sequences (interpreted as primitive-recursive coefficient identities),
+\[\sum_{n\ge0}F_nx^n=\frac{x}{1-x-x^2},\qquad \sum_{n\ge0}L_nx^n=\frac{2-x}{1-x-x^2}.\tag{16}\]
+\end{theorem}
+\begin{proof}
+``Division'' in (16) means a formal inverse specified by a finite coefficient equation, not an infinite analytic sum. For each coefficient index $n$, multiply the left coefficients by $(1-x-x^2)$; the coefficient is $F_n-F_{n-1}-F_{n-2}$ for $n\ge2$, and initial coefficients are $0,1$ for Fibonacci and $2,-1$ for Lucas. Thus every coefficient identity is an equation involving a fixed number of primitive-recursive terms. The universally quantified coefficient statement is proved with quantifier-free induction.
+\end{proof}
+\section{Parity, divisibility, gcd and modular periodicity}
+\begin{theorem}[Parity and divisibility]
+The parity pattern of $F_n$ is $(0,1,1)$ repeated, and that of $L_n$ is $(0,1,1)$ repeated. In particular,
+\[2\mid F_n\iff3\mid n,\qquad 2\mid L_n\iff3\mid n.\tag{17}\]
+For all $m,n\ge0$ with $m\ge1$, $F_m\mid F_{mn}$. For $m,n\ge1$,
+\[\gcd(F_m,F_n)=F_{\gcd(m,n)}.\tag{18}\]
+\end{theorem}
+\begin{proof}
+Parity follows by simultaneous induction on three successive residues, or equivalently by checking a three-cycle of the pair iterator modulo $2$. For divisibility, the matrix addition identity shows $F_{m(k+1)}=F_{mk}F_{m+1}+F_{mk-1}F_m$ for $mk\ge1$; an induction on $k$ proves the claim, with $k=0$ and $m=1$ immediate. For gcd, first derive $\gcd(F_j,F_{j+1})=1$ by the Euclidean recurrence $\gcd(F_j,F_{j+1})=\gcd(F_j,F_{j-1})$ with initial pair $(0,1)$. Then use
+\[F_{a+b}=F_aF_{b+1}+F_{a-1}F_b\]
+together with $\gcd(F_a,F_{a-1})=1$ to show $\gcd(F_a,F_{a+b})=\gcd(F_a,F_b)$. This is the Euclidean step for index reduction. To stay inside iPRA, define primitive-recursive remainder and a bounded Euclidean algorithm with decreasing index and prove its invariant by quantifier-free induction; no general induction over arbitrary predicates is needed. The special case $a=0$ follows from $\gcd(0,F_b)=F_b$. The final result is transported along the index Euclidean algorithm.
+\end{proof}
+\begin{theorem}[Purely finite modular periodicity]
+For each positive modulus $d$, there exists an explicitly bounded period $t$ with $1\le t\le d^2$ such that
+\[(F_{n+t},F_{n+t+1})\equiv(F_n,F_{n+1})\pmod d\quad\text{for every }n.\tag{19}\]
+The same period applies to Lucas numbers. 
+\end{theorem}
+\begin{proof}
+The update $(a,b)\mapsto(b,a+b)$ is invertible modulo $d$, with inverse $(a,b)\mapsto(b-a,a)$. There are $d^2$ residue pairs. Finite pigeonhole gives two equal pairs among the first $d^2+1$ iterates; invertibility moves the equality back to a return of $(0,1)$, with a return time between 1 and $d^2$. Existence is obtainable by \emph{bounded} search, represented by a primitive-recursive minimum function and a quantifier-free finite pigeonhole invariant. Once the start pair returns, induction proves equality of all shifted iterates. Lucas terms are polynomial combinations of Fibonacci pairs. This does not claim a uniform unbounded search principle.
+\end{proof}
+\begin{theorem}[Prime-index Lucas congruence]
+For any prime $p$, $L_p\equiv1\pmod p$.
+\end{theorem}
+\begin{proof}
+In $\Z/p\Z$ the elementary binomial congruence $(A+B)^p\equiv A^p+B^p$ holds for commuting matrices, because $p$ divides $\binom pk$ for $0<k<p$. More directly, for an integer matrix $A$, $\operatorname{tr}(A^p)\equiv (\operatorname{tr}A)^p\equiv\operatorname{tr}A\pmod p$: diagonalize formally over a commutative quadratic algebra, or use the cycle-rotation proof of the congruence $\operatorname{tr}(A^p)\equiv\sum_i a_{ii}^p$ by partitioning $p$-tuples into fixed tuples and length-$p$ orbits. Apply this to $Q$, whose trace is $1$. The orbit proof is a bounded combinatorial counting argument and admits a primitive-recursive encoding. Fermat's congruence $a^p\equiv a\pmod p$ is similarly proved by cyclic rotation of $p$-tuples over a finite alphabet. Primality is a decidable primitive-recursive predicate.
+\end{proof}
+\section{Combinatorial interpretations}
+\begin{theorem}[Tilings and independent subsets]
+Let $T(n)$ count tilings of a row of length $n$ by squares and dominoes. Then $T(n)=F_{n+1}$. For $n\ge2$, the number $C(n)$ of subsets of the vertices of an $n$-cycle with no adjacent vertices selected equals $L_n$ (with $C(2)=3$ under the two-vertex cycle convention).\end{theorem}
+\begin{proof}
+For a row, split on the first tile: square leaves a row of length $n-1$; domino leaves $n-2$. Thus $T(0)=T(1)=1$ and $T(n)=T(n-1)+T(n-2)$. To count cycle independent sets, split on a distinguished vertex. If absent, choose an independent set in a path of $n-1$ vertices, counted by $F_{n+1}$; if present, its two neighbors are absent, leaving a path of $n-3$ vertices counted by $F_{n-1}$, for $n\ge3$. Their sum is $L_n$. At $n=2$ direct enumeration yields three subsets. Encode finite subsets by bounded bitmasks, adjacency by bounded arithmetic and the count by a primitive-recursive bounded sum of characteristic functions. The splitting argument is a constructive bijection between finite coded sets.
+\end{proof}
+\section{Further algebraic consequences}
+\begin{theorem}[Triple arguments and mixed determinants]
+For all $n\ge0$,
+\[ F_{3n}=F_n\bigl(L_n^2-(-1)^n\bigr),\qquad
+L_{3n}=L_n^3-3(-1)^nL_n.\tag{22}\]
+For $n\ge0$,
+\[L_nF_{n+1}-L_{n+1}F_n=2(-1)^n,\tag{23}\]
+and for every $m\ge n$,
+\[L_mF_{n+1}-L_{m+1}F_n=(-1)^nL_{m-n}.\tag{24}\]
+\end{theorem}
+\begin{proof}
+Put $A=Q^n$, $t=\operatorname{tr}A=L_n$ and $d=\det A=(-1)^n$. Cayley--Hamilton in dimension two is the elementary four-entry polynomial identity $A^2-tA+dI=0$. Multiplying by $A$ and taking traces gives $\operatorname{tr}(A^3)=t^3-3dt$, proving the Lucas triple formula. For the Fibonacci triple formula, compare the off-diagonal entries of $A^3=(t^2-d)A-tdI$: these are $F_{3n}$ and $(t^2-d)F_n$. The formula at $n=0$ holds directly. Equation (23) follows by inserting $L_n=F_{n+1}+F_{n-1}$ and expanding: the left side is twice Cassini's determinant with indices shifted appropriately. Finally the left side of (24), as a sequence in $m$, satisfies the recurrence and its initial values at $m=n$ and $m=n+1$ are $2(-1)^n$ and $(-1)^n$, respectively, matching the Lucas sequence $L_{m-n}$.
+\end{proof}
+\begin{theorem}[Additional sums and a positive inequality]
+For every $n\ge0$,
+\[\sum_{k=0}^n L_k^2=L_nL_{n+1}+2,\qquad
+\sum_{k=0}^n F_kL_k=F_{2n+1}-1.\tag{25}\]
+For $n\ge1$, $F_n\ge1$, and for $n\ge2$, $F_{n+1}>F_n$. Moreover $F_n\le 2^n$ and $L_n\le 2^{n+1}$ for all $n$.
+\end{theorem}
+\begin{proof}
+For the first sum, use induction and the recurrence to compute
+$L_nL_{n+1}+L_{n+1}^2=L_{n+1}(L_n+L_{n+1})=L_{n+1}L_{n+2}$, starting at $L_0^2=L_0L_1+2=4$. The second follows from $F_kL_k=F_{2k}$ and the even-index sum in (12). Positivity follows from nonnegative addition and the bases. Bounds follow by simultaneous induction on the next two Fibonacci or Lucas values, observing $2^n+2^{n-1}\le2^{n+1}$. All inequalities can be represented by primitive-recursive truncated subtraction and are quantifier-free.
+\end{proof}
+\begin{theorem}[Polynomial identities for arithmetic progressions]
+Fix $r\ge1$ and write $u_k=F_{kr}$, $v_k=L_{kr}$, and $d=(-1)^r$. Then
+\[u_{k+2}=L_ru_{k+1}-d u_k,\quad
+v_{k+2}=L_rv_{k+1}-d v_k,\tag{26}\]
+where the difference is understood as an integer identity, or as $u_{k+2}+d u_k=L_ru_{k+1}$ when $d=1$ and $u_{k+2}=L_ru_{k+1}+u_k$ when $d=-1$. In particular, the subsequences along every fixed arithmetic progression are primitive-recursive linear recurrences.
+\end{theorem}
+\begin{proof}
+Apply $A^2-(\operatorname{tr}A)A+(\det A)I=0$ with $A=Q^r$, multiply by $A^k$ and take the off-diagonal entry or trace. This yields the two recurrences. Expressing signed equalities by pairs of naturals, and using a sign case split on the parity of $r$, requires only decidable bounded computation.
+\end{proof}
+
+\section{Analytic formulas: what is and is not established}
+Set $\phi=(1+\sqrt5)/2$ and $\psi=(1-\sqrt5)/2$ externally. The familiar Binet identities
+\[F_n=\frac{\phi^n-\psi^n}{\sqrt5},\qquad L_n=\phi^n+\psi^n\tag{21}\]
+can be recast as exact polynomial equalities in the algebraic ring $\Z[t]/(t^2-t-1)$: its distinguished element $t$ and $1-t$ satisfy the characteristic equation, so the sequences $t^n+(1-t)^n$ and the quotient-free relation $t^n-(1-t)^n=(2t-1)F_n$ follow by pair induction. This gives an \emph{algebraic version of Binet} inside iPRA using pairs of integers and polynomial arithmetic. It does not prove existence of a complete ordered real field, convergence of $F_{n+1}/F_n$ to $\phi$, an analytic generating function, or irrationality/asymptotic precision claims in the usual real-number semantics. Those require specifying primitive-recursive rational approximations and an explicit modulus, then separately proving the approximation contract.
+
+\section{Formalization architecture and dependency graph}
+The minimal Lean plan is divided into three layers.
+\begin{enumerate}
+\item \textbf{Computational layer}: define \texttt{fibPair}, \texttt{fib}, \texttt{lucPair}, \texttt{luc}, integer signed operations, \texttt{mat2}, \texttt{powQ}; prove recurrence and matrix laws with \texttt{Nat.rec} and \texttt{simp}/\texttt{ring}. The accompanying \texttt{FibonacciLucasSketch.lean} sketches definitions and theorem statements. This is NOT a kernel-checked proof file.
+\item \textbf{Ordinary Lean layer}: prove pair addition, Cassini, Lucas square, finite sums, convolution and gcd. Quantifier-free mathematical content should be isolated into lemma statements and their proof dependencies; avoid using Mathlib number-theoretic theorems as opaque evidence for iPRA.
+\item \textbf{Object-language iPRA layer}: represent fib pair and Lucas pair iterators as primitive-recursive \texttt{PR} function symbols; use simultaneous recursion from \texttt{Derivations}, then build derivations of explicit universally closed \texttt{PR} equalities of type \texttt{Prf PRAAx}. Translate a matrix identity into four scalar equalities and prove each by the supplied quantifier-free induction rule. Derive the family of subsequent statements by substitution, conjunction and equational rewriting, and use the \texttt{pra\_iff\_native} bridge only after an actual derivation has been constructed.
+\end{enumerate}
+The critical verification obligation is \emph{not} simply to show that the natural-number equations hold in Lean: it is to construct a proof term for each translated equation in the iPRA object calculus. Both the formal language's iteration rules and the finite bounded-search lemmas must be checked against the current repository interfaces.
+
+\section{Claim ledger and limitations}
+\begin{longtable}{p{.53\linewidth}p{.16\linewidth}p{.23\linewidth}}\toprule Claim family & Finitary proof & Lean/iPRA status\\\midrule\endhead
+Recurrences, matrix formulas, trace & Detailed & Lean outline; object calculus pending\\
+Addition, Cassini, Catalan, d'Ocagne & Detailed & Lean outline; object calculus pending\\
+Doubling and Lucas square identities & Detailed & Lean outline; object calculus pending\\
+Mixed Lucas--Fibonacci products, triple arguments & Inductive proof & Base-case formalization pending\\
+Finite sums, binomial transforms, formal series & Detailed & Lean outline; object calculus pending\\
+Parity, divisibility and gcd & Constructive algorithmic proof & Bounded Euclidean encoding pending\\
+Finite modular periodicity & Constructive bounded search & Pigeonhole code pending\\
+Prime Lucas congruence & Finite orbit argument & Counting lemma pending\\
+Tilings and independent sets & Constructive bijections & Bitmask implementation pending\\
+Algebraic Binet analogue & Exact recurrence argument & Quotient ring realization pending\\
+Analytic convergence, real Binet, square/triangular classification & Not established & Excluded\\\bottomrule
+\end{longtable}
+\noindent\textbf{Scope notice.} The four reference pages contain much additional material including specialized primality tests, numerical approximations, continued fractions, special divisibility records, reciprocal sums and classification of square/triangular Lucas numbers. These are not proved here. No exhaustive audit of every displayed equation on each page is claimed.
+\section{References}
+\begin{enumerate}
+\item \url{https://en.wikipedia.org/wiki/Fibonacci_sequence}
+\item \url{https://mathworld.wolfram.com/FibonacciNumber.html}
+\item \url{https://en.wikipedia.org/wiki/Lucas_number}
+\item \url{https://mathworld.wolfram.com/LucasNumber.html}
+\item \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic}
+\end{enumerate}
+\end{document}
