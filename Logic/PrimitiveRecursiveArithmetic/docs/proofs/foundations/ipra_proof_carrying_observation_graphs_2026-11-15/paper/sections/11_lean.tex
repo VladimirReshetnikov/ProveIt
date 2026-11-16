@@ -1,0 +1,334 @@
+\section{Lean formalization architecture}
+\label{sec:lean}
+
+The formalization plan is tied to the actual repository declarations rather
+than an invented surrogate calculus.  This section gives the main definitions,
+exact theorem endpoints, and dependency order needed for a complete Lean
+implementation.
+
+\subsection{Existing interfaces}
+
+The intended imports are:
+
+\begin{lstlisting}[language={},caption={Repository interfaces used by the compiler}]
+import ConciseIPRA.Syntax
+import ConciseIPRA.Deduction
+import ConciseIPRA.PR
+\end{lstlisting}
+
+The namespace is \texttt{LeanProofs.ConciseIPRA}.  The relevant types and
+constructors are:
+
+\begin{lstlisting}[language={}]
+PR k                         -- primitive-recursive symbol
+PTm n                        -- term with n free variables
+Fm PTm n                     -- first-order formula
+PRAAx                        -- iPRA axioms
+Prf PRAAx Gamma phi          -- embedded derivability
+PRA.qfInd                    -- quantifier-free induction
+Prf.substWeaken, Prf.trans   -- substitution/weakening and cut
+PRA.precZero, PRA.precSucc   -- recursion equations
+\end{lstlisting}
+
+The checked packet module \path{ObjectIteration.lean} should be integrated as
+\path{ConciseIPRA.FiniteTrace}; its key declarations are
+\path{primitiveRecursionInvariant} and \path{primitiveRecursionAt}.  The
+checked \path{ObjectObservation.lean} combinators should similarly become a
+library module \path{ConciseIPRA.ObservableGlue}.  Integration should import
+the repository sources directly rather than retain frozen copies of the
+kernel.
+
+\subsection{Trace package}
+
+The accompanying \texttt{ProofCarryingGraph.lean} proposes the following
+structure.
+
+\begin{lstlisting}[language={}]
+structure TracePackage (k : Nat) (Gamma : List (Fm PTm k)) where
+  init        : PR k
+  step        : PR (k + 2)
+  invariant   : Fm PTm (k + 2)
+  invariantQF : invariant.QF
+  base        : Gamma |-PRA baseFormula init invariant
+  advance     : invariant :: (Gamma.map shift).map shift
+                  |-PRA nextFormula step invariant
+\end{lstlisting}
+
+Here \texttt{|-PRA} abbreviates the repository notation
+\(\Gamma\vdash[\PRAAx]\varphi\).  The method
+\texttt{TracePackage.runAt} is a direct wrapper around
+\path{primitiveRecursionAt}; it contains no new mathematics.  A
+\texttt{TraceExit} stores fuel, output formula, and an object proof from the
+terminal invariant to the output.  Its compiler is one simultaneous cut.
+
+This layer should be the first integration milestone because it immediately
+gives future application modules a standard type for bounded verified runs.
+
+\subsection{Proof-producing graph rules}
+
+A graph rule can be represented without dependent graph syntax.
+
+\begin{lstlisting}[language={}]
+structure Rule (n : Nat) where
+  inputs : List (Fm PTm n)
+  output : Fm PTm n
+  derive : forall Gamma,
+    (forall A, A `mem` inputs -> Gamma |-PRA A) ->
+    Gamma |-PRA output
+\end{lstlisting}
+
+A compiled prefix stores a list of formulas and a proof of every member.
+Extending it with a rule is a single host-level construction.  This design has
+several advantages:
+
+\begin{itemize}
+\item the graph compiler is polymorphic in the ambient context;
+\item dependencies are ordinary formula membership, not a custom proof
+language;
+\item rules can close over arbitrary theorem-specific data and existing
+proofs;
+\item the final result is visibly an ordinary \texttt{Prf PRAAx} term.
+\end{itemize}
+
+A more strongly typed graph DSL may be added later, but it is not needed for
+the central theorem.
+
+\subsection{Term-to-symbol compilation}
+
+The graph compiler must emit \texttt{PR} symbols, not arbitrary host
+functions.  The resources-and-elimination packet reports checked declarations
+\path{TermCompiler.symbol_correct} and
+\path{TermCompiler.transport_equation}.  These should be integrated and
+used to compile fixed term expressions to symbols with object equation proofs.
+
+The compiler should support:
+\begin{enumerate}
+\item variables and constants;
+\item composition;
+\item pairing, projections, and fixed finite tuples;
+\item primitive recursion;
+\item bounded conditionals and Boolean operations;
+\item finite table reads and writes;
+\item fixed reverse-index transformations.
+\end{enumerate}
+
+A host function returning \texttt{PR k} is acceptable because it constructs
+syntax.  A host function \(\N^k\to\N\) is not automatically acceptable; it
+must be accompanied by compilation and equations.
+
+\subsection{Boolean reflection packages}
+
+The blueprint defines
+
+\begin{lstlisting}[language={}]
+structure BoolReflection (phi : Fm PTm n) where
+  arity    : Nat
+  code     : PR arity
+  args     : Fin arity -> PTm n
+  forward  : [phi] |-PRA checked code args
+  backward : [checked code args] |-PRA phi
+\end{lstlisting}
+
+The implementation order is:
+
+\begin{enumerate}
+\item prove equality and Boolean operation equations;
+\item define \texttt{allBelow}, \texttt{anyBelow}, and \texttt{leastBelow};
+\item prove their object reflection by \texttt{PRA.qfInd};
+\item define a host inductive syntax \texttt{BForm};
+\item recursively compile every constructor to a \texttt{BoolReflection}.
+\end{enumerate}
+
+Implication needs decidability of the recursively compiled subformulas, not
+classical excluded middle.  The reflection fields provide the required case
+split.
+
+\subsection{Finite table library}
+
+A reusable table module should expose:
+
+\begin{lstlisting}[language={}]
+Table.empty     : PR ...
+Table.read      : PR ...
+Table.write     : PR ...
+Table.length    : PR ...
+Table.mapFold   : PR ...
+Table.all       : PR ...
+Table.any       : PR ...
+\end{lstlisting}
+
+and object derivations for read-after-write, read-other, length, fold equations,
+and bounded validity.  The exact encoding can be pairing-based or sequence-
+number based.  What matters is a small equation interface.
+
+For fixed graph size, an even simpler tuple code suffices.  The general table
+library is useful for variable finite lists such as point enumerations and
+candidate clouds.
+
+\subsection{Demand compiler}
+
+Define a host structure for a fixed node specification:
+
+\begin{lstlisting}[language={}]
+structure NodeSpec where
+  predecessors : Array Nat
+  demand       : Array (PR demandArity)
+  localRule    : Rule parameterArity
+  -- plus syntax for evaluator/certificate fields
+\end{lstlisting}
+
+The host compiler checks topological order, constructs the reverse-pass PR
+symbol, and emits formulas for each table row.  The object proof has two
+levels.
+
+\begin{enumerate}
+\item Defining equations of the reverse recurrence, reusing the checked
+\path{DemandCompiler.object_backward_zero} and
+\path{DemandCompiler.object_backward_succ} results where their interfaces match.
+\item A quantifier-free invariant stating that the completed suffix of the
+demand table satisfies all edge inequalities.
+\end{enumerate}
+
+The demand leastness theorem can be a separate object theorem.  Forward
+correctness needs only soundness; leastness is valuable for complexity and
+review.
+
+\subsection{Finite dispatch}
+
+A trace step for a fixed graph must dispatch on a program counter.  The
+recommended route is a compiled selector term and one finite theorem:
+
+\begin{quote}
+If \(pc<N\) and branch \(i\) preserves the invariant for every numeral
+\(i<N\), then the selector-dispatched step preserves the invariant.
+\end{quote}
+
+Because \(N\) is fixed by the host graph, the proof constructor can recursively
+nest Boolean equality cases and apply the corresponding branch derivation.  It
+does not need induction on arbitrary program syntax.
+
+Alternatively, generate a specialized step proof directly as a nested
+\texttt{orE} tree.  This may produce larger terms but is simple and robust.
+
+\subsection{Relational viability module}
+
+The viability recurrence should use reverse time \(r=H-i\), avoiding
+subtraction in the primitive-recursion argument.  Define a PR table
+\(W(H,r,a,\vec x)\) whose row \(r\) corresponds to level \(H-r\).  The step
+uses \texttt{anyBelow} over the next cloud.
+
+Main targets:
+
+\begin{lstlisting}[language={}]
+viable_iff_path
+leastViable_start
+leastViable_edge
+leastViable_valid
+leastPath_lexicographic
+shrinking_step_bound
+shrinking_cauchy
+\end{lstlisting}
+
+The path predicate is itself a bounded checker over a table code.  Thus
+\texttt{viable\_iff\_path} is a quantifier-free induction theorem after
+Booleanization.
+
+\subsection{Rational metric layer}
+
+Use normalized integer pairs or signed numerators with positive denominators.
+Required exact operations:
+
+\begin{itemize}
+\item equality and order by cross multiplication;
+\item absolute difference;
+\item powers of two;
+\item finite sums and maxima;
+\item interval containment and width;
+\item triangle inequality and telescoping.
+\end{itemize}
+
+The shrinking theorem needs no completed real-number type.  It proves a
+first-order inequality between rational observations.  A ``regular name'' is
+just a fixed PR symbol returning rational codes plus the embedded Cauchy
+formula.
+
+\subsection{End-to-end theorem shape}
+
+Every application should expose its final endpoint in a small audit module.
+For example:
+
+\begin{lstlisting}[language={}]
+def cubicObservableSentence : Fm PTm 0 := ...
+
+theorem cubicObservable :
+    ([] : List (Fm PTm 0)) |-PRA cubicObservableSentence := by
+  exact (compileGraph cubicGraph).head ...
+
+#print axioms cubicObservable
+\end{lstlisting}
+
+The audit should reject weaker endpoints such as a host theorem
+\texttt{CubicObservableSpec}, an uninstantiated goal structure, or a theorem
+that assumes the desired \texttt{Prf} term.
+
+\subsection{Recommended module graph}
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Module & Responsibility \\
+\midrule
+\path{ConciseIPRA.FiniteTrace} & integrated checked trace rule \\
+\path{ConciseIPRA.ObservableGlue} & integrated checked certificate combinators \\
+\texttt{PCOG.TermCompiler} & fixed term to \texttt{PR} plus equations \\
+\texttt{PCOG.Boolean} & Boolean operations and reflection \\
+\texttt{PCOG.BoundedFold} & all/any/least bounded search \\
+\texttt{PCOG.Table} & finite coded tables and invariants \\
+\texttt{PCOG.Demand} & reverse demand pass \\
+\texttt{PCOG.Graph} & \texttt{Rule}, \texttt{Compiled}, graph fold \\
+\texttt{PCOG.Cloud} & viability and least finite paths \\
+\texttt{PCOG.RationalMetric} & intervals, error algebra, telescoping \\
+\texttt{PCOG.Stable} & independent witnesses and gap collapse \\
+\texttt{PCOG.Examples.Cubic} & first end-to-end benchmark \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Formalization risks}
+
+The principal risks are engineering rather than conceptual.
+
+\begin{itemize}
+\item Scoped de Bruijn substitutions can make invariant instantiation verbose.
+The existing trace module already solves the hardest state/time substitution
+pattern; reuse it.
+\item Large nested conjunctions can cause proof-term and simplifier blowup.
+Use Boolean table checkers instead of formula-level conjunctions where
+possible.
+\item Host arrays and functions are not automatically \texttt{PR}.  Keep a
+clear boundary between compile-time graph traversal and emitted syntax.
+\item A theorem that proves a semantic evaluator correct does not supply its
+object equations.  Require equation derivations in every compiler result.
+\item Full normalization or transport to the native scalar core should be a
+final independent step via the repository's existing equivalence; do not mix
+it into the PCOG compiler.
+\end{itemize}
+
+\subsection{Verification protocol}
+
+A completed implementation should record:
+
+\begin{enumerate}
+\item repository commit and source hashes;
+\item Lean version and root Lake build output;
+\item \texttt{\#print axioms} for every public embedded theorem;
+\item absence of \texttt{sorry}, new opaque axioms, and
+\texttt{Classical.choice} in audited dependencies;
+\item theorem types confirming \texttt{Prf PRAAx}, not host analogues;
+\item finite executable tests only as supplementary evidence;
+\item a theorem ledger marking each target as definition, human proof,
+compiled host theorem, embedded proof, or conditional interface.
+\end{enumerate}
+
+The files in this archive follow the ledger discipline, but no Lean build is
+claimed for them in the present environment.

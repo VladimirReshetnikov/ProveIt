@@ -1,0 +1,222 @@
+\section{From local contracts to embedded derivations}
+\label{sec:internalization}
+
+This section proves the core compiler theorem at the human level and matches
+its pieces to the current Lean API.  The proof has two independent parts: a
+recursive component theorem, already available in checked form in the
+repository, and a finite topological composition theorem.
+
+\subsection{Finite-trace reflection}
+
+Let \(f:\N^k\to\N\) and \(g:\N^{k+2}\to\N\) be fixed primitive-recursive
+functions.  Write
+\[
+ r(0,\vec x)=f(\vec x),\qquad
+ r(t+1,\vec x)=g(t,r(t,\vec x),\vec x).
+\]
+The symbol for \(r\) is an instance of primitive recursion.
+
+\begin{theorem}[Finite-trace reflection]
+\label{thm:trace-reflection}
+Let \(I(s,t,\vec x)\) be quantifier-free.  Suppose iPRA has embedded
+derivations, under a context \(\Gamma(\vec x)\), of
+\begin{align}
+ I(f(\vec x),0,\vec x),&\label{eq:trace-base}\\
+ I(s,t,\vec x)\longrightarrow
+ I(g(t,s,\vec x),t+1,\vec x).&\label{eq:trace-step}
+\end{align}
+Then it has an embedded derivation of
+\[
+ \forall t\;I(r(t,\vec x),t,\vec x).
+\]
+For every PR fuel term \(F(\vec x)\), it consequently derives
+\[
+ I(r(F(\vec x),\vec x),F(\vec x),\vec x).
+\]
+\end{theorem}
+
+\begin{proof}
+Apply quantifier-free induction to
+\(J(t,\vec x)\defeq I(r(t,\vec x),t,\vec x)\).  Substitution preserves the
+quantifier-free property.  At zero, the defining equation for primitive
+recursion rewrites \(r(0,\vec x)\) to \(f(\vec x)\), after which
+\eqref{eq:trace-base} applies.  For the successor step, assume \(J(t,\vec x)\),
+instantiate \eqref{eq:trace-step} with \(s=r(t,\vec x)\), and use the successor
+defining equation to rewrite
+\(r(t+1,\vec x)\) to \(g(t,r(t,\vec x),\vec x)\).  Universal elimination at
+\(F(\vec x)\) gives the specialized statement.
+\end{proof}
+
+This proof is exactly the mathematical content of the repository's checked
+\path{primitiveRecursionInvariant} and \path{primitiveRecursionAt}
+constructors.  The important point is that the premises in a trace package are
+object derivations.  The theorem does not inspect whether the invariant is
+true in the standard model.
+
+\subsection{Terminal extraction}
+
+\begin{corollary}[Trace finalization]
+\label{cor:trace-finalization}
+Under the hypotheses of Theorem~\ref{thm:trace-reflection}, suppose iPRA also
+derives
+\[
+ I(r(F(\vec x),\vec x),F(\vec x),\vec x)\longrightarrow B(\vec x).
+\]
+Then iPRA derives \(B(\vec x)\).
+\end{corollary}
+
+\begin{proof}
+Specialize the universal invariant at \(F\) and apply implication elimination.
+In the embedded calculus this is one use of simultaneous cut or two natural
+deduction constructors.
+\end{proof}
+
+The checked stable-observables module already implements this pattern as
+\path{loopProducesCertificate}.  The PCOG Lean core packages the same
+operation as \path{TraceExit.compile}.
+
+\subsection{Topological proof composition}
+
+Let \(G\) be a finite topologically ordered graph with node outputs
+\(B_0,\ldots,B_{N-1}\).  Node \(i\) names a list
+\(R_i\subseteq\{B_0,\ldots,B_{i-1}\}\) and carries a proof constructor which,
+for every context \(\Gamma\), maps proofs of all formulas in \(R_i\) to a
+proof of \(B_i\).
+
+\begin{theorem}[Finite proof-graph compilation]
+\label{thm:proof-graph}
+From the node constructors of a finite topologically ordered proof graph and
+embedded proofs of its initial assumptions, one can construct an embedded
+proof of every node output, in particular the designated final output.
+\end{theorem}
+
+\begin{proof}
+Induct on the node list.  The empty prefix has no outputs.  Suppose proofs have
+been constructed for all outputs in the prefix.  Every requirement of the
+next node occurs in that prefix by the topological-order condition, so retrieve
+its proof and feed the finite family to the node constructor.  Add the new
+proof to the prefix table.  After \(N\) steps, the final formula has a proof.
+This induction is performed in the host proof assistant over the finite graph;
+it is not an induction axiom inside iPRA.  Each generated edge is an ordinary
+composition of embedded \texttt{Prf} terms.
+\end{proof}
+
+The accompanying Lean source gives the intended implementation.  A
+\texttt{Compiled} prefix stores a list of formulas and a function proving any
+member.  \texttt{Compiled.extend} performs the inductive step.  The design
+requires no decidable equality on formulas beyond the ordinary elimination of
+list membership.
+
+\subsection{Staged internalization theorem}
+
+We can now state the main result.
+
+\begin{theorem}[Staged internalization]
+\label{thm:staged-internalization}
+Let \(G\) be a fixed finite PCOG over free numerical parameters \(\vec x\).
+Assume:
+\begin{enumerate}
+\item every function appearing in \(G\) has been compiled to a concrete
+symbol of \texttt{PR};
+\item every bounded predicate has a Boolean reflection package as in
+Theorem~\ref{thm:bounded-booleanization};
+\item every exact node carries an embedded proof of its local equations or
+contract;
+\item every trace node carries a trace package and a finalizer satisfying
+Theorem~\ref{thm:trace-reflection};
+\item every relational node carries embedded proofs of its finite validity,
+compatibility, and bounded-search contracts;
+\item every observation and finalizer node carries the stated embedded local
+proof constructor;
+\item all dependency and demand edges respect the graph's topological and
+resource contracts.
+\end{enumerate}
+Then there is an effective host construction of a term
+\[
+  \Prf\;\PRAAx\;\Gamma\;\Phi_G,
+\]
+where \(\Phi_G\) is the final graph formula.  If \(\Gamma\) consists of input
+validity assumptions, the assumptions can be universally closed and introduced
+as implications to obtain a closed theorem.
+\end{theorem}
+
+\begin{proof}
+First compile every trace node independently using
+Theorem~\ref{thm:trace-reflection} and its finalizer.  This turns each recursive
+component into an ordinary proof-producing rule.  Exact, relational, and
+observation nodes already have that form.  The component graph is finite and
+acyclic by construction, so apply Theorem~\ref{thm:proof-graph}.  The result is
+an embedded derivation under \(\Gamma\).  Repeated universal introduction and
+implication introduction close the free parameters and hypotheses, using the
+scoped substitution/weakening lemmas of the backend.
+\end{proof}
+
+The theorem is ``effective'' in a precise metatheoretic sense: a Lean function
+can build the proof term from finite node packages.  It is not asserting that
+an iPRA program can interpret an arbitrary encoded graph.
+
+\subsection{Why no universal evaluator is needed}
+
+A total primitive-recursive universal evaluator for all primitive-recursive
+program codes cannot exist.  If \(U(e,x)\) were PR and represented every unary
+PR function, then
+\[
+ d(x)=U(x,x)+1
+\]
+would be PR and would differ from the function represented by its own code at
+that code.  This diagonal contradiction is elementary and formalizable at the
+metalevel.
+
+The staged compiler avoids the premise.  Given a fixed node syntax tree, the
+host recursively constructs a \texttt{PR} value by the inductive constructors
+\texttt{zero}, \texttt{succ}, \texttt{proj}, \texttt{comp}, and
+\texttt{prec}.  The resulting arithmetic theorem mentions that one concrete
+symbol.  Another graph produces another symbol.  There is no \(U\) taking a
+runtime code.
+
+\begin{principle}[Specialize before internalizing]
+Whenever a proposed framework seems to require interpreting arbitrary program
+syntax inside iPRA, move the interpretation to the host compiler and emit
+concrete \texttt{PR} syntax.  Quantification over numerical \emph{inputs} is
+allowed; quantification over arbitrary program \emph{codes} is not needed.
+\end{principle}
+
+\subsection{Composition and substitution}
+
+Suppose one compiled graph proves \(A(\vec x)\), and a second graph, under
+assumption \(A(\vec y)\), proves \(B(\vec y)\).  A term substitution
+\(\vec y=\vec t(\vec x)\) turns the second derivation into one under
+\(A(\vec t(\vec x))\).  If the first graph exports that instance, simultaneous
+cut yields \(B(\vec t(\vec x))\).  This is the formal content of contract
+composition.
+
+Precision composition occurs separately: the second graph's backward pass
+computes demands on \(A\)'s observations, which become output requests to the
+first graph.  Keeping logical composition and precision composition separate
+is valuable.  The former is proof substitution and cut; the latter is a
+primitive-recursive numerical program whose soundness is one of the local
+contracts.
+
+\subsection{Acyclic normalization of complex algorithms}
+
+An arbitrary fixed algorithm built from primitive recursion, bounded search,
+and finite composition can be converted to PCOG normal form:
+\begin{enumerate}
+\item identify maximal uniform recurrences and package each as a trace node;
+\item replace bounded existential choices by least-search or relational cloud
+nodes;
+\item isolate all error estimates and algebraic identities as local proof
+nodes;
+\item collapse witness-dependent outputs to stable observations only after a
+comparison theorem;
+\item connect the resulting components by an acyclic dependency graph.
+\end{enumerate}
+
+Nested loops do not require nested logical induction if their inner run is
+compiled to a PR symbol with a proved contract; the outer invariant invokes
+that contract as a node rule.  When the inner loop's correctness depends on an
+outer state, its theorem is uniformly parameterized by that state.
+
+This normal form is the proposed organizing principle for future theorem
+packets.  It gives a standard answer to ``where is the actual iPRA proof?'':
+it is the result of compiling the trace packages and folding the proof graph.

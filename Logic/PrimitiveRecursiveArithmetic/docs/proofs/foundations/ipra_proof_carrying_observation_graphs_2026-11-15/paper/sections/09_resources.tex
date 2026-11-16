@@ -1,0 +1,203 @@
+\section{Resource compilers: descent, windows, and complete lists}
+\label{sec:resources}
+
+A finite algorithm is useful to iPRA only when its stopping resource is
+primitive recursive and its correctness can be maintained by a
+quantifier-free invariant.  This section collects three generic resource
+constructions that resolve recurring gaps in theorem packets.
+
+\subsection{Fixed-dimensional lexicographic descent}
+
+Let a state carry a tuple
+\[
+  a=(a_0,\ldots,a_{d-1}),\qquad 0\leq a_i\leq H_i(\vec x),
+\]
+where the dimension \(d\) is externally fixed.  Suppose every nonterminal step
+strictly decreases the tuple in lexicographic order, while lower-priority
+coordinates may reset within their bounds.
+
+Define the mixed-radix rank
+\[
+ \rho(a)=a_0\prod_{j=1}^{d-1}(H_j+1)
+ +a_1\prod_{j=2}^{d-1}(H_j+1)+\cdots+a_{d-1}.
+\]
+
+\begin{lemma}[Mixed-radix descent]
+\label{lem:mixed-radix}
+If \(b<_{\mathrm{lex}}a\) and both tuples satisfy the coordinate bounds, then
+\(\rho(b)<\rho(a)\).  Consequently every strict lexicographic descent has
+length less than
+\[
+  \prod_{i=0}^{d-1}(H_i+1).
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(r\) be the first coordinate where \(a\) and \(b\) differ.  Then
+\(b_r\leq a_r-1\).  Decreasing coordinate \(r\) lowers the rank by at least
+\(\prod_{j>r}(H_j+1)\).  The largest possible increase in all later
+coordinates is
+\[
+ \sum_{i>r}H_i\prod_{j>i}(H_j+1)
+ =\prod_{j>r}(H_j+1)-1.
+\]
+The net change is therefore at most \(-1\).  The rank is nonnegative and below
+the product of radices, so the chain-length bound follows.
+\end{proof}
+
+All products are primitive recursive for fixed \(d\).  The lemma yields a
+fuel term for Euclidean descent, reduction algorithms, finite rewrite systems,
+triangular elimination, and bounded searches with resetting counters.
+
+If coordinate bounds depend monotonically on time or earlier states, replace
+\(H_i\) by a proved envelope.  More sophisticated nested-iteration bounds from
+the resources packet can be used when a simple product is too weak.  The
+fixed-dimension condition must remain visible: arbitrary input-dependent
+nesting depth can escape primitive recursion.
+
+\subsection{Simultaneous finite-window selection}
+
+Suppose a finite interval \([0,L)\) has exceptional predicates
+\(E_1,\ldots,E_m\).  Assume each has a proved counting budget
+\[
+ \#\{i<L:E_j(i)\}\leq b_j.
+\]
+
+\begin{theorem}[Finite union window]
+\label{thm:finite-window}
+If \(L>\sum_{j=1}^m b_j\), bounded least search constructs an
+\(i<L\) satisfying none of the \(E_j\).  iPRA proves the witness's goodness.
+\end{theorem}
+
+\begin{proof}
+The indicator of the union is bounded by the sum of indicators:
+\[
+ [E_1(i)\vee\cdots\vee E_m(i)]
+ \leq\sum_j[E_j(i)].
+\]
+Sum over \(i<L\) using a bounded fold to obtain a union count at most
+\(\sum_jb_j<L\).  Therefore not every index is exceptional.  Apply
+Theorem~\ref{thm:least-search} to the complement predicate.
+\end{proof}
+
+This theorem combines finitely many variation, oscillation, bad-prime, or
+singular-index estimates.  It is often the correct constructive replacement
+for an informal diagonal subsequence argument.  The output is a finite stable
+window for the requested parameters, not a global convergence rate unless the
+budgets themselves provide one.
+
+\subsection{Height bounds and complete lists}
+
+Let \(P(z,x)\) be a decidable predicate on coded objects \(x\), and
+\(h(x)\) a natural-valued height.  Suppose a primitive-recursive enumerator
+\(E(B)\) lists every valid code of height at most \(B\).  For rationals, one
+can enumerate reduced numerator-denominator pairs; for integer tuples,
+bounded boxes; for polynomials, bounded coefficient arrays.
+
+\begin{theorem}[Height-to-list]
+\label{thm:height-to-list}
+If iPRA proves
+\[
+ P(z,x)\longrightarrow h(x)\leq B(z),
+\]
+then filtering \(E(B(z))\) by the Boolean checker for \(P\) yields a
+primitive-recursive complete finite list of all \(x\) satisfying \(P(z,x)\).
+The list comes with embedded soundness and completeness proofs.
+\end{theorem}
+
+\begin{proof}
+Every listed output passes the predicate checker, so soundness follows from
+its reflection theorem.  Conversely, if \(P(z,x)\), the height theorem gives
+\(h(x)\leq B(z)\); enumeration completeness places an equivalent code for
+\(x\) in \(E(B(z))\), and the predicate reflection ensures that filtering
+retains it.  All scans are bounded by the explicit finite enumeration size.
+\end{proof}
+
+\begin{theorem}[List-to-height]
+\label{thm:list-to-height}
+Suppose a finite list \(L(z)\) is proved complete for \(P(z,-)\).  Then
+\[
+ B_L(z)=\max\{h(x):x\in L(z)\},
+\]
+with default zero for the empty list, is a primitive-recursive height bound for
+all solutions.
+\end{theorem}
+
+\begin{proof}
+Completeness gives, for every solution \(x\), a list position containing an
+equivalent code.  Height invariance under code equivalence and the defining
+property of the finite maximum yield \(h(x)\leq B_L(z)\).
+\end{proof}
+
+Thus, for decidable coded sets with an explicit bounded-height enumerator, a
+proved height bound and a proved complete finite list are interconvertible
+interfaces.  This is an important simplification: theorem packets may choose
+whichever producer is mathematically natural.
+
+\subsection{Why cardinality is different}
+
+A statement \(\#\{x:P(z,x)\}\leq N\) does not supply a height bound.  The
+solutions can be arbitrarily sparse and delayed.  A uniform conversion from
+cardinality to cutoff would decide halting in standard coding examples: make a
+singleton appear at the halting time of a machine, or leave the set empty if it
+never halts.  The set always has cardinality at most one, but a uniform cutoff
+containing it would decide whether and when the machine halts.
+
+\begin{barrier}[Cardinality is not a search resource]
+The PCOG compiler accepts a height/cutoff theorem, a complete list, or a finite
+cover whose exhaustive expansion has a bound.  It does not accept a bare
+cardinality bound as sufficient input to a complete search node.
+\end{barrier}
+
+This boundary pinpoints the missing component in several arithmetic-geometry
+packets.  A zero-count or dimension argument may bound the number of points in
+a section; it does not by itself enumerate the rational points.
+
+\subsection{Finite auxiliary exhaustion}
+
+Sometimes every target object admits some auxiliary certificate in a finite
+box, but there is no uniform selector choosing the auxiliary from the target.
+The correct construction exhausts the auxiliary box.
+
+Let \(A<B(z)\) range over all auxiliary codes.  For each \(A\), suppose a
+complete finite list \(L_A(z)\) of objects compatible with \(A\) can be
+computed.  If every target \(x\) has at least one good auxiliary
+\(A<B(z)\), then the union of all \(L_A(z)\), filtered by the target predicate,
+is complete.  No function \(x\mapsto A_x\) is needed.
+
+This method applies to finite polynomial auxiliaries, local charts, modular
+lifts, descent coverings, and finite families of subspaces.  The coverage
+theorem---that every target has a good auxiliary in the finite box---remains
+the substantive obligation.
+
+\subsection{Certificate-producing termination}
+
+A terminating trace should ideally export not just its output but a certificate
+of why it stopped: rank zero, residual below threshold, no remaining
+candidate, completed table length, or checker success.  The invariant then
+proves:
+\begin{enumerate}
+\item the rank stays within its envelope;
+\item every nonterminal step lowers rank;
+\item fuel exceeds the initial rank;
+\item therefore the terminal flag is set by the end;
+\item the terminal certificate implies the public postcondition.
+\end{enumerate}
+
+This pattern avoids reliance on host evaluation of the fuel.  The arithmetic
+proof knows that the run has reached a certified terminal state.
+
+\subsection{Combining resource nodes}
+
+Resource bounds compose in the same graph as precision.  A polynomial
+factorization node may need:
+\begin{itemize}
+\item coefficient precision from a backward demand;
+\item a degree bound from input validity;
+\item a descent fuel from Lemma~\ref{lem:mixed-radix};
+\item a root-height cutoff from a local theorem;
+\item an exceptional-index window from Theorem~\ref{thm:finite-window}.
+\end{itemize}
+These become predecessor outputs.  The factorization trace begins only after
+the graph has produced proofs of all of them.  This explicit dependency
+structure is the primary benefit of PCOG over an informal ``effective'' proof.

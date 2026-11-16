@@ -1,0 +1,204 @@
+\section{Backward demand propagation and finite-use composition}
+\label{sec:demand}
+
+Precision and resource requirements flow opposite to data.  A consumer knows
+how accurately it must answer; from that it computes how accurately each
+predecessor must be observed.  The graph then runs forward at the resulting
+demands.  This reverse--forward architecture turns the phrase ``choose all
+approximations sufficiently fine'' into a primitive-recursive program with a
+proof obligation.
+
+\subsection{Static demand graphs}
+
+Let the graph nodes be \(0,\ldots,N-1\) in topological order.  For every edge
+\(i\to j\), the consumer \(j\) has a monotone demand transformer
+\[
+ \delta_{j,i}:\N\times Z\longrightarrow\N,
+\]
+where \(Z\) denotes fixed input parameters and finite summaries known before
+the producer runs.  Let \(q_i\) be the externally requested demand at node
+\(i\), usually zero except at exported outputs.  Define demands in reverse
+order by
+\begin{equation}
+ d_i=\max\left(q_i,
+       \max_{i\to j}\delta_{j,i}(d_j,z)\right).
+ \label{eq:backward-demand}
+\end{equation}
+The empty maximum is zero.
+
+Because \(N\) and the adjacency lists are fixed, this is a finite composition
+of PR functions and maximum, hence primitive recursive.  One may compile it
+as straight-line syntax or as a fixed-length reverse table fold.
+
+\begin{theorem}[Soundness and leastness of backward demands]
+\label{thm:demand-least}
+Assume every \(\delta_{j,i}\) is monotone in its demand argument.  The vector
+\(d\) defined by \eqref{eq:backward-demand} satisfies:
+\begin{enumerate}
+\item \(d_i\geq q_i\) for every node;
+\item \(d_i\geq\delta_{j,i}(d_j,z)\) for every edge \(i\to j\);
+\item if \(e\) satisfies the preceding two families of inequalities, then
+\(e_i\geq d_i\) for every \(i\).
+\end{enumerate}
+Thus \(d\) is the pointwise least safe demand assignment.
+\end{theorem}
+
+\begin{proof}
+The first two statements follow directly from the defining maxima.  For
+leastness, use reverse induction on \(i\).  Suppose \(e_j\geq d_j\) for all
+successors \(j>i\).  Monotonicity gives
+\(\delta_{j,i}(e_j,z)\geq\delta_{j,i}(d_j,z)\).  Since \(e\) is safe,
+\(e_i\) dominates \(q_i\) and every left-hand edge demand evaluated at
+\(e_j\), hence it dominates the maximum defining \(d_i\).
+\end{proof}
+
+For formalization, the reverse induction is implemented as a forward primitive
+recursion on the reverse index \(r=N-1-i\).  A table invariant states that all
+already-filled rows equal their defining maxima.  The relevant packet already
+contains checked object derivations for the zero and successor equations of a
+backward-demand compiler; these should be reused rather than reimplemented.
+
+\subsection{Local soundness under computed demands}
+
+A deterministic node contract is parameterized by a requested output demand:
+\begin{equation}
+ \left(\bigwedge_{i\to j}
+  \Valid_i(x_i,\delta_{j,i}(q,z))\right)
+ \wedge \Cert_j(\vec x,q,c)
+ \longrightarrow
+ \Valid_j(E_j(\vec x,q,c),q).
+ \label{eq:node-contract}
+\end{equation}
+If predecessor \(i\) is produced validly at \(d_i\), restriction coherence and
+Theorem~\ref{thm:demand-least} give validity at
+\(\delta_{j,i}(d_j,z)\).  Instantiating \eqref{eq:node-contract} at
+\(q=d_j\) therefore proves node \(j\)'s output valid at \(d_j\).
+
+\begin{theorem}[Forward graph validity]
+\label{thm:forward-validity}
+Suppose every source node is valid at its computed demand, every node has a
+local contract of the form \eqref{eq:node-contract}, and restriction is sound.
+Then a topological forward run produces every node valid at its computed
+demand.  In particular every exported node is valid at its external request.
+\end{theorem}
+
+\begin{proof}
+Induct in topological order.  At node \(j\), all predecessors are valid at
+their computed demands by the induction hypothesis.  Restrict them to the
+local demands, use the node certificate, and apply the local contract.  The
+external conclusion follows from \(d_j\geq q_j\) and restriction.
+\end{proof}
+
+This theorem is intentionally modular: the backward pass establishes only
+numerical inequalities; the forward proof establishes only validity.  The two
+are joined by restriction coherence.
+
+\subsection{Multiple resources}
+
+Demand need not be a single precision.  A resource vector can contain:
+\[
+ (\text{precision},\text{degree},\text{coefficient height},
+   \text{matrix dimension},\text{iteration fuel},\text{exception budget}).
+\]
+Use the componentwise preorder and componentwise join.  A demand transformer
+returns a resource vector, and the reverse equation uses joins instead of
+maximum.  The leastness proof is unchanged for any finite product of
+join-semilattices with monotone transformers.  Since the number of coordinates
+is fixed, all joins are PR.
+
+This generalization is useful in algebraic geometry.  A consumer may need a
+jet of order \(m\), coefficients at height \(H\), and a denominator apartness
+bound \(a\).  Flattening these into one enormous scalar obscures the proof;
+keeping a fixed tuple makes the contract readable while remaining a natural
+number code internally.
+
+\subsection{Value-dependent demands}
+
+Some algorithms appear to demand precision based on a value produced later.
+Three constructively legitimate repairs cover most cases.
+
+\paragraph{Safe envelope.}
+Replace the exact value-dependent demand by a monotone upper bound computed
+from input parameters and already available magnitude certificates.  This is
+the preferred method for arithmetic operations.
+
+\paragraph{Challenge summary.}
+Run a coarse finite pass that computes a bounded summary \(z\), such as an
+estimated magnitude class, a pivot location, or a candidate degree.  The
+backward demand pass is then allowed to depend on \(z\), and a second forward
+pass replays the computation at the resulting demands.  The summary's
+correctness is itself a trace-node contract.
+
+\paragraph{Relational retention.}
+If no stable summary can be selected, carry every finite candidate and let the
+consumer quantify over the cloud.  Backward viability can eliminate candidates
+that cannot extend to the requested horizon.  No value-dependent global
+selector is needed.
+
+What is not legitimate is a circular definition in which the producer needs a
+demand that depends on an exact output obtainable only after running the
+producer at that demand.  A PCOG must break the circle by one of the three
+methods above.
+
+\subsection{Two-pass trace invariant}
+
+A fixed graph can be executed by one state machine with two phases:
+\begin{enumerate}
+\item reverse phase: fill the demand table;
+\item forward phase: fill the value and certificate table.
+\end{enumerate}
+A state encodes the phase, program counter, demand table, output table, and
+certificate flags.  Its quantifier-free invariant says:
+
+\begin{itemize}
+\item the program counter lies in the phase's fixed range;
+\item every completed reverse row satisfies \eqref{eq:backward-demand};
+\item every completed forward row is valid at its recorded demand;
+\item untouched rows contain fixed defaults;
+\item the demand table is unchanged during the forward phase;
+\item every certificate flag corresponds to a checker returning one.
+\end{itemize}
+
+All universal statements over completed rows are represented by bounded
+Boolean folds.  The step proof dispatches on the fixed program-counter range.
+Theorem~\ref{thm:trace-reflection} then proves the invariant at the terminal
+state.
+
+For maintainability, the recommended implementation uses separate trace nodes
+for reverse and forward passes, connected by the static proof graph.  The
+single-state-machine presentation is nevertheless useful as a completeness
+argument: the entire finite graph can, in principle, be reduced to one
+primitive recursion and one quantifier-free induction.
+
+\subsection{Composition law for contracts}
+
+Suppose \(F:X\to Y\) has demand \(\delta_F\) and \(G:Y\to Z\) has demand
+\(\delta_G\).  The composite demand is
+\[
+ \delta_{G\circ F}(p)=\delta_F(\delta_G(p)).
+\]
+If each local validity theorem is embedded, the composite theorem is obtained
+by instantiating \(F\)'s contract at \(\delta_G(p)\), then applying \(G\)'s
+contract at \(p\).  This is ordinary cut.
+
+For a DAG, reverse propagation computes the closure of this composition across
+all paths and takes the maximum where a producer is shared.  Therefore a
+shared node is evaluated once at the greatest demand of all consumers.  Its
+result can be restricted independently along each outgoing edge.
+
+\subsection{Precision accounting as proof data}
+
+The demand vector should be retained in certificates and theorem statements,
+not erased after execution.  It supports three audits:
+
+\begin{enumerate}
+\item \emph{dependency audit}: which input observations were actually read;
+\item \emph{complexity audit}: what bounded fuel and table sizes were used;
+\item \emph{soundness audit}: whether every local theorem was instantiated at
+a demand no larger than the data supplied.
+\end{enumerate}
+
+This is especially useful for large theorem packets.  A machine-readable graph
+certificate can list each node, its demand expression, local theorem name, and
+predecessors.  The final Lean proof term remains authoritative, but the graph
+certificate makes the construction reviewable.

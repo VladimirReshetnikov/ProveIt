@@ -1,0 +1,310 @@
+\section{Application templates and repaired difficulty interfaces}
+\label{sec:applications}
+
+The framework is intended to organize many branches of mathematics without
+pretending that their deep quantitative content is automatic.  This section
+shows how the common compiler layer applies and identifies exactly what remains
+theorem-specific.
+
+\subsection{Finite algebra and linear algebra}
+
+For a fixed matrix dimension, every ring expression, determinant, minor,
+characteristic polynomial, and matrix product is a finite PR computation.
+The PCOG decomposition is:
+
+\begin{enumerate}
+\item exact nodes for coefficient and matrix arithmetic;
+\item bounded folds for finite sums and products;
+\item identity-certificate nodes for polynomial equalities;
+\item trace nodes for elimination or iterative reduction;
+\item observation nodes for invariants stable under basis or witness choices.
+\end{enumerate}
+
+This architecture covers constructive versions of Cayley--Hamilton, finite
+module computations, rational canonical data, determinant identities, and
+bounded Gröbner-style reductions.  The cleanest Cayley--Hamilton route uses a
+finite polynomial identity over the generic matrix and then substitutes the
+input entries.  The proof obligation is coefficientwise and bounded by the
+fixed dimension.  No eigenvalues are needed.
+
+For variable dimension \(n\), the algorithms remain PR because table sizes,
+permutation enumeration, and recursion depths are PR in \(n\).  The object
+proof uses one uniform invariant over coded matrices.  The challenge is not
+computability but the size and organization of algebraic lemmas.  Proof-
+carrying nodes permit each identity to be checked independently.
+
+\subsection{Polynomial systems and algebraic geometry}
+
+A finite affine polynomial system is coded by coefficient tables and degree
+bounds.  PCOG supports the following layers.
+
+\paragraph{Exact local algebra.}
+Evaluation, derivatives, Jacobians, resultants at fixed degree, Sylvester
+matrices, finite quotient-ring multiplication tables, and coefficientwise
+identities are exact nodes.  A certificate that a finite span contains one and
+is closed under multiplication by coordinates yields a finite-dimensional
+algebra bound by straightforward matrix checks.
+
+\paragraph{Filtered lifting.}
+Given a seed and a two-sided inverse Jacobian modulo the first filtration
+level, a fixed number of Newton-style updates in a nilpotent filtered ring is a
+trace node.  Residual improvement is the invariant.  The coherent-methods
+packet gives a broad human theorem for this situation.
+
+\paragraph{Root and branch observations.}
+Simple roots with a derivative apartness witness produce regular names by a
+contractive or Newton trace.  Singular fibers produce finite candidate clouds.
+Exact branch labels are exported only after a separation theorem.
+
+\paragraph{Finite covers and sections.}
+A cover is a finite relational output.  Restriction maps and overlap checks
+are bounded.  A global construction can be represented by compatible local
+observations and backward viability.  This gives a finitary interpretation of
+many sheaf-like arguments without quantifying over an actual infinite sheaf.
+
+\paragraph{Projective and graded data.}
+At each degree bound \(d\), homogeneous ideals, syzygies, Hilbert-function
+values, and finite graded pieces are coded tables.  A theorem requiring all
+degrees must supply a PR regularity or stabilization bound, or remain a family
+of finite statements indexed by \(d\).  The framework makes the missing
+regularity producer explicit.
+
+This is a plausible route to substantial algebraic geometry in iPRA: focus on
+finite presentations, explicit degree bounds, local certificates, and
+quantitative stabilization.  It does not collapse abstract existence theorems
+without effective bounds into finite computation.
+
+\subsection{Analysis and differential equations}
+
+Constructive analysis in iPRA is naturally expressed through regular rational
+names and finite error certificates.
+
+\paragraph{Series and products.}
+A partial-sum node is a trace whose invariant records the exact recurrence and
+an error bound.  A tail estimate node turns a requested precision into a
+truncation demand.  The finalizer combines the partial sum and tail bound.
+
+\paragraph{Differential equations.}
+For rational polynomial ODEs on a certified bounded region, Euler or Taylor
+schemes are trace nodes.  The invariant records state bounds, residual bounds,
+and error recurrence.  Conservation laws are exact polynomial observation
+nodes.  A local solution theorem needs explicit Lipschitz and region-invariance
+certificates; larger horizons need a separate continuation resource.
+
+\paragraph{Integration.}
+Riemann sums, quadrature rules, and interval enclosures are finite tables.  A
+modulus of continuity or derivative bound determines mesh demand.  The
+integral is a stable observable.  Improper integrals require a tail modulus.
+
+\paragraph{Special functions.}
+Instead of importing a completed transcendental object, define a PR rational
+name by a recurrence or ODE trace and prove its contracts.  Identities between
+special functions become comparison nodes or polynomial conservation laws.
+
+A recurrent danger is to prove a convergence theorem in ambient Lean and then
+use its limit as if it were an iPRA term.  PCOG prevents this: the exported
+object is always the PR name plus first-order error theorem.
+
+\subsection{Topology and finite geometry}
+
+General point-set topology is not a primitive-recursive data type, but many
+usable topological constructions have finite quantitative presentations.
+
+\paragraph{Finite spaces and complexes.}
+Finite preorders, simplicial complexes, chain groups, boundary matrices, and
+homology up to a fixed degree are exact finite data.  Reduction algorithms are
+bounded traces.  Invariants such as Betti numbers are stable observations.
+
+\paragraph{Compact metric presentations.}
+A compact object can be represented by PR finite nets with coverage proofs and
+refinement maps.  Uniformly continuous maps carry explicit moduli.  Products,
+images, finite covers, and approximate fixed-point searches become demand
+graphs.  Exact points require additional uniqueness or contraction data.
+
+\paragraph{Homotopy data.}
+At a fixed mesh, homotopies are finite tables with local compatibility
+checks.  Passing to arbitrary precision needs a refinement theorem and a PR
+modulus.  A theorem that only asserts abstract compactness without such data
+cannot be compiled directly.
+
+The framework thus interprets topology through finite observations rather than
+through arbitrary collections of open sets.  This is not merely a coding
+restriction; it identifies which topological theorems have quantitative
+computational content at iPRA strength.
+
+\subsection{Category-theoretic organization}
+
+Category theory is useful as an external language for composing finite
+presentations.  Fix a class of presentations and proof-carrying morphisms.
+Objects are code/validity/restriction packages; a morphism is a PR transformer
+with demand and local soundness proof.  Identity and composition are given by
+identity functions and demand composition.  Associativity holds by equality
+of the emitted PR syntax up to provable extensional equality.
+
+At the internal first-order level, one need not formalize a universe of all
+categories.  Each theorem uses a fixed finite diagram.  Limits, colimits,
+adjunction components, or Yoneda-style evaluations become finite graph
+constructions for that diagram.  The categorical layer organizes the host
+compiler, while the emitted theorem remains ordinary iPRA syntax.
+
+This distinction avoids a common overreach: a categorical proof can guide the
+compiler without requiring iPRA to quantify over arbitrary functors or natural
+transformations as higher-order objects.
+
+\subsection{Number theory and bounded arithmetic}
+
+Many elementary and computational number-theoretic arguments fit directly.
+
+\begin{itemize}
+\item Euclidean algorithms and continued fractions use ranked trace nodes.
+\item Primality and factorization certificates use bounded verification and
+finite search; a total factorization producer is PR by bounded trial division,
+though inefficient.
+\item Congruence lifting and Chinese remainder calculations are exact nodes.
+\item Finite sums over divisors, residue classes, or combinatorial partitions
+are bounded folds.
+\item Diophantine searches are complete once a height bound or finite cover is
+supplied.
+\item Explicit analytic number theory can use rational interval arithmetic,
+finite prime tables, and proved remainder estimates.
+\end{itemize}
+
+The hard part of advanced prime-distribution theorems is not representing
+finite sums.  It is supplying uniform effective estimates with a strength and
+logical form available in iPRA.  PCOG can verify and compose such estimates;
+it cannot infer them from their classical existence.
+
+\subsection{Repairing the Siegel and Faltings interfaces}
+
+The proof collection contains zero-count, norm, section, and finite-cover
+arguments relevant to Siegel and Faltings.  These solve genuine local
+obligations but not the general effective theorem.  The PCOG framework gives a
+precise conditional endpoint.
+
+Let \(C\) be a coded curve or variety and \(P(C,x)\) the decidable predicate
+that \(x\) is a rational or integral point in normalized code.  Suppose a node
+produces an explicit height bound \(B(C)\) with an embedded proof
+\[
+ P(C,x)\longrightarrow \height(x)\leq B(C).
+\]
+Then Theorem~\ref{thm:height-to-list} produces a complete finite point list.
+All algebraic verification, duplicate removal, and completeness bookkeeping
+are routine PCOG nodes.
+
+Alternatively, suppose a node produces a finite auxiliary cover and every
+point lies in some section for which a complete bounded list is available.
+Finite auxiliary exhaustion produces the point list without selecting a
+section per point.
+
+This resolves the \emph{post-bound} formalization problem completely.  It does
+not provide the missing general height or cover producer.  The report therefore
+recommends that future Siegel/Faltings packets state their unproved interface
+as exactly one of:
+
+\begin{enumerate}
+\item a PR height-bound symbol plus its embedded theorem;
+\item a PR complete-list symbol plus soundness and completeness;
+\item a finite cover producer plus coverage and section-completeness proofs.
+\end{enumerate}
+
+A cardinality theorem alone should not be presented as enough for enumeration.
+
+\subsection{Repairing the Mordell--Weil interface}
+
+A constructive Mordell--Weil theorem can be decomposed into:
+
+\begin{enumerate}
+\item exact coded group-law nodes on rational points;
+\item a finite descent map and local solvability certificates;
+\item a finite covering list of relevant cosets or homogeneous spaces;
+\item a height-reduction theorem and bounded descent fuel;
+\item a finite list of generators and an embedded proof that every point
+reduces to their span.
+\end{enumerate}
+
+PCOG handles steps 1, 2, 4, and the verification side of 5.  The unresolved
+general issue is a uniform effective producer for the covering list and the
+necessary arithmetic information.  If that list is supplied, backward
+viability can retain all locally compatible lifts and finite auxiliary
+exhaustion can avoid arbitrary selectors.
+
+The public theorem should distinguish:
+\begin{itemize}
+\item a conditional generator theorem from a supplied covering package;
+\item a complete theorem for explicitly bounded families;
+\item the still-missing uniform general producer.
+\end{itemize}
+
+\subsection{Repairing singular branches and exact orientation choices}
+
+For a simple analytic branch, a root seed and derivative apartness witness
+support a Newton or coefficient recurrence.  For a singular point, arbitrary
+Cauchy coefficient names do not uniformly determine exact Puiseux branch
+coefficients or labels.  The relational repair is:
+
+\begin{enumerate}
+\item at each truncation order, compute a finite cloud of candidate branch
+jets satisfying a residual checker;
+\item connect compatible truncations by an extension relation;
+\item use finite-horizon viability to remove dead ends;
+\item export symmetric or set-valued observations through collisions;
+\item collapse to one branch only with an isolation certificate.
+\end{enumerate}
+
+The same pattern applies to choosing an exact rotation axis at a symmetric or
+zero input.  A total exact side/axis selector can imply LLPO-like principles.
+A projective line, unoriented axis, finite candidate set, or gap-guarded exact
+choice is the correct output.
+
+\subsection{Prime-distribution packets}
+
+Dirichlet, Chebotarev, Brun--Titchmarsh, Siegel--Walfisz, and
+Bombieri--Vinogradov involve several layers:
+
+\begin{itemize}
+\item finite arithmetic functions and sums, which are straightforward PR
+nodes;
+\item rational approximations to analytic quantities, which need moduli and
+error traces;
+\item zero-free regions, density estimates, or exceptional-character bounds,
+which are substantive quantitative producers;
+\item final finite inequalities and bounded searches, which PCOG can compile.
+\end{itemize}
+
+A responsible iPRA formalization should present a dependency graph whose
+unproved nodes are the exact estimates, with all constants and ranges explicit.
+The framework then ensures that once those nodes are proved, no further hidden
+compactness, choice, or limit principle remains in the assembly.
+
+\subsection{A difficulty matrix}
+
+\begin{longtable}{@{}p{0.19\textwidth}p{0.28\textwidth}p{0.25\textwidth}p{0.20\textwidth}@{}}
+\toprule
+Area & Finite interface & PCOG resolution & Remaining producer \\
+\midrule
+\endhead
+Simple analytic root & seed, derivative gap, coefficient/interval checker &
+trace plus guarded inverse; regular name & explicit local radius and bounds \\
+Singular branch & finite jet clouds and extension relation & viability,
+shrinking observations, gap collapse & candidate completeness and separation \\
+Matrix spectrum & rational diagonalization certificates & independent-witness
+comparison, ordered eigenvalue observation & matrix-specific residual estimates \\
+Finite topology & nets, covers, chain tables & demand composition, bounded
+homology traces & quantitative refinement/coverage \\
+Siegel/Faltings & point predicate, height/list/cover interface & complete
+bounded enumeration and verification & general effective height or cover \\
+Mordell--Weil & finite descent/cover package & relational lifts, bounded descent,
+generator verification & uniform covering/generator producer \\
+Prime distribution & finite sums plus explicit estimates & graph composition,
+finite windows, rational inequalities & deep zero-density/zero-free estimates \\
+Metastability & bounded stable-window predicate & finite union/search node & a
+separate principle if a global modulus is desired \\
+Exact branch/sign & finite candidate relation & exact collapse only with gap &
+apartness or separation certificate \\
+\bottomrule
+\end{longtable}
+
+The matrix clarifies what ``a more general framework'' can honestly achieve.
+It can make the finite proof pipeline uniform and complete.  It cannot replace
+subject-specific quantitative theorems whose absence is the mathematical
+difficulty.

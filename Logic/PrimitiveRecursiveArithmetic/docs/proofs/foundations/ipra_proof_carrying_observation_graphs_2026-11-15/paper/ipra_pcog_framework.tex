@@ -1,0 +1,166 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{makecell}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\definecolor{linkblue}{RGB}{27,75,122}
+\definecolor{codegray}{RGB}{246,247,249}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Proof-Carrying Observation Graphs: A General Framework for Mathematics in iPRA},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+\setlist{nosep,leftmargin=2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Proof-Carrying Observation Graphs}
+\rhead{iPRA framework}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\lstdefinestyle{lean}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  framerule=0.3pt,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  tabsize=2
+}
+\lstset{style=lean}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{barrier}[theorem]{Barrier}
+\theoremstyle{definition}
+\newtheorem{construction}[theorem]{Construction}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\Prf}{\mathsf{Prf}}
+\newcommand{\Valid}{\mathsf{Valid}}
+\newcommand{\Cert}{\mathsf{Cert}}
+\newcommand{\Obs}{\mathsf{Obs}}
+\newcommand{\Good}{\mathsf{Good}}
+\newcommand{\Run}{\mathsf{Run}}
+\newcommand{\Code}{\mathsf{Code}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\height}{\operatorname{ht}}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\one}{\overline{1}}
+\newcommand{\zero}{\overline{0}}
+\newcommand{\pathcode}[1]{\texttt{#1}}
+
+\title{\textbf{Proof-Carrying Observation Graphs}\\[0.4em]
+\large A General Framework for Embedding Mathematics and Proofs into Intuitionistic Primitive Recursive Arithmetic}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.92\textwidth}
+\textbf{Status.}
+The mathematical arguments in this report are human proofs.  The accompanying
+Python code is exact finite regression evidence and is not an arithmetic proof
+checker.  The Lean files give a repository-specific implementation path and a
+small proof-composition core, but were not elaborated in this artifact
+environment because no Lean executable was available.  Existing declarations
+reported as kernel-checked are cited as inherited repository facts; no new
+headline theorem is represented as kernel-checked here.
+\end{minipage}}
+\end{center}
+
+\input{sections/00_executive}
+\tableofcontents
+\clearpage
+\input{sections/01_audit}
+\input{sections/02_representation}
+\input{sections/03_pcog}
+\input{sections/04_booleanization}
+\input{sections/05_internalization}
+\input{sections/06_demand}
+\input{sections/07_relational}
+\input{sections/08_observables}
+\input{sections/09_resources}
+\input{sections/10_applications}
+\input{sections/11_lean}
+\input{sections/12_example}
+\input{sections/13_boundaries}
+\appendix
+\input{sections/A_theorem_catalog}
+\input{sections/B_source_audit}
+\input{sections/C_notation}
+
+\begin{thebibliography}{20}
+\bibitem{ConciseIPRA}
+V.~Reshetnikov, \emph{Concise presentations of intuitionistic primitive recursive arithmetic},
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}, ProveIt repository, inspected at main commit
+\path{9df5cbdf39e6220be823f611987bd584d37711fd}, 2026.
+
+\bibitem{ProofIndex}
+V.~Reshetnikov, \emph{iPRA proof-packet index},
+\path{Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md}, ProveIt repository, 2026.
+
+\bibitem{LocalGlobal}
+\emph{Local-to-global constructions in intuitionistic primitive recursive arithmetic},
+\path{docs/proofs/foundations/ipra_local_global}, ProveIt repository, 2026.
+
+\bibitem{Unified}
+\emph{Unified finitary-relational framework for mathematics in iPRA},
+\path{docs/proofs/foundations/ipra_unified_finitary_framework_2026-11-15}, ProveIt repository, 2026.
+
+\bibitem{ContractDAG}
+\emph{Certified Finitary Presentations and a Contract-DAG Compiler},
+\path{docs/proofs/foundations/ipra_cfp_contract_compiler_2026-11-15}, ProveIt repository, 2026.
+
+\bibitem{FiniteObs}
+\emph{Finite observations and uniform constructions in iPRA},
+\path{docs/proofs/foundations/ipra_finite_observation}, ProveIt repository, 2026.
+
+\bibitem{Coherent}
+\emph{Coherent finite methods for intuitionistic primitive recursive arithmetic},
+\path{docs/proofs/foundations/ipra_coherent_methods_2026-11-15}, ProveIt repository, 2026.
+
+\bibitem{Resources}
+\emph{Finite mathematical interfaces in iPRA},
+\path{docs/proofs/foundations/ipra_resources_and_elimination_2026-11-15}, ProveIt repository, 2026.
+
+\bibitem{StableObs}
+\emph{Stable observables from finite witnesses},
+\path{docs/proofs/algebra/ipra_stable_observables}, ProveIt repository, 2026.
+\end{thebibliography}
+
+\end{document}

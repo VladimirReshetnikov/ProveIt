@@ -1,0 +1,219 @@
+\section{Finite relational witnesses and shrinking viability}
+\label{sec:relational}
+
+Non-unique outputs are not an edge case.  They arise whenever roots collide,
+eigenvectors rotate inside an eigenspace, factorizations reorder, local charts
+overlap, minimizers are not isolated, or a finite proof has several equally
+valid certificates.  Requiring a coherent exact selector can add logical
+strength unrelated to the theorem.  The relational layer avoids that error.
+
+\subsection{Finite cloud towers}
+
+For levels \(i=0,\ldots,H\), let \(C_i\) be a finite coded cloud.  Its
+candidates are bounded by a PR term \(B_i\), validity is a decidable predicate
+\(V_i(a)\), and compatibility between adjacent levels is a decidable relation
+\(E_i(a,b)\).  Think of level as precision, truncation order, modulus, or stage
+of a finite cover.
+
+Define backward viability relative to horizon \(H\):
+\begin{align*}
+ W_H^H(a)&\defeq V_H(a),\\
+ W_i^H(a)&\defeq V_i(a)\wedge
+   \exists b<B_{i+1}\,
+   \bigl(V_{i+1}(b)\wedge E_i(a,b)\wedge W_{i+1}^H(b)\bigr).
+\end{align*}
+All existential quantifiers are bounded.  The predicate is therefore compiled
+by a reverse-time primitive recursion using
+Theorem~\ref{thm:bounded-booleanization}.
+
+\begin{theorem}[Viability is finite path existence]
+\label{thm:viability-path}
+For every \(i\leq H\) and candidate \(a\in C_i\), \(W_i^H(a)\) holds iff
+there is a sequence
+\[
+ a_i=a,a_{i+1},\ldots,a_H
+\]
+with \(V_j(a_j)\) for all \(j\) and
+\(E_j(a_j,a_{j+1})\) for all \(j<H\).
+\end{theorem}
+
+\begin{proof}
+Use induction on the remaining horizon \(H-i\).  At zero, the claimed path is
+the singleton \((a)\), so the statement is exactly \(V_H(a)\).  At a
+successor, the defining clause for \(W_i^H(a)\) supplies a compatible valid
+\(b\) with \(W_{i+1}^H(b)\); the induction hypothesis extends \(b\) to a
+path.  Conversely, take the second element of any path and apply the induction
+hypothesis to its tail.  The proof is constructive and finite.
+\end{proof}
+
+In iPRA, the induction invariant is a Boolean equation comparing the viability
+checker with a bounded path-checker.  Both are PR.  No formula quantifies over
+an actual function or infinite sequence.
+
+\subsection{Least finite paths}
+
+Assume some initial candidate is viable.  Apply least bounded search to choose
+the least viable \(a_0\).  Given \(a_i\), choose the least \(a_{i+1}\) that is
+compatible and viable.  The viability clause guarantees existence at every
+step.
+
+\begin{theorem}[Finite dependent choice by bounded search]
+\label{thm:finite-choice}
+If \(\exists a<B_0\,W_0^H(a)\), there is a primitive-recursive function that
+returns the lexicographically least valid compatible path through horizon
+\(H\).  iPRA proves every row's validity, every edge's compatibility, and the
+lexicographic minimality of the path.
+\end{theorem}
+
+\begin{proof}
+The path constructor is a bounded primitive recursion on the level.  At each
+step use Theorem~\ref{thm:least-search} on the finite successor cloud, with the
+predicate \(E_i(a_i,b)\wedge W_{i+1}^H(b)\).  The viability theorem supplies
+existence.  The least-search theorem supplies validity, compatibility, and
+minimality.  A table fold accumulates the path code.
+\end{proof}
+
+This theorem is sometimes described informally as dependent choice, but it is
+not an infinitary choice principle.  The horizon and every candidate range are
+finite and explicitly bounded.
+
+\subsection{Why an infinite branch is unnecessary}
+
+Many applications need an approximation at each requested precision, not a
+single infinite branch object.  For precision \(p\), choose a PR horizon
+\(K(p)\geq p\), compute the least path through that finite horizon, and return
+its level-\(p\) observation.  A separate quantitative theorem proves coherence
+as \(p\) changes.
+
+This approach is stronger computationally than postulating an infinite branch:
+it gives a primitive-recursive procedure for every finite observation and
+keeps the proof inside the bounded fragment.
+
+\subsection{Shrinking viability theorem}
+
+Let \((M,d)\) be a coded rational metric presentation.  Each candidate
+\(a\in C_i\) has an observation \(O_i(a)\in M\).  For horizon \(H\geq i\), let
+\[
+ S_i^H=\{a\in C_i:W_i^H(a)\}.
+\]
+Assume the following quantitative data.
+
+\begin{enumerate}
+\item \emph{Nonemptiness}: for every required horizon, \(S_0^H\neq\varnothing\).
+\item \emph{Shrinking}: for all \(H\geq i\),
+\[
+ \diam O_i(S_i^H)\leq\delta_i.
+\]
+\item \emph{Edge motion}: if \(E_i(a,b)\), then
+\[
+ d(O_i(a),O_{i+1}(b))\leq\eta_i.
+\]
+\item \emph{Tail modulus}: a PR function \(M(p)\) satisfies
+\[
+ \sum_{i=M(p)}^{m-1}(\delta_i+\eta_i)\leq 2^{-p}
+ \quad\text{for all }m>M(p).
+\]
+The finite sums are rational and their bound is proved by a bounded checker or
+closed estimate.
+\end{enumerate}
+
+For a nondecreasing horizon schedule \(K(i)\geq i+1\), let \(P^H\) be the
+least path through horizon \(H\), and define
+\[
+ a_i=P^{K(i)}_i,\qquad x_i=O_i(a_i).
+\]
+
+\begin{theorem}[Shrinking finite-horizon coherence]
+\label{thm:shrinking-viability}
+Under the preceding hypotheses,
+\[
+ d(x_i,x_{i+1})\leq\delta_i+\eta_i.
+\]
+Consequently, for \(m>n\),
+\[
+ d(x_n,x_m)\leq\sum_{i=n}^{m-1}(\delta_i+\eta_i),
+\]
+and \((x_i)\) is a primitive-recursive Cauchy name with modulus \(M\).
+\end{theorem}
+
+\begin{proof}
+Assume \(K(i+1)\geq K(i)\); replace the schedule by its running maximum if
+necessary.  Let \(c_i=P^{K(i+1)}_i\).  Both \(a_i\) and \(c_i\) extend to
+horizon \(K(i)\): the first by definition and the second because its longer
+path can be truncated.  Hence they lie in \(S_i^{K(i)}\), and shrinking gives
+\[
+ d(O_i(a_i),O_i(c_i))\leq\delta_i.
+\]
+The path \(P^{K(i+1)}\) contains the edge
+\(c_i\to a_{i+1}\), so edge motion gives
+\[
+ d(O_i(c_i),O_{i+1}(a_{i+1}))\leq\eta_i.
+\]
+The triangle inequality proves the one-step bound.  Telescoping proves the
+finite-distance bound, and the supplied tail modulus proves the Cauchy
+condition.
+\end{proof}
+
+The theorem uses no compactness principle and no infinite path.  At each
+precision it computes one finite least path.  Coherence follows from shrinking
+of the entire viable cloud, not from persistence of an exact witness.
+
+\subsection{Nested viable sets and a simpler special case}
+
+In some presentations all level-\(i\) candidates valid to a sufficiently long
+horizon already have diameter \(\delta_i\), and adjacent observations are
+identical under restriction, so \(\eta_i=0\).  Then
+Theorem~\ref{thm:shrinking-viability} reduces to the familiar statement that
+nested finite approximation clouds with shrinking diameter determine a
+regular name.  The finite-horizon proof is preferable to an appeal to the
+Cantor intersection theorem because it remains first-order and quantitative.
+
+\subsection{Exact labels from a positive gap}
+
+Let \(L=\{\lambda_0,\ldots,\lambda_{r-1}\}\) be a finite list of exact coded
+labels with pairwise separation
+\[
+ d(\lambda_i,\lambda_j)\geq g>0\qquad(i\neq j).
+\]
+Suppose an interval or ball \(B\) has diameter less than \(g\) and is proved to
+contain some label.
+
+\begin{lemma}[Gap collapse]
+\label{lem:gap-collapse}
+The ball \(B\) contains exactly one label.  Bounded least search returns its
+index, and iPRA proves that index is stable under every refinement
+\(B'\subseteq B\) that is also proved to contain a label.
+\end{lemma}
+
+\begin{proof}
+Existence is assumed.  If two distinct labels lay in \(B\), their distance
+would be at most the diameter of \(B\), contradicting the separation bound.
+The unique index is therefore the least index satisfying the bounded
+containment predicate.  If a refined ball \(B'\subseteq B\) is also known to
+contain a label, that label must be the unique label already in \(B\), and no
+other label can occur by the same argument.
+\end{proof}
+
+This lemma is the correct interface for exact branch selection, root labeling,
+spectral block counts, and discrete minimizers.  Without \(g\), the theorem
+exports the cloud or multiset instead.
+
+\subsection{Where relational output is essential}
+
+The framework recommends relational output in the following cases.
+
+\begin{itemize}
+\item \textbf{Polynomial roots:} retain a multiset of isolating boxes and
+multiplicities; label a simple root only with an isolation gap.
+\item \textbf{Symmetric spectra:} ordered eigenvalues are stable, but bases
+inside repeated eigenspaces are not; export blocks or projectors with a gap.
+\item \textbf{Analytic branches:} retain all Newton/Puiseux candidates near a
+singular point; choose one only with branch-separating data.
+\item \textbf{Minimization:} the infimum value is stable without uniqueness;
+a coherent point needs quantitative uniqueness or strong convexity.
+\item \textbf{Covers and descent:} retain all finite local lifts and eliminate
+dead ends by viability instead of selecting one globally in advance.
+\end{itemize}
+
+Relationality is not merely defensive.  It often yields a more invariant
+statement and makes independent implementations comparable.

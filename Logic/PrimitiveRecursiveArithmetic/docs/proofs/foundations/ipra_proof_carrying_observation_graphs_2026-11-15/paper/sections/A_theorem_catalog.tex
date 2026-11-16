@@ -1,0 +1,81 @@
+\section{Theorem catalogue and formal status}
+\label{app:catalog}
+
+This appendix lists the report's claims in a form suitable for migration to a
+machine-readable ledger.  ``Human complete'' means that a proof is given in
+this report.  ``Inherited checked core'' refers only to repository declarations
+whose source packet reports a successful Lean build and an actual
+\texttt{Prf PRAAx} conclusion.  ``Blueprint'' means that a Lean target and
+implementation path are supplied but no build is claimed in this archive.
+
+\begin{longtable}{@{}L{0.07\textwidth}L{0.35\textwidth}L{0.19\textwidth}L{0.31\textwidth}@{}}
+\toprule
+ID & Claim & Status & Lean route \\
+\midrule
+\endhead
+B1 & Booleanization of each fixed quantifier-free formula & Human complete &
+\texttt{BoolReflection}; equality and Boolean PR equations \\
+B2 & Reflection for bounded all/any folds & Human complete &
+\texttt{PRA.qfInd} on fold equations \\
+B3 & Booleanization of fixed strictly bounded formulas & Human complete & host
+recursion on \texttt{BForm} \\
+B4 & Least bounded witness with minimality/no-witness branch & Human complete &
+primitive-recursive search state plus qf induction \\
+T1 & Finite-trace reflection and specialization at PR fuel & Human complete;
+inherited checked core & \path{primitiveRecursionInvariant},
+\path{primitiveRecursionAt} \\
+T2 & Terminal invariant implies public certificate & Human complete; inherited
+checked combinator pattern & \path{TraceExit.compile} / 
+\path{loopProducesCertificate} \\
+G1 & Finite proof-graph compilation by topological fold & Human complete;
+source core supplied & \texttt{Rule}, \path{Compiled.extend} \\
+G2 & Staged internalization theorem & Human complete at compiler-metatheorem
+level & combine trace packages and graph fold; full Lean graph generator pending \\
+D1 & Least safe backward demand assignment & Human complete & reverse table
+trace; reuse demand-equation declarations \\
+D2 & Forward validity at computed demands & Human complete & topological graph
+induction/cut \\
+R1 & Viability iff finite compatible path & Human complete & reverse-time PR
+recurrence and qf induction \\
+R2 & Lexicographically least viable finite path & Human complete & bounded
+least search at every level \\
+R3 & Shrinking finite-horizon coherence and Cauchy modulus & Human complete &
+rational metric/table module; blueprint \\
+R4 & Exact label collapse under positive gap & Human complete & bounded
+containment search and rational inequality \\
+O1 & Independent-certificate observation comparison & Human complete; inherited
+checked combinators & integrate \texttt{ObservableGlue} \\
+O2 & Finite-net infimum transfer & Human complete schema & theorem-specific
+coverage/modulus nodes plus bounded minimum \\
+F1 & Mixed-radix rank for fixed-dimensional descent & Human complete; Python
+tested & PR tuple/rank equations and qf induction \\
+F2 & Common good index outside finitely many exceptional sets & Human complete;
+Python tested & indicator sums, union bound, least search \\
+H1 & Height bound implies complete finite list & Human complete; Python tested &
+bounded enumerator and filter reflection \\
+H2 & Complete finite list implies height bound & Human complete & finite maximum
+and list completeness \\
+E1 & Cubic bisection invariant & Human complete; Python tested & first end-to-end
+benchmark target \\
+E2 & General cubic guarded reciprocal observable theorem & Human complete
+finite estimate; not fully instantiated in Lean & complete rational
+width demand and graph proof \\
+\bottomrule
+\end{longtable}
+
+\subsection*{Inherited versus new}
+
+The trace theorem and stable-observation proof combinators are inherited from
+existing packets and should be integrated into the main library.  The PCOG
+graph fold, its staged-internalization formulation, the unified status
+discipline, and the synthesis of demand, relational, resource, and observation
+layers are the new organizational contribution of this package.  The finite
+algorithms themselves draw on ideas already present throughout the repository.
+
+\subsection*{No formal overclaim}
+
+The three Lean files in this archive are not listed as compiled.  Two are
+explicit blueprints.  The core graph file is designed to be close to a
+compilable integration module, but the proposed import
+\texttt{ConciseIPRA.FiniteTrace} does not yet exist at the inspected repository
+path.  Its creation is milestone 1, not an assumption silently satisfied here.

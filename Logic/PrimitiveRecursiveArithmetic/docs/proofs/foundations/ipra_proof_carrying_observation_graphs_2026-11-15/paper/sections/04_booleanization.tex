@@ -1,0 +1,218 @@
+\section{Bounded Booleanization, folds, and least search}
+\label{sec:booleanization}
+
+The finite layer of the framework depends on a simple but indispensable fact:
+every fixed bounded predicate can be represented by a primitive-recursive
+Boolean checker whose correctness is provable in iPRA.  This section states
+and proves the required form carefully.  ``Fixed'' is essential: the formula
+syntax is traversed by the host compiler, not interpreted from a numerical
+code inside arithmetic.
+
+\subsection{Boolean conventions}
+
+Use \(0\) for false and \(1\) for true.  Define primitive-recursive operations
+\(\mathsf{not},\mathsf{and},\mathsf{or}\) by finite case distinction, with
+outputs normalized to \(0\) or \(1\).  Equality of natural numbers has a
+primitive-recursive characteristic function \(\mathsf{eq}(x,y)\).  iPRA proves
+its defining facts by quantifier-free induction:
+\begin{align*}
+ \mathsf{eq}(x,y)=1 &\leftrightarrow x=y,\\
+ \mathsf{eq}(x,y)=0 &\leftrightarrow x\neq y,\\
+ \mathsf{and}(a,b)=1 &\leftrightarrow a=1\wedge b=1,\\
+ \mathsf{or}(a,b)=1 &\leftrightarrow a=1\vee b=1,\\
+ \mathsf{not}(a)=1 &\leftrightarrow a=0,
+\end{align*}
+under the Boolean normalization hypotheses where needed.
+
+There are several possible implementations: truncated subtraction in both
+directions, simultaneous predecessor recursion, or the comparison functions
+already developed in the equational part of \texttt{ConciseIPRA}.  The
+compiler theorem uses only the proved interface, not a particular choice.
+
+\subsection{Quantifier-free formulas}
+
+\begin{theorem}[Booleanization of a fixed quantifier-free formula]
+\label{thm:qf-booleanization}
+For every fixed quantifier-free formula \(A(\vec x)\) in the iPRA language,
+one can effectively construct a primitive-recursive symbol \(b_A\) and
+embedded derivations of
+\[
+ A(\vec x)\longrightarrow b_A(\vec x)=1,
+ \qquad
+ b_A(\vec x)=1\longrightarrow A(\vec x).
+\]
+The construction is structural in \(A\).
+\end{theorem}
+
+\begin{proof}
+For an equality \(s=t\), set
+\(b_A=\mathsf{eq}(s,t)\) and use the equality-checker theorem.  For falsity use
+the constant-zero checker.  Conjunction and disjunction use the corresponding
+Boolean operations and the induction hypotheses.
+
+For implication \(A\to B\), both \(A\) and \(B\) are decidable because their
+Boolean reflections have already been constructed.  Define
+\[
+ b_{A\to B}=\mathsf{or}(\mathsf{not}(b_A),b_B).
+\]
+If \(A\to B\) holds, decide \(A\).  In the negative branch
+\(\mathsf{not}(b_A)=1\); in the positive branch obtain \(B\) and hence
+\(b_B=1\).  Conversely, if the Boolean disjunction is one and \(A\) is
+assumed, the negative branch contradicts the reflected truth of \(A\), while
+the positive branch yields \(B\).  Every case split is on a Boolean equation
+and is therefore intuitionistically valid.  No law of excluded middle for
+arbitrary formulas is used.
+\end{proof}
+
+The theorem is stronger operationally than mere decidability.  It returns the
+fixed checker syntax and two object derivations, which later nodes can compose.
+The accompanying Lean blueprint calls this package a
+\texttt{BoolReflection}.
+
+\subsection{Bounded universal and existential folds}
+
+Let \(b(i,\vec x)\in\{0,1\}\) be a PR Boolean predicate.  Define
+\begin{align*}
+ \mathsf{All}_b(0,\vec x)&=1,\\
+ \mathsf{All}_b(n+1,\vec x)&=
+   \mathsf{and}(\mathsf{All}_b(n,\vec x),b(n,\vec x)),\\[0.3em]
+ \mathsf{Any}_b(0,\vec x)&=0,\\
+ \mathsf{Any}_b(n+1,\vec x)&=
+   \mathsf{or}(\mathsf{Any}_b(n,\vec x),b(n,\vec x)).
+\end{align*}
+These are primitive-recursive symbols by definition.
+
+\begin{theorem}[Bounded fold reflection]
+\label{thm:bounded-folds}
+iPRA proves, uniformly in \(n\),
+\begin{align*}
+ \mathsf{All}_b(n,\vec x)=1
+ &\leftrightarrow \forall i<n\; b(i,\vec x)=1,\\
+ \mathsf{Any}_b(n,\vec x)=1
+ &\leftrightarrow \exists i<n\; b(i,\vec x)=1,
+\end{align*}
+where the bounded quantifiers on the right are expanded into their standard
+first-order coding or used through a bounded-formula translation.
+\end{theorem}
+
+\begin{proof}
+Use quantifier-free induction on \(n\).  At zero, the universal range is empty
+and the existential range is empty.  At a successor, split the bounded range
+into indices below \(n\) and the final index \(n\).  The defining recursion
+equations reduce the Boolean statement to a conjunction or disjunction, and
+the induction hypothesis supplies the prefix statement.  All formulas used in
+the induction invariant are Boolean equations and finite propositional
+combinations, hence quantifier-free after the bounded side is represented by
+its fold checker.
+\end{proof}
+
+The proof should be implemented with the Boolean equation as the induction
+invariant, not by attempting induction on a formula containing an unbounded
+quantifier.  Once reflection is proved, a bounded quantifier in a theorem can
+be replaced by the equation of the corresponding fold.
+
+\subsection{Strictly bounded formulas}
+
+A strictly bounded formula is built from equalities and Boolean connectives,
+with quantifiers of the form \(\forall i<t(\vec x)\) or
+\(\exists i<t(\vec x)\).  Combining Theorems~\ref{thm:qf-booleanization} and
+\ref{thm:bounded-folds} gives the following compiler.
+
+\begin{theorem}[Booleanization of fixed strictly bounded formulas]
+\label{thm:bounded-booleanization}
+For every fixed strictly bounded formula \(A(\vec x)\), there is a concrete PR
+symbol \(b_A\) and embedded iPRA derivations of
+\[
+   A(\vec x)\leftrightarrow b_A(\vec x)=1.
+\]
+The compiler is primitive recursive as a host transformation on the finite
+formula syntax, but no universal evaluator for encoded formulas is introduced
+inside iPRA.
+\end{theorem}
+
+\begin{proof}
+Proceed structurally.  The quantifier-free cases use
+Theorem~\ref{thm:qf-booleanization}.  For
+\(\forall i<t\,B(i,\vec x)\), recursively obtain \(b_B\) and use
+\(\mathsf{All}_{b_B}(t,\vec x)\); for the existential case use
+\(\mathsf{Any}_{b_B}\).  Compose the reflection derivations with
+Theorem~\ref{thm:bounded-folds}.  Since \(A\) is fixed, every recursively
+constructed symbol has a fixed arity and is a genuine element of the
+repository's inductive type \texttt{PR}.
+\end{proof}
+
+\subsection{Least bounded search}
+
+Define a search state \((f,w)\), where \(f\in\{0,1\}\) records whether a
+witness has been found and \(w\) stores the first witness.  Starting from
+\((0,0)\), at index \(i\) leave the state unchanged if \(f=1\); if \(f=0\)
+and \(b(i)=1\), move to \((1,i)\); otherwise remain \((0,0)\).  Pairing makes
+this a primitive recursion.
+
+Equivalently, define a sentinel-valued function \(\mu_b(n)\leq n\) by
+\[
+ \mu_b(n)=
+ \begin{cases}
+   \min\{i<n:b(i)=1\},&\text{if a witness exists},\\
+   n,&\text{otherwise}.
+ \end{cases}
+\]
+
+\begin{theorem}[Least bounded witness]
+\label{thm:least-search}
+iPRA proves all of the following:
+\begin{enumerate}
+\item \(\mu_b(n)\leq n\);
+\item if \(\mu_b(n)<n\), then \(b(\mu_b(n))=1\);
+\item if \(j<\mu_b(n)\), then \(b(j)=0\);
+\item \(\mu_b(n)=n\) iff \(\mathsf{Any}_b(n)=0\).
+\end{enumerate}
+Thus an existence proof for a bounded decidable predicate yields an explicit
+least witness without choice.
+\end{theorem}
+
+\begin{proof}
+Use a single quantifier-free induction invariant recording the range bound,
+the found-witness equation when the flag is one, and the prefix no-witness
+fold when the flag is zero.  At the successor step, case split on the found
+flag and on \(b(n)\).  The minimality clause is propagated because once the
+flag becomes one the stored witness never changes.  Reflection of
+\(\mathsf{Any}\) yields the final equivalence.
+\end{proof}
+
+This theorem is the constructive workhorse behind finite choice.  Whenever a
+cloud is nonempty under a proved finite bound, its least member is PR.  The
+important limitation is that the bound must already be present.
+
+\subsection{Finite tables and bounded verification}
+
+A finite table of length \(n\) can be represented by a nested pairing code or
+by a PR read function generated during a bounded fold.  The framework needs
+four internal theorems:
+\begin{align*}
+ \mathsf{read}(\mathsf{write}(T,i,x),i)&=x,\\
+ j\neq i\to
+ \mathsf{read}(\mathsf{write}(T,i,x),j)&=\mathsf{read}(T,j),\\
+ i<n\to \mathsf{read}(T,i)&\text{ is within its declared code bound},\\
+ \mathsf{AllValid}(T,n)=1&\leftrightarrow
+   \forall i<n\;\Valid(\mathsf{read}(T,i),i).
+\end{align*}
+The last theorem is another bounded fold.  Together these facts permit a
+trace invariant to speak about an entire prefix using one Boolean equation,
+rather than a quantifier that would violate quantifier-free induction.
+
+\subsection{Certificate reflection without proof reflection}
+
+A bounded certificate checker is merely a Boolean PR predicate.  Its
+reflection theorem is specific to the certificate format:
+\[
+ \mathsf{check}(x,c)=1\longrightarrow A(x,c).
+\]
+Proving this implication inside iPRA is ordinary mathematics, usually by
+bounded folds and local algebra.  It must not be confused with a general
+principle saying that if a numerical code is a proof, then its conclusion is
+true.  PCOGs require only the former.  The checker validates a finite witness
+whose semantics have been proved directly.
+
+This distinction keeps the framework predicatively modest and makes each
+certificate format independently auditable.
