@@ -70,11 +70,14 @@ and [site-42 transfer and zero exit](pa194/ipra/machine-code/SITE42-NATIVE-EXIT.
 now have native iPRA sentences for their complete transfer loops. A
 [matched five-instruction macro](pa194/ipra/machine-code/TRANSFER-TO-SITE0-INVARIANT.md)
 preserves a repeated-spare frame and its gap under explicit branch and padding
-conditions; it is a model-uniform finite segment, not an all-site simulation. A
-[native iPRA padding theorem](pa194/ipra/machine-code/HEADER-WIDTH-GLOBAL.md)
+conditions; it is a model-uniform finite segment, not an all-site simulation. Its
+[physical run and intermediate width equalities](pa194/ipra/machine-code/TRANSFER-MACRO-WIDTHS-PHYSICAL.md)
+have also been combined. A [native iPRA padding theorem](pa194/ipra/machine-code/HEADER-WIDTH-GLOBAL.md)
 rules out a gap below 21 under the explicit width-57 condition for every
-path-length lookup input. Outside the source table the lookup defaults to zero;
-preservation of that width is open. A complete reachable-state simulation remains open. Other native iPRA
+path-length lookup input. Outside the source table the lookup defaults to zero.
+A separate checked source-loop contract increases the gap on returning to the
+same path, so header width is not generally constant across such loops. A suitable
+reachable-state lower-bound invariant and a complete simulation remain open. Other native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
 [decoder](pa194/ipra/machine-code/DECODER-NATIVE.md),
@@ -136,6 +139,8 @@ are proved in the covered models. A separate [addition-existence supplier](pa194
 and a [multiplication-existence supplier](pa194-work/pa194-model-axioms/SOURCE-M1.md)
 have passed incremental replays. The [ten-fact assembly](pa194-work/pa194-model-axioms/SOURCE-FACTS-TEN.md)
 leaves addition and multiplication coherence as explicit premises. The
+[full-source inclusive Separation supplier](pa194-work/pa194-model-axioms/INCLUSIVE-SEPARATION-SOURCE.md)
+provides one graph-restriction instance needed for the coherence proofs. The
 [multiplication source chain](pa194-work/pa194-model-axioms/SOURCE-M1-CHAIN.md)
 has independently replayed. Older addition and
 induction dependencies remain prebuilt in these replays; a
