@@ -127,7 +127,10 @@ proved for the full source theory. Of the twelve fixed facts,
 [guarded isomorphism transitivity](pa194-work/pa194-model-axioms/SOURCE-IT.md),
 and [successor compatibility](pa194-work/pa194-model-axioms/SOURCE-S2.md)
 are proved in the covered models. The [assembly](pa194-work/pa194-model-axioms/SOURCE-FACTS-EIGHT.md)
-leaves four addition and multiplication facts as explicit premises.
+leaves four addition and multiplication facts as explicit premises. A separate
+[addition-existence supplier](pa194-work/pa194-model-axioms/SOURCE-A1.md)
+has passed an incremental replay; its older addition and induction dependencies
+remain prebuilt while their deeper source check runs.
 A [successor-value transport](pa194-work/pa194-model-axioms/SUCC-VALUE-FULL-SOURCE.md)
 is proved in the covered models, including for nonstandard term codes. The
 remaining source axiom suppliers are open. Identity translation is independent
@@ -326,9 +329,9 @@ conditional traces. A [seed-derived initial run](pa194/ipra/machine-code/SEED-FI
 reaches the first site-38 physical frame from blank tape in every PRA model.
 The [first decoder completion](pa194/ipra/machine-code/SEED-FIRST-DECODE-COMPLETE.md)
 continues the concrete run to site 42 with existential model-valued clocks. From
-that first frame, a [physical continuation](pa194/ipra/machine-code/SEED-FIRST-SITE3668.md)
-reaches site 3668 with gap 50; the matched site-3664 zero step preserves that
-gap. A complete source-frame correspondence and
+that first frame, a [physical continuation](pa194/ipra/machine-code/SEED-FIRST-SITE3671.md)
+reaches site 3671 with gap 54, following the matched zero steps at sites 3664
+and 3668. A complete source-frame correspondence and
 reachability invariant remain open.
 The other direction, `¬Halt(M₁₉₄) → Con(PA)`, also needs an internal
 translation of arbitrary PA refutations into the machine's numerical calculus.
