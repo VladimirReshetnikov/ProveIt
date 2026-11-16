@@ -1,0 +1,42 @@
+ARITHMETIC REVIEW FOR THE FINAL REPLAY
+
+Reviewed source: verify_stdlib.py, with its use by verify_offshell.py.
+
+The engine represents all five-variable ordinary numerators, and all
+six-variable off-shell numerators, by homogeneous-length exponent tuples.
+Every constructor in the supplied computations preserves that length.
+Polynomial addition combines equal exponent tuples, multiplication adds
+tuples coordinatewise, and coordinate differentiation decreases exactly
+one exponent and multiplies its integer coefficient by that exponent.
+The off-shell derivative additionally sends d to v and v to w, applying
+these polynomial operations without invoking analytic differentiation.
+
+Exact division is valid in either dimension. Graded lexicographic order
+is a well-order on the finite set of monomials of degree at most d. On
+each subtraction, the current leading monomial disappears, and all new
+terms have smaller graded lexicographic order. No degree increases.
+There are binomial(d+N,N) possible monomials, with N=5 in the ordinary
+engine and N=6 in the off-shell run. This supplies a finite primitive-
+recursive bound for the apparent while loop in either configuration.
+If a leading monomial is not divisible by the divisor's leading
+monomial, exact divisibility is impossible; returning None is sound.
+If the remainder vanishes, the accumulated quotient satisfies P=Q*f.
+
+The divisors S, D, and s have leading coefficients +1 or -1. In the
+off-shell configuration the divisor d is a single variable, again with
+leading coefficient +1. Integer quotient operations therefore remain
+exact. Coefficientwise division by two is performed only when every
+coefficient is even, and each such iteration decreases its finite
+denominator exponent. No generic polynomial gcd is used.
+
+The acceptance checks and critical exponent/divisor validations use
+explicit exceptions. They remain effective with Python optimization
+enabled. The final suite is replayed with python3 -O; the independent
+nonzero controls must still be rejected in that run.
+
+Each script is run in a fresh subprocess by run_all.py. In particular,
+the off-shell script's intentional reconfiguration of the global ring
+dimension and derivation cannot leak into any other checker.
+
+This review explains the finite algebraic invariants. It is not a
+machine-checked verification of the Python implementation or interpreter.

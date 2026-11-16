@@ -1,0 +1,160 @@
+EXACT VERIFICATION NOTES
+
+This package checks local tensor identities for signature (-,+,+,+), in the
+coordinate order (t,r,x,phi), with x=cos(theta). Set
+
+  s = 1-x^2, S = r^2+a^2*x^2, D = r^2-2*m*r+a^2+q^2,
+  B = r^2+a^2, H = r^2-a^2*x^2.
+
+The localization domain is S*D*s != 0. For Lorentzian geometry one uses
+S>0, s>0, D!=0. All checks are exact symbolic polynomial computations;
+there is no evaluation at random points.
+
+1. RUNS AND TRUST BOUNDARIES
+
+  python3 code/run_all.py
+  python3 code/run_all.py --sympy
+
+The default suite uses only the Python standard library. The optional
+independent calculation and comparison use SymPy (run here with SymPy 1.14.0). Result summaries and execution
+logs are stored in this directory. Checks use explicit exceptions, so
+Python's -O flag does not remove the acceptance conditions.
+
+The standard-library checker recomputes all sixteen Ricci components
+independently. Its checks cover metric symmetry (16 entries), metric
+inverse (16), determinant (1), connection trace (4), compact Ricci formula
+(16), Ricci symmetry (16), scalar curvature (1), field antisymmetry (16),
+Maxwell divergence (4), dF (4 independent triples), and Einstein-Maxwell
+(16). The latter uses the Maxwell stress tensor directly, not merely its
+asserted compact form. Four deliberately nonzero residuals are rejected
+by the negative-control script. The two arithmetic engines agree exactly
+on all 48 stored entries of Ricci, F, and S*F^{mu nu}.
+
+This is reproducible exact computational evidence and a finite algebraic
+proof certificate strategy. It is not a claim that Python has been proved
+correct in Lean, or that an end-to-end iPRA derivation has been compiled.
+
+2. FINITE ARITHMETIC ENGINE
+
+A polynomial is a finite dictionary from exponent tuples in N^5 to
+integer coefficients. A rational expression is a numerator P and four
+nonnegative denominator exponents, representing
+
+  P / (2^e * S^i * D^j * s^k).
+
+Addition raises denominator exponents to their componentwise maxima;
+multiplication adds them. Differentiation uses the product and quotient
+rules, treating a,m,q as constants. Normalization removes powers of 2
+from even coefficients, and performs exact polynomial division only by
+the three explicit factors S,D,s. It never invokes a polynomial gcd.
+
+The division algorithm uses graded lexicographic monomial order. The
+leading coefficient of every divisor is +1 or -1. On each subtraction,
+the leading monomial strictly decreases, and no total degree increases.
+If the input degree is d in N variables, at most binomial(d+N,N) monomials
+can occur. Thus the apparent while loop is replaceable by a loop with
+that explicit primitive-recursive bound. Denominator cancellation loops
+are bounded by the input denominator exponents. Sparse addition,
+multiplication and differentiation are finite loops with primitive-
+recursive bounds. A zero residual means its entire integer coefficient
+dictionary is empty, not that a numerical sample is zero.
+
+Soundness of each arithmetic operation follows from the ring axioms;
+soundness of each successful cancellation follows from the verified
+polynomial equality P=Q*f. No failed exact division changes the value.
+The fixed tensor computation therefore reduces to finitely many integer
+polynomial identities. Formal iPRA soundness must establish these local
+operation invariants and the relation to coded rational differentiation.
+
+The reported maximal numerator term count and total degree concern
+normalized Rat values; they are not claimed as global bounds on every
+temporary polynomial inside multiplication/division.
+
+3. READABLE TENSOR TABLES
+
+Let omega0=dt-a*s*dphi and omega3=B*dphi-a*dt. Then
+
+  Ric = q^2/S^2 * [ (D/S)*omega0^2 - (S/D)*dr^2
+                   + (S/s)*dx^2 + (s/S)*omega3^2 ].
+
+The only independent nonzero lower-index field entries are
+
+  F_tr   = -q*H/S^2,
+  F_tx   = -2*q*a^2*r*x/S^2,
+  F_rphi = -q*a*s*H/S^2,
+  F_xphi = -2*q*a*r*x*B/S^2.
+
+The only independent nonzero density entries W^{mu nu}=S*F^{mu nu} are
+
+  W^tr   = q*B*H/S^2,
+  W^tx   = 2*q*a^2*r*x*s/S^2,
+  W^rphi = -q*a*H/S^2,
+  W^xphi = -2*q*a*r*x/S^2.
+
+Antisymmetry supplies the reverse entries. These tables make all four
+Maxwell divergence equations immediate polynomial differentiations.
+
+4. OFF-SHELL RADIAL LEMMA
+
+The additional standard-library run replaces D by an arbitrary radial
+two-jet (d,v,w), standing for Delta, Delta', Delta''. Its polynomial
+variables are (r,x,a,d,v,w). The formal derivation sends r to 1, d to v,
+v to w, and x,a,w to 0. The assignment to the derivative of w is never
+used: only two derivatives of the original metric are taken.
+
+Set V=(r^2-a^2+d-r*v)/S^2 and U=V+(w-2)/(2*S). The directly recomputed
+Ricci tensor is
+
+  Ric = U * [ (d/S)*omega0^2 - (S/d)*dr^2 ]
+        + V * [ (S/s)*dx^2 + (s/S)*omega3^2 ],
+  scalar curvature = (2-w)/S.
+
+All sixteen entries and the scalar curvature are checked. Substituting
+d=r^2-2*m*r+a^2+q^2, v=2*r-2*m, w=2 gives U=V=q^2/S^2.
+
+5. CURVATURE SCALAR AND FLATNESS CERTIFICATE
+
+The separate standard-library curvature run computes all 96 independent
+mixed components R^a_bcd with c<d and obtains the others by antisymmetry.
+It then lowers the first index, checks the first-pair antisymmetry,
+pair-interchange symmetry and algebraic Bianchi identity, and contracts
+the computed tensor back to the independently obtained Ricci formula.
+The final contractions are
+
+  Ric_ab Ric^ab = 4*q^4/S^4,
+
+  K = R_abcd R^abcd
+    = 8/S^6 * [6*m^2*(r^6-15*r^4*a^2*x^2+15*r^2*a^4*x^4-a^6*x^6)
+      -12*m*q^2*r*(r^4-10*r^2*a^2*x^2+5*a^4*x^4)
+      +q^4*(7*r^4-34*r^2*a^2*x^2+7*a^4*x^4)].
+
+The six antisymmetric index pairs are (01,02,03,12,13,23). If L is the
+lower curvature matrix on these pairs and
+
+  G_(ab)(cd) = g^ac*g^bd-g^ad*g^bc,
+
+then its raised version is G*L*G and K=4*sum(L_ij*(G*L*G)_ij).
+The factor four accounts for the two orderings of each antisymmetric
+pair. This yields a small, direct, exact contraction rather than a
+shortcut that presupposes the desired invariant formula.
+
+The equatorial specialization is verified as a polynomial identity:
+
+  K(x=0) = 8*[6*(m*r-q^2)^2+q^4]/r^8.
+
+If q is apart from zero this immediately gives the explicit lower bound
+K >= 8*q^4/r^8. Independently of q, completing the square gives
+
+  6*(m*r-q^2)^2+q^4
+    = 7*(q^2-6*m*r/7)^2+(6/7)*m^2*r^2,
+
+so a witness that m is apart from zero gives K >= (48/7)*m^2/r^6.
+Thus either supplied apartness witness establishes curvature blow-up as
+r tends to zero through the equatorial chart. No decision of whether
+an arbitrary constructive real is exactly zero is needed for this claim.
+
+Finally, setting m=q=0 makes all 96 independent lower Riemann numerators
+zero. This proves flatness on the regular coordinate domain. Vanishing
+of K alone would not prove flatness in Lorentzian signature, which is
+why the componentwise flatness check is included. This script passes 206
+exact residual checks in addition to the field-equation checks above.
