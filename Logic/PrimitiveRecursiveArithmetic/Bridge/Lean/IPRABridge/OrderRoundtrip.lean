@@ -1,3 +1,4 @@
+import IPRABridge.HilbertLogic
 import DiophantineConsistency.IPRAOrderErasureRew
 import DiophantineConsistency.IPRAReferenceRew
 import DiophantineConsistency.IPRANativeTheory
@@ -28,7 +29,9 @@ local instance orderRoundtripDecidableEq : PRALanguage.language.DecidableEq wher
     change DecidableEq (Language.ORing.Rel k)
     infer_instance
 
-private theorem nativeTermRoundtrip {ξ : Type} {n : ℕ} (t : Semiterm L ξ n) :
+/-- Mapping a native term into the equality-only language and back
+preserves its syntax. -/
+theorem nativeTermRoundtrip {ξ : Type} {n : ℕ} (t : Semiterm L ξ n) :
     Semiterm.lMap toNative (Semiterm.lMap termsToReference t) = t := by
   induction t with
   | bvar | fvar => rfl
@@ -77,32 +80,23 @@ private noncomputable def ltIff (ts : Fin 2 → SyntacticTerm L) :
       exact funext isEmptyElim
   simpa only [body, LogicalConnective.HomClass.map_iff, Semiformulaᵢ.rew_rel, hVars, hBit, hImage] using h
 
-private def exMono {p q : Semipropositionᵢ L 1} (h : H ⊢! free p 🡒 free q) :
-    H ⊢! (∃⁰ p) 🡒 ∃⁰ q := by
-  have introQ : H ⊢! free q 🡒 shift (∃⁰ q) := by
-    change HilbertProofᵢ H (free q 🡒 shift (∃⁰ q))
-    simpa using HilbertProofᵢ.ex₁ (Λ := H) (&0) (shift q)
-  have step : H ⊢! free (p 🡒 (∃⁰ q)/[]) := by
-    simpa only [LogicalConnective.HomClass.map_imply, LawfulSyntacticRewriting.free_subst_nil] using
-      Entailment.C_trans h introQ
-  exact HilbertProofᵢ.ex₂ p (∃⁰ q) ⨀ HilbertProofᵢ.gen step
-
-private noncomputable def orderRoundtripOpen : (φ : Propositionᵢ L) → H ⊢! φ 🡘 embed (erase φ)
+/-- Order erasure preserves open native formulas under their existing free variables. -/
+noncomputable def nativeOrderRoundtripOpen : (φ : Propositionᵢ L) → H ⊢! φ 🡘 embed (erase φ)
   | .falsum => Entailment.E_Id
   | .rel .eq ts => by
     simp only [erase, embed, nativeTermRoundtrip]
     exact Entailment.E_Id
   | .rel .lt ts => ltIff ts
-  | .and φ ψ => Entailment.EKK_of_E_of_E (orderRoundtripOpen φ) (orderRoundtripOpen ψ)
-  | .or φ ψ => Entailment.EAA_of_E_of_E (orderRoundtripOpen φ) (orderRoundtripOpen ψ)
-  | .imp φ ψ => Entailment.ECC_of_E_of_E (orderRoundtripOpen φ) (orderRoundtripOpen ψ)
+  | .and φ ψ => Entailment.EKK_of_E_of_E (nativeOrderRoundtripOpen φ) (nativeOrderRoundtripOpen ψ)
+  | .or φ ψ => Entailment.EAA_of_E_of_E (nativeOrderRoundtripOpen φ) (nativeOrderRoundtripOpen ψ)
+  | .imp φ ψ => Entailment.ECC_of_E_of_E (nativeOrderRoundtripOpen φ) (nativeOrderRoundtripOpen ψ)
   | .all φ => by
     apply HilbertProofᵢ.allIffAllOfIff
-    simpa only [erase_free, embed_free] using orderRoundtripOpen (Rewriting.free φ)
+    simpa only [erase_free, embed_free] using nativeOrderRoundtripOpen (Rewriting.free φ)
   | .exs φ => by
     have h : H ⊢! Rewriting.free φ 🡘 Rewriting.free (embed (erase φ)) := by
-      simpa only [erase_free, embed_free] using orderRoundtripOpen (Rewriting.free φ)
-    exact Entailment.E_intro (exMono (Entailment.K_left h)) (exMono (Entailment.K_right h))
+      simpa only [erase_free, embed_free] using nativeOrderRoundtripOpen (Rewriting.free φ)
+    exact Entailment.E_intro (existsImpOfFreeImp (Entailment.K_left h)) (existsImpOfFreeImp (Entailment.K_right h))
   termination_by φ => φ.complexity
 
 /-- Erasing order and embedding the result preserves a native sentence up to
@@ -111,6 +105,6 @@ theorem nativeOrderRoundtrip (φ : Sentenceᵢ L) : nativeTheory ⊢ φ 🡘 emb
   apply Nonempty.intro
   apply extendedToTheory nativeTheory
   simpa only [LogicalConnective.HomClass.map_iff, erase_emb, embed_emb] using
-    orderRoundtripOpen (Rewriting.emb φ)
+    nativeOrderRoundtripOpen (Rewriting.emb φ)
 
 end IPRABridge
