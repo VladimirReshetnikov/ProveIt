@@ -43,6 +43,8 @@ import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.DiophantineNumberTheory.IrrationalSqrt
+import IPRADerivations.DiophantineNumberTheory.PellDescent
+import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder
