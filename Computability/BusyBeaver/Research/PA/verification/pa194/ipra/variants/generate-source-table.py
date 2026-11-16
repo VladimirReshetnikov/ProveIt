@@ -29,6 +29,22 @@ variants = {
             "sites.json": "bccf0a80ffdf4ff48c4457adf7331aa4c4d2a7742712983dd45ab4b243ed8820",
         },
     ),
+    "PA194LCA": (
+        "pa194_loop_continuation_research_2026-11-14/machines/PA194LC_A",
+        {
+            "machine.tm": "382663bad011e958b51221a589e47880d434172d2f3417d2f3e940acda33cbdf",
+            "labels.json": "21bb75424719d5d6718ca654d41f22b0467d3758d2cdd439a6000584a2399b53",
+            "sites.json": "9fb634b85041caf1acd31ea022249475a0cfcacd51d19337723abe231448a0fe",
+        },
+    ),
+    "PA194M4R": (
+        "pa194_radix_family_2026-11-13/machines/4R",
+        {
+            "machine.tm": "a3c1d556d61b37d60639801accacfa595df4b2c9d2b2a0a46978425b10c459a8",
+            "labels.json": "2890771c2db5c598d5f3f833feecf2903e01d69bdf626782e34196c34bfcb13b",
+            "sites.json": "153efd28b8b07de416bd842fcd4976170ffcc33a8f63ce4e6bd37f97ae8a440d",
+        },
+    ),
 }
 if len(sys.argv) != 4 or sys.argv[1] not in variants:
     raise SystemExit(f"usage: generate-source-table.py {{{','.join(variants)}}} REPO OUTPUT")

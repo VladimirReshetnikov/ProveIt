@@ -23,3 +23,15 @@ four_l=/dev/shm/pa1944l-model
 bash "$variants/pa1944l/check.sh" /dev/shm/pa194lcc-controller "$four_l"
 bash "$variants/check-linear-coverage.sh" PA1944L "$four_l" /dev/shm/pa1944l-coverage
 ```
+
+## Shared startup for LC_A and M4R
+
+Lean checks that the 58,320-step PA1944L startup avoids dense controls
+107 and 123. The [row comparisons](../PA194CommonStartupRows.lean) show
+that LC_A and M4R agree with PA1944L on every other working control.
+The [model startup theorems](../PA194CommonModelStartup.lean) transfer the
+same trace to the two pinned tables in every arithmetic `IΣ₁` model.
+
+```sh
+bash "$variants/check-common-startup.sh" "$four_l" /dev/shm/pa194-common-startup
+```

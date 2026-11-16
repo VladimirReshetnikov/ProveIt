@@ -7,6 +7,7 @@ import sys
 
 CHUNK_SIZE = 4096
 SEED = (24, 1, 152919395647067130113387679226998336721518593)
+RESTRICTED_CONTROLS = [107, 123]
 variants = {
     "PA194OR": (
         "PA194ORH_research_2026-11-15/machines/PA194OR/machine.tm",
@@ -72,37 +73,45 @@ def lean_tuple(values):
     return "(" + ",".join(map(str, values)) + ")"
 
 
-def generate_checkpoints(variant, time, rows, out):
+def checkpoints(time, rows, excluded=()):
     current = (0, 0, 0)
     chunks = []
     for start in range(0, time, CHUNK_SIZE):
         count = min(time - start, CHUNK_SIZE)
-        index = len(chunks)
         initial = current
         for _ in range(count):
+            assert current[0] not in excluded, (start, current[0])
             current = step(rows, current)
-        chunks.append(count)
+        chunks.append((count, initial, current))
+    assert current == SEED
+    return chunks
+
+
+def generate_checkpoints(variant, chunks, out):
+    for index, (count, initial, final) in enumerate(chunks):
         name = f"chunk{index:02}"
         (out / f"{variant}StartupChunk{index:02}.lean").write_text(
             f"""import {variant}Numerical
 set_option maxRecDepth 500000
 set_option maxHeartbeats 0
 namespace {variant}Startup
-theorem {name} : {variant}Numerical.runFrom {lean_tuple(initial)} {count} = {lean_tuple(current)} := by decide +kernel
+theorem {name} : {variant}Numerical.runFrom {lean_tuple(initial)} {count} = {lean_tuple(final)} := by decide +kernel
 #print axioms {name}
 end {variant}Startup
 """,
             encoding="utf-8",
         )
-    assert current == SEED
-    return chunks
+
+
+def time_expression(chunks):
+    time_expr = str(chunks[-1][0])
+    for count, _, _ in reversed(chunks[:-1]):
+        time_expr = f"{count} + ({time_expr})"
+    return time_expr
 
 
 def generate_assembly(variant, time, chunks, out):
     imports = "".join(f"import {variant}StartupChunk{i:02}\n" for i in range(len(chunks)))
-    time_expr = str(chunks[-1])
-    for count in reversed(chunks[:-1]):
-        time_expr = f"{count} + ({time_expr})"
     rewrites = ", ".join(f"run_add, chunk{i:02}" for i in range(len(chunks) - 1))
     (out / f"{variant}StartupComplete.lean").write_text(
         imports + f"""set_option maxRecDepth 65536
@@ -110,7 +119,7 @@ set_option maxHeartbeats 0
 namespace {variant}Startup
 open {variant}Numerical
 theorem startup : runFrom (0,0,0) {time} = {lean_tuple(SEED)} := by
-  have ht : {time} = {time_expr} := by decide
+  have ht : {time} = {time_expression(chunks)} := by decide
   rw [ht]
   rw [{rewrites}]
   exact chunk{len(chunks) - 1:02}
@@ -122,13 +131,71 @@ end {variant}Startup
     )
 
 
-if len(sys.argv) != 4 or sys.argv[1] not in variants:
-    raise SystemExit(f"usage: generate-indexed-startup.py {{{','.join(variants)}}} REPO OUTPUT")
+def generate_restricted(time, chunks, out):
+    excluded = RESTRICTED_CONTROLS
+    for index, (count, initial, final) in enumerate(chunks):
+        (out / f"PA1944LRestrictedChunk{index:02}.lean").write_text(
+            f"""import PA194IndexedRunRestriction
+import PA1944LData
+
+set_option maxRecDepth 500000
+set_option maxHeartbeats 0
+
+namespace PA1944LRestricted
+open PA194IndexedRunRestriction
+
+theorem chunk{index:02} :
+    restrictedRun PA1944LData.rows {excluded} {lean_tuple(initial)} {count} = (true, {lean_tuple(final)}) := by
+  decide +kernel
+
+#print axioms chunk{index:02}
+end PA1944LRestricted
+""",
+            encoding="utf-8",
+        )
+    imports = "".join(f"import PA1944LRestrictedChunk{i:02}\n" for i in range(len(chunks)))
+    rewrites = "".join(
+        f"  rw [append PA1944LData.rows {excluded} {lean_tuple(initial)} {count} _ "
+        f"(congrArg Prod.fst chunk{index:02}), chunk{index:02}]\n"
+        for index, (count, initial, _) in enumerate(chunks[:-1])
+    )
+    (out / "PA1944LRestrictedComplete.lean").write_text(
+        imports + f"""
+set_option autoImplicit false
+set_option maxRecDepth 65536
+
+namespace PA1944LRestricted
+open PA194IndexedRunRestriction
+
+theorem certificate :
+    restrictedRun PA1944LData.rows {excluded} (0, 0, 0) {time} =
+      (true, {str(SEED)}) := by
+  have count : {time} = {time_expression(chunks)} := by decide
+  rw [count]
+{rewrites}  exact chunk{len(chunks) - 1:02}
+
+#print axioms certificate
+end PA1944LRestricted
+""",
+        encoding="utf-8",
+    )
+
+
+restricted = len(sys.argv) == 5 and sys.argv[1] == "PA1944L" and sys.argv[4] == "--restricted"
+if not restricted and (len(sys.argv) != 4 or sys.argv[1] not in variants):
+    raise SystemExit(
+        f"usage: generate-indexed-startup.py {{{','.join(variants)}}} REPO OUTPUT\n"
+        "   or: generate-indexed-startup.py PA1944L REPO OUTPUT --restricted"
+    )
 variant = sys.argv[1]
-repo, out = map(Path, sys.argv[2:])
+repo, out = map(Path, sys.argv[2:4])
 relative, digest, time = variants[variant]
 table = repo / "Computability/BusyBeaver/Research/PA/docs" / relative
 out.mkdir(parents=True, exist_ok=True)
-chunks = generate_checkpoints(variant, time, read_rows(table, digest), out)
-generate_assembly(variant, time, chunks, out)
+chunks = checkpoints(time, read_rows(table, digest), RESTRICTED_CONTROLS if restricted else ())
+if restricted:
+    generate_restricted(time, chunks, out)
+else:
+    generate_checkpoints(variant, chunks, out)
+    generate_assembly(variant, time, chunks, out)
 print("Generated", len(chunks), "chunks ending at", SEED)
