@@ -1,0 +1,196 @@
+\section{Reusable domain libraries}
+\label{sec:domains}
+
+The framework is most useful when it becomes a small collection of shared
+object-language libraries.  This section describes the interfaces and the
+proof reductions they support.
+
+\subsection{Finite algebra and polynomial certificates}
+
+A multivariate integer polynomial is a finite list of coefficient/exponent
+pairs in a canonical order.  Addition and multiplication merge and convolve
+those lists.  Normalization combines equal monomials and removes zero
+coefficients.  Evaluation is a finite fold.
+
+\begin{proposition}[Polynomial certificate reflection]
+\label{prop:poly-reflection}
+There is a primitive-recursive checker
+\(\mathsf{PolyId}(P,Q,c)\) such that \(\ipra\) proves: if \(c\) is an accepted
+normalization certificate for \(P-Q\), then
+\[
+ \forall \mathbf x\quad P(\mathbf x)=Q(\mathbf x).
+\]
+The same method checks rational identities after multiplying by a certified
+positive common denominator.
+\end{proposition}
+
+\begin{proof}
+The certificate lists every normalization step: sorting, combining equal
+monomials, and deleting zeros.  The checker verifies local list equations.
+Induction on the certificate length proves that evaluation is preserved.
+Acceptance says the final list is empty, whose evaluation is zero.  The
+induction invariant is equality of two integer evaluations and is
+quantifier-free.  Variables \(\mathbf x\) remain free throughout and are
+universally introduced at the end.
+\end{proof}
+
+This library handles ring identities, determinant expansions, adjugate
+identities, trigonometric polynomial identities in \(\sin\) and \(\cos\), and
+the finite coefficient parts of power-series proofs.  It also separates two
+checks that are often conflated: a computer algebra system may produce the
+certificate, while the small arithmetic checker proves its soundness.
+
+\paragraph{Algebraic roots.}
+A root should be represented first by an isolating rectangle or disk, a root
+count, and a refinement procedure.  Polynomial arithmetic, interval bounds,
+and a finite argument-principle or subdivision certificate validate each
+region.  Repeated roots are represented by clusters with multiplicity data.
+An ordered list of individual roots is added only under pairwise separation.
+This resolves the branch discontinuity at collisions without weakening the
+algebraic theorem.
+
+\subsection{Linear algebra and geometry}
+
+Matrices over coded rationals are finite lists.  Matrix multiplication,
+transpose, determinant, minors, adjugate, dot products, and cross products are
+finite polynomial operations.  Fixed-dimension identities are direct
+polynomial certificates; variable-dimension identities use fold invariants.
+
+\paragraph{Nonsingular systems.}
+Cramer's rule and adjugate inversion are constructive under a determinant
+apartness witness.  The transducer carries a lower bound on
+\(\abs{\det A}\), requests sufficient entry precision, and proves the inverse
+error by \cref{lem:reciprocal,lem:product-error}.  Gaussian elimination is
+also possible, but every pivot choice must use a robust lower-bound scan.
+
+\paragraph{Singular systems and eigenvectors.}
+An exact nonzero kernel vector is not a continuous function of a singular
+matrix near rank changes.  The unconditional output should be one of:
+\begin{itemize}
+\item a projective kernel certificate;
+\item a residual-small unit vector at requested precision;
+\item an exact normalized vector under a supplied minor or spectral gap;
+\item a coherent isolating subspace projector rather than a basis.
+\end{itemize}
+Finite-net minimization of \(\norm{Av}^2\) on a rational sphere chart gives
+the approximate version.  A gap promotes it to a stable exact name.
+
+\paragraph{Euclidean and projective geometry.}
+Points, lines, circles, conics, and incidences are homogeneous coordinate
+codes.  Classical incidence theorems often reduce to determinant or polynomial
+identities after nondegeneracy denominators are recorded.  Power-of-a-point,
+Pappus, Ceva, Menelaus, and many circle theorems fit this pattern.  The library
+should expose determinant certificates, signed-area predicates, and chart
+transitions, not a large opaque geometry ontology.
+
+\paragraph{Trigonometry and spherical geometry.}
+Use regular names for \(\sin\) and \(\cos\) built from finite series or a
+circle parameter, and state identities first as polynomial equations in a
+pair \((c,s)\) satisfying \(c^2+s^2=1\).  Division-based tangent or half-angle
+forms require denominator gaps.  Spherical theorems should prefer vector dot
+and triple products; inverse angles are added via overlapping charts and
+separation certificates.
+
+\subsection{Real and complex analysis}
+
+The shared analytic library should have four layers.
+
+\begin{enumerate}
+\item \textbf{Regular names and interval arithmetic.}  This is the numerical
+      kernel of \cref{sec:represented}.
+\item \textbf{Finite sums, products, and series tails.}  Every named special
+      function exports a truncation algorithm, magnitude bound, and tail
+      modulus.
+\item \textbf{Mesh calculus.}  Integration, differentiation, and changes of
+      variable use finite mesh sums plus local remainder moduli.
+\item \textbf{Local analytic data.}  A holomorphic chart contains coefficient
+      names and a majorant on a larger rational disk.  Cauchy estimates and
+      termwise operations become finite tail calculations.
+\end{enumerate}
+
+A contour is a finite polygonal or piecewise rationally parametrized path.  A
+residue theorem instance needs a positive distance from the path to every
+pole, isolating disks for enclosed poles, local Laurent coefficient
+certificates, and a finite winding-number computation.  These are exactly the
+inputs that a classical diagram tends to suppress.
+
+A uniform convergence theorem must include a primitive-recursive modulus.  A
+pointwise statement without a modulus generally does not support interchange
+of limit, integral, or derivative in \(\ipra\).  Dominated convergence is
+replaced by finite truncation plus a tail or uniform-integrability modulus.
+
+\subsection{Elementary and Diophantine number theory}
+
+Bounded trial division, Euclid's algorithm, extended gcd, modular arithmetic,
+finite factorization, valuations below a supplied bound, and Chinese remainder
+construction are primitive-recursive finite algorithms.  Their proofs use
+state invariants such as
+\[
+ r_i=A u_i+B v_i,
+ \qquad
+ \gcd(r_i,r_{i+1})=\gcd(A,B),
+\]
+encoded by integer equations and a bounded decreasing measure.
+
+Diophantine geometry adds a search interface:
+\begin{itemize}
+\item a decidable point predicate;
+\item a height and enumeration of bounded-height codes;
+\item a height, descent, Runge, or covering certificate;
+\item a finite verifier proving that the certificate applies to the input.
+\end{itemize}
+The generic descent theorem can then be fully embedded even when the production
+of a global height certificate remains open.
+
+\subsection{Analytic number theory}
+
+Analytic-number-theory proofs should be divided into a finite arithmetic core
+and an analytic input contract.
+
+\begin{definition}[Analytic input certificate]
+An analytic input certificate is a finite code containing explicit constants,
+regions, exceptional cases, truncation lengths, and rational inequalities
+sufficient for the later finite estimate.  Its checker validates every finite
+algebraic and numerical condition.
+\end{definition}
+
+For a zero-free region, for example, the certificate records the region
+parameters, a finite cover or local argument data, bounds on coefficients and
+tails, and any exceptional zero with a separation estimate.  The downstream
+prime-counting proof is a certified transducer from this data to an explicit
+threshold.  The theorem is valuable even before a uniform certificate producer
+is known: it states exactly which quantitative input is missing and prevents
+an ineffective existence statement from entering unnoticed.
+
+\subsection{Finite and effective probability}
+
+A finite rational law is a finite list of rational values and natural weights
+with positive total weight.  Expectation is an exact finite weighted sum.  A
+product law is a mixed-radix enumeration; independence is an identity of
+finite sums rather than an axiom.
+
+Moments, characteristic functions at rational arguments, convolution, and
+events with rational thresholds are finite calculations.  A Berry--Esseen or
+Lindeberg proof is then a chain of polynomial/trigonometric approximation
+certificates, finite product telescoping, and rational smoothing estimates.
+
+An infinite or continuous law is admitted only through finite rational
+approximants with explicit tail and quantization moduli.  For weak convergence,
+a bounded-Lipschitz or characteristic-function metric is usually more robust
+than CDF comparison.  Transfer to CDFs requires a continuity or
+anti-concentration modulus near the threshold.  This cleanly separates the
+finite probabilistic theorem from the presentation of the input law.
+
+\subsection{Combinatorics and topology}
+
+Finite combinatorics is a natural fit: graphs, words, partitions, tableaux,
+simplicial complexes, and finite colorings are codes, while recurrences and
+injections are bounded traces.  Generating-function proofs should be compiled
+to coefficient identities before analytic notation is introduced.
+
+Constructive topology uses subdivisions and parity certificates.  Sperner,
+Brouwer-style approximate fixed points, polygonal Jordan separation, and
+finite-dimensional degree arguments can be stated on rational grids with
+explicit moduli.  Exact points arise from nested cells only when coherence is
+proved.  Dimension and invariance results require careful negative statements,
+but their local combinatorial certificates still fit finite-trace reflection.

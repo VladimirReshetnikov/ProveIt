@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Certified Finitary Presentation proof-obligation record",
+  "type": "object",
+  "required": [
+    "object_presentation",
+    "domain_guard",
+    "finite_observations",
+    "precision_transformer",
+    "trace_system",
+    "qf_invariant",
+    "soundness_bridge",
+    "object_language_target",
+    "status"
+  ],
+  "properties": {
+    "object_presentation": {"type": "string"},
+    "domain_guard": {"type": "string"},
+    "finite_observations": {"type": "string"},
+    "precision_transformer": {"type": "string"},
+    "trace_system": {"type": "string"},
+    "qf_invariant": {"type": "string"},
+    "branch_margins": {"type": "string"},
+    "compactness_or_search_certificate": {"type": "string"},
+    "soundness_bridge": {"type": "string"},
+    "object_language_target": {"type": "string"},
+    "native_transport": {"type": "string"},
+    "status": {
+      "enum": ["specified", "finite-core-proved", "embedded-proof-complete", "conditional", "obstructed"]
+    }
+  }
+}

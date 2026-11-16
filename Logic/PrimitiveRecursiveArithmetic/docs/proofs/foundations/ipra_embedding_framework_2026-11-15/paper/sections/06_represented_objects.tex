@@ -1,0 +1,224 @@
+\section{Represented numbers, functions, and analytic operations}
+\label{sec:represented}
+
+\subsection{Integers and rationals}
+
+An integer may be coded as a sign bit and magnitude, or by the standard zigzag
+map.  A rational is a pair \((z,d)\) with \(z\in\Z\) and positive
+\(d\in\N\).  Reduction to lowest terms is optional.  Equality and order are
+checked by cross multiplication:
+\[
+ (z,d)=(w,e)\iff ze=wd,
+ \qquad
+ (z,d)\le(w,e)\iff ze\le wd,
+\]
+under \(d,e>0\).  Addition and multiplication use the unreduced formulas.
+Absolute value, maximum, powers, finite sums, and finite products are
+primitive recursive.
+
+Clearing denominators is more than an implementation detail.  It converts the
+correctness predicates for rational algebra into integer equations and
+inequalities, which are directly suited to quantifier-free induction.  Every
+rational theorem should therefore identify the common positive denominator or
+state its cross-multiplied form.
+
+\subsection{Regular names}
+
+Let \(a(p,k)\in\Q\) be a fixed primitive-recursive evaluator.  Write
+\(\delta_k=2^{-k}\).
+
+\begin{definition}[Regular real name]
+The parameter \(p\) is regular for \(a\) when
+\[
+ \mathsf{Reg}_a(p):\quad
+ \forall k,l\quad
+ \abs{a(p,k)-a(p,l)}\le \delta_k+\delta_l.
+ \tag{R1}\label{eq:regular-name}
+\]
+\end{definition}
+
+\begin{definition}[Equality and apartness]
+Two fixed name families \(a,b\) are equal at parameters \(p,q\) when
+\[
+ \forall k,l\quad
+ \abs{a(p,k)-b(q,l)}\le\delta_k+\delta_l.       \tag{R2}\label{eq:name-eq}
+\]
+They are apart with witness \(d\in\Q_{>0}\) when the finite-precision lower
+bounds certify \(\abs{a-b}\ge d\); one convenient form is
+\[
+ \forall k,l\quad
+ d\le \abs{a(p,k)-b(q,l)}+\delta_k+\delta_l.   \tag{R3}\label{eq:apart}
+\]
+Stronger one-sample variants are often easier to use.
+\end{definition}
+
+These are first-order formulas because \(a\) and \(b\) are fixed symbols and
+all quantifiers range over natural precision indices.  They are schemas in the
+evaluators, not quantification over a function space.
+
+\begin{lemma}[Equality is transitive]
+\label{lem:name-eq-trans}
+Under regularity, \eqref{eq:name-eq} is an equivalence relation.
+\end{lemma}
+
+\begin{proof}
+Reflexivity is \eqref{eq:regular-name}; symmetry is immediate.  For
+transitivity, suppose \(a=b\) and \(b=c\).  For arbitrary \(k,l,j\),
+\[
+ \abs{a(k)-c(l)}
+ \le \delta_k+\delta_l+2\delta_j.
+\]
+We must remove the extra \(2\delta_j\) without appealing to a real limit.
+Assume the desired rational inequality fails.  Then the rational difference
+\[
+ r=\abs{a(k)-c(l)}-(\delta_k+\delta_l)
+\]
+is positive.  From the numerator and denominator of \(r\), bounded bit-length
+search produces \(j\) with \(2\delta_j<r\).  The displayed upper bound then
+contradicts the definition of \(r\).  This is finite rational arithmetic.  The
+argument formalizes as a decidable case split on the cross-multiplied target
+inequality and a primitive-recursive dyadic-below-positive-rational function.
+\end{proof}
+
+The same ``positive rational gap'' argument replaces every informal phrase
+``let the error tend to zero'' used to prove an exact rational inequality
+between names.
+
+\subsection{Operations and precision transformers}
+
+For every operation, the output algorithm and its error budget are recorded
+together.  The following elementary contracts form a useful base library.
+
+\begin{lemma}[Addition and finite sums]
+If \(a_i,b_i\) approximate \(x_i,y_i\) within \(\eps_i\), then
+\[
+ \abs{(a_1+a_2)-(x_1+x_2)}\le\eps_1+\eps_2,
+\]
+and for a finite sum the errors add.  Thus a sum of \(m\) terms requested at
+precision \(k\) may request each term at precision
+\(k+\ceil{\log_2\max(1,m)}+1\).
+\end{lemma}
+
+\begin{proof}
+Use the triangle inequality.  For the finite sum, induct on the accumulator
+index with the invariant that its error is at most the sum of the processed
+error radii.  The invariant is an integer inequality after denominators are
+cleared.  The displayed precision shift makes the total less than
+\(2^{-k}\).
+\end{proof}
+
+\begin{lemma}[Products]
+\label{lem:product-error}
+If \(\abs{x_i},\abs{y_i}\le B\) and
+\(\abs{x_i-y_i}\le\eps\) for \(i<m\), then
+\[
+ \abs{\prod_{i<m}x_i-\prod_{i<m}y_i}
+ \le m B^{m-1}\eps.
+\]
+\end{lemma}
+
+\begin{proof}
+Insert one changed factor at a time:
+\[
+ \prod x_i-\prod y_i=
+ \sum_{j<m}\left(\prod_{i<j}x_i\right)(x_j-y_j)
+                 \left(\prod_{j<i<m}y_i\right).
+\]
+Each summand is bounded by \(B^{m-1}\eps\).  The identity and bound are
+proved by finite induction; no infinite product theorem is involved.
+\end{proof}
+
+\begin{lemma}[Reciprocal under apartness]
+\label{lem:reciprocal}
+Suppose \(\abs{x}\ge d>0\) and \(\abs{x-a}\le\eps\le d/2\).  Then
+\(\abs{a}\ge d/2\) and
+\[
+ \abs{x^{-1}-a^{-1}}\le \frac{2\eps}{d^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+The first claim is the reverse triangle inequality.  For the second,
+\[
+ \abs{x^{-1}-a^{-1}}=\frac{\abs{a-x}}{\abs{x}\abs{a}}
+ \le \frac{\eps}{d(d/2)}.
+\]
+In the coded proof, division is absent from the invariant: multiply through by
+the known positive denominators and by the square of the rational lower bound \(d\).
+\end{proof}
+
+\begin{lemma}[Polynomial Lipschitz bound]
+\label{lem:poly-lip}
+For \(P(X)=\sum_\alpha c_\alpha X^\alpha\), if every coordinate of \(x,y\)
+has absolute value at most \(B\ge1\) and
+\(\max_i\abs{x_i-y_i}\le\eta\), then
+\[
+ \abs{P(x)-P(y)}\le
+ \left(\sum_\alpha\abs{c_\alpha}\,\abs{\alpha}\,B^{\abs{\alpha}-1}\right)\eta.
+\]
+\end{lemma}
+
+\begin{proof}
+For a monomial, telescope the product by replacing one factor at a time.
+There are \(\abs{\alpha}\) summands, each with one difference factor and at
+most \(\abs{\alpha}-1\) bounded factors.  Multiply by
+\(\abs{c_\alpha}\) and sum over the finite coefficient list.  The proof is a
+nested finite induction over monomials and factors.
+\end{proof}
+
+These lemmas give an automatic precision compiler for expression trees made of
+finite sums, products, guarded inverses, and fixed polynomials.  Each node
+returns both a value approximant and a certified magnitude bound for its
+parent.
+
+\subsection{Functions and continuity data}
+
+A represented function is not merely an evaluator \(f(p,x,k)\).  It carries a
+domain code and a modulus.  On a rational box, a modulus is a
+primitive-recursive function \(\mu(k)\) satisfying
+\[
+ \dist(x,y)\le2^{-\mu(k)}\to
+ \abs{f(x)-f(y)}\le2^{-k}.
+\]
+The arithmetic theorem uses rational approximants and slack, but the logical
+shape is the same.  Composition uses \(\mu_f\circ\mu_g\).  A Lipschitz
+constant supplies \(\mu(k)=k+\ceil{\log_2 L}+1\).
+
+Derivatives should be represented by a local remainder contract, not by an
+unqualified limit:
+\[
+ \abs{f(x+h)-f(x)-h g(x)}\le \abs{h}\,\omega(\abs{h}),
+\]
+with an explicit primitive-recursive modulus \(\omega\).  This is exactly the
+form needed for a finite telescoping proof of the fundamental theorem on a
+mesh.
+
+\subsection{Series and integrals}
+
+A series is represented by a finite partial sum and a tail bound
+\(T(N)\).  To name its value at precision \(k\), compute a
+primitive-recursive \(N(k)\) with \(T(N(k))\le2^{-k-c}\), evaluate the finite
+sum, and allocate the remaining error to term approximation.  Regularity of
+the resulting name follows by comparing two partial sums through the larger
+cutoff and using the two tail bounds.
+
+For an integral on \([a,b]\), use a rational mesh sum.  A Lipschitz constant
+\(L\) gives
+\[
+ \abs{I_M-I_{M'}}\le L(b-a)^2(M^{-1}+{M'}^{-1}).
+\]
+Comparison on a common refinement gives this estimate.  The common refinement, double sum,
+and error estimate are finite.  A primitive-recursive choice of \(M(k)\)
+gives a regular name.  Changes of variable, integration by parts, and contour
+integrals are admitted only with explicit local remainder or distance-to-pole
+certificates; their proofs are finite telescoping calculations.
+
+\subsection{Why no completeness axiom is needed}
+
+The represented object is the evaluator and its regularity proof.  Operations
+construct a new evaluator and prove its regularity.  The theory never asserts
+that every abstract Cauchy sequence has a limit in a pre-existing real-number
+sort.  Exact equality is the all-precision relation \eqref{eq:name-eq}; every
+use of it is reduced to arbitrary finite precision and then introduced
+universally.  This is sufficient for the analytic identities in the packets
+that already carry effective approximation data.

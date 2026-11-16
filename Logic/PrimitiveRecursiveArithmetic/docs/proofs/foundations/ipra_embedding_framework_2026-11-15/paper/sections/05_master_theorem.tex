@@ -1,0 +1,215 @@
+\section{The finite-trace embedding theorem}
+\label{sec:master}
+
+\subsection{Trace systems}
+
+All run-time parameters---the original input, requested precision, finite
+bounds, and externally supplied certificates---may be paired into one natural
+number \(u\).  A trace system consists of fixed primitive-recursive functions
+\[
+\begin{array}{ll}
+ \mathsf{init}(u), & \mathsf{bound}(u),\\
+ \mathsf{step}(u,i,s), & \mathsf{inv}(u,i,s)\in\{0,1\},\\
+ \mathsf{good}(u)\in\{0,1\}, & \mathsf{accept}(u,s)\in\{0,1\}.
+\end{array}
+\]
+Define the run by primitive recursion:
+\[
+ \mathsf{run}(u,0)=\mathsf{init}(u),\qquad
+ \mathsf{run}(u,i+1)=\mathsf{step}(u,i,\mathsf{run}(u,i)).
+\]
+The intended proof obligations are the following quantifier-free formulas:
+\begin{align}
+ \mathsf{good}(u)=1&\to
+   \mathsf{inv}(u,0,\mathsf{init}(u))=1, \tag{T0}\label{eq:T0}\\
+ \mathsf{good}(u)=1\wedge \mathsf{inv}(u,i,s)=1&\to
+   \mathsf{inv}(u,i+1,\mathsf{step}(u,i,s))=1, \tag{T1}\label{eq:T1}\\
+ \mathsf{good}(u)=1\wedge
+ \mathsf{inv}(u,\mathsf{bound}(u),s)=1&\to
+   \mathsf{accept}(u,s)=1. \tag{T2}\label{eq:T2}
+\end{align}
+
+\begin{theorem}[Finite-trace reflection]
+\label{thm:trace-reflection}
+If \(\ipra\) proves \eqref{eq:T0}--\eqref{eq:T2}, then it proves
+\[
+ \forall u\;\bigl(\mathsf{good}(u)=1\to
+ \mathsf{accept}(u,\mathsf{run}(u,\mathsf{bound}(u)))=1\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Keep \(u\) free.  Apply quantifier-free induction to
+\[
+ A(i)\;:\equiv\;
+ \mathsf{good}(u)=1\to
+ \mathsf{inv}(u,i,\mathsf{run}(u,i))=1.
+\]
+This is quantifier free: all functions are fixed primitive-recursive symbols,
+and implication is a propositional connective rather than a quantifier.  The
+base case is \eqref{eq:T0} after rewriting \(\mathsf{run}(u,0)\).  For the
+successor case, assume \(A(i)\) and \(\mathsf{good}(u)=1\).  The induction
+hypothesis gives the invariant at \(\mathsf{run}(u,i)\); \eqref{eq:T1} gives
+the invariant after one step; the defining equation for \(\mathsf{run}\)
+identifies that state with \(\mathsf{run}(u,i+1)\).
+
+Specialize the resulting universal statement to
+\(i=\mathsf{bound}(u)\).  Apply \eqref{eq:T2} with
+\(s=\mathsf{run}(u,\mathsf{bound}(u))\).  Finally introduce \(u\)
+universally.  No induction formula contains an unbounded quantifier.
+\end{proof}
+
+\begin{remark}
+The theorem is intentionally modest.  It does not say that every true
+primitive-recursive assertion is provable.  It says that a supplied base case,
+local invariant proof, and final implication compose into the expected bounded
+algorithm theorem.  The mathematical work lies in choosing an invariant for
+which \eqref{eq:T1} is actually derivable.
+\end{remark}
+
+\subsection{Finite query tables}
+
+A represented input may have a global contract such as
+\[
+ \mathsf{Reg}_a(p)\;:\equiv\;
+ \forall m,n\;R(a(p,m),a(p,n),m,n).
+\]
+Putting \(\mathsf{Reg}_a(p)\) inside the induction predicate would violate the
+intended proof discipline.  Instead, the trace declares a finite query list
+\(q(u,0),\ldots,q(u,L(u)-1)\).  Define \(\mathsf{GoodTable}(p,u)=1\) as the
+Boolean conjunction of exactly the regularity, domain, and magnitude facts
+needed about those samples.
+
+\begin{lemma}[Finite instantiation]
+\label{lem:finite-instantiation}
+For every fixed query generator, \(\ipra\) proves
+\[
+ \mathsf{Reg}_a(p)\to\mathsf{GoodTable}(p,u)=1,
+\]
+provided each field of \(\mathsf{GoodTable}\) is an instance or a finite
+algebraic consequence of the global contract.
+\end{lemma}
+
+\begin{proof}
+The query list is finite and primitive recursive.  For each entry, eliminate
+the universal quantifiers in \(\mathsf{Reg}_a(p)\) at the displayed numerical
+indices.  The remaining rational equalities and inequalities are combined by
+the Boolean-fold correctness lemma.  If later queries depend on earlier
+answers, perform the same argument along the actual trace: at stage \(i\), the
+query is a primitive-recursive term in the previous state, and universal
+elimination permits that term.  The accumulator invariant says that all facts
+queried so far have been inserted into the table.  This invariant is a Boolean
+equation and is therefore quantifier free.
+\end{proof}
+
+This lemma explains how universally quantified name hypotheses can remain in
+the surrounding context while the induction formula itself stays finite.
+
+\subsection{Fix precision, then quantify}
+
+\begin{theorem}[Fixed-precision compilation]
+\label{thm:fixed-precision}
+Let \(k\) be a requested output precision and let \(u=\angles{p,k,c}\) encode
+all numerical inputs and finite certificates.  Suppose:
+\begin{enumerate}
+\item global hypotheses \(H(p)\) imply \(\mathsf{good}(u)=1\) by finite
+      instantiation;
+\item the trace system satisfies \eqref{eq:T0}--\eqref{eq:T2};
+\item acceptance implies a finite output observation
+      \(\mathsf{Out}(p,k,A(p,k))\).
+\end{enumerate}
+Then \(\ipra\) proves
+\[
+ H(p)\to\forall k\;\mathsf{Out}(p,k,A(p,k)).
+\]
+\end{theorem}
+
+\begin{proof}
+Keep both \(p\) and \(k\) free.  From \(H(p)\), derive the finite good table
+for this particular \(k\).  Apply \cref{thm:trace-reflection}, then the final
+soundness implication.  At no point is induction applied to a formula
+containing \(\forall k\).  Once the finite derivation has been obtained with
+\(k\) free, apply universal introduction to \(k\).
+\end{proof}
+
+This simple reordering resolves a large class of reported ``iPRA induction is
+too weak'' concerns.  Frequently the problem is not the estimate but the
+attempt to induct on its completed all-precision interpretation.
+
+\subsection{Certificate reflection}
+
+A computation need not be rerun inside the checker.  Let a certificate
+\(c\) contain a state list \(s_0,\ldots,s_B\).  Define
+\(\mathsf{TraceOK}(u,c)=1\) to assert
+\[
+ s_0=\mathsf{init}(u),\qquad
+ s_{i+1}=\mathsf{step}(u,i,s_i)\ (i<B),\qquad
+ \mathsf{inv}(u,i,s_i)=1\ (i\le B),
+\]
+and the final acceptance equation.  Every clause is checked by a finite fold.
+
+\begin{corollary}[Uniform finite-certificate checker]
+\label{cor:certificate-checker}
+For a fixed trace language, \(\ipra\) proves
+\[
+ \mathsf{TraceOK}(u,c)=1\to\mathsf{Conclusion}(u,\mathsf{output}(c)).
+\]
+\end{corollary}
+
+\begin{proof}
+Use fold elimination to obtain every local transition and invariant clause.
+The final clause directly supplies acceptance, or alternatively reconstruct
+the run equality by induction on the list index and invoke
+\cref{thm:trace-reflection}.  Both routes use only finite list induction with a
+Boolean invariant.
+\end{proof}
+
+Certificate reflection is the right generic mechanism for externally produced
+polynomial normalizations, isolating regions, factorization traces, finite
+covers, and large numerical constant tables.
+
+\subsection{Composition theorem}
+
+\begin{theorem}[Composition of certified transducers]
+\label{thm:composition}
+The sequential composition of two \(\CFP\) transducers is a \(\CFP\)
+transducer.  Its precision transformer, trace bound, and checker are primitive
+recursive, and its soundness theorem is provable in \(\ipra\) from the two
+component soundness theorems.
+\end{theorem}
+
+\begin{proof}
+Encode a composite state as a phase bit together with the current component
+state and the finite metadata passed between components.  In phase zero, run
+the first transducer for its primitive-recursive bound.  Its final state
+contains the output code and every certified magnitude/domain bound needed by
+the second precision transformer.  Switch the phase bit, initialize the
+second state, and run it for its bound.  The total bound is the sum of the two
+bounds plus one switch step.
+
+The composite invariant is a Boolean case split on the phase bit.  In phase
+zero it is the first invariant.  At the switch it includes the first
+acceptance predicate and the second input-good predicate.  In phase one it is
+the second invariant together with the frozen metadata.  Each case is a
+quantifier-free equation.  Apply finite-trace reflection.  The final soundness
+implication is exactly the second component theorem after substituting the
+certified first output.  Primitive-recursive closure under pairing,
+composition, case distinction, addition, and primitive recursion supplies all
+new symbols.
+\end{proof}
+
+The same construction handles finite acyclic proof networks and bounded
+adaptive calls.  A network is flattened into one phase-indexed trace.
+
+\subsection{Export to the native calculus}
+
+Once the endpoint
+\(\Gamma\vdash[\texttt{PRAAx}]\varphi\) has been constructed, the existing
+repository theorem gives
+\[
+ \mathsf{NPrf}(\Gamma\text{ translated},\varphi\text{ translated}).
+\]
+No additional mathematical proof is required at this stage.  Conversely, the
+native public/guarded calculi can serve as compact certificate targets when
+their formula restrictions are convenient.  What must be avoided is invoking
+bi-interpretability before there is any object-language proof to transport.

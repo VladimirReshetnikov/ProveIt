@@ -1,0 +1,85 @@
+\section{Repository source audit}
+\label{app:sources}
+
+\subsection{Snapshot}
+
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}
+
+Inspected main commit:
+\begin{center}
+\small\ttfamily
+7d492fbfc5fee3b2b9dec0b2623b0b82effe05f2.
+\end{center}
+The inspection was read-only through the GitHub connector.  A network clone
+was unavailable in the artifact runtime, so the report relies on the fetched
+files listed below rather than claiming an exhaustive local build.
+
+\subsection{Foundation files}
+
+\begin{longtable}{@{}p{0.49\textwidth}p{0.43\textwidth}@{}}
+\toprule
+Path & Use in this report \\
+\midrule
+\endhead
+\code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md} & Native term
+and formula grammar, rule overview, and design intent.\\
+\code{.../ConciseIPRA/Lean/ConciseIPRA/PR.lean} & \code{PR}, \code{PTm},
+\code{PRAAx}, \code{PRA.qfInd}, primitive-recursion equations.\\
+\code{.../ConciseIPRA/Lean/ConciseIPRA/Native.lean} & \code{NFm}, \code{NPrf},
+substitution and soundness.\\
+\code{.../ConciseIPRA/Lean/ConciseIPRA/BiInterpretation.lean} & Faithful
+translation between equality theory and iPRA.\\
+\code{.../ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean} &
+\code{pra_iff_native}, \code{native_iff_pra}, round trips.\\
+\code{.../ConciseIPRA/Lean/ConciseIPRA/NativePublic.lean} & Guarded public
+certificate language and substitution-stable proof restrictions.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Proof-packet index and representative audits}
+
+\begin{longtable}{@{}p{0.51\textwidth}p{0.41\textwidth}@{}}
+\toprule
+Path & Finding used \\
+\midrule
+\endhead
+\code{Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md} & Forty-eight
+packets; placement did not rerun or compile them; area-by-area status and
+explicit partial results.\\
+\code{.../geometry/euler_rodrigues_ipra/README.md} & LLPO obstruction to
+unrestricted exact unit-axis choice; rational, separated, approximate, and
+quaternion positive results.\\
+\code{.../geometry/euler_rodrigues_ipra/formalization_and_audit.tex} & Fix
+precision before induction; finite \code{GoodTable}; polynomial residual and
+precision-compilation discipline.\\
+\code{.../diophantine-number-theory/dirichlet_kronecker_ipra/README.txt} &
+LLPO/LPO/Markov obstructions and strict/separated positive approximation
+forms.\\
+\code{.../analytic-number-theory/zeta_ipra_proof_package/paper/sections/01_foundations.tex} &
+Regular names, fixed evaluator schemas, no universal PR evaluator, finite
+mesh/series discipline.\\
+\code{.../analytic-number-theory/prime_distribution_ipra/paper/sections/01_scope.tex} &
+Explicit bounds for positive results; incomplete Chebotarev,
+Siegel--Walfisz, and Bombieri--Vinogradov analytic inputs.\\
+\code{.../diophantine-number-theory/faltings_ipra/README.md} & General
+Faltings not proved; height bound versus list; cardinality does not give a
+stopping rule; ambient Lean versus embedded proof.\\
+\code{.../diophantine-number-theory/siegel_ipra/paper/01_scope.tex} & General
+Siegel not proved; explicit Runge certificate families; missing general size
+bound.\\
+\code{.../diophantine-number-theory/mordell_weil_ipra/README.txt} & Generic
+finite descent relative to actual covering representatives; no uniform
+arbitrary-curve generator algorithm.\\
+\code{.../probability/central_limit_ipra_2026-11-15/paper/central_limit_ipra.tex} &
+Finite rational laws, effective completion with moduli, rational thresholds,
+and a Lean blueprint rather than a completed embedded proof.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Artifact verification}
+
+The exact Python companion in this archive passed nine unit tests and verified
+the supplied JSON certificate.  The PDF was compiled from the supplied LaTeX,
+rendered to images, and visually inspected.  The Lean files were not compiled
+because no Lean executable was available.  Their status is therefore exactly
+``semantic prototype and object-language blueprint.''

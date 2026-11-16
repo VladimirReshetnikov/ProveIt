@@ -1,0 +1,164 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[letterpaper,margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={A Certified Finitary Presentation Framework for Mathematics in iPRA},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+\setlength{\emergencystretch}{3em}
+\setlength{\headheight}{14pt}
+\setlist{nosep,leftmargin=2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Certified finitary presentations in iPRA}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}[theorem]{Principle}
+\newtheorem{warning}[theorem]{Warning}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{definition}
+\newtheorem{construction}[theorem]{Construction}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PRA}{\mathrm{PRA}}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\CFP}{\mathrm{CFP}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\htop}{\operatorname{ht}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\angles}[1]{\left\langle#1\right\rangle}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/ProveIt}}
+
+\lstdefinestyle{leanstyle}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  keywordstyle=\color{blue!55!black},
+  commentstyle=\color{green!35!black}
+}
+\lstdefinestyle{pythonstyle}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  keywordstyle=\color{blue!55!black},
+  commentstyle=\color{green!35!black}
+}
+
+\title{\bfseries A Certified Finitary Presentation Framework\\
+for Mathematics in Intuitionistic Primitive Recursive Arithmetic\\[0.5em]
+\large A common architecture for finite algebra, represented analysis,\\
+geometry, probability, number theory, and constructive obstruction audits}
+\author{Prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The proof packets under
+\code{Logic/PrimitiveRecursiveArithmetic} exhibit a stable positive pattern
+and a stable family of failures.  Finite exact algebra, bounded search, finite
+sums, grid arguments, and explicit descents usually fit intuitionistic
+primitive recursive arithmetic once their loop invariants are written as
+quantifier-free Boolean equations.  Difficulties arise when a textbook proof
+silently quantifies over arbitrary functions, invokes an unspecified limit or
+compactness principle, chooses an exact branch at a degenerate input, hides an
+ineffective constant, or stops at an ambient Lean theorem instead of producing
+an object-language derivation of type \code{Prf PRAAx}.
+
+This paper develops a unified \emph{Certified Finitary Presentation} (\(\CFP\))
+framework.  A mathematical object is presented by finite observations,
+primitive-recursive precision transformers, domain and apartness certificates,
+and bounded computation traces.  The central finite-trace reflection theorem
+reduces correctness to a base equation, a quantifier-free step invariant, and
+a final checker implication.  Regular names, finite nets, nested isolating
+certificates, robust overlapping branches, and height/covering certificates
+are then reusable modules rather than theorem-specific prose conventions.
+
+The framework yields fully explicit constructive replacements for several
+reported obstacles: all-precision induction is replaced by a finite query
+table at a free precision parameter; exact branch selection is replaced by an
+overlapping decision or by a decision under a supplied gap; abstract
+compactness is replaced by primitive-recursive nets; exact roots and axes are
+represented by coherent isolating data; and Diophantine finiteness is factored
+into a finite verifier plus the genuinely mathematical production of a height
+or covering certificate.  It also proves sharp boundaries: there is no total
+universal primitive-recursive evaluator; a bound on the number of solutions
+does not provide a search cutoff; and exact selections known to imply LLPO,
+LPO, or Markov principles cannot be recovered by a change of encoding.
+
+A detailed Lean plan is given against the existing declarations
+\code{PR}, \code{PTm}, \code{PRAAx}, \code{PRA.qfInd}, \code{NFm},
+\code{NPrf}, and \code{pra_iff_native}.  The accompanying archive contains
+LaTeX and PDF, a machine-readable difficulty matrix, a Lean semantic prototype
+and object-language blueprint, and an exact Python certificate kernel with
+passing regression tests.  The Lean files are an explicit completion plan, not
+a claim that the generic embedded reflection theorem has already been
+kernel-checked.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_scope}
+\input{sections/02_diagnosis}
+\input{sections/03_base}
+\input{sections/04_framework}
+\input{sections/05_master_theorem}
+\input{sections/06_represented_objects}
+\input{sections/07_robust_control}
+\input{sections/08_existence_compactness}
+\input{sections/09_domain_libraries}
+\input{sections/10_resolutions}
+\input{sections/11_barriers}
+\input{sections/12_lean_plan}
+\input{sections/13_examples}
+\input{sections/14_research_questions}
+\appendix
+\input{sections/A_normal_forms}
+\input{sections/B_source_audit}
+
+\end{document}

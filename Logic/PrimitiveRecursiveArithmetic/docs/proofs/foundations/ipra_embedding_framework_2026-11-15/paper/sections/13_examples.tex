@@ -1,0 +1,139 @@
+\section{Worked finite examples}
+\label{sec:examples}
+
+The accompanying Python program is an exact reference implementation using
+integers and \code{fractions.Fraction}.  It is not a proof in \(\ipra\), but
+its examples mirror the finite recurrences to be embedded.
+
+\subsection{A bounded trace}
+
+Fix an input \(u\) and define
+\[
+ s_0=0,\qquad s_{i+1}=s_i+u+i.
+\]
+The invariant is
+\[
+ s_i=iu+\frac{i(i-1)}2.                         \tag{E1}\label{eq:trace-demo}
+\]
+The base case is immediate.  At successor,
+\[
+ s_{i+1}=iu+\frac{i(i-1)}2+u+i
+ =(i+1)u+\frac{i(i+1)}2.
+\]
+Because \(i(i-1)\) is even, one may either use coded exact division by two or
+avoid division by storing \(2s_i=2iu+i(i-1)\).  The latter is the cleaner
+quantifier-free invariant.
+
+For \(u=3\) and bound \(8\), the certified states are
+\[
+ 0,3,7,12,18,25,33,42,52.
+\]
+The checker validates every local step and every instance of
+\eqref{eq:trace-demo}.  The final value is \(52\).
+
+\subsection{An overlapping decision}
+
+Take
+\[
+ a=\frac9{16},\qquad e=\frac1{32},\qquad
+ q=\frac12,\qquad d=\frac18.
+\]
+Here \(4e=d\), and
+\(a=q+d/2\).  The upper branch of \cref{thm:overlap-branch} returns
+\[
+ x<q+d=\frac58.
+\]
+Indeed \(x\le a+e=19/32<20/32=5/8\).  Had the approximation been larger than
+\(9/16\), the lower branch would certify \(x>1/2\).  The interval
+\((1/2,5/8)\) is deliberately shared by both branches.
+
+This tiny example is the complete control-flow core of much larger chart and
+pivot arguments.
+
+\subsection{Finite-grid approximation to \texorpdfstring{\(\sqrt2\)}{sqrt(2)}}
+
+Let \(P(x)=x^2-2\) on \([1,2]\).  On this interval,
+\cref{lem:poly-lip} gives Lipschitz constant \(4\).  Scan the grid with
+denominator \(16\).  The least point minimizing \(\abs{P}\) is
+\[
+ x_* = \frac{23}{16},
+ \qquad
+ \abs{P(x_*)}=\frac{17}{256}.
+\]
+A nearest grid point to \(\sqrt2\) is within \(1/32\), so the generic net
+bound gives residual at most \(4/32=1/8\); the exact residual above is smaller.
+The scan needs no square-root function.  It uses only integer squares and
+rational comparison.
+
+To obtain an exact regular name, at precision \(k\) compute
+\[
+ n_k=\floor{2^{k}\sqrt2}
+     =\mathsf{isqrt}(2\cdot2^{2k}),
+\]
+checked by
+\[
+ n_k^2\le2\cdot2^{2k}<(n_k+1)^2.
+\]
+The interval
+\([n_k/2^k,(n_k+1)/2^k]\) has width \(2^{-k}\), contains \(\sqrt2\), and is
+nested up to a harmless index shift.  Integer square root is a bounded search
+with a quantifier-free invariant.  The archive's regression test checks the
+resulting midpoint regularity through precision twelve; the general proof is
+the nested-ball theorem.
+
+\subsection{Polynomial identity certificates}
+
+Consider
+\[
+ (x+y)^2=x^2+2xy+y^2.
+\]
+A certificate producer expands the left side, sorts monomials
+\((2,0),(1,1),(0,2)\), and returns coefficients \((1,2,1)\).  The right side
+already has that normal form.  The checker verifies each list transformation.
+Soundness is proved once by induction on the certificate list; the theorem for
+this identity is then one accepted finite certificate plus universal
+introduction of \(x,y\).
+
+For a rational identity, the checker also records a positive common
+denominator.  The final statement is the corresponding integer polynomial
+identity after multiplication.  This is the recommended path for matrix,
+trigonometric, and algebraic identities in the packets.
+
+\subsection{Height bound and list}
+
+Let \(P(a,x)\) be \(x^2\le a\), with height \(h(x)=x\).  For \(a=20\), the
+height certificate \(H=4\) produces the complete list
+\([0,1,2,3,4]\).  Conversely the maximum of the list is \(4\).  The example is
+trivial, but its proof structure is identical to bounded rational-point search:
+a theorem-specific height implication feeds a generic finite filter.
+
+\subsection{Finite probability}
+
+Let a law have rational values \(x_j=a_j/b_j\) and natural weights \(w_j\),
+with \(W=\sum_jw_j>0\).  Its expectation is the exact rational
+\[
+ \mathbb E X=\frac{1}{W}\sum_jw_jx_j.
+\]
+For two laws, enumerate pairs by mixed radix.  The identity
+\[
+ \sum_{i,j}w_i v_j f(x_i)g(y_j)
+ =\left(\sum_iw_i f(x_i)\right)
+  \left(\sum_jv_j g(y_j)\right)
+\]
+is a finite polynomial certificate.  It proves independence algebra, mean
+additivity, and variance addition for centered variables.  There is no measure
+space and no appeal to Fubini; all sums are finite and their indices have
+explicit bounds.
+
+\subsection{Reproduction}
+
+From the archive root, run
+\begin{verbatim}
+cd code
+python3 -m unittest -v test_certificate_kernel.py
+python3 certificate_kernel.py ../examples/framework_certificate.json
+\end{verbatim}
+The delivered run passes nine tests.  The JSON certificate records the trace,
+branch, finite-grid, and regularity examples.  These tests provide independent
+finite arithmetic checks; they do not replace the planned \code{Prf PRAAx}
+formalization.

@@ -1,0 +1,140 @@
+\section{Sharp boundaries and impossibility arguments}
+\label{sec:barriers}
+
+A general framework is trustworthy only if it explains what it cannot encode.
+The following barriers show that several recurring difficulties are
+mathematical, not deficiencies of notation.
+
+\subsection{No total universal primitive-recursive evaluator}
+
+\begin{theorem}[Diagonal obstruction]
+\label{thm:no-universal-pr}
+There is no binary primitive-recursive function \(U(e,x)\) such that every
+unary primitive-recursive function \(f\) has an index \(e\) satisfying
+\(f(x)=U(e,x)\) for all \(x\).
+\end{theorem}
+
+\begin{proof}
+If such \(U\) existed, then
+\[
+ g(n)=U(n,n)+1
+\]
+would be primitive recursive.  By universality, choose \(e\) with
+\(g(n)=U(e,n)\) for every \(n\).  At \(n=e\),
+\[
+ U(e,e)=g(e)=U(e,e)+1,
+\]
+a contradiction.
+\end{proof}
+
+Consequently, a first-order theorem cannot receive an arbitrary PR function
+code and evaluate it by one total PR symbol.  Fixed evaluator schemas and
+finite trace verifiers are not a temporary workaround; they are the maximal
+uniform interface compatible with primitive recursiveness.
+
+\subsection{A cardinality bound does not yield a height bound}
+
+\begin{theorem}[No uniform conversion from ``at most one'' to a cutoff]
+\label{thm:cardinality-not-height}
+There is a primitive-recursive decidable predicate \(P(e,t)\) such that for
+every \(e\) at most one \(t\) satisfies \(P(e,t)\), but there is no
+primitive-recursive function \(H(e)\) satisfying
+\[
+ P(e,t)\to t\le H(e)
+\]
+for all \(e,t\).
+\end{theorem}
+
+\begin{proof}
+Let \(P(e,t)\) say that Turing machine \(e\), on blank input, halts for the
+first time exactly at step \(t\).  Bounded deterministic simulation is
+primitive recursive, so \(P\) is primitive-recursive and decidable.  A machine
+has at most one first halting time.
+
+If a primitive-recursive \(H\) bounded every possible first halting time, the
+halting problem would be decidable: simulate machine \(e\) for \(H(e)\) steps.
+If it has not halted by then, the implication says it never halts.  This
+contradicts undecidability of the halting problem.
+\end{proof}
+
+Thus even a uniform cardinality bound of one carries no search-stopping
+information.  The obstacle in the Faltings and Siegel packets is exactly the
+missing location/height data, not the finite filtering algorithm.
+
+\subsection{Exact sign selection and LLPO}
+
+One standard form of LLPO says: for every binary sequence with at most one
+entry equal to one, either all even entries are zero or all odd entries are
+zero.  From such a sequence \(\alpha\), construct the regular real name
+corresponding to
+\[
+ x=\sum_{n\ge0}(\alpha(2n)-\alpha(2n+1))2^{-n-1}.
+\]
+The at-most-one premise gives an explicit tail modulus.  If a uniform
+procedure always decides \(x\ge0\) or \(x\le0\), then:
+\begin{itemize}
+\item \(x\ge0\) rules out an odd-position one;
+\item \(x\le0\) rules out an even-position one.
+\end{itemize}
+When the sequence is all zero, both conclusions are valid.  Hence real sign
+selection realizes LLPO.
+
+The exact-axis and sharp-endpoint obstruction arguments in the inspected
+packets reduce their selectors to this sign principle.  Replacing the real
+encoding or choosing a different normal form cannot remove the obstruction.
+Overlapping branches avoid it because they do not decide which side of an
+exact boundary contains zero.
+
+\subsection{Negative inequality is not positive apartness}
+
+Intuitionistically, \(\neg(x=0)\) need not provide a rational \(d>0\) with
+\(\abs{x}\ge d\).  Algorithms for inversion, normalization, or density need
+the latter.  A principle converting every negative nonzeroness proof into a
+positive modulus is a Markov-style principle for represented numbers.  The
+framework therefore treats apartness witnesses as data and never derives them
+from bare negation unless the input class has a specific finite argument.
+
+For rationals and algebraic numbers with an isolating certificate, positive
+apartness can be computed.  For arbitrary regular names, it cannot.
+
+\subsection{Ineffective existence cannot be repaired by a verifier}
+
+A finite verifier may prove that any supplied constant table implies an
+asymptotic estimate.  This does not imply a primitive-recursive function
+producing such a table.  The difference mirrors proof checking versus theorem
+search: local verification may be elementary even when uniform production is
+open or noncomputable.
+
+Quantifier order detects the issue.  The useful statement is
+\[
+ \forall D\,\forall A\;\exists N\;\forall x\ge N\;E(D,A,x),
+\]
+with \(N\) produced before \(x\).  A family of proofs of
+\(\forall D,A,x\;\exists N_x\le x\;E(D,A,x)\) is not a substitute.  The
+finite-trace framework preserves the former order by making the threshold an
+output of a certificate producer.
+
+\subsection{Semantic truth is not automatic iPRA provability}
+
+A primitive-recursive function can have true arithmetic properties whose
+proofs require induction or consistency strength beyond a particular weak
+theory.  Therefore the slogan ``the algorithm is PR, so iPRA proves it'' is
+false.  The framework always asks for the local invariant derivations
+\eqref{eq:T0}--\eqref{eq:T2}.  The finite-trace theorem composes proofs; it
+does not create missing mathematical invariants.
+
+\subsection{Maximal positive statement principle}
+
+When an unrestricted theorem meets one of these barriers, the goal is not to
+stop at ``impossible.''  One should determine the maximal positive family:
+\begin{itemize}
+\item approximate witness at every precision;
+\item exact invariant or projective data;
+\item exact witness under a positive gap;
+\item certificate-relative theorem;
+\item theorem for rational or finitely presented inputs;
+\item obstruction showing why the omitted uniform selector is stronger.
+\end{itemize}
+The Euler--Rodrigues and Dirichlet--Kronecker packets already exemplify this
+pattern.  The \(\CFP\) framework makes it a standard deliverable for every
+future packet.
