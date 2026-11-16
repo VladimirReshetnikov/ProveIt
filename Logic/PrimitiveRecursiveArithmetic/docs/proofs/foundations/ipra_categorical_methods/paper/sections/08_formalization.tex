@@ -1,0 +1,198 @@
+\section{Lean definitions and a path to complete formalization}
+\label{sec:lean}
+
+\subsection{The intended endpoint}
+
+The final formal statement must construct a derivation in the embedded
+arithmetic. In the repository's notation the target has the form
+\[
+                 \Gamma\ \vdash[\texttt{PRAAx}]\ \varphi,
+\]
+where $\varphi$ is a \texttt{Fm PTm n} and $\Gamma$ is a list of formulas
+with the same numerical free variables. The actual type is
+\texttt{Prf PRAAx}. A host Lean proof of a fact about natural numbers,
+lists, rational numbers, or \texttt{CategoryTheory.Category} is a different
+kind of theorem. It may guide the arithmetic proof, but is not its
+replacement.
+
+The inspected source defines \texttt{PR k} by constructors for zero,
+successor, projection, composition, and primitive recursion. It defines
+\texttt{PTm n} by variables and applications of these symbols. The
+\texttt{PRAAx.ind} constructor requires a proof that its induction formula
+is quantifier-free. The derived rule \texttt{PRA.qfInd} exposes this
+restriction directly \cite{repo-pr}. These are the interfaces used here.
+
+The repository pins Lean \texttt{4.32.0} and Mathlib \texttt{v4.32.0}; the
+inspected manifest resolves Mathlib to commit
+\texttt{81a5d257c8e410db227a6665ed08f64fea08e997}. These are reproducibility
+targets, not a claim that this packet was compiled with them. No Lean
+executable was available in the inspected environment. The new Lean files
+are therefore explicitly \emph{uncompiled source}.
+
+\subsection{Delivered definitions}
+
+\begin{longtable}{@{}P{.32\linewidth}P{.61\linewidth}@{}}
+\toprule
+File & Mathematical content and status\\
+\midrule\endhead
+\path{lean/ObjectCategory.lean} & Source-level proofs with conclusions in
+the actual \texttt{Prf PRAAx} calculus: binary congruence, inverse uniqueness,
+an implication discharging its five hypotheses, both Yoneda determining
+computations, and implication composition. Uncompiled.\\
+\path{lean/FiniteCategoryTargets.lean} & Concrete finite-list data for maps,
+categories, functors, diagrams, cones, cocones, presheaves and representable
+transformations; exact propositions for limit and colimit producers and
+Yoneda determination. Targets are definitions of propositions, not proofs.\\
+\path{lean/MacaulayTargets.lean} & Concrete exponent and monomial enumeration,
+Macaulay matrices, closure acceptance, action identities, evaluation vectors,
+denominator grids, and complete-list targets over rational multivariate
+polynomials. Uncompiled host specification.\\
+\path{lean/CategoryBlueprint.md} & Data and proof details for contract maps,
+presented setoid categories, Yoneda, finite universal constructions, and the
+object-theory bridge.\\
+\path{lean/FORMALIZATION.md} & Ordered implementation milestones, exact
+proof obligations, coding bounds and invariants, build instructions, and
+status distinctions.\\
+\bottomrule
+\end{longtable}
+
+The finite-category specification deliberately uses \texttt{List Nat} for
+table storage. For example, composition is lookup at index $g\,a+f$ in an
+$a^2$-entry table, where $a$ is the arrow count. Invalid list lookup returns
+zero, while validity and typing are explicit predicates. The specification
+does not introduce an opaque arbitrary-function evaluator.
+
+The Macaulay specification uses host \texttt{MvPolynomial (Fin r) Rat}
+for readability. The human proof specifies the eventual numerical encoding:
+finite lists of exponent tuples and rational coefficients, with equality
+checked coefficientwise. \texttt{ClosureAccepted} is an existential
+linear-algebra \emph{specification}. A first formalization stage must implement
+the bounded row solver and prove its Boolean acceptance equivalent to that
+specification. Treating the existential formula itself as a Boolean algorithm
+would leave the main production obligation unproved.
+
+\subsection{One actual object-proof pattern}
+
+For a fixed binary PR symbol \texttt{comp}, let \texttt{bin comp g f}
+denote the arithmetic term for $g\circ f$. The delivered lemma
+\texttt{inverse\_unique} consumes object derivations of
+\begin{align*}
+ g\circ1_B&=g, & f\circ h&=1_B,\\
+ g\circ(f\circ h)&=(g\circ f)\circ h, & g\circ f&=1_A,\\
+ 1_A\circ h&=h.
+\end{align*}
+It returns an object derivation of $g=h$, by the exact five-step equality
+chain already proved. The companion \texttt{inverse\_unique\_imp} introduces
+the conjunction of those five assertions as an antecedent and proves the
+implication from the empty context. Thus the categorical equations are
+\emph{hypotheses in the theorem}, not extra axioms added to \texttt{PRAAx}.
+An application derives them from the chosen category's validity predicate.
+
+The delivered \texttt{yoneda\_component} similarly consumes a naturality
+instance at $1_A$ and the equation $1_A\circ f=f$. Two uses of equality
+reasoning yield
+\[
+ \alpha_X(f)=F(f)(\alpha_A(1_A)).
+\]
+This is the determining step, not an assertion that the whole Yoneda
+construction has already been compiled. Its converse, typing, and global
+table properties remain explicit subsequent lemmas.
+
+These source expressions use numerical equality. For a genuine setoid
+presentation, replace each equality by the appropriate relation formula and
+supply its symmetry, transitivity, and operation congruence proofs. The same
+human derivation then compiles through those rules. No quotient-equality law
+is obtained merely by reusing arithmetic equality substitution.
+
+\subsection{Implementation sequence for the main lemmas}
+
+\paragraph{Stage 1: numerical primitives.}
+Implement list coding, lookup, update, finite conjunction, first-success
+search, rank/select in a retained list, bounded products and sums, signed
+integers, rational arithmetic, and exponent tuples as \texttt{PR} syntax.
+For each primitive, prove its defining equations and a small set of lookup or
+algebraic laws in \texttt{Prf PRAAx}. Record the numerical validity guards.
+No general soundness theorem is needed.
+
+\paragraph{Stage 2: Boolean predicates.}
+Implement category, functor, naturality, cone, finite cover, overlap, matrix,
+and polynomial-identity tests. Prove their equivalence to the displayed
+bounded formulas using the prefix proofs in Lemma~\ref{lem:booleanization}.
+This stage is what permits the object proof to obtain a particular category
+law from an accepted table, rather than simply assuming all laws.
+
+\paragraph{Stage 3: fixed diagram proofs.}
+First compile \texttt{ObjectCategory.lean} against the pinned repository and
+audit the dependencies of its theorem declarations. Then instantiate its
+local law hypotheses using Stage 2. Add the equally short split-monic,
+terminal-uniqueness, naturality-composition, and adjunction calculations.
+These are finite first-order derivations and do not need new induction.
+
+\paragraph{Stage 4: uniform finite constructors.}
+For limits, prove the filtered tuple list is exactly the compatible tuples,
+then construct the rank mediator and prove uniqueness entrywise. For colimits,
+prove bounded reachability and the least-representative quotient, then descend
+cocones. For exponentials, prove digit summation and reconstruction, treating
+empty cases before division. Finite Kan extensions compose these constructions
+with the explicit formulas in Section~\ref{sec:category-framework}; no separate
+existence principle is needed. For finite-contract arrows, prove membership in
+the composite union and use the two input proof terms by implication cuts.
+
+\paragraph{Stage 5: algebraic certificate synthesis.}
+Prove the row solver correct using the invariant
+$[R\mid w]=U[A\mid v]$, the pivot pattern, and an inverse-operation log.
+Preserve the labels of the generator-multiple columns, so a solution vector
+constructs the explicit ideal-membership polynomials. Prove coefficientwise
+verification of each identity. Evaluate the identities at an arbitrary common
+zero, prove primitive scaling and the denominator lemma, and obtain the finite
+coordinate grid. Finally prove that exact filtering is sound and complete.
+Each induction concerns a bounded table predicate; the candidate point stays
+a free parameter until universal generalization.
+
+\paragraph{Stage 6: gluing and coherence.}
+Finite sheaf gluing is a first-success scan followed by a table loop. CRT uses
+the finite extended-Euclid invariant and rational-free integer calculations.
+For surjective towers, fix the supplied numerical initial value, implement the
+bounded lift scan, and use a QF validity invariant. The negative computability
+results are metatheorems about proposed uniform procedures; they should not be
+misrepresented as unproved object-theory axioms.
+
+\paragraph{Stage 7: native transport.}
+Only after obtaining the intended arithmetic derivation invoke the repository's
+\texttt{pra\_iff\_native}, supplied by the module
+\path{ConciseIPRA.NativeBiInterpretation}
+\cite{repo-native}. The theorem relates the actual ordinary-iPRA proof
+judgement to the native translation of its context and conclusion. It changes
+the presentation of the proof; it does not eliminate a mathematical hypothesis,
+create a missing bound, or turn an arbitrary host theorem into an iPRA theorem.
+
+\subsection{A compact invariant inventory}
+
+\begin{longtable}{@{}P{.24\linewidth}P{.32\linewidth}P{.35\linewidth}@{}}
+\toprule
+Construction & Finite resource & Induction content\\
+\midrule\endhead
+Contract composition & Lengths of the stored query lists & Membership in the
+flattened union; local implication for each demanded question.\\
+Category/functor tables & Object, arrow and tuple counts & Retained prefix
+contains exactly the candidates passing the bounded test.\\
+Finite limit & $\prod_i d_i$ candidates & Soundness and completeness of
+compatible retained tuples; rank/select equations.\\
+Finite colimit & $N=\sum_i d_i$ rounds; temporary paths of length at most $2N$
+& Reachability with intermediate vertices below the current round.\\
+Macaulay elimination & Matrix dimensions; finite row-operation log & Tracked
+matrix identity, inverse operations, and pivot pattern.\\
+Coordinate grid & $\prod_k(2R_k+1)$ candidates & Every retained point is a zero;
+every zero at an already scanned grid index was retained.\\
+Finite skeleton & Length of the supplied cover & Retained entries are
+inequivalent and cover the scanned prefix.\\
+Surjective tower & Stage index and given finite next-stage bound & The current
+state is valid; the selected next state maps to it.\\
+\bottomrule
+\end{longtable}
+
+For a loop bounded by a final parameter, guard its invariant by being within
+that bound. For matrix or table identities, bounded quantifiers are removed
+through their Boolean representatives before \texttt{PRA.qfInd} is used.
+This inventory gives a finite completion route; it is not a claim that the
+implementation has already been carried out.

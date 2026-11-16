@@ -1,0 +1,117 @@
+\section{Results, remaining obligations, and validation}
+
+The main outcome is a reusable way to organize finite mathematical data and
+their arithmetic proofs, together with concrete producers for categorical
+constructions and polynomial certificates. Its strength comes from exposing
+the hypotheses that make a construction work. The following comparison records
+what this changes in the inspected repository difficulties; it does not repeat
+the proofs or claim that a general change of language resolves their missing
+mathematical inputs.
+
+\begin{longtable}{@{}P{.23\linewidth}P{.70\linewidth}@{}}
+\toprule
+Question & Result and remaining boundary\\
+\midrule\endhead
+Reusable mathematical interfaces & Finite-demand contracts compose with
+explicit backward queries. Category laws, universal properties and finite
+gluing receive numerical implementations. Each application still needs its
+local arithmetic contracts proved in the target theory.\\
+Finite algebra certificates & The Macaulay closure test constructs action
+identities and a complete rational solution list at supplied successful degree
+caps. This extends the constructors in \cite{repo-witnesses}. A failed cap is
+not a proof of inconsistency; no general terminating cap search is supplied.\\
+Mordell--Weil & The existing rational-halving and supplied-cover descent
+remain valid conditional interfaces \cite{repo-mw}. The skeleton analysis
+explains why a component bound cannot generally replace representative data.
+No covering-list constructor for arbitrary elliptic curves is proved.\\
+Siegel & Finite algebra sections can be synthesized by the new closure test.
+This improves one concrete certificate-production step. The general
+approximation cover, its uniform existence, and the remaining geometric
+reductions in \cite{repo-siegel} are not established here.\\
+Faltings & Successful finite algebra certificates give explicit heights and
+lists for their systems. Positive-dimensional curves with finite rational
+point sets need not admit those certificates. The general height/list target
+of \cite{repo-faltings} remains open in this report.\\
+Puiseux with arbitrary names & The obstruction in \cite{repo-puiseux} remains:
+arbitrary computable complex Cauchy coefficient names do not support a
+uniform computable producer of a finite ramification integer and individually
+accessible exact Puiseux coefficient names. Approximate aggregates and
+conditional regularity statements have different specifications.\\
+Coherent infinite objects & Finite gluing and explicitly liftable finite
+towers have constructive producers. A node at every finite horizon alone
+does not supply a computable coherent branch. The counterexample proves a
+limit of that proposed inference, not the failure of finite limits.\\
+\bottomrule
+\end{longtable}
+
+In particular, this report does not prove general Mordell--Weil generation,
+Siegel, or Faltings in iPRA, and makes no independence claim for those
+theorems. The algebraic and categorical ingredients are established methods;
+the additions here concern their explicit arithmetic interfaces, the bounded
+certificate producer, and the precise scope of uniform constructions.
+
+\subsection{What was executed}
+
+The four Python suites were run with Python \texttt{3.12.14}; every program
+returned exit code zero. The records are
+\path{validation/reproduction.json}, \path{category_checks.json},
+\path{contract_checks.json}, \path{descent_checks.json}, and
+\path{macaulay_checks.json}, with the latter four also under
+\path{validation/}. All arithmetic in these diagnostics is exact. The counts
+below describe finite checks, not independent universal theorems.
+
+\begin{longtable}{@{}P{.23\linewidth}P{.70\linewidth}@{}}
+\toprule
+Suite & Recorded checks\\
+\midrule\endhead
+Finite categories & 9 category/opposite checks; 4 malformed-table
+rejections; 7 functor-category constructions; 75 Yoneda presentations and
+80 natural transformations; 83 limit cones and 61 colimit cocones; 304
+exponential round trips. Empty categories and empty fibres are included.\\
+Finite-demand contracts & 5 finite objects and 31 arrows; 227 composition
+checks; 1,739 associativity checks; 229 product pairings and 229 product
+$\eta$-law checks; 19 transports of realizations.\\
+Finite gluing and CRT & 909 gluing inputs: 300 accepted glued tables and
+609 rejected cover or overlap configurations. Of 6,084 CRT residue pairs,
+4,272 are compatible; 4,272 inverse-value checks verify the corresponding
+round trips.\\
+Macaulay certificates & 6 system/cap cases: 5 accepted and 1 insufficient
+cap rejected. The accepted grids have respectively 9, 2,401, 2,401, 9 and
+25 candidates. Cases include redundant noncommuting matrices and an accepted
+finite algebra with no rational points. Generated identities are checked
+coefficientwise before enumeration.\\
+\bottomrule
+\end{longtable}
+
+These checks exercise conventions, guards and examples that could invalidate
+an implementation: arrow composition order, empty cases, failed coverage,
+incompatible residues, insufficient degree caps and redundant generators.
+Their success supports the supplied reference programs. It does not establish
+their universal correctness or constitute an arithmetic proof checker.
+
+\subsection{Formalization status and concrete next steps}
+
+\textbf{No new Lean source in this archive has been kernel checked.}
+No Lean executable was available in the inspected environment. The delivered
+object-calculus expressions are uncompiled source-level constructions using
+the actual \texttt{Prf PRAAx} interface; the larger specifications define
+propositions still to be proved. No compilation result or theorem-dependency
+audit is claimed for these files. Section~\ref{sec:lean} gives the exact
+definitions and the ordered completion route.
+
+The first milestone is to compile the small object-calculus constructions
+against the pinned repository and discharge their source-level issues before
+claiming any checked derivation. The next is to implement the common numerical
+list and bounded-predicate library, then complete one uniform constructor,
+such as finite compatible-tuple limits, from its PR code through its Boolean
+invariant to its \texttt{Prf PRAAx} theorem. That would validate the shared
+method on a substantial example.
+
+For the new algebraic contribution, the decisive milestone is the bounded
+row solver with its solution-or-separator specification, followed by checked
+action-identity synthesis and the rational-grid proof. Those steps can be
+completed without resolving the separate existence of successful degree caps.
+Only after the intended arithmetic derivations exist should the repository's
+native bi-interpretation be applied. The missing approximation covers,
+curve bounds and exact-name selection principles remain mathematical research
+obligations rather than work delegated to a translation layer.

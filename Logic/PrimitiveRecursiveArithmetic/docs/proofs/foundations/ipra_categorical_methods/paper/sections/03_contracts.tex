@@ -1,0 +1,255 @@
+% Body fragment. Requires amsmath, amssymb, amsthm and theorem environments.
+\section{A category of finite challenge contracts}
+\label{sec:challenge-category}
+
+The existing finite-demand methods can be organized without insisting that
+all demands are precisions in a single linear order.  A computation may require
+several coefficient identities, a denominator bound, observations at different
+points, and a compatibility check.  A finite \emph{set of questions} is a more
+faithful interface than their maximum.  The forward output and the backward
+questions together form a category.
+
+The relation-and-two-map pattern is related to Dialectica categories and to the
+Diller--Nahm use of finite collections of challenges; de Paiva's work is an
+appropriate source for that history \cite{depaiva1991}.  We use only the explicit
+first-order construction proved below.  We do not import a higher-type
+interpretation, a closed structure, or the totality of higher-type recursors.
+
+\subsection{Objects, arrows, and their computational meaning}
+
+A contract $A$ comprises two PR carrier predicates $X_A(x)$ and $U_A(u)$ and a PR
+Boolean test $R_A(x,u)$, also written as the predicate $R_A(x,u)=1$.
+Think of $x$ as proposed data and $u$ as a question to
+which those data must give a valid answer.  Its realization assertion is
+\[
+ \operatorname{Real}(A)\;:\equiv\;
+ \exists x\bigl(X_A(x)\land
+      \forall u\,(U_A(u)\to R_A(x,u))\bigr).
+\]
+A contract does not assert this formula.  It specifies the formula whose
+witnesses a valid construction will transport.
+
+Use canonical codes of finite subsets of $\mathbb N$, for example strictly
+increasing finite lists.  Membership, singleton, image, and finite union are PR.
+The normalized representation makes equality a literal code equality; one can
+instead use arbitrary lists with equality defined by membership, but must then
+remember that it is a setoid equality.  Write $\operatorname{All}_A(x,S)$ for the
+bounded conjunction of $R_A(x,u)$ over $u\in S$.
+
+An arrow $A\to B$ consists of specified PR maps
+\[
+ f:X_A\longrightarrow X_B,\qquad
+ Q_f:X_A\times U_B\longrightarrow\operatorname{Fin}(U_A),
+\]
+with an iPRA proof of the local law
+\[
+ \operatorname{All}_A(x,Q_f(x,v))\longrightarrow R_B(f(x),v)
+ \quad(X_A(x),\ U_B(v)).                              \tag{C}
+\]
+The typing assertions say that $f(x)$ is valid and every member of the finite
+query set is a valid source challenge.  All displayed type restrictions are
+arithmetic guards.  The maps are total PR maps on natural codes; only their
+values at valid inputs matter.
+
+Two arrows are equal when their forward maps agree on valid witnesses and
+their query sets agree on every valid pair.  This is extensional equality of the
+\emph{displayed} numerical operations, expressed by first-order formulas; it is
+not assumed decidable in the general presentation.  The category is initially
+an external category of specified definitions and proofs, and its laws give
+fixed-signature iPRA theorem schemes.  A wholly internal finite-table version
+will be given below.
+
+\begin{proposition}[Realization transport]
+If $A\to B$ is a contract arrow, iPRA proves
+$\operatorname{Real}(A)\to\operatorname{Real}(B)$.
+\end{proposition}
+\begin{proof}
+Given the witness $x$ for $A$, use $f(x)$ for $B$.  For an arbitrary valid
+challenge $v$ of $B$, every member of $Q_f(x,v)$ is a valid challenge of $A$,
+so the hypothesis gives its $R_A$ assertion.  Finite conjunction gives
+$\operatorname{All}_A(x,Q_f(x,v))$, and (C) gives $R_B(f(x),v)$.  Universal
+introduction in $v$ and existential introduction with $f(x)$ finish the proof.
+There is no choice of a witness separately for each $v$.
+\end{proof}
+
+\subsection{Composition and its exact demand formula}
+
+For arrows $(f,Q_f):A\to B$ and $(g,Q_g):B\to C$, define
+\[
+ (g\circ f)(x)=g(f(x)),\qquad
+ Q_{g\circ f}(x,w)=
+       \bigcup_{v\in Q_g(f(x),w)}Q_f(x,v).             \tag{D}
+\]
+The union is a bounded fold over a coded finite list, followed if necessary by
+sorting and removal of duplicates; hence it is PR.
+
+\begin{theorem}[Contract composition]
+Formula (D) defines a contract arrow.  With identities
+$1_A(x)=x$ and $Q_{1_A}(x,u)=\{u\}$, the contracts and these arrows satisfy the
+category laws up to the stated extensional equality.
+\end{theorem}
+\begin{proof}
+Assume $R_A(x,u)$ for every $u$ in the union (D).  Fix
+$v\in Q_g(f(x),w)$.  Every $u\in Q_f(x,v)$ belongs to that union, so the local
+law for $f$ gives $R_B(f(x),v)$.  This holds for every such $v$, so the local law
+for $g$ gives $R_C(g(f(x)),w)$.  The types of all outputs and challenges follow
+from the typing clauses of the two arrows.  The identity law (C) is simply
+$R_A(x,u)\to R_A(x,u)$.
+
+Forward identity and associativity are numerical equalities.  A singleton
+union proves the two query identity laws.  For three arrows $f,g,h$, the two
+query sets of the associativity law both have the membership condition
+\[
+ u\in Q
+ \quad\Longleftrightarrow\quad
+ \exists w\in Q_h(g(f(x)),z)\;
+ \exists v\in Q_g(f(x),w)\;
+ u\in Q_f(x,v).
+\]
+All existential quantifiers here are bounded by displayed finite lists.
+Finite-union associativity proves equality of the normalized sets.  The proof
+uses induction only for finite list operations; after Booleanization their
+invariants are quantifier-free.  It does not use an unbounded union, choice,
+or a total evaluator for arbitrary program codes.
+\end{proof}
+
+Thus demands compose contravariantly while proposed witnesses compose
+covariantly.  The formula keeps separate questions separate; when source
+questions have an order and a proved domination law, a later optimization may
+replace a query set by a dominating question.  Taking the maximum without that
+law is not justified.
+
+\subsection{Finite products express conjunction of tasks}
+
+Let $A=(X,U,R)$ and $B=(Y,V,S)$.  Define their product contract by witnesses
+$X\times Y$, challenges $U+V$, and
+\[
+ T((x,y),\operatorname{inl}u)=R(x,u),\qquad
+ T((x,y),\operatorname{inr}v)=S(y,v).
+\]
+Pairs and tags use standard PR coding, with the appropriate guards.
+The first projection sends $(x,y)$ to $x$ and sends the target question $u$ to
+the singleton $\{\operatorname{inl}u\}$; the second uses the right tag.
+
+Given arrows $(f,Q_f):C\to A$ and $(g,Q_g):C\to B$, define their pairing by
+\[
+ h(z)=(f(z),g(z)),\quad
+ Q_h(z,\operatorname{inl}u)=Q_f(z,u),\quad
+ Q_h(z,\operatorname{inr}v)=Q_g(z,v).
+\]
+Each local validity law is one of the laws already supplied for $f$ or $g$.
+The projection equations follow from singleton union in (D).  If another arrow
+has both projection equations, its forward coordinates agree with $f$ and
+$g$, and its query set at every left-tagged and right-tagged question agrees
+with $Q_h$.  Those are all product questions.  Hence the arrow is equal to
+$h$.  This proves the categorical product universal property, not merely a
+logical implication between realization assertions.
+
+The terminal contract has one witness and no challenges.  A map to it is
+unique up to our equality: its forward value is the unique witness and there
+are no valid query arguments.  Consequently this category has finite
+products.  No function object or exponential was needed to construct them.
+
+\subsection{A uniform finite-table category of contracts}
+
+There is a useful internal specialization.  An object is a pair of finite
+cardinals $x,u$ and a Boolean $x\times u$ matrix.  Its witness and challenge
+sets are $[x]$ and $[u]$.  An arrow to $(y,v,S)$ is a pair of finite tables
+\[
+ f:[x]\to[y],\qquad Q:[x]\times[v]\to[2^u],
+\]
+where a number below $2^u$ is the bitset of source questions.  Validity is the
+bounded test
+\[
+ \bigwedge_{a<x}\bigwedge_{b<v}
+ \left(\left[\bigwedge_{c<u}
+      (c\in Q(a,b)\Rightarrow R(a,c))\right]
+      \Rightarrow S(f(a),b)\right).
+\]
+Empty witness and challenge sets are allowed, using the finite table
+conventions made explicit in the next section. For any fixed endpoints, the possible arrow
+tables are finite in number, bounded by
+\[
+ y^x(2^u)^{xv}.
+\]
+Their valid sublist is obtained by bounded filtering.  Identity and
+composition use table evaluation and bitset union, so all their data and laws
+are uniform PR functions and iPRA theorems about natural codes.  In this case
+there is an internal, decidably presented, locally finite category of all
+finite contract matrices.  Its infinitely many object codes do not cause a
+universal-program-evaluation problem: each evaluated arrow is a finite table
+whose domain size is explicit.
+
+\subsection{Example: addition of regular rational names}
+
+Fix PR rational-valued families $a(x,n)$ and $b(y,n)$; each denotes one fixed
+program with parameters $x$ or $y$.  Give the first the challenge relation
+\[
+ R_A(x,(i,j)):\quad |a(x,i)-a(x,j)|\le 2^{-i}+2^{-j},
+\]
+and analogously define $R_B$.  These are decidable tests on rational codes.
+The product contract requires regularity of both names.  Define the output
+family by the fixed PR formula
+\[
+ c((x,y),n)=a(x,n+1)+b(y,n+1).
+\]
+The forward map keeps the pair of parameters.  For target question $(i,j)$,
+ask the two source questions
+\[
+ \{\operatorname{inl}(i+1,j+1),\;
+   \operatorname{inr}(i+1,j+1)\}.
+\]
+Their answers imply, by the rational triangle inequality,
+\begin{align*}
+ |c((x,y),i)-c((x,y),j)|
+ &\le |a(x,i+1)-a(x,j+1)|+|b(y,i+1)-b(y,j+1)|\\
+ &\le 2(2^{-(i+1)}+2^{-(j+1)})=2^{-i}+2^{-j}.
+\end{align*}
+This is exactly the local arrow law.  The realization-transport theorem
+therefore carries two valid regular names to a valid regular output family.
+Here the displayed shifted family defines the addition operation on names;
+compatibility with a chosen equivalence relation on names is a separate
+representation obligation, not a conclusion of the regularity test alone.
+The algebra is rational arithmetic and the demand shift is explicit.  We have
+not asserted that iPRA contains an arbitrary real number as a completed set,
+or a uniform evaluator for codes of all real names.  The same contract shape
+applies to error bounds, derivative observations, finite covers, and algebraic
+certificates whenever their tests and numerical transformations have the
+required PR definitions and proved local laws.
+
+\subsection{Variable-length chains and the induction obligation}
+
+A variable-length chain is legitimate when there is \emph{one uniform PR}
+family of step maps $f(i,x)$, query maps $Q(i,x,u)$, and contract tests
+$R(i,x,u)$.  It is not legitimate merely because each entry of an unbounded
+list names some separately PR program.  In the uniform case compute
+\[
+ x_0=x,\qquad x_{i+1}=f(i,x_i),\qquad
+ S_n=\{u\},\qquad
+ S_i=\bigcup_{v\in S_{i+1}}Q(i,x_i,v)\quad(i<n).
+\]
+The finite state list is produced by primitive recursion.  The backward
+finite-set list is produced by a loop of exactly $n$ steps using reverse
+indices and bounded array lookup.  This is a PR construction even if its
+sets become very large.
+
+Assume each local step law.  If $R(0,x,v)$ holds for every $v\in S_0$, then
+inductively $R(i,x_i,v)$ holds for every $v\in S_i$, because each required
+source query for $v\in S_{i+1}$ is a member of $S_i$.  The induction predicate
+is the PR Boolean finite conjunction
+\[
+ \operatorname{All}(i,x_i,S_i)=1.
+\]
+At $i=n$ it gives $R(n,x_n,u)$.  This identifies the exact induction formula
+rather than applying induction to an assertion quantifying over all
+challenges.  It generalizes a scalar backward-precision schedule to any finite
+collection of heterogeneous observations.  Arithmetic bounds or resource
+certificates needed to define the individual step families remain part of
+their local obligations.
+
+More explicitly, validity of each $x_i$ follows from a separate QF induction
+using the forward typing law; the typing law for queries then proves validity
+of all members of each backward set. Apply the guarded loop rule to
+$i\le n\to\operatorname{All}(i,x_i,S_i)=1$, with the fixed terminal $n$
+as a parameter. Thus the recurrence is used only at indices for which the
+stored state and demand arrays have been constructed.

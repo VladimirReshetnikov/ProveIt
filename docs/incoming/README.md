@@ -243,6 +243,8 @@ byte-identical to the `lean/upstream/` copies in
 was placed the same way, under `foundations/`, and then deleted. All 37 of its members are
 placed. `ipra_algebraic_geometry_framework_2026-11-15.zip` was placed the same way, under
 `geometry/`, and then deleted. All 46 of its members are placed.
+`ipra_categorical_methods.zip` was placed the same way, under `foundations/`, and then
+deleted. All 49 of its members are placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

@@ -1,0 +1,535 @@
+% Body fragment. Requires amsmath, amssymb, amsthm, longtable, hyperref.
+% theorem, proposition, definition, corollary, remark environments are assumed.
+% Bibliography keys: riehl2016, depaiva1991, kellyPR.
+\section{Category theory without a universe of arbitrary functions}
+\label{sec:category-framework}
+
+The relevant part of category theory is largely a calculus of typed composition,
+explicit universal operations, and equations.  Its ordinary definitions and
+standard theorems are documented in Riehl's text \cite{riehl2016}.  The issue for
+iPRA is the representation of the data to which that calculus is applied.  A
+finite table can be evaluated uniformly by a primitive recursive function.  An
+arbitrary primitive recursive program cannot.  The distinction must be preserved
+at every use of the words ``category of'', ``functor'', and ``natural''.
+
+\subsection{Three distinct meanings of a categorical development}
+
+A \emph{fixed PR presentation} consists of finitely many specified primitive
+recursive predicates and operations, together with iPRA proofs of their laws.
+For example, object codes are natural numbers satisfying $O(a)$; an arrow code
+$f:a\to b$ satisfies $H(a,b,f)$; and parallel arrows are compared by
+$E(a,b,f,g)$.  Identities and composition are total PR operations $i(a)$ and
+$c(a,b,d,g,f)$, whose values on invalid arguments are immaterial.  On valid
+arguments the axioms assert:
+\begin{enumerate}
+\item $E$ is an equivalence relation on each $H(a,b,-)$;
+\item $i(a):a\to a$, and $g\circ f:a\to d$ whenever $f:a\to b$ and $g:b\to d$;
+\item composition respects $E$ in both arguments;
+\item $(h\circ g)\circ f=_{E}h\circ(g\circ f)$,
+      $i(b)\circ f=_{E}f$, and $f\circ i(a)=_{E}f$.
+\end{enumerate}
+Every displayed law carries the relevant object and arrow guards.  For a
+\emph{decidable presentation}, $O,H,E$ are PR predicates.  More generally $E$ may
+be a first-order arithmetic formula with supplied iPRA proofs of these laws;
+then equality need not be decidable, and algorithms that test it require a
+separate decidable presentation or certificate interface.  One must not silently
+use equality testing in the second version.
+
+A functor is a specified pair of PR maps on object and arrow codes preserving
+these laws.  A natural transformation is a specified PR map $a\mapsto\eta_a$
+satisfying the typed naturality equations.  These are \emph{schemes over fixed
+maps}: the symbols are fixed before the iPRA statement is formed.  We do not
+quantify over arbitrary functions or insert a universal evaluator for their
+codes.  If a category's laws are only hypotheses, the resulting theorem is a
+conditional theorem of iPRA; an application becomes an unconditional theorem
+only after those hypotheses have themselves been discharged.
+
+A second, stronger uniformity is available for \emph{finite table presentations}.
+Here the entire finite category, functor, and natural transformation are encoded
+by natural numbers, their validation predicates are PR, and all table operations
+are PR.  A theorem may then quantify over their codes in one iPRA formula.
+
+A third meaning is the \emph{external category of PR constructions}.  Its objects
+and arrows are individual specified PR definitions with supplied proofs.  It is
+legitimate mathematical bookkeeping and a source of theorem schemes.  It is not
+a first-order object that iPRA has been shown to contain.  In particular a
+syntactic program code is not by itself a morphism equipped with a uniform total
+PR evaluation operation.
+
+\subsection{Explicit category tables and finite functor categories}
+
+A finite category table has object set $[n]$, arrow set $[a]$, source and
+target arrays of length $a$, an identity array of length $n$, and a composition
+array with $a^2$ entries. A composition value is used only when the target of
+the first arrow equals the source of the second. Check array dimensions and
+entry bounds first; only afterwards check typing, unit laws, and associativity
+on composable triples. The final validity predicate is a bounded Boolean
+conjunction. Off-domain composition receives a fixed default; the reference
+implementation uses a separate sentinel to make invalid lookups visible.
+
+For categories $C,D$ with sizes $(n,a)$ and $(m,b)$, enumerate the
+$m^n b^a$ possible pairs of object and arrow tables. Filter by preservation
+of source, target, identity, and composition. The retained list is exactly
+the list of functors, including the unique empty functor from the empty
+category. Empty-table counts use $0^0=1$.
+
+For each retained pair $F,G$, enumerate the $b^n$ possible component tables
+and retain exactly those with
+$\eta_x:Fx\to Gx$ and
+\[
+ \eta_y\circ F(f)=G(f)\circ\eta_x\qquad(f:x\to y).
+\]
+The resulting category $[C,D]$ has these functors as objects and the tagged
+retained component tables as arrows. Its identities are
+$(1_F)_x=1_{Fx}$ and its composition is
+$(\mu\circ\eta)_x=\mu_x\circ\eta_x$.
+If $\eta:F\to G$ and $\mu:G\to H$, then
+\[
+ (\mu_y\eta_y)F(f)=\mu_yG(f)\eta_x
+                 =H(f)\mu_x\eta_x,
+\]
+using the two naturality equations and associativity in $D$. Thus composition
+passes the retained-table test. Unit and associative laws hold at each
+component by the corresponding laws in $D$. Canonical ranking in the retained
+lists converts these pointwise equations into equalities of arrow codes.
+The number of objects is at most $m^n b^a$, and the number of arrows is at
+most $(m^n b^a)^2b^n$. Every scan is bounded by these explicit PR expressions.
+The filtered-prefix invariant proves that each retained list is sound and
+complete. This constructs a functor category uniformly for finite inputs,
+rather than presupposing a universe of all arbitrary functors.
+
+\subsection{Elementary categorical results are intuitionistic}
+
+For completeness, several often-used deductions require no induction or
+excluded middle.  If $g,h:b\to a$ are both two-sided inverses of $f:a\to b$, then
+\[
+ g=g\circ 1_b=g\circ(f\circ h)=(g\circ f)\circ h=1_a\circ h=h.
+\]
+If $r\circ s=1$, then $s$ is monic: from $s\circ u=s\circ v$, composition with
+$r$ gives $u=v$.  Dually $r$ is epic.  If a monic $f:a\to b$ has a right inverse
+$r:b\to a$, then
+$f\circ(r\circ f)=(f\circ r)\circ f=f=f\circ1_a$; cancellation gives
+$r\circ f=1_a$.  These equations also prove the dual statement.  Thus an
+isomorphism is both monic and epic, and a monic retraction or epic section is an
+isomorphism.  The converse ``monic and epic implies isomorphism'' is not valid in
+an arbitrary category: the two-object category with only identities and one
+arrow $a\to b$ is a finite counterexample.
+
+Two terminal objects $t,u$ have unique arrows $p:t\to u$ and $q:u\to t$; terminal
+uniqueness gives $qp=1_t$ and $pq=1_u$.  The same argument applies to two objects
+satisfying the same universal property, by working with their universal
+structure maps.  An explicit mediating operation is preferable when the result
+will be used algorithmically: a formula asserting existence and uniqueness does
+not automatically provide a PR selector.
+
+\subsection{The category of finite sets has exponentials in iPRA}
+\label{subsec:finset-exp}
+
+Write $[n]=\{0,\ldots,n-1\}$.  An arrow $[n]\to[m]$ is the canonical table of its
+$n$ entries, each below $m$.  Equivalently, for $m>0$ it is a base-$m$ code
+$c<m^n$ and its value at $j<n$ is
+\[
+ \operatorname{ev}_{n,m}(c,j)
+ =\left\lfloor c/m^j\right\rfloor\bmod m.
+\]
+All operations are totalized by zero outside their valid domains.  When $n=0$
+there is one empty table, including when $m=0$; when $n>0,m=0$ there is no table.
+Thus the number of tables is $m^n$ with the usual convention $0^0=1$.
+
+Identity is the table $j\mapsto j$.  Composition is the table
+$j\mapsto\operatorname{ev}(g,\operatorname{ev}(f,j))$.  Equality is entrywise
+bounded equality, or literal equality of canonical table codes.  Closure and the
+category laws follow by evaluating at an arbitrary $j<n$.  All searches and
+finite sums used to encode these tables have displayed finite bounds.  Their
+proofs use induction only on PR Boolean predicates about finite prefixes.
+
+The terminal object is $[1]$, the initial object is $[0]$, the product is
+$[n]\times[m]\cong[nm]$, and the coproduct is $[n+m]$.  Use
+$(i,j)\mapsto im+j$ for the product, with the empty cases handled by the guards.
+The pairing of two tables $f:[z]\to[n]$ and $g:[z]\to[m]$ has entries
+$f(k)m+g(k)$.  Its projection equations and uniqueness are entrywise equations.
+The coproduct mediator is the table obtained by concatenating its two input
+tables; its two equations and uniqueness are equally direct.
+
+\begin{theorem}[Finite exponentials]
+The table category of finite sets is cartesian closed, with
+\[
+ [m]^{[n]}=[m^n].
+\]
+Evaluation and currying are primitive recursive uniformly in $m,n,z$ and the
+input tables, and their two inverse laws are provable in iPRA.
+\end{theorem}
+\begin{proof}
+Evaluation sends $(c,j)$ to the $j$th entry of table $c$.  If either $n=0$ or
+$m^n=0$, its domain is empty; otherwise the digit formula applies.  Given a table
+$h:[z]\times[n]\to[m]$, define
+\[
+ (\operatorname{curry}h)(k)
+   =\sum_{j<n}h(k,j)m^j.
+\]
+For $m>0$ this number is below $m^n$, and its $j$th digit is $h(k,j)$.  The
+finite-digit lemma is proved by induction on the table length, using quotient
+and remainder at the last digit.  For $n=0$ the sum is zero and $m^0=1$, so the
+same assertion is valid; if $m=0,n>0$, existence of $h$ forces $z=0$, making
+currying the empty table.  Consequently
+$\operatorname{ev}(\operatorname{curry}h(k),j)=h(k,j)$ on every valid input.
+Conversely a canonical code $c<m^n$ is recovered by summing its digits, so
+currying the evaluation of any $k:[z]\to[m^n]$ recovers $k$.  These two equations
+are precisely the exponential universal property.  No unbounded family of
+functions has been encoded: every represented function has a specified finite
+domain.
+\end{proof}
+
+This example prevents an overly strong negative conclusion.  Cartesian closure
+itself is compatible with iPRA.  The obstruction below concerns an exponential
+containing every PR function on an \emph{unbounded} natural-number domain with
+uniform PR evaluation.
+
+\subsection{Finite limits, including equalizers and pullbacks}
+
+A finite diagram is a finite table category $J$ and a table functor $D$ assigning
+the finite set $[d_i]$ to each object $i$ and a function table $D(a)$ to each arrow
+$a:i\to j$.  List all tuples
+\[
+ x=(x_i)_{i\in\operatorname{Ob}J},\qquad x_i<d_i,
+\]
+whose ambient number is $P=\prod_i d_i$, with the empty product equal to one.
+Retain a tuple exactly when every arrow satisfies
+\[
+ D(a)(x_i)=x_j.                                      \tag{L}
+\]
+Let $L$ be the increasing list of retained tuple codes.  Its size is a PR number
+$\ell\le P$.  Ranking within $L$ and selecting its $r$th element are bounded PR
+operations; rank is only used on an element known to have been retained.
+Coordinate selection gives a cone $p_i:[\ell]\to[d_i]$.
+
+For any cone $q_i:[z]\to[d_i]$ and $t<z$, the tuple $(q_i(t))_i$ satisfies (L),
+by the cone equations.  Its rank in $L$ therefore defines a table
+$u:[z]\to[\ell]$.  Then $p_i u=q_i$ for every $i$.  If $v$ also has these
+projection equations, the tuple selected by $v(t)$ has the same every
+coordinate as the tuple selected by $u(t)$; finite tuple extensionality and
+injectivity of ranking give $v(t)=u(t)$.  Thus $u=v$.
+
+This proves the finite-limit universal property and supplies its mediator.
+For the empty diagram the construction gives $[1]$.  A parallel pair produces
+the list of points where its two tables agree, so equalizers require no
+undecidable set formation.  A cospan gives pairs with equal images, so pullbacks
+are obtained by the same bounded filter.  The proof is uniform in the encoded
+diagram.  It never applies a compactness principle to infinitely many
+constraints.
+
+\subsection{Finite colimits by bounded equivalence closure}
+
+For the same diagram form the disjoint union
+\[
+ S=\coprod_i[d_i],\qquad N=\sum_i d_i.
+\]
+Its elements are tagged pairs $(i,x)$.  Generate an undirected relation by
+\[
+ (i,x)\sim(j,D(a)(x))\quad(a:i\to j),
+\]
+and include all reflexive pairs.  Its equivalence closure can be computed by
+finite reachability.  One explicit procedure is Warshall's recurrence on the
+$N$-element set:
+\[
+ R_{k+1}(u,v)=R_k(u,v)\lor\bigl(R_k(u,k)\land R_k(k,v)\bigr),
+ \qquad k<N.
+\]
+Here $R_0$ is the reflexive symmetric generating relation.  The elementary
+invariant says that $R_k(u,v)$ holds exactly when there is a path from $u$ to $v$
+whose internal vertices are below $k$.  The backward implication splits a path
+at its visits to vertex $k$: a segment between successive visits can be removed,
+so at most one visit is necessary.  The forward implication concatenates the
+two witnessing paths.  Both directions admit bounded implementations: on $N$
+vertices any walk can have repeated-vertex segments deleted until its length is
+below $N$, and at most its initial length many deletion steps are needed.
+For the invariant it suffices to use paths of length below $N$; a temporary
+concatenation has length at most $2N$ and is shortened in at most $2N$ deletion
+steps.  The path and its successive deletions are finite coded arrays; the
+invariant is a bounded predicate.  Thus this familiar proof uses quantifier-free induction
+after Booleanization, not induction on a formula with an unbounded existential
+path quantifier.
+
+It follows that $R_N$ is an equivalence relation containing the generators.
+For each $u<N$ choose the least $v<N$ with $R_N(u,v)$.  This bounded minimum
+exists because $R_N(u,u)$ holds.  List the distinct minima increasingly, and
+identify their list with $[q]$.  The map taking $u$ to the rank of its minimum is
+our quotient map.  In particular no abstract quotient type or choice axiom is
+needed in the object theory.
+
+A cocone $t_i:[d_i]\to[z]$ has equal values on every generating edge.  Equality
+propagates along a finite path, so its value is constant on each $R_N$-class.
+Define $v:[q]\to[z]$ by evaluating the cocone at the chosen least
+representative.  Then $v\circ\iota_i=t_i$.  Any other such map agrees on every
+class because every class has its displayed representative.  This proves the
+colimit universal property with a PR mediator.  The empty diagram yields
+$[0]$; a parallel pair yields a coequalizer, and a span yields a pushout.
+
+The finite reachability bound is essential.  Replacing this finite relation by
+an unbounded computably presented congruence would not justify a PR normal form
+or an equality decision procedure.
+
+\subsection{Yoneda as a first-order calculation}
+\label{subsec:yoneda}
+
+Let $C$ be a fixed PR-presented category.  A contravariant PR-presented family
+$F$ consists of a PR carrier predicate $P(x,u)$, a specified equivalence relation
+$u\simeq_x v$ on this carrier, and a PR action $F(f,u)$ for $f:x\to y$ and
+$u\in F(y)$, giving an element of $F(x)$.  The action respects equivalence and
+satisfies
+\[
+ F(1_x,u)\simeq_xu,\qquad
+ F(g\circ f,u)\simeq_xF(f,F(g,u)).                    \tag{F}
+\]
+It also respects equality of arrow codes.  These are guarded arithmetic
+formulas.  The representable family $h_A(x)=C(x,A)$ uses precomposition as its
+action.
+
+A specified natural transformation $\alpha:h_A\to F$ is a PR operation
+$\alpha(x,f)$ taking $f:x\to A$ to an element of $F(x)$, respecting arrow
+comparison, and satisfying
+\[
+ \alpha(y,f\circ k)\simeq_y F(k,\alpha(x,f))
+ \quad(k:y\to x,\ f:x\to A).                         \tag{N}
+\]
+
+\begin{theorem}[Presentation-wise Yoneda]
+For every specified $\alpha$ satisfying (N), put
+$a=\alpha(A,1_A)$.  Then
+\[
+ \alpha(x,f)\simeq_x F(f,a)\qquad(f:x\to A).          \tag{Y}
+\]
+Conversely every $a\in F(A)$ determines a natural transformation by
+$\alpha^a(x,f)=F(f,a)$.  Evaluation at $1_A$ and this construction are inverse up
+to the specified equivalences.  All operations are PR for the fixed
+presentation, and the argument is an intuitionistic iPRA derivation from its
+laws.
+\end{theorem}
+\begin{proof}
+Use (N) with $x=A$, $f=1_A$, and $k$ equal to the given arrow $f:x\to A$.
+It gives
+\[
+ \alpha(x,1_A\circ f)\simeq_x F(f,\alpha(A,1_A)).
+\]
+The left identity law and the requirement that $\alpha$ respect arrow equality
+replace the left-hand side by $\alpha(x,f)$, proving (Y).  Conversely (F) gives
+\[
+ \alpha^a(y,f\circ k)=F(f\circ k,a)
+ \simeq_y F(k,F(f,a))=F(k,\alpha^a(x,f)),
+\]
+which is naturality.  Evaluation of $\alpha^a$ at $1_A$ gives
+$F(1_A,a)\simeq_Aa$ by (F).  Evaluation followed by reconstruction sends
+$\alpha$ to a pointwise equivalent transformation by (Y).  No function
+extensionality axiom inside iPRA is required: pointwise equivalence is the
+arithmetic definition of equality of the displayed transformations.
+\end{proof}
+
+For $F=h_B$, the element $a$ is an arrow $A\to B$ and the transformation is
+$f\mapsto a\circ f$.  Thus every specified natural transformation between
+representables is induced by a unique arrow, modulo hom equality.  This is the
+full-faithfulness assertion in presentation-wise form.  If $C$ is a finite table
+category and all $F(x)$ are finite tables, then transformations themselves are
+finite tables, (N) is a bounded test, and the same proof yields a \emph{single
+uniform theorem about their codes}.  Only in that finite setting have we
+constructed the complete collection of transformations as an internal finite
+set.  In the general setting we have the theorem scheme (Y), which is already
+sufficient for many universal-property arguments.
+
+\subsection{Finite Kan extensions, explicitly}
+
+The finite constructions go beyond elementary category laws.  Let $C,D$ be
+finite table categories, $K:C\to D$ a table functor, and $F:C\to\mathrm{FinSet}$
+a finite-valued table functor.  For $d\in D$, the left Kan extension can be
+constructed as a quotient of the finite set of triples
+\[
+ (c,k,x),\qquad k:Kc\to d,\quad x\in F(c),
+\]
+by the equivalence relation generated by
+\[
+ (c,k,x)\sim(c',k',F(a)x)
+ \quad\text{if }a:c\to c'\text{ and }k'\circ K(a)=k.   \tag{K}
+\]
+Use the finite-colimit algorithm just proved.  For $v:d\to d'$, send a triple
+to $(c,v\circ k,x)$.  It preserves every generator (K), by associativity, so it
+descends to the chosen representative quotient.  Identity and composition are
+checked on representatives.  This defines the table functor $\operatorname{Lan}_K
+F:D\to\mathrm{FinSet}$ by PR operations.
+
+Its universal transformation sends $x\in F(c)$ to the class $[c,1_{Kc},x]$.
+It is natural because for $a:c\to c'$ the image of this class under
+$\operatorname{Lan}_K F(K(a))$ is $[c,K(a),x]$, which equals
+$[c',1_{Kc'},F(a)x]$ by generator (K).
+For any finite-valued $G:D\to\mathrm{FinSet}$ and natural transformation
+$\alpha:F\to GK$, define
+\[
+ \widehat\alpha_d[c,k,x]=G(k)(\alpha_c(x)).            \tag{KL}
+\]
+This is well-defined: if (K) holds, naturality of $\alpha$ gives
+\[
+ G(k')\alpha_{c'}F(a)x
+   =G(k')G(K(a))\alpha_cx
+   =G(k'K(a))\alpha_cx
+   =G(k)\alpha_cx.
+\]
+Equality then propagates along the bounded paths used in the quotient.  Formula
+(KL) is natural in $d$ because $G(vk)=G(v)G(k)$.  Conversely a natural
+$\beta:\operatorname{Lan}_K F\to G$ restricts to
+$\alpha_c(x)=\beta_{Kc}[c,1,x]$.  Naturality at $k:Kc\to d$ recovers (KL), while
+(KL) at the identity recovers $\alpha$.  Thus restriction and (KL) are inverse,
+proving the Kan universal property rather than merely constructing candidate
+objects.
+
+For the right Kan extension, $(\operatorname{Ran}_K F)(d)$ is the finite set of
+tuples
+\[
+ (x_{c,k})_{(c,k)},\qquad k:d\to Kc,\quad x_{c,k}\in F(c),
+\]
+satisfying
+\[
+ F(a)x_{c,k}=x_{c',K(a)\circ k}\quad(a:c\to c').       \tag{KR}
+\]
+It is a bounded filtered product, so the finite-limit algorithm applies.  An
+arrow $v:d\to d'$ sends a tuple $x$ to the tuple with $(c,k':d'\to Kc)$-coordinate
+$x_{c,k'v}$.  Condition (KR) and the functor laws verify this reindexing.
+Given $\alpha:GK\to F$, the corresponding transformation is
+\[
+ \widehat\alpha_d(y)_{c,k}=\alpha_c(G(k)y).
+\]
+Its coherence is naturality of $\alpha$.  The counit
+$\varepsilon_c(x)=x_{c,1_{Kc}}$ is natural: for $a:c\to c'$, its two
+naturality sides are $x_{c',K(a)}$ and $F(a)x_{c,1}$, equal by (KR).
+Conversely a natural $\beta:G\to\operatorname{Ran}_K F$ gives
+$\alpha_c=\varepsilon_c\beta_{Kc}$.  Naturality of $\beta$ at $k:d\to Kc$
+shows
+\[
+ \alpha_c(G(k)y)
+ =(\operatorname{Ran}_K F(k)(\beta_d y))_{c,1}
+ =(\beta_d y)_{c,k}.
+\]
+Thus reconstructing $\beta$ recovers every coordinate; restricting the
+constructed $\widehat\alpha$ at the identity recovers $\alpha$ by the identity
+law of $G$.  Empty comma categories cause no difficulty: the corresponding product
+is the singleton set and the corresponding coproduct quotient is empty.
+
+For explicit bounds put $q=|\operatorname{Ob}C|\,|\operatorname{Mor}D|$
+and $M=\max(1,\max_c|F(c)|)$, using $M=1$ when $C$ is empty.
+The left construction has at most $qM$ triples; the right construction has
+at most $M^q$ candidate tuples.  Every indexing set in these constructions is
+therefore finite and explicitly bounded by the input table sizes.  Thus finite Kan extensions and
+their adjunctions to restriction are available uniformly in iPRA.  This result
+does not assert Kan extensions over arbitrary infinite categories.
+
+\subsection{Adjunctions from unit and counit}
+
+For fixed presented categories, let $L:C\to D$, $R:D\to C$, natural maps
+$\eta:1_C\to RL$ and $\varepsilon:LR\to1_D$, and the triangle equations
+\[
+ \varepsilon_{Lx}\circ L(\eta_x)=1_{Lx},\qquad
+ R(\varepsilon_y)\circ\eta_{Ry}=1_{Ry}.
+\]
+Define
+\[
+ \Phi(f)=R(f)\circ\eta_x\quad(f:Lx\to y),\qquad
+ \Psi(g)=\varepsilon_y\circ L(g)\quad(g:x\to Ry).
+\]
+Then
+\begin{align*}
+ \Psi\Phi(f)
+ &=\varepsilon_y\circ LR(f)\circ L(\eta_x)\\
+ &=f\circ\varepsilon_{Lx}\circ L(\eta_x)=f,\\
+ \Phi\Psi(g)
+ &=R(\varepsilon_y)\circ RL(g)\circ\eta_x\\
+ &=R(\varepsilon_y)\circ\eta_{Ry}\circ g=g.
+\end{align*}
+The second lines use naturality of counit and unit respectively; the last use
+the triangles.  For $a:x'\to x$, $b:y\to y'$, the identity
+\[
+ \Phi(b\circ f\circ L(a))=R(b)\circ\Phi(f)\circ a
+\]
+follows by expanding $\Phi$, using functoriality, and naturality of $\eta$.
+Thus these are natural inverse hom correspondences, giving the adjunction.
+This proof is a finite equational derivation in iPRA for the fixed signatures;
+it assumes neither hom-set enumeration nor a function-space object.
+
+Conversely, \emph{supplied} PR natural inverse hom correspondences give
+$\eta_x=\Phi(1_{Lx})$ and $\varepsilon_y=\Psi(1_{Ry})$.  Naturality and the inverse
+laws recover the formulas above, and hence the triangle equations.  A bare
+assertion that some correspondence exists is insufficient for this
+algorithmic conclusion unless its maps or bounded selectors are provided.
+
+\subsection{Equivalence requires explicit splittings}
+
+Suppose $F:C\to D$ is faithful and has a supplied PR lifting operation
+$\lambda_{a,b}:D(Fa,Fb)\to C(a,b)$ with
+$F(\lambda(h))=h$.  Suppose also that for each object $d$ we are supplied PR data
+\[
+ c_d\in C,\qquad s_d:Fc_d\to d,\qquad t_d:d\to Fc_d,
+ \quad s_dt_d=1_d,\quad t_ds_d=1_{Fc_d}.
+\]
+Define
+\[
+ G(d)=c_d,\qquad
+ G(f:d\to e)=\lambda_{c_d,c_e}(t_e\circ f\circ s_d).
+\]
+Applying $F$ shows that $G$ preserves identities and composition, because
+$s_et_e=1_e$.  Faithfulness then proves the original equalities in $C$.
+The arrows $s_d$ are the components of a natural isomorphism $FG\cong1_D$:
+\[
+ s_e\circ F(Gf)=s_et_efs_d=fs_d.
+\]
+The components
+\[
+ \eta_c=\lambda_{c,c_{Fc}}(t_{Fc}),\qquad
+ \eta_c^{-1}=\lambda_{c_{Fc},c}(s_{Fc})
+\]
+are inverse by faithfulness.  Naturality also follows by applying $F$ and
+canceling $s_{Fc}t_{Fc}$ in the resulting equation.  Hence $1_C\cong GF$,
+providing an explicit equivalence.
+
+This is a constructive \emph{split full, faithful, essentially-surjective}
+criterion.  In finite table categories all missing data can be chosen by
+bounded search over the finite object and arrow tables, so the familiar
+full--faithful--essentially-surjective criterion is a uniform iPRA theorem
+there.  In an infinite presentation, the formulas expressing fullness and
+essential surjectivity alone do not furnish those PR selectors.  The standard
+set-theoretic proof makes choices at precisely this point.  Replacing the
+missing choices by supplied data or proved bounded searches states the actual
+proof obligation.
+
+\subsection{The exact diagonal obstruction}
+
+\begin{proposition}[No universal PR evaluation on natural codes]
+There is no total PR function $U(e,n)$ such that every unary PR function $f$ is
+represented by some $e$ with $U(e,n)=f(n)$ for every $n$.
+\end{proposition}
+\begin{proof}
+If $U$ were PR, then $d(n)=U(n,n)+1$ would be PR.  Let $e$ represent $d$.
+Evaluating at $n=e$ gives $U(e,e)=U(e,e)+1$, impossible.  The contradiction uses
+only successor's elementary arithmetic properties.  The representation
+assertion ranges over all PR functions externally; for any fixed proposed
+$U$, the contradictory instance is the one fixed PR definition $d$.
+\end{proof}
+
+The standard indexing-and-diagonalization mechanism is discussed in Kelly's
+lecture notes \cite{kellyPR}; the displayed argument specifies the exact
+interface ruled out here.  More generally suppose a proposed function object
+has natural-number codes $E\subseteq\mathbb N$, evaluation is the restriction of
+a total PR map $U$ on all natural inputs, and every unary PR function has a code
+in $E$.  The same argument chooses $e\in E$ representing $d$, so restricting
+the valid codes does not help.
+
+Consequently a category of PR-presented subsets of the naturals with morphisms
+given by restrictions of total PR maps cannot have an exponential
+$\mathbb N^{\mathbb N}$ representing all such maps and evaluated by a morphism
+of that same kind.  This is a limitation of that particular representation,
+not a claim that iPRA proves no cartesian closed categories exist.  Finite sets
+already provide the counterexample to that stronger claim.
+
+There are three sound alternatives.  First, fix each PR definition before
+forming its iPRA statement.  Second, use a primitive recursive bounded
+interpreter $U(e,n,t)$, with a supplied execution bound or a checked finite
+trace.  Third, use a uniform PR evaluator for a genuinely bounded fragment,
+with the fragment's bound part of the interface.  In the latter two cases a
+proof that every intended input is covered is an additional obligation.  A
+finite proof checker does not supply a uniform soundness theorem for all its
+accepted proofs, nor a uniform termination bound for all PR program codes.

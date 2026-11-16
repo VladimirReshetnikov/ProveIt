@@ -1,0 +1,209 @@
+\section{The arithmetic interface and a precise transfer principle}
+\label{sec:arithmetic}
+
+\subsection{The object theory}
+
+There is one numerical sort. For every specified primitive recursive
+definition there is a function symbol. The formation rules are zero,
+successor, projections, composition, and primitive recursion, with equations
+\[
+ r(0,\boldsymbol x)=g(\boldsymbol x),\qquad
+ r(t+1,\boldsymbol x)=h(t,r(t,\boldsymbol x),\boldsymbol x).
+\]
+The nonlogical axioms include these equations, $Sx\ne0$, successor
+injectivity, and
+\[
+ A(0,\boldsymbol x)\to
+ \bigl(\forall t(A(t,\boldsymbol x)\to A(t+1,\boldsymbol x))\bigr)
+ \to\forall t\,A(t,\boldsymbol x)
+\]
+for quantifier-free $A$. Equality has reflexivity and substitution. The
+logical rules are intuitionistic first-order natural deduction: introduction
+and elimination for $\wedge,\vee,\to,\forall,\exists$, falsity elimination,
+and the usual freshness conditions. No excluded-middle schema, choice,
+Markov principle, general comprehension, or reflection rule is added.
+This is the presentation implemented by \texttt{PR}, \texttt{PTm},
+\texttt{PRAAx}, and \texttt{Prf} in the inspected repository
+\cite{repo-pr,repo-deduction}. Avigad's lectures give the general
+proof-theoretic background \cite{avigad2015}.
+
+The restriction concerns the \emph{induction formula}. Quantified assumptions
+and conclusions are allowed. For example, a hypothesis $\forall k\,R(k)$
+can be instantiated at the finitely many indices needed in a computation;
+one must not then use $\forall k\,R(t,k)$ as an induction invariant unless a
+separate admissibility argument has been supplied.
+
+\subsection{Coding and totalization}
+
+Fix explicit numerical encodings. One convenient list encoding is
+\[
+ []=0,\qquad \operatorname{cons}(a,t)=2^a(2t+1).
+\]
+For a positive code, bounded divisibility tests recover its exponent of two
+and then its tail. The tail is strictly smaller than the code. A loop bounded
+by the original code therefore recovers length and entries. Pairing, finite
+tables, tagged unions, and arrays are implemented by the same operations.
+Efficiency is irrelevant to the existence of a PR definition, although the
+reference code uses ordinary lists for practicality.
+
+Integers use a sign and magnitude; rationals use an integer numerator and a
+positive denominator. Equality is cross multiplication. Gcd normalization is
+optional for basic arithmetic, but is useful for the rational denominator
+argument in Section~\ref{sec:macaulay}. A gcd can be obtained by scanning
+bounded possible divisors, or by a bounded Euclidean calculation. Division and
+remainder by a positive integer are PR; a zero divisor is assigned a default
+value. Rational inversion is totalized and its field laws are used only with
+the nonzero-numerator guard. Malformed codes also receive default values.
+Every theorem retains the guard that makes those values irrelevant.
+
+Uniform evaluation of a finite polynomial table is legitimate: enumerate its
+finitely many monomials, compute each finite product of powers, and add its
+coefficient. Likewise a finite function table can be looked up uniformly.
+Neither operation evaluates arbitrary PR \emph{programs}. The definition of
+the evaluator is fixed; only a finite data table is variable.
+
+\subsection{Booleanization and bounded choice}
+
+\begin{lemma}[Bounded Booleanization]
+\label{lem:booleanization}
+For each fixed bounded numerical formula $B(\boldsymbol x)$ whose atoms compare
+fixed PR terms, there is a PR Boolean $b_B$ and an iPRA derivation
+\[
+ B(\boldsymbol x)\ \longleftrightarrow\ b_B(\boldsymbol x)=1.
+\]
+Hence bounded induction is an admissible use of quantifier-free induction.
+The statement is a schema over fixed syntax, not a universal truth evaluator.
+\end{lemma}
+
+\begin{proof}
+Natural-number equality and order have characteristic functions whose
+specifications follow from the successor axioms and elementary QF inductions.
+Signed and rational comparisons reduce to them. Boolean conjunction,
+disjunction, and complement handle the logical operations. For implication,
+use $\neg b\vee c$ and case analysis on the already decidable Boolean $b$.
+This does not introduce excluded middle for an arbitrary formula.
+
+For bounded universals define a prefix conjunction
+$p(0)=1$, $p(t+1)=p(t)b_C(\boldsymbol x,t)$. Fix a terminal bound $T$.
+Under $\forall j<T\,C(\boldsymbol x,j)$, induct on the QF invariant
+$t\le T\to p(t)=1$, using the hypothesis only at $j=t$.
+Conversely, for a fixed numerical parameter $j$, induct on
+$j<t\wedge p(t)=1\to b_C(\boldsymbol x,j)=1$.
+The successor case is the decidable split $j=t$ or $j<t$.
+After the induction, generalize $j<T$. This proves the bounded-universal
+equivalence without assuming that equivalence as part of the invariant.
+
+For bounded existence, maintain a prefix disjunction $e(t)$ and a first-success
+register $w(t)$. If no success has been seen, the register is the current
+sentinel $t$; otherwise it retains the first successful index. On appending a
+new test at $t$, retain an earlier success, record $t$ if the new test succeeds,
+and otherwise change the sentinel to $t+1$. The QF assertions
+\[
+ e(t)=1\to w(t)<t\wedge b_C(\boldsymbol x,w(t))=1,
+ \qquad j<t\wedge b_C(\boldsymbol x,j)=1\to e(t)=1
+\]
+follow by induction, with $j$ fixed in the second assertion. They prove both
+directions and supply an actual bounded witness. Structural recursion on the
+fixed formula completes Booleanization. Replace a bounded induction formula by
+its Boolean equation, apply QF induction, and translate back.
+\end{proof}
+
+In particular, if $R$ is a bounded test and $b(x,i)$ a supplied PR bound, then
+\[
+ \forall i<n\ \exists y<b(x,i)\,R(x,i,y)
+\]
+admits a PR finite list of witnesses, obtained by bounded least-witness search.
+There is no corresponding inference from unbounded existence without a further
+constructor or bound. This difference will reappear in equivalence of
+categories and finite skeleton extraction.
+
+\subsection{Proofs of bounded loops}
+
+\begin{lemma}[Guarded loop rule]
+\label{lem:loop}
+Let $S(x,0)=a(x)$ and $S(x,t+1)=s(x,t,S(x,t))$ be fixed PR definitions.
+Let $I(x,N,t,z)$ and $Q(x,N,z)$ be bounded predicates. Suppose iPRA already
+derives, from a context $\Gamma$ independent of the step-local variables
+$t,z$, the initialization,
+transition, and exit assertions
+\begin{align*}
+ I(x,N,0,a(x)),\qquad
+ t<N\wedge I(x,N,t,z)&\to I(x,N,t+1,s(x,t,z)),\\
+ I(x,N,N,z)&\to Q(x,N,z).
+\end{align*}
+Then iPRA derives $Q(x,N,S(x,N))$ from $\Gamma$.
+\end{lemma}
+
+\begin{proof}
+Under the fixed context, induct on the Booleanization of
+$t\le N\to I(x,N,t,S(x,t))$. If $t+1\le N$, then $t<N$ and the transition
+applies. If the guard fails, the implication holds by decidable arithmetic.
+At $t=N$ the exit assertion gives the result. An unbounded precondition may
+remain in $\Gamma$; it must not be silently included in the QF induction
+formula. All conditions on changing intermediate data belong in $I$ as
+bounded numerical tests.
+\end{proof}
+
+Every main construction below comes with such a finite invariant: digit
+prefixes for tables, a filtered prefix for finite limits, bounded reachability
+for finite colimits, matrix identities and pivot patterns for linear algebra,
+and a checked prefix for final enumeration. The theorem gives a way to
+\emph{compose existing local proofs}. It does not replace their mathematical
+content.
+
+\subsection{Finite diagram proof transport}
+
+\begin{theorem}[Syntactic transport of local mathematical arguments]
+\label{thm:transport}
+Fix numerical presentations of finitely many operations and explicit iPRA
+derivations of the local laws used in a finite proof. Suppose that proof uses
+only typed substitution, equality reasoning, intuitionistic first-order rules,
+and bounded loops certified as in Lemma~\ref{lem:loop}. Then its translated
+conclusion has an iPRA derivation from the translated hypotheses. For purely
+equational proof trees, the proof transformation on finite numerical proof
+codes is PR when the syntax operations and supplied proof constructors are PR.
+\end{theorem}
+
+\begin{proof}
+Translate each operation to its specified numerical symbol. Translation
+commutes with substitution, by recursion on the finite term. Process the
+proof tree from its leaves. Reflexivity, symmetry, transitivity, and congruence
+become the corresponding equality rules. A law instance is its supplied
+derivation after simultaneous substitution and weakening. If it has a typing
+guard, first translate the proof of that guard and then use implication
+elimination. Logical rules translate to the same intuitionistic rules, keeping
+their freshness conditions. A bounded-loop node is replaced by the QF induction
+constructed in Lemma~\ref{lem:loop}. Each node therefore has a derivation once
+its predecessors do.
+
+For the stated numerical transformation, store a proof as a list of nodes
+whose dependencies have smaller indices. A primitive recursion through this
+list builds the translated node using the already built predecessors.
+The restrictions on syntax and local proof constructors make each update PR.
+No evaluation of an arbitrary program or assertion that every checked proof is
+true is used.
+
+If mathematical equality is a relation $E(a,b)$ rather than literal equality
+of codes, use the supplied derivations of reflexivity, symmetry, transitivity,
+and operation congruence for $E$. Arithmetic Leibniz substitution alone does
+not justify replacing one representative by another. This is why the setoid
+laws are part of the presentation.
+\end{proof}
+
+An immediate practical benefit is that the proof of inverse uniqueness needs
+only five local equations, regardless of the category's size. The determining
+calculation in Yoneda needs one naturality instance and one unit law. The
+accompanying Lean module implements exactly these local proof patterns at the
+\texttt{Prf PRAAx} interface; the arithmetic validation of a concrete category
+is a separate input.
+
+\subsection{The roles of categorical language}
+
+In the rest of the paper there are three precise levels. A \emph{uniform finite
+theorem} quantifies over numerical tables and uses fixed PR table algorithms.
+A \emph{presentation-wise theorem} is instantiated after its finitely many PR
+symbols have been fixed. An \emph{external category} organizes these instances
+in the metatheory. A theorem about that external organization is not, merely
+by its wording, a new object or quantification principle inside first-order
+iPRA. Keeping these levels explicit allows useful category theory without
+silently strengthening the arithmetic foundation.

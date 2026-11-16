@@ -1,0 +1,79 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor}
+\usepackage{tikz-cd,listings,needspace}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Finite presentations and categorical methods in iPRA},pdfauthor={Research report for the ProveIt iPRA collection}}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\FinSet}{\mathrm{FinSet}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Ob}{\operatorname{Ob}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\renewcommand{\arraystretch}{1.16}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Finite presentations and categorical methods}
+\fancyhead[R]{\small iPRA}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},showstringspaces=false}
+\title{Finite presentations and categorical methods\\in intuitionistic primitive recursive arithmetic\\[5pt]\large Proof transport, finite universal constructions,\\and algebraic certificate synthesis}
+\author{Research report for the ProveIt iPRA collection}
+\date{16 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a reusable arithmetic interface for mathematical constructions and
+their proofs, with a substantial category-theoretic layer. The interface combines
+explicit numerical presentations, finite observations, forward witness maps,
+backward finite demands, and derivations of the local laws in intuitionistic
+primitive recursive arithmetic (iPRA). We distinguish uniformly coded finite
+structures from fixed primitive recursive presentations and external schemes
+over programs. Within these boundaries we give complete human proofs of finite
+limits and colimits, finite exponentials, Yoneda, finite Kan extensions,
+adjunction identities, constructive equivalences, and finite gluing. A bounded
+linear algebra construction produces polynomial multiplication certificates
+from supplied degree caps and then a complete rational solution list, even for
+redundant, noncommuting action matrices. This extends the certificate-production
+interfaces in the inspected ProveIt packets. Two explicit computability
+obstructions explain why finite cardinality or compatible observations at every
+finite horizon need not provide the missing global witnesses. Lean definitions,
+object-calculus proof expressions, and a detailed completion route are included;
+the new Lean sources are uncompiled and no completed formalization of the main
+theorems is claimed. Exact executable diagnostics accompany the human proofs.
+\end{abstract}
+\clearpage
+{\fontsize{10}{11}\selectfont\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+\input{sections/01_scope}
+\input{sections/02_arithmetic}
+\input{sections/03_contracts}
+\input{sections/04_categories}
+\input{sections/05_descent}
+\input{sections/06_macaulay}
+\input{sections/07_obstacles}
+\input{sections/08_formalization}
+\input{sections/09_status}
+\input{references}
+\end{document}
