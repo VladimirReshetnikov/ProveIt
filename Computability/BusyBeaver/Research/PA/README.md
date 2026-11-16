@@ -443,13 +443,18 @@ compiler is the typed quote of a standard sentence, and `source_supply` (complet
 the first derivability condition) makes it internally provable in every model of `IΣ₁` once
 the sentence is true in every structure with equality that satisfies weak adjunction and
 all separation instances. The directory reduces the two recursion clauses to predecessor
-laws of the addition and multiplication traces and commutativity of addition, and proves
-those three, addition coherence and multiplication coherence in such structures; the last
-three and addition coherence are proved under the ten source facts that already have
-internal proofs. Each module has been compiled separately. The module that combines them
-with those ten internal proofs and the refutation transport into the compiler of arithmetic
-refutations (`PA194OrdinaryCompilerProof`) has not been compiled yet, so that compiler is
-not claimed. The bridge from the scheduler to the literal machine is open.
+laws of the addition and multiplication traces and commutativity of addition, and proves in
+such structures those three, addition and multiplication coherence, and the other ten source
+facts (isomorphism is an equivalence compatible with successor; zero, successors, sums and
+products exist). Its `calibration` and `sourceFacts_semantic` state, with no hypothesis and
+for every model of `IΣ₁`, internal proofs in the source theory of the four facts of the
+arithmetic calibration and of all twelve source facts; no internal proof from
+`pa194-model-axioms` is used. Each module has been compiled separately. The module that
+states `ArithmeticCalibration` itself from `calibration`, for the models of the candidate
+PRA presentation, has not been compiled, because the module defining that statement has
+imports that are not compiled locally yet; the calibration in that form, and the
+scheduler-level implication that follows from it, are therefore not claimed here. The
+bridge from the scheduler to the literal machine is open.
 
 [`isigma1-machine`](shared/isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation

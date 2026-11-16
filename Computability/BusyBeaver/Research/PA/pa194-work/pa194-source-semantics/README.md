@@ -23,19 +23,26 @@ derivation is written. The structures are not assumed extensional.
 | `PA194SourceMulCoherence` | `mul_zero_left`: a product with an empty first factor is that factor; `sem_m2`: coherence of multiplication in a structure, from coherence of addition; `m2_supply`: `⊢ tHyp sM2` from `TenFacts` and `⊢ tHyp sA2`. |
 | `PA194SourceAddComm` | `sem_r0` (a sum of `b` and an empty representative is isomorphic to `b`), `sem_rs` (the sum with a successor as second summand, up to isomorphism), `sem_ac` (commutativity), each by `letter_induction`; `ac_supply`: `⊢ tHyp sAC` from `TenFacts`. |
 | `PA194SourceCalibration` | `sourceFacts_of_ten`, `sourceFacts_full`: `SourceFacts` from `TenFacts`; `calibration_of_ten`: internal proofs of `sA2`, `sM2`, `sA3`, `sM3` in `adjunctiveFullSepTheory` from `TenFacts`. These four are the conjuncts of `ArithmeticCalibration` of `pa194-guarded-compiler`. |
+| `PA194SourceSets` | `wa_spec` (weak adjunction about membership), `exists_empty`, `exists_adjoin`, `exists_singleton`, `exists_pair`, `exists_kur`, `exists_extend` (a graph with one more entry), `dom_irrefl`, `empty_dom`, `succ_exists` (every ordinal representative has a successor that is one). |
+| `PA194SourceIsoFacts` | `iso_of_empty`, `iso_succ` (successors of isomorphic representatives are isomorphic), `iso_refl`, `iso_symm`, `iso_trans`; the last three by `letter_induction` with `iso_cancel` and `iso_succ`, with no inverse or composite graph. |
+| `PA194SourceTotality` | `succ_pred_unique`, `point_graph`, `extend_prefix`, `add_total`, `mul_total`: sums and products of ordinal representatives exist. |
+| `PA194SourceArithmetic` | `known_full`, `theta10`, `valid_ten`: the ten facts in a structure; `tenFacts_semantic : TenFacts adjunctiveFullSepTheory`; `sourceFacts_semantic`: all twelve `SourceFacts`; `calibration`: internal proofs of `sA2`, `sM2`, `sA3`, `sM3`. No hypothesis. |
 
 ## Status
 
-Proved here for the actual source theory, in every model of `IΣ₁`: `sAP` and `sMP`
-outright; `sA2`, `sM2`, `sAC`, and with them `sA3` and `sM3`, from `TenFacts`. `TenFacts` is
-internal provability of the ten members of `SourceFacts` other than `sA2` and `sM2`.
+Proved here for the actual source theory, in every model `V` of `IΣ₁`, with no hypothesis
+and using no internal proof from another directory: all twelve members of `SourceFacts`
+(`sourceFacts_semantic`), and `sA2`, `sM2`, `sA3`, `sM3` (`calibration`), which are the four
+conjuncts of `ArithmeticCalibration` of `pa194-guarded-compiler`. Every fact about the
+source theory in this chain is proved in structures and transferred by `source_supply`.
+The ten members of `SourceFacts` other than `sA2`, `sM2` also have internal proofs by
+derivations in `pa194-model-axioms`; they are not used here.
 
-Not done in the committed modules: `TenFacts` is a hypothesis. Its ten members have internal
-proofs in `pa194-model-axioms`, for models of the candidate PRA presentation with an `IΣ₁`
-reduct. The module that instantiates `TenFacts` with them and states
-`ArithmeticCalibration` is written but has not been compiled, because its imports are not
-all compiled locally; it is not in the repository yet. Its wrapper over all such models was
-checked against a stand-in for `TenFacts` only.
+Not done in the committed modules: `ArithmeticCalibration` itself is a statement about all
+models of the candidate PRA presentation with an `IΣ₁` reduct, defined in a module of
+`pa194-guarded-compiler` whose imports are not all compiled locally. The module that states
+it from `calibration` is written but not compiled, and is not in the repository yet; its
+wrapper over those models was checked against a stand-in only.
 
 ## Checking
 
@@ -45,7 +52,8 @@ closure). All axiom reports are `[propext, Classical.choice, Quot.sound]`: five 
 `PA194SourceModelBase`, four in `PA194SourcePredecessor`, two in `PA194SourceModelIso`, four
 in `PA194SourceInduction`, two in `PA194SourceKnown`, three in `PA194SourceAddCoherence`,
 three in `PA194SourceMulCoherence`, four in `PA194SourceAddComm`, three in
-`PA194SourceCalibration`.
+`PA194SourceCalibration`, four in `PA194SourceSets`, five in `PA194SourceIsoFacts`, four in
+`PA194SourceTotality`, five in `PA194SourceArithmetic`.
 
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-source-semantics/check.sh

@@ -1,0 +1,170 @@
+import IPRADerivations.Core.Monus
+
+/-!
+# The order of iPRA
+
+`a ≤ b` is the quantifier-free formula `a ∸ b = 0` (`le`), and `a < b` is
+`S a ≤ b` (`lt`). Derived here:
+
+* witnesses: `le_of_eq_add` (`b = a + d` gives `a ≤ b`) and `eq_add_of_le`
+  (`a ≤ b` gives `b = a + (b ∸ a)`), which reduce order reasoning to the ring tools;
+* `le_refl`, `zero_le`, `le_trans`, `le_antisymm`, `le_total`;
+* `not_succ_le_self`, `lt_or_eq_of_le`, `lt_or_le`, and decidability of equality
+  `eq_or_ne : a = b ∨ ¬ a = b`;
+* monotonicity of `+` and `*`, and cancellation of `+` in `≤`.
+-/
+
+set_option linter.unusedSimpArgs false
+
+namespace LeanProofs.IPRA
+
+open LeanProofs.ConciseIPRA
+open Syn
+open scoped Fm
+open ConciseIPRA.PTm (app zero succ)
+open PTm (pred monus)
+
+variable {n : ℕ} {Γ : List (Fm PTm n)}
+
+/-- `a ≤ b`. -/
+def le (a b : PTm n) : Fm PTm n := monus a b ≐ zero
+/-- `a < b`. -/
+def lt (a b : PTm n) : Fm PTm n := le (succ a) b
+/-- `¬ φ`. -/
+def neg (φ : Fm PTm n) : Fm PTm n := φ ⟶ Fm.bot
+
+@[simp] theorem subst_le {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
+    (le a b).subst σ = le (Syn.subst σ a) (Syn.subst σ b) := by simp [le]
+@[simp] theorem subst_lt {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
+    (lt a b).subst σ = lt (Syn.subst σ a) (Syn.subst σ b) := by simp [lt]
+@[simp] theorem subst_neg {m : ℕ} (σ : Fin n → PTm m) (φ : Fm PTm n) :
+    (neg φ).subst σ = neg (φ.subst σ) := by simp [neg]
+
+theorem le_QF (a b : PTm n) : (le a b).QF := trivial
+theorem lt_QF (a b : PTm n) : (lt a b).QF := trivial
+
+/-! ## Witnesses -/
+
+theorem le_of_eq_add {a b d : PTm n} (h : Γ ⊢[PRAAx] b ≐ a + d) : Γ ⊢[PRAAx] le a b :=
+  (congrMonus (.eqRefl a) h).eqTrans (monus_add a d)
+
+theorem eq_add_of_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] b ≐ a + monus b a := by
+  have m := monus_max (Γ := Γ) a b
+  have e : Γ ⊢[PRAAx] b ≐ monus b a + a :=
+    (zero_add b).eqSymm.eqTrans ((congrAdd h (.eqRefl b)).eqSymm.eqTrans m)
+  exact e.eqTrans (add_comm _ _)
+
+theorem le_refl (a : PTm n) : Γ ⊢[PRAAx] le a a := monus_self a
+
+theorem zero_le (a : PTm n) : Γ ⊢[PRAAx] le zero a := zero_monus a
+
+theorem le_add_right (a c : PTm n) : Γ ⊢[PRAAx] le a (a + c) := monus_add a c
+
+theorem le_add_left (a c : PTm n) : Γ ⊢[PRAAx] le a (c + a) := le_of_eq_add (add_comm _ _)
+
+theorem le_succ_self (a : PTm n) : Γ ⊢[PRAAx] le a (succ a) := le_of_eq_add (succ_eq_add_one a)
+
+theorem le_trans {a b c : PTm n} (h₁ : Γ ⊢[PRAAx] le a b) (h₂ : Γ ⊢[PRAAx] le b c) :
+    Γ ⊢[PRAAx] le a c :=
+  le_of_eq_add ((eq_add_of_le h₂).eqTrans <|
+    (congrAdd (eq_add_of_le h₁) (.eqRefl _)).eqTrans (add_assoc _ _ _))
+
+theorem le_antisymm {a b : PTm n} (h₁ : Γ ⊢[PRAAx] le a b) (h₂ : Γ ⊢[PRAAx] le b a) :
+    Γ ⊢[PRAAx] a ≐ b := by
+  have m := monus_max (Γ := Γ) a b
+  refine (zero_add a).eqSymm.eqTrans ?_
+  refine (congrAdd h₂ (.eqRefl a)).eqSymm.eqTrans ?_
+  exact m.eqSymm.eqTrans ((congrAdd h₁ (.eqRefl b)).eqTrans (zero_add b))
+
+/-- `x · y = 0` gives `x = 0 ∨ y = 0`. -/
+theorem zero_or_zero_of_mul {x y : PTm n} (h : Γ ⊢[PRAAx] x * y ≐ zero) :
+    Γ ⊢[PRAAx] (x ≐ zero) ⋎ (y ≐ zero) := by
+  refine .orE (zero_or_succ x) (.orI₁ Prf.hyp0) (.orI₂ (eq_zero_of_succ_mul (c := pred x) ?_))
+  exact (congrMul Prf.hyp0 (.eqRefl y)).eqSymm.eqTrans h.wk
+
+theorem le_total (a b : PTm n) : Γ ⊢[PRAAx] le a b ⋎ le b a :=
+  zero_or_zero_of_mul (monus_mul a b)
+
+theorem le_congr {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b')
+    (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le a' b' :=
+  (congrMonus h₁.eqSymm h₂.eqSymm).eqTrans h
+
+theorem lt_congr {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b')
+    (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] lt a' b' :=
+  le_congr (congrSucc h₁) h₂ h
+
+/-! ## Strict order and decidability -/
+
+theorem not_succ_le_self (a : PTm n) (φ : Fm PTm n) (h : Γ ⊢[PRAAx] le (succ a) a) : Γ ⊢[PRAAx] φ := by
+  refine succ_ne_zero' φ (a := zero) ?_
+  refine .eqTrans ?_ h
+  exact (add_monus' (succ zero) a).eqSymm.eqTrans (congrMonus (succ_eq_add_one a).eqSymm (.eqRefl a))
+
+theorem lt_irrefl (a : PTm n) (φ : Fm PTm n) (h : Γ ⊢[PRAAx] lt a a) : Γ ⊢[PRAAx] φ :=
+  not_succ_le_self a φ h
+
+theorem lt_or_eq_of_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] lt a b ⋎ (a ≐ b) := by
+  have e := eq_add_of_le h
+  refine .orE (zero_or_succ (monus b a)) ?_ ?_
+  · exact .orI₂ ((add_zero a).eqSymm.eqTrans ((congrAdd (.eqRefl a) Prf.hyp0).eqSymm.eqTrans e.wk.eqSymm))
+  · refine .orI₁ (le_of_eq_add (d := pred (monus b a)) ?_)
+    refine e.wk.eqTrans ?_
+    exact (congrAdd (.eqRefl a) Prf.hyp0).eqTrans ((add_succ _ _).eqTrans (succ_add _ _).eqSymm)
+
+theorem le_of_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] le a b :=
+  le_trans (le_succ_self a) h
+
+theorem lt_of_lt_of_le {a b c : PTm n} (h₁ : Γ ⊢[PRAAx] lt a b) (h₂ : Γ ⊢[PRAAx] le b c) :
+    Γ ⊢[PRAAx] lt a c := le_trans h₁ h₂
+
+theorem lt_of_le_of_lt {a b c : PTm n} (h₁ : Γ ⊢[PRAAx] le a b) (h₂ : Γ ⊢[PRAAx] lt b c) :
+    Γ ⊢[PRAAx] lt a c := by
+  refine le_trans ?_ h₂
+  have e := eq_add_of_le h₁
+  exact le_of_eq_add ((congrSucc e).eqTrans (succ_add _ _).eqSymm)
+
+/-- `a ≤ b` and `b < a` are incompatible. -/
+theorem le_lt_absurd {a b : PTm n} (φ : Fm PTm n) (h₁ : Γ ⊢[PRAAx] le a b) (h₂ : Γ ⊢[PRAAx] lt b a) :
+    Γ ⊢[PRAAx] φ := lt_irrefl a φ (lt_of_le_of_lt h₁ h₂)
+
+theorem lt_or_le (a b : PTm n) : Γ ⊢[PRAAx] lt a b ⋎ le b a := by
+  refine .orE (le_total a b) ?_ (.orI₂ Prf.hyp0)
+  refine .orE (lt_or_eq_of_le Prf.hyp0) (.orI₁ Prf.hyp0) ?_
+  exact .orI₂ (le_congr Prf.hyp0 (.eqRefl a) (le_refl a))
+
+theorem eq_or_ne (a b : PTm n) : Γ ⊢[PRAAx] (a ≐ b) ⋎ neg (a ≐ b) := by
+  refine .orE (lt_or_le a b) ?_ ?_
+  · refine .orI₂ (.impI ?_)
+    exact lt_irrefl a _ (lt_congr (.eqRefl a) Prf.hyp0.eqSymm Prf.hyp1)
+  · refine .orE (lt_or_eq_of_le Prf.hyp0) ?_ (.orI₁ Prf.hyp0.eqSymm)
+    refine .orI₂ (.impI ?_)
+    exact lt_irrefl a _ (lt_congr Prf.hyp0.eqSymm (.eqRefl a) Prf.hyp1)
+
+/-! ## Monotonicity and cancellation -/
+
+theorem add_le_add_right {a b : PTm n} (c : PTm n) (h : Γ ⊢[PRAAx] le a b) :
+    Γ ⊢[PRAAx] le (a + c) (b + c) := by
+  refine le_of_eq_add (d := monus b a) ?_
+  exact (congrAdd (eq_add_of_le h) (.eqRefl c)).eqTrans (add_right_comm _ _ _)
+
+theorem mul_le_mul_right {a b : PTm n} (c : PTm n) (h : Γ ⊢[PRAAx] le a b) :
+    Γ ⊢[PRAAx] le (a * c) (b * c) :=
+  le_of_eq_add (d := monus b a * c) ((congrMul (eq_add_of_le h) (.eqRefl c)).eqTrans (add_mul _ _ _))
+
+/-- Variables: `0 = c` (induction), `1 = a`, `2 = b`. -/
+private abbrev mcF : Fm PTm 3 := monus (var 1 + var 0) (var 2 + var 0) ≐ monus (var 1) (var 2)
+
+private theorem monus_add_add₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] mcF := by
+  refine ind _ trivial ?_ ?_
+  · ipra_subst'
+    exact congrMonus (add_zero _) (add_zero _)
+  · ipra_subst'
+    exact (congrMonus (add_succ _ _) (add_succ _ _)).eqTrans ((succ_monus_succ _ _).eqTrans Prf.hyp0)
+
+theorem monus_add_add (a b c : PTm n) : Γ ⊢[PRAAx] monus (a + c) (b + c) ≐ monus a b := by
+  simpa using inst (Γ := Γ) monus_add_add₀ (![c, a, b] : Fin 3 → PTm n)
+
+theorem le_of_add_le_add_right {a b c : PTm n} (h : Γ ⊢[PRAAx] le (a + c) (b + c)) :
+    Γ ⊢[PRAAx] le a b := (monus_add_add a b c).eqSymm.eqTrans h
+
+end LeanProofs.IPRA
