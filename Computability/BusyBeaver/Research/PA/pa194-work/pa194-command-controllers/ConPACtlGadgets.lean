@@ -95,19 +95,35 @@ def shifts : ℕ → V → V
   | 0, W => W
   | k + 1, W => shifts k (snoc W SH)
 
-lemma tstep_SH (a b c w d δ : V) (hh : a + b ≠ 1) :
+/-! ## The halting test -/
+
+lemma not_halts {a b : V} (ha : a ≠ 1) (hb : b ≠ 1) : ¬S.Halts a b := by
+  unfold Sem.Halts Sem.k
+  cases S.cacheTest
+  · simpa using add_ne_one ha hb
+  · simpa using hb
+
+lemma halts_iff_false {a b : V} (ha : a ≠ 1) (hb : b ≠ 1) : S.Halts a b ↔ False :=
+  iff_false_intro (not_halts S ha hb)
+
+/-- With the top `0`, both halting tests say that the cache is `1`. -/
+lemma halts_zero_iff (b : V) : S.Halts 0 b ↔ b = 1 := by
+  unfold Sem.Halts
+  simp
+
+lemma tstep_SH (a b c w d δ : V) (hh : ¬S.Halts a b) :
     tstep S SH ⟪⟪a, cantor c w, d, b⟫, δ + 1, 0⟫ = ⟪⟪b, w, d, c⟫, δ, 0⟫ := by
   unfold SH
   rw [tstep_shift S 0 0 a (cantor c w) d b δ hh]
   simp
 
-lemma tstep_SH_halt (a b w d δ : V) (hh : a + b = 1) :
+lemma tstep_SH_halt (a b w d δ : V) (hh : S.Halts a b) :
     tstep S SH ⟪⟪a, w, d, b⟫, δ, 0⟫ = ⟪⟪a, w, d, b⟫, δ, 1⟫ := by
   unfold SH
   exact tstep_shift_halt S 0 0 a w d b δ hh
 
 lemma tstep_MP_yes (y t w d h δ : V) (hm : 4 * cantor t (d + y) = h) :
-    tstep S (MP y) ⟪⟪t, w, d, h⟫, δ, 0⟫ = ⟪⟪d + y, S.mpW w, d + y, 0⟫, δ + (S.up : V), 0⟫ := by
+    tstep S (MP y) ⟪⟪t, w, d, h⟫, δ, 0⟫ = ⟪mpStore S.mp (d + y) w, δ + (S.up : V), 0⟫ := by
   unfold MP
   exact tstep_mp_yes S y 0 t w d h δ hm
 
@@ -141,10 +157,10 @@ def last2 : V → V → List V → V × V
 /-- No SHIFT of the window halts. -/
 def NoHalt : V → V → List V → Prop
   | _, _, [] => True
-  | a, b, x :: xs => a + b ≠ 1 ∧ NoHalt b x xs
+  | a, b, x :: xs => ¬S.Halts a b ∧ NoHalt b x xs
 
 /-- SHIFTs through the entries `xs` on top of the stack. -/
-lemma shifts_run (xs : List V) : ∀ (a b w d δ W τ : V), NoHalt a b xs →
+lemma shifts_run (xs : List V) : ∀ (a b w d δ W τ : V), NoHalt S a b xs →
     texec S W τ = ⟪⟪a, xs.foldr cantor w, d, b⟫, δ + (xs.length : V), 0⟫ →
     texec S (shifts xs.length W) τ =
       ⟪⟪(last2 a b xs).1, w, d, (last2 a b xs).2⟫, δ, 0⟫ := by
@@ -166,7 +182,7 @@ lemma shifts_run (xs : List V) : ∀ (a b w d δ W τ : V), NoHalt a b xs →
 /-- AX followed by SHIFTs through the first entries `xs` of the ten. -/
 lemma ax_shifts (A y x t w d h δ : V) (xs ys : List V)
     (hsplit : items (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t = xs ++ ys)
-    (hn : NoHalt (S.axT (h + y) (d + x) A) 0 xs) (W τ : V)
+    (hn : NoHalt S (S.axT (h + y) (d + x) A) 0 xs) (W τ : V)
     (hW : texec S W τ = ⟪⟪t, w, d, h⟫, δ, 0⟫) :
     texec S (shifts xs.length (snoc W (AX A y x))) τ =
       ⟪⟪(last2 (S.axT (h + y) (d + x) A) 0 xs).1, ys.foldr cantor w, 0,
@@ -185,7 +201,7 @@ lemma ax_all (A y x t w d h δ W τ : V) (hW : texec S W τ = ⟪⟪t, w, d, h�
     texec S (shifts 10 (snoc W (AX A y x))) τ = ⟪⟪4 * cantor h d + 2, w, 0, t⟫, δ, 0⟫ := by
   have h := ax_shifts S A y x t w d h δ
     (items (fun i => S.leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t) [] (by simp)
-    (by simp [NoHalt, items, add_ne_one, S.leaf_ne_one, S.axT_ne_one, allV_ne_one]) W τ hW
+    (by simp [NoHalt, items, halts_iff_false, S.leaf_ne_one, S.axT_ne_one, allV_ne_one]) W τ hW
   simpa [items, last2] using h
 
 /-- Nine shifts: the last leaf in `t`, the generalization in `h`, the old top pushed. -/
@@ -196,7 +212,7 @@ lemma ax_nine (A y x t w d h δ W τ : V) (hW : texec S W τ = ⟪⟪t, w, d, h�
     [S.leaf 0 (d + x) (h + y) A d, S.leaf 1 (d + x) (h + y) A d, S.leaf 2 (d + x) (h + y) A d,
       S.leaf 3 (d + x) (h + y) A d, S.leaf 4 (d + x) (h + y) A d, S.leaf 5 (d + x) (h + y) A d,
       S.leaf 6 (d + x) (h + y) A d, S.leaf 7 (d + x) (h + y) A d, 4 * cantor h d + 2] [t] rfl
-    (by simp [NoHalt, add_ne_one, S.leaf_ne_one, S.axT_ne_one, allV_ne_one]) W τ hW
+    (by simp [NoHalt, halts_iff_false, S.leaf_ne_one, S.axT_ne_one]) W τ hW
   simpa [last2] using h
 
 lemma shifts_succ' (k : ℕ) : ∀ W : V, shifts (k + 1) W = snoc (shifts k W) SH := by
@@ -209,40 +225,48 @@ lemma shifts_succ' (k : ℕ) : ∀ W : V, shifts (k + 1) W = snoc (shifts k W) S
 
 /-! ## POP, PUSH, DISCARD -/
 
-/-- Remove the top stack entry into `h`; the top `t` is kept, `d` is cleared. -/
+/-- Remove the top stack entry into `h`; the top `t` is kept, `d` is cleared. The last SHIFT
+of the word has `t` in the cache, so the top must not be `1`. -/
 def POP : V := shifts 11 (snoc 0 (AX 0 0 0))
 
-lemma pop_run (t a w d h δ : V) :
+lemma pop_run (t a w d h δ : V) (ht : t ≠ 1) :
     texec S POP ⟪⟪t, cantor a w, d, h⟫, δ + 1, 0⟫ = ⟪⟪t, w, 0, a⟫, δ, 0⟫ := by
   rw [POP, shifts_succ', texec_snoc,
     ax_all S 0 0 0 t (cantor a w) d h (δ + 1) 0 _ (by simp)]
-  exact tstep_SH S _ t a w 0 δ (allV_add_ne_one _ _)
+  exact tstep_SH S _ t a w 0 δ (not_halts S (allV_ne_one _) ht)
+
+/-- With the top `1`, POP halts at its last SHIFT when the test is `h = 1`. -/
+lemma pop_halt (hc : S.cacheTest = true) (w d h δ : V) :
+    flg(texec S POP ⟪⟪1, w, d, h⟫, δ, 0⟫) = 1 := by
+  rw [POP, shifts_succ', texec_snoc, ax_all S 0 0 0 1 w d h δ 0 _ (by simp),
+    tstep_SH_halt S _ 1 w 0 δ (by unfold Sem.Halts Sem.k; simp [hc])]
+  simp
 
 /-- `W` followed by `k` POPs. -/
 def pops : ℕ → V → V
   | 0, W => W
   | k + 1, W => pops k (W ⧺ POP)
 
-lemma pops_run (xs : List V) : ∀ (t a w d h δ W τ : V),
+lemma pops_run (xs : List V) : ∀ (t a w d h δ W τ : V), t ≠ 1 →
     texec S W τ = ⟪⟪t, (xs ++ [a]).foldr cantor w, d, h⟫, δ + ((xs.length + 1 : ℕ) : V), 0⟫ →
     texec S (pops (xs.length + 1) W) τ = ⟪⟪t, w, 0, a⟫, δ, 0⟫ := by
   induction xs with
   | nil =>
-    intro t a w d h δ W τ hW
+    intro t a w d h δ W τ ht hW
     show texec S (W ⧺ POP) τ = _
     rw [texec_seqApp, hW]
-    simpa using pop_run S t a w d h δ
+    simpa using pop_run S t a w d h δ ht
   | cons x xs ih =>
-    intro t a w d h δ W τ hW
+    intro t a w d h δ W τ ht hW
     show texec S (pops (xs.length + 1) (W ⧺ POP)) τ = _
-    apply ih t a w 0 x δ
+    apply ih t a w 0 x δ _ _ ht
     rw [texec_seqApp, hW]
     have he : δ + (((x :: xs).length + 1 : ℕ) : V) = δ + ((xs.length + 1 : ℕ) : V) + 1 := by
       push_cast [List.length_cons]
       ring
     rw [he]
     simp only [List.cons_append, List.foldr_cons]
-    exact pop_run S t x _ d h _
+    exact pop_run S t x _ d h _ ht
 
 /-- Save the top on the stack; the top becomes `0`. -/
 def PUSH : V := snoc (shifts 9 (snoc 0 (AX 0 0 0))) (MP 0)

@@ -11,17 +11,19 @@ formula, `w` a stack coded by the triangular pairing `cantor`, and `d`, `h` are 
 This file executes such words inside an arbitrary model `V` of `𝗜𝚺₁`. A word is an element of
 `V`, a Foundation vector of command codes, so its length may be nonstandard.
 
-This is `ConPACommandWords` of `pa194-model-fairness` with one more parameter, the field
-`push` of `Sem`: a successful MP pushes a zero onto the stack (`push = true`, the controller of
-the primary PA194 table) or leaves the stack unchanged (`push = false`, the controller of
-PA194N). `Sem.up` is the number of entries the successful MP adds.
+This is `ConPACommandWords` of `pa194-model-fairness` with the controller as a parameter, in
+two fields of `Sem`. `mp : MPKind` says what a successful MP returns: with `b = d + y` it is
+`⟪b, cantor 0 w, b, 0⟫` (`push`, the primary PA194 table), `⟪b, w, b, 0⟫` (`top`, PA194N and
+PA194H) or `⟪0, w, 0, b⟫` (`cache`, PA194C). `cacheTest : Bool` says whether SHIFT halts on
+`h = 1` (PA194C, PA194H) or on `t + h = 1`. `Sem.Halts` is that test, `mpStore` the store
+after a successful MP and `Sem.up` the number of stack entries it adds.
 
 The store step `cstep` is a parameter: a `𝚺₁` function of a command code `⟪tag, y, x⟫` and a
 store. Its three defining equations enter later as hypotheses.
 
 * `tstep`, `texec`: the tracked executor. A tracked state `⟪σ, δ, f⟫` carries the store `σ`,
   the height `δ` of the stack above the level at which the word started, and a flag `f`:
-  `0` running, `1` halted (a SHIFT found `t + h = 1`), `2` underflow (a SHIFT below the
+  `0` running, `1` halted (the halting test of a SHIFT held), `2` underflow (a SHIFT below the
   starting level). Flags `1` and `2` are final.
 * Words are stored last command first, so `texec (c ∷ W) τ = tstep c (texec W τ)`.
 * `seqApp U W` (`U ⧺ W`) executes `U` and then `W`: `texec_seqApp`.
@@ -99,6 +101,21 @@ def stack10 (f : ℕ → V) (g t w : V) : V :=
   cantor (f 0) (cantor (f 1) (cantor (f 2) (cantor (f 3) (cantor (f 4) (cantor (f 5)
     (cantor (f 6) (cantor (f 7) (cantor g (cantor t w)))))))))
 
+/-- What a successful MP returns, with `b = d + y`: `push` is `⟪b, cantor 0 w, b, 0⟫`, `top` is
+`⟪b, w, b, 0⟫`, `cache` is `⟪0, w, 0, b⟫`. -/
+inductive MPKind where
+  | push
+  | top
+  | cache
+  deriving DecidableEq
+
+/-- The store after a successful MP with consequent `b` on the stack `w`. -/
+def mpStore (k : MPKind) (b w : V) : V :=
+  match k with
+  | .push => ⟪b, cantor 0 w, b, 0⟫
+  | .top => ⟪b, w, b, 0⟫
+  | .cache => ⟪0, w, 0, b⟫
+
 variable (V) in
 /-- The store step of the three commands. A command is `⟪tag, y, x⟫`: SHIFT has tag `0`, MP
 tag `1` and argument `y`, AX tag `A + 2` and arguments `y`, `x`. A store is `⟪t, w, d, h⟫`. -/
@@ -106,16 +123,17 @@ structure Sem where
   cstep : V → V → V
   cstepDef : 𝚺₁.Semisentence 3
   cstep_defined : 𝚺₁-Function₂ cstep via cstepDef
-  /-- Whether a successful MP pushes a zero onto the stack. -/
-  push : Bool
+  /-- What a successful MP returns. -/
+  mp : MPKind
+  /-- Whether SHIFT halts on `h = 1` (otherwise on `t + h = 1`). -/
+  cacheTest : Bool
   /-- The top after AX, as a function of `H D A`. -/
   axT : V → V → V → V
   /-- The eight leaf formulas pushed by AX, as functions of `D H A d`. -/
   leaf : ℕ → V → V → V → V → V
   shift_eq : ∀ y x t w d h : V, cstep ⟪0, y, x⟫ ⟪t, w, d, h⟫ = ⟪h, second w, d, first w⟫
   mp_eq : ∀ y x t w d h : V, cstep ⟪1, y, x⟫ ⟪t, w, d, h⟫ =
-    if 4 * cantor t (d + y) = h then ⟪d + y, (if push then cantor 0 w else w), d + y, 0⟫
-    else ⟪0, w, d + y, 0⟫
+    if 4 * cantor t (d + y) = h then mpStore mp (d + y) w else ⟪0, w, d + y, 0⟫
   ax_eq : ∀ A y x t w d h : V, cstep ⟪A + 1 + 1, y, x⟫ ⟪t, w, d, h⟫ =
     ⟪axT (h + y) (d + x) A,
       stack10 (fun i => leaf i (d + x) (h + y) A d) (4 * cantor h d + 2) t w, 0, 0⟫
@@ -124,11 +142,18 @@ structure Sem where
 
 attribute [instance] Sem.cstep_defined
 
-/-- The number of stack entries a successful MP adds: `1` with the push, `0` without. -/
-def Sem.up (S : Sem V) : ℕ := if S.push then 1 else 0
+/-- The number of stack entries a successful MP adds. -/
+def Sem.up (S : Sem V) : ℕ :=
+  match S.mp with
+  | .push => 1
+  | _ => 0
 
-/-- The stack after a successful MP. -/
-def Sem.mpW (S : Sem V) (w : V) : V := if S.push then cantor 0 w else w
+/-- The weight of the top in the halting test of SHIFT: the test is `k * t + h = 1`, which is
+`t + h = 1` for `k = 1` and `h = 1` for `k = 0`. -/
+def Sem.k (S : Sem V) : ℕ := if S.cacheTest then 0 else 1
+
+/-- The halting test of SHIFT on the top `t` and the cache `h`. -/
+def Sem.Halts (S : Sem V) (t h : V) : Prop := (S.k : V) * t + h = 1
 
 variable (S : Sem V)
 
@@ -136,7 +161,7 @@ variable (S : Sem V)
 def tstep (c τ : V) : V :=
   if π₂ (π₂ τ) = 0 then
     if π₁ c = 0 then
-      if π₁ (π₁ τ) + π₂ (π₂ (π₂ (π₁ τ))) = 1 then ⟪π₁ τ, π₁ (π₂ τ), 1⟫
+      if (S.k : V) * π₁ (π₁ τ) + π₂ (π₂ (π₂ (π₁ τ))) = 1 then ⟪π₁ τ, π₁ (π₂ τ), 1⟫
       else if π₁ (π₂ τ) = 0 then ⟪π₁ τ, 0, 2⟫
       else ⟪S.cstep c (π₁ τ), π₁ (π₂ τ) - 1, 0⟫
     else if π₁ c = 1 then
@@ -146,30 +171,30 @@ def tstep (c τ : V) : V :=
     else ⟪S.cstep c (π₁ τ), π₁ (π₂ τ) + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1, 0⟫
   else τ
 
-def tstepDef (up : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : 𝚺₁.Semisentence 3 :=
+def tstepDef (k up : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : 𝚺₁.Semisentence 3 :=
   .mkSigma “tn c tau. ∃ s, !pi₁Def s tau ∧ ∃ r, !pi₂Def r tau ∧ ∃ dl, !pi₁Def dl r ∧
     ∃ f, !pi₂Def f r ∧ ∃ tag, !pi₁Def tag c ∧ ∃ t, !pi₁Def t s ∧ ∃ s2, !pi₂Def s2 s ∧
     ∃ s3, !pi₂Def s3 s2 ∧ ∃ d, !pi₁Def d s3 ∧ ∃ h, !pi₂Def h s3 ∧ ∃ c2, !pi₂Def c2 c ∧
     ∃ y, !pi₁Def y c2 ∧ ∃ sn, !cstepDef sn c s ∧ ∃ p, !cantorDef p t (d + y) ∧
     ((f ≠ 0 ∧ tn = tau) ∨
-     (f = 0 ∧ tag = 0 ∧ t + h = 1 ∧ !pair₃Def tn s dl 1) ∨
-     (f = 0 ∧ tag = 0 ∧ t + h ≠ 1 ∧ dl = 0 ∧ !pair₃Def tn s 0 2) ∨
-     (f = 0 ∧ tag = 0 ∧ t + h ≠ 1 ∧ dl ≠ 0 ∧ ∃ dp, !subDef dp dl 1 ∧ !pair₃Def tn sn dp 0) ∨
+     (f = 0 ∧ tag = 0 ∧ ↑k * t + h = 1 ∧ !pair₃Def tn s dl 1) ∨
+     (f = 0 ∧ tag = 0 ∧ ↑k * t + h ≠ 1 ∧ dl = 0 ∧ !pair₃Def tn s 0 2) ∨
+     (f = 0 ∧ tag = 0 ∧ ↑k * t + h ≠ 1 ∧ dl ≠ 0 ∧ ∃ dp, !subDef dp dl 1 ∧ !pair₃Def tn sn dp 0) ∨
      (f = 0 ∧ tag = 1 ∧ 4 * p = h ∧ !pair₃Def tn sn (dl + ↑up) 0) ∨
      (f = 0 ∧ tag = 1 ∧ 4 * p ≠ h ∧ !pair₃Def tn sn dl 0) ∨
      (f = 0 ∧ tag ≠ 0 ∧ tag ≠ 1 ∧
        !pair₃Def tn sn (dl + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1) 0))”
 
 lemma tstepDef_iff (tn c τ : V) :
-    (tstepDef S.up S.cstepDef).val.Evalb ![tn, c, τ] ↔ tn = tstep S c τ := by
+    (tstepDef S.k S.up S.cstepDef).val.Evalb ![tn, c, τ] ↔ tn = tstep S c τ := by
   unfold tstep
   by_cases hf : π₂ (π₂ τ) = 0
   · by_cases h0 : π₁ c = 0
-    · by_cases hh : π₁ (π₁ τ) + π₂ (π₂ (π₂ (π₁ τ))) = 1
-      · simp [tstepDef, hf, h0, hh]
+    · by_cases hh : (S.k : V) * π₁ (π₁ τ) + π₂ (π₂ (π₂ (π₁ τ))) = 1
+      · simp [tstepDef, hf, h0, hh, numeral_eq_natCast]
       · by_cases hd : π₁ (π₂ τ) = 0
-        · simp [tstepDef, hf, h0, hh, hd]
-        · simp [tstepDef, hf, h0, hh, hd]
+        · simp [tstepDef, hf, h0, hh, hd, numeral_eq_natCast]
+        · simp [tstepDef, hf, h0, hh, hd, numeral_eq_natCast]
     · by_cases h1 : π₁ c = 1
       · by_cases hm : 4 * cantor (π₁ (π₁ τ)) (π₁ (π₂ (π₂ (π₁ τ))) + π₁ (π₂ c)) =
             π₂ (π₂ (π₂ (π₁ τ)))
@@ -182,11 +207,11 @@ lemma tstepDef_iff (tn c τ : V) :
 
 namespace Exec
 
-def blueprint (up : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : VecRec.Blueprint 1 where
+def blueprint (k up : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : VecRec.Blueprint 1 where
   nil := .mkSigma “y tau. y = tau”
-  adjoin := .mkSigma “y x xs ih tau. !(tstepDef up cstepDef) y x ih”
+  adjoin := .mkSigma “y x xs ih tau. !(tstepDef k up cstepDef) y x ih”
 
-def construction : VecRec.Construction V (blueprint S.up S.cstepDef) where
+def construction : VecRec.Construction V (blueprint S.k S.up S.cstepDef) where
   nil := fun v ↦ v 0
   adjoin := fun _ x _ ih ↦ tstep S x ih
   nil_defined := .mk fun v ↦ by simp [blueprint]
@@ -202,10 +227,10 @@ def texec (W τ : V) : V := (Exec.construction S).result ![τ] W
 @[simp] lemma texec_adjoin (c W τ : V) : texec S (c ∷ W) τ = tstep S c (texec S W τ) := by
   simp [texec, Exec.construction]
 
-def texecDef (up : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : 𝚺₁.Semisentence 3 :=
-  (Exec.blueprint up cstepDef).resultDef
+def texecDef (k up : ℕ) (cstepDef : 𝚺₁.Semisentence 3) : 𝚺₁.Semisentence 3 :=
+  (Exec.blueprint k up cstepDef).resultDef
 
-instance texec_defined : 𝚺₁-Function₂ (texec S) via texecDef S.up S.cstepDef :=
+instance texec_defined : 𝚺₁-Function₂ (texec S) via texecDef S.k S.up S.cstepDef :=
   (Exec.construction S).result_defined
 
 instance texec_definable : 𝚺₁-Function₂ (texec S) := (texec_defined S).to_definable

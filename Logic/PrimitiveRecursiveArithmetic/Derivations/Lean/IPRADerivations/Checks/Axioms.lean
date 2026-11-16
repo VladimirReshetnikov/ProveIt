@@ -105,6 +105,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_quotients
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.dvd_of_sq_dvd_sq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras.pythagoras
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep.odd_sq_sum
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep.primitive_step
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic.smaller
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic.fermat_quartic
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic.flt4
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples.pw_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples.flt_multiple_of_four
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.IrrationalSqrt.no_rational_sqrt
 #print axioms LeanProofs.IPRA.DescentEx.descent
 #print axioms LeanProofs.IPRA.Analysis.Products.pochhammer_shift
 #print axioms LeanProofs.IPRA.Analysis.Products.telescoping_sum
