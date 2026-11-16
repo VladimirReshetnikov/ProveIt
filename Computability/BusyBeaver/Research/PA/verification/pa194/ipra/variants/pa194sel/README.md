@@ -30,3 +30,7 @@ The PA194SEL replay regenerates the pinned row data and recompiles its six
 Lean modules. It uses the checked primary and PA194B stages for shared
 proofs. The final axiom report lists `propext`, `Classical.choice`, and
 `Quot.sound`.
+
+The [companion selector stage](companions/README.md) extends the same
+model-valued halting comparison to the delivered overlays on other exact
+194-state parent tables.
