@@ -18,6 +18,7 @@ import IPRADerivations.Core.Division
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Bezout
 import IPRADerivations.Core.Search
+import IPRADerivations.Core.SearchParameters
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Fubini
