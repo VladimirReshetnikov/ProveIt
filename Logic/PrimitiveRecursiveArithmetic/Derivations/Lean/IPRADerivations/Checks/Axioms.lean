@@ -224,6 +224,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative.count_ge
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative.count_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative.phi_mul
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.sum_split
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.phi_two
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.gcd_period
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.odd_cop
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.even_point
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.phi_double_odd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.phi_double_even
 #print axioms LeanProofs.IPRA.Bezout.invariant_open
 #print axioms LeanProofs.IPRA.gcd_dvd_at
 #print axioms LeanProofs.IPRA.gcd_eq_zero
