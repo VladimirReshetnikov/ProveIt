@@ -25,7 +25,10 @@ list of 3,673 instructions.
   and the checked LC boxes.
 - [`PA194LCNative.consistency_iff_literal_nonhalt`](PA194LCNative.lean)
   derives both directions in standard iPRA conditional on the finite
-  source certificates.
+  source certificates. The full coverage replay checks all 3,673 sites.
+  [`PA194LCFinal.consistency_iff_literal_nonhalt`](PA194LCFinal.lean)
+  applies those checks to obtain the unconditional derivation. Its axiom
+  audit reports `propext`, `Classical.choice`, and `Quot.sound`.
 
 From the repository root, use the verified
 [shared register stage](../../../../shared/isigma1-machine/README.md).
@@ -35,12 +38,14 @@ pa=Computability/BusyBeaver/Research/PA
 lc="$pa/pa194/ipra/variants/pa194lc"
 lc_base=/dev/shm/pa194lc-base
 lc_startup=/dev/shm/pa194lc-startup
+lc_controller=/dev/shm/pa194lc-controller
+lc_coverage=/dev/shm/pa194lc-coverage
 bash "$lc/check.sh" "$register" "$lc_base"
 bash "$lc/check-startup.sh" "$lc_base" "$lc_startup"
-bash "$lc/check-controller.sh" "$lc_startup" /dev/shm/pa194lc-controller
-bash "$lc/check-coverage.sh" "$lc_base" /dev/shm/pa194lc-coverage
+bash "$lc/check-controller.sh" "$lc_startup" "$lc_controller"
+bash "$lc/check-coverage.sh" "$lc_base" "$lc_coverage"
+bash "$lc/../check-controller-final.sh" PA194LC "$lc_controller" "$lc_coverage" /dev/shm/pa194lc-final
 ```
 
 The startup replay uses 15 numerical chunks and lifts their composition
-to model-valued arithmetic. Checking every source-site certificate is the
-remaining premise. The finite replay is in progress.
+to model-valued arithmetic. The source coverage runs in 58 chunks.
