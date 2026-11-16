@@ -89,4 +89,53 @@ theorem nonhalt_iff (p : Semisentence language 1) (hp : p.Open)
 
 #print axioms classical_iff
 #print axioms nonhalt_iff
+
+/-- A model-level equivalence of two bounded halting matrices transfers to PRA. -/
+theorem bounded_classical_iff (δ ε : ArithmeticSemisentence 1)
+    (hδ : Hierarchy 𝚺 0 δ) (hε : Hierarchy 𝚺 0 ε)
+    (h : ∀ (M : Type) [Nonempty M] [Structure language M] [Structure.Eq language M]
+      [M↓[language] ⊧* PRA], ReductISigma1 M →
+        ((M↓[language] ⊧ Semiformula.lMap embedding (∃⁰ δ)) ↔
+          (M↓[language] ⊧ Semiformula.lMap embedding (∃⁰ ε)))) :
+    PRA ⊢ (Semiformula.lMap embedding (∃⁰ δ) 🡘 Semiformula.lMap embedding (∃⁰ ε)) := by
+  obtain ⟨p, hp, hpProof⟩ := DiophantineConsistency.PRABoundedPiOneUnary.unary_open δ hδ
+  obtain ⟨q, hq, hqProof⟩ := DiophantineConsistency.PRABoundedPiOneUnary.unary_open ε hε
+  have common : PRA ⊢ ((∀⁰ p) 🡘 ∀⁰ q) := by
+    apply pi_one_iff_of_models p q hp hq
+    intro M _ _ _ hM reduct
+    have hpM := models_of_provable hM hpProof
+    have hqM := models_of_provable hM hqProof
+    simp only [LogicalConnective.iff, Semantics.And.models_and, Semantics.Imp.models_imply]
+      at hpM hqM ⊢
+    have same := (mappedHall δ M).trans ((not_congr (h M reduct)).trans (mappedHall ε M).symm)
+    exact ⟨fun a => hqM.1 (same.mp (hpM.2 a)), fun b => hpM.1 (same.mpr (hqM.2 b))⟩
+  apply Theory.Proof.complete_on_eq_models.{0,0}
+  intro M _ _ _ hM
+  have hc := models_of_provable hM common
+  have hpM := models_of_provable hM hpProof
+  have hqM := models_of_provable hM hqProof
+  simp only [LogicalConnective.iff, Semantics.And.models_and, Semantics.Imp.models_imply]
+    at hc hpM hqM ⊢
+  constructor
+  · intro hD
+    by_contra hE
+    exact (mappedHall δ M).mp (hpM.2 (hc.2 (hqM.1 ((mappedHall ε M).mpr hE)))) hD
+  · intro hE
+    by_contra hD
+    exact (mappedHall ε M).mp (hqM.2 (hc.1 (hpM.1 ((mappedHall δ M).mpr hD)))) hE
+
+/-- Transfer a model comparison of two bounded halting predicates to iPRA nonhalting. -/
+theorem bounded_nonhalt_iff (δ ε : ArithmeticSemisentence 1)
+    (hδ : Hierarchy 𝚺 0 δ) (hε : Hierarchy 𝚺 0 ε)
+    (h : ∀ (M : Type) [Nonempty M] [Structure language M] [Structure.Eq language M]
+      [M↓[language] ⊧* PRA], ReductISigma1 M →
+        ((M↓[language] ⊧ Semiformula.lMap embedding (∃⁰ δ)) ↔
+          (M↓[language] ⊧ Semiformula.lMap embedding (∃⁰ ε)))) :
+    standardTheory ⊢ ∼haltSentence δ 🡘 ∼haltSentence ε := by
+  have proof := Classical.choice (bounded_classical_iff δ ε hδ hε h)
+  have left := contrapositive _ _ ⟨Entailment.K_right proof⟩ (halt_backward δ hδ)
+  have right := contrapositive _ _ ⟨Entailment.K_left proof⟩ (halt_backward ε hε)
+  exact ⟨Entailment.K_intro (Classical.choice left) (Classical.choice right)⟩
+
+#print axioms bounded_nonhalt_iff
 end ConPA.Relative
