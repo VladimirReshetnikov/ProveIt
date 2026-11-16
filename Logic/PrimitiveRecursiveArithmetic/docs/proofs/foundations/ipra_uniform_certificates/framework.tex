@@ -1,0 +1,136 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,hyperref,enumitem}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}\newcommand{\ipra}{\mathrm{iPRA}}
+\title{Uniform Certificates for Constructive Mathematics in Intuitionistic Primitive Recursive Arithmetic\\\large Finite nets, residual bounds, and stable implicit roots}
+\author{Research note for the ProveIt primitive-recursive arithmetic collection}
+\date{15 November 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We develop an interface for turning local, quantitative approximations into uniform primitive-recursive names, without extracting discontinuous exact choices. The main result is a finite-net lifting theorem with an explicit error budget. A second theorem uses an algebraic separation inequality and sign brackets to obtain a uniform primitive-recursive root operator, illustrated by $y^3+y=x$. The argument separates the constructive arithmetic theorem from Lean metatheory and supplies precise proof obligations for the repository's \texttt{Prf PRAAx} calculus. This is a focused extension of existing finite-contract frameworks, not a claim to settle arbitrary effective algebraic geometry or analytic number theory.
+\end{abstract}
+\tableofcontents
+\section{Repository audit and problem selection}
+The repository index at \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs} describes 54 research packets and explicitly warns that many Lean files are specifications rather than checked internal derivations. Existing foundational reports \texttt{ipra\_framework}, \texttt{ipra\_embedding\_framework}, and \texttt{ipra\_framework\_2026-11-15} already develop bounded searches, finite contracts, Cauchy names, and some analytic and Diophantine interfaces. We do not relabel those results as new. Instead we isolate a reusable \emph{uniformization layer}: local approximations are available at finitely many sites, and a quantitative modulus transfers their guarantees to all represented inputs.
+
+Three motivating barriers must remain visible. The Puiseux packet's \texttt{scope\_obstruction.md} proves that an unrestricted uniform constructor of exact Puiseux coefficients from arbitrary Cauchy coefficient names would decide halting. The Faltings packet notes that bounded-point enumeration does not entail a global height bound. The general frameworks distinguish a metatheoretic Lean proposition from a derivation in the embedded intuitionistic theory. Our construction respects all three separations.
+
+\section{Arithmetic conventions and admissible inputs}
+A rational is represented canonically by a signed numerator and positive denominator, with a primitive-recursive gcd normalization. All finite sums, products, comparisons, division by positive integers, and loops with primitive-recursive bounds are primitive recursive. Quantifier-free induction applies to their defining equations. To avoid hidden higher-order quantification over arbitrary programs, every construction is a schema for \emph{fixed} primitive-recursive evaluators with explicitly supplied modulus functions.
+
+A fast name on a rational interval $I$ is a fixed PR map $a:I_\mathrm{code}\times\N\to\Q$ with $|a(x,n)-F(x)|\le 2^{-n}$ in the metatheoretic semantics. The object theory instead uses a relation on rational approximations: $|a(x,n)-a(x,m)|\le2^{-n}+2^{-m}$. The symbol $F(x)$ is explanatory shorthand, never an object of quantification in bare first-order arithmetic. Every final inequality can be rewritten with finite rational approximations and a prescribed finite slack.
+
+\begin{definition}[Finite-net certificate]
+For $I=[0,1]$, a finite-net certificate of order $n$ consists of: a mesh $M(n)\ge1$; rational samples $q_{n,j}$ for $0\le j\le M(n)$; a nonnegative rational $\delta_n$; and an explicit bound $\omega_n$ satisfying for every $x\in I$ and the clipped nearest-left grid index $j=\min(M(n),\lfloor M(n)x\rfloor)$,
+\[
+|F(x)-F(j/M(n))|\le\omega_n,\qquad |q_{n,j}-F(j/M(n))|\le\delta_n.
+\]
+Here the first inequality must come from a certified modulus, not from merely pointwise continuity.
+\end{definition}
+
+\begin{theorem}[Uniform finite-net lifting]\label{thm:net}
+Suppose $F:[0,1]\to\mathbb R$ has a supplied PR modulus $\mu$ such that $|x-x'|\le2^{-\mu(k)}$ implies $|F(x)-F(x')|\le2^{-k}$. Suppose $q(k,j)$ is a fixed PR rational evaluator satisfying
+$|q(k,j)-F(j/2^{\mu(k+1)})|\le2^{-(k+1)}$ for every $j\le2^{\mu(k+1)}$.
+For rational input $x$, the function
+\[
+A(k,x)=q\bigl(k,\min(2^{\mu(k+1)},\lfloor 2^{\mu(k+1)}x\rfloor)\bigr)
+\]
+is a uniform PR evaluator with $|A(k,x)-F(x)|\le2^{-k}$. The same assertion holds for represented $x$ when a rational approximation to $x$ within $2^{-\mu(k+2)-1}$ is supplied, provided that the mesh is refined to $2^{\mu(k+2)+1}$ and the sample error is at most $2^{-(k+2)}$.
+\end{theorem}
+\begin{proof}
+Let $M=2^{\mu(k+1)}$ and $j=\min(M,\lfloor Mx\rfloor)$. The Euclidean division invariant gives $0\le x-j/M\le 1/M$; in particular the modulus implies $|F(x)-F(j/M)|\le2^{-(k+1)}$. Add the sample error by the rational triangle inequality. For a represented $x$, first clip its rational approximation $r$ to $[0,1]$. Clipping is nonexpansive: $|\mathrm{clip}(r)-x|\le|r-x|$. The chosen grid point $g$ is within $1/M$ of the clipped $r$, so $|x-g|\le2^{-\mu(k+2)-1}+1/M$. With $M=2^{\mu(k+2)+1}$ (a safe additional mesh factor), we have $|x-g|\le2^{-\mu(k+2)}$; use a sample error of $2^{-(k+2)}$. The total error is at most $2^{-(k+1)}$, stronger than requested. The bounds are rational, and the construction requires only bounded search and arithmetic. For the first-order presentation replace each real inequality with the corresponding two-index Cauchy estimate and a rational margin; no completeness principle is used in the finite computation.
+\end{proof}
+\noindent\textbf{Precision audit.} A bare mesh $2^{\mu(k+2)}$ and input accuracy $2^{-\mu(k+2)}$ do not generally leave enough room for both sources of error; the stated half-size contributions are essential.
+
+\section{A separation certificate for implicit roots}
+\begin{definition}[Monotone root chart]
+Let $P(x,y)\in\Q[x,y]$ and $x\in[0,1]$, $y\in[a,b]$ with rational $a<b$. A chart carries positive rationals $c,L$ and certificates that
+\begin{align}
+P(x,a)&\le0\le P(x,b),\\
+(y-z)(P(x,y)-P(x,z))&\ge c(y-z)^2,\label{eq:sep}\\
+|P(x,y)-P(x',y)|&\le L|x-x'|.
+\end{align}
+All displayed universal claims are required to be reduced to finite polynomial identities or quantified rational inequalities with explicit arithmetic proofs. A derivative lower bound is a convenient sufficient certificate, but is not taken as a primitive axiom.
+\end{definition}
+
+\begin{lemma}[Bisection with non-strict signs]\label{lem:bisect}
+For each integer $n\ge0$ a primitive-recursive algorithm constructs rationals $\ell_n(x),u_n(x)$ with $u_n-\ell_n=(b-a)2^{-n}$, $P(x,\ell_n)\le0\le P(x,u_n)$, and nested intervals. It compares $P(x,(\ell+u)/2)$ exactly when $x$ is rational.
+\end{lemma}
+\begin{proof}
+Start with $[a,b]$. At each step let $m=(\ell+u)/2$. If $P(x,m)\le0$, keep $[m,u]$; otherwise keep $[\ell,m]$. In both cases the sign bracket and nesting survive, and the length halves. These are bounded rational tests and quantifier-free invariants. An equality case is harmless: either subinterval contains the exact zero. The algorithm does not select an exact root or invoke excluded middle on represented-real equality.
+\end{proof}
+
+\begin{theorem}[Certified uniform implicit root]\label{thm:implicit}
+For each rational $x\in[0,1]$, the bisection intervals define a unique coherent Cauchy root name $Y(x)$ of $P(x,Y)=0$. Moreover
+\[
+|Y(x)-Y(x')|\le (L/c)|x-x'|.
+\]
+For any supplied PR fast name $r(k)$ of $x$, there is a uniform PR evaluator of a name for $Y(x)$, with a precision schedule depending only on $k,c,L,a,b$ and the fixed polynomial $P$. No equality decision on the represented $x$ is needed.
+\end{theorem}
+\begin{proof}
+For rational $x$, Lemma~\ref{lem:bisect} gives nested intervals with lengths decreasing geometrically. Their midpoints satisfy $|m_n-m_{n+t}|\le(b-a)2^{-n}$; hence they provide a fast name after rescaling the index by a fixed constant. The residual at midpoint tends to zero with an explicit polynomial Lipschitz bound in $y$ obtained by factoring powers, so the represented limit satisfies $P(x,Y)=0$ in Cauchy arithmetic. Suppose $P(x,y)=P(x,z)=0$ as represented equalities. Equation~\eqref{eq:sep} yields $c(y-z)^2\le0$, whence $y=z$ in the separated real representation. For distinct parameters, put $y=Y(x)$, $z=Y(x')$. Separation gives
+\[
+c|y-z|^2\le(y-z)(P(x,y)-P(x,z))
+= (y-z)(P(x',z)-P(x,z)),
+\]
+so $c|y-z|\le L|x-x'|$; cancellation can be replaced constructively by a case split on rational approximations to $|y-z|$ with positive margins, avoiding a decision whether $y=z$. For a represented input, approximate $x$ by rational $r$ sufficiently tightly and clip it, then apply rational bisection to $r$. The transfer error is bounded by $(L/c)|r-x|$, and bisection contributes at most $(b-a)2^{-n}$. Choose fixed exponents so each contributes $\le2^{-(k+2)}$. Each operation has a fixed PR evaluator. Again, only the finite approximation inequalities are object-language conclusions.
+\end{proof}
+
+\begin{corollary}[An explicit stable cubic root]
+For $P(x,y)=y^3+y-x$ on $[0,1]^2$, choose $a=0,b=1,c=L=1$. Then $P(x,0)=-x\le0$, $P(x,1)=2-x\ge0$, and
+\[
+(y-z)(P(x,y)-P(x,z))=(y-z)^2(y^2+yz+z^2+1)\ge(y-z)^2
+\]
+for nonnegative $y,z$. Also $P(x,y)-P(x',y)=x'-x$. Consequently the cubic's unique root map is $1$-Lipschitz. If $r(k)$ approximates $x\in[0,1]$ within $2^{-k}$, perform $k+3$ bisection steps at the clipped rational input $r(k+3)$; the midpoint differs from the intended root by at most $2^{-(k+3)}+2^{-(k+4)}<2^{-k}$. This gives a concrete uniform PR name whose correctness is reducible to elementary polynomial arithmetic and induction.
+\end{corollary}
+
+\section{Compositional precision calculus}
+A contract is a tuple $(f,E_f,\mathcal D)$, where $f$ is a fixed PR evaluator, $E_f$ a primitive-recursive rational upper bound on its error, and $\mathcal D$ a finite list of quantitative domain assumptions. If $|u-u'|\le\varepsilon$ and $|f(u)-f(u')|\le K\varepsilon$, and an approximate stage $\widetilde f$ has error $\eta$, then
+\[
+|\widetilde f(u')-f(u)|\le K\varepsilon+\eta.
+\]
+This is an \emph{error transport rule}. Along a finite directed acyclic graph of operations, attach a rational error budget to each edge. The compiler must check (i) every leaf's explicit input precision; (ii) every edge's rational modulus inequality; (iii) accumulation by finite addition; (iv) a final inequality against the demanded output tolerance. With fixed graph shapes and PR precision functions, the generated evaluator remains PR. This is an algorithm for assembling certificates, not a compiler converting arbitrary proofs of continuity into quantitative moduli.
+
+For finite covers, one may choose the least index $i<m$ satisfying a \emph{decidable rational chart guard with a strict margin}. If each guard certifies the same target function on its domain and a finite PR proof shows $\bigvee_{i<m}G_i(x)$, then the selected chart's approximation is sound. On overlaps no compatibility axiom is needed if both charts approximate a uniquely specified target with the advertised error; otherwise an explicit overlap coherence bound must be supplied. There is no unrestricted choice over an infinite collection.
+
+\section{Applications, obstructions, and non-claims}
+\paragraph{Ordinary analytic branches.} Given a supplied simple-root chart and derivative gap, Theorem~\ref{thm:implicit} makes the local root selection stable in a represented parameter, provided the sign bracket and separation hold uniformly. In the Puiseux obstruction example $Y^2-X^2-a$, the parameter $a$ crosses zero and the root multiplicity changes. There is no uniform positive separation constant $c$ on the full family; our theorem therefore does not contradict the halting reduction in \texttt{scope\_obstruction.md}.
+
+\paragraph{Finite geometry and integration.} A known modulus for a geometric or analytic invariant and a certified rational grid computation yield a uniform approximation algorithm by Theorem~\ref{thm:net}. The theorem does not produce a modulus from qualitative continuity. In geometric applications its principal open obligation is usually a finite cover with rational margins; in analytic number theory it is often a nontrivial explicit estimate.
+
+\paragraph{Diophantine bounds.} Given a PR height bound $H(C)$ and a decidable point predicate $R(C,p)$, searching all codes $p\le H(C)$ is complete and PR. Neither finite-net lifting nor root separation constructs the missing global height bound in the general Faltings or Siegel packets. In particular, a bound on the number of points is not an effective height cutoff.
+
+\paragraph{Uniform versus fixed inputs.} For every fixed $a$ an ordinary algebraic identity may be formally true even when no computable operator uniformly converts arbitrary Cauchy names of $a$ into branch labels. Our theorem outputs approximate, stable roots; it never claims exact branching data across a singular parameter.
+
+\section{Lean 4 formalization plan: kernel boundary}
+The file \texttt{lean/UniformRootBlueprint.lean} provides actual algorithm definitions and target propositions in ordinary Lean (using \texttt{Rat} for exposition). A theorem labeled \texttt{Target} is intentionally not asserted as proved. To turn the results into genuine iPRA proofs, formalize the arithmetic at two levels.
+
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Integer codes.} Define signed integer pairs and rational pairs of positive denominators by PR coding; implement \texttt{ratAdd}, \texttt{ratMul}, \texttt{ratLE}, and \texttt{clip}. Prove denominator positivity, preservation of interpreted rational arithmetic, and Booleanization of comparisons using quantifier-free induction. Avoid importing \texttt{Rat} itself into the object language.
+\item \textbf{Fixed PR polynomial.} Define \texttt{cubic (x y)} by PR products and signed addition. Prove in the object calculus the factored difference and nonnegative-square inequality. Supply the closed proof terms in \texttt{Prf PRAAx} via the existing \texttt{ObjectBridge} \texttt{Contract} structure. The native \texttt{Rat} proof is only a guide.
+\item \textbf{Bisection.} Encode the state as two rational codes. Define a fixed PR iterator, using its rational comparison Boolean to select the branch. Prove the base and successor cases of the bracket invariant using the existing \texttt{InductionCertificate} and \texttt{PRA.qfInd}; derive $u_n-\ell_n=2^{-n}$ from the loop equation.
+\item \textbf{Finite names, no completed reals.} For output stages $m_n$, prove the two-index bounded inequality $|m_n-m_{n+t}|\le2^{-n}$ and a finite residual estimate. Define a represented equality by an arithmetical Cauchy relation on the fixed evaluator. Do not use general Lean real completeness as a replacement for an embedded derivation.
+\item \textbf{Input transport.} Prove in the object calculus a PR clipping inequality and the factored cubic separation inequality. Use rational bounds to establish $|Y(x)-Y(x')|\le|x-x'|$ stage by stage with a finite slack. Compose the input-stage and bisection budgets at $k+3$.
+\item \textbf{General net lifting.} First prove the theorem for a fixed encoded PR modulus and a fixed sample evaluator. If a compiler is built, its output must include object-language derivations of the modulus premises; a Lean structure containing an unproved proposition is not a derivation.
+\end{enumerate}
+
+In the inspected repository, \texttt{ObjectBridge.lean} defines \texttt{Booleanized}, \texttt{Contract}, and \texttt{InductionCertificate}, including an actual \texttt{PRA.qfInd} endpoint. The present outline targets those types without asserting compilation of a new integration adapter. Bounded recursion and Boolean branches should be mapped into existing \texttt{Syn.PR} and \texttt{PTm.app}; all proof terms must eventually be checked against \texttt{PRAAx}. Proofs in native Lean about \texttt{Rat} are not automatically object-level proofs.
+
+\section{Verification and research directions}
+The companion Python program uses only exact \texttt{Fraction} arithmetic and tests the cubic chart's interval invariant, explicit residual bounds, parameter stability on a finite grid, and a represented-input precision budget. It is a regression test, not a proof of the universal assertions. The Lean file is a carefully delimited blueprint, not a completed kernel-checked iPRA derivation. The PDF and TeX were built together for this note.
+
+Further research: implement a proof-producing rational-code kernel for \texttt{Prf PRAAx}; construct a library of polynomial separation certificates by sum-of-squares identities; prove finite-margin guard extraction for concrete geometric charts; and determine which existing analytic packets can replace nonuniform branch choices with the stable-implicit-root interface. A useful next benchmark is the Puiseux packet's simple-root subcase, not unrestricted singular branch selection.
+
+\begin{thebibliography}{9}
+\bibitem{index} V. Reshetnikov, \emph{ProveIt: delivered iPRA proof packets}, \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md}.
+\bibitem{framework} \emph{Finite contracts for mathematics in iPRA}, \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_framework}.
+\bibitem{embedding} \emph{Mathematics in iPRA through finite observations}, \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_embedding_framework}.
+\bibitem{obstruction} \emph{A uniform computability obstruction for arbitrary Cauchy-presented coefficients}, \url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/algebra/puiseux_ipra/evidence/scope_obstruction.md}.
+\bibitem{core} \emph{ConciseIPRA}, \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\end{thebibliography}
+\end{document}

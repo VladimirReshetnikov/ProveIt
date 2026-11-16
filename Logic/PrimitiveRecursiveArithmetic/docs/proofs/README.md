@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 22 to
+15 November 2026: 33 to `docs/drafts`, and 23 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -61,7 +61,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 55 archives hold 1,276 members: 1,192 placed here, 53 ignored, 13 in the bundled copy of
+The 56 archives hold 1,282 members: 1,198 placed here, 53 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 17 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -148,6 +148,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | [`ipra_evidence_framework`](foundations/ipra_evidence_framework/) | *not committed* 2026-11-15 | none | Evidence-indexed finite mathematics: a finite relational-output and compatibility interface for cases where only approximate witness families are justified, with a backward finite dynamic program for witness amalgamation. It credits the earlier frameworks here. Its Lean blueprint is not compiled. | 6 | 0 |
 | [`ipra_framework`](foundations/ipra_framework/) | *not committed* 2026-11-15 | `ipra_framework` | Finite contracts for mathematics in iPRA, a different packet from `ipra_framework_2026-11-15`: bounded-formula Booleanization and guarded induction, then stable finite windows, coherent approximate witnesses, local analytic branches, and integral power-gap certificates for y^m = f(x). It says it gives no final convergence moduli. | 64 | 1 |
 | [`ipra_framework_2026-11-15`](foundations/ipra_framework_2026-11-15/) | *not committed* 2026-11-15 | `ipra_framework` | A cross-domain certificate-and-modulus framework for the packets here: bounded primitive recursive search and descent, certificate composition, arithmetic of quantitative real names and apartness-conditioned inverses. It says it is not a verified solution of the other packets. Its Lean files have not been typechecked. | 6 | 0 |
+| [`ipra_uniform_certificates`](foundations/ipra_uniform_certificates/) | *not committed* 2026-11-15 | `ipra_uniform_certificates` | Uniform certificates complementing the finite-contract frameworks here: finite-net lifting with an explicit modulus and rational error budgets, uniform root names from sign brackets and algebraic separation, and composition of precision contracts. Its Lean blueprint is not compiled. | 6 | 0 |
 
 ### Geometry
 

@@ -215,6 +215,8 @@ from `ipra_framework_2026-11-15.zip`: a different SHA-256, and 65 members agains
 placed the same way, under `foundations/ipra_framework/`, and then deleted. It leaves out only
 its ignored `SHA256SUMS`. `ipra_evidence_framework.zip` has no wrapper directory. It was placed
 the same way, under `foundations/`, and then deleted. All 6 of its members are placed.
+`ipra_uniform_certificates.zip` was placed the same way, under `foundations/`, and then
+deleted. All 6 of its members are placed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 
