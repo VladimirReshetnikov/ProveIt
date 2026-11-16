@@ -26,11 +26,43 @@ and remainder by each fixed positive divisor. The code parameter is the
 largest digit, so parameter 4 implements division by five. The modeled
 recurrence increments the remainder and carries into the quotient at that
 digit. `modelQuotient` and `modelRemainder` identify the outputs in every
-PRA model with an `IΣ₁) reduct. These functions can now be used in the
+PRA model with an `IΣ₁` reduct. These functions can now be used in the
 formula-and-label recoding history.
 
 Pass the output of the safe M5 source checker to its replay script.
 
 ```sh
 bash "$dir/check-radix-split.sh" /path/to/checked-safe-m5-source /path/to/fresh-radix-split-output
+```
+
+`PA194RadixRecoding` gives a primitive-recursive history for hereditary
+recoding of the paired numerical constructors. It preserves every
+available digit, reads the already computed recodings of the two decoded
+components, and maps an unavailable digit to zero. The components include
+numerical variable labels. `recodeConstructor` checks that action uniformly,
+including the zero constructor. `recodeDigit` fixes the truth and
+falsehood indices 0 and 1.
+
+`radixFiveRoundTrip` proves that recoding from radix four to five and back
+returns every original model value. The generic `injective` theorem applies
+whenever the target radix contains all source digits and the source radix
+is at least two. These statements use the explicit primitive-recursive
+function codes in arbitrary PRA models with an `IΣ₁` reduct.
+
+The source replay takes the two decoder stages above.
+
+```sh
+bash "$dir/check-radix-recoding.sh" /path/to/radix-model /path/to/radix-split /path/to/fresh-recoding-output
+```
+
+`PA194RadixRestrictedImplication` instantiates the archived finite
+`rho8All` proof template in the modeled natural order for any radix at
+least one. Each implication code is at least each of its two operands.
+Those two inequalities discharge the order conditions within the template.
+The theorem supplies the unrestricted row from the restricted row and
+modus ponens, so recoding a restricted leaf can use this template at its
+recoded operands.
+
+```sh
+bash "$dir/check-radix-rho8.sh" /path/to/radix-model /path/to/fresh-rho8-output
 ```
