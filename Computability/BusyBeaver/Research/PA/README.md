@@ -116,9 +116,13 @@ is proved. The term facts reduce to seventeen one-layer naming obligations;
 [zero](pa194-work/pa194-model-logic/UZERO-FIELD.md) uniqueness are proved in
 the full source theory. The generic [reflexive naming](pa194-work/pa194-model-logic/NAME-REFL.md)
 and [transfer from uniqueness](pa194-work/pa194-model-logic/NAME-OF-UNIQ.md)
-fields are also proved. The other naming obligations and remaining axiom
-suppliers are open. Identity translation is independent of packet length for
-valid internal formulas. The
+fields are also proved. A separately replayed generic reduction derives all naming
+fields from twelve fixed source facts and variable-name existence; the latter is
+proved for the full source theory, while the twelve facts are not yet all supplied.
+A [successor-value transport](pa194-work/pa194-model-axioms/SUCC-VALUE-FULL-SOURCE.md)
+is proved in the covered models, including for nonstandard term codes. The
+remaining source axiom suppliers are open. Identity translation is independent
+of packet length for valid internal formulas. The
 [ordinary PAeq theory now has a uniform classifier](pa194-work/pa194-model-logic/PAEQ-ORDINARY-CLASS.md),
 and the [arithmetic induction-axiom supplier](pa194-work/pa194-model-logic/PAEQ-INDUCTION-SUPPLIER.md)
 establishes modeled PAeq proof existence for every internal arithmetic induction
@@ -132,8 +136,9 @@ The [reflexivity](pa194-work/pa194-model-logic/FORWARD-REFL-ROOT.md),
 and [symmetry](pa194-work/pa194-model-logic/FORWARD-SYMMETRY.md) suppliers
 prove the root-packet translations of those fixed axioms in the source theory
 under the stated code bounds. A [normalized identity-packet bridge](pa194-work/pa194-model-logic/IDENTITY-FIXED.md)
-now supplies these five fixed translations for the guarded route; they still
-need to be connected to the new calculus interpretation field. [Transitivity](pa194-work/pa194-model-logic/TRANSITIVITY-PACKET.md)
+supplies these five fixed translations for the guarded route; the interpretation
+axiom supplier now reduces to four fixed axioms and arbitrary induction
+instances. [Transitivity](pa194-work/pa194-model-logic/TRANSITIVITY-PACKET.md)
 is also supplied for every valid arity-zero packet. The [remaining source
 axiom reduction](pa194-work/pa194-model-logic/FORWARD-FIXED-FOUR.md) assumes four
 fixed axioms and arbitrary induction instances. Other rule suppliers and the
@@ -311,8 +316,11 @@ under the explicit eight-block blank-tail layout. These are model-uniform
 conditional traces. A [seed-derived initial run](pa194/ipra/machine-code/SEED-FIRST-SITE38.md)
 reaches the first site-38 physical frame from blank tape in every PRA model.
 The [first decoder completion](pa194/ipra/machine-code/SEED-FIRST-DECODE-COMPLETE.md)
-continues the concrete run to site 42 with existential model-valued clocks.
-A complete source-frame correspondence and reachability invariant remain open.
+continues the concrete run to site 42 with existential model-valued clocks. From
+that first frame, a [physical continuation](pa194/ipra/machine-code/SEED-FIRST-SITE3664.md)
+reaches site 3664 with gap 50; its register 5 is zero, identifying the source
+controller’s zero branch. A complete source-frame correspondence and
+reachability invariant remain open.
 The other direction, `¬Halt(M₁₉₄) → Con(PA)`, also needs an internal
 translation of arbitrary PA refutations into the machine's numerical calculus.
 The [model-level calculus logic](pa194-work/pa194-model-logic/README.md)
@@ -376,9 +384,12 @@ the translated sequent) fails for derivable sequents with free variables, so the
 suppliers cannot all be proved in that form. The directory uses an invariant with the guards
 `¬Dom(&i)` and a packet that keeps free variables distinct, proves the propositional rules,
 cut, the shift rule, the universal rule and the existential rule for a variable witness for
-it, and removes the guards at the root of a refutation. The existential rule for a function
-term as witness, the translated theory axioms and the inhabitation of the domain in the
-actual source theory are still hypotheses there, so `OrdinaryCompiler` is not proved.
+it, and removes the guards at the root of a refutation. Domain inhabitation is
+proved for the actual source theory. A separate reduction derives term-witness
+support from naming facts, and derives those facts from twelve fixed source
+facts plus variable-name existence. Those twelve facts, four translated fixed
+axioms and the arbitrary translated induction instances are not yet all supplied,
+so the unconditional compiler is not proved.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
