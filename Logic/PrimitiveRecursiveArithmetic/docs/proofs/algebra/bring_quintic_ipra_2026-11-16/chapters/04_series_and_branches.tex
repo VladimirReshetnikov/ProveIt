@@ -1,0 +1,259 @@
+\section{Series, hypergeometric form, branch points, and the differential resolvent}\label{sec:series}
+
+\subsection{The Taylor coefficients by finite Lagrange inversion}
+
+Put
+\[
+ y(a)=-\BR(a).
+\]
+Then \(y(0)=0\) and
+\begin{equation}\label{eq:y-fixed}
+ y+y^5=a,
+ \qquad
+ y=a(1+y^4)^{-1}.
+\end{equation}
+In the truncated ring \(\Q[a]/(a^{N+1})\), the inverse
+\((1+y^4)^{-1}\) is a finite geometric sum.  Theorem~\ref{thm:finite-lagrange}
+therefore applies with \(\Phi(w)=(1+w^4)^{-1}\).
+
+\begin{theorem}[Bring coefficient formula]\label{thm:bring-coeff}
+For every \(N\), the unique truncated solution of~\eqref{eq:y-fixed} is
+\begin{equation}\label{eq:bring-series-y}
+ y(a)=\sum_{4k+1\le N}
+ (-1)^k\frac{1}{4k+1}\binom{5k}{k}a^{4k+1}
+ \pmod {a^{N+1}}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:bring-series}
+ \BR(a)=\sum_{k\ge0}
+ (-1)^{k+1}\frac{1}{4k+1}\binom{5k}{k}a^{4k+1}
+ =-a+a^5-5a^9+35a^{13}-285a^{17}+\cdots .
+\end{equation}
+The assertion through every requested degree is a theorem of \ipra.
+\end{theorem}
+
+\begin{proof}
+Finite Lagrange inversion gives
+\[
+ [a^n]y=\frac1n[w^{n-1}](1+w^4)^{-n}.
+\]
+The finite negative-binomial identity is
+\[
+ (1+w^4)^{-n}
+ =\sum_{j=0}^{\lfloor N/4\rfloor}
+   (-1)^j\binom{n+j-1}{j}w^{4j}
+   \pmod {w^{N+1}}.
+\]
+Thus the coefficient vanishes unless \(n-1=4k\).  For
+\(n=4k+1\),
+\[
+ \binom{n+k-1}{k}=\binom{5k}{k},
+\]
+which gives~\eqref{eq:bring-series-y}.  In the object theory one keeps the
+integer equation
+\((4k+1)[a^{4k+1}]y=(-1)^k\binom{5k}{k}\), so no unguarded division is used.
+\end{proof}
+
+The archive's exact checker forms the right side through degree 65 and verifies
+that \(y^5+y-a\) has no coefficient through that degree.  This finite check is
+not the proof of the uniform theorem, but it is a useful independent regression
+test.
+
+\subsection{The hypergeometric identity is a coefficient recurrence}
+
+Let
+\[
+ c_k=\frac{1}{4k+1}\binom{5k}{k}
+     =\frac{(5k)!}{k!(4k+1)!}.
+\]
+A direct cancellation of factorials gives
+\begin{equation}\label{eq:bring-ratio}
+ \frac{c_{k+1}}{c_k}
+ =\frac{3125}{256}
+ \frac{(k+\frac15)(k+\frac25)(k+\frac35)(k+\frac45)}
+ {(k+\frac12)(k+\frac34)(k+\frac54)(k+1)}.
+\end{equation}
+
+\begin{theorem}[Hypergeometric form]\label{thm:bring-hypergeom}
+On its disk of convergence,
+\begin{equation}\label{eq:bring-hypergeom}
+ \BR(a)=-a\,{}_4F_3\!\left(
+ \begin{matrix}\frac15,\frac25,\frac35,\frac45\\
+               \frac12,\frac34,\frac54
+ \end{matrix};-\frac{3125}{256}a^4\right).
+\end{equation}
+For every truncation order, this is an exact identity of rational coefficient
+vectors and is therefore an \ipra{} theorem.
+\end{theorem}
+
+\begin{proof}
+The coefficient of \(a^{4k+1}\) on the right is
+\[
+ -\frac{(\frac15)_k(\frac25)_k(\frac35)_k(\frac45)_k}
+ {(\frac12)_k(\frac34)_k(\frac54)_k k!}
+ \left(-\frac{3125}{256}\right)^k.
+\]
+At \(k=0\) it equals \(-1\).  Its ratio to the preceding coefficient is the
+negative of~\eqref{eq:bring-ratio}, exactly matching
+\((-1)^{k+1}c_k\).  Equality follows by induction on \(k\).  After clearing the
+fixed denominators \(2,3,4,5\), the recurrence is an integer polynomial
+identity, so quantifier-free induction proves the finite vector equality.
+\end{proof}
+
+This proof is preferable in the present setting to invoking a general theory
+of hypergeometric functions: the named special function is simply the regular
+sequence of its rational partial sums plus the tail modulus established next.
+
+\subsection{Exact convergence radius and boundary convergence}
+
+Taking \(k\to\infty\) in~\eqref{eq:bring-ratio} gives
+\[
+ \lim_{k\to\infty}\frac{c_{k+1}}{c_k}=\frac{3125}{256}.
+\]
+The limit is constructive.  Subtracting \(3125/256\) from the rational function
+in~\eqref{eq:bring-ratio} gives a quotient whose numerator has degree at most
+three and whose positive denominator has degree four.  A fixed integer
+\(C\) therefore satisfies
+\begin{equation}\label{eq:ratio-modulus}
+ \left|\frac{c_{k+1}}{c_k}-\frac{3125}{256}\right|
+ \le\frac{C}{k+1}.
+\end{equation}
+The inequality is checked after multiplication by the positive denominator,
+and is thus available in \ipra{} with an explicit cutoff.
+
+\begin{theorem}[Radius of the Bring series]\label{thm:bring-radius}
+The radius of convergence of~\eqref{eq:bring-series} is
+\begin{equation}\label{eq:bring-radius}
+ R=\left(\frac{256}{3125}\right)^{1/4}
+   =\frac{4}{5\sqrt[4]{5}}.
+\end{equation}
+On every named closed disk \(|a|\le r<R\), the series has a
+primitive-recursive geometric tail modulus.  If \(|a|>R\), its terms do not
+tend to zero.  The series also converges absolutely on \(|a|=R\), with a
+primitive-recursive tail modulus of order \(N^{-1/2}\).
+\end{theorem}
+
+\begin{proof}
+Regard the series after its leading factor \(a\) as a series in \(t=a^4\).
+Given rational \(r<R\), choose a rational \(\theta<1\) strictly above
+\((3125/256)r^4\).  Estimate~\eqref{eq:ratio-modulus} supplies an explicit
+\(K\) after which consecutive absolute terms have ratio at most \(\theta\),
+so a geometric tail bound follows.  For \(|a|>R\), choose a rational ratio
+strictly greater than one below the eventual term ratio; the terms cannot tend
+to zero.
+
+At the boundary, the finite Wallis--Stirling inequalities used in the ProveIt
+Lagrange-inversion packet give a rational constant \(C_0\) such that
+\[
+ c_k\left(\frac{256}{3125}\right)^k
+ \le \frac{C_0}{(k+1)^{3/2}}.
+\]
+The proof uses only factorial products, rational upper and lower bounds for
+\(\log(1+u)\), and dyadic grouping.  The tail of
+\(\sum(k+1)^{-3/2}\) is bounded by a constant times \(N^{-1/2}\), again by
+dyadic grouping.  Every cutoff and rational constant is primitive recursive.
+\end{proof}
+
+\subsection{The four branch points and the discriminant}
+
+A multiple root of \(x^5+x+a\) satisfies
+\[
+ x^5+x+a=0,
+ \qquad 5x^4+1=0.
+\]
+The second equation gives \(x^4=-1/5\), and hence
+\(x^5=-x/5\) and \(a=-4x/5\).  Therefore
+\begin{equation}\label{eq:branch-equation}
+ 3125a^4+256=0.
+\end{equation}
+Conversely every solution of~\eqref{eq:branch-equation}, with
+\(x=-5a/4\), satisfies both equations.
+
+\begin{theorem}[Trinomial discriminant]\label{thm:trinomial-discriminant}
+For indeterminates \(p,q\),
+\begin{equation}\label{eq:trinomial-discriminant}
+ \Disc_X(X^5+pX+q)=256p^5+3125q^4.
+\end{equation}
+In particular, the four critical values of the Bring projection are the four
+roots of~\eqref{eq:branch-equation}; all have modulus \(R\) from
+\eqref{eq:bring-radius}.
+\end{theorem}
+
+\begin{proof}
+The discriminant is the resultant of
+\(X^5+pX+q\) and \(5X^4+p\), since
+\((-1)^{5\cdot4/2}=1\).  The determinant of the fixed \(9\times9\) Sylvester
+matrix normalizes to the right side of~\eqref{eq:trinomial-discriminant}.
+Equivalently, eliminate \(X\): a common root has
+\(X^4=-p/5\) and
+\(q=-4pX/5\); raising the latter equation to the fourth power and substituting
+the former yields the displayed relation.  The converse is checked after
+adjoining a fourth root.  Both versions are finite polynomial arguments.
+\end{proof}
+
+At a critical root \(x_0\), one has \(x_0\ne0\) and
+\(P_{xx}(x_0)=20x_0^3\ne0\).  Thus the local inverse has two Puiseux branches
+with leading term proportional to \((a-a_0)^{1/2}\).  Analytic continuation
+around a small rational polygonal loop enclosing \(a_0\) interchanges these
+two branches.  A single-valued analytic branch on the whole complex plane is
+therefore impossible, and any domain for a branch agreeing with the real Bring
+radical must introduce cuts.  The local square-root construction is finite in
+every truncation and fits the ramified Lagrange theorem of the reused packet;
+the loop interchange can be certified by a finite winding-number computation.
+
+The critical values lie exactly on the circle \(|a|=R\).  Hence the branch
+point calculation independently proves that the Taylor disk at zero cannot be
+larger than the radius found by the coefficient ratio.
+
+\subsection{The Cockle--Harley differential resolvent}
+
+The differential-resolvent convention uses a branch \(t=t(\rho)\) satisfying
+\begin{equation}\label{eq:minus-bring}
+ t^5-t+\rho=0.
+\end{equation}
+Write \(D=5t^4-1\).  Implicit differentiation gives
+\(t'=-D^{-1}\).  Repeatedly applying the total derivative
+\[
+ \mathcal D=\frac{\partial}{\partial\rho}
+            -\frac1D\frac{\partial}{\partial t}
+\]
+expresses \(t'',t^{(3)},t^{(4)}\) as rational functions of \(t\), with the
+fourth derivative having denominator \(D^7\).
+
+\begin{theorem}[Fourth-order differential resolvent]\label{thm:differential-resolvent}
+Every simple branch of~\eqref{eq:minus-bring} satisfies
+\begin{equation}\label{eq:cockle-harley}
+ \frac{256-3125\rho^4}{1155}\,t^{(4)}
+ -\frac{6250\rho^3}{231}\,t^{(3)}
+ -\frac{4875\rho^2}{77}\,t''
+ -\frac{2125\rho}{77}\,t'
+ +t=0.
+\end{equation}
+For every fixed Taylor order this is an \ipra{} theorem about rational
+coefficient vectors; on a named disk avoiding the critical values it is an
+effective analytic theorem.
+\end{theorem}
+
+\begin{proof}
+Substitute the four rational derivative expressions into the left side,
+multiply by \(1155D^7\), and replace \(\rho\) by \(t-t^5\) using
+\eqref{eq:minus-bring}.  Polynomial normalization gives zero.  This is the
+exact certificate implemented by \code{check\_differential\_resolvent} in the
+archive.  In \ipra{}, the same calculation is an integer ring identity under
+the guarded hypothesis \(D\ne0\).  At a simple branch the guard follows from
+the nonvanishing derivative.
+\end{proof}
+
+At \(\rho=0\), the five roots are \(0,1,-1,i,-i\), all simple.  The branch at
+zero is the hypergeometric branch of Theorem~\ref{thm:bring-hypergeom} after the
+appropriate sign change.  For a fourth root of unity \(\zeta\), write
+\(t=\zeta+u\); then
+\[
+ u=-\rho\bigl(4+10\zeta^3u+10\zeta^2u^2+5\zeta u^3+u^4\bigr)^{-1}.
+\]
+Finite fixed-point iteration constructs the other four Taylor branches.  They
+all satisfy~\eqref{eq:cockle-harley}; their sum is zero by the missing quartic
+coefficient, explaining why a fourth-order equation suffices for five
+algebraic branches.  This gives a constructive derivation of all five local
+roots even when one does not adopt the particular hypergeometric basis printed
+by MathWorld.

@@ -1,0 +1,217 @@
+\section{Statement-by-statement audit}\label{sec:audit}
+
+The following table records the mathematical coverage.  ``Exact'' means a
+finite identity or finite certificate theorem whose \ipra{} proof is fully
+given.  ``Effective'' includes explicit names and moduli.  ``Certificate''
+means the verifier and soundness theorem are complete but a very large
+universal witness or a page-specific substitution is not expanded here.
+``Outline'' gives a concrete formalization route but not a completed proof of
+the global source claim.
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\textwidth}
+                  >{\raggedright\arraybackslash}p{0.15\textwidth}
+                  >{\raggedright\arraybackslash}p{0.50\textwidth}}
+\caption{Coverage of mathematical statements from the three reference pages.}
+\label{tab:audit}\\
+\toprule
+Statement & Status & Result and qualification\\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Result and qualification\\
+\midrule
+\endhead
+
+Unique real root of \(x^5+x+a\) & \Effective &
+Theorem~\ref{thm:bring-exists}; exact rational bisection with a displayed
+primitive-recursive modulus.\\
+
+Oddness, monotone decrease and unboundedness of \(\BR\) & \Exact/\allowbreak\Effective &
+Corollaries~\ref{cor:bring-odd-decreasing} and
+\ref{cor:bring-unbounded}; based on the SOS identity
+\eqref{eq:s4-sos}.\\
+
+\(\BR(a)\sim-a^{1/5}\) & \Effective &
+Theorem~\ref{thm:bring-asymptotic}; explicit absolute error
+\(\le a^{-3/5}\) and relative error \(\le a^{-4/5}\) for \(a\ge1\).\\
+
+Continuity/stability of the real branch & \Effective &
+Theorem~\ref{thm:bring-lipschitz}; sharp bound
+\(|\BR(a)-\BR(b)|\le|a-b|\) and residual certification.\\
+
+Derivative of the real branch & \Effective &
+Theorem~\ref{thm:bring-derivative};
+\(\BR'(a)=-(1+5\BR(a)^4)^{-1}\) with local moduli.\\
+
+Complex Bring radical is five-valued & \Exact &
+The polynomial has degree five; branches are represented in a formal splitting
+algebra.  Existence as five analytic values away from the discriminant is the
+effective local inverse construction.\\
+
+Four branch points and need for cuts & \Exact/\allowbreak\Effective &
+Equation~\eqref{eq:branch-equation}, Theorem~\ref{thm:trinomial-discriminant},
+and the simple-critical-point Puiseux argument.  Global monodromy is represented
+by finite path certificates.\\
+
+Taylor series of \(\BR\) & \Exact &
+Theorem~\ref{thm:bring-coeff}; finite Lagrange inversion in every truncation.\\
+
+Hypergeometric form of \(\BR\) & \Exact/\allowbreak\Effective &
+Theorem~\ref{thm:bring-hypergeom}; exact coefficient recurrence and effective
+tails.\\
+
+Radius \(4/(5\sqrt[4]5)\) & \Effective &
+Theorem~\ref{thm:bring-radius}; constructive ratio modulus, boundary
+convergence, and matching critical values.\\
+
+General trinomial discriminant & \Exact &
+\(\Disc(X^5+pX+q)=256p^5+3125q^4\),
+Theorem~\ref{thm:trinomial-discriminant}.\\
+
+Cockle--Harley fourth-order ODE & \Exact/\allowbreak\Effective &
+Theorem~\ref{thm:differential-resolvent}; rational derivative elimination,
+cleared by \((5t^4-1)^7\).\\
+
+All five local branches of \(t^5-t+\rho\) & \Effective &
+Finite fixed-point construction around \(0,\pm1,\pm i\), followed by the common
+differential resolvent.  The exact linear combinations in MathWorld's printed
+hypergeometric basis are not separately normalized.\\
+
+General quintic depression & \Exact &
+Theorem~\ref{thm:depress-quintic}, including all four coefficient formulas.\\
+
+Derivative of a quintic is quartic & \Exact &
+Formal differentiation; real-root isolation is a bounded Sturm or
+critical-point algorithm.\\
+
+Quadratic reduction to principal form & \Exact &
+Theorem~\ref{thm:principal-reduction}; explicit \(\alpha,\beta\) equations from
+power sums.\\
+
+Universal quartic Tschirnhaus reduction to Bring--Jerrard form & \Conditional &
+Theorem~\ref{thm:bring-certificate-sound} gives a compact resultant verifier and
+complete soundness proof.  The classical universal witness, obtained through a
+cubic and quadratic, is not expanded into its multimegabyte symbolic form.\\
+
+Scaling \(x^5+px+q\) to a Bring equation & \Exact &
+Theorem~\ref{thm:bring-scaling}; branch and fourth-root compatibility are made
+explicit.\\
+
+Inverting the Tschirnhaus map by equations of degree at most four & \Conditional &
+Certified subresultant/gcd interface following~\eqref{eq:inverse-system};
+degenerate degrees are recorded rather than ignored.\\
+
+Brioschi normal form & \Conditional &
+Any proposed rational transformation is checked after denominator clearing.
+The global polyhedral formulas for its parameters remain with the icosahedral
+outline.\\
+
+General quintic not solvable by radicals & \Exact &
+Theorem~\ref{thm:abel-ruffini}; generic group \(S_5\), radical towers solvable,
+and explicit finite commutator proofs.\\
+
+Solvability criterion for irreducible quintics & \Exact &
+Theorem~\ref{thm:AGL-criterion}; solvable transitive subgroups are conjugate
+into \(\operatorname{AGL}(1,5)\).  The independent enumeration checks all 156
+subgroups.\\
+
+\(x^5-x+1\) is not solvable by radicals & \Exact/\allowbreak\Conditional &
+Theorem~\ref{thm:x5-x+1-S5}; exact modular factors and Frobenius traces.  The
+factor-degree/Frobenius bridge is supplied as a finite Galois-certificate
+module plan rather than a completed new Lean file.\\
+
+A concrete Bring value is not radical & \Exact/\allowbreak\Conditional &
+Theorem~\ref{thm:BR3-not-radical}: \(x^5+x+3\) has group \(S_5\), so its real
+root \(\BR(3)\) is not in a radical extension of \(\Q\).  Same Galois-module
+qualification as the preceding row.\\
+
+Reducible example \(x^5-x^4-x+1\) & \Exact &
+Factorization~\eqref{eq:reducible-example}.\\
+
+de Moivre quintic and auxiliary quadratic & \Exact &
+Theorem~\ref{thm:de-moivre-product} and
+Corollary~\ref{cor:de-moivre-roots}.\\
+
+General four-resolvent expansion & \Exact &
+Theorem~\ref{thm:four-resolvent}; direct cyclotomic quotient identity matching
+MathWorld's coefficient invariants.\\
+
+Spearman--Williams radical root expressions & \Conditional &
+Corollary~\ref{cor:four-resolvent-specialization} is the complete root verifier.
+The long substitution showing that the page's specific \(u_i\) satisfy the
+four invariant equations is left as a generated certificate.\\
+
+Spearman--Williams ``if and only if'' rational parameterization & \Outline &
+Reduced to rational invariant theory plus the affine-group criterion; no claim
+of a completed normalization of all published parameter formulas.\\
+
+Runge/Cadenhad/Young parameterization & \Conditional &
+The displayed coefficients are exact rational maps and can feed the universal
+resolvent verifier.  Completeness of the parameterization is not reproved.\\
+
+Explicit root involving \(\sqrt[5]2\) & \Exact &
+Equation~\eqref{eq:explicit-example-one}; exact remainder modulo \(t^5-2\).\\
+
+Paxton Young example with \(\sqrt[5]2\) & \Exact &
+Equation~\eqref{eq:young-example}.\\
+
+Root \(2\cos(2\pi/11)\) of a quintic & \Exact &
+Equation~\eqref{eq:cos11-example}; reduction modulo the eleventh cyclotomic
+polynomial.\\
+
+The source's quartic-resolvent formula for the root of \(x^5-5x+12\) & \Conditional &
+It fits Theorem~\ref{thm:solvable-quintic-resolvents}; the particular four
+fifth-root compatibility relations are not expanded in this packet.\\
+
+The five listed solvable \(x^5+ax^2+b\) shapes & \Outline &
+Each instance is decidable by a Galois/resolvent certificate, but the historical
+classification ``exactly five up to scaling'' is not reproved here.\\
+
+Kondo--Brumer and other parameterized solvable families & \Conditional &
+A supplied group/resolvent certificate is checkable.  Universal family
+solvability is a future generated-certificate target.\\
+
+Casus irreducibilis for quintics & \Outline &
+Ordered radical-tower argument in Section~\ref{sec:solvable}; individual towers
+are checkable, but the full ordered-field Lean module is not complete.\\
+
+Hermite theta-function solution & \Outline &
+Theorem~\ref{thm:hermite-interface} gives exact data and tail requirements.
+Global modular equations and branch choices are not completed.\\
+
+Klein icosahedral/hypergeometric solution & \Outline &
+Local hypergeometric and polynomial verification are finite; global monodromy
+and invariant normalization remain.\\
+
+Hypergeometric solution for \(x^p+bx^q+c\) & \Effective{} schema &
+Finite Lagrange inversion and coefficient recurrences for every fixed
+\((p,q)\); global branch formulas require case-specific continuation.\\
+
+Doyle--McMullen iteration & \Conditional &
+Theorem~\ref{thm:certified-iteration}; a trapping disk and contraction bound
+replace the nonformal instruction to use a random start.\\
+
+Quintic from collinear Lagrange points & \Exact &
+Theorem~\ref{thm:lagrange-quintic} and expansion
+\eqref{eq:lagrange-expanded}.\\
+
+Hill-radius approximation & \Effective &
+Exact dimensionless equation~\eqref{eq:L2-dimensionless}; rational interval
+bounds give any requested asymptotic accuracy.\\
+
+Historical attributions and dates & Not arithmetic &
+Recorded in the source bibliography but not presented as theorems of \ipra.\\
+
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Net result}
+
+The largest fully developed fragment is the one most naturally suited to
+\ipra: polynomial identities, finite series coefficients, effective real
+roots, finite groups, radical-tower certificates, and exact numerical
+verification.  The remaining gaps are concentrated in global special-function
+identities and the size of universal symbolic transformations, not in the
+constructive treatment of the Bring radical itself.

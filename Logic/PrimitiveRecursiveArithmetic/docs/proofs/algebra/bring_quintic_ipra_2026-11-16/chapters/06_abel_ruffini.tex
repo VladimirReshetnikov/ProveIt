@@ -1,0 +1,335 @@
+\section{Abel--Ruffini and finite Galois certificates}\label{sec:abel-ruffini}
+
+The statement ``the quintic cannot be solved by radicals'' has two distinct
+forms.  The generic theorem says that no single radical formula works for the
+universal quintic.  A concrete theorem says that a specified irreducible
+quintic has no radical expression for its roots.  Both can be organized
+constructively, but neither says that every quintic is insoluble: reducible and
+special solvable quintics are treated in Section~\ref{sec:solvable}.
+
+\subsection{Radical towers yield solvable finite groups}
+
+A finite radical certificate over a field \(K\) is a tower
+\begin{equation}\label{eq:radical-tower}
+ K=K_0\subset K_1\subset\cdots\subset K_m,
+ \qquad K_{j+1}=K_j(\alpha_j),
+ \qquad \alpha_j^{n_j}\in K_j,
+\end{equation}
+with the required roots of unity adjoined.  For object-theory purposes a finite
+extension is represented by a basis, addition and multiplication tables,
+embeddings of the preceding field, and reduction certificates for the defining
+polynomials.  Every axiom is a bounded equality on table entries.
+
+\begin{lemma}[Kummer step]\label{lem:kummer-step}
+Suppose \(K\) contains all \(n\)-th roots of unity and
+\(L=K(\alpha)\) with \(\alpha^n\in K\).  Every \(K\)-automorphism of the normal
+closure sends \(\alpha\) to \(\zeta\alpha\) for an \(n\)-th root of unity
+\(\zeta\).  The corresponding relative automorphism group embeds into the
+abelian group of \(n\)-th roots of unity.
+\end{lemma}
+
+\begin{proof}
+If \(\sigma\) fixes \(K\), then
+\(\sigma(\alpha)^n=\sigma(\alpha^n)=\alpha^n\).  When \(\alpha\ne0\), the
+quotient \(\sigma(\alpha)/\alpha\) is an \(n\)-th root of unity; the zero case
+is trivial.  Multiplication of these quotients follows composition of
+automorphisms.  In a coded finite extension, all divisions are implemented by
+multiplicative-inverse tables with nonzero guards.
+\end{proof}
+
+\begin{theorem}[Radicals imply solvability]\label{thm:radicals-solvable}
+The Galois group of the normal closure of a finite radical tower has a finite
+normal series with abelian quotients.  Hence every polynomial solvable by
+radicals has a solvable Galois group.
+\end{theorem}
+
+\begin{proof}
+First adjoin the finitely many roots of unity required by the tower; these are
+cyclotomic extensions with abelian Galois groups.  Normalize one radical step at
+a time.  Lemma~\ref{lem:kummer-step} makes the kernel contributed by that step
+abelian.  Induction on the tower length and the elementary fact that an
+extension of a solvable group by a solvable group is solvable give the result.
+For finite multiplication tables, normality, quotient multiplication, and the
+derived series are all bounded checks.  The argument therefore translates into
+\ipra{} for every coded tower.
+\end{proof}
+
+The converse---a polynomial with solvable Galois group is solvable by
+radicals after adjoining roots of unity---uses the same series in reverse and
+successive cyclic extensions.  In a fully explicit finite extension it is
+again a certificate theorem.  We use both directions below for the standard
+criterion ``solvable by radicals iff the finite Galois group is solvable.''
+
+\subsection{The generic quintic has group \(S_5\)}
+
+Let \(x_1,\ldots,x_5\) be algebraically independent indeterminates over
+\(\Q\), let \(e_j\) be their elementary symmetric polynomials, and put
+\[
+ L=\Q(x_1,\ldots,x_5),
+ \qquad K=\Q(e_1,\ldots,e_5).
+\]
+Every permutation of the \(x_i\) fixes \(K\), so \(S_5\) acts by
+\(K\)-automorphisms of \(L\).  Conversely the roots of
+\begin{equation}\label{eq:generic-quintic}
+ Z^5-e_1Z^4+e_2Z^3-e_3Z^2+e_4Z-e_5
+\end{equation}
+are exactly the \(x_i\), so a \(K\)-automorphism permutes them.
+
+The only subtle point is that the fixed field of the permutation action is
+exactly \(K\).  This admits a finite algorithmic proof.
+
+\begin{lemma}[Constructive symmetric rational functions]
+\label{lem:symmetric-rational}
+Every rational function in \(x_1,\ldots,x_5\) fixed by all permutations is a
+rational function in \(e_1,\ldots,e_5\).  For bounded numerator and denominator
+degrees, the conversion is primitive recursive.
+\end{lemma}
+
+\begin{proof}
+Write the invariant as \(f=p/q\).  Replace the denominator by its permutation
+norm
+\[
+ Q=\prod_{\sigma\in S_5}\sigma(q).
+\]
+Then \(Q\) is symmetric and \(P=fQ=p(Q/q)\) is a symmetric polynomial.
+The fundamental theorem of symmetric polynomials has a terminating
+lexicographic reduction: subtract from a symmetric polynomial a suitable
+monomial in \(e_1,\ldots,e_5\) that cancels its leading monomial, and repeat.
+The leading exponent strictly decreases in a finite well-order bounded by the
+input degree.  Thus \(P=P(e_1,\ldots,e_5)\) and similarly for \(Q\).  The
+reduction loop and its evaluation invariant are primitive recursive; the
+termination measure is a bounded natural code of the exponent vector.
+\end{proof}
+
+\begin{theorem}[Generic Galois group]\label{thm:generic-S5}
+The Galois group of the generic quintic~\eqref{eq:generic-quintic} over
+\(K\) is \(S_5\).
+\end{theorem}
+
+\begin{proof}
+The preceding discussion embeds the group in \(S_5\), while every permutation
+of the indeterminates is a \(K\)-automorphism.  Lemma
+\ref{lem:symmetric-rational} shows there is no larger fixed field hidden
+between \(K\) and the invariant field, so the action is the full Galois action.
+All coefficient manipulations at a requested degree are finite.  This is the
+constructive core of the generic argument developed in ProVeIt's
+polynomial-formulas/Abel--Ruffini packet.
+\end{proof}
+
+\subsection{Why \(S_5\) is not solvable}
+
+Let the commutator convention be
+\([g,h]=ghg^{-1}h^{-1}\).
+
+\begin{lemma}\label{lem:S5-derived}
+The commutator subgroup of \(S_5\) is \(A_5\).
+\end{lemma}
+
+\begin{proof}
+The sign homomorphism has abelian target, so every commutator is even and
+\([S_5,S_5]\subseteq A_5\).  On the other hand, the commutator of two
+transpositions sharing one letter is a 3-cycle (up to orientation), and
+3-cycles generate \(A_5\).  Hence \(A_5\subseteq[S_5,S_5]\).
+\end{proof}
+
+\begin{lemma}\label{lem:A5-perfect}
+The group \(A_5\) is perfect: \([A_5,A_5]=A_5\).
+\end{lemma}
+
+\begin{proof}
+Both
+\[
+ g=(2\,3)(4\,5),
+ \qquad h=(1\,2)(4\,5)
+\]
+are in \(A_5\), and a direct five-entry permutation calculation gives
+\[
+ [g,h]=(1\,2\,3).
+\]
+The commutator subgroup is normal.  All 3-cycles are conjugate within
+\(A_5\), and 3-cycles generate \(A_5\), so the commutator subgroup is all of
+\(A_5\).
+\end{proof}
+
+Both lemmas are tiny finite certificates: the archive independently enumerates
+the 120 permutations and obtains derived-series orders
+\[
+ 120,60,60.
+\]
+
+\begin{theorem}[Constructive Abel--Ruffini theorem]
+\label{thm:abel-ruffini}
+There is no radical expression, uniform in the five generic coefficients, that
+produces a root of the generic quintic.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:generic-S5}, the generic Galois group is \(S_5\).
+Lemmas~\ref{lem:S5-derived} and~\ref{lem:A5-perfect} show that its derived
+series never reaches the trivial group, so it is not solvable.  This contradicts
+Theorem~\ref{thm:radicals-solvable} for any proposed radical tower.  Every group
+calculation is finite, and the symmetric-polynomial reduction is a bounded
+algorithm, so the argument has the required \ipra{} form.
+\end{proof}
+
+The theorem excludes a universal formula by ordinary radicals.  It does not
+exclude Bring radicals, hypergeometric functions, numerical algorithms, or
+radical formulas for special quintics.
+
+\subsection{A finite group criterion for an irreducible quintic}
+
+An irreducible quintic over \(\Q\) has a transitive Galois group
+\(G\le S_5\).  The solvable transitive subgroups have a particularly small
+form.
+
+\begin{theorem}[Prime-degree solvable subgroup criterion]
+\label{thm:AGL-criterion}
+A solvable transitive subgroup of \(S_5\) is conjugate to a subgroup of
+\begin{equation}\label{eq:AGL}
+ \operatorname{AGL}(1,5)
+ =\{x\mapsto ax+b:a\in\F_5^\times,\ b\in\F_5\},
+\end{equation}
+which has order \(20\).  Conversely every subgroup of
+\(\operatorname{AGL}(1,5)\) is solvable.  Hence an irreducible quintic is
+solvable by radicals exactly when its Galois group is conjugate to such a
+subgroup.
+\end{theorem}
+
+\begin{proof}
+Let \(G\) be solvable and transitive, and choose a nontrivial minimal normal
+subgroup \(N\).  A standard finite induction on the derived series shows that
+\(N\) is elementary abelian of prime-power order.  The orbits of a normal
+subgroup form a block system.  Since the action has prime degree five, a
+nontrivial normal subgroup must be transitive.  Therefore \(5\mid |N|\).
+Inside \(S_5\), a 5-subgroup has order at most five, so \(N\cong C_5\) and acts
+regularly.  Conjugation embeds a point stabilizer into
+\(\Aut(C_5)\cong C_4\), giving
+\(G\le C_5\rtimes C_4=\operatorname{AGL}(1,5)\) after relabeling the points.
+
+Conversely the translation subgroup \(C_5\) is normal in
+\(\operatorname{AGL}(1,5)\) and the quotient is \(C_4\), so the affine group
+and all its subgroups are solvable.  The radical criterion follows from
+Theorem~\ref{thm:radicals-solvable} and its converse.
+\end{proof}
+
+The executable verifier checks the theorem independently by enumerating all
+156 subgroups of \(S_5\): there are 20 transitive subgroups as actual subsets,
+18 solvable ones of orders \(5,10,20\), and two nonsolvable ones, \(A_5\) and
+\(S_5\).  The affine group's derived-series orders are \(20,5,1\).
+
+\subsection{A concrete nonsolvable quintic: \(x^5-x+1\)}
+
+Let
+\[
+ f(X)=X^5-X+1.
+\]
+Its discriminant, from~\eqref{eq:trinomial-discriminant}, is
+\[
+ \Disc(f)=-256+3125=2869.
+\]
+Modulo two one has the exact square-free factorization
+\begin{equation}\label{eq:f-mod2}
+ f(X)=(X^2+X+1)(X^3+X^2+1)\pmod2.
+\end{equation}
+The quadratic and cubic factors have no root in \(\F_2\), hence are
+irreducible.  The factor degrees are therefore \((2,3)\).
+
+Modulo three, define \(r_0=X\) and
+\(r_{j+1}=r_j^3\bmod f\).  A finite reduction gives
+\begin{center}
+\begin{tabular}{c|l}
+\toprule
+\(j\)&\(r_j\) in \(\F_3[X]/(f)\)\\
+\midrule
+1&\(X^3\)\\
+2&\(-X^4+X-1\)\\
+3&\(-X^4-X^2-1\)\\
+4&\(-X^4-X^3+X^2+X-1\)\\
+5&\(X\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+Moreover the Bézout identity
+\begin{equation}\label{eq:f-bezout3}
+ f(X)+(-X^2-1)(X^3-X)=1\pmod3
+\end{equation}
+shows that \(f\) has no linear factor over \(\F_3\).  Since
+\(f\mid X^{3^5}-X\) by the table, and five is prime, all irreducible factors
+have degree five.  Thus \(f\) is irreducible modulo three and hence over
+\(\Q\).
+
+\begin{theorem}\label{thm:x5-x+1-S5}
+The Galois group of \(X^5-X+1\) over \(\Q\) is \(S_5\).  In particular the
+polynomial is not solvable by radicals.
+\end{theorem}
+
+\begin{proof}
+The factorization modulo three supplies a Frobenius element of cycle type
+\((5)\), while~\eqref{eq:f-mod2} supplies one of type \((2)(3)\).  Cubing the
+latter leaves a transposition.  A subgroup of \(S_5\) containing a 5-cycle and
+a transposition is all of \(S_5\): conjugating the transposition by powers of
+the 5-cycle gives the edge transpositions of a connected graph on the five
+letters, and edge transpositions of a connected graph generate the full
+symmetric group.  Nonsolvability follows from
+Lemmas~\ref{lem:S5-derived}--\ref{lem:A5-perfect}.
+\end{proof}
+
+The factor-degree/Frobenius lemma used here has a finite \ipra{} realization.
+For a prime not dividing the discriminant, reduce the integral splitting order
+modulo the prime, choose a prime ideal above it by bounded search in the finite
+quotient, and use the residue Frobenius \(z\mapsto z^p\).  Its orbits on the
+roots have lengths equal to the irreducible factor degrees.  Addition and
+multiplication in every residue algebra are finite tables; the decomposition
+and lifting checks are therefore certificate verifications.  This is a
+substantial Lean module, but it needs no infinitary set existence.
+
+\subsection{The real number \(\BR(3)\) is not a radical number}
+
+Now let
+\[
+ g(X)=X^5+X+3.
+\]
+The discriminant is
+\[
+ \Disc(g)=256+3125\cdot3^4=253381.
+\]
+Modulo two, \(g\) has the same factorization~\eqref{eq:f-mod2}.  Modulo seven,
+let \(s_0=X\) and \(s_{j+1}=s_j^7\bmod g\).  Exact reduction gives
+\begin{center}
+\begin{tabular}{c|l}
+\toprule
+\(j\)&\(s_j\) in \(\F_7[X]/(g)\)\\
+\midrule
+1&\(-X^3-3X^2\)\\
+2&\(3X^4+2X^3+3X+1\)\\
+3&\(2X^4-3X^3+3X^2+2X+3\)\\
+4&\(2X^4+2X^3+X+3\)\\
+5&\(X\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+Writing \(h=s_1-X=-X^3-3X^2-X\), the explicit identity
+\begin{equation}\label{eq:g-bezout7}
+ -2g(X)+(-2X^2-X-2)h(X)=1\pmod7
+\end{equation}
+excludes linear factors.  As above, \(g\) is irreducible modulo seven.
+
+\begin{theorem}\label{thm:BR3-not-radical}
+The Galois group of \(X^5+X+3\) is \(S_5\).  Its unique real root
+\(\BR(3)\) is not contained in any radical extension of \(\Q\).
+\end{theorem}
+
+\begin{proof}
+Modulo seven the factor degree is five, giving a 5-cycle; modulo two the factor
+degrees are two and three, giving a transposition after cubing.  Thus the group
+is \(S_5\).  If the single algebraic number \(\BR(3)\) belonged to a radical
+tower, the normal closure of that tower (after adjoining roots of unity) would
+have solvable Galois group.  The splitting field of the minimal polynomial of
+\(\BR(3)\) is a subextension of that normal closure, so its Galois group would
+be a quotient of a solvable group and hence solvable, contradicting \(S_5\).
+\end{proof}
+
+This gives a concrete arithmetic interpretation of the source page's claim
+that the Bring radical is not an ordinary radical function.  The generic
+version follows already from Theorem~\ref{thm:abel-ruffini}; the specialization
+at \(a=3\) shows that the obstruction is not merely formal.

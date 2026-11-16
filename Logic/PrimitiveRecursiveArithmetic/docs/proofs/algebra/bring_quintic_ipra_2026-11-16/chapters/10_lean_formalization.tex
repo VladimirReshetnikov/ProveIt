@@ -1,0 +1,241 @@
+\section{Lean formalization plan}\label{sec:lean}
+
+The archive contains \code{Lean/BringQuinticBlueprint.lean} and a separate
+roadmap.  The file is intentionally a blueprint rather than a claim of a new
+completed build.  This section gives the precise path from the human proofs to
+closed terms of the same form as the existing ProveIt derivations.
+
+\subsection{Target theorem shape}
+
+The existing derivation library represents a closed \ipra{} theorem as
+\[
+ ([]:\operatorname{List}(\mathrm{Fm}\;\mathrm{PTm}\;0))
+ \;\vdash[\mathrm{PRAAx}]\;\varphi.
+\]
+A new theorem should have this type after all free variables are universally
+closed.  The metatheoretic Lean proof may use the repository's quotient and
+ring infrastructure, but the resulting object theorem contains only the
+\ipra{} axioms.  The audit command should print the axioms of every exported
+Lean theorem, exactly as in \code{IPRADerivations/Checks/Axioms.lean}.
+
+The regular-real statements are theorem schemas.  A fixed primitive-recursive
+coefficient or approximation function is introduced as a language symbol, and
+its defining equations become part of \code{PRAAx}.  We never attempt to put a
+Lean function variable \(\N\to\N\) inside first-order \ipra.
+
+\subsection{Proposed module tree}
+
+\begin{description}[style=nextline,leftmargin=0pt,labelindent=0pt,labelwidth=0pt,labelsep=0pt]
+\item[\code{Algebra/Bring/Polynomial.lean}]
+  Integer-difference terms for \(S_4\), the identity
+  \eqref{eq:s4-sos}, strong monotonicity after importing signed order, the
+  trinomial discriminant, scaling, and the differential-resolvent numerator.
+
+\item[\code{Algebra/Bring/Rational.lean}]
+  Reduced rational codes, exact order and midpoint, \(P_a(x)\), the bisection
+  step, the interval invariant, \(\lceil\log_2\rceil\), and the rational
+  approximation function \code{bringApprox}.
+
+\item[\code{Algebra/Bring/RegularReal.lean}]
+  The arithmetic predicate saying that the fixed approximation sequence is
+  regular, compatibility of two parameter names, the Lipschitz and residual
+  bounds, oddness, unboundedness, and the fifth-root asymptotic modulus.
+
+\item[\code{Algebra/Bring/TruncatedSeries.lean}]
+  Codes for vectors in \(\Q[X]/(X^{N+1})\), Cauchy product, composition,
+  geometric inverse, finite residue, and the finite Lagrange theorem
+  \eqref{eq:finite-lagrange}.
+
+\item[\code{Algebra/Bring/Series.lean}]
+  The Bring coefficient function, the finite identity
+  \(Y_N^5+Y_N=X\bmod X^{N+1}\), the hypergeometric ratio, convergence
+  majorants, and the branch-point resultant.
+
+\item[\code{Algebra/Quintic/NormalForms.lean}]
+  The depression identity, power-sum/Newton identities through degree five,
+  the quadratic principal transform, generic Sylvester matrices, and the
+  soundness of a Bring--Jerrard certificate.
+
+\item[\code{Algebra/Quintic/Cyclotomic5.lean}]
+  The quotient by \(1+W+W^2+W^3+W^4\), root-of-unity filters, the de Moivre
+  product, the four-resolvent product, and the explicit examples.
+
+\item[\code{Algebra/Quintic/FiniteGroups.lean}]
+  Five-letter permutation codes, subgroup generation, commutators, the
+  explicit proofs \([S_5,S_5]=A_5\), \([A_5,A_5]=A_5\), and the affine group
+  derived series.
+
+\item[\code{Algebra/Quintic/GaloisCertificates.lean}]
+  Finite-field polynomial arithmetic, Frobenius traces, modular factorization
+  certificates for the two concrete polynomials, and the finite decomposition
+  group theorem needed to obtain cycle types.
+
+\item[\code{Algebra/Quintic/RadicalTowers.lean}]
+  Coded extension tables, roots of unity, Kummer kernels, solvable normal
+  series, and Lagrange-resolvent reconstruction for a group contained in
+  \(\operatorname{AGL}(1,5)\).
+\end{description}
+
+\subsection{First milestone: exact polynomial theorems}
+
+This milestone uses only existing ring infrastructure and should be completed
+first.  A representative object-theory definition is
+\begin{lstlisting}[style=code,language={}]
+-- schematic: variables are signed integer terms ZT n
+abbrev S4 (x y : ZT n) : ZT n :=
+  x^4 + x^3*y + x^2*y^2 + x*y^3 + y^4
+
+def bringSOS : Fm PTm n :=
+  ZT.eq (12 * S4 x y)
+    (3 * (2*x^2 + x*y)^2 + (3*x*y + 2*y^2)^2 + 8*y^4)
+
+theorem bring_sos :
+  ([] : List (Fm PTm 0)) |-[PRAAx] univ n bringSOS := by
+  refine closeUniv n (ZT.derive ?_)
+  ipra_ring
+\end{lstlisting}
+The actual syntax must use the repository's \code{ZT.natLit}, multiplication
+and power notation, as illustrated by
+\code{Algebra/PolynomialFormulas.lean}.  The depression identity and both
+cyclotomic products have the same shape: assumptions are introduced by
+\code{impI}, converted into quotient-ring equalities by \code{ZT.toZ\_mem}, and
+closed by \code{ipra\_ring} or \code{linear\_combination}.
+
+The resultant identity can be proved in either of two ways:
+
+\begin{enumerate}
+\item instantiate the fixed \(9\times9\) determinant from
+      \code{Core.LinearAlgebra} and normalize; or
+\item prove the elimination implications in both directions using
+      \(5X^4+p=0\) and \(4pX+5q=0\), together with a Bézout identity for the
+      converse.
+\end{enumerate}
+
+The first route generalizes; the second produces a smaller term for the
+trinomial.
+
+\subsection{Second milestone: rational bisection}
+
+Define total rational operations.  A denominator-zero input returns a fixed
+default, and every theorem carries a positivity guard.  The bisection state is
+a paired code \(\angles{L,U}\).  Its step is a primitive recursion using the
+Boolean rational comparison
+\[
+ \chi(P_a((L+U)/2)\le0).
+\]
+The main induction theorem should state the three clauses of
+Lemma~\ref{lem:bisection-invariant} as a single Boolean conjunction.  The
+width clause is an equality after multiplying by \(2^n\), avoiding rational
+exponents.
+
+The regularity theorem for \code{bringApprox} follows from the nested-interval
+invariant.  Soundness of the limit is represented arithmetically as:
+for every precision \(k\), the residual of the \(k\)-th approximation is below
+a displayed dyadic bound.  Equality to zero of the named real is the universal
+closure of these residual bounds.  The Lipschitz theorem is first proved for
+rational parameters and approximants, then transferred to the fixed regular
+names by their moduli.
+
+\subsection{Third milestone: truncated series}
+
+A series vector can reuse the repository's pairing and bounded-sum modules.
+Recommended definitions are
+\begin{align*}
+ \operatorname{coeff}(A,i)&=\text{the }i\text{-th decoded rational},\\
+ \operatorname{mul}(A,B,n)_k
+ &=\sum_{i\le k}A_iB_{k-i},\\
+ \operatorname{compose}(A,B,n)
+ &=\sum_{j\le n}A_jB^j\pmod{X^{n+1}}.
+\end{align*}
+The fixed-point proof uses the Boolean relation
+\[
+ \operatorname{Agree}(A,B,m)
+ =\prod_{i<m}[A_i=B_i].
+\]
+One quantifier-free induction proves that one application of
+\(A\mapsto X\Phi(A)\) increases the agreement bound by one.  A second induction
+proves the finite residue substitution lemma.  These two results yield the
+uniform finite Lagrange theorem.
+
+For the Bring series, define
+\begin{lstlisting}[style=code,language={}]
+bringCoeff (n : Nat) : RatCode :=
+  if h : n % 4 = 1 then
+    let k := (n - 1) / 4
+    (-1)^k * choose (5*k) k / (4*k+1)
+  else 0
+\end{lstlisting}
+with the sign and division implemented on codes.  The object theorem is the
+coefficient-vector equality, not a Lean equality of completed formal power
+series.
+
+\subsection{Fourth milestone: finite groups before Galois theory}
+
+The finite group layer can be completed independently of field theory.  Encode
+a permutation by a base-six numeral or a five-entry nested pair.  Verify
+bijectivity by a five-term Boolean product.  Enumerate \(S_5\) by bounded search
+through the \(5^5\) maps and filter permutations; this is primitive recursive,
+although a hard-coded 120-entry table gives smaller proof terms.
+
+The perfectness proof of \(A_5\) need not enumerate all commutators.  Formalize
+the two explicit double transpositions from Lemma~\ref{lem:A5-perfect}, prove
+their commutator is \((1\,2\,3)\), prove normality of the commutator subgroup,
+and prove that 3-cycles generate \(A_5\).  The affine-group theorem can follow
+the minimal-normal-subgroup proof of Theorem~\ref{thm:AGL-criterion}, with the
+156-subgroup enumeration retained as a check theorem.
+
+\subsection{Fifth milestone: the concrete \(S_5\) certificates}
+
+Polynomial arithmetic modulo \(2,3,7\) is tiny.  The Frobenius remainder tables
+and Bézout identities in Section~\ref{sec:abel-ruffini} can be inserted as
+literal vectors and verified by \code{native\_decide} in the Lean metatheory;
+a reflection lemma then turns an accepted vector computation into the
+corresponding object-theory equality.
+
+The nontrivial bridge is the factor-degree/Frobenius theorem.  A clean module
+order is:
+
+\begin{enumerate}
+\item finite quotient rings and fields;
+\item square-free factorization and Frobenius orbits;
+\item coded finite free \(\Z\)-orders and reduction modulo a prime;
+\item decomposition groups and the residue Frobenius lift;
+\item cycle type on the roots.
+\end{enumerate}
+
+For the two concrete examples the splitting-field degree is at most 120, so all
+objects can be bounded a priori.  The general theorem is nevertheless cleaner
+than hard-coding one splitting field.
+
+\subsection{Sixth milestone: radical towers and the generic theorem}
+
+The finite radical-tower theorem uses basis tables and automorphism tables.
+Kummer-step soundness is the equation
+\((\sigma\alpha/\alpha)^n=1\).  A normal-series constructor appends the abelian
+kernel at each step.  The generic \(S_5\) theorem requires a separate syntactic
+ring of rational functions in five indeterminates and the constructive
+symmetric-polynomial normalizer of Lemma~\ref{lem:symmetric-rational}.  It need
+not quantify over arbitrary fields inside the object theory; it is a fixed
+symbolic computation theorem about polynomial codes.
+
+\subsection{Completion criteria}
+
+A complete Lean delivery should satisfy all of the following.
+
+\begin{enumerate}
+\item \code{lake build IPRADerivations} succeeds with the new modules enabled.
+\item No \code{sorry}, \code{admit}, or unproved axiom is introduced.
+\item Every exported theorem has the closed \code{Prf PRAAx} type or is clearly
+      marked as a metatheoretic helper.
+\item \code{Checks/Axioms.lean} reports only the same Lean metatheory axioms
+      already present in the repository, and no new object-theory axiom.
+\item The Python certificate JSON is regenerated and its hashes match the
+      archive manifest.
+\item The formal statement audit points to the exact Lean theorem name for
+      every item upgraded from \(\Outline\) to \(\Exact\) or
+      \(\Effective\).
+\end{enumerate}
+
+The ordering above deliberately yields useful checked theorems early: the
+polynomial identities, real bisection, series coefficients and finite groups do
+not have to wait for the larger Galois infrastructure.

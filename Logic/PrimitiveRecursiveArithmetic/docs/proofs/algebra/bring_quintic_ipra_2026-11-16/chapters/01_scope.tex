@@ -1,0 +1,142 @@
+\section{Scope, conventions, and the constructive reading}\label{sec:scope}
+
+\subsection{The three source pages}
+
+The requested source material consists of the Wikipedia articles
+\emph{Bring radical} and \emph{Quintic equation}, and the MathWorld article
+\emph{Quintic Equation}.  They mix several logically different kinds of
+assertion:
+
+\begin{enumerate}
+\item finite algebraic identities, such as a Tschirnhaus substitution, a
+      resultant, a cyclotomic product, or a displayed radical formula;
+\item existence and approximation assertions for real or complex roots;
+\item convergence, branch-point, differential-equation, theta-function, and
+      hypergeometric assertions;
+\item Galois-theoretic impossibility and solvability criteria;
+\item historical attributions and computational advice.
+\end{enumerate}
+
+Only the first four are mathematical propositions.  Historical priority is not
+an arithmetic theorem and is therefore recorded only as bibliography.  The
+three pages were inspected on 16 November 2026.  Their main claims relevant to
+this report are the following.
+
+\begin{itemize}
+\item The real Bring radical \(\BR(a)\) is the unique real zero of
+      \(x^5+x+a\); it is odd, decreasing and unbounded, with
+      \(\BR(a)\sim-a^{1/5}\).  Its local series, hypergeometric form, radius,
+      and four branch points are displayed.
+\item A general quintic can first be depressed, then put in principal form,
+      and finally related to a Bring--Jerrard equation by a quartic
+      Tschirnhaus transformation.  A trinomial \(x^5+px+q\) is reduced to one
+      variable of the Bring radical by scaling.
+\item General quintics are not solvable by radicals, while special quintics
+      are.  The pages give de Moivre's family, resolvent constructions,
+      solvable parameterizations, explicit examples, and finite-group
+      criteria.
+\item Beyond radicals, the pages describe hypergeometric, theta, elliptic,
+      icosahedral and iterative methods, and the quintic arising from the
+      collinear Lagrange points.
+\end{itemize}
+
+The goal is not to copy those pages, but to identify which claims admit a clean
+finitary proof and to expose the exact data needed by \ipra.
+
+\subsection{Four meanings of ``proved in \(\ipra\)''}
+
+First-order \ipra{} quantifies only over natural numbers.  It has no primitive
+sort of arbitrary real numbers, complex functions, fields, or infinite
+series.  We therefore use four precise readings.
+
+\begin{definition}[Exact finite statement]
+An \emph{exact} statement is an identity or decidable relation on natural-number
+codes for integers, rationals, finite vectors, polynomials, permutations, or
+finite tables.  Denominators are cleared and all loops have explicit bounds.
+Such a statement is directly expressible in \ipra.
+\end{definition}
+
+\begin{definition}[Effective analytic statement]
+A real or complex quantity is represented by a fixed primitive-recursive
+sequence of rational or Gaussian-rational approximants, together with a fixed
+primitive-recursive modulus.  An analytic theorem is a theorem schema for such
+named data, with all radii, bounds and error moduli explicit.  No quantifier
+ranges over an unspecified completed function space.
+\end{definition}
+
+\begin{definition}[Certificate statement]
+A certificate statement says that a primitive-recursive verifier accepts a
+finite object only when a specified mathematical relation holds.  Examples are
+a resultant identity, a factorization modulo a prime, a multiplication table
+for a finite Galois group, or a Tschirnhaus transformation.  The theorem is
+uniform in the certificate code; a concrete certificate is then checked by
+finite computation.
+\end{definition}
+
+\begin{definition}[Formalization outline]
+An outline gives all object-theory definitions, the exact lemmas to be proved,
+and a dependency path to a kernel-checked Lean theorem, but does not claim that
+the final Lean term has already been compiled.  We use this label for the
+large global theta-function and universal Bring--Jerrard developments.
+\end{definition}
+
+The audit in Section~\ref{sec:audit} labels results by
+\(\Exact\), \(\Effective\), \(\Conditional\), or \(\Outline\).  These labels
+are deliberately stronger than a vague assertion that an ordinary classical
+proof is ``finitary in spirit.''
+
+\subsection{Sign conventions}
+
+Two closely related normal forms occur in the sources.  Throughout this report
+we define
+\begin{equation}\label{eq:BRdef}
+  \BR(a)^5+\BR(a)+a=0
+\end{equation}
+for real \(a\).  Thus if
+\[
+  h(x)=x^5+x,
+\]
+then \(\BR(a)=h^{-1}(-a)=-h^{-1}(a)\).  The alternative Bring equation
+\(t^5-t+\rho=0\) is treated separately; it has different critical values and
+is the convention used in the Cockle--Harley differential resolvent.
+
+For a primitive fifth root of unity we write \(\omega\), so
+\begin{equation}\label{eq:cyclo5}
+ \omega^5=1,
+ \qquad 1+\omega+\omega^2+\omega^3+\omega^4=0.
+\end{equation}
+No analytic choice of \(e^{2\pi i/5}\) is needed for the algebraic identities:
+\(\omega\) is simply an element satisfying these two equations.
+
+\subsection{What is new in this packet}
+
+Several ingredients already existed in ProveIt.  The repository's
+\code{IPRADerivations} library contains kernel-checked object-theory proofs of
+the quadratic, Cardano and Ferrari factorization identities.  Its Lagrange
+inversion packet gives the finite coefficient algebra needed for inverses of
+\(x-x^p\).  A separate polynomial-formulas packet develops a generic
+Abel--Ruffini architecture.  We use these rather than silently reproving them
+in a stronger metatheory.
+
+The new contribution is the synthesis specific to Bring radicals and the
+quintic pages:
+
+\begin{itemize}
+\item a short sum-of-squares proof of strong monotonicity and the resulting
+      primitive-recursive real Bring radical;
+\item exact coefficient and branch-point proofs tied to the finite Lagrange
+      framework;
+\item a transparent principal-form reduction and a compact certificate
+      interface for the large Bring--Jerrard step;
+\item concrete finite-field certificates proving that both
+      \(x^5-x+1\) and \(x^5+x+3\) have Galois group \(S_5\);
+\item exact de Moivre and four-resolvent identities, plus a complete finite
+      enumeration of the subgroup classification relevant to solvable
+      irreducible quintics;
+\item a detailed Lean module plan connected to the existing ProveIt theorem
+      names.
+\end{itemize}
+
+The executable verifier performs seventeen independent families of exact
+checks.  It is evidence for the displayed certificates, not a substitute for
+the human proofs or the intended object-theory derivations.

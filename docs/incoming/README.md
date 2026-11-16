@@ -305,6 +305,8 @@ placed the same way, under `combinatorics/`, and then deleted. It leaves out one
 `aperiodic_monotile_ipra_2026-11-16.zip` was placed the same way, under `geometry/`, and
 then deleted. All 31 of its members are placed. `conway_criterion_ipra_2026-11-16.zip` was
 placed the same way, under `geometry/`, and then deleted. All 50 of its members are placed.
+`bring_quintic_ipra_2026-11-16.zip` was placed the same way, under `algebra/`, and then
+deleted. It leaves out one ignored `.log` file.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

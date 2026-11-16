@@ -5,7 +5,7 @@ gives the target interface for future verified
 derivations of these delivered proofs.
 
 This directory holds the research packets that were delivered as archives from 14 to
-16 November 2026: 33 to `docs/drafts`, and 65 to
+16 November 2026: 33 to `docs/drafts`, and 66 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -36,7 +36,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 106 | The member matches the repository's `.gitignore`: 47 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 58 `.log` files from LaTeX and Lean builds and from test and verification runs, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
+| `ignored` | 107 | The member matches the repository's `.gitignore`: 47 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests, 59 `.log` files from LaTeX and Lean builds and from test and verification runs, and 1 file under a `build/` directory. It is available only from the delivered archive, so it is lost for the archives that were not committed. |
 | `sibling-packet` | 21 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/) (13 members). `ipra_finite_demand` bundles four of its files under the same path (4 members). `ipra_resources_and_elimination_2026-11-15` bundles `lean/BackwardDemand.lean` of [`foundations/ipra_finite_demand`](foundations/ipra_finite_demand/) (1 member). `ipra_stable_observables` bundles three `lean/ConciseIPRA/` files byte-identical to the `lean/upstream/` copies in [`foundations/ipra_coherent_methods_2026-11-15`](foundations/ipra_coherent_methods_2026-11-15/) (3 members). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 25 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`; `ipra_presentations_to_witnesses` and `four_metrics_ipra_2026-11-15` bundle those three and `Syntax.lean`, under `lean/upstream/` and `lean/upstream_inspected/`; all byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). `isoperimetric_ipra_constructive_2026-11-15` bundles, under `reused/`, the earlier packet [`geometry/isoperimetric_ipra`](geometry/isoperimetric_ipra/) as filed here at `22afac4c9d`; 14 of its files are byte-identical to that packet. The reference column gives that file, relative to the repository root. |
@@ -66,7 +66,7 @@ manifests, build logs and `build/` files.
 
 ## Packets
 
-The 98 archives hold 3,060 members: 2,907 placed here, 106 ignored, 21 in bundled copies of
+The 99 archives hold 3,092 members: 2,938 placed here, 107 ignored, 21 in bundled copies of
 a sibling packet, 1 nested copy of a sibling archive and 25 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory, or *not committed*.
@@ -77,6 +77,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
+| [`bring_quintic_ipra_2026-11-16`](algebra/bring_quintic_ipra_2026-11-16/) | `f444b76e84` 2026-11-16 | `bring_quintic_ipra_2026-11-16` | Bring radicals and quintic equations: the real Bring radical by exact rational bisection with its monotonicity, Lipschitz and asymptotic bounds, its Lagrange-inversion series, hypergeometric form, branch points and differential resolvent, the depression and Tschirnhaus reductions of a general quintic with a resultant certificate for the Bring–Jerrard step, the Abel–Ruffini obstruction with explicit `S5` certificates, and the de Moivre and solvable quintics. It comes with an exact SymPy verifier. The Hermite theta-function formula and Klein's icosahedral continuation are stated as interfaces only. Its Lean file is an uncompiled blueprint; no kernel-checked derivation is claimed. | 31 | 1 |
 | [`FTA_iPRA`](algebra/FTA_iPRA/) | `ea3f6066cf` 2026-11-14 | `FTA_iPRA` | An arithmetized constructive fundamental theorem of algebra, with a Lean formalization blueprint and exact rational reference programs. | 12 | 1 |
 | [`cayley_hamilton_ipra`](algebra/cayley_hamilton_ipra/) | *not committed* 2026-11-15 | `cayley_hamilton_ipra` | The Cayley–Hamilton theorem as the uniform primitive recursive identity for the generic n×n matrix, specialized to any commutative ring, with trace identities, minimal polynomials, integrality and quaternionic extensions. Its Lean files are uncompiled specifications and an outline. | 24 | 0 |
 | [`ipra_observation_algebra_2026-11-16`](algebra/ipra_observation_algebra_2026-11-16/) | `899b536832` 2026-11-16 | `ipra_observation_algebra` | Branch-free finite observation algebra: a monic finite-algebra normal form, matrix observations and their resultant representation, functoriality under substitution and quotients, Newton identities without division, conditional stability, and a branch-free workaround for Puiseux families. Its Lean file is an uncompiled blueprint, not a `Prf PRAAx` formalization; no general Puiseux branch selection or Faltings/Siegel height bound is claimed. | 7 | 0 |
