@@ -1,0 +1,185 @@
+\section{The beta--gamma identity by a one-dimensional effective limit}
+\label{sec:betagamma}
+
+The familiar textbook proof multiplies two improper Gamma integrals, invokes an iterated integral, and makes a two-dimensional change of variables.  That proof can be made constructive, but it introduces more machinery than necessary.  We instead use only the one-dimensional beta integral, the shift recurrence, and the effective Euler construction of Gamma.
+
+\subsection{An explicit beta-to-gamma limit}
+
+Fix domain data
+\[
+ \Rea a\ge\alpha>0,
+ \qquad |a|\le d,
+ \qquad |b-1|\le C,
+\]
+where $d,C$ are integers after upward rounding.  Let
+\[
+ H=1/\alpha+d!.
+\]
+For $T\ge1$ and
+\[
+ N\ge\max\{2T,2,T^2+2CT\},
+\]
+the following effective estimate is available:
+\begin{equation}
+ \left|N^a\B(a,b+N)-\Gamma(a)\right|
+ \le \frac{2H(T^2+2CT)}{N}
+       +2\,4^{d+1}d!\,e^{-T/4}.
+ \label{eq:beta-gamma-limit}
+\end{equation}
+
+\begin{proof}
+Substitute $t=s/N$ in the beta integral.  Then
+\[
+ N^a\B(a,b+N)=
+ \int_0^N s^{a-1}(1-s/N)^{N+b-1}\,ds.
+\]
+On $0\le s\le T$ put
+\[
+ D(s)=(N+b-1)\log(1-s/N)+s.
+\]
+The finite logarithm inequalities
+\[
+ 0\le-\log(1-u)-u\le u^2,
+ \qquad |\log(1-u)|\le2u
+ \quad(0\le u\le1/2)
+\]
+follow from a finite geometric sum plus its positive remainder.  They give
+\[
+ |D(s)|\le (T^2+2CT)/N\le1.
+\]
+The factorial series gives $|e^w-1|\le2|w|$ for $|w|\le1$.  Multiplying by $s^{\Rea a-1}e^{-s}$ and using
+\[
+ \int_0^\infty s^{\Rea a-1}e^{-s}\,ds\le H
+\]
+proves the first term in \eqref{eq:beta-gamma-limit}.
+
+For $s\ge T$, the real part of $N+b-1$ is at least $N/2$ after increasing the fixed lower cutoff if necessary, and hence
+\[
+ |(1-s/N)^{N+b-1}|\le e^{-s/2}
+ \quad(0\le s<N).
+\]
+For $s\ge1$, $s^{\Rea a-1}\le s^d$, while the single factorial-series term gives
+$s^de^{-s/2}\le4^d d!e^{-s/4}$.  The beta tail and the Gamma tail are each at most $4^{d+1}d!e^{-T/4}$.  All inequalities are first proved on finite intervals; the displayed exponential tail is the cutoff certificate.
+\end{proof}
+
+For error $2^{-p}$ one safe choice is
+\[
+ T=4(p+d^2+2d+8),\qquad
+ N=\max\!\left\{2T,2,T^2+2CT,\,
+ 2^{p+4}(T^2+2CT)\lceil H\rceil\right\}.
+\]
+The assignment is a closed primitive-recursive function.
+
+\subsection{Identification of the constant}
+
+By the finite recurrence,
+\begin{equation}
+ \B(a,b+N)=\frac{(b)_N}{(a+b)_N}\B(a,b).
+ \label{eq:beta-shift-N}
+\end{equation}
+The Euler approximants to Gamma give, for $N\ge2$, the exact finite identity
+\begin{equation}
+ N^a\frac{(b)_N}{(a+b)_N}
+ =\left(\frac{N}{N-1}\right)^a
+   \frac{\Gamma_{N-1}(a+b)}{\Gamma_{N-1}(b)}.
+ \label{eq:euler-ratio-exact}
+\end{equation}
+Every factor in this equation is a finite product.  The effective convergence of the Gamma approximants, together with denominator margins for Gamma in the right half-plane, therefore gives
+\[
+ N^a\frac{(b)_N}{(a+b)_N}\longrightarrow
+ \frac{\Gamma(a+b)}{\Gamma(b)}
+\]
+with a primitive-recursive modulus.  Combining this with \eqref{eq:beta-gamma-limit} and \eqref{eq:beta-shift-N} first proves the cleared identity
+\[
+ \B(a,b)\Gamma(a+b)=\Gamma(a)\Gamma(b).
+\]
+Gamma is positive on the positive real axis and has an explicit nonzero margin on certified compact right-half-plane domains.  Hence guarded inversion yields the central result.
+
+\begin{theorem}[Beta--Gamma identity]\label{thm:beta-gamma}
+For certified $\Rea a,\Rea b>0$,
+\[
+ \boxed{\B(a,b)=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)}.}
+\]
+The proof has a primitive-recursive modulus and uses no general Fubini theorem or multidimensional change of variables.
+\end{theorem}
+
+\subsection{Immediate functional consequences}
+
+The Gamma recurrence and reflection formula now produce several source-page identities.  Every division below requires the displayed right-half-plane condition or an explicit pole/sine separation.
+
+\begin{corollary}[Associativity identity]\label{cor:beta-assoc}
+Whenever all factors are defined,
+\[
+ \boxed{\B(p,q)\B(p+q,r)=\B(q,r)\B(q+r,p).}
+\]
+\end{corollary}
+
+\begin{proof}
+Both sides are
+$\Gamma(p)\Gamma(q)\Gamma(r)/\Gamma(p+q+r)$ after exact cancellation.  A division-free proof multiplies both sides by the common Gamma denominators first.
+\end{proof}
+
+\begin{corollary}[Reflection consequences]\label{cor:beta-reflection}
+In the integral strip $0<\Rea x<1$,
+\[
+ \boxed{\B(x,1-x)=\frac{\pi}{\sin(\pi x)}.}
+\]
+More generally, where the factors have certified margins,
+\[
+ \boxed{\B(x,y)\B(x+y,1-y)=\frac{\pi}{x\sin(\pi y)}.}
+\]
+\end{corollary}
+
+\begin{proof}
+The first formula is Euler reflection
+$\Gamma(x)\Gamma(1-x)=\pi/\sin(\pi x)$.  For the second, Gamma cancellation leaves
+$\Gamma(y)\Gamma(1-y)/x$.  Constructively it is preferable to prove the cleared sine identities before inversion.
+\end{proof}
+
+At $x=1/2$ this gives
+\[
+ \B(1/2,1/2)=\pi,
+ \qquad \Gamma(1/2)^2=\pi.
+\]
+The effective Gamma construction is positive on the positive real axis, so the
+positive-square-root specification yields the source-page special value
+$\Gamma(1/2)=\sqrt\pi$.
+
+\begin{corollary}[Duplication identity]\label{cor:beta-duplication}
+For certified arguments,
+\[
+ \boxed{2^{z-1}\B(z/2,z/2)=\B(1/2,z/2).}
+\]
+Also
+\[
+ \boxed{\B(p,p)\B(p+1/2,p+1/2)=
+ \frac{\pi}{2^{4p-1}p}.}
+\]
+\end{corollary}
+
+\begin{proof}
+Both formulas follow by substituting the Gamma quotient and applying Legendre duplication.  For the second,
+\[
+ \frac{[\Gamma(p)\Gamma(p+1/2)]^2}
+ {\Gamma(2p)\Gamma(2p+1)}
+ =\frac{2^{2-4p}\pi\Gamma(2p)^2}
+ {2p\Gamma(2p)^2}.
+\]
+All cancellations can be carried out after clearing denominators.
+\end{proof}
+
+\subsection{Special positive integrals}
+
+For a positive rational $q$ and a certified $0<\Rea a<q$, the substitution $u=t^q$ in the infinite-interval beta representation gives
+\begin{equation}
+ \boxed{
+ \int_0^\infty\frac{t^{a-1}}{1+t^q}\,dt
+ =\frac{\pi}{q\sin(\pi a/q)}.}
+ \label{eq:p-integral}
+\end{equation}
+In particular, for real $q>1$,
+\[
+ \int_0^\infty\frac{dt}{1+t^q}
+ =\frac{\pi}{q}\csc(\pi/q),
+\]
+which is MathWorld's formula.  The lower and upper tails are bounded respectively by $\varepsilon^{\Rea a}/\Rea a$ and $R^{\Rea a-q}/(q-\Rea a)$, so the substitution is finite and effective.

@@ -1,0 +1,76 @@
+\section{Source audit: qualifications, corrections, and non-theorem material}
+\label{sec:source-audit}
+
+The goal is not merely to reproduce formulas but to determine what can be proved with their stated hypotheses.  The following audit is part of the mathematical result.
+
+\subsection{Corrections and required qualifications}
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Source item & Constructive audit\\
+\midrule\endhead
+Wikipedia symmetric series for $\B(z,z)$ &
+False as rendered with the explicitly stated rising-factorial convention.  At $z=1$ the first series has terms not tending to zero; the second Abel expression equals $2/3$, not $1$.  See \cref{warn:false-series}.\\
+
+Fractional-linear integral with parameter $c\le1$ &
+The displayed substitution requires $c<1$.  At $c=1$ it degenerates and the ordinary integrand/prefactor formula is undefined.  A limiting statement would need separate hypotheses.\\
+
+Central radical formula with $z\ne1$ &
+For positive real $z$ the proof works also at $z=1$; the exclusion is unnecessary.  For complex $z$, roots require branch choices that the source does not state.\\
+
+Reflection $B(x,1-x)=\pi/\sin\pi x$ for $x\notin\Z$ &
+The integral proof requires $0<\Rea x<1$.  Elsewhere it is meromorphic.  Constructive division requires a positive distance from the relevant integers, not merely negated membership.\\
+
+Binomial interpolation quotient &
+The raw quotient has $0/0$ at integer $k$.  Use the cleared entire identity or the factorial value at integers.\\
+
+Incomplete-beta transformation with $(-1)^a$ &
+Branch-ambiguous for noninteger complex $a$ and a negative transformed endpoint.  It is directly valid for integer $a$, or with an explicit branch/path certificate.\\
+
+Continued-fraction bounds &
+The finite continuant algebra is elementary.  The alternating inequalities and rapid-convergence statement require positivity and a remainder theorem; they are not consequences of formal continued-fraction notation alone.\\
+
+MathWorld factorial notation &
+Expressions such as $(p-1)!$ are literal factorials only at positive integers.  For general complex parameters they abbreviate Gamma values.\\
+
+MathWorld polar derivation &
+Correct classically, but unnecessary for the iPRA target.  A finite polar-grid proof needs a Jacobian error analysis; the one-dimensional beta-to-gamma limit is simpler.\\
+
+Software and application paragraphs &
+Statements about Excel, SciPy, string scattering, or preferential attachment are factual/application claims, not beta-function identities.  They are not formalized in this packet.\\
+\bottomrule
+\end{longtable}
+
+\subsection{The corrected counterexample calculation}
+
+For clarity, at $z=1$ the second displayed symmetric expression is
+\[
+ 2\sum_{n\ge0}\frac{(-2)_n r^n}{(n+1)n!}.
+\]
+The rising factorial terminates:
+\[
+ (-2)_0=1,\qquad(-2)_1=-2,\qquad(-2)_2=2,\qquad(-2)_n=0\ (n\ge3).
+\]
+Therefore the $r\to1^-$ limit is
+\[
+ 2\left(1-1+\frac13\right)=\frac23.
+\]
+The exact-rational evidence file checks this arithmetic.  This corrects an earlier scratch calculation and is the value used throughout the final packet.
+
+\subsection{Statements not fully proved here}
+
+The following are mathematically plausible standard results but remain at status \statusC{} in this packet:
+
+\begin{enumerate}
+\item the Pochhammer-contour identity with explicit branch and polygonal-contour certificates;
+\item the reciprocal-beta trigonometric integrals for arbitrary noninteger frequency;
+\item the general alternating-convergent remainder theorem for the incomplete-beta continued fraction;
+\item a completely internalized variable-dimension simplex integration theorem;
+\item a kernel-checked production of all analytic statements as \code{Prf PRAAx} terms.
+\end{enumerate}
+
+These are not omitted because of classical logic.  Each has a finitary route; the missing work is the construction and checking of substantial quantitative certificates.
+
+\subsection{Why the audit matters for iPRA}
+
+Classical expositions often use analytic continuation to make a formula true after silently changing its meaning.  That practice is especially dangerous in a weak arithmetic setting.  An integral, a meromorphic quotient, a branch-dependent contour value, and a removable-singularity extension are four different algorithms.  They may agree on overlapping domains, but the agreement itself needs a theorem and a modulus.  This report therefore states domains at every transition and favors cleared equations at possible singularities.

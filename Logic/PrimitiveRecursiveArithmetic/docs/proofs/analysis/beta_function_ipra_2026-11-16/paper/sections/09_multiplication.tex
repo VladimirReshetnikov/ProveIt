@@ -1,0 +1,195 @@
+\section{Multiplication identities and Gosper products}
+\label{sec:multiplication}
+
+All identities in this section are finite consequences of Gauss's multiplication theorem
+\begin{equation}
+ \prod_{j=0}^{n-1}\Gamma\!\left(z+\frac jn\right)
+ =(2\pi)^{(n-1)/2}n^{1/2-nz}\Gamma(nz).
+ \label{eq:gauss-mult}
+\end{equation}
+ProveIt's Gamma packet derives \eqref{eq:gauss-mult} from finite Euler approximants, reflection, and a finite sine product, with explicit pole margins.  Once that contract is available, the beta identities require only product regrouping and Gamma recurrence, hence quantifier-free induction.
+
+\subsection{MathWorld's $n$-fold identity}
+
+\begin{theorem}[Beta multiplication]\label{thm:beta-multiplication}
+For $n\ge1$ and certified parameters,
+\begin{equation}
+ \boxed{
+ \B(np,nq)=n^{-nq}
+ \frac{\displaystyle\prod_{j=0}^{n-1}
+       \B\!\left(p+\frac jn,q\right)}
+      {\displaystyle\prod_{k=1}^{n-1}\B(kq,q)}.}
+ \label{eq:beta-multiplication}
+\end{equation}
+The denominator product is empty and equals $1$ when $n=1$.
+\end{theorem}
+
+\begin{proof}
+Apply the beta--gamma identity to the numerator:
+\[
+ \prod_{j=0}^{n-1}\B\!\left(p+\frac jn,q\right)
+ =\Gamma(q)^n
+ \frac{\prod_j\Gamma(p+j/n)}
+      {\prod_j\Gamma(p+q+j/n)}.
+\]
+Gauss multiplication makes the quotient
+\[
+ n^{nq}\frac{\Gamma(np)}{\Gamma(n(p+q))}.
+\]
+The denominator in \eqref{eq:beta-multiplication} telescopes:
+\[
+ \prod_{k=1}^{n-1}\B(kq,q)
+ =\Gamma(q)^{n-1}
+   \prod_{k=1}^{n-1}\frac{\Gamma(kq)}{\Gamma((k+1)q)}
+ =\frac{\Gamma(q)^n}{\Gamma(nq)}.
+\]
+Dividing the first expression by the second gives
+$n^{nq}\B(np,nq)$.  For a division-free internal proof, multiply by every displayed Gamma denominator and use the same finite cancellations.
+\end{proof}
+
+\subsection{A general product with simultaneous shifts}
+
+Put
+\[
+ P_N(a,b)=\prod_{i=0}^{N-1}
+ \B\!\left(a+\frac iN,b+\frac iN\right),
+ \qquad s=a+b.
+\]
+The two numerator Gamma products in $P_N$ are immediately evaluated by \eqref{eq:gauss-mult}.  The denominator
+\[
+ D_N(s)=\prod_{i=0}^{N-1}\Gamma\!\left(s+\frac{2i}{N}\right)
+\]
+behaves differently according to the parity of $N$.
+
+\subsection{Odd modulus}
+
+Let $N=2n+1$.  Multiplication by $2$ permutes the residues modulo $N$.  For $0\le i\le n$ there is no carry in $2i/N$; for $n+1\le i\le2n$ there is one carry, and the residual numerators are $1,3,\dots,2n-1$.  Therefore
+\[
+ D_N(s)=
+ \left[\prod_{r=0}^{N-1}\Gamma\!\left(s+\frac rN\right)\right]
+ \prod_{j=0}^{n-1}\left(s+\frac{2j+1}{N}\right).
+\]
+The first product is Gauss's formula.  The second is
+\[
+ N^{-n}\prod_{j=0}^{n-1}(Ns+2j+1)
+ =N^{-n}2^n\left(\frac{Ns+1}{2}\right)_n.
+\]
+After cancellation we obtain the first Gosper identity.
+
+\begin{theorem}[Gosper product, odd case]\label{thm:gosper-odd}
+For $n\ge1$, $N=2n+1$, and certified parameters,
+\begin{equation}
+ \boxed{\begin{aligned}
+ \prod_{i=0}^{2n}
+ \B\!\left(a+\frac{i}{2n+1},b+\frac{i}{2n+1}\right)
+ &=\frac{(2n+1)^{(2n+1)/2}\pi^n}{(n-1)!}\\[-1mm]
+ &\quad{}\times
+ \B\!\left(n,\frac{(2n+1)(a+b)+1}{2}\right)
+ \B((2n+1)a,(2n+1)b).
+ \end{aligned}}
+ \label{eq:gosper-odd}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The calculation above gives
+\[
+ P_N(a,b)=
+ \frac{N^{N/2}(2\pi)^n}{\prod_{j=0}^{n-1}(Ns+2j+1)}
+ \B(Na,Nb).
+\]
+If $x=(Ns+1)/2$, the denominator product is $2^n(x)_n$, so
+\[
+ \frac{(2\pi)^n}{2^n(x)_n}
+ =\frac{\pi^n}{(n-1)!}\B(n,x).
+\]
+Substitution proves \eqref{eq:gosper-odd}.
+\end{proof}
+
+For $n=1$, $N=3$, $\B(1,x)=1/x$, and the formula reduces to
+\[
+ \boxed{
+ \B(a,b)\B(a+\tfrac13,b+\tfrac13)
+ \B(a+\tfrac23,b+\tfrac23)
+ =
+ \frac{6\pi\sqrt3}{1+3(a+b)}\B(3a,3b).}
+\]
+
+\subsection{Even modulus}
+
+Let $N=2n$.  Now $2i/N=i/n$, so each residue class modulo $n$ occurs once at height $0$ and once at height $1$:
+\[
+ D_{2n}(s)
+ =\prod_{i=0}^{n-1}
+   \Gamma\!\left(s+\frac in\right)
+   \Gamma\!\left(s+1+\frac in\right).
+\]
+Use $\Gamma(z+1)=z\Gamma(z)$:
+\[
+ D_{2n}(s)
+ =\left[\prod_{i=0}^{n-1}
+   \Gamma\!\left(s+\frac in\right)\right]^2
+   \prod_{i=0}^{n-1}\left(s+\frac in\right).
+\]
+Gauss multiplication and
+\[
+ \prod_{i=0}^{n-1}\left(s+\frac in\right)
+ =n^{-n}\frac{\Gamma(n(s+1))}{\Gamma(ns)}
+\]
+give
+\[
+ D_{2n}(s)
+ =(2\pi)^{n-1}n^{1-n-2ns}
+ \Gamma(ns)\Gamma(n(s+1)).
+\]
+
+\begin{theorem}[Gosper product, even case]\label{thm:gosper-even}
+For $n\ge1$ and certified parameters,
+\begin{equation}
+ \boxed{
+ \prod_{i=0}^{2n-1}
+ \B\!\left(a+\frac{i}{2n},b+\frac{i}{2n}\right)
+ =
+ \frac{n^n\pi^n\B(n,2n(a+b))\B(2na,2nb)}
+ {2^{2n(a+b)-n-1}(n-1)!\,
+  \B(n(a+b),n(a+b+1))}.}
+ \label{eq:gosper-even}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The numerator Gamma products give
+\[
+ (2\pi)^{2n-1}(2n)^{1-2ns}
+ \Gamma(2na)\Gamma(2nb).
+\]
+Divide by the displayed expression for $D_{2n}(s)$ and simplify the powers:
+\[
+ P_{2n}(a,b)=
+ 2^{n+1-2ns}n^n\pi^n
+ \frac{\Gamma(2na)\Gamma(2nb)}
+ {\Gamma(ns)\Gamma(n(s+1))}.
+\]
+Expanding the three beta factors on the right side of
+\eqref{eq:gosper-even} cancels
+$\Gamma(2ns)$ and $\Gamma(n(2s+1))$ and gives exactly this quotient.
+\end{proof}
+
+At $n=2$ this is MathWorld's four-factor special case:
+\[
+ \prod_{i=0}^{3}\B(a+i/4,b+i/4)
+ =
+ \frac{2^{3-4(a+b)}\pi^2\B(4a,4b)}
+ {(a+b)(1+4(a+b))
+   \B(2(a+b),2(a+b+1))}.
+\]
+The equality follows from \eqref{eq:gosper-even} plus the elementary formulas
+$\B(2,4s)=1/[4s(4s+1)]$ and Gamma recurrence.
+
+\subsection{Internal proof shape}
+
+The parity split is ideal for iPRA.  Encode the map
+\[
+ i\longmapsto (2i\bmod N,\ \lfloor2i/N\rfloor)
+\]
+using the checked division-with-remainder infrastructure.  In the odd case, prove by bounded arithmetic that the residue map is a permutation and that the carry set is $n+1,\dots,2n$.  In the even case, pair $i$ with $i+n$.  Prove product invariance under the odd permutation using ProveIt's checked \code{Core/Permutation} theorem.  All remaining steps are identities of finite products and powers.  The only analytic input is the already isolated Gamma multiplication certificate.

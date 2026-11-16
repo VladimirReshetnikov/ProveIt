@@ -1,0 +1,64 @@
+\section{Scope, theorem inventory, and exact meaning of the claim}
+
+\subsection{The source pages and the constructive target}
+
+The two requested source pages mix several logically different kinds of statement:
+
+\begin{enumerate}
+\item identities of finite algebra, such as Pascal's relation and the factorial values;
+\item identities of proper or improper real integrals;
+\item results about named transcendental functions, such as Gamma, digamma, sine, and exponential;
+\item limiting formulas, products, asymptotics, and continued fractions;
+\item complex analytic continuation and contour integrals;
+\item applications and software remarks that are not themselves mathematical theorems about Beta.
+\end{enumerate}
+
+A literal function $\R^2\to\R$ is not an object of first-order iPRA.  The constructive target is instead a family of arithmetical theorems about rational approximation programs.  A real input is a fixed primitive-recursive name, not a quantified arbitrary program.  A domain condition is positive data: lower bounds for real parts, upper bounds for moduli, and lower bounds for denominators that will be inverted.  An equality $F=G$ means that for every requested precision $p$, explicitly chosen finite calculations for $F$ and $G$ differ by at most $2^{-p}$.  This is the same discipline used by ProveIt's Gamma packet.
+
+The report therefore distinguishes three levels:
+
+\begin{description}
+\item[Mathematical finite proof.]  Every limit is replaced by a displayed primitive-recursive modulus, every improper endpoint by a displayed tail bound, every division by a displayed apartness margin, and every differentiation by a finite Taylor remainder.
+\item[Lean metatheory outline.]  Rational codes, approximation programs, finite sums, and certificates are represented in Lean.  This layer may use ordinary Lean structures to organize the proof.
+\item[Internal iPRA derivation.]  The finite invariant is reified as a formula over ProveIt's \code{PTm}; quantifier-free induction produces a term of type $[]\vdash[\code{PRAAx}]\varphi$.  The checked bridge \code{pra_iff_native} then transfers the result to the native concise calculus.
+\end{description}
+
+The first level is developed in detail below.  The second and third are specified down to definitions and target formulas, but the complete analytic Lean development is not claimed to have been executed.
+
+\subsection{Coverage at a glance}
+
+The report proves or reduces to existing effective Gamma contracts the following large families.
+
+\begin{longtable}{@{}p{0.27\textwidth}p{0.56\textwidth}p{0.08\textwidth}@{}}
+\toprule
+Family & Results covered & Status\\
+\midrule\endhead
+Definition and convergence & Effective integral on $[0,1]$; endpoint tails; primitive-recursive mesh; independence of certificates & \statusA\\
+Elementary laws & Symmetry, conjugation, positivity, bounds, Pascal identity, both shift recurrences, rising-factorial shifts & \statusA\\
+Discrete values & $B(a,1)$, $B(a,n+1)$, factorial values, binomial relation, $h(a,b)$ coefficient formula and PDE & \statusA\\
+Gamma relation & $B(a,b)=\Gamma(a)\Gamma(b)/\Gamma(a+b)$ through a one-dimensional effective limit & \statusB\\
+Integral transformations & Trigonometric, infinite-interval, power substitution, fractional-linear substitution, central radical integral & \statusA/\statusB\\
+Series and products & General binomial series; effective Euler product; source audit of the displayed symmetric series & \statusA/\statusD\\
+Differentiation & All mixed parameter derivatives as logarithmic moments; digamma/polygamma formulas & \statusA/\statusB\\
+Special identities & Reflection, product-reflection, duplication, associativity, special values & \statusB\\
+Multiplication & MathWorld's general $n$-fold identity; odd and even Gosper products and the $3$- and $4$-fold cases & \statusB\\
+Incomplete Beta & Definition, transformed integrals, polynomial values, recurrences, derivative and antiderivative, hypergeometric series & \statusA/\statusB\\
+Regularized Beta & Complement, endpoint values, recurrences, binomial-CDF identity & \statusA\\
+Continued fraction & Finite continuants and an exact formalization target; convergence/alternating bounds delegated to a positive-remainder lemma & \statusC\\
+Multivariate Beta & Gamma quotient, coordinate shifts, Pascal identity, derivatives, fixed-dimensional simplex reduction & \statusA/\statusB\\
+Asymptotics & Two-parameter Stirling formula with explicit error; fixed-parameter natural-grid limit & \statusB\\
+Complex continuation & Meromorphic Gamma quotient; Pochhammer contour and general-frequency reciprocal integrals outlined & \statusB/\statusC\\
+\bottomrule
+\end{longtable}
+
+A machine-readable, formula-by-formula ledger is included as \code{evidence/theorem_inventory.csv}.
+
+\subsection{What is reused from ProveIt}
+
+The current repository separates checked arithmetic from research packets.  The ordinary object theory is \code{PRAAx}: intuitionistic first-order logic with equality, a symbol and defining equations for each primitive-recursive function, successor axioms, and induction for quantifier-free formulas.  The \code{Derivations} library already supplies checked semiring, order, finite-sum, finite-product, power, factorial, division, pairing, bounded-search, and related infrastructure.  The \code{ConciseIPRA} library supplies the bi-interpretation and the theorem \code{pra_iff_native}.
+
+The Gamma packet supplies a mathematically detailed but not fully internalized effective construction of Gamma, elementary functions, finite Riemann integration, reflection, multiplication, derivative certificates, and Stirling estimates.  Its own documentation explicitly says that the full analytic Lean development and the production of \code{Prf PRAAx} derivations remain work.  This report reuses those contracts transparently: every result marked \statusB{} inherits that qualification.
+
+\subsection{Constructive logic policy}
+
+No proof below uses excluded middle for equality of real names, countable choice, an abstract Cauchy-completeness axiom, unrestricted dominated convergence, or an unbounded search for a modulus.  Case distinctions are on natural numbers or rational comparisons.  When a reciprocal is needed, an explicit positive rational lower bound is part of the hypotheses.  When a source page writes ``$z\ne n$,'' the constructive replacement is a rational $\delta>0$ satisfying $|z-n|\ge\delta$ for the finitely many relevant integers.

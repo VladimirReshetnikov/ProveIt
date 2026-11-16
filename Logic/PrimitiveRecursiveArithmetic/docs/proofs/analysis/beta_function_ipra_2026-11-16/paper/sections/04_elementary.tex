@@ -1,0 +1,162 @@
+\section{Recurrences, integer values, binomial coefficients, and finite generating identities}
+\label{sec:elementary}
+
+\subsection{Pascal and integration-by-parts identities}
+
+The key point is that the most useful beta identities do not require Gamma.
+
+\begin{theorem}[Pascal identity]\label{thm:pascal}
+For $\Rea a,\Rea b>0$,
+\[
+ \boxed{\B(a,b)=\B(a+1,b)+\B(a,b+1).}
+\]
+\end{theorem}
+
+\begin{proof}
+On every truncated interval,
+\[
+ t^{a-1}(1-t)^{b-1}\bigl(t+(1-t)\bigr)
+ =t^a(1-t)^{b-1}+t^{a-1}(1-t)^b.
+\]
+This is an exact rational identity after the elementary functions have been approximated with a shared error budget.  Sum it over the mesh and then remove the endpoints with \eqref{eq:lefttail}--\eqref{eq:righttail}.
+\end{proof}
+
+\begin{lemma}[Balanced integration by parts]\label{lem:balanced-ibp}
+For $\Rea a,\Rea b>0$,
+\[
+ a\B(a,b+1)=b\B(a+1,b).
+\]
+\end{lemma}
+
+\begin{proof}
+The derivative
+\[
+ \frac{d}{dt}\bigl(t^a(1-t)^b\bigr)
+ =a t^{a-1}(1-t)^b-bt^a(1-t)^{b-1}
+\]
+has integral zero on $[\varepsilon,1-\varepsilon]$ up to the finite fundamental-theorem error.  Its boundary terms have moduli at most $\varepsilon^\alpha+\varepsilon^\beta$, so they vanish with the same primitive-recursive cutoff used in the definition of Beta.
+\end{proof}
+
+Since $\Rea(a+b)\ge\alpha+\beta$, the denominator $a+b$ has a supplied positive modulus margin.  Solving the two linear equations gives the standard shifts.
+
+\begin{corollary}[Coordinate recurrences]\label{cor:coordinate-recurrence}
+\[
+ \boxed{\B(a+1,b)=\frac{a}{a+b}\B(a,b),\qquad
+ \B(a,b+1)=\frac{b}{a+b}\B(a,b).}
+\]
+More generally, for $m,n\in\N$,
+\[
+ \boxed{\B(a+m,b+n)=
+ \frac{(a)_m(b)_n}{(a+b)_{m+n}}\B(a,b),}
+\]
+where $(z)_r=\prod_{j<r}(z+j)$.
+\end{corollary}
+
+\begin{proof}
+The one-step formulas are obtained from \cref{thm:pascal,lem:balanced-ibp}.  The general formula is induction first on $m$ and then on $n$; the two denominator products concatenate to $(a+b)_{m+n}$.  The invariant is an equality of finite products after denominators are cleared.
+\end{proof}
+
+\subsection{Values at natural arguments}
+
+\begin{theorem}[Base and factorial values]\label{thm:integer-values}
+For $\Rea a>0$ and $N\in\N$,
+\[
+ \B(a,1)=\frac1a,
+ \qquad
+ \boxed{\B(a,N+1)=\frac{N!}{a(a+1)\cdots(a+N)}.}
+\]
+For positive integers $m,n$,
+\[
+ \boxed{\B(m,n)=\frac{(m-1)!(n-1)!}{(m+n-1)!}.}
+\]
+\end{theorem}
+
+\begin{proof}
+The first identity follows from the finite fundamental theorem applied to $t^a/a$; the lower endpoint is bounded by $\varepsilon^\alpha/|a|$.  Iterate the second recurrence in \cref{cor:coordinate-recurrence} to obtain the second formula.  Put $a=m$ and simplify the rising product to obtain the third.  Every step is finite induction and factorial arithmetic.
+\end{proof}
+
+The alternative form appearing on Wikipedia is
+\[
+ \B(m,n)=\frac{m+n}{mn}\binom{m+n}{m}^{-1}.
+\]
+It follows by multiplying numerator and denominator of the factorial expression by $(m+n)/(mn)$.
+
+\begin{corollary}[Binomial coefficient through Beta]\label{cor:binomial-beta}
+For $0\le k\le n$,
+\[
+ \boxed{\binom nk=\frac{1}{(n+1)\B(n-k+1,k+1)}.}
+\]
+\end{corollary}
+
+\begin{proof}
+Substitute $m=n-k+1$ and $r=k+1$ into the factorial formula.  The result is the exact integer identity
+$(n+1)\B(n-k+1,k+1)=k!(n-k)!/n!$.
+\end{proof}
+
+\subsection{The entire interpolation formula for binomial coefficients}
+
+Define the generalized binomial name by
+\[
+ \binom nk=\frac{\Gamma(n+1)}{\Gamma(k+1)\Gamma(n-k+1)}.
+\]
+At a noninteger $k$ with a supplied separation from $0,1,\dots,n$, reflection and recurrence give
+\begin{equation}
+ \boxed{
+ \binom nk=(-1)^n n!\,
+ \frac{\sin(\pi k)}{\pi\prod_{j=0}^n(k-j)}.}
+ \label{eq:binomial-interpolation}
+\end{equation}
+A constructively preferable form is the cleared identity
+\[
+ \pi\binom nk\prod_{j=0}^n(k-j)=(-1)^n n!\sin(\pi k),
+\]
+which remains meaningful at integer $k$.  At an integer the quotient in \eqref{eq:binomial-interpolation} is $0/0$ and must be replaced by the factorial value, or by a certified limit.  Thus the source's displayed quotient needs this domain qualification.
+
+\subsection{The function $h(a,b)$ and its PDE}
+
+The quotient $(e^a-e^b)/(a-b)$ is inconvenient at $a=b$.  Define instead
+\[
+ h(a,b)=\int_0^1 e^{ta+(1-t)b}\,dt.
+\]
+On an apartness domain $|a-b|\ge d>0$, the finite fundamental theorem proves
+\[
+ h(a,b)=\frac{e^a-e^b}{a-b}.
+\]
+The integral definition is regular on the diagonal.
+
+\begin{theorem}[Beta values as derivatives of $h$]\label{thm:h-derivatives}
+For $m,n\in\N$,
+\[
+ \boxed{
+ \frac{\partial^{m+n}h}{\partial a^m\partial b^n}(0,0)
+ =\B(m+1,n+1).}
+\]
+Moreover,
+\[
+ \boxed{h=h_a+h_b.}
+\]
+\end{theorem}
+
+\begin{proof}
+Finite Taylor expansion of the exponential, with its factorial remainder, allows termwise parameter differentiation on the compact interval.  At $(0,0)$ the derivative is
+\[
+ \int_0^1 t^m(1-t)^n\,dt=\B(m+1,n+1).
+\]
+For the PDE, differentiate the same finite approximation and use $t+(1-t)=1$.  Equivalently, the power-series identity
+\[
+ \frac{e^a-e^b}{a-b}
+ =\sum_{m,n\ge0}\frac{a^m b^n}{(m+n+1)!}
+\]
+has coefficient $1/(m+n+1)!$; multiplying by $m!n!$ gives the beta value.  Every coefficient statement up to a requested total degree is finite.
+\end{proof}
+
+\subsection{Convolution of truncated powers}
+
+Let $t_+^r$ mean $t^r$ for $t>0$ and $0$ for $t\le0$.  For a positive named $t$ with margin $t\ge d>0$ and $\Rea x,\Rea y>0$,
+\begin{equation}
+ \boxed{
+ (u\mapsto u_+^{x-1})*(u\mapsto u_+^{y-1})(t)
+ =\B(x,y)t^{x+y-1}.}
+ \label{eq:convolution}
+\end{equation}
+Indeed the convolution is supported on $0<u<t$; put $u=tv$.  The endpoint estimates are the beta endpoint estimates multiplied by the compact factor $t^{x+y-1}$.  The Wikipedia restriction $x,y\ge1$ avoids singular endpoint notation, but the certified construction works throughout the right half-planes.

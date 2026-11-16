@@ -1,0 +1,295 @@
+\section{Lean and ConciseIPRA formalization plan}
+\label{sec:lean}
+
+\subsection{Repository interfaces}
+
+The intended target is the checked embedded calculus used by ProveIt's
+\code{IPRADerivations} library.  A finished theorem has the shape
+\[
+ ([]:\operatorname{List}(\code{Fm PTm 0}))
+ \ \vdash[\code{PRAAx}]\ \varphi.
+\]
+The checked arithmetic modules already provide:
+
+\begin{itemize}
+\item primitive-recursive definitions and defining equations;
+\item semiring laws, cancellation, order, and decidable rational-code comparisons;
+\item finite sums, finite products, powers, and factorials;
+\item pairing, simultaneous recursion, division with remainder, and bounded search;
+\item product invariance under an explicitly invertible permutation;
+\item a tactic layer for polynomial identities over encoded integers.
+\end{itemize}
+
+Once an ordinary iPRA derivation exists, \code{pra_iff_native} in
+\code{ConciseIPRA.NativeBiInterpretation} transports it to the native scalar core.  The bridge does not create the derivation; it is the final checked translation.
+
+\subsection{Host-level organization types}
+
+The companion file \code{lean/BetaIPRAOutline.lean} uses ordinary Lean structures to organize obligations.  These structures are metatheoretic bookkeeping, not new sorts added to iPRA.
+
+\begin{lstlisting}[language={}]
+structure RatCode where
+  num : Int
+  den : Nat
+  den_pos : 0 < den
+
+structure CQRat where
+  re : RatCode
+  im : RatCode
+
+structure RegularName where
+  approx : Nat -> RatCode
+  regular : forall p q,
+    absQ (approx p - approx q) <= dyadic p + dyadic q
+
+structure BetaDomain (a b : CName) where
+  A B R : Nat
+  A_pos : 0 < A
+  B_pos : 0 < B
+  re_a_margin : Re a >= 1 / A
+  re_b_margin : Re b >= 1 / B
+  norm_a : norm1 a <= R
+  norm_b : norm1 b <= R
+\end{lstlisting}
+
+In the actual object theory, a \code{RegularName} is not quantified over.  A particular \code{approx} implementation is compiled to a primitive-recursive symbol, and its regularity theorem is an assumption or previously derived theorem about that symbol.
+
+\subsection{The concrete beta evaluator}
+
+For domain data $D=(A,B,R)$ and precision $p$, define:
+\begin{align*}
+ L(D,p)&=p+A+B+10,\\
+ h(D,p)&=AB\,L(D,p),\\
+ \varepsilon(D,p)&=2^{-h(D,p)},\\
+ C(D,p)&=2(R+1)\varepsilon(D,p)^{-2R-3},\\
+ m(D,p)&=2^{p+7}(1+\lceil C(D,p)\rceil).
+\end{align*}
+The evaluator is the left sum
+\[
+ \operatorname{betaApprox}(D,a,b,p)
+ =\frac{1-2\varepsilon}{m}
+ \sum_{j=0}^{m-1}
+ f_{a,b}\!\left(
+ \varepsilon+\frac{j(1-2\varepsilon)}{m}\right),
+\]
+with each elementary-function call made at the precision allocated by the product-error lemma.  All divisions are rational-code divisions with visibly positive denominators.
+
+The first Lean milestones are:
+
+\begin{enumerate}
+\item prove that every sample point lies in
+$[\varepsilon,1-\varepsilon]$;
+\item prove the endpoint bounds
+\eqref{eq:lefttail}--\eqref{eq:righttail};
+\item prove the derivative majorant $C(D,p)$;
+\item prove that the Riemann error is below $2^{-p-7}$;
+\item prove regularity and independence from enlarged valid domain data.
+\end{enumerate}
+
+The internal formula for regularity is a cleared integer inequality.  It contains no reference to an abstract integral.
+
+\subsection{Module dependency order}
+
+\begin{longtable}{@{}p{0.21\textwidth}p{0.46\textwidth}p{0.25\textwidth}@{}}
+\toprule
+Planned module & Main declarations & iPRA invariant\\
+\midrule\endhead
+\code{Beta/RatCode} &
+Signed fractions, dyadics, complex pairs, absolute-value comparisons, error propagation &
+Integer cross products; positivity of denominators\\
+
+\code{Beta/Elementary} &
+Certified \code{exp}, \code{log}, positive powers, sine, cosine, square root and positive rational powers &
+Finite Taylor/geometric sums and factorial tails\\
+
+\code{Beta/Names} &
+Regular-name equality, arithmetic, guarded inverse, substitution of fixed names &
+Precision fixed before induction; rational inequalities only\\
+
+\code{FiniteIntegral} &
+Riemann sums, common refinement, finite fundamental theorem, integration by parts, substitution &
+Telescoping sums with a quadratic remainder\\
+
+\code{Beta/Complete} &
+\code{betaApprox}, endpoint and mesh certificates, symmetry, positivity &
+Mesh-index induction and list reversal\\
+
+\code{Beta/Recurrence} &
+Pascal, balanced integration by parts, coordinate shifts, factorial values &
+Finite product concatenation and endpoint terms\\
+
+\code{Beta/GammaBridge} &
+Effective limit \eqref{eq:beta-gamma-limit}, exact Euler ratio, beta--gamma &
+Finite logarithm inequalities and Gamma approximant error\\
+
+\code{Beta/Transforms} &
+Trigonometric, infinite-interval, power, fractional-linear, central radical forms &
+Substitution telescope plus endpoint budgets\\
+
+\code{Beta/SeriesProduct} &
+Binomial series, Euler product, product tails &
+Finite Taylor polynomial; product telescope; $\sum k^{-2}$ bound\\
+
+\code{Beta/Derivatives} &
+Logarithmic moments and digamma/polygamma formulas &
+Finite parameter Taylor polynomial\\
+
+\code{Multiplication} &
+General multiplication and Gosper odd/even products &
+Permutation of residues; carry-count product\\
+
+\code{Beta/Incomplete} &
+Incomplete evaluator, recurrences, polynomial values, hypergeometric name, binomial CDF &
+Finite interval split; binomial theorem; polynomial telescoping\\
+
+\code{ContinuedFraction} &
+Continuants, determinant identity, positive remainder &
+Second-order recursion and sign invariant\\
+
+\code{Beta/Multi} &
+List Gamma quotient, shifts, Pascal, fixed-dimensional simplex &
+List sum/product recursion; iterated one-dimensional beta reduction\\
+
+\code{Beta/Asymptotic} &
+Stirling combination, fixed-parameter limit &
+Addition of three explicit Gamma remainders\\
+
+\code{Beta/ObjectTheory} &
+Reified \code{Fm PTm} statements and \code{Prf PRAAx} terms &
+Only \code{PRA.qfInd} on encoded finite invariants\\
+\bottomrule
+\end{longtable}
+
+\subsection{Representative theorem statements in Lean}
+
+The metatheoretic analysis layer can expose the following shapes.  The exact names depend on the checked-out ProveIt revision.
+
+\begin{lstlisting}[language={}]
+theorem beta_symm
+    (D : BetaDomain a b) :
+    NameEq (betaName D a b) (betaName D.swap b a) := by
+  -- reverse the common Riemann mesh; discharge tails
+  ...
+
+theorem beta_pascal
+    (D : BetaDomain a b) :
+    NameEq (betaName D a b)
+      (betaName (D.shiftLeft) (a+1) b
+       + betaName (D.shiftRight) a (b+1)) := by
+  -- pointwise identity t + (1-t) = 1
+  ...
+
+theorem beta_shift_left
+    (D : BetaDomain a b) :
+    NameEq (betaName D.shiftLeft (a+1) b)
+      (a / (a+b)) * betaName D a b := by
+  -- Pascal plus finite integration by parts
+  ...
+
+theorem beta_gamma
+    (D : BetaDomain a b)
+    (G : EffectiveGammaContract) :
+    NameEq (betaName D a b)
+      (G.gamma a * G.gamma b / G.gamma (a+b)) := by
+  -- effective N^a B(a,b+N) limit and exact Euler ratio
+  ...
+
+theorem incomplete_beta_nat
+    (m n : Nat) (hm : 0 < m) (hn : 0 < n) :
+    PolyEq (incBetaPoly m n)
+      (sum n (fun j =>
+        (-1)^j * choose (n-1) j * X^(m+j) / (m+j))) := by
+  -- finite binomial theorem
+  ...
+\end{lstlisting}
+
+The delivered outline keeps the analytic holes visible as \code{sorry}; it is not represented as a completed Lean proof.
+
+\subsection{Object-theory formulas}
+
+A name equality must be turned into an arithmetical sentence.  Let
+$\mathsf{BA}(D,a,b,p)$ be the rational-code output of the evaluator and let
+$\operatorname{close}(u,v,p)$ be the Boolean relation
+$|u-v|\le2^{-p}$ after positive denominators are cleared.  The symmetry target is
+\[
+ \forall D,a,b,p\;
+ \operatorname{Dom}(D,a,b)\to
+ \operatorname{close}\bigl(
+ \mathsf{BA}(D,a,b,p+c),
+ \mathsf{BA}(D^\mathrm{op},b,a,p+c),p\bigr).
+\]
+Here $D,a,b$ are finite tuples of natural-number codes, and
+$\operatorname{Dom}$ is a primitive-recursive Boolean conjunction.
+
+The Pascal target is
+\[
+ \operatorname{close}\bigl(
+ \mathsf{BA}(a,b,p+c),
+ \mathsf{BA}(a+1,b,p+c)+
+ \mathsf{BA}(a,b+1,p+c),p\bigr).
+\]
+At a common mesh, the summand identity is exact.  The proof object consists of:
+\begin{enumerate}
+\item the derivation of the summand identity by the ring tactic;
+\item finite-sum congruence;
+\item the endpoint and mesh inequalities;
+\item integer triangle inequalities.
+\end{enumerate}
+
+For the beta--gamma identity, division is avoided:
+\[
+ \operatorname{close}\bigl(
+ \mathsf{BA}(a,b,p+c)\cdot\mathsf{GA}(a+b,p+c),
+ \mathsf{GA}(a,p+c)\cdot\mathsf{GA}(b,p+c),p\bigr).
+\]
+Only after this theorem is available does a guarded-inverse lemma derive the quotient form.
+
+\subsection{Quantifier-free induction invariants}
+
+The important invariants are concrete.
+
+\begin{description}
+\item[Mesh reversal.]  The sum of the first $r$ beta samples for $(a,b)$ equals the sum of the last $r$ reversed samples for $(b,a)$, up to a tracked rational evaluation error.
+\item[Pascal.]  The difference between the accumulated left side and the two accumulated right sides is exactly zero for the first $r$ samples.
+\item[Integration by parts.]  The accumulated discrete derivative equals the endpoint difference plus a remainder bounded by $rCh^2$.
+\item[Rising products.]  After $r$ shifts,
+$(a+b)_r\B(a+r,b)=(a)_r\B(a,b)$ at the chosen finite precision.
+\item[Odd Gosper permutation.]  The multiplicity counter for residue $j$ among $2i\bmod(2n+1)$ is $1$ after all indices have been processed; the carry product contains exactly the odd residues.
+\item[Incomplete polynomial.]  The derivative of the partial polynomial through term $r$ equals the first $r$ terms of the finite binomial expansion.
+\item[Binomial CDF.]  The derivative of the first $r$ summands telescopes to two boundary terms; after $r=k+1$ only the final boundary remains.
+\end{description}
+
+Each invariant is an equality or inequality among primitive-recursive natural-number terms.  No induction formula contains the unbounded precision quantifier used in name equality.
+
+\subsection{Use of the checked ProveIt arithmetic library}
+
+The most direct imports for the eventual implementation are expected to include
+\begin{lstlisting}[language={}]
+import ConciseIPRA.NativeBiInterpretation
+import IPRADerivations.Core.Basic
+import IPRADerivations.Core.Definitions
+import IPRADerivations.Core.Sums
+import IPRADerivations.Core.Order
+import IPRADerivations.Core.Powers
+import IPRADerivations.Core.Division
+import IPRADerivations.Core.Search
+import IPRADerivations.Core.Permutation
+\end{lstlisting}
+Exact module paths must be adjusted to the current workspace.  The Gamma packet's host-level \code{GammaIPRA.lean} is useful as an interface sketch, but its analytic certificate structures are uninstantiated and should not be imported as if they were proved theorems.
+
+\subsection{Definition of done}
+
+A complete formalization should satisfy all of the following.
+
+\begin{enumerate}
+\item Every theorem exported as a beta identity has an explicit term of type
+$[]\vdash[\code{PRAAx}]\varphi$.
+\item A \texttt{\#print axioms} audit shows no \code{sorryAx}; standard Lean metatheory axioms are listed separately.
+\item Every analytic evaluator is a fixed primitive-recursive symbol with defining equations.
+\item Every use of inverse includes a proved positive margin.
+\item Every improper integral, infinite sum, product, derivative, or asymptotic statement has a closed cutoff function.
+\item The final native theorem is obtained only by applying the checked
+\code{pra_iff_native} bridge to the already constructed ordinary derivation.
+\end{enumerate}
+
+The current archive meets the mathematical-specification and outline requirements, not this final kernel-checked definition of done.

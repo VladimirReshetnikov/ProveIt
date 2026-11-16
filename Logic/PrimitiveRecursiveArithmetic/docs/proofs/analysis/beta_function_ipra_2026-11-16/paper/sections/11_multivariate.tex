@@ -1,0 +1,104 @@
+\section{Multivariate beta and fixed-dimensional simplex integrals}
+\label{sec:multivariate}
+
+For a finite nonempty list
+$\boldsymbol\alpha=(\alpha_1,\ldots,\alpha_n)$ with positive real parts, define
+\[
+ \B(\boldsymbol\alpha)
+ =\frac{\prod_{j=1}^{n}\Gamma(\alpha_j)}
+        {\Gamma(S)},
+ \qquad S=\sum_{j=1}^{n}\alpha_j.
+\]
+For $n=2$ this is the ordinary beta function.
+
+\subsection{Coordinate recurrences and Pascal's identity}
+
+\begin{theorem}[Multivariate recurrence]\label{thm:multi-recurrence}
+For each $j$,
+\[
+ \boxed{
+ \B(\alpha_1,\ldots,\alpha_j+1,\ldots,\alpha_n)
+ =\frac{\alpha_j}{S}\B(\boldsymbol\alpha).}
+\]
+Consequently
+\[
+ \boxed{
+ \B(\boldsymbol\alpha)=
+ \sum_{j=1}^{n}
+ \B(\alpha_1,\ldots,\alpha_j+1,\ldots,\alpha_n).}
+\]
+\end{theorem}
+
+\begin{proof}
+Apply $\Gamma(z+1)=z\Gamma(z)$ in the numerator and denominator.  Summing the coordinate formulas multiplies $\B(\boldsymbol\alpha)$ by
+$\sum_j\alpha_j/S=1$.  For internalization, clear the common denominator $S$ before the finite sum.  The list sum and product are primitive-recursive recursors.
+\end{proof}
+
+Repeated shifts give, for a vector $\mathbf m\in\N^n$,
+\[
+ \B(\boldsymbol\alpha+\mathbf m)
+ =
+ \frac{\prod_j(\alpha_j)_{m_j}}
+      {(S)_{\sum_jm_j}}
+ \B(\boldsymbol\alpha).
+\]
+At positive integer arguments this becomes
+\[
+ \B(m_1,\ldots,m_n)
+ =\frac{\prod_j(m_j-1)!}
+        {(\sum_jm_j-1)!}.
+\]
+This is the direct analogue of the multinomial coefficient relation.
+
+\subsection{Derivative formula}
+
+The source-page derivative
+\[
+ \frac{\partial}{\partial\alpha_j}\B(\boldsymbol\alpha)
+ =
+ \B(\boldsymbol\alpha)\bigl(\psi(\alpha_j)-\psi(S)\bigr)
+\]
+was proved in \eqref{eq:multibeta-derivative}.  Higher derivatives are again finite Bell polynomials in polygamma differences.  For each fixed order and list length, this is a finite formal identity.  A variable list can be represented by a code and a length; the internal theorem quantifies only over the code and uses bounded lookup.
+
+\subsection{Simplex integral}
+
+For fixed $n\ge2$, let
+\[
+ \Delta_{n-1}=
+ \{(t_1,\ldots,t_{n-1})\in[0,1]^{n-1}:
+   t_1+\cdots+t_{n-1}\le1\},
+ \qquad
+ t_n=1-\sum_{j<n}t_j.
+\]
+Then
+\begin{equation}
+ \boxed{
+ \int_{\Delta_{n-1}}\prod_{j=1}^{n}t_j^{\alpha_j-1}
+ \,dt_1\cdots dt_{n-1}
+ =\B(\boldsymbol\alpha).}
+ \label{eq:simplex-beta}
+\end{equation}
+A constructive proof avoids a general multivariate integration theorem.  Integrate $t_{n-1}$ first and use the substitution
+\[
+ t_{n-1}=(1-t_1-\cdots-t_{n-2})u.
+\]
+The inner integral becomes
+\[
+ (1-t_1-\cdots-t_{n-2})^{\alpha_{n-1}+\alpha_n-1}
+ \B(\alpha_{n-1},\alpha_n).
+\]
+Repeat.  After $n-2$ steps, the product of beta factors telescopes to the Gamma quotient.  Every stage is a one-dimensional finite Riemann sum with endpoint bounds; the dimension $n$ is externally fixed, or encoded by a simultaneous primitive recursion if a uniform family is desired.
+
+\subsection{Dirichlet normalization without probability axioms}
+
+For positive real parameters, dividing the simplex integrand by
+$\B(\boldsymbol\alpha)$ produces a finite-sum name whose integral is $1$.  Expectations of monomials are merely ratios of shifted multivariate beta values:
+\[
+ \frac{1}{\B(\boldsymbol\alpha)}
+ \int_{\Delta_{n-1}}
+ \prod_j t_j^{\alpha_j+m_j-1}\,dt
+ =
+ \frac{\prod_j(\alpha_j)_{m_j}}
+      {(S)_{\sum_jm_j}}.
+\]
+Thus the algebraic moment formulas usually stated for the Dirichlet distribution are already iPRA theorems about finite weighted sums and their certified limits; no measure-theoretic probability space is required.

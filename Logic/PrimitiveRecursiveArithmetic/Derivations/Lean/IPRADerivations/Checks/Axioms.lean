@@ -132,6 +132,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.TailSum.incl_excl
 #print axioms LeanProofs.IPRA.Probability.TailSum.union_bound₂
 #print axioms LeanProofs.IPRA.Probability.TailSum.total_expectation
+#print axioms LeanProofs.IPRA.Probability.Variance.ad_sq
+#print axioms LeanProofs.IPRA.Probability.Variance.dev_sum
+#print axioms LeanProofs.IPRA.Probability.Variance.variance_identity
+#print axioms LeanProofs.IPRA.Probability.Variance.mean_square_decomp
+#print axioms LeanProofs.IPRA.Probability.Variance.mean_minimizes
+#print axioms LeanProofs.IPRA.Probability.Variance.second_moment_add
+#print axioms LeanProofs.IPRA.Probability.Variance.sum_one
+#print axioms LeanProofs.IPRA.Probability.Variance.sum_const_of
+#print axioms LeanProofs.IPRA.Probability.Variance.sample_mean
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw

@@ -1,0 +1,81 @@
+\section{Formula-by-formula coverage ledger}
+\label{sec:inventory}
+
+The table below records the main mathematical statements appearing on the two requested pages.  Closely related display lines are grouped when their proofs are identical.  The CSV artifact contains the same ledger in machine-readable form.
+
+\begin{longtable}{@{}p{0.08\textwidth}p{0.33\textwidth}p{0.09\textwidth}p{0.40\textwidth}@{}}
+\toprule
+ID & Formula or family & Status & Constructive proof location or qualification\\
+\midrule\endhead
+W1 & Integral definition on $\Rea a,\Rea b>0$ & \statusA & \Cref{sec:definition}; explicit endpoint and mesh modulus.\\
+W2 & Symmetry $B(a,b)=B(b,a)$ & \statusA & Mesh reversal, \cref{thm:basic-laws}.\\
+W3 & Beta--Gamma quotient & \statusB & One-dimensional effective limit, \cref{thm:beta-gamma}.\\
+W4 & Product-of-integrals/Fubini proof & \statusC & Avoided; finite two-dimensional version is possible but unnecessary.\\
+W5 & Convolution proof of beta--gamma & \statusB & One-dimensional convolution \eqref{eq:convolution} plus Gamma integration.\\
+W6 & Positive integer factorial value & \statusA & \Cref{thm:integer-values}.\\
+W7 & Binomial form of integer value & \statusA & Exact factorial algebra.\\
+W8 & First derivative via digamma & \statusB & \Cref{thm:digamma-beta}.\\
+W9 & Multivariate derivative & \statusB & \eqref{eq:multibeta-derivative}.\\
+W10 & Two-parameter Stirling asymptotic & \statusB & Explicit relative error, \eqref{eq:beta-stirling-relative}.\\
+W11 & Fixed-$y$ asymptotic & \statusB & Natural-grid modulus, \cref{thm:fixed-y-asymp}.\\
+W12 & Trigonometric integral & \statusA & \eqref{eq:trig-beta}.\\
+W13 & Infinite-interval integral & \statusA & \eqref{eq:infinity-beta}.\\
+W14 & Power-substitution integral & \statusA & \eqref{eq:power-beta}.\\
+W15 & Fractional-linear integral & \statusA & \eqref{eq:mobius-beta}; parameter must satisfy $c<1$.\\
+W16 & Central radical integral & \statusA & \eqref{eq:central-radical}; positive real $z$, valid also at $z=1$.\\
+W17 & General infinite series & \statusA & \Cref{thm:beta-series}.\\
+W18 & Displayed symmetric series & \statusD & False as rendered; counterexample \cref{warn:false-series}.\\
+W19 & Infinite product & \statusB & \Cref{thm:beta-product}; effective $O(1/N)$ tail.\\
+W20 & Pascal identity & \statusA & \Cref{thm:pascal}.\\
+W21 & Two coordinate recurrences & \statusA & \Cref{cor:coordinate-recurrence}.\\
+W22 & $h(a,b)$ derivative values & \statusA & \Cref{thm:h-derivatives}.\\
+W23 & PDE $h=h_a+h_b$ & \statusA & Same theorem, pointwise $t+(1-t)=1$.\\
+W24 & Truncated-power convolution & \statusA & \eqref{eq:convolution}.\\
+W25 & $B(1,x)=1/x$ & \statusA & Base case of \cref{thm:integer-values}.\\
+W26 & Reflection $B(x,1-x)$ & \statusB & \Cref{cor:beta-reflection}; strip or meromorphic margin.\\
+W27 & Product-reflection identity & \statusB & \Cref{cor:beta-reflection}.\\
+W28 & Duplication identity & \statusB & \Cref{cor:beta-duplication}.\\
+W29 & Pochhammer contour & \statusC & Polygon/branch route, \cref{sec:complex}.\\
+W30 & Beta definition of $\binom nk$ & \statusA & \Cref{cor:binomial-beta}.\\
+W31 & Continuous binomial interpolation & \statusB & Cleared reflection identity; raw quotient excludes integers.\\
+W32 & Reciprocal-beta trig integrals & \statusA/\statusC & Integer frequencies finite; general frequency needs hypergeometric summation.\\
+W33 & Incomplete beta definition & \statusA & \Cref{sec:incomplete}.\\
+W34 & Incomplete trigonometric form & \statusA & \eqref{eq:inc-trig}.\\
+W35 & Incomplete infinite-tail form & \statusA & \eqref{eq:inc-infinity}.\\
+W36 & Hypergeometric representation & \statusA & \eqref{eq:inc-series}--\eqref{eq:inc-hyper}.\\
+W37 & Regularized definition & \statusA & Guarded division using positivity.\\
+W38 & Binomial CDF relation & \statusA & \Cref{thm:binomial-cdf}.\\
+W39 & $I_0,I_1,I_x(a,1),I_x(1,b)$ & \statusA & \Cref{thm:incomplete-basic}.\\
+W40 & Complement $I_x=1-I_{1-x}$ & \statusA & Split and reverse the finite integral.\\
+W41 & Regularized recurrences & \statusA & \eqref{eq:inc-left-rec}--\eqref{eq:inc-right-rec}.\\
+W42 & Endpoint derivative of $I_x$ & \statusA & Finite fundamental theorem.\\
+W43 & Antiderivatives of $I_x$ and $B_x$ & \statusA & Product-rule telescope.\\
+W44 & Branch transformation with $(-1)^a$ & \statusD/\statusC & Integer $a$ finite; complex version needs a branch.\\
+W45 & $B_x(a,-a)$ & \statusA & Differentiate explicit power, \eqref{eq:inc-special}.\\
+W46 & Continued fraction coefficients & \statusA & Primitive-recursive rational sequence.\\
+W47 & Continuant determinant & \statusA & Second-order induction.\\
+W48 & Alternating CF bounds & \statusC & Positive-remainder theorem remains.\\
+W49 & Multivariate Gamma quotient & \statusB & Finite Gamma product.\\
+W50 & Multivariate Pascal identity & \statusA/\statusB & \Cref{thm:multi-recurrence}.\\
+M1 & Gamma/factorial definition & \statusA/\statusB & Integer case \statusA; general quotient \statusB.\\
+{\scriptsize M2--M8} & Polar-coordinate factorial derivation & \statusC & Result proved one-dimensionally; finite polar-grid implementation omitted.\\
+{\scriptsize M9--M10} & Odd-power trig integral and factorial value & \statusA & \Cref{thm:transformed-integrals,thm:integer-values}.\\
+{\scriptsize M13--M19} & Symmetry and ordinary beta integral & \statusA & \Cref{thm:basic-laws,sec:definition}.\\
+{\scriptsize M20--M21} & $u=x^2$ form & \statusA & Power substitution with $q=2$.\\
+M22 & Infinite-interval polynomial form & \statusA & \eqref{eq:infinity-beta}.\\
+{\scriptsize M23--M24} & $\int_0^\infty(1+x^p)^{-1}$ & \statusB & \eqref{eq:p-integral}.\\
+{\scriptsize M25--M28} & First and second derivatives & \statusB & \Cref{thm:digamma-beta}.\\
+{\scriptsize M29--M30} & General multiplication identity & \statusB & \Cref{thm:beta-multiplication}.\\
+{\scriptsize M31--M35} & Shift, Pascal, recurrence & \statusA & \Cref{thm:pascal,cor:coordinate-recurrence}.\\
+M36 & $B(p,n+1)$ finite product & \statusA & \Cref{thm:integer-values}.\\
+M37 & Product of two central Betas & \statusB & \Cref{cor:beta-duplication}.\\
+M38 & Associativity identity & \statusB & \Cref{cor:beta-assoc}.\\
+M39 & Euler infinite product & \statusB & \Cref{thm:beta-product}.\\
+M40 & Gosper odd product & \statusB & \Cref{thm:gosper-odd}.\\
+M41 & Gosper even product & \statusB & \Cref{thm:gosper-even}.\\
+M42 & Three-factor special case & \statusB & $n=1$ in odd Gosper formula.\\
+M43 & Four-factor special case & \statusB & $n=2$ in even Gosper formula.\\
+\bottomrule
+\end{longtable}
+
+The ledger deliberately distinguishes ``identity proved from an effective Gamma contract'' from ``all Gamma obligations already internalized.''  This is the main proof-status boundary in the packet.

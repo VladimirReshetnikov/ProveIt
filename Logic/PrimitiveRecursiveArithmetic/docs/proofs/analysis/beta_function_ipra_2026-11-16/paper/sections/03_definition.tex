@@ -1,0 +1,100 @@
+\section{The effective beta integral}
+\label{sec:definition}
+
+\subsection{Domain data and endpoint tails}
+
+Fix complex names $a,b$ and integers $A,B,R\ge1$ with certificates
+\[
+ \Rea a\ge\alpha:=1/A,
+ \qquad \Rea b\ge\beta:=1/B,
+ \qquad |a|,|b|\le R.
+\]
+For $0<t<1$, put
+\[
+ f_{a,b}(t)=t^{a-1}(1-t)^{b-1},
+\]
+using only the real logarithms of the positive bases $t$ and $1-t$.
+For $0<\varepsilon\le1/2$, we have
+\begin{align}
+ \int_0^\varepsilon |f_{a,b}(t)|\,dt
+ &\le \frac{2\varepsilon^\alpha}{\alpha},
+ \label{eq:lefttail}\\
+ \int_{1-\varepsilon}^1 |f_{a,b}(t)|\,dt
+ &\le \frac{2\varepsilon^\beta}{\beta}.
+ \label{eq:righttail}
+\end{align}
+Indeed, on $[0,1/2]$ the factor $(1-t)^{\Rea b-1}$ is at most $2$, because its exponent is greater than $-1$; the other endpoint is symmetric.
+
+For requested precision $p$, let
+\[
+ L=p+A+B+10,
+ \qquad \varepsilon=2^{-ABL}.
+\]
+Then both powers $\varepsilon^{1/A}$ and $\varepsilon^{1/B}$ are at most $2^{-L}$, so the sum of the two tails is below $2^{-p-5}$.  This cutoff is intentionally enormous but primitive recursive and easy to verify.
+
+\subsection{A compact derivative bound}
+
+On $[\varepsilon,1-\varepsilon]$,
+\[
+ f'_{a,b}(t)=f_{a,b}(t)
+ \left(\frac{a-1}{t}-\frac{b-1}{1-t}\right).
+\]
+A safe rational majorant is
+\[
+ |f_{a,b}(t)|\le \varepsilon^{-2(R+1)},
+ \qquad
+ |f'_{a,b}(t)|\le C:=2(R+1)\varepsilon^{-2R-3}.
+\]
+Choose
+\[
+ m=2^{p+7}(1+\ceil C).
+\]
+The compact Riemann error is then below $2^{-p-7}$.  Evaluate each power in the sum so that the total arithmetic error is also below $2^{-p-7}$.  Combining this with \eqref{eq:lefttail}--\eqref{eq:righttail} gives a rational approximation within $2^{-p-3}$.
+
+\begin{definition}[Effective beta name]
+The program $\operatorname{BetaApprox}(a,b,A,B,R,p)$ is the above truncated left Riemann sum, evaluated with the fixed elementary-function precision budget.  The regular name it determines is denoted
+\[
+ \B(a,b)=\int_0^1 t^{a-1}(1-t)^{b-1}\,dt.
+\]
+\end{definition}
+
+\begin{theorem}[Existence, regularity, and certificate independence]\label{thm:beta-name}
+The effective beta approximation is a primitive-recursive regular name.  If larger valid values of $A,B,R$ are used, the resulting names are equal.  Thus the notation $\B(a,b)$ is independent of the supplied valid domain certificate.
+\end{theorem}
+
+\begin{proof}
+Every cutoff, mesh length, rational arithmetic precision, and loop body is primitive recursive.  Compare two outputs using a common refinement whose endpoint cutoff is the smaller of the two endpoint intervals and whose mesh refines both meshes.  Each output differs from the common sum by the sum of its displayed endpoint, mesh, and arithmetic budgets.  At requested precision $p+4$ this total is below $2^{-p}$.  The common-refinement statement is a finite identity about sums and is proved by induction on the mesh length.
+\end{proof}
+
+\subsection{Symmetry, conjugation, positivity, and coarse bounds}
+
+\begin{theorem}[Basic laws]\label{thm:basic-laws}
+On the certified right-half-plane domain:
+\begin{align*}
+ \B(a,b)&=\B(b,a),\\
+ \overline{\B(a,b)}&=\B(\overline a,\overline b),\\
+ |\B(a,b)|&\le \B(\Rea a,\Rea b).
+\end{align*}
+For positive real $a,b$ the value is positive.  If additionally $a,b\le R$, then
+\[
+ 3^{1-2R}\le \B(a,b)\le 2A+2B+2^{2R+3}.
+\]
+The constants are deliberately coarse.
+\end{theorem}
+
+\begin{proof}
+Symmetry is the finite substitution $t\mapsto1-t$; on equal meshes it is reversal of a finite list.  Conjugation commutes with the finite elementary approximations, and the modulus inequality is the triangle inequality on each finite sum followed by the endpoint bounds.
+
+For positivity, every summand is nonnegative.  On $[1/3,2/3]$ and $0<a,b\le R$, each factor is at least $3^{1-R}$, so the integral over an interval of length $1/3$ is at least $3^{1-2R}$.  For the upper bound, use the endpoint estimates with $\varepsilon=1/2$ and a crude bound $2^{2R+2}$ on the middle half.  The positive lower bound is an explicit inversion margin for $1/\B(a,b)$.
+\end{proof}
+
+\subsection{The direct finite statement internalized in iPRA}
+
+The definition above is external notation for a family of integer-coded programs.  A typical internal target is the formula
+\[
+ \forall p\quad
+ \left|\operatorname{BetaApprox}(a,b,A,B,R,p+4)
+      -\operatorname{BetaApprox}(a,b,A',B',R',p+4)
+ \right|\le2^{-p},
+\]
+where the absolute-value inequality is cleared to a comparison of integer products.  The hypotheses saying that both tuples are valid domain certificates are finite Boolean conjunctions.  The proof uses induction only on the Riemann mesh and on the finite elementary-function sums.  It never uses induction on the unbounded statement that two names are equal.

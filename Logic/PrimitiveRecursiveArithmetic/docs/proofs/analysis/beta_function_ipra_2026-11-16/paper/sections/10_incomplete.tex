@@ -1,0 +1,220 @@
+\section{Incomplete and regularized beta functions}
+\label{sec:incomplete}
+
+\subsection{Effective definition}
+
+Let $x$ be a real name with $0\le x\le1$.  For $\Rea a>0$, define
+\[
+ \B_x(a,b)=\int_0^x t^{a-1}(1-t)^{b-1}\,dt.
+\]
+If $x\le1-\delta$ with $\delta>0$, only the lower endpoint is improper and the compact derivative bound uses the margin $1-t\ge\delta$.  At $x=1$ use the complete-beta construction.  If the sign or endpoint status of a general name $x$ is not decidable, the theorem is stated under one of these positive certificates; no exact-real case split is made.
+
+The regularized incomplete beta function is
+\[
+ \I_x(a,b)=\frac{\B_x(a,b)}{\B(a,b)}
+\]
+for positive real parameters, where \cref{thm:basic-laws} supplies a positive lower bound on the denominator over a certified compact domain.
+
+\subsection{Basic identities}
+
+\begin{theorem}[Endpoints, complement, and elementary cases]\label{thm:incomplete-basic}
+For positive real parameters and $0\le x\le1$,
+\begin{align*}
+ \B_0(a,b)&=0,& \B_1(a,b)&=\B(a,b),\\
+ \B_x(a,b)+\B_{1-x}(b,a)&=\B(a,b),\\
+ \B_x(a,1)&=\frac{x^a}{a},&
+ \B_x(1,b)&=\frac{1-(1-x)^b}{b}.
+\end{align*}
+Consequently
+\begin{align*}
+ \I_0(a,b)&=0,& \I_1(a,b)&=1,\\
+ \I_x(a,b)&=1-\I_{1-x}(b,a),\\
+ \I_x(a,1)&=x^a,&
+ \I_x(1,b)&=1-(1-x)^b.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+The endpoint statements are definitions and the tail estimates.  Split the complete integral at $x$ and in the second part substitute $t=1-u$.  The elementary cases use the antiderivatives $t^a/a$ and $-(1-t)^b/b$.  All equalities are first established on rational approximations to $x$ and then transferred using the Lipschitz/error budget.
+\end{proof}
+
+\subsection{Recurrences and differentiation in the endpoint}
+
+Integrating the derivative of $t^a(1-t)^b$ on $[0,x]$ gives
+\[
+ a\B_x(a,b+1)-b\B_x(a+1,b)=x^a(1-x)^b.
+\]
+Together with the incomplete Pascal identity
+\[
+ \B_x(a,b)=\B_x(a+1,b)+\B_x(a,b+1),
+\]
+this yields
+\begin{align}
+ \B_x(a+1,b)
+ &=\frac{a}{a+b}\B_x(a,b)
+   -\frac{x^a(1-x)^b}{a+b},
+ \label{eq:inc-left-rec}\\
+ \B_x(a,b+1)
+ &=\frac{b}{a+b}\B_x(a,b)
+   +\frac{x^a(1-x)^b}{a+b}.
+ \label{eq:inc-right-rec}
+\end{align}
+After division by the corresponding complete-beta recurrence,
+\begin{align}
+ \I_x(a+1,b)
+ &=\I_x(a,b)-\frac{x^a(1-x)^b}{a\B(a,b)},\\
+ \I_x(a,b+1)
+ &=\I_x(a,b)+\frac{x^a(1-x)^b}{b\B(a,b)}.
+\end{align}
+
+The finite fundamental theorem gives
+\begin{align}
+ \frac{d}{dx}\B_x(a,b)&=x^{a-1}(1-x)^{b-1},\\
+ \frac{d}{dx}\I_x(a,b)&=
+ \frac{x^{a-1}(1-x)^{b-1}}{\B(a,b)}.
+\end{align}
+These derivative statements require a local margin $0<d\le x\le1-d$ unless one uses one-sided endpoint certificates.
+
+Integration by parts in $x$, again interpreted by finite telescoping, gives the source formulas
+\begin{align*}
+ \int\B_x(a,b)\,dx
+ &=x\B_x(a,b)-\B_x(a+1,b)\\
+ &=\left(x-\frac{a}{a+b}\right)\B_x(a,b)
+   +\frac{x^a(1-x)^b}{a+b},\\
+ \int\I_x(a,b)\,dx
+ &=x\I_x(a,b)-\frac{a}{a+b}\I_x(a+1,b)\\
+ &=\left(x-\frac{a}{a+b}\right)\I_x(a,b)
+   +\frac{x^a(1-x)^b}{(a+b)\B(a,b)}.
+\end{align*}
+An indefinite integral here means the displayed antiderivative identity with a quadratic remainder, not a quotient by constants.
+
+\subsection{Alternative integrals}
+
+For $0<x<1$ with endpoint margins,
+\begin{align}
+ \B_x(a,b)
+ &=2\int_0^{\arcsin\sqrt{x}}
+   \sin^{2a-1}\theta\cos^{2b-1}\theta\,d\theta,
+ \label{eq:inc-trig}\\
+ &=\int_{(1-x)/x}^{\infty}
+   \frac{s^{b-1}}{(1+s)^{a+b}}\,ds.
+ \label{eq:inc-infinity}
+\end{align}
+The first uses $t=\sin^2\theta$ and a bisection name for the inverse on the monotone first quadrant.  The second uses $t=1/(1+s)$.  Its upper tail is bounded by $T^{-\Rea a}/\Rea a$.
+
+The special identity
+\begin{equation}
+ \boxed{\B_x(a,-a)=\frac1a\left(\frac{x}{1-x}\right)^a}
+ \label{eq:inc-special}
+\end{equation}
+follows by differentiating the right side and checking the value at $x=0$.  It is constructive for positive real $x<1$ and a specified positive-real power convention.  For complex parameters and transformed negative arguments, branch data must be included.
+
+\subsection{Polynomial values at positive integers}
+
+\begin{theorem}[Exact polynomial formula]\label{thm:inc-polynomial}
+For positive integers $m,n$,
+\begin{equation}
+ \boxed{
+ \B_x(m,n)=
+ \sum_{j=0}^{n-1}(-1)^j\binom{n-1}{j}
+ \frac{x^{m+j}}{m+j}.}
+ \label{eq:inc-poly}
+\end{equation}
+It is a rational polynomial of degree $m+n-1$.
+\end{theorem}
+
+\begin{proof}
+Use the finite binomial theorem
+$(1-t)^{n-1}=\sum_{j=0}^{n-1}(-1)^j\binom{n-1}{j}t^j$
+and integrate each monomial exactly.  This is a finite sum identity with no analytic remainder.
+\end{proof}
+
+The complement relation gives a second polynomial centered at $1$.  Multiplying by $(m+n-1)!/[(m-1)!(n-1)!]$ gives exact integer-coefficient formulas for the regularized function after common denominators are cleared.
+
+\subsection{Hypergeometric representation}
+
+For $0\le x\le1-\delta$,
+\begin{align}
+ \B_x(a,b)
+ &=\sum_{n=0}^{\infty}
+   \frac{(1-b)_n}{(a+n)n!}x^{a+n}
+ \label{eq:inc-series}\\
+ &=\frac{x^a}{a}\,
+ {}_2F_1(a,1-b;a+1;x).
+ \label{eq:inc-hyper}
+\end{align}
+The equality of the two displayed series uses
+$(a)_n/(a+1)_n=a/(a+n)$, an exact finite-product cancellation.  The proof is the compact binomial-series proof of \cref{thm:beta-series}; the geometric margin $x\le1-\delta$ gives an especially simple cutoff.  At $x=1$ one instead uses the endpoint tail and the complete beta value.
+
+A Lean development need not introduce a general hypergeometric-function object.  It may define the right side of \eqref{eq:inc-hyper} as this particular finite-sum name and prove the identity directly.
+
+\subsection{The binomial cumulative-distribution identity}
+
+For $0\le k<n$ and $0\le p\le1$, define the finite polynomial
+\[
+ F_{n,k}(p)=\sum_{j=0}^{k}\binom nj p^j(1-p)^{n-j}.
+\]
+No probability theory is needed.
+
+\begin{theorem}[Binomial CDF identity]\label{thm:binomial-cdf}
+\[
+ \boxed{
+ F_{n,k}(p)=\I_{1-p}(n-k,k+1)
+ =1-\I_p(k+1,n-k).}
+\]
+\end{theorem}
+
+\begin{proof}
+The two regularized beta expressions are equal by complementarity.  Differentiate the finite polynomial.  Using
+$j\binom nj=n\binom{n-1}{j-1}$ and
+$(n-j)\binom nj=n\binom{n-1}{j}$, adjacent terms telescope:
+\[
+ F'_{n,k}(p)
+ =-\frac{n!}{k!(n-k-1)!}p^k(1-p)^{n-k-1}.
+\]
+By the factorial formula for $\B(k+1,n-k)$, this is exactly the derivative of
+$1-\I_p(k+1,n-k)$.  Both sides equal $1$ at $p=0$.  The finite fundamental theorem proves equality.  Alternatively, induction on $n$ using Pascal's identity stays entirely in polynomial arithmetic.  The omitted boundary case $k=n$ has $F_{n,n}(p)=1$ by the binomial theorem; it is handled separately because the regularized parameter $n-k$ would be zero.
+\end{proof}
+
+\subsection{Continued fraction: exact finite target and remaining lemma}
+
+The source gives
+\[
+ \B_x(a,b)=
+ \frac{x^a(1-x)^b}
+ {a\left(1+\cfrac{d_1}{1+\cfrac{d_2}{1+\cdots}}\right)}
+\]
+with
+\[
+ d_{2m+1}=
+ -\frac{(a+m)(a+b+m)x}{(a+2m)(a+2m+1)},
+ \qquad
+ d_{2m}=
+ \frac{m(b-m)x}{(a+2m-1)(a+2m)}.
+\]
+Define continuants by
+\[
+ P_{-1}=1,\ P_0=1,\quad
+ Q_{-1}=0,\ Q_0=1,\quad
+ P_n=P_{n-1}+d_nP_{n-2},\quad
+ Q_n=Q_{n-1}+d_nQ_{n-2}.
+\]
+The $n$th finite continued fraction is $P_n/Q_n$, and its determinant identity
+\[
+ P_nQ_{n-1}-P_{n-1}Q_n
+ =(-1)^{n-1}d_1d_2\cdots d_n
+\]
+is a one-line induction, fully internal to iPRA.
+
+The remaining analytic theorem is a positive-remainder representation comparing
+\[
+ \frac{x^a(1-x)^bQ_n}{aP_n}
+\]
+with $\B_x(a,b)$.  Classical proofs obtain it from Gauss contiguous relations for ${}_2F_1$; the signs of the remainder yield the stated $4m/4m+1$ lower and $4m+2/4m+3$ upper convergents.  A complete iPRA proof should:
+\begin{enumerate}
+\item express every contiguous relation as a finite coefficient identity for truncated hypergeometric sums;
+\item attach the geometric tail from $x\le1-\delta$;
+\item derive the remainder as an integral with a nonnegative rational-mesh integrand for $a,b>0$;
+\item use the complement relation when $x$ is near $1$.
+\end{enumerate}
+The continuant algebra and formal target are complete; the general alternating-remainder lemma is classified \statusC{} in this packet.

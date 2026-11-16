@@ -1,0 +1,105 @@
+\section{Finitary analytic foundations inside iPRA}
+\label{sec:foundations}
+
+\subsection{Codes and regular names}
+
+Integers are coded by a sign and a natural magnitude.  A rational code is a pair $(u,v)$ with $u\in\Z$ and $v\in\N_{>0}$.  Equality and order are decided by cross multiplication; gcd normalization is optional.  A complex rational is a pair of rational codes.  All of these operations are primitive recursive after denominators are carried as positive natural numbers.
+
+\begin{definition}[Regular names]
+A regular real name is a fixed primitive-recursive map $x:\N\to\Q$ with
+\[
+ |x(p)-x(q)|\le 2^{-p}+2^{-q}.
+\]
+A complex name is a pair of regular real names.  We write $x\simeq y$ if
+\[
+ \forall p\quad |x(p+3)-y(p+3)|\le 2^{-p}.
+\]
+A positive margin for $x$ is a rational $d>0$ together with a proof that every sufficiently accurate approximation is at least $d$; for a complex name it is a lower bound on the squared modulus or on the $1$-norm.
+\end{definition}
+
+The fixed shift $3$ is inessential.  It absorbs the two regularity errors and makes transitivity immediate after refinement.  The definition does not require a sort containing all primitive-recursive programs.  Each theorem is a schema for the particular program names occurring in it.
+
+\subsection{Arithmetic error lemmas}
+
+Every analytic construction below ultimately uses the following finite identities.  They are especially suitable for ProveIt's embedded arithmetic library because their proofs are inductions on a finite length.
+
+\begin{lemma}[Finite error budgets]
+Suppose $|a_j-b_j|\le\varepsilon$ for $j<s$.
+\begin{align*}
+ \left|\sum_{j<s}a_j-\sum_{j<s}b_j\right|&\le s\varepsilon,\\
+ \left|\prod_{j<s}a_j-\prod_{j<s}b_j\right|&\le sM^{s-1}\varepsilon
+ \quad\text{if }|a_j|,|b_j|\le M,\\
+ |a^{-1}-b^{-1}|&\le \varepsilon/d^2
+ \quad\text{if } |a|,|b|\ge d.
+\end{align*}
+If only $|a|\ge d$ is known and $|a-b|\le d/2$, the last bound may be replaced by $2\varepsilon/d^2$.
+\end{lemma}
+
+\begin{proof}
+The sum estimate is the triangle inequality.  For products use the exact telescoping identity
+\[
+ \prod_{j<s}a_j-\prod_{j<s}b_j
+ =\sum_{r<s}(a_r-b_r)\prod_{j<r}a_j\prod_{r<j<s}b_j.
+\]
+The inverse identity is $(a^{-1}-b^{-1})=(b-a)/(ab)$.  After rational values replace every absolute-value comparison by finitely many integer inequalities.  The telescope is proved by quantifier-free induction on $s$.
+\end{proof}
+
+A deliberately wasteful precision shift is often simpler than binary logarithms.  If $C\ge1$ is an integer, then
+\[
+ C2^{-(C+p+3)}<2^{-p}.
+\]
+Thus every displayed integer majorant can be converted directly into a primitive-recursive precision allocation.
+
+\subsection{Positive powers, exponential, and logarithm}
+
+For a positive real name $t$ with rational margins $0<d\le t\le D$, define $\log t$ by the atanh series
+\[
+ \log t=2\sum_{j\ge0}\frac{v^{2j+1}}{2j+1},\qquad v=\frac{t-1}{t+1}.
+\]
+If $D^{-1}\le t\le D$, then $|v|\le1-1/D$ and a primitive-recursive geometric cutoff gives any requested precision.  Define $\exp w$ by its factorial series.  On $|w|\le R$, once $m+1\ge2R$ the tail is bounded by
+\[
+ 2\frac{R^{m+1}}{(m+1)!}.
+\]
+Finally, for positive $t$ and a complex name $z$, set
+\[
+ t^z:=\exp(z\log t).
+\]
+No complex logarithm or branch choice is involved because the base is positive real.  Finite Cauchy products prove $\exp(u+v)=\exp u\exp v$ and hence the usual power laws on certified compact domains.
+
+\subsection{Finite integration}
+
+Let $f$ be supplied on a rational interval $[c,d]$ with a rational Lipschitz majorant $L$.  The left Riemann sum on $m$ equal subintervals differs from every refinement, and hence from the diagonal name defined by those refinements, by at most
+\[
+ \frac{L(d-c)^2}{m}.
+\]
+Choose $m\ge 2^{p+4}(1+\ceil{L(d-c)^2})$ and evaluate every summand with a total arithmetic error below $2^{-p-4}$.  This defines the integral as a regular primitive-recursive name.  There is no appeal to a general completeness theorem.
+
+\begin{lemma}[Finite fundamental theorem]
+Suppose a fixed primitive-recursive approximation to $F$ satisfies, on the certified interval,
+\[
+ |F(t+h)-F(t)-hf(t)|\le C h^2.
+\]
+Then the Riemann-sum name for $\int_c^d f(t)\,dt$ equals $F(d)-F(c)$.
+\end{lemma}
+
+\begin{proof}
+Sum the displayed relation over the mesh.  The main terms telescope exactly; the total remainder is at most $Cm h^2=C(d-c)^2/m$.  Choose the mesh from the requested output precision.  This is a finite sum identity followed by quantifier-free induction.
+\end{proof}
+
+The same argument proves integration by parts and substitution whenever the derivative and quadratic remainder of the substitution are supplied.  Improper integrals are not primitive notions: first truncate, then add an explicit tail certificate.
+
+\subsection{Differentiability and analyticity}
+
+A derivative certificate for $F$ at $z$ is a program for $F'(z)$ and a rational majorant $C$ such that
+\[
+ |F(z+h)-F(z)-hF'(z)|\le C|h|^2
+\]
+on a certified neighborhood.  Higher derivatives use a finite polynomial with an explicitly bounded remainder.  A holomorphic-disk certificate consists of finite coefficient approximations, a larger rational radius, and a geometric coefficient majorant.  These are positive data, not predicates decided about arbitrary functions.
+
+\begin{proposition}[Finite-precision interpretation]
+Any proof in this report that supplies endpoint tails, compact derivative bounds, finite algebraic identities, and denominator margins translates, for each fixed tuple of primitive-recursive names and each precision $p$, to a finite rational statement.  Its loop invariants are equations or inequalities between primitive-recursive terms and are therefore eligible for quantifier-free induction in iPRA.
+\end{proposition}
+
+\begin{proof}
+Fix $p$ before beginning the proof.  Replace each named value by a rational approximation at the allocated precision.  Replace every integral by a finite sum, every infinite sum or product by its displayed cutoff, and every reciprocal by cleared multiplication using its margin.  All remaining calculations are bounded loops and integer comparisons.  Universal introduction over $p$ is intuitionistically valid after the finite derivation has been constructed.
+\end{proof}

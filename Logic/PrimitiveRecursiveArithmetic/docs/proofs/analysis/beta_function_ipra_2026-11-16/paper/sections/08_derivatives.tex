@@ -1,0 +1,138 @@
+\section{Parameter derivatives, digamma formulas, and logarithmic moments}
+\label{sec:derivatives}
+
+\subsection{Effective differentiation under the integral}
+
+For $r,s\in\N$, define
+\[
+ M_{r,s}(a,b)=\int_0^1
+ t^{a-1}(1-t)^{b-1}
+ (\log t)^r(\log(1-t))^s\,dt.
+\]
+The logarithms do not destroy effective convergence.  If $0<t\le1/2$ and $\Rea a\ge1/A$, then
+\[
+ |\log t|^r\le r!(2A)^r t^{-1/(2A)}.
+\]
+Indeed, with $v=-\log t$, the single term
+$e^{v/(2A)}\ge(v/(2A))^r/r!$ proves the inequality.  Also
+$|\log(1-t)|\le2t$ on this interval.  Consequently a safe lower-endpoint bound is
+\[
+ \int_0^\varepsilon
+ |t^{a-1}(1-t)^{b-1}
+  (\log t)^r(\log(1-t))^s|\,dt
+ \le
+ 4A\,r!(2A)^r\,2^s\,
+ \varepsilon^{1/(2A)}.
+\]
+The upper endpoint has the symmetric bound with $B,s$.  On the compact middle interval, expand
+\[
+ t^h(1-t)^k
+ =\exp\bigl(h\log t+k\log(1-t)\bigr)
+\]
+to total degree $r+s+1$ with the factorial-series remainder.  The logarithms are bounded by $\log(1/\varepsilon)$, so the remainder constant is explicit.
+
+\begin{theorem}[All mixed parameter derivatives]\label{thm:mixed-derivatives}
+For every fixed $r,s\in\N$ and certified right-half-plane inputs,
+\[
+ \boxed{
+ \frac{\partial^{r+s}}{\partial a^r\partial b^s}\B(a,b)
+ =M_{r,s}(a,b).}
+\]
+The derivative means a finite local polynomial with a primitive-recursive remainder bound.
+\end{theorem}
+
+\begin{proof}
+Choose the endpoint cutoff from the displayed logarithmic tail bounds.  On the compact interval use the finite Taylor expansion in the increments $h,k$.  Integrate the finite polynomial termwise and bound the integrated remainder.  The coefficient of $h^rk^s/(r!s!)$ is precisely $M_{r,s}$.  All degree loops are finite and all precision schedules are primitive recursive.
+\end{proof}
+
+In particular,
+\[
+ \partial_a\B(a,b)=\int_0^1f_{a,b}(t)\log t\,dt,
+ \qquad
+ \partial_b\B(a,b)=\int_0^1f_{a,b}(t)\log(1-t)\,dt.
+\]
+
+\subsection{Digamma and polygamma formulas}
+
+Let
+\[
+ \psi(z)=\frac{\Gamma'(z)}{\Gamma(z)},
+ \qquad
+ \psi_1(z)=\psi'(z),
+\]
+on a certified domain where Gamma has a positive modulus margin.  Differentiate the cleared beta--gamma identity and only then divide.
+
+\begin{theorem}[First and second derivatives]\label{thm:digamma-beta}
+\begin{align*}
+ \partial_a\B(a,b)
+ &=\B(a,b)\bigl(\psi(a)-\psi(a+b)\bigr),\\
+ \partial_b\B(a,b)
+ &=\B(a,b)\bigl(\psi(b)-\psi(a+b)\bigr),\\
+ \partial_b^2\B(a,b)
+ &=\B(a,b)\left(
+   [\psi(b)-\psi(a+b)]^2+
+   \psi_1(b)-\psi_1(a+b)\right),\\
+ \partial_a\partial_b\B(a,b)
+ &=\B(a,b)\left(
+   [\psi(a)-\psi(a+b)]
+   [\psi(b)-\psi(a+b)]
+   -\psi_1(a+b)\right).
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+The first two identities are the logarithmic derivatives of
+$\B(a,b)=\Gamma(a)\Gamma(b)/\Gamma(a+b)$.  Differentiate those finite local Taylor identities once more and apply the product rule.  The Gamma packet supplies derivative-remainder certificates, so no qualitative theorem about differentiating quotients is required.
+\end{proof}
+
+More generally, derivatives of $\log\B$ are finite signed sums of polygamma values:
+\[
+ \partial_a^r\log\B(a,b)
+ =\psi^{(r-1)}(a)-\psi^{(r-1)}(a+b)
+ \quad(r\ge1),
+\]
+and every mixed derivative involving both $a$ and $b$ differentiates only the term $-\log\Gamma(a+b)$.  Derivatives of $\B$ itself are then complete Bell polynomials in these logarithmic derivatives.  For each externally fixed order this is finite polynomial arithmetic and therefore an iPRA theorem schema.
+
+\subsection{Convexity and covariance consequences}
+
+For positive real $a,b$, normalize the beta density
+\[
+ d\mu(t)=\frac{t^{a-1}(1-t)^{b-1}}{\B(a,b)}\,dt.
+\]
+This notation abbreviates finite weighted sums and their limit certificates; no probability space is postulated.  Then
+\begin{align*}
+ \partial_a\log\B(a,b)&=\mathbb E_\mu[\log t],\\
+ \partial_b\log\B(a,b)&=\mathbb E_\mu[\log(1-t)],\\
+ \partial_a^2\log\B(a,b)&=
+ \mathbb E_\mu[(\log t)^2]
+ -\mathbb E_\mu[\log t]^2\ge0,\\
+ \partial_b^2\log\B(a,b)&\ge0,\\
+ \partial_a\partial_b\log\B(a,b)&=
+ \mathbb E_\mu[\log t\log(1-t)]
+ -\mathbb E_\mu[\log t]\mathbb E_\mu[\log(1-t)].
+\end{align*}
+The variance inequality is the finite identity
+\[
+ \left(\sum w_i\right)\left(\sum w_i x_i^2\right)
+ -\left(\sum w_i x_i\right)^2
+ =\frac12\sum_{i,j}w_iw_j(x_i-x_j)^2\ge0
+\]
+followed by the integration error bounds.  Thus separate log-convexity of Beta is fully constructive.
+
+\subsection{Derivatives of the multivariate beta function}
+
+For $\boldsymbol\alpha=(\alpha_1,\dots,\alpha_n)$ and
+$S=\sum_j\alpha_j$,
+\[
+ \B(\boldsymbol\alpha)
+ =\frac{\prod_j\Gamma(\alpha_j)}{\Gamma(S)}.
+\]
+For every fixed coordinate $m$,
+\begin{equation}
+ \boxed{
+ \frac{\partial}{\partial\alpha_m}\B(\boldsymbol\alpha)
+ =\B(\boldsymbol\alpha)
+ \bigl(\psi(\alpha_m)-\psi(S)\bigr).}
+ \label{eq:multibeta-derivative}
+\end{equation}
+This is the source-page formula.  For a variable-length encoded list, the product and sum are primitive-recursive recursors; the coordinate lookup is bounded search.  The derivative order and list length can be parameters of the metatheory, while each internal theorem uses a fixed primitive-recursive implementation.
