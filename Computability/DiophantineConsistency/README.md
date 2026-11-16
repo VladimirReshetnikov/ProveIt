@@ -23,6 +23,25 @@ printed derivation is not required. The exact candidate theory and proof
 boundary are specified in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md)
 and tracked in [IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md).
 
+**Pell slack in ordinary iPRA.** The [downstream row proof](Lean/DiophantineConsistency/IPRAPellSlack.lean)
+derives both directions between `η < k` and the existence of a natural
+`ζ` with `0 < ζ` and `k = η + ζ`. Its forward derivation supplies the
+truncated difference `k ∸ η`, as in the [Jones witness construction](../HilbertTenthProblem/Lean/Diophantine/Paper1980/NecessityPell90.lean).
+The row matches [`Sys90.E10b`](../HilbertTenthProblem/Lean/Diophantine/Paper1980/System90.lean).
+The native source application uses `η = x 12` and the positive slack
+`ζ = x 13`. The object-theory proof checks this specialization and recovers
+the supplied slack as the truncated difference. It also derives the upper
+interval `c < k * (Y + 1)` using the adjacent equation `c = k * Y + η`.
+[Native Pell consumer](Lean/DiophantineConsistency/NativePellPower.lean)
+
+The first command checks the row proof and its axiom audit. The second
+replays the witness interface against the existing natural-number consumer.
+
+```sh
+lake build +DiophantineConsistency.IPRAPellSlack
+lake env lean Computability/DiophantineConsistency/Lean/checks/IPRAPellSlack.lean
+```
+
 **Trace75 research candidate (3 November 2026).** A separate
 [decimal display](research/trace75-bfs-decimal-display/equation.pdf) gives a
 ten-positive-variable, 75-operation, degree-402 candidate. Its displayed

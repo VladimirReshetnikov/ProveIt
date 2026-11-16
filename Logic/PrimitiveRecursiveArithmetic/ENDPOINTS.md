@@ -134,6 +134,16 @@ public bridge and order-symbol comparison.
 The [MRDP proof guide](../../Computability/HilbertTenthProblem/Lean/MRDP.md)
 covers `Diophantine.mrdp` and `mrdp_iff` over standard natural numbers.
 Use `lake build Diophantine` and the published `MRDPAxioms.lean` audit.
+The [Pell slack row](../../Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAPellSlack.lean)
+is the first object-theory client. It uses `Sys90.E10b` with
+`k = η + ζ` and a positive natural witness `ζ`, and proves both
+directions of the strict bound, using `k ∸ η` for the forward witness.
+The exact source ports also give the adjacent upper interval in ordinary
+iPRA. Independently build `+Diophantine.Paper1980.System90` and
+`+DiophantineConsistency.IPRAPellSlack`, then run
+`lake env lean -j1 Computability/DiophantineConsistency/Lean/checks/IPRAPellSlack.lean`
+to check the existing native consumer's interface. All three checks passed.
+
 The [PA list-coding project](../PeanoArithmetic/ListCoding/README.md) provides
 the `ExactTrace` interface for this closure. The
 [ZFCinPA project](../Interpretability/ZFCinPA/README.md) and
