@@ -383,6 +383,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination.harmonic_upper
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination.prime_reciprocal_at
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination.prime_reciprocal
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.cop_A
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.phi_A
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.liminf_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.liminf_phi
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.iS_pair
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.nth_pair_succ
 #print axioms LeanProofs.IPRA.Combinatorics.Bell.bell_zero
