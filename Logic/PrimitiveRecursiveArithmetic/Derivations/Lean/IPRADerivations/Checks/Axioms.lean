@@ -31,6 +31,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.gram_identity
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.lagrange_identity
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.gram_factor
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.angle_unit
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.sine_law
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.angle_cosine
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.cagnoli
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.five_part
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.four_part
+#print axioms LeanProofs.IPRA.Geometry.SphericalCore.right_rules
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.quadratic
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.cardano
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.ferrari
