@@ -1,0 +1,28 @@
+Verification summary - 2026-11-16
+=================================
+
+1. Exact mathematical checker
+   Command: python3 code/verify_pentagonal_tilings.py
+   Result: PASS (`checker_status`: `all assertions passed`).
+   Full structured output: run_stdout.json
+   Compact result set: results.json
+   Explicit edge/translate/separating-axis witnesses: periodic_witnesses.json
+
+2. LaTeX build
+   Command: latexmk -pdf -interaction=nonstopmode -halt-on-error pentagonal_tiling_ipra.tex
+   Result: PASS, 28 pages.
+   Undefined references/citations: none.
+   Remaining warnings: two underfull boxes in the bibliography; no overfull boxes.
+
+3. PDF structural checks
+   `pdf_preflight.py`: openable, 28 pages, unencrypted, not likely scanned, no XFA.
+   `pdftotext`: successful, 56,677 extracted characters in the QA pass.
+   `pdffonts`: every listed font is embedded.
+
+4. PDF visual checks
+   Rendered all 28 pages at 160 dpi and inspected four contact sheets plus full-size
+   Type 14 pages. No clipping, overlap, black squares, or broken glyphs observed.
+
+5. Lean
+   No Lean/Lake executable was available. The blueprint was statically scanned;
+   it contains no `sorry`, `admit`, or added `axiom`, but is not claimed compiled.

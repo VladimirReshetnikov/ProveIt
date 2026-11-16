@@ -1,0 +1,45 @@
+Pentagonal tilings in iPRA - build information
+================================================
+
+Build date: 2026-11-16
+Platform: Linux x86_64
+Python: 3.13.5
+Matplotlib: 3.10.8
+SymPy: 1.14.0
+Shapely: 2.1.2
+pdfTeX: 1.40.26 (TeX Live 2025/dev/Debian)
+latexmk: 4.86
+
+ProveIt baseline
+----------------
+Repository: VladimirReshetnikov/ProveIt
+Observed main commit: d91fc1854ebe1f4be70f5c690b6180aca57cc937
+Observation date: 2026-11-16
+
+Commands executed
+-----------------
+python3 code/verify_pentagonal_tilings.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error pentagonal_tiling_ipra.tex
+python /home/oai/skills/pdfs/scripts/pdf_preflight.py pentagonal_tiling_ipra.pdf
+python /home/oai/skills/pdfs/scripts/render_pdf.py pentagonal_tiling_ipra.pdf --dpi 160
+pdftotext pentagonal_tiling_ipra.pdf
+pdffonts pentagonal_tiling_ipra.pdf
+
+Results
+-------
+- Exact checker: all assertions passed.
+- Periodic cells checked: 4 (2, 2, 3, and 12 pentagons).
+- Type 15: 32 directed-subsegment reverse pairs and 1,794 separating-axis checks.
+- Type 14: exact ordered-quartic arithmetic; 6 convex congruent copies; all 15 pairs exactly separated.
+- Nonconvex subdivisions: triangle, square, and regular hexagon verified as exact planar complexes.
+- Spherical certificate: regular dodecahedron, 20 vertices, 30 edges, 12 pentagonal faces.
+- PDF: 28 pages; openable; unencrypted; searchable text; all fonts embedded.
+- Visual QA: all 28 rendered pages inspected at 160 dpi; no clipping, overlaps, black boxes, or broken glyphs observed.
+- LaTeX: no undefined references or citations; two harmless underfull bibliography boxes.
+
+Lean status
+-----------
+Neither `lean` nor `lake` was installed in the build environment. The supplied
+Lean file is therefore a source blueprint, not a compiler-checked artifact. It
+contains no `sorry`, `admit`, or newly introduced axiom. The intended endpoints
+remain closed object-language derivations of type `Prf PRAAx`.
