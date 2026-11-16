@@ -141,16 +141,21 @@ encoding rules below.
   layer now have independent imports. The bridge goes through the
   equality-only reference proof rules, and the PA replay checks keep the
   original declaration owners when loading pinned objects.
-- [ ] Keep syntax translation, reference proof transport, standard Foundation
+- [x] Keep syntax translation, reference proof transport, standard Foundation
   transport, and application examples at separately importable boundaries.
   Keep the root and standalone Lake build targets usable on their existing
   toolchains. A lightweight Concise arithmetic import should remain
   independent of Foundation, `BusyBeaver`, and `DiophantineConsistency`.
-- [ ] Check representative old imports after each move, inspect import cycles
+  The normal root bridge targets and the standalone BusyBeaver package
+  both passed. The portable library has its own source closure gate.
+- [x] Check representative old imports after each move, inspect import cycles
   and transitive application imports. Add a focused closure check for the
   extracted core that excludes BusyBeaver, ZFCinPA, bounded-consistency
   endpoints, and polynomial certificate data. Compare baseline replay costs
   and document any purposeful dependency change.
+  The [dependency inventory](DEPENDENCIES.md) and
+  [endpoint receipts](ENDPOINTS.md) record the closure and the checked
+  root and pinned provider paths.
 
 ### Phase 2 · Complete formula and sequent transport
 

@@ -40,6 +40,16 @@ reported `propext`, `Classical.choice`, and `Quot.sound`. The
 the full portable library, the Foundation statement layer, and the
 public bridge and order-symbol comparison.
 
+After extracting the new syntax providers, the normal root Lake build
+of `IPRABridge` checked all 1,188 jobs. With its toolchain and general
+dependencies already built, the run took 90.68 seconds and peaked at
+1,739 MiB. The immediate `lake --no-build build IPRABridge` rerun found all
+targets up to date in 1.26 seconds at 799 MiB peak resident memory. The
+installed `IPRABridge` objects and companions used 7.0 MiB. The round trip,
+open and scoped sequent, arithmetic, and PA196 assembly targets each
+passed after the new sources were built. Their elapsed times ranged from
+3.19 to 4.99 seconds.
+
 The [zero-test comparison](Bridge/Lean/IPRABridge/ComparisonBits.lean)
 proves the translated `isZeroCode` application equal to `eqb a zero` at
 any `a : PTm n` in any finite context. The Foundation
