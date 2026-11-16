@@ -37,10 +37,18 @@ private def proofDeclarations : IO (Std.HashMap Name ConstantInfo) := do
     `DiophantineConsistency.IPRADifferenceStepClosure,
     `DiophantineConsistency.IPRADifferenceSuccLogic, `DiophantineConsistency.IPRADifferenceSuccEq,
     `DiophantineConsistency.IPRASubSuccSelfNonzero, `IPRADerivations.Core.Order,
-    `IPRABridge.BoundedSearch, `IPRADerivations.Core.SearchParameters]
+    `IPRABridge.BoundedSearch, `IPRADerivations.Core.SearchParameters,
+    `DiophantineConsistency.IPRADifferenceInvariantBase,
+    `DiophantineConsistency.IPRADifferenceInvariant,
+    `DiophantineConsistency.IPRADifferenceEqualityZeroJoin,
+    `DiophantineConsistency.IPRAZeroStepNative, `DiophantineConsistency.IPRAAddOneTransfer,
+    `DiophantineConsistency.IPRAReconstructBridgeOpen, `DiophantineConsistency.IPRAReconstructBridge,
+    `DiophantineConsistency.IPRASubPredZeroNative, `DiophantineConsistency.IPRASubSuccZeroNative]
   let mut decls := {}
   for mod in modules do
     let file ← findOLean mod
+    unless ← file.pathExists do
+      throw <| IO.userError s!"Missing proof provider {mod}: {file}"
     let parts ← (#[file, Lean.OLeanLevel.server.adjustFileName file,
       Lean.OLeanLevel.private.adjustFileName file]).filterM (fun path => do path.pathExists)
     let moduleData ← readModuleDataParts parts
@@ -55,7 +63,10 @@ def main : IO Unit := do
   let endpoint := `PA1944LFinal.consistency_iff_literal_nonhalt
   let paths := #[
     (`DiophantineConsistency.IPRASubSuccSelfNonzero.native, `LeanProofs.IPRA.not_succ_le_self),
-    (`DiophantineConsistency.IPRABoundedSelector.selectorOpen, `LeanProofs.IPRA.Search.Finite.search_found)]
+    (`DiophantineConsistency.IPRABoundedSelector.selectorOpen, `LeanProofs.IPRA.Search.Finite.search_found),
+    (`DiophantineConsistency.IPRAAddOneTransfer.transfer, `LeanProofs.IPRA.succ_eq_add_one),
+    (`DiophantineConsistency.IPRASubPredZeroNative.native, `LeanProofs.IPRA.monus_succ),
+    (`DiophantineConsistency.IPRASubSuccZeroNative.native, `LeanProofs.IPRA.le_succ_self)]
   for (helper, shared) in paths do
     let some usePath := proofPath decls endpoint helper
       | throw <| IO.userError s!"{endpoint} does not use {helper}"

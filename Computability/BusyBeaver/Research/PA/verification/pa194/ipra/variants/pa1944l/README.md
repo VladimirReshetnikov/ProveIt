@@ -53,7 +53,10 @@ uses the shared ConciseIPRA proof `LeanProofs.IPRA.not_succ_le_self`.
 The bounded existential comparison uses `IPRABoundedSelector.selectorOpen`,
 which reaches the shared finite search proof `LeanProofs.IPRA.Search.Finite.search_found`.
 [`PA1944LSharedArithmeticChecks.lean`](PA1944LSharedArithmeticChecks.lean)
-checks both paths in the proof values of the literal endpoint.
+checks those paths in the proof values of the literal endpoint. It also checks
+that the add-one, predecessor subtraction, and successor subtraction proofs
+reach `LeanProofs.IPRA.succ_eq_add_one`, `LeanProofs.IPRA.monus_succ`, and
+`LeanProofs.IPRA.le_succ_self`, respectively.
 
 Build the current arithmetic modules, then reuse the checked machine and
 coverage stages in the replay above.
