@@ -111,8 +111,12 @@ retain those distinctions and use existential guard bounds. Their interpretation
 interface has no packet-length condition; the [domain-inhabitation supplier](pa194-work/pa194-model-logic/SOURCE-INHABITED.md)
 is proved. The term facts reduce to seventeen one-layer naming obligations;
 [variable](pa194-work/pa194-model-axioms/NAME-VARIABLE.md) and
-[zero](pa194-work/pa194-model-logic/NAME-ZERO.md) name existence are proved in
-the full source theory, while the other obligations and remaining axiom
+[zero](pa194-work/pa194-model-logic/NAME-ZERO.md) name existence and their
+[variable](pa194-work/pa194-model-axioms/NAME-VARIABLE-UNIQUE.md) and
+[zero](pa194-work/pa194-model-logic/UZERO-FIELD.md) uniqueness are proved in
+the full source theory. The generic [reflexive naming](pa194-work/pa194-model-logic/NAME-REFL.md)
+and [transfer from uniqueness](pa194-work/pa194-model-logic/NAME-OF-UNIQ.md)
+fields are also proved. The other naming obligations and remaining axiom
 suppliers are open. Identity translation is independent of packet length for
 valid internal formulas. The
 [ordinary PAeq theory now has a uniform classifier](pa194-work/pa194-model-logic/PAEQ-ORDINARY-CLASS.md),
