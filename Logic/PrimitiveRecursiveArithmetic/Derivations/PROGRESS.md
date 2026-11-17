@@ -7,6 +7,9 @@ and encoding conventions. The table below indexes the whole packet scope
 and the current derivation families. Each module records the mathematical
 statements it proves. Source-claim reconciliation remains open across the
 packet inventory.
+The [complete FIBER claim audit](FIBER-CLAIMS.md) covers its theorem
+environments, target signatures, implementation phases and regression
+obligations, with exact statement-level status.
 
 ## Current theorem additions
 
@@ -31,6 +34,8 @@ packet inventory.
 | Barnes G, finite complex `eq:qseries`/`eq:qbound` comparison | `ComplexLogarithmRemainder.finite_complex_logarithm_domination`, `finite_complex_canonical_factor_bound`, `exact_finite_complex_taylor_evaluator` | Actual Gaussian powers and alternating finite numerator. Internal norm/triangle and series inductions yield `normSq(G_L)≤P_L²` and the exact squared cleared constant. No complex or series estimate is assumed. The infinite logarithm-name bridge remains open. |
 | Finite-use-v2, finite actual-selector stability for `cor:strong-minimizer` | `StrongMinimizer.selected_residual`, `selected_pair_closed` | The actual finite-net least minimizers at two precisions, their derived residual errors, and an explicit convexity/error schedule give a rational pair-distance bound. Completed-domain existence and evaluator compatibility remain application obligations. |
 | FIBER, `thm:strategy` | `StrategyRealization.bounded_strategy_program` | A generated binary PR verifier for every fixed dependent bounded quantifier pattern, actual response/tree tables and reflected leaves; closed object-theory soundness for every code and packed move history. |
+| Barnes G, actual finite complex-logarithm convergence | `ComplexLogarithmCauchy.finite_complex_logarithm_cauchy`, `uniform_dyadic_cauchy` | Cross-multiplied actual samples at arbitrary internal lengths `L,L+K`, with a proved shifted geometric remainder; an explicit `2^(-L)` modulus and positive sample denominators. The dyadic rounding and logarithm identification steps remain open. |
+| FIBER, `thm:least` | `BoundedSelection.canonical_bounded_selection` | Arbitrary fixed binary verifier with explicit object bit contract; internal query and bound, actual least complement search, acceptedness and literal zero at every earlier index. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -90,7 +95,7 @@ claims beyond those families.
 | [algebra/lagrange_inversion_ipra](../docs/proofs/algebra/lagrange_inversion_ipra/) | [Combinatorics/BinomialIdentities](Lean/IPRADerivations/Combinatorics/BinomialIdentities.lean), [Combinatorics/BinomialTheorem](Lean/IPRADerivations/Combinatorics/BinomialTheorem.lean) |
 | [algebra/puiseux_ipra](../docs/proofs/algebra/puiseux_ipra/) | [Algebra/HenselStep](Lean/IPRADerivations/Algebra/HenselStep.lean) |
 | [algebra/three_impossibilities_ipra](../docs/proofs/algebra/three_impossibilities_ipra/) | [Algebra/CubeRootTwo](Lean/IPRADerivations/Algebra/CubeRootTwo.lean), [Algebra/TrisectionCubic](Lean/IPRADerivations/Algebra/TrisectionCubic.lean), [Algebra/PolynomialFormulas](Lean/IPRADerivations/Algebra/PolynomialFormulas.lean) |
-| [analysis/barnes_g_ipra_2026-11-16](../docs/proofs/analysis/barnes_g_ipra_2026-11-16/) | [Analysis/BarnesInteger](Lean/IPRADerivations/Analysis/BarnesInteger.lean), [Analysis/BarnesProducts](Lean/IPRADerivations/Analysis/BarnesProducts.lean), [Analysis/ReciprocalSquareTail](Lean/IPRADerivations/Analysis/ReciprocalSquareTail.lean), [Analysis/BarnesCutoff](Lean/IPRADerivations/Analysis/BarnesCutoff.lean), [Analysis/LogarithmRemainder](Lean/IPRADerivations/Analysis/LogarithmRemainder.lean), [Analysis/ComplexLogarithmRemainder](Lean/IPRADerivations/Analysis/ComplexLogarithmRemainder.lean) |
+| [analysis/barnes_g_ipra_2026-11-16](../docs/proofs/analysis/barnes_g_ipra_2026-11-16/) | [Analysis/BarnesInteger](Lean/IPRADerivations/Analysis/BarnesInteger.lean), [Analysis/BarnesProducts](Lean/IPRADerivations/Analysis/BarnesProducts.lean), [Analysis/ReciprocalSquareTail](Lean/IPRADerivations/Analysis/ReciprocalSquareTail.lean), [Analysis/BarnesCutoff](Lean/IPRADerivations/Analysis/BarnesCutoff.lean), [Analysis/LogarithmRemainder](Lean/IPRADerivations/Analysis/LogarithmRemainder.lean), [Analysis/ComplexLogarithmRemainder](Lean/IPRADerivations/Analysis/ComplexLogarithmRemainder.lean), [Analysis/ComplexLogarithmCauchy](Lean/IPRADerivations/Analysis/ComplexLogarithmCauchy.lean) |
 | [analysis/basel_ipra](../docs/proofs/analysis/basel_ipra/) | [Analysis/PowerSums](Lean/IPRADerivations/Analysis/PowerSums.lean), [Analysis/BaselDiagonal](Lean/IPRADerivations/Analysis/BaselDiagonal.lean) |
 | [analysis/beta_function_ipra_2026-11-16](../docs/proofs/analysis/beta_function_ipra_2026-11-16/) | [Analysis/BetaIntegers](Lean/IPRADerivations/Analysis/BetaIntegers.lean) |
 | [analysis/bohr_mollerup_ipra_2026-11-15](../docs/proofs/analysis/bohr_mollerup_ipra_2026-11-15/) | [Analysis/Products](Lean/IPRADerivations/Analysis/Products.lean) |
@@ -130,7 +135,7 @@ claims beyond those families.
 | [diophantine-number-theory/transcendence_ipra](../docs/proofs/diophantine-number-theory/transcendence_ipra/) | [DiophantineNumberTheory/CoprimeModulus](Lean/IPRADerivations/DiophantineNumberTheory/CoprimeModulus.lean) |
 | [foundations/cifer_ipra_framework_2026-11-15](../docs/proofs/foundations/cifer_ipra_framework_2026-11-15/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/darc_ipra_framework_2026-11-16](../docs/proofs/foundations/darc_ipra_framework_2026-11-16/) | Source-claim inventory pending. |
-| [foundations/fiber_ipra_2026-11-16](../docs/proofs/foundations/fiber_ipra_2026-11-16/) | [Analysis/DyadicCauchy](Lean/IPRADerivations/Analysis/DyadicCauchy.lean), [Analysis/SummableTails](Lean/IPRADerivations/Analysis/SummableTails.lean), [Foundations/FiniteNet](Lean/IPRADerivations/Foundations/FiniteNet.lean), [Foundations/MasterCertificate](Lean/IPRADerivations/Foundations/MasterCertificate.lean), [Foundations/StrategyRealization](Lean/IPRADerivations/Foundations/StrategyRealization.lean), [Foundations/DemandClosure](Lean/IPRADerivations/Foundations/DemandClosure.lean) |
+| [foundations/fiber_ipra_2026-11-16](../docs/proofs/foundations/fiber_ipra_2026-11-16/) | [Analysis/DyadicCauchy](Lean/IPRADerivations/Analysis/DyadicCauchy.lean), [Analysis/SummableTails](Lean/IPRADerivations/Analysis/SummableTails.lean), [Foundations/FiniteNet](Lean/IPRADerivations/Foundations/FiniteNet.lean), [Foundations/MasterCertificate](Lean/IPRADerivations/Foundations/MasterCertificate.lean), [Foundations/StrategyRealization](Lean/IPRADerivations/Foundations/StrategyRealization.lean), [Foundations/DemandClosure](Lean/IPRADerivations/Foundations/DemandClosure.lean), [Foundations/BoundedSelection](Lean/IPRADerivations/Foundations/BoundedSelection.lean) |
 | [foundations/FINER-iPRA-framework-2026-11-16](../docs/proofs/foundations/FINER-iPRA-framework-2026-11-16/) | Source-claim inventory pending. |
 | [foundations/ipra_bounded_reflection_2026-11-16](../docs/proofs/foundations/ipra_bounded_reflection_2026-11-16/) | [Foundations/BoundedReflection](Lean/IPRADerivations/Foundations/BoundedReflection.lean), [Foundations/BoundedFormulas](Lean/IPRADerivations/Foundations/BoundedFormulas.lean), [Foundations/BoundedCover](Lean/IPRADerivations/Foundations/BoundedCover.lean) |
 | [foundations/ipra_categorical_methods](../docs/proofs/foundations/ipra_categorical_methods/) | [Foundations/ChineseRemainder](Lean/IPRADerivations/Foundations/ChineseRemainder.lean), [Foundations/BooleanizationCorollaries](Lean/IPRADerivations/Foundations/BooleanizationCorollaries.lean), [Foundations/GuardedLoop](Lean/IPRADerivations/Foundations/GuardedLoop.lean) |
@@ -200,12 +205,12 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `a46acfdae8`, including the full finite-demand closure
-and finite complex logarithm additions, the root build completed 2,076 jobs
-and emitted 1,924 axiom reports for 1,882 distinct declarations, all using only
-`propext`, `Classical.choice`, and `Quot.sound`. The portable import gate
-passed across 3,495 source modules and the independent `Diophantine` boundary
-passed across 5,252 modules.
+At the source based on `b1bd8ac2e4`, including the complex-logarithm Cauchy
+modulus and generic bounded-selection additions, the root build completed
+2,078 jobs and emitted 1,939 axiom reports for 1,891 distinct declarations,
+all using only `propext`, `Classical.choice`, and `Quot.sound`. The portable
+import gate passed across 3,497 source modules and the independent
+`Diophantine` boundary passed across 5,252 modules.
 
 The new modules are included in `IPRADerivations`. Their public theorem
 names are audited in `Checks/Axioms.lean`. Build and inspect the object

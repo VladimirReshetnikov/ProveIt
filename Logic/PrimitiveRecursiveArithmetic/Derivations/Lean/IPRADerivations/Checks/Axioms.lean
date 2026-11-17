@@ -1890,3 +1890,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.DemandClosure.closure_prefixed
 #print axioms LeanProofs.IPRA.Foundations.DemandClosure.demand_closure
 #print axioms LeanProofs.IPRA.Foundations.DemandClosure.demand_closure_closed
+#print axioms LeanProofs.IPRA.Analysis.ComplexLogarithmCauchy.positive_shifted_remainder
+#print axioms LeanProofs.IPRA.Analysis.ComplexLogarithmCauchy.finite_complex_logarithm_cauchy
+#print axioms LeanProofs.IPRA.Analysis.ComplexLogarithmCauchy.uniform_dyadic_cauchy
+#print axioms LeanProofs.IPRA.Foundations.BoundedSelection.found_bound
+#print axioms LeanProofs.IPRA.Foundations.BoundedSelection.least
+#print axioms LeanProofs.IPRA.Foundations.BoundedSelection.canonical_bounded_selection
