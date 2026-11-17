@@ -150,6 +150,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamiltonGeneral.toZ_cfZ
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamiltonGeneral.toZ_powM
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamiltonGeneral.cayley_hamilton
+#print axioms LeanProofs.IPRA.Algebra.AdjugatePolynomial.mul_Sp
+#print axioms LeanProofs.IPRA.Algebra.AdjugatePolynomial.adj_poly_generic
+#print axioms LeanProofs.IPRA.Algebra.AdjugatePolynomial.adj_poly
+#print axioms LeanProofs.IPRA.Algebra.AdjugatePolynomial.adjugate_polynomial
 #print axioms LeanProofs.IPRA.Geometry.EulerRodrigues.rodrigues_orthogonal
 #print axioms LeanProofs.IPRA.Geometry.EulerRodrigues.rodrigues_det
 #print axioms LeanProofs.IPRA.Geometry.EulerRodrigues.rodrigues_axis
