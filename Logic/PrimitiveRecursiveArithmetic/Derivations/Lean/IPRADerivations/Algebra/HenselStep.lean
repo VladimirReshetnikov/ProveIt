@@ -3,7 +3,7 @@ import IPRADerivations.Core.Tactic
 /-!
 # One step of coprime Hensel lifting, and the simple-root identities
 
-Packet: `algebra/puiseux_ipra` (`lem:hensel` for two factors; the Bézout bound and the Taylor
+Packet: `algebra/puiseux_ipra` (`lem:hensel` for two and three factors; the Bézout bound and the Taylor
 identity in the proof of `lem:backend-isolation`). The statements are rules over the integers;
 the letters stand for the values of the polynomials involved, and only ring identities are used,
 so the same derivations apply coefficientwise.
@@ -15,6 +15,8 @@ so the same derivations apply coefficientwise.
 * `hensel_step`: if `G = C₁ C₂ + T R + T² S`, then
   `G = (C₁ + T V₁)(C₂ + T V₂) + T² (S − V₁ V₂)`: the lifted factors agree with `G` to one more
   order in `T`;
+* `hensel_combine₃`, `hensel_step₃`: the same for three pairwise coprime factors, with the Bézout
+  identity `E₁ C₂ C₃ + E₂ C₁ C₃ + E₃ C₁ C₂ = 1`;
 * `bezout_root`: `A p + B p' = 1` and `p = 0` give `B p' = 1`, so the derivative at a root of a
   squarefree polynomial is invertible;
 * `taylor_cubic`: for `p(x) = c₃ x³ + c₂ x² + c₁ x + c₀`,
@@ -63,6 +65,32 @@ theorem hensel_step (hB : Γ ⊢[PRAAx] ZT.eq (E₁ * C₂ + E₂ * C₁) (ZT.na
     (hG : Γ ⊢[PRAAx] ZT.eq G (C₁ * C₂ + T * R + T * T * S)) :
     Γ ⊢[PRAAx] ZT.eq G
       ((C₁ + T * (E₁ * R)) * (C₂ + T * (E₂ * R)) + T * T * (S - (E₁ * R) * (E₂ * R))) := by
+  have e := ZT.toZ_eq hB; have eG := ZT.toZ_eq hG
+  apply ZT.derive
+  ipra_simps
+  linear_combination eG - 𝔷(T) * 𝔷(R) * e
+
+/-- Three pairwise coprime factors, with the Bézout identity
+`E₁ C₂ C₃ + E₂ C₁ C₃ + E₃ C₁ C₂ = 1`: the corrections `V_j = E_j R` satisfy
+`V₁ C₂ C₃ + V₂ C₁ C₃ + V₃ C₁ C₂ = R`. -/
+theorem hensel_combine₃ {C₃ E₃ : ZT n}
+    (hB : Γ ⊢[PRAAx] ZT.eq (E₁ * (C₂ * C₃) + E₂ * (C₁ * C₃) + E₃ * (C₁ * C₂)) (ZT.natLit 1)) (R : ZT n) :
+    Γ ⊢[PRAAx] ZT.eq ((E₁ * R) * (C₂ * C₃) + (E₂ * R) * (C₁ * C₃) + (E₃ * R) * (C₁ * C₂)) R := by
+  have e := ZT.toZ_eq hB
+  apply ZT.derive
+  ipra_simps
+  linear_combination 𝔷(R) * e
+
+/-- One order of lifting for three factors: if `G = C₁ C₂ C₃ + T R + T² S`, then with
+`V_j = E_j R`,
+`G = ∏ (C_j + T V_j) + T² (S − (V₁ V₂ C₃ + V₁ V₃ C₂ + V₂ V₃ C₁) − T V₁ V₂ V₃)`. -/
+theorem hensel_step₃ {C₃ E₃ : ZT n}
+    (hB : Γ ⊢[PRAAx] ZT.eq (E₁ * (C₂ * C₃) + E₂ * (C₁ * C₃) + E₃ * (C₁ * C₂)) (ZT.natLit 1))
+    (hG : Γ ⊢[PRAAx] ZT.eq G (C₁ * C₂ * C₃ + T * R + T * T * S)) :
+    Γ ⊢[PRAAx] ZT.eq G
+      ((C₁ + T * (E₁ * R)) * (C₂ + T * (E₂ * R)) * (C₃ + T * (E₃ * R)) +
+        T * T * (S - ((E₁ * R) * (E₂ * R) * C₃ + (E₁ * R) * (E₃ * R) * C₂ + (E₂ * R) * (E₃ * R) * C₁) -
+          T * ((E₁ * R) * (E₂ * R) * (E₃ * R)))) := by
   have e := ZT.toZ_eq hB; have eG := ZT.toZ_eq hG
   apply ZT.derive
   ipra_simps

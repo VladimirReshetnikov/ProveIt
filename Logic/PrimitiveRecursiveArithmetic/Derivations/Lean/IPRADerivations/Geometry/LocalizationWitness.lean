@@ -27,10 +27,14 @@ The power-cover constructor, for a cover certificate `∑ cᵢ fᵢ = 1`:
   `∑ dᵢ fᵢ^N = (∑ cᵢ fᵢ)^M`, `M = r (N − 1) + 1`, for `(r, N) = (2, 2), (2, 3), (3, 2)`, with
   the coefficients `dᵢ` of the packet's formula;
 * `cover22`, `cover23`, `cover32`: hence `∑ dᵢ fᵢ^N = 1`;
+* `cover_step`: for two generators and every exponent, an explicit update of the coefficients
+  turns a certificate for the powers `N + 1` into one for `N + 2`;
 * `cover_example`: for `f = (2, 3)`, `c = (−1, 1)` and `N = 2` the constructor returns
   `d = (7, −3)`, and `7 · 2² − 3 · 3² = 1`.
 
-The general `r` and `N`, quotient presentations and the gluing theorems are not formalized.
+For two generators every `N` is reached by iterating `cover_step`; the single object-level
+statement for all `N`, more generators, quotient presentations and the gluing theorems are not
+formalized.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -212,6 +216,26 @@ theorem cover32 (h : Γ ⊢[PRAAx] ZT.eq (c₀ * f₀ + c₁ * f₁ + c₂ * f�
   linear_combination ((𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) ^ 3 +
     (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) ^ 2 +
     (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) + 1) * e
+
+/-- The inductive step of `thm:power-cover` for two generators, for every exponent. With
+`P = f₀^N`, `Q = f₁^N` and a certificate `d₀ f₀^(N+1) + d₁ f₁^(N+1) = 1`, the updated
+coefficients
+
+  `d₀' = d₀ c₀ + d₀² c₁ P f₁ + d₀ d₁ c₀ f₁ Q`,  `d₁' = d₁ c₁ + d₀ d₁ c₁ f₀ P + d₁² c₀ f₀ Q`
+
+satisfy `d₀' f₀^(N+2) + d₁' f₁^(N+2) = 1`. Starting from `d = c`, `P = Q = 1`, iteration gives
+the certificate for every power, by a primitive-recursive update. -/
+theorem cover_step {d₀ d₁ P Q : ZT n} (hu : Γ ⊢[PRAAx] ZT.eq (c₀ * f₀ + c₁ * f₁) (ZT.natLit 1))
+    (hS : Γ ⊢[PRAAx] ZT.eq (d₀ * (f₀ * P) + d₁ * (f₁ * Q)) (ZT.natLit 1)) :
+    Γ ⊢[PRAAx] ZT.eq
+      ((d₀ * c₀ + d₀ * d₀ * c₁ * P * f₁ + d₀ * d₁ * c₀ * (f₁ * Q)) * (f₀ * (f₀ * P)) +
+        (d₁ * c₁ + d₀ * d₁ * c₁ * (f₀ * P) + d₁ * d₁ * c₀ * f₀ * Q) * (f₁ * (f₁ * Q)))
+      (ZT.natLit 1) := by
+  have eu := ZT.toZ_eq hu; have eS := ZT.toZ_eq hS
+  apply ZT.derive
+  ipra_simps
+  linear_combination (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(d₀) * 𝔷(c₁) * 𝔷(f₁) * (𝔷(f₀) * 𝔷(P)) +
+    𝔷(d₁) * 𝔷(c₀) * 𝔷(f₀) * (𝔷(f₁) * 𝔷(Q))) * eS + eu
 
 end PowerCover
 

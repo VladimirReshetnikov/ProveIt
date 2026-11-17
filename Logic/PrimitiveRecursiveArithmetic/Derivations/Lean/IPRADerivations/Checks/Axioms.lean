@@ -67,6 +67,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.LocalizationWitness.cover23_all
 #print axioms LeanProofs.IPRA.Geometry.LocalizationWitness.cover32_all
 #print axioms LeanProofs.IPRA.Geometry.LocalizationWitness.cover_example
+#print axioms LeanProofs.IPRA.Geometry.LocalizationWitness.cover_step
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm2
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm4
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.box_product2
@@ -310,6 +311,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.HenselStep.hensel_step
 #print axioms LeanProofs.IPRA.Algebra.HenselStep.bezout_root
 #print axioms LeanProofs.IPRA.Algebra.HenselStep.taylor_cubic
+#print axioms LeanProofs.IPRA.Algebra.HenselStep.hensel_combine₃
+#print axioms LeanProofs.IPRA.Algebra.HenselStep.hensel_step₃
 #print axioms LeanProofs.IPRA.Topology.Sperner.parity_invariant
 #print axioms LeanProofs.IPRA.Topology.Sperner.sperner_1d
 #print axioms LeanProofs.IPRA.Topology.CrossingParity.straddle_parity
