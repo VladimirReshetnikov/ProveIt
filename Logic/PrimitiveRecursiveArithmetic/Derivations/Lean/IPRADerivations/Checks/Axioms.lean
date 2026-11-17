@@ -478,6 +478,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.BernoulliTrials.bX_idem
 #print axioms LeanProofs.IPRA.Probability.BernoulliTrials.binomial_mean
 #print axioms LeanProofs.IPRA.Probability.BernoulliTrials.binomial_variance
+#print axioms LeanProofs.IPRA.Probability.FiniteKernel.pr_evaluator
+#print axioms LeanProofs.IPRA.Probability.FiniteKernel.wB_at
+#print axioms LeanProofs.IPRA.Probability.FiniteKernel.weighted_average
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_fact

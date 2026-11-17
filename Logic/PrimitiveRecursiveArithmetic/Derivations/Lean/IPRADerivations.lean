@@ -266,6 +266,7 @@ import IPRADerivations.Probability.JointLotus
 import IPRADerivations.Probability.Jensen
 import IPRADerivations.Probability.Minkowski
 import IPRADerivations.Probability.BernoulliTrials
+import IPRADerivations.Probability.FiniteKernel
 import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Probability.MedianL1
