@@ -648,6 +648,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.lpf_dvd
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.lpf_prime
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.euclid
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.g_period
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.block
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.blocks
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.partial_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.count_upper
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.count_lower
 #print axioms LeanProofs.IPRA.sum_zero_of_bounded
 #print axioms LeanProofs.IPRA.Combinatorics.Binomial.binom_open
 #print axioms LeanProofs.IPRA.Combinatorics.Binomial.binom_spec
