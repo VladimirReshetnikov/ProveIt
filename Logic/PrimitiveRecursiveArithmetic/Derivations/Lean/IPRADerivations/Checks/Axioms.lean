@@ -1060,6 +1060,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers.bezout_pos
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers.exp_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers.canonical_injective
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalDecomposition.root_hit
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalDecomposition.root_spec
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalDecomposition.maximal
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalDecomposition.canonical_pow
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalDecomposition.e_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalDecomposition.no_root
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalDecomposition.canonical_RF
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalDecomposition.canonical_unique
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalDecomposition.perfect_canonical
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.cop_A
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.phi_A
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.liminf_at
