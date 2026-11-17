@@ -53,6 +53,7 @@ import IPRADerivations.Algebra.HenselStep
 import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Combinatorics.BinomialTheorem
+import IPRADerivations.Combinatorics.BinomialTransform
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.Totient

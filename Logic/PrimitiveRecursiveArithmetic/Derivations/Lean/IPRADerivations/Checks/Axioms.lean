@@ -474,6 +474,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialIdentities.catalan
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialTheorem.sum_mul_snd
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialTheorem.binomial
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.pas_pt
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.pascal_sum
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.shift_fb
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.shift_fs
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.conv_step
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.fib_convolution
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.absorption
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.prime_dvd_binom
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.dvd_sum
