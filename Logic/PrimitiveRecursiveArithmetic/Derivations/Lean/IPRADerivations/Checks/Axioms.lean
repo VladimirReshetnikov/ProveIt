@@ -273,6 +273,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.closed_signed
 #print axioms LeanProofs.IPRA.sum_split
 #print axioms LeanProofs.IPRA.sum_split₃
+#print axioms LeanProofs.IPRA.pal_pt
+#print axioms LeanProofs.IPRA.sum_half_par
+#print axioms LeanProofs.IPRA.sum_palindrome
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.trichotomy_bits
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.partition
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.counts_le
@@ -811,6 +814,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.shift_squares
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.signed_square
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.signed_square_zero
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanHalving.gb_K
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanHalving.pv_K
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanHalving.t_sym
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanHalving.t_full
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanHalving.t_middle
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanHalving.square_sum_half
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanHalving.half_succ_succ
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_split
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_shift
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_shift'

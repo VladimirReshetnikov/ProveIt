@@ -28,6 +28,7 @@ import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Core.Telescoping
 import IPRADerivations.Core.SumSplit
+import IPRADerivations.Core.SumPalindrome
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
@@ -104,6 +105,7 @@ import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Combinatorics.CatalanSums
 import IPRADerivations.Combinatorics.CatalanNarayana
 import IPRADerivations.Combinatorics.CatalanSquares
+import IPRADerivations.Combinatorics.CatalanHalving
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.DiophantineNumberTheory.PellModular

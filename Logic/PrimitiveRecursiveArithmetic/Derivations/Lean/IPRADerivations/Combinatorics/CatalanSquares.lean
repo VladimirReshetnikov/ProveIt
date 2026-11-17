@@ -17,8 +17,7 @@ absolute difference `ad a b = (a ∸ b) + (b ∸ a)` of `Probability/Variance`, 
   `∑ C(n, j)² = C(2n, n)`, `∑ C(n, j) C(n, j + 1) = n Cat_n` and `(n + 1) Cat_n = C(2n, n)`;
 * `signed_square_zero`: the case `n = 0`.
 
-The halving by symmetry, which gives the displayed form with `k ≤ n/2` and the rational factor, is
-not formalized.
+The halving by symmetry, which gives the sum over `k ≤ n/2`, is `Combinatorics/CatalanHalving`.
 -/
 
 set_option linter.unusedSimpArgs false
