@@ -141,6 +141,7 @@ import IPRADerivations.Geometry.TriangularNorm
 import IPRADerivations.Geometry.LocalizationWitness
 import IPRADerivations.Geometry.PowerCover
 import IPRADerivations.Geometry.PowerCover3
+import IPRADerivations.Geometry.Gluing
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Geometry.KerrNewmanAlgebra
 import IPRADerivations.Core.IntCancel

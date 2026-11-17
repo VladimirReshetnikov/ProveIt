@@ -79,6 +79,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.PowerCover3.inv_base
 #print axioms LeanProofs.IPRA.Geometry.PowerCover3.inv_step
 #print axioms LeanProofs.IPRA.Geometry.PowerCover3.power_cover₃
+#print axioms LeanProofs.IPRA.Geometry.Gluing.cross_common
+#print axioms LeanProofs.IPRA.Geometry.Gluing.glue₂
+#print axioms LeanProofs.IPRA.Geometry.Gluing.unique₂
+#print axioms LeanProofs.IPRA.Geometry.Gluing.glue₃
+#print axioms LeanProofs.IPRA.Geometry.Gluing.unique₃
+#print axioms LeanProofs.IPRA.Geometry.Gluing.restrict_witness
+#print axioms LeanProofs.IPRA.Geometry.Gluing.glue_power₂
+#print axioms LeanProofs.IPRA.Geometry.Gluing.glue_power₃
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm2
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm4
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.box_product2
