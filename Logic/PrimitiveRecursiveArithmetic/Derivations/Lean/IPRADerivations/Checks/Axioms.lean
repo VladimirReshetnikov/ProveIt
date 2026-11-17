@@ -851,6 +851,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.DescentTools.lt_of_sq_gap
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.DescentTools.pyth_param
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.DescentTools.pyth_unique
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.TriangleNormalize.triangle_normalize
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.cop_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.cop_right
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.prim_core
