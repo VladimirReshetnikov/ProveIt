@@ -731,6 +731,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.FallingFactorial.ff_self
 #print axioms LeanProofs.IPRA.Combinatorics.FallingFactorial.ff_fact
 #print axioms LeanProofs.IPRA.Combinatorics.FallingFactorial.ff_binom
+#print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_zero
+#print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_self
+#print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_above
+#print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_pascal
+#print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.vs_succ_r
+#print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.vs_step
+#print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.vs_r0
+#print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.vs_base
+#print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.viol_step
+#print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.vandermonde
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fib_le
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fibS_add
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fib_add
