@@ -280,6 +280,7 @@ import IPRADerivations.Probability.BernoulliTrials
 import IPRADerivations.Probability.FiniteKernel
 import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Probability.MedianCounts
+import IPRADerivations.Probability.MedianSkew
 import IPRADerivations.Probability.MedianL1
 import IPRADerivations.Probability.MedianWeighted
 import IPRADerivations.Probability.MedianSymmetry
