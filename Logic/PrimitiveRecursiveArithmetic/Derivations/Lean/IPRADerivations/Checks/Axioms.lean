@@ -927,6 +927,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius.lambda_mobius
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius.split_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius.lambda_mobius_neg
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz.cv_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz.leib_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz.dirichlet_leibniz
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
