@@ -1415,6 +1415,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.pfq_ratio
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.gauss_symm
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.gauss_norm
+#print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.ff_vanish
+#print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.sign_step
+#print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.neg_poch
+#print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.ff_fact
+#print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.ff_binom
+#print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.termination
+#print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.termination_vanish
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_fact
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_symm
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_step_left
