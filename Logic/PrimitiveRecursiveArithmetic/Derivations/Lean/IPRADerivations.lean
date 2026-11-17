@@ -102,6 +102,7 @@ import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Combinatorics.StirlingPowers
 import IPRADerivations.Combinatorics.FallingFactorial
 import IPRADerivations.Combinatorics.StirlingBinomial
+import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Combinatorics.HockeyStick
 import IPRADerivations.Combinatorics.Fibonacci

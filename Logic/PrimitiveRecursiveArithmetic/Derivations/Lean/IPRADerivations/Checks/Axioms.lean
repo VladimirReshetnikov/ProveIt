@@ -783,6 +783,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingBinomial.sb_base
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingBinomial.viol_step
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingBinomial.stirling_binomial
+#print axioms LeanProofs.IPRA.Combinatorics.BellStirling.T_ext
+#print axioms LeanProofs.IPRA.Combinatorics.BellStirling.row_pt
+#print axioms LeanProofs.IPRA.Combinatorics.BellStirling.T_fub
+#print axioms LeanProofs.IPRA.Combinatorics.BellStirling.col_pt
+#print axioms LeanProofs.IPRA.Combinatorics.BellStirling.rec_pt
+#print axioms LeanProofs.IPRA.Combinatorics.BellStirling.T_succ
+#print axioms LeanProofs.IPRA.Combinatorics.BellStirling.T_zero
+#print axioms LeanProofs.IPRA.Combinatorics.BellStirling.v_step
+#print axioms LeanProofs.IPRA.Combinatorics.BellStirling.bell_stirling
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_zero
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_self
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_above
