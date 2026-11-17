@@ -349,6 +349,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.MedianRobust.below_perturb
 #print axioms LeanProofs.IPRA.Probability.MedianRobust.above_perturb
 #print axioms LeanProofs.IPRA.Probability.MedianRobust.robust_median
+#print axioms LeanProofs.IPRA.Probability.Ninther.mx_le
+#print axioms LeanProofs.IPRA.Probability.Ninther.mx_ge
+#print axioms LeanProofs.IPRA.Probability.Ninther.mn_le
+#print axioms LeanProofs.IPRA.Probability.Ninther.mn_ge
+#print axioms LeanProofs.IPRA.Probability.Ninther.leb_mono_r
+#print axioms LeanProofs.IPRA.Probability.Ninther.leb_mono_l
+#print axioms LeanProofs.IPRA.Probability.Ninther.med3_spec
+#print axioms LeanProofs.IPRA.Probability.Ninther.triple_low
+#print axioms LeanProofs.IPRA.Probability.Ninther.triple_high
+#print axioms LeanProofs.IPRA.Probability.Ninther.ninther_low
+#print axioms LeanProofs.IPRA.Probability.Ninther.ninther_high
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw

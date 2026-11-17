@@ -192,6 +192,7 @@ import IPRADerivations.Probability.MedianL1
 import IPRADerivations.Probability.MedianWeighted
 import IPRADerivations.Probability.MedianSymmetry
 import IPRADerivations.Probability.MedianRobust
+import IPRADerivations.Probability.Ninther
 import IPRADerivations.Topology.Sperner
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
