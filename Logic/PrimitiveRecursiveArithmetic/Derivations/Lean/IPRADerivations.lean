@@ -47,6 +47,7 @@ import IPRADerivations.Analysis.TerminatingSeries
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BarnesInteger
+import IPRADerivations.Analysis.BarnesProducts
 import IPRADerivations.Analysis.RationalClosure
 import IPRADerivations.Analysis.TrapezoidAffine
 import IPRADerivations.Analysis.HypergeometricTerm
@@ -147,6 +148,8 @@ import IPRADerivations.Combinatorics.BellTouchard
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Combinatorics.HockeyStick
 import IPRADerivations.Combinatorics.Fibonacci
+import IPRADerivations.Combinatorics.FibonacciCatalan
+import IPRADerivations.Combinatorics.FibonacciProgression
 import IPRADerivations.Combinatorics.FibonacciGcd
 import IPRADerivations.Combinatorics.FibonacciPeriod
 import IPRADerivations.Combinatorics.LucasPrime

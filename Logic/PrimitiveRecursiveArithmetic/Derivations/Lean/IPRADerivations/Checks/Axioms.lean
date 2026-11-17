@@ -1784,3 +1784,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.gcd_prime
 #print axioms LeanProofs.IPRA.euclid_lemma
 #print axioms LeanProofs.IPRA.bezout
+
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciCatalan.catalan_add_closed
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciCatalan.catalan_closed
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciProgression.fib_progression_closed
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciProgression.luc_progression_closed
+#print axioms LeanProofs.IPRA.Analysis.BarnesProducts.finite_ratio_sentence
+#print axioms LeanProofs.IPRA.Analysis.BarnesProducts.gamma_finite_product_sentence
+#print axioms LeanProofs.IPRA.Analysis.BarnesProducts.gamma_finite_quotient
+#print axioms LeanProofs.IPRA.Analysis.BarnesProducts.gamma_finite_quotient_sentence
