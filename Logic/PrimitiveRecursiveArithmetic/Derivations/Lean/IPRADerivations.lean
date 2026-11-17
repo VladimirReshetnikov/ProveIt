@@ -253,6 +253,7 @@ import IPRADerivations.Probability.ProductReplacement
 import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.ExpectationCorollaries
+import IPRADerivations.Probability.UnionUtility
 import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Probability.MedianL1

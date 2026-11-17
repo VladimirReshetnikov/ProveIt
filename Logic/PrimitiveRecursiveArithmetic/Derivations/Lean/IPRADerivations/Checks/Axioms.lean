@@ -384,6 +384,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.ExpectationCorollaries.power_pt
 #print axioms LeanProofs.IPRA.Probability.ExpectationCorollaries.power_markov
 #print axioms LeanProofs.IPRA.Probability.ExpectationCorollaries.three_quarters
+#print axioms LeanProofs.IPRA.Probability.UnionUtility.sg_le_self
+#print axioms LeanProofs.IPRA.Probability.UnionUtility.row_aw
+#print axioms LeanProofs.IPRA.Probability.UnionUtility.union_bound
+#print axioms LeanProofs.IPRA.Probability.UnionUtility.mx_succ
+#print axioms LeanProofs.IPRA.Probability.UnionUtility.ag_succ
+#print axioms LeanProofs.IPRA.Probability.UnionUtility.max_ge
+#print axioms LeanProofs.IPRA.Probability.UnionUtility.mx_upper
+#print axioms LeanProofs.IPRA.Probability.UnionUtility.ag_attains
+#print axioms LeanProofs.IPRA.Probability.UnionUtility.argmax
+#print axioms LeanProofs.IPRA.Probability.UnionUtility.expected_utility
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_fact
