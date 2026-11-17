@@ -111,6 +111,7 @@ import IPRADerivations.Combinatorics.Fibonacci
 import IPRADerivations.Combinatorics.FibonacciGcd
 import IPRADerivations.Combinatorics.FibonacciPeriod
 import IPRADerivations.Combinatorics.LucasPrime
+import IPRADerivations.Combinatorics.FibonacciSeries
 import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Combinatorics.CatalanConvolution

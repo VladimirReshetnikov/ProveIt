@@ -886,6 +886,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.lucas_odd
 #print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.lucas_prime
 #print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.lucas_prime_closed
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciSeries.fib_base
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciSeries.fib_step
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciSeries.luc_base
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciSeries.luc_step
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciSeries.fib_series
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciSeries.luc_series
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_zero
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_one
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_five
