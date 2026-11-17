@@ -16,7 +16,7 @@ and of the square sum (2.20)). With `C(M, k)` guarded to vanish for `k > M`
   `∑_{j=1}^{n} N(n, j) = Cat_n` for the Narayana numbers `n N(n, j) = C(n, j) C(n, j − 1)`, which is
   (2.14) `₂F₁(1 − n, −n; 2; 1) = Cat_n` after the term evaluation (2.13).
 
-The signed square sum (2.20) itself is not formalized.
+The square sum (2.20) is `Combinatorics/CatalanSquares`.
 -/
 
 set_option linter.unusedSimpArgs false
