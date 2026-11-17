@@ -1055,6 +1055,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric.geom_den
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric.geom_den_tail
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric.geom_exp
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers.pw_inj
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers.root_extract
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers.bezout_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers.exp_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers.canonical_injective
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.cop_A
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.phi_A
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.liminf_at
