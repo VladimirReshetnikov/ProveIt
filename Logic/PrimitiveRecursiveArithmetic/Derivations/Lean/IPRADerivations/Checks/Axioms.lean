@@ -904,6 +904,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.pb_cancel
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.sp_step
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.summatory_phi
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt.pw_lt_exp
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt.pw_inj_exp
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt.val_pw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt.dvd_iff_le_val
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt.jsum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt.pp_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt.count_pp
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt.count_cnt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt.row_lam
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt.col_lam
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt.lambda_divsum
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
