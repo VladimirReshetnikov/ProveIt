@@ -189,6 +189,7 @@ import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Probability.MedianL1
+import IPRADerivations.Probability.MedianWeighted
 import IPRADerivations.Topology.Sperner
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
