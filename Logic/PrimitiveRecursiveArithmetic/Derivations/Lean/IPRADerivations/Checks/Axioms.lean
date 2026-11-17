@@ -1186,6 +1186,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanValuation.fact_cat
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanValuation.cat_pos
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanValuation.catalan_valuation
+#print axioms LeanProofs.IPRA.Combinatorics.CentralBinomial.ratio
+#print axioms LeanProofs.IPRA.Combinatorics.CentralBinomial.rise
+#print axioms LeanProofs.IPRA.Combinatorics.CentralBinomial.fall
+#print axioms LeanProofs.IPRA.Combinatorics.CentralBinomial.central_pos
+#print axioms LeanProofs.IPRA.Combinatorics.CentralBinomial.central_left
+#print axioms LeanProofs.IPRA.Combinatorics.CentralBinomial.central_right
+#print axioms LeanProofs.IPRA.Combinatorics.CentralBinomial.central_max
+#print axioms LeanProofs.IPRA.Combinatorics.CentralBinomial.row_sum
+#print axioms LeanProofs.IPRA.Combinatorics.CentralBinomial.central_upper
+#print axioms LeanProofs.IPRA.Combinatorics.CentralBinomial.central_lower
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.square_pt
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.shift_squares
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.signed_square
