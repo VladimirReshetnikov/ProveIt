@@ -21,6 +21,7 @@ import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Bezout
 import IPRADerivations.Core.Search
 import IPRADerivations.Core.SearchParameters
+import IPRADerivations.Core.Evaluation
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Fubini
@@ -216,6 +217,7 @@ import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.Foundations.EmbeddingBasics
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Foundations.BoundedSelection
 import IPRADerivations.Foundations.BoundedCover

@@ -755,6 +755,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BoundedReflection.ex_least
 #print axioms LeanProofs.IPRA.Foundations.BoundedReflection.ex_none
 #print axioms LeanProofs.IPRA.Foundations.BoundedReflection.bounded_choice
+#print axioms LeanProofs.IPRA.Foundations.EmbeddingBasics.diag_at
+#print axioms LeanProofs.IPRA.Foundations.EmbeddingBasics.no_universal_evaluator
+#print axioms LeanProofs.IPRA.Foundations.EmbeddingBasics.least_witness
+#print axioms LeanProofs.IPRA.Foundations.EmbeddingBasics.inst2_wB
+#print axioms LeanProofs.IPRA.Foundations.EmbeddingBasics.witness_list
 #print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bitAt_subst
 #print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.fmAt_subst
 #print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.reflect
@@ -932,6 +937,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Search.Finite.search_spec
 #print axioms LeanProofs.IPRA.Search.Finite.search_found
 #print axioms LeanProofs.IPRA.Search.Finite.search_failed
+#print axioms LeanProofs.IPRA.eval_app
+#print axioms LeanProofs.IPRA.eval_term
+#print axioms LeanProofs.IPRA.eval_eq
+#print axioms LeanProofs.IPRA.eval_closed
+#print axioms LeanProofs.IPRA.eval_ground
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.dvd_fact
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.lpf_dvd
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Primes.lpf_prime
