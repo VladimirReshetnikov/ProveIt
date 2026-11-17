@@ -1151,6 +1151,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanNarayana.narayana_sum
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanNarayana.binom_succ_cat
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanNarayana.narayana_catalan
+#print axioms LeanProofs.IPRA.Combinatorics.FiniteBijection.sg_bit
+#print axioms LeanProofs.IPRA.Combinatorics.FiniteBijection.maps_at
+#print axioms LeanProofs.IPRA.Combinatorics.FiniteBijection.ret_at
+#print axioms LeanProofs.IPRA.Combinatorics.FiniteBijection.row_eval
+#print axioms LeanProofs.IPRA.Combinatorics.FiniteBijection.col_pt
+#print axioms LeanProofs.IPRA.Combinatorics.FiniteBijection.col_zero
+#print axioms LeanProofs.IPRA.Combinatorics.FiniteBijection.col_eval
+#print axioms LeanProofs.IPRA.Combinatorics.FiniteBijection.finite_bijection
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.square_pt
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.shift_squares
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.signed_square
