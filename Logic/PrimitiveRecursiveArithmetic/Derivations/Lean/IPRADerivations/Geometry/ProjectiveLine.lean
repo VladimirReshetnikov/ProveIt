@@ -28,8 +28,10 @@ arbitrary body.
   exponent `d < e < 0`, so residuals that differ by a coboundary are equal there, and the range has
   `−d − 1` elements.
 
-Coefficients are natural numbers; an integer vector is a difference of two such. The statements
-that the kernel is exactly these vectors, and the case `d < 0` are not formalized.
+* `ker_high`, `ker_low`, `ker_mid`, `ker_neg`: a cocycle has `a_e = 0` for `e > d`, `b_j = 0` for
+  `j > d` and `a_e = b_{d−e}` in between; for `d < 0` its coefficients vanish.
+
+Coefficients are natural numbers; an integer vector is a difference of two such.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -173,5 +175,40 @@ theorem h1_dimension {A D : PTm n} (h : Γ ⊢[PRAAx] le D A) (hD : Γ ⊢[PRAAx
   exact (congrMonus m₁ (.eqRefl _)).eqTrans (add_monus _ _)
 
 end Residual
+
+/-! ## The kernel of the differential -/
+
+/-- The coefficient of `δ(a, b)` at the shifted exponent `e` for `O(d)`, with `Ad = A + d`:
+`[A ≤ e] a_{e−A} − [e ≤ Ad] b_{Ad−e}`. A cocycle has `[A ≤ e] a_{e−A} = [e ≤ Ad] b_{Ad−e}`. -/
+abbrev kerEq {n : ℕ} (A Ad e pa pb : PTm n) : Fm PTm n := gle' A e * pa ≐ gle' e Ad * pb
+
+theorem gle'_of_le {k N : PTm n} (h : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] gle' k N ≐ one :=
+  (congrMonus (.eqRefl _) h).eqTrans (monus_zero _)
+
+/-- Above the degree: `a_{e−A} = 0` for `e > A + d`, `e ≥ A`. -/
+theorem ker_high {A Ad e pa pb : PTm n} (h : Γ ⊢[PRAAx] kerEq A Ad e pa pb) (h₁ : Γ ⊢[PRAAx] le A e)
+    (h₂ : Γ ⊢[PRAAx] lt Ad e) : Γ ⊢[PRAAx] pa ≐ zero :=
+  (one_mul _).eqSymm.eqTrans ((congrMul (gle'_of_le h₁).eqSymm (.eqRefl _)).eqTrans
+    (h.eqTrans ((congrMul (gle'_above h₂) (.eqRefl _)).eqTrans (zero_mul _))))
+
+/-- Below zero: `b_{Ad−e} = 0` for `e < A`, `e ≤ A + d`. -/
+theorem ker_low {A Ad e pa pb : PTm n} (h : Γ ⊢[PRAAx] kerEq A Ad e pa pb) (h₁ : Γ ⊢[PRAAx] lt e A)
+    (h₂ : Γ ⊢[PRAAx] le e Ad) : Γ ⊢[PRAAx] pb ≐ zero :=
+  (one_mul _).eqSymm.eqTrans ((congrMul (gle'_of_le h₂).eqSymm (.eqRefl _)).eqTrans
+    (h.eqSymm.eqTrans ((congrMul (gle'_above h₁) (.eqRefl _)).eqTrans (zero_mul _))))
+
+/-- In the window `0 ≤ e − A ≤ d`: `a_{e−A} = b_{Ad−e}`, i.e. `b(u) = ∑ c_{d−j} u^j`. -/
+theorem ker_mid {A Ad e pa pb : PTm n} (h : Γ ⊢[PRAAx] kerEq A Ad e pa pb) (h₁ : Γ ⊢[PRAAx] le A e)
+    (h₂ : Γ ⊢[PRAAx] le e Ad) : Γ ⊢[PRAAx] pa ≐ pb :=
+  (one_mul _).eqSymm.eqTrans ((congrMul (gle'_of_le h₁).eqSymm (.eqRefl _)).eqTrans
+    (h.eqTrans ((congrMul (gle'_of_le h₂) (.eqRefl _)).eqTrans (one_mul _))))
+
+/-- `thm:p1-h0` for `d < 0` (`A + d < A`): every exponent of a cocycle is above the degree or
+below zero, so the kernel is zero. -/
+theorem ker_neg {A Ad e pa pb : PTm n} (hd : Γ ⊢[PRAAx] lt Ad A) (h : Γ ⊢[PRAAx] kerEq A Ad e pa pb) :
+    Γ ⊢[PRAAx] (le A e ⟶ (pa ≐ zero)) ⋏ (le e Ad ⟶ (pb ≐ zero)) :=
+  .andI (.impI (ker_high h.wk Prf.hyp0 (lt_of_lt_of_le hd.wk Prf.hyp0)))
+    (.impI (ker_low h.wk (lt_of_le_of_lt Prf.hyp0 hd.wk) Prf.hyp0))
+
 
 end LeanProofs.IPRA.Geometry.ProjectiveLine
