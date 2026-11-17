@@ -944,6 +944,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.row_diff
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.mu_lambda_conv
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.mu_lambda
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt.val_pw_prime
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt.ppI_pw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt.p_lt_pw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt.lam_pw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt.lam_pw'
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt.lw_pw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt.log_zeta_coeff
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt.twist
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
