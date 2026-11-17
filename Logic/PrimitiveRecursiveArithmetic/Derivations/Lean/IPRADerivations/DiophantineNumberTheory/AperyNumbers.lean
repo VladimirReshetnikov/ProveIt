@@ -18,7 +18,8 @@ Packet: `diophantine-number-theory/apery_ipra` (`lem:integrality`, initial value
 * `four_pow_ge`: `n + 1 ≤ 4^n`, and `apery_ge_succ`: `n + 1 ≤ a_n`;
 * `apery_pos`: `a_n > 0`.
 
-The second sequence `b_n`, the Apéry recurrence and the irrationality argument are not formalized.
+The Apéry recurrence is derived in `DiophantineNumberTheory/AperyRecurrence`. The second sequence
+`b_n` and the irrationality argument are not formalized.
 -/
 
 set_option linter.unusedSimpArgs false

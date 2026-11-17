@@ -138,6 +138,7 @@ import IPRADerivations.DiophantineNumberTheory.IrrationalSqrt
 import IPRADerivations.DiophantineNumberTheory.PellDescent
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.DiophantineNumberTheory.AperyNumbers
+import IPRADerivations.DiophantineNumberTheory.AperyRecurrence
 import IPRADerivations.DiophantineNumberTheory.CoprimeModulus
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
