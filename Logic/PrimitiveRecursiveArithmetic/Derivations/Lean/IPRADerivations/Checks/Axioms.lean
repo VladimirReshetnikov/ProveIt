@@ -491,6 +491,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.PowerDifference.sqrt_truncation₂
 #print axioms LeanProofs.IPRA.Algebra.PowerDifference.sqrt_truncation₃
 #print axioms LeanProofs.IPRA.Algebra.PowerDifference.cbrt_truncation₂
+#print axioms LeanProofs.IPRA.Algebra.FTABounds.binom_lower
+#print axioms LeanProofs.IPRA.Algebra.FTABounds.block_half
+#print axioms LeanProofs.IPRA.Algebra.FTABounds.bernoulli_down
+#print axioms LeanProofs.IPRA.Algebra.FTABounds.prod_pt
+#print axioms LeanProofs.IPRA.Algebra.FTABounds.prod_bound
 #print axioms LeanProofs.IPRA.Algebra.HenselStep.hensel_combine
 #print axioms LeanProofs.IPRA.Algebra.HenselStep.hensel_remainder
 #print axioms LeanProofs.IPRA.Algebra.HenselStep.hensel_step
