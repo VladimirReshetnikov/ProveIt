@@ -175,6 +175,7 @@ import IPRADerivations.Geometry.PowerCover3
 import IPRADerivations.Geometry.Gluing
 import IPRADerivations.Geometry.ProjectiveLine
 import IPRADerivations.Geometry.CevaMenelaus
+import IPRADerivations.Geometry.HoehnBrianchon
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Geometry.HypercubeEdge
 import IPRADerivations.Geometry.KerrNewmanAlgebra

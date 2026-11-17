@@ -156,6 +156,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.binary_quadratic
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.carnot_forward
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.carnot_converse
+#print axioms LeanProofs.IPRA.Geometry.HoehnBrianchon.four_point
+#print axioms LeanProofs.IPRA.Geometry.HoehnBrianchon.delta_cyc
+#print axioms LeanProofs.IPRA.Geometry.HoehnBrianchon.hoehn_cert
+#print axioms LeanProofs.IPRA.Geometry.HoehnBrianchon.hoehn
+#print axioms LeanProofs.IPRA.Geometry.HoehnBrianchon.pascalR
+#print axioms LeanProofs.IPRA.Geometry.HoehnBrianchon.brianchonR
+#print axioms LeanProofs.IPRA.Geometry.HoehnBrianchon.pascal_cert
+#print axioms LeanProofs.IPRA.Geometry.HoehnBrianchon.brianchon
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.binet_cauchy
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.gram_identity
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law
