@@ -875,6 +875,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.period_return
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.fib_period
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.fibonacci_period
+#print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.gE_succ
+#print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.gO_succ
+#print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.W_succ
+#print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.V_succ
+#print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.binet
+#print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.binet_luc
+#print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.W_prime
+#print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.even_prime
+#print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.lucas_odd
+#print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.lucas_prime
+#print axioms LeanProofs.IPRA.Combinatorics.LucasPrime.lucas_prime_closed
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_zero
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_one
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_five
