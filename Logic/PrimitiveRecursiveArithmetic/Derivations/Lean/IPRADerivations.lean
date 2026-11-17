@@ -25,6 +25,7 @@ import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.SquareLayers
+import IPRADerivations.Core.BlockSum
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.ParityArith

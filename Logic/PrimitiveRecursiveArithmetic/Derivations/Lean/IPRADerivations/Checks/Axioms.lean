@@ -327,6 +327,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.sum_zeroB
 #print axioms LeanProofs.IPRA.fubini
 #print axioms LeanProofs.IPRA.sum_delta
+#print axioms LeanProofs.IPRA.BlockSum.blk_at
+#print axioms LeanProofs.IPRA.BlockSum.block_sum
+#print axioms LeanProofs.IPRA.BlockSum.qr_block
+#print axioms LeanProofs.IPRA.BlockSum.flat_at
+#print axioms LeanProofs.IPRA.BlockSum.flatten
 #print axioms LeanProofs.IPRA.SquareLayers.square_step
 #print axioms LeanProofs.IPRA.SquareLayers.square_layers
 #print axioms LeanProofs.IPRA.Probability.Lotus.sum_const_mul
