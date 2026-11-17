@@ -922,6 +922,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda.fl_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda.fl_step
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda.factorial_lambda
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius.inner_lam
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius.row_lam_mob
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius.lambda_mobius
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius.split_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius.lambda_mobius_neg
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
