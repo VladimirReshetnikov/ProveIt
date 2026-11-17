@@ -1832,3 +1832,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FiniteNet.lift_at
 #print axioms LeanProofs.IPRA.Foundations.FiniteNet.finite_net
 #print axioms LeanProofs.IPRA.Foundations.FiniteNet.finite_net_closed
+#print axioms LeanProofs.IPRA.Analysis.ReciprocalSquareTail.sharp_closed
+#print axioms LeanProofs.IPRA.Analysis.ReciprocalSquareTail.uniform_closed
+#print axioms LeanProofs.IPRA.Analysis.ReciprocalSquareTail.reciprocal_square_tail
+#print axioms LeanProofs.IPRA.Analysis.ReciprocalSquareTail.barnes_qtail
+#print axioms LeanProofs.IPRA.Foundations.ApproximateWitness.argmin_spec_closed
+#print axioms LeanProofs.IPRA.Foundations.ApproximateWitness.argmin_minimal_closed
+#print axioms LeanProofs.IPRA.Foundations.ApproximateWitness.argmin_least
+#print axioms LeanProofs.IPRA.Foundations.ApproximateWitness.argmin_tie
+#print axioms LeanProofs.IPRA.Foundations.ApproximateWitness.approximate_witness_closed
+#print axioms LeanProofs.IPRA.Foundations.ApproximateWitness.approximate_witness_exists_closed

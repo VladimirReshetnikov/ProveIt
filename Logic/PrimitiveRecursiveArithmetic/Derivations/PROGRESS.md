@@ -16,10 +16,12 @@ packet inventory.
 | Fibonacci packet, equation (26) | `FibonacciProgression.fib_progression_closed`, `luc_progression_closed` | Both sequences, arbitrary progression index, common difference and offset. |
 | Barnes G, `eq:finite-ratio` | `BarnesProducts.finite_ratio_sentence` | The finite monomial cancellation after clearing denominators, at arbitrary cutoff and natural argument. |
 | Barnes G, `eq:gamma-finite-product`, `eq:gamma-finite-quotient` | `BarnesProducts.gamma_finite_product_sentence`, `gamma_finite_quotient_sentence` | All positive integer arguments and arbitrary product lengths, including the empty product. |
+| Barnes G, `lem:canonical-tail`, finite comparison for `eq:qtail` | `ReciprocalSquareTail.reciprocal_square_tail`, `barnes_qtail` | Arbitrary internal positive starting index, endpoint and parameter; sharp and uniform finite inverse-square comparisons. The pointwise error majorant is explicit. The Barnes coefficient specializes to `3 N ∑e ≤ 2R³D`. The logarithmic-factor estimate remains open. |
 | FIBER, `thm:dyadic`, `dyadic_scaled_cauchy` | `DyadicCauchy.dyadic_cauchy`, `dyadic_endpoints` | Signed binary PR numerator symbols, runtime parameter, sharp scaled bound, and both index conventions. |
 | FIBER, corollary following `thm:dyadic` | `DyadicCauchy.certificates_coherent`, `certificates_coherent_endpoints` | Separate existential certificates at each precision imply coherence through their adjacent-pair soundness theorem. Each witness is local to the object proof. |
 | FIBER, Section 7.2 | `SummableTails.finite_telescoping`, `summable_tail`, `summable_tail_endpoints` | Signed binary PR sequence with runtime parameter, finite adjacent-error sum and supplied tail certificate at arbitrary internal endpoints. |
 | FIBER, `thm:net` | `FiniteNet.finite_net`, `finite_net_closed` | Domain, coverage, modulus, stability and correctness certificates at the net points, with arbitrary finite parameter families and local witness elimination. |
+| Finite-use-v2, `thm:approx-witness` | `ApproximateWitness.argmin_spec_closed`, `argmin_minimal_closed`, `approximate_witness_closed`, `approximate_witness_exists_closed` | An actual primitive recursive least minimizer, with attainment and least-index ties proved internally. The supplied-witness and existential-witness forms retain domain, coverage, modulus and both evaluation-error contracts. All natural size, data and error parameters are universally closed. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -56,7 +58,7 @@ remain open.
 ## Packet inventory
 
 The current source index contains 115 packets. The derivations
-README links 83 of them to existing proof families.
+README links 84 of them to existing proof families.
 Completion requires reconciling all theorems within each packet, including
 claims beyond those families.
 
@@ -71,7 +73,7 @@ claims beyond those families.
 | [algebra/lagrange_inversion_ipra](../docs/proofs/algebra/lagrange_inversion_ipra/) | [Combinatorics/BinomialIdentities](Lean/IPRADerivations/Combinatorics/BinomialIdentities.lean), [Combinatorics/BinomialTheorem](Lean/IPRADerivations/Combinatorics/BinomialTheorem.lean) |
 | [algebra/puiseux_ipra](../docs/proofs/algebra/puiseux_ipra/) | [Algebra/HenselStep](Lean/IPRADerivations/Algebra/HenselStep.lean) |
 | [algebra/three_impossibilities_ipra](../docs/proofs/algebra/three_impossibilities_ipra/) | [Algebra/CubeRootTwo](Lean/IPRADerivations/Algebra/CubeRootTwo.lean), [Algebra/TrisectionCubic](Lean/IPRADerivations/Algebra/TrisectionCubic.lean), [Algebra/PolynomialFormulas](Lean/IPRADerivations/Algebra/PolynomialFormulas.lean) |
-| [analysis/barnes_g_ipra_2026-11-16](../docs/proofs/analysis/barnes_g_ipra_2026-11-16/) | [Analysis/BarnesInteger](Lean/IPRADerivations/Analysis/BarnesInteger.lean), [Analysis/BarnesProducts](Lean/IPRADerivations/Analysis/BarnesProducts.lean) |
+| [analysis/barnes_g_ipra_2026-11-16](../docs/proofs/analysis/barnes_g_ipra_2026-11-16/) | [Analysis/BarnesInteger](Lean/IPRADerivations/Analysis/BarnesInteger.lean), [Analysis/BarnesProducts](Lean/IPRADerivations/Analysis/BarnesProducts.lean), [Analysis/ReciprocalSquareTail](Lean/IPRADerivations/Analysis/ReciprocalSquareTail.lean) |
 | [analysis/basel_ipra](../docs/proofs/analysis/basel_ipra/) | [Analysis/PowerSums](Lean/IPRADerivations/Analysis/PowerSums.lean), [Analysis/BaselDiagonal](Lean/IPRADerivations/Analysis/BaselDiagonal.lean) |
 | [analysis/beta_function_ipra_2026-11-16](../docs/proofs/analysis/beta_function_ipra_2026-11-16/) | [Analysis/BetaIntegers](Lean/IPRADerivations/Analysis/BetaIntegers.lean) |
 | [analysis/bohr_mollerup_ipra_2026-11-15](../docs/proofs/analysis/bohr_mollerup_ipra_2026-11-15/) | [Analysis/Products](Lean/IPRADerivations/Analysis/Products.lean) |
@@ -127,7 +129,7 @@ claims beyond those families.
 | [foundations/ipra_finite_observation](../docs/proofs/foundations/ipra_finite_observation/) | Source-claim inventory pending. |
 | [foundations/ipra_finite_query_normal_form_2026-11-16](../docs/proofs/foundations/ipra_finite_query_normal_form_2026-11-16/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/ipra_finite_use_framework_2026-11-15](../docs/proofs/foundations/ipra_finite_use_framework_2026-11-15/) | Source-claim inventory pending. |
-| [foundations/ipra_finite_use_framework_2026-11-15_v2](../docs/proofs/foundations/ipra_finite_use_framework_2026-11-15_v2/) | Source-claim inventory pending. |
+| [foundations/ipra_finite_use_framework_2026-11-15_v2](../docs/proofs/foundations/ipra_finite_use_framework_2026-11-15_v2/) | [Foundations/ApproximateWitness](Lean/IPRADerivations/Foundations/ApproximateWitness.lean) |
 | [foundations/ipra_framework](../docs/proofs/foundations/ipra_framework/) | [DiophantineNumberTheory/Siegel](Lean/IPRADerivations/DiophantineNumberTheory/Siegel.lean) |
 | [foundations/ipra_framework_2026-11-15](../docs/proofs/foundations/ipra_framework_2026-11-15/) | Source-claim inventory pending. |
 | [foundations/ipra_frnf_framework_bundle](../docs/proofs/foundations/ipra_frnf_framework_bundle/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
@@ -181,9 +183,10 @@ claims beyond those families.
 
 ## Verification
 
-At `57b78b74ce`, the root build completed 2,062 jobs and the named axiom
-audit reported 1,825 declarations using the standard Lean axioms. The
-portable import gate passed across 3,481 source modules, and the
+At the source based on `5ff3a70ac9`, including the approximate-witness and
+reciprocal-square-tail additions, the root build completed 2,066 jobs and
+emitted 1,848 axiom reports for 1,830 distinct declarations, all using only
+`propext`, `Classical.choice`, and `Quot.sound`. The portable import gate passed across 3,485 source modules and the
 independent `Diophantine` boundary passed across 5,252 modules.
 
 The new modules are included in `IPRADerivations`. Their public theorem
