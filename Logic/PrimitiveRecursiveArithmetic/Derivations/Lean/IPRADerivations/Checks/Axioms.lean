@@ -639,6 +639,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.TraceReflection.trace_at
 #print axioms LeanProofs.IPRA.Foundations.TraceReflection.trace
 #print axioms LeanProofs.IPRA.Foundations.TraceReflection.loop_compile
+#print axioms LeanProofs.IPRA.Foundations.StagedGraph.instantiate_into
+#print axioms LeanProofs.IPRA.Foundations.StagedGraph.cut_all
+#print axioms LeanProofs.IPRA.Foundations.StagedGraph.staged_graph
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_zero
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_succ
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.trace_invariant_all
