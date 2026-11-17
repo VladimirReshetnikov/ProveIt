@@ -24,6 +24,7 @@ import IPRADerivations.Core.SearchParameters
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.Fubini
+import IPRADerivations.Core.SquareLayers
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.ParityArith
@@ -99,6 +100,7 @@ import IPRADerivations.AnalyticNumberTheory.GoldbachPhi
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.AnalyticNumberTheory.MobiusBounds
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
+import IPRADerivations.AnalyticNumberTheory.CoprimePairs
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.PhiTwo
 import IPRADerivations.AnalyticNumberTheory.PhiLowerSharp

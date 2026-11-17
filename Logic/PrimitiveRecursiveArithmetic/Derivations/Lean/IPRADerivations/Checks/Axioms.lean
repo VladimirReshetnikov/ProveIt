@@ -327,6 +327,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.sum_zeroB
 #print axioms LeanProofs.IPRA.fubini
 #print axioms LeanProofs.IPRA.sum_delta
+#print axioms LeanProofs.IPRA.SquareLayers.square_step
+#print axioms LeanProofs.IPRA.SquareLayers.square_layers
 #print axioms LeanProofs.IPRA.Probability.Lotus.sum_const_mul
 #print axioms LeanProofs.IPRA.Probability.Lotus.row_eval
 #print axioms LeanProofs.IPRA.Probability.Lotus.col_eval
@@ -889,6 +891,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.inner_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.row_phi
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion.phi_mobius
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs.cop_symm
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs.col_phi
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs.layer
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs.coprime_pairs
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
