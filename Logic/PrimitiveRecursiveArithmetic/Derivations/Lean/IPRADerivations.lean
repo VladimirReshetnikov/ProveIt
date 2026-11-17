@@ -102,6 +102,7 @@ import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Combinatorics.CatalanSums
+import IPRADerivations.Combinatorics.CatalanNarayana
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.DiophantineNumberTheory.PellModular

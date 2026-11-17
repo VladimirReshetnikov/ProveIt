@@ -802,6 +802,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSums.odd_sum
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSums.bw_pt
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSums.weighted_convolution
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanNarayana.gb_symm
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanNarayana.central_squares
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanNarayana.narayana_sum
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanNarayana.binom_succ_cat
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanNarayana.narayana_catalan
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_split
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_shift
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_shift'
