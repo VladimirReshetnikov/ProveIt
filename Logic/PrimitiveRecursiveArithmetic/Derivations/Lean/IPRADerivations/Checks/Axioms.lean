@@ -663,6 +663,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.GuardedLoop.I3_gInv
 #print axioms LeanProofs.IPRA.Foundations.GuardedLoop.obligations
 #print axioms LeanProofs.IPRA.Foundations.GuardedLoop.loop_at
+#print axioms LeanProofs.IPRA.Foundations.GapDecision.zabs_congr
+#print axioms LeanProofs.IPRA.Foundations.GapDecision.zabs_tri
+#print axioms LeanProofs.IPRA.Foundations.GapDecision.zabs_neg
+#print axioms LeanProofs.IPRA.Foundations.GapDecision.gap_zero
+#print axioms LeanProofs.IPRA.Foundations.GapDecision.gap_far
+#print axioms LeanProofs.IPRA.Foundations.GapDecision.gap_decide
 #print axioms LeanProofs.IPRA.Foundations.StagedGraph.instantiate_into
 #print axioms LeanProofs.IPRA.Foundations.StagedGraph.cut_all
 #print axioms LeanProofs.IPRA.Foundations.StagedGraph.staged_graph

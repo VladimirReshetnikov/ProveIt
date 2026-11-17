@@ -183,6 +183,7 @@ import IPRADerivations.Foundations.ChallengeDecomposition
 import IPRADerivations.Foundations.BooleanizationCorollaries
 import IPRADerivations.Foundations.TraceReflection
 import IPRADerivations.Foundations.GuardedLoop
+import IPRADerivations.Foundations.GapDecision
 import IPRADerivations.Foundations.StagedGraph
 import IPRADerivations.Foundations.TraceInvariant
 import IPRADerivations.Geometry.EulerRodrigues
