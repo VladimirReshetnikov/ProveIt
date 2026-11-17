@@ -209,6 +209,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.delambre2
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.delambre3
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.delambre4
+#print axioms LeanProofs.IPRA.Geometry.SphericalArea.gram_DQ
+#print axioms LeanProofs.IPRA.Geometry.SphericalArea.lhuilierR
+#print axioms LeanProofs.IPRA.Geometry.SphericalArea.lhuilier
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.gram_factor
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.angle_unit
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.sine_law
