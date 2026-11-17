@@ -153,6 +153,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.DesarguesInternal.des_toZ
 #print axioms LeanProofs.IPRA.Geometry.DesarguesInternal.desargues_forward
 #print axioms LeanProofs.IPRA.Geometry.DesarguesInternal.desargues_reverse
+#print axioms LeanProofs.IPRA.Geometry.PascalInternal.trilinear4
+#print axioms LeanProofs.IPRA.Geometry.PascalInternal.four_term
+#print axioms LeanProofs.IPRA.Geometry.PascalInternal.pascal_universal
+#print axioms LeanProofs.IPRA.Geometry.PascalInternal.cofactor_cert
+#print axioms LeanProofs.IPRA.Geometry.PascalInternal.conic_det
+#print axioms LeanProofs.IPRA.Geometry.PascalInternal.pascal_det
+#print axioms LeanProofs.IPRA.Geometry.PascalInternal.pascal_axis
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.zt_cancel
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.ceva_det
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.ceva_witness
