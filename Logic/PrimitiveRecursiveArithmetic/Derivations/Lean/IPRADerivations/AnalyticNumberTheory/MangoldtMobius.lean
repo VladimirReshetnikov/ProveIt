@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
+import IPRADerivations.AnalyticNumberTheory.DivisorSwap
 
 /-!
 # Möbius forms of the weighted von Mangoldt function
@@ -12,7 +13,8 @@ for a weight `w` on primes (here with its parameter fixed to `0`),
 * `lambda_mobius_neg`: `Λ_w(N) = −∑_{d ∣ N} μ(d) L_w(d)` for `N ≥ 2`, from complete additivity
   `L_w(N/d) = L_w(N) − L_w(d)` for `d ∣ N` (`split_pt`) and `∑_{d ∣ N} μ(d) = 0`.
 
-The middle form `∑_{d ∣ N} μ(N/d) L_w(d)` (the substitution `d ↔ N/d`) is not derived here.
+* `lambda_mobius_mid`: `Λ_w(N) = ∑_{d ∣ N} μ(N/d) L_w(d)` for `N ≥ 1`, the first form after the
+  divisor involution `d ↔ N/d` (`DivisorSwap.div_swap`).
 -/
 
 set_option linter.unusedSimpArgs false
@@ -199,6 +201,32 @@ theorem lambda_mobius_neg {N : PTm n} (hN : Γ ⊢[PRAAx] le two N) :
   have e₁ := natEq sP; have e₂ := natEq sN
   apply deriveNat; ipra_simps
   linear_combination -lm - aP' + aN' + e₁ - e₂ + 𝔞 (Lw w N zero) * mc
+
+/-- `μ^±_{N+1}(a) L_w(b)`, over `0 = a`, `1 = b`, `2 = N`. -/
+abbrev mlP : PTm 3 := muP (succ (var 2)) (var 0) * ap2 (sumF (ellB w)) (succ (var 1)) (pairT (var 1) zero)
+abbrev mlN : PTm 3 := muN (succ (var 2)) (var 0) * ap2 (sumF (ellB w)) (succ (var 1)) (pairT (var 1) zero)
+
+theorem inst3_mlP (a b N : PTm n) : inst3 (mlP w) a b N = muP (succ N) a * Lw w b zero := by simp [inst3]
+theorem inst3_mlN (a b N : PTm n) : inst3 (mlN w) a b N = muN (succ N) a * Lw w b zero := by simp [inst3]
+
+/-- `thm:lambda-mobius`, middle form: `Λ_w(N) = ∑_{d ∣ N} μ(N/d) L_w(d)` for `N ≥ 1`, as
+`∑_{d ∣ N} μ⁺(N/d) L_w(d) = Λ_w(N) + ∑_{d ∣ N} μ⁻(N/d) L_w(d)`. -/
+theorem lambda_mobius_mid {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
+    Γ ⊢[PRAAx] ap2 (sumF (DivisorSwap.TB (mlP w))) (succ N) N ≐
+      Lam w N zero + ap2 (sumF (DivisorSwap.TB (mlN w))) (succ N) N := by
+  have cP : Γ ⊢[PRAAx] ap2 (sumF (DivisorSwap.SB (mlP w))) (succ N) N ≐ ap2 (sumF (QLP w)) (succ N) N := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    rw [DivisorSwap.inst2_SB, inst3_mlP, inst2_QLP]
+    apply deriveNat; ipra_simps; ring
+  have cN : Γ ⊢[PRAAx] ap2 (sumF (DivisorSwap.SB (mlN w))) (succ N) N ≐ ap2 (sumF (QLN w)) (succ N) N := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    rw [DivisorSwap.inst2_SB, inst3_mlN, inst2_QLN]
+    apply deriveNat; ipra_simps; ring
+  have sP := natEq (DivisorSwap.div_swap (mlP w) hN)
+  have sN := natEq (DivisorSwap.div_swap (mlN w) hN)
+  have a := natEq cP; have b := natEq cN; have lm := natEq (lambda_mobius w hN)
+  apply deriveNat; ipra_simps
+  linear_combination -sP + a + lm - b + sN
 
 end Forms
 
