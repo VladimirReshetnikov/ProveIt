@@ -963,6 +963,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.lcmu_dvd
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.lw_lcmu_succ
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.psi_lcm
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm.f_dvd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm.R_dvd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm.dvd_of_val_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm.quo_two
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm.binom_val
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm.term_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm.binom_val_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm.central_dvd_lcm
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
