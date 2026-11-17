@@ -196,6 +196,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalHalf.half_angle_sin
 #print axioms LeanProofs.IPRA.Geometry.SphericalHalf.half_angle_cos
 #print axioms LeanProofs.IPRA.Geometry.SphericalHalf.half_angle_tan
+#print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d1R
+#print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d2R
+#print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d3R
+#print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d4R
+#print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.delambre1
+#print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.delambre2
+#print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.delambre3
+#print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.delambre4
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.gram_factor
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.angle_unit
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.sine_law
