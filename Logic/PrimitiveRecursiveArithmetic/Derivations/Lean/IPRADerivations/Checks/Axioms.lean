@@ -892,6 +892,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciSeries.luc_step
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciSeries.fib_series
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciSeries.luc_series
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.half_double
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.half_double_succ
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.st_front
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.ok_succ
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.ok_even
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.ok_odd
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.sum_pairs
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.C_rec
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.C_zero
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.C_one
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.independent_sets
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_zero
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_one
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_five
