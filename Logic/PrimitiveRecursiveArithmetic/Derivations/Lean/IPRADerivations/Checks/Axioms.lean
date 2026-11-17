@@ -1159,6 +1159,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.FiniteBijection.col_zero
 #print axioms LeanProofs.IPRA.Combinatorics.FiniteBijection.col_eval
 #print axioms LeanProofs.IPRA.Combinatorics.FiniteBijection.finite_bijection
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreDigits.dm
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreDigits.dmu
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreDigits.quo_quo
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreDigits.quo_small
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreDigits.digit_step
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreDigits.telescope
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreDigits.legendre_digits
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.square_pt
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.shift_squares
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.signed_square
