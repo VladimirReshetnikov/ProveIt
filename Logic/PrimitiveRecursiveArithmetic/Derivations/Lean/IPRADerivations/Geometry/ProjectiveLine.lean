@@ -1,0 +1,107 @@
+import IPRADerivations.Core.SumReflect
+import IPRADerivations.Core.Powers
+import IPRADerivations.Core.Tactic
+
+/-!
+# Global sections of `O(d)` on the projective line
+
+Packet: `geometry/ipra_algebraic_geometry_framework_2026-11-15` (`thm:p1-h0`, the correspondence
+between the two chart polynomials). A global section of `O(d)`, `d ≥ 0`, is a coefficient vector
+`(c_0, …, c_d)`; on the two charts it is
+
+  `a(t) = ∑_{e ≤ d} c_e t^e`,   `b(u) = ∑_{j ≤ d} c_{d−j} u^j`,
+
+and the cocycle condition is `a(t) = t^d b(t⁻¹)`. With `t = T/U` and denominators cleared this is
+the identity of binary forms
+
+  `∑_{e ≤ d} c_e T^e U^(d−e) = ∑_{j ≤ d} c_{d−j} U^j T^(d−j)`.
+
+The data are read from one parameter code `y = ⟨d, ⟨T, ⟨U, x⟩⟩⟩`, with `c_e = c(e, x)` an
+arbitrary body.
+
+* `p1_sections`: the identity above, for every `d`, by reflecting the sum.
+
+Coefficients are natural numbers; an integer vector is a difference of two such. The statements
+that the kernel is exactly these vectors, the case `d < 0`, and the `H¹` normal form are not
+formalized.
+-/
+
+set_option linter.unusedSimpArgs false
+
+namespace LeanProofs.IPRA.Geometry.ProjectiveLine
+
+open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open Syn
+open scoped Fm
+open ConciseIPRA.PTm (app zero succ)
+open LeanProofs.IPRA.PTm (num monus pred)
+
+variable {n : ℕ} {Γ : List (Fm PTm n)}
+
+local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
+
+/-- `m ∸ (m ∸ i) = i` for `i ≤ m`. -/
+theorem monus_monus {i m : PTm n} (h : Γ ⊢[PRAAx] le i m) : Γ ⊢[PRAAx] monus m (monus m i) ≐ i :=
+  (congrMonus (eq_add_of_le h) (zero_add _).eqSymm).eqTrans
+    ((monus_add_add i zero (monus m i)).eqTrans (monus_zero i))
+
+/-! ## Reading the parameter code `y = ⟨d, ⟨T, ⟨U, x⟩⟩⟩` -/
+
+abbrev dOf {n : ℕ} (y : PTm n) : PTm n := fstT y
+abbrev tOf {n : ℕ} (y : PTm n) : PTm n := fstT (sndT y)
+abbrev uOf {n : ℕ} (y : PTm n) : PTm n := fstT (sndT (sndT y))
+abbrev xOf {n : ℕ} (y : PTm n) : PTm n := sndT (sndT (sndT y))
+
+/-- `c_e T^e U^(d−e)`; variables `0 = e`, `1 = y`. -/
+abbrev aB (c : PTm 2) : PTm 2 :=
+  Syn.subst ![var 0, xOf (var 1)] c * pw (tOf (var 1)) (var 0) * pw (uOf (var 1)) (monus (dOf (var 1)) (var 0))
+
+/-- `c_{d−j} U^j T^(d−j)`; variables `0 = j`, `1 = y`. -/
+abbrev bB (c : PTm 2) : PTm 2 :=
+  Syn.subst ![monus (dOf (var 1)) (var 0), xOf (var 1)] c * pw (uOf (var 1)) (var 0) *
+    pw (tOf (var 1)) (monus (dOf (var 1)) (var 0))
+
+theorem inst2_a (c : PTm 2) (e y : PTm n) :
+    inst2 (aB c) e y = inst2 c e (xOf y) * pw (tOf y) e * pw (uOf y) (monus (dOf y) e) := by
+  have h : Syn.subst ![e, y] (Syn.subst ![var 0, xOf (var 1)] c) = inst2 c e (xOf y) := by
+    simp only [inst2, Syn.subst_subst]
+    congr 1; funext j; fin_cases j <;> simp
+  simp only [inst2, PTm.subst_mul, h]
+  simp [inst2]
+
+theorem inst2_b (c : PTm 2) (j y : PTm n) :
+    inst2 (bB c) j y =
+      inst2 c (monus (dOf y) j) (xOf y) * pw (uOf y) j * pw (tOf y) (monus (dOf y) j) := by
+  have h : Syn.subst ![j, y] (Syn.subst ![monus (dOf (var 1)) (var 0), xOf (var 1)] c) =
+      inst2 c (monus (dOf y) j) (xOf y) := by
+    simp only [inst2, Syn.subst_subst]
+    congr 1; funext i; fin_cases i <;> simp
+  simp only [inst2, PTm.subst_mul, h]
+  simp [inst2]
+
+/-! ## The correspondence -/
+
+theorem refl_pt (c : PTm 2) {i y : PTm n} (h : Γ ⊢[PRAAx] le i (dOf y)) :
+    Γ ⊢[PRAAx] inst2 (rflBody (aB c)) i (pairT (succ (dOf y)) y) ≐ inst2 (bB c) i y := by
+  rw [inst2_rflBody]
+  have hk : Γ ⊢[PRAAx] monus (fstT (pairT (succ (dOf y)) y)) (succ i) ≐ monus (dOf y) i :=
+    (congrMonus (fst_pair _ _) (.eqRefl _)).eqTrans (succ_monus_succ _ _)
+  refine (congrInst2 (aB c) hk (snd_pair _ _)).eqTrans ?_
+  rw [inst2_a, inst2_b]
+  have e := natEq (congrAp2 powF (monus_monus h) (.eqRefl (uOf y)))
+  apply deriveNat; ipra_simps
+  linear_combination 𝔞(inst2 c (monus (dOf y) i) (xOf y)) * 𝔞(pw (tOf y) (monus (dOf y) i)) * e
+
+/-- `thm:p1-h0`, the correspondence: `∑_{e ≤ d} c_e T^e U^(d−e) = ∑_{j ≤ d} c_{d−j} U^j T^(d−j)`. -/
+theorem p1_sections (c : PTm 2) (y : PTm n) :
+    Γ ⊢[PRAAx] ap2 (sumF (aB c)) (succ (dOf y)) y ≐ ap2 (sumF (bB c)) (succ (dOf y)) y := by
+  refine (sum_reflect (aB c) (succ (dOf y)) y).eqTrans ?_
+  refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+  have e : Syn.shift (pairT (succ (dOf y)) y) = pairT (succ (dOf (Syn.shift y))) (Syn.shift y) := by
+    simp [Syn.shift]
+  have e' : Syn.shift (succ (dOf y)) = succ (dOf (Syn.shift y)) := by simp [Syn.shift]
+  rw [e]
+  rw [e'] at *
+  exact refl_pt c ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
+
+end LeanProofs.IPRA.Geometry.ProjectiveLine

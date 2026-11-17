@@ -87,6 +87,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.Gluing.restrict_witness
 #print axioms LeanProofs.IPRA.Geometry.Gluing.glue_power₂
 #print axioms LeanProofs.IPRA.Geometry.Gluing.glue_power₃
+#print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.monus_monus
+#print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.refl_pt
+#print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.p1_sections
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm2
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm4
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.box_product2
