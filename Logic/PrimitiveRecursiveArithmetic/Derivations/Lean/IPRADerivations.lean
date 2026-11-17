@@ -27,6 +27,7 @@ import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Core.Telescoping
+import IPRADerivations.Core.SumSplit
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev

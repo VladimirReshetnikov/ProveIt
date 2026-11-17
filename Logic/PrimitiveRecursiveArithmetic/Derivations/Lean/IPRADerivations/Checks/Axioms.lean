@@ -90,6 +90,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.monus_monus
 #print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.refl_pt
 #print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.p1_sections
+#print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.h1_decomposition
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm2
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm4
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.box_product2
@@ -270,6 +271,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.tele_nat
 #print axioms LeanProofs.IPRA.tele_signed
 #print axioms LeanProofs.IPRA.closed_signed
+#print axioms LeanProofs.IPRA.sum_split
+#print axioms LeanProofs.IPRA.sum_split₃
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.trichotomy_bits
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.partition
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.counts_le
@@ -352,6 +355,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.CrossingParity.double_edge
 #print axioms LeanProofs.IPRA.Topology.CrossingParity.concat_parity
 #print axioms LeanProofs.IPRA.Topology.CrossingParity.replacement
+#print axioms LeanProofs.IPRA.Topology.CrossingParity.concat_chain
 #print axioms LeanProofs.IPRA.Topology.FinitePreorder.refl_elim
 #print axioms LeanProofs.IPRA.Topology.FinitePreorder.trans_elim
 #print axioms LeanProofs.IPRA.Topology.FinitePreorder.antisym_elim

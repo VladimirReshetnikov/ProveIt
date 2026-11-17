@@ -1,4 +1,5 @@
 import IPRADerivations.Core.SumReflect
+import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Tactic
 
@@ -20,10 +21,13 @@ The data are read from one parameter code `y = ⟨d, ⟨T, ⟨U, x⟩⟩⟩`, wi
 arbitrary body.
 
 * `p1_sections`: the identity above, for every `d`, by reflecting the sum.
+* `h1_decomposition` (`eq:p1-normal-form`): a degree-one cochain, as a list of terms by increasing
+  exponent, is the sum of the block of exponents `≤ d`, the residual block `d < e < 0` and the
+  block of exponents `≥ 0`; the outer blocks are the two chart contributions of a coboundary.
 
 Coefficients are natural numbers; an integer vector is a difference of two such. The statements
-that the kernel is exactly these vectors, the case `d < 0`, and the `H¹` normal form are not
-formalized.
+that the kernel is exactly these vectors, the case `d < 0`, and the uniqueness of the residual
+block are not formalized.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -103,5 +107,17 @@ theorem p1_sections (c : PTm 2) (y : PTm n) :
   rw [e]
   rw [e'] at *
   exact refl_pt c ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
+
+/-! ## The `H¹` normal form -/
+
+/-- `eq:p1-normal-form`. A degree-one cochain of `O(d)`, `d ≤ −2`, is a Laurent polynomial; list
+its terms `g(i)` by increasing exponent, with `A` terms of exponent `≤ d`, then the `R = −d − 1`
+terms of exponent `d < e < 0`, then `H` terms of exponent `≥ 0`. The first block is the
+contribution `−t^d b(t⁻¹)` of the second chart and the last block is the contribution `a(t)` of
+the first chart, so the cochain is a coboundary plus the residual block. -/
+theorem h1_decomposition (g : PTm 2) (A R H x : PTm n) :
+    Γ ⊢[PRAAx] ap2 (sumF g) (A + R + H) x ≐
+      ap2 (sumF g) A x + ap2 (sumF (offB g)) R (pairT A x) + ap2 (sumF (offB g)) H (pairT (A + R) x) :=
+  sum_split₃ g A R H x
 
 end LeanProofs.IPRA.Geometry.ProjectiveLine

@@ -1,4 +1,5 @@
 import IPRADerivations.Core.ParityArith
+import IPRADerivations.Core.SumSplit
 
 /-!
 # Crossing parity of a polygonal chain
@@ -21,6 +22,8 @@ parameter `x`, not only for bits.
 * `reverse_edge`, `double_edge`, `concat_parity`: a contribution is unchanged by reversing an
   edge, two copies of an edge cancel, and the parity of a concatenation is the xor of the
   parities;
+* `concat_chain`: for an edge list split as `M + K` edges, the parity of the crossing count is
+  the xor of the parities of the two parts;
 * `replacement`: chains whose crossing counts differ modulo two by a bounded sum of even triangle
   contributions have equal parities (`lem:replacement`).
 
@@ -136,5 +139,12 @@ theorem replacement (t : PTm 2) {P₁ P₂ C y M : PTm n}
     (ht : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift M) ⟶ (par (inst2 t (var 0) (Syn.shift y)) ≐ zero))) :
     Γ ⊢[PRAAx] par P₁ ≐ par P₂ :=
   par_replacement h (sum_even_bounded t y M ht)
+
+/-- The crossing count of a concatenated edge list: for contributions `c(i, x)`, the parity of
+`∑_{i<M+K} c(i)` is the xor of the parities of the first `M` and of the following `K` edges. -/
+theorem concat_chain (c : PTm 2) (M K x : PTm n) :
+    Γ ⊢[PRAAx] par (ap2 (sumF c) (M + K) x) ≐
+      par (par (ap2 (sumF c) M x) + par (ap2 (sumF (offB c)) K (pairT M x))) :=
+  (congrAp1 parF (sum_split c M K x)).eqTrans (par_add _ _)
 
 end LeanProofs.IPRA.Topology.CrossingParity
