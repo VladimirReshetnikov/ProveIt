@@ -356,6 +356,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.PolynomialTranslation.expand_pt
 #print axioms LeanProofs.IPRA.Algebra.PolynomialTranslation.translation
 #print axioms LeanProofs.IPRA.Algebra.PolynomialTranslation.coef_pt
+#print axioms LeanProofs.IPRA.Algebra.DescentPigeonhole.drop_pt
+#print axioms LeanProofs.IPRA.Algebra.DescentPigeonhole.drops_step
+#print axioms LeanProofs.IPRA.Algebra.DescentPigeonhole.drops
+#print axioms LeanProofs.IPRA.Algebra.DescentPigeonhole.good_center
+#print axioms LeanProofs.IPRA.Algebra.DescentPigeonhole.triple_of_center
+#print axioms LeanProofs.IPRA.Algebra.DescentPigeonhole.geom_third
 #print axioms LeanProofs.IPRA.Topology.Sperner.parity_invariant
 #print axioms LeanProofs.IPRA.Topology.Sperner.sperner_1d
 #print axioms LeanProofs.IPRA.Topology.CrossingParity.straddle_parity
