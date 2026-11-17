@@ -91,6 +91,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.refl_pt
 #print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.p1_sections
 #print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.h1_decomposition
+#print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.gle'_above
+#print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.h1_unique
+#print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.h1_residual_zero
+#print axioms LeanProofs.IPRA.Geometry.ProjectiveLine.h1_dimension
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm2
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm4
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.box_product2

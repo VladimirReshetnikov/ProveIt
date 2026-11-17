@@ -24,10 +24,12 @@ arbitrary body.
 * `h1_decomposition` (`eq:p1-normal-form`): a degree-one cochain, as a list of terms by increasing
   exponent, is the sum of the block of exponents `≤ d`, the residual block `d < e < 0` and the
   block of exponents `≥ 0`; the outer blocks are the two chart contributions of a coboundary.
+* `h1_unique`, `h1_residual_zero`, `h1_dimension`: a coboundary has zero coefficient at every
+  exponent `d < e < 0`, so residuals that differ by a coboundary are equal there, and the range has
+  `−d − 1` elements.
 
 Coefficients are natural numbers; an integer vector is a difference of two such. The statements
-that the kernel is exactly these vectors, the case `d < 0`, and the uniqueness of the residual
-block are not formalized.
+that the kernel is exactly these vectors, and the case `d < 0` are not formalized.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -119,5 +121,57 @@ theorem h1_decomposition (g : PTm 2) (A R H x : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF g) (A + R + H) x ≐
       ap2 (sumF g) A x + ap2 (sumF (offB g)) R (pairT A x) + ap2 (sumF (offB g)) H (pairT (A + R) x) :=
   sum_split₃ g A R H x
+
+/-! ## Uniqueness of the residual -/
+
+section Residual
+
+/-- `[k ≤ N]`. -/
+abbrev gle' {n : ℕ} (k N : PTm n) : PTm n := monus one (monus k N)
+
+theorem gle'_above {k N : PTm n} (h : Γ ⊢[PRAAx] le (succ N) k) : Γ ⊢[PRAAx] gle' k N ≐ zero := by
+  have e : Γ ⊢[PRAAx] k ≐ succ (monus k (succ N)) + N := by
+    have a := natEq (eq_add_of_le h)
+    apply deriveNat; ipra_simps; linear_combination a
+  have m : Γ ⊢[PRAAx] monus k N ≐ succ (monus k (succ N)) := (congrMonus e (.eqRefl _)).eqTrans (add_monus _ _)
+  exact (congrMonus (.eqRefl _) m).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
+
+/-- The coefficient of a coboundary `δ(a, b) = a(t) − t^d b(t⁻¹)` at the shifted exponent `e`
+(exponent `e − A`, with `d = −D`, so that the `b` part sits at `e ≤ A ∸ D`): the positive part
+`[A ≤ e] a_{e−A}` and the negative part `[e ≤ A ∸ D] b_{(A ∸ D) − e}`. -/
+abbrev cobPos {n : ℕ} (A e pa : PTm n) : PTm n := gle' A e * pa
+abbrev cobNeg {n : ℕ} (A D e pb : PTm n) : PTm n := gle' e (monus A D) * pb
+
+theorem cob_zero_pos {A e : PTm n} (pa : PTm n) (h₂ : Γ ⊢[PRAAx] lt e A) : Γ ⊢[PRAAx] cobPos A e pa ≐ zero :=
+  (congrMul (gle'_above h₂) (.eqRefl _)).eqTrans (zero_mul _)
+
+theorem cob_zero_neg {A D e : PTm n} (pb : PTm n) (h₁ : Γ ⊢[PRAAx] lt (monus A D) e) :
+    Γ ⊢[PRAAx] cobNeg A D e pb ≐ zero :=
+  (congrMul (gle'_above h₁) (.eqRefl _)).eqTrans (zero_mul _)
+
+/-- `thm:p1-h1`, uniqueness: at an exponent `d < e − A < 0` a coboundary has zero coefficient, so
+residuals `R₁, R₂` with `R₁ − R₂ = δ(a, b)` there are equal. -/
+theorem h1_unique {A D e R₁ R₂ pa pb : PTm n} (h₁ : Γ ⊢[PRAAx] lt (monus A D) e) (h₂ : Γ ⊢[PRAAx] lt e A)
+    (h : Γ ⊢[PRAAx] R₁ + cobNeg A D e pb ≐ R₂ + cobPos A e pa) : Γ ⊢[PRAAx] R₁ ≐ R₂ := by
+  have a := natEq (cob_zero_neg (D := D) pb h₁); have b := natEq (cob_zero_pos pa h₂)
+  have c := natEq h
+  apply deriveNat; ipra_simps
+  linear_combination c - a + b
+
+/-- In particular a residual that is a coboundary is zero. -/
+theorem h1_residual_zero {A D e R pa pb : PTm n} (h₁ : Γ ⊢[PRAAx] lt (monus A D) e) (h₂ : Γ ⊢[PRAAx] lt e A)
+    (h : Γ ⊢[PRAAx] R + cobNeg A D e pb ≐ cobPos A e pa) : Γ ⊢[PRAAx] R ≐ zero :=
+  h1_unique h₁ h₂ (h.eqTrans (zero_add _).eqSymm)
+
+/-- The residual range `A ∸ D < e < A` has `D − 1` elements for `1 ≤ D ≤ A`: the dimension
+`−d − 1` of `Ȟ¹(P¹, O(d))`. -/
+theorem h1_dimension {A D : PTm n} (h : Γ ⊢[PRAAx] le D A) (hD : Γ ⊢[PRAAx] le one D) :
+    Γ ⊢[PRAAx] monus A (succ (monus A D)) ≐ monus D one := by
+  have e₁ := natEq (eq_add_of_le h); have e₂ := natEq (eq_add_of_le hD)
+  have m₁ : Γ ⊢[PRAAx] A ≐ monus D one + succ (monus A D) := by
+    apply deriveNat; ipra_simps; linear_combination e₁ + e₂
+  exact (congrMonus m₁ (.eqRefl _)).eqTrans (add_monus _ _)
+
+end Residual
 
 end LeanProofs.IPRA.Geometry.ProjectiveLine
