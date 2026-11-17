@@ -165,6 +165,7 @@ import IPRADerivations.DiophantineNumberTheory.FLTMixed
 import IPRADerivations.DiophantineNumberTheory.IrrationalSqrt
 import IPRADerivations.DiophantineNumberTheory.PellDescent
 import IPRADerivations.DiophantineNumberTheory.PellAll
+import IPRADerivations.DiophantineNumberTheory.PellIndex
 import IPRADerivations.DiophantineNumberTheory.AperyNumbers
 import IPRADerivations.DiophantineNumberTheory.AperyRecurrence
 import IPRADerivations.DiophantineNumberTheory.CoprimeModulus

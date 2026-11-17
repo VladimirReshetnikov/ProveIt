@@ -732,6 +732,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellDescent.unit_descent
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellAll.inv_step
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellAll.pell_all
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellIndex.X_succ
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellIndex.Y_succ
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellIndex.X_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellIndex.Y_step
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellIndex.Y_mono
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellIndex.index_unique
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellIndex.A_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellIndex.stormer_pell_powers
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellIndex.stormer_index_unique
 #print axioms LeanProofs.IPRA.DescentEx.descent
 #print axioms LeanProofs.IPRA.ClockedDescent.orb_zero
 #print axioms LeanProofs.IPRA.ClockedDescent.orb_succ
