@@ -952,6 +952,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt.lw_pw
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt.log_zeta_coeff
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt.twist
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.cop_val
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.val_lcm
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.lcmu_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.lcmu_succ
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.lcmu_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.inv_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.lcm_valuation
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.val_lcmu_succ
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.lcmu_dvd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.lw_lcmu_succ
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto.psi_lcm
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
