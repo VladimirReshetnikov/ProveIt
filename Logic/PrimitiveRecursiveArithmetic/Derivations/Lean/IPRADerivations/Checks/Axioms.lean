@@ -467,6 +467,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.hb
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.hstep
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.square_area
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticE1.no_tri
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticE1.e1_tri
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticE1.e1_no_point
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples.pw_pos
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples.flt_multiple_of_four
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FLTMixed.quartic_at

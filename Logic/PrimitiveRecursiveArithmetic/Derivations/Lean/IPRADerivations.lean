@@ -136,6 +136,7 @@ import IPRADerivations.DiophantineNumberTheory.Pythagoras
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
 import IPRADerivations.DiophantineNumberTheory.SquareArea
+import IPRADerivations.DiophantineNumberTheory.EllipticE1
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.DiophantineNumberTheory.FLTMixed
 import IPRADerivations.DiophantineNumberTheory.IrrationalSqrt
