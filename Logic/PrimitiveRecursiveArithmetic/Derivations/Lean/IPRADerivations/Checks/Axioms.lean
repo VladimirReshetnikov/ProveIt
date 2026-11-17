@@ -624,6 +624,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.sq_inj
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_quotients
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.dvd_of_sq_dvd_sq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.dvd_of_pw_dvd_pw
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.coprime_third
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.z_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.prim_dvd
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.prim_eq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.prim_xy
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.prim_xz
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.prim_yz
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.prim_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.quartic_dvd
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.quartic_eq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras.pythagoras
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep.odd_sq_sum
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep.primitive_step
