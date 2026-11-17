@@ -20,7 +20,10 @@ is used through two finite facts about samples `F(0), F(1), …` on a subdivisio
   `r f(0)` by at most `D r (r − 1)/2`. With sample spacing `h/r` this is the bound
   "the total change on a cell of width `h` is at most `D h²/2`" of the proof.
 
-The lower bounds are symmetric. The integral names, the Taylor estimates of the elementary
+* `lip_down`, `cell_lower`: the lower bounds, from `f(j) ≤ f(j + 1) + D`:
+  `f(0) ≤ f(i) + D i` and `2 r f(0) + D r ≤ 2 ∑_{i<r} f(i) + D r²`.
+
+The integral names, the Taylor estimates of the elementary
 functions and the functional equation are not formalized.
 -/
 
@@ -159,5 +162,84 @@ theorem cell_upper (f : PTm 2) (x r D : PTm n)
       (Prf.impE lipO.wk (le_of_lt Prf.hyp0))
   exact le_congr (.eqRefl _) (lin_sum r (inst2 f zero x) D)
     (add_le_add_right (D * r) (two_mul_le_two_mul hs))
+
+/-! ## Lower bounds -/
+
+theorem lin_step' (a D i : PTm n) : Γ ⊢[PRAAx] (a + D) + D * i ≐ a + D * succ i := by
+  apply deriveNat; ipra_simps; ring
+
+/-- If `f(j) ≤ f(j + 1) + D` for `j < N`, then `f(0) ≤ f(i) + D i` for `i ≤ N`. -/
+theorem lip_down (f : PTm 2) (x N D : PTm n)
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
+      le (inst2 f (var 0) (Syn.shift x)) (inst2 f (succ (var 0)) (Syn.shift x) + Syn.shift D))) :
+    Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
+      le (inst2 f zero (Syn.shift x)) (inst2 f (var 0) (Syn.shift x) + Syn.shift D * var 0)) := by
+  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
+  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
+      Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    exact .impI (le_add_right _ _)
+  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
+      Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    have hf := h.allOpen
+    refine .impI ?_
+    have hle : (le (succ (var 0)) (Syn.shift N) ::
+        (le (var 0) (Syn.shift N) ⟶ le (inst2 f zero (Syn.shift x))
+          (inst2 f (var 0) (Syn.shift x) + Syn.shift D * var 0)) ::
+        Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
+      le_trans (le_succ_self _) Prf.hyp0
+    have ih := Prf.impE Prf.hyp1 hle
+    refine le_trans ih ?_
+    exact le_congr (.eqRefl _) (lin_step' _ _ _)
+      (add_le_add_right (Syn.shift D * var 0) (Prf.impE hf.wk.wk Prf.hyp0))
+
+/-- `f(i, fst y)`: the body `f` read at the first component of a pair parameter. -/
+abbrev fp (f : PTm 2) : PTm 2 := Syn.subst ![var 0, fstT (var 1)] f
+/-- `snd y · i`. -/
+abbrev linZ : PTm 2 := sndT (var 1) * var 0
+
+theorem inst2_fp (f : PTm 2) (i y : PTm n) : inst2 (fp f) i y = inst2 f i (fstT y) := by
+  simp only [inst2, Syn.subst_subst]
+  congr 1; funext j; fin_cases j <;> simp
+
+theorem inst2_linZ (i y : PTm n) : inst2 linZ i y = sndT y * i := by simp [inst2]
+
+/-- `2 r f(0) + D r ≤ 2 ∑_{i<r} f(i) + D r²` when `f(j) ≤ f(j + 1) + D` for `j < r`: the refined
+rectangle sum is below the coarse one `r f(0)` by at most `D r (r − 1)/2`. -/
+theorem cell_lower (f : PTm 2) (x r D : PTm n)
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift r) ⟶
+      le (inst2 f (var 0) (Syn.shift x)) (inst2 f (succ (var 0)) (Syn.shift x) + Syn.shift D))) :
+    Γ ⊢[PRAAx] le (two * (r * inst2 f zero x) + D * r) (two * ap2 (sumF f) r x + D * (r * r)) := by
+  have lipO := (lip_down f x r D h).allOpen
+  have e₁ : Syn.shift (pairT (inst2 f zero x) zero) = pairT (inst2 f zero (Syn.shift x)) zero := by
+    simp [Syn.shift, subst_inst2]
+  have e₂ : Syn.shift (pairT x D) = pairT (Syn.shift x) (Syn.shift D) := by simp [Syn.shift]
+  have e₃ : Syn.shift (pairT (zero : PTm n) D) = pairT zero (Syn.shift D) := by simp [Syn.shift]
+  have s₁ : Γ ⊢[PRAAx] le (ap2 (sumF linB) r (pairT (inst2 f zero x) zero))
+      (ap2 (sumF (addBody (fp f) linZ)) r (pairT x D)) := by
+    refine sum_le_params _ _ _ _ _ (.allI (.impI ?_))
+    rw [e₁, e₂, inst2_lin, inst2_addBody, inst2_fp, inst2_linZ]
+    exact le_congr
+      ((congrAdd (fst_pair _ _) ((congrMul (snd_pair _ _) (.eqRefl _)).eqTrans (zero_mul _))).eqTrans
+        (add_zero _)).eqSymm
+      (congrAdd (congrInst2 f (.eqRefl _) (fst_pair _ _)) (congrMul (snd_pair _ _) (.eqRefl _))).eqSymm
+      (Prf.impE lipO.wk (le_of_lt Prf.hyp0))
+  have c₁ : Γ ⊢[PRAAx] ap2 (sumF (fp f)) r (pairT x D) ≐ ap2 (sumF f) r x := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    rw [e₂, inst2_fp]
+    exact congrInst2 f (.eqRefl _) (fst_pair _ _)
+  have c₂ : Γ ⊢[PRAAx] ap2 (sumF linZ) r (pairT x D) ≐ ap2 (sumF linB) r (pairT zero D) := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    rw [e₂, e₃, inst2_linZ, inst2_lin]
+    exact (congrMul (snd_pair _ _) (.eqRefl _)).eqTrans
+      ((congrAdd (fst_pair _ _) (congrMul (snd_pair _ _) (.eqRefl _))).eqTrans (zero_add _)).eqSymm
+  have a₁ := natEq (lin_sum (Γ := Γ) r (inst2 f zero x) zero)
+  have a₂ := natEq (sum_add (Γ := Γ) (fp f) linZ r (pairT x D))
+  have a₃ := natEq (lin_sum (Γ := Γ) r zero D)
+  have b₁ := natEq c₁; have b₂ := natEq c₂
+  refine le_congr ?_ ?_ (add_le_add_right (D * r) (two_mul_le_two_mul s₁))
+  · apply deriveNat; ipra_simps
+    linear_combination a₁
+  · apply deriveNat; ipra_simps
+    linear_combination 2 * a₂ + 2 * b₁ + 2 * b₂ + a₃
 
 end LeanProofs.IPRA.Analysis.FiniteCalculus

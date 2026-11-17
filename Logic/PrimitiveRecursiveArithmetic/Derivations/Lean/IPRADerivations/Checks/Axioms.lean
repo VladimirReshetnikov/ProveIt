@@ -800,6 +800,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.lip_up
 #print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.lin_sum
 #print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.cell_upper
+#print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.lip_down
+#print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.cell_lower
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY
