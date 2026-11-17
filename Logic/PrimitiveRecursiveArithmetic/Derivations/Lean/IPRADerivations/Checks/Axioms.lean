@@ -189,6 +189,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.gram_identity
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.lagrange_identity
+#print axioms LeanProofs.IPRA.Geometry.SphericalHalf.diffR
+#print axioms LeanProofs.IPRA.Geometry.SphericalHalf.sumR
+#print axioms LeanProofs.IPRA.Geometry.SphericalHalf.product_to_sum_diff
+#print axioms LeanProofs.IPRA.Geometry.SphericalHalf.product_to_sum_sum
+#print axioms LeanProofs.IPRA.Geometry.SphericalHalf.half_angle_sin
+#print axioms LeanProofs.IPRA.Geometry.SphericalHalf.half_angle_cos
+#print axioms LeanProofs.IPRA.Geometry.SphericalHalf.half_angle_tan
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.gram_factor
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.angle_unit
 #print axioms LeanProofs.IPRA.Geometry.SphericalCore.sine_law

@@ -165,6 +165,7 @@ import IPRADerivations.Geometry.Morley
 import IPRADerivations.Geometry.PlatonicSolids
 import IPRADerivations.Geometry.Projective
 import IPRADerivations.Geometry.SphericalTrigonometry
+import IPRADerivations.Geometry.SphericalHalf
 import IPRADerivations.Geometry.SphericalCore
 import IPRADerivations.Geometry.SphericalPolar
 import IPRADerivations.Geometry.TriangleFormulas
