@@ -147,6 +147,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.Projective.desargues_identity
 #print axioms LeanProofs.IPRA.Geometry.Projective.plucker_relation
 #print axioms LeanProofs.IPRA.Geometry.Projective.pappus
+#print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.zt_cancel
+#print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.ceva_det
+#print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.ceva_witness
+#print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.menelaus_det
+#print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.menelaus_line
+#print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.bq_identity
+#print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.binary_quadratic
+#print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.carnot_forward
+#print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.carnot_converse
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.binet_cauchy
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.gram_identity
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law
