@@ -147,6 +147,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.Projective.desargues_identity
 #print axioms LeanProofs.IPRA.Geometry.Projective.plucker_relation
 #print axioms LeanProofs.IPRA.Geometry.Projective.pappus
+#print axioms LeanProofs.IPRA.Geometry.DesarguesInternal.nz_congr
+#print axioms LeanProofs.IPRA.Geometry.DesarguesInternal.inc_det
+#print axioms LeanProofs.IPRA.Geometry.DesarguesInternal.axis_spec
+#print axioms LeanProofs.IPRA.Geometry.DesarguesInternal.des_toZ
+#print axioms LeanProofs.IPRA.Geometry.DesarguesInternal.desargues_forward
+#print axioms LeanProofs.IPRA.Geometry.DesarguesInternal.desargues_reverse
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.zt_cancel
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.ceva_det
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.ceva_witness
