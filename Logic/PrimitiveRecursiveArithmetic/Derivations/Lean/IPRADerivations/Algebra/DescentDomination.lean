@@ -3,6 +3,7 @@ import IPRADerivations.Probability.Lotus
 import IPRADerivations.Core.SumPalindrome
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Core.IntOrder
 
 /-!
 # Geometric domination of the other terms
@@ -17,6 +18,9 @@ at most `1/3`". Cleared of the powers of `4`, for natural-number terms `T_i`:
 * `geo_dom_up`: if `4^{j+1} T_j ≤ V` for `j < K`, then `3 ∑_{j<K} T_j ≤ V` (the terms above `k`,
   indexed by `j = i − k − 1`), by reflecting the sum;
 * `other_terms`: both together, `3 (∑ below + ∑ above) ≤ 2V`.
+* `decrease`, `decrease_factor`: the final decrease, cleared by `12`: `|u| ≤ 12A − 11V`,
+  `|v| ≤ 8V` give `|u + v| ≤ 12A − 3V`, and with `D V ≥ A`, `D (12A − 3V) ≤ 3A (4D − 1)`, i.e.
+  `|P(z + Δ)| ≤ A − V/4 ≤ (1 − 1/(4D)) A`.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -152,5 +156,70 @@ theorem other_terms (L U : PTm 2) (k m V x : PTm n)
     Γ ⊢[PRAAx] le ((two + one) * (ap2 (sumF L) k x + ap2 (sumF U) m x)) (V + V) :=
   le_congr (by apply deriveNat; ipra_simps; ring) (.eqRefl _)
     (add_le_add₂ (geo_dom L k V x hlo) (geo_dom_up U m V x hup))
+
+/-! ## The decrease -/
+
+section Decrease
+
+variable {A V Dd : PTm n} {x₁ y₁ x₂ y₂ : ZT n}
+
+abbrev twelve {n : ℕ} : PTm n := num 12
+abbrev eleven {n : ℕ} : PTm n := num 11
+abbrev eight {n : ℕ} : PTm n := num 8
+abbrev three {n : ℕ} : PTm n := num 3
+
+/-- The decrease of the residual, cleared by `12`: with `u = 12 (b₀ + b_k Δ^k)` and `v` twelve
+times the other terms, `|u| ≤ 12A − 11V` and `|v| ≤ 8V` give `|u + v| ≤ 12A − 3V`, i.e.
+`|P(z + Δ)| ≤ A − V/4`, for `V ≤ A`. -/
+theorem decrease (hVA : Γ ⊢[PRAAx] le V A)
+    (h₁ : Γ ⊢[PRAAx] zle (ZT.sq x₁ + ZT.sq y₁) (ZT.ofNat (monus (twelve * A) (eleven * V) * monus (twelve * A) (eleven * V))))
+    (h₂ : Γ ⊢[PRAAx] zle (ZT.sq x₂ + ZT.sq y₂) (ZT.ofNat ((eight * V) * (eight * V)))) :
+    Γ ⊢[PRAAx] zle (ZT.sq (x₁ + x₂) + ZT.sq (y₁ + y₂))
+      (ZT.ofNat (monus (twelve * A) (three * V) * monus (twelve * A) (three * V))) := by
+  have t := triangle h₁ h₂
+  have e := natEq (eq_add_of_le hVA)
+  have m₁ : Γ ⊢[PRAAx] monus (twelve * A) (eleven * V) ≐ V + twelve * monus A V := by
+    have a : Γ ⊢[PRAAx] twelve * A ≐ (V + twelve * monus A V) + eleven * V := by
+      apply deriveNat; ipra_simps; linear_combination 12 * e
+    exact (congrMonus a (.eqRefl _)).eqTrans (add_monus _ _)
+  have m₃ : Γ ⊢[PRAAx] monus (twelve * A) (three * V) ≐ num 9 * V + twelve * monus A V := by
+    have a : Γ ⊢[PRAAx] twelve * A ≐ (num 9 * V + twelve * monus A V) + three * V := by
+      apply deriveNat; ipra_simps; linear_combination 12 * e
+    exact (congrMonus a (.eqRefl _)).eqTrans (add_monus _ _)
+  have ab : Γ ⊢[PRAAx] monus (twelve * A) (eleven * V) + eight * V ≐ monus (twelve * A) (three * V) := by
+    have a := natEq m₁; have b := natEq m₃
+    apply deriveNat; ipra_simps; linear_combination a - b
+  refine le_congr (.eqRefl _) ?_ t
+  simp only [zle, ZT.ofNat]
+  exact congrAdd (congrMul ab ab) (.eqRefl _)
+
+/-- With `D V ≥ A` (`eq:dominant-lower`): `D (12A − 3V) ≤ 3A (4D − 1)`, i.e.
+`A − V/4 ≤ (1 − 1/(4D)) A`. -/
+theorem decrease_factor (hVA : Γ ⊢[PRAAx] le V A) (hD : Γ ⊢[PRAAx] le A (Dd * V)) :
+    Γ ⊢[PRAAx] le (Dd * monus (twelve * A) (three * V)) (three * A * monus (num 4 * Dd) one + zero) := by
+  have e := natEq (eq_add_of_le hVA)
+  have m : Γ ⊢[PRAAx] monus (twelve * A) (three * V) ≐ num 9 * V + twelve * monus A V := by
+    have a : Γ ⊢[PRAAx] twelve * A ≐ (num 9 * V + twelve * monus A V) + three * V := by
+      apply deriveNat; ipra_simps; linear_combination 12 * e
+    exact (congrMonus a (.eqRefl _)).eqTrans (add_monus _ _)
+  -- `D ≥ 1` since `A ≤ D V` and, if `D = 0`, then `A = 0 = V` and both sides vanish.
+  refine .orE (zero_or_succ Dd) ?_ ?_
+  · have z : ((Dd ≐ zero) :: Γ) ⊢[PRAAx] Dd ≐ zero := Prf.hyp0
+    exact le_trans (le_congr ((zero_mul _).eqSymm.eqTrans (congrMul z.eqSymm (.eqRefl _))) (.eqRefl _) (le_refl zero))
+      (zero_le _)
+  · have s : ((Dd ≐ succ (pred Dd)) :: Γ) ⊢[PRAAx] Dd ≐ succ (pred Dd) := Prf.hyp0
+    have m4 : ((Dd ≐ succ (pred Dd)) :: Γ) ⊢[PRAAx] monus (num 4 * Dd) one ≐ num 3 * Dd + pred Dd := by
+      have a := natEq s
+      have b : ((Dd ≐ succ (pred Dd)) :: Γ) ⊢[PRAAx] num 4 * Dd ≐ (num 3 * Dd + pred Dd) + one := by
+        apply deriveNat; ipra_simps; linear_combination 4 * a - 3 * a
+      exact (congrMonus b (.eqRefl _)).eqTrans (add_monus _ _)
+    have e₂ := natEq (eq_add_of_le (hD.wk (ψ := Dd ≐ succ (pred Dd))))
+    have e₁ := natEq (eq_add_of_le (hVA.wk (ψ := Dd ≐ succ (pred Dd))))
+    refine le_of_eq_add (d := three * monus (Dd * V) A) ?_
+    have mm := natEq (m.wk (ψ := Dd ≐ succ (pred Dd))); have m4' := natEq m4; have a := natEq s
+    apply deriveNat; ipra_simps
+    linear_combination 3 * 𝔞(A) * m4' - 3 * 𝔞(A) * a + 12 * 𝔞(Dd) * e₁ - 𝔞(Dd) * mm + 3 * e₂
+
+end Decrease
 
 end LeanProofs.IPRA.Algebra.DescentDomination
