@@ -866,6 +866,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciGcd.fib_gcd
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciGcd.docagne
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciGcd.docagne_closed
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.sig_range
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.cong_lin
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.doc_t
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.doc_t1
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.ret_zero
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.ret_one
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.period_return
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.fib_period
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciPeriod.fibonacci_period
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_zero
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_one
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_five

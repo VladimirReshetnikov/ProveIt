@@ -109,6 +109,7 @@ import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Combinatorics.HockeyStick
 import IPRADerivations.Combinatorics.Fibonacci
 import IPRADerivations.Combinatorics.FibonacciGcd
+import IPRADerivations.Combinatorics.FibonacciPeriod
 import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Combinatorics.CatalanConvolution
