@@ -462,6 +462,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.JointLotus.inner_eq
 #print axioms LeanProofs.IPRA.Probability.JointLotus.multi_lotus
 #print axioms LeanProofs.IPRA.Probability.JointLotus.componentwise
+#print axioms LeanProofs.IPRA.Probability.Jensen.G3_at
+#print axioms LeanProofs.IPRA.Probability.Jensen.G3_sum
+#print axioms LeanProofs.IPRA.Probability.Jensen.jensen
+#print axioms LeanProofs.IPRA.Probability.Jensen.conditional_jensen
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_fact
