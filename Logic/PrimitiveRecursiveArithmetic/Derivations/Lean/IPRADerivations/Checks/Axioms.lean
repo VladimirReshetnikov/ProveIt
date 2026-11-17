@@ -903,6 +903,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.C_zero
 #print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.C_one
 #print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.independent_sets
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.E_sum
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.half_lt
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.ok_ext
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.cy_pair
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.H_sum
+#print axioms LeanProofs.IPRA.Combinatorics.IndependentSets.cycle_count
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_zero
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_one
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.luc_five
