@@ -1201,6 +1201,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.cell_upper
 #print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.lip_down
 #print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.cell_lower
+#print axioms LeanProofs.IPRA.Analysis.GapRemoval.gap_of
+#print axioms LeanProofs.IPRA.Analysis.GapRemoval.gap
+#print axioms LeanProofs.IPRA.Analysis.GapRemoval.gap_all
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY
