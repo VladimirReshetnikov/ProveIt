@@ -360,6 +360,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.Ninther.triple_high
 #print axioms LeanProofs.IPRA.Probability.Ninther.ninther_low
 #print axioms LeanProofs.IPRA.Probability.Ninther.ninther_high
+#print axioms LeanProofs.IPRA.Probability.MedianTransport.inc_below
+#print axioms LeanProofs.IPRA.Probability.MedianTransport.inc_above
+#print axioms LeanProofs.IPRA.Probability.MedianTransport.dec_below
+#print axioms LeanProofs.IPRA.Probability.MedianTransport.dec_above
+#print axioms LeanProofs.IPRA.Probability.MedianTransport.inc_counts
+#print axioms LeanProofs.IPRA.Probability.MedianTransport.dec_counts
+#print axioms LeanProofs.IPRA.Probability.MedianTransport.inc_median
+#print axioms LeanProofs.IPRA.Probability.MedianTransport.dec_median
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw
