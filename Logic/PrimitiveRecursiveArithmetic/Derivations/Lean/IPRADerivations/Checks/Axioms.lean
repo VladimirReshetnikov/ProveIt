@@ -659,6 +659,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.partial_le
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.count_upper
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.count_lower
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.two_pow_le_fact
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.fact_le_falling
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.binom_fact_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.term_bound
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.geom_dom
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.binomial_three
 #print axioms LeanProofs.IPRA.sum_zero_of_bounded
 #print axioms LeanProofs.IPRA.Combinatorics.Binomial.binom_open
 #print axioms LeanProofs.IPRA.Combinatorics.Binomial.binom_spec
