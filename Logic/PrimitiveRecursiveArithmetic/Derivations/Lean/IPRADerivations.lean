@@ -148,6 +148,7 @@ import IPRADerivations.Probability.Expectation
 import IPRADerivations.Probability.Lotus
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Probability.BinomialLaw
+import IPRADerivations.Probability.ProductReplacement
 import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.NormalMoments

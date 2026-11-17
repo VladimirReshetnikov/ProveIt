@@ -209,6 +209,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.BinomialLaw.binomial_variance
 #print axioms LeanProofs.IPRA.Probability.BinomialLaw.bernoulli_variance
 #print axioms LeanProofs.IPRA.Probability.BinomialLaw.bernoulli_third
+#print axioms LeanProofs.IPRA.Probability.ProductReplacement.Hp_succ
+#print axioms LeanProofs.IPRA.Probability.ProductReplacement.Hm_succ
+#print axioms LeanProofs.IPRA.Probability.ProductReplacement.replacement_identity
+#print axioms LeanProofs.IPRA.Probability.ProductReplacement.repl_step
+#print axioms LeanProofs.IPRA.Probability.ProductReplacement.replacement_all
+#print axioms LeanProofs.IPRA.Probability.ProductReplacement.replacement_bound
 #print axioms LeanProofs.IPRA.Probability.TailSum.tail_pt
 #print axioms LeanProofs.IPRA.Probability.TailSum.tail_col_pt
 #print axioms LeanProofs.IPRA.Probability.TailSum.tail_sum
