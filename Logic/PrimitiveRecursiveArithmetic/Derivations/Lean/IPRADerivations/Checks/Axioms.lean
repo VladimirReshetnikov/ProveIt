@@ -280,6 +280,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.pal_pt
 #print axioms LeanProofs.IPRA.sum_half_par
 #print axioms LeanProofs.IPRA.sum_palindrome
+#print axioms LeanProofs.IPRA.zle_of_toZ
+#print axioms LeanProofs.IPRA.zle_toZ
+#print axioms LeanProofs.IPRA.sq_nat
+#print axioms LeanProofs.IPRA.nat_sqrt_mono
+#print axioms LeanProofs.IPRA.dot_le
+#print axioms LeanProofs.IPRA.triangle
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.trichotomy_bits
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.partition
 #print axioms LeanProofs.IPRA.Probability.MedianCounts.counts_le
