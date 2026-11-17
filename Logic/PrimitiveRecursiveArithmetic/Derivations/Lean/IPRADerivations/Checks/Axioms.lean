@@ -178,6 +178,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.Mollweide.mollweide_diff
 #print axioms LeanProofs.IPRA.Geometry.Mollweide.tangent_cross
 #print axioms LeanProofs.IPRA.Geometry.Mollweide.inradius
+#print axioms LeanProofs.IPRA.Geometry.TriangleIsoperimetry.amgm3
+#print axioms LeanProofs.IPRA.Geometry.TriangleIsoperimetry.pq_ge
+#print axioms LeanProofs.IPRA.Geometry.TriangleIsoperimetry.abc_add
+#print axioms LeanProofs.IPRA.Geometry.TriangleIsoperimetry.triangle_isoperimetry
+#print axioms LeanProofs.IPRA.Geometry.TriangleIsoperimetry.triangle_product
+#print axioms LeanProofs.IPRA.Geometry.TriangleIsoperimetry.equilateral_iso
+#print axioms LeanProofs.IPRA.Geometry.TriangleIsoperimetry.equilateral_product
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.binet_cauchy
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.gram_identity
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law
