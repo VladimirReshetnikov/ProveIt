@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Combinatorics.Fibonacci
+import IPRADerivations.Probability.Independence
 
 /-!
 # The binomial transform and the Fibonacci convolution
@@ -15,7 +16,8 @@ the pair `y = ⟨m, x⟩`.
   for every `m`, by a simultaneous quantifier-free induction: writing `A_m`, `B_m` for the two
   sums, the Pascal step gives `A_{m+1} = 2 A_m + B_m` and `B_{m+1} = A_m + B_m`.
 
-The Lucas case (15) is not formalized.
+* `luc_convolution` (15): `∑_{k ≤ m} C(m, k) L_k = L_{2m}`, from the two Fibonacci convolutions and
+  `L_k + F_k = 2 F_{k+1}`.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -27,6 +29,7 @@ open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self' pascal_at)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
 open LeanProofs.IPRA.Combinatorics.Fibonacci
+open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
@@ -190,5 +193,37 @@ theorem fib_convolution (m : PTm n) :
     Γ ⊢[PRAAx] (Am m ≐ fibS (two * m)) ⋏ (Bm m ≐ fib (two * m)) := by
   have h := inst (Γ := Γ) conv₀ (![m] : Fin 1 → PTm n)
   simpa using h
+
+/-! ## The Lucas convolution -/
+
+/-- `L_k` as a body. -/
+abbrev lB : PTm 2 := luc (var 0)
+
+theorem inst2_l (k x : PTm n) : inst2 lB k x = luc k := by simp [inst2]
+
+/-- `∑_{k ≤ m} C(m, k) L_k`. -/
+abbrev Lm (m : PTm n) : PTm n := ap2 (sumF (bgB lB)) (succ m) (pairT m zero)
+
+theorem luc_pt (k y : PTm n) :
+    Γ ⊢[PRAAx] inst2 (addBody (bgB lB) (bgB fbB)) k y ≐ two * inst2 (bgB fsB) k y := by
+  rw [inst2_addBody, inst2_bg, inst2_bg, inst2_bg, inst2_l, inst2_fb, inst2_fs]
+  have e := natEq (luc_eq (Γ := Γ) k)
+  apply deriveNat; ipra_simps
+  linear_combination 𝔞(binom (fstT y) k) * e
+
+/-- The Lucas convolution (15): `∑_{k ≤ m} C(m, k) L_k = L_{2m}`. -/
+theorem luc_convolution (m : PTm n) : Γ ⊢[PRAAx] Lm m ≐ luc (two * m) := by
+  have s₁ := natEq (sum_add (Γ := Γ) (bgB lB) (bgB fbB) (succ m) (pairT m zero))
+  have two_shift : Syn.shift (two : PTm n) = two := by simp [Syn.shift]
+  have s₂' : Γ ⊢[PRAAx] ap2 (sumF (addBody (bgB lB) (bgB fbB))) (succ m) (pairT m zero) ≐ two * Am m := by
+    refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
+    rw [two_shift]
+    exact luc_pt _ _
+  have s₂ := natEq s₂'
+  have c := fib_convolution (Γ := Γ) m
+  have cA := natEq (Prf.andE₁ c); have cB := natEq (Prf.andE₂ c)
+  have l := natEq (luc_eq (Γ := Γ) (two * m))
+  apply deriveNat; ipra_simps
+  linear_combination -s₁ + s₂ + 2 * cA - cB - l
 
 end LeanProofs.IPRA.Combinatorics.BinomialTransform

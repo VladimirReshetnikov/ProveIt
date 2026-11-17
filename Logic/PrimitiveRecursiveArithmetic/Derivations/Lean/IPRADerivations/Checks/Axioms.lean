@@ -480,6 +480,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.shift_fs
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.conv_step
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.fib_convolution
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.luc_pt
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.luc_convolution
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.absorption
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.prime_dvd_binom
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.dvd_sum
