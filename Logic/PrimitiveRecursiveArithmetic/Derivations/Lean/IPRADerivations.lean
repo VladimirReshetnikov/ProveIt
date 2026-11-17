@@ -128,6 +128,7 @@ import IPRADerivations.Combinatorics.CatalanNarayana
 import IPRADerivations.Combinatorics.FiniteBijection
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Combinatorics.LegendreFact
+import IPRADerivations.Combinatorics.CatalanValuation
 import IPRADerivations.Combinatorics.CatalanSquares
 import IPRADerivations.Combinatorics.CatalanHalving
 import IPRADerivations.Combinatorics.CatalanBallot

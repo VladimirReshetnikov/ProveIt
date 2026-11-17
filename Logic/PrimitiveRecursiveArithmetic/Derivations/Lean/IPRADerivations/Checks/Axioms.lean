@@ -1183,6 +1183,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.LegendreFact.count_lt
 #print axioms LeanProofs.IPRA.Combinatorics.LegendreFact.L_succ
 #print axioms LeanProofs.IPRA.Combinatorics.LegendreFact.legendre_fact
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanValuation.fact_cat
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanValuation.cat_pos
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanValuation.catalan_valuation
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.square_pt
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.shift_squares
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.signed_square
