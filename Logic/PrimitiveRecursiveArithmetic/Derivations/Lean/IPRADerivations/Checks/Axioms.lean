@@ -708,6 +708,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BellTriangle.tri_step
 #print axioms LeanProofs.IPRA.Combinatorics.BellTriangle.tri_diag
 #print axioms LeanProofs.IPRA.Combinatorics.BellTriangle.bell_triangle
+#print axioms LeanProofs.IPRA.Combinatorics.Stirling.build_succ
+#print axioms LeanProofs.IPRA.Combinatorics.Stirling.nth_build
+#print axioms LeanProofs.IPRA.Combinatorics.Stirling.gle_above
+#print axioms LeanProofs.IPRA.Combinatorics.Stirling.row_zero
+#print axioms LeanProofs.IPRA.Combinatorics.Stirling.row_succ
+#print axioms LeanProofs.IPRA.Combinatorics.Stirling.stir_zero
+#print axioms LeanProofs.IPRA.Combinatorics.Stirling.stir_above
+#print axioms LeanProofs.IPRA.Combinatorics.Stirling.stir_succ_zero
+#print axioms LeanProofs.IPRA.Combinatorics.Stirling.stir_succ_succ
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fib_le
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fibS_add
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fib_add

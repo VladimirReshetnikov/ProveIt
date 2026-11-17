@@ -92,6 +92,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiLiminf
 import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.Combinatorics.BellTriangle
+import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Combinatorics.Fibonacci
 import IPRADerivations.Combinatorics.FibonacciGcd
 import IPRADerivations.Combinatorics.LucasIdentities
