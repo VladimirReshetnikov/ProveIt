@@ -843,6 +843,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.RationalTriangles.quartic_obstruction
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.RationalTriangles.quartic_fermat
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.RationalTriangles.square_progression
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.DescentTools.gcd_tools
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.DescentTools.gauss_tool
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.DescentTools.sq_dvd_tool
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.DescentTools.square_split
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.DescentTools.leg_parity
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.DescentTools.lt_of_sq_gap
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.DescentTools.pyth_param
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.DescentTools.pyth_unique
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.cop_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.cop_right
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.prim_core
