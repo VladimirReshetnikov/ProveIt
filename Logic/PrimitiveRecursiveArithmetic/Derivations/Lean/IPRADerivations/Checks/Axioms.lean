@@ -446,6 +446,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.SignedParts.signed_mono
 #print axioms LeanProofs.IPRA.Probability.SignedParts.signed_tail
 #print axioms LeanProofs.IPRA.Probability.SignedParts.finite_linearity
+#print axioms LeanProofs.IPRA.Probability.Histogram.lotus_bounded
+#print axioms LeanProofs.IPRA.Probability.Histogram.rep_spec
+#print axioms LeanProofs.IPRA.Probability.Histogram.rep_min
+#print axioms LeanProofs.IPRA.Probability.Histogram.hist_support
+#print axioms LeanProofs.IPRA.Probability.Histogram.hist_distinct
+#print axioms LeanProofs.IPRA.Probability.Histogram.rep_fiber
+#print axioms LeanProofs.IPRA.Probability.Histogram.histogram
+#print axioms LeanProofs.IPRA.Probability.Histogram.hist_weight
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_fact
