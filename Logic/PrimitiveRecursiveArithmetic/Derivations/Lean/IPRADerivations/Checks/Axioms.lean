@@ -977,6 +977,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm.binom_val_ge
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm.window_dvd
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm.binomial_lcm
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.lcmu_dvd_add
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.lcmu_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.val_double
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.double_dvd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.double_lcm
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.lcmu_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.upper_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.lcmu_upper
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.two_pow_ge
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.lcmu_lower2
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.lcmu_lower
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
