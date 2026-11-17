@@ -94,6 +94,7 @@ import IPRADerivations.Combinatorics.Fibonacci
 import IPRADerivations.Combinatorics.FibonacciGcd
 import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Combinatorics.Catalan
+import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.DiophantineNumberTheory.PellModular

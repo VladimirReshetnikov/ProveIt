@@ -718,6 +718,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_odd_binom
 #print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_telescope
 #print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_partial_sum
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanConvolution.monus_monus
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanConvolution.conv_symm
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanConvolution.u_eq
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanConvolution.shift_eq
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanConvolution.cat_one
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanConvolution.segner
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_split
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_shift
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_shift'
