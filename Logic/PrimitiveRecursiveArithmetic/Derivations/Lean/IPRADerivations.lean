@@ -101,6 +101,7 @@ import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.AnalyticNumberTheory.MobiusBounds
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
 import IPRADerivations.AnalyticNumberTheory.CoprimePairs
+import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.PhiTwo
 import IPRADerivations.AnalyticNumberTheory.PhiLowerSharp

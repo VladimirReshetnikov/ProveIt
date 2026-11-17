@@ -895,6 +895,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs.col_phi
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs.layer
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs.coprime_pairs
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.quo_succ
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.eqb_sq
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.eqb_sg
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.D_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.inc_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.inc_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.pb_cancel
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.sp_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi.summatory_phi
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
