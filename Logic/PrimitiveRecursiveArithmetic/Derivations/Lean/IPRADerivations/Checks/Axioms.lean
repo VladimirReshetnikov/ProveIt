@@ -876,6 +876,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Mobius.split_reindex
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Mobius.mobius_cancel
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Mobius.mobius_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds.sum_ext
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds.val_big
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds.mu_bound
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds.G_tail
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds.G_fix
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds.cancel_gen
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
