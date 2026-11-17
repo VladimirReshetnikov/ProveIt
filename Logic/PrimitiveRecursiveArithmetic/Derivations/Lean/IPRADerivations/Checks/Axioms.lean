@@ -931,6 +931,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination.harmonic_upper
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination.prime_reciprocal_at
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination.prime_reciprocal
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.prime_dvd_pw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.not_dvd_R
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.inv_case_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.inv_case_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.inv_all
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.reconstruct
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.val_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.factor_injective
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.divergence_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.divergence
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.divergence_rational
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.cop_A
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.phi_A
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.liminf_at
