@@ -32,6 +32,7 @@ import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.SumPalindrome
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Algebra.CayleyHamilton
+import IPRADerivations.Algebra.AdjugateInverse
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Analysis.Products

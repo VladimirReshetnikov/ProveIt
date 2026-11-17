@@ -137,6 +137,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.cayleyHamilton3
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.leftMul_hom
 #print axioms LeanProofs.IPRA.Algebra.CayleyHamilton.euler_four_squares
+#print axioms LeanProofs.IPRA.Algebra.AdjugateInverse.conjFin_elim
+#print axioms LeanProofs.IPRA.Algebra.AdjugateInverse.toZ_of_eqFm
+#print axioms LeanProofs.IPRA.Algebra.AdjugateInverse.row_expand
+#print axioms LeanProofs.IPRA.Algebra.AdjugateInverse.col_expand
+#print axioms LeanProofs.IPRA.Algebra.AdjugateInverse.mul_adj
+#print axioms LeanProofs.IPRA.Algebra.AdjugateInverse.adj_mul
+#print axioms LeanProofs.IPRA.Algebra.AdjugateInverse.inverse_right
+#print axioms LeanProofs.IPRA.Algebra.AdjugateInverse.inverse_left
+#print axioms LeanProofs.IPRA.Algebra.AdjugateInverse.unit_of_inverse
 #print axioms LeanProofs.IPRA.Geometry.EulerRodrigues.rodrigues_orthogonal
 #print axioms LeanProofs.IPRA.Geometry.EulerRodrigues.rodrigues_det
 #print axioms LeanProofs.IPRA.Geometry.EulerRodrigues.rodrigues_axis
