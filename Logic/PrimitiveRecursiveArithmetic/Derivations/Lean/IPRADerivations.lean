@@ -135,6 +135,7 @@ import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.DiophantineNumberTheory.Pythagoras
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.DiophantineNumberTheory.FermatQuartic
+import IPRADerivations.DiophantineNumberTheory.SquareArea
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.DiophantineNumberTheory.FLTMixed
 import IPRADerivations.DiophantineNumberTheory.IrrationalSqrt
