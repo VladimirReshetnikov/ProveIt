@@ -18,8 +18,13 @@ four polynomial identities proved here, from
 * `delambre4`, the square of (7.4): `(1 + cos(A − B))(1 − cos c) = (1 − cos(a + b))(1 − cos C)`,
 
 with `cos(A ± B) = cos A cos B ∓ sin A sin B` and likewise for the sides. Each is proved over a
-commutative ring and read as an equation of integer terms. The nonnegative square roots and the
-quotient forms (7.7)–(7.17) are not formalized.
+commutative ring and read as an equation of integer terms.
+
+`napier1`–`napier4` (`thm:napier`, (7.11)–(7.14) squared and cross-multiplied) combine two of these,
+e.g. `(1 − cos(A+B))(1 + cos(a+b))(1 − cos C) = (1 + cos(A+B))(1 + cos(a−b))(1 + cos C)` from (7.5) and
+the square of (7.3), cancelling `1 + cos c ≠ 0` (and `1 − cos c ≠ 0` for (7.12)).
+
+The nonnegative square roots and the quotient forms (7.7)–(7.17) are not formalized.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -119,5 +124,59 @@ theorem delambre4 (h : Laws cA sA cB sB cC sC ca sa cb sb cc sc Γ) :
   exact d4R a b c d e
 
 end Terms
+
+/-! ## Napier's analogies, squared and cross-multiplied -/
+
+section Napier
+
+open LeanProofs.IPRA.Geometry.CevaMenelaus (nz zt_cancel)
+
+variable {cA sA cB sB cC sC ca sa cb sb cc sc : ZT n}
+
+/-- (7.11) squared: `(1 − cos(A+B))(1 + cos(a+b))(1 − cos C) = (1 + cos(A+B))(1 + cos(a−b))(1 + cos C)`,
+given `1 + cos c ≠ 0`. -/
+theorem napier1 (h : Laws cA sA cB sB cC sC ca sa cb sb cc sc Γ) (hc : Γ ⊢[PRAAx] nz (ZT.natLit 1 + cc)) :
+    Γ ⊢[PRAAx] ZT.eq ((ZT.natLit 1 - (cA * cB - sA * sB)) * (ZT.natLit 1 + (ca * cb - sa * sb)) * (ZT.natLit 1 - cC))
+      ((ZT.natLit 1 + (cA * cB - sA * sB)) * (ZT.natLit 1 + (ca * cb + sa * sb)) * (ZT.natLit 1 + cC)) := by
+  have d₁ := ZT.toZ_eq (delambre1 h); have d₃ := ZT.toZ_eq (delambre3 h)
+  refine zt_cancel hc (ZT.derive ?_)
+  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at d₁ d₃ ⊢
+  linear_combination
+    (1 + (ZT.toZ Γ ca * ZT.toZ Γ cb - ZT.toZ Γ sa * ZT.toZ Γ sb)) * (1 - ZT.toZ Γ cC) * d₁ -
+    (1 + (ZT.toZ Γ ca * ZT.toZ Γ cb + ZT.toZ Γ sa * ZT.toZ Γ sb)) * (1 + ZT.toZ Γ cC) * d₃
+
+/-- (7.12) squared: `(1 − cos(A−B))(1 − cos(a+b))(1 − cos C) = (1 + cos(A−B))(1 − cos(a−b))(1 + cos C)`,
+given `1 − cos c ≠ 0`. -/
+theorem napier2 (h : Laws cA sA cB sB cC sC ca sa cb sb cc sc Γ) (hc : Γ ⊢[PRAAx] nz (ZT.natLit 1 - cc)) :
+    Γ ⊢[PRAAx] ZT.eq ((ZT.natLit 1 - (cA * cB + sA * sB)) * (ZT.natLit 1 - (ca * cb - sa * sb)) * (ZT.natLit 1 - cC))
+      ((ZT.natLit 1 + (cA * cB + sA * sB)) * (ZT.natLit 1 - (ca * cb + sa * sb)) * (ZT.natLit 1 + cC)) := by
+  have d₂ := ZT.toZ_eq (delambre2 h); have d₄ := ZT.toZ_eq (delambre4 h)
+  refine zt_cancel hc (ZT.derive ?_)
+  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at d₂ d₄ ⊢
+  linear_combination
+    (1 - (ZT.toZ Γ ca * ZT.toZ Γ cb - ZT.toZ Γ sa * ZT.toZ Γ sb)) * (1 - ZT.toZ Γ cC) * d₂ -
+    (1 - (ZT.toZ Γ ca * ZT.toZ Γ cb + ZT.toZ Γ sa * ZT.toZ Γ sb)) * (1 + ZT.toZ Γ cC) * d₄
+
+/-- (7.13) squared: `(1 − cos(a+b))(1 + cos(A+B))(1 + cos c) = (1 + cos(a+b))(1 + cos(A−B))(1 − cos c)`. -/
+theorem napier3 (h : Laws cA sA cB sB cC sC ca sa cb sb cc sc Γ) :
+    Γ ⊢[PRAAx] ZT.eq ((ZT.natLit 1 - (ca * cb - sa * sb)) * (ZT.natLit 1 + (cA * cB - sA * sB)) * (ZT.natLit 1 + cc))
+      ((ZT.natLit 1 + (ca * cb - sa * sb)) * (ZT.natLit 1 + (cA * cB + sA * sB)) * (ZT.natLit 1 - cc)) := by
+  have d₃ := ZT.toZ_eq (delambre3 h); have d₄ := ZT.toZ_eq (delambre4 h)
+  refine ZT.derive ?_
+  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at d₃ d₄ ⊢
+  linear_combination (1 - (ZT.toZ Γ ca * ZT.toZ Γ cb - ZT.toZ Γ sa * ZT.toZ Γ sb)) * d₃ -
+    (1 + (ZT.toZ Γ ca * ZT.toZ Γ cb - ZT.toZ Γ sa * ZT.toZ Γ sb)) * d₄
+
+/-- (7.14) squared: `(1 − cos(a−b))(1 − cos(A+B))(1 + cos c) = (1 + cos(a−b))(1 − cos(A−B))(1 − cos c)`. -/
+theorem napier4 (h : Laws cA sA cB sB cC sC ca sa cb sb cc sc Γ) :
+    Γ ⊢[PRAAx] ZT.eq ((ZT.natLit 1 - (ca * cb + sa * sb)) * (ZT.natLit 1 - (cA * cB - sA * sB)) * (ZT.natLit 1 + cc))
+      ((ZT.natLit 1 + (ca * cb + sa * sb)) * (ZT.natLit 1 - (cA * cB + sA * sB)) * (ZT.natLit 1 - cc)) := by
+  have d₁ := ZT.toZ_eq (delambre1 h); have d₂ := ZT.toZ_eq (delambre2 h)
+  refine ZT.derive ?_
+  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at d₁ d₂ ⊢
+  linear_combination (1 - (ZT.toZ Γ ca * ZT.toZ Γ cb + ZT.toZ Γ sa * ZT.toZ Γ sb)) * d₁ -
+    (1 + (ZT.toZ Γ ca * ZT.toZ Γ cb + ZT.toZ Γ sa * ZT.toZ Γ sb)) * d₂
+
+end Napier
 
 end LeanProofs.IPRA.Geometry.SphericalDelambre
