@@ -1122,6 +1122,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.spivey_prime
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.touchard_witness
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.touchard_pre
+#print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.stir_one
+#print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.stir_diag
+#print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.not_dvd_fact
+#print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.stir_dvd_step
+#print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.all_viol
+#print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.bell_prime
+#print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.touchard
+#print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.bell_prime_two
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_zero
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_self
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_above
