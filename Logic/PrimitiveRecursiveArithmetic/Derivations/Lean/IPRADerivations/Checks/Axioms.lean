@@ -389,6 +389,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.SortingBound.sorting_bound
 #print axioms LeanProofs.IPRA.Probability.SortingBound.interpolated
 #print axioms LeanProofs.IPRA.Probability.SortingBound.interpolated_example
+#print axioms LeanProofs.IPRA.Probability.MedianOfMedians.strong_ind
+#print axioms LeanProofs.IPRA.Probability.MedianOfMedians.lt_of_ceil₅
+#print axioms LeanProofs.IPRA.Probability.MedianOfMedians.lt_of_ceil₇
+#print axioms LeanProofs.IPRA.Probability.MedianOfMedians.cost_arith
+#print axioms LeanProofs.IPRA.Probability.MedianOfMedians.mom_step
+#print axioms LeanProofs.IPRA.Probability.MedianOfMedians.mom_linear
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw
