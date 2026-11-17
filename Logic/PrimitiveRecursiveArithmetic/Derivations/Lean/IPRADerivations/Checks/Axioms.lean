@@ -756,6 +756,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.PowerSums.lower
 #print axioms LeanProofs.IPRA.Analysis.PowerSums.upper
 #print axioms LeanProofs.IPRA.Analysis.PowerSums.power_sum_quadrature
+#print axioms LeanProofs.IPRA.Analysis.BaselDiagonal.pair_pt
+#print axioms LeanProofs.IPRA.Analysis.BaselDiagonal.odd_dvd
+#print axioms LeanProofs.IPRA.Analysis.BaselDiagonal.dc_pt
+#print axioms LeanProofs.IPRA.Analysis.BaselDiagonal.diagonal
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
