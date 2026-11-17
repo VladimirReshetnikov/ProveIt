@@ -1408,6 +1408,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_binom
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.gauss_ratio
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.gauss_derivative
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.pochL_succ
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.pochL_zero
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.prodL_perm
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.pochL_perm
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.pfq_ratio
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.gauss_symm
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.gauss_norm
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_fact
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_symm
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_step_left

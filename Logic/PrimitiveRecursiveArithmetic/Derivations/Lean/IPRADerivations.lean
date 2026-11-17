@@ -40,6 +40,7 @@ import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Analysis.Products
 import IPRADerivations.Analysis.Pochhammer
+import IPRADerivations.Analysis.HypergeometricRatio
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BarnesInteger
 import IPRADerivations.Analysis.RationalClosure
