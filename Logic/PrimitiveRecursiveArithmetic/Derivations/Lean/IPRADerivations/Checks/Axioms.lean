@@ -819,6 +819,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BellPascalInversion.claim_step
 #print axioms LeanProofs.IPRA.Combinatorics.BellPascalInversion.lt_shift
 #print axioms LeanProofs.IPRA.Combinatorics.BellPascalInversion.pascal_inversion
+#print axioms LeanProofs.IPRA.Combinatorics.BellSpivey.revision
+#print axioms LeanProofs.IPRA.Combinatorics.BellSpivey.conv_inner
+#print axioms LeanProofs.IPRA.Combinatorics.BellSpivey.G_shift
+#print axioms LeanProofs.IPRA.Combinatorics.BellSpivey.G_succ
+#print axioms LeanProofs.IPRA.Combinatorics.BellSpivey.G_zero
+#print axioms LeanProofs.IPRA.Combinatorics.BellSpivey.F_succ
+#print axioms LeanProofs.IPRA.Combinatorics.BellSpivey.spivey
+#print axioms LeanProofs.IPRA.Combinatorics.BellSpivey.G_ge
+#print axioms LeanProofs.IPRA.Combinatorics.BellSpivey.bell_product
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_zero
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_self
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_above

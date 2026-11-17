@@ -104,6 +104,7 @@ import IPRADerivations.Combinatorics.FallingFactorial
 import IPRADerivations.Combinatorics.StirlingBinomial
 import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.Combinatorics.BellPascalInversion
+import IPRADerivations.Combinatorics.BellSpivey
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Combinatorics.HockeyStick
 import IPRADerivations.Combinatorics.Fibonacci
