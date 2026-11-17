@@ -32,9 +32,9 @@ The power-cover constructor, for a cover certificate `∑ cᵢ fᵢ = 1`:
 * `cover_example`: for `f = (2, 3)`, `c = (−1, 1)` and `N = 2` the constructor returns
   `d = (7, −3)`, and `7 · 2² − 3 · 3² = 1`.
 
-For two generators every `N` is reached by iterating `cover_step`; the single object-level
-statement for all `N`, more generators, quotient presentations and the gluing theorems are not
-formalized.
+For two generators every `N` is reached by iterating `cover_step`; the statement for all `N`
+is `Geometry/PowerCover`. More generators, quotient presentations and the gluing theorems are
+not formalized.
 -/
 
 set_option linter.unusedSimpArgs false
