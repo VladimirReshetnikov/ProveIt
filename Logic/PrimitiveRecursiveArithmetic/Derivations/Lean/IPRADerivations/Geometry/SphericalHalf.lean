@@ -20,7 +20,16 @@ are the finite addition-formula polynomials. With `h = sin²(A/2)` and the side 
 * `half_angle_cos` (6.2): `sin b sin c · (1 − h) = sin p sin(p − a)`;
 * `half_angle_tan` (6.3), cross-multiplied: `sin p sin(p − a) · h = sin(p − b) sin(p − c) · (1 − h)`.
 
-The positive square roots (6.4)–(6.6) are not formalized.
+Dually (`thm:half-side`), with half-angle unit pairs for `A/2, B/2, C/2`, `P = (A + B + C)/2`,
+`k = sin²(a/2)` and the angle cosine law `cos A = −cos B cos C + sin B sin C cos a`:
+
+* `sideSumR`, `sideDiffR`: `cos A + cos(B + C) = 2 cos P cos(P − A)` and
+  `cos A + cos(B − C) = 2 cos(P − B) cos(P − C)` modulo the unit relations;
+* `half_side_sin` (6.9): `sin B sin C · k = −cos P cos(P − A)`;
+* `half_side_cos` (6.10): `sin B sin C · (1 − k) = cos(P − B) cos(P − C)`;
+* `half_side_tan` (6.11), cross-multiplied.
+
+The positive square roots (6.4)–(6.6) and (6.12) are not formalized.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -167,5 +176,94 @@ theorem half_angle_tan (u₁ : Γ ⊢[PRAAx] ZT.eq (s₁ * s₁ + c₁ * c₁) (
   linear_combination ZT.toZ Γ (ZT.natLit 1 - h) * hs - ZT.toZ Γ h * hc
 
 end Half
+
+/-! ## The half-side formulas -/
+
+section HalfSideRing
+
+variable {R : Type*} [CommRing R]
+
+/-- `cos(x + y + z)` from unit pairs. -/
+def cos3R (sx cx sy cy sz cz : R) : R := cx * cy * cz - cx * sy * sz - sx * cy * sz - sx * sy * cz
+
+theorem sideSumR (s₁ c₁ s₂ c₂ s₃ c₃ : R) (u₁ : s₁ * s₁ + c₁ * c₁ = 1) (u₂ : s₂ * s₂ + c₂ * c₂ = 1)
+    (u₃ : s₃ * s₃ + c₃ * c₃ = 1) :
+    (c₁ * c₁ - s₁ * s₁) + ((c₂ * c₂ - s₂ * s₂) * (c₃ * c₃ - s₃ * s₃) - 2 * s₂ * c₂ * (2 * s₃ * c₃)) =
+      2 * cos3R s₁ c₁ s₂ c₂ s₃ c₃ * cos3R (-s₁) c₁ s₂ c₂ s₃ c₃ := by
+  simp only [cos3R]
+  linear_combination (-2 * c₂ ^ 2 * c₃ ^ 2 + 4 * c₂ * c₃ * s₂ * s₃ - 2 * s₂ ^ 2 * s₃ ^ 2 + 1) * u₁ +
+    (2 * c₃ ^ 2 * s₁ ^ 2 - c₃ ^ 2 + 2 * s₁ ^ 2 * s₃ ^ 2 - s₃ ^ 2) * u₂ + (2 * s₁ ^ 2 - 1) * u₃
+
+theorem sideDiffR (s₁ c₁ s₂ c₂ s₃ c₃ : R) (u₁ : s₁ * s₁ + c₁ * c₁ = 1) (u₂ : s₂ * s₂ + c₂ * c₂ = 1)
+    (u₃ : s₃ * s₃ + c₃ * c₃ = 1) :
+    (c₁ * c₁ - s₁ * s₁) + ((c₂ * c₂ - s₂ * s₂) * (c₃ * c₃ - s₃ * s₃) + 2 * s₂ * c₂ * (2 * s₃ * c₃)) =
+      2 * cos3R s₁ c₁ (-s₂) c₂ s₃ c₃ * cos3R s₁ c₁ s₂ c₂ (-s₃) c₃ := by
+  simp only [cos3R]
+  linear_combination (-2 * c₂ ^ 2 * c₃ ^ 2 - 4 * c₂ * c₃ * s₂ * s₃ - 2 * s₂ ^ 2 * s₃ ^ 2 + 1) * u₁ +
+    (2 * c₃ ^ 2 * s₁ ^ 2 - c₃ ^ 2 + 2 * s₁ ^ 2 * s₃ ^ 2 - s₃ ^ 2) * u₂ + (2 * s₁ ^ 2 - 1) * u₃
+
+end HalfSideRing
+
+/-- `cos(x + y + z)` for integer terms. -/
+abbrev cos3 (sx cx sy cy sz cz : ZT n) : ZT n := cx * cy * cz - cx * sy * sz - sx * cy * sz - sx * sy * cz
+
+theorem toZ_cos3 (sx cx sy cy sz cz : ZT n) :
+    ZT.toZ Γ (cos3 sx cx sy cy sz cz) =
+      cos3R (ZT.toZ Γ sx) (ZT.toZ Γ cx) (ZT.toZ Γ sy) (ZT.toZ Γ cy) (ZT.toZ Γ sz) (ZT.toZ Γ cz) := by
+  simp only [cos3R, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul]
+
+section HalfSide
+
+/-! Here `(s₁, c₁), (s₂, c₂), (s₃, c₃)` are the half angles `A/2, B/2, C/2`, `P = (A + B + C)/2`,
+`k = sin²(a/2)`, and the angle cosine law is `cos A = −cos B cos C + sin B sin C cos a`. -/
+variable {s₁ c₁ s₂ c₂ s₃ c₃ ca k : ZT n}
+
+/-- (6.9): `sin B sin C · sin²(a/2) = −cos P cos(P − A)`. -/
+theorem half_side_sin (u₁ : Γ ⊢[PRAAx] ZT.eq (s₁ * s₁ + c₁ * c₁) (ZT.natLit 1))
+    (u₂ : Γ ⊢[PRAAx] ZT.eq (s₂ * s₂ + c₂ * c₂) (ZT.natLit 1)) (u₃ : Γ ⊢[PRAAx] ZT.eq (s₃ * s₃ + c₃ * c₃) (ZT.natLit 1))
+    (law : Γ ⊢[PRAAx] ZT.eq (cosD s₁ c₁) (-(cosD s₂ c₂ * cosD s₃ c₃) + sinD s₂ c₂ * sinD s₃ c₃ * ca))
+    (ha : Γ ⊢[PRAAx] ZT.eq ca (ZT.natLit 1 - ZT.natLit 2 * k)) :
+    Γ ⊢[PRAAx] ZT.eq (sinD s₂ c₂ * sinD s₃ c₃ * k) (-(cos3 s₁ c₁ s₂ c₂ s₃ c₃ * cos3 (-s₁) c₁ s₂ c₂ s₃ c₃)) := by
+  have e₁ := ZT.toZ_eq u₁; have e₂ := ZT.toZ_eq u₂; have e₃ := ZT.toZ_eq u₃
+  simp only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at e₁ e₂ e₃
+  have j := sideSumR _ _ _ _ _ _ e₁ e₂ e₃
+  have l := ZT.toZ_eq law; have a := ZT.toZ_eq ha
+  refine zt_cancel nz_two (ZT.derive ?_)
+  simp only [toZ_cos3, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_natLit] at l a j ⊢
+  simp only [cos3R] at j ⊢
+  push_cast at l a j ⊢
+  linear_combination -j + l + (2 * ZT.toZ Γ s₂ * ZT.toZ Γ c₂ * (2 * ZT.toZ Γ s₃ * ZT.toZ Γ c₃)) * a
+
+/-- (6.10): `sin B sin C · cos²(a/2) = cos(P − B) cos(P − C)`, with `cos²(a/2) = 1 − k`. -/
+theorem half_side_cos (u₁ : Γ ⊢[PRAAx] ZT.eq (s₁ * s₁ + c₁ * c₁) (ZT.natLit 1))
+    (u₂ : Γ ⊢[PRAAx] ZT.eq (s₂ * s₂ + c₂ * c₂) (ZT.natLit 1)) (u₃ : Γ ⊢[PRAAx] ZT.eq (s₃ * s₃ + c₃ * c₃) (ZT.natLit 1))
+    (law : Γ ⊢[PRAAx] ZT.eq (cosD s₁ c₁) (-(cosD s₂ c₂ * cosD s₃ c₃) + sinD s₂ c₂ * sinD s₃ c₃ * ca))
+    (ha : Γ ⊢[PRAAx] ZT.eq ca (ZT.natLit 1 - ZT.natLit 2 * k)) :
+    Γ ⊢[PRAAx] ZT.eq (sinD s₂ c₂ * sinD s₃ c₃ * (ZT.natLit 1 - k))
+      (cos3 s₁ c₁ (-s₂) c₂ s₃ c₃ * cos3 s₁ c₁ s₂ c₂ (-s₃) c₃) := by
+  have e₁ := ZT.toZ_eq u₁; have e₂ := ZT.toZ_eq u₂; have e₃ := ZT.toZ_eq u₃
+  simp only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at e₁ e₂ e₃
+  have j := sideDiffR _ _ _ _ _ _ e₁ e₂ e₃
+  have l := ZT.toZ_eq law; have a := ZT.toZ_eq ha
+  refine zt_cancel nz_two (ZT.derive ?_)
+  simp only [toZ_cos3, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_neg, ZT.toZ_natLit] at l a j ⊢
+  simp only [cos3R] at j ⊢
+  push_cast at l a j ⊢
+  linear_combination j - l - (2 * ZT.toZ Γ s₂ * ZT.toZ Γ c₂ * (2 * ZT.toZ Γ s₃ * ZT.toZ Γ c₃)) * a
+
+/-- (6.11), cross-multiplied: `sin²(a/2) cos(P − B) cos(P − C) = −cos P cos(P − A) cos²(a/2)`. -/
+theorem half_side_tan (u₁ : Γ ⊢[PRAAx] ZT.eq (s₁ * s₁ + c₁ * c₁) (ZT.natLit 1))
+    (u₂ : Γ ⊢[PRAAx] ZT.eq (s₂ * s₂ + c₂ * c₂) (ZT.natLit 1)) (u₃ : Γ ⊢[PRAAx] ZT.eq (s₃ * s₃ + c₃ * c₃) (ZT.natLit 1))
+    (law : Γ ⊢[PRAAx] ZT.eq (cosD s₁ c₁) (-(cosD s₂ c₂ * cosD s₃ c₃) + sinD s₂ c₂ * sinD s₃ c₃ * ca))
+    (ha : Γ ⊢[PRAAx] ZT.eq ca (ZT.natLit 1 - ZT.natLit 2 * k)) :
+    Γ ⊢[PRAAx] ZT.eq (k * (cos3 s₁ c₁ (-s₂) c₂ s₃ c₃ * cos3 s₁ c₁ s₂ c₂ (-s₃) c₃))
+      (-(cos3 s₁ c₁ s₂ c₂ s₃ c₃ * cos3 (-s₁) c₁ s₂ c₂ s₃ c₃) * (ZT.natLit 1 - k)) := by
+  have hs := ZT.toZ_eq (half_side_sin u₁ u₂ u₃ law ha)
+  have hc := ZT.toZ_eq (half_side_cos u₁ u₂ u₃ law ha)
+  refine ZT.derive ?_
+  simp only [ZT.toZ_mul, ZT.toZ_neg] at hs hc ⊢
+  linear_combination -ZT.toZ Γ k * hc + ZT.toZ Γ (ZT.natLit 1 - k) * hs
+
+end HalfSide
 
 end LeanProofs.IPRA.Geometry.SphericalHalf
