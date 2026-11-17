@@ -383,6 +383,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.MedianMajority.majority_value
 #print axioms LeanProofs.IPRA.Probability.MedianConditional.outer_at
 #print axioms LeanProofs.IPRA.Probability.MedianConditional.conditional_l1
+#print axioms LeanProofs.IPRA.Probability.SortingBound.fact_pos
+#print axioms LeanProofs.IPRA.Probability.SortingBound.pw_fact
+#print axioms LeanProofs.IPRA.Probability.SortingBound.fact_double
+#print axioms LeanProofs.IPRA.Probability.SortingBound.sorting_bound
+#print axioms LeanProofs.IPRA.Probability.SortingBound.interpolated
+#print axioms LeanProofs.IPRA.Probability.SortingBound.interpolated_example
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw

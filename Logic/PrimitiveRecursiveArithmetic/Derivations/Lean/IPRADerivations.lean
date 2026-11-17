@@ -197,6 +197,7 @@ import IPRADerivations.Probability.MedianTransport
 import IPRADerivations.Probability.MedianJensen
 import IPRADerivations.Probability.MedianMajority
 import IPRADerivations.Probability.MedianConditional
+import IPRADerivations.Probability.SortingBound
 import IPRADerivations.Topology.Sperner
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
