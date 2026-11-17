@@ -19,7 +19,7 @@ from one parameter code `x`: `c₀ = C0 x`, `c₁ = C1 x` (pairs of natural numb
   `d₀ f₀^(k+1) + d₁ f₁^(k+1) = 1` with `(d₀, d₁) = st k x`. The invariant is an equation between
   primitive-recursive terms, and the induction on `k` is quantifier-free.
 
-More than two generators and the gluing theorems are not formalized.
+Three generators are `Geometry/PowerCover3`. The gluing theorems are not formalized.
 -/
 
 set_option linter.unusedSimpArgs false

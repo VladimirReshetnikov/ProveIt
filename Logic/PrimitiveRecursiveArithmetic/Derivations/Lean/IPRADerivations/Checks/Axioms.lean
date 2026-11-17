@@ -68,11 +68,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.LocalizationWitness.cover32_all
 #print axioms LeanProofs.IPRA.Geometry.LocalizationWitness.cover_example
 #print axioms LeanProofs.IPRA.Geometry.LocalizationWitness.cover_step
+#print axioms LeanProofs.IPRA.Geometry.LocalizationWitness.cover_step₃
 #print axioms LeanProofs.IPRA.Geometry.PowerCover.st_zero
 #print axioms LeanProofs.IPRA.Geometry.PowerCover.st_succ
 #print axioms LeanProofs.IPRA.Geometry.PowerCover.inv_base
 #print axioms LeanProofs.IPRA.Geometry.PowerCover.inv_step
 #print axioms LeanProofs.IPRA.Geometry.PowerCover.power_cover
+#print axioms LeanProofs.IPRA.Geometry.PowerCover3.st_zero
+#print axioms LeanProofs.IPRA.Geometry.PowerCover3.st_succ
+#print axioms LeanProofs.IPRA.Geometry.PowerCover3.inv_base
+#print axioms LeanProofs.IPRA.Geometry.PowerCover3.inv_step
+#print axioms LeanProofs.IPRA.Geometry.PowerCover3.power_cover₃
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm2
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.amgm4
 #print axioms LeanProofs.IPRA.Geometry.HypercubeSplit.box_product2

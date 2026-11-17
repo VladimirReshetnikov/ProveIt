@@ -29,6 +29,7 @@ The power-cover constructor, for a cover certificate `∑ cᵢ fᵢ = 1`:
 * `cover22`, `cover23`, `cover32`: hence `∑ dᵢ fᵢ^N = 1`;
 * `cover_step`: for two generators and every exponent, an explicit update of the coefficients
   turns a certificate for the powers `N + 1` into one for `N + 2`;
+* `cover_step₃`: the same step for three generators, from the buckets of `(∑ dᵢ fᵢ^(N+1))³ ∑ cᵢ fᵢ`;
 * `cover_example`: for `f = (2, 3)`, `c = (−1, 1)` and `N = 2` the constructor returns
   `d = (7, −3)`, and `7 · 2² − 3 · 3² = 1`.
 
@@ -236,6 +237,35 @@ theorem cover_step {d₀ d₁ P Q : ZT n} (hu : Γ ⊢[PRAAx] ZT.eq (c₀ * f₀
   ipra_simps
   linear_combination (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(d₀) * 𝔷(c₁) * 𝔷(f₁) * (𝔷(f₀) * 𝔷(P)) +
     𝔷(d₁) * 𝔷(c₀) * 𝔷(f₀) * (𝔷(f₁) * 𝔷(Q))) * eS + eu
+
+/-- A bucket of `(X + Xa + Xb)³ u` for three generators: the terms with the square of `X = d f P`,
+and the share `6 c d Xa Xb` of the mixed term. -/
+def bucket {n : ℕ} (d c P X Xa Xb u : ZT n) : ZT n :=
+  d * d * P * (X + ZT.natLit 3 * Xa + ZT.natLit 3 * Xb) * u + ZT.natLit 6 * c * d * (Xa * Xb)
+
+/-- The inductive step of `thm:power-cover` for three generators, for every exponent. With
+`Pᵢ = fᵢ^N`, `Xᵢ = dᵢ fᵢ Pᵢ`, `u = ∑ cᵢ fᵢ` and a certificate `∑ dᵢ fᵢ^(N+1) = 1`, the buckets of
+`(X₀ + X₁ + X₂)³ u` give coefficients with `∑ dᵢ' fᵢ^(N+2) = 1`: a term with a repeated index
+`i` contains `fᵢ^(2N+2)`, and the term with three different indices is multiplied by `u`. -/
+theorem cover_step₃ {d₀ d₁ d₂ P₀ P₁ P₂ : ZT n}
+    (hu : Γ ⊢[PRAAx] ZT.eq (c₀ * f₀ + c₁ * f₁ + c₂ * f₂) (ZT.natLit 1))
+    (hS : Γ ⊢[PRAAx] ZT.eq (d₀ * (f₀ * P₀) + d₁ * (f₁ * P₁) + d₂ * (f₂ * P₂)) (ZT.natLit 1)) :
+    Γ ⊢[PRAAx] ZT.eq
+      (bucket d₀ c₀ P₀ (d₀ * (f₀ * P₀)) (d₁ * (f₁ * P₁)) (d₂ * (f₂ * P₂)) (c₀ * f₀ + c₁ * f₁ + c₂ * f₂) *
+          (f₀ * (f₀ * P₀)) +
+        bucket d₁ c₁ P₁ (d₁ * (f₁ * P₁)) (d₀ * (f₀ * P₀)) (d₂ * (f₂ * P₂)) (c₀ * f₀ + c₁ * f₁ + c₂ * f₂) *
+          (f₁ * (f₁ * P₁)) +
+        bucket d₂ c₂ P₂ (d₂ * (f₂ * P₂)) (d₀ * (f₀ * P₀)) (d₁ * (f₁ * P₁)) (c₀ * f₀ + c₁ * f₁ + c₂ * f₂) *
+          (f₂ * (f₂ * P₂)))
+      (ZT.natLit 1) := by
+  have eu := ZT.toZ_eq hu; have eS := ZT.toZ_eq hS
+  apply ZT.derive
+  simp only [bucket]
+  ipra_simps
+  linear_combination
+    ((𝔷(d₀) * (𝔷(f₀) * 𝔷(P₀)) + 𝔷(d₁) * (𝔷(f₁) * 𝔷(P₁)) + 𝔷(d₂) * (𝔷(f₂) * 𝔷(P₂))) ^ 2 +
+      (𝔷(d₀) * (𝔷(f₀) * 𝔷(P₀)) + 𝔷(d₁) * (𝔷(f₁) * 𝔷(P₁)) + 𝔷(d₂) * (𝔷(f₂) * 𝔷(P₂))) + 1) *
+      (𝔷(c₀) * 𝔷(f₀) + 𝔷(c₁) * 𝔷(f₁) + 𝔷(c₂) * 𝔷(f₂)) * eS + eu
 
 end PowerCover
 
