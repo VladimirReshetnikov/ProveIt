@@ -375,6 +375,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.MedianJensen.count_side_above
 #print axioms LeanProofs.IPRA.Probability.MedianJensen.jensen_count
 #print axioms LeanProofs.IPRA.Probability.MedianJensen.jensen_median
+#print axioms LeanProofs.IPRA.Probability.MedianMajority.in_above_val
+#print axioms LeanProofs.IPRA.Probability.MedianMajority.in_below_val
+#print axioms LeanProofs.IPRA.Probability.MedianMajority.in_above
+#print axioms LeanProofs.IPRA.Probability.MedianMajority.in_below
+#print axioms LeanProofs.IPRA.Probability.MedianMajority.majority_interval
+#print axioms LeanProofs.IPRA.Probability.MedianMajority.majority_value
+#print axioms LeanProofs.IPRA.Probability.MedianConditional.outer_at
+#print axioms LeanProofs.IPRA.Probability.MedianConditional.conditional_l1
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw
