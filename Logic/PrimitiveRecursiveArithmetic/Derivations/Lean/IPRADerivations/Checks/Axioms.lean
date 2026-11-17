@@ -618,6 +618,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_dec
 #print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_choice
 #print axioms LeanProofs.IPRA.Foundations.BoundedFormulas.bf_least
+#print axioms LeanProofs.IPRA.Foundations.BoundedCover.cover_at
+#print axioms LeanProofs.IPRA.Foundations.BoundedCover.cover
+#print axioms LeanProofs.IPRA.Foundations.BoundedCover.composition
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_zero
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_succ
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.trace_invariant_all
