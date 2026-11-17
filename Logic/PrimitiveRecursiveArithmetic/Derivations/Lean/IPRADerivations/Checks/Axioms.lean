@@ -725,6 +725,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingPowers.x_pt
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingPowers.pf_step
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingPowers.stirling_powers
+#print axioms LeanProofs.IPRA.Combinatorics.FallingFactorial.monus_monus_add
+#print axioms LeanProofs.IPRA.Combinatorics.FallingFactorial.ff_add
+#print axioms LeanProofs.IPRA.Combinatorics.FallingFactorial.ff_one
+#print axioms LeanProofs.IPRA.Combinatorics.FallingFactorial.ff_self
+#print axioms LeanProofs.IPRA.Combinatorics.FallingFactorial.ff_fact
+#print axioms LeanProofs.IPRA.Combinatorics.FallingFactorial.ff_binom
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fib_le
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fibS_add
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fib_add

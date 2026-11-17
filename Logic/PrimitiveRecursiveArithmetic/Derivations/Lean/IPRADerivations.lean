@@ -94,6 +94,7 @@ import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.Combinatorics.BellTriangle
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Combinatorics.StirlingPowers
+import IPRADerivations.Combinatorics.FallingFactorial
 import IPRADerivations.Combinatorics.Fibonacci
 import IPRADerivations.Combinatorics.FibonacciGcd
 import IPRADerivations.Combinatorics.LucasIdentities
