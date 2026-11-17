@@ -722,6 +722,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic.smaller
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic.fermat_quartic
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic.flt4
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuarticPoints.no_square_area
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuarticPoints.flt4'
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuarticPoints.fourth_difference
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuarticPoints.quartic_points
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FermatQuarticPoints.quartic_canonical
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.cop_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.cop_right
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareArea.prim_core
