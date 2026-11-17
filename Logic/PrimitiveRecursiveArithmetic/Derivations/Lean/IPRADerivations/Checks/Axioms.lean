@@ -347,6 +347,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.HenselStep.taylor_cubic
 #print axioms LeanProofs.IPRA.Algebra.HenselStep.hensel_combine₃
 #print axioms LeanProofs.IPRA.Algebra.HenselStep.hensel_step₃
+#print axioms LeanProofs.IPRA.Algebra.PolynomialTranslation.head_pt
+#print axioms LeanProofs.IPRA.Algebra.PolynomialTranslation.tail_pt
+#print axioms LeanProofs.IPRA.Algebra.PolynomialTranslation.expand_pt
+#print axioms LeanProofs.IPRA.Algebra.PolynomialTranslation.translation
+#print axioms LeanProofs.IPRA.Algebra.PolynomialTranslation.coef_pt
 #print axioms LeanProofs.IPRA.Topology.Sperner.parity_invariant
 #print axioms LeanProofs.IPRA.Topology.Sperner.sperner_1d
 #print axioms LeanProofs.IPRA.Topology.CrossingParity.straddle_parity
