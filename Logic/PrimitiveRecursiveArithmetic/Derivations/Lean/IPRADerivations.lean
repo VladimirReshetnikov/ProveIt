@@ -52,6 +52,7 @@ import IPRADerivations.Analysis.RationalClosure
 import IPRADerivations.Analysis.DyadicCauchy
 import IPRADerivations.Analysis.SummableTails
 import IPRADerivations.Analysis.ReciprocalSquareTail
+import IPRADerivations.Analysis.BarnesCutoff
 import IPRADerivations.Analysis.TrapezoidAffine
 import IPRADerivations.Analysis.HypergeometricTerm
 import IPRADerivations.Analysis.FiniteCalculus
@@ -216,6 +217,9 @@ import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Foundations.BoundedCover
 import IPRADerivations.Foundations.FiniteNet
 import IPRADerivations.Foundations.ApproximateWitness
+import IPRADerivations.Foundations.NestedRegions
+import IPRADerivations.Foundations.StrongConvexity
+import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Foundations.ChallengeDecomposition
 import IPRADerivations.Foundations.BooleanizationCorollaries
 import IPRADerivations.Foundations.TraceReflection
