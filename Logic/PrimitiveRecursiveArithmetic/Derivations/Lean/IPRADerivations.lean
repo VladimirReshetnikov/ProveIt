@@ -53,6 +53,7 @@ import IPRADerivations.Algebra.PowerDifference
 import IPRADerivations.Algebra.HenselStep
 import IPRADerivations.Algebra.PolynomialTranslation
 import IPRADerivations.Algebra.DescentPigeonhole
+import IPRADerivations.Algebra.DescentDomination
 import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Combinatorics.BinomialTheorem

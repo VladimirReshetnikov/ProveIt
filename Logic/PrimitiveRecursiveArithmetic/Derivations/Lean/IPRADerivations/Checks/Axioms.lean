@@ -362,6 +362,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.DescentPigeonhole.good_center
 #print axioms LeanProofs.IPRA.Algebra.DescentPigeonhole.triple_of_center
 #print axioms LeanProofs.IPRA.Algebra.DescentPigeonhole.geom_third
+#print axioms LeanProofs.IPRA.Algebra.DescentDomination.geom4
+#print axioms LeanProofs.IPRA.Algebra.DescentDomination.dom_pt
+#print axioms LeanProofs.IPRA.Algebra.DescentDomination.geo_dom
+#print axioms LeanProofs.IPRA.Algebra.DescentDomination.monus_pred
+#print axioms LeanProofs.IPRA.Algebra.DescentDomination.lt_rfl
+#print axioms LeanProofs.IPRA.Algebra.DescentDomination.geo_dom_up
+#print axioms LeanProofs.IPRA.Algebra.DescentDomination.other_terms
 #print axioms LeanProofs.IPRA.Topology.Sperner.parity_invariant
 #print axioms LeanProofs.IPRA.Topology.Sperner.sperner_1d
 #print axioms LeanProofs.IPRA.Topology.CrossingParity.straddle_parity
