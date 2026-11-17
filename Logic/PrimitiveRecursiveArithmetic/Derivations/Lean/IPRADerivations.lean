@@ -92,6 +92,7 @@ import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.AnalyticNumberTheory.Radical
 import IPRADerivations.AnalyticNumberTheory.GeneralMul
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
+import IPRADerivations.AnalyticNumberTheory.GoldbachPhi
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.PhiTwo
 import IPRADerivations.AnalyticNumberTheory.PhiLowerSharp
@@ -106,6 +107,7 @@ import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.AnalyticNumberTheory.Smooth
 import IPRADerivations.AnalyticNumberTheory.EulerDomination
 import IPRADerivations.AnalyticNumberTheory.FactorVector
+import IPRADerivations.AnalyticNumberTheory.FactorTrace
 import IPRADerivations.AnalyticNumberTheory.GoldbachGeometric
 import IPRADerivations.AnalyticNumberTheory.CanonicalPowers
 import IPRADerivations.AnalyticNumberTheory.CanonicalDecomposition

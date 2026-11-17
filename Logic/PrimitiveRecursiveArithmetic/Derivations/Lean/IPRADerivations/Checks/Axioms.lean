@@ -859,6 +859,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totient.indicator_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totient.count_multiples
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Totient.totient_prime_power
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachPhi.phi_prime
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachPhi.goldbach_phi
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
@@ -1058,6 +1060,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.divergence_at
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.divergence
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.divergence_rational
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace.step_big
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace.step_small
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace.step_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace.step_bound
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace.trace_bound
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace.trace_end
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace.trace_prime
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace.trace_lt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace.factor_product
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric.geom_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric.geom_den
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric.geom_den_tail
