@@ -399,6 +399,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.WeightedLagrange.lagrange
 #print axioms LeanProofs.IPRA.Probability.WeightedLagrange.cs_equality
 #print axioms LeanProofs.IPRA.Probability.WeightedLagrange.cs_equality_rev
+#print axioms LeanProofs.IPRA.Probability.FiniteLaws.cell_zero
+#print axioms LeanProofs.IPRA.Probability.FiniteLaws.cell_char
+#print axioms LeanProofs.IPRA.Probability.FiniteLaws.bernoulli
+#print axioms LeanProofs.IPRA.Probability.FiniteLaws.center_mass
+#print axioms LeanProofs.IPRA.Probability.FiniteLaws.min_le_left
+#print axioms LeanProofs.IPRA.Probability.FiniteLaws.min_le_right
+#print axioms LeanProofs.IPRA.Probability.FiniteLaws.mn_succ
+#print axioms LeanProofs.IPRA.Probability.FiniteLaws.mn_le
+#print axioms LeanProofs.IPRA.Probability.FiniteLaws.fatou
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_fact
