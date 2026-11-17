@@ -642,6 +642,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.prim_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.quartic_dvd
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.quartic_eq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.D_congr
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.D_neg
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.D_add_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.D_mul
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.prod_ge_left
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.prod_ge_right
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.prod_sum_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.half_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.half_le_max
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras.pythagoras
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep.odd_sq_sum
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep.primitive_step
