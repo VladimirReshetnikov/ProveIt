@@ -111,6 +111,7 @@ import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Combinatorics.CatalanSums
+import IPRADerivations.Combinatorics.CatalanTouchard
 import IPRADerivations.Combinatorics.CatalanNarayana
 import IPRADerivations.Combinatorics.CatalanSquares
 import IPRADerivations.Combinatorics.CatalanHalving

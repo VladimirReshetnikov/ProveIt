@@ -872,6 +872,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSums.odd_sum
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSums.bw_pt
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSums.weighted_convolution
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanTouchard.t1
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanTouchard.t2
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanTouchard.tpt
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanTouchard.phi
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanTouchard.touch_rec
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanTouchard.M_zero
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanTouchard.touchard
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanNarayana.gb_symm
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanNarayana.central_squares
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanNarayana.narayana_sum
