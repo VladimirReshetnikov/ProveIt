@@ -658,6 +658,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellAll.inv_step
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellAll.pell_all
 #print axioms LeanProofs.IPRA.DescentEx.descent
+#print axioms LeanProofs.IPRA.ClockedDescent.orb_zero
+#print axioms LeanProofs.IPRA.ClockedDescent.orb_succ
+#print axioms LeanProofs.IPRA.ClockedDescent.inv_step
+#print axioms LeanProofs.IPRA.ClockedDescent.clocked_at
+#print axioms LeanProofs.IPRA.ClockedDescent.clocked
 #print axioms LeanProofs.IPRA.Analysis.Products.pochhammer_shift
 #print axioms LeanProofs.IPRA.Analysis.Products.telescoping_sum
 #print axioms LeanProofs.IPRA.Analysis.Products.wallis_product
