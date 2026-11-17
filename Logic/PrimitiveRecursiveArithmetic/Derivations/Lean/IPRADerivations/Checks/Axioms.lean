@@ -1793,3 +1793,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.BarnesProducts.gamma_finite_product_sentence
 #print axioms LeanProofs.IPRA.Analysis.BarnesProducts.gamma_finite_quotient
 #print axioms LeanProofs.IPRA.Analysis.BarnesProducts.gamma_finite_quotient_sentence
+#print axioms LeanProofs.IPRA.Analysis.DyadicCauchy.dyadic_cauchy
+#print axioms LeanProofs.IPRA.Analysis.DyadicCauchy.dyadic_endpoints
+#print axioms LeanProofs.IPRA.Analysis.DyadicCauchy.certificates_coherent
+#print axioms LeanProofs.IPRA.Analysis.DyadicCauchy.certificates_coherent_endpoints
+#print axioms LeanProofs.IPRA.Analysis.SummableTails.finite_telescoping
+#print axioms LeanProofs.IPRA.Analysis.SummableTails.summable_tail
+#print axioms LeanProofs.IPRA.Analysis.SummableTails.summable_tail_endpoints
+#print axioms LeanProofs.IPRA.Foundations.FiniteNet.lift_at
+#print axioms LeanProofs.IPRA.Foundations.FiniteNet.finite_net
+#print axioms LeanProofs.IPRA.Foundations.FiniteNet.finite_net_closed

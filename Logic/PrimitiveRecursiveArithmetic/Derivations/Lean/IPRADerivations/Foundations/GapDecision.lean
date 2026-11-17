@@ -40,6 +40,10 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- `|u|` for an integer term, as a natural-number term. -/
 abbrev zabs (u : ZT n) : PTm n := ad u.pos u.neg
 
+@[simp] theorem subst_zabs {m : ℕ} (σ : Fin n → PTm m) (u : ZT n) :
+    Syn.subst σ (zabs u) = zabs (u.subst σ) := by
+  simp [zabs, ad, ZT.subst]
+
 theorem zabs_sq (u : ZT n) : Groth.ι (Q.mk Γ (zabs u * zabs u)) = ZT.toZ Γ u * ZT.toZ Γ u := by
   rw [← sq_nat, ZT.toZ_sq, pow_two]
 
