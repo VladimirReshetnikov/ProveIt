@@ -106,6 +106,7 @@ import IPRADerivations.Combinatorics.CatalanSums
 import IPRADerivations.Combinatorics.CatalanNarayana
 import IPRADerivations.Combinatorics.CatalanSquares
 import IPRADerivations.Combinatorics.CatalanHalving
+import IPRADerivations.Combinatorics.CatalanBallot
 import IPRADerivations.DiophantineNumberTheory.PellGcd
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.DiophantineNumberTheory.PellModular

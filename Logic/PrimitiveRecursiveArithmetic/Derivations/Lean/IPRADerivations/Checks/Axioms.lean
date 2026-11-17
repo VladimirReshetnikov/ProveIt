@@ -821,6 +821,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanHalving.t_middle
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanHalving.square_sum_half
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanHalving.half_succ_succ
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanBallot.binom_ratio
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanBallot.gb_ratio
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanBallot.ballot_le
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanBallot.aux
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanBallot.ballot_factor_succ
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanBallot.ballot_factor
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanBallot.ballot_factor'
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_split
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_shift
 #print axioms LeanProofs.IPRA.Analysis.Pochhammer.poch_shift'

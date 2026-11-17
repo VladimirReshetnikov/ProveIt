@@ -15,7 +15,7 @@ Packet: `combinatorics/catalan_numbers_ipra_2026-11-16` (theorem "Square sum", (
 * `t_middle`: the middle term vanishes, `[n + 2 odd] · d_{⌊(n+2)/2⌋}² = 0`;
 * `square_sum_half`: `∑_{k < ⌊n/2⌋ + 1} d_k² = Cat_n`, i.e. `Cat_n = ∑_{k ≤ ⌊n/2⌋} d_k²`.
 
-The rewriting of `d_k` as `(n − 2k + 1)/(n − k + 1) · C(n, n − k)` is not formalized.
+The rewriting of `d_k` as `(n − 2k + 1)/(n − k + 1) · C(n, n − k)` is `Combinatorics/CatalanBallot`.
 -/
 
 set_option linter.unusedSimpArgs false
