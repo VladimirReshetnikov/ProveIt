@@ -259,6 +259,7 @@ import IPRADerivations.Probability.WeightedLagrange
 import IPRADerivations.Probability.FiniteLaws
 import IPRADerivations.Probability.TowerCommonDen
 import IPRADerivations.Probability.ProductPower
+import IPRADerivations.Probability.WeakLaw
 import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Probability.MedianL1

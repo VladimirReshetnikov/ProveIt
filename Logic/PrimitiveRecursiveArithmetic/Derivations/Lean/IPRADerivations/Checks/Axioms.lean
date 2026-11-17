@@ -435,6 +435,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.ProductPower.sample_moments
 #print axioms LeanProofs.IPRA.Probability.ProductPower.total_pow
 #print axioms LeanProofs.IPRA.Probability.ProductPower.residual
+#print axioms LeanProofs.IPRA.Probability.WeakLaw.monte_carlo
+#print axioms LeanProofs.IPRA.Probability.WeakLaw.dev_sum
+#print axioms LeanProofs.IPRA.Probability.WeakLaw.weak_law
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_fact
