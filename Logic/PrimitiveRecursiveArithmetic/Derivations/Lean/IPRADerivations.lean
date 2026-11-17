@@ -53,6 +53,7 @@ import IPRADerivations.Analysis.DyadicCauchy
 import IPRADerivations.Analysis.SummableTails
 import IPRADerivations.Analysis.ReciprocalSquareTail
 import IPRADerivations.Analysis.BarnesCutoff
+import IPRADerivations.Analysis.LogarithmRemainder
 import IPRADerivations.Analysis.TrapezoidAffine
 import IPRADerivations.Analysis.HypergeometricTerm
 import IPRADerivations.Analysis.FiniteCalculus
@@ -219,7 +220,9 @@ import IPRADerivations.Foundations.FiniteNet
 import IPRADerivations.Foundations.ApproximateWitness
 import IPRADerivations.Foundations.NestedRegions
 import IPRADerivations.Foundations.StrongConvexity
+import IPRADerivations.Foundations.StrongMinimizer
 import IPRADerivations.Foundations.MasterCertificate
+import IPRADerivations.Foundations.StrategyRealization
 import IPRADerivations.Foundations.ChallengeDecomposition
 import IPRADerivations.Foundations.BooleanizationCorollaries
 import IPRADerivations.Foundations.TraceReflection

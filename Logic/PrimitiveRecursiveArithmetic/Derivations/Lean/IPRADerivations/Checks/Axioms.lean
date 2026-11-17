@@ -1869,3 +1869,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.MasterCertificate.master_length
 #print axioms LeanProofs.IPRA.Foundations.MasterCertificate.master_valid
 #print axioms LeanProofs.IPRA.Foundations.MasterCertificate.master_closed
+#print axioms LeanProofs.IPRA.Analysis.LogarithmRemainder.finite_logarithm_remainder
+#print axioms LeanProofs.IPRA.Analysis.LogarithmRemainder.finite_canonical_factor_bound
+#print axioms LeanProofs.IPRA.Analysis.LogarithmRemainder.exact_finite_taylor_evaluator
+#print axioms LeanProofs.IPRA.Foundations.StrongMinimizer.selected_residual
+#print axioms LeanProofs.IPRA.Foundations.StrongMinimizer.selected_pair_closed
+#print axioms LeanProofs.IPRA.Foundations.StrategyRealization.check_sound
+#print axioms LeanProofs.IPRA.Foundations.StrategyRealization.verifier_at
+#print axioms LeanProofs.IPRA.Foundations.StrategyRealization.verifier_cases
+#print axioms LeanProofs.IPRA.Foundations.StrategyRealization.bounded_strategy
+#print axioms LeanProofs.IPRA.Foundations.StrategyRealization.bounded_strategy_program
