@@ -256,6 +256,7 @@ import IPRADerivations.Probability.ExpectationCorollaries
 import IPRADerivations.Probability.UnionUtility
 import IPRADerivations.Probability.WeightedLagrange
 import IPRADerivations.Probability.FiniteLaws
+import IPRADerivations.Probability.TowerCommonDen
 import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Probability.MedianL1

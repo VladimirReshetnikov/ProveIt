@@ -408,6 +408,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.FiniteLaws.mn_succ
 #print axioms LeanProofs.IPRA.Probability.FiniteLaws.mn_le
 #print axioms LeanProofs.IPRA.Probability.FiniteLaws.fatou
+#print axioms LeanProofs.IPRA.Probability.TowerCommonDen.dvd_prod_term
+#print axioms LeanProofs.IPRA.Probability.TowerCommonDen.common_den
+#print axioms LeanProofs.IPRA.Probability.TowerCommonDen.tA_at
+#print axioms LeanProofs.IPRA.Probability.TowerCommonDen.row_t
+#print axioms LeanProofs.IPRA.Probability.TowerCommonDen.col_t
+#print axioms LeanProofs.IPRA.Probability.TowerCommonDen.regroup
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_fact
