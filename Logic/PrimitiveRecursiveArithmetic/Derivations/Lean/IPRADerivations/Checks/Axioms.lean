@@ -692,6 +692,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.term_bound
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.geom_dom
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.binomial_three
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul.val_unique
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul.val_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul.val_congr
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul.val_mul
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul.val_fact_succ
 #print axioms LeanProofs.IPRA.sum_zero_of_bounded
 #print axioms LeanProofs.IPRA.Combinatorics.Binomial.binom_open
 #print axioms LeanProofs.IPRA.Combinatorics.Binomial.binom_spec
@@ -1170,6 +1175,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.LegendreDigits.digit_step
 #print axioms LeanProofs.IPRA.Combinatorics.LegendreDigits.telescope
 #print axioms LeanProofs.IPRA.Combinatorics.LegendreDigits.legendre_digits
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreFact.eqb_bit
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreFact.inc_one
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreFact.inc_zero
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreFact.pw_dvd_pw
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreFact.delta_eq
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreFact.count_lt
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreFact.L_succ
+#print axioms LeanProofs.IPRA.Combinatorics.LegendreFact.legendre_fact
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.square_pt
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.shift_squares
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSquares.signed_square

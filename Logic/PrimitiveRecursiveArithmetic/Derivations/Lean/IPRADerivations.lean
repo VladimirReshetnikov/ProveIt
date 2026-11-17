@@ -46,6 +46,7 @@ import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
+import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.Algebra.TrisectionCubic
@@ -126,6 +127,7 @@ import IPRADerivations.Combinatorics.CatalanAlternating
 import IPRADerivations.Combinatorics.CatalanNarayana
 import IPRADerivations.Combinatorics.FiniteBijection
 import IPRADerivations.Combinatorics.LegendreDigits
+import IPRADerivations.Combinatorics.LegendreFact
 import IPRADerivations.Combinatorics.CatalanSquares
 import IPRADerivations.Combinatorics.CatalanHalving
 import IPRADerivations.Combinatorics.CatalanBallot
