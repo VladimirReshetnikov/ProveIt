@@ -621,6 +621,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BoundedCover.cover_at
 #print axioms LeanProofs.IPRA.Foundations.BoundedCover.cover
 #print axioms LeanProofs.IPRA.Foundations.BoundedCover.composition
+#print axioms LeanProofs.IPRA.Foundations.ChallengeDecomposition.challenge_dec
+#print axioms LeanProofs.IPRA.Foundations.ChallengeDecomposition.challenge_A
+#print axioms LeanProofs.IPRA.Foundations.ChallengeDecomposition.challenge_B_q
+#print axioms LeanProofs.IPRA.Foundations.ChallengeDecomposition.challenge_B_e
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_zero
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_succ
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.trace_invariant_all

@@ -171,6 +171,7 @@ import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Foundations.BoundedCover
+import IPRADerivations.Foundations.ChallengeDecomposition
 import IPRADerivations.Foundations.TraceInvariant
 import IPRADerivations.Geometry.EulerRodrigues
 import IPRADerivations.Geometry.Morley
