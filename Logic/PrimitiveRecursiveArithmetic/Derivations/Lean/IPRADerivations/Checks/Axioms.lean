@@ -717,6 +717,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.Stirling.stir_above
 #print axioms LeanProofs.IPRA.Combinatorics.Stirling.stir_succ_zero
 #print axioms LeanProofs.IPRA.Combinatorics.Stirling.stir_succ_succ
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingPowers.ff_succ
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingPowers.ff_zero_above
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingPowers.ff_mul
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingPowers.wsum
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingPowers.step_pt
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingPowers.x_pt
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingPowers.pf_step
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingPowers.stirling_powers
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fib_le
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fibS_add
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fib_add

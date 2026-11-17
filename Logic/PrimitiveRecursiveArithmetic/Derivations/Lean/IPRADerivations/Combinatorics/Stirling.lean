@@ -17,6 +17,8 @@ The table is defined by primitive recursion on coded rows. Row `n` is the Cantor
 * `stir_zero`: `S(0, 0) = 1`; `stir_succ_zero`: `S(n + 1, 0) = 0`;
   `stir_above`: `S(n, k) = 0` for `k > n`;
 * `stir_succ_succ`: `S(n + 1, k + 1) = (k + 1) S(n, k + 1) + S(n, k)` for `k ≤ n`.
+
+The identity `X^n = ∑ S(n, k) (X)_k` is `Combinatorics/StirlingPowers`.
 -/
 
 set_option linter.unusedSimpArgs false
