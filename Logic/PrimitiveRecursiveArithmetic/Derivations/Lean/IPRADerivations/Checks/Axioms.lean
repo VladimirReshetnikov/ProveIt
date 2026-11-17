@@ -634,6 +634,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.first_le
 #print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.first_found
 #print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.first_before
+#print axioms LeanProofs.IPRA.Foundations.TraceReflection.run_zero
+#print axioms LeanProofs.IPRA.Foundations.TraceReflection.run_succ
+#print axioms LeanProofs.IPRA.Foundations.TraceReflection.trace_at
+#print axioms LeanProofs.IPRA.Foundations.TraceReflection.trace
+#print axioms LeanProofs.IPRA.Foundations.TraceReflection.loop_compile
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_zero
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_succ
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.trace_invariant_all
