@@ -761,6 +761,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.vs_base
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.viol_step
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.vandermonde
+#print axioms LeanProofs.IPRA.Combinatorics.HockeyStick.hs_step
+#print axioms LeanProofs.IPRA.Combinatorics.HockeyStick.hockey_stick
+#print axioms LeanProofs.IPRA.Combinatorics.HockeyStick.stars_bars_rec
+#print axioms LeanProofs.IPRA.Combinatorics.HockeyStick.stars_bars_zero
+#print axioms LeanProofs.IPRA.Combinatorics.HockeyStick.neg_rank
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fib_le
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fibS_add
 #print axioms LeanProofs.IPRA.Combinatorics.Fibonacci.fib_add
