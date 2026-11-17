@@ -454,6 +454,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.Histogram.rep_fiber
 #print axioms LeanProofs.IPRA.Probability.Histogram.histogram
 #print axioms LeanProofs.IPRA.Probability.Histogram.hist_weight
+#print axioms LeanProofs.IPRA.Probability.JointLotus.code_inv
+#print axioms LeanProofs.IPRA.Probability.JointLotus.code_split
+#print axioms LeanProofs.IPRA.Probability.JointLotus.code_eqb
+#print axioms LeanProofs.IPRA.Probability.JointLotus.cB_at
+#print axioms LeanProofs.IPRA.Probability.JointLotus.JB_at
+#print axioms LeanProofs.IPRA.Probability.JointLotus.inner_eq
+#print axioms LeanProofs.IPRA.Probability.JointLotus.multi_lotus
+#print axioms LeanProofs.IPRA.Probability.JointLotus.componentwise
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_fact
