@@ -679,6 +679,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.sq_inj
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_quotients
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.dvd_of_sq_dvd_sq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SquareSplit.square_split
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.dvd_of_pw_dvd_pw
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.coprime_third
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction.z_pos
