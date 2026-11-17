@@ -485,6 +485,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.fib_convolution
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.luc_pt
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialTransform.luc_convolution
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTwo.bt_at
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTwo.p_pascal
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTwo.p_x
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTwo.p_y
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTwo.p_shift
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTwo.binom2_step
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTwo.binom2_base
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialTwo.binomial_two
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.absorption
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.prime_dvd_binom
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Fermat.dvd_sum
