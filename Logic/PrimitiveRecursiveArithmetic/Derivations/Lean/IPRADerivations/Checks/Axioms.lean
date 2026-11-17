@@ -368,6 +368,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.MedianTransport.dec_counts
 #print axioms LeanProofs.IPRA.Probability.MedianTransport.inc_median
 #print axioms LeanProofs.IPRA.Probability.MedianTransport.dec_median
+#print axioms LeanProofs.IPRA.Probability.MedianJensen.le_bits_le_one
+#print axioms LeanProofs.IPRA.Probability.MedianJensen.side_bit_below
+#print axioms LeanProofs.IPRA.Probability.MedianJensen.side_bit_above
+#print axioms LeanProofs.IPRA.Probability.MedianJensen.count_side_below
+#print axioms LeanProofs.IPRA.Probability.MedianJensen.count_side_above
+#print axioms LeanProofs.IPRA.Probability.MedianJensen.jensen_count
+#print axioms LeanProofs.IPRA.Probability.MedianJensen.jensen_median
 #print axioms LeanProofs.IPRA.pw_add
 #print axioms LeanProofs.IPRA.pw_le_pw
 #print axioms LeanProofs.IPRA.le_self_pw
