@@ -948,6 +948,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.divergence_at
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.divergence
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FactorVector.divergence_rational
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric.geom_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric.geom_den
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric.geom_den_tail
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric.geom_exp
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.cop_A
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.phi_A
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf.liminf_at
