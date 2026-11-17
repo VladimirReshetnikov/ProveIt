@@ -35,6 +35,7 @@ import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.AdjugateInverse
 import IPRADerivations.Algebra.CayleyHamiltonGeneral
 import IPRADerivations.Algebra.AdjugatePolynomial
+import IPRADerivations.Algebra.PrincipalMinors
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Analysis.Products
