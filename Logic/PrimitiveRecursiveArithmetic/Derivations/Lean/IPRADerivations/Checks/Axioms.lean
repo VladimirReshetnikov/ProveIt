@@ -394,6 +394,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.UnionUtility.ag_attains
 #print axioms LeanProofs.IPRA.Probability.UnionUtility.argmax
 #print axioms LeanProofs.IPRA.Probability.UnionUtility.expected_utility
+#print axioms LeanProofs.IPRA.Probability.WeightedLagrange.eB_at
+#print axioms LeanProofs.IPRA.Probability.WeightedLagrange.row_identity
+#print axioms LeanProofs.IPRA.Probability.WeightedLagrange.lagrange
+#print axioms LeanProofs.IPRA.Probability.WeightedLagrange.cs_equality
+#print axioms LeanProofs.IPRA.Probability.WeightedLagrange.cs_equality_rev
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_fact
