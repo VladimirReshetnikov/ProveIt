@@ -112,6 +112,7 @@ import IPRADerivations.AnalyticNumberTheory.PrimePowerMangoldt
 import IPRADerivations.AnalyticNumberTheory.LcmUpto
 import IPRADerivations.AnalyticNumberTheory.BinomialLcm
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
+import IPRADerivations.AnalyticNumberTheory.HarmonicLambda
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.PhiTwo
 import IPRADerivations.AnalyticNumberTheory.PhiLowerSharp

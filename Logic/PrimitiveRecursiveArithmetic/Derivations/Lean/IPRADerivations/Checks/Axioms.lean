@@ -988,6 +988,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.two_pow_ge
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.lcmu_lower2
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds.lcmu_lower
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda.fact_le_pow
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda.pow_le_three_fact
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda.pt1
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda.pt2
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda.harmonic_sandwich
 #print axioms LeanProofs.IPRA.prod2_delta
 #print axioms LeanProofs.IPRA.sum2_delta
 #print axioms LeanProofs.IPRA.Permutation.fiber
