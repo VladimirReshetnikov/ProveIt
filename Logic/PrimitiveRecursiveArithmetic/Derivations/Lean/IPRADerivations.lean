@@ -42,6 +42,7 @@ import IPRADerivations.Analysis.Products
 import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.Analysis.HypergeometricRatio
 import IPRADerivations.Analysis.TerminatingSeries
+import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BarnesInteger
 import IPRADerivations.Analysis.RationalClosure

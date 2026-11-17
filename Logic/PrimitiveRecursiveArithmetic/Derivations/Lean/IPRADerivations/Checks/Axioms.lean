@@ -1422,6 +1422,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.ff_binom
 #print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.termination
 #print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.termination_vanish
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.pascal_sum
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.E_succ
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.O_succ
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.E_zero
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.bin_step
+#print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.signed_binomial
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_fact
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_symm
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_step_left
