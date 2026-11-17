@@ -209,6 +209,7 @@ import IPRADerivations.Geometry.Gluing
 import IPRADerivations.Geometry.ProjectiveLine
 import IPRADerivations.Geometry.DesarguesInternal
 import IPRADerivations.Geometry.PascalInternal
+import IPRADerivations.Geometry.MeshBracket
 import IPRADerivations.Geometry.CevaMenelaus
 import IPRADerivations.Geometry.HoehnBrianchon
 import IPRADerivations.Geometry.Mollweide

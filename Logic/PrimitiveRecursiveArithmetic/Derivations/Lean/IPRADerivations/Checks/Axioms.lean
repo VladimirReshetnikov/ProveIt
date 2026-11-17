@@ -181,6 +181,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.PascalInternal.conic_det
 #print axioms LeanProofs.IPRA.Geometry.PascalInternal.pascal_det
 #print axioms LeanProofs.IPRA.Geometry.PascalInternal.pascal_axis
+#print axioms LeanProofs.IPRA.Geometry.MeshBracket.mesh_lower
+#print axioms LeanProofs.IPRA.Geometry.MeshBracket.mesh_upper
+#print axioms LeanProofs.IPRA.Geometry.MeshBracket.mesh_unique
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.zt_cancel
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.ceva_det
 #print axioms LeanProofs.IPRA.Geometry.CevaMenelaus.ceva_witness
