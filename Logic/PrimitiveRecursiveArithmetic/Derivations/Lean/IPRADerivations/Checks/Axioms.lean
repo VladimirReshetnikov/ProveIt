@@ -1879,3 +1879,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.StrategyRealization.verifier_cases
 #print axioms LeanProofs.IPRA.Foundations.StrategyRealization.bounded_strategy
 #print axioms LeanProofs.IPRA.Foundations.StrategyRealization.bounded_strategy_program
+#print axioms LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder.normSq_mul
+#print axioms LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder.gaussian_power_bound
+#print axioms LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder.finite_complex_logarithm_domination
+#print axioms LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder.finite_complex_canonical_factor_bound
+#print axioms LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder.exact_finite_complex_taylor_evaluator
+#print axioms LeanProofs.IPRA.Foundations.DemandClosure.rank_mono
+#print axioms LeanProofs.IPRA.Foundations.DemandClosure.rank_step_or_prefixed
+#print axioms LeanProofs.IPRA.Foundations.DemandClosure.closure_stable
+#print axioms LeanProofs.IPRA.Foundations.DemandClosure.closure_prefixed
+#print axioms LeanProofs.IPRA.Foundations.DemandClosure.demand_closure
+#print axioms LeanProofs.IPRA.Foundations.DemandClosure.demand_closure_closed

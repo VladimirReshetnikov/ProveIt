@@ -54,6 +54,7 @@ import IPRADerivations.Analysis.SummableTails
 import IPRADerivations.Analysis.ReciprocalSquareTail
 import IPRADerivations.Analysis.BarnesCutoff
 import IPRADerivations.Analysis.LogarithmRemainder
+import IPRADerivations.Analysis.ComplexLogarithmRemainder
 import IPRADerivations.Analysis.TrapezoidAffine
 import IPRADerivations.Analysis.HypergeometricTerm
 import IPRADerivations.Analysis.FiniteCalculus
@@ -222,6 +223,7 @@ import IPRADerivations.Foundations.NestedRegions
 import IPRADerivations.Foundations.StrongConvexity
 import IPRADerivations.Foundations.StrongMinimizer
 import IPRADerivations.Foundations.MasterCertificate
+import IPRADerivations.Foundations.DemandClosure
 import IPRADerivations.Foundations.StrategyRealization
 import IPRADerivations.Foundations.ChallengeDecomposition
 import IPRADerivations.Foundations.BooleanizationCorollaries

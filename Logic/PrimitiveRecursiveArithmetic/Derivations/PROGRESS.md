@@ -26,7 +26,9 @@ packet inventory.
 | Finite-use-v2, corrected `thm:nested-name` | `NestedRegions.nested_name`, `compatible_name` | General encoded rational balls, positive denominators, adjacent inclusion and shrinking radii imply center Cauchy bounds at arbitrary internal ordered endpoints. Agreement with a particular solution retains its explicit membership in every region. |
 | Finite-use-v2, quantitative inequality before `cor:strong-minimizer` | `StrongConvexity.rational_squared_closed`, `rational_diameter_closed`, `exact_minimizers` | Signed rational objective values, independent rational coefficient and distance denominators, exact squared-distance estimate and an explicit rational error schedule; zero-distance uniqueness for exact minima. The represented minimizer construction remains open. |
 | FIBER, `thm:master` | `MasterCertificate.master_decode`, `master_length`, `master_valid`, `master_closed` | Variable-length actual PR sequence construction and decoder. Pointwise bounded totality implies the bounded validity of each decoded least witness; no master-code correctness or choice premise. |
-| Barnes G, `eq:qseries`, finite positive comparison for `eq:qbound` | `LogarithmRemainder.finite_logarithm_remainder`, `finite_canonical_factor_bound`, `exact_finite_taylor_evaluator` | Actual finite rational Taylor series with exact Horner addition, denominator positivity and a proved geometric-tail estimate at arbitrary internal length. The complex comparison and logarithm-name bridge remain open. |
+| FIBER, `thm:demand-closure` | `DemandClosure.demand_closure`, `demand_closure_closed` | Actual variable-dimension capped vectors, join and PR iteration. Stabilization at the sum of coordinate caps, prefixedness and internally quantified leastness; vector equality is coordinate equality. Rank growth is proved from the coordinate sums. Zero dimension and caps are included. |
+| Barnes G, `eq:qseries`, finite positive comparison for `eq:qbound` | `LogarithmRemainder.finite_logarithm_remainder`, `finite_canonical_factor_bound`, `exact_finite_taylor_evaluator` | Actual finite rational Taylor series with exact Horner addition, denominator positivity and a proved geometric-tail estimate at arbitrary internal length. The complex comparison is proved by the next row. The logarithm-name bridge remains open. |
+| Barnes G, finite complex `eq:qseries`/`eq:qbound` comparison | `ComplexLogarithmRemainder.finite_complex_logarithm_domination`, `finite_complex_canonical_factor_bound`, `exact_finite_complex_taylor_evaluator` | Actual Gaussian powers and alternating finite numerator. Internal norm/triangle and series inductions yield `normSq(G_L)≤P_L²` and the exact squared cleared constant. No complex or series estimate is assumed. The infinite logarithm-name bridge remains open. |
 | Finite-use-v2, finite actual-selector stability for `cor:strong-minimizer` | `StrongMinimizer.selected_residual`, `selected_pair_closed` | The actual finite-net least minimizers at two precisions, their derived residual errors, and an explicit convexity/error schedule give a rational pair-distance bound. Completed-domain existence and evaluator compatibility remain application obligations. |
 | FIBER, `thm:strategy` | `StrategyRealization.bounded_strategy_program` | A generated binary PR verifier for every fixed dependent bounded quantifier pattern, actual response/tree tables and reflected leaves; closed object-theory soundness for every code and packed move history. |
 
@@ -39,7 +41,7 @@ The Barnes packet still requires the analytic canonical-product construction,
 complex functional and reflection identities, multiplication formulas,
 analytic special values, asymptotic estimates and characterizations. Its
 integer product results provide a finite part of those arguments. The FIBER
-packet also has separate compiler, demand, cluster and obstruction claims. Their source inventories and object proofs
+packet also has separate compiler, cluster and obstruction claims. Their source inventories and object proofs
 remain open.
 
 ## Source statements needing correction
@@ -61,6 +63,15 @@ remain open.
   bound. The underlying `eq:qtail` bound has its stated constant.
   [Source cutoff](../docs/proofs/analysis/barnes_g_ipra_2026-11-16/paper/sections/03_canonical_product.tex)
 
+- In FIBER Section 8, “Gap-guarded labeling,” a positive distance gap
+  between complex-root clusters does not make lexicographic box order
+  independent of the certificate. The roots `i` and `−i` have gap `2`;
+  arbitrarily small rational boxes containing them can have their real
+  coordinates perturbed in either order. Real-coordinate ties require an
+  additional order-separation or locator convention. Metric separation alone
+  does give unique geometric matching at sufficiently fine precision.
+  [Source proposition](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/08_algebra.tex)
+
 ## Packet inventory
 
 The current source index contains 115 packets. The derivations
@@ -79,7 +90,7 @@ claims beyond those families.
 | [algebra/lagrange_inversion_ipra](../docs/proofs/algebra/lagrange_inversion_ipra/) | [Combinatorics/BinomialIdentities](Lean/IPRADerivations/Combinatorics/BinomialIdentities.lean), [Combinatorics/BinomialTheorem](Lean/IPRADerivations/Combinatorics/BinomialTheorem.lean) |
 | [algebra/puiseux_ipra](../docs/proofs/algebra/puiseux_ipra/) | [Algebra/HenselStep](Lean/IPRADerivations/Algebra/HenselStep.lean) |
 | [algebra/three_impossibilities_ipra](../docs/proofs/algebra/three_impossibilities_ipra/) | [Algebra/CubeRootTwo](Lean/IPRADerivations/Algebra/CubeRootTwo.lean), [Algebra/TrisectionCubic](Lean/IPRADerivations/Algebra/TrisectionCubic.lean), [Algebra/PolynomialFormulas](Lean/IPRADerivations/Algebra/PolynomialFormulas.lean) |
-| [analysis/barnes_g_ipra_2026-11-16](../docs/proofs/analysis/barnes_g_ipra_2026-11-16/) | [Analysis/BarnesInteger](Lean/IPRADerivations/Analysis/BarnesInteger.lean), [Analysis/BarnesProducts](Lean/IPRADerivations/Analysis/BarnesProducts.lean), [Analysis/ReciprocalSquareTail](Lean/IPRADerivations/Analysis/ReciprocalSquareTail.lean), [Analysis/BarnesCutoff](Lean/IPRADerivations/Analysis/BarnesCutoff.lean), [Analysis/LogarithmRemainder](Lean/IPRADerivations/Analysis/LogarithmRemainder.lean) |
+| [analysis/barnes_g_ipra_2026-11-16](../docs/proofs/analysis/barnes_g_ipra_2026-11-16/) | [Analysis/BarnesInteger](Lean/IPRADerivations/Analysis/BarnesInteger.lean), [Analysis/BarnesProducts](Lean/IPRADerivations/Analysis/BarnesProducts.lean), [Analysis/ReciprocalSquareTail](Lean/IPRADerivations/Analysis/ReciprocalSquareTail.lean), [Analysis/BarnesCutoff](Lean/IPRADerivations/Analysis/BarnesCutoff.lean), [Analysis/LogarithmRemainder](Lean/IPRADerivations/Analysis/LogarithmRemainder.lean), [Analysis/ComplexLogarithmRemainder](Lean/IPRADerivations/Analysis/ComplexLogarithmRemainder.lean) |
 | [analysis/basel_ipra](../docs/proofs/analysis/basel_ipra/) | [Analysis/PowerSums](Lean/IPRADerivations/Analysis/PowerSums.lean), [Analysis/BaselDiagonal](Lean/IPRADerivations/Analysis/BaselDiagonal.lean) |
 | [analysis/beta_function_ipra_2026-11-16](../docs/proofs/analysis/beta_function_ipra_2026-11-16/) | [Analysis/BetaIntegers](Lean/IPRADerivations/Analysis/BetaIntegers.lean) |
 | [analysis/bohr_mollerup_ipra_2026-11-15](../docs/proofs/analysis/bohr_mollerup_ipra_2026-11-15/) | [Analysis/Products](Lean/IPRADerivations/Analysis/Products.lean) |
@@ -119,7 +130,7 @@ claims beyond those families.
 | [diophantine-number-theory/transcendence_ipra](../docs/proofs/diophantine-number-theory/transcendence_ipra/) | [DiophantineNumberTheory/CoprimeModulus](Lean/IPRADerivations/DiophantineNumberTheory/CoprimeModulus.lean) |
 | [foundations/cifer_ipra_framework_2026-11-15](../docs/proofs/foundations/cifer_ipra_framework_2026-11-15/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/darc_ipra_framework_2026-11-16](../docs/proofs/foundations/darc_ipra_framework_2026-11-16/) | Source-claim inventory pending. |
-| [foundations/fiber_ipra_2026-11-16](../docs/proofs/foundations/fiber_ipra_2026-11-16/) | [Analysis/DyadicCauchy](Lean/IPRADerivations/Analysis/DyadicCauchy.lean), [Analysis/SummableTails](Lean/IPRADerivations/Analysis/SummableTails.lean), [Foundations/FiniteNet](Lean/IPRADerivations/Foundations/FiniteNet.lean), [Foundations/MasterCertificate](Lean/IPRADerivations/Foundations/MasterCertificate.lean), [Foundations/StrategyRealization](Lean/IPRADerivations/Foundations/StrategyRealization.lean) |
+| [foundations/fiber_ipra_2026-11-16](../docs/proofs/foundations/fiber_ipra_2026-11-16/) | [Analysis/DyadicCauchy](Lean/IPRADerivations/Analysis/DyadicCauchy.lean), [Analysis/SummableTails](Lean/IPRADerivations/Analysis/SummableTails.lean), [Foundations/FiniteNet](Lean/IPRADerivations/Foundations/FiniteNet.lean), [Foundations/MasterCertificate](Lean/IPRADerivations/Foundations/MasterCertificate.lean), [Foundations/StrategyRealization](Lean/IPRADerivations/Foundations/StrategyRealization.lean), [Foundations/DemandClosure](Lean/IPRADerivations/Foundations/DemandClosure.lean) |
 | [foundations/FINER-iPRA-framework-2026-11-16](../docs/proofs/foundations/FINER-iPRA-framework-2026-11-16/) | Source-claim inventory pending. |
 | [foundations/ipra_bounded_reflection_2026-11-16](../docs/proofs/foundations/ipra_bounded_reflection_2026-11-16/) | [Foundations/BoundedReflection](Lean/IPRADerivations/Foundations/BoundedReflection.lean), [Foundations/BoundedFormulas](Lean/IPRADerivations/Foundations/BoundedFormulas.lean), [Foundations/BoundedCover](Lean/IPRADerivations/Foundations/BoundedCover.lean) |
 | [foundations/ipra_categorical_methods](../docs/proofs/foundations/ipra_categorical_methods/) | [Foundations/ChineseRemainder](Lean/IPRADerivations/Foundations/ChineseRemainder.lean), [Foundations/BooleanizationCorollaries](Lean/IPRADerivations/Foundations/BooleanizationCorollaries.lean), [Foundations/GuardedLoop](Lean/IPRADerivations/Foundations/GuardedLoop.lean) |
@@ -189,12 +200,12 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `a312a376c1`, including the finite logarithm, actual-
-minimizer stability and strategy-realization additions, the root build
-completed 2,074 jobs and emitted 1,907 axiom reports for 1,870 distinct
-declarations, all using only `propext`, `Classical.choice`, and `Quot.sound`.
-The portable import gate passed across 3,493 source modules and the
-independent `Diophantine` boundary passed across 5,252 modules.
+At the source based on `a46acfdae8`, including the full finite-demand closure
+and finite complex logarithm additions, the root build completed 2,076 jobs
+and emitted 1,924 axiom reports for 1,882 distinct declarations, all using only
+`propext`, `Classical.choice`, and `Quot.sound`. The portable import gate
+passed across 3,495 source modules and the independent `Diophantine` boundary
+passed across 5,252 modules.
 
 The new modules are included in `IPRADerivations`. Their public theorem
 names are audited in `Checks/Axioms.lean`. Build and inspect the object
