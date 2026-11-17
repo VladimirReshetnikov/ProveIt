@@ -197,6 +197,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.Independence.ind_sum_first
 #print axioms LeanProofs.IPRA.Probability.Independence.ind_sum_second
 #print axioms LeanProofs.IPRA.Probability.Independence.ind_var_sum
+#print axioms LeanProofs.IPRA.Probability.BinomialLaw.absorption
+#print axioms LeanProofs.IPRA.Probability.BinomialLaw.binomial_mean
+#print axioms LeanProofs.IPRA.Probability.BinomialLaw.binomial_second
+#print axioms LeanProofs.IPRA.Probability.BinomialLaw.binomial_variance
+#print axioms LeanProofs.IPRA.Probability.BinomialLaw.bernoulli_variance
+#print axioms LeanProofs.IPRA.Probability.BinomialLaw.bernoulli_third
 #print axioms LeanProofs.IPRA.Probability.TailSum.tail_pt
 #print axioms LeanProofs.IPRA.Probability.TailSum.tail_col_pt
 #print axioms LeanProofs.IPRA.Probability.TailSum.tail_sum
@@ -764,6 +770,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricTerm.lambert_P4
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricTerm.lambert_fix2
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricTerm.lambert_fix3
+#print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.increments_le
+#print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.lip_up
+#print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.lin_sum
+#print axioms LeanProofs.IPRA.Analysis.FiniteCalculus.cell_upper
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.add_formula
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.pell_norm
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGcd.cop_XY

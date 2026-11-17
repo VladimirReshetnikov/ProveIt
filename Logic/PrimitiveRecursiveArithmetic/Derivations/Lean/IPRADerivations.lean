@@ -37,6 +37,7 @@ import IPRADerivations.Analysis.BarnesInteger
 import IPRADerivations.Analysis.RationalClosure
 import IPRADerivations.Analysis.TrapezoidAffine
 import IPRADerivations.Analysis.HypergeometricTerm
+import IPRADerivations.Analysis.FiniteCalculus
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.Core.EuclidLemma
@@ -144,6 +145,7 @@ import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
 import IPRADerivations.Probability.Lotus
 import IPRADerivations.Probability.Independence
+import IPRADerivations.Probability.BinomialLaw
 import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.NormalMoments
