@@ -625,6 +625,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ChallengeDecomposition.challenge_A
 #print axioms LeanProofs.IPRA.Foundations.ChallengeDecomposition.challenge_B_q
 #print axioms LeanProofs.IPRA.Foundations.ChallengeDecomposition.challenge_B_e
+#print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.bit_one_iff
+#print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.bit_zero_iff
+#print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.imp_iff
+#print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.least_spec
+#print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.least_none_of
+#print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.none_of_least
+#print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.first_le
+#print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.first_found
+#print axioms LeanProofs.IPRA.Foundations.BooleanizationCorollaries.first_before
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_zero
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.run_succ
 #print axioms LeanProofs.IPRA.Foundations.TraceInvariant.trace_invariant_all
