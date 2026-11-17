@@ -438,6 +438,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.WeakLaw.monte_carlo
 #print axioms LeanProofs.IPRA.Probability.WeakLaw.dev_sum
 #print axioms LeanProofs.IPRA.Probability.WeakLaw.weak_law
+#print axioms LeanProofs.IPRA.Probability.SignedParts.part_identities
+#print axioms LeanProofs.IPRA.Probability.SignedParts.neg_tail_pt
+#print axioms LeanProofs.IPRA.Probability.SignedParts.expect_parts
+#print axioms LeanProofs.IPRA.Probability.SignedParts.abs_expect_le
+#print axioms LeanProofs.IPRA.Probability.SignedParts.signed_nonneg
+#print axioms LeanProofs.IPRA.Probability.SignedParts.signed_mono
+#print axioms LeanProofs.IPRA.Probability.SignedParts.signed_tail
+#print axioms LeanProofs.IPRA.Probability.SignedParts.finite_linearity
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.edf_succ
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_fact
