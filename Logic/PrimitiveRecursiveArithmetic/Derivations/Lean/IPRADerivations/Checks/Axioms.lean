@@ -13772,6 +13772,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.HankelGram.hankel0_two
 #print axioms LeanProofs.IPRA.Combinatorics.HankelGram.hankel1_two
 #print axioms LeanProofs.IPRA.Combinatorics.HankelGram.hankel2_one
+#print axioms LeanProofs.IPRA.Combinatorics.HankelCongruence.congruence_ring
+#print axioms LeanProofs.IPRA.Combinatorics.HankelCongruence.lagrange_ring
+#print axioms LeanProofs.IPRA.Combinatorics.HankelCongruence.toZ_diag
+#print axioms LeanProofs.IPRA.Combinatorics.HankelCongruence.congruence_det
+#print axioms LeanProofs.IPRA.Combinatorics.HankelCongruence.gram_lagrange
 #print axioms LeanProofs.IPRA.Foundations.RealizerStateAdaptive.Code
 #print axioms LeanProofs.IPRA.Foundations.RealizerStateAdaptive.Code.candidate
 #print axioms LeanProofs.IPRA.Foundations.RealizerStateAdaptive.Code.cap
