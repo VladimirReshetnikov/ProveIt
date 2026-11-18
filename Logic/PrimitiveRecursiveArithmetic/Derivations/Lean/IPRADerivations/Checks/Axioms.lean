@@ -1323,6 +1323,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.fact_pt
 #print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_fact
 #print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_fact_closed
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.monus_monus_of_le
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.binom_symm_of_le
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.comm_pt
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_comm
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_comm_closed
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.rem_eq_of_eq
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.dvd_of_rem_eq

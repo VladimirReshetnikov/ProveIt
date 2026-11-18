@@ -1,5 +1,6 @@
 import IPRADerivations.Combinatorics.BinomialTransform
 import IPRADerivations.Probability.Variance
+import IPRADerivations.Core.SumReflect
 
 /-!
 # The Hurwitz product and its derivation (`ipra_coherent_methods_2026-11-15`, (6), (7))
@@ -30,7 +31,10 @@ factor is visible in the statement: the right-hand side reads `a` and `b` up to 
   `Y' = Y ⋆ Y`, `Y_0 = 1` (the packet's example after (10)); every summand
   `C(n, j) j! (n − j)!` is `n!` (`fact_pt`).
 
-Not derived: associativity and commutativity of `⋆`, the recurrence (9) for a polynomial
+* `hw_comm`: `(a ⋆ b)_n = (b ⋆ a)_n`, by reflecting the sum (`sum_reflect`) and
+  `C(n, n − j) = C(n, j)` (`binom_symm_of_le`); closed form `hw_comm_closed`.
+
+Not derived: associativity of `⋆`, the recurrence (9) for a polynomial
 system and `thm:hurwitz-ode` itself.
 -/
 
@@ -159,6 +163,67 @@ theorem leibniz_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
   closeUniv 2 (leibniz a b _ _)
 
 end Product
+
+/-! ## Commutativity -/
+
+section Commutativity
+
+open LeanProofs.IPRA.Analysis.Products (fact)
+
+/-- `n ∸ (n ∸ j) = j` for `j ≤ n`. -/
+theorem monus_monus_of_le {j n : PTm k} (h : Γ ⊢[PRAAx] le j n) :
+    Γ ⊢[PRAAx] monus n (monus n j) ≐ j := by
+  have e₁ := natEq (eq_add_of_le h)
+  have hd : Γ ⊢[PRAAx] le (monus n j) n :=
+    le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; linear_combination e₁)
+  have e₂ := natEq (eq_add_of_le hd)
+  apply deriveNat; ipra_simps
+  linear_combination e₁ - e₂
+
+/-- `C(n, n ∸ j) = C(n, j)` for `j ≤ n`. -/
+theorem binom_symm_of_le {j n : PTm k} (h : Γ ⊢[PRAAx] le j n) :
+    Γ ⊢[PRAAx] binom n (monus n j) ≐ binom n j :=
+  congrAp2 quoF (.eqRefl _)
+    ((congrMul (.eqRefl _) (congrAp2 factF (monus_monus_of_le h) (.eqRefl _))).eqTrans
+      (mul_comm _ _))
+
+variable (a b : PTm 2)
+
+/-- The reflected summand of `(a ⋆ b)_n` at `j` is the summand of `(b ⋆ a)_n` at `j`. -/
+theorem comm_pt {j n x : PTm k} (h : Γ ⊢[PRAAx] lt j (succ n)) :
+    Γ ⊢[PRAAx] inst2 (rflBody (bgB (cv a b))) j (pairT (succ n) (pairT n (pairT n x))) ≐
+      inst2 (bgB (cv b a)) j (pairT n (pairT n x)) := by
+  have hle : Γ ⊢[PRAAx] le j n := (succ_monus_succ j n).eqSymm.eqTrans h
+  rw [inst2_rflBody]
+  -- the reflected index is `n ∸ j`
+  have i₁ : Γ ⊢[PRAAx]
+      monus (fstT (pairT (succ n) (pairT n (pairT n x)))) (succ j) ≐ monus n j :=
+    (congrMonus (fst_pair _ _) (.eqRefl _)).eqTrans (succ_monus_succ n j)
+  have c₁ := (congrInst2 (bgB (cv a b)) i₁ (snd_pair (succ n) (pairT n (pairT n x)))).eqTrans
+    (term_at (Γ := Γ) a b (monus n j) n n x)
+  have m := natEq c₁
+  have t := natEq (term_at (Γ := Γ) b a j n n x)
+  have s := natEq (binom_symm_of_le hle)
+  have r := natEq (congrInst2 (Γ := Γ) b (monus_monus_of_le hle) (.eqRefl x))
+  apply deriveNat; ipra_simps
+  linear_combination m - t +
+    𝔞 (inst2 a (monus n j) x) * 𝔞 (inst2 b (monus n (monus n j)) x) * s +
+    𝔞 (binom n j) * 𝔞 (inst2 a (monus n j) x) * r
+
+/-- The Hurwitz product is commutative: `(a ⋆ b)_n = (b ⋆ a)_n`. -/
+theorem hw_comm (n x : PTm k) : Γ ⊢[PRAAx] hw a b n x ≐ hw b a n x := by
+  refine (sum_reflect (bgB (cv a b)) (succ n) (pairT n (pairT n x))).eqTrans ?_
+  refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+  simp only [Syn.shift, subst_pairT, ConciseIPRA.PTm.subst_succ]
+  exact comm_pt a b Prf.hyp0
+
+/-- Commutativity as a closed sentence, for all coefficient terms. Variables: `0 = n`,
+`1 = x`. -/
+theorem hw_comm_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
+    (hw a b (var 0) (var 1) ≐ hw b a (var 0) (var 1)) :=
+  closeUniv 2 (hw_comm a b _ _)
+
+end Commutativity
 
 /-! ## The solution of `Y' = Y ⋆ Y`, `Y_0 = 1` -/
 
