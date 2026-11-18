@@ -79,6 +79,9 @@ import IPRADerivations.Analysis.BaselQuadrature
 import IPRADerivations.Analysis.BaselRiemann
 import IPRADerivations.Analysis.PowerIncrement
 import IPRADerivations.Analysis.WallisGrid
+import IPRADerivations.Analysis.WallisRecurrence
+import IPRADerivations.Analysis.WallisFinite
+import IPRADerivations.Analysis.RobbinsSeries
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
@@ -332,6 +335,7 @@ import IPRADerivations.Probability.Minkowski
 import IPRADerivations.Probability.BernoulliTrials
 import IPRADerivations.Probability.FiniteKernel
 import IPRADerivations.Probability.NormalMoments
+import IPRADerivations.Probability.ProductTelescope
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Probability.MedianSorted
 import IPRADerivations.Probability.MedianBreakdown
@@ -355,6 +359,20 @@ import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Topology.DimensionTwo
 import IPRADerivations.Topology.DimensionUnits
+import IPRADerivations.Core.PolynomialImplications
+import IPRADerivations.Geometry.JoinMeet
+import IPRADerivations.Geometry.MorleyCertificate
+import IPRADerivations.Geometry.PentagonLedger
+import IPRADerivations.Geometry.RodriguesMap
+import IPRADerivations.Geometry.IsoperimetricIdentities
+import IPRADerivations.Geometry.PlatonicAlgebra
+import IPRADerivations.Geometry.PappusCell
+import IPRADerivations.Geometry.CircumcentreUnique
+import IPRADerivations.Geometry.MonotileSubstitution
+import IPRADerivations.Combinatorics.FibonacciLucasMore
+import IPRADerivations.Core.PolynomialInequalities
+import IPRADerivations.Geometry.IsoperimetricInequalities
+import IPRADerivations.Combinatorics.CatalanProducts
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 

@@ -99,7 +99,7 @@ end LeanProofs.IPRA
 /-- Prove `Nonneg Γ z` for `z` built from slacks `sl h`, values of terms and numerals by `+`, `*` and
 natural powers. -/
 macro "ipra_nonneg" : tactic =>
-  `(tactic| repeat (first
+  `(tactic| repeat (with_reducible first
       | exact LeanProofs.IPRA.nn_sl _
       | exact LeanProofs.IPRA.nn_term _
       | exact LeanProofs.IPRA.nn_one
