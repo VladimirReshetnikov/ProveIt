@@ -89,6 +89,7 @@ import IPRADerivations.Analysis.EvenPowerIntegrals
 import IPRADerivations.Analysis.EulerPiSeries
 import IPRADerivations.Analysis.FiniteFTC
 import IPRADerivations.Analysis.RobbinsTelescope
+import IPRADerivations.Analysis.WeightedAMGM
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
@@ -389,6 +390,9 @@ import IPRADerivations.Foundations.CoherentTower
 import IPRADerivations.Foundations.FiniteGluing
 import IPRADerivations.Foundations.ChallengeContracts
 import IPRADerivations.Foundations.TwoClassObstruction
+import IPRADerivations.Foundations.ContractProducts
+import IPRADerivations.Foundations.CoherentPresentations
+import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
@@ -642,6 +646,7 @@ import IPRADerivations.Analysis.GaussianNonmonicApproximateRoot
 -- Actual coefficient recovery, quantitative translation and power-order transport.
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
 import IPRADerivations.Foundations.DiscreteGronwall
+import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Analysis.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Analysis.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Analysis.GaussianTranslationCoefficientValues
