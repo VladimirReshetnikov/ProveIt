@@ -10656,6 +10656,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanProducts.oddB
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanProducts.oddProd
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanProducts.sixteen
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanGrowth.cat_one
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanGrowth.cat_double
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanGrowth.cat_four
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanGrowth.ge_step
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanGrowth.cat_ge
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanGrowth.cat_ge_closed
 #print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.conv_pt
 #print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.conv_congr
 #print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.inst2_convT
