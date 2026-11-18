@@ -536,6 +536,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_cb
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.df_pos
 #print axioms LeanProofs.IPRA.Probability.NormalMoments.moment_quotient
+#print axioms LeanProofs.IPRA.Probability.ProductTelescope.pinv_step
+#print axioms LeanProofs.IPRA.Probability.ProductTelescope.prod_telescope
+#print axioms LeanProofs.IPRA.Probability.ProductTelescope.sd_comm
+#print axioms LeanProofs.IPRA.Probability.ProductTelescope.prod_telescope_abs
 #print axioms LeanProofs.IPRA.add_le_add₂
 #print axioms LeanProofs.IPRA.sum_le_params
 #print axioms LeanProofs.IPRA.even_of
@@ -1341,6 +1345,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.WallisFinite.finite_wallis_closed
 #print axioms LeanProofs.IPRA.Analysis.WallisFinite.wallis_le_two
 #print axioms LeanProofs.IPRA.Analysis.WallisFinite.wallis_le_two_closed
+#print axioms LeanProofs.IPRA.Analysis.RobbinsSeries.Tr_succ
+#print axioms LeanProofs.IPRA.Analysis.RobbinsSeries.robbins_lower
+#print axioms LeanProofs.IPRA.Analysis.RobbinsSeries.upper_inv
+#print axioms LeanProofs.IPRA.Analysis.RobbinsSeries.robbins_upper
+#print axioms LeanProofs.IPRA.Analysis.RobbinsSeries.margin
+#print axioms LeanProofs.IPRA.Analysis.RobbinsSeries.w_eq
+#print axioms LeanProofs.IPRA.Analysis.RobbinsSeries.robbins_core
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
