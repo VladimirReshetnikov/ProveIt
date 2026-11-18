@@ -1544,6 +1544,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.EulerPiSeries.euler_pi
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.ftc_upper
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.ftc_lower
+#print axioms LeanProofs.IPRA.Analysis.RobbinsTelescope.vT_le
+#print axioms LeanProofs.IPRA.Analysis.RobbinsTelescope.As_succ
+#print axioms LeanProofs.IPRA.Analysis.RobbinsTelescope.robbins_telescope
+#print axioms LeanProofs.IPRA.Analysis.RobbinsTelescope.robbins_telescope_closed
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
