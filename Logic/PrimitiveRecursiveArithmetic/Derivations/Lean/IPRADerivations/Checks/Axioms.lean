@@ -9380,6 +9380,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.StructuralRules.specialization
 #print axioms LeanProofs.IPRA.Foundations.StructuralRules.existential_sealing
 #print axioms LeanProofs.IPRA.Foundations.StructuralRules.qf_induction
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.bind
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.weaken_interface
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.closed
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.singleton
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.normalization
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.substitution
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.residual_discharge
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.compose
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
