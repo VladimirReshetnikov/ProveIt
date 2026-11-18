@@ -224,6 +224,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.Mollweide.mollweide_diff
 #print axioms LeanProofs.IPRA.Geometry.Mollweide.tangent_cross
 #print axioms LeanProofs.IPRA.Geometry.Mollweide.inradius
+#print axioms LeanProofs.IPRA.Geometry.Mollweide.incenter_distance
 #print axioms LeanProofs.IPRA.Geometry.MollweideRoots.pos_root
 #print axioms LeanProofs.IPRA.Geometry.MollweideRoots.unit_A
 #print axioms LeanProofs.IPRA.Geometry.MollweideRoots.prod1
@@ -233,6 +234,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.MollweideRoots.area_A
 #print axioms LeanProofs.IPRA.Geometry.MollweideRoots.side_A
 #print axioms LeanProofs.IPRA.Geometry.MollweideRoots.cot_A
+#print axioms LeanProofs.IPRA.Geometry.MollweideRoots.halfangle_cos
 #print axioms LeanProofs.IPRA.Geometry.TriangleIsoperimetry.amgm3
 #print axioms LeanProofs.IPRA.Geometry.TriangleIsoperimetry.pq_ge
 #print axioms LeanProofs.IPRA.Geometry.TriangleIsoperimetry.abc_add
