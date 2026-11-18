@@ -13480,6 +13480,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.AnnihilatorGrid.annihilator_residual
 #print axioms LeanProofs.IPRA.Foundations.AnnihilatorGrid.annihilator_zero
 #print axioms LeanProofs.IPRA.Foundations.AnnihilatorGrid.annihilator_grid
+#print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.neg_congr
+#print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.inter_sound
+#print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.inter_complete
+#print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.inter_height
+#print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.disjFin_intro
+#print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.disjFin_imp
+#print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.global_cover
+#print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.le_maxFin
+#print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.global_height
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.Bez
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.P
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.tB

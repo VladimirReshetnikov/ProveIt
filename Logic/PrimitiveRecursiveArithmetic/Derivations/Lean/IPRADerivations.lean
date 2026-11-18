@@ -432,6 +432,7 @@ import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Foundations.RationalRootScan
 import IPRADerivations.Foundations.MixedRadixGrid
 import IPRADerivations.Foundations.AnnihilatorGrid
+import IPRADerivations.Foundations.IntersectionEnumeration
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.EigenvalueIntegral
 import IPRADerivations.Foundations.EigenvalueGrid
