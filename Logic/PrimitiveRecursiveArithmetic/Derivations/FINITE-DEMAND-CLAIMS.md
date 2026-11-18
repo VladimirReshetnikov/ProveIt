@@ -223,10 +223,19 @@ the environment labels. Completion needs the following evidence:
    proves the actual row invariant; no inversion or global coefficient law
    is supplied. The source's literal inverse-binomial identity is not claimed.
    [Internal rational power-order reflection](Lean/IPRADerivations/Analysis/RationalNonnegativePowerOrder.lean)
-   is also proved. The remaining travel work combines the actual balanced
-   radius, original coefficient apartness and residual budgets into the
-   shrinking-step bound, then proves the general coefficient-name iteration.
-   General nonmonic FTA remains in scope.
+   is also proved. Actual [coefficient apartness and radius combination](Lean/IPRADerivations/Analysis/GaussianNonmonicTravelCoefficientBound.lean)
+   and its [normalized program comparison](Lean/IPRADerivations/Analysis/GaussianNonmonicTravelComparison.lean)
+   derive the source squared budget. [Residual clearing](Lean/IPRADerivations/Analysis/GaussianTravelResidualClearing.lean)
+   and [shrinking-power arithmetic](Lean/IPRADerivations/Analysis/RationalShrinkingStepPowerBound.lean)
+   then give the original travel bound. The unchanged displacement is proved
+   to stay within the actual [starting radius](Lean/IPRADerivations/Analysis/GaussianNonmonicDisplacementRadius.lean).
+   [GaussianNonmonicStepBound](Lean/IPRADerivations/Analysis/GaussianNonmonicStepBound.lean)
+   closes the full finite source step-bound lemma and its actual PR3 endpoint
+   from original coefficient/rate/residual assumptions, without an NC, chosen
+   coefficient, radius, power or output-law premise. All 15 numerical inputs
+   are internal. The general changing-precision coefficient-name iteration,
+   its Cauchy bounds and polynomial-value zero remain open; general nonmonic
+   FTA stays in scope.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z
    constants. The later unnumbered stage-distance/zero-distance corollary is also

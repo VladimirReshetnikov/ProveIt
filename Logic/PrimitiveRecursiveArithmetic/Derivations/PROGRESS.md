@@ -174,13 +174,17 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | FTA actual rational coefficient scaling and normalization | `GaussianRationalCoefficientScaling.rational_evaluation_scaling_closed`, `GaussianRationalMonicNormalization.monic_normalization_closed`, `monic_normalization_recovery_closed`, `GaussianRationalInvertibleNorm.rational_invertible_contraction_closed` | Actual sequence multiplication has QF runtime Horner linearity. Reciprocal-head monic normalization derives literal leading one and recovery/zero equivalence from the original nonzero head norm. Inverse norm transport uses a derived nonnegative norm multiplier, without a supplied cancellation/representation law. |
 | FTA actual nonconstant translation | `GaussianTranslatedNonconstant.translated_nonconstant_closed`, `translated_radius_input_closed` | Computed least nonzero descending coefficient survives the actual translation as its canonical recode, proved by actual Horner/quotient/stage induction. Original length and nonconstant witness suffice; no head nonzeroness, monicity or canonical input is assumed. |
 | FTA constructed uniform nonmonic RD | `GaussianNonmonicRD.constructed_nonconstant_rd_closed`, `constructed_nonconstant_rd_at_closed`, `original_nonconstant_positive_decrease_closed` | The same fixed PR3 step now proves original-N contraction for every proper nonconstant rational polynomial, including zero leading coefficients. All translated guards and zero/positive residual branches are proved; no RD, positive-case or final output premise remains. |
-| FTA concrete nonmonic approximate roots | `GaussianNonmonicApproximateRoot.concrete_nonconstant_approximate_root_closed`, `concrete_nonconstant_root_program_correct_closed`, `concrete_nonconstant_residual_decay_closed` | Actual PR4 and finite residual clock need only original nonconstant shape and positive p,q. Computed initial residual and every decay stage are retained. General coefficient-name convergence still requires the travel estimate. |
+| FTA concrete nonmonic approximate roots | `GaussianNonmonicApproximateRoot.concrete_nonconstant_approximate_root_closed`, `concrete_nonconstant_root_program_correct_closed`, `concrete_nonconstant_residual_decay_closed` | Actual PR4 and finite residual clock need only original nonconstant shape and positive p,q. Computed initial residual and every decay stage are retained. General coefficient-name convergence remains separate; the travel estimate is proved below. |
 | FTA original-degree clock weakening | `GaussianDescentRateMonotonicity.actual_descent_clock_monotone_closed`, `residual_contract_weakening_closed` | True natural power/predecessor arithmetic proves actual D/rate monotonicity, including degree zero, then transports the literal normalized residual comparison using a derived nonnegative norm. |
 | Bounded syntax, reverse-counter induction | `BoundedSyntaxBackwardInduction.bounded_backward_induction_closed`, `bounded_backward_induction_at_closed`, `compiled_reverse_induction_closed` | Actual BFm substitution and Boolean compilation reduce backward propagation to ordinary QF induction, preserving arbitrary local contexts and internal N/j, including N=0. Fixed observation syntax alone is external. |
 | FTA actual raw/stage/scaled coefficient recovery | `GaussianRationalSyntheticCoefficientValues.actual_interior_coefficient_closed`, `GaussianTranslationCoefficientValues.constant_coefficient_closed`, `GaussianTranslationScaledCoefficients.interior_coefficient_closed`, `actual_scaled_coefficient_program_closed` | Genuine quotient/Horner identities recover canonical values of raw originals and propagate through actual stages, with exact radius-power exponents. Leading, interior, constant and terminal cases are separate; actual PR5/PR4/PR7 bindings are checked. No recurrence, inverse or global coefficient-bound premise is supplied. |
 | FTA two-term relative norm and radius-power rescaling | `GaussianRationalRelativeTwoTerm.actual_two_term_relative_closed`, `GaussianRationalTravelScaling.actual_scaled_difference_closed`, `actual_relative_unscale_closed` | Actual common-D triangle and exact inverse/power algebra retain arbitrary raw points and zero weights/base. Unit ratio z/U follows from the original disk, and literal recovery uses only the derived canonical coefficient recode. |
-| FTA computed maximum and quantitative original-coefficient bound | `GaussianTranslationCoefficientMaximum.translated_coefficient_maximum_closed`, `GaussianTranslationCoefficientBound.quantitative_translation_bound_closed`, `source_quantitative_translation_bound_closed`, `returned_quantitative_translation_bound_closed` | Actual positive-degree argmax plus bounded backward row induction proves the stronger 2^N coefficient bound, then the source N*2^N bound, against the actual returned maximum. Input is precisely original shape/N1/U>=1/point disk, with no nonconstant/head/canonical/positive-maximum premise. This is the quantitative translation consequence needed for travel; the final radius/residual-budget combination remains open. |
+| FTA computed maximum and quantitative original-coefficient bound | `GaussianTranslationCoefficientMaximum.translated_coefficient_maximum_closed`, `GaussianTranslationCoefficientBound.quantitative_translation_bound_closed`, `source_quantitative_translation_bound_closed`, `returned_quantitative_translation_bound_closed` | Actual positive-degree argmax plus bounded backward row induction proves the stronger 2^N coefficient bound, then the source N*2^N bound, against the actual returned maximum. Input is precisely original shape/N1/U>=1/point disk, with no nonconstant/head/canonical/positive-maximum premise. This is the quantitative translation consequence used by the actual source step-bound construction below. |
 | FTA internal nonnegative power-order reflection | `RationalNonnegativePowerOrder.rational_positive_power_order_reflection_closed`, `rational_power_exponent_antitone_closed`, `returned_positive_power_order_reflection_closed` | True native power strictness and exact normalized cross-products reflect rational power order at internal positive exponents. Unit-interval exponent antitonicity and above-one monotonicity include zero bases without numerator cancellation. |
+| FTA actual coefficient apartness and balanced-radius combination | `GaussianNonmonicTravelCoefficientBound.coefficient_radius_bound`, `GaussianNonmonicTravelComparison.native_coefficient_radius_bound_closed`, `normalized_coefficient_radius_bound_closed`, `returned_travel_comparison_bound_closed` | Original lambda=L/M>0 at an arbitrary positive-degree coefficient derives NC and actual translated input. The computed selected value and actual BR coefficient bound give the native and literal rational squared radius inequality, with PR7 index/radius/operand bindings. No selected-norm, residual or radius-numerator positivity is assumed or cancelled. |
+| FTA actual displacement stays within starting radius | `GaussianNonmonicDisplacementRadius.actual_starting_radius_bound_closed`, `actual_starting_zero_branch_closed` | Computed center denominator growth and actual residual branching prove the unchanged displacement is within the actual starting BR radius for all C,N,z, including zero residuals. No shape/NC/RD guard or supplied radius bound is used. |
+| FTA actual residual clearing and source power budget | `GaussianTravelResidualClearing.actual_residual_power_budget_closed`, `actual_combined_point_budget_closed`, `RationalShrinkingStepPowerBound.source_shrinking_step_bound_closed` | Genuine residual B0*Q^j bounds give the exact native comparison. Q<=rho^N, C0>=1, 1<=i<=N and positive-power reflection derive the actual radius budget, with zero numerators allowed and only positive denominator powers cancelled. |
+| FTA complete finite source shrinking-step bound | `GaussianNonmonicStepBound.source_step_bound_closed`, `source_displacement_bound_closed`, `source_displacement_program_bound_closed` | Actual starting r0 and unchanged displacement/PR3 satisfy <=U*C0*rho^j, C0=B0*N*2^N/lambda, from original coefficient apartness and source rate/residual guards alone. All NC/Max/BR/native power obligations are derived internally; 15 numerical inputs are closed. Source disk U-1 relaxes to U, rho=0/1 and zero residuals are supported. This completes the finite source lemma; the changing-precision Cauchy-name construction remains open. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -352,54 +356,64 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `957bef9f00`, including the actual quantitative
-translation bound and its compiled backward induction, the root build
-completed 2,345 jobs and emitted 9,121 axiom reports for 8,612 distinct
-declarations. Every report uses only `propext`, `Classical.choice` and
-`Quot.sound`. All nine import closure gates passed: 3,764 modules in the
-portable arithmetic closure and 5,252 in the independent `Diophantine` closure.
+At the source based on `3c9d1097b3`, including the complete finite nonmonic
+shrinking-step theorem, the root build completed 2,351 jobs and emitted
+9,265 axiom reports for 8,756 distinct declarations. Every report uses only
+`propext`, `Classical.choice` and `Quot.sound`. All nine import closure gates
+passed: 3,770 modules in the portable arithmetic closure and 5,252 in the
+independent `Diophantine` closure.
 
-The nine new modules contain 1,703 lines, 206 public theorems and 242 public
+The six new modules contain 1,151 lines, 112 public theorems and 144 public
 declarations, each with a fully qualified axiom probe. Independent full
-source/math reviews checked the original quotient recurrences, arbitrary
-raw input recoding, precise internal coefficient indices and separate
-constant/interior/leading/terminal cases. They checked the true relative
-Euclidean triangle, rational inverse/power rescaling, actual selected
-maximum and all returned-program bindings. Two independent critical reviews
-checked the entire global coefficient-bound proof and the generic backward
-induction, including the actual Boolean-compiled QF induction and all
-capture-avoiding substitutions. Actual nonnegative power reflection and
-exponent order were reviewed without cancelling a possibly zero numerator.
+source/math reviews checked the original coefficient apartness, derived
+nonconstancy, actual selected coefficient representations, native and
+normalized balanced-radius comparisons, and all program fields. They
+checked that only genuine decoded denominator squares are cancelled;
+selected-norm positivity is not an extra input, and zero residuals and
+radius numerators are covered.
+Actual center-to-starting radius transport and both displacement branches
+were checked. Two independent critical reviews accepted the complete
+source step-bound assembly and its 15-variable closed input/output maps.
+The power calculation includes zero decay numerators and zero iteration
+counter; it cancels only proved positive denominator powers.
 
-`GaussianTranslationCoefficientBound.quantitative_translation_bound_closed`
-proves a uniform bound on every original coefficient of positive degree:
-its norm is at most 2^N times the actual largest norm of U^i*b_i over
-1<=i<=N, where the b_i are the actual translated coefficients. The source
-N*2^N bound follows by weakening. The actual argmax PR5 supplies the index
-and value; the returned-value bound is proved too. Only original length
-N+1, N>=1, U=A/B>=1 and the original point disk bound are assumed.
-No nonconstant, nonzero-head, canonical-original, positive-maximum,
-inverse-translation or global coefficient-invariant premise is supplied.
-The zero polynomial is included. The source literal inverse-binomial
-identity is not claimed; its needed quantitative consequence is proved
-by the actual synthetic coefficient triangle.
+`GaussianNonmonicStepBound.source_step_bound_closed` now proves the finite
+source travel estimate r0<=U*C0*rho^j, with C0=B0*N*2^N/lambda, for the actual
+starting balanced radius. `source_displacement_bound_closed` and
+`source_displacement_program_bound_closed` prove the same bound for the
+unchanged constructed displacement and its actual PR3 query. The input
+has original polynomial shape, arbitrary positive-degree coefficient
+apartness lambda=L/M>0, U=A/B>=1, the original point disk, Q<=rho^N,
+C0>=1 and the actual residual bound B0*Q^j. Nonconstancy, maximum selection,
+balanced-radius comparisons and the final native power budget are all
+derived internally. No monicity, nonzero-leading-coefficient or canonical
+original-input restriction is added. The source disk U-1 is relaxed to U,
+and the finite estimate supports rho in [0,1]. Zero residuals are included.
 
-The finite nonmonic RD and approximate-root proofs from the preceding
-batch remain checked at the unchanged actual step and original degree N.
-Concrete monic root-support and completed adequacy also retain the original
-schedules, sharp constants and actual name programs, with RD discharged
-internally. Their genuine CN/pointCN/disk/degree guards remain explicit.
+`GaussianNonmonicTravelCoefficientBound` supplies the actual native
+coefficient/radius inequality and derives nonconstancy from the original
+apartness guard. `GaussianNonmonicTravelComparison` binds its literal
+normalized rational operands and actual returned index/radius/values.
+`GaussianTravelResidualClearing` specializes the true residual budget,
+while `RationalShrinkingStepPowerBound` raises and compares the internal
+powers and reflects their order. `GaussianNonmonicDisplacementRadius`
+connects the selected center radius to the actual starting radius, with
+no polynomial-shape or RD premise. The preceding uniform nonmonic RD,
+finite approximate-root and concrete monic root-support/adequacy results
+remain checked at their unchanged actual programs.
 
-General nonmonic coefficient-name FTA is still incomplete. The next step
-combines the proved translation bound, original coefficient apartness,
-actual balanced radius and residual budgets to derive shrinking step
-lengths, then proves the changing-precision Cauchy iteration and zero
-polynomial-value name. The Gaussian point-name realization adapter,
-coded-field norm/fiber/annihilator claims, Minkowski physical-basis transport,
-remaining FIBER compiler/adapters, Gamma/Barnes analytic identities and all
-other source-packet obligations remain in scope. Completed-real direction
-interpretation, general convolution and the separately expanded telescoping
-sum remain unclaimed. The complete 115-packet goal remains active.
+General nonmonic coefficient-name FTA is still incomplete. The remaining
+work constructs the original global constants and changing-precision
+iteration, proves perturbed residual contraction and the travel/radius
+bootstrap, and derives the actual Cauchy root name and polynomial-value
+zero name. The finite travel theorem is now available for that proof.
+The Gaussian point-name realization adapter, coded-field norm/fiber/
+annihilator claims, Minkowski physical-basis transport, remaining FIBER
+compiler/adapters, Gamma/Barnes analytic identities and all other source
+packet obligations remain in scope. Completed-real direction interpretation,
+general convolution, the separately expanded telescoping sum and literal
+inverse-binomial identity remain unclaimed. The complete 115-packet goal
+remains active.
 
 The new modules are included in `IPRADerivations`; all their public declarations
 are audited in `Checks/Axioms.lean`. Run the root verification commands:

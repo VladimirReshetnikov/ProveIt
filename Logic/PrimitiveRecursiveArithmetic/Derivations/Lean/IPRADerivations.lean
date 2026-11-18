@@ -605,3 +605,11 @@ import IPRADerivations.Analysis.GaussianTranslationCoefficientMaximum
 import IPRADerivations.Analysis.GaussianTranslationScaledCoefficients
 import IPRADerivations.Analysis.RationalNonnegativePowerOrder
 import IPRADerivations.Analysis.GaussianTranslationCoefficientBound
+
+-- Actual nonmonic shrinking-step bound from original coefficient apartness.
+import IPRADerivations.Analysis.GaussianNonmonicDisplacementRadius
+import IPRADerivations.Analysis.RationalShrinkingStepPowerBound
+import IPRADerivations.Analysis.GaussianNonmonicTravelCoefficientBound
+import IPRADerivations.Analysis.GaussianNonmonicTravelComparison
+import IPRADerivations.Analysis.GaussianTravelResidualClearing
+import IPRADerivations.Analysis.GaussianNonmonicStepBound
