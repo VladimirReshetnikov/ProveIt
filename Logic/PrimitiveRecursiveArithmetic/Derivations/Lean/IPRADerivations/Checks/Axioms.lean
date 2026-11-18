@@ -9452,6 +9452,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.VectorStabilization.vector_step
 #print axioms LeanProofs.IPRA.Foundations.VectorStabilization.vector_stab
 #print axioms LeanProofs.IPRA.Foundations.VectorStabilization.vector_stable
+#print axioms LeanProofs.IPRA.Foundations.ProofSchedule.compile
+#print axioms LeanProofs.IPRA.Foundations.ProofSchedule.schedule_of_steps
+#print axioms LeanProofs.IPRA.Foundations.ProofSchedule.all_derivable
+#print axioms LeanProofs.IPRA.Foundations.ProofSchedule.compile_steps
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
