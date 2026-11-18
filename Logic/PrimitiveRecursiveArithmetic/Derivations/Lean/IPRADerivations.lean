@@ -302,6 +302,7 @@ import IPRADerivations.Geometry.SphericalTrigonometry
 import IPRADerivations.Geometry.SphericalHalf
 import IPRADerivations.Geometry.SphericalHalfTangent
 import IPRADerivations.Geometry.SphericalVariation
+import IPRADerivations.Geometry.TetrahedralGram
 import IPRADerivations.Geometry.SphericalDelambre
 import IPRADerivations.Geometry.SphericalArea
 import IPRADerivations.Geometry.SphericalCore
@@ -437,6 +438,7 @@ import IPRADerivations.Foundations.ObservableUnit
 import IPRADerivations.Foundations.FiniteReconstruction
 import IPRADerivations.Foundations.Deduplication
 import IPRADerivations.Foundations.NormVanishing
+import IPRADerivations.Foundations.NullVectorDeterminant
 import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Foundations.ViableChain
 import IPRADerivations.Foundations.ChainViability
