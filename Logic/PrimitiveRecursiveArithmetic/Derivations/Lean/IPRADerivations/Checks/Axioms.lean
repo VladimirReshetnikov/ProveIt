@@ -884,6 +884,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.FinitePreorder.preimage_up
 #print axioms LeanProofs.IPRA.Topology.FinitePreorder.cont_elim
 #print axioms LeanProofs.IPRA.Topology.FinitePreorder.mono_of_continuous
+#print axioms LeanProofs.IPRA.Topology.Carriers.carried_of_images
+#print axioms LeanProofs.IPRA.Topology.Carriers.contiguous
+#print axioms LeanProofs.IPRA.Topology.Carriers.simplicial
 #print axioms LeanProofs.IPRA.Topology.Sperner2D.sum2_add
 #print axioms LeanProofs.IPRA.Topology.Sperner2D.sum2_even
 #print axioms LeanProofs.IPRA.Topology.Sperner2D.straddle2
@@ -2597,6 +2600,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_poch
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_general
 #print axioms LeanProofs.IPRA.Analysis.BetaAssociativity.rbeta_assoc
+#print axioms LeanProofs.IPRA.Analysis.NewtonCertificates.halley_denominator
+#print axioms LeanProofs.IPRA.Analysis.NewtonCertificates.newton_residual
+#print axioms LeanProofs.IPRA.Analysis.NewtonCertificates.newton_quadratic
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_succ
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_one
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_two

@@ -49,6 +49,7 @@ import IPRADerivations.Analysis.TerminatingSeries
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BetaAssociativity
+import IPRADerivations.Analysis.NewtonCertificates
 import IPRADerivations.Analysis.BarnesInteger
 import IPRADerivations.Analysis.BarnesProducts
 import IPRADerivations.Analysis.RationalClosure
@@ -429,6 +430,7 @@ import IPRADerivations.Foundations.BoundedFixpoint
 import IPRADerivations.Foundations.SquareRootNames
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
+import IPRADerivations.Topology.Carriers
 
 import IPRADerivations.Algebra.PolynomialFiniteRoots
 import IPRADerivations.Analysis.LogisticName
