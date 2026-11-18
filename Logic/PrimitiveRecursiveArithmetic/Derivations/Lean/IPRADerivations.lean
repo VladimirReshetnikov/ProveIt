@@ -88,6 +88,7 @@ import IPRADerivations.Analysis.WallisRecurrence
 import IPRADerivations.Analysis.WallisFinite
 import IPRADerivations.Analysis.RobbinsSeries
 import IPRADerivations.Analysis.ExponentialSeries
+import IPRADerivations.Analysis.WeierstrassProduct
 import IPRADerivations.Analysis.FiniteDifferenceIdentities
 import IPRADerivations.Analysis.RiemannRefinement
 import IPRADerivations.Analysis.EvenPowerIntegrals

@@ -10954,6 +10954,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.tp_step
 #print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.up_base
 #print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.up_step
+#print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.weierstrass_lower
+#print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.weierstrass_upper
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.DnInv
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.UpInv
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.dn_base
