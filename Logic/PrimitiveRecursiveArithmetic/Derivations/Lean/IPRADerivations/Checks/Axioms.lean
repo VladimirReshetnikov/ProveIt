@@ -11553,6 +11553,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.PrimitiveScaling.G_dvd_seed
 #print axioms LeanProofs.IPRA.Foundations.PrimitiveScaling.G_greatest
 #print axioms LeanProofs.IPRA.Foundations.PrimitiveScaling.primitive
+#print axioms LeanProofs.IPRA.Foundations.EigenvaluePrimitive.eigen_integral_gcd
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_canonical
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_constant
