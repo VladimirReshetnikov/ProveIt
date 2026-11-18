@@ -9429,6 +9429,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ReverseDemand.sound_term
 #print axioms LeanProofs.IPRA.Foundations.ReverseDemand.sound_edge
 #print axioms LeanProofs.IPRA.Foundations.ReverseDemand.least
+#print axioms LeanProofs.IPRA.Foundations.VectorRank.rank_mono
+#print axioms LeanProofs.IPRA.Foundations.VectorRank.sum_diff
+#print axioms LeanProofs.IPRA.Foundations.VectorRank.agree_all
+#print axioms LeanProofs.IPRA.Foundations.VectorRank.rank_dichotomy
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
