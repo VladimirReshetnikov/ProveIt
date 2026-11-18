@@ -1310,6 +1310,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ChainViability.viable_step
 #print axioms LeanProofs.IPRA.Foundations.ChainViability.chain_viable
 #print axioms LeanProofs.IPRA.Foundations.ChainViability.start_viable
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.succ_monus_of_le
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.cv_at
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.term_at
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.shift_term_at
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_zero
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.first_pt
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.second_pt
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.leibniz
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.leibniz_closed
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.rem_eq_of_eq
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.dvd_of_rem_eq
