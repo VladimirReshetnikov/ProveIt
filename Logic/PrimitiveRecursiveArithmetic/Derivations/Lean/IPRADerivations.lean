@@ -303,6 +303,8 @@ import IPRADerivations.Geometry.SphericalHalf
 import IPRADerivations.Geometry.SphericalHalfTangent
 import IPRADerivations.Geometry.SphericalVariation
 import IPRADerivations.Geometry.TetrahedralGram
+import IPRADerivations.Geometry.SphericalSolidAngle
+import IPRADerivations.Geometry.SphericalPlanarLimit
 import IPRADerivations.Geometry.SphericalDelambre
 import IPRADerivations.Geometry.SphericalArea
 import IPRADerivations.Geometry.SphericalCore
@@ -401,6 +403,8 @@ import IPRADerivations.Combinatorics.CatalanProducts
 import IPRADerivations.Combinatorics.CatalanGrowth
 import IPRADerivations.Combinatorics.CatalanPrimes
 import IPRADerivations.Combinatorics.CatalanSmallPrimes
+import IPRADerivations.Combinatorics.HankelGram
+import IPRADerivations.Combinatorics.HankelCongruence
 import IPRADerivations.Combinatorics.SegnerUnique
 import IPRADerivations.Foundations.PresentedCategory
 import IPRADerivations.Foundations.Yoneda
@@ -430,7 +434,12 @@ import IPRADerivations.Foundations.WitnessAlgebra
 import IPRADerivations.Foundations.RationalRootDegree
 import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Foundations.RationalRootScan
+import IPRADerivations.Foundations.RationalRootFactor
 import IPRADerivations.Foundations.MixedRadixGrid
+import IPRADerivations.Foundations.AnnihilatorGrid
+import IPRADerivations.Foundations.IntersectionEnumeration
+import IPRADerivations.Foundations.EliminationRoot
+import IPRADerivations.Foundations.VandermondeDeterminant
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.EigenvalueIntegral
 import IPRADerivations.Foundations.EigenvalueGrid
@@ -456,6 +465,8 @@ import IPRADerivations.Foundations.HurwitzUniqueness
 import IPRADerivations.Foundations.SumLinear
 import IPRADerivations.Foundations.WeightedDimension
 import IPRADerivations.Foundations.ResiduePermutation
+import IPRADerivations.Foundations.CofactorAnnihilator
+import IPRADerivations.Foundations.FilteredLiftingStep
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.BoundedFixpoint
 import IPRADerivations.Foundations.SquareRootNames
@@ -731,6 +742,12 @@ import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization
 import IPRADerivations.Foundations.NetTransfer
+import IPRADerivations.Foundations.TelescopingNames
+import IPRADerivations.Foundations.RankedSearch
+import IPRADerivations.Foundations.ReverseDemand
+import IPRADerivations.Foundations.VectorRank
+import IPRADerivations.Foundations.VectorStabilization
+import IPRADerivations.Foundations.ProofSchedule
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
