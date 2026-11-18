@@ -13474,6 +13474,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.pos_recover
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.neg_recover
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.grid_complete
+#print axioms LeanProofs.IPRA.Foundations.AnnihilatorGrid.boundary_ring
+#print axioms LeanProofs.IPRA.Foundations.AnnihilatorGrid.residual_ring
+#print axioms LeanProofs.IPRA.Foundations.AnnihilatorGrid.annihilator_boundary
+#print axioms LeanProofs.IPRA.Foundations.AnnihilatorGrid.annihilator_residual
+#print axioms LeanProofs.IPRA.Foundations.AnnihilatorGrid.annihilator_zero
+#print axioms LeanProofs.IPRA.Foundations.AnnihilatorGrid.annihilator_grid
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.Bez
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.P
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.tB
