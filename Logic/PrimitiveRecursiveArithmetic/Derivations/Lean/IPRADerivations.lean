@@ -354,3 +354,8 @@ import IPRADerivations.Analysis.RationalHausdorff
 import IPRADerivations.DiophantineNumberTheory.MinkowskiEnlargement
 import IPRADerivations.Analysis.RationalHausdorffTriangle
 import IPRADerivations.Analysis.GammaCanonicalFactors
+import IPRADerivations.Analysis.AggregateEquality
+import IPRADerivations.Analysis.RationalNearest
+import IPRADerivations.DiophantineNumberTheory.MinkowskiPigeonhole
+import IPRADerivations.DiophantineNumberTheory.SignedEuclidean
+import IPRADerivations.DiophantineNumberTheory.MinkowskiResidues

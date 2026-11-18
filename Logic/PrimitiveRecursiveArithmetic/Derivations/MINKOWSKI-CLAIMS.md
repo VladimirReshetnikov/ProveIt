@@ -2,8 +2,9 @@
 
 This audit covers every theorem, lemma, proposition and corollary environment
 in [`diophantine-number-theory/minkowski_ipra`](../docs/proofs/diophantine-number-theory/minkowski_ipra/).
-There are six such environments. None is counted complete merely from the
-checked enlargement dependency. The delivered source is preserved; the full
+There are six such environments. The finite-prefix pigeonhole lemma is
+checked in full; the other five remain unfinished. The checked enlargement
+dependency alone does not complete the equality-case theorem. The delivered source is preserved; the full
 repository scope is recorded in [PROGRESS.md](PROGRESS.md).
 
 **Checked** below refers to ordinary `Prf PRAAx` derivations. Native Lean
@@ -17,7 +18,7 @@ claimed object derivation.
 | Source claim | Checked scope and remaining work |
 | --- | --- |
 | `thm:main`, Certificate form of Minkowski, [01_foundations.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/01_foundations.tex), line 220 | **Open assembled extractor.** Given `n≥1` and genuine `BoxOK` (nonempty boxes, positive sides, disjoint interiors, content greater than one), construct distinct mesh cells, an actual residue collision and a nonzero integer quotient vector. Then instantiate the supplied `InsideΦ`, symmetry and midpoint contracts. Arbitrary-formula `Φ` must be interpreted on canonical rational codes or have a proved rational-extensionality contract; numerical equality of unreduced fractions alone does not permit substituting raw natural codes into arbitrary formulas. |
-| `lem:php`, Bounded color collision, [02_finite_proof.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/02_finite_proof.tex), line 48 | **Partial: actual general pigeonhole kernel checked.** [Core/Pigeonhole](Lean/IPRADerivations/Core/Pigeonhole.lean) constructs `phpI`/`phpJ` and proves `i<j≤H` with equal colors. Its `Permutation.rangeAll` premise bounds colors at every index; this source needs only the finite prefix through `H`. Prove the adapter by totalizing the color with remainder modulo positive `H`, retaining equality on the prefix. Alternatively prove global range directly for the actual residue-color constructor. The source is not credited complete from the stronger generic premise alone. |
+| `lem:php`, Bounded color collision, [02_finite_proof.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/02_finite_proof.tex), line 48 | **Checked actual finite-prefix search.** [MinkowskiPigeonhole](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiPigeonhole.lean) proves `bounded_color_collision` and `sequence_collision_closed` with actual PR pair-search metadata. Only `H≥1` and original colors below `H` at indices `i≤H` are required. Remainder totalization derives the global range used by [Core/Pigeonhole](Lean/IPRADerivations/Core/Pigeonhole.lean); returned bounds recover equality of original prefix colors. No supplied collision or stronger global range premise remains. |
 | `lem:shrink`, Inner grid covers a shrink, [03_polytopes.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/03_polytopes.tex), line 91 | **Open.** Construct the actual floor-based cell and bounded containment checker. Retain certified `[-r,r]^n⊆P⊆[-R,R]^n`, `0<η<1`, `1/m≤ηr/2` and the computed search radius `T`. Derive that the chosen cell lies in the search window and passes every facet/vertex containment check. No supplied containment or successful-search conclusion may replace that proof. |
 | `cor:poly`, Strict rational-polytope theorem, [03_polytopes.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/03_polytopes.tex), line 131 | **Open volume/geometry frontend.** Fixed-size determinant and adjugate identities exist, but the complete volume frontend and strict extractor do not. From the bounded symmetric rational body and rational matrix with nonzero determinant, construct normalization, inner/outer radii, certified volume lower bound and the explicit mesh; prove retained content exceeds one and invoke `thm:main`. Prove the actual nonzero-vector/lattice transport. |
 | `thm:equality`, Integer-facet enlargement, [03_polytopes.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/03_polytopes.tex), line 156 | **Checked dependency `eq:same-lattice`; complete theorem remains open.** [MinkowskiEnlargement](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiEnlargement.lean) supplies actual runtime dot sums, bound maximum and enlargement code `(M+2,M+1)`. `expanded_bound_gap`, `same_lattice_closed`, `same_lattice_program_closed` and `enlargement_metadata_closed` derive integer discreteness, membership equivalence and generated checker behavior. Public source guards include positive dimension/facet count/bounds and row/point shapes. Volume homogeneity, strict threshold growth, the rational enlarged-body presentation and the strict extractor remain. Boundedness and volume hypotheses belong to the unfinished complete theorem. |
@@ -58,16 +59,15 @@ are executable evidence. They do not establish all-input ordinary iPRA
 correctness. The source labels its Lean outlines uncompiled; this audit does
 not revise those historical artifact claims into object-theory proof claims.
 
-## Next concrete dependency: signed mesh extraction
+## Signed arithmetic checked; mesh extraction and box refinement remain
 
-Implement the pure signed mesh kernel from
+Complete the pure signed mesh kernel from
 [Section 2](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/02_finite_proof.tex)
 before the volume frontend:
 
-1. Construct signed Euclidean quotient/remainder and prove `a=mq+r`, `r<m`,
-   including negative coordinates and `m=1`.
-2. Construct the runtime-dimensional residue-color fold, proving its range
-   and coordinate decoding from the actual mixed-radix program.
+1. **Checked:** [SignedEuclidean](Lean/IPRADerivations/DiophantineNumberTheory/SignedEuclidean.lean) constructs actual signed quotient/remainder and proves `a=mq+r`, `r<m`,
+   including negative coordinates and `m=1`; actual PR output metadata and equal-residue/nonzero-difference transport are checked.
+2. **Checked:** [MinkowskiResidues](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiResidues.lean) constructs the runtime-dimensional reverse Horner residue-color fold. Range below `m^n`, actual quotient/remainder peeling, coordinate residue injectivity and the exact signed difference equations are derived; `n=0` and `m=1` are included.
 3. Apply the actual pigeonhole witnesses to a supplied cell list with at
    least `m^n+1` entries. Distinctness must concern decoded integer vectors,
    rather than merely different raw codes representing the same vector.
