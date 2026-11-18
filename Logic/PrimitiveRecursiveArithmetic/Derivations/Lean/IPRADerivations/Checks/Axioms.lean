@@ -9190,6 +9190,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.root_lipschitz
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.root_unique
+#print axioms LeanProofs.IPRA.Foundations.MixedRadix.prod_split
+#print axioms LeanProofs.IPRA.Foundations.MixedRadix.code_split
+#print axioms LeanProofs.IPRA.Foundations.MixedRadix.code_lt
+#print axioms LeanProofs.IPRA.Foundations.MixedRadix.suffix_step
+#print axioms LeanProofs.IPRA.Foundations.MixedRadix.decode
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRelativeTwoTerm.norm_order_relative
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRelativeTwoTerm.relative_norm_order
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRelativeTwoTerm.relative_add
