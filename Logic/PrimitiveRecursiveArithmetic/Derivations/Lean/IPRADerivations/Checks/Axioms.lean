@@ -13761,6 +13761,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes.five
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes.four
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes.three
+#print axioms LeanProofs.IPRA.Combinatorics.HankelGram.unit_gram_ring
+#print axioms LeanProofs.IPRA.Combinatorics.HankelGram.cb_ring
+#print axioms LeanProofs.IPRA.Combinatorics.HankelGram.corner_ring
+#print axioms LeanProofs.IPRA.Combinatorics.HankelGram.unit_gram_det
+#print axioms LeanProofs.IPRA.Combinatorics.HankelGram.toZ_rowGram
+#print axioms LeanProofs.IPRA.Combinatorics.HankelGram.cauchy_binet
+#print axioms LeanProofs.IPRA.Combinatorics.HankelGram.natLit_succ_ne
+#print axioms LeanProofs.IPRA.Combinatorics.HankelGram.corner_determines
+#print axioms LeanProofs.IPRA.Combinatorics.HankelGram.hankel0_two
+#print axioms LeanProofs.IPRA.Combinatorics.HankelGram.hankel1_two
+#print axioms LeanProofs.IPRA.Combinatorics.HankelGram.hankel2_one
 #print axioms LeanProofs.IPRA.Foundations.RealizerStateAdaptive.Code
 #print axioms LeanProofs.IPRA.Foundations.RealizerStateAdaptive.Code.candidate
 #print axioms LeanProofs.IPRA.Foundations.RealizerStateAdaptive.Code.cap
