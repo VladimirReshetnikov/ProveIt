@@ -9078,6 +9078,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.three_bound
 #print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.growth
 #print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.gronwall_three
+#print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
+#print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
+#print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
+#print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.root_lipschitz
+#print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.root_unique
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRelativeTwoTerm.norm_order_relative
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRelativeTwoTerm.relative_norm_order
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRelativeTwoTerm.relative_add
