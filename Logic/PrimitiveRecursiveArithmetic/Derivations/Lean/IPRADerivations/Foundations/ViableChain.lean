@@ -23,6 +23,11 @@ chain is a term in `t`, so no coded sequence is needed. If `s(p) < B(0, p)` and
 So `c(0), …, c(h)` is an admissible chain. The induction is on the quantifier-free formula
 `t ≤ h → c(t) < B(t) ∧ V(h ∸ t, c(t)) = 1`; each step is `V_unfold`.
 
+Theorem "Constraint refinement under stronger evidence": if every test passed for `I'` is
+passed for `I` (`Refines`), the chain certified by `I'` passes the tests of `I`
+(`refinement_local`, `refinement_edge`). This does not give viability for `I` in the sense
+of its own rows; it transfers the certified chain, as the packet states.
+
 `monus_succ_sub`, `monus_sub`, `succ_monus`: for `t < h`, `h ∸ ((h ∸ (t + 1)) + 1) = t`,
 `h ∸ (h ∸ (t + 1)) = t + 1` and `(h ∸ (t + 1)) + 1 = h ∸ t`.
 -/
@@ -260,5 +265,35 @@ theorem chain_local {t p : PTm k} (hs : Γ ⊢[PRAAx] lt (start s p) (I.bd zero 
     exact (g_congr I hth.wk.eqSymm).eqTrans Prf.hyp0
 
 end Chain
+
+/-! ## Refinement under stronger evidence -/
+
+/-- `I'` is stronger evidence than `I`: every local test and every edge test passed for `I'`
+is passed for `I` (the Boolean inequalities `G' ≤ G`, `T' ≤ T`). -/
+structure Refines (I' I : Instance) : Prop where
+  g_mono : ∀ {k : ℕ} {Γ : List (Fm PTm k)} {i a p : PTm k},
+    (Γ ⊢[PRAAx] neg (I'.g i a p ≐ zero)) → (Γ ⊢[PRAAx] neg (I.g i a p ≐ zero))
+  t_mono : ∀ {k : ℕ} {Γ : List (Fm PTm k)} {i a b p : PTm k},
+    (Γ ⊢[PRAAx] neg (I'.t i a b p ≐ zero)) → (Γ ⊢[PRAAx] neg (I.t i a b p ≐ zero))
+
+section Refinement
+
+variable {I' I : Instance} {s : PTm 1}
+
+/-- The chain certified by the stronger evidence passes the local tests of the weaker. -/
+theorem refinement_local (R : Refines I' I) {t p : PTm k}
+    (hs : Γ ⊢[PRAAx] lt (start s p) (I'.bd zero p))
+    (hv : Γ ⊢[PRAAx] I'.V (I'.h p) (start s p) p ≐ one) (ht : Γ ⊢[PRAAx] le t (I'.h p)) :
+    Γ ⊢[PRAAx] neg (I.g t (chain I' s t p) p ≐ zero) :=
+  R.g_mono (chain_local hs hv ht)
+
+/-- The chain certified by the stronger evidence passes the edge tests of the weaker. -/
+theorem refinement_edge (R : Refines I' I) {t p : PTm k}
+    (hs : Γ ⊢[PRAAx] lt (start s p) (I'.bd zero p))
+    (hv : Γ ⊢[PRAAx] I'.V (I'.h p) (start s p) p ≐ one) (ht : Γ ⊢[PRAAx] lt t (I'.h p)) :
+    Γ ⊢[PRAAx] neg (I.t t (chain I' s t p) (chain I' s (succ t) p) p ≐ zero) :=
+  R.t_mono (chain_edge hs hv ht)
+
+end Refinement
 
 end LeanProofs.IPRA.Foundations.ViableChain
