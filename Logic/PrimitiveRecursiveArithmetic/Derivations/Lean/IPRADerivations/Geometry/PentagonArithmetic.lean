@@ -164,4 +164,20 @@ theorem dual_angle_sums :
 theorem dodecahedron_euler : Γ ⊢[PRAAx] (num 20 + num 12 : PTm n) ≐ num 30 + num 2 := by
   apply deriveNat; ipra_simps; norm_num
 
+/-- `thm:hyperbolic-order`, cleared: `1/2 + 1/5 + 1/m < 1` times `10m` is `7m + 10 < 10m`, and
+`7m + 10 < 10m ↔ 4 ≤ m`. -/
+theorem coxeter_hyperbolic (m : PTm n) :
+    Γ ⊢[PRAAx] Fm.iff (lt (num 7 * m + num 10) (num 10 * m)) (le (num 4) m) := by
+  refine .andI (.impI ?_) (.impI ?_)
+  · let C := lt (num 7 * m + num 10) (num 10 * m) :: Γ
+    have e := natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] lt (num 7 * m + num 10) (num 10 * m)))
+    refine le_of_hyperbolic (le_of_eq_add (d := monus (num 10 * m) (succ (num 7 * m + num 10))) ?_)
+    apply deriveNat; ipra_simps
+    linear_combination e
+  · let C := le (num 4) m :: Γ
+    have e := natEq (eq_add_of_le (hyperbolic_of_le (Prf.hyp0 : C ⊢[PRAAx] le (num 4) m)))
+    refine le_of_eq_add (d := monus (num 3 * m) (succ (num 10))) ?_
+    apply deriveNat; ipra_simps
+    linear_combination e
+
 end LeanProofs.IPRA.Geometry.PentagonArithmetic
