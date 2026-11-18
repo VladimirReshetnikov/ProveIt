@@ -1072,6 +1072,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.BaselCore.omitted_bound
 #print axioms LeanProofs.IPRA.Analysis.BaselCore.E_bound
 #print axioms LeanProofs.IPRA.Analysis.BaselCore.core
+#print axioms LeanProofs.IPRA.Analysis.BaselUniform.uniform
+#print axioms LeanProofs.IPRA.Analysis.BaselUniform.dyadic
+#print axioms LeanProofs.IPRA.Analysis.BaselUniform.pw_seven
+#print axioms LeanProofs.IPRA.Analysis.BaselUniform.cut_eq
+#print axioms LeanProofs.IPRA.Analysis.BaselUniform.growth_cut
+#print axioms LeanProofs.IPRA.Analysis.BaselUniform.main
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
