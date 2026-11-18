@@ -9417,6 +9417,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.NetTransfer.net_transfer
 #print axioms LeanProofs.IPRA.Foundations.TelescopingNames.telescope
 #print axioms LeanProofs.IPRA.Foundations.TelescopingNames.regular_of_budget
+#print axioms LeanProofs.IPRA.Foundations.TelescopingNames.three_term
+#print axioms LeanProofs.IPRA.Foundations.TelescopingNames.adjacent_of_edge
 #print axioms LeanProofs.IPRA.Foundations.RankedSearch.ranked_inv
 #print axioms LeanProofs.IPRA.Foundations.RankedSearch.ranked_search
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity

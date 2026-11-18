@@ -1,5 +1,6 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.BoundedSums
+import IPRADerivations.Core.Pairing
 
 /-!
 # Regular names from a motion budget
@@ -17,8 +18,23 @@ enters as `D(k + 1) ≤ D(k) + s(k)`.
   `k`;
 * `regular_of_budget` (`thm:regular-name`): if moreover `∑_{i<k} s(i) ≤ B`, then `D(k) ≤ B`.
 
-The construction of the sequence from shrinking viability and the bound of `thm:adjacent-coherence` are not
-derived here. The geometric special case `s(k) ≤ C/2^k` is `OdeRefinement.geometric_cauchy`.
+The geometric special case `s(k) ≤ C/2^k` is `OdeRefinement.geometric_cauchy`.
+
+The same telescoping proves Theorem `thm:shrinking` ("Shrinking-cloud name extraction") of
+`ipra_kifc_framework_2026-11-15`, `ipra_kifc_framework_2026-11-16`, `ipra_kifcr_framework_2026-11-16` and
+`ipra_kifcs_framework_2026-11-16`, whose step bound is the three-term estimate
+`d(a_q, a_{q+1}) ≤ d(a_q, u) + d(u, v) + d(v, a_{q+1}) ≤ δ_q + μ_q + δ_{q+1}` for one valid edge `(u, v)`
+between consecutive clouds:
+
+* `three_term`: the arithmetic of that estimate;
+* `adjacent_of_edge`: if there is a pair `w = ⟨u, v⟩` satisfying the triangle inequality and the three
+  bounds (diameter of the cloud of `a`, edge length, diameter of the next cloud), then
+  `d(a, a') ≤ δ + μ + δ'`. The edge is eliminated in the object theory: it is used only existentially, and
+  the output keeps choosing its own representatives.
+
+With `s(k) = δ + μ + δ'` at level `p + k` and the tail certificate as budget, `regular_of_budget` gives the
+regular name `r_k = a_{T(k)}`. The construction of the clouds from shrinking viability and the bound of
+PFIG `thm:adjacent-coherence` are not derived here.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -80,5 +96,32 @@ theorem regular_of_budget (h0 : Γ ⊢[PRAAx] inst2 D zero x ≐ zero)
   le_trans (telescope h0 hstep k) hb
 
 end Telescope
+
+/-! ## The step bound from an edge between consecutive clouds -/
+
+/-- `D ≤ d₁ + d₂ + d₃` with `d₁ ≤ δ`, `d₂ ≤ μ`, `d₃ ≤ δ'` gives `D ≤ δ + μ + δ'`. -/
+theorem three_term {D d₁ d₂ d₃ δ μ δ' : PTm n} (ht : Γ ⊢[PRAAx] le D (d₁ + d₂ + d₃))
+    (h₁ : Γ ⊢[PRAAx] le d₁ δ) (h₂ : Γ ⊢[PRAAx] le d₂ μ) (h₃ : Γ ⊢[PRAAx] le d₃ δ') :
+    Γ ⊢[PRAAx] le D (δ + μ + δ') := by
+  ipra_le sl ht + sl h₁ + sl h₂ + sl h₃
+
+/-- The pair `w = ⟨u, v⟩` (variable `0`) is an edge witnessing the three-term estimate for `D = d(a, a')`. -/
+abbrev EdgeAt (dist : PTm 2) (a a' D δ μ δ' : PTm n) : Fm PTm (n + 1) :=
+  le (Syn.shift D)
+      (inst2 dist (Syn.shift a) (fstT (var 0)) + inst2 dist (fstT (var 0)) (sndT (var 0)) +
+        inst2 dist (sndT (var 0)) (Syn.shift a')) ⋏
+    (le (inst2 dist (Syn.shift a) (fstT (var 0))) (Syn.shift δ) ⋏
+      (le (inst2 dist (fstT (var 0)) (sndT (var 0))) (Syn.shift μ) ⋏
+        le (inst2 dist (sndT (var 0)) (Syn.shift a')) (Syn.shift δ')))
+
+/-- An edge between consecutive clouds, given existentially, bounds the distance of the representatives. -/
+theorem adjacent_of_edge {dist : PTm 2} {a a' D δ μ δ' : PTm n}
+    (he : Γ ⊢[PRAAx] Fm.ex (EdgeAt dist a a' D δ μ δ')) : Γ ⊢[PRAAx] le D (δ + μ + δ') := by
+  refine .exE he ?_
+  have w : (EdgeAt dist a a' D δ μ δ' :: Γ.map Fm.shift) ⊢[PRAAx] EdgeAt dist a a' D δ μ δ' := Prf.hyp0
+  have r := three_term (Prf.andE₁ w) (Prf.andE₁ (Prf.andE₂ w)) (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ w)))
+    (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ w)))
+  simp only [Fm.shift, subst_le, PTm.subst_add]
+  exact r
 
 end LeanProofs.IPRA.Foundations.TelescopingNames
