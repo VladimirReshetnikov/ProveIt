@@ -472,9 +472,31 @@ the original raw polynomial evaluations at the actual computed root precision
 are bounded by 2^-t. Only length and one nonzero positive-degree coefficient
 are supplied. Equality of arbitrary outer list codes is not asserted.
 
-A generic completed-field/extensionality adapter remains separate. Source
-reconciliation and the remaining packet claims are not inferred from these
-root-specific actual-program theorems.
+The [actual Euclidean name relation](Lean/IPRADerivations/Analysis/GaussianNameEquivalence.lean)
+now has diagonal/cross-precision equivalence, equivalence laws on proper
+names and actual program-zero transport. Every auxiliary precision is
+removed by the proved finite integer-gap query. The
+[independent normalizer theorem](Lean/IPRADerivations/Analysis/GaussianValueNormalizerExtensionality.lean)
+keeps both numerical moduli, persistent data and actual precision shifts;
+a vanishing raw discrepancy gives cross-equivalent normalized programs,
+including zero moduli and without a modulus-order assumption.
+[General polynomial extensionality](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialExtensionality.lean)
+derives that discrepancy from equivalent original coefficient and point
+names on a computed common proof disk. All N+1 coefficients participate.
+The output programs retain their own original disks, data and shifts, and
+their zero predicates agree. Degree zero and zero leading samples are
+included. Actual padding across different upper degrees and completed-field
+ring/evaluation realization remain separate obligations.
+
+The [natural scalar action](Lean/IPRADerivations/Analysis/GaussianRationalNaturalScale.lean)
+and [actual finite Gaussian sum](Lean/IPRADerivations/Analysis/GaussianRationalFiniteSum.lean)
+now have canonical-output, zero/unit, recurrence, shifted-first-term,
+bounded-entry congruence, addition and multiplication transport proofs.
+The sum laws use genuine QF prefix inductions over the actual generated
+lists; raw entries retain their canonical recoding where needed. These
+provide the finite algebra for the still-open literal inverse-binomial
+Pascal row. Source reconciliation and the remaining packet claims are
+not inferred from these components.
 Generic completed Gaussian-point/field realization, coded-field norm/fiber/
 annihilator claims, Minkowski physical-basis transport, remaining FIBER
 compiler/adapters, Gamma/Barnes analytic identities and all other source

@@ -287,7 +287,19 @@ the environment labels. Completion needs the following evidence:
    constructs the concrete root/value programs and original-evaluation
    dyadic zero bound from list length and a nonzero positive-degree
    coefficient alone. Arbitrary outer list-code extensionality is not used.
-   Generic completed-field/extensionality and the remaining
+   The [Euclidean name relation](Lean/IPRADerivations/Analysis/GaussianNameEquivalence.lean)
+   and [independent normalizer comparison](Lean/IPRADerivations/Analysis/GaussianValueNormalizerExtensionality.lean)
+   now prove cross-name equivalence and program-zero transport by finite
+   fixed-query slack removal. The
+   [general polynomial extensionality theorem](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialExtensionality.lean)
+   derives its raw discrepancy from equivalent coefficients and points,
+   retaining every coefficient and the original independent disks/data/shifts.
+   It includes same-upper-degree coefficient, point and disk independence;
+   actual different-degree padding and completed-field ring/evaluation
+   realization remain. The [natural scalar action](Lean/IPRADerivations/Analysis/GaussianRationalNaturalScale.lean)
+   and [finite Gaussian sum](Lean/IPRADerivations/Analysis/GaussianRationalFiniteSum.lean)
+   prove the actual recurrences and algebra needed by the remaining literal
+   inverse-binomial Pascal-row proof. Generic completed-field and the remaining
    representation adapters stay separate; the complete packet scope is retained.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z
