@@ -13233,6 +13233,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.NormMembership.norm_membership
 #print axioms LeanProofs.IPRA.Foundations.NormMembership.norm_membership_unit
 #print axioms LeanProofs.IPRA.Foundations.NormMembership.boundary_column
+#print axioms LeanProofs.IPRA.Foundations.AdjugateConverse.converse_ring
+#print axioms LeanProofs.IPRA.Foundations.AdjugateConverse.converse_witness_ring
+#print axioms LeanProofs.IPRA.Foundations.AdjugateConverse.char_ring
+#print axioms LeanProofs.IPRA.Foundations.AdjugateConverse.adjugate_converse
+#print axioms LeanProofs.IPRA.Foundations.AdjugateConverse.char_vanish
 #print axioms LeanProofs.IPRA.Foundations.PrecisionCostDAG.actual_budget_lookup_closed
 #print axioms LeanProofs.IPRA.Foundations.PrecisionCostDAG.actual_budget_nonnegative_closed
 #print axioms LeanProofs.IPRA.Foundations.PrecisionCostDAG.actual_budget_recurrence_closed
