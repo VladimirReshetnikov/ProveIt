@@ -41,6 +41,8 @@ its exact checked scope and remaining obligations.
 The [finite-demand claim audit](FINITE-DEMAND-CLAIMS.md) covers all 17 theorem
 environments in that packet and the required scheduling, metric and norm
 constructions.
+The [Minkowski claim audit](MINKOWSKI-CLAIMS.md) covers its six source theorem
+environments, finite-volume appendix and remaining mesh-extractor obligations.
 
 ## Layout
 

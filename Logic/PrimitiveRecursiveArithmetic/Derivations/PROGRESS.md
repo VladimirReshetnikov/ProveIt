@@ -13,6 +13,9 @@ obligations, with exact statement-level status.
 The [finite-demand claim audit](FINITE-DEMAND-CLAIMS.md) accounts for all 17
 source theorem environments and the exact scheduling/aggregate/root/norm
 producer boundaries.
+The [Minkowski claim audit](MINKOWSKI-CLAIMS.md) distinguishes the checked
+lattice-preserving enlargement from its six unfinished source claims and
+records the actual signed-mesh dependency.
 
 ## Current theorem additions
 
