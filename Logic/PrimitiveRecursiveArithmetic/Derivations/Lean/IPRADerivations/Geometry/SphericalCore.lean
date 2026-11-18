@@ -188,6 +188,16 @@ theorem sine_law : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 26 sineLawFormula := b
   simp only [ZT.toZ_mul]
   exact sine_law_ring h8 h9
 
+/-- `cor:sine-volume`, (4.10) cleared: with `6V = τ` (the triple product of the vertex vectors),
+`sin A (sin a sin b sin c) = 6V sin a`, i.e. `sin A / sin a = 6V / (sin a sin b sin c)`. -/
+def sineVolumeFormula : Fm PTm 26 := core ⟶ ZT.eq (sA * (sa * sb * sc)) (τ * sa)
+
+theorem sine_volume : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 26 sineVolumeFormula := by
+  refine closeUniv 26 (.impI (ZT.derive ?_))
+  obtain ⟨_, _, _, _, _, _, _, h8, -⟩ := core_toZ (Γ := [core]) Prf.hyp0
+  simp only [ZT.toZ_mul]
+  linear_combination ZT.toZ [core] sa * h8
+
 def angleCosineFormula : Fm PTm 26 :=
   core ⟶ ZT.eq (ZT.sq sa * sb * sc * cA) (ZT.sq sa * sb * sc * (sB * sC * x - cB * cC))
 

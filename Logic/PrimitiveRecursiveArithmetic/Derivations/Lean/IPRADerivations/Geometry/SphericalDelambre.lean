@@ -24,7 +24,8 @@ commutative ring and read as an equation of integer terms.
 e.g. `(1 − cos(A+B))(1 + cos(a+b))(1 − cos C) = (1 + cos(A+B))(1 + cos(a−b))(1 + cos C)` from (7.5) and
 the square of (7.3), cancelling `1 + cos c ≠ 0` (and `1 − cos c ≠ 0` for (7.12)).
 
-The nonnegative square roots and the quotient forms (7.7)–(7.17) are not formalized.
+`tangent_law` (`cor:tangent-law`, (7.15) squared and cleared) is the quotient of (7.11) and (7.12), cancelling
+`1 − cos C ≠ 0`. The nonnegative square roots and the other quotient forms are not formalized.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -176,6 +177,23 @@ theorem napier4 (h : Laws cA sA cB sB cC sC ca sa cb sb cc sc Γ) :
   simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at d₁ d₂ ⊢
   linear_combination (1 - (ZT.toZ Γ ca * ZT.toZ Γ cb + ZT.toZ Γ sa * ZT.toZ Γ sb)) * d₁ -
     (1 + (ZT.toZ Γ ca * ZT.toZ Γ cb + ZT.toZ Γ sa * ZT.toZ Γ sb)) * d₂
+
+/-- `cor:tangent-law`, (7.15) squared and cleared: with `tan²(x/2) = (1 − cos x)/(1 + cos x)`,
+`tan²((A−B)/2) tan²((a+b)/2) = tan²((A+B)/2) tan²((a−b)/2)`, i.e.
+`(1 − cos(A−B))(1 + cos(A+B))(1 + cos(a−b))(1 − cos(a+b)) = (1 + cos(A−B))(1 − cos(A+B))(1 − cos(a−b))(1 + cos(a+b))`,
+given `1 ± cos c ≠ 0` and `1 − cos C ≠ 0`; the quotient of Napier's (7.11) and (7.12). -/
+theorem tangent_law (h : Laws cA sA cB sB cC sC ca sa cb sb cc sc Γ) (hc₁ : Γ ⊢[PRAAx] nz (ZT.natLit 1 + cc))
+    (hc₂ : Γ ⊢[PRAAx] nz (ZT.natLit 1 - cc)) (hC : Γ ⊢[PRAAx] nz (ZT.natLit 1 - cC)) :
+    Γ ⊢[PRAAx] ZT.eq ((ZT.natLit 1 - (cA * cB + sA * sB)) * (ZT.natLit 1 + (cA * cB - sA * sB)) *
+        (ZT.natLit 1 + (ca * cb + sa * sb)) * (ZT.natLit 1 - (ca * cb - sa * sb)))
+      ((ZT.natLit 1 + (cA * cB + sA * sB)) * (ZT.natLit 1 - (cA * cB - sA * sB)) *
+        (ZT.natLit 1 - (ca * cb + sa * sb)) * (ZT.natLit 1 + (ca * cb - sa * sb))) := by
+  have n₁ := ZT.toZ_eq (napier1 h hc₁); have n₂ := ZT.toZ_eq (napier2 h hc₂)
+  refine zt_cancel hC (ZT.derive ?_)
+  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] at n₁ n₂ ⊢
+  linear_combination
+    (1 + (ZT.toZ Γ cA * ZT.toZ Γ cB - ZT.toZ Γ sA * ZT.toZ Γ sB)) * (1 + (ZT.toZ Γ ca * ZT.toZ Γ cb + ZT.toZ Γ sa * ZT.toZ Γ sb)) * n₂ -
+    (1 + (ZT.toZ Γ cA * ZT.toZ Γ cB + ZT.toZ Γ sA * ZT.toZ Γ sB)) * (1 - (ZT.toZ Γ ca * ZT.toZ Γ cb + ZT.toZ Γ sa * ZT.toZ Γ sb)) * n₁
 
 end Napier
 
