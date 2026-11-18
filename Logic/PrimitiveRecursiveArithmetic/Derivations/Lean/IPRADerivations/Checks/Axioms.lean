@@ -1236,6 +1236,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ContractProducts.prod_of_real
 #print axioms LeanProofs.IPRA.Foundations.ContractProducts.real_prod
 #print axioms LeanProofs.IPRA.Foundations.ContractProducts.real_prod_closed
+#print axioms LeanProofs.IPRA.Foundations.CoherentPresentations.coherence
+#print axioms LeanProofs.IPRA.Foundations.CoherentPresentations.coherence_closed
+#print axioms LeanProofs.IPRA.Foundations.CoherentPresentations.two_pos
+#print axioms LeanProofs.IPRA.Foundations.CoherentPresentations.rem_rem
+#print axioms LeanProofs.IPRA.Foundations.CoherentPresentations.binary_spec
+#print axioms LeanProofs.IPRA.Foundations.CoherentPresentations.binary_eqv
+#print axioms LeanProofs.IPRA.Foundations.CoherentPresentations.binary_res
+#print axioms LeanProofs.IPRA.Foundations.CoherentPresentations.binary_out
+#print axioms LeanProofs.IPRA.Foundations.CoherentPresentations.binary_laws
+#print axioms LeanProofs.IPRA.Foundations.CoherentPresentations.binary_coherence
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.rem_eq_of_eq
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.dvd_of_rem_eq

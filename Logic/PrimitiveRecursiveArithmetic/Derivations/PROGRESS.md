@@ -309,7 +309,7 @@ claims beyond those families.
 | [foundations/ipra_cbip_framework_2026-11-16](../docs/proofs/foundations/ipra_cbip_framework_2026-11-16/) | [Foundations/BooleanizationCorollaries](Lean/IPRADerivations/Foundations/BooleanizationCorollaries.lean), [Foundations/TraceReflection](Lean/IPRADerivations/Foundations/TraceReflection.lean), [Foundations/TraceInvariant](Lean/IPRADerivations/Foundations/TraceInvariant.lean) |
 | [foundations/ipra_certified_finitary_framework_2026-11-15](../docs/proofs/foundations/ipra_certified_finitary_framework_2026-11-15/) | Source-claim inventory pending. |
 | [foundations/ipra_cfp_contract_compiler_2026-11-15](../docs/proofs/foundations/ipra_cfp_contract_compiler_2026-11-15/) | Source-claim inventory pending. |
-| [foundations/ipra_coherent_methods_2026-11-15](../docs/proofs/foundations/ipra_coherent_methods_2026-11-15/) | Source-claim inventory pending. |
+| [foundations/ipra_coherent_methods_2026-11-15](../docs/proofs/foundations/ipra_coherent_methods_2026-11-15/) | [Foundations/CoherentPresentations](Lean/IPRADerivations/Foundations/CoherentPresentations.lean) |
 | [foundations/ipra_embedding_framework](../docs/proofs/foundations/ipra_embedding_framework/) | [Foundations/EmbeddingBasics](Lean/IPRADerivations/Foundations/EmbeddingBasics.lean) |
 | [foundations/ipra_embedding_framework_2026-11-15](../docs/proofs/foundations/ipra_embedding_framework_2026-11-15/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/ipra_evidence_framework](../docs/proofs/foundations/ipra_evidence_framework/) | Source-claim inventory pending. |

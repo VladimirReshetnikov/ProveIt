@@ -390,6 +390,7 @@ import IPRADerivations.Foundations.FiniteGluing
 import IPRADerivations.Foundations.ChallengeContracts
 import IPRADerivations.Foundations.TwoClassObstruction
 import IPRADerivations.Foundations.ContractProducts
+import IPRADerivations.Foundations.CoherentPresentations
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
