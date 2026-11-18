@@ -11123,6 +11123,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FiniteSetClosed.exp_beta
 #print axioms LeanProofs.IPRA.Foundations.FiniteSetClosed.exp_eta
 #print axioms LeanProofs.IPRA.Foundations.FiniteSetClosed.exp_unique
+#print axioms LeanProofs.IPRA.Foundations.DiagonalObstruction.self_ne_succ
+#print axioms LeanProofs.IPRA.Foundations.DiagonalObstruction.diag_differs
+#print axioms LeanProofs.IPRA.Foundations.DiagonalObstruction.no_code
+#print axioms LeanProofs.IPRA.Foundations.DiagonalObstruction.no_code_in
+#print axioms LeanProofs.IPRA.Foundations.DiagonalObstruction.no_code_closed
 #print axioms LeanProofs.IPRA.Foundations.FiniteSetProducts.prT_at
 #print axioms LeanProofs.IPRA.Foundations.FiniteSetProducts.shift_mul'
 #print axioms LeanProofs.IPRA.Foundations.FiniteSetProducts.shift_p1c
@@ -11172,6 +11177,28 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.Persistent.mono
 #print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.bit
 #print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.thr
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.inst2_fB
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.rep_le
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.rep_hit
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.rep_min
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.rep_found
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.rep_le_of
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.rep_congr
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.rep_idem
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.kept_inj
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.kept_scan
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.kept_of_scan
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.cover_hit
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.skeleton
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.skeleton_closed
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.rep_congr_closed
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.inst2_eqE
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.eqE_of_eq
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.eq_of_eqE
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.eq_laws
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.inst1_id
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.id_kept
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.eq_skeleton_closed
 
 -- Actual Euclidean name/value extensionality and finite Gaussian sums.
 #print axioms LeanProofs.IPRA.Analysis.GaussianNameEquivalence.diagonalEquivalent

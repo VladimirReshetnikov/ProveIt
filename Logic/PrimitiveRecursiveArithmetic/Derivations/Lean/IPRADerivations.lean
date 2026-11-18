@@ -397,10 +397,12 @@ import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Foundations.FinitePullback
 import IPRADerivations.Foundations.FiniteSetCategory
 import IPRADerivations.Foundations.FiniteSetClosed
+import IPRADerivations.Foundations.DiagonalObstruction
 import IPRADerivations.Foundations.FiniteSetProducts
 import IPRADerivations.Foundations.FiniteSetCoproducts
 import IPRADerivations.Foundations.ChallengeContracts
 import IPRADerivations.Foundations.TwoClassObstruction
+import IPRADerivations.Foundations.FiniteCoverSkeleton
 import IPRADerivations.Foundations.ContractProducts
 import IPRADerivations.Foundations.CoherentPresentations
 import IPRADerivations.Foundations.IterationFusion
