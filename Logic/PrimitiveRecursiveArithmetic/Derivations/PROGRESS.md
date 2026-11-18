@@ -249,6 +249,8 @@ README links 88 of them to existing proof families.
 Completion requires reconciling all theorems within each packet, including
 claims beyond those families.
 
+`Geometry/MorleyCertificate` and the Type 15 part of `Geometry/PentagonLedger` currently provide symbolic polynomial certificates, not non-vacuous encoded geometry. Their ordinary iPRA formulas use integer variables, and antecedents such as `2*u_c=1`, `rho^2=3` or `h^2=3` have no integer instance. Scalar-quotient or quadratic-ring realizations and the original geometry checkers remain open. The conditional integer ledgers and area identities retain their stated finite algebraic scope.
+
 | Packet | Current derivation families |
 | --- | --- |
 | [algebra/bring_quintic_ipra_2026-11-16](../docs/proofs/algebra/bring_quintic_ipra_2026-11-16/) | [Algebra/Quintic](Lean/IPRADerivations/Algebra/Quintic.lean) |
