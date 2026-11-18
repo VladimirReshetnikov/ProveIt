@@ -349,3 +349,5 @@ import IPRADerivations.Foundations.FiniteHausdorffConcat
 import IPRADerivations.Foundations.FiniteHausdorffProduct
 import IPRADerivations.Foundations.FiniteHausdorffImage
 import IPRADerivations.Foundations.RealizerLoop
+import IPRADerivations.Analysis.RationalHausdorff
+import IPRADerivations.DiophantineNumberTheory.MinkowskiEnlargement
