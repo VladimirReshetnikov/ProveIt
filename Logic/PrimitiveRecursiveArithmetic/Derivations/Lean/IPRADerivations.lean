@@ -401,6 +401,7 @@ import IPRADerivations.Foundations.ViableChain
 import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Foundations.HurwitzProduct
 import IPRADerivations.Foundations.TriangularUniqueness
+import IPRADerivations.Foundations.HurwitzUniqueness
 import IPRADerivations.Foundations.SquareRootNames
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder

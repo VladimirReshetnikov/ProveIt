@@ -1349,6 +1349,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.TriangularUniqueness.hw_congr
 #print axioms LeanProofs.IPRA.Foundations.TriangularUniqueness.inst2_hwB
 #print axioms LeanProofs.IPRA.Foundations.TriangularUniqueness.hurwitz_linear_unique
+#print axioms LeanProofs.IPRA.Foundations.HurwitzUniqueness.hw_pt
+#print axioms LeanProofs.IPRA.Foundations.HurwitzUniqueness.hw_congr₂
+#print axioms LeanProofs.IPRA.Foundations.HurwitzUniqueness.square_unique
+#print axioms LeanProofs.IPRA.Foundations.HurwitzUniqueness.bell_unique
 #print axioms LeanProofs.IPRA.Foundations.SquareRootNames.f_at
 #print axioms LeanProofs.IPRA.Foundations.SquareRootNames.le_of_f
 #print axioms LeanProofs.IPRA.Foundations.SquareRootNames.f_of_le
