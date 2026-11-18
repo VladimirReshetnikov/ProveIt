@@ -9281,6 +9281,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.three_bound
 #print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.growth
 #print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.gronwall_three
+#print axioms LeanProofs.IPRA.Foundations.OdeRefinement.node_bound
+#print axioms LeanProofs.IPRA.Foundations.OdeRefinement.geometric_cauchy
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
@@ -9360,6 +9362,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ObserverErasure.exact_erasure_imp
 #print axioms LeanProofs.IPRA.Foundations.ObserverErasure.metric_erasure
 #print axioms LeanProofs.IPRA.Foundations.ObserverErasure.sealed_consumer
+#print axioms LeanProofs.IPRA.Foundations.ObserverErasure.quotient_erasure
 #print axioms LeanProofs.IPRA.Foundations.BoundedEnumeration.kept_of_valid
 #print axioms LeanProofs.IPRA.Foundations.BoundedEnumeration.valid_of_kept
 #print axioms LeanProofs.IPRA.Foundations.BoundedEnumeration.listed
