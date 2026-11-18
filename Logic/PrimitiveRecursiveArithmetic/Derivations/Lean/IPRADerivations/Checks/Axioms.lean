@@ -10671,6 +10671,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanPrimes.prime_dvd_cat_lt
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanPrimes.cat_not_prime
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanPrimes.cat_not_prime_closed
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes.cat_two
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes.cat_three
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes.cat_zero_not_prime
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes.cat_one_not_prime
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes.prime_two
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes.not_dvd_of
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes.small_cases
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanSmallPrimes.prime_five
 #print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.conv_pt
 #print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.conv_congr
 #print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.inst2_convT
