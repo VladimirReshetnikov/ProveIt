@@ -1637,6 +1637,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.WeightedAMGM.amgm
 #print axioms LeanProofs.IPRA.Analysis.WeightedAMGM.amgm_closed
 #print axioms LeanProofs.IPRA.Analysis.WeightedAMGM.mult_convex
+#print axioms LeanProofs.IPRA.Analysis.EulerBrackets.pw_split
+#print axioms LeanProofs.IPRA.Analysis.EulerBrackets.B_decreasing
+#print axioms LeanProofs.IPRA.Analysis.EulerBrackets.A_increasing
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
