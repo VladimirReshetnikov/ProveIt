@@ -1353,6 +1353,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.HurwitzUniqueness.hw_congr₂
 #print axioms LeanProofs.IPRA.Foundations.HurwitzUniqueness.square_unique
 #print axioms LeanProofs.IPRA.Foundations.HurwitzUniqueness.bell_unique
+#print axioms LeanProofs.IPRA.Foundations.BoundedDescent.inv_step
+#print axioms LeanProofs.IPRA.Foundations.BoundedDescent.descent_inv
+#print axioms LeanProofs.IPRA.Foundations.BoundedDescent.terminal
+#print axioms LeanProofs.IPRA.Foundations.BoundedDescent.terminal_closed
+#print axioms LeanProofs.IPRA.Foundations.BoundedDescent.app1_predT
+#print axioms LeanProofs.IPRA.Foundations.BoundedDescent.app1_idT
+#print axioms LeanProofs.IPRA.Foundations.BoundedDescent.app1_zeroTest
+#print axioms LeanProofs.IPRA.Foundations.BoundedDescent.app1_trueT
+#print axioms LeanProofs.IPRA.Foundations.BoundedDescent.countdown
+#print axioms LeanProofs.IPRA.Foundations.BoundedDescent.countdown_closed
 #print axioms LeanProofs.IPRA.Foundations.SquareRootNames.f_at
 #print axioms LeanProofs.IPRA.Foundations.SquareRootNames.le_of_f
 #print axioms LeanProofs.IPRA.Foundations.SquareRootNames.f_of_le
