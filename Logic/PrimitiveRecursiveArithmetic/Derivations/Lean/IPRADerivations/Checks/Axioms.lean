@@ -1809,6 +1809,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellCF.inv_step
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellCF.cf_invariants
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellCF.cf_norm
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral.guard_cases
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral.seed_square
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral.inv_step_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral.general_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral.seed_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral.inv_step_neg
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral.general_neg
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral.seed_neg
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.eq_one_of_sq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.R_lt_A
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.RT_lt_AB

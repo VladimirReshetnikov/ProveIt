@@ -186,6 +186,7 @@ import IPRADerivations.DiophantineNumberTheory.PellGenDescent
 import IPRADerivations.DiophantineNumberTheory.PellOneSided
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
 import IPRADerivations.DiophantineNumberTheory.PellCF
+import IPRADerivations.DiophantineNumberTheory.PellGeneral
 import IPRADerivations.DiophantineNumberTheory.PellNegUnits
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.Identities
