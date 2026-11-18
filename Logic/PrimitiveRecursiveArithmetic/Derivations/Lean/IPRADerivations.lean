@@ -350,6 +350,10 @@ import IPRADerivations.Probability.MedianConditional
 import IPRADerivations.Probability.SortingBound
 import IPRADerivations.Probability.MedianOfMedians
 import IPRADerivations.Topology.Sperner
+import IPRADerivations.Topology.Sperner2D
+import IPRADerivations.Topology.StaggeredCells
+import IPRADerivations.Topology.InjectionBound
+import IPRADerivations.Topology.DimensionTwo
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
