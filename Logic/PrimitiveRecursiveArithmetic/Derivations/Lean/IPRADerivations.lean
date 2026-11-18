@@ -302,6 +302,7 @@ import IPRADerivations.Geometry.SphericalTrigonometry
 import IPRADerivations.Geometry.SphericalHalf
 import IPRADerivations.Geometry.SphericalHalfTangent
 import IPRADerivations.Geometry.SphericalVariation
+import IPRADerivations.Geometry.TetrahedralGram
 import IPRADerivations.Geometry.SphericalDelambre
 import IPRADerivations.Geometry.SphericalArea
 import IPRADerivations.Geometry.SphericalCore
@@ -428,6 +429,7 @@ import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.WitnessAlgebra
 import IPRADerivations.Foundations.RationalRootDegree
 import IPRADerivations.Foundations.RationalRootConstant
+import IPRADerivations.Foundations.RationalRootScan
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.EigenvalueIntegral
 import IPRADerivations.Foundations.EigenvalueGrid
@@ -437,6 +439,9 @@ import IPRADerivations.Foundations.ObservableUnit
 import IPRADerivations.Foundations.FiniteReconstruction
 import IPRADerivations.Foundations.Deduplication
 import IPRADerivations.Foundations.NormVanishing
+import IPRADerivations.Foundations.AdjugateConverse
+import IPRADerivations.Foundations.NormMembership
+import IPRADerivations.Foundations.NullVectorDeterminant
 import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Foundations.ViableChain
 import IPRADerivations.Foundations.ChainViability
@@ -721,6 +726,9 @@ import IPRADerivations.Foundations.OdeRefinement
 import IPRADerivations.Foundations.GuardedTrace
 import IPRADerivations.Foundations.StructuralRules
 import IPRADerivations.Foundations.OpenContracts
+import IPRADerivations.Foundations.ExtensionalComposition
+import IPRADerivations.Foundations.GuardedTotalization
+import IPRADerivations.Foundations.NetTransfer
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
