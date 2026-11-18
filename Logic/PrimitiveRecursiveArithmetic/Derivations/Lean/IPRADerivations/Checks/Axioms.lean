@@ -328,6 +328,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.line_power
 #print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.signed_power_closed
 #print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.tangent_power
+#print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.secant_factor
+#print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.tangent_length
 #print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.chords_secants
 #print axioms LeanProofs.IPRA.Geometry.PowerOfPoint.tangent_secant
 #print axioms LeanProofs.IPRA.Probability.Expectation.exp_add

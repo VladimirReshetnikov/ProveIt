@@ -94,6 +94,22 @@ theorem tangent_power {τ : ZT n}
   push_cast at e₁ l₁ k ⊢
   linear_combination e₁ - l₁ - 2 * ZT.toZ Γ τ * k
 
+/-- `lem:secant-factor`, (7.6): with `f(t) = p + 2ht + qt²`, `w f(u) − u f(w) = (w − u)(p − q u w)`. -/
+theorem secant_factor (p h q u w : ZT n) :
+    Γ ⊢[PRAAx] ZT.eq (w * (p + ZT.natLit 2 * h * u + q * (u * u)) - u * (p + ZT.natLit 2 * h * w + q * (w * w)))
+      ((w - u) * (p - q * u * w)) := by
+  apply ZT.derive
+  simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit]
+  push_cast; ring
+
+/-- `lem:tangent-power`, the second equality of (7.9): for the touching point `T = P + τV`,
+`|P − T|² = |τV|² = q τ²`. -/
+theorem tangent_length (Vx Vy τ : ZT n) :
+    Γ ⊢[PRAAx] ZT.eq (qq (τ * Vx) (τ * Vy)) (qq Vx Vy * (τ * τ)) := by
+  apply ZT.derive
+  simp only [toZ_qq, ZT.toZ_mul]
+  ring
+
 end Generic
 
 /-! ## Closed theorems -/
