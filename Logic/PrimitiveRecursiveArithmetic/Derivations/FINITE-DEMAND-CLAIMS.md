@@ -164,8 +164,13 @@ the environment labels. Completion needs the following evidence:
    actual backward coefficient-error induction. The upstream (RD) proof
    remains open. Its [balanced-radius producer](Lean/IPRADerivations/Analysis/GaussianBalancedRadius.lean)
    now derives the actual zero/nonzero radius certificates and bounded
-   scan/witness outputs from a supplied coefficient list; translation,
-   dominant plateau, direction and contraction remain separate. The root-support construction is now checked under that
+   scan/witness outputs from a supplied coefficient list. Actual
+   [translation](Lean/IPRADerivations/Analysis/GaussianRationalTranslation.lean)
+   now constructs the coefficients of P(z+W), and the
+   [monic frontend](Lean/IPRADerivations/Analysis/GaussianTranslatedBalancedRadius.lean)
+   connects the original C,N,z to the full radius certificate. Relative
+   Euclidean finite-sum norms are also checked. Actual dominant plateau,
+   off-dominant weights, direction and contraction remain separate. The root-support construction is now checked under that
    same RD contract.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z

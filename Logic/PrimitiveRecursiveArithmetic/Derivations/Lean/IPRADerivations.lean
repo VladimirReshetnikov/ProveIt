@@ -514,3 +514,11 @@ import IPRADerivations.Analysis.GaussianBalancedRadiusSearch
 import IPRADerivations.Analysis.GaussianBalancedRadiusValues
 import IPRADerivations.Analysis.GaussianBalancedRadiusZero
 import IPRADerivations.Analysis.GaussianBalancedRadius
+
+-- Actual rational polynomial translation and its balanced-radius frontend.
+import IPRADerivations.Analysis.GaussianRationalTranslationAlgebra
+import IPRADerivations.Analysis.GaussianRationalTranslationStages
+import IPRADerivations.Analysis.GaussianRationalTranslation
+import IPRADerivations.Analysis.GaussianMonicNonconstant
+import IPRADerivations.Analysis.GaussianTranslatedBalancedRadius
+import IPRADerivations.Analysis.GaussianRelativeNormTriangle
