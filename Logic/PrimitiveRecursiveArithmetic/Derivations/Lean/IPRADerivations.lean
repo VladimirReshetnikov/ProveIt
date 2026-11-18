@@ -395,6 +395,7 @@ import IPRADerivations.Foundations.ContractProducts
 import IPRADerivations.Foundations.CoherentPresentations
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.WitnessAlgebra
+import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
