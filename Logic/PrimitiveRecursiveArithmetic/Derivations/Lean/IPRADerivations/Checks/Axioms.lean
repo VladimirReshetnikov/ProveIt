@@ -1191,6 +1191,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.WallisGrid.gm_anti
 #print axioms LeanProofs.IPRA.Analysis.WallisGrid.sg_inc
 #print axioms LeanProofs.IPRA.Analysis.WallisGrid.gm_inc
+#print axioms LeanProofs.IPRA.Analysis.WallisRecurrence.cell_ring
+#print axioms LeanProofs.IPRA.Analysis.WallisRecurrence.om_D
+#print axioms LeanProofs.IPRA.Analysis.WallisRecurrence.cell_up
+#print axioms LeanProofs.IPRA.Analysis.WallisRecurrence.cell_dn
+#print axioms LeanProofs.IPRA.Analysis.WallisRecurrence.up_all
+#print axioms LeanProofs.IPRA.Analysis.WallisRecurrence.dn_all
+#print axioms LeanProofs.IPRA.Analysis.WallisRecurrence.Hp_sum
+#print axioms LeanProofs.IPRA.Analysis.WallisRecurrence.wallis_rec
+#print axioms LeanProofs.IPRA.Analysis.WallisRecurrence.wallis_rec_paper
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
