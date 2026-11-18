@@ -51,12 +51,29 @@ Dimension, facets, endpoints, coefficients and bounds are internal. The
 arithmetic interprets total sequence coordinates in the first N positions;
 stored-length or canonical shape guards are not silently inferred.
 
-The remaining specialization must construct the lattice rows `α=2aB`,
-prove the rational basis/dot-product and doubled-coordinate transport,
-derive the source's fully guarded symmetry/midpoint and `Inside` contracts,
-and construct/check the physical nonzero lattice output `Bz`, uniformly in
-dimension. The complete abstract membership-formula certificate scheme and
-the numerical containment checker do not yet supply this composition.
+The supplied-row numerical slab theorem is now checked by
+[MinkowskiSlabLinearity](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiSlabLinearity.lean)
+and [MinkowskiSlabCertificate](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiSlabCertificate.lean).
+Actual dot products commute with the actual vector negation and midpoint
+programs as literal canonical scalar codes. The original slab inequalities
+give the source's fully guarded symmetry and midpoint contracts.
+An actual doubled-facet constructor feeds the interval test on every box;
+`slab_inside_closed` derives the original doubled-coordinate `Inside`
+contract. The fixed PR3 combined checker includes original numerical
+`BoxOK` and these computed interval tests. `slab_certificate_closed` proves
+that acceptance yields the original extractor's actual nonzero integer
+vector and membership of its canonical embedding in every supplied slab.
+`Inside`, symmetry, midpoint closure and output membership are conclusions,
+not additional geometric premises. The scalar representation and affine
+algebra used here are checked in
+[RationalRepresentations](Lean/IPRADerivations/Analysis/RationalRepresentations.lean)
+and [RationalAlgebra](Lean/IPRADerivations/Analysis/RationalAlgebra.lean).
+
+The physical-basis specialization remains open: construct `aB` from the
+physical rows and rational basis, prove the dot-product transport identifying
+this numerical slab body with `Bq∈K`, and construct/check the physical
+nonzero lattice output `Bz`, uniformly in dimension. The supplied-row
+theorem does not assume or implement those matrix and injectivity proofs.
 
 The [finite-volume appendix](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/06_finite_volume.tex)
 has no theorem-style environment. It still supplies essential requirements:
