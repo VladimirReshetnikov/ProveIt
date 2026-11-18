@@ -303,6 +303,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalHalf.half_side_sin
 #print axioms LeanProofs.IPRA.Geometry.SphericalHalf.half_side_cos
 #print axioms LeanProofs.IPRA.Geometry.SphericalHalf.half_side_tan
+#print axioms LeanProofs.IPRA.Geometry.SphericalHalfTangent.half_tangent_angle
+#print axioms LeanProofs.IPRA.Geometry.SphericalHalfTangent.half_tangent_side
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d1R
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d2R
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d3R

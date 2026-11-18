@@ -300,6 +300,7 @@ import IPRADerivations.Geometry.PlatonicSolids
 import IPRADerivations.Geometry.Projective
 import IPRADerivations.Geometry.SphericalTrigonometry
 import IPRADerivations.Geometry.SphericalHalf
+import IPRADerivations.Geometry.SphericalHalfTangent
 import IPRADerivations.Geometry.SphericalDelambre
 import IPRADerivations.Geometry.SphericalArea
 import IPRADerivations.Geometry.SphericalCore
