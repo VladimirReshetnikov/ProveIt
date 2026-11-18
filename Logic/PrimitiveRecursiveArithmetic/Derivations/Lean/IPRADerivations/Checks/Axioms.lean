@@ -1042,6 +1042,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.BaselSquares.oe_step
 #print axioms LeanProofs.IPRA.Analysis.BaselSquares.odd_even
 #print axioms LeanProofs.IPRA.Analysis.BaselSquares.compare
+#print axioms LeanProofs.IPRA.Analysis.BaselAverages.H_le'
+#print axioms LeanProofs.IPRA.Analysis.BaselAverages.C_split
+#print axioms LeanProofs.IPRA.Analysis.BaselAverages.C_succ
+#print axioms LeanProofs.IPRA.Analysis.BaselAverages.C_le
+#print axioms LeanProofs.IPRA.Analysis.BaselAverages.average
+#print axioms LeanProofs.IPRA.Analysis.BaselAverages.H_le_N
+#print axioms LeanProofs.IPRA.Analysis.BaselAverages.last_bound
+#print axioms LeanProofs.IPRA.Analysis.BaselAverages.inc_w
+#print axioms LeanProofs.IPRA.Analysis.BaselAverages.boundary_E
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
