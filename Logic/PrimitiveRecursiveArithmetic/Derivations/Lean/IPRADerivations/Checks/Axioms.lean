@@ -11512,6 +11512,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.rev_pt
 #print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.reversal
 #print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.constant_dvd
+#print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.dvd_le
+#print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.num_bound
+#print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.den_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_canonical
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_constant

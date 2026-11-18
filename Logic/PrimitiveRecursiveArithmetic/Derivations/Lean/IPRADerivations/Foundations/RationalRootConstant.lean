@@ -17,8 +17,16 @@ numerator statement follows by reading the homogeneous polynomial from the other
 * `constant_dvd`: from `∑_{i≤d} a_i p^i q^{d∸i} = ∑_{i≤d} b_i p^i q^{d∸i}` and a Bezout
   relation between `p` and `q`, `p` divides `(a_0 ∸ b_0) + (b_0 ∸ a_0)`.
 
-With `leading_dvd` this is the whole divisibility step of the lemma in every degree. The bound
-`B(H)`, the scan and the completeness of the root list are not derived.
+With `leading_dvd` this is the whole divisibility step of the lemma in every degree.
+
+"The coefficients are nonzero, so `|p| ≤ |c_0|` and `q ≤ |c_d|`. Thus every root occurs in the
+scan":
+
+* `dvd_le`: a divisor of a positive number is at most that number;
+* `num_bound`, `den_bound`: `p ≤ |c_0|` and `q ≤ |c_d|` when those coefficients are nonzero.
+
+The scan itself (the enumeration of candidate pairs, the exact substitution test and the list
+without repetition) is not derived.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -111,5 +119,49 @@ theorem constant_dvd {p' q u v d x : PTm k} (hB : Γ ⊢[PRAAx] Bez p' q u v)
   have eb : Γ ⊢[PRAAx] inst2 (revC b) d (pairT d x) ≐ inst2 b zero x :=
     (revC_at b d d x).eqTrans (congrInst2 b (le_refl d) (.eqRefl _))
   exact dvd_congr (congrAdd (congrMonus ea eb) (congrMonus eb ea)) l
+
+/-! ## The bounds of the scan -/
+
+/-- A divisor of a positive number is at most that number. -/
+theorem dvd_le {m' C : PTm k} (h : Γ ⊢[PRAAx] dvd (succ m') C)
+    (hC : Γ ⊢[PRAAx] C ≐ succ (pred C)) : Γ ⊢[PRAAx] le (succ m') C := by
+  have e := eq_of_dvd h
+  refine .orE (zero_or_succ (quo C (succ m'))) ?_ ?_
+  · -- a zero cofactor would make `C` zero
+    have z := natEq (Prf.hyp0 (Γ := Γ) (φ := quo C (succ m') ≐ zero))
+    have e' := natEq (e.wk (ψ := quo C (succ m') ≐ zero))
+    have c0 : ((quo C (succ m') ≐ zero) :: Γ) ⊢[PRAAx] C ≐ zero := by
+      apply deriveNat; ipra_simps
+      linear_combination e' + (𝔞 m' + 1) * z
+    exact succ_ne_zero' _ (hC.wk.eqSymm.eqTrans c0)
+  · have s := natEq (Prf.hyp0 (Γ := Γ)
+      (φ := quo C (succ m') ≐ succ (pred (quo C (succ m')))))
+    have e' := natEq (e.wk (ψ := quo C (succ m') ≐ succ (pred (quo C (succ m')))))
+    refine le_of_eq_add (d := succ m' * pred (quo C (succ m'))) ?_
+    apply deriveNat; ipra_simps
+    linear_combination e' + (𝔞 m' + 1) * s
+
+/-- The numerator of a root is bounded by the absolute value of a nonzero constant
+coefficient: `p ≤ |c_0|`. -/
+theorem num_bound {p' q u v d x : PTm k} (hB : Γ ⊢[PRAAx] Bez p' q u v)
+    (hE : Γ ⊢[PRAAx] P a (succ d) (succ p') q d x ≐ P b (succ d) (succ p') q d x)
+    (hne : Γ ⊢[PRAAx]
+      monus (inst2 a zero x) (inst2 b zero x) + monus (inst2 b zero x) (inst2 a zero x) ≐
+        succ (pred (monus (inst2 a zero x) (inst2 b zero x) +
+          monus (inst2 b zero x) (inst2 a zero x)))) :
+    Γ ⊢[PRAAx] le (succ p')
+      (monus (inst2 a zero x) (inst2 b zero x) + monus (inst2 b zero x) (inst2 a zero x)) :=
+  dvd_le (constant_dvd a b hB hE) hne
+
+/-- The denominator of a root is bounded by the absolute value of a nonzero leading
+coefficient: `q ≤ |c_d|`. -/
+theorem den_bound {p q' u v d x : PTm k} (hB : Γ ⊢[PRAAx] Bez q' p u v)
+    (hE : Γ ⊢[PRAAx] P a (succ d) p (succ q') d x ≐ P b (succ d) p (succ q') d x)
+    (hne : Γ ⊢[PRAAx]
+      monus (inst2 a d x) (inst2 b d x) + monus (inst2 b d x) (inst2 a d x) ≐
+        succ (pred (monus (inst2 a d x) (inst2 b d x) + monus (inst2 b d x) (inst2 a d x)))) :
+    Γ ⊢[PRAAx] le (succ q')
+      (monus (inst2 a d x) (inst2 b d x) + monus (inst2 b d x) (inst2 a d x)) :=
+  dvd_le (leading_dvd a b hB hE) hne
 
 end LeanProofs.IPRA.Foundations.RationalRootConstant
