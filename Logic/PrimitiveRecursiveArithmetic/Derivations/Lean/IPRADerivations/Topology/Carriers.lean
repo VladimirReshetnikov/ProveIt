@@ -24,13 +24,22 @@ is assumed bounded or decidable, and the derivation is first-order logic in iPRA
   simplex of `L`;
 * `simplicial` (`thm:selection`, first statement): the case `g = f`, every `q ⊆ f(p)` is a simplex of `L`.
 
-Carrier composition, the prism identity and the homology statements of the section are not derived here.
+`thm:carrier-composition` ("Carrier composition"), the carrier property of the composite:
+
+* `Carried2 A E C D p r`: `∀ u, E(u, r) → ∃ w, (∃ v, A(v, p) ∧ C(v, w)) ∧ D(w, u)`, i.e.
+  `r ⊆ D(C(p)) = ⋃_{v ∈ p} ⋃_{w ∈ C(v)} D(w) = (D ∘ C)(p)`;
+* `comp_carrier`: if `C : K ⊸ L` and `D : L ⊸ M` are strong carriers and the union `C(p)` has a code
+  `ι(p)` (rules `himg₁`: `ι(p) ⊆ C(p)`, `himg₂`: `C(p) ⊆ ι(p)`), then every `r ⊆ (D ∘ C)(p)` over a simplex
+  `p` of `K` is a simplex of `M`. This is the reassociation of finite unions in the proof of the paper.
+
+Associativity and identities of the composition, the prism identity and the homology statements of the
+section are not derived here.
 -/
 
 namespace LeanProofs.IPRA.Topology.Carriers
 
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.Topology.FinitePreorder (App)
+open LeanProofs.IPRA.Topology.FinitePreorder (App shift_var)
 open LeanProofs.IPRA.Foundations.CoherentTower (ex_mono)
 open Syn
 open scoped Fm
@@ -94,5 +103,36 @@ theorem simplicial
   contiguous hcar hf hf hp hq
 
 end Selection
+
+/-! ## Composition of carriers -/
+
+/-- `r ⊆ D(C(p))`: every member of `r` is carried by `D` from a vertex that `C` carries from `p`. -/
+abbrev Carried2 {m : ℕ} (A E C D : Fm PTm 2) (p r : PTm m) : Fm PTm m :=
+  Fm.all (App E (var 0) (Syn.shift r) ⟶
+    Fm.ex ((Fm.ex (App A (var 0) (Syn.shift (Syn.shift (Syn.shift p))) ⋏ App C (var 0) (var 1))) ⋏
+      App D (var 0) (var 1)))
+
+theorem shift_inst1 (β : PTm 1) (b : PTm m) : Syn.shift (inst1 β b) = inst1 β (Syn.shift b) := by
+  simp [Syn.shift]
+
+/-- `thm:carrier-composition`: the composite of two strong carriers is a strong carrier. -/
+theorem comp_carrier {A B E C D : Fm PTm 2} {SK SL SM : Fm PTm 1} {ι : PTm 1} {p r : PTm m}
+    (hcarC : ∀ {k : ℕ} {Δ : List (Fm PTm k)} {p q : PTm k},
+      (Δ ⊢[PRAAx] At SK p) → (Δ ⊢[PRAAx] Carried A B C p q) → (Δ ⊢[PRAAx] At SL q))
+    (hcarD : ∀ {k : ℕ} {Δ : List (Fm PTm k)} {q r : PTm k},
+      (Δ ⊢[PRAAx] At SL q) → (Δ ⊢[PRAAx] Carried B E D q r) → (Δ ⊢[PRAAx] At SM r))
+    (himg₁ : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (p : PTm k), Δ ⊢[PRAAx] Carried A B C p (inst1 ι p))
+    (himg₂ : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (p w : PTm k),
+      (Δ ⊢[PRAAx] Fm.ex (App A (var 0) (Syn.shift p) ⋏ App C (var 0) (Syn.shift w))) →
+        (Δ ⊢[PRAAx] App B w (inst1 ι p)))
+    (hp : Γ ⊢[PRAAx] At SK p) (hr : Γ ⊢[PRAAx] Carried2 A E C D p r) : Γ ⊢[PRAAx] At SM r := by
+  refine hcarD (hcarC hp (himg₁ p)) ?_
+  refine .allI (.impI ?_)
+  refine ex_mono (Prf.impE (Prf.allOpen hr).wk Prf.hyp0) ?_
+  refine .andI ?_ (Prf.andE₂ Prf.hyp0)
+  rw [shift_inst1, shift_inst1]
+  refine himg₂ (Syn.shift (Syn.shift p)) (var 0) ?_
+  simp only [shift_var, Fin.succ_zero_eq_one]
+  exact Prf.andE₁ Prf.hyp0
 
 end LeanProofs.IPRA.Topology.Carriers
