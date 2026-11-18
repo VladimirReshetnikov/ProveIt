@@ -214,9 +214,19 @@ the environment labels. Completion needs the following evidence:
    nonconstant rational polynomial, even with zero leading coefficients.
    [Nonmonic approximate roots](Lean/IPRADerivations/Analysis/GaussianNonmonicApproximateRoot.lean)
    instantiate the actual finite residual clock without an RD premise.
-   These finite results leave the inverse-translation/travel estimate from
-   an arbitrary nonconstant coefficient and the general coefficient-name
-   iteration unproved; general nonmonic FTA remains in scope.
+   Actual [triangular coefficient recovery](Lean/IPRADerivations/Analysis/GaussianTranslationCoefficientValues.lean),
+   [rational rescaling](Lean/IPRADerivations/Analysis/GaussianTranslationScaledCoefficients.lean)
+   and [computed maximum](Lean/IPRADerivations/Analysis/GaussianTranslationCoefficientMaximum.lean)
+   now give the [quantitative translation bound](Lean/IPRADerivations/Analysis/GaussianTranslationCoefficientBound.lean)
+   with the stronger coefficient constant 2^N, hence the source N*2^N.
+   Genuine [compiled backward induction](Lean/IPRADerivations/Foundations/BoundedSyntaxBackwardInduction.lean)
+   proves the actual row invariant; no inversion or global coefficient law
+   is supplied. The source's literal inverse-binomial identity is not claimed.
+   [Internal rational power-order reflection](Lean/IPRADerivations/Analysis/RationalNonnegativePowerOrder.lean)
+   is also proved. The remaining travel work combines the actual balanced
+   radius, original coefficient apartness and residual budgets into the
+   shrinking-step bound, then proves the general coefficient-name iteration.
+   General nonmonic FTA remains in scope.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z
    constants. The later unnumbered stage-distance/zero-distance corollary is also
