@@ -304,6 +304,7 @@ import IPRADerivations.Geometry.SphericalHalfTangent
 import IPRADerivations.Geometry.SphericalVariation
 import IPRADerivations.Geometry.TetrahedralGram
 import IPRADerivations.Geometry.SphericalSolidAngle
+import IPRADerivations.Geometry.SphericalPlanarLimit
 import IPRADerivations.Geometry.SphericalDelambre
 import IPRADerivations.Geometry.SphericalArea
 import IPRADerivations.Geometry.SphericalCore

@@ -334,6 +334,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.solid_cos
 #print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.solid_sin
 #print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.solid_tan
+#print axioms LeanProofs.IPRA.Geometry.SphericalPlanarLimit.planar_upper
+#print axioms LeanProofs.IPRA.Geometry.SphericalPlanarLimit.planar_lower
+#print axioms LeanProofs.IPRA.Geometry.SphericalPlanarLimit.planar_two
+#print axioms LeanProofs.IPRA.Geometry.SphericalPlanarLimit.sine_cross_upper
+#print axioms LeanProofs.IPRA.Geometry.SphericalPlanarLimit.sine_cross_lower
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d1R
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d2R
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d3R
