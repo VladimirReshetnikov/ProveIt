@@ -397,3 +397,8 @@ import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalContent
 import IPRADerivations.DiophantineNumberTheory.MinkowskiBoxChecker
 import IPRADerivations.DiophantineNumberTheory.MinkowskiInside
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCertificate
+
+import IPRADerivations.Analysis.RationalHausdorffProduct
+import IPRADerivations.Analysis.RationalHausdorffImage
+import IPRADerivations.Analysis.RationalPointDistanceVariation
+import IPRADerivations.Analysis.AggregateDistanceName
