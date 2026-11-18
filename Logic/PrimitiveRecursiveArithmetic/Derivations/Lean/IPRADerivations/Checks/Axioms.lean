@@ -10662,6 +10662,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanGrowth.ge_step
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanGrowth.cat_ge
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanGrowth.cat_ge_closed
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanPrimes.pos_of_two_le
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanPrimes.prime_dvd_cat_le
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanPrimes.prime_ne_even
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanPrimes.even_not_prime
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanPrimes.prime_dvd_cat_lt
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanPrimes.cat_not_prime
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanPrimes.cat_not_prime_closed
 #print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.conv_pt
 #print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.conv_congr
 #print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.inst2_convT
