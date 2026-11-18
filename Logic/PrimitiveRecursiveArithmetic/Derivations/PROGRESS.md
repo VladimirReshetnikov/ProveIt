@@ -100,7 +100,7 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | Minkowski, original rational content and numerical certificate | `MinkowskiRationalBoxes.conversion_guards_closed`, `integer_width_closed`; `MinkowskiRationalContent.content_count_closed`, `rational_count_threshold_closed`, `rational_mesh_closed`; `MinkowskiBoxChecker.box_checker_reflection_closed`, `accepted_mesh_closed` | Original independently denominated endpoint data construct the actual integer boxes and mesh. QF product/sum identities derive the count from original rational content, and `W>1` yields actual extraction. The numerical checker includes canonical code shapes, rational sides, literal separation and actual content; geometric membership is separate. |
 | Minkowski, complete original rational certificate theorem | `MinkowskiInside.enumerated_membership_closed`; `MinkowskiCertificate.certificate_closed`, `certificate_exists_closed`, `solution_programs_closed` | Completes source `thm:main` for the actual fixed PR2 extractor, from positive dimension, the original numerical checker and fully canonical guarded `Inside`/symmetry/midpoint contracts. Actual half-center containment, both center memberships and literal midpoint-to-integer embedding are derived. The returned integer vector has the stated length, an actual nonzero coordinate and arbitrary-formula membership of its canonical embedding. All numerical inputs, including persistent formula parameters, remain internal. Other four Minkowski source claims remain open. |
 | Minkowski, numerical rational slab-box containment | `RationalArithmetic.interval_multiply_closed`; `RationalFiniteSum.sum_monotone_closed`, `sum_succ_closed`, `sum_ext_closed`; `RationalSumLinearity.sum_homogeneous_closed`, `RationalSumAdditivity.sum_additive_closed`; `MinkowskiSlabInterval.dot_interval_closed`, `slab_checker_reflection_closed`, `accepted_box_closed` | Actual signed rational min/max products and independent-denominator finite sums compute every row interval. A fixed PR4 checker proves every point in the input coordinate box satisfies every supplied facet bound. Scalar homogeneity and pointwise additivity are literal equalities of canonical sum outputs. Doubled-coordinate transport and supplied-row extraction are completed below; physical basis/row construction remains open. |
-| Finite-demand, actual runtime Gaussian product polynomial | `GaussianRootProduct.root_product_closed`, `listed_root_zero_closed`, `coefficient_monic_closed`, `squared_norm_product_closed`, `root_product_program_closed` | Actual descending coefficient recursor, independent Horner evaluator and factor fold have exact product, norm, length, monicity and listed-root-zero derivations for arbitrary internal degree, including repeated roots. Current raw codes are Gaussian signed integer pairs; the full rational coefficient-error-to-closeness theorem remains open. |
+| Finite-demand, actual runtime Gaussian product polynomial | `GaussianRootProduct.root_product_closed`, `listed_root_zero_closed`, `coefficient_monic_closed`, `squared_norm_product_closed`, `root_product_program_closed` | Actual descending coefficient recursor, independent Horner evaluator and factor fold have exact product, norm, length, monicity and listed-root-zero derivations for arbitrary internal degree, including repeated roots. Raw codes in this module are Gaussian signed integer pairs; the later original rational stability modules complete the rational coefficient-error implication. |
 | Finite-demand, actual rational small-factor search | `RationalProductWitness.rational_witness_closed`, `program_correct_closed`, `selected_least_closed`, `zero_threshold_closed` | Actual PR4 least factor selection from the computed finite product comparison. Positive denominator products, strict-product contradiction and zero-threshold vanishing are proved internally; no successful-search or positive-tolerance assumption is supplied. The coefficient-error bridge remains a separate obligation. |
 | Finite-demand, normalized rational product coefficients | `GaussianRationalRootProduct.normalized_coefficient_closed`, `normalized_list_lookup_closed`, `normalized_monic_closed`, `normalized_program_closed` | Actual runtime canonical coefficient list for the common-positive-denominator presentation, with exact clearing equations and literal leading coefficient one. The descending coefficient scale is `D^(N−i)/D^N`. Conversion of independent rational inputs and evaluation of this normalized rational list are completed below. |
 | Finite-demand, polynomial evaluation to actual nearby root | `GaussianProductNorm.evaluation_product_closed`, `factor_selection_closed`, `list_factor_selection_closed`, `zero_threshold_closed`, `factor_program_closed` | The actual product coefficient constructor and Horner norm feed a least-index squared-distance search. Positive common denominator and threshold denominator, exact searched products and returned root/distance metadata are derived. Zero tolerance yields actual decoded Gaussian equality. The actual coefficient-discrepancy bound and both covers are now checked for Gaussian integer inputs below; the full rational presentation is completed below. |
@@ -114,7 +114,13 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | Finite-demand, conditional actual approximate-root clock | `GaussianDescentClockArithmetic.clock_budget_closed`, `ceiling_correct_closed`; `GaussianDescentClock.conditional_approximate_root_closed`, `actual_increment_iteration_closed`, `conditional_descent_clock_closed` | Completes the finite approximate-root corollary conditional on its explicit local (RD) contract. Actual canonical iterates, actual polynomial evaluation, exact ceil clock and computed B prove the final residual bound. No global decay, successful search, root existence or initial residual bound is a final premise. The source's FTA descent operation and its object proof remain open. |
 | Finite-demand, original rational quotient growth | `GaussianRationalSyntheticBounds.quotient_bound_closed`, `horner_bound_closed`, `stage_coefficient_bounds_closed` | Actual normalized quotient coefficients satisfy the source A_(j+1) bound by QF induction, using only original coefficient bounds, monicity, true length/current-degree guards and the original Euclidean root radius A_j+2. Current degree and original horizon are internal. No supplied local recurrence or global quotient estimate is accepted. Residual-to-radius and composition through the actual outer loop are completed below. |
 | Finite-demand, actual outer deflation and strict radius budget | `GaussianRationalDeflation.deflation_structure_closed`, `deflation_root_list_closed`, `deflation_stage_division_closed`, `deflation_final_polynomial_closed`, `deflation_program_closed`; `GaussianRadiusBudget.geometric_radius_budget_closed` | The actual PR4 loop returns exactly N computed roots, preserves monicity/decreasing degree and ends at the literal singleton-one polynomial. Active-stage synthetic identities and canonical storage are derived without residual/RD contracts. The exact finite geometric budget for the reciprocal radius contradiction is proved separately. The residual-to-radius estimate and complete coefficient-error composition are proved below by actual loop invariants. |
-| Finite-demand, complete actual uniform approximate factorization conditional on RD | `GaussianMonicResidualRadius.monic_residual_radius_closed`; `GaussianFactorBounds.actual_deflation_bounds_closed`, `actual_deflation_radii_closed`; `GaussianApproximateFactorization.uniform_approximate_factorization_closed`, `returned_approximate_factorization_closed`, `returned_product_evaluation_closed` | Completes source `thm:approx-factor` for the chosen Gaussian-rational coefficient-list coding, conditional on its explicit uniform local monic RD contract. The actual PR4 returns N roots and product coefficients with full coefficient L1 error≤eta; an independent factor fold proves the returned polynomial's product meaning. All four numerical inputs are internal. Actual coefficient and root bounds, terminal error zero and local error transport are derived; backward QF weighted-error induction gives the exact eta budget. No desired factorization/error or stage invariant is supplied. Upstream RD, root-support/adequacy and general convolution/expanded telescoping identities remain separate. |
+| Finite-demand, complete actual uniform approximate factorization conditional on RD | `GaussianMonicResidualRadius.monic_residual_radius_closed`; `GaussianFactorBounds.actual_deflation_bounds_closed`, `actual_deflation_radii_closed`; `GaussianApproximateFactorization.uniform_approximate_factorization_closed`, `returned_approximate_factorization_closed`, `returned_product_evaluation_closed` | Completes source `thm:approx-factor` for the chosen Gaussian-rational coefficient-list coding, conditional on its explicit uniform local monic RD contract. The actual PR4 returns N roots and product coefficients with full coefficient L1 error≤eta; an independent factor fold proves the returned polynomial's product meaning. All four numerical inputs are internal. Actual coefficient and root bounds, terminal error zero and local error transport are derived; backward QF weighted-error induction gives the exact eta budget. No desired factorization/error or stage invariant is supplied. Upstream RD, root adequacy and general convolution/expanded telescoping identities remain separate; the root-support constructor is completed below. |
+| Finite-demand, actual root-support coefficient names and programs | `GaussianCoefficientNameBounds.sample_bound_closed`, `source_constants_program_closed`; `GaussianRootSchedule.root_support_schedule_closed`; `GaussianRootSamples.sampled_polynomial_closed`, `sampled_factor_error_closed` | Exact source A/R and actual binary-length/E(t)/sampler/factorizer programs, with internal numerical degree, data and precision. CN derives sample coefficients at most A-1; actual AF derives each product coefficient error. |
+| Finite-demand, reverse-product stability and sharp radius | `GaussianEuclideanResidualRadius.euclidean_residual_radius_closed`; `GaussianReconstructionRoots.reconstructed_listed_root_closed`; `GaussianRootStability.reconstructed_product_stability_closed`, `reconstructed_product_witness_closed` | True reverse reconstruction/factor semantics and original Euclidean Horner/finite-product estimates supply both original covers and actual original-target witnesses. No producer equivalence is assumed. Coefficient Euclidean radius A gives root radius A+2, without the L1 factor-two loss. |
+| Finite-demand, complete collision-tolerant root-support name conditional on RD | `GaussianRootSupport.collision_tolerant_root_support_closed`, `collision_tolerant_root_checker_closed`, `root_name_program_closed` | Completes source thm:root-support: exact computed source A/R/b/E(t), actual PR3 root lists of length N, every listed radius at most R, and u>=t implies original Euclidean Close at 2^(-t-2). Actual CN+AF errors derive 4*2^-E(t); actual b proves the 4C budget. Premises are genuine CN, local monic RD, positive numerical degree and stage order. No supplied final radius/coherence/cover or root separation. |
+| Finite-demand, exact finite adequacy estimates and precision selectors | `GaussianRationalHornerLipschitz.rational_horner_lipschitz_closed`; `GaussianRootFiniteEvaluation.finite_root_evaluation_closed`; `GaussianRootAdequacySchedule.finite_root_evaluation_budget_closed` | Exact M_U=A*sum(i=1..N,i*U^(i-1)), actual FE bound and actual source t/s precision selectors. All numerical inputs are internal, with ordinary QF prefix proofs and exact independent rational denominators. FE retains the legitimate normalized rational sample residual, rather than assuming the desired Ft residual. |
+| Finite-demand, actual finite root-to-support producer | `GaussianRootApproximationWitness.finite_root_to_support_closed`, `returned_root_witness_closed`, `finite_root_witness_program_closed` | From CN/RD, actual point bounds and the exact source normalized V_s root condition, derives successful original finite search at the actual source precisions. PR4 returned fields certify t>=k, s>=k+1, valid original index/literal stored root and query-sample distance<=2^(-k-1). Full represented-point Member equivalence and the converse remain open. |
+| Finite-demand, actual Euclidean finite distance observations | `GaussianEuclideanPointDistance.euclidean_minimum_hit_closed`, `euclidean_sqrt_brackets_closed`, `finite_hit_to_distance_sample_closed`, `distance_sample_to_finite_hit_closed`, `euclidean_distance_program_closed` | Actual least rational argmin of original squared Euclidean distances, actual integer-square-root brackets and both finite hit/sample implications with explicit dyadic slack. This is the source Euclidean metric, not the vector sup-metric. Completed-point distance names, slack removal and the exact quantified Member predicate remain separate. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -285,37 +291,44 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `e653306c7e`, including the complete uniform
-approximate-factorization theorem conditional on explicit local (RD), the
-root build completed 2,219 jobs and emitted 5,255 axiom reports for
-4,746 distinct declarations. Every report uses only `propext`,
+At the source based on `ab7cdf70b6`, including the complete conditional
+collision-tolerant root-support theorem and finite adequacy components, the
+root build completed 2,237 jobs and emitted 5,665 axiom reports for
+5,156 distinct declarations. Every report uses only `propext`,
 `Classical.choice` and `Quot.sound`. The portable import gate passed across
-3,638 source modules, and the independent `Diophantine` boundary passed
+3,656 source modules, and the independent `Diophantine` boundary passed
 across 5,252 modules.
 
-The thirteen modules added in this batch contain 3,361 lines and 350 public
+The eighteen modules added in this batch contain 3,771 lines and 410 public
 theorem registrations, all individually present in that audit output.
-Independent source/math reviews checked the actual reciprocal/tail/radius
-programs, exact Euclidean constants, linear multiplication and coefficient
-norms, computed source parameters, Boolean-compiled bounded induction,
-actual suffix reconstruction/error recurrence and final backward QF error
-induction. The actual returned PR4 fields satisfy the exact source
-coefficient-error target, and their product evaluation is derived from an
-independently computed ordered factor fold.
+Independent source/math reviews checked the exact source coefficient-name
+constants, actual bounded precision programs and descending samplers,
+original Euclidean metric arithmetic, sharp residual/root radii, actual
+reverse-product zeros and finite factor search, actual coefficient
+coherence and both original Hausdorff covers. They also checked the exact
+runtime Horner Lipschitz constant, actual FE comparison, source precision
+selectors, returned root-witness fields and actual Euclidean minimum and
+integer-square-root observations. Every numerical degree, stage, point,
+list, radius, precision and persistent datum remains internal; only fixed
+finite syntax and PR schemas are external proof-generator parameters.
 
-Finite-demand `thm:approx-factor` is now checked conditional on the explicit
-local monic RD contract. Its upstream FTA descent implementation/proof is
-still open. Root-support construction, adequacy, the coded-field norm
-claims and the remaining source packets are unfinished. General convolution
-and the separately expanded telescoping sum are not claimed: the proved
-factorization target uses actual one-step error transport and backward
-prefix-weighted induction. The complete 115-packet scope remains active.
+Finite-demand `thm:approx-factor` and `thm:root-support` are now checked
+conditional on the explicit local monic RD contract. Its upstream FTA
+descent implementation/proof is still open. Root adequacy has checked
+finite estimates and actual forward witness production, but the represented
+point-distance name, rational slack removal, exact quantified Member
+adapter, represented evaluation/distance inequalities and converse remain
+unfinished. The coded-field norm claims and the remaining source packets
+are also open. General convolution and the separately expanded telescoping
+sum remain unclaimed; the proved factorization target uses actual
+one-step error transport and backward prefix-weighted induction. The
+complete 115-packet scope remains active.
 
 The new modules are included in `IPRADerivations`. Their public theorem
 names are audited in `Checks/Axioms.lean`. Build and inspect the object
 statements and Lean axiom reports with the root workspace commands.
 
 ```sh
-lake build IPRADerivations
-lake build +IPRADerivations.Checks.Axioms
+lake build IPRADerivations +IPRADerivations.Checks.Axioms
+lake env lean --run Logic/PrimitiveRecursiveArithmetic/Bridge/check-import-closure.lean
 ```
