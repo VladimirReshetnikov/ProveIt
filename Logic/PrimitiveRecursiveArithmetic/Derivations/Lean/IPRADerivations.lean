@@ -361,6 +361,13 @@ import IPRADerivations.Core.PolynomialImplications
 import IPRADerivations.Geometry.JoinMeet
 import IPRADerivations.Geometry.MorleyCertificate
 import IPRADerivations.Geometry.PentagonLedger
+import IPRADerivations.Geometry.RodriguesMap
+import IPRADerivations.Geometry.IsoperimetricIdentities
+import IPRADerivations.Geometry.PlatonicAlgebra
+import IPRADerivations.Geometry.PappusCell
+import IPRADerivations.Geometry.CircumcentreUnique
+import IPRADerivations.Geometry.MonotileSubstitution
+import IPRADerivations.Combinatorics.FibonacciLucasMore
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
