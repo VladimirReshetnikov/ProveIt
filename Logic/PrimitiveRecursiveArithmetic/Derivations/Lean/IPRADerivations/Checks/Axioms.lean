@@ -9409,6 +9409,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.compose
 #print axioms LeanProofs.IPRA.Foundations.ExtensionalComposition.ext_compose
 #print axioms LeanProofs.IPRA.Foundations.ExtensionalComposition.ext_compose_closed
+#print axioms LeanProofs.IPRA.Foundations.GuardedTotalization.sel_one
+#print axioms LeanProofs.IPRA.Foundations.GuardedTotalization.sel_zero
+#print axioms LeanProofs.IPRA.Foundations.GuardedTotalization.sel_cases
+#print axioms LeanProofs.IPRA.Foundations.GuardedTotalization.totalization
+#print axioms LeanProofs.IPRA.Foundations.GuardedTotalization.totalization_guarded
+#print axioms LeanProofs.IPRA.Foundations.NetTransfer.net_transfer
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
