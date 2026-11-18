@@ -1366,6 +1366,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RobbinsSeries.margin
 #print axioms LeanProofs.IPRA.Analysis.RobbinsSeries.w_eq
 #print axioms LeanProofs.IPRA.Analysis.RobbinsSeries.robbins_core
+#print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.two_pow_le_fact
+#print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.en_succ
+#print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.en_ge
+#print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.tail_step
+#print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.en_upper
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
