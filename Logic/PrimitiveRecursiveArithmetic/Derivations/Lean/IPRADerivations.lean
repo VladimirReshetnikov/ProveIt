@@ -396,6 +396,7 @@ import IPRADerivations.Foundations.FiniteGluing
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Foundations.FinitePullback
 import IPRADerivations.Foundations.FiniteSetCategory
+import IPRADerivations.Foundations.FiniteSetClosed
 import IPRADerivations.Foundations.FiniteSetProducts
 import IPRADerivations.Foundations.FiniteSetCoproducts
 import IPRADerivations.Foundations.ChallengeContracts
