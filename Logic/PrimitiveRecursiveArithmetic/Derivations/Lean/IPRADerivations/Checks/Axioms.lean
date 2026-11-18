@@ -13526,6 +13526,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.global_cover
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.le_maxFin
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.global_height
+#print axioms LeanProofs.IPRA.Foundations.EliminationRoot.poly_coeff
+#print axioms LeanProofs.IPRA.Foundations.EliminationRoot.poly_natDegree
+#print axioms LeanProofs.IPRA.Foundations.EliminationRoot.poly_eval
+#print axioms LeanProofs.IPRA.Foundations.EliminationRoot.rowR_coeff
+#print axioms LeanProofs.IPRA.Foundations.EliminationRoot.row_sum
+#print axioms LeanProofs.IPRA.Foundations.EliminationRoot.sylvester_root
+#print axioms LeanProofs.IPRA.Foundations.EliminationRoot.toZ_vpow
+#print axioms LeanProofs.IPRA.Foundations.EliminationRoot.toZ_rowT
+#print axioms LeanProofs.IPRA.Foundations.EliminationRoot.toZ_sylv
+#print axioms LeanProofs.IPRA.Foundations.EliminationRoot.elim_root
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.Bez
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.P
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.tB
