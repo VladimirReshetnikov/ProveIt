@@ -2596,6 +2596,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_pascal
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_poch
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_general
+#print axioms LeanProofs.IPRA.Analysis.BetaAssociativity.rbeta_assoc
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_succ
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_one
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_two
@@ -9285,6 +9286,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.root_lipschitz
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.root_unique
+#print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.cubic_strict_mono
 #print axioms LeanProofs.IPRA.Foundations.MixedRadix.prod_split
 #print axioms LeanProofs.IPRA.Foundations.MixedRadix.code_split
 #print axioms LeanProofs.IPRA.Foundations.MixedRadix.code_lt
@@ -9364,6 +9366,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BoundedEnumeration.entry
 #print axioms LeanProofs.IPRA.Foundations.BoundedEnumeration.sel_strict
 #print axioms LeanProofs.IPRA.Foundations.BoundedEnumeration.complete_of_bound
+#print axioms LeanProofs.IPRA.Foundations.BoundedEnumeration.bound_of_list
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicBandSum.three_four_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicBandSum.geometric
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicBandSum.weighted
