@@ -139,11 +139,16 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | FTA descent, actual scalar radius powers and original norm coding | `RationalNonnegativePowers.nonnegative_power_closed`, `nonnegative_power_recurrence_closed`, `dyadic_power_closed`; `GaussianBalancedRadiusSyntax.coefficient_norm_representation_closed` | Actual canonical rational power values, their multiplication recurrence and the original independently denominated squared coefficient norms are proved uniformly in every numerical exponent and coefficient index. |
 | FTA descent, computed height and proved finite scan endpoints | `GaussianBalancedRadiusHeight.height_facts_closed`, `coefficient_height_bounds_closed`; `GaussianBalancedRadiusArithmetic.balanced_radius_endpoint_fit_closed`, `balanced_radius_endpoint_failure_closed`, `balanced_radius_squared_witness_closed` | A genuine runtime maximum fold computes a coarser norm-bit height b and exact E=2b+3. Every coefficient numerator/denominator is bounded internally; low fit and strict high failure follow, with the unchanged literal 4^N squared witness factor. |
 | FTA descent, actual greatest fitting radius and failed coefficient | `GaussianBalancedRadiusSearch.balanced_radius_search_closed`, `returned_balanced_radius_search_closed`, `positive_degree_scan_closed` | Actual bounded Boolean coefficient search and outer first-failure search derive adjacent fit/failure, a positive original failed index and the greatest-fit property. The final theorem assumes only the legitimate nonzero-constant source input, never endpoints, monotonicity or successful search. |
-| FTA descent, complete balanced-radius producer including zero residual | `GaussianBalancedRadius.balanced_radius_closed`, `balanced_radius_program_closed`; `GaussianBalancedRadiusValues.balanced_radius_fit_values_closed`, `balanced_radius_literal_witness_closed`; `GaussianBalancedRadiusZero.zero_radius_bound_closed` | The public actual PR2 producer removes the nonzero-constant restriction by its genuine zero branch. All original squared radius bounds, exact canonical radius/representation, zero value and positive-branch computed search/witness certificate are derived from the supplied nonconstant coefficient list. The later translation frontend below establishes the P,z connection for positive-degree monic input. Dominant plateau, direction and full RD remain open; the full 115-packet goal remains active. |
+| FTA descent, complete balanced-radius producer including zero residual | `GaussianBalancedRadius.balanced_radius_closed`, `balanced_radius_program_closed`; `GaussianBalancedRadiusValues.balanced_radius_fit_values_closed`, `balanced_radius_literal_witness_closed`; `GaussianBalancedRadiusZero.zero_radius_bound_closed` | The public actual PR2 producer removes the nonzero-constant restriction by its genuine zero branch. All original squared radius bounds, exact canonical radius/representation, zero value and positive-branch computed search/witness certificate are derived from the supplied nonconstant coefficient list. The later translation frontend below establishes the P,z connection for positive-degree monic input. The actual dominant plateau and squared geometric weights are checked below; direction and full RD remain open. The full 115-packet goal remains active. |
 | FTA descent, actual shifted Gaussian algebra and quotient trajectory | `GaussianRationalTranslationAlgebra.translated_synthetic_step_closed`; `GaussianRationalTranslationStages.quotient_stages_recursion_closed`, `quotient_stages_division_closed`, `terminal_constant_evaluation_closed` | True independent-denominator algebra and an actual PR4 quotient loop derive the stage lengths, terminal constant and evaluation step, with no canonical-input or supplied division/translation invariant. |
 | FTA descent, complete actual polynomial translation | `GaussianRationalTranslation.translation_evaluation_closed`, `translation_coefficient_closed`, `translation_returned_certificate_closed` | A genuine QF backward-Horner argument proves the actual returned PR3 polynomial evaluates to P(z+W) under input length alone, including N=0 and raw original codes. Its constant is P(z), each ascending coefficient is an actual quotient-stage remainder, and monic heads are preserved separately. |
 | FTA descent, original monic input to actual translated balanced radius | `GaussianMonicNonconstant.monic_nonconstant_closed`; `GaussianTranslatedBalancedRadius.translated_balanced_radius_closed`, `translated_balanced_program_closed` | Positive norm of the actual monic leading coefficient derives nonconstancy; the source input C,N,z then supplies the actual translated polynomial and complete radius certificate. Both zero and positive branches use the original computed residual, with returned-field identities. No translated coefficient list, height, successful search or desired output law is an input. |
-| FTA descent, genuine Euclidean relative finite-sum norm | `GaussianRelativeNormTriangle.relative_norm_triangle_closed`, `finite_relative_sum_closed`, `finite_relative_sum_budget_closed`, `relative_sum_certificate_closed` | Exact signed Gaussian arithmetic gives the common relative squared-norm triangle without roots, including zero weights/budget. Actual Gaussian and natural-weight sums have a derived QF prefix invariant and full scaled sum estimate from individual term bounds. This is a component for the off-dominant estimate; actual plateau weight bounds and the source 2/3 conclusion remain open. |
+| FTA descent, genuine Euclidean relative finite-sum norm | `GaussianRelativeNormTriangle.relative_norm_triangle_closed`, `finite_relative_sum_closed`, `finite_relative_sum_budget_closed`, `relative_sum_certificate_closed` | Exact signed Gaussian arithmetic gives the common relative squared-norm triangle without roots, including zero weights/budget. Actual Gaussian and natural-weight sums have a derived QF prefix invariant and full scaled sum estimate from individual term bounds. This is a component for the off-dominant estimate; actual squared plateau weight bounds are now checked below; their finite-sum application and the source 2/3 conclusion remain open. |
+| FTA descent, actual positive least dominant coefficient | `GaussianDominantSelector.dominant_winner_maximal_closed`, `dominant_winner_least_tie_closed`, `computed_dominant_index_closed`, `computed_dominant_monotone_closed` | Actual inclusive negative-score argmin over 0..N-1 selects precisely 1..N. The genuine failed coefficient supplies positivity; independent-denominator 16^i scaling proves adjacent and global monotonicity. All numerical inputs are internal; rational-value equality controls ties. |
+| FTA descent, actual bounded odd-center search | `GaussianDominantPlateau.dominant_plateau_closed`, `dominant_plateau_program_closed`, `returned_dominant_triple_closed` | Actual PR2 search derives 1<=j<2N, winner range, and equality of the actual adjacent three winners under Syntax.input alone. Search success follows from the derived positive count; no monotonicity/count/plateau premise is supplied. Five returned integer fields are identified. |
+| FTA descent, literal same-winner three-radius dominance | `GaussianDominantRadiusValues.actual_quarter_radius_closed`, `actual_selected_dominance_closed`; `GaussianDominantPlateauValues.dominant_plateau_values_closed`, `actual_plateau_values_program_closed` | Same positive computed coefficient dominates every original degree 1..N at actual radii r/4,r,4r. Literal radius fractions use E+2h, with canonicality, positivity and both factor-four identities. The full certificate and five actual PR2 fields are derived from Syntax.input alone. |
+| FTA descent, original monic-input dominant plateau | `GaussianTranslatedDominantPlateau.translated_dominant_plateau_closed`, `translated_returned_plateau_closed`, `translated_plateau_fields_closed` | Original C,N,z and the monic input contract derive the full translation/balanced-radius certificate plus both guarded residual branches. Positive residual supplies the actual plateau on the constructed translated list; zero residual supplies the actual zero starting radius. Actual PR3 coefficient/center/winner/three-radius fields and the returned-polynomial certificate are proved. |
+| FTA descent, actual geometric squared-score weights | `GaussianDominantScoreWeights.actual_geometric_score_weights_closed`, `original_geometric_score_weights_closed` | Actual previous/next dominance gives 16^abs(i-k)*S_i<=S_k at the selected central radius for every degree 1..N, with independently decoded denominators and zero coefficients included. The original monic/positive-residual endpoint derives all input guards. The unsquared finite Gaussian sum and its 2/3 estimate, dominant lower bound, direction and full local contraction remain open. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -314,41 +319,41 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `b0408af8e3`, including the actual Gaussian
-translation and its original-input radius frontend, the root build
-completed 2,278 jobs and emitted 6,585 axiom reports for 6,076 distinct
-declarations. Every report uses only `propext`, `Classical.choice` and
-`Quot.sound`. The portable import gate passed across 3,697 source modules,
-and the independent `Diophantine` boundary passed across 5,252 modules.
+At the source based on `e0111a5832`, including the actual dominant
+selector, bounded odd-center search, literal three-radius certificate and
+squared geometric weights, the root build completed 2,287 jobs and emitted
+6,825 axiom reports for 6,316 distinct declarations. Every report uses only
+`propext`, `Classical.choice` and `Quot.sound`. The portable import gate
+passed across 3,706 source modules, and the independent `Diophantine`
+boundary passed across 5,252 modules.
 
-The six modules added in this batch contain 1,153 lines and 149 public
-theorem registrations, all individually present in that audit output.
-Independent source/math reviews checked the actual repeated-quotient
-program, guarded runtime length and monic-head invariants, raw terminal
-constant evaluation including N=0, independent-denominator shifted-query
-algebra, descending/ascending coefficient order, genuine QF backward-Horner
-translation proof, literal returned PR3 coefficients and evaluator,
-monic-one norm positivity and derived nonconstancy, and the original-input
-translation/radius composition with both residual branches. They also
-checked exact signed Lagrange/Cauchy identities, the relative norm triangle
-including zero budgets, actual Gaussian and natural-weight finite folds,
-QF sum invariants, the scaled finite-sum budget and all returned fields.
-Every numerical degree, list, point, stage, horizon and weight budget is
-internal; the generic finite-sum evaluator schemas alone are fixed external
-PR syntax parameters. No translation, height, successful scan or desired
-output law is supplied to the original-input radius frontend.
+The nine new modules contain 1,517 lines, 192 public theorems and 240 public
+declarations. Each declaration has a fully qualified axiom probe. Independent
+source/math reviews checked inclusive least-argmin indexing over 1..N,
+rational-value ties, actual candidate-to-winner positivity, exact squared
+16^i denominator scaling, derived adjacent/global monotonicity, actual
+bounded-search failure forcing the original counted sum to zero, and the
+computed odd-center bounds, including N=1. They also checked same-winner
+all-coefficient dominance at the three actual positive fractions, both
+literal quarter-radius identities, the original monic-input/residual
+frontend, actual returned PR fields, and the two geometric squared-score
+bounds with only proved positive factors cancelled. No maximum, plateau,
+monotonicity, positive count, successful search or output law is supplied to
+the final producers. All numerical lists, degrees, scales and indices are
+internal.
 
-`GaussianRationalTranslation.translation_evaluation_closed` proves the
-complete actual finite translation identity under input list length alone,
-including N=0 and noncanonical original codes. Its constant is the literal
-computed P(z), and monicity is preserved separately.
-`GaussianTranslatedBalancedRadius.translated_balanced_radius_closed`
-connects the original positive-degree monic C,N,z to the full checked radius
-certificate, with zero/positive branches controlled by that original
-residual. The relative squared-norm finite-sum theorem is a reusable tool;
-actual dominant-term/plateau selection, source weight bounds and the 2/3
-off-dominant application, rational direction and full local contraction
-remain open. Neither full RD nor the general nonmonic FTA is claimed.
+`GaussianDominantPlateauValues.dominant_plateau_values_closed` proves the
+same coefficient dominates at three consecutive literal radii from the
+positive-constant balanced-radius input alone.
+`GaussianTranslatedDominantPlateau.translated_dominant_plateau_closed`
+derives that input on the positive original-residual branch, while retaining
+the actual zero starting radius when the original residual is zero.
+`GaussianDominantScoreWeights.original_geometric_score_weights_closed`
+derives both actual pointwise 16^abs(i-k) squared-score bounds for the translated
+polynomial from the original monic shape and positive residual. The source's
+finite 2/3 norm-sum application, quantitative dominant lower bound, rational
+direction and full local contraction remain open. Neither full RD nor the
+general nonmonic FTA is claimed.
 
 Finite-demand approximate factorization, root support, full root adequacy
 and its stage-distance/zero-distance corollary remain checked under the

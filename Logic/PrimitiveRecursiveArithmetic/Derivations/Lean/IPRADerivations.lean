@@ -522,3 +522,14 @@ import IPRADerivations.Analysis.GaussianRationalTranslation
 import IPRADerivations.Analysis.GaussianMonicNonconstant
 import IPRADerivations.Analysis.GaussianTranslatedBalancedRadius
 import IPRADerivations.Analysis.GaussianRelativeNormTriangle
+
+-- Actual three-scale dominant term and squared geometric weights.
+import IPRADerivations.Analysis.GaussianDominantSyntax
+import IPRADerivations.Analysis.GaussianDominantScalarOrder
+import IPRADerivations.Analysis.GaussianDominantScaleArithmetic
+import IPRADerivations.Analysis.GaussianDominantSelector
+import IPRADerivations.Analysis.GaussianDominantRadiusValues
+import IPRADerivations.Analysis.GaussianDominantPlateau
+import IPRADerivations.Analysis.GaussianDominantPlateauValues
+import IPRADerivations.Analysis.GaussianTranslatedDominantPlateau
+import IPRADerivations.Analysis.GaussianDominantScoreWeights

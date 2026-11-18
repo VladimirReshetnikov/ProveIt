@@ -169,8 +169,16 @@ the environment labels. Completion needs the following evidence:
    now constructs the coefficients of P(z+W), and the
    [monic frontend](Lean/IPRADerivations/Analysis/GaussianTranslatedBalancedRadius.lean)
    connects the original C,N,z to the full radius certificate. Relative
-   Euclidean finite-sum norms are also checked. Actual dominant plateau,
-   off-dominant weights, direction and contraction remain separate. The root-support construction is now checked under that
+   Euclidean finite-sum norms are also checked. The actual
+   [dominant plateau](Lean/IPRADerivations/Analysis/GaussianDominantPlateauValues.lean)
+   and its [original monic-input frontend](Lean/IPRADerivations/Analysis/GaussianTranslatedDominantPlateau.lean)
+   now derive the same positive coefficient's dominance at three literal
+   consecutive radii. The actual bounded center search supplies its own
+   success, and no maximum, count, monotonicity or plateau premise is
+   supplied. The actual [pointwise squared weights](Lean/IPRADerivations/Analysis/GaussianDominantScoreWeights.lean)
+   satisfy 16^abs(i-k)*S_i<=S_k at the selected radius. Their finite Gaussian-sum
+   application and the source 2/3 norm estimate, quantitative dominant lower
+   bound, direction and full contraction remain separate. The root-support construction is now checked under that
    same RD contract.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z
