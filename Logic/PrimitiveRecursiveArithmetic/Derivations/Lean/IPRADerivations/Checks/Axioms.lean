@@ -354,6 +354,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalNapier.napier_sin
 #print axioms LeanProofs.IPRA.Geometry.SphericalNapier.napier_tan
 #print axioms LeanProofs.IPRA.Geometry.SphericalNapier.napier_cos
+#print axioms LeanProofs.IPRA.Geometry.SphericalHaversine.hav_a_ring
+#print axioms LeanProofs.IPRA.Geometry.SphericalHaversine.hav_b_ring
+#print axioms LeanProofs.IPRA.Geometry.SphericalHaversine.hav_c_ring
+#print axioms LeanProofs.IPRA.Geometry.SphericalHaversine.hav_A_ring
+#print axioms LeanProofs.IPRA.Geometry.SphericalHaversine.haversine_side
+#print axioms LeanProofs.IPRA.Geometry.SphericalHaversine.haversine_angle
 #print axioms LeanProofs.IPRA.Geometry.SphericalPolar.polar_cross
 #print axioms LeanProofs.IPRA.Geometry.SphericalPolar.polar_side
 #print axioms LeanProofs.IPRA.Geometry.SphericalPolar.polar_triple

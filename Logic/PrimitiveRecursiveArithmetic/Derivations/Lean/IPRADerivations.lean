@@ -305,6 +305,7 @@ import IPRADerivations.Geometry.SphericalArea
 import IPRADerivations.Geometry.SphericalCore
 import IPRADerivations.Geometry.SphericalQuadrantal
 import IPRADerivations.Geometry.SphericalNapier
+import IPRADerivations.Geometry.SphericalHaversine
 import IPRADerivations.Geometry.SphericalPolar
 import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
