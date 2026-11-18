@@ -113,6 +113,7 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | Finite-demand, actual uniform synthetic division and factorization budgets | `GaussianSyntheticDivision.synthetic_division_closed`, `synthetic_monic_closed`; `GaussianRationalSyntheticDivision.rational_synthetic_division_closed`, `rational_synthetic_monic_closed`; `GaussianFactorBudget.epsilon_parameters_closed`, `prefix_budget_closed`, `budget_program_closed` | Genuine runtime Horner-prefix quotient programs and evaluation remainders prove (SD), coefficient reconstruction, monicity and canonical storage. The source (AF) recursion, L and epsilon are actual programs; positivity, exact final budget and prefix error majorants are checked. This does not yet construct the full approximate factorization. |
 | Finite-demand, conditional actual approximate-root clock | `GaussianDescentClockArithmetic.clock_budget_closed`, `ceiling_correct_closed`; `GaussianDescentClock.conditional_approximate_root_closed`, `actual_increment_iteration_closed`, `conditional_descent_clock_closed` | Completes the finite approximate-root corollary conditional on its explicit local (RD) contract. Actual canonical iterates, actual polynomial evaluation, exact ceil clock and computed B prove the final residual bound. No global decay, successful search, root existence or initial residual bound is a final premise. The source's FTA descent operation and its object proof remain open. |
 | Finite-demand, original rational quotient growth | `GaussianRationalSyntheticBounds.quotient_bound_closed`, `horner_bound_closed`, `stage_coefficient_bounds_closed` | Actual normalized quotient coefficients satisfy the source A_(j+1) bound by QF induction, using only original coefficient bounds, monicity, true length/current-degree guards and the original Euclidean root radius A_j+2. Current degree and original horizon are internal. No supplied local recurrence or global quotient estimate is accepted. Residual-to-radius and composition through the complete outer deflation loop remain open. |
+| Finite-demand, actual outer deflation and strict radius budget | `GaussianRationalDeflation.deflation_structure_closed`, `deflation_root_list_closed`, `deflation_stage_division_closed`, `deflation_final_polynomial_closed`, `deflation_program_closed`; `GaussianRadiusBudget.geometric_radius_budget_closed` | The actual PR4 loop returns exactly N computed roots, preserves monicity/decreasing degree and ends at the literal singleton-one polynomial. Active-stage synthetic identities and canonical storage are derived without residual/RD contracts. The exact finite geometric budget for the reciprocal radius contradiction is proved separately. Residual-to-radius, global coefficient/error invariants and final telescoping composition remain open. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -283,26 +284,28 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `bc9fbc065e`, including actual uniform synthetic
-division, coefficient L1 arithmetic, factorization budgets and the
-conditional rational-descent clock, the root build completed 2,204 jobs
-and emitted 4,847 axiom reports for 4,338 distinct declarations.
+At the source based on `2762cc76b5`, including the actual outer deflation
+loop and the strict geometric radius budget, the root build completed
+2,206 jobs and emitted 4,905 axiom reports for 4,396 distinct declarations.
 Every report uses only `propext`, `Classical.choice` and `Quot.sound`.
-The portable import gate passed across 3,623 source modules and the
+The portable import gate passed across 3,625 source modules and the
 independent `Diophantine` boundary passed across 5,252 modules.
 
-The eleven modules added in this batch contain 2,840 lines and 322 public
-theorem registrations, all individually present in that audit output.
-Independent source/math reviews checked every new module, including actual
-independent rational denominators, runtime degree, constant quotient and
-zero-norm cases, exact epsilon/clock arithmetic, computed initial bounds
-and the explicit local (RD) contract. The finite approximate-root corollary
-conditional on (RD), actual synthetic division and its coefficient bounds
-are checked. The full approximate-factorization theorem still requires the
-residual-to-radius estimate, full deflation loop and coefficient telescoping
-error composition. Its upstream FTA descent implementation/proof is open.
-The complete 115-packet scope remains active; these components do not
-complete that scope or the finite-demand packet.
+The two modules added after that baseline contain 485 lines and 58 public
+theorem registrations. Together with the preceding synthetic-division and
+descent batch, these thirteen modules contain 3,325 lines and 380 public
+registrations, all individually present in the latest audit output.
+Independent source/math reviews checked every module, including actual
+independent denominators, runtime degree, the literal final singleton-one
+polynomial, actual root-list persistence and geometric strictness for
+positive degree. The structural deflation loop, synthetic division,
+coefficient bounds and the finite approximate-root corollary conditional
+on (RD) are checked. The full approximate-factorization theorem still
+requires residual-to-radius, coefficient/radius invariants through that
+loop and the coefficient telescoping error composition. Its upstream FTA
+descent implementation/proof remains open. The complete 115-packet scope
+remains active; these components do not complete that scope or the
+finite-demand packet.
 
 The new modules are included in `IPRADerivations`. Their public theorem
 names are audited in `Checks/Axioms.lean`. Build and inspect the object

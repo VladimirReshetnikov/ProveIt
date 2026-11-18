@@ -438,3 +438,5 @@ import IPRADerivations.Analysis.GaussianFactorBudget
 import IPRADerivations.Analysis.GaussianDescentClockArithmetic
 import IPRADerivations.Analysis.GaussianDescentClock
 import IPRADerivations.Analysis.GaussianRationalSyntheticBounds
+import IPRADerivations.Analysis.GaussianRationalDeflation
+import IPRADerivations.Analysis.GaussianRadiusBudget
