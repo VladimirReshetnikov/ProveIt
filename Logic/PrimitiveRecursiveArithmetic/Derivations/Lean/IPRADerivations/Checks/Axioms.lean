@@ -269,6 +269,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalPolar.polar_triple
 #print axioms LeanProofs.IPRA.Geometry.SphericalPolar.face_closure
 #print axioms LeanProofs.IPRA.Geometry.SphericalPolar.tetra_cosine
+#print axioms LeanProofs.IPRA.Geometry.SphericalPolar.tetra_linear0
+#print axioms LeanProofs.IPRA.Geometry.SphericalPolar.tetra_linear1
+#print axioms LeanProofs.IPRA.Geometry.SphericalPolar.tetra_sine
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.quadratic
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.cardano
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.ferrari

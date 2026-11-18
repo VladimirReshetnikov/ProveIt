@@ -49,6 +49,37 @@ theorem tetra_cosine_ring (a b c : Fin 3 → R) :
         2 * ((b ⨯₃ c) ⬝ᵥ (c ⨯₃ a) + (b ⨯₃ c) ⬝ᵥ (a ⨯₃ b) + (c ⨯₃ a) ⬝ᵥ (a ⨯₃ b)) := by
   simp [crossProduct, dotProduct, Fin.sum_univ_three]; ring
 
+theorem tetra_linear0_ring (a b c : Fin 3 → R) :
+    ((b - a) ⨯₃ (c - a)) ⬝ᵥ ((b - a) ⨯₃ (c - a)) =
+      ((b - a) ⨯₃ (c - a)) ⬝ᵥ (b ⨯₃ c) + ((b - a) ⨯₃ (c - a)) ⬝ᵥ (c ⨯₃ a) + ((b - a) ⨯₃ (c - a)) ⬝ᵥ (a ⨯₃ b) := by
+  simp [crossProduct, dotProduct, Fin.sum_univ_three]; ring
+
+theorem tetra_linear1_ring (a b c : Fin 3 → R) :
+    (b ⨯₃ c) ⬝ᵥ (b ⨯₃ c) + (b ⨯₃ c) ⬝ᵥ (c ⨯₃ a) + (b ⨯₃ c) ⬝ᵥ (a ⨯₃ b) = (b ⨯₃ c) ⬝ᵥ ((b - a) ⨯₃ (c - a)) := by
+  simp [crossProduct, dotProduct, Fin.sum_univ_three]; ring
+
+theorem cross_flip (o x y : Fin 3 → R) :
+    ((o - y) ⨯₃ (x - y)) ⬝ᵥ ((o - y) ⨯₃ (x - y)) = ((o - x) ⨯₃ (y - x)) ⬝ᵥ ((o - x) ⨯₃ (y - x)) := by
+  simp [crossProduct, dotProduct, Fin.sum_univ_three]; ring
+
+theorem norm_flip (x y : Fin 3 → R) : (x - y) ⬝ᵥ (x - y) = (y - x) ⬝ᵥ (y - x) := by
+  simp [dotProduct, Fin.sum_univ_three]; ring
+
+/-- The squared tetrahedral sine law, cleared: with `σ(X; Y, Z) = |(X − Y) × (Z − Y)|²` and edge norms,
+`σ_A(O,B) σ_B(O,C) σ_C(O,A) · |OA|²|AC|²|OC|²|CB|²|OB|²|BA|² =
+ σ_A(O,C) σ_C(O,B) σ_B(O,A) · |OA|²|AB|²|OB|²|BC|²|OC|²|CA|²`. -/
+theorem tetra_sine_ring (o a b c : Fin 3 → R) :
+    (((o - a) ⨯₃ (b - a)) ⬝ᵥ ((o - a) ⨯₃ (b - a)) * (((o - b) ⨯₃ (c - b)) ⬝ᵥ ((o - b) ⨯₃ (c - b))) *
+        (((o - c) ⨯₃ (a - c)) ⬝ᵥ ((o - c) ⨯₃ (a - c)))) *
+      (((o - a) ⬝ᵥ (o - a)) * ((c - a) ⬝ᵥ (c - a)) * (((o - c) ⬝ᵥ (o - c)) * ((b - c) ⬝ᵥ (b - c))) *
+        (((o - b) ⬝ᵥ (o - b)) * ((a - b) ⬝ᵥ (a - b)))) =
+    (((o - a) ⨯₃ (c - a)) ⬝ᵥ ((o - a) ⨯₃ (c - a)) * (((o - c) ⨯₃ (b - c)) ⬝ᵥ ((o - c) ⨯₃ (b - c))) *
+        (((o - b) ⨯₃ (a - b)) ⬝ᵥ ((o - b) ⨯₃ (a - b)))) *
+      (((o - a) ⬝ᵥ (o - a)) * ((b - a) ⬝ᵥ (b - a)) * (((o - b) ⬝ᵥ (o - b)) * ((c - b) ⬝ᵥ (c - b))) *
+        (((o - c) ⬝ᵥ (o - c)) * ((a - c) ⬝ᵥ (a - c)))) := by
+  rw [cross_flip o a c, cross_flip o c b, cross_flip o b a, norm_flip c a, norm_flip b c, norm_flip a b]
+  ring
+
 end Ring
 
 abbrev u : Vec 3 18 := Vec.vars 3 0 (by norm_num)
@@ -104,5 +135,54 @@ theorem tetra_cosine : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 18 tetraCosineForm
   closeUniv 18 (ZT.derive (by
     simp only [Vec.toZ_dot, Vec.toZ_cross, Vec.toZ_sub, ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_ofNat]
     exact tetra_cosine_ring _ _ _))
+
+/-- `cor:tetra-linear`, cleared: dotting the closure with the face normal `N₀ = (v − u) × (w − u)` gives
+`N₀·N₀ = N₀·N₁ + N₀·N₂ + N₀·N₃` with `N₁ = v × w`, `N₂ = w × u`, `N₃ = u × v`, i.e.
+`Δ₀ = Δ₁ cos θ + Δ₂ cos θ' + Δ₃ cos θ''` after dividing by `Δ₀`. -/
+def tetraLinear0Formula : Fm PTm 18 :=
+  ZT.eq (Vec.dot (Vec.cross (Vec.sub v u) (Vec.sub w u)) (Vec.cross (Vec.sub v u) (Vec.sub w u)))
+    (Vec.dot (Vec.cross (Vec.sub v u) (Vec.sub w u)) (Vec.cross v w) +
+      Vec.dot (Vec.cross (Vec.sub v u) (Vec.sub w u)) (Vec.cross w u) +
+      Vec.dot (Vec.cross (Vec.sub v u) (Vec.sub w u)) (Vec.cross u v))
+
+theorem tetra_linear0 : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 18 tetraLinear0Formula :=
+  closeUniv 18 (ZT.derive (by
+    simp only [Vec.toZ_dot, Vec.toZ_cross, Vec.toZ_sub, ZT.toZ_add]
+    exact tetra_linear0_ring _ _ _))
+
+/-- `cor:tetra-linear` at a face through the apex: `N₁·N₁ + N₁·N₂ + N₁·N₃ = N₁·N₀`. -/
+def tetraLinear1Formula : Fm PTm 18 :=
+  ZT.eq (Vec.dot (Vec.cross v w) (Vec.cross v w) + Vec.dot (Vec.cross v w) (Vec.cross w u) +
+      Vec.dot (Vec.cross v w) (Vec.cross u v))
+    (Vec.dot (Vec.cross v w) (Vec.cross (Vec.sub v u) (Vec.sub w u)))
+
+theorem tetra_linear1 : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 18 tetraLinear1Formula :=
+  closeUniv 18 (ZT.derive (by
+    simp only [Vec.toZ_dot, Vec.toZ_cross, Vec.toZ_sub, ZT.toZ_add]
+    exact tetra_linear1_ring _ _ _))
+
+section TetraSine
+
+abbrev O : Vec 3 24 := Vec.vars 3 0 (by norm_num)
+abbrev A : Vec 3 24 := Vec.vars 3 6 (by norm_num)
+abbrev B : Vec 3 24 := Vec.vars 3 12 (by norm_num)
+abbrev C : Vec 3 24 := Vec.vars 3 18 (by norm_num)
+
+/-- `σ(X; Y, Z) = |(X − Y) × (Z − Y)|²`, the squared doubled area seen from `Y`. -/
+abbrev sg2 (X Y Z : Vec 3 24) : ZT 24 := Vec.dot (Vec.cross (Vec.sub X Y) (Vec.sub Z Y)) (Vec.cross (Vec.sub X Y) (Vec.sub Z Y))
+abbrev nm2 (X Y : Vec 3 24) : ZT 24 := Vec.dot (Vec.sub X Y) (Vec.sub X Y)
+
+/-- `thm:tetra-sine`, squared and cleared: with `sin² ∠XYZ = σ(X; Y, Z) / (|X − Y|² |Z − Y|²)`,
+`sin²∠OAB sin²∠OBC sin²∠OCA = sin²∠OAC sin²∠OCB sin²∠OBA`. -/
+def tetraSineFormula : Fm PTm 24 :=
+  ZT.eq ((sg2 O A B * sg2 O B C * sg2 O C A) * (nm2 O A * nm2 C A * (nm2 O C * nm2 B C) * (nm2 O B * nm2 A B)))
+    ((sg2 O A C * sg2 O C B * sg2 O B A) * (nm2 O A * nm2 B A * (nm2 O B * nm2 C B) * (nm2 O C * nm2 A C)))
+
+theorem tetra_sine : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 24 tetraSineFormula :=
+  closeUniv 24 (ZT.derive (by
+    simp only [Vec.toZ_dot, Vec.toZ_cross, Vec.toZ_sub, ZT.toZ_mul]
+    exact tetra_sine_ring _ _ _ _))
+
+end TetraSine
 
 end LeanProofs.IPRA.Geometry.SphericalPolar
