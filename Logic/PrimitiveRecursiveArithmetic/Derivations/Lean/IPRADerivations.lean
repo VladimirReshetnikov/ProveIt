@@ -440,6 +440,7 @@ import IPRADerivations.Foundations.AnnihilatorGrid
 import IPRADerivations.Foundations.IntersectionEnumeration
 import IPRADerivations.Foundations.EliminationRoot
 import IPRADerivations.Foundations.VandermondeDeterminant
+import IPRADerivations.Foundations.GenericDirection
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.EigenvalueIntegral
 import IPRADerivations.Foundations.EigenvalueGrid
@@ -748,6 +749,7 @@ import IPRADerivations.Foundations.ReverseDemand
 import IPRADerivations.Foundations.VectorRank
 import IPRADerivations.Foundations.VectorStabilization
 import IPRADerivations.Foundations.ProofSchedule
+import IPRADerivations.Foundations.ReachableFrontier
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion

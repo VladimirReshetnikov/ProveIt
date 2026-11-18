@@ -9456,6 +9456,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ProofSchedule.schedule_of_steps
 #print axioms LeanProofs.IPRA.Foundations.ProofSchedule.all_derivable
 #print axioms LeanProofs.IPRA.Foundations.ProofSchedule.compile_steps
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.reach_parent
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.reach_min
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.reach_union
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.front_of_reachable
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.front_union
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.frontier_sufficient
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
@@ -13560,6 +13566,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.ne_congr
 #print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.vandermonde_ne
 #print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.root_bound
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.zdec
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.all_or_some
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.some_nonroot
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.lit_succ_ne
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.lit_distinct
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.generic_direction
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.Bez
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.P
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.tB
