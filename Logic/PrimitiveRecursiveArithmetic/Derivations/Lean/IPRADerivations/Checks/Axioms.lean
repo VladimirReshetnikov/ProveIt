@@ -13572,6 +13572,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.GenericDirection.lit_succ_ne
 #print axioms LeanProofs.IPRA.Foundations.GenericDirection.lit_distinct
 #print axioms LeanProofs.IPRA.Foundations.GenericDirection.generic_direction
+#print axioms LeanProofs.IPRA.Foundations.LexFuelMonotone.itP_zero
+#print axioms LeanProofs.IPRA.Foundations.LexFuelMonotone.itP_succ
+#print axioms LeanProofs.IPRA.Foundations.LexFuelMonotone.succ_le
+#print axioms LeanProofs.IPRA.Foundations.LexFuelMonotone.mono_start
+#print axioms LeanProofs.IPRA.Foundations.LexFuelMonotone.grow_iter
+#print axioms LeanProofs.IPRA.Foundations.LexFuelMonotone.mono_count
+#print axioms LeanProofs.IPRA.Foundations.LexFuelMonotone.F_zero_at
+#print axioms LeanProofs.IPRA.Foundations.LexFuelMonotone.F_succ_at
+#print axioms LeanProofs.IPRA.Foundations.LexFuelMonotone.fuel_step
+#print axioms LeanProofs.IPRA.Foundations.LexFuelMonotone.fuel_grow
+#print axioms LeanProofs.IPRA.Foundations.LexFuelMonotone.fuel_mono
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.Bez
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.P
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.tB
