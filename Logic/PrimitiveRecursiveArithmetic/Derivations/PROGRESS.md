@@ -139,24 +139,31 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | FTA descent, actual scalar radius powers and original norm coding | `RationalNonnegativePowers.nonnegative_power_closed`, `nonnegative_power_recurrence_closed`, `dyadic_power_closed`; `GaussianBalancedRadiusSyntax.coefficient_norm_representation_closed` | Actual canonical rational power values, their multiplication recurrence and the original independently denominated squared coefficient norms are proved uniformly in every numerical exponent and coefficient index. |
 | FTA descent, computed height and proved finite scan endpoints | `GaussianBalancedRadiusHeight.height_facts_closed`, `coefficient_height_bounds_closed`; `GaussianBalancedRadiusArithmetic.balanced_radius_endpoint_fit_closed`, `balanced_radius_endpoint_failure_closed`, `balanced_radius_squared_witness_closed` | A genuine runtime maximum fold computes a coarser norm-bit height b and exact E=2b+3. Every coefficient numerator/denominator is bounded internally; low fit and strict high failure follow, with the unchanged literal 4^N squared witness factor. |
 | FTA descent, actual greatest fitting radius and failed coefficient | `GaussianBalancedRadiusSearch.balanced_radius_search_closed`, `returned_balanced_radius_search_closed`, `positive_degree_scan_closed` | Actual bounded Boolean coefficient search and outer first-failure search derive adjacent fit/failure, a positive original failed index and the greatest-fit property. The final theorem assumes only the legitimate nonzero-constant source input, never endpoints, monotonicity or successful search. |
-| FTA descent, complete balanced-radius producer including zero residual | `GaussianBalancedRadius.balanced_radius_closed`, `balanced_radius_program_closed`; `GaussianBalancedRadiusValues.balanced_radius_fit_values_closed`, `balanced_radius_literal_witness_closed`; `GaussianBalancedRadiusZero.zero_radius_bound_closed` | The public actual PR2 producer removes the nonzero-constant restriction by its genuine zero branch. All original squared radius bounds, exact canonical radius/representation, zero value and positive-branch computed search/witness certificate are derived from the supplied nonconstant coefficient list. The later translation frontend below establishes the P,z connection for positive-degree monic input. The actual dominant plateau and squared geometric weights are checked below; direction and full RD remain open. The full 115-packet goal remains active. |
+| FTA descent, complete balanced-radius producer including zero residual | `GaussianBalancedRadius.balanced_radius_closed`, `balanced_radius_program_closed`; `GaussianBalancedRadiusValues.balanced_radius_fit_values_closed`, `balanced_radius_literal_witness_closed`; `GaussianBalancedRadiusZero.zero_radius_bound_closed` | The public actual PR2 producer removes the nonzero-constant restriction by its genuine zero branch. All original squared radius bounds, exact canonical radius/representation, zero value and positive-branch computed search/witness certificate are derived from the supplied nonconstant coefficient list. The later translation frontend below establishes the P,z connection for positive-degree monic input. The actual dominant plateau and squared geometric weights are checked below; the rational direction is checked below; full RD remains open. The full 115-packet goal remains active. |
 | FTA descent, actual shifted Gaussian algebra and quotient trajectory | `GaussianRationalTranslationAlgebra.translated_synthetic_step_closed`; `GaussianRationalTranslationStages.quotient_stages_recursion_closed`, `quotient_stages_division_closed`, `terminal_constant_evaluation_closed` | True independent-denominator algebra and an actual PR4 quotient loop derive the stage lengths, terminal constant and evaluation step, with no canonical-input or supplied division/translation invariant. |
 | FTA descent, complete actual polynomial translation | `GaussianRationalTranslation.translation_evaluation_closed`, `translation_coefficient_closed`, `translation_returned_certificate_closed` | A genuine QF backward-Horner argument proves the actual returned PR3 polynomial evaluates to P(z+W) under input length alone, including N=0 and raw original codes. Its constant is P(z), each ascending coefficient is an actual quotient-stage remainder, and monic heads are preserved separately. |
 | FTA descent, original monic input to actual translated balanced radius | `GaussianMonicNonconstant.monic_nonconstant_closed`; `GaussianTranslatedBalancedRadius.translated_balanced_radius_closed`, `translated_balanced_program_closed` | Positive norm of the actual monic leading coefficient derives nonconstancy; the source input C,N,z then supplies the actual translated polynomial and complete radius certificate. Both zero and positive branches use the original computed residual, with returned-field identities. No translated coefficient list, height, successful search or desired output law is an input. |
-| FTA descent, genuine Euclidean relative finite-sum norm | `GaussianRelativeNormTriangle.relative_norm_triangle_closed`, `finite_relative_sum_closed`, `finite_relative_sum_budget_closed`, `relative_sum_certificate_closed` | Exact signed Gaussian arithmetic gives the common relative squared-norm triangle without roots, including zero weights/budget. Actual Gaussian and natural-weight sums have a derived QF prefix invariant and full scaled sum estimate from individual term bounds. This is a component for the off-dominant estimate; actual squared plateau weights and their actual Gaussian-sum consequence with constant 2/3 are now checked below. Polynomial decomposition and exact dominant bounds are checked below; direction and full RD remain separate. |
+| FTA descent, genuine Euclidean relative finite-sum norm | `GaussianRelativeNormTriangle.relative_norm_triangle_closed`, `finite_relative_sum_closed`, `finite_relative_sum_budget_closed`, `relative_sum_certificate_closed` | Exact signed Gaussian arithmetic gives the common relative squared-norm triangle without roots, including zero weights/budget. Actual Gaussian and natural-weight sums have a derived QF prefix invariant and full scaled sum estimate from individual term bounds. This is a component for the off-dominant estimate; actual squared plateau weights and their actual Gaussian-sum consequence with constant 2/3 are now checked below. Polynomial decomposition and exact dominant bounds are checked below; the rational direction is checked below; full RD remains separate. |
 | FTA descent, actual positive least dominant coefficient | `GaussianDominantSelector.dominant_winner_maximal_closed`, `dominant_winner_least_tie_closed`, `computed_dominant_index_closed`, `computed_dominant_monotone_closed` | Actual inclusive negative-score argmin over 0..N-1 selects precisely 1..N. The genuine failed coefficient supplies positivity; independent-denominator 16^i scaling proves adjacent and global monotonicity. All numerical inputs are internal; rational-value equality controls ties. |
 | FTA descent, actual bounded odd-center search | `GaussianDominantPlateau.dominant_plateau_closed`, `dominant_plateau_program_closed`, `returned_dominant_triple_closed` | Actual PR2 search derives 1<=j<2N, winner range, and equality of the actual adjacent three winners under Syntax.input alone. Search success follows from the derived positive count; no monotonicity/count/plateau premise is supplied. Five returned integer fields are identified. |
 | FTA descent, literal same-winner three-radius dominance | `GaussianDominantRadiusValues.actual_quarter_radius_closed`, `actual_selected_dominance_closed`; `GaussianDominantPlateauValues.dominant_plateau_values_closed`, `actual_plateau_values_program_closed` | Same positive computed coefficient dominates every original degree 1..N at actual radii r/4,r,4r. Literal radius fractions use E+2h, with canonicality, positivity and both factor-four identities. The full certificate and five actual PR2 fields are derived from Syntax.input alone. |
 | FTA descent, original monic-input dominant plateau | `GaussianTranslatedDominantPlateau.translated_dominant_plateau_closed`, `translated_returned_plateau_closed`, `translated_plateau_fields_closed` | Original C,N,z and the monic input contract derive the full translation/balanced-radius certificate plus both guarded residual branches. Positive residual supplies the actual plateau on the constructed translated list; zero residual supplies the actual zero starting radius. Actual PR3 coefficient/center/winner/three-radius fields and the returned-polynomial certificate are proved. |
-| FTA descent, actual geometric squared-score weights | `GaussianDominantScoreWeights.actual_geometric_score_weights_closed`, `original_geometric_score_weights_closed` | Actual previous/next dominance gives 16^abs(i-k)*S_i<=S_k at the selected central radius for every degree 1..N, with independently decoded denominators and zero coefficients included. The original monic/positive-residual endpoint derives all input guards. The actual Gaussian-sum consequence with constant 2/3 is now checked below. Dominant lower/upper bounds and polynomial decomposition are checked below; direction and full local contraction remain open. |
+| FTA descent, actual geometric squared-score weights | `GaussianDominantScoreWeights.actual_geometric_score_weights_closed`, `original_geometric_score_weights_closed` | Actual previous/next dominance gives 16^abs(i-k)*S_i<=S_k at the selected central radius for every degree 1..N, with independently decoded denominators and zero coefficients included. The original monic/positive-residual endpoint derives all input guards. The actual Gaussian-sum consequence with constant 2/3 is now checked below. Dominant lower/upper bounds and polynomial decomposition are checked below; the rational direction is checked below; full local contraction remains open. |
 | FTA descent, actual displaced coefficient terms and reference | `GaussianOffDominantTerms.actual_power_norm_bound_closed`, `actual_term_norm_bound_closed`, `actual_selected_reference_closed`, `actual_lower_term_bound_closed`, `actual_upper_term_bound_closed` | Existing actual powers and product norm arithmetic derive original term bounds for every displacement satisfying the legitimate computed disk guard. A literal radial reference has norm squared exactly the selected score. Both actual off-dominant lists and all their individual weighted comparisons are computed, with no supplied term, sum or successful-search law. |
 | FTA descent, actual geometric weights and exact relative reweighting | `GaussianOffDominantWeights.geometric_weight_budget_closed`, `squared_geometric_reweight_closed`, `geometric_singleton_closed` | Actual PR2 weights and both side budgets derive the exact geometric constant. The 16^d squared bound becomes the scaled 4^(N-d) relative norm bound by proved exponent identities; numerical degrees, indices and data are internal. N=1 empty sides and zero norms are included. |
 | FTA descent, genuine common-denominator rational sum | `GaussianHornerCommonDenominator.horner_clearing_closed`, `normalized_sums_clearing_closed`, `returned_sums_clearing_closed`; `GaussianRationalNormClearing.weighted_common_denominator_closed`, `scaled_relative_bound_closed` | Genuine QF prefix induction connects actual Horner-at-one to the actual integer fold. Concrete normalization derives all entry representations and the positive common denominator. Exact weighted-norm clearing and reverse transport preserve every original decoded denominator; no desired prefix, sum or denominator law is supplied. |
-| FTA descent, exact actual off-dominant Gaussian-sum bound | `GaussianGeometricSumBound.actual_geometric_sum_bound_closed`; `GaussianOffDominantSum.actual_off_dominant_sum_closed`, `original_off_dominant_sum_closed`, `returned_off_dominant_bound_closed` | Literal normalized comparison 9*normSq(otherSum)<=4*selectedScore gives the required 2/3 bound for the actual Gaussian sum, uniformly for every displacement within the computed radius. The final producer derives all individual comparisons, counts, weights and sum representations from Syntax.input and the disk guard; original monic/positive residual derives the translated input. Six actual PR3 fields are identified. The stronger displayed sum of individual magnitudes is not separately encoded. Polynomial decomposition and the exact dominant bounds are checked below; direction and full RD remain separate. |
+| FTA descent, exact actual off-dominant Gaussian-sum bound | `GaussianGeometricSumBound.actual_geometric_sum_bound_closed`; `GaussianOffDominantSum.actual_off_dominant_sum_closed`, `original_off_dominant_sum_closed`, `returned_off_dominant_bound_closed` | Literal normalized comparison 9*normSq(otherSum)<=4*selectedScore gives the required 2/3 bound for the actual Gaussian sum, uniformly for every displacement within the computed radius. The final producer derives all individual comparisons, counts, weights and sum representations from Syntax.input and the disk guard; original monic/positive residual derives the translated input. Six actual PR3 fields are identified. The stronger displayed sum of individual magnitudes is not separately encoded. Polynomial decomposition and the exact dominant bounds are checked below; the rational direction is checked below; full RD remains separate. |
 | FTA descent, actual ring exchange and full ascending power expansion | `GaussianRationalSumAlgebra.horner_sum_exchange_closed`, `contextual_unit_closed`; `GaussianRationalPowerExpansion.actual_horner_conservation_closed`, `actual_horner_power_expansion_closed` | Actual common-denominator operation laws prove the five-operand exchange and contextual unit without canonical-input guards. Genuine guarded QF conservation then identifies the actual Horner evaluator with its numerical ascending power list from length alone, including degree zero and raw coefficient/point codes. |
 | FTA descent, actual segment splitting and dominant decomposition | `GaussianRationalSumSegments.actual_prefix_split_closed`, `bounded_prefix_congruence_closed`; `GaussianRationalDominantDecomposition.actual_dominant_decomposition_closed`, `returned_dominant_decomposition_closed` | Actual segments, bounded original entry-code equality and QF prefix induction derive the four-part split into raw constant, actual degree-k term and the existing lower/upper Gaussian sum. Only length C=N+1 and internal 1<=k<=N are inputs. Empty sides and raw-constant contextual normalization are included; no decomposition or reindexing law is supplied. |
 | FTA descent, exact dominant lower and upper bounds | `GaussianDominantMagnitude.exact_descent_budget_closed`, `actual_dominant_magnitude_closed`, `original_dominant_magnitude_closed`, `actual_magnitude_program_closed` | Actual failed balanced witness, derived central maximum and h<2N yield S>0, S<=A^2 and NOT(D^2*S<=A^2), where the unchanged clock D=2^N*4^(2*N*N). Exact exponent bounds and cancellation of only positive current denominator/scale derive strictness, with no lower-bound or positive-maximum premise. The original monic/positive-residual frontend and five actual PR2 fields are checked. |
-| FTA descent, original-polynomial decomposition and joint estimates | `GaussianTranslatedDominantEstimates.original_dominant_estimates_closed`, `original_dominant_preparation_closed`, `original_magnitude_bounds_closed`, `returned_original_decomposition_closed` | Original monic input yields both actual residual branches. Positive residual supplies the literal P(z+delta) split with constant P(z), exact dominant estimates against actual normSq(P(z)), and the actual off-sum norm bound under only the legitimate computed disk guard. The zero branch retains actual starting radius zero. Six PR4 fields and returned split are identified; direction, dominant-pair decrease and full RD remain open. |
+| FTA descent, original-polynomial decomposition and joint estimates | `GaussianTranslatedDominantEstimates.original_dominant_estimates_closed`, `original_dominant_preparation_closed`, `original_magnitude_bounds_closed`, `returned_original_decomposition_closed` | Original monic input yields both actual residual branches. Positive residual supplies the literal P(z+delta) split with constant P(z), exact dominant estimates against actual normSq(P(z)), and the actual off-sum norm bound under only the legitimate computed disk guard. The zero branch retains actual starting radius zero. Six PR4 fields and returned split are identified; the rational direction is checked below; dominant-pair decrease and full RD remain open. |
+| FTA direction, actual square-root and circle programs | `RationalSquareRootBounds.actual_square_root_bracket_closed`, `GaussianRationalCircleParametrization.rational_circle_unit_closed`, `GaussianIntegerCircleProjection.actual_projection_squared_error_closed` | Computed floors and original sign bits give exact unit points and squared projection error 4/H, with all counts and coordinates internal. |
+| FTA direction, exact relative rational norm triangle | `GaussianRationalRelativeTriangle.rational_relative_triangle_closed` | Exact (A+B)^2/H bound at independently decoded positive denominators; H need not be a square. |
+| FTA direction, actual runtime powers and rounding | `GaussianRationalPowerAlgebra.rational_power_composition_closed`, `GaussianRationalPowerDifference.rational_unit_disk_power_difference_closed`, `GaussianRationalRoundedPower.rational_rounded_power_closed` | Genuine QF power identities and j*A/B unit-disk difference give exact remainder error r*A/B when P=k*a+r. Zero exponents, zero R and raw original inputs are handled explicitly. |
+| FTA direction, actual principal half-angle and loop | `GaussianRationalHalfAngle.dyadic_half_accuracy_closed`, `GaussianRationalHalfAngleIteration.repeated_half_angle_distance_closed`, `GaussianRationalHalfAngleRecovery.dyadic_recovery_closed` | Exact unit outputs and contraction yield squared distance 4/2^j. Actual square error 400/H and a genuine QF invariant yield recovery error (2^j-1)/2^J. All local accuracy laws are derived. |
+| FTA direction, full computed unit-input algorithm | `GaussianRationalDirectionClock.dyadic_direction_budgets_closed`, `GaussianRationalDirectionIteration.unit_input_direction_closed` | Actual binary-length clock, division identity and all budgets derive unit output and kth-power distance 1/(8q) from only canonical unit input and k,q>=1. |
+| FTA direction, actual arbitrary-input initializer and construction | `GaussianRationalDirectionNormalizer.actual_direction_initialization_closed`, `GaussianRationalDirectionConstruction.nonzero_direction_construction_closed` | Original nonzero input determines positive normalizer t with exact 65/64 bound, actual canonical unit phase initializer and target c/t. Full actual algorithm derives distance(w^k,c/t)<=1/(4q) from only original guards; all PR fields are identified. |
+| FTA lem:direction, exact original rational certificate | `GaussianRationalPhaseCertificate.source_direction_phase_closed`, `GaussianRationalDirection.rational_direction_closed`, `returned_rational_direction_certificate_closed` | Actual PR4 output derives normSq(w)<=1, b>0, d>=0 and A*b^2<=d^2 for literal A=normSq(c), b=normSq(w^k)+1-(p/q)^2 and d=2Re(w^k*conj(c)). Nonzero c, k,p>=1 and 16p<=q are the only guards. No phase/clock/error/output certificate is assumed. All numerical inputs are internal. Full local contraction remains open. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -170,6 +177,7 @@ integer product results provide a finite part of those arguments. The FIBER
 packet still requires the remaining source-node compiler adapters and cyclic unrolling, cluster and finite-algebra
 observation proofs, concrete application instances, and the adapters recorded
 in its claim audit. The full source scope remains active.
+
 
 ## Source statements needing correction
 
@@ -327,59 +335,52 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `76d70ae99a`, including the actual original-polynomial
-dominant decomposition and exact dominant magnitude bounds, the root build
-completed 2,299 jobs and emitted 7,325 axiom reports for 6,816 distinct
-declarations. Every report uses only `propext`, `Classical.choice` and
-`Quot.sound`. The portable import gate passed across 3,718 source modules,
-and the independent `Diophantine` boundary passed across 5,252 modules.
+At the source based on `1372c9356c`, including the actual rational direction
+and original algebraic certificate, the root build completed 2,315 jobs and
+emitted 8,095 axiom reports for 7,586 distinct declarations. Every report
+uses only `propext`, `Classical.choice` and `Quot.sound`. All nine import
+closure gates passed, with 3,734 modules in the portable arithmetic closure
+and 5,252 in the independent `Diophantine` closure.
 
-The six new modules contain 1,254 lines, 176 public theorems and 227 public
-declarations, each with a fully qualified axiom probe. Independent full
-source/math reviews checked the computed common-denominator five-operand
-exchange, associative/contextual-unit laws for raw codes, actual ascending
-term producer and genuine guarded QF conservation, degree-zero cases,
-actual segment splitting and bounded entry-code congruence, correct
-positive-degree cuts and empty sides, raw constant semantics and all
-returned field identities. They also checked the exact existing source
-clock constant, strict balanced failed witness, actual central maximum,
-scale and degree budgets, cancellation of only positive factors, upper
-and positive score bounds, original translated decomposition and both
-magnitude comparisons rewritten against actual normSq(P(z)).
+The sixteen new modules contain 4,407 lines, 596 public theorems and 770
+public declarations, each with a fully qualified axiom probe. Independent
+full source/math reviews checked the actual square-root floors, sign-zero
+branches, exact circle and rotated cross-error, positive common denominators,
+relative norm triangle, all runtime power identities including zero cases,
+actual half-angle accuracy and contraction, genuine QF iteration/recovery,
+computed binary-length clock and division identity, original nonzero-input
+normalizer/initializer, exact 65/64 bracket and full actual direction program.
+The phase proof expands the true integer cross-error and completes the square;
+it uses the literal original A,b,d programs and derives b>0. Review also checked
+all actual returned fields and the certificate on the decoded PR4 output.
 
-`GaussianRationalDominantDecomposition.actual_dominant_decomposition_closed`
-proves the actual constant/dominant/other split from only original length
-and the internal positive-degree guards. No monicity, residual, radius or
-canonical-input condition is needed for that algebraic theorem.
-`GaussianDominantMagnitude.actual_dominant_magnitude_closed` derives all
-three source bounds from the balanced-radius input alone, with the exact
-D=2^N*4^(2*N*N), without square roots or added slack.
-`GaussianTranslatedDominantEstimates.original_dominant_preparation_closed`
-uses only the original monic shape to retain the actual zero branch and
-derive the positive-branch decomposition, magnitude bounds and conditional
-uniform off-sum estimate at every original numerical displacement. The
-actual PR4 returns P(z+delta), P(z), dominant term, other sum, selected
-score and D; the returned decomposition is checked. No translation,
-maximum, lower-bound, decomposition, sum or successful-search conclusion
-is supplied as a premise. All numerical degrees, lists, points and indices
-are internal.
+`GaussianRationalDirection.rational_direction_closed` proves the exact
+radical-free source `eq:direction-certificate` for the actual constructed w.
+Its guards are only the original nonzero raw Gaussian norm, k,p>=1 and
+16p<=q. The output is exactly unit, and all normalization, phase, local-error,
+iteration, power and clock budgets are derived. The producer additionally
+retains its actual positive normalizer and distance(w^k,c/t)<=1/(4q).
+The proof uses rational half-angles and a rounded numerical power instead
+of the source's binomial branch. The original degree and precision parameters
+remain internal object variables.
 
-Actual rational direction construction, the dominant-pair error and
-decrease, and full local contraction remain open. The stronger explanatory
-sum of individual magnitudes is not separately encoded; its actual
-Gaussian-sum consequence needed for contraction is checked. Neither full
-RD nor the general nonmonic FTA is claimed.
+Dominant-pair error/decrease and full local contraction remain open. The
+already checked polynomial decomposition, exact dominant bounds and actual
+2/3 off-sum estimate are unchanged. Full RD and the general nonmonic FTA
+are not claimed. The completed-real interpretation of a normalized direction
+is not separately constructed here; the endpoint is the exact source rational
+certificate used by the finite arithmetic proof.
 
 Finite-demand approximate factorization, root support, full root adequacy
-and its stage-distance/zero-distance corollary remain checked under the
-explicit local monic RD contract. The Gaussian point-name realization
-adapter, coded-field norm claims and remaining source packets remain open.
+and its stage-distance/zero-distance corollary retain the explicit local
+monic RD contract. The Gaussian point-name realization adapter, coded-field
+norm claims, Minkowski physical-basis transport, Gamma/Barnes analytic
+identities and all remaining source-packet obligations remain in scope.
 General convolution and the separately expanded telescoping sum remain
-unclaimed; factorization uses actual one-step error transport and backward
-prefix-weighted induction. The complete 115-packet goal remains active.
+unclaimed. The complete 115-packet goal remains active.
 
-The new modules are included in `IPRADerivations`. Their public theorem
-names are audited in `Checks/Axioms.lean`. Run the root verification commands:
+The new modules are included in `IPRADerivations`; all their public declarations
+are audited in `Checks/Axioms.lean`. Run the root verification commands:
 
 ```sh
 lake build IPRADerivations +IPRADerivations.Checks.Axioms

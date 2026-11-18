@@ -188,8 +188,15 @@ the environment labels. Completion needs the following evidence:
    [original-input preparation](Lean/IPRADerivations/Analysis/GaussianTranslatedDominantEstimates.lean)
    connects the literal P(z+delta) split, bounds against actual P(z),
    both residual branches and the conditional off-sum norm estimate.
-   Rational direction, dominant-pair decrease and full contraction remain
-   separate. The root-support construction is now checked under that
+   The actual [rational direction](Lean/IPRADerivations/Analysis/GaussianRationalDirection.lean)
+   now proves the exact source certificate A*b^2<=d^2, d>=0 and b>0 for its
+   actual unit output, with original nonzero/k/epsilon guards only. Its
+   [initializer](Lean/IPRADerivations/Analysis/GaussianRationalDirectionNormalizer.lean),
+   [computed loop](Lean/IPRADerivations/Analysis/GaussianRationalDirectionIteration.lean)
+   and [phase transfer](Lean/IPRADerivations/Analysis/GaussianRationalPhaseCertificate.lean)
+   discharge all normalization, clock and local approximation laws. Actual
+   normalizer/target data and the 65/64 bracket are retained. Dominant-pair
+   decrease and full contraction remain separate. The root-support construction is now checked under that
    same RD contract.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z
