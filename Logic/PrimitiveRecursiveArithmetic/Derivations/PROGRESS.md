@@ -131,7 +131,11 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | Finite-demand, sharp represented polynomial-evaluation error | `GaussianRootSharpErrorSamples.sharp_sample_error_closed`; `GaussianRootSharpEvaluation.sharp_root_evaluation_error_closed`, `sharp_error_name_closed`, `actual_error_name_query_closed` | The actual F_t(point_s)-P_s(point_s) error is at most 2C_Z/D+computedCost/2^s. Its true modulus is derived from actual Horner bounds; removing finite slack yields exactly source root-eval-error, retaining Z in C_Z. The actual PR2 difference program and its fast name are identified. |
 | Finite-demand, actual distance upper cuts and affine scalar name | `GaussianEuclideanDistanceUpperCut.distance_sample_upper_cut_closed`; `GaussianLinearDistanceName.linear_distance_name_closed`, `linear_distance_program_closed` | Actual Euclidean sample upper cuts and actual normalized PR2 scalar arithmetic realize M*D_t+A/B, with derived nonnegativity, fastness, explicit numerator/denominator and literal affine identity. No represented minimizing point is assumed. |
 | Finite-demand, sharp represented residual-distance error | `GaussianRootSharpResidualSamples.sharp_represented_residual_cut_closed`; `GaussianRootSharpDistance.root_distance_residual_closed`, `root_residual_rhs_name_closed` | Completes root-distance-residual at original M_Z/C_R. A proved distance upper observation feeds the actual sharp residual cut; exact scalar normalization yields the joint order cut between the OLD polynomial-value program and the actual nonnegative RHS program, with both precision errors. No conclusion or represented root selector is supplied. |
-| Finite-demand, complete source root-adequacy proposition conditional on RD | `GaussianRootAdequacyTheorem.root_adequacy_closed` | One checked closed sentence contains the actual P-value name, Member iff literal P-program zero, all-stage fast/nonnegative Euclidean D_t, both sharp cuts and the source PR forward stage for every requested precision. Only the unchanged genuine source input contract is assumed. The later stage-distance completion corollary and upstream RD proof remain separate; the full 115-packet goal remains active. |
+| Finite-demand, complete source root-adequacy proposition conditional on RD | `GaussianRootAdequacyTheorem.root_adequacy_closed` | One checked closed sentence contains the actual P-value name, Member iff literal P-program zero, all-stage fast/nonnegative Euclidean D_t, both sharp cuts and the source PR forward stage for every requested precision. Only the unchanged genuine source input contract is assumed. The following completion modules establish the stage-distance/zero-distance corollary; upstream RD remains open and the full 115-packet goal remains active. |
+| Finite-demand, exact Euclidean cover variation and scalar closure | `GaussianEuclideanDistanceVariation.euclidean_distance_sample_variation_closed`, `finite_hit_cover_transfer_closed`; `GaussianScalarSlackRemoval.scalar_slack_removal_closed`, `scalar_upper_cut_closed` | Actual original covers transfer finite hits and independently computed distance observations with exact Hausdorff error plus both dyadic errors. A single explicit positive-denominator integer-gap query removes scalar slack; no limiting or successful-search premise is used. |
+| Finite-demand, actual root-stage distance completion | `GaussianRootDistanceCompletion.stage_variation_closed`, `completed_distance_name_closed`, `completed_distance_query_closed` | Source RS gives the exact represented stage-distance Cauchy bound at independent observation precisions. The actual PR2 diagonal name uses stage k+2 and point/sqrt precision k+4; its derived modulus, normalization, nonnegativity and canonicality are proved with all numerical degree/data/stage/precision inputs internal. |
+| Finite-demand, Member iff literal completed-distance zero | `GaussianRootDistanceZero.root_distance_zero_closed`, `distance_zero_stage_closed`, `distance_zero_program_closed` | Local existential-stage elimination gives each fixed raw observation the finite bound 2*2^-r+3*2^-m; actual scalar closure then proves the normalized zero predicate. Conversely that literal zero predicate gives a genuine represented membership cut at the explicit PR stage k+3. The reverse implication uses only positive degree and point CN. |
+| Finite-demand, full root adequacy with literal distance/polynomial zero equivalence | `GaussianRootCompletedAdequacy.completed_root_adequacy_closed`, `completed_distance_root_equation_closed` | Extends the unchanged original adequacy contract with actual completed-distance scalar fastness, all-query nonnegativity and literal distance-zero iff actual P-value program zero. This checks the stage-distance/zero-distance corollary; upstream RD and a Gaussian point-name realization adapter remain open, as does the complete 115-packet goal. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -302,39 +306,38 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `f6bea5daf3`, including the complete root-adequacy
-proposition with both sharp represented estimates, the root build completed
-2,259 jobs and emitted 6,101 axiom reports for 5,592 distinct declarations.
+At the source based on `7f26c1da50`, including the root-stage distance
+completion and exact zero-distance interpretation, the root build completed
+2,264 jobs and emitted 6,208 axiom reports for 5,699 distinct declarations.
 Every report uses only `propext`, `Classical.choice` and `Quot.sound`. The
-portable import gate passed across 3,678 source modules, and the independent
+portable import gate passed across 3,683 source modules, and the independent
 `Diophantine` boundary passed across 5,252 modules.
 
-The twelve modules added in this batch contain 2,654 lines and 248 public
+The five modules added in this batch contain 1,081 lines and 107 public
 theorem registrations, all individually present in that audit output.
-Independent source/math reviews checked actual power and weighted-sum
-meanings, exact rational-radius Horner variation, finite dyadic envelope
-removal, Gaussian canonical recoding, nonnegative scalar norm comparison,
-actual distance-sample upper cuts, actual affine distance-name arithmetic,
-the original polynomial-value program identity, both independent name
-precision errors, and the assembled source proposition. Every degree,
-disk bound, coefficient/list code, root stage, precision and persistent
-parameter remains internal; only fixed finite syntax and PR schemas are
-external proof-generator parameters.
+Independent source/math reviews checked original-cover hit transfer,
+actual Euclidean argmin/square-root variation, the exact source RS error
+with two independent observation precisions, the actual diagonal PR2 name
+and its derived modulus/normalization, finite scalar integer-gap closure,
+local existential-stage elimination, both Member/zero directions, the
+explicit reverse stage k+3, and the literal distance/polynomial program
+zero equivalence. Every degree, list code, bound, stage, precision and
+persistent datum remains internal; only fixed finite syntax and PR schemas
+are external proof-generator parameters.
 
 Finite-demand `thm:approx-factor`, `thm:root-support` and
-`prop:root-adequacy` are now checked conditional on the explicit local
-monic RD contract. The last result is collected in the single closed
-`GaussianRootAdequacyTheorem.root_adequacy_closed` sentence: actual P-name
-fastness, exact Member iff literal P-program zero, all-stage nonnegative
-fast Euclidean distances, both sharp cuts at the original C_Z/M_Z/C_R,
-and the source PR forward stage for every requested precision. The source
-later, unnumbered stage-distance Cauchy/completion corollary remains a
-separate obligation. The upstream actual FTA descent implementation/proof,
-coded-field norm claims and remaining source packets are also open.
-General convolution and the separately expanded telescoping sum remain
-unclaimed; the factorization target uses actual one-step error transport
-and backward prefix-weighted induction. The complete 115-packet goal
-remains active.
+`prop:root-adequacy` remain checked conditional on the explicit local
+monic RD contract. `GaussianRootCompletedAdequacy.completed_root_adequacy_closed`
+retains the full named proposition and adds the actual completed-distance
+fast scalar name, its all-query nonnegativity, and literal distance-zero
+iff actual P-program zero. The later unnumbered stage-distance and
+zero-distance corollary is therefore checked in the explicit finite-name
+coding. The separate Gaussian point-name realization adapter and the
+upstream actual FTA descent implementation/proof remain open. The coded-field
+norm claims and remaining source packets are also open. General convolution
+and the separately expanded telescoping sum remain unclaimed; the
+factorization target uses actual one-step error transport and backward
+prefix-weighted induction. The complete 115-packet goal remains active.
 
 The new modules are included in `IPRADerivations`. Their public theorem
 names are audited in `Checks/Axioms.lean`. Run the root verification commands:

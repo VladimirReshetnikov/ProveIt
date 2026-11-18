@@ -5665,3 +5665,122 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianRootAdequacyTheorem.all_forward_stages
 #print axioms LeanProofs.IPRA.Analysis.GaussianRootAdequacyTheorem.root_adequacy
 #print axioms LeanProofs.IPRA.Analysis.GaussianRootAdequacyTheorem.root_adequacy_closed
+
+-- Actual Euclidean root-stage completion and zero-distance adequacy.
+
+-- GaussianEuclideanDistanceVariation
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.cover_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.hit_transfer
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.lower_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.subst_sampleNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.subst_sampleDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.sample_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.sample_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.sample_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.sample_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.checker_sample_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.subst_output
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.subst_run
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.program_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.output_left
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.output_right
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.output_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.output_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.program_certificate
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.finite_hit_cover_transfer_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.finite_euclidean_distance_variation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.euclidean_distance_sample_variation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.euclidean_distance_checker_variation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.euclidean_distance_variation_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation.euclidean_distance_variation_certificate_closed
+
+-- GaussianScalarSlackRemoval
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.subst_precision
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.subst_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.subst_allSlack
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.slack_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.slack_linear
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.slack_removal_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.slack_removal
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.upper_cut
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.precision_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.finite_scalar_slack_removal_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.scalar_slack_removal_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.scalar_slack_query_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarSlackRemoval.scalar_upper_cut_closed
+
+-- GaussianRootDistanceCompletion
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.subst_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.subst_normalized
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.subst_normalizeData
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.regular_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.normalization_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.normalized_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.normalize_program
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.normalized_fast
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.subst_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.subst_raw
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.subst_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.subst_nameData
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.name_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.stage_variation
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.cover_denominator_ge_unit
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.stage_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_stage_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_ordered_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.name_fast
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_canonical
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.name_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.name_canonical
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.name_nonnegative_all
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.stage_variation_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.stage_variation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.generic_scalar_normalization_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.generic_scalar_normalization_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.completed_distance_name_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.completed_distance_nonnegative_canonical_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.completed_distance_query_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_representation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceCompletion.raw_stage_upper_closed
+
+-- GaussianRootDistanceZero
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.subst_three
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.subst_inputContract
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.member_query_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.zero_query_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.subst_completedZero
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.subst_zeroStage
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.zero_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.raw_slack_from_stage
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.member_raw_slack_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.member_raw_slacks
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.member_raw_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.member_to_completed_zero_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.member_to_completed_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.completed_zero_to_stage
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.completed_zero_to_member
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.member_iff_completed_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.zero_stage_program
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.root_distance_zero_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.distance_zero_stage_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootDistanceZero.distance_zero_program_closed
+
+-- GaussianRootCompletedAdequacy
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootCompletedAdequacy.completion_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootCompletedAdequacy.completed_zero_iff_polynomial_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootCompletedAdequacy.subst_distanceNonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootCompletedAdequacy.completed_distance_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootCompletedAdequacy.subst_completionConclusion
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootCompletedAdequacy.subst_conclusion
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootCompletedAdequacy.completed_root_adequacy
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootCompletedAdequacy.completed_root_adequacy_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRootCompletedAdequacy.completed_distance_root_equation_closed

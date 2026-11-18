@@ -497,3 +497,10 @@ import IPRADerivations.Analysis.GaussianScalarOrderCut
 import IPRADerivations.Analysis.GaussianRootDistanceOrderBudget
 import IPRADerivations.Analysis.GaussianRootSharpDistance
 import IPRADerivations.Analysis.GaussianRootAdequacyTheorem
+
+-- Actual Euclidean root-stage completion and zero-distance adequacy.
+import IPRADerivations.Analysis.GaussianEuclideanDistanceVariation
+import IPRADerivations.Analysis.GaussianScalarSlackRemoval
+import IPRADerivations.Analysis.GaussianRootDistanceCompletion
+import IPRADerivations.Analysis.GaussianRootDistanceZero
+import IPRADerivations.Analysis.GaussianRootCompletedAdequacy
