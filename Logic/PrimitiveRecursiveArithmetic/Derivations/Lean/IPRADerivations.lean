@@ -320,6 +320,7 @@ import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Geometry.HypercubeEdge
 import IPRADerivations.Geometry.KerrNewmanAlgebra
 import IPRADerivations.Geometry.KerrNewmanInverse
+import IPRADerivations.Geometry.KerrNewmanIngoing
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
