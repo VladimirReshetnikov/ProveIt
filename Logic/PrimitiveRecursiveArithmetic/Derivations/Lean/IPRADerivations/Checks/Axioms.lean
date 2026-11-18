@@ -9449,6 +9449,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.VectorRank.sum_diff
 #print axioms LeanProofs.IPRA.Foundations.VectorRank.agree_all
 #print axioms LeanProofs.IPRA.Foundations.VectorRank.rank_dichotomy
+#print axioms LeanProofs.IPRA.Foundations.VectorStabilization.vector_step
+#print axioms LeanProofs.IPRA.Foundations.VectorStabilization.vector_stab
+#print axioms LeanProofs.IPRA.Foundations.VectorStabilization.vector_stable
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
