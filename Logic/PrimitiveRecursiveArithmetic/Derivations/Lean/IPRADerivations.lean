@@ -309,6 +309,7 @@ import IPRADerivations.Probability.FiniteLaws
 import IPRADerivations.Probability.TowerCommonDen
 import IPRADerivations.Probability.ProductPower
 import IPRADerivations.Probability.WeakLaw
+import IPRADerivations.Probability.Wald
 import IPRADerivations.Probability.SignedParts
 import IPRADerivations.Probability.Histogram
 import IPRADerivations.Probability.JointLotus
