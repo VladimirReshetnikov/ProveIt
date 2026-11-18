@@ -49,6 +49,7 @@ import IPRADerivations.Analysis.TerminatingSeries
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BetaAssociativity
+import IPRADerivations.Analysis.NewtonCertificates
 import IPRADerivations.Analysis.BarnesInteger
 import IPRADerivations.Analysis.BarnesProducts
 import IPRADerivations.Analysis.RationalClosure
@@ -391,6 +392,7 @@ import IPRADerivations.Foundations.PresentedCategory
 import IPRADerivations.Foundations.Yoneda
 import IPRADerivations.Foundations.Adjunction
 import IPRADerivations.Foundations.SplitEquivalence
+import IPRADerivations.Foundations.KanFormula
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.CoherentTower
 import IPRADerivations.Foundations.CoherenceObstruction
@@ -411,6 +413,11 @@ import IPRADerivations.Foundations.ContractProducts
 import IPRADerivations.Foundations.CoherentPresentations
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.WitnessAlgebra
+import IPRADerivations.Foundations.RationalRootDegree
+import IPRADerivations.Foundations.RationalRootConstant
+import IPRADerivations.Foundations.EigenvalueBound
+import IPRADerivations.Foundations.EigenvalueIntegral
+import IPRADerivations.Foundations.EigenvalueGrid
 import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Foundations.ViableChain
 import IPRADerivations.Foundations.ChainViability
@@ -428,6 +435,7 @@ import IPRADerivations.Foundations.SquareRootRelationalCandidates
 import IPRADerivations.Foundations.SquareRootRelationalCertificate
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
+import IPRADerivations.Topology.Carriers
 
 import IPRADerivations.Algebra.PolynomialFiniteRoots
 import IPRADerivations.Analysis.LogisticName
