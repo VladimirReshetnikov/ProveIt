@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.BinomialTransform
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.SumReflect
+import IPRADerivations.Combinatorics.Bell
 
 /-!
 # The Hurwitz product and its derivation (`ipra_coherent_methods_2026-11-15`, (6), (7))
@@ -33,6 +34,10 @@ factor is visible in the statement: the right-hand side reads `a` and `b` up to 
 
 * `hw_comm`: `(a ⋆ b)_n = (b ⋆ a)_n`, by reflecting the sum (`sum_reflect`) and
   `C(n, n − j) = C(n, j)` (`binom_symm_of_le`); closed form `hw_comm_closed`.
+
+* `hw_one_bell`: `(1 ⋆ B)_n = B_{n+1}` for the Bell numbers `B`: they solve `Y' = A ⋆ Y` with
+  `A_j = 1`, `Y_0 = 1` (the packet's first example after (10)), from the Bell recurrence of
+  `Combinatorics/Bell` and commutativity.
 
 Not derived: associativity of `⋆`, the recurrence (9) for a polynomial
 system and `thm:hurwitz-ode` itself.
@@ -263,5 +268,49 @@ theorem hw_fact_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
   closeUniv 2 (hw_fact _ _)
 
 end Factorial
+
+/-! ## The Bell numbers solve `Y' = A ⋆ Y` with `A_j = 1` -/
+
+section BellNumbers
+
+open LeanProofs.IPRA.Combinatorics.Bell (bell bell_succ recB inst2_rec)
+
+/-- The sequence `j ↦ B_j` of Bell numbers. -/
+def bellB : PTm 2 := bell (var 0)
+
+/-- The constant sequence `1`. -/
+def oneB : PTm 2 := one
+
+theorem inst2_bellB (j x : PTm k) : inst2 bellB j x = bell j := by simp [inst2, bellB]
+
+theorem inst2_oneB (j x : PTm k) : inst2 oneB j x = one := by simp [inst2, oneB]
+
+/-- A summand of `(B ⋆ 1)_n` is the summand `C(n, j) B_j` of the Bell recurrence. -/
+theorem bell_pt (j n x : PTm k) :
+    Γ ⊢[PRAAx] inst2 (bgB (cv bellB oneB)) j (pairT n (pairT n x)) ≐ inst2 recB j n := by
+  have t := term_at (Γ := Γ) bellB oneB j n n x
+  rw [inst2_bellB, inst2_oneB] at t
+  rw [inst2_rec]
+  refine t.eqTrans (congrMul (.eqRefl _) ?_)
+  exact (mul_comm _ _).eqTrans (one_mul _)
+
+/-- `(B ⋆ 1)_n = ∑_{j ≤ n} C(n, j) B_j = B_{n+1}`. -/
+theorem hw_bell_one (n x : PTm k) : Γ ⊢[PRAAx] hw bellB oneB n x ≐ bell (succ n) := by
+  refine .eqTrans ?_ (bell_succ n).eqSymm
+  refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+  rw [shift_pairT, shift_pairT]
+  exact bell_pt _ _ _
+
+/-- `(1 ⋆ B)_n = B_{n+1}`: the Bell numbers satisfy `Y' = A ⋆ Y` with `A_j = 1` and
+`Y_0 = 1`, the packet's example after (10). -/
+theorem hw_one_bell (n x : PTm k) : Γ ⊢[PRAAx] hw oneB bellB n x ≐ bell (succ n) :=
+  (hw_comm oneB bellB n x).eqTrans (hw_bell_one n x)
+
+/-- The Bell example as a closed sentence. Variables: `0 = n`, `1 = x`. -/
+theorem hw_one_bell_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
+    (hw oneB bellB (var 0) (var 1) ≐ bell (succ (var 0))) :=
+  closeUniv 2 (hw_one_bell _ _)
+
+end BellNumbers
 
 end LeanProofs.IPRA.Foundations.HurwitzProduct

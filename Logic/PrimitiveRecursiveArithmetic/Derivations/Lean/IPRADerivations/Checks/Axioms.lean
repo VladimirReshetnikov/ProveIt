@@ -1328,6 +1328,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.comm_pt
 #print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_comm
 #print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_comm_closed
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.inst2_bellB
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.inst2_oneB
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.bell_pt
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_bell_one
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_one_bell
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_one_bell_closed
 #print axioms LeanProofs.IPRA.Foundations.TriangularUniqueness.inst2_eB
 #print axioms LeanProofs.IPRA.Foundations.TriangularUniqueness.subst_agree
 #print axioms LeanProofs.IPRA.Foundations.TriangularUniqueness.shift_agree
