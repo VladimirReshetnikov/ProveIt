@@ -533,3 +533,11 @@ import IPRADerivations.Analysis.GaussianDominantPlateau
 import IPRADerivations.Analysis.GaussianDominantPlateauValues
 import IPRADerivations.Analysis.GaussianTranslatedDominantPlateau
 import IPRADerivations.Analysis.GaussianDominantScoreWeights
+
+-- Actual off-dominant Gaussian sum with the exact 2/3 relative norm bound.
+import IPRADerivations.Analysis.GaussianOffDominantWeights
+import IPRADerivations.Analysis.GaussianOffDominantTerms
+import IPRADerivations.Analysis.GaussianHornerCommonDenominator
+import IPRADerivations.Analysis.GaussianRationalNormClearing
+import IPRADerivations.Analysis.GaussianGeometricSumBound
+import IPRADerivations.Analysis.GaussianOffDominantSum

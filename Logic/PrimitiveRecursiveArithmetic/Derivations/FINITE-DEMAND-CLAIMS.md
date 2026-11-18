@@ -176,9 +176,14 @@ the environment labels. Completion needs the following evidence:
    consecutive radii. The actual bounded center search supplies its own
    success, and no maximum, count, monotonicity or plateau premise is
    supplied. The actual [pointwise squared weights](Lean/IPRADerivations/Analysis/GaussianDominantScoreWeights.lean)
-   satisfy 16^abs(i-k)*S_i<=S_k at the selected radius. Their finite Gaussian-sum
-   application and the source 2/3 norm estimate, quantitative dominant lower
-   bound, direction and full contraction remain separate. The root-support construction is now checked under that
+   satisfy 16^abs(i-k)*S_i<=S_k at the selected radius. The actual
+   [off-dominant Gaussian sum](Lean/IPRADerivations/Analysis/GaussianOffDominantSum.lean)
+   now satisfies 9*normSq(otherSum)<=4*selectedScore, giving the required
+   2/3 norm estimate for every displacement within that radius. All term,
+   weight and common-denominator sum premises are derived; the stronger
+   displayed sum of individual magnitudes is not separately encoded.
+   Actual polynomial decomposition, quantitative dominant lower bound,
+   direction and full contraction remain separate. The root-support construction is now checked under that
    same RD contract.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z
