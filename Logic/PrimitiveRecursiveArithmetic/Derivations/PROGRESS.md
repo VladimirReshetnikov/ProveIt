@@ -109,6 +109,10 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | Finite-demand, rational input and normalized evaluation bridges | `GaussianRationalNormalization.joint_properties_closed`, `joint_program_closed`; `GaussianRationalHorner.rational_horner_closed`, `normalized_evaluation_closed`, `rational_product_closed`, `rational_root_zero_closed`, `original_query_evaluation_closed` | One actual positive common denominator is constructed from independent component codes of both root lists and a query. Canonical rational Horner evaluation of the generated coefficient list is exactly the integer product numerator divided by D^N. All degrees and numerical data are internal. Full rational coefficient-error/metric stability composition is completed below. |
 | Finite-demand, full common-denominator rational product stability | `GaussianRationalMetric.actual_coefficient_bound_closed`, `rational_distance_bound_closed`; `GaussianPolynomialScaling.homogeneous_linearity_closed`; `GaussianRationalProductStability.common_denominator_product_stability_closed`, `common_denominator_checker_closed`, `nearest_rational_root_bound_closed`, `zero_tolerance_root_closed` | Actual normalized coefficient comparisons imply both rational root covers with the exact source budget, all nine numerical parameters internal. Coefficient scaling, homogeneous evaluation, listed-root vanishing and positive denominator cancellation supply the full coefficient-to-cover argument, with repeated roots and zero tolerance. Original independently denominated point/radius input transport is completed below. |
 | Finite-demand, complete original rational product stability | `GaussianRationalRadius.actual_radius_closed`, `budget_transport_closed`; `GaussianRationalCover.original_close_transport_closed`, `original_output_closed`; `GaussianRationalStability.original_product_stability_closed`, `original_product_checker_closed`, `original_product_witness_closed`, `original_witness_program_closed` | Completes source `lem:product-stability` for the original independently denominated Gaussian-rational lists. The actual radius query derives its own common denominator, raw radius and exact source budget; actual normalized coefficient errors imply both original Euclidean covers. All nine source inputs are internal, including runtime degree and independent rational parameters. Repeated roots, zero tolerances, original-list checker acceptance and an actual PR6 original-target-point witness are checked. No residual, clearing, factorization, successful search or desired cover is an input premise. |
+| Finite-demand, actual scalar and coefficient L1 norms | `GaussianL1.gaussian_l1_algebra_closed`, `gaussian_l1_euclidean_closed`; `GaussianRationalL1.rational_l1_bound_closed`; `GaussianRationalL1Algebra.rational_l1_algebra_closed`, `rational_l1_radius_closed`; `GaussianCoefficientL1.coefficient_norm_triangle_closed`; `GaussianInitialCoefficientBound.initial_coefficient_bound_closed` | Actual norm operations, independent-denominator triangle/product/radius laws, runtime coefficient-norm sums and constructed coefficient addition/subtraction are checked. The initial residual bound and initial integer coefficient bound are computed from original inputs. Full polynomial convolution and the final factorization error composition remain open. |
+| Finite-demand, actual uniform synthetic division and factorization budgets | `GaussianSyntheticDivision.synthetic_division_closed`, `synthetic_monic_closed`; `GaussianRationalSyntheticDivision.rational_synthetic_division_closed`, `rational_synthetic_monic_closed`; `GaussianFactorBudget.epsilon_parameters_closed`, `prefix_budget_closed`, `budget_program_closed` | Genuine runtime Horner-prefix quotient programs and evaluation remainders prove (SD), coefficient reconstruction, monicity and canonical storage. The source (AF) recursion, L and epsilon are actual programs; positivity, exact final budget and prefix error majorants are checked. This does not yet construct the full approximate factorization. |
+| Finite-demand, conditional actual approximate-root clock | `GaussianDescentClockArithmetic.clock_budget_closed`, `ceiling_correct_closed`; `GaussianDescentClock.conditional_approximate_root_closed`, `actual_increment_iteration_closed`, `conditional_descent_clock_closed` | Completes the finite approximate-root corollary conditional on its explicit local (RD) contract. Actual canonical iterates, actual polynomial evaluation, exact ceil clock and computed B prove the final residual bound. No global decay, successful search, root existence or initial residual bound is a final premise. The source's FTA descent operation and its object proof remain open. |
+| Finite-demand, original rational quotient growth | `GaussianRationalSyntheticBounds.quotient_bound_closed`, `horner_bound_closed`, `stage_coefficient_bounds_closed` | Actual normalized quotient coefficients satisfy the source A_(j+1) bound by QF induction, using only original coefficient bounds, monicity, true length/current-degree guards and the original Euclidean root radius A_j+2. Current degree and original horizon are internal. No supplied local recurrence or global quotient estimate is accepted. Residual-to-radius and composition through the complete outer deflation loop remain open. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -279,27 +283,26 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `0cb01ef5ec`, including the complete original
-Gaussian-rational finite product-stability theorem and the numerical
-supplied-row Minkowski slab extractor, the root build completed 2,193 jobs
-and emitted 4,525 axiom reports for 4,016
-distinct declarations.
-Every report uses only
-`propext`, `Classical.choice` and `Quot.sound`. The portable import gate
-passed across 3,612 source modules and the independent `Diophantine`
-boundary passed across 5,252 modules.
+At the source based on `bc9fbc065e`, including actual uniform synthetic
+division, coefficient L1 arithmetic, factorization budgets and the
+conditional rational-descent clock, the root build completed 2,204 jobs
+and emitted 4,847 axiom reports for 4,338 distinct declarations.
+Every report uses only `propext`, `Classical.choice` and `Quot.sound`.
+The portable import gate passed across 3,623 source modules and the
+independent `Diophantine` boundary passed across 5,252 modules.
 
-The fourteen modules added in this batch contain 4,367 lines and 438 public
+The eleven modules added in this batch contain 2,840 lines and 322 public
 theorem registrations, all individually present in that audit output.
-Independent source/math reviews checked the rational denominator invariants,
-actual program constructions, complete source hypotheses, exact rational
-budgets, runtime degree and zero-tolerance cases. Finite-demand
-`lem:product-stability` is complete in the original pair coding. The
-numerical slab extractor is complete for supplied lattice-coordinate rows;
-physical basis transport and the other four unfinished Minkowski source
-claims remain open. Approximate factorization, root support/adequacy and
-the norm claims remain open in the finite-demand audit. The entire
-115-packet scope remains active.
+Independent source/math reviews checked every new module, including actual
+independent rational denominators, runtime degree, constant quotient and
+zero-norm cases, exact epsilon/clock arithmetic, computed initial bounds
+and the explicit local (RD) contract. The finite approximate-root corollary
+conditional on (RD), actual synthetic division and its coefficient bounds
+are checked. The full approximate-factorization theorem still requires the
+residual-to-radius estimate, full deflation loop and coefficient telescoping
+error composition. Its upstream FTA descent implementation/proof is open.
+The complete 115-packet scope remains active; these components do not
+complete that scope or the finite-demand packet.
 
 The new modules are included in `IPRADerivations`. Their public theorem
 names are audited in `Checks/Axioms.lean`. Build and inspect the object
