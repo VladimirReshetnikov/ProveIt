@@ -80,6 +80,7 @@ import IPRADerivations.Analysis.BaselRiemann
 import IPRADerivations.Analysis.PowerIncrement
 import IPRADerivations.Analysis.WallisGrid
 import IPRADerivations.Analysis.WallisRecurrence
+import IPRADerivations.Analysis.WallisFinite
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
