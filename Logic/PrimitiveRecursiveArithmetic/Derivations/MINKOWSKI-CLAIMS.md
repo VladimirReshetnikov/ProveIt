@@ -17,7 +17,7 @@ claimed object derivation.
 
 | Source claim | Checked scope and remaining work |
 | --- | --- |
-| `thm:main`, Certificate form of Minkowski, [01_foundations.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/01_foundations.tex), line 220 | **Partial: pure mesh kernel checked; assembled geometric extractor open.** [MinkowskiMesh](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiMesh.lean) constructs actual PR3 selected indices, quotient-difference vector and least nonzero coordinate from a sufficiently long decoded-distinct cell list. It proves index/output lengths, every exact scaled difference and actual integer nonzeroness. The remaining `BoxOK` producer must construct that list and derive its guards from nonempty boxes, positive sides, disjoint interiors and content greater than one. Then prove canonical rational cell-center cancellation and instantiate `InsideΦ`, symmetry and midpoint. Arbitrary-formula `Φ` needs canonical rational codes or a proved rational-extensionality contract; equal values of unreduced fractions do not permit substituting arbitrary raw codes. |
+| `thm:main`, Certificate form of Minkowski, [01_foundations.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/01_foundations.tex), line 220 | **Partial: integer-box enumeration to mesh and literal center transport checked; original geometric certificate frontend open.** [MinkowskiMixedRadix](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiMixedRadix.lean), [MinkowskiBoxes](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiBoxes.lean) and [MinkowskiBoxUnion](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiBoxUnion.lean) construct the actual varying-radix union list, count, arbitrary-index location, half-open membership and decoded distinctness from positive integer endpoint sides and the literal source separating-axis condition. `union_mesh_closed` supplies [MinkowskiMesh](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiMesh.lean) correctness under actual total count `>m^n`, with no enumeration/collision/distinctness premise. [RationalIntegerNormalization](Lean/IPRADerivations/Analysis/RationalIntegerNormalization.lean), [MinkowskiCenters](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiCenters.lean) and [MinkowskiCenterVectors](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiCenterVectors.lean) prove literal normalized center-midpoint/integer code equality and arbitrary-formula transport, including persistent numerical parameters and explicit closure contracts. Still construct common-denominator integer endpoints from the original rational certificate; derive the exact rational volume-to-count identity and threshold; implement its numerical `BoxOK` checker; derive generated center membership from the original `InsideΦ`; and assemble the original guarded formula scheme. Stored length alone is not a proof of canonical well-formedness. |
 | `lem:php`, Bounded color collision, [02_finite_proof.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/02_finite_proof.tex), line 48 | **Checked actual finite-prefix search.** [MinkowskiPigeonhole](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiPigeonhole.lean) proves `bounded_color_collision` and `sequence_collision_closed` with actual PR pair-search metadata. Only `H≥1` and original colors below `H` at indices `i≤H` are required. Remainder totalization derives the global range used by [Core/Pigeonhole](Lean/IPRADerivations/Core/Pigeonhole.lean); returned bounds recover equality of original prefix colors. No supplied collision or stronger global range premise remains. |
 | `lem:shrink`, Inner grid covers a shrink, [03_polytopes.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/03_polytopes.tex), line 91 | **Open.** Construct the actual floor-based cell and bounded containment checker. Retain certified `[-r,r]^n⊆P⊆[-R,R]^n`, `0<η<1`, `1/m≤ηr/2` and the computed search radius `T`. Derive that the chosen cell lies in the search window and passes every facet/vertex containment check. No supplied containment or successful-search conclusion may replace that proof. |
 | `cor:poly`, Strict rational-polytope theorem, [03_polytopes.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/03_polytopes.tex), line 131 | **Open volume/geometry frontend.** Fixed-size determinant and adjugate identities exist, but the complete volume frontend and strict extractor do not. From the bounded symmetric rational body and rational matrix with nonzero determinant, construct normalization, inner/outer radii, certified volume lower bound and the explicit mesh; prove retained content exceeds one and invoke `thm:main`. Prove the actual nonzero-vector/lattice transport. |
@@ -59,7 +59,7 @@ are executable evidence. They do not establish all-input ordinary iPRA
 correctness. The source labels its Lean outlines uncompiled; this audit does
 not revise those historical artifact claims into object-theory proof claims.
 
-## Pure mesh extraction checked; box refinement and geometric transport remain
+## Integer boxes and literal center transport checked; original frontend remains
 
 The pure signed mesh kernel from
 [Section 2](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/02_finite_proof.tex)
@@ -71,11 +71,24 @@ is checked independently of the unfinished volume frontend:
 3. **Checked:** [MinkowskiMesh](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiMesh.lean) applies the actual pigeonhole witnesses to a supplied list with at least `m^n+1` entries. The premise concerns decoded integer-vector distinctness, not different raw codes for one vector.
 4. **Checked:** its actual PR3 returned fields include the quotient vector `z` and the least searched nonzero coordinate. `mesh_correct_closed` derives every equation `a−b=mz`, the exact output vector length and a decoded nonzero entry from the supplied prefix guard; no collision or output nonzero premise is used.
 
-The checked `mesh_correct_closed` has exactly the pure-kernel form
-`MeshGuard → correct(N,m,L,meshF(N,m,L))`, with dimension, modulus,
-list lengths and coordinates internal. Source vectors use total signed
-coordinate decoders; there is no asserted zero padding of malformed vectors.
-The geometric producer can require each stored vector length to equal `N`. The subsequent box-refinement proof
-must derive `MeshGuard` from the original `BoxOK` certificate. It must not
-silently replace the original certificate by an assumed mesh-extraction
-conclusion.
+The original mesh-only conditional is now fed by an actual integer-box
+producer. `MinkowskiBoxUnion.union_mesh_closed` assumes only the actual
+integer endpoint side/separation guards, positive mesh, and computed sum of
+products greater than `m^n`. Its global block locator, within/cross-box
+coordinate witnesses and prefix distinctness are derived. This is not yet
+the original rational `BoxOK`: common-denominator preprocessing, exact
+rational content/count preservation and its numerical Boolean checker still
+need their explicit frontend.
+
+The center-code dependency is checked separately. The actual gcd-normalized
+scalar programs preserve value and, at an integer result, return its literal
+canonical code. `MinkowskiCenterVectors` constructs actual vectors and uses
+[SequenceEquality](Lean/IPRADerivations/Foundations/SequenceEquality.lean) to
+obtain literal whole-vector code equality from bounded coordinate equations.
+Equality replacement then transports arbitrary membership formulas without
+an extensionality premise or induction on membership. Parameterized formulas
+retain their internal persistent data. Unguarded and stored-length-guarded
+symmetry/midpoint contracts are explicit; neither is silently identified with
+the source's full canonical well-formed-input guards. The source geometric
+membership and original guard adapters remain part of the unfinished main
+theorem.

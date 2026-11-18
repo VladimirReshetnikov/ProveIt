@@ -47,6 +47,16 @@ construct a different canonical local power-series name and its exact
 rounding/Cauchy bounds; they do not automatically instantiate Gamma's Euler
 approximants, elementary function error budgets, or branch/domain contracts.
 
+[LogarithmExponentialCoefficients](Lean/IPRADerivations/Analysis/LogarithmExponentialCoefficients.lean)
+now proves a finite algebraic dependency of C4. Its actual signed Bell/history
+program uses the proved kernel `g_k=(-1)^k k!`, and derives the differential
+coefficient recurrence, initial values and zero coefficients at every
+internal degree at least two. The rational coefficients use proved-positive
+factorials. Identification with the literal finite sum of powers of the
+truncated logarithm, and transport to the actual analytic exponential/log
+names with their tail bounds, remain unproved bridges. The derived recurrence
+is not counted as the complete analytic C4 identity.
+
 ## Every ledger family remains in scope
 
 | Ledger IDs | Complete source deliverables still required |
