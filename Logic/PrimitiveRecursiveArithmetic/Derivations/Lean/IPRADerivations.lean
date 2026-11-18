@@ -60,6 +60,7 @@ import IPRADerivations.Analysis.ComplexLogarithmCauchy
 import IPRADerivations.Analysis.DyadicComplexLogarithm
 import IPRADerivations.Analysis.ComplexLogarithmName
 import IPRADerivations.Analysis.RationalSummableTails
+import IPRADerivations.Analysis.PolynomialBisection
 import IPRADerivations.Analysis.TrapezoidAffine
 import IPRADerivations.Analysis.HypergeometricTerm
 import IPRADerivations.Analysis.FiniteCalculus

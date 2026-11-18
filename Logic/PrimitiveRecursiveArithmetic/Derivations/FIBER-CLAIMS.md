@@ -269,7 +269,7 @@ source theorem's local contracts.
 | Metastability, §7.3 | Fixed bounded windows can use reflected formulas and strategies once a control program is fixed. | Construct the concrete window verifier and its witness bound. Keep `g` as a supplied fixed PR program unless a separate coded bounded semantics is proved. A global Cauchy rate needs a tail/rate producer. |
 | Guarded partial operations, §7.5 | `GapDecision.gap_decide` distinguishes zero from a separated magnitude under its exact signed approximation contract. | For reciprocal/division, supply exact rational interval arithmetic, a positive apartness margin, a precision transformer and verified output error. Logarithms, square roots, pivots and normalized vectors require their own domain guards and stability estimates. |
 | Modulus calculus, §7.6 | Signed ring/order arithmetic and finite sum APIs are available. | Prove the actual numerical contracts for addition; multiplication on bounded boxes; composition; `L`-term sums with the length allowance; division under apartness; root labels under an adequate labeling guard; and mesh/quadrature total error. A qualitative continuity premise is insufficient. |
-| A4. Certified bisection and uniqueness, §7.7 | `Core.Integers` and the exact polynomial identities in `Foundations.QuantitativeIdentities` support finite algebra; cancellation is available in the arithmetic library. The archive has executable bisection tests. | Encode the entire rational trace, prove midpoint selection preserves signs, prove exact width halving, and derive uniqueness from a checked factor identity `p(y)−p(x)=(y−x)Q(x,y)` with a positive lower bound for `Q`. No full polynomial interval checker or bisection endpoint is identified. |
+| A4. Certified bisection and uniqueness, §7.7 | **Checked exact finite rational algorithm.** [PolynomialBisection](Lean/IPRADerivations/Analysis/PolynomialBisection.lean) constructs the actual fixed-degree homogeneous evaluator and PR midpoint update. `evaluate_scale`, `run_bracket`, `run_width`, `run_denominator`, closed `bisection` and `bisection_nested` derive all finite signs, exact width halving and arbitrary-index nesting from the initial bracket. `factor_identity` and closed `uniqueness` prove rational-zero uniqueness using the computed factor's positive guard. All coefficients and bracket data are internal, including degree-zero/tie/zero-width cases. | Connect supplied coefficient lists through in-range sequence decoding; produce a uniform interval factor guard where needed; prove completed-real root-name correctness, continuity and uniqueness adapters. No completed-space root theorem is inferred from rational-zero uniqueness alone. |
 | Branch/Puiseux and representative interfaces, §§8.5–8.6 | Fixed quadratic observation identities provide a small finite example; finite strategies provide compatibility consumers. | For exact splitting data, prove truncation identities and permutation-invariant validity. For approximate data, prove cluster/residual bounds. Preserve discriminant/order guards for labels and representative-totality/continuation as separate producers. |
 
 The wider domain discussion in [09_domains.tex](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/09_domains.tex)
@@ -360,16 +360,16 @@ add any object axiom to `PRAAx`. Build acceptance must continue to exclude
 `sorryAx`, unproved theorem-specific axioms and quantified induction stronger
 than the stated object theory.
 
-The latest root integration, based on `32099fe883` with runtime sequence
-composition, passed 2,089 build jobs and 2,055 axiom reports for 1,977
+The latest root integration, based on `08b2d04b77` with actual polynomial
+bisection, passed 2,090 build jobs and 2,083 axiom reports for 1,994
 distinct declarations. Every report uses only the standard Lean axioms.
-The portable and independent Diophantine import gates passed across 3,508
+The portable and independent Diophantine import gates passed across 3,509
 and 5,252 modules respectively. The full demand endpoints first landed in
 `b1bd8ac2e4`; its reviewed source hash is
 `b6d91cfab1bfa8e78d5aedad3b633efceeae59eafb8c8f448bf567692777fade`.
 These receipts cover the implemented theorem scopes. Global realizer and
-compiler assembly, representation adapters and application obligations above
-remain open.
+compiler assembly, completed-name and uniform-guard adapters, and the other
+application obligations above remain open.
 
 Appendix B requests eight concrete regression examples. Generic coverage and
 an instantiated regression receipt are kept separate.
@@ -436,9 +436,9 @@ presentation-independent invariants from spanning alone.
 2. Complete the global compiler/realizer result above the checked typed
    acyclic kernel, with flattened demands and exact specialized residuals. Use the checked demand closure to generate and verify
    the finite unrolling of cyclic demand graphs.
-3. Rational denominator-changing telescoping is checked. Add guarded interval
-   arithmetic and use it for a complete rational polynomial bisection trace
-   theorem and the factor-bound uniqueness conclusion.
+3. Rational denominator-changing telescoping and the actual finite rational
+   polynomial-bisection trace are checked. Complete the represented root-name,
+   continuity, coefficient-list and uniform factor-guard adapters.
 4. Settle the precise G1 metric and the G2 labeling guard, then implement real
    cluster-count certificates and prove common-coarsening/label stability.
 5. Generalize the finite-algebra example to checked finite presentations and

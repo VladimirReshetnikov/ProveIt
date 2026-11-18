@@ -1973,3 +1973,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.SequenceComposition.runtime_flatten
 #print axioms LeanProofs.IPRA.Foundations.SequenceComposition.empty_sequence_composition
 #print axioms LeanProofs.IPRA.Foundations.SequenceComposition.zero_length_inner_block
+#print axioms LeanProofs.IPRA.Analysis.PolynomialBisection.evaluate_scale
+#print axioms LeanProofs.IPRA.Analysis.PolynomialBisection.factor_identity
+#print axioms LeanProofs.IPRA.Analysis.PolynomialBisection.uniqueness
+#print axioms LeanProofs.IPRA.Analysis.PolynomialBisection.run_bracket
+#print axioms LeanProofs.IPRA.Analysis.PolynomialBisection.run_width
+#print axioms LeanProofs.IPRA.Analysis.PolynomialBisection.run_denominator
+#print axioms LeanProofs.IPRA.Analysis.PolynomialBisection.nested_between
+#print axioms LeanProofs.IPRA.Analysis.PolynomialBisection.bisection
+#print axioms LeanProofs.IPRA.Analysis.PolynomialBisection.bisection_nested
+#print axioms LeanProofs.IPRA.Analysis.PolynomialBisection.selector_at_zero
+#print axioms LeanProofs.IPRA.Analysis.PolynomialBisection.run_add
