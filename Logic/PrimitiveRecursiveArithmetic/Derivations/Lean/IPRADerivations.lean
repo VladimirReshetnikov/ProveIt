@@ -50,6 +50,7 @@ import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BetaAssociativity
 import IPRADerivations.Analysis.NewtonCertificates
+import IPRADerivations.Analysis.LambertAlgebra
 import IPRADerivations.Analysis.BarnesInteger
 import IPRADerivations.Analysis.BarnesProducts
 import IPRADerivations.Analysis.RationalClosure
