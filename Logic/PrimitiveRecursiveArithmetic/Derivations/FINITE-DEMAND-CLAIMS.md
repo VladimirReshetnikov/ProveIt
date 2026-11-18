@@ -233,9 +233,32 @@ the environment labels. Completion needs the following evidence:
    closes the full finite source step-bound lemma and its actual PR3 endpoint
    from original coefficient/rate/residual assumptions, without an NC, chosen
    coefficient, radius, power or output-law premise. All 15 numerical inputs
-   are internal. The general changing-precision coefficient-name iteration,
-   its Cauchy bounds and polynomial-value zero remain open; general nonmonic
-   FTA stays in scope.
+   are internal. [General coefficient names](Lean/IPRADerivations/Analysis/GaussianGeneralCoefficientNames.lean)
+   now derive whole-tail apartness from the actual h+2 test; the
+   [sample builder](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialSamples.lean)
+   retains all supplied coefficients and derives its initial B bound.
+   [All-coefficient perturbation](Lean/IPRADerivations/Analysis/GaussianRationalAllCoefficientPerturbation.lean)
+   covers the changing leading observation. Actual
+   [global constants](Lean/IPRADerivations/Analysis/GaussianGeneralFTAConstants.lean)
+   and [rate comparisons](Lean/IPRADerivations/Analysis/GaussianGeneralFTARates.lean)
+   discharge the source clock and rate obligations, with the documented
+   upper-power binary-length convention. The
+   [actual product recursor](Lean/IPRADerivations/Analysis/GaussianGeometricProduct.lean),
+   [tail gap](Lean/IPRADerivations/Analysis/GaussianGeometricProductTail.lean)
+   and [finite uniform bound](Lean/IPRADerivations/Analysis/GaussianGeometricProductBound.lean)
+   prove the [computed source product bound](Lean/IPRADerivations/Analysis/GaussianGeneralProductBound.lean)
+   1<=U_j<=R from N>=1 alone, without a supplied global bound or infinite product.
+   The [actual trajectory](Lean/IPRADerivations/Analysis/GaussianGeneralFTATrajectory.lean)
+   samples P_j at j+L and has proved updates, canonicality and initial residual.
+   The [computed sampled-step theorem](Lean/IPRADerivations/Analysis/GaussianGeneralFTAStepBound.lean)
+   derives U C rho^j from original coefficient names/apartness and the local
+   disk/residual budgets; every finite rate/lambda/NC obligation is discharged.
+   The [actual adjacent-sample drift](Lean/IPRADerivations/Analysis/GaussianGeneralFTACoefficientDrift.lean)
+   is bounded by B Q^j/(8D) throughout the computed R disk, from genuine
+   coefficient coherence and precision/rate arithmetic alone.
+   The simultaneous perturbed residual/radius invariant for the actual
+   trajectory, its Cauchy bounds and polynomial-value zero remain open;
+   general nonmonic FTA stays in scope.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z
    constants. The later unnumbered stage-distance/zero-distance corollary is also
