@@ -541,3 +541,11 @@ import IPRADerivations.Analysis.GaussianHornerCommonDenominator
 import IPRADerivations.Analysis.GaussianRationalNormClearing
 import IPRADerivations.Analysis.GaussianGeometricSumBound
 import IPRADerivations.Analysis.GaussianOffDominantSum
+
+-- Actual original-polynomial dominant decomposition and exact magnitude bounds.
+import IPRADerivations.Analysis.GaussianRationalSumAlgebra
+import IPRADerivations.Analysis.GaussianRationalPowerExpansion
+import IPRADerivations.Analysis.GaussianRationalSumSegments
+import IPRADerivations.Analysis.GaussianRationalDominantDecomposition
+import IPRADerivations.Analysis.GaussianDominantMagnitude
+import IPRADerivations.Analysis.GaussianTranslatedDominantEstimates

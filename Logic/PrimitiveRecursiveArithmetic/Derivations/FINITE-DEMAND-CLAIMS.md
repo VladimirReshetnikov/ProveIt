@@ -182,8 +182,14 @@ the environment labels. Completion needs the following evidence:
    2/3 norm estimate for every displacement within that radius. All term,
    weight and common-denominator sum premises are derived; the stronger
    displayed sum of individual magnitudes is not separately encoded.
-   Actual polynomial decomposition, quantitative dominant lower bound,
-   direction and full contraction remain separate. The root-support construction is now checked under that
+   The actual [polynomial decomposition](Lean/IPRADerivations/Analysis/GaussianRationalDominantDecomposition.lean)
+   and [strict dominant lower/upper bounds](Lean/IPRADerivations/Analysis/GaussianDominantMagnitude.lean)
+   are now checked, with the unchanged source D=2^N*4^(2*N*N). The
+   [original-input preparation](Lean/IPRADerivations/Analysis/GaussianTranslatedDominantEstimates.lean)
+   connects the literal P(z+delta) split, bounds against actual P(z),
+   both residual branches and the conditional off-sum norm estimate.
+   Rational direction, dominant-pair decrease and full contraction remain
+   separate. The root-support construction is now checked under that
    same RD contract.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z
