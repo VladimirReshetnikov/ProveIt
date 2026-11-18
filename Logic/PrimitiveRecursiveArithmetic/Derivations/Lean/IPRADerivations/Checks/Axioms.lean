@@ -13560,6 +13560,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.ne_congr
 #print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.vandermonde_ne
 #print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.root_bound
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.zdec
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.all_or_some
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.some_nonroot
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.lit_succ_ne
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.lit_distinct
+#print axioms LeanProofs.IPRA.Foundations.GenericDirection.generic_direction
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.Bez
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.P
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.tB
