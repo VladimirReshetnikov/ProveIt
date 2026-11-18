@@ -39,7 +39,7 @@ come from the delivered theorem ledger.
 
 | Source claim | Location and label | Current scope and exact declarations | Remaining work |
 |---|---|---|---|
-| O1. No primitive-recursive universal evaluator | [02_boundary.tex](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/02_boundary.tex), line 61, unlabelled theorem | **Open external obstruction.** The source's diagonal argument is about primitive-recursive functions in the metatheory. No corresponding checked declaration is identified here. | Formalize the asserted enumeration property and the diagonal `g(x)=U(x,x)+1` using the chosen PR semantics. This is a Lean metatheorem, unless a separate coded object-language version is specified. |
+| O1. No primitive-recursive universal evaluator | [02_boundary.tex](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/02_boundary.tex), line 61, unlabelled theorem | **Checked external obstruction and internal diagonal family.** [UniversalEvaluatorObstruction](Lean/IPRADerivations/Foundations/UniversalEvaluatorObstruction.lean) `no_universal_primitive_recursive_evaluator` proves that no binary `E : PR 2` represents every unary PR program under actual `PR.ev` semantics. `diagonal_obstruction` closes the object-level no-index theorem using `EmbeddingBasics.no_universal_evaluator`. [Core/Evaluation](Lean/IPRADerivations/Core/Evaluation.lean) defines the shared evaluator and proves closed computation derivations. | No mathematical remainder for the stated metatheorem. The external semantic assertion is separate from the object-language diagonal sentence; no internal universal evaluator is introduced. |
 | K1. Local certificate sealing | [04_kernel.tex](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/04_kernel.tex), line 11, `thm:sealing` | **Inherited checked structural schema.** `LeanProofs.ConciseIPRA.Prf.exE` has exactly the fresh-witness branch and shifted conclusion required by the source. | No mathematical remainder. The optional delivered alias `FIBER.seal` has not been installed as a new library module. |
 | Observational escape | 04_kernel.tex, line 30, unlabelled corollary | **Inherited checked elimination schema.** `Prf.exE` seals any branch whose public conclusion has no fresh certificate variable. The application supplies its actual observation-invariance derivation. | Concrete equivalence bits, observation congruence and stability proofs remain obligations for each interface. There is no generic installed FIBER observation record or observation compiler. |
 | K2. Finite residual discharge | 04_kernel.tex, line 45, `thm:cut` | **Inherited checked structural schema.** `LeanProofs.ConciseIPRA.Prf.trans` works for arbitrary formulas and arbitrary contexts, under a derivation of each source hypothesis. | No mathematical remainder. A residual producer is a premise until its own derivation is supplied. |
@@ -48,8 +48,8 @@ come from the delivered theorem ledger.
 | K5. Master-certificate theorem | 04_kernel.tex, line 171, `thm:master` | **Checked conditional object family.** [MasterCertificate](Lean/IPRADerivations/Foundations/MasterCertificate.lean) provides the actual PR sequence `master`, its `entry` decoder, `master_decode`, `master_length`, `master_valid`, and closed `master_closed`. Pointwise bounded totality yields every decoded entry's bound and acceptance. | A client must translate its fixed verifier into the implemented predicate and prove pointwise totality. A uniform numerical bound on the entire sequence code and sequence concatenation are further compiler requirements, not premises hidden in `master_valid`. |
 | K6. Least finite demand closure | 04_kernel.tex, line 209, `thm:demand-closure` | **Checked conditional object family.** [DemandClosure](Lean/IPRADerivations/Foundations/DemandClosure.lean) provides actual variable-length sequence coordinates, reflected order, coordinate sum, maximum, join, zero vector and PR iteration. `closure_prefixed`, `closure_stable`, `demand_closure`, and closed `demand_closure_closed` prove cappedness, stabilization at the exact sum of caps, prefixedness and minimality. | No mathematical remainder for the source finite-product theorem. The operator's cap preservation and monotonicity are explicit object premises. Compiler integration still needs demand extraction and finite schedule unrolling. |
 | K7. Bounded strategy realization | 04_kernel.tex, line 263, `thm:strategy` | **Checked proof-generator family with closed object endpoints.** [StrategyRealization](Lean/IPRADerivations/Foundations/StrategyRealization.lean) provides fixed `Pattern`, actual `check`, `verifierF : PR 2`, `verifier_at`, `check_sound`, `strategy_sound`, `bounded_strategy`, and `bounded_strategy_program`. Bounds may depend on the entire packed move history. Existential responses and universal tables are decoded from the supplied code. | No mathematical remainder for the source's acceptance-implies-formula theorem over the implemented reflected leaves. Translation of other source leaf syntax is the K3 frontend obligation. No completeness or extraction from arbitrary classical proofs is asserted. |
-| C1. FIBER compilation | [05_compiler.tex](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/05_compiler.tex), line 59, `thm:compilation` | **Partial external compiler metatheorem.** [StagedGraph](Lean/IPRADerivations/Foundations/StagedGraph.lean) provides `Node`, `instantiate_into`, `cut_all`, and `staged_graph` for static proof-bearing nodes with earlier-dependency proofs. These construct object derivations. | Implement the stated typed FIBER node language and well-formedness, demand generation, master bounds/verifier, transformation/observation terms, exact residual list, scope checker, and compilation recursion. Cyclic demand additionally needs K6 and a proved finite unrolling adapter. `staged_graph` alone does not construct these outputs. |
-| C2. Compositionality | 05_compiler.tex, line 131, `thm:composition` | **Partial external realizer construction.** `Prf.subst`, `Prf.trans`, and `StagedGraph.staged_graph` supply the derivation-composition layer. [BoundedCover](Lean/IPRADerivations/Foundations/BoundedCover.lean) `composition` covers two dependent bounded selections. | Construct the full demand-list flattening and master-input reassociation, specialized residual list, output transformer, code bounds, and observation stability. Prove the lookup/concatenation identities used by that construction. The two-selection result does not establish all these fields. |
+| C1. FIBER compilation | [05_compiler.tex](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/05_compiler.tex), line 59, `thm:compilation` | **Partial external compiler metatheorem.** [FiberCompiler](Lean/IPRADerivations/Foundations/FiberCompiler.lean) has actual typed acyclic `Program` syntax, `Program.compile`, `compile_at`, `compile_closed`, guarded residual computation, scoped metadata and `GeneratedSymbol.correct`. Primitive nodes require local sequents and recursively constructed premise programs. Pair/projection, QF loop, search, Boolean branch, lexical witness, strategy, observation and specialized call constructors are implemented. | Complete global runtime demand flattening, whole-master metadata/verification, transformation/observation composition and cyclic graph unrolling. Local symbol evaluation correctness does not assert the missing global realizer laws. Witness residual hoisting is explicitly the possibly stronger producer `∀c,φ(c)→R(c)`. |
+| C2. Compositionality | 05_compiler.tex, line 131, `thm:composition` | **Partial realizer construction.** `FiberCompiler.Program.callCompiled` specializes a previously compiled interface, retaining its specialized residuals. `Program.bind_residuals` and `booleanCase_residuals` preserve control-flow guards; the literal proof is compiled by recursive substitution/cut. `StagedGraph` and `BoundedCover.composition` remain additional components. | Construct runtime demand-list flattening, master-input reassociation, bounds/verifier and global output-transformer/observation stability. The acyclic local proof kernel and static specialized call do not yet supply these realizer fields. |
 | Reuse under arbitrary terms and contexts | 05_compiler.tex, line 159, unlabelled corollary | **Inherited checked structural schema.** `LeanProofs.IPRA.inst`, `Prf.subst`, `Prf.weaken`, and `Prf.ofNil` provide the advertised arbitrary-term and arbitrary-context reuse. `StagedGraph.instantiate_into` also supports local hypotheses. | No mathematical remainder for already constructed object derivations. This does not supply a missing compiler or a missing local theorem. |
 | R1. Bounded producer elimination | [06_residuals.tex](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/06_residuals.tex), line 61, unlabelled proposition | **Inherited checked structural schema, with checked bounded-selection components.** `Prf.trans` discharges a proved producer; `Prf.exE` seals a witness-independent branch. `bf_choice` and `least_spec` supply explicit terms for reflected bounded producers. | Every producer's existence proof and every source-verifier adapter remain inputs. No theorem here eliminates an unproved producer merely because it is bounded. |
 | A1. Dyadic adjacent-motion theorem | [07_analysis.tex](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/07_analysis.tex), line 22, `thm:dyadic` | **Checked conditional object family.** [DyadicCauchy](Lean/IPRADerivations/Analysis/DyadicCauchy.lean) provides `discrepancy`, `discrepancy_between`, closed `dyadic_cauchy`, and closed `dyadic_endpoints`. The exact sharp integer bound has arbitrary internal indices and a runtime parameter. | No mathematical remainder for the source's cleared-denominator endpoint. Interpreting a represented real or exporting a particular interface's observation requires that client's evaluator/observation adapter. |
@@ -199,26 +199,34 @@ fixed observation symbols. Both `certificates_coherent` and
 variables. There is no requirement to produce one infinite witness array.
 
 The additional A2 claim in [07_analysis.tex §7.2](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/07_analysis.tex)
-has no theorem environment. It is **checked for signed integer sequences and
-natural error majorants**, with a separate adapter still needed for general
-rational codes. [SummableTails](Lean/IPRADerivations/Analysis/SummableTails.lean)
-provides the actual `intervalSum`, its zero/successor equations,
-`finite_telescoping`, `summable_tail`, and `summable_tail_endpoints`.
-For arbitrary fixed `p q e T : PR 2`, the last declaration closes `N,M,x` in
+has no theorem environment. It is **checked for signed rational sequences with
+independently varying positive sample and error denominators** in
+[RationalSummableTails](Lean/IPRADerivations/Analysis/RationalSummableTails.lean).
+For fixed PR symbols, a sample is `(p(k,x)−q(k,x))/d(k,x)` and its adjacent
+error is `e(k,x)/f(k,x)`. The actual PR accumulator starts at `(E,D)=(0,1)`
+and adds the next error by `(E,D) ↦ (E*f+e*D,D*f)`.
+
+`accumulator_succ` gives these exact rational-addition equations;
+`sumDen_positive` proves positivity from the error-denominator contract.
+`cross_triangle` and `rational_step` prove the cleared triangle step and
+cancel the positive intermediate sample denominator. QF induction then proves
+`finite_telescoping` at internal `N,r,x`. No common-scale conversion or
+pairwise Cauchy estimate is assumed.
+
+`summable_tail_endpoints` closes internal `N,M,x` and retains sample/error
+denominator positivity, adjacent error bounds, the actual rational finite-sum
+tail certificate and `N≤M`. Its conclusion has positive tail denominator and
 
 ```text
-motion(p,q,e,x) → tail(e,T,x) → N≤M → |a(M,x)−a(N,x)|≤T(N,x).
+Tden(N,x) * |a(M,x)*d(N,x) − a(N,x)*d(M,x)|
+  ≤ Tnum(N,x) * d(N,x)*d(M,x).
 ```
 
-The `tail` premise states an upper bound on each actual finite interval sum,
-and `motion` bounds each actual adjacent signed difference. Neither premise
-asserts the desired pairwise discrepancy bound. To cover rational sequences
-with precision-dependent denominators, next implement exact fraction
-addition, subtraction, absolute comparison, positivity and finite telescoping
-under denominator clearing. Reusing the integer theorem at a fixed common
-scale requires a proved scale-conversion adapter. A tail tending to zero with
-a specified rate is additional input when the application requests a global
-Cauchy rate.
+Thus the finite error sum can be compared to an independently supplied rational
+tail bound. A specified rate at which that bound tends to zero remains input
+when the application requests a global Cauchy rate. The original
+[SummableTails](Lean/IPRADerivations/Analysis/SummableTails.lean) is the simpler
+signed-integer/common-unit specialization, with its own direct finite sums.
 
 ### Finite-net lifting
 
@@ -255,8 +263,8 @@ source theorem's local contracts.
 | Certificate-independent observation and metric/quotient fibers, §§3.2, 3.6 | `Prf.exE` enforces the lexical witness condition; `GapDecision` supplies signed absolute-value lemmas; fixed algebraic observations are available. | Supply each actual equivalence bit's reflexivity, symmetry and transitivity, exported-operation congruence, and numerical stability proofs. These are not implied by metadata names. |
 | Realizer fields and escape classes, §§3.3–3.4 | Least bounded search and master construction cover canonical bounded witnesses; local elimination covers sealed witnesses. | Define demand, master bound/verifier, transform, observe and residual constructors together with their literal local soundness sequents. Prove that every exported code is canonical or observationally independent. |
 | Herbrand capsules, §3.5 | `exB`, `bf_choice`, bounded reflection and pairing provide components. The reference implementation has a capsule algorithm. | Encode the actual list and prove the disjunction's meaning through lookup; prove pointwise mapping and invariant elimination, and the least-valid-member adapter when selection is requested. No dedicated generic capsule endpoint is identified. |
-| Node arities, scopes and QF loop invariants, §5.1–§5.2 and Appendix A | `StagedGraph` handles proof-bearing local nodes; `TraceInvariant.trace_invariant_all` and `trace_invariant` preserve a supplied PR bit invariant through an actual PR run. | Implement source well-formedness and lexical scopes, reflection before loops, and generated base/step derivations. Reject escaping local variables. Prove each emitted formula and substitution is the declared one. |
-| Compiler output tuple, §5.3 and Appendix A | Structural substitution/cut plus the checked arithmetic families above. | Return all seven prescribed components `(demand,bound,verifier,transform,observe,residuals,proof)` from an accepted typed source program; cover all node constructors, calls, loops and cyclic unrolling. |
+| Node arities, scopes and QF loop invariants, §5.1–§5.2 and Appendix A | `StagedGraph` handles proof-bearing local nodes; `TraceInvariant.trace_invariant_all` and `trace_invariant` preserve a supplied PR bit invariant through an actual PR run. | `FiberCompiler.Program` now enforces arities and lexical witness scope by its indices and compiles supplied checked QF loops. Complete a runtime graph frontend and global demand/unrolling adapter, and prove their interpretation into that typed syntax. |
+| Compiler output tuple, §5.3 and Appendix A | The checked typed acyclic `FiberCompiler` returns literal residual/input sequents and local generated symbols with evaluation equalities; the arithmetic families supply its primitive contracts. | Return all seven prescribed components `(demand,bound,verifier,transform,observe,residuals,proof)` from an accepted typed source program; cover all node constructors, calls, loops and cyclic unrolling. |
 | Residual normal form and hierarchy R0–R8, §6 | Structural rules cover R0; bounded reflection/search, master certificates, demand closure, coherence and finite-net lifting cover displayed conditional R1–R6 instances within their documented representation scope. | Supply precise R7 guarded operations and rational adapters for the full R4 scope. Preserve every unresolved R8 producer as an object formula with all parameters, strictness and zero cases. No generic theorem supplies absent height, modulus, gap or representative data. |
 | Metastability, §7.3 | Fixed bounded windows can use reflected formulas and strategies once a control program is fixed. | Construct the concrete window verifier and its witness bound. Keep `g` as a supplied fixed PR program unless a separate coded bounded semantics is proved. A global Cauchy rate needs a tail/rate producer. |
 | Guarded partial operations, §7.5 | `GapDecision.gap_decide` distinguishes zero from a separated magnitude under its exact signed approximation contract. | For reciprocal/division, supply exact rational interval arithmetic, a positive apartness margin, a precision transformer and verified output error. Logarithms, square roots, pivots and normalized vectors require their own domain guards and stability estimates. |
@@ -308,8 +316,8 @@ Names are mapped by theorem scope rather than namespace resemblance.
 | `Strategy.realize` | `StrategyRealization.check_sound`, `strategy_sound`, closed `bounded_strategy_program`. |
 | `Interface.localSound` | Concrete compiled interface instances are pending. `StagedGraph.Node.d` stores a supplied local proof without proving new local mathematics. |
 | `Interface.obsIndependent` | Pending for concrete general FIBER interfaces. The dyadic certificate theorem covers its specific public observation contract. |
-| `Compile.sound` | Static derivation scheduling is checked by `StagedGraph.staged_graph`. Complete source-language compilation with all promised output fields remains pending. |
-| `Compile.compose` | Substitution/cut and two bounded selections are checked components. General demand/master/observation composition remains pending. |
+| `Compile.sound` | Typed acyclic source compilation is checked by `FiberCompiler.Program.compile`, `compile_at`, and `compile_closed`; static scheduling is also checked by `StagedGraph`. Full global runtime realizer fields and cyclic unrolling remain pending. |
+| `Compile.compose` | `FiberCompiler.Program.callCompiled` and guarded bind/case residual equations prove static specialized calls and local proof composition. General runtime demand/master/observation composition remains pending. |
 | `Dyadic.scaledBound` | `DyadicCauchy.discrepancy`, `discrepancy_between`; universally closed `dyadic_cauchy`, `dyadic_endpoints`. |
 | `Dyadic.cauchy` | The same exact bound implies the source's permitted cleared-denominator strict inequality. No completed-real semantics is imported. |
 | `FiniteNet.lift` | `FiniteNet.lift_at`, `finite_net`, `finite_net_closed`. |
@@ -340,9 +348,9 @@ irrespective of their installed directory.
 | 4. Master certificates | The variable-length bounded-family theorem is checked directly, including its actual PR code and closed endpoint. The prescribed three-query polynomial-evaluation regression and numerical whole-code bound are separate follow-up tests/contracts. |
 | 5. Demand closure | The full variable-length order/rank/join/orbit theorem is checked, including cap preservation, sharp stabilization, prefixedness and minimality. The source's suggested fixed-coordinate milestones are subsumed mathematically. A concrete two-coordinate regression should instantiate this actual theorem rather than report a host settlement calculation. |
 | 6. Bounded strategies | General fixed patterns, dependent bounds, actual checked response/table trees, explicit PR verifier and closed soundness theorem are checked. The concrete depth-two regression is still a named-instance obligation. |
-| 7. Interface/compiler records | Partial structural scheduling and local proof specialization are checked. Full proof-bearing typed syntax, all result fields, observation invariance, residual specialization, lexical scope enforcement, demand closure and finite unrolling remain. |
+| 7. Interface/compiler records | Typed acyclic syntax, recursive proof generation, local metadata symbols, guarded residuals and lexical scope are checked in `FiberCompiler`. Complete global runtime demand/master/observation composition and cyclic unrolling; actual realizer instances still need their mathematical local contracts. |
 | 8. Cross-domain examples | Exact runtime-parameter dyadic coherence, including sealed local certificates, and conditional finite-net lifting are checked families. Genuine cluster-certificate agreement and corrected gap labels remain. Concrete rational-net, cluster and polynomial-evaluation regression instances must instantiate actual representation checkers. |
-| 9. Build, axioms and bridges | [Checks/Axioms.lean](Lean/IPRADerivations/Checks/Axioms.lean) registers the new dyadic, certificate, summable-tail, finite-net, master and strategy endpoints. Direct and normal integration builds and standard-axiom audits are recorded in the progress report. `ConciseIPRA.pra_iff_native` and the generic open bridges exist; a concrete FIBER native transfer and open-sequent round trip should be recorded when performed. No such packet-specific receipt is inferred from the generic bridge theorem. |
+| 9. Build, axioms and bridges | [Checks/Axioms.lean](Lean/IPRADerivations/Checks/Axioms.lean) registers the new dyadic, certificate, integer/rational tail, finite-net, master, demand, strategy, compiler-kernel and evaluator-obstruction endpoints. Direct and normal integration builds and standard-axiom audits are recorded in the progress report. `ConciseIPRA.pra_iff_native` and the generic open bridges exist; a concrete FIBER native transfer and open-sequent round trip should be recorded when performed. No such packet-specific receipt is inferred from the generic bridge theorem. |
 
 `pra_iff_native` is defined in
 [`ConciseIPRA/NativeBiInterpretation.lean`](../ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean).
@@ -352,15 +360,15 @@ add any object axiom to `PRAAx`. Build acceptance must continue to exclude
 `sorryAx`, unproved theorem-specific axioms and quantified induction stronger
 than the stated object theory.
 
-The integration receipt containing the completed demand theorem records
-2,076 build jobs and 1,924 axiom reports for 1,882 distinct declarations, all
-using only those standard Lean axioms. The portable and independent
-Diophantine import gates passed over 3,495 and 5,252 modules respectively.
-The full demand endpoints are in commit `b1bd8ac2e4`; the reviewed
-`DemandClosure.lean` has SHA-256
+The latest root integration, based on `6a13fc5252` with the rational-tail,
+acyclic-compiler and evaluator-obstruction additions, passed 2,085 build jobs
+and 2,006 axiom reports for 1,935 distinct declarations. Every report uses
+only the standard Lean axioms. The portable and independent Diophantine
+import gates passed across 3,504 and 5,252 modules respectively. The full
+demand endpoints first landed in `b1bd8ac2e4`; its reviewed source hash is
 `b6d91cfab1bfa8e78d5aedad3b633efceeae59eafb8c8f448bf567692777fade`.
-These receipts validate the listed implementation rather than the remaining
-source claims.
+These receipts cover the implemented theorem scopes, while the unresolved
+compiler, representation and application obligations above remain open.
 
 Appendix B requests eight concrete regression examples. Generic coverage and
 an instantiated regression receipt are kept separate.
@@ -424,20 +432,19 @@ presentation-independent invariants from spanning alone.
 1. Supply the remaining sequence concatenation and whole-master-code bound
    contracts; connect the arity-indexed source syntax to the checked packed
    reflection generator.
-2. Implement the complete proof-bearing compiler result and its source scope
-   checker, then compose actual realizers with flattened demands and exact
-   specialized residuals. Use the checked demand closure to generate and verify
+2. Complete the global compiler/realizer result above the checked typed
+   acyclic kernel, with flattened demands and exact specialized residuals. Use the checked demand closure to generate and verify
    the finite unrolling of cyclic demand graphs.
-3. Add rational denominator-changing telescoping and guarded interval
-   arithmetic. Use them for a complete rational polynomial bisection trace
+3. Rational denominator-changing telescoping is checked. Add guarded interval
+   arithmetic and use it for a complete rational polynomial bisection trace
    theorem and the factor-bound uniqueness conclusion.
 4. Settle the precise G1 metric and the G2 labeling guard, then implement real
    cluster-count certificates and prove common-coarsening/label stability.
 5. Generalize the finite-algebra example to checked finite presentations and
    prove polynomial-action and transport correctness with all relation or
    independence assumptions displayed.
-6. Formalize the two external obstruction theorems at their actual
-   metatheoretic representation types and record the requested concrete
+6. Formalize the remaining unguarded-sign obstruction at its actual
+   metatheoretic representation type and record the requested concrete
    native/open-bridge and regression instances.
 
 These remaining tasks are independent mathematical and compiler obligations.
