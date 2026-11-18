@@ -72,6 +72,7 @@ import IPRADerivations.Analysis.BaselDiagonal
 import IPRADerivations.Analysis.BaselFinite
 import IPRADerivations.Analysis.BaselSquares
 import IPRADerivations.Analysis.BaselAverages
+import IPRADerivations.Analysis.BaselCore
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
