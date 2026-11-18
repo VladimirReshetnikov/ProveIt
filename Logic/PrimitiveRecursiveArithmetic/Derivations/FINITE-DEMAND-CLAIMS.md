@@ -346,9 +346,18 @@ the environment labels. Completion needs the following evidence:
    canonical quotient/remainder lists and the exact evaluator identity at
    every internal base-field point. The quotient length M+2 is deliberately
    coarse; the remainder has D entries. No output law is an input.
-   Actual coefficient reconstruction, extension-field interpretation,
-   numerical-dimension determinant/norm programs, fiber multiplicity and degree
-   proofs, and the Gaussian-elimination annihilator producer remain. An
+   [GaussianRationalMonicReconstruction](Lean/IPRADerivations/Analysis/GaussianRationalMonicReconstruction.lean)
+   now proves the actual coefficient identity for those SAME returned Q/R
+   codes and the actual convolution product, on the common width D+M+2.
+   Original shapes/monicity and the queried index bound suffice. The source
+   input is recoded coefficientwise; arbitrary outer-list codes are not
+   identified. A genuine fixed-index QF prefix induction derives this identity
+   without an evaluator premise, and an actual PR4 reconstructed buffer has
+   the proved entries, length and canonicality. This remains an exact Q(i)
+   dependency: polynomial-valued multiplication matrices and their coefficient
+   identities, extension-field interpretation, numerical-dimension
+   determinant/norm programs, fiber multiplicity and degree proofs, and the
+   Gaussian-elimination annihilator producer remain. An
    all-point base-field evaluator identity does not by itself instantiate an
    extension field. Supplied and constructed certificates retain separate
    acceptance claims.
