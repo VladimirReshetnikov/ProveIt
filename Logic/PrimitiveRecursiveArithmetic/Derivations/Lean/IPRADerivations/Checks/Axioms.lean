@@ -11079,6 +11079,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FiniteSetCategory.fs_assoc
 #print axioms LeanProofs.IPRA.Foundations.FiniteSetCategory.finSet_laws
 #print axioms LeanProofs.IPRA.Foundations.FiniteSetCategory.finSet_inverse_unique
+#print axioms LeanProofs.IPRA.Foundations.FiniteSetCategory.one_pw
+#print axioms LeanProofs.IPRA.Foundations.FiniteSetCategory.subst_termT
+#print axioms LeanProofs.IPRA.Foundations.FiniteSetCategory.subst_bangT
+#print axioms LeanProofs.IPRA.Foundations.FiniteSetCategory.finSet_terminal
 #print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.E
 #print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.Persistent
 #print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.Persistent.mk

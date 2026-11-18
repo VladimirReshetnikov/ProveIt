@@ -24,6 +24,10 @@ derives all nine laws (`finSet`, `finSet_laws`):
 with equal entries below `N` have equal codes. Associativity and the unit laws are then
 entrywise computations followed by `curry_ev`.
 
+`finSet_terminal`: `[1]` is a terminal object (`Terminal` of `Foundations/PresentedCategory`):
+the unique table into `[1]` has code `0`, because the only code below `1^x = 1` is `0`
+(`one_pw`).
+
 Consequently every theorem about presented categories applies to finite sets; for example
 `finSet_inverse_unique`: a table with a left inverse and a right inverse has them equal, as
 one closed sentence about codes.
@@ -259,5 +263,43 @@ theorem finSet_laws : finSet.Laws where
 theorem finSet_inverse_unique :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5 (inverseUniqueFormula finSet) :=
   inverse_unique_closed finSet_laws
+
+/-! ## The terminal object `[1]` -/
+
+private theorem one_pw₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pw (one : PTm 1) (var 0) ≐ one := by
+  refine ind _ trivial ?_ ?_
+  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
+      ConciseIPRA.PTm.subst_succ]
+    exact pw_zero _
+  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
+      ConciseIPRA.PTm.subst_succ]
+    exact (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _))
+
+/-- `1^x = 1`. -/
+theorem one_pw (x : PTm k) : Γ ⊢[PRAAx] pw one x ≐ one := by
+  have i := inst (Γ := Γ) one_pw₀ (![x] : Fin 1 → PTm k)
+  simpa using i
+
+/-- The terminal object `[1]` (no parameter is used). -/
+def termT : PTm 1 := one
+/-- The unique table `[x] → [1]`: all entries `0`, code `0`. -/
+def bangT : PTm 2 := zero
+
+theorem subst_termT (p : PTm k) : Syn.subst ![p] termT = one := by simp [termT]
+
+theorem subst_bangT (p x : PTm k) : Syn.subst ![p, x] bangT = zero := by simp [bangT]
+
+/-- `[1]` is a terminal object of the table category: the only code below `1^x` is `0`. -/
+theorem finSet_terminal : Terminal finSet termT bangT where
+  bang_hom := fun {k Γ p x} hx => by
+    rw [fs_obj] at hx
+    rw [subst_termT, subst_bangT, fs_hom]
+    exact .andI hx (.andI (pos_of_eq_succ (c := zero) (.eqRefl _))
+      (lt_congr (.eqRefl _) (one_pw x).eqSymm (le_refl one)))
+  bang_unique := fun {k Γ p x f} hf => by
+    rw [subst_termT, fs_hom] at hf
+    rw [subst_termT, subst_bangT, fs_eqv]
+    have h : Γ ⊢[PRAAx] lt f one := lt_congr (.eqRefl _) (one_pw x) (Prf.andE₂ (Prf.andE₂ hf))
+    exact (monus_zero f).eqSymm.eqTrans ((succ_monus_succ f zero).eqSymm.eqTrans h)
 
 end LeanProofs.IPRA.Foundations.FiniteSetCategory
