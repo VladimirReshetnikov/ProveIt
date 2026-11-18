@@ -96,4 +96,15 @@ theorem root_unique {X Y Z q₀ : PTm n}
   · exact le_antisymm Prf.hyp0 (hc e2 e1)
   · exact le_antisymm (hc e1 e2) Prf.hyp0
 
+/-- Strict monotonicity of `f_x(y) = y³ + y − x` in `y` (the lemma "Strict monotonicity" of
+`foundations/FINER-iPRA-framework-2026-11-16`, `paper/sections/14_applications.tex`), for nonnegative
+rationals `u = U/q < v = V/q` with `q = q₀ + 1`: `U³ + U q² < V³ + V q²`. The difference is
+`(V − U)(V² + UV + U² + q²)`, and each factor is at least one. -/
+theorem cubic_strict_mono {U V q₀ : PTm n} (h : Γ ⊢[PRAAx] lt U V) :
+    Γ ⊢[PRAAx] lt (U * U * U + U * (succ q₀ * succ q₀)) (V * V * V + V * (succ q₀ * succ q₀)) := by
+  have h' : Γ ⊢[PRAAx] le (succ U) V := h
+  show Γ ⊢[PRAAx] le (succ (U * U * U + U * (succ q₀ * succ q₀))) (V * V * V + V * (succ q₀ * succ q₀))
+  ipra_le sl h' * (𝔞 V * 𝔞 V + 𝔞 U * 𝔞 V + 𝔞 U * 𝔞 U + (𝔞 q₀ + 1) * (𝔞 q₀ + 1)) +
+    (𝔞 V * 𝔞 V + 𝔞 U * 𝔞 V + 𝔞 U * 𝔞 U + 𝔞 q₀ * 𝔞 q₀ + 2 * 𝔞 q₀)
+
 end LeanProofs.IPRA.Foundations.StableCubicRoot

@@ -48,6 +48,7 @@ import IPRADerivations.Analysis.HypergeometricRatio
 import IPRADerivations.Analysis.TerminatingSeries
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.BetaIntegers
+import IPRADerivations.Analysis.BetaAssociativity
 import IPRADerivations.Analysis.BarnesInteger
 import IPRADerivations.Analysis.BarnesProducts
 import IPRADerivations.Analysis.RationalClosure
@@ -396,10 +397,13 @@ import IPRADerivations.Foundations.FiniteGluing
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Foundations.FinitePullback
 import IPRADerivations.Foundations.FiniteSetCategory
+import IPRADerivations.Foundations.FiniteSetClosed
+import IPRADerivations.Foundations.DiagonalObstruction
 import IPRADerivations.Foundations.FiniteSetProducts
 import IPRADerivations.Foundations.FiniteSetCoproducts
 import IPRADerivations.Foundations.ChallengeContracts
 import IPRADerivations.Foundations.TwoClassObstruction
+import IPRADerivations.Foundations.FiniteCoverSkeleton
 import IPRADerivations.Foundations.ContractProducts
 import IPRADerivations.Foundations.CoherentPresentations
 import IPRADerivations.Foundations.IterationFusion

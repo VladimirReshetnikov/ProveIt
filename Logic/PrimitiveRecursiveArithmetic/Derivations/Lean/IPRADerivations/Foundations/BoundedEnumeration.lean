@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Core.Division
+import IPRADerivations.Probability.UnionUtility
 
 /-!
 # The complete duplicate-free list of the solutions below a height bound
@@ -24,7 +25,13 @@ height-bound wrapper:
 * `sel_strict` (no duplicates): `r < r' < cnt` gives `entry r < entry r'`;
 * `complete_of_bound`: under a height bound `∀ y. f(y, x) = 0 → y < N`, every solution `y` is listed.
 
-The converse conversion (the maximum height of a complete list bounds every solution) is not derived here.
+The converse conversion, direction (ii) ⇒ (i) of `thm:height-list` ("List-to-height" of the PCOG packet,
+"Complete list implies height bound" of the PFIG packet): for a list `ℓ(k, x)`, `k < m`, and a height term
+`h(y, x)`, the bound is the running maximum `H = max_{k<m} h(ℓ(k, x), x)` (`UnionUtility.Mx`), and
+
+* `bound_of_list`: a point `y` that occurs in the list, `∃ k < m. y = ℓ(k, x)`, has `h(y, x) ≤ H`.
+
+For a complete list the premise holds for every solution, so `H` dominates the height of every solution.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -35,6 +42,7 @@ open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size rank_mono)
 open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero not_of_zero not_of_one)
+open LeanProofs.IPRA.Probability.UnionUtility (Mx mx_upper)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
@@ -108,5 +116,27 @@ theorem complete_of_bound {f : PTm 2} {N x y : PTm n}
   simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_inst2, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at a
   exact listed (Prf.impE a hy) hy
+
+/-! ## From a complete list to a height bound -/
+
+/-- The heights of the list entries, over `0 = k`, `1 = x`: `h(ℓ(k, x), x)`. -/
+def hL (h l : PTm 2) : PTm 2 := Syn.subst ![l, var 1] h
+
+theorem inst2_hL (h l : PTm 2) (k x : PTm n) : inst2 (hL h l) k x = inst2 h (inst2 l k x) x := by
+  simp only [hL, inst2, Syn.subst_subst]
+  congr 1; funext j; fin_cases j <;> rfl
+
+/-- A point that occurs in the list has height at most the maximum height of the list. -/
+theorem bound_of_list {h l : PTm 2} {m x y : PTm n}
+    (hy : Γ ⊢[PRAAx] Fm.ex (lt (var 0) (Syn.shift m) ⋏ (Syn.shift y ≐ inst2 l (var 0) (Syn.shift x)))) :
+    Γ ⊢[PRAAx] le (inst2 h y x) (Mx (hL h l) m x) := by
+  refine .exE hy ?_
+  have w : ((lt (var 0) (Syn.shift m) ⋏ (Syn.shift y ≐ inst2 l (var 0) (Syn.shift x))) :: Γ.map Fm.shift)
+      ⊢[PRAAx] lt (var 0) (Syn.shift m) ⋏ (Syn.shift y ≐ inst2 l (var 0) (Syn.shift x)) := Prf.hyp0
+  have u := mx_upper (hL h l) (x := Syn.shift x) (Prf.andE₁ w)
+  rw [inst2_hL] at u
+  have r := le_congr (congrInst2 h (Prf.andE₂ w).eqSymm (.eqRefl (Syn.shift x))) (.eqRefl _) u
+  simp only [Fm.shift, subst_le, subst_inst2, subst_ap2]
+  exact r
 
 end LeanProofs.IPRA.Foundations.BoundedEnumeration
