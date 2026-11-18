@@ -1480,6 +1480,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.P_zero
 #print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.even_power_integral
 #print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.even_power_integral_closed
+#print axioms LeanProofs.IPRA.Analysis.EulerPiSeries.geo_step
+#print axioms LeanProofs.IPRA.Analysis.EulerPiSeries.R_le
+#print axioms LeanProofs.IPRA.Analysis.EulerPiSeries.Q_eq
+#print axioms LeanProofs.IPRA.Analysis.EulerPiSeries.Th_succ
+#print axioms LeanProofs.IPRA.Analysis.EulerPiSeries.horner
+#print axioms LeanProofs.IPRA.Analysis.EulerPiSeries.Eu_succ
+#print axioms LeanProofs.IPRA.Analysis.EulerPiSeries.eu_all
+#print axioms LeanProofs.IPRA.Analysis.EulerPiSeries.euler_pi
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
