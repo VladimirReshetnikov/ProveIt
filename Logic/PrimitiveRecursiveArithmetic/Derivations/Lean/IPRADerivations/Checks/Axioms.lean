@@ -225,6 +225,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.binet_cauchy
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.gram_identity
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law
+#print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.gram_unit
+#print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law_b
+#print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law_c
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.lagrange_identity
 #print axioms LeanProofs.IPRA.Geometry.SphericalHalf.diffR
 #print axioms LeanProofs.IPRA.Geometry.SphericalHalf.sumR
