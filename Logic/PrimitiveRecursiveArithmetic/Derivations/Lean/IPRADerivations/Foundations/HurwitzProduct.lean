@@ -1,4 +1,5 @@
 import IPRADerivations.Combinatorics.BinomialTransform
+import IPRADerivations.Probability.Variance
 
 /-!
 # The Hurwitz product and its derivation (`ipra_coherent_methods_2026-11-15`, (6), (7))
@@ -24,6 +25,10 @@ The proof is the Pascal step for binomial-weighted sums (`pascal_sum` of
 fixed, followed by two reindexings: `(n + 1) ∸ (j + 1) = n ∸ j`, and
 `(n + 1) ∸ j = (n ∸ j) + 1` for `j ≤ n`. The demand for one extra coefficient of each
 factor is visible in the statement: the right-hand side reads `a` and `b` up to index `n + 1`.
+
+* `hw_fact`: for `Y_j = j!`, `(Y ⋆ Y)_n = (n + 1)! = Y_{n+1}`: the factorials solve
+  `Y' = Y ⋆ Y`, `Y_0 = 1` (the packet's example after (10)); every summand
+  `C(n, j) j! (n − j)!` is `n!` (`fact_pt`).
 
 Not derived: associativity and commutativity of `⋆`, the recurrence (9) for a polynomial
 system and `thm:hurwitz-ode` itself.
@@ -154,5 +159,44 @@ theorem leibniz_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
   closeUniv 2 (leibniz a b _ _)
 
 end Product
+
+/-! ## The solution of `Y' = Y ⋆ Y`, `Y_0 = 1` -/
+
+section Factorial
+
+open LeanProofs.IPRA.Analysis.Products (fact)
+open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq)
+open LeanProofs.IPRA.Probability.Variance (sum_const_of)
+
+/-- The sequence `j ↦ j!`. -/
+def factB : PTm 2 := fact (var 0)
+
+theorem inst2_factB (j x : PTm k) : inst2 factB j x = fact j := by simp [inst2, factB]
+
+/-- Every summand of `(Y ⋆ Y)_n` for `Y_j = j!` is `n!`: `C(n, j) j! (n − j)! = n!`. -/
+theorem fact_pt {j n x : PTm k} (h : Γ ⊢[PRAAx] lt j (succ n)) :
+    Γ ⊢[PRAAx] inst2 (bgB (cv factB factB)) j (pairT n (pairT n x)) ≐ fact n := by
+  have hle : Γ ⊢[PRAAx] le j n := (succ_monus_succ j n).eqSymm.eqTrans h
+  have t := term_at (Γ := Γ) factB factB j n n x
+  rw [inst2_factB, inst2_factB] at t
+  exact t.eqTrans ((mul_comm _ _).eqTrans (binom_eq hle).eqSymm)
+
+/-- `(Y ⋆ Y)_n = (n + 1)!` for `Y_j = j!`: the factorials solve `Y' = Y ⋆ Y`, `Y_0 = 1`,
+since `Y_{n+1} = (n + 1)!`. No division by a factorial occurs. -/
+theorem hw_fact (n x : PTm k) : Γ ⊢[PRAAx] hw factB factB n x ≐ fact (succ n) := by
+  have c : Γ ⊢[PRAAx] hw factB factB n x ≐ succ n * fact n := by
+    refine sum_const_of _ _ _ _ (.allI (.impI ?_))
+    simp only [Syn.shift, subst_pairT, subst_ap2, ConciseIPRA.PTm.subst_succ,
+      ConciseIPRA.PTm.subst_zero]
+    exact fact_pt Prf.hyp0
+  exact c.eqTrans ((mul_comm _ _).eqTrans (fact_succ n zero).eqSymm)
+
+/-- `∑_{j ≤ n} C(n, j) j! (n − j)! = (n + 1)!` as a closed sentence. Variables: `0 = n`,
+`1 = x`. -/
+theorem hw_fact_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
+    (hw factB factB (var 0) (var 1) ≐ fact (succ (var 0))) :=
+  closeUniv 2 (hw_fact _ _)
+
+end Factorial
 
 end LeanProofs.IPRA.Foundations.HurwitzProduct

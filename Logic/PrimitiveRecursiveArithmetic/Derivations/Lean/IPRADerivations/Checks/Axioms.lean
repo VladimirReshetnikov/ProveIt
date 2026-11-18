@@ -1319,6 +1319,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.second_pt
 #print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.leibniz
 #print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.leibniz_closed
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.inst2_factB
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.fact_pt
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_fact
+#print axioms LeanProofs.IPRA.Foundations.HurwitzProduct.hw_fact_closed
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.rem_eq_of_eq
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.dvd_of_rem_eq
