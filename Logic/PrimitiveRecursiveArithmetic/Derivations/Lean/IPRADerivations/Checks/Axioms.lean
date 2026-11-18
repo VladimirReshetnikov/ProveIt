@@ -1261,6 +1261,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.IterationFusion.squaring
 #print axioms LeanProofs.IPRA.Foundations.IterationFusion.double_iter
 #print axioms LeanProofs.IPRA.Foundations.IterationFusion.square_squaring
+#print axioms LeanProofs.IPRA.Foundations.WitnessAlgebra.eigen_unit_2
+#print axioms LeanProofs.IPRA.Foundations.WitnessAlgebra.eigen_unit_3
+#print axioms LeanProofs.IPRA.Foundations.WitnessAlgebra.root_num_2
+#print axioms LeanProofs.IPRA.Foundations.WitnessAlgebra.root_den_2
+#print axioms LeanProofs.IPRA.Foundations.WitnessAlgebra.root_num_3
+#print axioms LeanProofs.IPRA.Foundations.WitnessAlgebra.root_den_3
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.rem_eq_of_eq
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.dvd_of_rem_eq
