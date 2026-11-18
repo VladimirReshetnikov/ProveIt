@@ -1239,6 +1239,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative.count_ge
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative.count_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative.phi_mul
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection.rem_small
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection.quo_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection.crt_into
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection.crt_inj
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection.crt_surj
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection.crt_reduced
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection.crt_reduced_inv
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.sum_split
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.phi_two
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble.gcd_period
