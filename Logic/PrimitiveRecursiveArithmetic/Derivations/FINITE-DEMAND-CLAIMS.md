@@ -336,10 +336,22 @@ the environment labels. Completion needs the following evidence:
    checked by an actual nonnegative fast PR2 diagonal distance name and
    both Member equivalence directions, including explicit stage k+3.
    Generic completed Gaussian-point and field realization remains separate.
-5. **Coded field algebra:** actual monic reduction/determinant programs,
-   fiber multiplicity and degree proofs, and the Gaussian-elimination
-   annihilator producer. Supplied certificates and constructed certificates
-   have separate acceptance claims.
+5. **Coded field algebra:** actual runtime polynomial buffers, convolution
+   product, monic companion and quotient/remainder programs are now checked in
+   [GaussianRationalPolynomialBuffers](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialBuffers.lean),
+   [GaussianRationalPolynomialProduct](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialProduct.lean),
+   [GaussianRationalMonicCompanion](Lean/IPRADerivations/Analysis/GaussianRationalMonicCompanion.lean)
+   and [GaussianRationalMonicReduction](Lean/IPRADerivations/Analysis/GaussianRationalMonicReduction.lean).
+   The original coefficient lengths and literal monic head alone yield actual
+   canonical quotient/remainder lists and the exact evaluator identity at
+   every internal base-field point. The quotient length M+2 is deliberately
+   coarse; the remainder has D entries. No output law is an input.
+   Actual coefficient reconstruction, extension-field interpretation,
+   numerical-dimension determinant/norm programs, fiber multiplicity and degree
+   proofs, and the Gaussian-elimination annihilator producer remain. An
+   all-point base-field evaluator identity does not by itself instantiate an
+   extension field. Supplied and constructed certificates retain separate
+   acceptance claims.
 6. **Verification:** register each completed module in `IPRADerivations`, audit
    its named public endpoints in `Checks/Axioms.lean`, run normal Lake builds
    and the source import-closure gate, and document exact assumptions and
