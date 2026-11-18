@@ -1537,6 +1537,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.bell_prime
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.touchard
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchard.bell_prime_two
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.gb_ratio
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.gb_absorb
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.sum_affine
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.Ep_step
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.Om_step
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.alt_e
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.alt_o
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.base
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.pt_succ
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.stirling_ie
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_zero
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_self
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_above
