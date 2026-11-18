@@ -9372,6 +9372,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.OdeRefinement.geometric_cauchy
 #print axioms LeanProofs.IPRA.Foundations.GuardedTrace.guarded_loop
 #print axioms LeanProofs.IPRA.Foundations.GuardedTrace.guarded_trace
+#print axioms LeanProofs.IPRA.Foundations.StructuralRules.simultaneous_cut
+#print axioms LeanProofs.IPRA.Foundations.StructuralRules.residual_cut
+#print axioms LeanProofs.IPRA.Foundations.StructuralRules.residual_discharge
+#print axioms LeanProofs.IPRA.Foundations.StructuralRules.boundary_intro
+#print axioms LeanProofs.IPRA.Foundations.StructuralRules.weakening
+#print axioms LeanProofs.IPRA.Foundations.StructuralRules.specialization
+#print axioms LeanProofs.IPRA.Foundations.StructuralRules.existential_sealing
+#print axioms LeanProofs.IPRA.Foundations.StructuralRules.qf_induction
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
