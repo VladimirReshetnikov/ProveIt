@@ -306,6 +306,21 @@ All caps and comparison vectors are internal data, including B=0 and C=0.
 This closes the named concrete-demand regression. It does not construct a
 cyclic execution of mutually dependent certificates; that obligation remains.
 
+### Actual Herbrand capsules
+
+[HerbrandCapsule](Lean/IPRADerivations/Foundations/HerbrandCapsule.lean)
+constructs the actual runtime candidate list and independent numerical bounds
+on its values and whole sequence code. For arbitrary fixed formulas it proves
+the lookup-existential meaning of a capsule, pointwise mapping and invariant
+elimination with a genuinely local existential witness. For fixed bounded
+syntax it additionally compiles the actual verifier and proves reflection.
+The identity enumeration is a produced verified capsule from the original
+bounded-existence hypothesis, rather than a supplied capsule-correctness law.
+The actual first-valid-index adapter retains acceptance, earlier rejection,
+bound-default and empty cases; numerical leastness is claimed only for the
+identity enumeration. Application producers and source graph/interface
+adapters remain explicit obligations.
+
 ## Definitions, compiler invariants and application obligations
 
 The definitions in [03_interfaces.tex](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/03_interfaces.tex)
@@ -320,7 +335,7 @@ source theorem's local contracts.
 | Interface, validity and totality, §3.2 | PR terms and ordinary formulas can express query validity, exclusive bounds, verifier equality and bounded totality. | Install consistent formula constructors with substitution equations; prove concrete query/verifier soundness contracts. Totality stays a theorem, hypothesis or exact producer residual. |
 | Certificate-independent observation and metric/quotient fibers, §§3.2, 3.6 | `Prf.exE` enforces the lexical witness condition; `GapDecision` supplies signed absolute-value lemmas; fixed algebraic observations are available. | Supply each actual equivalence bit's reflexivity, symmetry and transitivity, exported-operation congruence, and numerical stability proofs. These are not implied by metadata names. |
 | Realizer fields and escape classes, §§3.3–3.4 | `RealizerComposition` and `RealizerGraph` supply actual demand/master/verifier/transform/observation/residual constructors, soundness/stability and sealed sequents in the canonical bounded model; `RealizerProduct` adds products and projections. | Prove each richer source interface instance and external master-normalization adapter. Observational independence needs the displayed interface laws; it does not follow merely from holding a certificate. |
-| Herbrand capsules, §3.5 | `exB`, `bf_choice`, bounded reflection and pairing provide components. The reference implementation has a capsule algorithm. | Encode the actual list and prove the disjunction's meaning through lookup; prove pointwise mapping and invariant elimination, and the least-valid-member adapter when selection is requested. No dedicated generic capsule endpoint is identified. |
+| Herbrand capsules, §3.5 | **Checked generic logical and bounded-syntax constructors.** [HerbrandCapsule](Lean/IPRADerivations/Foundations/HerbrandCapsule.lean) supplies actual generated lists, computed value/code bounds, lookup-disjunction meaning, pointwise mapping and proof-local invariant elimination. A fixed bounded predicate has an actual reflected checker and first-valid-index selector; original bounded existence produces a verified identity-enumeration capsule. Empty/default/duplicates and actual PR fields are covered. | Supply each application's original predicate, valid-member proof or bounded-possibility producer and source-graph/interface adapter. No checker decides arbitrary undecidable formulas, no absent height/totality is inferred, and an unsorted capsule's first valid value need not be numerically least. |
 | Node arities, scopes and QF loop invariants, §5.1–§5.2 and Appendix A | `FiberCompiler` enforces local proof arities and lexical scope. `RealizerGraph` enforces interface source/target types and recursively constructs primitive/sequential/Boolean-branch/product/projection bounded realizers. `RealizerLoop` additionally constructs actual predetermined-query folds from QF base/step/final contracts, preserving all named stage producers. | Connect the remaining scoped node kinds and QF-loop contracts to runtime metadata; construct and verify finite cyclic unrolling. |
 | Compiler output tuple, §5.3 and Appendix A | `RealizerGraph` returns actual demand/bound/verifier/transform/observation/guard/residual programs and a derived proof for typed primitive/sequential/Boolean-branch/product/projection programs. `compile_code` links separately computed raw metadata to the recursively built realizer. `FiberCompiler` provides further local scoped proof constructors. | Translate the remaining source node kinds, calls and adaptive formats beyond the finite-candidate/same-slot construction into the runtime frontend; derive cyclic unrolling from actual demand closure and verify application contracts. |
 | Residual normal form and hierarchy R0–R8, §6 | Structural rules cover R0; bounded reflection/search, master certificates, demand closure, coherence and finite-net lifting cover displayed conditional R1–R6 instances within their documented representation scope. | Supply precise R7 guarded operations and rational adapters for the full R4 scope. Preserve every unresolved R8 producer as an object formula with all parameters, strictness and zero cases. No generic theorem supplies absent height, modulus, gap or representative data. |

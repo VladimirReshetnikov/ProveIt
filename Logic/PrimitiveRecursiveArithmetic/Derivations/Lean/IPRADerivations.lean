@@ -471,6 +471,7 @@ import IPRADerivations.Foundations.RealizerLoop
 import IPRADerivations.Foundations.RealizerMasterInterface
 import IPRADerivations.Foundations.RealizerBlockLoop
 import IPRADerivations.Foundations.RealizerLeastSearch
+import IPRADerivations.Foundations.HerbrandCapsule
 import IPRADerivations.Foundations.RealizerStateAdaptive
 import IPRADerivations.Foundations.TwoCoordinateDemandClosure
 import IPRADerivations.Foundations.PrecisionCostDAG
@@ -797,3 +798,5 @@ import IPRADerivations.Analysis.GaussianRationalPolynomialProduct
 import IPRADerivations.Analysis.GaussianRationalMonicCompanion
 import IPRADerivations.Analysis.GaussianRationalMonicReduction
 import IPRADerivations.Analysis.GaussianRationalMonicReconstruction
+import IPRADerivations.Analysis.GaussianPolynomialMonicCompanion
+import IPRADerivations.Analysis.GaussianRationalFiniteRoots
