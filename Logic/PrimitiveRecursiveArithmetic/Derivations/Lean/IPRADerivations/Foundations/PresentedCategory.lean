@@ -29,6 +29,9 @@ For every presentation with laws, the following are derived in iPRA
 * `monic_split`: if `f ∘ r = 1` and `f` is left cancellable against the pair `(r ∘ f, 1)`, then
   `r ∘ f = 1`: a monic with a right inverse is an isomorphism.
 
+* `terminal_unique`: for two terminal objects, given with their arrows `bang` and the
+  uniqueness law (`Terminal`), the composite of the two structure maps is the identity.
+
 `natAdd` is the additive monoid of the natural numbers as a one-object presentation, with its
 laws (`natAdd_laws`), so the theorems are not vacuous.
 
@@ -189,6 +192,40 @@ theorem inverse_unique_closed :
     (inverse_unique L (.hyp (by simp)) (.hyp (by simp)) hyp2 Prf.hyp1 Prf.hyp0))))))
 
 end Elementary
+
+/-! ## Terminal objects -/
+
+/-- A terminal object with a parameter: the object `T(p)` and the arrow `bang(p, x) : x → T(p)`.
+Variables of `T`: `0 = p`; of `bang`: `0 = p`, `1 = x`. -/
+structure Terminal (C : Pres) (T : PTm 1) (bang : PTm 2) : Prop where
+  bang_hom : ∀ {n : ℕ} {Γ : List (Fm PTm n)} {p x : PTm n},
+    (Γ ⊢[PRAAx] C.obj x) → (Γ ⊢[PRAAx] C.hom x (Syn.subst ![p] T) (Syn.subst ![p, x] bang))
+  bang_unique : ∀ {n : ℕ} {Γ : List (Fm PTm n)} {p x f : PTm n},
+    (Γ ⊢[PRAAx] C.hom x (Syn.subst ![p] T) f) →
+      (Γ ⊢[PRAAx] C.eqv x (Syn.subst ![p] T) f (Syn.subst ![p, x] bang))
+
+section TerminalUnique
+
+variable {C : Pres} (L : C.Laws) {n : ℕ} {Γ : List (Fm PTm n)}
+
+include L
+
+/-- Two terminal objects are isomorphic by their structure maps: for terminal `t = T(p)` and
+`u = T'(p')`, the composite `t → u → t` of the two unique arrows is the identity of `t`. By
+symmetry the other composite is the identity of `u`. -/
+theorem terminal_unique {T T' : PTm 1} {bang bang' : PTm 2} (hT : Terminal C T bang)
+    (hT' : Terminal C T' bang') {p p' : PTm n}
+    (ht : Γ ⊢[PRAAx] C.obj (Syn.subst ![p] T)) (hu : Γ ⊢[PRAAx] C.obj (Syn.subst ![p'] T')) :
+    Γ ⊢[PRAAx] C.eqv (Syn.subst ![p] T) (Syn.subst ![p] T)
+      (C.comp (Syn.subst ![p] T) (Syn.subst ![p'] T') (Syn.subst ![p] T)
+        (Syn.subst ![p, Syn.subst ![p'] T'] bang) (Syn.subst ![p', Syn.subst ![p] T] bang'))
+      (C.id1 (Syn.subst ![p] T)) := by
+  -- both sides are arrows `t → t`, hence equal to `bang(p, t)`
+  have h₁ := hT.bang_unique (L.comp_hom (hT'.bang_hom (p := p') ht) (hT.bang_hom (p := p) hu))
+  have h₂ := hT.bang_unique (L.id_hom ht)
+  exact L.eqv_trans h₁ (L.eqv_symm h₂)
+
+end TerminalUnique
 
 /-! ## The additive monoid of the natural numbers as a one-object category -/
 

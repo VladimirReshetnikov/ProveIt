@@ -378,6 +378,7 @@ import IPRADerivations.Geometry.IsoperimetricInequalities
 import IPRADerivations.Combinatorics.CatalanProducts
 import IPRADerivations.Foundations.PresentedCategory
 import IPRADerivations.Foundations.Yoneda
+import IPRADerivations.Foundations.Adjunction
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
