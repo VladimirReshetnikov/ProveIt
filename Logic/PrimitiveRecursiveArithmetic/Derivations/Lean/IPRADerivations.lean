@@ -384,6 +384,7 @@ import IPRADerivations.Foundations.Yoneda
 import IPRADerivations.Foundations.Adjunction
 import IPRADerivations.Foundations.SplitEquivalence
 import IPRADerivations.Foundations.FiniteSetExponential
+import IPRADerivations.Foundations.CoherentTower
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
