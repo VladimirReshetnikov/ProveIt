@@ -96,6 +96,7 @@ import IPRADerivations.Analysis.FiniteFTC
 import IPRADerivations.Analysis.RobbinsTelescope
 import IPRADerivations.Analysis.WeightedAMGM
 import IPRADerivations.Analysis.EulerBrackets
+import IPRADerivations.Analysis.PowerGap
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
