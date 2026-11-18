@@ -11532,6 +11532,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.EigenvalueIntegral.pt
 #print axioms LeanProofs.IPRA.Foundations.EigenvalueIntegral.sum_div
 #print axioms LeanProofs.IPRA.Foundations.EigenvalueIntegral.eigen_integral
+#print axioms LeanProofs.IPRA.Foundations.EigenvalueGrid.grid_den_dvd
+#print axioms LeanProofs.IPRA.Foundations.EigenvalueGrid.grid_den_le
+#print axioms LeanProofs.IPRA.Foundations.EigenvalueGrid.mul_cancel
+#print axioms LeanProofs.IPRA.Foundations.EigenvalueGrid.grid_num_le
+#print axioms LeanProofs.IPRA.Foundations.EigenvalueGrid.grid
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_canonical
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_constant
