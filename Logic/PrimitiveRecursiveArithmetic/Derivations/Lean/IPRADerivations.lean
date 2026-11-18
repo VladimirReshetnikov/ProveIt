@@ -581,3 +581,16 @@ import IPRADerivations.Analysis.GaussianZeroResidualContraction
 import IPRADerivations.Analysis.GaussianMonicDescentBranch
 import IPRADerivations.Analysis.GaussianMonicRD
 import IPRADerivations.Analysis.GaussianMonicApplications
+
+-- Concrete monic root-support names and sharp completed-distance adequacy.
+import IPRADerivations.Analysis.GaussianMonicRootSupport
+import IPRADerivations.Analysis.GaussianMonicRootAdequacy
+
+-- Actual coefficient normalization and finite descent for arbitrary nonconstant inputs.
+import IPRADerivations.Analysis.GaussianRationalCoefficientScaling
+import IPRADerivations.Analysis.GaussianRationalMonicNormalization
+import IPRADerivations.Analysis.GaussianRationalInvertibleNorm
+import IPRADerivations.Analysis.GaussianDescentRateMonotonicity
+import IPRADerivations.Analysis.GaussianTranslatedNonconstant
+import IPRADerivations.Analysis.GaussianNonmonicRD
+import IPRADerivations.Analysis.GaussianNonmonicApproximateRoot

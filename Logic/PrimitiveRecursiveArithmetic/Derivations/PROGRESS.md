@@ -131,11 +131,11 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | Finite-demand, sharp represented polynomial-evaluation error | `GaussianRootSharpErrorSamples.sharp_sample_error_closed`; `GaussianRootSharpEvaluation.sharp_root_evaluation_error_closed`, `sharp_error_name_closed`, `actual_error_name_query_closed` | The actual F_t(point_s)-P_s(point_s) error is at most 2C_Z/D+computedCost/2^s. Its true modulus is derived from actual Horner bounds; removing finite slack yields exactly source root-eval-error, retaining Z in C_Z. The actual PR2 difference program and its fast name are identified. |
 | Finite-demand, actual distance upper cuts and affine scalar name | `GaussianEuclideanDistanceUpperCut.distance_sample_upper_cut_closed`; `GaussianLinearDistanceName.linear_distance_name_closed`, `linear_distance_program_closed` | Actual Euclidean sample upper cuts and actual normalized PR2 scalar arithmetic realize M*D_t+A/B, with derived nonnegativity, fastness, explicit numerator/denominator and literal affine identity. No represented minimizing point is assumed. |
 | Finite-demand, sharp represented residual-distance error | `GaussianRootSharpResidualSamples.sharp_represented_residual_cut_closed`; `GaussianRootSharpDistance.root_distance_residual_closed`, `root_residual_rhs_name_closed` | Completes root-distance-residual at original M_Z/C_R. A proved distance upper observation feeds the actual sharp residual cut; exact scalar normalization yields the joint order cut between the OLD polynomial-value program and the actual nonnegative RHS program, with both precision errors. No conclusion or represented root selector is supplied. |
-| Finite-demand, complete source root-adequacy proposition conditional on RD | `GaussianRootAdequacyTheorem.root_adequacy_closed` | One checked closed sentence contains the actual P-value name, Member iff literal P-program zero, all-stage fast/nonnegative Euclidean D_t, both sharp cuts and the source PR forward stage for every requested precision. Only the unchanged genuine source input contract is assumed. The following completion modules establish the stage-distance/zero-distance corollary; the concrete monic RD is proved below, while a dedicated fixed-step adequacy export remains separate. The full 115-packet goal remains active. |
+| Finite-demand, complete source root-adequacy proposition conditional on RD | `GaussianRootAdequacyTheorem.root_adequacy_closed` | One checked closed sentence contains the actual P-value name, Member iff literal P-program zero, all-stage fast/nonnegative Euclidean D_t, both sharp cuts and the source PR forward stage for every requested precision. Only the unchanged genuine source input contract is assumed. The following completion modules establish the stage-distance/zero-distance corollary; the concrete fixed-step source proposition is now exported in GaussianMonicRootAdequacy below, with RD discharged internally. The full 115-packet goal remains active. |
 | Finite-demand, exact Euclidean cover variation and scalar closure | `GaussianEuclideanDistanceVariation.euclidean_distance_sample_variation_closed`, `finite_hit_cover_transfer_closed`; `GaussianScalarSlackRemoval.scalar_slack_removal_closed`, `scalar_upper_cut_closed` | Actual original covers transfer finite hits and independently computed distance observations with exact Hausdorff error plus both dyadic errors. A single explicit positive-denominator integer-gap query removes scalar slack; no limiting or successful-search premise is used. |
 | Finite-demand, actual root-stage distance completion | `GaussianRootDistanceCompletion.stage_variation_closed`, `completed_distance_name_closed`, `completed_distance_query_closed` | Source RS gives the exact represented stage-distance Cauchy bound at independent observation precisions. The actual PR2 diagonal name uses stage k+2 and point/sqrt precision k+4; its derived modulus, normalization, nonnegativity and canonicality are proved with all numerical degree/data/stage/precision inputs internal. |
 | Finite-demand, Member iff literal completed-distance zero | `GaussianRootDistanceZero.root_distance_zero_closed`, `distance_zero_stage_closed`, `distance_zero_program_closed` | Local existential-stage elimination gives each fixed raw observation the finite bound 2*2^-r+3*2^-m; actual scalar closure then proves the normalized zero predicate. Conversely that literal zero predicate gives a genuine represented membership cut at the explicit PR stage k+3. The reverse implication uses only positive degree and point CN. |
-| Finite-demand, full root adequacy with literal distance/polynomial zero equivalence | `GaussianRootCompletedAdequacy.completed_root_adequacy_closed`, `completed_distance_root_equation_closed` | Extends the unchanged original adequacy contract with actual completed-distance scalar fastness, all-query nonnegativity and literal distance-zero iff actual P-value program zero. This checks the stage-distance/zero-distance corollary; concrete monic RD is proved below; a dedicated fixed-step completion export and a Gaussian point-name realization adapter remain open. The complete 115-packet goal remains active. |
+| Finite-demand, full root adequacy with literal distance/polynomial zero equivalence | `GaussianRootCompletedAdequacy.completed_root_adequacy_closed`, `completed_distance_root_equation_closed` | Extends the unchanged original adequacy contract with actual completed-distance scalar fastness, all-query nonnegativity and literal distance-zero iff actual P-value program zero. This checks the stage-distance/zero-distance corollary; the concrete fixed-step completion export is now proved in GaussianMonicRootAdequacy below; a Gaussian point-name realization adapter remains open. The complete 115-packet goal remains active. |
 | FTA descent, actual scalar radius powers and original norm coding | `RationalNonnegativePowers.nonnegative_power_closed`, `nonnegative_power_recurrence_closed`, `dyadic_power_closed`; `GaussianBalancedRadiusSyntax.coefficient_norm_representation_closed` | Actual canonical rational power values, their multiplication recurrence and the original independently denominated squared coefficient norms are proved uniformly in every numerical exponent and coefficient index. |
 | FTA descent, computed height and proved finite scan endpoints | `GaussianBalancedRadiusHeight.height_facts_closed`, `coefficient_height_bounds_closed`; `GaussianBalancedRadiusArithmetic.balanced_radius_endpoint_fit_closed`, `balanced_radius_endpoint_failure_closed`, `balanced_radius_squared_witness_closed` | A genuine runtime maximum fold computes a coarser norm-bit height b and exact E=2b+3. Every coefficient numerator/denominator is bounded internally; low fit and strict high failure follow, with the unchanged literal 4^N squared witness factor. |
 | FTA descent, actual greatest fitting radius and failed coefficient | `GaussianBalancedRadiusSearch.balanced_radius_search_closed`, `returned_balanced_radius_search_closed`, `positive_degree_scan_closed` | Actual bounded Boolean coefficient search and outer first-failure search derive adjacent fit/failure, a positive original failed index and the greatest-fit property. The final theorem assumes only the legitimate nonzero-constant source input, never endpoints, monotonicity or successful search. |
@@ -169,6 +169,13 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | FTA descent, original positive-residual monic polynomial | `GaussianMonicPositiveDecrease.original_positive_decrease_closed` | Original monic shape and actual positive norm of P(z) yield literal P(z+delta) contraction by the unchanged GaussianDescentClock factor. Translation, alpha, phase and local errors are derived; no canonical z or final residual estimate is assumed. |
 | FTA descent, constructed uniform monic RD | `GaussianMonicRD.constructed_monic_rd_closed`, `constructed_local_rd_closed`, `constructed_step_program_closed` | The concrete fixed PR3 step handles raw zero and positive residual constructively and proves ordinary FactorParameters.monicRD with no RD or positive-case contract premise. Degree/list/point are internal; canonical point is the original localRD guard. Scope is positive-degree monic input. |
 | Source04 thm:approx-factor and concrete monic approximate root | `GaussianMonicApplications.concrete_monic_approximate_root_closed`, `concrete_monic_approximate_factorization_closed`, `concrete_returned_factorization_closed`, `concrete_returned_product_evaluation_closed` | The proved fixed step discharges RD inside the actual finite clock and deflation programs. Original monic shape and precision guards suffice for canonical approximate roots, N returned roots, product polynomial and coefficient L1 error<=p/q. Original program/returned product evaluation identities are retained. No existence/step/RD/output premise is supplied. |
+| Source04 concrete root-support | `GaussianMonicRootSupport.concrete_root_support_closed`, `concrete_root_name_checker_closed`, `concrete_returned_support_closed` | Same actual monic step and original root-name program, with RD discharged. Genuine CN, N>=1 and stage order give both original covers/checker; actual sample/product/radius/zero and returned metadata are checked. |
+| Source04 concrete sharp root adequacy and completed distance | `GaussianMonicRootAdequacy.concrete_monic_source_root_adequacy_closed`, `concrete_monic_completed_root_adequacy_closed`, `concrete_completed_distance_closed`, `concrete_names_program_closed` | Full original C_Z/M_Z proposition and actual polynomial/member/completed-zero equivalences have no RD premise. CN/pointCN/degree and source disk guards remain genuine; completion alone needs no disk bound. All actual PR3/PR2 names are bound. |
+| FTA actual rational coefficient scaling and normalization | `GaussianRationalCoefficientScaling.rational_evaluation_scaling_closed`, `GaussianRationalMonicNormalization.monic_normalization_closed`, `monic_normalization_recovery_closed`, `GaussianRationalInvertibleNorm.rational_invertible_contraction_closed` | Actual sequence multiplication has QF runtime Horner linearity. Reciprocal-head monic normalization derives literal leading one and recovery/zero equivalence from the original nonzero head norm. Inverse norm transport uses a derived nonnegative norm multiplier, without a supplied cancellation/representation law. |
+| FTA actual nonconstant translation | `GaussianTranslatedNonconstant.translated_nonconstant_closed`, `translated_radius_input_closed` | Computed least nonzero descending coefficient survives the actual translation as its canonical recode, proved by actual Horner/quotient/stage induction. Original length and nonconstant witness suffice; no head nonzeroness, monicity or canonical input is assumed. |
+| FTA constructed uniform nonmonic RD | `GaussianNonmonicRD.constructed_nonconstant_rd_closed`, `constructed_nonconstant_rd_at_closed`, `original_nonconstant_positive_decrease_closed` | The same fixed PR3 step now proves original-N contraction for every proper nonconstant rational polynomial, including zero leading coefficients. All translated guards and zero/positive residual branches are proved; no RD, positive-case or final output premise remains. |
+| FTA concrete nonmonic approximate roots | `GaussianNonmonicApproximateRoot.concrete_nonconstant_approximate_root_closed`, `concrete_nonconstant_root_program_correct_closed`, `concrete_nonconstant_residual_decay_closed` | Actual PR4 and finite residual clock need only original nonconstant shape and positive p,q. Computed initial residual and every decay stage are retained. General coefficient-name convergence still requires the travel estimate. |
+| FTA original-degree clock weakening | `GaussianDescentRateMonotonicity.actual_descent_clock_monotone_closed`, `residual_contract_weakening_closed` | True natural power/predecessor arithmetic proves actual D/rate monotonicity, including degree zero, then transports the literal normalized residual comparison using a derived nonnegative norm. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -340,46 +347,56 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `cc2c2f7c8e`, including the constructed monic RD and
-concrete applications, the root build completed 2,327 jobs and emitted
-8,586 axiom reports for 8,077 distinct declarations. Every report uses
-only `propext`, `Classical.choice` and `Quot.sound`. All nine import closure
-gates passed: 3,746 modules in the portable arithmetic closure and 5,252
-in the independent `Diophantine` closure.
+At the source based on `959cc8482f`, including concrete monic root support,
+completed adequacy and arbitrary nonconstant finite descent, the root build
+completed 2,336 jobs and emitted 8,879 axiom reports for 8,370 distinct
+declarations. Every report uses only `propext`, `Classical.choice` and
+`Quot.sound`. All nine import closure gates passed: 3,755 modules in the
+portable arithmetic closure and 5,252 in the independent `Diophantine` closure.
 
-The twelve new modules contain 2,649 lines, 377 public theorems and 491
-public declarations, each with a fully qualified axiom probe. Independent
-full source/math reviews checked the actual alpha numerator/denominator,
-positive-factor cancellation, exact normalizer-relative bound, signed
-phase cancellation, radius powers, raw/canonical distinctions, literal
-scaled main/error split, selected data and all returned metadata. They
-checked all three derived relative bounds, the four-point common denominator,
-natural weight contraction budget, actual polynomial sum and exact existing
-clock factor. The zero and positive branches, original monic input guards,
-uniform object binders and concrete root/factorization programs were reviewed.
+The nine new modules contain 1,586 lines, 239 public theorems and 293 public
+declarations, each with a fully qualified axiom probe. Independent full
+source/math reviews checked the actual bounded nonzero-coefficient search,
+canonical recoding of raw input values, Horner/quotient/stage inductions,
+translated nonconstant witness and original-N residual contraction. They
+checked the actual scaling/reciprocal programs, inverse norm roundtrip,
+positive-denominator representations, numerical rate order and all closed
+binders. Concrete root support and adequacy retain original schedules,
+sharp C_Z/M_Z constants, genuine name/disk guards and literal PR name
+queries. The finite approximate-root clock uses its actual P(0) bound.
 
-`GaussianMonicRD.constructed_monic_rd_closed` proves the ordinary embedded
-monicRD sentence for the actual fixed PR3 step. No RD, positive-case, phase,
-root, residual or final-output contract is assumed. The degree and coefficient
-list are internal, with original positive-degree monic-shape guards. The
-canonical point guard is exactly the existing localRD interface. Both raw
-zero-residual and positive-residual branches are proved for this program.
+`GaussianNonmonicRD.constructed_nonconstant_rd_closed` proves the ordinary
+embedded uniform RD sentence for every proper nonconstant rational
+polynomial. The fixed step is literally the previously constructed monic
+step, at the original N. Original length N+1, N>=1 and a nonzero coefficient
+of positive degree suffice, even with zero leading coefficients and raw
+input fractions. Neither RD nor a positive-case, phase, root or output
+contract is supplied. The canonical point guard is the existing localRD
+guard; actual zero and positive residual branches are both proved.
+`GaussianNonmonicApproximateRoot` instantiates the actual PR4 finite clock
+and its all-stage decay with RD discharged internally and p,q>=1.
 
-`GaussianMonicApplications` then proves concrete approximate-root and
-approximate-factorization endpoints with RD discharged internally. The
-actual returned roots/product satisfy the source coefficient error, and
-actual/returned product evaluation identities are checked. The generic
-step-parametric APIs retain their useful RD arguments. Standalone concrete
-root-support, adequacy and completed-distance interfaces still need their
-fixed-step instantiation and source-binding audit; their generic conditional
-proofs remain checked.
+`GaussianMonicRootSupport` now exports both original Euclidean covers,
+actual checker acceptance, root-name PR3 queries and returned sample/product
+metadata with RD discharged internally. `GaussianMonicRootAdequacy` exports
+the full source proposition and completed-distance corollary, preserving
+the original sharp constants and genuine CN/pointCN/disk/degree guards.
+Its literal polynomial-name zero predicate is equivalent to represented
+membership and completed distance-name zero. Fast, canonical, nonnegative
+distance completion and its membership equivalence require only CN,
+pointCN and positive degree. The older generic step APIs retain their
+useful explicit RD arguments.
 
-General nonmonic FTA, Gaussian point-name realization, coded-field norm
-claims, Minkowski physical-basis transport, remaining FIBER compiler/adapters,
-Gamma/Barnes analytic identities and all other source-packet obligations
-remain in scope. The completed-real interpretation of a normalized direction
-is separate from its checked source rational certificate. General convolution
-and the separately expanded telescoping sum remain unclaimed. The complete
+The general nonmonic coefficient-name FTA is still incomplete: finite
+residual contraction does not provide the quantitative travel estimate
+from an arbitrary nonconstant coefficient or prove the resulting Cauchy
+iteration. Those steps and the Gaussian point-name realization adapter
+remain in scope, together with coded-field norm/fiber/annihilator claims,
+Minkowski physical-basis transport, remaining FIBER compiler/adapters,
+Gamma/Barnes analytic identities and all other source-packet obligations.
+The completed-real interpretation of a normalized direction is separate
+from its checked source rational certificate. General convolution and the
+separately expanded telescoping sum remain unclaimed. The complete
 115-packet goal remains active.
 
 The new modules are included in `IPRADerivations`; all their public declarations
