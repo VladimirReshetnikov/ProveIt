@@ -230,6 +230,8 @@ import IPRADerivations.Foundations.EmbeddingBasics
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Foundations.BoundedSyntax
 import IPRADerivations.Foundations.BackwardDemand
+import IPRADerivations.Foundations.ParameterChangingRecursion
+import IPRADerivations.Foundations.LeastEven
 import IPRADerivations.Foundations.BoundedSelection
 import IPRADerivations.Foundations.BoundedCover
 import IPRADerivations.Foundations.FiniteNet
@@ -245,6 +247,7 @@ import IPRADerivations.Foundations.FiberCompiler
 import IPRADerivations.Foundations.UniversalEvaluatorObstruction
 import IPRADerivations.Foundations.FiniteUseSignObstruction
 import IPRADerivations.Foundations.RealizerComposition
+import IPRADerivations.Foundations.RealizerGraph
 import IPRADerivations.Foundations.ChallengeDecomposition
 import IPRADerivations.Foundations.BooleanizationCorollaries
 import IPRADerivations.Foundations.TraceReflection
