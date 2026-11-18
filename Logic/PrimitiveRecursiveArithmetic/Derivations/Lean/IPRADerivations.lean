@@ -438,6 +438,7 @@ import IPRADerivations.Foundations.ObservableUnit
 import IPRADerivations.Foundations.FiniteReconstruction
 import IPRADerivations.Foundations.Deduplication
 import IPRADerivations.Foundations.NormVanishing
+import IPRADerivations.Foundations.NormMembership
 import IPRADerivations.Foundations.NullVectorDeterminant
 import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Foundations.ViableChain
