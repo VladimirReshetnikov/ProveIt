@@ -9063,6 +9063,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BoundedSyntaxBackwardInduction.compiled_reverse_induction_closed
 #print axioms LeanProofs.IPRA.Foundations.BoundedSyntaxBackwardInduction.reverse_complement_closed
 #print axioms LeanProofs.IPRA.Foundations.BoundedSyntaxBackwardInduction.reverse_successor_closed
+#print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.gronwall
+#print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.bern
+#print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.growth_quad
+#print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.three_bound
+#print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.growth
+#print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.gronwall_three
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRelativeTwoTerm.norm_order_relative
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRelativeTwoTerm.relative_norm_order
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRelativeTwoTerm.relative_add

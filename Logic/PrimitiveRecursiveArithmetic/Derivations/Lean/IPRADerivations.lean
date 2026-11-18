@@ -640,6 +640,7 @@ import IPRADerivations.Analysis.GaussianNonmonicApproximateRoot
 
 -- Actual coefficient recovery, quantitative translation and power-order transport.
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
+import IPRADerivations.Foundations.DiscreteGronwall
 import IPRADerivations.Analysis.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Analysis.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Analysis.GaussianTranslationCoefficientValues
