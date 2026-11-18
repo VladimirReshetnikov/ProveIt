@@ -88,6 +88,7 @@ import IPRADerivations.Analysis.WallisRecurrence
 import IPRADerivations.Analysis.WallisFinite
 import IPRADerivations.Analysis.RobbinsSeries
 import IPRADerivations.Analysis.ExponentialSeries
+import IPRADerivations.Analysis.WeierstrassProduct
 import IPRADerivations.Analysis.FiniteDifferenceIdentities
 import IPRADerivations.Analysis.RiemannRefinement
 import IPRADerivations.Analysis.EvenPowerIntegrals
@@ -96,6 +97,7 @@ import IPRADerivations.Analysis.FiniteFTC
 import IPRADerivations.Analysis.RobbinsTelescope
 import IPRADerivations.Analysis.WeightedAMGM
 import IPRADerivations.Analysis.EulerBrackets
+import IPRADerivations.Analysis.PowerGap
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
@@ -301,6 +303,8 @@ import IPRADerivations.Geometry.SphericalHalf
 import IPRADerivations.Geometry.SphericalDelambre
 import IPRADerivations.Geometry.SphericalArea
 import IPRADerivations.Geometry.SphericalCore
+import IPRADerivations.Geometry.SphericalQuadrantal
+import IPRADerivations.Geometry.SphericalNapier
 import IPRADerivations.Geometry.SphericalPolar
 import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
@@ -392,6 +396,7 @@ import IPRADerivations.Geometry.IsoperimetricInequalities
 import IPRADerivations.Combinatorics.CatalanProducts
 import IPRADerivations.Combinatorics.CatalanGrowth
 import IPRADerivations.Combinatorics.CatalanPrimes
+import IPRADerivations.Combinatorics.CatalanSmallPrimes
 import IPRADerivations.Combinatorics.SegnerUnique
 import IPRADerivations.Foundations.PresentedCategory
 import IPRADerivations.Foundations.Yoneda
