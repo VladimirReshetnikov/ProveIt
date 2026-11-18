@@ -637,3 +637,12 @@ import IPRADerivations.Analysis.GaussianGeneralProductBound
 import IPRADerivations.Analysis.GaussianGeneralFTATrajectory
 import IPRADerivations.Analysis.GaussianGeneralFTAStepBound
 import IPRADerivations.Analysis.GaussianGeneralFTACoefficientDrift
+
+-- Actual general coefficient-name FTA: global invariant, Cauchy root and polynomial zero name.
+import IPRADerivations.Analysis.GaussianGeneralFTAResidualStep
+import IPRADerivations.Analysis.GaussianGeneralFTARadiusStep
+import IPRADerivations.Analysis.GaussianGeneralFTAInvariant
+import IPRADerivations.Analysis.GaussianGeneralFTATelescope
+import IPRADerivations.Analysis.GaussianGeneralFTARootName
+import IPRADerivations.Analysis.GaussianGeneralFTAName
+import IPRADerivations.Analysis.GaussianGeneralFTAPolynomialValueName
