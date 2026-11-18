@@ -300,6 +300,7 @@ import IPRADerivations.Geometry.SphericalPolar
 import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
 import IPRADerivations.Geometry.ConwayAlgebra
+import IPRADerivations.Geometry.PathShoelace
 import IPRADerivations.Geometry.PentagonArithmetic
 import IPRADerivations.Geometry.PappusSegment
 import IPRADerivations.Geometry.TriangularNorm
