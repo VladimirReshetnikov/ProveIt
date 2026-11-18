@@ -83,6 +83,7 @@ import IPRADerivations.Analysis.WallisRecurrence
 import IPRADerivations.Analysis.WallisFinite
 import IPRADerivations.Analysis.RobbinsSeries
 import IPRADerivations.Analysis.ExponentialSeries
+import IPRADerivations.Analysis.FiniteDifferenceIdentities
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree

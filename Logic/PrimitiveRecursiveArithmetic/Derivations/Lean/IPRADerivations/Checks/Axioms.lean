@@ -1397,6 +1397,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.en_ge
 #print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.tail_step
 #print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.en_upper
+#print axioms LeanProofs.IPRA.Analysis.FiniteDifferenceIdentities.product_finite
+#print axioms LeanProofs.IPRA.Analysis.FiniteDifferenceIdentities.product_defect
+#print axioms LeanProofs.IPRA.Analysis.FiniteDifferenceIdentities.product_split
+#print axioms LeanProofs.IPRA.Analysis.FiniteDifferenceIdentities.bernstein_weights
+#print axioms LeanProofs.IPRA.Analysis.FiniteDifferenceIdentities.em_constant
+#print axioms LeanProofs.IPRA.Analysis.FiniteDifferenceIdentities.inverse_taylor
+#print axioms LeanProofs.IPRA.Analysis.FiniteDifferenceIdentities.circle
+#print axioms LeanProofs.IPRA.Analysis.FiniteDifferenceIdentities.complete_square
+#print axioms LeanProofs.IPRA.Analysis.FiniteDifferenceIdentities.ss_decomposition
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
