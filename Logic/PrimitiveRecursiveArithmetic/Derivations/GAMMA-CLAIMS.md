@@ -57,6 +57,19 @@ truncated logarithm, and transport to the actual analytic exponential/log
 names with their tail bounds, remain unproved bridges. The derived recurrence
 is not counted as the complete analytic C4 identity.
 
+[FiniteExponential](Lean/IPRADerivations/Analysis/FiniteExponential.lean)
+and [FiniteLogarithm](Lean/IPRADerivations/Analysis/FiniteLogarithm.lean)
+now evaluate the literal factorial-cleared finite sums, together with
+independent termwise derivative sums. Exact coefficient clearing identifies
+the prescribed `1/k!` and alternating `1/j` coefficients. Internal-cutoff
+QF inductions derive their evaluation recurrences and exact differential
+residuals `D E'_N+x^N=E_N` and
+`(D+x)H'_N+g_N x^N=N!D^N`. Positive-denominator and actual PR3 output
+contracts are checked. These are finite scalar algebraic dependencies:
+literal composition/chain-rule correctness, coefficient extraction and its
+Bell-history identification, complex evaluation, analytic tails and the
+actual C4 name identity remain open.
+
 ## Every ledger family remains in scope
 
 | Ledger IDs | Complete source deliverables still required |
