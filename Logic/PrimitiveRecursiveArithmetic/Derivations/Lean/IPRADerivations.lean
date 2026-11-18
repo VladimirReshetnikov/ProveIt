@@ -291,6 +291,7 @@ import IPRADerivations.Geometry.MeshBracket
 import IPRADerivations.Geometry.CevaMenelaus
 import IPRADerivations.Geometry.HoehnBrianchon
 import IPRADerivations.Geometry.Mollweide
+import IPRADerivations.Geometry.MollweideRoots
 import IPRADerivations.Geometry.TriangleIsoperimetry
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Geometry.HypercubeEdge
