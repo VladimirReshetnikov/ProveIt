@@ -61,6 +61,7 @@ import IPRADerivations.Analysis.DyadicComplexLogarithm
 import IPRADerivations.Analysis.ComplexLogarithmName
 import IPRADerivations.Analysis.RationalSummableTails
 import IPRADerivations.Analysis.PolynomialBisection
+import IPRADerivations.Analysis.PolynomialRootName
 import IPRADerivations.Analysis.TrapezoidAffine
 import IPRADerivations.Analysis.HypergeometricTerm
 import IPRADerivations.Analysis.FiniteCalculus
@@ -240,6 +241,8 @@ import IPRADerivations.Foundations.DemandClosure
 import IPRADerivations.Foundations.StrategyRealization
 import IPRADerivations.Foundations.FiberCompiler
 import IPRADerivations.Foundations.UniversalEvaluatorObstruction
+import IPRADerivations.Foundations.FiniteUseSignObstruction
+import IPRADerivations.Foundations.RealizerComposition
 import IPRADerivations.Foundations.ChallengeDecomposition
 import IPRADerivations.Foundations.BooleanizationCorollaries
 import IPRADerivations.Foundations.TraceReflection

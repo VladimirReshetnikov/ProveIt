@@ -42,7 +42,10 @@ obligations, with exact statement-level status.
 | FIBER, acyclic compiler kernel | `FiberCompiler.Program.compile`, `compile_at`, `compile_closed`, `GeneratedSymbol.correct` | Actual typed source recursion, literal residual/input proof output, guarded control-flow producers and scoped PR metadata. The full compiler/composition claims still require runtime demand flattening, metadata composition and cyclic unrolling. |
 | FIBER, runtime list arithmetic for composition | `SequenceComposition.sequence_append`, `sequence_append_associative`, `runtime_flatMap_lookup`, `runtime_flatten` | Actual PR demand-list append and flattening with stored-length equations, internal prefix sums and block lookup. Empty outer lists and zero-length inner lists are covered. This is a necessary component of the full realizer composition theorem. |
 | FIBER, actual polynomial-bisection finite trace | `PolynomialBisection.bisection`, `bisection_nested`, `uniqueness` | Fixed arbitrary polynomial degree with internal signed coefficient code and initial bracket. Actual midpoint-sign computation, exact scaling, positive denominators, width halving and arbitrary-index nesting; guarded rational-zero uniqueness from the computed factor. Completed-real and uniform-guard adapters remain open. |
+| FIBER, actual bisection root-name contract | `PolynomialRootName.sample_programs`, `regular_name`, `residual_name` | Actual PR sample programs, computed width shift, explicit Cauchy modulus and polynomial residual rate from the computed coefficient bound. The generated PR schedule queries the actual name. Completed-real interpretation and uniform-guard name uniqueness remain separate. |
 | FIBER, no universal PR evaluator | `UniversalEvaluatorObstruction.diagonal_obstruction`, `no_universal_primitive_recursive_evaluator` | The closed internal diagonal schema and the separate source metatheorem about actual `PR.ev` semantics. No internal universal evaluator is postulated. |
+| FIBER, `thm:composition`, canonical bounded realizer model | `RealizerComposition.compose`, `fiber_realizer_composition`, `fiber_realizer_composition_stable`, `fiber_composition_sequent` | Actual runtime demand flattening, bounded submaster extraction and intermediate bundling, PR metadata, soundness/stability and named residual/sealed sequents. External master conventions and application interface laws require explicit adapters. |
+| FIBER, `thm:no-sign` | `FiniteUseSignObstruction.finite_use_at_halt`, `zero_run_perturbations`, `no_exact_sign_machine` | The external source metatheorem for an actual adaptive finite-query machine and valid rapid rational names. Finite use is derived from execution, with explicit perturbation names and a deterministic-execution proof. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -53,8 +56,9 @@ The Barnes packet still requires the analytic canonical-product construction,
 complex functional and reflection identities, multiplication formulas,
 analytic special values, asymptotic estimates and characterizations. Its
 integer product results provide a finite part of those arguments. The FIBER
-packet also has separate compiler, cluster and obstruction claims. Their source inventories and object proofs
-remain open.
+packet still requires graph-level compiler assembly, cluster and finite-algebra
+observation proofs, concrete application instances, and the adapters recorded
+in its claim audit. The full source scope remains active.
 
 ## Source statements needing correction
 
@@ -142,7 +146,7 @@ claims beyond those families.
 | [diophantine-number-theory/transcendence_ipra](../docs/proofs/diophantine-number-theory/transcendence_ipra/) | [DiophantineNumberTheory/CoprimeModulus](Lean/IPRADerivations/DiophantineNumberTheory/CoprimeModulus.lean) |
 | [foundations/cifer_ipra_framework_2026-11-15](../docs/proofs/foundations/cifer_ipra_framework_2026-11-15/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/darc_ipra_framework_2026-11-16](../docs/proofs/foundations/darc_ipra_framework_2026-11-16/) | Source-claim inventory pending. |
-| [foundations/fiber_ipra_2026-11-16](../docs/proofs/foundations/fiber_ipra_2026-11-16/) | [Analysis/DyadicCauchy](Lean/IPRADerivations/Analysis/DyadicCauchy.lean), [Analysis/SummableTails](Lean/IPRADerivations/Analysis/SummableTails.lean), [Analysis/RationalSummableTails](Lean/IPRADerivations/Analysis/RationalSummableTails.lean), [Foundations/UniversalEvaluatorObstruction](Lean/IPRADerivations/Foundations/UniversalEvaluatorObstruction.lean), [Foundations/BoundedSelection](Lean/IPRADerivations/Foundations/BoundedSelection.lean), [Foundations/FiniteNet](Lean/IPRADerivations/Foundations/FiniteNet.lean), [Foundations/MasterCertificate](Lean/IPRADerivations/Foundations/MasterCertificate.lean), [Foundations/SequenceComposition](Lean/IPRADerivations/Foundations/SequenceComposition.lean), [Foundations/DemandClosure](Lean/IPRADerivations/Foundations/DemandClosure.lean), [Foundations/StrategyRealization](Lean/IPRADerivations/Foundations/StrategyRealization.lean), [Foundations/FiberCompiler](Lean/IPRADerivations/Foundations/FiberCompiler.lean), [Analysis/PolynomialBisection](Lean/IPRADerivations/Analysis/PolynomialBisection.lean) |
+| [foundations/fiber_ipra_2026-11-16](../docs/proofs/foundations/fiber_ipra_2026-11-16/) | [Analysis/DyadicCauchy](Lean/IPRADerivations/Analysis/DyadicCauchy.lean), [Analysis/SummableTails](Lean/IPRADerivations/Analysis/SummableTails.lean), [Analysis/RationalSummableTails](Lean/IPRADerivations/Analysis/RationalSummableTails.lean), [Foundations/UniversalEvaluatorObstruction](Lean/IPRADerivations/Foundations/UniversalEvaluatorObstruction.lean), [Foundations/BoundedSelection](Lean/IPRADerivations/Foundations/BoundedSelection.lean), [Foundations/FiniteNet](Lean/IPRADerivations/Foundations/FiniteNet.lean), [Foundations/MasterCertificate](Lean/IPRADerivations/Foundations/MasterCertificate.lean), [Foundations/SequenceComposition](Lean/IPRADerivations/Foundations/SequenceComposition.lean), [Foundations/DemandClosure](Lean/IPRADerivations/Foundations/DemandClosure.lean), [Foundations/StrategyRealization](Lean/IPRADerivations/Foundations/StrategyRealization.lean), [Foundations/FiberCompiler](Lean/IPRADerivations/Foundations/FiberCompiler.lean), [Analysis/PolynomialBisection](Lean/IPRADerivations/Analysis/PolynomialBisection.lean), [Foundations/RealizerComposition](Lean/IPRADerivations/Foundations/RealizerComposition.lean), [Foundations/FiniteUseSignObstruction](Lean/IPRADerivations/Foundations/FiniteUseSignObstruction.lean), [Analysis/PolynomialRootName](Lean/IPRADerivations/Analysis/PolynomialRootName.lean) |
 | [foundations/FINER-iPRA-framework-2026-11-16](../docs/proofs/foundations/FINER-iPRA-framework-2026-11-16/) | Source-claim inventory pending. |
 | [foundations/ipra_bounded_reflection_2026-11-16](../docs/proofs/foundations/ipra_bounded_reflection_2026-11-16/) | [Foundations/BoundedReflection](Lean/IPRADerivations/Foundations/BoundedReflection.lean), [Foundations/BoundedFormulas](Lean/IPRADerivations/Foundations/BoundedFormulas.lean), [Foundations/BoundedCover](Lean/IPRADerivations/Foundations/BoundedCover.lean) |
 | [foundations/ipra_categorical_methods](../docs/proofs/foundations/ipra_categorical_methods/) | [Foundations/ChineseRemainder](Lean/IPRADerivations/Foundations/ChineseRemainder.lean), [Foundations/BooleanizationCorollaries](Lean/IPRADerivations/Foundations/BooleanizationCorollaries.lean), [Foundations/GuardedLoop](Lean/IPRADerivations/Foundations/GuardedLoop.lean) |
@@ -212,12 +216,12 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `08b2d04b77`, including the actual polynomial-
-bisection addition, the root build completed 2,090 jobs and emitted
-2,083 axiom reports for 1,994 distinct declarations, all using only
-`propext`, `Classical.choice`, and `Quot.sound`. The portable import gate
-passed across 3,509 source modules and the independent `Diophantine` boundary
-passed across 5,252 modules.
+At the source based on `96e97fae3d`, including bounded realizer
+composition, the external sign obstruction and actual polynomial root-name
+contracts, the root build completed 2,095 jobs and emitted 2,184 axiom reports
+for 2,069 distinct declarations, all using only `propext`, `Classical.choice`,
+and `Quot.sound`. The portable import gate passed across 3,514 source modules
+and the independent `Diophantine` boundary passed across 5,252 modules.
 
 The new modules are included in `IPRADerivations`. Their public theorem
 names are audited in `Checks/Axioms.lean`. Build and inspect the object
