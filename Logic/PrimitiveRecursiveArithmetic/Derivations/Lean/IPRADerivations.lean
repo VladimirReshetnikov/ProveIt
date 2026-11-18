@@ -748,6 +748,7 @@ import IPRADerivations.Foundations.ReverseDemand
 import IPRADerivations.Foundations.VectorRank
 import IPRADerivations.Foundations.VectorStabilization
 import IPRADerivations.Foundations.ProofSchedule
+import IPRADerivations.Foundations.ReachableFrontier
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion

@@ -9456,6 +9456,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ProofSchedule.schedule_of_steps
 #print axioms LeanProofs.IPRA.Foundations.ProofSchedule.all_derivable
 #print axioms LeanProofs.IPRA.Foundations.ProofSchedule.compile_steps
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.reach_parent
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.reach_min
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.reach_union
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.front_of_reachable
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.front_union
+#print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.frontier_sufficient
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
