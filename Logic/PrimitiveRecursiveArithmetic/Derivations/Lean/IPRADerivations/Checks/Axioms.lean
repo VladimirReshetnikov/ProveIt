@@ -1966,3 +1966,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.ComplexLogarithmName.canonical_local_power_series_log_name
 #print axioms LeanProofs.IPRA.Analysis.ComplexLogarithmName.canonical_local_power_series_log_endpoints
 #print axioms LeanProofs.IPRA.Analysis.ComplexLogarithmName.local_power_series_observation_error
+#print axioms LeanProofs.IPRA.Foundations.SequenceComposition.sequence_append
+#print axioms LeanProofs.IPRA.Foundations.SequenceComposition.sequence_append_associative
+#print axioms LeanProofs.IPRA.Foundations.SequenceComposition.runtime_flatMap_length
+#print axioms LeanProofs.IPRA.Foundations.SequenceComposition.runtime_flatMap_lookup
+#print axioms LeanProofs.IPRA.Foundations.SequenceComposition.runtime_flatten
+#print axioms LeanProofs.IPRA.Foundations.SequenceComposition.empty_sequence_composition
+#print axioms LeanProofs.IPRA.Foundations.SequenceComposition.zero_length_inner_block

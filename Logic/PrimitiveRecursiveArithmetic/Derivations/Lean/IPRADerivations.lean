@@ -233,6 +233,7 @@ import IPRADerivations.Foundations.NestedRegions
 import IPRADerivations.Foundations.StrongConvexity
 import IPRADerivations.Foundations.StrongMinimizer
 import IPRADerivations.Foundations.MasterCertificate
+import IPRADerivations.Foundations.SequenceComposition
 import IPRADerivations.Foundations.DemandClosure
 import IPRADerivations.Foundations.StrategyRealization
 import IPRADerivations.Foundations.FiberCompiler
