@@ -354,6 +354,7 @@ import IPRADerivations.Topology.Sperner2D
 import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Topology.DimensionTwo
+import IPRADerivations.Topology.DimensionUnits
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
