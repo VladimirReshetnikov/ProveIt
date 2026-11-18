@@ -164,6 +164,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.EulerRodrigues.adjugate_shift
 #print axioms LeanProofs.IPRA.Geometry.EulerRodrigues.det_shift_formula
 #print axioms LeanProofs.IPRA.Geometry.EulerRodrigues.adjugate_adjugate
+#print axioms LeanProofs.IPRA.Geometry.EulerRodriguesUniversal.adj_eq_transpose
+#print axioms LeanProofs.IPRA.Geometry.EulerRodriguesUniversal.det_one_sub
+#print axioms LeanProofs.IPRA.Geometry.EulerRodriguesUniversal.S_sq
+#print axioms LeanProofs.IPRA.Geometry.EulerRodriguesUniversal.circle
+#print axioms LeanProofs.IPRA.Geometry.EulerRodriguesUniversal.outer_S
+#print axioms LeanProofs.IPRA.Geometry.EulerRodriguesUniversal.axis_adj
+#print axioms LeanProofs.IPRA.Geometry.EulerRodriguesUniversal.s_identities
+#print axioms LeanProofs.IPRA.Geometry.EulerRodriguesUniversal.scalar_identities
 #print axioms LeanProofs.IPRA.Geometry.Projective.double_cross
 #print axioms LeanProofs.IPRA.Geometry.Projective.desargues_identity
 #print axioms LeanProofs.IPRA.Geometry.Projective.plucker_relation

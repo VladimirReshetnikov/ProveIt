@@ -265,6 +265,7 @@ import IPRADerivations.Foundations.GapRecovery
 import IPRADerivations.Foundations.StagedGraph
 import IPRADerivations.Foundations.TraceInvariant
 import IPRADerivations.Geometry.EulerRodrigues
+import IPRADerivations.Geometry.EulerRodriguesUniversal
 import IPRADerivations.Geometry.Morley
 import IPRADerivations.Geometry.PlatonicSolids
 import IPRADerivations.Geometry.Projective
