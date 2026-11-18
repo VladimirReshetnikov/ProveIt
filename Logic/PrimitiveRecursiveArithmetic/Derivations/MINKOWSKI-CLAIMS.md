@@ -28,10 +28,35 @@ claimed object derivation.
 ## Obligations outside theorem environments
 
 The numerical specialization for rational bases and rational slab bodies
-following `thm:main` remains open. It needs the actual rational row/basis
-products, min/max box-containment checker, physical lattice output `Bz`
-and its output checker, uniformly in the dimension. The complete abstract
-membership-formula certificate scheme does not supply this specialization.
+following `thm:main` is partially checked.
+[RationalArithmetic](Lean/IPRADerivations/Analysis/RationalArithmetic.lean)
+proves actual signed rational multiplication and min/max endpoint bounds.
+[RationalFiniteSum](Lean/IPRADerivations/Analysis/RationalFiniteSum.lean)
+constructs the canonical sums and derives their monotonicity from bounded
+coordinate comparisons, with independently computed product denominators.
+[RationalSumLinearity](Lean/IPRADerivations/Analysis/RationalSumLinearity.lean)
+proves literal scalar homogeneity of the actual sum program, including zero,
+negative scalars and empty sums.
+[RationalSumAdditivity](Lean/IPRADerivations/Analysis/RationalSumAdditivity.lean)
+`sum_additive_closed` proves literal additivity for the actual pointwise sum
+of two independent input families. Its QF invariant retains all three raw
+denominator products, with no supplied common scale or global sum equation.
+[MinkowskiSlabInterval](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiSlabInterval.lean)
+`dot_interval_closed`, `slab_checker_reflection_closed` and
+`accepted_box_closed` prove the actual numerical min/max containment test:
+acceptance by a fixed PR4 checker implies every point in the original
+rational coordinate box satisfies every supplied row bound. The checker
+uses actual endpoint products and sums; containment is derived, not supplied.
+Dimension, facets, endpoints, coefficients and bounds are internal. The
+arithmetic interprets total sequence coordinates in the first N positions;
+stored-length or canonical shape guards are not silently inferred.
+
+The remaining specialization must construct the lattice rows `α=2aB`,
+prove the rational basis/dot-product and doubled-coordinate transport,
+derive the source's fully guarded symmetry/midpoint and `Inside` contracts,
+and construct/check the physical nonzero lattice output `Bz`, uniformly in
+dimension. The complete abstract membership-formula certificate scheme and
+the numerical containment checker do not yet supply this composition.
 
 The [finite-volume appendix](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/06_finite_volume.tex)
 has no theorem-style environment. It still supplies essential requirements:
