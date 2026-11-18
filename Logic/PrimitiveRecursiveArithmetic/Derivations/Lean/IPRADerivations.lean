@@ -424,6 +424,8 @@ import IPRADerivations.Foundations.HurwitzUniqueness
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.BoundedFixpoint
 import IPRADerivations.Foundations.SquareRootNames
+import IPRADerivations.Foundations.SquareRootRelationalCandidates
+import IPRADerivations.Foundations.SquareRootRelationalCertificate
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
@@ -739,6 +741,9 @@ import IPRADerivations.Analysis.GaussianNameEquivalence
 import IPRADerivations.Analysis.GaussianNameBounds
 import IPRADerivations.Analysis.GaussianNameArithmetic
 import IPRADerivations.Analysis.GaussianNameRingLaws
+import IPRADerivations.Analysis.GaussianNameReciprocal
+import IPRADerivations.Analysis.GaussianPolynomialNameHorner
+import IPRADerivations.Analysis.GaussianRepresentedFTA
 import IPRADerivations.Analysis.GaussianValueNormalizerExtensionality
 import IPRADerivations.Analysis.GaussianGeneralPolynomialExtensionality
 import IPRADerivations.Analysis.GaussianPolynomialDegreePadding

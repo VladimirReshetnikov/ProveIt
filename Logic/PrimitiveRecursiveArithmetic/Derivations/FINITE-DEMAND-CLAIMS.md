@@ -310,8 +310,21 @@ the environment labels. Completion needs the following evidence:
    now prove associativity, commutativity, both distributions and the
    zero/one/inverse laws up to exact cross-precision equivalence, from
    original point-Cauchy conditions alone. Computed disks and all nested
-   normalization errors are derived. Completed-field realization and the
-   uniform evaluation-to-name-arithmetic adapter remain. The [natural scalar action](Lean/IPRADerivations/Analysis/GaussianRationalNaturalScale.lean)
+   normalization errors are derived.
+   [Actual reciprocal names](Lean/IPRADerivations/Analysis/GaussianNameReciprocal.lean)
+   now derive separation, regularity, both product inverse laws and properness
+   from point CN and the original finite dyadic apartness witness. Bare
+   negated zero is not an effective apartness selector.
+   [Uniform prefix interpretation](Lean/IPRADerivations/Analysis/GaussianPolynomialNameHorner.lean)
+   derives actual add/multiply Horner recurrence for internal prefix lengths;
+   the full prefix binds to the original value program and zero predicate
+   with its exact original data and normalization shift.
+   [The collected name-level FTA certificate](Lean/IPRADerivations/Analysis/GaussianRepresentedFTA.lean)
+   now derives the actual root, prefix-arithmetic and full Horner-zero
+   certificate from the original source input, retaining R/T/data and the
+   original programs. Its actual sample output has proved fields and bounds.
+   Completed-field realization and represented factorization remain separate.
+   The [natural scalar action](Lean/IPRADerivations/Analysis/GaussianRationalNaturalScale.lean)
    and [finite Gaussian sum](Lean/IPRADerivations/Analysis/GaussianRationalFiniteSum.lean)
    prove the actual recurrences and algebra used by the now-proved literal
    inverse-binomial Pascal row and its source-identity binding. Generic
