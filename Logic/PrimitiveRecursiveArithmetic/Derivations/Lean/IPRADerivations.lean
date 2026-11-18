@@ -29,6 +29,7 @@ import IPRADerivations.Core.SquareLayers
 import IPRADerivations.Core.BlockSum
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Core.Telescoping
 import IPRADerivations.Core.SumSplit

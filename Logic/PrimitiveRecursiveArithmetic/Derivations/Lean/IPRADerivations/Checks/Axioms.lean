@@ -319,6 +319,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.monus_mul
 #print axioms LeanProofs.IPRA.le_total
 #print axioms LeanProofs.IPRA.le_antisymm
+#print axioms LeanProofs.IPRA.nn_add
+#print axioms LeanProofs.IPRA.nn_mul
+#print axioms LeanProofs.IPRA.nn_ofNat
+#print axioms LeanProofs.IPRA.nn_pow
+#print axioms LeanProofs.IPRA.nn_sl
+#print axioms LeanProofs.IPRA.le_of_nonneg
+#print axioms LeanProofs.IPRA.le_of_comb
 #print axioms LeanProofs.IPRA.le_trans
 #print axioms LeanProofs.IPRA.eq_or_ne
 #print axioms LeanProofs.IPRA.lt_or_le
