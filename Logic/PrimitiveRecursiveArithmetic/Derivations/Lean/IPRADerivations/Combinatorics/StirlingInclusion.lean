@@ -1,6 +1,8 @@
 import IPRADerivations.Combinatorics.BellPascalInversion
 import IPRADerivations.Combinatorics.CatalanBallot
 import IPRADerivations.Combinatorics.StirlingBinomial
+import IPRADerivations.Combinatorics.BellStirling
+import IPRADerivations.AnalyticNumberTheory.Totient
 
 /-!
 # Inclusion–exclusion for the Stirling numbers
@@ -19,10 +21,11 @@ with the signed sum split by the parity of `k − i` into natural numbers `E⁺(
   (pointwise absorption and the parity flip; `sum_affine` combines sums with different parameters);
 * `alt_e`, `alt_o`, `base`: `E⁺(0, k + 1) = E⁻(0, k) + E⁺(0, k)` and `E⁻(0, k + 1) = E⁺(0, k) + E⁻(0, k)`
   (Pascal's rule after shifting the index), so `∑_i (−1)^{k−i} C(k, i) = [k = 0]` and the case `n = 0` holds;
+* `q_eq`, `bell_ie` (`eq:bell-ie`): `(E⁺ ∸ E⁻)/k! = S(n, k)` exactly, so `B_n = ∑_{k ≤ n} (E⁺(n, k) ∸ E⁻(n, k))/k!`;
 * `pt_zero`, `pt_succ`, `stirling_ie`: induction on `n` for all `k` at once, as the vanishing of the violation
   count over `k ≤ K`, from `S(n + 1, k + 1) = (k + 1) S(n, k + 1) + S(n, k)` and `(k + 1)! = k! (k + 1)`.
 
-The consequences with the factor `1 / k!` (`eq:bell-ie`, `eq:bell-finite-dobinski`) are not derived.
+The finite Dobinski form `eq:bell-finite-dobinski` and the derangement form are not derived.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -450,5 +453,31 @@ theorem stirling_ie (N K : PTm n) : Γ ⊢[PRAAx] P N K := by
   have h := Prf.allE N hall
   simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h
   exact elim h (le_refl _)
+
+/-! ## The Bell number as a sum of exact quotients (`eq:bell-ie`) -/
+
+/-- `(E⁺(n, k) ∸ E⁻(n, k)) / k!`, over `0 = k`, `1 = n`. -/
+abbrev qB : PTm 2 := quo (monus (ap2 (sumF eB) (succ (var 0)) (pairT (var 1) (var 0)))
+  (ap2 (sumF oB) (succ (var 0)) (pairT (var 1) (var 0)))) (fact (var 0))
+
+/-- The signed sum is exactly divisible by `k!`, with quotient `S(n, k)`. -/
+theorem q_eq (N K : PTm n) : Γ ⊢[PRAAx] quo (monus (Ep N K) (Om N K)) (fact K) ≐ stir N K := by
+  have d : Γ ⊢[PRAAx] monus (Ep N K) (Om N K) ≐ fact K * stir N K :=
+    (congrMonus (stirling_ie N K).eqSymm (.eqRefl _)).eqTrans (add_monus _ _)
+  have hf := AnalyticNumberTheory.Primes.fact_pos (Γ := Γ) K
+  have hl : Γ ⊢[PRAAx] lt zero (fact K) :=
+    le_of_eq_add (d := pred (fact K)) (by have e := natEq hf; apply deriveNat; ipra_simps; linear_combination e)
+  exact (congrAp2 quoF d (.eqRefl _)).eqTrans
+    (AnalyticNumberTheory.Totient.quo_eq hf (r := zero) (by apply deriveNat; ipra_simps; ring) hl)
+
+/-- `eq:bell-ie`: `B_n = ∑_{k ≤ n} (1/k!) ∑_{i ≤ k} (−1)^{k−i} C(k, i) iⁿ`, each summand an exact quotient. -/
+theorem bell_ie (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF qB) (succ N) N ≐ Bell.bell N := by
+  refine .eqTrans ?_ (BellStirling.bell_stirling N)
+  refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+  have e : inst2 qB (var 0) (Syn.shift N) = quo (monus (Ep (Syn.shift N) (var 0)) (Om (Syn.shift N) (var 0))) (fact (var 0)) := by
+    simp [inst2]
+  have e' : inst2 BellStirling.tB (var 0) (Syn.shift N) = stir (Syn.shift N) (var 0) := by simp [inst2]
+  rw [e, e']
+  exact q_eq _ _
 
 end LeanProofs.IPRA.Combinatorics.StirlingInclusion

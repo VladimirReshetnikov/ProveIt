@@ -1547,6 +1547,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.base
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.pt_succ
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.stirling_ie
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.q_eq
+#print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.bell_ie
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_zero
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_self
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_above
