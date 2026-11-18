@@ -33,6 +33,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.type15_angle_sum
 #print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.dual_angle_sums
 #print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.dodecahedron_euler
+#print axioms LeanProofs.IPRA.Geometry.PentagonArithmetic.coxeter_hyperbolic
 #print axioms LeanProofs.IPRA.Geometry.PappusSegment.affine_sum
 #print axioms LeanProofs.IPRA.Geometry.PappusSegment.sum_odd
 #print axioms LeanProofs.IPRA.Geometry.PappusSegment.midpoint_moment
