@@ -339,3 +339,13 @@ import IPRADerivations.Probability.MedianOfMedians
 import IPRADerivations.Topology.Sperner
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
+
+import IPRADerivations.Algebra.PolynomialFiniteRoots
+import IPRADerivations.Analysis.LogisticName
+import IPRADerivations.Analysis.RationalSupMetric
+import IPRADerivations.Foundations.FiniteHausdorff
+import IPRADerivations.Foundations.FiniteHausdorffOperations
+import IPRADerivations.Foundations.FiniteHausdorffConcat
+import IPRADerivations.Foundations.FiniteHausdorffProduct
+import IPRADerivations.Foundations.FiniteHausdorffImage
+import IPRADerivations.Foundations.RealizerLoop
