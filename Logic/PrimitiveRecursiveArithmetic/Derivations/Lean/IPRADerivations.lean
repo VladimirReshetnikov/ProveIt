@@ -70,6 +70,7 @@ import IPRADerivations.Analysis.GapRemoval
 import IPRADerivations.Analysis.PowerSums
 import IPRADerivations.Analysis.BaselDiagonal
 import IPRADerivations.Analysis.BaselFinite
+import IPRADerivations.Analysis.BaselSquares
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
