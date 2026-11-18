@@ -302,6 +302,7 @@ import IPRADerivations.Geometry.SphericalHalf
 import IPRADerivations.Geometry.SphericalDelambre
 import IPRADerivations.Geometry.SphericalArea
 import IPRADerivations.Geometry.SphericalCore
+import IPRADerivations.Geometry.SphericalQuadrantal
 import IPRADerivations.Geometry.SphericalPolar
 import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
