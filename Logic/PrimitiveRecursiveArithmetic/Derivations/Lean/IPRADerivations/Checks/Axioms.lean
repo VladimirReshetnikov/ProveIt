@@ -13463,6 +13463,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.RationalRootScan.scan_nodup
 #print axioms LeanProofs.IPRA.Foundations.RationalRootScan.roots_complete
 #print axioms LeanProofs.IPRA.Foundations.RationalRootScan.zero_root_complete
+#print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.code_lt
+#print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.dig_congr
+#print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.dig_code
+#print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.dig_lt
+#print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.code_dig
+#print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.code_inj
+#print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.digit_pos
+#print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.digit_neg
+#print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.pos_recover
+#print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.neg_recover
+#print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.grid_complete
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.Bez
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.P
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.tB
