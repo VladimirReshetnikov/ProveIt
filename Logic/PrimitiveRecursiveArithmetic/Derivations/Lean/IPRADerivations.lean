@@ -410,6 +410,7 @@ import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Foundations.CodedViableChain
 import IPRADerivations.Foundations.ViableChainSelection
 import IPRADerivations.Foundations.CodedViableSuffix
+import IPRADerivations.Foundations.CodedChainRefinement
 import IPRADerivations.Foundations.HurwitzProduct
 import IPRADerivations.Foundations.TriangularUniqueness
 import IPRADerivations.Foundations.HurwitzUniqueness
@@ -725,6 +726,8 @@ import IPRADerivations.Analysis.GaussianGeneralFTAValueZero
 import IPRADerivations.Analysis.GaussianConstantCoefficientNames
 import IPRADerivations.Analysis.GaussianConstantPolynomialEvaluation
 import IPRADerivations.Analysis.GaussianNameEquivalence
+import IPRADerivations.Analysis.GaussianNameBounds
+import IPRADerivations.Analysis.GaussianNameArithmetic
 import IPRADerivations.Analysis.GaussianValueNormalizerExtensionality
 import IPRADerivations.Analysis.GaussianGeneralPolynomialExtensionality
 import IPRADerivations.Analysis.GaussianPolynomialDegreePadding
