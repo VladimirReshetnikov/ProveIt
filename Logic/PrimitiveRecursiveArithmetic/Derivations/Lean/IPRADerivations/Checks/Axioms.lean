@@ -11592,6 +11592,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ObservableUnit.sum_vanish
 #print axioms LeanProofs.IPRA.Foundations.ObservableUnit.unit_seed
 #print axioms LeanProofs.IPRA.Foundations.ObservableUnit.unit_seed_pos
+#print axioms LeanProofs.IPRA.Foundations.FiniteReconstruction.inst2_iB
+#print axioms LeanProofs.IPRA.Foundations.FiniteReconstruction.jB_at
+#print axioms LeanProofs.IPRA.Foundations.FiniteReconstruction.reconstruct
+#print axioms LeanProofs.IPRA.Foundations.FiniteReconstruction.reconstruct_eq
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_canonical
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_constant
