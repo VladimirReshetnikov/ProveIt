@@ -84,6 +84,7 @@ import IPRADerivations.Analysis.WallisFinite
 import IPRADerivations.Analysis.RobbinsSeries
 import IPRADerivations.Analysis.ExponentialSeries
 import IPRADerivations.Analysis.FiniteDifferenceIdentities
+import IPRADerivations.Analysis.RiemannRefinement
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
