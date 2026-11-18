@@ -13697,6 +13697,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ResiduePermutation.SG
 #print axioms LeanProofs.IPRA.Foundations.ResiduePermutation.UG
 #print axioms LeanProofs.IPRA.Foundations.ResiduePermutation.bd4
+#print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.row_adj_zero
+#print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.row_adj_succ
+#print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.span_ring
+#print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.adjugate_updateRow
+#print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.eval_ring
+#print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.toZ_cof
+#print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.toZ_withRow
+#print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.cof_expand
+#print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.cof_orthogonal
+#print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.span_annihilated
+#print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.eval_det
 #print axioms LeanProofs.IPRA.Foundations.SumLinear.bd
 #print axioms LeanProofs.IPRA.Foundations.SumLinear.idB
 #print axioms LeanProofs.IPRA.Foundations.SumLinear.linF

@@ -458,6 +458,7 @@ import IPRADerivations.Foundations.HurwitzUniqueness
 import IPRADerivations.Foundations.SumLinear
 import IPRADerivations.Foundations.WeightedDimension
 import IPRADerivations.Foundations.ResiduePermutation
+import IPRADerivations.Foundations.CofactorAnnihilator
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.BoundedFixpoint
 import IPRADerivations.Foundations.SquareRootNames
