@@ -110,6 +110,56 @@ theorem tangent_length (Vx Vy τ : ZT n) :
   simp only [toZ_qq, ZT.toZ_mul]
   ring
 
+/-! ## Lengths: the order/sign readings of `thm:power-final` -/
+
+/-- `|u|` for an integer term, as a natural number. -/
+abbrev zab (u : ZT n) : PTm n := PTm.monus u.pos u.neg + PTm.monus u.neg u.pos
+
+theorem zab_nonneg {u : ZT n} (h : Γ ⊢[PRAAx] le u.neg u.pos) : Γ ⊢[PRAAx] ZT.eq (ZT.ofNat (zab u)) u := by
+  have e := natEq (eq_add_of_le h); have z := natEq h
+  show Γ ⊢[PRAAx] zab u + u.neg ≐ u.pos + ConciseIPRA.PTm.zero
+  apply deriveNat; ipra_simps; linear_combination z - e
+
+theorem zab_nonpos {u : ZT n} (h : Γ ⊢[PRAAx] le u.pos u.neg) : Γ ⊢[PRAAx] ZT.eq (ZT.ofNat (zab u)) (-u) := by
+  have e := natEq (eq_add_of_le h); have z := natEq h
+  show Γ ⊢[PRAAx] zab u + u.pos ≐ u.neg + ConciseIPRA.PTm.zero
+  apply deriveNat; ipra_simps; linear_combination z - e
+
+variable {u w : ZT n}
+  (hu : Γ ⊢[PRAAx] ZT.eq (pow (Px + u * Vx) (Py + u * Vy) Ox Oy ρ) (ZT.natLit 0))
+  (hw : Γ ⊢[PRAAx] ZT.eq (pow (Px + w * Vx) (Py + w * Vy) Ox Oy ρ) (ZT.natLit 0))
+  (huw : Γ ⊢[PRAAx] neg (ZT.eq u w))
+include hu hw huw
+
+/-- `thm:power-final`, part 2: for an external point the two intersections lie on one side
+(`u, w ≥ 0`), and `Pow(P) = q |u| |w|`, the product of the two secant lengths `|u| ‖V‖` and `|w| ‖V‖`. -/
+theorem secant_lengths (su : Γ ⊢[PRAAx] le u.neg u.pos) (sw : Γ ⊢[PRAAx] le w.neg w.pos) :
+    Γ ⊢[PRAAx] ZT.eq (pow Px Py Ox Oy ρ) (qq Vx Vy * ZT.ofNat (zab u) * ZT.ofNat (zab w)) := by
+  have p := ZT.toZ_eq (signed_power hu hw huw)
+  have a := ZT.toZ_eq (zab_nonneg su); have b := ZT.toZ_eq (zab_nonneg sw)
+  apply ZT.derive
+  simp only [ZT.toZ_mul] at p ⊢
+  linear_combination p - (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ (ZT.ofNat (zab w))) * a - (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ u) * b
+
+/-- Part 2 with both intersections on the other side (`u, w ≤ 0`). -/
+theorem secant_lengths' (su : Γ ⊢[PRAAx] le u.pos u.neg) (sw : Γ ⊢[PRAAx] le w.pos w.neg) :
+    Γ ⊢[PRAAx] ZT.eq (pow Px Py Ox Oy ρ) (qq Vx Vy * ZT.ofNat (zab u) * ZT.ofNat (zab w)) := by
+  have p := ZT.toZ_eq (signed_power hu hw huw)
+  have a := ZT.toZ_eq (zab_nonpos su); have b := ZT.toZ_eq (zab_nonpos sw)
+  apply ZT.derive
+  simp only [ZT.toZ_mul, ZT.toZ_neg] at p a b ⊢
+  linear_combination p - (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ (ZT.ofNat (zab w))) * a + (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ u) * b
+
+/-- `thm:power-final`, part 3: for an interior point the chord's intersections lie on opposite sides
+(`u ≤ 0 ≤ w`), and `−Pow(P) = q |u| |w|`, the product of the two chord pieces. -/
+theorem chord_lengths (su : Γ ⊢[PRAAx] le u.pos u.neg) (sw : Γ ⊢[PRAAx] le w.neg w.pos) :
+    Γ ⊢[PRAAx] ZT.eq (pow Px Py Ox Oy ρ + qq Vx Vy * ZT.ofNat (zab u) * ZT.ofNat (zab w)) (ZT.natLit 0) := by
+  have p := ZT.toZ_eq (signed_power hu hw huw)
+  have a := ZT.toZ_eq (zab_nonpos su); have b := ZT.toZ_eq (zab_nonneg sw)
+  apply ZT.derive
+  simp only [ZT.toZ_mul, ZT.toZ_add, ZT.toZ_neg, ZT.toZ_natLit, Nat.cast_zero] at p a b ⊢
+  linear_combination p + (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ (ZT.ofNat (zab w))) * a - (ZT.toZ Γ (qq Vx Vy) * ZT.toZ Γ u) * b
+
 end Generic
 
 /-! ## Closed theorems -/
