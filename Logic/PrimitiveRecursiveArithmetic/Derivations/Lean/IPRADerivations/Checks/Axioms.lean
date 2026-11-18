@@ -9370,6 +9370,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.DiscreteGronwall.gronwall_three
 #print axioms LeanProofs.IPRA.Foundations.OdeRefinement.node_bound
 #print axioms LeanProofs.IPRA.Foundations.OdeRefinement.geometric_cauchy
+#print axioms LeanProofs.IPRA.Foundations.GuardedTrace.guarded_loop
+#print axioms LeanProofs.IPRA.Foundations.GuardedTrace.guarded_trace
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
