@@ -29,6 +29,7 @@ import IPRADerivations.Core.SquareLayers
 import IPRADerivations.Core.BlockSum
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.SumOrder
+import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Core.Telescoping
 import IPRADerivations.Core.SumSplit
@@ -75,6 +76,9 @@ import IPRADerivations.Analysis.BaselAverages
 import IPRADerivations.Analysis.BaselCore
 import IPRADerivations.Analysis.BaselUniform
 import IPRADerivations.Analysis.BaselQuadrature
+import IPRADerivations.Analysis.BaselRiemann
+import IPRADerivations.Analysis.PowerIncrement
+import IPRADerivations.Analysis.WallisGrid
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
@@ -346,6 +350,11 @@ import IPRADerivations.Probability.MedianConditional
 import IPRADerivations.Probability.SortingBound
 import IPRADerivations.Probability.MedianOfMedians
 import IPRADerivations.Topology.Sperner
+import IPRADerivations.Topology.Sperner2D
+import IPRADerivations.Topology.StaggeredCells
+import IPRADerivations.Topology.InjectionBound
+import IPRADerivations.Topology.DimensionTwo
+import IPRADerivations.Topology.DimensionUnits
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
