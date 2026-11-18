@@ -13,7 +13,9 @@ vertices of a spherical triangle (`sections/03_vector_model.tex`,
 * the Gram identity `[u v w]² = (u·u)(v·v)(w·w) + 2(u·v)(v·w)(w·u) − (u·u)(v·w)² −
   (v·v)(w·u)² − (w·w)(u·v)²`, which for unit vectors with `x = v·w`, `y = w·u`,
   `z = u·v` is `τ² = 1 + 2xyz − x² − y² − z²`;
-* the Lagrange identity `|u × v|² = (u·u)(v·v) − (u·v)²`.
+* the Lagrange identity `|u × v|² = (u·u)(v·v) − (u·v)²`;
+* `gram_unit` (`lem:gram`, (3.5)) and the division-free cosine law at all three vertices
+  (`cosine_law`, `cosine_law_b`, `cosine_law_c`: `thm:side-cosine`, (4.4)).
 -/
 
 namespace LeanProofs.IPRA.Geometry.SphericalTrigonometry
@@ -96,6 +98,56 @@ theorem lagrange_identity : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 18 lagrangeFo
     simp only [Vec.toZ_dot, Vec.toZ_cross, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_sq, binetCauchy]
     rw [dotProduct_comm (Vec.toZ _ b) (Vec.toZ _ a)]
     ring))
+
+/-- The unit hypotheses at `b` and `c`. -/
+def unitB : Fm PTm 18 := ZT.eq (Vec.dot b b) (ZT.natLit 1)
+def unitC : Fm PTm 18 := ZT.eq (Vec.dot c c) (ZT.natLit 1)
+
+/-- `lem:gram`, (3.5): for unit `a, b, c` with `x = b·c`, `y = c·a`, `z = a·b`,
+`τ² = [a b c]² = 1 + 2xyz − x² − y² − z²`. -/
+def gramUnitFormula : Fm PTm 18 :=
+  unitA ⟶ unitB ⟶ unitC ⟶ ZT.eq (ZT.sq (Vec.triple a b c))
+    (ZT.natLit 1 + ZT.natLit 2 * Vec.dot b c * Vec.dot c a * Vec.dot a b
+      - ZT.sq (Vec.dot b c) - ZT.sq (Vec.dot c a) - ZT.sq (Vec.dot a b))
+
+theorem gram_unit : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 18 gramUnitFormula := by
+  refine closeUniv 18 (.impI (.impI (.impI (ZT.derive ?_))))
+  have ha := ZT.toZ_mem (Γ := [unitC, unitB, unitA]) (u := Vec.dot a a) (v := ZT.natLit 1) (by simp [unitA])
+  have hb := ZT.toZ_mem (Γ := [unitC, unitB, unitA]) (u := Vec.dot b b) (v := ZT.natLit 1) (by simp [unitB])
+  have hc := ZT.toZ_mem (Γ := [unitC, unitB, unitA]) (u := Vec.dot c c) (v := ZT.natLit 1) (by simp [unitC])
+  simp only [Vec.toZ_dot, ZT.toZ_natLit, Nat.cast_one] at ha hb hc
+  simp only [ZT.toZ_sq, Vec.toZ_triple, ZT.toZ_sub, ZT.toZ_add, ZT.toZ_mul, ZT.toZ_natLit, Vec.toZ_dot]
+  rw [gram, ha, hb, hc]
+  push_cast
+  ring
+
+/-- `thm:side-cosine`, (4.4) at `b`: if `b·b = 1` then `(b × c)·(b × a) = c·a − (b·c)(b·a)`, i.e.
+`s_c s_a c_B = y − z x`. -/
+def cosineLawBFormula : Fm PTm 18 :=
+  unitB ⟶ ZT.eq (Vec.dot (Vec.cross b c) (Vec.cross b a)) (Vec.dot c a - Vec.dot b c * Vec.dot b a)
+
+theorem cosine_law_b : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 18 cosineLawBFormula := by
+  refine closeUniv 18 (.impI (ZT.derive ?_))
+  have h := ZT.toZ_mem (Γ := [unitB]) (u := Vec.dot b b) (v := ZT.natLit 1) (by simp [unitB])
+  simp only [Vec.toZ_dot, ZT.toZ_natLit, Nat.cast_one] at h
+  rw [Vec.toZ_dot, Vec.toZ_cross, Vec.toZ_cross, binetCauchy, h,
+    dotProduct_comm (Vec.toZ _ c) (Vec.toZ _ b)]
+  simp only [ZT.toZ_sub, ZT.toZ_mul, Vec.toZ_dot]
+  ring
+
+/-- `thm:side-cosine`, (4.4) at `c`: if `c·c = 1` then `(c × a)·(c × b) = a·b − (c·a)(c·b)`, i.e.
+`s_a s_b c_C = z − x y`. -/
+def cosineLawCFormula : Fm PTm 18 :=
+  unitC ⟶ ZT.eq (Vec.dot (Vec.cross c a) (Vec.cross c b)) (Vec.dot a b - Vec.dot c a * Vec.dot c b)
+
+theorem cosine_law_c : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 18 cosineLawCFormula := by
+  refine closeUniv 18 (.impI (ZT.derive ?_))
+  have h := ZT.toZ_mem (Γ := [unitC]) (u := Vec.dot c c) (v := ZT.natLit 1) (by simp [unitC])
+  simp only [Vec.toZ_dot, ZT.toZ_natLit, Nat.cast_one] at h
+  rw [Vec.toZ_dot, Vec.toZ_cross, Vec.toZ_cross, binetCauchy, h,
+    dotProduct_comm (Vec.toZ _ a) (Vec.toZ _ c)]
+  simp only [ZT.toZ_sub, ZT.toZ_mul, Vec.toZ_dot]
+  ring
 
 end Triangle
 

@@ -225,6 +225,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.binet_cauchy
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.gram_identity
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law
+#print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.gram_unit
+#print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law_b
+#print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.cosine_law_c
 #print axioms LeanProofs.IPRA.Geometry.SphericalTrigonometry.lagrange_identity
 #print axioms LeanProofs.IPRA.Geometry.SphericalHalf.diffR
 #print axioms LeanProofs.IPRA.Geometry.SphericalHalf.sumR
@@ -266,6 +269,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.SphericalPolar.polar_triple
 #print axioms LeanProofs.IPRA.Geometry.SphericalPolar.face_closure
 #print axioms LeanProofs.IPRA.Geometry.SphericalPolar.tetra_cosine
+#print axioms LeanProofs.IPRA.Geometry.SphericalPolar.tetra_linear0
+#print axioms LeanProofs.IPRA.Geometry.SphericalPolar.tetra_linear1
+#print axioms LeanProofs.IPRA.Geometry.SphericalPolar.tetra_sine
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.quadratic
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.cardano
 #print axioms LeanProofs.IPRA.Algebra.PolynomialFormulas.ferrari
@@ -1549,6 +1555,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.stirling_ie
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.q_eq
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.bell_ie
+#print axioms LeanProofs.IPRA.Combinatorics.BellDobinski.ff_gb
+#print axioms LeanProofs.IPRA.Combinatorics.BellDobinski.scaled_e
+#print axioms LeanProofs.IPRA.Combinatorics.BellDobinski.reindex_e
+#print axioms LeanProofs.IPRA.Combinatorics.BellDobinski.colsum_e
+#print axioms LeanProofs.IPRA.Combinatorics.BellDobinski.sumP
+#print axioms LeanProofs.IPRA.Combinatorics.BellDobinski.split_P
+#print axioms LeanProofs.IPRA.Combinatorics.BellDobinski.finite_dobinski
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_zero
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_self
 #print axioms LeanProofs.IPRA.Combinatorics.Vandermonde.gb_above
