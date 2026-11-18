@@ -327,7 +327,7 @@ claims beyond those families.
 | [foundations/ipra_kifc_framework_2026-11-16](../docs/proofs/foundations/ipra_kifc_framework_2026-11-16/) | Source-claim inventory pending. |
 | [foundations/ipra_kifcr_framework_2026-11-16](../docs/proofs/foundations/ipra_kifcr_framework_2026-11-16/) | Source-claim inventory pending. |
 | [foundations/ipra_kifcs_framework_2026-11-16](../docs/proofs/foundations/ipra_kifcs_framework_2026-11-16/) | Source-claim inventory pending. |
-| [foundations/ipra_local_global](../docs/proofs/foundations/ipra_local_global/) | [Foundations/DiscreteGronwall](Lean/IPRADerivations/Foundations/DiscreteGronwall.lean); the discrete Gronwall estimate and the rational growth bound of Section 4 (`lem:ode-growth`, `lem:ode-gronwall`) are checked; the other sections and the ODE refinement theorem remain. |
+| [foundations/ipra_local_global](../docs/proofs/foundations/ipra_local_global/) | [Foundations/DiscreteGronwall](Lean/IPRADerivations/Foundations/DiscreteGronwall.lean); the cleared natural-sample Gronwall estimate and integer-growth core for Section 4 (`lem:ode-growth`, `lem:ode-gronwall`) are checked. Rational-sample and rational-parameter/ceiling frontends, the constant-error ODE wrapper, the other sections and the ODE refinement theorem remain. |
 | [foundations/ipra_native_clause_framework_2026-11-15](../docs/proofs/foundations/ipra_native_clause_framework_2026-11-15/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/ipra_pfig_framework_2026-11-15](../docs/proofs/foundations/ipra_pfig_framework_2026-11-15/) | Source-claim inventory pending. |
 | [foundations/ipra_presentations_to_witnesses](../docs/proofs/foundations/ipra_presentations_to_witnesses/) | Source-claim inventory pending. |
