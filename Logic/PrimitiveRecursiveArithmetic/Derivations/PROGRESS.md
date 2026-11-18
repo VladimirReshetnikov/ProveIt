@@ -312,7 +312,7 @@ claims beyond those families.
 | [foundations/ipra_coherent_methods_2026-11-15](../docs/proofs/foundations/ipra_coherent_methods_2026-11-15/) | [Foundations/CoherentPresentations](Lean/IPRADerivations/Foundations/CoherentPresentations.lean), [Foundations/HurwitzProduct](Lean/IPRADerivations/Foundations/HurwitzProduct.lean), [Foundations/TriangularUniqueness](Lean/IPRADerivations/Foundations/TriangularUniqueness.lean), [Foundations/HurwitzUniqueness](Lean/IPRADerivations/Foundations/HurwitzUniqueness.lean), [Foundations/BoundedDescent](Lean/IPRADerivations/Foundations/BoundedDescent.lean) |
 | [foundations/ipra_embedding_framework](../docs/proofs/foundations/ipra_embedding_framework/) | [Foundations/EmbeddingBasics](Lean/IPRADerivations/Foundations/EmbeddingBasics.lean) |
 | [foundations/ipra_embedding_framework_2026-11-15](../docs/proofs/foundations/ipra_embedding_framework_2026-11-15/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
-| [foundations/ipra_evidence_framework](../docs/proofs/foundations/ipra_evidence_framework/) | [Foundations/BackwardViability](Lean/IPRADerivations/Foundations/BackwardViability.lean), [Foundations/ViableChain](Lean/IPRADerivations/Foundations/ViableChain.lean), [Foundations/ChainViability](Lean/IPRADerivations/Foundations/ChainViability.lean), [Foundations/SquareRootNames](Lean/IPRADerivations/Foundations/SquareRootNames.lean) |
+| [foundations/ipra_evidence_framework](../docs/proofs/foundations/ipra_evidence_framework/) | [Foundations/BackwardViability](Lean/IPRADerivations/Foundations/BackwardViability.lean), [Foundations/ViableChain](Lean/IPRADerivations/Foundations/ViableChain.lean), [Foundations/ChainViability](Lean/IPRADerivations/Foundations/ChainViability.lean), [Foundations/SquareRootNames](Lean/IPRADerivations/Foundations/SquareRootNames.lean), [Foundations/CodedViableChain](Lean/IPRADerivations/Foundations/CodedViableChain.lean), [Foundations/ViableChainSelection](Lean/IPRADerivations/Foundations/ViableChainSelection.lean), [Foundations/CodedViableSuffix](Lean/IPRADerivations/Foundations/CodedViableSuffix.lean) |
 | [foundations/ipra_finitary_interface_compiler_2026-11-15](../docs/proofs/foundations/ipra_finitary_interface_compiler_2026-11-15/) | [Foundations/BooleanizationCorollaries](Lean/IPRADerivations/Foundations/BooleanizationCorollaries.lean), [Foundations/TraceReflection](Lean/IPRADerivations/Foundations/TraceReflection.lean) |
 | [foundations/ipra_finite_demand](../docs/proofs/foundations/ipra_finite_demand/) | [Foundations/BackwardDemand](Lean/IPRADerivations/Foundations/BackwardDemand.lean), [Foundations/ParameterChangingRecursion](Lean/IPRADerivations/Foundations/ParameterChangingRecursion.lean), [Foundations/FiniteQueryDemand](Lean/IPRADerivations/Foundations/FiniteQueryDemand.lean), [Foundations/BackwardDemandBounds](Lean/IPRADerivations/Foundations/BackwardDemandBounds.lean), [Analysis/LogisticName](Lean/IPRADerivations/Analysis/LogisticName.lean), [Foundations/FiniteHausdorff](Lean/IPRADerivations/Foundations/FiniteHausdorff.lean), [Foundations/FiniteHausdorffOperations](Lean/IPRADerivations/Foundations/FiniteHausdorffOperations.lean), [Foundations/FiniteHausdorffConcat](Lean/IPRADerivations/Foundations/FiniteHausdorffConcat.lean), [Foundations/FiniteHausdorffProduct](Lean/IPRADerivations/Foundations/FiniteHausdorffProduct.lean), [Foundations/FiniteHausdorffImage](Lean/IPRADerivations/Foundations/FiniteHausdorffImage.lean), [Analysis/RationalSupMetric](Lean/IPRADerivations/Analysis/RationalSupMetric.lean), [Algebra/PolynomialFiniteRoots](Lean/IPRADerivations/Algebra/PolynomialFiniteRoots.lean), [Analysis/RationalHausdorff](Lean/IPRADerivations/Analysis/RationalHausdorff.lean), [Analysis/RationalHausdorffTriangle](Lean/IPRADerivations/Analysis/RationalHausdorffTriangle.lean), [Analysis/AggregateEquality](Lean/IPRADerivations/Analysis/AggregateEquality.lean), [Analysis/RationalNearest](Lean/IPRADerivations/Analysis/RationalNearest.lean), [Analysis/AggregateChain](Lean/IPRADerivations/Analysis/AggregateChain.lean), [Analysis/RationalArgmin](Lean/IPRADerivations/Analysis/RationalArgmin.lean), [Analysis/RationalValueBounds](Lean/IPRADerivations/Analysis/RationalValueBounds.lean), [Analysis/RationalPointDistance](Lean/IPRADerivations/Analysis/RationalPointDistance.lean), [Analysis/AggregateOptimization](Lean/IPRADerivations/Analysis/AggregateOptimization.lean); see the [complete claim audit](FINITE-DEMAND-CLAIMS.md) for all 17 claims and remaining applications; [Analysis/RationalHausdorffConcat](Lean/IPRADerivations/Analysis/RationalHausdorffConcat.lean), [Analysis/RationalHausdorffProduct](Lean/IPRADerivations/Analysis/RationalHausdorffProduct.lean), [Analysis/RationalHausdorffImage](Lean/IPRADerivations/Analysis/RationalHausdorffImage.lean), [Analysis/RationalPointDistanceVariation](Lean/IPRADerivations/Analysis/RationalPointDistanceVariation.lean), [Analysis/AggregateDistanceName](Lean/IPRADerivations/Analysis/AggregateDistanceName.lean), [Analysis/RationalProductWitness](Lean/IPRADerivations/Analysis/RationalProductWitness.lean), [Analysis/GaussianRootAlgebra](Lean/IPRADerivations/Analysis/GaussianRootAlgebra.lean), [Analysis/GaussianRootProduct](Lean/IPRADerivations/Analysis/GaussianRootProduct.lean), [Analysis/GaussianRationalRootProduct](Lean/IPRADerivations/Analysis/GaussianRationalRootProduct.lean), [Analysis/GaussianProductNorm](Lean/IPRADerivations/Analysis/GaussianProductNorm.lean), [Analysis/GaussianRationalNormalization](Lean/IPRADerivations/Analysis/GaussianRationalNormalization.lean), [Analysis/GaussianPolynomialPerturbation](Lean/IPRADerivations/Analysis/GaussianPolynomialPerturbation.lean), [Analysis/GaussianProductStability](Lean/IPRADerivations/Analysis/GaussianProductStability.lean), [Analysis/GaussianRationalHorner](Lean/IPRADerivations/Analysis/GaussianRationalHorner.lean), [Analysis/GaussianRationalMetric](Lean/IPRADerivations/Analysis/GaussianRationalMetric.lean), [Analysis/GaussianPolynomialScaling](Lean/IPRADerivations/Analysis/GaussianPolynomialScaling.lean), [Analysis/GaussianRationalProductStability](Lean/IPRADerivations/Analysis/GaussianRationalProductStability.lean), [Analysis/GaussianRationalRadius](Lean/IPRADerivations/Analysis/GaussianRationalRadius.lean), [Analysis/GaussianRationalCover](Lean/IPRADerivations/Analysis/GaussianRationalCover.lean), [Analysis/GaussianRationalStability](Lean/IPRADerivations/Analysis/GaussianRationalStability.lean) |
 | [foundations/ipra_finite_observation](../docs/proofs/foundations/ipra_finite_observation/) | [Analysis/WeightedAMGM](Lean/IPRADerivations/Analysis/WeightedAMGM.lean); the weighted AM–GM step and the arithmetic core of `lem:positive-convexity` are checked; the infimum names, the minimization scheme and the section-root results remain. |
@@ -320,7 +320,7 @@ claims beyond those families.
 | [foundations/ipra_finite_use_framework_2026-11-15](../docs/proofs/foundations/ipra_finite_use_framework_2026-11-15/) | [Foundations/LeastBoundedWitness](Lean/IPRADerivations/Foundations/LeastBoundedWitness.lean); the least bounded witness corollary with its sentinel equivalence is checked; the remaining theorems of this edition are not derived (the second edition has its own rows). |
 | [foundations/ipra_finite_use_framework_2026-11-15_v2](../docs/proofs/foundations/ipra_finite_use_framework_2026-11-15_v2/) | [Foundations/ApproximateWitness](Lean/IPRADerivations/Foundations/ApproximateWitness.lean), [Foundations/NestedRegions](Lean/IPRADerivations/Foundations/NestedRegions.lean), [Foundations/StrongConvexity](Lean/IPRADerivations/Foundations/StrongConvexity.lean), [Foundations/StrongMinimizer](Lean/IPRADerivations/Foundations/StrongMinimizer.lean) |
 | [foundations/ipra_framework](../docs/proofs/foundations/ipra_framework/) | [DiophantineNumberTheory/Siegel](Lean/IPRADerivations/DiophantineNumberTheory/Siegel.lean) |
-| [foundations/ipra_framework_2026-11-15](../docs/proofs/foundations/ipra_framework_2026-11-15/) | [Foundations/PrecisionArithmetic](Lean/IPRADerivations/Foundations/PrecisionArithmetic.lean), [Foundations/LeastBoundedWitness](Lean/IPRADerivations/Foundations/LeastBoundedWitness.lean); finite-tail replacement, the effective inverse under apartness, finite-certificate composition and the specification of bounded existential search are checked; the algebra of dyadic Cauchy names, finite descent with explicit range, the height-bound search and the no-uniform-zero-decision theorem are not derived. |
+| [foundations/ipra_framework_2026-11-15](../docs/proofs/foundations/ipra_framework_2026-11-15/) | [Foundations/PrecisionArithmetic](Lean/IPRADerivations/Foundations/PrecisionArithmetic.lean), [Foundations/LeastBoundedWitness](Lean/IPRADerivations/Foundations/LeastBoundedWitness.lean); the cleared numerator inequality cores for finite-tail replacement and effective inversion under apartness, finite-certificate composition and the specification of bounded existential search are checked. Represented tail equality, the actual inverse-name precision schedule and its representation adapter remain; the algebra of dyadic Cauchy names, finite descent with explicit range, the height-bound search and the no-uniform-zero-decision theorem are not derived. |
 | [foundations/ipra_frnf_framework_bundle](../docs/proofs/foundations/ipra_frnf_framework_bundle/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/ipra_kernel_finite_use_framework_2026-11-15](../docs/proofs/foundations/ipra_kernel_finite_use_framework_2026-11-15/) | [Foundations/GapDecision](Lean/IPRADerivations/Foundations/GapDecision.lean) |
 | [foundations/ipra_kifc_framework_2026-11-15](../docs/proofs/foundations/ipra_kifc_framework_2026-11-15/) | [Foundations/LeastBoundedWitness](Lean/IPRADerivations/Foundations/LeastBoundedWitness.lean); least bounded search with the found bit and default is checked; Booleanization of general bounded formulas, the contract and graph compilation theorems, viability, observer elimination and name extraction are not derived. |
@@ -485,8 +485,16 @@ derives that discrepancy from equivalent original coefficient and point
 names on a computed common proof disk. All N+1 coefficients participate.
 The output programs retain their own original disks, data and shifts, and
 their zero predicates agree. Degree zero and zero leading samples are
-included. Actual padding across different upper degrees and completed-field
-ring/evaluation realization remain separate obligations.
+included. The [actual degree-padding program](Lean/IPRADerivations/Analysis/GaussianPolynomialDegreePadding.lean)
+retains original coefficients through N and returns literal zero above it.
+Two guarded QF Horner-prefix inductions prove exact padded evaluation for
+N<=P, including degree zero. The
+[different-degree comparison](Lean/IPRADerivations/Analysis/GaussianPolynomialDegreeExtensionality.lean)
+compares two independently normalized original value programs through their
+actual extensions at N+M. Their original disks, data and shifts are retained;
+equivalent padded coefficient names and point names give equivalent values
+and zero predicates. No outer list-code equality is used. Completed-field
+ring/evaluation realization remains separate.
 
 The [natural scalar action](Lean/IPRADerivations/Analysis/GaussianRationalNaturalScale.lean)
 and [actual finite Gaussian sum](Lean/IPRADerivations/Analysis/GaussianRationalFiniteSum.lean)
@@ -494,15 +502,43 @@ now have canonical-output, zero/unit, recurrence, shifted-first-term,
 bounded-entry congruence, addition and multiplication transport proofs.
 The sum laws use genuine QF prefix inductions over the actual generated
 lists; raw entries retain their canonical recoding where needed. These
-provide the finite algebra for the still-open literal inverse-binomial
-Pascal row. Source reconciliation and the remaining packet claims are
-not inferred from these components.
+provide the finite algebra for the now-proved
+[inverse-binomial row](Lean/IPRADerivations/Analysis/GaussianInverseBinomialRows.lean).
+Actual finite-sum Pascal recurrences and compiled bounded backward induction
+derive every row. The [literal source identity](Lean/IPRADerivations/Analysis/GaussianRationalInverseTranslation.lean)
+then binds ordinary binomial coefficients and the actual translated list:
+the canonical recode of original coefficient a_k is
+sum_{r=0}^{N-k} binom(k+r,k) b_{k+r} (-z)^r.
+Only original list length and k<=N are assumed; N=0 and raw noncanonical
+entries are supported. The actual PR4 output returns both equal quantities
+and the translated list. Source reconciliation and the remaining packet
+claims are not inferred from this identity.
+
+The [coded finite-chain producer](Lean/IPRADerivations/Foundations/CodedViableChain.lean)
+stores the actual h+1 candidates and derives its object-language admissibility
+and an independent PR bound on the code. A genuine QF induction checks any
+numerical admissible code in the converse direction, yielding bounded coded
+existence iff viability at the supplied start. The
+[automatic initial selector](Lean/IPRADerivations/Foundations/ViableChainSelection.lean)
+then finds the least viable start and returns a success-tagged chain or the
+literal failure output. Its success bit is equivalent to bounded existence
+of any admissible full-horizon code; the entire tagged output has a proved
+bound depending only on candidate bounds and horizon. No host admissibility,
+successful search or output-law premise is supplied.
+[Arbitrary-level coded suffixes](Lean/IPRADerivations/Foundations/CodedViableSuffix.lean)
+now prove the source equivalence for every numerical i<=h and a<B(i):
+V(h-i,a)=1 iff there is a bounded admissible coded suffix starting at a.
+The actual PR4 iterator and PR3 code output have proved length, start,
+lookups and admissibility, with a separate PR2 bound depending only on B,
+horizon and starting level. Both directions use genuine QF invariants;
+the converse accepts arbitrary numerical codes. Coded stronger-evidence
+transport and the remaining worked-example claims still require separate proofs.
 Generic completed Gaussian-point/field realization, coded-field norm/fiber/
 annihilator claims, Minkowski physical-basis transport, remaining FIBER
 compiler/adapters, Gamma/Barnes analytic identities and all other source
 packet obligations remain in scope. Completed-real direction interpretation,
-general convolution, the separately expanded telescoping sum and literal
-inverse-binomial identity remain unclaimed. The complete 115-packet goal
+general convolution and the separately expanded telescoping sum remain
+unclaimed. The complete 115-packet goal
 remains active.
 
 The new modules are included in `IPRADerivations`; all their public declarations

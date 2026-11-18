@@ -221,7 +221,12 @@ the environment labels. Completion needs the following evidence:
    with the stronger coefficient constant 2^N, hence the source N*2^N.
    Genuine [compiled backward induction](Lean/IPRADerivations/Foundations/BoundedSyntaxBackwardInduction.lean)
    proves the actual row invariant; no inversion or global coefficient law
-   is supplied. The source's literal inverse-binomial identity is not claimed.
+   is supplied. A separate [actual inverse-binomial row proof](Lean/IPRADerivations/Analysis/GaussianInverseBinomialRows.lean)
+   now derives the literal Pascal sums by guarded backward induction, and
+   [inverse translation](Lean/IPRADerivations/Analysis/GaussianRationalInverseTranslation.lean)
+   binds them to ordinary binomial coefficients and actual translated entries.
+   The original a_k is canonically recoded; original length and k<=N suffice,
+   including N=0 and noncanonical raw inputs. No inverse identity is assumed.
    [Internal rational power-order reflection](Lean/IPRADerivations/Analysis/RationalNonnegativePowerOrder.lean)
    is also proved. Actual [coefficient apartness and radius combination](Lean/IPRADerivations/Analysis/GaussianNonmonicTravelCoefficientBound.lean)
    and its [normalized program comparison](Lean/IPRADerivations/Analysis/GaussianNonmonicTravelComparison.lean)
@@ -294,12 +299,18 @@ the environment labels. Completion needs the following evidence:
    [general polynomial extensionality theorem](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialExtensionality.lean)
    derives its raw discrepancy from equivalent coefficients and points,
    retaining every coefficient and the original independent disks/data/shifts.
-   It includes same-upper-degree coefficient, point and disk independence;
-   actual different-degree padding and completed-field ring/evaluation
-   realization remain. The [natural scalar action](Lean/IPRADerivations/Analysis/GaussianRationalNaturalScale.lean)
+   It includes same-upper-degree coefficient, point and disk independence.
+   [Actual degree padding](Lean/IPRADerivations/Analysis/GaussianPolynomialDegreePadding.lean)
+   preserves the original raw entries and adds literal leading zeros; genuine
+   guarded QF Horner inductions prove equal evaluation. The
+   [different-degree extensionality theorem](Lean/IPRADerivations/Analysis/GaussianPolynomialDegreeExtensionality.lean)
+   compares the original normalized programs through their actual common-degree
+   extensions, retaining independent disks, data and shifts. Completed-field
+   ring/evaluation realization remains. The [natural scalar action](Lean/IPRADerivations/Analysis/GaussianRationalNaturalScale.lean)
    and [finite Gaussian sum](Lean/IPRADerivations/Analysis/GaussianRationalFiniteSum.lean)
-   prove the actual recurrences and algebra needed by the remaining literal
-   inverse-binomial Pascal-row proof. Generic completed-field and the remaining
+   prove the actual recurrences and algebra used by the now-proved literal
+   inverse-binomial Pascal row and its source-identity binding. Generic
+   completed-field and the remaining
    representation adapters stay separate; the complete packet scope is retained.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z
