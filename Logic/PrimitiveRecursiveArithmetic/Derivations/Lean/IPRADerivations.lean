@@ -89,6 +89,7 @@ import IPRADerivations.Analysis.EvenPowerIntegrals
 import IPRADerivations.Analysis.EulerPiSeries
 import IPRADerivations.Analysis.FiniteFTC
 import IPRADerivations.Analysis.RobbinsTelescope
+import IPRADerivations.Analysis.WeightedAMGM
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree

@@ -1625,6 +1625,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RobbinsTelescope.As_succ
 #print axioms LeanProofs.IPRA.Analysis.RobbinsTelescope.robbins_telescope
 #print axioms LeanProofs.IPRA.Analysis.RobbinsTelescope.robbins_telescope_closed
+#print axioms LeanProofs.IPRA.Analysis.WeightedAMGM.step_ge
+#print axioms LeanProofs.IPRA.Analysis.WeightedAMGM.step_le
+#print axioms LeanProofs.IPRA.Analysis.WeightedAMGM.one_step
+#print axioms LeanProofs.IPRA.Analysis.WeightedAMGM.amgm
+#print axioms LeanProofs.IPRA.Analysis.WeightedAMGM.amgm_closed
+#print axioms LeanProofs.IPRA.Analysis.WeightedAMGM.mult_convex
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
