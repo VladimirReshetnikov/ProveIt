@@ -356,6 +356,10 @@ import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Topology.DimensionTwo
 import IPRADerivations.Topology.DimensionUnits
+import IPRADerivations.Core.PolynomialImplications
+import IPRADerivations.Geometry.JoinMeet
+import IPRADerivations.Geometry.MorleyCertificate
+import IPRADerivations.Geometry.PentagonLedger
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
