@@ -323,6 +323,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.TetrahedralGram.faces_closure
 #print axioms LeanProofs.IPRA.Geometry.TetrahedralGram.tetra_gram_det
 #print axioms LeanProofs.IPRA.Geometry.TetrahedralGram.tetra_gram_null
+#print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.two_ne
+#print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.girard
+#print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.polygon_excess
+#print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.cos_sum_ring
+#print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.sin_sum_ring
+#print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.lagrange_prod
+#print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.solid_cos_ring
+#print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.solid_sin_ring
+#print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.solid_cos
+#print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.solid_sin
+#print axioms LeanProofs.IPRA.Geometry.SphericalSolidAngle.solid_tan
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d1R
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d2R
 #print axioms LeanProofs.IPRA.Geometry.SphericalDelambre.d3R
