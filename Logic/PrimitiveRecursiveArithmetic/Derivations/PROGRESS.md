@@ -444,6 +444,29 @@ alpha_t; its derived (2S+1/4)2^-t bound and bl(4S+1) shift construct a canonical
 fast polynomial-value zero name. No global invariant, root-name validity,
 polynomial-value coherence or zero-name law is a source premise.
 
+The [general polynomial observer](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialEvaluation.lean)
+now works at any bounded fast Gaussian point name, with separate numerical
+coefficient and point data. All N+1 coefficients contribute to its derived
+modulus (N+1)U^N plus the actual weighted Horner Lipschitz sum. Degree zero
+and zero leading coefficients are included. The
+[general value-name program](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialValueName.lean)
+is canonical and fast from those source contracts alone. An arbitrary raw
+K*2^-s envelope implies its zero predicate by finite fixed-query slack removal;
+no comparison between K and the normalization modulus is assumed.
+[The actual general FTA adapter](Lean/IPRADerivations/Analysis/GaussianGeneralFTAValueZero.lean)
+derives that envelope at the returned root and proves zero of this same
+generic polynomial-value program. Its original raw observations are identified;
+the independently shifted normalized programs are not equated.
+
+The [constant coefficient-name compiler](Lean/IPRADerivations/Analysis/GaussianConstantCoefficientNames.lean)
+uses one fixed PR3 program and numerical data (N,C). It reads the original
+descending entry C[N-i], proves coefficient coherence without a premise,
+and computes dyadic apartness from the actual positive decoded denominator
+and a nonzero native coefficient norm. Its closed source-input theorem needs
+only 1<=k<=N and that nonzero coefficient. Equality of an arbitrary outer
+list code with a resampled list is not asserted; the separate original-list
+Horner binding remains to be exported.
+
 A generic completed-field/extensionality adapter remains separate. Source
 reconciliation and the remaining packet claims are not inferred from these
 root-specific actual-program theorems.

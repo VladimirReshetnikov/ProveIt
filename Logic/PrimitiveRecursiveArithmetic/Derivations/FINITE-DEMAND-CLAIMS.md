@@ -269,7 +269,20 @@ the environment labels. Completion needs the following evidence:
    is a fast Gaussian point name in the computed R disk. Its
    [same-precision polynomial evaluations](Lean/IPRADerivations/Analysis/GaussianGeneralFTAPolynomialValueName.lean)
    give a canonical fast zero PR2 name using the derived V_t bound and computed
-   bl(4S+1) shift. Generic completed-field/extensionality and the remaining
+   bl(4S+1) shift. The
+   [general polynomial observer](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialEvaluation.lean)
+   derives its exact (N+1)U^N plus weighted-Lipschitz modulus at any bounded
+   fast point name, retaining separate numerical coefficient/point data.
+   Its [actual generic value name](Lean/IPRADerivations/Analysis/GaussianGeneralPolynomialValueName.lean)
+   is fast and canonical, and finite fixed-query slack removal transports any
+   raw K*2^-s envelope to program zero without a modulus-dominates-K premise.
+   The [general FTA binding](Lean/IPRADerivations/Analysis/GaussianGeneralFTAValueZero.lean)
+   proves that precise generic program-zero predicate from the original source
+   assumptions. The [constant coefficient compiler](Lean/IPRADerivations/Analysis/GaussianConstantCoefficientNames.lean)
+   also derives actual coefficient coherence and computed apartness from
+   numerical polynomial entries and one positive-degree nonzero coefficient;
+   no coefficient-name schema is supplied for this case.
+   Generic completed-field/extensionality and the remaining
    representation adapters stay separate; the complete packet scope is retained.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z
