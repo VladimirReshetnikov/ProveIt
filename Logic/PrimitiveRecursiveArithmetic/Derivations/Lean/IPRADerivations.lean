@@ -82,6 +82,9 @@ import IPRADerivations.Analysis.WallisGrid
 import IPRADerivations.Analysis.WallisRecurrence
 import IPRADerivations.Analysis.WallisFinite
 import IPRADerivations.Analysis.RobbinsSeries
+import IPRADerivations.Analysis.ExponentialSeries
+import IPRADerivations.Analysis.FiniteDifferenceIdentities
+import IPRADerivations.Analysis.RiemannRefinement
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
@@ -373,6 +376,10 @@ import IPRADerivations.Combinatorics.FibonacciLucasMore
 import IPRADerivations.Core.PolynomialInequalities
 import IPRADerivations.Geometry.IsoperimetricInequalities
 import IPRADerivations.Combinatorics.CatalanProducts
+import IPRADerivations.Foundations.PresentedCategory
+import IPRADerivations.Foundations.Yoneda
+import IPRADerivations.Foundations.Adjunction
+import IPRADerivations.Foundations.SplitEquivalence
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
