@@ -202,8 +202,7 @@ abbrev quadratureFormula : Fm PTm 2 :=
     le (pw (var 1) (succ (var 0)))
       (succ (var 0) * ap2 (sumF Bq) (var 1) (var 0) + succ (var 0) * pw (var 1) (var 0))
 
-theorem power_sum_quadrature : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 quadratureFormula := by
-  refine closeUniv 2 ?_
+theorem power_sum_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] quadratureFormula := by
   -- Abbreviations: `p = var 0`, `M = var 1`.
   have tA := telescope' (Γ := ([] : List (Fm PTm 2))) Aq (var 1) (var 0)
   have tB := telescope' (Γ := ([] : List (Fm PTm 2))) Bq (var 1) (var 0)
@@ -240,5 +239,15 @@ theorem power_sum_quadrature : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 quadratu
     have h₆ := natEq tB
     apply deriveNat; ipra_simps
     linear_combination h₁ - h₂ + h₃ - h₄ - h₅ - (Groth.ι (Q.mk [] (var 0)) + 1) * h₆
+
+theorem power_sum_quadrature : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 quadratureFormula :=
+  closeUniv 2 power_sum_open
+
+/-- `lem:moment` at given `p`, `M`: `(p + 1) ∑_{i<M} iᵖ ≤ M^{p+1} ≤ (p + 1) ∑_{i<M} iᵖ + (p + 1) Mᵖ`. -/
+theorem moment (p M : PTm n) :
+    Γ ⊢[PRAAx] le (succ p * ap2 (sumF Bq) M p) (pw M (succ p)) ⋏
+      le (pw M (succ p)) (succ p * ap2 (sumF Bq) M p + succ p * pw M p) := by
+  have i := inst (Γ := Γ) power_sum_open (![p, M] : Fin 2 → PTm n)
+  simpa using i
 
 end LeanProofs.IPRA.Analysis.PowerSums
