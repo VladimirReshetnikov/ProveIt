@@ -119,8 +119,13 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | Finite-demand, reverse-product stability and sharp radius | `GaussianEuclideanResidualRadius.euclidean_residual_radius_closed`; `GaussianReconstructionRoots.reconstructed_listed_root_closed`; `GaussianRootStability.reconstructed_product_stability_closed`, `reconstructed_product_witness_closed` | True reverse reconstruction/factor semantics and original Euclidean Horner/finite-product estimates supply both original covers and actual original-target witnesses. No producer equivalence is assumed. Coefficient Euclidean radius A gives root radius A+2, without the L1 factor-two loss. |
 | Finite-demand, complete collision-tolerant root-support name conditional on RD | `GaussianRootSupport.collision_tolerant_root_support_closed`, `collision_tolerant_root_checker_closed`, `root_name_program_closed` | Completes source thm:root-support: exact computed source A/R/b/E(t), actual PR3 root lists of length N, every listed radius at most R, and u>=t implies original Euclidean Close at 2^(-t-2). Actual CN+AF errors derive 4*2^-E(t); actual b proves the 4C budget. Premises are genuine CN, local monic RD, positive numerical degree and stage order. No supplied final radius/coherence/cover or root separation. |
 | Finite-demand, exact finite adequacy estimates and precision selectors | `GaussianRationalHornerLipschitz.rational_horner_lipschitz_closed`; `GaussianRootFiniteEvaluation.finite_root_evaluation_closed`; `GaussianRootAdequacySchedule.finite_root_evaluation_budget_closed` | Exact M_U=A*sum(i=1..N,i*U^(i-1)), actual FE bound and actual source t/s precision selectors. All numerical inputs are internal, with ordinary QF prefix proofs and exact independent rational denominators. FE retains the legitimate normalized rational sample residual, rather than assuming the desired Ft residual. |
-| Finite-demand, actual finite root-to-support producer | `GaussianRootApproximationWitness.finite_root_to_support_closed`, `returned_root_witness_closed`, `finite_root_witness_program_closed` | From CN/RD, actual point bounds and the exact source normalized V_s root condition, derives successful original finite search at the actual source precisions. PR4 returned fields certify t>=k, s>=k+1, valid original index/literal stored root and query-sample distance<=2^(-k-1). Full represented-point Member equivalence and the converse remain open. |
-| Finite-demand, actual Euclidean finite distance observations | `GaussianEuclideanPointDistance.euclidean_minimum_hit_closed`, `euclidean_sqrt_brackets_closed`, `finite_hit_to_distance_sample_closed`, `distance_sample_to_finite_hit_closed`, `euclidean_distance_program_closed` | Actual least rational argmin of original squared Euclidean distances, actual integer-square-root brackets and both finite hit/sample implications with explicit dyadic slack. This is the source Euclidean metric, not the vector sup-metric. Completed-point distance names, slack removal and the exact quantified Member predicate remain separate. |
+| Finite-demand, actual finite root-to-support producer | `GaussianRootApproximationWitness.finite_root_to_support_closed`, `returned_root_witness_closed`, `finite_root_witness_program_closed` | From CN/RD, actual point bounds and the exact source normalized V_s root condition, derives successful original finite search at the actual source precisions. PR4 returned fields certify t>=k, s>=k+1, valid original index/literal stored root and query-sample distance<=2^(-k-1). The exact represented Member equivalence and converse are completed by the later membership/value-name modules below. |
+| Finite-demand, actual Euclidean finite distance observations | `GaussianEuclideanPointDistance.euclidean_minimum_hit_closed`, `euclidean_sqrt_brackets_closed`, `finite_hit_to_distance_sample_closed`, `distance_sample_to_finite_hit_closed`, `euclidean_distance_program_closed` | Actual least rational argmin of original squared Euclidean distances, actual integer-square-root brackets and both finite hit/sample implications with explicit dyadic slack. This is the source Euclidean metric, not the vector sup-metric. The later distance-name, slack-removal and membership modules below provide those adapters. |
+| Finite-demand, actual Euclidean distance name and rational slack removal | `GaussianEuclideanDistanceName.euclidean_distance_name_closed`, `euclidean_distance_cut_to_hit_closed`, `finite_hit_to_euclidean_cut_closed`; `GaussianRationalSlackRemoval.finite_euclidean_slack_removal_closed`, `euclidean_slack_removal_closed` | Actual Euclidean minimum/sqrt samples form a nonnegative fast scalar name, with both exact represented-cut/finite-hit adapters. One computed integer-gap precision removes original rational Euclidean slack; no represented nearest-root choice or limit principle is assumed. |
+| Finite-demand, exact represented Member and normalized root equation | `GaussianRootMembershipHit.finite_member_residual_closed`; `GaussianRootMembership.source_member_iff_normalized_root_closed`, `primitive_root_to_member_stage_closed` | Literal forall-k exists-t>=k Euclidean-cut membership is equivalent to normalized actual V_s vanishing. The existential stage is eliminated locally before the fixed residual receives all dyadic slacks. Constants T and 4M_U+2C_R are independent of that stage and slack precision; actual arithmetic removes the slack. The forward stage is the source PR construction. |
+| Finite-demand, actual P(z) value name and literal program vanishing | `GaussianPolynomialValueName.polynomial_value_name_closed`, `polynomial_value_zero_closed`, `polynomial_computed_zero_closed`, `polynomial_value_program_closed` | True sampled Horner evaluations have derived T-weighted coherence; actual binary normalization and packed PR2 evaluation give a genuine fast Gaussian name. Proves equivalence of normalized V_s vanishing and zero of the literal program, with all numerical degree/bound/data inputs internal and no RD needed for this value construction. |
+| Finite-demand, both represented root-membership directions and source PR stage | `GaussianRepresentedPointBounds.represented_disk_sample_bound_closed`; `GaussianRootAdequacy.represented_root_membership_closed`, `represented_polynomial_value_name_closed`, `primitive_represented_root_stage_closed` | Original represented point disk Z derives actual sample disk Z+1. Genuine source conditions imply exact Member iff the actual PR2 polynomial-value name is zero, and certify the actual PR forward stage. Conditional only on local monic RD/CN/pointCN and the source numerical degree/disk bounds. The source sharp C_Z/M_Z error inequalities remain open, so the full adequacy proposition is not marked complete. |
+| Finite-demand, exact rational-disk Horner perturbation | `GaussianRationalHornerRadiusPerturbation.rational_radius_horner_perturbation_closed`, `rational_radius_horner_prefix_closed`, `rational_radius_horner_certificate_closed` | Actual QF Horner prefixes retain rational query radius U/V>=1 and exact denominator V^(N-1)*B. A finite component for the sharp represented constants, with no rounding loss or supplied evaluation/clearing law; it does not itself prove the remaining represented inequalities. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -291,42 +296,42 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `ab7cdf70b6`, including the complete conditional
-collision-tolerant root-support theorem and finite adequacy components, the
-root build completed 2,237 jobs and emitted 5,665 axiom reports for
-5,156 distinct declarations. Every report uses only `propext`,
-`Classical.choice` and `Quot.sound`. The portable import gate passed across
-3,656 source modules, and the independent `Diophantine` boundary passed
-across 5,252 modules.
+At the source based on `4e7d3f5eb0`, including both represented root-membership
+directions and the actual polynomial-value program, the root build
+completed 2,247 jobs and emitted 5,853 axiom reports for 5,344 distinct
+declarations. Every report uses only `propext`, `Classical.choice` and
+`Quot.sound`. The portable import gate passed across 3,666 source modules,
+and the independent `Diophantine` boundary passed across 5,252 modules.
 
-The eighteen modules added in this batch contain 3,771 lines and 410 public
+The ten modules added in this batch contain 1,960 lines and 188 public
 theorem registrations, all individually present in that audit output.
-Independent source/math reviews checked the exact source coefficient-name
-constants, actual bounded precision programs and descending samplers,
-original Euclidean metric arithmetic, sharp residual/root radii, actual
-reverse-product zeros and finite factor search, actual coefficient
-coherence and both original Hausdorff covers. They also checked the exact
-runtime Horner Lipschitz constant, actual FE comparison, source precision
-selectors, returned root-witness fields and actual Euclidean minimum and
-integer-square-root observations. Every numerical degree, stage, point,
-list, radius, precision and persistent datum remains internal; only fixed
-finite syntax and PR schemas are external proof-generator parameters.
+Independent source/math reviews checked the actual Euclidean distance
+name and cut/hit adapters, the finite residual from an original root-list
+hit, exact membership denominator budgets, actual rational slack removal,
+local existential-stage elimination, the exact quantified Member formula,
+actual sampled-Horner value coherence and its packed PR2 fast Gaussian
+name, the literal program-zero predicate, the represented disk adapter
+Z-to-Z+1, both membership implications and the source PR forward stage.
+They also checked rational-disk Horner perturbation without radius rounding.
+Every numerical degree, bound, list, precision and persistent datum remains
+internal; only fixed finite syntax and PR schemas are external parameters.
 
-Finite-demand `thm:approx-factor` and `thm:root-support` are now checked
+Finite-demand `thm:approx-factor` and `thm:root-support` remain checked
 conditional on the explicit local monic RD contract. Its upstream FTA
-descent implementation/proof is still open. Root adequacy has checked
-finite estimates and actual forward witness production, but the represented
-point-distance name, rational slack removal, exact quantified Member
-adapter, represented evaluation/distance inequalities and converse remain
-unfinished. The coded-field norm claims and the remaining source packets
-are also open. General convolution and the separately expanded telescoping
-sum remain unclaimed; the proved factorization target uses actual
-one-step error transport and backward prefix-weighted induction. The
-complete 115-packet scope remains active.
+descent implementation/proof is still open. The root-adequacy proposition
+now has both exact represented membership directions, a genuine actual
+polynomial-value name, the source represented point bound and the PR
+forward stage. The two additional sharp represented error inequalities
+`root-eval-error` and `root-distance-residual`, with the original C_Z/M_Z
+constants, remain unfinished. Further stage-distance completion adapters
+must be connected explicitly if used. The coded-field norm claims and
+remaining source packets are also open. General convolution and the
+separately expanded telescoping sum remain unclaimed; the proved
+factorization target uses actual one-step error transport and backward
+prefix-weighted induction. The complete 115-packet scope remains active.
 
 The new modules are included in `IPRADerivations`. Their public theorem
-names are audited in `Checks/Axioms.lean`. Build and inspect the object
-statements and Lean axiom reports with the root workspace commands.
+names are audited in `Checks/Axioms.lean`. Run the root verification commands:
 
 ```sh
 lake build IPRADerivations +IPRADerivations.Checks.Axioms
