@@ -305,8 +305,13 @@ the environment labels. Completion needs the following evidence:
    guarded QF Horner inductions prove equal evaluation. The
    [different-degree extensionality theorem](Lean/IPRADerivations/Analysis/GaussianPolynomialDegreeExtensionality.lean)
    compares the original normalized programs through their actual common-degree
-   extensions, retaining independent disks, data and shifts. Completed-field
-   ring/evaluation realization remains. The [natural scalar action](Lean/IPRADerivations/Analysis/GaussianRationalNaturalScale.lean)
+   extensions, retaining independent disks, data and shifts.
+   [Actual Gaussian-name ring laws](Lean/IPRADerivations/Analysis/GaussianNameRingLaws.lean)
+   now prove associativity, commutativity, both distributions and the
+   zero/one/inverse laws up to exact cross-precision equivalence, from
+   original point-Cauchy conditions alone. Computed disks and all nested
+   normalization errors are derived. Completed-field realization and the
+   uniform evaluation-to-name-arithmetic adapter remain. The [natural scalar action](Lean/IPRADerivations/Analysis/GaussianRationalNaturalScale.lean)
    and [finite Gaussian sum](Lean/IPRADerivations/Analysis/GaussianRationalFiniteSum.lean)
    prove the actual recurrences and algebra used by the now-proved literal
    inverse-binomial Pascal row and its source-identity binding. Generic

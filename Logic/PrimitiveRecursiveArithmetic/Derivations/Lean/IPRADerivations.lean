@@ -684,6 +684,7 @@ import IPRADerivations.Foundations.BooleanBits
 import IPRADerivations.Foundations.PrecisionArithmetic
 import IPRADerivations.Foundations.ObserverErasure
 import IPRADerivations.Foundations.BoundedEnumeration
+import IPRADerivations.Foundations.FilteredEnumerationCode
 import IPRADerivations.AnalyticNumberTheory.DyadicBandSum
 import IPRADerivations.Analysis.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Analysis.GaussianRationalSyntheticCoefficientValues
@@ -732,6 +733,7 @@ import IPRADerivations.Analysis.GaussianConstantPolynomialEvaluation
 import IPRADerivations.Analysis.GaussianNameEquivalence
 import IPRADerivations.Analysis.GaussianNameBounds
 import IPRADerivations.Analysis.GaussianNameArithmetic
+import IPRADerivations.Analysis.GaussianNameRingLaws
 import IPRADerivations.Analysis.GaussianValueNormalizerExtensionality
 import IPRADerivations.Analysis.GaussianGeneralPolynomialExtensionality
 import IPRADerivations.Analysis.GaussianPolynomialDegreePadding
