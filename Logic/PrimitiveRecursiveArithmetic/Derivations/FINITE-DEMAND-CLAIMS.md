@@ -281,7 +281,12 @@ the environment labels. Completion needs the following evidence:
    assumptions. The [constant coefficient compiler](Lean/IPRADerivations/Analysis/GaussianConstantCoefficientNames.lean)
    also derives actual coefficient coherence and computed apartness from
    numerical polynomial entries and one positive-degree nonzero coefficient;
-   no coefficient-name schema is supplied for this case.
+   no coefficient-name schema is supplied for this case. The
+   [original numerical polynomial binding](Lean/IPRADerivations/Analysis/GaussianConstantPolynomialEvaluation.lean)
+   proves actual coefficient and guarded-QF Horner-prefix equality, then
+   constructs the concrete root/value programs and original-evaluation
+   dyadic zero bound from list length and a nonzero positive-degree
+   coefficient alone. Arbitrary outer list-code extensionality is not used.
    Generic completed-field/extensionality and the remaining
    representation adapters stay separate; the complete packet scope is retained.
    Adequacy now has a single closed proof of all its stated clauses,

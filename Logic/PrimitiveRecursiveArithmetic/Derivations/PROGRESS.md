@@ -463,9 +463,14 @@ uses one fixed PR3 program and numerical data (N,C). It reads the original
 descending entry C[N-i], proves coefficient coherence without a premise,
 and computes dyadic apartness from the actual positive decoded denominator
 and a nonzero native coefficient norm. Its closed source-input theorem needs
-only 1<=k<=N and that nonzero coefficient. Equality of an arbitrary outer
-list code with a resampled list is not asserted; the separate original-list
-Horner binding remains to be exported.
+only 1<=k<=N and that nonzero coefficient. The
+[original-polynomial frontend](Lean/IPRADerivations/Analysis/GaussianConstantPolynomialEvaluation.lean)
+now proves entry equality and a genuine guarded QF Horner-prefix equality;
+list length gives exact evaluation of the original numerical polynomial.
+Its fixed root/value programs have proved pointCN and zero predicates, and
+the original raw polynomial evaluations at the actual computed root precision
+are bounded by 2^-t. Only length and one nonzero positive-degree coefficient
+are supplied. Equality of arbitrary outer list codes is not asserted.
 
 A generic completed-field/extensionality adapter remains separate. Source
 reconciliation and the remaining packet claims are not inferred from these

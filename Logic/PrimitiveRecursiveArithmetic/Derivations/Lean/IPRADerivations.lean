@@ -680,3 +680,4 @@ import IPRADerivations.Analysis.GaussianGeneralPolynomialEvaluation
 import IPRADerivations.Analysis.GaussianGeneralPolynomialValueName
 import IPRADerivations.Analysis.GaussianGeneralFTAValueZero
 import IPRADerivations.Analysis.GaussianConstantCoefficientNames
+import IPRADerivations.Analysis.GaussianConstantPolynomialEvaluation
