@@ -136,6 +136,10 @@ and distinguishes finite factor/tail names from the remaining analytic endpoints
 | Finite-demand, actual root-stage distance completion | `GaussianRootDistanceCompletion.stage_variation_closed`, `completed_distance_name_closed`, `completed_distance_query_closed` | Source RS gives the exact represented stage-distance Cauchy bound at independent observation precisions. The actual PR2 diagonal name uses stage k+2 and point/sqrt precision k+4; its derived modulus, normalization, nonnegativity and canonicality are proved with all numerical degree/data/stage/precision inputs internal. |
 | Finite-demand, Member iff literal completed-distance zero | `GaussianRootDistanceZero.root_distance_zero_closed`, `distance_zero_stage_closed`, `distance_zero_program_closed` | Local existential-stage elimination gives each fixed raw observation the finite bound 2*2^-r+3*2^-m; actual scalar closure then proves the normalized zero predicate. Conversely that literal zero predicate gives a genuine represented membership cut at the explicit PR stage k+3. The reverse implication uses only positive degree and point CN. |
 | Finite-demand, full root adequacy with literal distance/polynomial zero equivalence | `GaussianRootCompletedAdequacy.completed_root_adequacy_closed`, `completed_distance_root_equation_closed` | Extends the unchanged original adequacy contract with actual completed-distance scalar fastness, all-query nonnegativity and literal distance-zero iff actual P-value program zero. This checks the stage-distance/zero-distance corollary; upstream RD and a Gaussian point-name realization adapter remain open, as does the complete 115-packet goal. |
+| FTA descent, actual scalar radius powers and original norm coding | `RationalNonnegativePowers.nonnegative_power_closed`, `nonnegative_power_recurrence_closed`, `dyadic_power_closed`; `GaussianBalancedRadiusSyntax.coefficient_norm_representation_closed` | Actual canonical rational power values, their multiplication recurrence and the original independently denominated squared coefficient norms are proved uniformly in every numerical exponent and coefficient index. |
+| FTA descent, computed height and proved finite scan endpoints | `GaussianBalancedRadiusHeight.height_facts_closed`, `coefficient_height_bounds_closed`; `GaussianBalancedRadiusArithmetic.balanced_radius_endpoint_fit_closed`, `balanced_radius_endpoint_failure_closed`, `balanced_radius_squared_witness_closed` | A genuine runtime maximum fold computes a coarser norm-bit height b and exact E=2b+3. Every coefficient numerator/denominator is bounded internally; low fit and strict high failure follow, with the unchanged literal 4^N squared witness factor. |
+| FTA descent, actual greatest fitting radius and failed coefficient | `GaussianBalancedRadiusSearch.balanced_radius_search_closed`, `returned_balanced_radius_search_closed`, `positive_degree_scan_closed` | Actual bounded Boolean coefficient search and outer first-failure search derive adjacent fit/failure, a positive original failed index and the greatest-fit property. The final theorem assumes only the legitimate nonzero-constant source input, never endpoints, monotonicity or successful search. |
+| FTA descent, complete balanced-radius producer including zero residual | `GaussianBalancedRadius.balanced_radius_closed`, `balanced_radius_program_closed`; `GaussianBalancedRadiusValues.balanced_radius_fit_values_closed`, `balanced_radius_literal_witness_closed`; `GaussianBalancedRadiusZero.zero_radius_bound_closed` | The public actual PR2 producer removes the nonzero-constant restriction by its genuine zero branch. All original squared radius bounds, exact canonical radius/representation, zero value and positive-branch computed search/witness certificate are derived from the supplied nonconstant coefficient list. Translation from P,z, dominant plateau, direction and full RD remain open; the full 115-packet goal remains active. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -188,7 +192,7 @@ claims beyond those families.
 | Packet | Current derivation families |
 | --- | --- |
 | [algebra/bring_quintic_ipra_2026-11-16](../docs/proofs/algebra/bring_quintic_ipra_2026-11-16/) | [Algebra/Quintic](Lean/IPRADerivations/Algebra/Quintic.lean) |
-| [algebra/FTA_iPRA](../docs/proofs/algebra/FTA_iPRA/) | [Algebra/PowerDifference](Lean/IPRADerivations/Algebra/PowerDifference.lean), [Algebra/FTABounds](Lean/IPRADerivations/Algebra/FTABounds.lean), [Algebra/PolynomialTranslation](Lean/IPRADerivations/Algebra/PolynomialTranslation.lean), [Algebra/DescentPigeonhole](Lean/IPRADerivations/Algebra/DescentPigeonhole.lean), [Algebra/DescentDomination](Lean/IPRADerivations/Algebra/DescentDomination.lean), [Combinatorics/BinomialTwo](Lean/IPRADerivations/Combinatorics/BinomialTwo.lean) |
+| [algebra/FTA_iPRA](../docs/proofs/algebra/FTA_iPRA/) | [Algebra/PowerDifference](Lean/IPRADerivations/Algebra/PowerDifference.lean), [Algebra/FTABounds](Lean/IPRADerivations/Algebra/FTABounds.lean), [Algebra/PolynomialTranslation](Lean/IPRADerivations/Algebra/PolynomialTranslation.lean), [Algebra/DescentPigeonhole](Lean/IPRADerivations/Algebra/DescentPigeonhole.lean), [Algebra/DescentDomination](Lean/IPRADerivations/Algebra/DescentDomination.lean), [Combinatorics/BinomialTwo](Lean/IPRADerivations/Combinatorics/BinomialTwo.lean), [Analysis/GaussianBalancedRadius](Lean/IPRADerivations/Analysis/GaussianBalancedRadius.lean) |
 | [algebra/cayley_hamilton_ipra](../docs/proofs/algebra/cayley_hamilton_ipra/) | [Algebra/CayleyHamilton](Lean/IPRADerivations/Algebra/CayleyHamilton.lean), [Algebra/AdjugateInverse](Lean/IPRADerivations/Algebra/AdjugateInverse.lean), [Algebra/CayleyHamiltonGeneral](Lean/IPRADerivations/Algebra/CayleyHamiltonGeneral.lean), [Algebra/AdjugatePolynomial](Lean/IPRADerivations/Algebra/AdjugatePolynomial.lean), [Algebra/PrincipalMinors](Lean/IPRADerivations/Algebra/PrincipalMinors.lean) |
 | [algebra/ipra_observation_algebra_2026-11-16](../docs/proofs/algebra/ipra_observation_algebra_2026-11-16/) | [Algebra/ObservationAlgebra](Lean/IPRADerivations/Algebra/ObservationAlgebra.lean) |
 | [algebra/ipra_polynomial_formulas_abel_ruffini](../docs/proofs/algebra/ipra_polynomial_formulas_abel_ruffini/) | [Algebra/PolynomialFormulas](Lean/IPRADerivations/Algebra/PolynomialFormulas.lean) |
@@ -306,37 +310,44 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `7f26c1da50`, including the root-stage distance
-completion and exact zero-distance interpretation, the root build completed
-2,264 jobs and emitted 6,208 axiom reports for 5,699 distinct declarations.
-Every report uses only `propext`, `Classical.choice` and `Quot.sound`. The
-portable import gate passed across 3,683 source modules, and the independent
+At the source based on `063628b9fb`, including the executable balanced
+starting-radius construction, the root build completed 2,272 jobs and
+emitted 6,436 axiom reports for 5,927 distinct declarations. Every report
+uses only `propext`, `Classical.choice` and `Quot.sound`. The portable
+import gate passed across 3,691 source modules, and the independent
 `Diophantine` boundary passed across 5,252 modules.
 
-The five modules added in this batch contain 1,081 lines and 107 public
+The eight modules added in this batch contain 1,643 lines and 228 public
 theorem registrations, all individually present in that audit output.
-Independent source/math reviews checked original-cover hit transfer,
-actual Euclidean argmin/square-root variation, the exact source RS error
-with two independent observation precisions, the actual diagonal PR2 name
-and its derived modulus/normalization, finite scalar integer-gap closure,
-local existential-stage elimination, both Member/zero directions, the
-explicit reverse stage k+3, and the literal distance/polynomial program
-zero equivalence. Every degree, list code, bound, stage, precision and
-persistent datum remains internal; only fixed finite syntax and PR schemas
-are external proof-generator parameters.
+Independent source/math reviews checked the original descending coefficient
+lookup and independent-denominator squared norms, actual normalized rational
+powers and multiplication recurrence, the runtime maximum bit-height fold,
+derived low-fit/high-failure endpoints, actual Boolean atom reflection,
+both bounded scans, adjacent comparisons and global greatest fit, the same
+computed positive failed coefficient, exact literal rational 4^N witness,
+and both residual branches with all six PR2 returned fields. Every degree,
+list, height, radius exponent and witness is internal. Neither a height
+bound, scan-success condition nor desired output inequality is assumed by
+the public producer.
 
-Finite-demand `thm:approx-factor`, `thm:root-support` and
-`prop:root-adequacy` remain checked conditional on the explicit local
-monic RD contract. `GaussianRootCompletedAdequacy.completed_root_adequacy_closed`
-retains the full named proposition and adds the actual completed-distance
-fast scalar name, its all-query nonnegativity, and literal distance-zero
-iff actual P-program zero. The later unnumbered stage-distance and
-zero-distance corollary is therefore checked in the explicit finite-name
-coding. The separate Gaussian point-name realization adapter and the
-upstream actual FTA descent implementation/proof remain open. The coded-field
-norm claims and remaining source packets are also open. General convolution
-and the separately expanded telescoping sum remain unclaimed; the
-factorization target uses actual one-step error transport and backward
+`GaussianBalancedRadius.balanced_radius_closed` proves the complete
+balanced starting-radius component of FTA `lem:descent` for a supplied
+nonconstant rational coefficient list. It handles a zero constant residual
+by returning literal canonical zero; otherwise it returns the largest
+fitting dyadic radius and the source strict squared balanced witness. The
+computed norm-numerator/denominator bit height is an explicitly coarser
+choice than the source's component-digit height; E=2b+3 and the exact
+4^N squared factor are retained. Construction of the translated coefficient
+list from P and z, dominant-term/plateau selection, rational direction and
+the actual local contraction remain open. The full FTA descent theorem
+and the monic RD obligation are not claimed here.
+
+Finite-demand approximate factorization, root support, full root adequacy
+and its stage-distance/zero-distance corollary remain checked under the
+explicit local monic RD contract. The Gaussian point-name realization
+adapter, coded-field norm claims and remaining source packets remain open.
+General convolution and the separately expanded telescoping sum remain
+unclaimed; factorization uses actual one-step error transport and backward
 prefix-weighted induction. The complete 115-packet goal remains active.
 
 The new modules are included in `IPRADerivations`. Their public theorem

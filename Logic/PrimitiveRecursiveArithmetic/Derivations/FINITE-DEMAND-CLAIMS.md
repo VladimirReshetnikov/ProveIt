@@ -162,7 +162,10 @@ the environment labels. Completion needs the following evidence:
    the full original rational coding above. Uniform approximate factorization
    is now checked conditional on the explicit local (RD) contract, using
    actual backward coefficient-error induction. The upstream (RD) proof
-   remains open. The root-support construction is now checked under that
+   remains open. Its [balanced-radius producer](Lean/IPRADerivations/Analysis/GaussianBalancedRadius.lean)
+   now derives the actual zero/nonzero radius certificates and bounded
+   scan/witness outputs from a supplied coefficient list; translation,
+   dominant plateau, direction and contraction remain separate. The root-support construction is now checked under that
    same RD contract.
    Adequacy now has a single closed proof of all its stated clauses,
    including both sharp represented estimates at the original C_Z/M_Z

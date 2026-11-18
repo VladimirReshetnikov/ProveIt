@@ -504,3 +504,13 @@ import IPRADerivations.Analysis.GaussianScalarSlackRemoval
 import IPRADerivations.Analysis.GaussianRootDistanceCompletion
 import IPRADerivations.Analysis.GaussianRootDistanceZero
 import IPRADerivations.Analysis.GaussianRootCompletedAdequacy
+
+-- Actual bounded balanced-radius producer for the FTA descent.
+import IPRADerivations.Analysis.GaussianBalancedRadiusSyntax
+import IPRADerivations.Analysis.RationalNonnegativePowers
+import IPRADerivations.Analysis.GaussianBalancedRadiusHeight
+import IPRADerivations.Analysis.GaussianBalancedRadiusArithmetic
+import IPRADerivations.Analysis.GaussianBalancedRadiusSearch
+import IPRADerivations.Analysis.GaussianBalancedRadiusValues
+import IPRADerivations.Analysis.GaussianBalancedRadiusZero
+import IPRADerivations.Analysis.GaussianBalancedRadius
