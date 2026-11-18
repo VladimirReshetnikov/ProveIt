@@ -1305,6 +1305,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ViableChain.chain_local
 #print axioms LeanProofs.IPRA.Foundations.ViableChain.refinement_local
 #print axioms LeanProofs.IPRA.Foundations.ViableChain.refinement_edge
+#print axioms LeanProofs.IPRA.Foundations.ChainViability.monus_le
+#print axioms LeanProofs.IPRA.Foundations.ChainViability.monus_succ_lt
+#print axioms LeanProofs.IPRA.Foundations.ChainViability.viable_step
+#print axioms LeanProofs.IPRA.Foundations.ChainViability.chain_viable
+#print axioms LeanProofs.IPRA.Foundations.ChainViability.start_viable
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.rem_eq_of_eq
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.dvd_of_rem_eq

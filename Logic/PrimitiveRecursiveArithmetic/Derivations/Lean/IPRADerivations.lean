@@ -397,6 +397,7 @@ import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.WitnessAlgebra
 import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Foundations.ViableChain
+import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
