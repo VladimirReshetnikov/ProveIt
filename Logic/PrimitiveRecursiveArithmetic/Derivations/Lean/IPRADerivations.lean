@@ -300,11 +300,14 @@ import IPRADerivations.Geometry.PlatonicSolids
 import IPRADerivations.Geometry.Projective
 import IPRADerivations.Geometry.SphericalTrigonometry
 import IPRADerivations.Geometry.SphericalHalf
+import IPRADerivations.Geometry.SphericalHalfTangent
+import IPRADerivations.Geometry.SphericalVariation
 import IPRADerivations.Geometry.SphericalDelambre
 import IPRADerivations.Geometry.SphericalArea
 import IPRADerivations.Geometry.SphericalCore
 import IPRADerivations.Geometry.SphericalQuadrantal
 import IPRADerivations.Geometry.SphericalNapier
+import IPRADerivations.Geometry.SphericalHaversine
 import IPRADerivations.Geometry.SphericalPolar
 import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
@@ -714,6 +717,8 @@ import IPRADerivations.Analysis.GaussianNonmonicApproximateRoot
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
 import IPRADerivations.Foundations.DiscreteGronwall
 import IPRADerivations.Foundations.OdeRefinement
+import IPRADerivations.Foundations.GuardedTrace
+import IPRADerivations.Foundations.StructuralRules
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
