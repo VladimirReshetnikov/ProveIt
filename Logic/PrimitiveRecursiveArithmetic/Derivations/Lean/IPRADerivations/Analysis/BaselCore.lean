@@ -570,4 +570,211 @@ theorem E_step {M L : PTm n} (hL : Γ ⊢[PRAAx] le (succ (two * succ M)) L) :
   · apply deriveNat; ipra_simps
     linear_combination a2 + t2 + 𝔞 (par M) * bc
 
+/-! ## The triangle `T(N) = ∑_{i<N} s_i A_{N−1−i}` -/
+
+/-- `A^±(N − 1 − i)` over `0 = i`, `1 = N`, `2 = L`. -/
+abbrev ApK : PTm 3 := Ev tB (monus (var 1) (succ (var 0))) (fact (var 2))
+abbrev AmK : PTm 3 := Od tB (monus (var 1) (succ (var 0))) (fact (var 2))
+/-- The positive and negative parts of `s_i A_{N−1−i}`. -/
+abbrev tP : PTm 2 := lift3 (monus one (par (var 0)) * gK * ApK + par (var 0) * gK * AmK)
+abbrev tM : PTm 2 := lift3 (monus one (par (var 0)) * gK * AmK + par (var 0) * gK * ApK)
+
+abbrev Tp (N L : PTm n) : PTm n := ap2 (sumF tP) N (pairT N L)
+abbrev Tm (N L : PTm n) : PTm n := ap2 (sumF tM) N (pairT N L)
+
+theorem inst_tP (i N L : PTm n) : Γ ⊢[PRAAx] inst2 tP i (pairT N L) ≐
+    monus one (par i) * g i L * Ap (monus N (succ i)) L + par i * g i L * Am (monus N (succ i)) L := by
+  have h := inst2_lift3 (Γ := Γ) (monus one (par (var 0)) * gK * ApK + par (var 0) * gK * AmK) i N L
+  simp at h
+  exact h
+
+theorem inst_tM (i N L : PTm n) : Γ ⊢[PRAAx] inst2 tM i (pairT N L) ≐
+    monus one (par i) * g i L * Am (monus N (succ i)) L + par i * g i L * Ap (monus N (succ i)) L := by
+  have h := inst2_lift3 (Γ := Γ) (monus one (par (var 0)) * gK * AmK + par (var 0) * gK * ApK) i N L
+  simp at h
+  exact h
+
+/-- The pointwise increment: for `i < N = M + 1`, with `k = N − 1 − i`,
+`s_i A^±(N − i) = s_i A^±(N − 1 − i) + [i + k even or odd] g_i g_k`. -/
+theorem t_pt {i M L : PTm n} (hi : Γ ⊢[PRAAx] lt i (succ M)) :
+    Γ ⊢[PRAAx] (inst2 tP i (pairT (succ M) L) + monus one (par M) * inst2 cv i (pairT (succ M) L) ≐
+        inst2 tP i (pairT (succ (succ M)) L)) ⋏
+      (inst2 tM i (pairT (succ M) L) + par M * inst2 cv i (pairT (succ M) L) ≐ inst2 tM i (pairT (succ (succ M)) L)) := by
+  have i1 := natEq (inst_tP (Γ := Γ) i (succ M) L); have i2 := natEq (inst_tP (Γ := Γ) i (succ (succ M)) L)
+  have j1 := natEq (inst_tM (Γ := Γ) i (succ M) L); have j2 := natEq (inst_tM (Γ := Γ) i (succ (succ M)) L)
+  have ic := natEq (inst_cv (Γ := Γ) i (succ M) L)
+  have em : Γ ⊢[PRAAx] monus (succ (succ M)) (succ i) ≐ succ (monus (succ M) (succ i)) :=
+    (succ_monus_succ _ _).eqTrans (LeanProofs.IPRA.Analysis.BaselAverages.monus_succ_eq hi)
+  have ap := natEq ((congrAp2 (sumF (LeanProofs.IPRA.Analysis.BaselFinite.eB tB)) em (.eqRefl (fact L))).eqTrans
+    (Ap_succ (Γ := Γ) (monus (succ M) (succ i)) L))
+  have am := natEq ((congrAp2 (sumF (LeanProofs.IPRA.Analysis.BaselFinite.oB tB)) em (.eqRefl (fact L))).eqTrans
+    (Am_succ (Γ := Γ) (monus (succ M) (succ i)) L))
+  have eik : Γ ⊢[PRAAx] i + monus (succ M) (succ i) ≐ M := by
+    have w := natEq (eq_add_of_le hi)
+    apply deriveNat; ipra_simps; linear_combination -w
+  have qa := natEq (q_add (Γ := Γ) i (monus (succ M) (succ i)))
+  have pa := natEq (p_add (Γ := Γ) i (monus (succ M) (succ i)))
+  have qc := natEq (congrMonus (.eqRefl one) (congrAp1 parF eik))
+  have pc := natEq (congrAp1 parF eik)
+  refine .andI ?_ ?_
+  · apply deriveNat; ipra_simps
+    rw [i1, i2, ic, ap, am]
+    linear_combination 𝔞 (g i L) * 𝔞 (g (monus (succ M) (succ i)) L) * (qa - qc)
+  · apply deriveNat; ipra_simps
+    rw [j1, j2, ic, ap, am]
+    linear_combination 𝔞 (g i L) * 𝔞 (g (monus (succ M) (succ i)) L) * (pa - pc)
+
+/-- The increment of `T`: `T^±(N + 1) = T^±(N) + [N − 1 even or odd] Conv(N)` for `N = M + 1`. -/
+theorem T_step (M L : PTm n) :
+    Γ ⊢[PRAAx] (Tp (succ (succ M)) L ≐ Tp (succ M) L + monus one (par M) * Conv (succ M) L) ⋏
+      (Tm (succ (succ M)) L ≐ Tm (succ M) L + par M * Conv (succ M) L) := by
+  have e0 : Γ ⊢[PRAAx] monus (succ (succ M)) (succ (succ M)) ≐ zero := monus_self _
+  have a0 := natEq ((congrAp2 (sumF (LeanProofs.IPRA.Analysis.BaselFinite.eB tB)) e0 (.eqRefl (fact L))).eqTrans
+    (sum_zero _ _))
+  have b0 := natEq ((congrAp2 (sumF (LeanProofs.IPRA.Analysis.BaselFinite.oB tB)) e0 (.eqRefl (fact L))).eqTrans
+    (sum_zero _ _))
+  have l1 := natEq (inst_tP (Γ := Γ) (succ M) (succ (succ M)) L)
+  have l2 := natEq (inst_tM (Γ := Γ) (succ M) (succ (succ M)) L)
+  have h1 := natEq (sum_succ' (Γ := Γ) tP (succ M) (pairT (succ (succ M)) L))
+  have h2 := natEq (sum_succ' (Γ := Γ) tM (succ M) (pairT (succ (succ M)) L))
+  have es1 : Syn.shift (succ M) = succ (Syn.shift M) := by simp [Syn.shift]
+  have es2 : Syn.shift (succ (succ M)) = succ (succ (Syn.shift M)) := by simp [Syn.shift]
+  have esq : Syn.shift (monus one (par M)) = monus one (par (Syn.shift M)) := by simp [Syn.shift]
+  have esp : Syn.shift (par M) = par (Syn.shift M) := by simp [Syn.shift]
+  have s1 := natEq (sum_lin (Γ := Γ) tP cv tP (succ M) (pairT (succ M) L) (pairT (succ M) L) (pairT (succ (succ M)) L)
+    (monus one (par M)) (.allI (.impI (by
+      simp only [shift_pairT, es1, es2, esq]
+      exact Prf.andE₁ (t_pt Prf.hyp0)))))
+  have s2 := natEq (sum_lin (Γ := Γ) tM cv tM (succ M) (pairT (succ M) L) (pairT (succ M) L) (pairT (succ (succ M)) L)
+    (par M) (.allI (.impI (by
+      simp only [shift_pairT, es1, es2, esp]
+      exact Prf.andE₂ (t_pt Prf.hyp0)))))
+  refine .andI ?_ ?_
+  · apply deriveNat; ipra_simps
+    rw [h1, l1, a0, b0]
+    linear_combination -s1
+  · apply deriveNat; ipra_simps
+    rw [h2, l2, a0, b0]
+    linear_combination -s2
+
+/-! ## The second decomposition `A² + T = O + E` (`eq:second`) -/
+
+/-- The ring form of the induction step of `eq:second`. -/
+theorem phi_ring {R : Type*} [CommRing R] (Ap Am Tp Tm Ep Em O ApN AmN TpN TmN EpN EmN ON p q g F u H C Rp Rm N : R)
+    (ih : Ap * Ap + Am * Am + Tp + Em = O + Ep + Tm + 2 * (Ap * Am))
+    (hap : ApN = Ap + p * g) (ham : AmN = Am + q * g) (ho : ON = O + g * g)
+    (htp : TpN = Tp + q * (u * H)) (htm : TmN = Tm + p * (u * H))
+    (hep : EpN + 2 * g * Rp = Ep + q * (u * C)) (hem : EmN + 2 * g * Rm = Em + p * (u * C))
+    (hrefl : q * Rp + p * Rm + Am + F = q * Rm + p * Rp + Ap)
+    (hc : C + F = H + g) (hfu : F = N * u) (hg : F = (2 * N + 1) * g) (hps : p + q = 1) (hpp : p * q = 0) :
+    ApN * ApN + AmN * AmN + TpN + EmN = ON + EpN + TmN + 2 * (ApN * AmN) := by
+  have hep' : EpN = Ep + q * (u * C) - 2 * g * Rp := by linear_combination hep
+  have hem' : EmN = Em + p * (u * C) - 2 * g * Rm := by linear_combination hem
+  subst hap ham ho htp htm hep' hem'
+  linear_combination ih + (g ^ 2 * (p + q + 1) - 2 * g * (Rp - Rm) * (p + q + 1)) * hps +
+    (-4 * g ^ 2 + 8 * g * (Rp - Rm)) * hpp + 2 * g * (q - p) * hrefl + (q - p) * u * hg -
+    2 * (q - p) * g * hfu - (q - p) * u * hc
+
+open LeanProofs.IPRA.Analysis.BaselSquares (O O_succ fact_eq) in
+/-- `eq:second` at `N = M + 1`, as an equation of naturals:
+`A⁺² + A⁻² + T⁺ + E⁻ = O + E⁺ + T⁻ + 2 A⁺ A⁻`, i.e. `A_N² + T_N = O_N + E_N` (`T_N` the triangle). -/
+abbrev Phi (M L : PTm n) : Fm PTm n :=
+  Ap (succ M) L * Ap (succ M) L + Am (succ M) L * Am (succ M) L + Tp (succ M) L + Em' M L ≐
+    O (succ M) L + Ep' M L + Tm (succ M) L + two * (Ap (succ M) L * Am (succ M) L)
+
+open LeanProofs.IPRA.Analysis.BaselSquares (O O_succ fact_eq) in
+theorem phi_zero (L : PTm n) : Γ ⊢[PRAAx] Phi zero L := by
+  have q := natEq (LeanProofs.IPRA.Analysis.BaselAverages.quo_one' (Γ := Γ) (fact L))
+  have a1 := natEq (Ap_succ (Γ := Γ) zero L); have a2 := natEq (Am_succ (Γ := Γ) zero L)
+  have a0 := natEq (sum_zero (Γ := Γ) (LeanProofs.IPRA.Analysis.BaselFinite.eB tB) (fact L))
+  have b0 := natEq (sum_zero (Γ := Γ) (LeanProofs.IPRA.Analysis.BaselFinite.oB tB) (fact L))
+  have z0 := natEq ((congrMonus (.eqRefl one) (par_zero (Γ := Γ))).eqTrans (monus_zero _))
+  have z1 := natEq (par_zero (Γ := Γ) (n := n))
+  have o1 := natEq (O_succ (Γ := Γ) zero L)
+  have o0 := natEq (sum_zero (Γ := Γ) LeanProofs.IPRA.Analysis.BaselSquares.oB L)
+  have e0 : Γ ⊢[PRAAx] monus (succ zero) (succ zero) ≐ zero := monus_self _
+  have c0 := natEq ((congrAp2 (sumF (LeanProofs.IPRA.Analysis.BaselFinite.eB tB)) e0 (.eqRefl (fact L))).eqTrans
+    (sum_zero _ _))
+  have d0 := natEq ((congrAp2 (sumF (LeanProofs.IPRA.Analysis.BaselFinite.oB tB)) e0 (.eqRefl (fact L))).eqTrans
+    (sum_zero _ _))
+  have t1 := natEq ((sum_succ' (Γ := Γ) tP zero (pairT (succ zero) L)).eqTrans
+    (congrAdd (sum_zero _ _) (inst_tP zero (succ zero) L)))
+  have t2 := natEq ((sum_succ' (Γ := Γ) tM zero (pairT (succ zero) L)).eqTrans
+    (congrAdd (sum_zero _ _) (inst_tM zero (succ zero) L)))
+  have e1 := natEq (sum_zero (Γ := Γ) (LeanProofs.IPRA.Analysis.BaselFinite.eB LeanProofs.IPRA.Analysis.BaselAverages.wB)
+    (pairT (succ zero) L))
+  have e2 := natEq (sum_zero (Γ := Γ) (LeanProofs.IPRA.Analysis.BaselFinite.oB LeanProofs.IPRA.Analysis.BaselAverages.wB)
+    (pairT (succ zero) L))
+  apply deriveNat; ipra_simps
+  rw [a1, a2, a0, b0, t1, t2, c0, d0, e1, e2, o1, o0, z0, z1]
+  rw [q]
+  ring
+
+open LeanProofs.IPRA.Analysis.BaselSquares (O O_succ fact_eq) in
+open LeanProofs.IPRA.Analysis.BaselAverages (C C_split H_succ quo_one') in
+theorem phi_step {M L : PTm n} (ih : Γ ⊢[PRAAx] le (succ (two * succ M)) L ⟶ Phi M L)
+    (h : Γ ⊢[PRAAx] le (succ (two * succ (succ M))) L) : Γ ⊢[PRAAx] Phi (succ M) L := by
+  have h' : Γ ⊢[PRAAx] le (succ (two * succ M)) L :=
+    le_trans (le_of_eq_add (d := two) (by apply deriveNat; ipra_simps; ring)) h
+  have h2 : Γ ⊢[PRAAx] le (two * succ M) L := le_trans (le_succ_self _) h'
+  have h1 : Γ ⊢[PRAAx] le (succ M) L :=
+    le_trans (le_of_eq_add (d := succ M) (by apply deriveNat; ipra_simps; ring)) h2
+  have i := natEq (Prf.impE ih h')
+  have ap := natEq (Ap_succ (Γ := Γ) (succ M) L); have am := natEq (Am_succ (Γ := Γ) (succ M) L)
+  have cs := natEq (compl_succ (Γ := Γ) M); have ps := natEq (par_succ (Γ := Γ) M)
+  have o := natEq (O_succ (Γ := Γ) (succ M) L)
+  have t := T_step (Γ := Γ) M L
+  have tp := natEq (Prf.andE₁ t); have tm := natEq (Prf.andE₂ t)
+  have fu := natEq (fact_eq h1)
+  have cv : Γ ⊢[PRAAx] Conv (succ M) L ≐ quo (fact L) (succ M) * H (succ M) L := by
+    have d := natEq (diagonal h2); have f := natEq (fact_eq h1)
+    refine LeanProofs.IPRA.Combinatorics.BinomialIdentities.mul_cancel (D := succ M) (odd_pos _) ?_
+    apply deriveNat; ipra_simps
+    linear_combination d + 𝔞 (H (succ M) L) * f
+  have cv' := natEq cv
+  have e := E_step (Γ := Γ) h'
+  have ep := natEq (Prf.andE₁ e); have em := natEq (Prf.andE₂ e)
+  have rf := natEq (refl (Γ := Γ) M L)
+  have c1 := natEq (C_split (Γ := Γ) (succ M) (succ (succ M)) L)
+  have m1 : Γ ⊢[PRAAx] monus (succ (succ M)) (succ M) ≐ succ zero :=
+    LeanProofs.IPRA.Combinatorics.BellDobinski.monus_of_eq (by apply deriveNat; ipra_simps; ring)
+  have hh1 := natEq ((congrAp2 (sumF tB) m1 (.eqRefl (fact L))).eqTrans ((H_succ (Γ := Γ) zero L).eqTrans
+    ((congrAdd (sum_zero _ _) (quo_one' _)).eqTrans (zero_add _))))
+  have hs := natEq (H_succ (Γ := Γ) (succ M) L)
+  have fg := natEq (fact_eq h')
+  have sp := natEq (par_sum (Γ := Γ) M); have pp := natEq (par_prod (Γ := Γ) M)
+  apply deriveNat; ipra_simps
+  linear_combination phi_ring (𝔞 (Ap (succ M) L)) (𝔞 (Am (succ M) L)) (𝔞 (Tp (succ M) L)) (𝔞 (Tm (succ M) L))
+    (𝔞 (Ep' M L)) (𝔞 (Em' M L)) (𝔞 (O (succ M) L)) (𝔞 (Ap (succ (succ M)) L)) (𝔞 (Am (succ (succ M)) L))
+    (𝔞 (Tp (succ (succ M)) L)) (𝔞 (Tm (succ (succ M)) L)) (𝔞 (Ep' (succ M) L)) (𝔞 (Em' (succ M) L))
+    (𝔞 (O (succ (succ M)) L)) (𝔞 (par M)) (𝔞 (monus one (par M))) (𝔞 (g (succ M) L)) (𝔞 (fact L))
+    (𝔞 (quo (fact L) (succ M))) (𝔞 (H (succ M) L)) (𝔞 (C (succ M) (succ (succ M)) L)) (𝔞 (Rp M L)) (𝔞 (Rm M L))
+    (𝔞 M + 1)
+    (by linear_combination i) (by linear_combination ap + 𝔞 (g (succ M) L) * cs)
+    (by linear_combination am + 𝔞 (g (succ M) L) * ps) (by linear_combination o)
+    (by linear_combination tp + 𝔞 (monus one (par M)) * cv') (by linear_combination tm + 𝔞 (par M) * cv')
+    (by linear_combination ep) (by linear_combination em) (by linear_combination rf)
+    (by linear_combination -c1 - hh1 + hs) (by linear_combination fu) (by linear_combination fg)
+    (by linear_combination sp) (by linear_combination pp)
+
+/-- Variables: `0 = M`, `1 = L`. -/
+private abbrev phiF : Fm PTm 2 := le (succ (two * succ (var 0))) (var 1) ⟶ Phi (var 0) (var 1)
+
+private theorem phi₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] phiF := by
+  refine ind _ ⟨le_QF _ _, trivial⟩ ?_ ?_
+  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_ap1, subst_pairT, PTm.subst_add,
+      PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero,
+      ConciseIPRA.PTm.subst_succ]
+    exact .impI (phi_zero _)
+  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_ap1, subst_pairT, PTm.subst_add,
+      PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
+      ConciseIPRA.PTm.subst_succ]
+    exact .impI (phi_step Prf.hyp1 Prf.hyp0)
+
+/-- `eq:second`, cleared by `F = L!`: for `N = M + 1` and `2N + 1 ≤ L`, `A_N² + T_N = O_N + E_N`. -/
+theorem second {M L : PTm n} (h : Γ ⊢[PRAAx] le (succ (two * succ M)) L) : Γ ⊢[PRAAx] Phi M L := by
+  have i := inst (Γ := Γ) phi₀ (![M, L] : Fin 2 → PTm n)
+  simp at i
+  exact Prf.impE i h
+
 end LeanProofs.IPRA.Analysis.BaselCore
