@@ -152,7 +152,7 @@ claims beyond those families.
 | [algebra/puiseux_ipra](../docs/proofs/algebra/puiseux_ipra/) | [Algebra/HenselStep](Lean/IPRADerivations/Algebra/HenselStep.lean) |
 | [algebra/three_impossibilities_ipra](../docs/proofs/algebra/three_impossibilities_ipra/) | [Algebra/CubeRootTwo](Lean/IPRADerivations/Algebra/CubeRootTwo.lean), [Algebra/TrisectionCubic](Lean/IPRADerivations/Algebra/TrisectionCubic.lean), [Algebra/PolynomialFormulas](Lean/IPRADerivations/Algebra/PolynomialFormulas.lean) |
 | [analysis/barnes_g_ipra_2026-11-16](../docs/proofs/analysis/barnes_g_ipra_2026-11-16/) | [Analysis/BarnesInteger](Lean/IPRADerivations/Analysis/BarnesInteger.lean), [Analysis/BarnesProducts](Lean/IPRADerivations/Analysis/BarnesProducts.lean), [Analysis/ReciprocalSquareTail](Lean/IPRADerivations/Analysis/ReciprocalSquareTail.lean), [Analysis/BarnesCutoff](Lean/IPRADerivations/Analysis/BarnesCutoff.lean), [Analysis/LogarithmRemainder](Lean/IPRADerivations/Analysis/LogarithmRemainder.lean), [Analysis/ComplexLogarithmRemainder](Lean/IPRADerivations/Analysis/ComplexLogarithmRemainder.lean), [Analysis/ComplexLogarithmCauchy](Lean/IPRADerivations/Analysis/ComplexLogarithmCauchy.lean), [Analysis/DyadicComplexLogarithm](Lean/IPRADerivations/Analysis/DyadicComplexLogarithm.lean), [Analysis/ComplexLogarithmName](Lean/IPRADerivations/Analysis/ComplexLogarithmName.lean) |
-| [analysis/basel_ipra](../docs/proofs/analysis/basel_ipra/) | [Analysis/PowerSums](Lean/IPRADerivations/Analysis/PowerSums.lean), [Analysis/BaselDiagonal](Lean/IPRADerivations/Analysis/BaselDiagonal.lean) |
+| [analysis/basel_ipra](../docs/proofs/analysis/basel_ipra/) | [Analysis/PowerSums](Lean/IPRADerivations/Analysis/PowerSums.lean), [Analysis/BaselDiagonal](Lean/IPRADerivations/Analysis/BaselDiagonal.lean), [Analysis/BaselFinite](Lean/IPRADerivations/Analysis/BaselFinite.lean), [Analysis/BaselSquares](Lean/IPRADerivations/Analysis/BaselSquares.lean), [Analysis/BaselAverages](Lean/IPRADerivations/Analysis/BaselAverages.lean); finite alternating, square-tail and boundary-average bounds checked; full source reconciliation remains. |
 | [analysis/beta_function_ipra_2026-11-16](../docs/proofs/analysis/beta_function_ipra_2026-11-16/) | [Analysis/BetaIntegers](Lean/IPRADerivations/Analysis/BetaIntegers.lean) |
 | [analysis/bohr_mollerup_ipra_2026-11-15](../docs/proofs/analysis/bohr_mollerup_ipra_2026-11-15/) | [Analysis/Products](Lean/IPRADerivations/Analysis/Products.lean) |
 | [analysis/calculus_ipra](../docs/proofs/analysis/calculus_ipra/) | [Analysis/RationalClosure](Lean/IPRADerivations/Analysis/RationalClosure.lean) |
@@ -261,12 +261,13 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `432d5cf677`, including full aggregate optimization,
-integer box-union enumeration and literal center-code transport, the root
-build completed 2,147 jobs and emitted 3,285 axiom reports for 2,799 distinct
-declarations. Every report uses only `propext`, `Classical.choice` and
-`Quot.sound`. The portable import gate passed across 3,566 source modules
-and the independent `Diophantine` boundary passed across 5,252 modules.
+At the source based on `a18fd70d2b`, including full aggregate optimization,
+integer box-union enumeration, literal center-code transport and the merged
+Basel finite bounds, the root build completed 2,150 jobs and emitted 3,319
+axiom reports for 2,833 distinct declarations. Every report uses only
+`propext`, `Classical.choice` and `Quot.sound`. The portable import gate
+passed across 3,569 source modules and the independent `Diophantine`
+boundary passed across 5,252 modules.
 
 The new modules are included in `IPRADerivations`. Their public theorem
 names are audited in `Checks/Axioms.lean`. Build and inspect the object
