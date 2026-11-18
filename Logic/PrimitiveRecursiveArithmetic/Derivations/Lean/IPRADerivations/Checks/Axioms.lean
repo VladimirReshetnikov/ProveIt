@@ -1269,6 +1269,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.WallisFinite.finite_wallis
 #print axioms LeanProofs.IPRA.Analysis.WallisFinite.J_zero_eq
 #print axioms LeanProofs.IPRA.Analysis.WallisFinite.finite_wallis_closed
+#print axioms LeanProofs.IPRA.Analysis.WallisFinite.wallis_le_two
+#print axioms LeanProofs.IPRA.Analysis.WallisFinite.wallis_le_two_closed
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique

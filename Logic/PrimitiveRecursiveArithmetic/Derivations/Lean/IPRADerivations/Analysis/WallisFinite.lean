@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.WallisRecurrence
+import IPRADerivations.Analysis.BaselRiemann
 
 /-!
 # The finite Wallis inequality
@@ -13,6 +14,9 @@ Everything is cleared by `F = L!` with `2M² ≤ L` (`M = M₀ + 1`), as in `Wal
 `𝒥_k = ∑_{j<M} om_j sg_j^k = M F^{k+1} J_k(M)`. The products are the double factorials
 `da m = ∏_{k<m} (2k + 1) = (2m − 1)!!` and `db m = ∏_{k<m} (2k + 2) = (2m)!!`, so that
 `p_m = da m / db m`, `q_m = db m / da (m + 1)` and `W_m = (db m)² / (da m · da (m + 1))`.
+
+The last section derives the paper's exact consequence `W_m ≤ 2` (`wallis_le_two`), a statement about double
+factorials alone, by using the inequality at one explicit mesh.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -518,5 +522,44 @@ abbrev finiteWallisFormula : Fm PTm 3 :=
 /-- `thm:finitewallis` as a closed sentence of iPRA. -/
 theorem finite_wallis_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3 finiteWallisFormula :=
   closeUniv 3 (.impI (finite_wallis Prf.hyp0 (var 0)))
+
+/-! ## An exact rational consequence: `W_m ≤ 2` -/
+
+/-- The mesh `M₀ = D_m · da m · da (m+1)` (so `M = M₀ + 1`) at which the finite Wallis inequality is used. -/
+abbrev Mw (m : PTm n) : PTm n := Dm m * (da m * da (succ m))
+/-- The clearing bound `L = 2M²` for that mesh. -/
+abbrev Lw (m : PTm n) : PTm n := two * (succ (Mw m) * succ (Mw m))
+
+/-- `W_m ≤ 2`: `(db m)² ≤ 2 · da m · da (m+1)`. The paper substitutes a large mesh in `eq:finitewallis` and
+uses `J_0 ≤ 2` and the discreteness of the integers; here the mesh is `M = D_m · da m · da (m+1) + 1`, with
+`J_0 ≤ 2` from `Q_M ≤ 1` (`BaselRiemann.Q_le`), and the case `2 · da m · da (m+1) < (db m)²` is refuted. No
+limit is taken. -/
+theorem wallis_le_two (m : PTm n) : Γ ⊢[PRAAx] le (db m * db m) (two * (da m * da (succ m))) := by
+  have hL : Γ ⊢[PRAAx] le (two * (succ (Mw m) * succ (Mw m))) (Lw m) := le_refl _
+  have lo := finite_wallis_lower hL m
+  have jz := natEq (J_zero_eq (Γ := Γ) (succ (Mw m)) (Lw m))
+  have ql := LeanProofs.IPRA.Analysis.BaselRiemann.Q_le hL
+  have hF := LeanProofs.IPRA.AnalyticNumberTheory.Primes.fact_pos (Γ := Γ) (Lw m)
+  have h1 : Γ ⊢[PRAAx] le (succ (Mw m) * (db m * db m))
+      (da m * da (succ m) * (two * succ (Mw m) + Dm m)) := by
+    refine mul_le_cancel (d' := pred (fact (Lw m)))
+      (le_congr (congrMul hF (.eqRefl _)) (congrMul hF (.eqRefl _)) ?_)
+    ipra_le sl lo + 2 * (𝔞 (da m) * 𝔞 (da (succ m))) * (𝔞 (Mw m) + 1) * sl ql using
+      rw [jz]; ring
+  refine .orE (lt_or_le (two * (da m * da (succ m))) (db m * db m)) ?_ Prf.hyp0
+  have h0 : (lt (two * (da m * da (succ m))) (db m * db m) :: Γ) ⊢[PRAAx]
+      le (succ (two * (da m * da (succ m)))) (db m * db m) := Prf.hyp0
+  have h2 : (lt (two * (da m * da (succ m))) (db m * db m) :: Γ) ⊢[PRAAx]
+      le (succ (da m * da (succ m) * (two * succ (Mw m) + Dm m))) (succ (Mw m) * (db m * db m)) := by
+    ipra_le (𝔟 (Mw m) + 1) * sl h0
+  exact not_succ_le_self _ _ (le_trans h2 h1.wk)
+
+/-- Variable `0 = m`. -/
+abbrev wallisTwoFormula : Fm PTm 1 :=
+  le (db (var 0) * db (var 0)) (two * (da (var 0) * da (succ (var 0))))
+
+/-- `W_m ≤ 2` as a closed sentence: `∀ m, ((2m)!!)² ≤ 2 (2m − 1)!! (2m + 1)!!`. -/
+theorem wallis_le_two_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 wallisTwoFormula :=
+  closeUniv 1 (wallis_le_two (var 0))
 
 end LeanProofs.IPRA.Analysis.WallisFinite
