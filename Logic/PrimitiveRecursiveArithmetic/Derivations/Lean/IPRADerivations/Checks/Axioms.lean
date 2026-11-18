@@ -1471,6 +1471,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RiemannRefinement.dn_off
 #print axioms LeanProofs.IPRA.Analysis.RiemannRefinement.refine_upper
 #print axioms LeanProofs.IPRA.Analysis.RiemannRefinement.refine_lower
+#print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.cell_up
+#print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.cell_lo
+#print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.u_all
+#print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.l_all
+#print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.rec_up
+#print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.rec_lo
+#print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.P_zero
+#print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.even_power_integral
+#print axioms LeanProofs.IPRA.Analysis.EvenPowerIntegrals.even_power_integral_closed
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
