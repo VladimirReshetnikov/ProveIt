@@ -46,6 +46,8 @@ obligations, with exact statement-level status.
 | FIBER, no universal PR evaluator | `UniversalEvaluatorObstruction.diagonal_obstruction`, `no_universal_primitive_recursive_evaluator` | The closed internal diagonal schema and the separate source metatheorem about actual `PR.ev` semantics. No internal universal evaluator is postulated. |
 | FIBER, `thm:composition`, canonical bounded realizer model | `RealizerComposition.compose`, `fiber_realizer_composition`, `fiber_realizer_composition_stable`, `fiber_composition_sequent` | Actual runtime demand flattening, bounded submaster extraction and intermediate bundling, PR metadata, soundness/stability and named residual/sealed sequents. External master conventions and application interface laws require explicit adapters. |
 | FIBER, `thm:no-sign` | `FiniteUseSignObstruction.finite_use_at_halt`, `zero_run_perturbations`, `no_exact_sign_machine` | The external source metatheorem for an actual adaptive finite-query machine and valid rapid rational names. Finite use is derived from execution, with explicit perturbation names and a deterministic-execution proof. |
+| FIBER, `thm:boolean-reflection`, arity-indexed source frontend | `BoundedSyntax.compile_correct`, `bounded_reflection`, `boolean_reflection_closed`, `boolean_program_closed` | Actual `BFm n` translation, original n-variable source formula, capture-avoiding substitution, n-ary PR symbol and closed Boolean/reflection contracts. Pairing correctness is proved rather than requested as a client premise. |
+| Finite demand, `thm:backward-transfer`, `cor:observational-induction` | `BackwardDemand.horizon_step`, `backward_transfer`, `observational_induction_closed` | Actual PR backward schedule, final-demand and local schedule equations; QF induction transfers an arbitrary bounded observation through nonstationary nonmonotone demand transformers. One initial observation suffices; no cap or monotonicity premise. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -91,7 +93,7 @@ in its claim audit. The full source scope remains active.
 ## Packet inventory
 
 The current source index contains 115 packets. The derivations
-README links 85 of them to existing proof families.
+README links 86 of them to existing proof families.
 Completion requires reconciling all theorems within each packet, including
 claims beyond those families.
 
@@ -146,7 +148,7 @@ claims beyond those families.
 | [diophantine-number-theory/transcendence_ipra](../docs/proofs/diophantine-number-theory/transcendence_ipra/) | [DiophantineNumberTheory/CoprimeModulus](Lean/IPRADerivations/DiophantineNumberTheory/CoprimeModulus.lean) |
 | [foundations/cifer_ipra_framework_2026-11-15](../docs/proofs/foundations/cifer_ipra_framework_2026-11-15/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/darc_ipra_framework_2026-11-16](../docs/proofs/foundations/darc_ipra_framework_2026-11-16/) | Source-claim inventory pending. |
-| [foundations/fiber_ipra_2026-11-16](../docs/proofs/foundations/fiber_ipra_2026-11-16/) | [Analysis/DyadicCauchy](Lean/IPRADerivations/Analysis/DyadicCauchy.lean), [Analysis/SummableTails](Lean/IPRADerivations/Analysis/SummableTails.lean), [Analysis/RationalSummableTails](Lean/IPRADerivations/Analysis/RationalSummableTails.lean), [Foundations/UniversalEvaluatorObstruction](Lean/IPRADerivations/Foundations/UniversalEvaluatorObstruction.lean), [Foundations/BoundedSelection](Lean/IPRADerivations/Foundations/BoundedSelection.lean), [Foundations/FiniteNet](Lean/IPRADerivations/Foundations/FiniteNet.lean), [Foundations/MasterCertificate](Lean/IPRADerivations/Foundations/MasterCertificate.lean), [Foundations/SequenceComposition](Lean/IPRADerivations/Foundations/SequenceComposition.lean), [Foundations/DemandClosure](Lean/IPRADerivations/Foundations/DemandClosure.lean), [Foundations/StrategyRealization](Lean/IPRADerivations/Foundations/StrategyRealization.lean), [Foundations/FiberCompiler](Lean/IPRADerivations/Foundations/FiberCompiler.lean), [Analysis/PolynomialBisection](Lean/IPRADerivations/Analysis/PolynomialBisection.lean), [Foundations/RealizerComposition](Lean/IPRADerivations/Foundations/RealizerComposition.lean), [Foundations/FiniteUseSignObstruction](Lean/IPRADerivations/Foundations/FiniteUseSignObstruction.lean), [Analysis/PolynomialRootName](Lean/IPRADerivations/Analysis/PolynomialRootName.lean) |
+| [foundations/fiber_ipra_2026-11-16](../docs/proofs/foundations/fiber_ipra_2026-11-16/) | [Analysis/DyadicCauchy](Lean/IPRADerivations/Analysis/DyadicCauchy.lean), [Analysis/SummableTails](Lean/IPRADerivations/Analysis/SummableTails.lean), [Analysis/RationalSummableTails](Lean/IPRADerivations/Analysis/RationalSummableTails.lean), [Foundations/UniversalEvaluatorObstruction](Lean/IPRADerivations/Foundations/UniversalEvaluatorObstruction.lean), [Foundations/BoundedSelection](Lean/IPRADerivations/Foundations/BoundedSelection.lean), [Foundations/FiniteNet](Lean/IPRADerivations/Foundations/FiniteNet.lean), [Foundations/MasterCertificate](Lean/IPRADerivations/Foundations/MasterCertificate.lean), [Foundations/SequenceComposition](Lean/IPRADerivations/Foundations/SequenceComposition.lean), [Foundations/DemandClosure](Lean/IPRADerivations/Foundations/DemandClosure.lean), [Foundations/StrategyRealization](Lean/IPRADerivations/Foundations/StrategyRealization.lean), [Foundations/FiberCompiler](Lean/IPRADerivations/Foundations/FiberCompiler.lean), [Analysis/PolynomialBisection](Lean/IPRADerivations/Analysis/PolynomialBisection.lean), [Foundations/RealizerComposition](Lean/IPRADerivations/Foundations/RealizerComposition.lean), [Foundations/FiniteUseSignObstruction](Lean/IPRADerivations/Foundations/FiniteUseSignObstruction.lean), [Analysis/PolynomialRootName](Lean/IPRADerivations/Analysis/PolynomialRootName.lean), [Foundations/BoundedSyntax](Lean/IPRADerivations/Foundations/BoundedSyntax.lean) |
 | [foundations/FINER-iPRA-framework-2026-11-16](../docs/proofs/foundations/FINER-iPRA-framework-2026-11-16/) | Source-claim inventory pending. |
 | [foundations/ipra_bounded_reflection_2026-11-16](../docs/proofs/foundations/ipra_bounded_reflection_2026-11-16/) | [Foundations/BoundedReflection](Lean/IPRADerivations/Foundations/BoundedReflection.lean), [Foundations/BoundedFormulas](Lean/IPRADerivations/Foundations/BoundedFormulas.lean), [Foundations/BoundedCover](Lean/IPRADerivations/Foundations/BoundedCover.lean) |
 | [foundations/ipra_categorical_methods](../docs/proofs/foundations/ipra_categorical_methods/) | [Foundations/ChineseRemainder](Lean/IPRADerivations/Foundations/ChineseRemainder.lean), [Foundations/BooleanizationCorollaries](Lean/IPRADerivations/Foundations/BooleanizationCorollaries.lean), [Foundations/GuardedLoop](Lean/IPRADerivations/Foundations/GuardedLoop.lean) |
@@ -158,7 +160,7 @@ claims beyond those families.
 | [foundations/ipra_embedding_framework_2026-11-15](../docs/proofs/foundations/ipra_embedding_framework_2026-11-15/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/ipra_evidence_framework](../docs/proofs/foundations/ipra_evidence_framework/) | Source-claim inventory pending. |
 | [foundations/ipra_finitary_interface_compiler_2026-11-15](../docs/proofs/foundations/ipra_finitary_interface_compiler_2026-11-15/) | [Foundations/BooleanizationCorollaries](Lean/IPRADerivations/Foundations/BooleanizationCorollaries.lean), [Foundations/TraceReflection](Lean/IPRADerivations/Foundations/TraceReflection.lean) |
-| [foundations/ipra_finite_demand](../docs/proofs/foundations/ipra_finite_demand/) | Source-claim inventory pending. |
+| [foundations/ipra_finite_demand](../docs/proofs/foundations/ipra_finite_demand/) | [Foundations/BackwardDemand](Lean/IPRADerivations/Foundations/BackwardDemand.lean); finite transfer and observational induction checked, parameter-changing recursion and subsequent applications remain. |
 | [foundations/ipra_finite_observation](../docs/proofs/foundations/ipra_finite_observation/) | Source-claim inventory pending. |
 | [foundations/ipra_finite_query_normal_form_2026-11-16](../docs/proofs/foundations/ipra_finite_query_normal_form_2026-11-16/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/ipra_finite_use_framework_2026-11-15](../docs/proofs/foundations/ipra_finite_use_framework_2026-11-15/) | Source-claim inventory pending. |
@@ -216,12 +218,12 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `96e97fae3d`, including bounded realizer
-composition, the external sign obstruction and actual polynomial root-name
-contracts, the root build completed 2,095 jobs and emitted 2,184 axiom reports
-for 2,069 distinct declarations, all using only `propext`, `Classical.choice`,
-and `Quot.sound`. The portable import gate passed across 3,514 source modules
-and the independent `Diophantine` boundary passed across 5,252 modules.
+At the source based on `f90e3f9319`, including the arity-indexed bounded
+formula frontend and nonmonotone backward-demand transfer, the root build
+completed 2,099 jobs and emitted 2,239 axiom reports for 2,109 distinct
+declarations, all using only `propext`, `Classical.choice`, and `Quot.sound`.
+The portable import gate passed across 3,518 source modules and the independent
+`Diophantine` boundary passed across 5,252 modules.
 
 The new modules are included in `IPRADerivations`. Their public theorem
 names are audited in `Checks/Axioms.lean`. Build and inspect the object

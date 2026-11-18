@@ -43,7 +43,7 @@ come from the delivered theorem ledger.
 | K1. Local certificate sealing | [04_kernel.tex](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/04_kernel.tex), line 11, `thm:sealing` | **Inherited checked structural schema.** `LeanProofs.ConciseIPRA.Prf.exE` has exactly the fresh-witness branch and shifted conclusion required by the source. | No mathematical remainder. The optional delivered alias `FIBER.seal` has not been installed as a new library module. |
 | Observational escape | 04_kernel.tex, line 30, unlabelled corollary | **Inherited checked elimination schema.** `Prf.exE` seals any branch whose public conclusion has no fresh certificate variable. The application supplies its actual observation-invariance derivation. | Concrete equivalence bits, observation congruence and stability proofs remain obligations for each interface. There is no generic installed FIBER observation record or observation compiler. |
 | K2. Finite residual discharge | 04_kernel.tex, line 45, `thm:cut` | **Inherited checked structural schema.** `LeanProofs.ConciseIPRA.Prf.trans` works for arbitrary formulas and arbitrary contexts, under a derivation of each source hypothesis. | No mathematical remainder. A residual producer is a premise until its own derivation is supplied. |
-| K3. Fixed-formula Boolean reflection schema | 04_kernel.tex, line 70, `thm:boolean-reflection` | **Checked for the implemented packed bounded syntax.** [BoundedFormulas](Lean/IPRADerivations/Foundations/BoundedFormulas.lean) provides `BF`, `bitAt`, `fmAt`, `reflect`, `bf_reflect`, `bf_cases`, and `bf_dec`. [BooleanizationCorollaries](Lean/IPRADerivations/Foundations/BooleanizationCorollaries.lean) provides `bit_one_iff`, `bit_zero_iff`, and `imp_iff`. These return object derivations at arbitrary argument terms and contexts. | The source's proposed arity-indexed `BFm n` frontend is not installed. Translation from that syntax or arbitrary original formulas to packed `BF`, with formula-equivalence proofs, must be explicit before crediting a frontend. See the reflection scope below. |
+| K3. Fixed-formula Boolean reflection schema | 04_kernel.tex, line 70, `thm:boolean-reflection` | **Checked arity-indexed frontend and packed backend.** [BoundedSyntax](Lean/IPRADerivations/Foundations/BoundedSyntax.lean) defines actual `BFm n`, literal `formula`, capture-avoiding substitution, `compile`, `compile_correct`, the n-ary PR symbol `bitF`, arbitrary-term/context `bounded_reflection`, zero/negation reflection and decidability, and closed `boolean_reflection_closed`/`boolean_program_closed`. The backend is [BoundedFormulas](Lean/IPRADerivations/Foundations/BoundedFormulas.lean). | No mathematical remainder for the implemented fixed bounded grammar: equality/order, conjunction/disjunction/implication/negation and dependent bounded quantifiers. A separately encoded application syntax requires its own frontend interpretation. No internal universal formula evaluator is claimed. |
 | K4. Canonical bounded selection | 04_kernel.tex, line 134, `thm:least` | **Checked generic conditional object family.** [BoundedSelection](Lean/IPRADerivations/Foundations/BoundedSelection.lean) provides `mu`, `found_bound`, `least`, and closed `canonical_bounded_selection` for any fixed binary PR verifier. The internal query has an explicit universally quantified bit-valued contract. Bounded existence yields an in-range accepted least witness and literal zero at every earlier input. `BoundedFormulas.bf_choice` and `bf_least` also cover reflected predicates. | No mathematical remainder for this source theorem. The verifier bit contract and bounded totality must be proved by a client; they cannot be inferred from intended semantics. |
 | K5. Master-certificate theorem | 04_kernel.tex, line 171, `thm:master` | **Checked conditional object family.** [MasterCertificate](Lean/IPRADerivations/Foundations/MasterCertificate.lean) provides the actual PR sequence `master`, its `entry` decoder, `master_decode`, `master_length`, `master_valid`, and closed `master_closed`. Pointwise bounded totality yields every decoded entry's bound and acceptance. | A client must translate its fixed verifier into the implemented predicate and prove pointwise totality. A uniform numerical bound on the entire sequence code and sequence concatenation are further compiler requirements, not premises hidden in `master_valid`. |
 | K6. Least finite demand closure | 04_kernel.tex, line 209, `thm:demand-closure` | **Checked conditional object family.** [DemandClosure](Lean/IPRADerivations/Foundations/DemandClosure.lean) provides actual variable-length sequence coordinates, reflected order, coordinate sum, maximum, join, zero vector and PR iteration. `closure_prefixed`, `closure_stable`, `demand_closure`, and closed `demand_closure_closed` prove cappedness, stabilization at the exact sum of caps, prefixedness and minimality. | No mathematical remainder for the source finite-product theorem. The operator's cap preservation and monotonicity are explicit object premises. Compiler integration still needs demand extraction and finite schedule unrolling. |
@@ -80,8 +80,16 @@ any context. They prove `A(y) → bit(A,y)=1`, its converse, and that the bit is
 zero or one. `BooleanizationCorollaries.bit_one_iff` has the orientation in
 the source statement. These open endpoints can be universally closed with
 `closeUniv`. The schema does not quantify internally over arbitrary formula
-codes. A parser or translation from the proposed `BFm n` datatype must prove
-that its packed interpretation is the original input formula.
+codes. The arity-indexed frontend in
+[`BoundedSyntax`](Lean/IPRADerivations/Foundations/BoundedSyntax.lean) now proves
+that interpretation. `formula` retains the original term variables;
+`formula_subst` proves capture-avoiding source substitution. `projections_pack`
+and `extend_correct` prove the actual tuple/binder decoding equations, used
+by `compile_correct`. Its internal embedding-agreement parameter is discharged
+by `projections_pack` in the public `bounded_reflection`; a client supplies
+neither decoding correctness nor formula equivalence. `bitF : PR n` is linked
+to the generated bit by `program_correct`, and the closed theorem quantifies
+over the original n variables, including arity zero.
 
 [`BoundedReflection`](Lean/IPRADerivations/Foundations/BoundedReflection.lean)
 uses the actual conjunction fold `allB` and existential fold `exB`.
@@ -306,7 +314,7 @@ Names are mapped by theorem scope rather than namespace resemblance.
 | `Fold.any_complete` | `BoundedReflection.ex_intro`; it accepts a nonzero body, with bit conversion supplied for reflected leaves. |
 | `Fold.all_sound` | `BoundedReflection.all_elim`, `all_reflect`; the raw body condition is nonzero. |
 | `Fold.all_complete` | `BoundedReflection.all_intro`, under the actual bounded universal nonzero premise. |
-| `BFm.reflect` | `BoundedFormulas.reflect` and `BooleanizationCorollaries.bit_one_iff` for packed `BF`. Translation of the proposed arity-indexed syntax remains explicit work. |
+| `BFm.reflect` | `BoundedSyntax.bounded_reflection`, `boolean_reflection_closed` for the literal arity-indexed source formula; `compile_correct`, `projections_pack`, `formula_subst`, `program_correct` prove frontend/backend and generated-symbol linkage. The packed backend remains `BoundedFormulas.reflect`. |
 | `Search.leastAccepted_found` | `BoundedSelection.least`, closed `canonical_bounded_selection`, for arbitrary binary verifier symbols under the explicit bit contract; `bf_choice`/`least_spec` for reflected predicates. |
 | `Search.leastAccepted_minimal` | The earlier-zero conjunct of `BoundedSelection.least` and `canonical_bounded_selection`; `bf_least` for reflected predicates. |
 | `Sequence.lookup_append` | `MasterCertificate.stack_succ`, `drop_push`, `sequence_decode`, `sequence_length` establish lookup for the actual constructor. `SequenceComposition.sequence_append`, `sequence_append_associative`, `runtime_flatMap_lookup` and `runtime_flatten` now provide actual arbitrary-code append/flatten equations, including empty cases. Append associativity is extensional. |
@@ -345,7 +353,7 @@ irrespective of their installed directory.
 |---|---|
 | 0. Structural kernel | The exact inherited rules and `inst` are checked. The archived `FIBER/Kernel.lean` is an alias candidate, not an installed integration module. Dedicated alias compilation and the requested nonempty-context/nontrivial-substitution examples remain an optional integration task. |
 | 1. Boolean atoms and folds | Checked atoms, actual `allB`/`exB`, arbitrary-term extension/indexing and both reflection directions are present in `BoundedReflection`. Its induction predicates are QF state equations; universally quantified source contracts remain hypotheses outside those predicates. |
-| 2. Fixed formula reflection | Checked external recursion over packed `BF`, nested binders, substitutions, decidability and reflection. The proposed general `BFm n` frontend and named nested-quantifier regression instances remain to be connected explicitly. |
+| 2. Fixed formula reflection | Checked external recursion over packed `BF` and actual arity-indexed `BFm n`. Translation, binder projection equations, source substitution, actual n-ary symbol and closed reflection/Boolean contracts are proved. Named concrete nested-quantifier regression instances remain separate integration examples. |
 | 3. Least accepted code and sequence coding | Checked complete generic one-success selection under an explicit bit contract, least reflected witnesses, actual sequence constructor and in-range decoder. Actual append/flatten length and lookup are now checked in `SequenceComposition`; canonical cap-sequence bounds and bounded realizer assembly are checked in `RealizerComposition`; graph-level compiler linkage remains. |
 | 4. Master certificates | The variable-length bounded-family theorem is checked directly, including its actual PR code and closed endpoint. The prescribed three-query polynomial-evaluation regression and numerical whole-code bound are separate follow-up tests/contracts. |
 | 5. Demand closure | The full variable-length order/rank/join/orbit theorem is checked, including cap preservation, sharp stabilization, prefixedness and minimality. The source's suggested fixed-coordinate milestones are subsumed mathematically. A concrete two-coordinate regression should instantiate this actual theorem rather than report a host settlement calculation. |
@@ -432,9 +440,9 @@ presentation-independent invariants from spanning alone.
 
 ## Next mathematical deliverables
 
-1. Use the checked sequence append/flatten API to finish master-code bounds
-   and realizer composition; connect the arity-indexed source syntax to the
-   checked packed reflection generator.
+1. Canonical master bounds, realizer composition and the arity-indexed
+   bounded-syntax frontend are checked. Supply concrete interface instances,
+   external master-normalization adapters and the requested regression examples.
 2. Connect the checked typed acyclic kernel and bounded realizer composition
    through the full source graph translation and application adapters. Use the checked demand closure to generate and verify
    the finite unrolling of cyclic demand graphs.

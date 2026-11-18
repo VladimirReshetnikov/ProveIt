@@ -228,6 +228,8 @@ import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.EmbeddingBasics
 import IPRADerivations.Foundations.BoundedFormulas
+import IPRADerivations.Foundations.BoundedSyntax
+import IPRADerivations.Foundations.BackwardDemand
 import IPRADerivations.Foundations.BoundedSelection
 import IPRADerivations.Foundations.BoundedCover
 import IPRADerivations.Foundations.FiniteNet

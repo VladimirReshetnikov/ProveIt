@@ -2061,3 +2061,19 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.PolynomialRootName.residualSchedule_at
 #print axioms LeanProofs.IPRA.Analysis.PolynomialRootName.residual_program_at
 #print axioms LeanProofs.IPRA.Analysis.PolynomialRootName.residual_name
+
+#print axioms LeanProofs.IPRA.Foundations.BoundedSyntax.formula_subst
+#print axioms LeanProofs.IPRA.Foundations.BoundedSyntax.projections_pack
+#print axioms LeanProofs.IPRA.Foundations.BoundedSyntax.compile_correct
+#print axioms LeanProofs.IPRA.Foundations.BoundedSyntax.bounded_reflection
+#print axioms LeanProofs.IPRA.Foundations.BoundedSyntax.bit_zero_iff
+#print axioms LeanProofs.IPRA.Foundations.BoundedSyntax.bounded_decidable
+#print axioms LeanProofs.IPRA.Foundations.BoundedSyntax.program_correct
+#print axioms LeanProofs.IPRA.Foundations.BoundedSyntax.boolean_reflection_closed
+#print axioms LeanProofs.IPRA.Foundations.BoundedSyntax.boolean_program_closed
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemand.backward_zero
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemand.backward_succ
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemand.horizon_final
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemand.horizon_step
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemand.backward_transfer
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemand.observational_induction_closed
