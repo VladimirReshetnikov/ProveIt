@@ -668,6 +668,8 @@ import IPRADerivations.Foundations.DisjointSums
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Foundations.GapStabilization
 import IPRADerivations.Foundations.BooleanBits
+import IPRADerivations.Foundations.PrecisionArithmetic
+import IPRADerivations.AnalyticNumberTheory.DyadicBandSum
 import IPRADerivations.Analysis.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Analysis.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Analysis.GaussianTranslationCoefficientValues

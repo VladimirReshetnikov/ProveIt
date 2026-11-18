@@ -44,7 +44,14 @@ Further forms, for packets whose statement is one of these:
   (`ipra_kifc_framework_2026-11-16`, `cor:bounded-skolem`; `ipra_resources_and_elimination_2026-11-15`,
   `cor:bounded`, the bounded first-success scan);
 * `eq_stable`: `¬¬(s = t) → s = t` (`ipra_kifc_framework_2026-11-16`, `cor:eq-stability`, and the PFIG
-  corollary of the same name); equality decidability itself is `eq_or_ne` of `Core/Order`.
+  corollary of the same name); equality decidability itself is `eq_or_ne` of `Core/Order`;
+* `lt_iff_exists`: `μ < N ↔ ∃ i < N. f(i, x) = 0` (`ipra_framework_2026-11-15`, Lemma "Bounded existential
+  search": the witness term is below the bound exactly when the bounded existential holds; the recursion
+  is that of `Core/Search`, not the one displayed in the packet);
+* `all_iff`: the universal fold bit `1 ∸ h` satisfies `1 ∸ h = 1 ↔ ∀ i < N. f(i, x) ≠ 0`; with `found_iff`
+  and the witness clauses this is `thm:fold-correct` of `ipra_certified_finitary_framework_2026-11-15`
+  ("Fold and search correctness") and the characteristic functions of the lemma "Bounded logical
+  operations" of `analytic-number-theory/prime_distribution_ipra`.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -194,5 +201,25 @@ theorem skolem {H : Fm PTm n} {N x : PTm n} (h : Γ ⊢[PRAAx] H ⟶ ExW f N x) 
 /-- Equality is stable: `¬¬(s = t) → s = t`. -/
 theorem eq_stable (s t : PTm n) : Γ ⊢[PRAAx] neg (neg (s ≐ t)) ⟶ (s ≐ t) :=
   .impI (.orE (eq_or_ne s t) Prf.hyp0 (.botE _ (Prf.impE Prf.hyp1 Prf.hyp0)))
+
+/-! ## The existential and universal folds -/
+
+/-- `μ < N ↔ ∃ i < N. f(i, x) = 0`. -/
+theorem lt_iff_exists (N x : PTm n) : Γ ⊢[PRAAx] Fm.iff (lt (mu f N x) N) (ExW f N x) :=
+  Prf.iffI (.impI (exists_of_lt Prf.hyp0)) (.impI (Prf.andE₁ (lt_of_exists Prf.hyp0)))
+
+theorem all_of_bit {N x : PTm n} (h : Γ ⊢[PRAAx] monus (succ zero) (fnd f N x) ≐ succ zero) :
+    Γ ⊢[PRAAx] NoW f N x :=
+  .orE (found_bit (f := f) N x) (noW_of_eq (default_of_not_found Prf.hyp0))
+    (succ_ne_zero' _ (h.wk.eqSymm.eqTrans ((congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_self _))))
+
+theorem bit_of_all {N x : PTm n} (h : Γ ⊢[PRAAx] NoW f N x) :
+    Γ ⊢[PRAAx] monus (succ zero) (fnd f N x) ≐ succ zero :=
+  (congrMonus (.eqRefl _) (Prf.andE₂ (no_witness h))).eqTrans (monus_zero _)
+
+/-- The universal fold bit: `1 ∸ h = 1 ↔ ∀ i < N. f(i, x) ≠ 0`. -/
+theorem all_iff (N x : PTm n) :
+    Γ ⊢[PRAAx] Fm.iff (monus (succ zero) (fnd f N x) ≐ succ zero) (NoW f N x) :=
+  Prf.iffI (.impI (all_of_bit Prf.hyp0)) (.impI (bit_of_all Prf.hyp0))
 
 end LeanProofs.IPRA.Foundations.LeastBoundedWitness
