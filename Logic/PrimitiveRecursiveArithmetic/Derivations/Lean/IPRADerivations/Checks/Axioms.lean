@@ -13536,6 +13536,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.EliminationRoot.toZ_rowT
 #print axioms LeanProofs.IPRA.Foundations.EliminationRoot.toZ_sylv
 #print axioms LeanProofs.IPRA.Foundations.EliminationRoot.elim_root
+#print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.vandermonde_ring
+#print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.right_null_ring
+#print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.toZ_vand
+#print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.toZ_pairProd
+#print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.vandermonde_det
+#print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.one_ne
+#print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.mul_ne
+#print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.prodFin_ne
+#print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.ne_congr
+#print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.vandermonde_ne
+#print axioms LeanProofs.IPRA.Foundations.VandermondeDeterminant.root_bound
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.Bez
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.P
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.tB
