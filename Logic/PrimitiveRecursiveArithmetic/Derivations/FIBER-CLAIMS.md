@@ -321,6 +321,24 @@ bound-default and empty cases; numerical leastness is claimed only for the
 identity enumeration. Application producers and source graph/interface
 adapters remain explicit obligations.
 
+### Actual observation export
+
+[RealizerObservationExport](Lean/IPRADerivations/Foundations/RealizerObservationExport.lean)
+constructs a finite observation-image interface from X. Its numerical bound is
+computed from the original finite certificate cap; its actual bounded-exists
+checker verifies an original valid certificate with that observation. The
+singleton-demand realizer, metadata, soundness and paired stability are
+derived. It transfers all-valid output independence only from the original
+local certificate-independence law under its displayed query guard.
+
+The concrete interface with certificate c=q, cap q+1 and observation c+p
+has internally proved totality/coherence. Its actual PR2 export is q+p and
+its exported verifier accepts exactly that value. The construction includes
+zero data and rejection when an original certificate cap is empty. Existential
+totality remains a sealed object proof; it does not select a raw observation
+code from bare totality. Richer metric/quotient laws, full source translation
+and cyclic certificate execution remain explicit obligations.
+
 ## Definitions, compiler invariants and application obligations
 
 The definitions in [03_interfaces.tex](../docs/proofs/foundations/fiber_ipra_2026-11-16/paper/sections/03_interfaces.tex)
@@ -387,8 +405,8 @@ Names are mapped by theorem scope rather than namespace resemblance.
 | `Demand.stabilizes` | `DemandClosure.closure_stable`, included in `demand_closure` and `demand_closure_closed`, at exactly the actual sum of caps. |
 | `Demand.least` | `DemandClosure.iterate_le_prefixed_at`, `closure_prefixed`, and the universally quantified leastness conjunct of `demand_closure`. |
 | `Strategy.realize` | `StrategyRealization.check_sound`, `strategy_sound`, closed `bounded_strategy_program`. |
-| `Interface.localSound` | The canonical runtime bundle adapter is derived in `RealizerMasterInterface`; the original interface and richer application contracts remain explicit. `StagedGraph.Node.d` stores a supplied local proof without proving new local mathematics. |
-| `Interface.obsIndependent` | Pending for concrete general FIBER interfaces. The dyadic certificate theorem covers its specific public observation contract. |
+| `Interface.localSound` | The canonical runtime bundle adapter is derived in `RealizerMasterInterface`; `RealizerObservationExport` adds an actual observation-image interface and a concrete total/coherent q+p example. Original interface and richer application contracts remain explicit. `StagedGraph.Node.d` stores a supplied local proof without proving new local mathematics. |
+| `Interface.obsIndependent` | The actual observation-image adapter transfers the original local certificate-independence law, and its q+p example proves that law. Richer/general FIBER interface laws remain separate; the dyadic theorem covers its own public observation contract. |
 | `Compile.sound` | `FiberCompiler` supplies the local typed proof kernel; `RealizerGraph.Program.compile_code` and closed `acyclic_program_soundness`, `_stability`, `_sealed` link the actual runtime programs for primitive/sequential/Boolean-branch/product/projection syntax. Remaining source-node adapters and cyclic unrolling are pending. |
 | `Compile.compose` | `FiberCompiler.Program.callCompiled` and guarded bind/case residual equations prove static specialized calls and local proof composition. `RealizerComposition.compose` constructs the runtime master/transformer/observation assembly with soundness, stability and exact residual contexts. The primitive/sequential/Boolean-branch/product/projection runtime frontend is now `RealizerGraph`; remaining source nodes, cyclic unrolling and bespoke external-convention adapters remain. |
 | `Dyadic.scaledBound` | `DyadicCauchy.discrepancy`, `discrepancy_between`; universally closed `dyadic_cauchy`, `dyadic_endpoints`. |
