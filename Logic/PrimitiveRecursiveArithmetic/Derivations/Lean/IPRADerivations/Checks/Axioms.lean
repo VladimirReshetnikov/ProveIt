@@ -2641,6 +2641,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RatioMajorant.coefficient_recurrence
 #print axioms LeanProofs.IPRA.Analysis.RatioMajorant.ratio_tail
 #print axioms LeanProofs.IPRA.Analysis.RatioMajorant.half_tail
+#print axioms LeanProofs.IPRA.Analysis.ExponentialTail.ratio_inv
+#print axioms LeanProofs.IPRA.Analysis.ExponentialTail.two_pow_fact
+#print axioms LeanProofs.IPRA.Analysis.ExponentialTail.pow_bound
+#print axioms LeanProofs.IPRA.Analysis.ExponentialTail.first_term
+#print axioms LeanProofs.IPRA.Analysis.ExponentialTail.exp_tail
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_succ
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_one
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_two

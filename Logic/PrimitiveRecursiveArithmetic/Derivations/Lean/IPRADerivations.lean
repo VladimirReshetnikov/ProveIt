@@ -52,6 +52,7 @@ import IPRADerivations.Analysis.BetaAssociativity
 import IPRADerivations.Analysis.NewtonCertificates
 import IPRADerivations.Analysis.LambertAlgebra
 import IPRADerivations.Analysis.RatioMajorant
+import IPRADerivations.Analysis.ExponentialTail
 import IPRADerivations.Analysis.BarnesInteger
 import IPRADerivations.Analysis.BarnesProducts
 import IPRADerivations.Analysis.RationalClosure
