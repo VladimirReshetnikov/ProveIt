@@ -1212,6 +1212,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ChallengeContracts.comp_typ
 #print axioms LeanProofs.IPRA.Foundations.ChallengeContracts.comp_local
 #print axioms LeanProofs.IPRA.Foundations.ChallengeContracts.transport_comp
+#print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.E_refl
+#print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.E_symm
+#print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.E_trans
+#print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.three_classes
+#print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.zero_of_sg
+#print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.cover_decides
+#print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.never_halts
+#print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.thr_at
+#print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.thr_persistent
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.rem_eq_of_eq
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.dvd_of_rem_eq
