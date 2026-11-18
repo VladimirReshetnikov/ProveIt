@@ -2607,6 +2607,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.LambertAlgebra.addition_identity
 #print axioms LeanProofs.IPRA.Analysis.LambertAlgebra.general_equation
 #print axioms LeanProofs.IPRA.Analysis.LambertAlgebra.power_identity
+#print axioms LeanProofs.IPRA.Analysis.RatioMajorant.coefficient_recurrence
+#print axioms LeanProofs.IPRA.Analysis.RatioMajorant.ratio_tail
+#print axioms LeanProofs.IPRA.Analysis.RatioMajorant.half_tail
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_succ
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_one
 #print axioms LeanProofs.IPRA.Analysis.BarnesInteger.barnes_two
