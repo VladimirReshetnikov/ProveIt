@@ -1078,6 +1078,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.BaselUniform.cut_eq
 #print axioms LeanProofs.IPRA.Analysis.BaselUniform.growth_cut
 #print axioms LeanProofs.IPRA.Analysis.BaselUniform.main
+#print axioms LeanProofs.IPRA.Analysis.BaselQuadrature.inst2_lift4
+#print axioms LeanProofs.IPRA.Analysis.BaselQuadrature.u_eq
+#print axioms LeanProofs.IPRA.Analysis.BaselQuadrature.U_step
+#print axioms LeanProofs.IPRA.Analysis.BaselQuadrature.U_zero
+#print axioms LeanProofs.IPRA.Analysis.BaselQuadrature.step_cost
+#print axioms LeanProofs.IPRA.Analysis.BaselQuadrature.quad_ring
+#print axioms LeanProofs.IPRA.Analysis.BaselQuadrature.inv_zero
+#print axioms LeanProofs.IPRA.Analysis.BaselQuadrature.inv_step
+#print axioms LeanProofs.IPRA.Analysis.BaselQuadrature.inv
+#print axioms LeanProofs.IPRA.Analysis.BaselQuadrature.U_bound
+#print axioms LeanProofs.IPRA.Analysis.BaselQuadrature.quadrature
 #print axioms LeanProofs.IPRA.div_mod
 #print axioms LeanProofs.IPRA.euclid_unique
 #print axioms LeanProofs.IPRA.div_mod_unique
