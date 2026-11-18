@@ -1343,6 +1343,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.TriangularUniqueness.hw_congr
 #print axioms LeanProofs.IPRA.Foundations.TriangularUniqueness.inst2_hwB
 #print axioms LeanProofs.IPRA.Foundations.TriangularUniqueness.hurwitz_linear_unique
+#print axioms LeanProofs.IPRA.Foundations.SquareRootNames.f_at
+#print axioms LeanProofs.IPRA.Foundations.SquareRootNames.le_of_f
+#print axioms LeanProofs.IPRA.Foundations.SquareRootNames.f_of_le
+#print axioms LeanProofs.IPRA.Foundations.SquareRootNames.top_cross
+#print axioms LeanProofs.IPRA.Foundations.SquareRootNames.sqrt_cross
+#print axioms LeanProofs.IPRA.Foundations.SquareRootNames.sqrt_below
+#print axioms LeanProofs.IPRA.Foundations.SquareRootNames.sqrt_upper
+#print axioms LeanProofs.IPRA.Foundations.SquareRootNames.sqrt_lower
+#print axioms LeanProofs.IPRA.Foundations.SquareRootNames.sqrt_compatible
 #print axioms LeanProofs.IPRA.Foundations.Termination.termination
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.rem_eq_of_eq
 #print axioms LeanProofs.IPRA.Foundations.ChineseRemainder.dvd_of_rem_eq
