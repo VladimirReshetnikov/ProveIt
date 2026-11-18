@@ -351,3 +351,5 @@ import IPRADerivations.Foundations.FiniteHausdorffImage
 import IPRADerivations.Foundations.RealizerLoop
 import IPRADerivations.Analysis.RationalHausdorff
 import IPRADerivations.DiophantineNumberTheory.MinkowskiEnlargement
+import IPRADerivations.Analysis.RationalHausdorffTriangle
+import IPRADerivations.Analysis.GammaCanonicalFactors

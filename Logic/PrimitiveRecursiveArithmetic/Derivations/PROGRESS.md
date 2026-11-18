@@ -66,8 +66,10 @@ producer boundaries.
 | Finite demand, rational sup metric and normalization | `RationalSupMetric.metric_closed`, `normalization_programs_closed`, `normalization_closed`, `normalized_difference` | Actual runtime-dimensional metric laws and common-denominator preprocessing for arbitrary finite rational coordinates, with positive computed scale and exact cleared value preservation. The original-list common-pool/sublist/code/checker adapter is now checked below; further pair-scale metric transports remain. |
 | Finite demand, rational finite-root dependency | `PolynomialFiniteRoots.coded_synthetic_division_closed`, `coded_root_removal_closed`, `coded_quotient_degree_closed`, `finite_root_bound_closed` | Actual coded quotient and derived root removal/counting for a fixed external degree, arbitrary internal root-list length and independent positive denominators. Runtime-uniform degree and general norm/multiplicity remain open. |
 | FIBER, predetermined bounded fold | `RealizerLoop.bounded_fold_soundness`, `bounded_fold_stability`, `bounded_fold_sealed`, `fold_sequent` | Actual stage-query/master-entry loop and independent metadata; genuine local QF base/step/final and paired invariants derive soundness/stability/sealing, with exact producers and frontend adapters. Adaptive/multiblock and state-dependent producer scope remain separate. |
-| Finite demand, original rational Hausdorff code and cover | `RationalHausdorff.original_code_cover_closed`, `checker_program_closed`, `checker_closed` | Actual common pool, normalized blocks, original independent coordinate denominators, rational-H pair and PR5 comparison bit. Exact bounded original-coordinate covers are equivalent to the computed rational bound. Pair-scale triangle/transport is separate. |
+| Finite demand, original rational Hausdorff code and cover | `RationalHausdorff.original_code_cover_closed`, `checker_program_closed`, `checker_closed` | Actual common pool, normalized blocks, original independent coordinate denominators, rational-H pair and PR5 comparison bit. Exact bounded original-coordinate covers are equivalent to the computed rational bound. The independently computed pair-scale triangle is checked below; other original-format transports remain. |
 | Minkowski, `eq:same-lattice` in `thm:equality` | `MinkowskiEnlargement.same_lattice_closed`, `same_lattice_program_closed` | Actual runtime dot/max/enlargement and generated facet checkers; integer discreteness derives lattice-membership equivalence. Full volume/extractor/grid-certificate construction is not assumed or claimed. |
+| Finite demand, independently scaled rational Hausdorff triangle | `RationalHausdorffTriangle.rational_triangle_closed`, `code_triangle_closed`, `triangle_checker_closed` | Actual original-coordinate covers compose, and each edge uses its own computed positive-denominator rational-H code. No cross-pool grid comparison or supplied invariance law. |
+| Gamma, finite arithmetic behind C3/C6 | `GammaCanonicalFactors.finite_factor_bound_closed`, `rational_disk_tail_closed`, `tail_program_closed` | Actual canonical finite factor, degree Cauchy estimate and finite rational-complex tail with the exact `R²/N` constant; computed positive product denominator and in-range quotient clearing. Analytic log/Gamma, joint infinite limits and the sharper C3 remainder remain open. |
 
 The declarations belong to the corresponding namespaces under
 `LeanProofs.IPRA.Combinatorics`, `LeanProofs.IPRA.Analysis`, and
@@ -113,7 +115,7 @@ in its claim audit. The full source scope remains active.
 ## Packet inventory
 
 The current source index contains 115 packets. The derivations
-README links 87 of them to existing proof families.
+README links 88 of them to existing proof families.
 Completion requires reconciling all theorems within each packet, including
 claims beyond those families.
 
@@ -134,7 +136,7 @@ claims beyond those families.
 | [analysis/bohr_mollerup_ipra_2026-11-15](../docs/proofs/analysis/bohr_mollerup_ipra_2026-11-15/) | [Analysis/Products](Lean/IPRADerivations/Analysis/Products.lean) |
 | [analysis/calculus_ipra](../docs/proofs/analysis/calculus_ipra/) | [Analysis/RationalClosure](Lean/IPRADerivations/Analysis/RationalClosure.lean) |
 | [analysis/cauchy_residue_ipra](../docs/proofs/analysis/cauchy_residue_ipra/) | [Analysis/TrapezoidAffine](Lean/IPRADerivations/Analysis/TrapezoidAffine.lean) |
-| [analysis/gamma_ipra](../docs/proofs/analysis/gamma_ipra/) | Source-claim inventory pending. |
+| [analysis/gamma_ipra](../docs/proofs/analysis/gamma_ipra/) | [Analysis/GammaCanonicalFactors](Lean/IPRADerivations/Analysis/GammaCanonicalFactors.lean); finite C3/C6 arithmetic checked, analytic identification and other source claims remain. |
 | [analysis/hypergeometric_ipra_2026-11-16](../docs/proofs/analysis/hypergeometric_ipra_2026-11-16/) | [Analysis/Pochhammer](Lean/IPRADerivations/Analysis/Pochhammer.lean), [Analysis/HypergeometricRatio](Lean/IPRADerivations/Analysis/HypergeometricRatio.lean), [Analysis/TerminatingSeries](Lean/IPRADerivations/Analysis/TerminatingSeries.lean), [Combinatorics/BinomialSigned](Lean/IPRADerivations/Combinatorics/BinomialSigned.lean) |
 | [analysis/lambert_w_ipra_2026-11-16](../docs/proofs/analysis/lambert_w_ipra_2026-11-16/) | [Analysis/HypergeometricTerm](Lean/IPRADerivations/Analysis/HypergeometricTerm.lean) |
 | [analysis/meijer_g_ipra_2026-11-16](../docs/proofs/analysis/meijer_g_ipra_2026-11-16/) | [Analysis/HypergeometricTerm](Lean/IPRADerivations/Analysis/HypergeometricTerm.lean) |
@@ -180,7 +182,7 @@ claims beyond those families.
 | [foundations/ipra_embedding_framework_2026-11-15](../docs/proofs/foundations/ipra_embedding_framework_2026-11-15/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/ipra_evidence_framework](../docs/proofs/foundations/ipra_evidence_framework/) | Source-claim inventory pending. |
 | [foundations/ipra_finitary_interface_compiler_2026-11-15](../docs/proofs/foundations/ipra_finitary_interface_compiler_2026-11-15/) | [Foundations/BooleanizationCorollaries](Lean/IPRADerivations/Foundations/BooleanizationCorollaries.lean), [Foundations/TraceReflection](Lean/IPRADerivations/Foundations/TraceReflection.lean) |
-| [foundations/ipra_finite_demand](../docs/proofs/foundations/ipra_finite_demand/) | [Foundations/BackwardDemand](Lean/IPRADerivations/Foundations/BackwardDemand.lean), [Foundations/ParameterChangingRecursion](Lean/IPRADerivations/Foundations/ParameterChangingRecursion.lean), [Foundations/FiniteQueryDemand](Lean/IPRADerivations/Foundations/FiniteQueryDemand.lean), [Foundations/BackwardDemandBounds](Lean/IPRADerivations/Foundations/BackwardDemandBounds.lean), [Analysis/LogisticName](Lean/IPRADerivations/Analysis/LogisticName.lean), [Foundations/FiniteHausdorff](Lean/IPRADerivations/Foundations/FiniteHausdorff.lean), [Foundations/FiniteHausdorffOperations](Lean/IPRADerivations/Foundations/FiniteHausdorffOperations.lean), [Foundations/FiniteHausdorffConcat](Lean/IPRADerivations/Foundations/FiniteHausdorffConcat.lean), [Foundations/FiniteHausdorffProduct](Lean/IPRADerivations/Foundations/FiniteHausdorffProduct.lean), [Foundations/FiniteHausdorffImage](Lean/IPRADerivations/Foundations/FiniteHausdorffImage.lean), [Analysis/RationalSupMetric](Lean/IPRADerivations/Analysis/RationalSupMetric.lean), [Algebra/PolynomialFiniteRoots](Lean/IPRADerivations/Algebra/PolynomialFiniteRoots.lean), [Analysis/RationalHausdorff](Lean/IPRADerivations/Analysis/RationalHausdorff.lean); see the [complete claim audit](FINITE-DEMAND-CLAIMS.md) for all 17 claims and remaining applications. |
+| [foundations/ipra_finite_demand](../docs/proofs/foundations/ipra_finite_demand/) | [Foundations/BackwardDemand](Lean/IPRADerivations/Foundations/BackwardDemand.lean), [Foundations/ParameterChangingRecursion](Lean/IPRADerivations/Foundations/ParameterChangingRecursion.lean), [Foundations/FiniteQueryDemand](Lean/IPRADerivations/Foundations/FiniteQueryDemand.lean), [Foundations/BackwardDemandBounds](Lean/IPRADerivations/Foundations/BackwardDemandBounds.lean), [Analysis/LogisticName](Lean/IPRADerivations/Analysis/LogisticName.lean), [Foundations/FiniteHausdorff](Lean/IPRADerivations/Foundations/FiniteHausdorff.lean), [Foundations/FiniteHausdorffOperations](Lean/IPRADerivations/Foundations/FiniteHausdorffOperations.lean), [Foundations/FiniteHausdorffConcat](Lean/IPRADerivations/Foundations/FiniteHausdorffConcat.lean), [Foundations/FiniteHausdorffProduct](Lean/IPRADerivations/Foundations/FiniteHausdorffProduct.lean), [Foundations/FiniteHausdorffImage](Lean/IPRADerivations/Foundations/FiniteHausdorffImage.lean), [Analysis/RationalSupMetric](Lean/IPRADerivations/Analysis/RationalSupMetric.lean), [Algebra/PolynomialFiniteRoots](Lean/IPRADerivations/Algebra/PolynomialFiniteRoots.lean), [Analysis/RationalHausdorff](Lean/IPRADerivations/Analysis/RationalHausdorff.lean), [Analysis/RationalHausdorffTriangle](Lean/IPRADerivations/Analysis/RationalHausdorffTriangle.lean); see the [complete claim audit](FINITE-DEMAND-CLAIMS.md) for all 17 claims and remaining applications. |
 | [foundations/ipra_finite_observation](../docs/proofs/foundations/ipra_finite_observation/) | Source-claim inventory pending. |
 | [foundations/ipra_finite_query_normal_form_2026-11-16](../docs/proofs/foundations/ipra_finite_query_normal_form_2026-11-16/) | [Foundations/GapRecovery](Lean/IPRADerivations/Foundations/GapRecovery.lean) |
 | [foundations/ipra_finite_use_framework_2026-11-15](../docs/proofs/foundations/ipra_finite_use_framework_2026-11-15/) | Source-claim inventory pending. |
@@ -238,12 +240,12 @@ claims beyond those families.
 
 ## Verification
 
-At the source based on `7bc2f28cd9`, including the original-coordinate
-rational Hausdorff checker and integer-lattice enlargement, the root build
-completed 2,122 jobs and emitted 2,755 axiom reports for 2,389 distinct
-declarations, all using only `propext`, `Classical.choice` and `Quot.sound`.
-The portable import gate passed across 3,541 source modules and the independent
-`Diophantine` boundary passed across 5,252 modules.
+At the source based on `47e1b66bc5`, including the independently scaled
+rational Hausdorff triangle and finite Gamma-factor arithmetic, the root
+build completed 2,124 jobs and emitted 2,823 axiom reports for 2,423 distinct
+declarations. Every report uses only `propext`, `Classical.choice` and
+`Quot.sound`. The portable import gate passed across 3,543 source modules
+and the independent `Diophantine` boundary passed across 5,252 modules.
 
 The new modules are included in `IPRADerivations`. Their public theorem
 names are audited in `Checks/Axioms.lean`. Build and inspect the object
