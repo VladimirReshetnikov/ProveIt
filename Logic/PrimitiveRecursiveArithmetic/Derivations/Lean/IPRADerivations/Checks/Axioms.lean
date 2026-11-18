@@ -10481,6 +10481,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanProducts.oddB
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanProducts.oddProd
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanProducts.sixteen
+#print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.conv_pt
+#print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.conv_congr
+#print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.inst2_convT
+#print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.inst2_catB
+#print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.cat_pt
+#print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.conv_cat
+#print axioms LeanProofs.IPRA.Combinatorics.SegnerUnique.segner_unique
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciLucasMore.fibLucSumFormula
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciLucasMore.fibStrictFormula
 #print axioms LeanProofs.IPRA.Combinatorics.FibonacciLucasMore.flB
