@@ -11722,6 +11722,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BoundedDescent.predT
 #print axioms LeanProofs.IPRA.Foundations.BoundedDescent.trueT
 #print axioms LeanProofs.IPRA.Foundations.BoundedDescent.zeroTest
+#print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.app1_rk
+#print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.app1_fx
+#print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.descent
+#print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.valid_iter
+#print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.fixpoint
+#print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.fixpoint_succ
+#print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.fixpoint_closed
+#print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.app1_upT
+#print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.app1_sgT
+#print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.saturate
+#print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.saturate_closed
 #print axioms LeanProofs.IPRA.Foundations.CodedViableSuffix.absolute_le
 #print axioms LeanProofs.IPRA.Foundations.CodedViableSuffix.absolute_lt
 #print axioms LeanProofs.IPRA.Foundations.CodedViableSuffix.absolute_reverse

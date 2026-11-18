@@ -420,6 +420,7 @@ import IPRADerivations.Foundations.HurwitzProduct
 import IPRADerivations.Foundations.TriangularUniqueness
 import IPRADerivations.Foundations.HurwitzUniqueness
 import IPRADerivations.Foundations.BoundedDescent
+import IPRADerivations.Foundations.BoundedFixpoint
 import IPRADerivations.Foundations.SquareRootNames
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
