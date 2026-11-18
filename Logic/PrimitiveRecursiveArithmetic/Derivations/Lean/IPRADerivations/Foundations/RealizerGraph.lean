@@ -1,10 +1,11 @@
 import IPRADerivations.Foundations.RealizerComposition
+import IPRADerivations.Foundations.RealizerProduct
 
 /-!
 # A typed acyclic program frontend for bounded finite-query realizers
 
 The frontend has primitive nodes with literal local laws, sequential nodes,
-and actual query-dependent Boolean branches. Its raw PR metadata are computed
+product/fanout and projection nodes, and actual query-dependent Boolean branches. Its raw PR metadata are computed
 recursively from syntax independently of proof compilation. Compilation then
 constructs a `Realizer` recursively and proves its metadata agree with the
 source calculation.
@@ -312,21 +313,65 @@ def branchRealizer {X Y : Interface} (test : PR 2) (L R : Realizer X Y) : Realiz
 theorem Code.of_branch {X Y : Interface} (test : PR 2) (L R : Realizer X Y) :
     Code.ofRealizer (branchRealizer test L R) = Code.branch test (Code.ofRealizer L) (Code.ofRealizer R) := rfl
 
+/-! ## Independent metadata for product and projection nodes -/
+
+def Code.fanoutDemandTerm (L R : Code) (q p : PTm n) : PTm n :=
+  SequenceComposition.append (ap2 L.demand (fstT q) p) (ap2 R.demand (sndT q) p)
+
+def Code.fanoutTransformTerm (L R : Code) (C q p : PTm n) : PTm n :=
+  pairT (ap3 L.transform (slice C zero (length (ap2 L.demand (fstT q) p))) (fstT q) p)
+    (ap3 R.transform (slice C (length (ap2 L.demand (fstT q) p))
+      (length (ap2 R.demand (sndT q) p))) (sndT q) p)
+
+def Code.fanout (L R : Code) : Code where
+  demand := PTm.toPR (Code.fanoutDemandTerm L R (var 0) (var 1))
+  transform := PTm.toPR (Code.fanoutTransformTerm L R (var 0) (var 1) (var 2))
+  guard := RealizerProduct.leftTemplate L.guard ⋏ RealizerProduct.rightTemplate R.guard
+  residuals := L.residuals.map RealizerProduct.leftTemplate ++
+    R.residuals.map RealizerProduct.rightTemplate
+
+def Code.projectLeft (companion : PR 2) : Code :=
+  ⟨RealizerProduct.leftDemandF companion, RealizerProduct.leftTransformF,
+    (zero ≐ zero : Fm PTm 2), []⟩
+
+def Code.projectRight (companion : PR 2) : Code :=
+  ⟨RealizerProduct.rightDemandF companion, RealizerProduct.rightTransformF,
+    (zero ≐ zero : Fm PTm 2), []⟩
+
+theorem Code.of_fanout {X Y Z : Interface} (L : Realizer X Y) (R : Realizer X Z) :
+    Code.ofRealizer (RealizerProduct.fanout L R) = Code.fanout (Code.ofRealizer L) (Code.ofRealizer R) := rfl
+
+theorem Code.of_projectLeft (Y Z : Interface) (companion : PR 2) :
+    Code.ofRealizer (RealizerProduct.projectLeft Y Z companion) = Code.projectLeft companion := rfl
+
+theorem Code.of_projectRight (Y Z : Interface) (companion : PR 2) :
+    Code.ofRealizer (RealizerProduct.projectRight Y Z companion) = Code.projectRight companion := rfl
+
 /-! ## Typed acyclic syntax and independent recursive metadata -/
 
 inductive Program : Interface → Interface → Type
   | primitive {X Y : Interface} (op : Primitive X Y) : Program X Y
   | seq {X Y Z : Interface} (first : Program X Y) (second : Program Y Z) : Program X Z
+  | fanout {X Y Z : Interface} (first : Program X Y) (second : Program X Z) :
+      Program X (RealizerProduct.product Y Z)
+  | projectLeft (Y Z : Interface) (companion : PR 2) : Program (RealizerProduct.product Y Z) Y
+  | projectRight (Y Z : Interface) (companion : PR 2) : Program (RealizerProduct.product Y Z) Z
   | booleanBranch {X Y : Interface} (test : PR 2) (zeroBranch oneBranch : Program X Y) : Program X Y
 
 def Program.code : {X Y : Interface} → Program X Y → Code
   | _, _, .primitive op => op.code
   | _, _, .seq first second => first.code.seq second.code
+  | _, _, .fanout first second => Code.fanout first.code second.code
+  | _, _, .projectLeft _ _ companion => Code.projectLeft companion
+  | _, _, .projectRight _ _ companion => Code.projectRight companion
   | _, _, .booleanBranch test left right => Code.branch test left.code right.code
 
 def Program.compile : {X Y : Interface} → Program X Y → Realizer X Y
   | _, _, .primitive op => op.realizer
   | _, _, .seq first second => compose first.compile second.compile
+  | _, _, .fanout first second => RealizerProduct.fanout first.compile second.compile
+  | _, _, .projectLeft Y Z companion => RealizerProduct.projectLeft Y Z companion
+  | _, _, .projectRight Y Z companion => RealizerProduct.projectRight Y Z companion
   | _, _, .booleanBranch test left right => branchRealizer test left.compile right.compile
 
 /-- Compilation inspects the source program recursively. This theorem links
@@ -338,6 +383,11 @@ theorem Program.compile_code {X Y : Interface} (P : Program X Y) :
   | seq first second ihFirst ihSecond =>
     rw [Program.compile, Code.of_compose, ihFirst, ihSecond]
     rfl
+  | fanout first second ihFirst ihSecond =>
+    rw [Program.compile, Code.of_fanout, ihFirst, ihSecond]
+    rfl
+  | projectLeft Y Z companion => rfl
+  | projectRight Y Z companion => rfl
   | booleanBranch test left right ihLeft ihRight =>
     rw [Program.compile, Code.of_branch, ihLeft, ihRight]
     rfl
