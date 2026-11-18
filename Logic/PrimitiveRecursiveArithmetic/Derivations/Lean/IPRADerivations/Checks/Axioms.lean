@@ -13708,6 +13708,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.cof_orthogonal
 #print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.span_annihilated
 #print axioms LeanProofs.IPRA.Foundations.CofactorAnnihilator.eval_det
+#print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.lift_step_ring
+#print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.unique_step_ring
+#print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.hensel_gain_ring
+#print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.hensel_unique_ring
+#print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.lift_step
+#print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.unique_step
+#print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.hensel_gain
+#print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.hensel_unique
+#print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.example_first
+#print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.example_second
+#print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.example_root
 #print axioms LeanProofs.IPRA.Foundations.SumLinear.bd
 #print axioms LeanProofs.IPRA.Foundations.SumLinear.idB
 #print axioms LeanProofs.IPRA.Foundations.SumLinear.linF

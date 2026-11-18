@@ -459,6 +459,7 @@ import IPRADerivations.Foundations.SumLinear
 import IPRADerivations.Foundations.WeightedDimension
 import IPRADerivations.Foundations.ResiduePermutation
 import IPRADerivations.Foundations.CofactorAnnihilator
+import IPRADerivations.Foundations.FilteredLiftingStep
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.BoundedFixpoint
 import IPRADerivations.Foundations.SquareRootNames
