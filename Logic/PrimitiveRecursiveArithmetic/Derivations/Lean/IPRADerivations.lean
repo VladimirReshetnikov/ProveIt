@@ -393,6 +393,7 @@ import IPRADerivations.Foundations.Adjunction
 import IPRADerivations.Foundations.SplitEquivalence
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.CoherentTower
+import IPRADerivations.Foundations.CoherenceObstruction
 import IPRADerivations.Foundations.FiniteGluing
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Foundations.FinitePullback
