@@ -11500,6 +11500,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.low_dvd
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.diff_dvd
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.leading_dvd
+#print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.shift_succ₁
+#print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.monus_monus'
+#print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.revC_at
+#print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.rev_pt
+#print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.reversal
+#print axioms LeanProofs.IPRA.Foundations.RationalRootConstant.constant_dvd
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_canonical
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_constant

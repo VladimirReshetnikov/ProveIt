@@ -413,6 +413,7 @@ import IPRADerivations.Foundations.CoherentPresentations
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.WitnessAlgebra
 import IPRADerivations.Foundations.RationalRootDegree
+import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Foundations.ViableChain
 import IPRADerivations.Foundations.ChainViability
