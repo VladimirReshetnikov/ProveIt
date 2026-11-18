@@ -361,3 +361,6 @@ import IPRADerivations.Analysis.RationalNearest
 import IPRADerivations.DiophantineNumberTheory.MinkowskiPigeonhole
 import IPRADerivations.DiophantineNumberTheory.SignedEuclidean
 import IPRADerivations.DiophantineNumberTheory.MinkowskiResidues
+import IPRADerivations.Analysis.GammaCanonicalNames
+import IPRADerivations.Analysis.AggregateChain
+import IPRADerivations.DiophantineNumberTheory.MinkowskiMesh

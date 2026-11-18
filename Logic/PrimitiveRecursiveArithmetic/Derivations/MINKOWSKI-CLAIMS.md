@@ -17,7 +17,7 @@ claimed object derivation.
 
 | Source claim | Checked scope and remaining work |
 | --- | --- |
-| `thm:main`, Certificate form of Minkowski, [01_foundations.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/01_foundations.tex), line 220 | **Open assembled extractor.** Given `n≥1` and genuine `BoxOK` (nonempty boxes, positive sides, disjoint interiors, content greater than one), construct distinct mesh cells, an actual residue collision and a nonzero integer quotient vector. Then instantiate the supplied `InsideΦ`, symmetry and midpoint contracts. Arbitrary-formula `Φ` must be interpreted on canonical rational codes or have a proved rational-extensionality contract; numerical equality of unreduced fractions alone does not permit substituting raw natural codes into arbitrary formulas. |
+| `thm:main`, Certificate form of Minkowski, [01_foundations.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/01_foundations.tex), line 220 | **Partial: pure mesh kernel checked; assembled geometric extractor open.** [MinkowskiMesh](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiMesh.lean) constructs actual PR3 selected indices, quotient-difference vector and least nonzero coordinate from a sufficiently long decoded-distinct cell list. It proves index/output lengths, every exact scaled difference and actual integer nonzeroness. The remaining `BoxOK` producer must construct that list and derive its guards from nonempty boxes, positive sides, disjoint interiors and content greater than one. Then prove canonical rational cell-center cancellation and instantiate `InsideΦ`, symmetry and midpoint. Arbitrary-formula `Φ` needs canonical rational codes or a proved rational-extensionality contract; equal values of unreduced fractions do not permit substituting arbitrary raw codes. |
 | `lem:php`, Bounded color collision, [02_finite_proof.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/02_finite_proof.tex), line 48 | **Checked actual finite-prefix search.** [MinkowskiPigeonhole](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiPigeonhole.lean) proves `bounded_color_collision` and `sequence_collision_closed` with actual PR pair-search metadata. Only `H≥1` and original colors below `H` at indices `i≤H` are required. Remainder totalization derives the global range used by [Core/Pigeonhole](Lean/IPRADerivations/Core/Pigeonhole.lean); returned bounds recover equality of original prefix colors. No supplied collision or stronger global range premise remains. |
 | `lem:shrink`, Inner grid covers a shrink, [03_polytopes.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/03_polytopes.tex), line 91 | **Open.** Construct the actual floor-based cell and bounded containment checker. Retain certified `[-r,r]^n⊆P⊆[-R,R]^n`, `0<η<1`, `1/m≤ηr/2` and the computed search radius `T`. Derive that the chosen cell lies in the search window and passes every facet/vertex containment check. No supplied containment or successful-search conclusion may replace that proof. |
 | `cor:poly`, Strict rational-polytope theorem, [03_polytopes.tex](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/03_polytopes.tex), line 131 | **Open volume/geometry frontend.** Fixed-size determinant and adjugate identities exist, but the complete volume frontend and strict extractor do not. From the bounded symmetric rational body and rational matrix with nonzero determinant, construct normalization, inner/outer radii, certified volume lower bound and the explicit mesh; prove retained content exceeds one and invoke `thm:main`. Prove the actual nonzero-vector/lattice transport. |
@@ -59,24 +59,23 @@ are executable evidence. They do not establish all-input ordinary iPRA
 correctness. The source labels its Lean outlines uncompiled; this audit does
 not revise those historical artifact claims into object-theory proof claims.
 
-## Signed arithmetic checked; mesh extraction and box refinement remain
+## Pure mesh extraction checked; box refinement and geometric transport remain
 
-Complete the pure signed mesh kernel from
+The pure signed mesh kernel from
 [Section 2](../docs/proofs/diophantine-number-theory/minkowski_ipra/paper/02_finite_proof.tex)
-before the volume frontend:
+is checked independently of the unfinished volume frontend:
 
 1. **Checked:** [SignedEuclidean](Lean/IPRADerivations/DiophantineNumberTheory/SignedEuclidean.lean) constructs actual signed quotient/remainder and proves `a=mq+r`, `r<m`,
    including negative coordinates and `m=1`; actual PR output metadata and equal-residue/nonzero-difference transport are checked.
 2. **Checked:** [MinkowskiResidues](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiResidues.lean) constructs the runtime-dimensional reverse Horner residue-color fold. Range below `m^n`, actual quotient/remainder peeling, coordinate residue injectivity and the exact signed difference equations are derived; `n=0` and `m=1` are included.
-3. Apply the actual pigeonhole witnesses to a supplied cell list with at
-   least `m^n+1` entries. Distinctness must concern decoded integer vectors,
-   rather than merely different raw codes representing the same vector.
-4. Compute the quotient vector `z`, prove `a−b=mz`, and return an actual
-   nonzero coordinate from decoded vector distinctness.
+3. **Checked:** [MinkowskiMesh](Lean/IPRADerivations/DiophantineNumberTheory/MinkowskiMesh.lean) applies the actual pigeonhole witnesses to a supplied list with at least `m^n+1` entries. The premise concerns decoded integer-vector distinctness, not different raw codes for one vector.
+4. **Checked:** its actual PR3 returned fields include the quotient vector `z` and the least searched nonzero coordinate. `mesh_correct_closed` derives every equation `a−b=mz`, the exact output vector length and a decoded nonzero entry from the supplied prefix guard; no collision or output nonzero premise is used.
 
-The closed endpoint should have the form
-`MeshGuard(c) → GoodPair(c,meshExtract(c))`, with dimension, modulus,
-list lengths and coordinates internal. The subsequent box-refinement proof
+The checked `mesh_correct_closed` has exactly the pure-kernel form
+`MeshGuard → correct(N,m,L,meshF(N,m,L))`, with dimension, modulus,
+list lengths and coordinates internal. Source vectors use total signed
+coordinate decoders; there is no asserted zero padding of malformed vectors.
+The geometric producer can require each stored vector length to equal `N`. The subsequent box-refinement proof
 must derive `MeshGuard` from the original `BoxOK` certificate. It must not
 silently replace the original certificate by an assumed mesh-extraction
 conclusion.
