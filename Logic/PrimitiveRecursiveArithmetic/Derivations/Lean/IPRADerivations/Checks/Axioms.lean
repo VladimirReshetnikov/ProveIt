@@ -11202,6 +11202,24 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.inst1_id
 #print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.id_kept
 #print axioms LeanProofs.IPRA.Foundations.FiniteCoverSkeleton.eq_skeleton_closed
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.congrInst1
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.quot_spec
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.quot_idem
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.quot_sound
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.quot_exact
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.quot_kernel_closed
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.med_comm
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.med_unique
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.eq_of_compl
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.compl_of_eq
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.inst2_kerE
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.ker_of_eq
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.eq_of_ker
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.ker_laws
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.ker_resp
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.image_factor
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.image_mono
+#print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.image_factor_closed
 
 -- Actual Euclidean name/value extensionality and finite Gaussian sums.
 #print axioms LeanProofs.IPRA.Analysis.GaussianNameEquivalence.diagonalEquivalent
