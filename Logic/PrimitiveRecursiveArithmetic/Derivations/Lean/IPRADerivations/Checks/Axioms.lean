@@ -11244,6 +11244,37 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.image_factor
 #print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.image_mono
 #print axioms LeanProofs.IPRA.Foundations.FiniteQuotient.image_factor_closed
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.eqb_congr'
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.shift_succ'
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.shift_zero'
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.rho_eq
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.rho_ne
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.rho_congr
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.rho_lt
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.relT_at
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.lam_zero
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.lam_succ
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.lab_lt
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.lab_zero
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.lab_succ
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.merge_step
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.merged
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.inst2_cT
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.coc_elim
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.coc_of_all
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.kT_at
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.inv_elim
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.ne_of_pt
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.inv_intro
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.inv_zero
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.step_pt
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.inv_step
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.inv_all
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.coeq_merge
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.coeq_factor
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.coeq_unique
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.coeq_merge_closed
+#print axioms LeanProofs.IPRA.Foundations.FiniteCoequalizer.coeq_factor_closed
 
 -- Actual Euclidean name/value extensionality and finite Gaussian sums.
 #print axioms LeanProofs.IPRA.Analysis.GaussianNameEquivalence.diagonalEquivalent

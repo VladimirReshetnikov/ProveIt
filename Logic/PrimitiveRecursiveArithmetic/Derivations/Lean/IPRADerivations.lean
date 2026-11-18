@@ -406,6 +406,7 @@ import IPRADerivations.Foundations.ChallengeContracts
 import IPRADerivations.Foundations.TwoClassObstruction
 import IPRADerivations.Foundations.FiniteCoverSkeleton
 import IPRADerivations.Foundations.FiniteQuotient
+import IPRADerivations.Foundations.FiniteCoequalizer
 import IPRADerivations.Foundations.ContractProducts
 import IPRADerivations.Foundations.CoherentPresentations
 import IPRADerivations.Foundations.IterationFusion
