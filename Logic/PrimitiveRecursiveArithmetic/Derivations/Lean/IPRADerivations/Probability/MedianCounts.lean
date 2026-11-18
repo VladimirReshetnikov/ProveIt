@@ -19,8 +19,8 @@ are sums of bits, and `t` is a balance median when `2 B(t) ≤ n` and `2 A(t) �
 * `med_interval`: if `t₁ ≤ t ≤ t₂` and `t₁`, `t₂` are balance medians, so is `t`: the set of
   medians is an interval, which is the order-only half of `thm:middle-interval`.
 
-The sorted list, the identification of the interval with `[y_ℓ, y_u]` and the robustness results
-of the packet are not formalized.
+The identification of the interval with `[y_ℓ, y_u]` for sorted data, and the odd and even
+formulas, are in `Probability/MedianSorted`.
 -/
 
 set_option linter.unusedSimpArgs false
