@@ -77,6 +77,8 @@ import IPRADerivations.Analysis.BaselCore
 import IPRADerivations.Analysis.BaselUniform
 import IPRADerivations.Analysis.BaselQuadrature
 import IPRADerivations.Analysis.BaselRiemann
+import IPRADerivations.Analysis.PowerIncrement
+import IPRADerivations.Analysis.WallisGrid
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
