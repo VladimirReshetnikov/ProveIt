@@ -421,6 +421,7 @@ import IPRADerivations.Foundations.EigenvalueIntegral
 import IPRADerivations.Foundations.EigenvalueGrid
 import IPRADerivations.Foundations.PrimitiveScaling
 import IPRADerivations.Foundations.EigenvaluePrimitive
+import IPRADerivations.Foundations.ObservableUnit
 import IPRADerivations.Foundations.BackwardViability
 import IPRADerivations.Foundations.ViableChain
 import IPRADerivations.Foundations.ChainViability

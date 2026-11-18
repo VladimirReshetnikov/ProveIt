@@ -11554,6 +11554,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.PrimitiveScaling.G_greatest
 #print axioms LeanProofs.IPRA.Foundations.PrimitiveScaling.primitive
 #print axioms LeanProofs.IPRA.Foundations.EigenvaluePrimitive.eigen_integral_gcd
+#print axioms LeanProofs.IPRA.Foundations.ObservableUnit.inst2_zeroB
+#print axioms LeanProofs.IPRA.Foundations.ObservableUnit.sum_vanish
+#print axioms LeanProofs.IPRA.Foundations.ObservableUnit.unit_seed
+#print axioms LeanProofs.IPRA.Foundations.ObservableUnit.unit_seed_pos
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_canonical
 #print axioms LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows.R_constant
