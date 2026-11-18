@@ -25,7 +25,7 @@ with the signed sum split by the parity of `k − i` into natural numbers `E⁺(
 * `pt_zero`, `pt_succ`, `stirling_ie`: induction on `n` for all `k` at once, as the vanishing of the violation
   count over `k ≤ K`, from `S(n + 1, k + 1) = (k + 1) S(n, k + 1) + S(n, k)` and `(k + 1)! = k! (k + 1)`.
 
-The finite Dobinski form `eq:bell-finite-dobinski` and the derangement form are not derived.
+The finite Dobinski form `eq:bell-finite-dobinski` is in `Combinatorics/BellDobinski`.
 -/
 
 set_option linter.unusedSimpArgs false
