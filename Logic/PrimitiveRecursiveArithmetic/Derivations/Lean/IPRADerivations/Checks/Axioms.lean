@@ -9421,6 +9421,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.TelescopingNames.adjacent_of_edge
 #print axioms LeanProofs.IPRA.Foundations.RankedSearch.ranked_inv
 #print axioms LeanProofs.IPRA.Foundations.RankedSearch.ranked_search
+#print axioms LeanProofs.IPRA.Foundations.ReverseDemand.le_mx_left
+#print axioms LeanProofs.IPRA.Foundations.ReverseDemand.le_mx_right
+#print axioms LeanProofs.IPRA.Foundations.ReverseDemand.mx_lub
+#print axioms LeanProofs.IPRA.Foundations.ReverseDemand.rd_zero
+#print axioms LeanProofs.IPRA.Foundations.ReverseDemand.rd_succ
+#print axioms LeanProofs.IPRA.Foundations.ReverseDemand.sound_term
+#print axioms LeanProofs.IPRA.Foundations.ReverseDemand.sound_edge
+#print axioms LeanProofs.IPRA.Foundations.ReverseDemand.least
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
