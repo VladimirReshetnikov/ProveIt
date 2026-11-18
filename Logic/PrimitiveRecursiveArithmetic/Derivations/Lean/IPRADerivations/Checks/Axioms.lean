@@ -9432,6 +9432,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FiniteStabilization.stable_after
 #print axioms LeanProofs.IPRA.Foundations.FiniteStabilization.stable_inflationary
 #print axioms LeanProofs.IPRA.Foundations.FiniteStabilization.invariant
+#print axioms LeanProofs.IPRA.Foundations.FiniteStabilization.iter_ge_start
+#print axioms LeanProofs.IPRA.Foundations.FiniteStabilization.iter_le_prefixed
+#print axioms LeanProofs.IPRA.Foundations.FiniteStabilization.capped_closure
+#print axioms LeanProofs.IPRA.Foundations.FiniteStabilization.capped_closure_least
 #print axioms LeanProofs.IPRA.Foundations.DisjointSums.prefix_mono
 #print axioms LeanProofs.IPRA.Foundations.DisjointSums.code_lt
 #print axioms LeanProofs.IPRA.Foundations.DisjointSums.owner_eq

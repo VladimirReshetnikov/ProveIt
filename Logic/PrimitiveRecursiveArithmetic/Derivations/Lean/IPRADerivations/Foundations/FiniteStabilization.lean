@@ -26,6 +26,17 @@ The state is one number (a packed vector), the update is a unary step term `f`, 
   every iterate; with `R(s, y) = (s ≤ y)` and a prefixed point `y` this is the induction of
   `thm:demand-least`, so `x^H ≤ y`.
 
+The one-dimensional case of "Finite stabilization and least capped closure"
+(`ipra_kifcr_framework_2026-11-16` and `ipra_kifcs_framework_2026-11-16`, `thm:capped-closure` with
+`lem:demand-inflation`; `scope_ipra_framework_2026-11-16_2`, "Capped demand stabilization";
+`darc_ipra_framework_2026-11-16`, "Least prefixed point above the query"), for a numerical state and a map
+`f` that is inflationary (`s ≤ f(s)`) and monotone, with a cap `C` such that `f(C) ≤ C`:
+
+* `iter_ge_start`: `x ≤ x^t` for every `t`;
+* `iter_le_prefixed`: if `x ≤ y` and `f(y) ≤ y`, then `x^t ≤ y` for every `t`;
+* `capped_closure`: for `x ≤ C`, the iterate `r = x^C` satisfies `f(r) = r`, `x ≤ r ≤ C`, and `r ≤ u` for
+  every `u` with `x ≤ u` and `f(u) ≤ u`: it is the least fixed point above `x`.
+
 The packed-vector instance (componentwise join, rank as a bounded sum, capacities) is not derived here.
 -/
 
@@ -199,5 +210,71 @@ theorem invariant (hqf : R.QF)
   exact .impE i h
 
 end Invariant
+
+/-! ## The capped closure of a numerical inflationary monotone map -/
+
+section Capped
+
+variable {f : PTm 1}
+
+/-- `s ≤ y ∧ f(y) ≤ y`: `s` is below the prefixed point `y`. Variables `0 = s`, `1 = y`. -/
+def RP (f : PTm 1) : Fm PTm 2 := le (var 0) (var 1) ⋏ le (app1 f (var 1)) (var 1)
+
+/-- `y ≤ s`. Variables `0 = s`, `1 = y`. -/
+def RG : Fm PTm 2 := le (var 1) (var 0)
+
+theorem rel_RP (a b : PTm k) : rel (RP f) a b = (le a b ⋏ le (app1 f b) b) := by
+  simp [rel, RP]
+
+theorem rel_RG (a b : PTm k) : rel RG a b = le b a := by
+  simp [rel, RG]
+
+/-- `x ≤ x^t`. -/
+theorem iter_ge_start
+    (hinfl : ∀ {k : ℕ} {Γ : List (Fm PTm k)} (s : PTm k), Γ ⊢[PRAAx] le s (app1 f s))
+    (x t : PTm k) : Γ ⊢[PRAAx] le x (iter f t x) := by
+  have h := invariant (Γ := Γ) (R := RG) (f := f) (le_QF _ _)
+    (fun {k} {Γ} {s} {y} hr => by
+      rw [rel_RG] at hr ⊢
+      exact le_trans hr (hinfl s))
+    (x := x) (y := x) (by rw [rel_RG]; exact le_refl x) t
+  rw [rel_RG] at h
+  exact h
+
+/-- Below a prefixed point: `x ≤ y` and `f(y) ≤ y` give `x^t ≤ y`. -/
+theorem iter_le_prefixed
+    (hmono : ∀ {k : ℕ} {Γ : List (Fm PTm k)} {s s' : PTm k},
+      (Γ ⊢[PRAAx] le s s') → (Γ ⊢[PRAAx] le (app1 f s) (app1 f s')))
+    {x y : PTm k} (hx : Γ ⊢[PRAAx] le x y) (hy : Γ ⊢[PRAAx] le (app1 f y) y) (t : PTm k) :
+    Γ ⊢[PRAAx] le (iter f t x) y := by
+  have h := invariant (R := RP f) (f := f) ⟨le_QF _ _, le_QF _ _⟩
+    (fun {k} {Γ} {s} {y} hr => by
+      rw [rel_RP] at hr ⊢
+      exact .andI (le_trans (hmono (Prf.andE₁ hr)) (Prf.andE₂ hr)) (Prf.andE₂ hr))
+    (x := x) (y := y) (by rw [rel_RP]; exact .andI hx hy) t
+  rw [rel_RP] at h
+  exact Prf.andE₁ h
+
+/-- The least fixed point above `x` in the capped box: `r = x^C`. -/
+theorem capped_closure
+    (hinfl : ∀ {k : ℕ} {Γ : List (Fm PTm k)} (s : PTm k), Γ ⊢[PRAAx] le s (app1 f s))
+    (hmono : ∀ {k : ℕ} {Γ : List (Fm PTm k)} {s s' : PTm k},
+      (Γ ⊢[PRAAx] le s s') → (Γ ⊢[PRAAx] le (app1 f s) (app1 f s')))
+    {x C : PTm k} (hx : Γ ⊢[PRAAx] le x C) (hC : Γ ⊢[PRAAx] le (app1 f C) C) :
+    Γ ⊢[PRAAx] (app1 f (iter f C x) ≐ iter f C x) ⋏
+      (le x (iter f C x) ⋏ le (iter f C x) C) :=
+  .andI ((iter_succ f C x).eqSymm.eqTrans
+      (stable_inflationary hinfl (iter_le_prefixed hmono hx hC (succ C))))
+    (.andI (iter_ge_start hinfl x C) (iter_le_prefixed hmono hx hC C))
+
+/-- Leastness: every prefixed point above `x` is above the closure. -/
+theorem capped_closure_least
+    (hmono : ∀ {k : ℕ} {Γ : List (Fm PTm k)} {s s' : PTm k},
+      (Γ ⊢[PRAAx] le s s') → (Γ ⊢[PRAAx] le (app1 f s) (app1 f s')))
+    {x C u : PTm k} (hxu : Γ ⊢[PRAAx] le x u) (hu : Γ ⊢[PRAAx] le (app1 f u) u) :
+    Γ ⊢[PRAAx] le (iter f C x) u :=
+  iter_le_prefixed hmono hxu hu C
+
+end Capped
 
 end LeanProofs.IPRA.Foundations.FiniteStabilization
