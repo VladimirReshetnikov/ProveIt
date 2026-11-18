@@ -391,6 +391,7 @@ import IPRADerivations.Foundations.PresentedCategory
 import IPRADerivations.Foundations.Yoneda
 import IPRADerivations.Foundations.Adjunction
 import IPRADerivations.Foundations.SplitEquivalence
+import IPRADerivations.Foundations.KanFormula
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.CoherentTower
 import IPRADerivations.Foundations.CoherenceObstruction
