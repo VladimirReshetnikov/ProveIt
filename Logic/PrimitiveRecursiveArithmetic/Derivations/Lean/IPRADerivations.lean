@@ -308,6 +308,7 @@ import IPRADerivations.Probability.FiniteKernel
 import IPRADerivations.Probability.NormalMoments
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Probability.MedianSorted
+import IPRADerivations.Probability.MedianBreakdown
 import IPRADerivations.Probability.MedianSkew
 import IPRADerivations.Probability.SampleMedian
 import IPRADerivations.Probability.SampleMedianPmf
