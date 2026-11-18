@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Foundations.IterationFusion
 
 /-!
 # Erasing the choice of a certificate behind a stable observer
@@ -33,8 +34,11 @@ Statements, for a totality premise `∃ a < N. f(a, x) = 0`:
 * `sealed_consumer`: a conclusion `C` derived from the canonical witness, `a_* < N → f(a_*, x) = 0 → C`,
   follows from the bounded existential alone: `(∃ a < N. f(a, x) = 0) → C`.
 
-The quotient-observer clause of FINER, the composition with a downstream modulus and the regular-name
-statements are not derived here.
+* `QStable f O E x`: `∀ a b. f(a, x) = 0 → f(b, x) = 0 → E(O(a, x), O(b, x))` for a relation `E` on
+  observations; `quotient_erasure` (FINER `thm:choice-erasure` (ii)): `f(a, x) = 0` gives
+  `E(O(a_*, x), O(a, x))`. No property of `E` is used.
+
+The composition with a downstream modulus and the regular-name statements are not derived here.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -44,6 +48,7 @@ namespace LeanProofs.IPRA.Foundations.ObserverErasure
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open LeanProofs.IPRA.Search (mu)
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW lt_of_exists)
+open LeanProofs.IPRA.Foundations.IterationFusion (rel subst_rel)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
@@ -63,6 +68,12 @@ def Diam (f O : PTm 2) (x δ : PTm n) : Fm PTm n :=
     ((inst2 f (var 0) (Syn.shift (Syn.shift x)) ≐ zero) ⟶
       le (inst2 O (var 1) (Syn.shift (Syn.shift x)))
         (inst2 O (var 0) (Syn.shift (Syn.shift x)) + Syn.shift (Syn.shift δ)))))
+
+/-- Pairwise stability of the observer up to a relation `E` on observations. -/
+def QStable (f O : PTm 2) (E : Fm PTm 2) (x : PTm n) : Fm PTm n :=
+  .all (.all ((inst2 f (var 1) (Syn.shift (Syn.shift x)) ≐ zero) ⟶
+    ((inst2 f (var 0) (Syn.shift (Syn.shift x)) ≐ zero) ⟶
+      rel E (inst2 O (var 1) (Syn.shift (Syn.shift x))) (inst2 O (var 0) (Syn.shift (Syn.shift x))))))
 
 section Erasure
 
@@ -119,6 +130,22 @@ theorem sealed_consumer {C : Fm PTm n}
   have hex : (ExW f N x :: Γ) ⊢[PRAAx] ExW f N x := Prf.hyp0
   have v := lt_of_exists hex
   exact Prf.impE (Prf.impE h.wk (Prf.andE₁ v)) (Prf.andE₂ v)
+
+theorem qstable_at {E : Fm PTm 2} (h : Γ ⊢[PRAAx] QStable f O E x) {a b : PTm n}
+    (ha : Γ ⊢[PRAAx] inst2 f a x ≐ zero) (hb : Γ ⊢[PRAAx] inst2 f b x ≐ zero) :
+    Γ ⊢[PRAAx] rel E (inst2 O a x) (inst2 O b x) := by
+  have i := Prf.allE b (Prf.allE a h)
+  have body : Γ ⊢[PRAAx] (inst2 f a x ≐ zero) ⟶
+      ((inst2 f b x ≐ zero) ⟶ rel E (inst2 O a x) (inst2 O b x)) := by
+    simpa [QStable, Syn.subst_shift, Syn.up_succ, ← Syn.shift_subst, Syn.subst_subst] using i
+  exact Prf.impE (Prf.impE body ha) hb
+
+/-- FINER `thm:choice-erasure` (ii): every accepted observation is `E`-related to the observation of the
+least certificate. -/
+theorem quotient_erasure {E : Fm PTm 2} (hex : Γ ⊢[PRAAx] ExW f N x) (hq : Γ ⊢[PRAAx] QStable f O E x)
+    {a : PTm n} (ha : Γ ⊢[PRAAx] inst2 f a x ≐ zero) :
+    Γ ⊢[PRAAx] rel E (inst2 O (mu f N x) x) (inst2 O a x) :=
+  qstable_at hq (Prf.andE₂ (lt_of_exists hex)) ha
 
 end Erasure
 

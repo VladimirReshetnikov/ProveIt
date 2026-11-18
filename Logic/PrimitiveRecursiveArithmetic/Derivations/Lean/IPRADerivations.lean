@@ -393,6 +393,7 @@ import IPRADerivations.Foundations.Adjunction
 import IPRADerivations.Foundations.SplitEquivalence
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.CoherentTower
+import IPRADerivations.Foundations.CoherenceObstruction
 import IPRADerivations.Foundations.FiniteGluing
 import IPRADerivations.Foundations.FilteredEnumeration
 import IPRADerivations.Foundations.FinitePullback
@@ -404,6 +405,7 @@ import IPRADerivations.Foundations.FiniteSetCoproducts
 import IPRADerivations.Foundations.ChallengeContracts
 import IPRADerivations.Foundations.TwoClassObstruction
 import IPRADerivations.Foundations.FiniteCoverSkeleton
+import IPRADerivations.Foundations.FiniteQuotient
 import IPRADerivations.Foundations.ContractProducts
 import IPRADerivations.Foundations.CoherentPresentations
 import IPRADerivations.Foundations.IterationFusion
@@ -419,6 +421,7 @@ import IPRADerivations.Foundations.HurwitzProduct
 import IPRADerivations.Foundations.TriangularUniqueness
 import IPRADerivations.Foundations.HurwitzUniqueness
 import IPRADerivations.Foundations.BoundedDescent
+import IPRADerivations.Foundations.BoundedFixpoint
 import IPRADerivations.Foundations.SquareRootNames
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
@@ -673,6 +676,7 @@ import IPRADerivations.Analysis.GaussianNonmonicApproximateRoot
 -- Actual coefficient recovery, quantitative translation and power-order transport.
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
 import IPRADerivations.Foundations.DiscreteGronwall
+import IPRADerivations.Foundations.OdeRefinement
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
