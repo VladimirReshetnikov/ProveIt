@@ -368,6 +368,8 @@ import IPRADerivations.Geometry.PappusCell
 import IPRADerivations.Geometry.CircumcentreUnique
 import IPRADerivations.Geometry.MonotileSubstitution
 import IPRADerivations.Combinatorics.FibonacciLucasMore
+import IPRADerivations.Core.PolynomialInequalities
+import IPRADerivations.Geometry.IsoperimetricInequalities
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
