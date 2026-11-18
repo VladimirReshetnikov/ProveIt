@@ -732,6 +732,8 @@ import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization
 import IPRADerivations.Foundations.NetTransfer
+import IPRADerivations.Foundations.TelescopingNames
+import IPRADerivations.Foundations.RankedSearch
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
