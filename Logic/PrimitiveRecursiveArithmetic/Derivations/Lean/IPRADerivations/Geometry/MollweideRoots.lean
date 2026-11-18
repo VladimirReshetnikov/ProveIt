@@ -208,6 +208,17 @@ theorem cot_A (hx : Γ ⊢[PRAAx] x ≐ succ (pred x)) (hs : Γ ⊢[PRAAx] (z + 
   linear_combination cot_ring (x := 𝔞 x) (y := 𝔞 y) (z := 𝔞 z) (sA := 𝔞 sA) (cA := 𝔞 cA) (K := 𝔞 K) (r := 𝔞 r)
     (by linear_combination a) (by linear_combination b) (by linear_combination k) (by linear_combination e)
 
+/-- `lem:geometric-halfangles`, the cosine half: with `cos A = (b² + c² − a²)/(2bc)`,
+`c_A² − s_A² = cos A`, cleared as `2 b c c_A² + a² = b² + c² + 2 b c s_A²` (the sine half is `area_A`:
+`2 s_A c_A = 2K/(bc) = sin A`). -/
+theorem halfangle_cos {x y z sA cA : PTm n} (hs : Γ ⊢[PRAAx] (z + x) * (x + y) * (sA * sA) ≐ y * z)
+    (hc : Γ ⊢[PRAAx] (z + x) * (x + y) * (cA * cA) ≐ (x + y + z) * x) :
+    Γ ⊢[PRAAx] two * ((z + x) * (x + y)) * (cA * cA) + (y + z) * (y + z) ≐
+      (z + x) * (z + x) + (x + y) * (x + y) + two * ((z + x) * (x + y)) * (sA * sA) := by
+  have a := natEq hs; have b := natEq hc
+  apply deriveNat; ipra_simps
+  linear_combination 2 * b - 2 * a
+
 end Scale
 
 end LeanProofs.IPRA.Geometry.MollweideRoots

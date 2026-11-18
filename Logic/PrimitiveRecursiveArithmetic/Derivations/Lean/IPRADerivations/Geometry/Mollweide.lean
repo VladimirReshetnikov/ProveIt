@@ -187,4 +187,20 @@ theorem inradius {r s K x y z : ZT n} (hs : Γ ⊢[PRAAx] nz s) (h₁ : Γ ⊢[P
   simp only [ZT.toZ_mul]
   linear_combination (ZT.toZ Γ r * ZT.toZ Γ s + ZT.toZ Γ K) * e₁ + e₂
 
+/-! ## The incenter -/
+
+/-- `lem:incenter-distance`, cleared: if `(a + b + c) I = a A + b B + c C` coordinatewise, then
+`(a + b + c) det(C − B, I − B) = a det(C − B, A − B)`, i.e. the signed distance of `I` from the side `BC`
+is `2aK / ((a + b + c) a) = K/s = r`; the other two sides are the cyclic instances. -/
+theorem incenter_distance {a b c Ax Ay Bx By Cx Cy Ix Iy : ZT n}
+    (hx : Γ ⊢[PRAAx] ZT.eq ((a + b + c) * Ix) (a * Ax + b * Bx + c * Cx))
+    (hy : Γ ⊢[PRAAx] ZT.eq ((a + b + c) * Iy) (a * Ay + b * By + c * Cy)) :
+    Γ ⊢[PRAAx] ZT.eq ((a + b + c) * ((Cx - Bx) * (Iy - By) - (Cy - By) * (Ix - Bx)))
+      (a * ((Cx - Bx) * (Ay - By) - (Cy - By) * (Ax - Bx))) := by
+  have e₁ := ZT.toZ_eq hx; have e₂ := ZT.toZ_eq hy
+  simp only [ZT.toZ_mul, ZT.toZ_add] at e₁ e₂
+  apply ZT.derive
+  simp only [ZT.toZ_mul, ZT.toZ_add, ZT.toZ_sub]
+  linear_combination (ZT.toZ Γ Cx - ZT.toZ Γ Bx) * e₂ - (ZT.toZ Γ Cy - ZT.toZ Γ By) * e₁
+
 end LeanProofs.IPRA.Geometry.Mollweide
