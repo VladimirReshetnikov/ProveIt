@@ -1817,6 +1817,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral.inv_step_neg
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral.general_neg
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral.seed_neg
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellDirichlet.le_isqrt
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellDirichlet.sqrt_add_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellDirichlet.sqrt_add_lt
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellDirichlet.bB_at
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellDirichlet.w_bounds
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellDirichlet.dirichlet
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.eq_one_of_sq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.R_lt_A
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellNegUnits.RT_lt_AB
