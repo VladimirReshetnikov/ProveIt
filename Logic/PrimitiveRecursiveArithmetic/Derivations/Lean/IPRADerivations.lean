@@ -379,6 +379,7 @@ import IPRADerivations.Combinatorics.CatalanProducts
 import IPRADerivations.Foundations.PresentedCategory
 import IPRADerivations.Foundations.Yoneda
 import IPRADerivations.Foundations.Adjunction
+import IPRADerivations.Foundations.SplitEquivalence
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 
