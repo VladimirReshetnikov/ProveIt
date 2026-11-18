@@ -663,6 +663,9 @@ import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
 import IPRADerivations.Foundations.FiniteStabilization
 import IPRADerivations.Foundations.DisjointSums
+import IPRADerivations.Foundations.LeastBoundedWitness
+import IPRADerivations.Foundations.GapStabilization
+import IPRADerivations.Foundations.BooleanBits
 import IPRADerivations.Analysis.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Analysis.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Analysis.GaussianTranslationCoefficientValues
