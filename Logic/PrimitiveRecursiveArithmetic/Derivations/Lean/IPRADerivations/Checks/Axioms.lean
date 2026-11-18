@@ -534,6 +534,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.MedianSorted.even_med
 #print axioms LeanProofs.IPRA.Probability.MedianSorted.even_between
 #print axioms LeanProofs.IPRA.Probability.MedianSorted.doubled_median
+#print axioms LeanProofs.IPRA.Probability.MedianBreakdown.bit_cmp_below
+#print axioms LeanProofs.IPRA.Probability.MedianBreakdown.below_cmp
+#print axioms LeanProofs.IPRA.Probability.MedianBreakdown.above_cmp
+#print axioms LeanProofs.IPRA.Probability.MedianBreakdown.count_contra
+#print axioms LeanProofs.IPRA.Probability.MedianBreakdown.bounded
+#print axioms LeanProofs.IPRA.Probability.MedianBreakdown.z_lt
+#print axioms LeanProofs.IPRA.Probability.MedianBreakdown.z_ge
+#print axioms LeanProofs.IPRA.Probability.MedianBreakdown.rep_count
+#print axioms LeanProofs.IPRA.Probability.MedianBreakdown.driven_above
+#print axioms LeanProofs.IPRA.Probability.MedianBreakdown.driven_med
 #print axioms LeanProofs.IPRA.Probability.MedianSkew.sum_five
 #print axioms LeanProofs.IPRA.Probability.MedianSkew.eqb_num
 #print axioms LeanProofs.IPRA.Probability.MedianSkew.x_at
