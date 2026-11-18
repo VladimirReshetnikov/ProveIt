@@ -11052,6 +11052,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FilteredEnumeration.equalizer_incl
 #print axioms LeanProofs.IPRA.Foundations.FilteredEnumeration.equalizer_factor
 #print axioms LeanProofs.IPRA.Foundations.FilteredEnumeration.equalizer_unique
+#print axioms LeanProofs.IPRA.Foundations.FinitePullback.fB_at
+#print axioms LeanProofs.IPRA.Foundations.FinitePullback.gB_at
+#print axioms LeanProofs.IPRA.Foundations.FinitePullback.pb_square
+#print axioms LeanProofs.IPRA.Foundations.FinitePullback.pair_agree
+#print axioms LeanProofs.IPRA.Foundations.FinitePullback.pb_factor
+#print axioms LeanProofs.IPRA.Foundations.FinitePullback.pb_unique
 #print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.E
 #print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.Persistent
 #print axioms LeanProofs.IPRA.Foundations.TwoClassObstruction.Persistent.mk
