@@ -177,6 +177,38 @@ the exact computed partition sum over all original positions. The runtime
 Vandermonde/completion matrices, determinant algebra, sharp fiber divisibility
 and accumulated norm multiplicity remain required.
 
+## Field transport and completed fiber-matrix prerequisites
+
+[GaussianRationalFubini](Lean/IPRADerivations/Analysis/GaussianRationalFubini.lean)
+proves equality of separately constructed row-first and column-first field
+sums by genuine QF induction. Both counts are numerical and raw entries stay
+under actual qadd. [GaussianRationalPermutationSum](Lean/IPRADerivations/Analysis/GaussianRationalPermutationSum.lean)
+uses actual delta/incidence sums to derive bounded permutation reindexing from
+local range and inverse facts, including empty domains and raw inputs.
+[GaussianRationalFiniteProduct](Lean/IPRADerivations/Analysis/GaussianRationalFiniteProduct.lean)
+constructs actual qone/qmul folds and derives numerical splits and bounded
+entry congruence; a raw singleton is its canonical recode.
+
+[RuntimeAdjacentPermutationSwap](Lean/IPRADerivations/Foundations/RuntimeAdjacentPermutationSwap.lean)
+constructs numerical adjacent tuple/word/rank swaps and derives their real
+involutions. Genuine natural sum transport proves the actual inversion
+balance, distinct-adjacent odd-count relation and retained parity flip. Its
+word-code horizon guard remains separate from the bare tuple checker. Actual
+retained words derive the needed bounds and distinctness internally.
+Gaussian signing, factor swaps, concrete field-sum reindexing and full
+alternation/adjugate/determinant algebra remain required.
+
+[GaussianRationalFiberVandermonde](Lean/IPRADerivations/Analysis/GaussianRationalFiberVandermonde.lean)
+now constructs the actual U/W power/completion tables, constant-polynomial WP
+and polynomial product WM. Genuine QF coefficient/evaluator fold proofs
+identify WM with the actual WP*M finite sums. Original norm and field-point
+predicates produce the same ordinate list and selected x, derive 1<=t<=m,
+and prove the returned first-t polynomial rows vanish at that x. The lower
+standard rows use coordinate r, and the actual PR8 payload keeps the exact
+original partition sum. No desired row-zero law is a premise. A full right
+inverse, numerical Vandermonde determinant, actual determinant multiplication,
+row-factor extraction and accumulated sharp norm multiplicity remain open.
+
 ## Logical strength and program boundaries
 
 The ordinary scheduling proof keeps the user's entire context fixed during
