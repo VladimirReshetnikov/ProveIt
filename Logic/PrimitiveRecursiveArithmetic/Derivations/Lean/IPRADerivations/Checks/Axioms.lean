@@ -9464,6 +9464,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.front_of_reachable
 #print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.front_union
 #print axioms LeanProofs.IPRA.Foundations.ReachableFrontier.frontier_sufficient
+#print axioms LeanProofs.IPRA.Foundations.GraphDemand.le_lub_base
+#print axioms LeanProofs.IPRA.Foundations.GraphDemand.le_lub_mem
+#print axioms LeanProofs.IPRA.Foundations.GraphDemand.lub_le
+#print axioms LeanProofs.IPRA.Foundations.GraphDemand.sound_term
+#print axioms LeanProofs.IPRA.Foundations.GraphDemand.sound_edge
+#print axioms LeanProofs.IPRA.Foundations.GraphDemand.least
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.parameter_identity
 #print axioms LeanProofs.IPRA.Foundations.StableCubicRoot.separation
