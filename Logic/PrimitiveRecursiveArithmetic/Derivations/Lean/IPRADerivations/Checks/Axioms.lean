@@ -16045,6 +16045,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.CubicEnclosure.nested_multi
 #print axioms LeanProofs.IPRA.Foundations.CubicEnclosure.nested_at
 #print axioms LeanProofs.IPRA.Foundations.CubicEnclosure.midpoint_close
+#print axioms LeanProofs.IPRA.Foundations.CubicEnclosure.endpoint_residual
+#print axioms LeanProofs.IPRA.Foundations.SerialChoice.serial_step
+#print axioms LeanProofs.IPRA.Foundations.SerialChoice.serial_path
+#print axioms LeanProofs.IPRA.Foundations.SerialChoice.serial_good
+#print axioms LeanProofs.IPRA.Foundations.SerialChoice.serial_edge
+#print axioms LeanProofs.IPRA.Foundations.RationalWindow.r_at
+#print axioms LeanProofs.IPRA.Foundations.RationalWindow.floor_nonrise
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 

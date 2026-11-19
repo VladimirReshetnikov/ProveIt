@@ -23,8 +23,14 @@ With the bisection run of `Foundations/CubicBisection` for a nonnegative rationa
   `2^j m_t ≤ m_{t+j} + 2^j (p + 1)`, i.e. `|c_{t+j} − c_t| ≤ (p + 1)/2^{t+1}`, half the width of the
   bracket of stage `t`.
 
-The sign bracket itself is `cubic_bracket`. The represented equation `F(y) = x` for the limit name is not
-derived here.
+* `endpoint_residual` (the estimate behind "The equation in represented form",
+  `|F(c) − x| ≤ (3M² + 1)(u − l)`): with `FN(a) = a³ + a 4^t` the numerator of `F(a/2^t)`,
+  `q FN(u_t) ≤ p 8^t + q (p + 1)(3u_t² + 4^t)` and `p 8^t ≤ q FN(ℓ_t) + q (p + 1)(3u_t² + 4^t)`, i.e.
+  `|F(U_t) − x|` and `|F(L_t) − x|` are at most `(U_t − L_t)(3U_t² + 1)`.
+
+The sign bracket itself is `cubic_bracket`. The final alignment with the regular-name convention and the
+uniqueness of the represented root (`Foundations/StableCubicRoot` for rational roots) are not derived
+here.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -34,7 +40,7 @@ namespace LeanProofs.IPRA.Foundations.CubicEnclosure
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open LeanProofs.IPRA.Foundations.TraceReflection (Run)
 open LeanProofs.IPRA.Foundations.BisectionInvariant (bStep)
-open LeanProofs.IPRA.Foundations.CubicBisection (cinit cc cubic_bisection cubic_nested width_fuel)
+open LeanProofs.IPRA.Foundations.CubicBisection (cinit cc cubic_bisection cubic_bracket cubic_nested width_fuel)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
@@ -148,5 +154,25 @@ theorem midpoint_close {x : PTm k} (hq : Γ ⊢[PRAAx] le one (sndT x)) (t j : P
   refine .andI ?_ ?_
   · ipra_le 2 * sl n₂ + (𝔟 (fstT x) + 1) using linear_combination (-𝔟 (pw two j)) * w₁ + w₂
   · ipra_le 2 * sl n₁ + (𝔟 (fstT x) + 1) using linear_combination (-𝔟 (pw two j)) * w₁ + w₂
+
+/-- The residual of the equation at the endpoints of the bracket is at most
+`(U_t − L_t)(3U_t² + 1)`. -/
+theorem endpoint_residual {x : PTm k} (hq : Γ ⊢[PRAAx] le one (sndT x)) (t : PTm k) :
+    Γ ⊢[PRAAx]
+      le (sndT x * (sndT (St t x) * sndT (St t x) * sndT (St t x) + sndT (St t x) * pw (num 4) t))
+          (fstT x * pw (num 8) t +
+            sndT x * succ (fstT x) * (num 3 * (sndT (St t x) * sndT (St t x)) + pw (num 4) t)) ⋏
+        le (fstT x * pw (num 8) t)
+          (sndT x * (fstT (St t x) * fstT (St t x) * fstT (St t x) + fstT (St t x) * pw (num 4) t) +
+            sndT x * succ (fstT x) * (num 3 * (sndT (St t x) * sndT (St t x)) + pw (num 4) t)) := by
+  have br := cubic_bracket hq t
+  have lo := Prf.andE₁ br
+  have hi := Prf.andE₁ (Prf.andE₂ br)
+  have w := natEq (Prf.andE₂ (Prf.andE₂ br))
+  refine .andI ?_ ?_
+  · ipra_le sl lo + 𝔟 (sndT x) * (𝔟 (fstT x) + 1) * (𝔟 (fstT x) + 1) *
+        (2 * 𝔟 (sndT (St t x)) + 𝔟 (fstT (St t x))) using rw [w]; ring
+  · ipra_le sl hi + 𝔟 (sndT x) * (𝔟 (fstT x) + 1) * (𝔟 (fstT x) + 1) *
+        (2 * 𝔟 (sndT (St t x)) + 𝔟 (fstT (St t x))) using rw [w]; ring
 
 end LeanProofs.IPRA.Foundations.CubicEnclosure

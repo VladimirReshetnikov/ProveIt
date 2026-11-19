@@ -805,6 +805,8 @@ import IPRADerivations.Foundations.DyadicNames
 import IPRADerivations.Foundations.EmptyWindow
 import IPRADerivations.Foundations.RobustControl
 import IPRADerivations.Foundations.CubicEnclosure
+import IPRADerivations.Foundations.SerialChoice
+import IPRADerivations.Foundations.RationalWindow
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
