@@ -47,6 +47,7 @@ import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.Analysis.HypergeometricRatio
 import IPRADerivations.Analysis.TerminatingSeries
 import IPRADerivations.Analysis.ChuVandermonde
+import IPRADerivations.Analysis.ContiguousRelations
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BetaAssociativity
@@ -108,6 +109,7 @@ import IPRADerivations.Analysis.PowerGap
 import IPRADerivations.Analysis.EulerSqueeze
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
+import IPRADerivations.AnalyticNumberTheory.BrunElementary
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
 import IPRADerivations.Core.EuclidLemma

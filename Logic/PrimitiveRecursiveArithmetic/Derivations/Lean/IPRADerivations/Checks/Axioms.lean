@@ -1969,6 +1969,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.partial_le
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.count_upper
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting.count_lower
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunElementary.sq_le_pow
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BrunElementary.telescope_step
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.two_pow_le_fact
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.fact_le_falling
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree.binom_fact_le
@@ -2904,6 +2906,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.ChuVandermonde.TE_succ
 #print axioms LeanProofs.IPRA.Analysis.ChuVandermonde.TO_succ
 #print axioms LeanProofs.IPRA.Analysis.ChuVandermonde.chu_vandermonde
+#print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.Tn_succ
+#print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.contig_a_plus
+#print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.contig_b_plus
+#print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.contig_c_minus
+#print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.contig_a_minus
+#print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.contig_b_minus
+#print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.contig_c_plus
+#print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.gauss_chain
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.pascal_sum
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.E_succ
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.O_succ
