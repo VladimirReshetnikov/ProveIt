@@ -370,6 +370,7 @@ import IPRADerivations.Geometry.PentagonArithmetic
 import IPRADerivations.Geometry.PappusSegment
 import IPRADerivations.Geometry.TriangularNorm
 import IPRADerivations.Geometry.LocalizationWitness
+import IPRADerivations.Geometry.QuotientPresentation
 import IPRADerivations.Geometry.PowerCover
 import IPRADerivations.Geometry.PowerCover3
 import IPRADerivations.Geometry.Gluing

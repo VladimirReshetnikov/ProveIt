@@ -83,6 +83,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.LocalizationWitness.cover_example
 #print axioms LeanProofs.IPRA.Geometry.LocalizationWitness.cover_step
 #print axioms LeanProofs.IPRA.Geometry.LocalizationWitness.cover_step₃
+#print axioms LeanProofs.IPRA.Geometry.QuotientPresentation.eval_zsum
+#print axioms LeanProofs.IPRA.Geometry.QuotientPresentation.eval_comb
+#print axioms LeanProofs.IPRA.Geometry.QuotientPresentation.refl_witness
+#print axioms LeanProofs.IPRA.Geometry.QuotientPresentation.symm_witness
+#print axioms LeanProofs.IPRA.Geometry.QuotientPresentation.trans_witness
+#print axioms LeanProofs.IPRA.Geometry.QuotientPresentation.add_witness
+#print axioms LeanProofs.IPRA.Geometry.QuotientPresentation.neg_witness
+#print axioms LeanProofs.IPRA.Geometry.QuotientPresentation.mul_witness
+#print axioms LeanProofs.IPRA.Geometry.QuotientPresentation.comm_witness
+#print axioms LeanProofs.IPRA.Geometry.QuotientPresentation.distrib_witness
 #print axioms LeanProofs.IPRA.Geometry.PowerCover.st_zero
 #print axioms LeanProofs.IPRA.Geometry.PowerCover.st_succ
 #print axioms LeanProofs.IPRA.Geometry.PowerCover.inv_base
