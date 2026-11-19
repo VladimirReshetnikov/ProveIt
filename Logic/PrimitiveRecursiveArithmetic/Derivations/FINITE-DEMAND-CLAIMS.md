@@ -195,8 +195,17 @@ involutions. Genuine natural sum transport proves the actual inversion
 balance, distinct-adjacent odd-count relation and retained parity flip. Its
 word-code horizon guard remains separate from the bare tuple checker. Actual
 retained words derive the needed bounds and distinctness internally.
-Gaussian signing, factor swaps, concrete field-sum reindexing and full
-alternation/adjugate/determinant algebra remain required.
+Actual Gaussian signing and same-scalar pair cancellation are now derived in
+[GaussianDeterminantSignTransport](Lean/IPRADerivations/Analysis/GaussianDeterminantSignTransport.lean).
+The raw double negative equals canonical recode; comparison with the original
+code retains its canonical guard. Actual retained ranks derive word validity.
+[GaussianRationalAdjacentProduct](Lean/IPRADerivations/Analysis/GaussianRationalAdjacentProduct.lean)
+now proves actual adjacent-factor swaps using that SAME numerical reader, and
+a genuine unconditional QF induction identifies the original determinant
+scalar fold with the actual generic evaluated-factor product. Numerical
+bounds/data and raw factors remain internal. Exchanged matrix-factor matching,
+concrete retained-word field-sum reindexing and full alternation/adjugate/
+determinant algebra remain required.
 
 [GaussianRationalFiberVandermonde](Lean/IPRADerivations/Analysis/GaussianRationalFiberVandermonde.lean)
 now constructs the actual U/W power/completion tables, constant-polynomial WP
@@ -208,6 +217,19 @@ standard rows use coordinate r, and the actual PR8 payload keeps the exact
 original partition sum. No desired row-zero law is a premise. A full right
 inverse, numerical Vandermonde determinant, actual determinant multiplication,
 row-factor extraction and accumulated sharp norm multiplicity remain open.
+
+[GaussianRationalLagrangeCardinals](Lean/IPRADerivations/Analysis/GaussianRationalLagrangeCardinals.lean)
+now constructs actual numerical skip/deletion lists with proved full coverage.
+A guarded QF induction on the SAME original reverse reconstruction-factor fold
+proves the denominator nonzero from original field distinction. The native
+norm/reciprocal then gives actual cardinal delta evaluations. A query-parametric
+ascending coefficient-dot identity proves the numerical Vandermonde right-inverse
+entry computation for this cardinal data. The actual PR2 and original-fiber PR4
+outputs retain the SAME generated ordinate list, selected x and exact partition;
+source point distinction and original index guards discharge the field premises.
+Singletons and empty admissible-index domains are covered. Constructing the full
+completed-matrix right inverse, proving its actual matrix product, and deriving
+the determinant/multiplicity laws remain required.
 
 ## Logical strength and program boundaries
 
