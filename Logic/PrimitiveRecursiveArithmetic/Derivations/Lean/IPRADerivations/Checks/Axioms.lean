@@ -16473,6 +16473,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.RationalWindow.floor_nonrise
 #print axioms LeanProofs.IPRA.Foundations.RealWindow.selected_increase
 #print axioms LeanProofs.IPRA.Foundations.ShiftedInduction.shifted_induction
+#print axioms LeanProofs.IPRA.Foundations.CommonWindow.bad_count
+#print axioms LeanProofs.IPRA.Foundations.CommonWindow.good_window
+#print axioms LeanProofs.IPRA.Foundations.MeshPositivity.grid_lower
+#print axioms LeanProofs.IPRA.Foundations.MeshPositivity.grid_upper
+#print axioms LeanProofs.IPRA.Foundations.MeshPositivity.grid_le
+#print axioms LeanProofs.IPRA.Foundations.MeshPositivity.mesh_positive
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 

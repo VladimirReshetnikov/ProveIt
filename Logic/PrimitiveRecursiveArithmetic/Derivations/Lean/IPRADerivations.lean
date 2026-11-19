@@ -856,6 +856,8 @@ import IPRADerivations.Foundations.SerialChoice
 import IPRADerivations.Foundations.RationalWindow
 import IPRADerivations.Foundations.RealWindow
 import IPRADerivations.Foundations.ShiftedInduction
+import IPRADerivations.Foundations.CommonWindow
+import IPRADerivations.Foundations.MeshPositivity
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
