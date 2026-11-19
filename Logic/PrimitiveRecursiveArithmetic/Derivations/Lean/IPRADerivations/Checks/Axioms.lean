@@ -646,6 +646,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.KolmogorovVariance.square_sums
 #print axioms LeanProofs.IPRA.Probability.KolmogorovVariance.dn_moment
 #print axioms LeanProofs.IPRA.Probability.KolmogorovVariance.kolmogorov_variance
+#print axioms LeanProofs.IPRA.Probability.ProductMarginal.rpn_at
+#print axioms LeanProofs.IPRA.Probability.ProductMarginal.hr_at
+#print axioms LeanProofs.IPRA.Probability.ProductMarginal.summand_at
+#print axioms LeanProofs.IPRA.Probability.ProductMarginal.inner_block
+#print axioms LeanProofs.IPRA.Probability.ProductMarginal.marginal
+#print axioms LeanProofs.IPRA.Probability.KolmogorovBlock.I_low_gen
+#print axioms LeanProofs.IPRA.Probability.KolmogorovBlock.hB_at
+#print axioms LeanProofs.IPRA.Probability.KolmogorovBlock.block_dsum
+#print axioms LeanProofs.IPRA.Probability.KolmogorovBlock.block_kolmogorov
+#print axioms LeanProofs.IPRA.Probability.KolmogorovBlock.hB_low
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.trunc_pt
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.truncation
 #print axioms LeanProofs.IPRA.Probability.MomentDeterminacy.back_unique
