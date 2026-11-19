@@ -2588,6 +2588,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BellModularRecurrence.cyc_self
 #print axioms LeanProofs.IPRA.Combinatorics.BellModularRecurrence.act_split
 #print axioms LeanProofs.IPRA.Combinatorics.BellModularRecurrence.recurrence_split
+#print axioms LeanProofs.IPRA.Combinatorics.BellWindowPeriod.sh_at
+#print axioms LeanProofs.IPRA.Combinatorics.BellWindowPeriod.mid_pt
+#print axioms LeanProofs.IPRA.Combinatorics.BellWindowPeriod.window_case
+#print axioms LeanProofs.IPRA.Combinatorics.BellWindowPeriod.window_step
+#print axioms LeanProofs.IPRA.Combinatorics.BellWindowPeriod.window_all
+#print axioms LeanProofs.IPRA.Combinatorics.BellWindowPeriod.period_of_window
+#print axioms LeanProofs.IPRA.Combinatorics.BellWindowPeriod.window_mul
 #print axioms LeanProofs.IPRA.Combinatorics.DobinskiTruncation.aD_at
 #print axioms LeanProofs.IPRA.Combinatorics.DobinskiTruncation.l_at
 #print axioms LeanProofs.IPRA.Combinatorics.DobinskiTruncation.inst2_eD

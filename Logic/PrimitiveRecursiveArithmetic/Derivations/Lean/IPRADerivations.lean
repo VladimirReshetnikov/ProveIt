@@ -201,6 +201,7 @@ import IPRADerivations.Combinatorics.LinearFactorTable
 import IPRADerivations.Combinatorics.BellPeriodNp
 import IPRADerivations.Combinatorics.BellLeastPeriod
 import IPRADerivations.Combinatorics.BellModularRecurrence
+import IPRADerivations.Combinatorics.BellWindowPeriod
 import IPRADerivations.Combinatorics.DobinskiTruncation
 import IPRADerivations.Combinatorics.StirlingInclusion
 import IPRADerivations.Combinatorics.BellDobinski
