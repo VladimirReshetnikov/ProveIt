@@ -365,6 +365,7 @@ import IPRADerivations.Geometry.Mollweide
 import IPRADerivations.Geometry.MollweideRoots
 import IPRADerivations.Geometry.TriangleIsoperimetry
 import IPRADerivations.Geometry.HypercubeSplit
+import IPRADerivations.Geometry.BoxProduct
 import IPRADerivations.Geometry.HypercubeEdge
 import IPRADerivations.Geometry.KerrNewmanAlgebra
 import IPRADerivations.Geometry.KerrNewmanInverse
