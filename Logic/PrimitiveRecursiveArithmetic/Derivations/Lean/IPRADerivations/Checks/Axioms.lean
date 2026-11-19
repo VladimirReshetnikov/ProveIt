@@ -15954,6 +15954,18 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BisectionInvariant.bis_step
 #print axioms LeanProofs.IPRA.Foundations.BisectionInvariant.bisection_invariant
 #print axioms LeanProofs.IPRA.Foundations.BisectionInvariant.bisection_at
+#print axioms LeanProofs.IPRA.Foundations.BisectionInvariant.bis_nested
+#print axioms LeanProofs.IPRA.Foundations.CubicBisection.lo2
+#print axioms LeanProofs.IPRA.Foundations.CubicBisection.hi2
+#print axioms LeanProofs.IPRA.Foundations.CubicBisection.midLo
+#print axioms LeanProofs.IPRA.Foundations.CubicBisection.midHi
+#print axioms LeanProofs.IPRA.Foundations.CubicBisection.base
+#print axioms LeanProofs.IPRA.Foundations.CubicBisection.cubic_bisection
+#print axioms LeanProofs.IPRA.Foundations.CubicBisection.cubic_bracket
+#print axioms LeanProofs.IPRA.Foundations.CubicBisection.width_fuel
+#print axioms LeanProofs.IPRA.Foundations.CubicBisection.cubic_nested
+#print axioms LeanProofs.IPRA.Foundations.BoundedChoice.bounded_choice
+#print axioms LeanProofs.IPRA.Foundations.BoundedChoice.strategy_table
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 

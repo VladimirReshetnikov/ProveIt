@@ -796,6 +796,8 @@ import IPRADerivations.Foundations.LabelledInvariant
 import IPRADerivations.Foundations.QueryCompilation
 import IPRADerivations.Foundations.EnumerationSearch
 import IPRADerivations.Foundations.BisectionInvariant
+import IPRADerivations.Foundations.CubicBisection
+import IPRADerivations.Foundations.BoundedChoice
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
