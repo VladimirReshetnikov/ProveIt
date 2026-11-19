@@ -23,9 +23,10 @@ Derived, cleared of denominators, from the ratio `(N − j) C(N, j) = (j + 1) C(
 * `ballot_closed`: (7.1) as a closed sentence;
 * `fuss`: (7.5), `k C(pk, k) = ((p − 1)k + 1) C(pk, k − 1)` with `p = p' + 1`, `k = k' + 1`.
 
-Not derived: the cycle lemma and the word bijection behind (7.1), the `k`-fold convolution for
-`k > 2`, the generating-function statements (7.6)–(7.13), and the integrality of the
-super-Catalan numbers (7.14)–(7.15).
+Not derived: the cycle lemma and the word bijection behind (7.1), and the generating-function
+statements (7.6)–(7.13). The `k`-fold convolution (7.3) for every `k` is
+`Combinatorics/CatalanKFold`, and the integrality of the super-Catalan numbers (7.14) is
+`Combinatorics/SuperCatalanIntegral`.
 -/
 
 set_option linter.unusedSimpArgs false

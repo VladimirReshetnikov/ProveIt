@@ -436,6 +436,8 @@ import IPRADerivations.Combinatorics.HankelGram
 import IPRADerivations.Combinatorics.CatalanExtensions
 import IPRADerivations.Combinatorics.SuperCatalanFloor
 import IPRADerivations.Combinatorics.SuperCatalanIntegral
+import IPRADerivations.Combinatorics.CatalanPowers
+import IPRADerivations.Combinatorics.CatalanKFold
 import IPRADerivations.Combinatorics.HankelCongruence
 import IPRADerivations.Combinatorics.SegnerUnique
 import IPRADerivations.Foundations.PresentedCategory
