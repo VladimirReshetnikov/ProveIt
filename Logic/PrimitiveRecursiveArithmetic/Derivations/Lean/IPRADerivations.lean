@@ -196,6 +196,7 @@ import IPRADerivations.Combinatorics.BellPascalInversion
 import IPRADerivations.Combinatorics.BellSpivey
 import IPRADerivations.Combinatorics.BellTouchard
 import IPRADerivations.Combinatorics.BellTouchardPower
+import IPRADerivations.Combinatorics.BellPrimePeriod
 import IPRADerivations.Combinatorics.StirlingInclusion
 import IPRADerivations.Combinatorics.BellDobinski
 import IPRADerivations.Combinatorics.Vandermonde
@@ -394,6 +395,7 @@ import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Topology.DimensionTwo
 import IPRADerivations.Topology.DimensionUnits
+import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.Core.PolynomialImplications
 import IPRADerivations.Geometry.JoinMeet
 import IPRADerivations.Geometry.MorleyCertificate
@@ -788,6 +790,8 @@ import IPRADerivations.Foundations.RiseAlternative
 import IPRADerivations.Foundations.WindowStability
 import IPRADerivations.Foundations.FiniteReplay
 import IPRADerivations.Foundations.PrecisionGate
+import IPRADerivations.Foundations.LeastViablePath
+import IPRADerivations.Foundations.LabelledInvariant
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion

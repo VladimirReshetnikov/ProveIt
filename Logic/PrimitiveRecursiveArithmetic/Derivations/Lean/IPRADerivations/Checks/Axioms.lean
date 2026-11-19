@@ -2500,6 +2500,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchardPower.level_all
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchardPower.touchard_power
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchardPower.touchard_power_closed
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.cong_drop
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.cong_cancel
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.shift_pp
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.period_succ
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.period_zero
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.bell_period
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.bell_period_closed
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.gb_ratio
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.gb_absorb
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.sum_affine
@@ -10694,6 +10701,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.DimensionUnits.usep0F
 #print axioms LeanProofs.IPRA.Topology.DimensionUnits.usep1F
 #print axioms LeanProofs.IPRA.Topology.DimensionUnits.usmallF
+#print axioms LeanProofs.IPRA.Topology.CollisionScales.lt_pw_two
+#print axioms LeanProofs.IPRA.Topology.CollisionScales.small_bound
+#print axioms LeanProofs.IPRA.Topology.CollisionScales.final_bound
+#print axioms LeanProofs.IPRA.Topology.CollisionScales.delta_units
 #print axioms LeanProofs.IPRA.Topology.InjectionBound.boundFormula
 #print axioms LeanProofs.IPRA.Topology.InjectionBound.collisionFormula
 #print axioms LeanProofs.IPRA.Topology.InjectionBound.injBelow
@@ -15907,6 +15918,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_step
 #print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_all
 #print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_at
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.viable_of_zero
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.zero_of_viable
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.start_spec
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.path_inv
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.path_local
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.path_edge
+#print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.num_cases
+#print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.labelled_QF
+#print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.labelled_intro
+#print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.labelled_at
+#print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.labelled_step
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 
