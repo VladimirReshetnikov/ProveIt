@@ -10154,6 +10154,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FilteredFixedPoint.agree_at
 #print axioms LeanProofs.IPRA.Foundations.FilteredFixedPoint.fixed_point
 #print axioms LeanProofs.IPRA.Foundations.FilteredFixedPoint.unique
+#print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.inst2_polyB
+#print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.inst2_lipB
+#print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.poly_at
+#print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.lip_at
+#print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.term_le
+#print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.lip_step
+#print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.poly_lip
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
