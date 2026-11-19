@@ -16901,6 +16901,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.RodriguesFixedLine.fixedHyps
 #print axioms LeanProofs.IPRA.Geometry.RodriguesFixedLine.lineHyps
 #print axioms LeanProofs.IPRA.Foundations.LinearCertificates.delta
+#print axioms LeanProofs.IPRA.Foundations.FiniteAvoidance.shift_pair
+#print axioms LeanProofs.IPRA.Foundations.FiniteAvoidance.zero_of_sg
+#print axioms LeanProofs.IPRA.Foundations.FiniteAvoidance.inst3_aB
+#print axioms LeanProofs.IPRA.Foundations.FiniteAvoidance.inst2_gB
+#print axioms LeanProofs.IPRA.Foundations.FiniteAvoidance.rows_ge
+#print axioms LeanProofs.IPRA.Foundations.FiniteAvoidance.cols_le
+#print axioms LeanProofs.IPRA.Foundations.FiniteAvoidance.exists_good
+#print axioms LeanProofs.IPRA.Foundations.FiniteAvoidance.good_lt
+#print axioms LeanProofs.IPRA.Foundations.FiniteAvoidance.good_row
+#print axioms LeanProofs.IPRA.Foundations.FiniteAvoidance.good_at
+#print axioms LeanProofs.IPRA.Foundations.FiniteAvoidance.height_candidate
 #print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_guard
 #print axioms LeanProofs.IPRA.Foundations.WindowStability.lower_step
 #print axioms LeanProofs.IPRA.Foundations.WindowStability.lower_guard
