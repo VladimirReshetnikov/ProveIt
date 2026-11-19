@@ -10064,6 +10064,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.SealingVariants.conditional_boundary
 #print axioms LeanProofs.IPRA.Foundations.SealingVariants.dependent_sealing
 #print axioms LeanProofs.IPRA.Foundations.SealingVariants.existential_output
+#print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.trN_subst
+#print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.trN_QF
+#print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.stable
+#print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.qf_dec
+#print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.qf_recovery
+#print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.trN_axiom
+#print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.proof_translation
+#print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.qf_conservative
+#print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.retained_equivalence
+#print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.lift_classical
+#print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.retained_transfer
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
