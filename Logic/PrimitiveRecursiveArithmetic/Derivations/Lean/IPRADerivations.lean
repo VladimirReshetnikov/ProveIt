@@ -500,6 +500,8 @@ import IPRADerivations.Topology.KuhnSimplices
 import IPRADerivations.Topology.SpernerCube
 import IPRADerivations.Topology.StaggeredGrids
 import IPRADerivations.Topology.LeadingBits
+import IPRADerivations.Topology.DimensionOccupancy
+import IPRADerivations.Topology.DimensionObstruction
 import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Topology.DimensionTwo
