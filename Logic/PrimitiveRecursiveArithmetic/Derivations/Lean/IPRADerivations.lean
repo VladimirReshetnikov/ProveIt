@@ -401,6 +401,7 @@ import IPRADerivations.Geometry.PlatonicAlgebra
 import IPRADerivations.Geometry.PappusCell
 import IPRADerivations.Geometry.PappusGrid
 import IPRADerivations.Geometry.CircumcentreUnique
+import IPRADerivations.Geometry.FiniteTriangleLaws
 import IPRADerivations.Geometry.MonotileSubstitution
 import IPRADerivations.Combinatorics.FibonacciLucasMore
 import IPRADerivations.Core.PolynomialInequalities
