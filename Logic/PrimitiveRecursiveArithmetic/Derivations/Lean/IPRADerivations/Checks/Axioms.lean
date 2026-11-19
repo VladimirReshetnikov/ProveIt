@@ -157,6 +157,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.RationalCut.c_at
 #print axioms LeanProofs.IPRA.Geometry.RationalCut.cross
 #print axioms LeanProofs.IPRA.Geometry.RationalCut.cut
+#print axioms LeanProofs.IPRA.Geometry.RationalBrunnMinkowski.child_hyp
+#print axioms LeanProofs.IPRA.Geometry.RationalBrunnMinkowski.combine
 #print axioms LeanProofs.IPRA.Geometry.HypercubeEdge.bit_succ
 #print axioms LeanProofs.IPRA.Geometry.HypercubeEdge.bit_zero
 #print axioms LeanProofs.IPRA.Geometry.HypercubeEdge.sum_lin3
