@@ -14468,6 +14468,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialMonicCompanion.values_lookup
 #print axioms LeanProofs.IPRA.Foundations.GuardedTrace.run_step
 #print axioms LeanProofs.IPRA.Foundations.GuardedTrace.shift_at
+#print axioms LeanProofs.IPRA.Foundations.GuardedTrace.guarded_loop_all
+#print axioms LeanProofs.IPRA.Foundations.GuardedTrace.guarded_trace_all
 #print axioms LeanProofs.IPRA.Foundations.HerbrandCapsule.candidates
 #print axioms LeanProofs.IPRA.Foundations.HerbrandCapsule.candidates_code_bound
 #print axioms LeanProofs.IPRA.Foundations.HerbrandCapsule.candidates_length
@@ -15851,5 +15853,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.SplitBranches.lower_terms
 #print axioms LeanProofs.IPRA.Foundations.SplitBranches.dominance
 #print axioms LeanProofs.IPRA.Foundations.SplitBranches.no_large_root
+#print axioms LeanProofs.IPRA.Foundations.ObservationEstimates.product_error
+#print axioms LeanProofs.IPRA.Foundations.ObservationEstimates.convex_lipschitz
+#print axioms LeanProofs.IPRA.Foundations.ObservationEstimates.pw_exp_le
+#print axioms LeanProofs.IPRA.Foundations.ObservationEstimates.defect_weight
+#print axioms LeanProofs.IPRA.Foundations.ObservationEstimates.defects
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
