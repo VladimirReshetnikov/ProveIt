@@ -518,6 +518,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.TailSum.incl_excl
 #print axioms LeanProofs.IPRA.Probability.TailSum.union_bound₂
 #print axioms LeanProofs.IPRA.Probability.TailSum.total_expectation
+#print axioms LeanProofs.IPRA.Probability.StPetersburg.term_const
+#print axioms LeanProofs.IPRA.Probability.StPetersburg.partial_expectation
+#print axioms LeanProofs.IPRA.Probability.StPetersburg.normalization
 #print axioms LeanProofs.IPRA.Probability.Variance.ad_sq
 #print axioms LeanProofs.IPRA.Probability.Variance.dev_sum
 #print axioms LeanProofs.IPRA.Probability.Variance.variance_identity
@@ -16085,6 +16088,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.SerialChoice.serial_edge
 #print axioms LeanProofs.IPRA.Foundations.RationalWindow.r_at
 #print axioms LeanProofs.IPRA.Foundations.RationalWindow.floor_nonrise
+#print axioms LeanProofs.IPRA.Foundations.RealWindow.selected_increase
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 

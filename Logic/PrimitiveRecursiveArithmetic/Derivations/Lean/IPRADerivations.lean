@@ -358,6 +358,7 @@ import IPRADerivations.Probability.Independence
 import IPRADerivations.Probability.BinomialLaw
 import IPRADerivations.Probability.ProductReplacement
 import IPRADerivations.Probability.TailSum
+import IPRADerivations.Probability.StPetersburg
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.ExpectationCorollaries
 import IPRADerivations.Probability.UnionUtility
@@ -809,6 +810,7 @@ import IPRADerivations.Foundations.RobustControl
 import IPRADerivations.Foundations.CubicEnclosure
 import IPRADerivations.Foundations.SerialChoice
 import IPRADerivations.Foundations.RationalWindow
+import IPRADerivations.Foundations.RealWindow
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
