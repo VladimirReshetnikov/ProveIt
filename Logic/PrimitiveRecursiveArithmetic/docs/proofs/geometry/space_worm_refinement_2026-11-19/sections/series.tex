@@ -1,0 +1,130 @@
+\section{An exact series for the volume}
+
+The value can be specified without any optimization over real parameters. The series below uses finite integer and rational operations for each term. The large catalogues make it expensive to evaluate.
+
+For each positive integer $n$, take mesh size $n^{-3}$ and form all
+$n$-step walks starting at the origin with increments
+\[
+    d=n^{-3}(i,j,k),\qquad i^2+j^2+k^2\le n^4,\qquad i,j,k\in\mathbb Z.
+\]
+Each walk has length at most one. Use the same fixed tetrahedron $T$ as in Section~1. In the
+coordinates $0\le z\le y\le x\le1/3$, its four facet planes are explicit.
+The closed ball of radius $r=1/15$ around
+$o=(4/15,1/6,1/15)$ lies in $T$. The distances to the two sloping facets are
+$1/(10\sqrt2)>1/15$.
+
+Here is a finite catalogue of poses. Set $m=n^2$. Choose an integer
+quaternion $q$ by setting one of its four components equal to $m$ and
+letting each other component run from $-m$ to $m$. Let $R_q$ be its
+rotation, defined on vectors viewed as pure quaternions by
+$R_q(v)=qv\overline q/\|q\|^2$. Use all maps
+\[
+     v\longmapsto R_qSv+t,\qquad
+     t\in m^{-1}\mathbb Z^3\cap[-114,114]^3,
+\]
+where $S$ ranges over the $24$ orientation-preserving signed permutations
+of the coordinates. The extra signed permutations make the order-one
+example shorter. All entries of the maps are rational. Choose one pose
+independently for every walk. Let $b_n$ be the least volume of the convex
+hull of $T$ and all the resulting vertices, over this finite list of
+choices.
+
+For clarity, a finite arithmetic specification of this coefficient is
+as follows. Enumerate all tuples of pose indices, one index per walk.
+For each tuple, make its list of points and enumerate all noncollinear
+triples. Keep the triples whose plane has every point on one closed side.
+Merge triples with the same supporting plane and order its extreme points
+cyclically using a projection onto a nondegenerate coordinate plane and
+a planar convex hull. Triangulate each resulting face from one of its
+vertices. For each boundary triangle $a,b,c$ add
+$|\det(a-g,b-g,c-g)|/6$, where $g$ is the average of all the distinct
+points. Since $T$ is full-dimensional, $g$ is interior, and these pyramids
+decompose the hull in volume. Take the least sum found. Thus $b_n$ is
+obtained from integers by finite rational arithmetic and comparisons.
+
+Define the rational numbers
+\[
+   d_n=\frac1{2n}+\frac7{4n^2},\qquad
+   e_n=\frac9{2n^2},\qquad
+   L_n=\frac{b_n}{(1+15e_n)^3},\qquad
+   U_n=b_n(1+15d_n)^3.
+\]
+Then $L_n\le V_3\le U_n$. In particular, if
+$c_j=\max_{0\le k\le j}L_{2^k}$, then
+\[
+  \boxed{\displaystyle V_3=c_0+\sum_{j=0}^{\infty}(c_{j+1}-c_j).}
+\]
+All summands are nonnegative. After summing through $c_j$, with $n=2^j$,
+the uncomputed tail is bounded both by $U_n-c_j$ and by
+\[
+ 45(0.052956040)\left(\frac1{2n}+\frac{25}{4n^2}\right).
+\]
+
+\paragraph{Proof of the upper estimate.}
+Parametrize a unit curve by arclength and place its first point at the
+origin. Divide the parameter interval into $n$ equal pieces. Round each
+coordinate of each endpoint increment towards zero on the $n^{-3}$
+mesh. This shortens each increment, so the resulting walk occurs in our
+finite family. A rounded sample point is within
+$n\sqrt3/n^3=\sqrt3/n^2$ of its true position. Every point of the
+curve is at arclength distance at most $1/(2n)$ from a sample point.
+Thus every curve lies in the $d_n$-neighborhood of a catalogue walk.
+Let $K_n$ be a hull realizing $b_n$ and let $B$ be the closed unit ball.
+Then $K_n+d_n B$ is universal. Whenever $o+rB\subseteq K$,
+\[
+  K+tB\subseteq o+(1+t/r)(K-o)\qquad(t\ge0),
+\]
+by convexity. Applying this with $K=K_n$ gives $V_3\le U_n$.
+
+\paragraph{Proof of the lower estimate.}
+Take an optimal body $K$ and use a rigid motion to put its copy of $T$
+in the coordinates above. Polygonal walks are legitimate tests for a
+smooth-curve cover by the smooth closure argument. The ball of radius
+$1/2$ is universal, since the midpoint in arclength lies at distance at
+most $1/2$ from every point. Hence $V_3\le\pi/6$. For every $p\in K$,
+the cone with apex $p$ over the radius-$r$ disk through $o$ normal to
+$p-o$ yields
+\[
+   \|p-o\|\le \frac{3V_3}{\pi r^2}\le\frac{225}{2}.
+\]
+This places each true initial point safely inside the translation cube.
+Rounding it to the nearest $m^{-1}$ lattice point incurs at most
+$\sqrt3/(2m)$ error.
+
+For a true rotation choose a representing unit quaternion, flip its sign
+if necessary, and divide it by its largest absolute component to obtain
+a representative $a$ whose chosen component is $1$ and whose others
+lie in $[-1,1]$. Rounding the other three coordinates of $ma$ gives a
+catalogue quaternion $q$ with $\|a-q/m\|\le\sqrt3/(2m)$. For nonzero
+vectors of length at least one, normalization changes distances by at
+most a factor of two, by the triangle and reverse triangle inequalities.
+Conjugation by two unit quaternions $p,p'$ differs on each vector $v$ by
+at most $2\|p-p'\|\,\|v\|$. Each walk vertex has norm at most one.
+Its combined translation and rotation error is therefore at most
+$5\sqrt3/(2m)<e_n$. After rounding independently for every walk, their
+convex hull with $T$ lies in $K+e_n B$. The dilation estimate gives
+$b_n\le(1+15e_n)^3V_3$, proving the claim.
+
+Finally $L_n\ge V_3[(1+15e_n)(1+15d_n)]^{-3}$. For $x,y\ge0$,
+$1-(1+x)^{-3}(1+y)^{-3}\le3(x+y)$, by the tangent inequality for
+$(1+x)^{-3}$ and the union bound $1-ab\le (1-a)+(1-b)$ for
+$a,b\in[0,1]$. Combining this with the explicit upper bound in Section~2 proves the tail
+estimate and the series identity.
+
+\paragraph{The first coefficient.}
+At $n=1$ the zero walk is redundant, and the six directed coordinate
+segments have the same set of placements because the catalogue is closed
+under right multiplication by the signed permutations. Adding $[0,e_1]$
+to $T$ gives volume $1/54$. For a point $p=(x,y,z)$ with barycentric
+coordinates $\lambda=(1-3x,3(x-y),3(y-z),3z)$ relative to $T$,
+\[
+ \operatorname{vol}\operatorname{conv}(T\cup\{p\})=
+ \frac{1+\sum_i\max(0,-\lambda_i)}{162}.
+\]
+This follows by adding the pyramids over visible tetrahedral facets.
+In a placement improving on $1/54$, every barycentric coordinate of
+its integer start point is at least $-2$. Integrality then gives
+$0\le z\le y\le x\le1$. Four possible start points and $30$ rational
+directions remain. The included standard-library Python calculation
+checks all of them by rational determinants and returns
+$b_1=1/81$. For example, the segment from the origin to $(1/3,2/3,2/3)$ attains this minimum. The program also implements the general enumeration. Only order one was evaluated here.

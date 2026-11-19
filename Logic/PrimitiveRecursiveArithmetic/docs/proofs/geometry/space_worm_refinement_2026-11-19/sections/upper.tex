@@ -1,0 +1,120 @@
+\section{Turning the entire enclosing prism}
+The base is Keller's planar universal quadrilateral $C$ \cite[Theorem 4.1]{keller}. For $n(t)=(1-t^2,2t)/(1+t^2)$, its definition is
+\[
+ C=\{v\in\mathbb R^2:n(t_i)\cdot v\le d_i,\quad 0\le i\le3\},\qquad
+ \begin{array}{c|rrrr}
+ i&0&1&2&3\\ \hline
+ t_i&-631/58&-1&7/16&37/56\\
+ d_i&0&0&130783/250000&446199/10^6
+ \end{array}
+\]
+ Index its four support lines cyclically from
+$0$ through $3$, and write $n_i=(a_i,b_i)$ and $d_i$ for their unit
+normals and offsets. The origin
+is a vertex. Denote the intersection of lines $j$ and $j+1$ by $(x_j,y_j)$,
+using indices modulo four. Write $x_* = x_3=\min_jx_j$ and
+$Y=y_3=\max_j y_j$. The two bottom vertices have $y_0=y_1=0$.
+Set
+\[
+ T=1/Y,\qquad H=(9+T^2)^{-1/2}=0.281666408810\ldots.
+\]
+Begin with the tapered body
+\[
+ K_0=\{(x,y,z):0\le z\le H,\quad(x,y)\in\sqrt{1-9z^2}\,C\}.
+\]
+The scale is nonnegative and concave on $[0,H]$. Since $0\in C$,
+its scaled copies are nested, so $K_0$ is convex. Add one point $E=(0,H,H)$ and take $K=\operatorname{conv}(K_0\cup\{E\})$.
+
+For a nonplanar curve choose the normal to the alternating support planes of Ghomi \cite[Corollary 3.2]{ghomi}, put $h$ equal to their separation, and write
+$p=\sqrt{1-9h^2}$. The curve meets one plane, then the other, then the first and then the other again. Each of the three intervening portions contributes at least $h$ to the total variation of the vertical coordinate. The triangle inequality for the integrated horizontal and absolute
+vertical speeds bounds the projected length by $p$. Indeed, in arclength coordinates,
+\[
+  L_{xy}^2+\operatorname{TV}(z)^2=
+  \left\|\int_0^1 (\|\gamma'_{xy}\|,|z'|)\,ds\right\|^2\le1 .
+\] A planar curve can
+be treated with $h=0$. By Keller's covering theorem and scaling, the whole
+spatial curve fits a right prism with base $p C$ and height $h$. If the
+planar placement uses a reflection, also reverse the vertical coordinate
+and translate its range to $[0,h]$. This gives a proper spatial motion.
+For $h\le H$, this prism fits directly at the bottom of $K_0$.
+
+For $H\le h\le1/3$, turn the prism through a right angle and translate it.
+Its image can be written
+\[
+ Q_h=\{(p(x-x_*),s,py):(x,y)\in C,\quad 0\le s\le h\}.
+\]
+For example, the rotation $(x,y,z)\mapsto(x,-z,y)$ followed by translations
+gives the displayed set. Only the eight vertices need to be tested because
+$K$ is convex. Put $t=p/h$, so $0\le t\le T$. Since $TY=1$ and $p$
+decreases with $h$, the largest height $pY$ occurs at $H$ and is at
+most $HTY\le H$. Both horizontal coordinates of $Q_h$ are nonnegative.
+Thus the first two inequalities of the horizontal sections hold.
+The remaining normals have positive coordinates, so only $s=h$ can be
+extremal. For $i=2,3$ and $X_j=x_j-x_*$ the required inequalities are
+\[
+ a_i p X_j+b_i h\le d_i\sqrt{1-9p^2 y_j^2}.
+\]
+Squaring, dividing by $h^2$, and using $h^{-2}=9+t^2$ gives the test
+$A t^2+B t+D\le0$, where
+\[
+ A=(a_i X_j)^2+9d_i^2y_j^2-d_i^2,\quad B=2a_iX_j b_i,\quad
+ D=b_i^2-9d_i^2.
+\]
+For seven entries rational upper bounds for the maximum over $[0,1/Y]$
+are given below. One evaluates the polynomial at $0$, at $1/Y$, and at
+$-B/(2A)$ when $A<0$ and this last point belongs to the interval.
+\[
+\begin{array}{c|rrrr}
+ &j=0&j=1&j=2&j=3\\\hline
+ i=2&-1.91&-0.014&-0.60&-0.44\\
+ i=3&-0.93&-0.055&-0.18&\text{extra point}
+\end{array}
+\]
+Only the vertex $(0,h,pY)$ can escape $K_0$. Let $m=d_3/b_3$.
+Then $(0,m,0)\in K_0$. At every height $0\le z\le H$ the point $(0,0,z)$
+lies in $K_0$, and the segment from $(0,m,0)$ to $E$ lies in $K$.
+The resulting allowable interval of $y$ at $x=0$ reaches
+$m-(m-H)z/H$. Along the exceptional vertex locus,
+$y=g(z)=\sqrt{1-z^2/Y^2}/3$, for $0\le z\le H$.
+Here $g(H)=H$ and $|g'(z)|\le |g'(H)|=1/(9Y^2)\le(m-H)/H$.
+The available interval contains this vertex as well.
+
+The addition of $E$ changes just one curved face of $K_0$.
+Indeed, $E$ satisfies the defining inequalities of the bottom, top and
+first three side surfaces viewed separately. Each such inequality defines
+a convex set, so none of its supporting planes has $E$ strictly outside.
+Let $e$ be the base edge between vertices 2 and 3, $L$ its length,
+$s(z)=\sqrt{1-9z^2}$, $b=b_3$ and $d=d_3$.
+The volume added by $E$ is the integral of its positive signed distance to
+the supporting plane, times surface area divided by three, over the fourth
+face. This cone formula follows by joining each visible surface element to
+$E$. Equivalently, the parametrization $(r,u)\mapsto E+r(u-E)$ of the added
+region, with $0\le r\le1$ and visible boundary point $u$, has volume
+element $r^2(E-u)\cdot n(u)\,dr\,dS(u)$, where $n(u)$ is the outward
+unit normal. Shared boundary pieces have volume zero.
+
+At height $z$ the edge has length $L s(z)$ and the outward normal is
+proportional to $(n_3,-d s'(z))$. Normalization cancels the area
+factor $\sqrt{1+d^2s'(z)^2}$. For $u$ on this edge,
+the resulting integrand before dividing by three is
+$L s(z)[bH-ds(z)-ds'(z)(H-z)]_+$.
+The identity $s(z)^2+s(z)s'(z)(H-z)=1-9Hz$ yields
+\[
+ |K|=|C| H(1-3H^2)
+  +\frac L3\int_0^H
+  \left[bH\sqrt{1-9z^2}-d(1-9Hz)\right]_+\,dz
+  =0.05295603908\ldots .
+\]
+This integral also has an elementary closed form. With $c=bH/d$, let $z_0$ be the root in $(0,H)$ of
+$(81H^2+9c^2)z_0^2-18Hz_0+1-c^2=0$. The expression inside the positive part is strictly concave, negative at zero and positive at $H$. Its positive interval is therefore $(z_0,H]$. An antiderivative there is
+\[
+ F(z)=bH\left(\tfrac z2\sqrt{1-9z^2}+\tfrac16\arcsin(3z)\right)-d\left(z-\tfrac92 Hz^2\right).
+\]
+The volume correction is exactly $L(F(H)-F(z_0))/3$.
+
+For a rational evaluation put $z=Hv$. The expression inside the positive part becomes
+$g(v)=bH\sqrt{1-9H^2v^2}-d(1-9H^2v)$.
+It is concave, with $|g''|=9bH^3(1-9H^2v^2)^{-3/2}<3$ throughout $[0,1]$, using $1-9H^2>1/4$. Divide $[0,1]$ into $8192$ equal intervals. On each one $g$ exceeds its chord by at most $3/(8\cdot8192^2)$, by the linear interpolation error bound. Taking positive parts preserves that error. The integral of the positive part of a chord is the area of a trapezoid or a triangle. The verifier rounds each square root down to a multiple of $10^{-15}$ for these chords and adds the rounding and interpolation errors to the upper integral. It obtains the rigorous enclosure
+\[
+        0.0529560390 < \vol(K) < 0.052956040 .
+\]
