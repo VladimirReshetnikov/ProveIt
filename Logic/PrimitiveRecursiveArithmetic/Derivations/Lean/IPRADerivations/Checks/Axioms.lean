@@ -16016,6 +16016,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.RobustControl.overlap_branch
 #print axioms LeanProofs.IPRA.Foundations.RobustControl.robust_pivot
 #print axioms LeanProofs.IPRA.Foundations.RobustControl.robust_pivot_argmax
+#print axioms LeanProofs.IPRA.Foundations.CubicEnclosure.enclosure_width
+#print axioms LeanProofs.IPRA.Foundations.CubicEnclosure.nested_step
+#print axioms LeanProofs.IPRA.Foundations.CubicEnclosure.nested_base
+#print axioms LeanProofs.IPRA.Foundations.CubicEnclosure.nested_multi
+#print axioms LeanProofs.IPRA.Foundations.CubicEnclosure.nested_at
+#print axioms LeanProofs.IPRA.Foundations.CubicEnclosure.midpoint_close
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 
