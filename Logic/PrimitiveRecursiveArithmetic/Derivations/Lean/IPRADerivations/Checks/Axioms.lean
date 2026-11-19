@@ -613,6 +613,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.KolmogorovStep.past_bound
 #print axioms LeanProofs.IPRA.Probability.KolmogorovStep.future_bound
 #print axioms LeanProofs.IPRA.Probability.KolmogorovStep.crossing_step
+#print axioms LeanProofs.IPRA.Probability.KolmogorovAssembly.inst3_lift
+#print axioms LeanProofs.IPRA.Probability.KolmogorovAssembly.inst2_gl
+#print axioms LeanProofs.IPRA.Probability.KolmogorovAssembly.col_scale
+#print axioms LeanProofs.IPRA.Probability.KolmogorovAssembly.assembly
+#print axioms LeanProofs.IPRA.Probability.ProductSplit.dg_high
+#print axioms LeanProofs.IPRA.Probability.ProductSplit.high_congr
+#print axioms LeanProofs.IPRA.Probability.ProductSplit.pr_split
+#print axioms LeanProofs.IPRA.Probability.ProductSplit.sr_split
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.trunc_pt
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.truncation
 #print axioms LeanProofs.IPRA.Probability.MomentDeterminacy.back_unique
