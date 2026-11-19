@@ -395,6 +395,8 @@ import IPRADerivations.Geometry.KerrNewmanIngoingConnection
 import IPRADerivations.Geometry.KerrNewmanIngoingRicci
 import IPRADerivations.Geometry.KerrNewmanIngoingMaxwell
 import IPRADerivations.Geometry.KerrNewmanStatic
+import IPRADerivations.Geometry.KerrNewmanHorizon
+import IPRADerivations.Geometry.KerrNewmanAtlas
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
@@ -461,6 +463,7 @@ import IPRADerivations.Geometry.JoinMeet
 import IPRADerivations.Geometry.MorleyCertificate
 import IPRADerivations.Geometry.PentagonLedger
 import IPRADerivations.Geometry.PentagonTypeOne
+import IPRADerivations.Geometry.Dodecahedron
 import IPRADerivations.Geometry.RodriguesMap
 import IPRADerivations.Geometry.IsoperimetricIdentities
 import IPRADerivations.Geometry.PlatonicAlgebra
