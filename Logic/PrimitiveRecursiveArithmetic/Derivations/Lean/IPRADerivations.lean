@@ -404,6 +404,7 @@ import IPRADerivations.Combinatorics.CatalanGrowth
 import IPRADerivations.Combinatorics.CatalanPrimes
 import IPRADerivations.Combinatorics.CatalanSmallPrimes
 import IPRADerivations.Combinatorics.HankelGram
+import IPRADerivations.Combinatorics.CatalanExtensions
 import IPRADerivations.Combinatorics.HankelCongruence
 import IPRADerivations.Combinatorics.SegnerUnique
 import IPRADerivations.Foundations.PresentedCategory

@@ -13881,6 +13881,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.HankelGram.hankel0_two
 #print axioms LeanProofs.IPRA.Combinatorics.HankelGram.hankel1_two
 #print axioms LeanProofs.IPRA.Combinatorics.HankelGram.hankel2_one
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanExtensions.lt_double
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanExtensions.two_fold
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanExtensions.ballot_zero
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanExtensions.ballot_succ
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanExtensions.ballot
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanExtensions.ballot_closed
+#print axioms LeanProofs.IPRA.Combinatorics.CatalanExtensions.fuss
 #print axioms LeanProofs.IPRA.Combinatorics.HankelCongruence.congruence_ring
 #print axioms LeanProofs.IPRA.Combinatorics.HankelCongruence.lagrange_ring
 #print axioms LeanProofs.IPRA.Combinatorics.HankelCongruence.toZ_diag
