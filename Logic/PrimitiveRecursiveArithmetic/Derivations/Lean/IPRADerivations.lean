@@ -763,6 +763,7 @@ import IPRADerivations.Foundations.MixedRadixExpansion
 import IPRADerivations.Foundations.RuntimePermutationWords
 import IPRADerivations.Analysis.GaussianPolynomialDeterminantTerms
 import IPRADerivations.Analysis.GaussianPolynomialDeterminant
+import IPRADerivations.Analysis.GaussianPolynomialMonicNorm
 import IPRADerivations.Foundations.FiniteStabilization
 import IPRADerivations.Foundations.DisjointSums
 import IPRADerivations.Foundations.LeastBoundedWitness
@@ -845,3 +846,4 @@ import IPRADerivations.Analysis.GaussianRationalPolynomialDegree
 import IPRADerivations.Analysis.GaussianRationalPolynomialProductDegree
 import IPRADerivations.Analysis.GaussianRationalValueEquality
 import IPRADerivations.Analysis.GaussianRationalFiberGrouping
+import IPRADerivations.Analysis.GaussianRationalCurveFibers
