@@ -642,6 +642,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.KolmogorovIidGlue.RT_eq
 #print axioms LeanProofs.IPRA.Probability.KolmogorovIidGlue.step_k
 #print axioms LeanProofs.IPRA.Probability.KolmogorovIidGlue.kolmogorov_iid
+#print axioms LeanProofs.IPRA.Probability.KolmogorovVariance.point_square
+#print axioms LeanProofs.IPRA.Probability.KolmogorovVariance.square_sums
+#print axioms LeanProofs.IPRA.Probability.KolmogorovVariance.dn_moment
+#print axioms LeanProofs.IPRA.Probability.KolmogorovVariance.kolmogorov_variance
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.trunc_pt
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.truncation
 #print axioms LeanProofs.IPRA.Probability.MomentDeterminacy.back_unique

@@ -457,6 +457,7 @@ import IPRADerivations.Probability.ProductSplit
 import IPRADerivations.Probability.FirstCrossing
 import IPRADerivations.Probability.KolmogorovIid
 import IPRADerivations.Probability.KolmogorovIidGlue
+import IPRADerivations.Probability.KolmogorovVariance
 import IPRADerivations.Probability.TruncationEstimate
 import IPRADerivations.Probability.MomentDeterminacy
 import IPRADerivations.Probability.Variance
