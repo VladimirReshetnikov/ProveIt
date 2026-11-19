@@ -89,6 +89,8 @@ import IPRADerivations.Analysis.WallisFinite
 import IPRADerivations.Analysis.RobbinsSeries
 import IPRADerivations.Analysis.ExponentialSeries
 import IPRADerivations.Analysis.WeierstrassProduct
+import IPRADerivations.Analysis.BinomialExponentialGap
+import IPRADerivations.Analysis.StirlingElimination
 import IPRADerivations.Analysis.FiniteDifferenceIdentities
 import IPRADerivations.Analysis.RiemannRefinement
 import IPRADerivations.Analysis.EvenPowerIntegrals
@@ -768,6 +770,7 @@ import IPRADerivations.Foundations.VectorStabilization
 import IPRADerivations.Foundations.ProofSchedule
 import IPRADerivations.Foundations.ReachableFrontier
 import IPRADerivations.Foundations.GraphDemand
+import IPRADerivations.Foundations.FrontierSoundness
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
