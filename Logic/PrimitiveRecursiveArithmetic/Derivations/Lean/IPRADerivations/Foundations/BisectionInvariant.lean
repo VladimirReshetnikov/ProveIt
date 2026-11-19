@@ -32,7 +32,8 @@ Then, from `Lo(L_0, 0)`, `Hi(U_0, 0)` and `U_0 = L_0 + W`:
 * `bisection_at`: the instance at a stage `t`.
 
 `bStep`, `step_lo`, `step_hi` describe one step; the case distinction is on the value of the test term,
-which is decidable. Nestedness of the intervals and the regular name of the root are not derived here.
+which is decidable. `bis_nested`: for `ℓ ≤ u` the next interval lies inside the current one (`2ℓ ≤ ℓ′`,
+`u′ ≤ 2u` on the next scale). The regular name of the root is not derived here.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -102,6 +103,32 @@ theorem step_hi {t s x d : PTm k} (h : Γ ⊢[PRAAx] cAt c (fstT s + sndT s) t x
   refine .andI ((fst_pair _ _).eqTrans ?_) ((snd_pair _ _).eqTrans ?_)
   · apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
   · apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
+
+/-- For `ℓ ≤ u` the next interval lies inside the current one, on the next scale: `2ℓ ≤ ℓ′` and
+`u′ ≤ 2u`. -/
+theorem bis_nested {t s s' x : PTm k} (hs' : Γ ⊢[PRAAx] s' ≐ Syn.subst ![t, s, x] (bStep c))
+    (hle : Γ ⊢[PRAAx] le (fstT s) (sndT s)) :
+    Γ ⊢[PRAAx] le (fstT s + fstT s) (fstT s') ⋏ le (sndT s') (sndT s + sndT s) := by
+  refine .orE (zero_or_succ (cAt c (fstT s + sndT s) t x)) ?_ ?_
+  · have h0 : ((cAt c (fstT s + sndT s) t x ≐ zero) :: Γ) ⊢[PRAAx]
+        cAt c (fstT s + sndT s) t x ≐ zero := Prf.hyp0
+    have st := step_lo h0
+    have eL := natEq ((congrFst hs'.wk).eqTrans (Prf.andE₁ st))
+    have eU := natEq ((congrSnd hs'.wk).eqTrans (Prf.andE₂ st))
+    have hle' := hle.wk (ψ := cAt c (fstT s + sndT s) t x ≐ zero)
+    refine .andI ?_ ?_
+    · ipra_le sl hle' using linear_combination eL
+    · ipra_le 0 using linear_combination -eU
+  · have h1 : ((cAt c (fstT s + sndT s) t x ≐ succ (pred (cAt c (fstT s + sndT s) t x))) :: Γ) ⊢[PRAAx]
+        cAt c (fstT s + sndT s) t x ≐ succ (pred (cAt c (fstT s + sndT s) t x)) := Prf.hyp0
+    have st := step_hi h1
+    have eL := natEq ((congrFst hs'.wk).eqTrans (Prf.andE₁ st))
+    have eU := natEq ((congrSnd hs'.wk).eqTrans (Prf.andE₂ st))
+    have hle' := hle.wk
+      (ψ := cAt c (fstT s + sndT s) t x ≐ succ (pred (cAt c (fstT s + sndT s) t x)))
+    refine .andI ?_ ?_
+    · ipra_le 0 using linear_combination eL
+    · ipra_le sl hle' using linear_combination -eU
 
 /-- Congruence of `I3` in its first argument. -/
 theorem I3_congr₁ (F : Fm PTm 3) {a a' b d : PTm k} (h : Γ ⊢[PRAAx] a ≐ a')

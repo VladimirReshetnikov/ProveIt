@@ -19,9 +19,8 @@ index `1` on; the index `0` is reached by running `thm:touchard` backwards once
 * `period_succ`, `period_zero`, `bell_period`: `rem B_{N+(p^p−1)} p = rem B_N p` for every `N`;
 * `bell_period_closed`: the same closed over `p` and `N`.
 
-Not derived: that the shorter `N_p` is already a period (this needs
-`∏_{r<p} (E + r) ≡ E^p − E (mod p)` on the sequence), the least period, and
-`thm:all-moduli-period`.
+The sharp period `N_p` of the theorem is derived in `Combinatorics/BellPeriodNp`, which uses
+`shift_pp` of this module. Not derived: the least period and `thm:all-moduli-period`.
 -/
 
 namespace LeanProofs.IPRA.Combinatorics.BellPrimePeriod
