@@ -17786,6 +17786,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.MeshPositivity.grid_upper
 #print axioms LeanProofs.IPRA.Foundations.MeshPositivity.grid_le
 #print axioms LeanProofs.IPRA.Foundations.MeshPositivity.mesh_positive
+#print axioms LeanProofs.IPRA.Foundations.FilteredMinimization.score_adm
+#print axioms LeanProofs.IPRA.Foundations.FilteredMinimization.filtered_min
+#print axioms LeanProofs.IPRA.Foundations.FilteredMinimization.filtered_tie
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 
