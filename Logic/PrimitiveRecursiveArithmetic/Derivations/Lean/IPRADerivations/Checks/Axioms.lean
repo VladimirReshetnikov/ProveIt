@@ -1755,6 +1755,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.IntegerRootBound.pw_exp_mono
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.IntegerRootBound.weighted_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.IntegerRootBound.integer_root_bound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellLegendre.det_identity
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellLegendre.det_bound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellLegendre.legendre_finite
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras.pythagoras
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep.odd_sq_sum
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep.primitive_step
@@ -15733,6 +15736,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.bracket_order
 #print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.bracket_width
 #print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.raw_width
+#print axioms LeanProofs.IPRA.Analysis.EulerLogConvex.prod_mono
+#print axioms LeanProofs.IPRA.Analysis.EulerLogConvex.euler_log_convex
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.WInv
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.w_all
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.w_at

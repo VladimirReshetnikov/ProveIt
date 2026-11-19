@@ -117,6 +117,7 @@ import IPRADerivations.Analysis.WeightedAMGM
 import IPRADerivations.Analysis.EulerBrackets
 import IPRADerivations.Analysis.PowerGap
 import IPRADerivations.Analysis.EulerSqueeze
+import IPRADerivations.Analysis.EulerLogConvex
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BrunElementary
@@ -300,6 +301,7 @@ import IPRADerivations.DiophantineNumberTheory.SquareSplit
 import IPRADerivations.DiophantineNumberTheory.PrimitiveReduction
 import IPRADerivations.DiophantineNumberTheory.RungeProduct
 import IPRADerivations.DiophantineNumberTheory.IntegerRootBound
+import IPRADerivations.DiophantineNumberTheory.PellLegendre
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder
