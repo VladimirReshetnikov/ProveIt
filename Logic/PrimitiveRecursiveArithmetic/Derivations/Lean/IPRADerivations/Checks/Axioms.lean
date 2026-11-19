@@ -861,6 +861,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.MedianWeighted.sum_triangle
 #print axioms LeanProofs.IPRA.Probability.MedianWeighted.mean_median
 #print axioms LeanProofs.IPRA.Probability.MedianIndex.median_index
+#print axioms LeanProofs.IPRA.Probability.MedianSimilarity.orth_norm
+#print axioms LeanProofs.IPRA.Probability.MedianSimilarity.similarity_sq
 #print axioms LeanProofs.IPRA.Probability.MedianSymmetry.refl_monus
 #print axioms LeanProofs.IPRA.Probability.MedianSymmetry.cdf_of_med
 #print axioms LeanProofs.IPRA.Probability.MedianSymmetry.med_of_cdf

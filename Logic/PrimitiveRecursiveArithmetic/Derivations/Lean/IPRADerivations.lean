@@ -444,6 +444,7 @@ import IPRADerivations.Probability.SampleMedianPmf
 import IPRADerivations.Probability.MedianL1
 import IPRADerivations.Probability.MedianWeighted
 import IPRADerivations.Probability.MedianIndex
+import IPRADerivations.Probability.MedianSimilarity
 import IPRADerivations.Probability.MedianSymmetry
 import IPRADerivations.Probability.MedianRobust
 import IPRADerivations.Probability.Ninther
