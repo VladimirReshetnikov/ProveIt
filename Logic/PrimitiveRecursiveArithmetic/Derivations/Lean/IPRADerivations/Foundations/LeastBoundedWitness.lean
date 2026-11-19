@@ -51,7 +51,12 @@ Further forms, for packets whose statement is one of these:
 * `all_iff`: the universal fold bit `1 ∸ h` satisfies `1 ∸ h = 1 ↔ ∀ i < N. f(i, x) ≠ 0`; with `found_iff`
   and the witness clauses this is `thm:fold-correct` of `ipra_certified_finitary_framework_2026-11-15`
   ("Fold and search correctness") and the characteristic functions of the lemma "Bounded logical
-  operations" of `analytic-number-theory/prime_distribution_ipra`.
+  operations" of `analytic-number-theory/prime_distribution_ipra`;
+* `witness_of_bound`, `decide_of_bound` (`ipra_framework_2026-11-15`, Lemma "Search from a supplied height
+  bound"): under a height bound `∀ y. f(y, x) = 0 → y < N`, an unbounded solution is found by the bounded
+  search (`μ < N`, `f(μ, x) = 0`), and existence is decided:
+  `(∃ y. f(y, x) = 0) ∨ (∀ y. f(y, x) ≠ 0)`. The complete list of the solutions is
+  `Foundations/BoundedEnumeration`.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -221,5 +226,35 @@ theorem bit_of_all {N x : PTm n} (h : Γ ⊢[PRAAx] NoW f N x) :
 theorem all_iff (N x : PTm n) :
     Γ ⊢[PRAAx] Fm.iff (monus (succ zero) (fnd f N x) ≐ succ zero) (NoW f N x) :=
   Prf.iffI (.impI (all_of_bit Prf.hyp0)) (.impI (bit_of_all Prf.hyp0))
+
+/-! ## Search from a supplied height bound -/
+
+/-- Under a height bound `∀ y. f(y, x) = 0 → y < N`, an unbounded solution is found by the bounded search:
+`(∃ y. f(y, x) = 0)` gives `μ < N` and `f(μ, x) = 0`. -/
+theorem witness_of_bound {N x : PTm n}
+    (hb : Γ ⊢[PRAAx] Fm.all ((inst2 f (var 0) (Syn.shift x) ≐ zero) ⟶ lt (var 0) (Syn.shift N)))
+    (hex : Γ ⊢[PRAAx] Fm.ex (inst2 f (var 0) (Syn.shift x) ≐ zero)) :
+    Γ ⊢[PRAAx] lt (mu f N x) N ⋏ (inst2 f (mu f N x) x ≐ zero) := by
+  refine .exE hex ?_
+  have w : ((inst2 f (var 0) (Syn.shift x) ≐ zero) :: Γ.map Fm.shift) ⊢[PRAAx]
+      inst2 f (var 0) (Syn.shift x) ≐ zero := Prf.hyp0
+  have sf := search_found w (Prf.impE hb.allOpen.wk w)
+  simp only [Fm.shift, Fm.subst_and, Fm.subst_eq, subst_lt, subst_ap2, subst_inst2, ConciseIPRA.PTm.subst_zero]
+  exact .andI (Prf.andE₁ sf) (Prf.andE₁ (Prf.andE₂ sf))
+
+/-- A height bound decides existence: `(∃ y. f(y, x) = 0) ∨ (∀ y. f(y, x) ≠ 0)`. -/
+theorem decide_of_bound {N x : PTm n}
+    (hb : Γ ⊢[PRAAx] Fm.all ((inst2 f (var 0) (Syn.shift x) ≐ zero) ⟶ lt (var 0) (Syn.shift N))) :
+    Γ ⊢[PRAAx] Fm.ex (inst2 f (var 0) (Syn.shift x) ≐ zero) ⋎
+      Fm.all (neg (inst2 f (var 0) (Syn.shift x) ≐ zero)) := by
+  refine .orE (decision (f := f) N x) (.orI₁ ?_) (.orI₂ ?_)
+  · have w := lt_of_exists (Prf.hyp0 : (ExW f N x :: Γ) ⊢[PRAAx] ExW f N x)
+    refine .exI (mu f N x) ?_
+    simp only [Fm.subst_eq, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+      ConciseIPRA.PTm.subst_zero]
+    exact Prf.andE₂ w
+  · have hN : (NoW f N x :: Γ) ⊢[PRAAx] NoW f N x := Prf.hyp0
+    refine .allI (.impI ?_)
+    exact Prf.impE (Prf.impE hN.allOpen.wk (Prf.impE hb.allOpen.wk.wk Prf.hyp0)) Prf.hyp0
 
 end LeanProofs.IPRA.Foundations.LeastBoundedWitness

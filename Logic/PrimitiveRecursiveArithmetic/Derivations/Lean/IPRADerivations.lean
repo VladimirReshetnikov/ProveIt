@@ -89,16 +89,20 @@ import IPRADerivations.Analysis.WallisFinite
 import IPRADerivations.Analysis.RobbinsSeries
 import IPRADerivations.Analysis.ExponentialSeries
 import IPRADerivations.Analysis.WeierstrassProduct
+import IPRADerivations.Analysis.BinomialExponentialGap
+import IPRADerivations.Analysis.StirlingElimination
 import IPRADerivations.Analysis.FiniteDifferenceIdentities
 import IPRADerivations.Analysis.RiemannRefinement
 import IPRADerivations.Analysis.EvenPowerIntegrals
 import IPRADerivations.Analysis.EulerPiSeries
 import IPRADerivations.Analysis.FiniteFTC
 import IPRADerivations.Analysis.RiemannSumRules
+import IPRADerivations.Analysis.BernsteinContraction
 import IPRADerivations.Analysis.RobbinsTelescope
 import IPRADerivations.Analysis.WeightedAMGM
 import IPRADerivations.Analysis.EulerBrackets
 import IPRADerivations.Analysis.PowerGap
+import IPRADerivations.Analysis.EulerSqueeze
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
@@ -191,6 +195,7 @@ import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.Combinatorics.BellPascalInversion
 import IPRADerivations.Combinatorics.BellSpivey
 import IPRADerivations.Combinatorics.BellTouchard
+import IPRADerivations.Combinatorics.BellTouchardPower
 import IPRADerivations.Combinatorics.StirlingInclusion
 import IPRADerivations.Combinatorics.BellDobinski
 import IPRADerivations.Combinatorics.Vandermonde
@@ -305,6 +310,7 @@ import IPRADerivations.Geometry.SphericalHalfTangent
 import IPRADerivations.Geometry.SphericalVariation
 import IPRADerivations.Geometry.TetrahedralGram
 import IPRADerivations.Geometry.SphericalSolidAngle
+import IPRADerivations.Geometry.RodriguesFixedLine
 import IPRADerivations.Geometry.SphericalPlanarLimit
 import IPRADerivations.Geometry.SphericalDelambre
 import IPRADerivations.Geometry.SphericalArea
@@ -395,7 +401,9 @@ import IPRADerivations.Geometry.RodriguesMap
 import IPRADerivations.Geometry.IsoperimetricIdentities
 import IPRADerivations.Geometry.PlatonicAlgebra
 import IPRADerivations.Geometry.PappusCell
+import IPRADerivations.Geometry.PappusGrid
 import IPRADerivations.Geometry.CircumcentreUnique
+import IPRADerivations.Geometry.FiniteTriangleLaws
 import IPRADerivations.Geometry.MonotileSubstitution
 import IPRADerivations.Combinatorics.FibonacciLucasMore
 import IPRADerivations.Core.PolynomialInequalities
@@ -449,6 +457,9 @@ import IPRADerivations.Foundations.VandermondeDeterminant
 import IPRADerivations.Foundations.GenericDirection
 import IPRADerivations.Foundations.LexFuelMonotone
 import IPRADerivations.Foundations.DemandRecursion
+import IPRADerivations.Foundations.TermCompiler
+import IPRADerivations.Foundations.ExhaustiveWitness
+import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Foundations.LexPotential
 import IPRADerivations.Foundations.LexChain
 import IPRADerivations.Foundations.AutomaticLexFuel
@@ -488,6 +499,7 @@ import IPRADerivations.Foundations.SquareRootRelationalCertificate
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 import IPRADerivations.Topology.Carriers
+import IPRADerivations.Topology.CarrierComposition
 
 import IPRADerivations.Algebra.PolynomialFiniteRoots
 import IPRADerivations.Analysis.LogisticName
@@ -763,6 +775,11 @@ import IPRADerivations.Foundations.VectorStabilization
 import IPRADerivations.Foundations.ProofSchedule
 import IPRADerivations.Foundations.ReachableFrontier
 import IPRADerivations.Foundations.GraphDemand
+import IPRADerivations.Foundations.FrontierSoundness
+import IPRADerivations.Foundations.ModulusNormalization
+import IPRADerivations.Foundations.UniformCertificates
+import IPRADerivations.Foundations.SplitBranches
+import IPRADerivations.Foundations.ObservationEstimates
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
