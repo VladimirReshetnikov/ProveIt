@@ -971,6 +971,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.StableRootBounds.ad_sq_diff
 #print axioms LeanProofs.IPRA.Algebra.StableRootBounds.cos_lipschitz
 #print axioms LeanProofs.IPRA.Algebra.StableRootBounds.sqrt_scalar
+#print axioms LeanProofs.IPRA.Algebra.MixedBasisBound.entry_bound
+#print axioms LeanProofs.IPRA.Algebra.MixedBasisBound.mixed_basis_bound
 #print axioms LeanProofs.IPRA.Algebra.PowerDifference.gd_zero
 #print axioms LeanProofs.IPRA.Algebra.PowerDifference.gd_succ
 #print axioms LeanProofs.IPRA.Algebra.PowerDifference.power_diff
