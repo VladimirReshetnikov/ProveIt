@@ -15818,6 +15818,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.AuxiliaryEnvelope.pair_congr
 #print axioms LeanProofs.IPRA.Foundations.AuxiliaryEnvelope.fibre_count
 #print axioms LeanProofs.IPRA.Foundations.AuxiliaryEnvelope.cover_card
+#print axioms LeanProofs.IPRA.Foundations.WeightedMonomials.weight_dvd
+#print axioms LeanProofs.IPRA.Foundations.WeightedMonomials.weight_core
+#print axioms LeanProofs.IPRA.Foundations.WeightedMonomials.weight_unique
+#print axioms LeanProofs.IPRA.Foundations.WeightedMonomials.weight_unique_closed
+#print axioms LeanProofs.IPRA.Foundations.WeightedMonomials.weighted_cover
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bc
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bt
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.eqbProd
