@@ -10045,6 +10045,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.StructuralRules.specialization
 #print axioms LeanProofs.IPRA.Foundations.StructuralRules.existential_sealing
 #print axioms LeanProofs.IPRA.Foundations.StructuralRules.qf_induction
+#print axioms LeanProofs.IPRA.Foundations.SealingVariants.certificate_sealing
+#print axioms LeanProofs.IPRA.Foundations.SealingVariants.conditional_boundary
+#print axioms LeanProofs.IPRA.Foundations.SealingVariants.dependent_sealing
+#print axioms LeanProofs.IPRA.Foundations.SealingVariants.existential_output
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
