@@ -1742,6 +1742,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.prod_sum_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.half_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct.half_le_max
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.IntegerRootBound.pw_exp_mono
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.IntegerRootBound.weighted_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.IntegerRootBound.integer_root_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras.pythagoras
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep.odd_sq_sum
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep.primitive_step

@@ -299,6 +299,7 @@ import IPRADerivations.DiophantineNumberTheory.CoprimeModulus
 import IPRADerivations.DiophantineNumberTheory.SquareSplit
 import IPRADerivations.DiophantineNumberTheory.PrimitiveReduction
 import IPRADerivations.DiophantineNumberTheory.RungeProduct
+import IPRADerivations.DiophantineNumberTheory.IntegerRootBound
 import IPRADerivations.Foundations.QuantitativeIdentities
 import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder
