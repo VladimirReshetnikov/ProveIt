@@ -2751,6 +2751,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.InvolutionParity.lower_half
 #print axioms LeanProofs.IPRA.Foundations.InvolutionParity.upper_half
 #print axioms LeanProofs.IPRA.Foundations.InvolutionParity.involution_even
+#print axioms LeanProofs.IPRA.Foundations.BoundedDecision.le_of_lt_succ
+#print axioms LeanProofs.IPRA.Foundations.BoundedDecision.cases_num
+#print axioms LeanProofs.IPRA.Foundations.BoundedDecision.decide_at
+#print axioms LeanProofs.IPRA.Foundations.BoundedDecision.decide_aux
+#print axioms LeanProofs.IPRA.Foundations.BoundedDecision.bounded_decide
+#print axioms LeanProofs.IPRA.Foundations.BoundedDecision.mem_vals
+#print axioms LeanProofs.IPRA.Foundations.BoundedDecision.bounded_decide_list
+#print axioms LeanProofs.IPRA.Foundations.BoundedDecision.triangle_doors
 #print axioms LeanProofs.IPRA.Foundations.PowerBezout.shift_add
 #print axioms LeanProofs.IPRA.Foundations.PowerBezout.shift_pw
 #print axioms LeanProofs.IPRA.Foundations.PowerBezout.g_at
