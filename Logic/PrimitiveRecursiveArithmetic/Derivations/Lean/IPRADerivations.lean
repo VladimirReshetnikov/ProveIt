@@ -784,6 +784,9 @@ import IPRADerivations.Foundations.SplitBranches
 import IPRADerivations.Foundations.ObservationEstimates
 import IPRADerivations.Foundations.RunningIntersection
 import IPRADerivations.Foundations.RiseAlternative
+import IPRADerivations.Foundations.WindowStability
+import IPRADerivations.Foundations.FiniteReplay
+import IPRADerivations.Foundations.PrecisionGate
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion

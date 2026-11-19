@@ -15892,5 +15892,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.RiseAlternative.rise_all
 #print axioms LeanProofs.IPRA.Foundations.RiseAlternative.rise_alternative
 #print axioms LeanProofs.IPRA.Foundations.RiseAlternative.nonrise_of_bound
+#print axioms LeanProofs.IPRA.Foundations.WindowStability.window_of_nonrise
+#print axioms LeanProofs.IPRA.Foundations.WindowStability.sum_lower
+#print axioms LeanProofs.IPRA.Foundations.WindowStability.telescope_incr
+#print axioms LeanProofs.IPRA.Foundations.WindowStability.min_gap
+#print axioms LeanProofs.IPRA.Foundations.FiniteReplay.replay_step
+#print axioms LeanProofs.IPRA.Foundations.FiniteReplay.replay
+#print axioms LeanProofs.IPRA.Foundations.FiniteReplay.replay_at
+#print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_mul
+#print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_step
+#print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_all
+#print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_at
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
