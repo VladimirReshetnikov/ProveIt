@@ -379,11 +379,13 @@ import IPRADerivations.Geometry.KerrNewmanAlgebra
 import IPRADerivations.Geometry.KerrNewmanInverse
 import IPRADerivations.Geometry.KerrNewmanIngoing
 import IPRADerivations.Foundations.FormalDerivation
+import IPRADerivations.Foundations.ExpressionRenaming
 import IPRADerivations.Geometry.KerrNewmanBase
 import IPRADerivations.Geometry.KerrNewmanBaseCurvature
 import IPRADerivations.Geometry.KerrNewmanConnection
 import IPRADerivations.Geometry.KerrNewmanRicci
 import IPRADerivations.Geometry.KerrNewmanMaxwell
+import IPRADerivations.Geometry.KerrNewmanEinstein
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
