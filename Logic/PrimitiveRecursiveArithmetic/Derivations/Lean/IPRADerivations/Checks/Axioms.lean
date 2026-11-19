@@ -13527,6 +13527,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.RationalRootFactor.low_pt
 #print axioms LeanProofs.IPRA.Foundations.RationalRootFactor.decompose
 #print axioms LeanProofs.IPRA.Foundations.RationalRootFactor.factor_out
+#print axioms LeanProofs.IPRA.Foundations.RationalRootList.pair_congr
+#print axioms LeanProofs.IPRA.Foundations.RationalRootList.side_gen
+#print axioms LeanProofs.IPRA.Foundations.RationalRootList.side_at
+#print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK_at
+#print axioms LeanProofs.IPRA.Foundations.RationalRootList.root_test_of_eq
+#print axioms LeanProofs.IPRA.Foundations.RationalRootList.eq_of_root_test
+#print axioms LeanProofs.IPRA.Foundations.RationalRootList.roots_sound
+#print axioms LeanProofs.IPRA.Foundations.RationalRootList.roots_listed
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.code_lt
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.dig_congr
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.dig_code
