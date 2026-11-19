@@ -1,0 +1,126 @@
+\section{General real planes: a quantitative interpretation}
+\label{sec:realinputs}
+iPRA is a first-order theory of natural numbers. It does not literally
+quantify over every subset of the real numbers, every real Cauchy
+sequence, or every real plane. Equation (\ref{eq:ipraendpoint}) is its
+precise exact-arithmetic theorem. Here we explain why this proves the
+stated geometric result, and how to read it constructively for supplied
+real-number names. The distinction is substantive, not a change of the
+optimization problem.
+
+\subsection{Uniform geometric margins}
+Every unscaled coordinate model in this report satisfies
+\[
+ \tfrac12\mathbb B\subseteq K\subseteq2\mathbb B,
+                                                               \tag{R1}
+\]
+where $\mathbb B$ is the Euclidean unit ball. The outer inclusion follows
+by checking squared vertex norms against $4$. For the inner inclusion,
+orient each facet inequality as $v\cdot x\le d$ with $d>0$ and check
+$4d^2\ge v\cdot v$. These are finite checks in $K=\QQ(\varphi)$ and
+are also performed by the witness program. Convexity gives, for
+$0<\epsilon<1$,
+\begin{equation}
+ (1-\epsilon)K+\tfrac\epsilon2\mathbb B\subseteq K.
+                                                               \label{eq:margin}
+\end{equation}
+Every planar section is contained in a disk of radius $2$, hence has
+area at most $16$ by an enclosing square. In particular each displayed
+raw maximum $M$ is at most $16$.
+
+\subsection{Approximate a plane after contracting its section}
+Let $S=K\cap H(u,t)$, with $\|u\|=1$. If $S$ is nonempty then
+$|t|\le2$. Fix a rational $0<\epsilon\le1/2$, and let $s=1-\epsilon$.
+Choose a nonzero dyadic vector $n$ so that, on putting $w=n/\|n\|$,
+\[
+ \|w-u\|\le\epsilon/8.
+\]
+This is an explicit finite approximation: component errors at most
+$\epsilon/64$ suffice, since $\|n-u\|\le\epsilon/32$ and
+$\|n/\|n\|-u\|\le2\|n-u\|$. In particular $\|n\|\ge1/2$.
+Choose a dyadic $d$ with
+\[
+ |d-\|n\|st|\le\epsilon/8,
+ \qquad t'=d/\|n\|,
+\]
+so $|t'-st|\le\epsilon/4$.
+
+There is a rotation $R$ taking $u$ to $w$ with
+$\|R-\mathrm{id}\|_{\mathrm{op}}=\|u-w\|$.
+For a finite algebraic verification, when $u\cdot w>-1$ put
+$v=u\times w$ and use
+\[
+ R=\mathrm{id}+[v]_\times+\frac{[v]_\times^2}{1+u\cdot w},
+ \qquad [v]_\times x=v\times x.
+\]
+Matrix multiplication verifies orthogonality and $Ru=w$; restriction
+to the plane spanned by $u,w$ verifies the displayed operator-norm
+identity. In our application the denominator is bounded away from
+zero. If $u=w$, the identity rotation suffices and the same formula
+already gives it.
+
+The congruent copy
+\[
+ S'=R(sS)+(t'-st)w
+\]
+lies in the dyadic plane $H(n,d)$ and has area $s^2\Area(S)$.
+For every $x\in S$,
+\[
+ \|R(sx)+(t'-st)w-sx\|
+ \le2\|R-\mathrm{id}\|_{\mathrm{op}}+|t'-st|
+ \le\epsilon/2.
+\]
+By (\ref{eq:margin}), $S'\subseteq K$. Therefore the proved
+arithmetic-plane inequality gives
+\[
+ s^2\Area(S)\le\Area(K\cap H(n,d))\le M,
+ \qquad \Area(S)\le\frac{M}{(1-\epsilon)^2}.        \tag{R2}
+\]
+Since $\epsilon\le1/2$,
+\[
+ \frac1{(1-\epsilon)^2}-1\le8\epsilon.
+\]
+Taking $\epsilon=2^{-(k+8)}$ in (R2) proves the explicit bound
+\[
+ \Area(S)\le M+2^{-k}
+ \qquad\hbox{for every }k\in\mathbb N.             \tag{R3}
+\]
+The constants above actually leave a factor of two in reserve.
+This argument includes supporting faces. It does not assert that
+section area is continuous across a supporting plane, which would be
+false because the nearby exterior sections are empty.
+
+\subsection{Classical and constructive readings}
+In ordinary real geometry, (R3) for every $k$ is exactly the sharp
+inequality $\Area(S)\le M$. Together with the explicit attaining
+algebraic planes, it proves the optimization result over all real
+affine planes, not merely planes with algebraic coefficients.
+
+For a constructive reading, supply a unit normal and offset by Cauchy
+names with a specified error modulus, or supply a nonzero normal
+with a positive lower bound on its norm and then normalize it. For
+each requested accuracy, the construction queries finitely many
+approximations and produces dyadic $n,d$ and the quantitative
+implication (R2). Square roots of positive rationals are approximated
+by bounded integer bisection; the required reciprocal has a supplied
+positive denominator bound. These are primitive recursive
+operations. The resulting family of finite precision statements
+has an iPRA proof for every fixed primitive recursive family of
+input names whose approximation contracts are available in iPRA.
+Here the area upper bound is interpreted as a predicate on finite
+inscribed polygon data, or conditionally on a supplied area name with
+its geometric approximation contract. An area name for the full
+section is not computed from arbitrary plane names: such a uniform
+computation would fail at supporting planes. The construction computes
+the dyadic comparison plane. Its upper bound applies to every finite
+inscribed polygon, and hence to a supplied section-area name satisfying
+the stated contract. The inequality between represented real areas is
+read through these finite precision statements.
+
+This is a schema for specified names and their contracts. It is not
+an internally quantified claim that every real is coded by a natural
+number, nor a total universal evaluator for arbitrary purported
+primitive recursive program codes. The exact theorem, its
+constructive finite precision consequences, and its ordinary-real
+interpretation are thus kept distinct and connected by an explicit
+error calculation.

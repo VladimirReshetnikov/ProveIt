@@ -1,0 +1,196 @@
+\section{Tetrahedron: the largest-face bound}
+The following elementary argument works for every nondegenerate tetrahedron,
+not only a regular one.  For three points define the oriented area vector by
+\[
+ F(P,Q,R)=\frac12(Q-P)\mathbin\times(R-P).
+\]
+Its norm is the area of the triangle.  This vector is affine in each of
+its three arguments separately, as is clear from
+$2F(P,Q,R)=P\times Q+Q\times R+R\times P$.
+Consequently, if $P,Q,R$ are convex combinations of the four vertices,
+then $F(P,Q,R)$ is a convex combination of the $4^3=64$ corresponding
+vertex-triangle vectors.  The norm of each of those vectors is at most
+$M$, the largest face area.  The triangle inequality therefore proves
+that every triangle contained in the tetrahedron has area at most $M$.
+
+It remains to consider a quadrilateral section.  Label the vertices
+$A,B$ on one side and $C,D$ on the other, with respective positive
+signed heights $a,b,-c,-d$.  Translate so that $A=0$, and put
+$B=u,C=v,D=w$.  The vertices of the section in their cyclic order are
+\[
+ P=\alpha v,\quad Q=\beta w,\quad
+ R=(1-\gamma)u+\gamma w,\quad
+ S=(1-\delta)u+\delta v,
+\]
+where
+\[
+ \alpha=\frac a{a+c},\qquad \beta=\frac a{a+d},\qquad
+ \gamma=\frac b{b+d},\qquad \delta=\frac b{b+c}.
+\]
+Set
+\[
+ E_1=\frac12u\times v,\quad E_2=-\frac12u\times w,
+ \quad E_3=\frac12v\times w,\quad E_4=-E_1-E_2-E_3.
+\]
+These are signed face-area vectors, so $\lVert E_i\rVert\le M$.
+The quadrilateral area vector is
+\[
+ G=\frac12(R-P)\times(S-Q)=pE_1+qE_2+rE_3,
+\]
+with
+\begin{align*}
+ p&=\alpha+\delta-\alpha\delta-\gamma\delta,\\
+ q&=\beta+\gamma-\beta\gamma-\gamma\delta,\\
+ r&=\alpha\beta-\gamma\delta.
+\end{align*}
+The four numbers $p,q,p-r,q-r$ are nonnegative.  For example,
+\[
+ p=\alpha(1-\delta)+\delta(1-\gamma),\qquad
+ p-r=\alpha(1-\beta)+\delta(1-\alpha),
+\]
+and the two analogous formulas give the claim for $q,q-r$.
+If $r\le0$, apply the triangle inequality to $G$ as displayed.
+If $r\ge0$, instead use
+\[
+ G=(p-r)E_1+(q-r)E_2-rE_4.
+\]
+In both cases,
+\[
+ \lVert G\rVert\le(p+q-r)M.
+\]
+Finally the exact slack identity is
+\begin{align*}
+ 1-(p+q-r)
+ &=(\alpha+\gamma-1)(\beta+\delta-1)\\
+ &=\frac{(ab-cd)^2}{(a+c)(a+d)(b+c)(b+d)}\ge0.
+\end{align*}
+This proves the desired bound.  Sections with a vertex of the tetrahedron
+on the cutting plane are triangles or degenerate quadrilaterals.  In
+the latter case the same argument holds with nonnegative heights,
+provided the four displayed denominators are positive; if a denominator
+vanishes, the plane contains that entire edge, and the section is a
+triangle.  Thus no limiting argument is needed.
+
+For the regular model
+\[
+ T=\operatorname{conv}\{(1,1,1),(1,-1,-1),(-1,1,-1),(-1,-1,1)\},
+\]
+the edge length is $2\sqrt2$.  The plane $x+y+z=-1$ gives a face of
+area $2\sqrt3$.  With edge length $s$ the maximum is
+$\sqrt3\,s^2/4$.
+Here a planar section includes the intersection with a supporting
+plane.  If one requires the plane to meet the interior of $T$, this
+number is only a supremum: every genuine triangular or quadrilateral
+cut has strictly smaller area.  In the quadrilateral argument this
+follows from the strict triangle inequality for two nonparallel,
+nonzero face-area vectors; for a triangle the affine expansion gives
+equality only for a complete face.
+
+\section{Cube: an elementary central-section bound}
+Let $C=[-1,1]^3$.  Assume the separately proved central-section
+dominance lemma for centrally symmetric convex polytopes.  Sign changes
+and permutations of coordinates reduce the normal to
+$a\ge b\ge c\ge0$, with $a>0$.  Put $x=b/a$, $y=c/a$.
+The orthogonal graph of the central section over the $yz$ square is
+\[
+ X=-xY-yZ,\qquad |Y|,|Z|\le1,\quad |xY+yZ|\le1.
+\]
+Area on this graph equals projected area times
+$\sqrt{1+x^2+y^2}$.
+
+If $x+y\le1$, there is no truncation, and the area is
+\[
+ A=4\sqrt{1+x^2+y^2}\le4\sqrt2,
+\]
+because $x^2+y^2\le(x+y)^2\le1$.
+
+If $x+y>1$, let $r=x+y-1\in(0,1]$.  Here $x,y>0$.
+Exactly two opposite corners are removed from the projected square;
+each removed right triangle has legs $r/x,r/y$.  Thus
+\[
+ \frac A4=\sqrt{1+x^2+y^2}\left(1-\frac{r^2}{4xy}\right).
+\]
+The elementary inequalities
+\[
+ x^2+y^2\le1+r^2,\qquad 4xy\le(1+r)^2
+\]
+follow respectively from $(1-x)(1-y)\ge0$ and $(x-y)^2\ge0$.
+Hence
+\[
+ \frac A4\le\sqrt{2+r^2}\frac{1+2r}{(1+r)^2}\le\sqrt2.
+\]
+The last step is justified by the explicit polynomial identity
+\[
+ 2(1+r)^4-(2+r^2)(1+2r)^2
+ =r^2(3+4r-2r^2)
+ =r^2\bigl(3+2r+2r(1-r)\bigr)\ge0.
+\]
+All factors being squared or multiplied are nonnegative.
+Equality is achieved at $(x,y)=(1,0)$, i.e. $X+Y=0$.
+The section is the rectangle with vertices
+$(1,-1,1),(1,-1,-1),(-1,1,-1),(-1,1,1)$,
+with side lengths $2,2\sqrt2$ and area $4\sqrt2$.
+At edge length $s$ the maximum is $\sqrt2\,s^2$.
+
+\section{Octahedron: an all-positive polynomial certificate}
+Let $O=\{(X,Y,Z):|X|+|Y|+|Z|\le1\}$, with edge length $\sqrt2$.
+Again use central-section dominance.  Coordinate symmetries reduce a
+nonzero normal to $(a,b,c)$ with $a,b,c\ge0$ and $a>0$.
+If $b=c=0$, the section is the square $X=0$, of area $2$.
+Otherwise $D=(a+b)(a+c)(b+c)>0$, and its vertices, allowing duplicates
+when a coefficient vanishes, are
+\[
+ P=\frac{(b,-a,0)}{a+b},\qquad
+ Q=\frac{(c,0,-a)}{a+c},\qquad
+ R=\frac{(0,c,-b)}{b+c},\qquad -P,-Q,-R.
+\]
+They occur in the listed cyclic order.  The shoelace area vector is
+\[
+ P\times Q+Q\times R-R\times P
+ =\frac{2(ab+ac+bc)}D(a,b,c).
+\]
+Consequently
+\[
+ A=\frac{2\sqrt{a^2+b^2+c^2}(ab+ac+bc)}D\le2,
+\]
+where the inequality follows by squaring and using
+\begin{align*}
+ D^2-(a^2+b^2+c^2)(ab+ac+bc)^2
+ ={}&2(a^3b^3+a^3c^3+b^3c^3)\\
+ &+4abc(a^2b+a^2c+ab^2+ac^2+b^2c+bc^2)\\
+ &+7a^2b^2c^2\ge0.
+\end{align*}
+Every monomial has a nonnegative coefficient.  If at least two normal
+coordinates are positive, the difference is strictly positive, so the
+only maximizing central planes are the coordinate planes.
+For example $Z=0$ gives the square with vertices
+$(1,0,0),(0,1,0),(-1,0,0),(0,-1,0)$.
+Scaling to edge length $s$ gives maximum area $s^2$.
+
+\section{Arithmetic and formalization notes}
+All inequalities above have fixed finite algebraic proofs over ordered
+fields.  The displayed slack identities are checked by
+\texttt{verify\_small\_solids.py}; the checker is supplementary evidence,
+and the identities themselves are visible certificates.
+For iPRA, integer and rational arithmetic are primitive recursive;
+sign cases are decidable for encoded rationals or fixed-degree real
+algebraic coordinates.  The operations and loops have fixed finite
+bounds.  One must separately supply the representation and error
+control for arbitrary constructive plane normals, as in the common
+framework, rather than assume that arbitrary real-number sign tests
+are decidable.  Square roots in the Euclidean area formulas can be
+replaced throughout the upper-bound verification by nonnegative squared
+areas.  In Lean, the polynomial identities are \texttt{ring}; their
+nonnegativity uses \texttt{positivity} and \texttt{nlinarith} after the
+explicit denominator-positivity lemmas.  The geometric bridge uses
+finite convex combinations, cross products, and cyclic polygon area
+vectors; it does not need an unbounded search or an existence theorem
+for a maximizing plane.
+
+The generic tetrahedron largest-face theorem is historically recorded
+in M. S. Klamkin, ``Largest Cross-Section of a Tetrahedron'',
+\emph{American Mathematical Monthly} 82 (1975), p.~661, solution to
+Problem E~1298, pointing back to Problem~5006 (1962--1963).
+An author-hosted collected reprint is at
+\url{https://carmamaths.org/resources/jon/Preprints/Books/Klamkin/komplete.pdf}.
+The proof given here is complete independently of that reference.
