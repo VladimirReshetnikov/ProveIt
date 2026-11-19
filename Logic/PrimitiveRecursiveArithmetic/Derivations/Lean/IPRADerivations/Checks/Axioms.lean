@@ -3312,6 +3312,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HeightContraction.pw_exp_mono
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HeightContraction.exponent_compare
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HeightContraction.height_contraction
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticFormulas.dup_numerator
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticFormulas.dup_denominator
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticFormulas.halving_quartic
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticFormulas.secant
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticFormulas.box_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus.p_gt_one
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus.p_coprime
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus.poch_ge_pow
