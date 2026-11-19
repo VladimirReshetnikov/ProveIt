@@ -460,6 +460,7 @@ import IPRADerivations.Foundations.DemandRecursion
 import IPRADerivations.Foundations.TermCompiler
 import IPRADerivations.Foundations.ExhaustiveWitness
 import IPRADerivations.Foundations.AuxiliaryEnvelope
+import IPRADerivations.Foundations.WeightedMonomials
 import IPRADerivations.Foundations.LexPotential
 import IPRADerivations.Foundations.LexChain
 import IPRADerivations.Foundations.AutomaticLexFuel
@@ -780,6 +781,8 @@ import IPRADerivations.Foundations.ModulusNormalization
 import IPRADerivations.Foundations.UniformCertificates
 import IPRADerivations.Foundations.SplitBranches
 import IPRADerivations.Foundations.ObservationEstimates
+import IPRADerivations.Foundations.RunningIntersection
+import IPRADerivations.Foundations.RiseAlternative
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
