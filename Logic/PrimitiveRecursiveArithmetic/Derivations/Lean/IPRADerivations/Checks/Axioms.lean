@@ -3075,6 +3075,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.OdeCertificates.jacobi_leading
 #print axioms LeanProofs.IPRA.Analysis.OdeCertificates.jacobi_first
 #print axioms LeanProofs.IPRA.Analysis.OdeCertificates.jacobi_zero
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricOdeFormal.euler_transform
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricOdeFormal.pfaff_transform
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricOdeFormal.wronskian_formal
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricOdeFormal.jacobi_equation
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricOdeFormal.q_form_formal
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.pascal_sum
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.E_succ
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.O_succ
