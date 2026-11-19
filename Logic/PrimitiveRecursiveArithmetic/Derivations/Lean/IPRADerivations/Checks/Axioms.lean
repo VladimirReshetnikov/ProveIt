@@ -15940,6 +15940,20 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.labelled_intro
 #print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.labelled_at
 #print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.labelled_step
+#print axioms LeanProofs.IPRA.Foundations.QueryCompilation.contract_cut
+#print axioms LeanProofs.IPRA.Foundations.QueryCompilation.conj_intro
+#print axioms LeanProofs.IPRA.Foundations.QueryCompilation.conj_elim
+#print axioms LeanProofs.IPRA.Foundations.QueryCompilation.node_accum
+#print axioms LeanProofs.IPRA.Foundations.QueryCompilation.query_compile
+#print axioms LeanProofs.IPRA.Foundations.QueryCompilation.reach_agree
+#print axioms LeanProofs.IPRA.Foundations.QueryCompilation.front_agree
+#print axioms LeanProofs.IPRA.Foundations.EnumerationSearch.search_sound
+#print axioms LeanProofs.IPRA.Foundations.EnumerationSearch.search_complete
+#print axioms LeanProofs.IPRA.Foundations.BisectionInvariant.step_lo
+#print axioms LeanProofs.IPRA.Foundations.BisectionInvariant.step_hi
+#print axioms LeanProofs.IPRA.Foundations.BisectionInvariant.bis_step
+#print axioms LeanProofs.IPRA.Foundations.BisectionInvariant.bisection_invariant
+#print axioms LeanProofs.IPRA.Foundations.BisectionInvariant.bisection_at
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 
