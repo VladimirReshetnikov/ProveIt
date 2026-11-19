@@ -2488,6 +2488,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper.block_le
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper.harmonic_upper
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper.harmonic_upper_closed
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal.inst2_sq
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal.cancel_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal.sq_quo_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal.subst_sqInv
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal.T_succ
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal.sq_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal.square_bound
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal.square_bound_closed
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.modulus_exponent
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.floor_bound
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.dyadic_rate
