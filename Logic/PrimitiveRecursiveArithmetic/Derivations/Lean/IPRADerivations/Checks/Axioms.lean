@@ -15914,6 +15914,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_step
 #print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_all
 #print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_at
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.viable_of_zero
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.zero_of_viable
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.start_spec
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.path_inv
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.path_local
+#print axioms LeanProofs.IPRA.Foundations.LeastViablePath.path_edge
+#print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.num_cases
+#print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.labelled_QF
+#print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.labelled_intro
+#print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.labelled_at
+#print axioms LeanProofs.IPRA.Foundations.LabelledInvariant.labelled_step
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 

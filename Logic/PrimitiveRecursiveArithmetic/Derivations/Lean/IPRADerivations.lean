@@ -789,6 +789,8 @@ import IPRADerivations.Foundations.RiseAlternative
 import IPRADerivations.Foundations.WindowStability
 import IPRADerivations.Foundations.FiniteReplay
 import IPRADerivations.Foundations.PrecisionGate
+import IPRADerivations.Foundations.LeastViablePath
+import IPRADerivations.Foundations.LabelledInvariant
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
