@@ -575,6 +575,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.HermiteCoefficients.binom_lower
 #print axioms LeanProofs.IPRA.Probability.HermiteCoefficients.hc_deriv
 #print axioms LeanProofs.IPRA.Probability.HermiteCoefficients.hc_closed
+#print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.phi_second
+#print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.cdf_ode
+#print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.hermite_step
+#print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.integrating_factor
+#print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.mills_derivative
+#print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.tail_step
+#print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.density_ode
+#print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.inflection
+#print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.stein_local
 #print axioms LeanProofs.IPRA.Probability.PoissonShift.shift_identity
 #print axioms LeanProofs.IPRA.Probability.PoissonShift.ff_ratio
 #print axioms LeanProofs.IPRA.Probability.PoissonShift.po_ratio
@@ -3104,6 +3113,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.LambertAlgebra.addition_identity
 #print axioms LeanProofs.IPRA.Analysis.LambertAlgebra.general_equation
 #print axioms LeanProofs.IPRA.Analysis.LambertAlgebra.power_identity
+#print axioms LeanProofs.IPRA.Analysis.LambertCalculus.dx_dw
+#print axioms LeanProofs.IPRA.Analysis.LambertCalculus.anti_W
+#print axioms LeanProofs.IPRA.Analysis.LambertCalculus.anti_W_over_x
+#print axioms LeanProofs.IPRA.Analysis.LambertCalculus.second_derivative
+#print axioms LeanProofs.IPRA.Analysis.LambertCalculus.anti_Ei
 #print axioms LeanProofs.IPRA.Analysis.RatioMajorant.coefficient_recurrence
 #print axioms LeanProofs.IPRA.Analysis.RatioMajorant.ratio_tail
 #print axioms LeanProofs.IPRA.Analysis.RatioMajorant.half_tail

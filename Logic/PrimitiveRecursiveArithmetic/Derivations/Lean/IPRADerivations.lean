@@ -60,6 +60,7 @@ import IPRADerivations.Analysis.BinomialCdf
 import IPRADerivations.Analysis.BetaBinomialSum
 import IPRADerivations.Analysis.NewtonCertificates
 import IPRADerivations.Analysis.LambertAlgebra
+import IPRADerivations.Analysis.LambertCalculus
 import IPRADerivations.Analysis.RatioMajorant
 import IPRADerivations.Analysis.ExponentialTail
 import IPRADerivations.Analysis.BarnesInteger
@@ -397,6 +398,7 @@ import IPRADerivations.Probability.SymmetrizedMoments
 import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.StPetersburg
 import IPRADerivations.Probability.HermiteCoefficients
+import IPRADerivations.Probability.GaussianDerivatives
 import IPRADerivations.Probability.PoissonShift
 import IPRADerivations.Probability.HarmonicRearrangement
 import IPRADerivations.Probability.TruncationEstimate
