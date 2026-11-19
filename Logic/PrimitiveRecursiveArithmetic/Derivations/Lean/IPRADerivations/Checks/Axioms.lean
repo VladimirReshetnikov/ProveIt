@@ -15984,6 +15984,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.CubicBisection.cubic_nested
 #print axioms LeanProofs.IPRA.Foundations.BoundedChoice.bounded_choice
 #print axioms LeanProofs.IPRA.Foundations.BoundedChoice.strategy_table
+#print axioms LeanProofs.IPRA.Foundations.DyadicNames.monus_anti
+#print axioms LeanProofs.IPRA.Foundations.DyadicNames.eps_anti
+#print axioms LeanProofs.IPRA.Foundations.DyadicNames.eps_half
+#print axioms LeanProofs.IPRA.Foundations.DyadicNames.sample_stability
+#print axioms LeanProofs.IPRA.Foundations.DyadicNames.add_regular
+#print axioms LeanProofs.IPRA.Foundations.DyadicNames.reciprocal_gap
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 
