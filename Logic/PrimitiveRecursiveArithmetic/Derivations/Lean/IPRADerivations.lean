@@ -195,6 +195,7 @@ import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.Combinatorics.BellPascalInversion
 import IPRADerivations.Combinatorics.BellSpivey
 import IPRADerivations.Combinatorics.BellTouchard
+import IPRADerivations.Combinatorics.BellTouchardPower
 import IPRADerivations.Combinatorics.StirlingInclusion
 import IPRADerivations.Combinatorics.BellDobinski
 import IPRADerivations.Combinatorics.Vandermonde
