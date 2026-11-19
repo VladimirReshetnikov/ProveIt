@@ -1,0 +1,136 @@
+% Self-contained strengthened lower-bound fragment.  Requires the segment/
+% projection lemma in lower_bound.tex, or its equivalent in the main report.
+\section{A stronger rational lower bound: 3/220}\label{sec:rational}
+
+The same segment-and-projection argument can be strengthened using a
+four-segment curve with a particularly convenient exact certificate.
+No numerical optimization is needed in the proof.
+
+\begin{lemma}[Finitely many directions suffice for a polytope's smallest shadow]
+Let $P$ be a full-dimensional convex polytope with triangular facets.
+For each facet, let $n_i$ be the cross product of two of its edge vectors,
+in either orientation.  Then
+\[
+ A(u):=\operatorname{area}(P_uP)
+ =\frac14\sum_i|n_i\cdot u|\qquad(\|u\|=1).
+\]
+The minimum of $A$ is attained at a direction parallel to $n_i\times n_j$
+for some pair of linearly independent facet vectors.
+\end{lemma}
+\begin{proof}
+The area formula follows by summing projected facet areas: a facet's area
+is $\|n_i\|/2$, and the front and back facets each cover the projection
+once almost everywhere.  Also $A(u)>0$ for every nonzero $u$, since
+$P$ has interior.
+
+Let $u$ minimize $A$. Suppose the facet vectors satisfying $n_i\cdot u=0$
+span a space of dimension at most one. Choose a unit vector $v\perp u$
+perpendicular to all these vanishing vectors, and set
+\[
+ u_\pm=\cos\varepsilon\,u\pm\sin\varepsilon\,v.
+\]
+For sufficiently small $\varepsilon>0$, every nonzero scalar product
+retains its sign, and all zero scalar products stay zero. Therefore
+\[
+ A(u_+)+A(u_-)=2\cos\varepsilon\,A(u)<2A(u).
+\]
+One nearby direction would have smaller area, a contradiction. Thus
+at a minimum two independent facet vectors vanish, so $u$ is parallel
+to their cross product.
+\end{proof}
+
+Consider the five points
+\[
+\begin{array}{c|rrr}
+i& p_{i,x}&p_{i,y}&p_{i,z}\\\hline
+0& 3&0&0\\
+1& 0&3&2\\
+2&-3&0&4\\
+3&0&-3&6\\
+4&3&0&8
+\end{array}
+\]
+and let $P=\operatorname{conv}\{p_0,\ldots,p_4\}$.
+Every successive edge $p_ip_{i+1}$ has length $\sqrt{22}$.
+Thus the polygonal curve through the scaled points
+$p_i/(4\sqrt{22})$ has length exactly one.  Any convex universal
+cover must contain a congruent copy of $P/(4\sqrt{22})$.
+
+The facets and their cross-product vectors are as follows; the orientation
+of a vector does not affect the projection formula.
+\[
+\begin{array}{c|c|rrr}
+i&\text{facet}&n_{i,x}&n_{i,y}&n_{i,z}\\\hline
+0&012&12&0&18\\
+1&014&24&24&0\\
+2&023&12&24&18\\
+3&034&-24&24&0\\
+4&124&-12&24&18\\
+5&234&-12&0&18
+\end{array}
+\]
+For completeness, these facets can be checked solely with integer
+arithmetic: for every listed triple, the other two vertices lie strictly
+on the same side of its plane; every unlisted nondegenerate triple has
+vertices on both sides.  The accompanying program enumerates all ten
+triples and performs exactly these checks.
+
+For $v=n_i\times n_j\ne0$, the square of the projection area in direction
+$u=v/\|v\|$ is the rational number
+\[
+ A(u)^2=
+ \frac{\left(\sum_{k=0}^{5}|n_k\cdot v|\right)^2}{16\,v\cdot v}.
+\]
+All fifteen pairs are independent.  The complete list of distinct
+values is short:
+\[
+\begin{array}{c|c|l}
+A(u)^2&\text{multiplicity}&\text{pairs }(i,j)\\\hline
+5184/25&1&(2,4)\\
+216&2&(1,4),(2,3)\\
+2592/11&6&(0,3),(0,4),(1,2),(1,5),(2,5),(3,4)\\
+324&1&(1,3)\\
+5184/13&2&(0,2),(4,5)\\
+5832/11&2&(0,1),(3,5)\\
+576&1&(0,5)
+\end{array}
+\]
+These are exact rational calculations.  The minimum is $5184/25$,
+so the smallest shadow of $P$ has area $72/5$.  It occurs in direction
+$(0,-3,4)/5$, proportional to $n_2\times n_4$.
+Scaling areas by $(4\sqrt{22})^{-2}=1/352$ gives
+\[
+ \min_{\|u\|=1}\operatorname{area}
+ \left(P_u\left(\frac{P}{4\sqrt{22}}\right)\right)
+ =\frac{72}{5\cdot352}=\frac9{220}.
+\]
+
+\begin{theorem}[Rational lower bound]
+Every convex body that contains a translated and rotated copy of every
+rectifiable space curve of length one has volume at least
+\[
+ \boxed{\frac3{220}=0.013636363636\ldots.}
+\]
+\end{theorem}
+\begin{proof}
+The body contains both a unit segment, in some direction $u$, and a
+congruent copy of $P/(4\sqrt{22})$.  Its projection onto $u^\perp$
+therefore has area at least $9/220$, irrespective of the relative
+orientation of the two test curves.  The segment-and-projection lemma
+gives volume at least $(1/3)(9/220)=3/220$.
+\end{proof}
+
+\paragraph{Reproducibility and scope.}
+The file \texttt{code/verify\_lower\_bound.py} checks the edge lengths,
+all supporting facets, the complete list of projection directions,
+and the final bound using only integers and exact rational arithmetic
+from the Python standard library.  The finite-direction lemma above
+supplies the global mathematical justification; the certificate is
+not a sampling experiment.  No claim of historical priority or
+best-known status is made for this lower bound.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{lower_bound.pdf}
+\caption{Left: the four-edge test curve and its convex hull after normalization to length one. Right: a schematic illustration of the concave-fiber argument in Lemma~\ref{lem:fiber}. The nested copies of the shadow give a lower bound for every height superlevel set.}
+\end{figure}

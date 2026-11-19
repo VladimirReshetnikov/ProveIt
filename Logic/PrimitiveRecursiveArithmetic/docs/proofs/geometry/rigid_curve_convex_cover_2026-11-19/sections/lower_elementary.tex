@@ -1,0 +1,98 @@
+% A self-contained contribution to the main report.
+\section{A lower bound from a regular tetrahedron and a unit segment}\label{sec:tetra}
+
+Every convex universal cover must contain a congruent regular tetrahedron
+of side length $1/3$: take a polygonal curve that visits all four vertices
+along three consecutive edges.  It must also contain a unit line segment.
+These two requirements combine to give a stronger bound than the volume
+of either test curve's convex hull alone.
+
+\begin{lemma}[A segment and a projection]\label{lem:fiber}
+Let $K\subset\mathbb R^3$ be a convex body, let $u$ be a unit vector,
+and suppose that $K$ contains a line segment of length $D$ parallel to $u$.
+Writing $P_u$ for orthogonal projection onto $u^\perp$, we have
+\[
+ \operatorname{vol}_3(K)\geq
+ \frac{D}{3}\operatorname{area}(P_uK).
+\]
+\end{lemma}
+\begin{proof}
+Set $B=P_uK$.  For $x\in B$, let $f(x)$ be the length of the fiber
+$K\cap(x+\mathbb Ru)$.  Convexity shows that $f$ is nonnegative and
+concave: convex combinations of two fiber intervals are contained in the
+corresponding intermediate fiber.  At the projection $x_0$ of the given
+segment, $f(x_0)\ge D$.  For $0\leq t\leq1$, concavity gives
+\[
+ f\bigl(t x_0+(1-t)x\bigr)\geq tD\qquad(x\in B).
+\]
+Consequently $\{f\geq tD\}$ contains $t x_0+(1-t)B$ and has area
+at least $(1-t)^2\operatorname{area}(B)$.  Cavalieri's principle and
+integration of the superlevel sets yield
+\[
+ \operatorname{vol}_3(K)=\int_B f(x)\,dx
+ \geq D\operatorname{area}(B)\int_0^1(1-t)^2\,dt
+ =\frac D3\operatorname{area}(B).
+\]
+The argument permits $x_0\in\partial B$ and fibers of zero length elsewhere.
+\end{proof}
+
+\begin{lemma}[Smallest shadow of a regular tetrahedron]
+For a regular tetrahedron $T$ of side length $a$, every orthogonal planar
+projection has area at least $a^2/(2\sqrt2)$.  Equality is attained when
+the projection direction is parallel to an edge.
+\end{lemma}
+\begin{proof}
+Put $b=a/(2\sqrt2)$ and choose vertices
+\[
+ b(1,1,1),\quad b(1,-1,-1),\quad
+ b(-1,1,-1),\quad b(-1,-1,1).
+\]
+For a convex polytope, its projected area is half the sum of the projected
+areas of its facets.  Indeed, except on sets of planar area zero, each
+line through a point of the projection meets precisely one front facet
+and one back facet.  For $u=(x,y,z)$ with $x^2+y^2+z^2=1$, the four
+equal facet areas and their unit normals therefore give
+\[
+ \operatorname{area}(P_uT)=\frac{a^2}{8}\bigl(
+ |x+y+z|+|x-y-z|+|-x+y-z|+|-x-y+z|\bigr).
+\]
+The expression in parentheses is invariant under permutations and sign
+changes of the coordinates.  Thus assume $x\geq y\geq z\geq0$ and write
+$s=x+y+z$.  The expression equals $4x$ if $x\geq y+z$, and $2s$
+if $x\leq y+z$.
+
+In the first case,
+$1=x^2+y^2+z^2\leq x^2+(y+z)^2\leq2x^2$, so $4x\geq2\sqrt2$.
+In the second, each coordinate is at most $s/2$, whence
+$1=x^2+y^2+z^2\leq(s/2)(x+y+z)=s^2/2$, and again
+$2s\geq2\sqrt2$.  This proves the claimed bound.  The direction
+$u=(1,1,0)/\sqrt2$, parallel to one of the tetrahedron's edges,
+attains equality.
+\end{proof}
+
+\begin{theorem}[An explicit universal-cover lower bound]
+If a convex body $K\subset\mathbb R^3$ contains a translated and rotated
+copy of every rectifiable curve of length $1$, then
+\[
+ \operatorname{vol}_3(K)\geq\frac{1}{54\sqrt2}
+ =0.0130945700219731\ldots.
+\]
+\end{theorem}
+\begin{proof}
+Choose the direction $u$ of a unit segment in $K$.  Let $T\subset K$
+be a regular tetrahedron of side $a=1/3$ obtained from the three-edge
+test curve.  The two preceding lemmas imply
+\[
+ \operatorname{vol}_3(K)\geq\frac13\operatorname{area}(P_uK)
+ \geq\frac13\operatorname{area}(P_uT)
+ \geq\frac{a^2}{6\sqrt2}=\frac{1}{54\sqrt2}.
+\]
+The segment and tetrahedron may have arbitrary relative positions and
+orientations.  The inequality uses no assumption about their placement.
+\end{proof}
+
+\paragraph{Status of this bound.}
+The argument above is supplied as an independently verified elementary
+bound, without a claim of historical priority or of being the best known
+lower bound.  In particular, it is a lower bound for a common container,
+not an identification of an optimal container.

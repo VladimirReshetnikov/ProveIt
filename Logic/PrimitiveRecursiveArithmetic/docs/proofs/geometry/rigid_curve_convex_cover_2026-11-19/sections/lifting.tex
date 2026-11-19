@@ -1,0 +1,163 @@
+% General lifting theorem; external inputs are stated, not reproved.
+\section{Lifting a planar cover into three dimensions}\label{sec:lift}
+The key construction applies to every convex planar universal cover, and
+separates the geometric argument from the choice of a particular planar
+cover. Planar congruences in the hypothesis may include reflections; the
+resulting three-dimensional cover works using proper rotations alone.
+
+\paragraph{External support-plane theorem.}
+We use Wienholtz's alternating-support result in the form proved by
+Ghomi~\cite[Corollary~3.2]{Ghomi2018}.
+For a continuous space curve whose affine span is three-dimensional, there
+are two parallel supporting planes and four parameter values
+$t_0<t_1<t_2<t_3$ at which the curve meets the two planes alternately.
+The curve lies in the slab between those planes. For a curve contained in a
+plane, we will instead use that containing plane as a slab of width zero.
+This is a nontrivial external theorem; the argument below is a deduction
+from it. The planes need not realize the curve's minimum width.
+
+\begin{theorem}[A planar cover produces a spatial cover]\label{thm:lift}
+Let $C\subset\mathbb R^2$ be a compact convex set with nonempty interior,
+containing the origin, which contains a congruent copy of every planar
+rectifiable curve of length at most one. Set
+\[
+ f(z)=\sqrt{1-36z^2},\qquad -\frac16\le z\le\frac16,
+\]
+and define
+\[
+ K_C=\left\{(p,z)\in\mathbb R^2\times\mathbb R:
+ |z|\le\frac16,\quad p\in f(z)C\right\}.
+\]
+Then $K_C$ is a convex body which contains a translated and properly rotated
+copy of every rectifiable space curve of length at most one. Moreover,
+\[
+ \boxed{|K_C|=\frac29\operatorname{area}(C).}
+\]
+\end{theorem}
+The assumption $0\in C$ entails no restriction on the area of a planar
+cover: any chosen point of the cover may be translated to the origin.
+
+\paragraph{Convexity and compactness.}
+The function $f$ is continuous and concave on $[-1/6,1/6]$. Compactness of
+$K_C$ follows from its representation as the continuous image of
+$C\times[-1/6,1/6]$ under $(c,z)\mapsto(f(z)c,z)$. To check convexity,
+take $(p_i,z_i)\in K_C$, write $p_i=f(z_i)c_i$ with $c_i\in C$, and let
+$0\le\lambda\le1$. Put
+\[
+ z=(1-\lambda)z_1+\lambda z_2,\qquad
+ a=(1-\lambda)f(z_1)+\lambda f(z_2).
+\]
+Convexity of $C$ gives
+$(1-\lambda)p_1+\lambda p_2\in aC$; when $a=0$ this simply says that the
+point is zero. Concavity gives $a\le f(z)$, and $0\in C$ implies
+$aC\subseteq f(z)C$. Thus the convex combination belongs to $K_C$.
+The product $(C/2)\times[-\sqrt3/12,\sqrt3/12]$ is contained in $K_C$,
+so $K_C$ has nonempty interior even when the origin is a boundary point
+of $C$.
+
+\paragraph{Length of the two projections.}
+Fix a curve $\gamma$ of length $L\le1$. A constant curve is immediate, so
+assume $L>0$. Apply the support-plane theorem if the curve is nonplanar;
+otherwise take a plane containing the curve. By a proper rigid motion,
+put the resulting supporting planes at $z=-h/2$ and $z=h/2$, where $h\ge0$.
+Write the transformed curve as $\gamma(s)=(p(s),z(s))$ and parametrize it
+by arclength. Let $\ell$ be the length of the planar projection $p$, and
+let $v$ be the total variation of $z$. The three alternating traversals
+between the supporting planes give
+\[
+ v\ge3h.
+\]
+This inequality also holds in the planar case $h=0$.
+Because an arclength parametrization is Lipschitz, its derivative exists
+almost everywhere and the projection lengths satisfy
+\[
+ \ell=\int_0^L |p'(s)|\,ds,\qquad
+ v=\int_0^L |z'(s)|\,ds.
+\]
+The triangle inequality for the integral of the two-dimensional vector
+$(|p'(s)|,|z'(s)|)$ yields
+\[
+ \sqrt{\ell^2+v^2}
+ \le \int_0^L\sqrt{|p'(s)|^2+|z'(s)|^2}\,ds=L\le1.
+\]
+Consequently
+\[
+ 0\le h\le\frac13,
+ \qquad \ell\le\sqrt{1-9h^2}.
+\]
+This is the essential link between the thickness of the chosen slab and
+the amount of length left in its orthogonal projection. The quantity $h$
+is the width of this chosen slab, not necessarily the minimum width over
+all directions.
+
+\paragraph{One rigid placement fits every height.}
+If $\ell>0$, the planar universality of $C$, applied after scaling the
+projection by $1/\ell$, supplies $A\in O(2)$ and $b\in\mathbb R^2$ such that
+\[
+ A p(s)+b\in\ell C\quad\hbox{for every }s.
+\]
+If $\ell=0$, the projection is a point; a translation sends it to the
+origin, giving the same conclusion with $\ell C=\{0\}$.
+For all points of the curve,
+\[
+ |z(s)|\le h/2\le1/6,
+ \qquad
+ f(z(s))\ge\sqrt{1-9h^2}\ge\ell.
+\]
+Since $0\in C$, we have $\ell C\subseteq f(z(s))C$. Hence this single
+planar placement fits the entire three-dimensional curve into $K_C$ at
+all heights simultaneously.
+
+For completeness, even if the planar placement uses a reflection, the
+three-dimensional placement can be chosen proper: put
+$\varepsilon=\det A\in\{-1,1\}$ and use
+\[
+ (p,z)\longmapsto(Ap+b,\varepsilon z).
+\]
+Its linear part has determinant $(\det A)\varepsilon=1$, while replacing
+$z$ by $-z$ preserves every slice of $K_C$. Composing with the initial
+proper rigid motion proves the assertion without permitting reflections
+of the physical space curve.
+
+\paragraph{Volume.}
+The section at height $z$ has area $f(z)^2\operatorname{area}(C)$. Thus
+Cavalieri's principle gives
+\[
+ |K_C|=\operatorname{area}(C)
+ \int_{-1/6}^{1/6}(1-36z^2)\,dz
+ =\frac29\operatorname{area}(C).
+\]
+
+\subsection{An explicit ellipsoidal sector of volume \texorpdfstring{$\pi/54$}{pi/54}}
+The planar theorem of Panraksa and Wichiramala~\cite{PW2021}
+states that a circular sector of unit radius
+and angle $\pi/6$ contains a congruent copy of every unit-length planar arc.
+The statement for shorter arcs follows by extending the path to unit
+length. Apply the lifting theorem to the sector
+\[
+ S=\{(\rho\cos\theta,\rho\sin\theta):
+ 0\le\rho\le1,\ |\theta|\le\pi/12\},
+ \qquad \operatorname{area}(S)=\frac{\pi}{12}.
+\]
+Since $\tan(\pi/12)=2-\sqrt3$, its lift is the explicit convex body
+\[
+ \boxed{K_S=\left\{(x,y,z):
+ x^2+y^2+36z^2\le1,\quad
+ x\ge0,\quad |y|\le(2-\sqrt3)x\right\}.}
+\]
+It is the intersection of an ellipsoid with a $30$-degree dihedral wedge,
+and
+\[
+ \boxed{|K_S|=\frac29\frac{\pi}{12}
+ =\frac{\pi}{54}=0.05817764173314\ldots.}
+\]
+This is a rigorously justified feasible volume; the lifting argument does
+not establish that it is the minimum. The more general theorem also shows
+how any improved convex planar cover immediately gives a corresponding
+three-dimensional upper bound.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{cover.pdf}
+\caption{Left: the explicit universal convex body, an ellipsoid intersected with a $30^\circ$ dihedral wedge. Right: for any chosen alternating-support slab, one prism of height $h$ and planar scale $\ell$ fits inside the body. The figure illustrates the proof; containment is proved by the exact inequality $\ell^2+9h^2\le1$.}
+\end{figure}
