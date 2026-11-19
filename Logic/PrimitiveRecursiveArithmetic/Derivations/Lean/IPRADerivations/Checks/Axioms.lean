@@ -13649,6 +13649,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.AutomaticLexFuel.shift_act
 #print axioms LeanProofs.IPRA.Foundations.AutomaticLexFuel.automatic_fuel
 #print axioms LeanProofs.IPRA.Foundations.AutomaticLexFuel.automatic_post
+#print axioms LeanProofs.IPRA.Foundations.AutomaticLexFuelExample.tau_at
+#print axioms LeanProofs.IPRA.Foundations.AutomaticLexFuelExample.act_at
+#print axioms LeanProofs.IPRA.Foundations.AutomaticLexFuelExample.rk_at
+#print axioms LeanProofs.IPRA.Foundations.AutomaticLexFuelExample.inv_at'
+#print axioms LeanProofs.IPRA.Foundations.AutomaticLexFuelExample.countdown
+#print axioms LeanProofs.IPRA.Foundations.AutomaticLexFuelExample.countdown_closed
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.Bez
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.P
 #print axioms LeanProofs.IPRA.Foundations.RationalRootDegree.tB
