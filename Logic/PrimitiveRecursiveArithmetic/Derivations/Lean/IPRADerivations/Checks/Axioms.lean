@@ -17789,6 +17789,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FilteredMinimization.score_adm
 #print axioms LeanProofs.IPRA.Foundations.FilteredMinimization.filtered_min
 #print axioms LeanProofs.IPRA.Foundations.FilteredMinimization.filtered_tie
+#print axioms LeanProofs.IPRA.Foundations.OverlapBranches.left_branch
+#print axioms LeanProofs.IPRA.Foundations.OverlapBranches.right_branch
+#print axioms LeanProofs.IPRA.Foundations.OverlapBranches.branch_cover
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 

@@ -891,6 +891,7 @@ import IPRADerivations.Foundations.ShiftedInduction
 import IPRADerivations.Foundations.CommonWindow
 import IPRADerivations.Foundations.MeshPositivity
 import IPRADerivations.Foundations.FilteredMinimization
+import IPRADerivations.Foundations.OverlapBranches
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
