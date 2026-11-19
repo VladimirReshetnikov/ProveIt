@@ -237,10 +237,9 @@ abbrev tele2F (p N : PTm n) : Fm PTm (n + 1) :=
     (rem (G (Syn.shift N) (Syn.shift p)) (Syn.shift p) ≐
       rem (Act gyB (var 0) (Syn.shift N) (monus (Syn.shift p) (var 0))) (Syn.shift p))
 
-/-- `G(N, p) ≡ ((E + 1) ⋯ (E + p) B)_N (mod p)`. -/
-theorem tele2 {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
+/-- `G(N, p) ≡ ((E + 1) ⋯ (E + p) B)_N (mod p)`, for every modulus `p ≥ 1`. -/
+theorem tele2_pos {p : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (N : PTm n) :
     Γ ⊢[PRAAx] rem (G N p) p ≐ rem (Act bellB p N zero) p := by
-  have hq := prime_eq_succ_pred hp
   have hall : Γ ⊢[PRAAx] Fm.all (tele2F p N) := by
     refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
     · have a0 := act_zero (Γ := le zero p :: Γ) gyB N (monus p zero)
@@ -266,6 +265,11 @@ theorem tele2 {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
     (.allI (.impI ?_))
   simp only [shift_pair, shift_monus, shift_zero]
   exact act_gy_bell _ _ _
+
+/-- `G(N, p) ≡ ((E + 1) ⋯ (E + p) B)_N (mod p)`. -/
+theorem tele2 {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
+    Γ ⊢[PRAAx] rem (G N p) p ≐ rem (Act bellB p N zero) p :=
+  tele2_pos (prime_eq_succ_pred hp) N
 
 /-! ## The period `N_p` -/
 

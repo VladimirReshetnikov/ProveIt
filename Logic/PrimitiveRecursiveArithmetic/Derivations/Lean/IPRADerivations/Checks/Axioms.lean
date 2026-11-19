@@ -2560,6 +2560,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BellPeriodNp.tail_eq
 #print axioms LeanProofs.IPRA.Combinatorics.BellPeriodNp.bell_period_Np
 #print axioms LeanProofs.IPRA.Combinatorics.BellPeriodNp.bell_period_Np_closed
+#print axioms LeanProofs.IPRA.Combinatorics.BellPeriodNp.tele2_pos
 #print axioms LeanProofs.IPRA.Combinatorics.BellLeastPeriod.e_at
 #print axioms LeanProofs.IPRA.Combinatorics.BellLeastPeriod.e_elim
 #print axioms LeanProofs.IPRA.Combinatorics.BellLeastPeriod.e_intro
@@ -2583,6 +2584,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BellLeastPeriod.shift_s
 #print axioms LeanProofs.IPRA.Combinatorics.BellLeastPeriod.s_test
 #print axioms LeanProofs.IPRA.Combinatorics.BellLeastPeriod.least_dvd
+#print axioms LeanProofs.IPRA.Combinatorics.BellModularRecurrence.bell_recurrence_mod
+#print axioms LeanProofs.IPRA.Combinatorics.BellModularRecurrence.cyc_self
+#print axioms LeanProofs.IPRA.Combinatorics.BellModularRecurrence.act_split
+#print axioms LeanProofs.IPRA.Combinatorics.BellModularRecurrence.recurrence_split
 #print axioms LeanProofs.IPRA.Combinatorics.DobinskiTruncation.aD_at
 #print axioms LeanProofs.IPRA.Combinatorics.DobinskiTruncation.l_at
 #print axioms LeanProofs.IPRA.Combinatorics.DobinskiTruncation.inst2_eD
