@@ -444,6 +444,7 @@ import IPRADerivations.Foundations.EliminationRoot
 import IPRADerivations.Foundations.VandermondeDeterminant
 import IPRADerivations.Foundations.GenericDirection
 import IPRADerivations.Foundations.LexFuelMonotone
+import IPRADerivations.Foundations.DemandRecursion
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.EigenvalueIntegral
 import IPRADerivations.Foundations.EigenvalueGrid
