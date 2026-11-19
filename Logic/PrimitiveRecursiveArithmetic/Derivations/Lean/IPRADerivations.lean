@@ -105,6 +105,7 @@ import IPRADerivations.Analysis.RiemannRefinement
 import IPRADerivations.Analysis.EvenPowerIntegrals
 import IPRADerivations.Analysis.EulerPiSeries
 import IPRADerivations.Analysis.FiniteFTC
+import IPRADerivations.Analysis.TaggedFTC
 import IPRADerivations.Analysis.RiemannSumRules
 import IPRADerivations.Analysis.BernsteinContraction
 import IPRADerivations.Analysis.RobbinsTelescope

@@ -11519,6 +11519,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.dn_step
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.up_base
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.up_step
+#print axioms LeanProofs.IPRA.Analysis.TaggedFTC.tagged_upper
+#print axioms LeanProofs.IPRA.Analysis.TaggedFTC.tagged_lower
 #print axioms LeanProofs.IPRA.Analysis.RiemannSumRules.rs_additive
 #print axioms LeanProofs.IPRA.Analysis.RiemannSumRules.rs_add
 #print axioms LeanProofs.IPRA.Analysis.RiemannSumRules.rs_scale
