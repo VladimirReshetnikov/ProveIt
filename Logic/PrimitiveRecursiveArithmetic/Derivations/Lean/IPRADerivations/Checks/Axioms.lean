@@ -2482,6 +2482,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Harmonic.dyadic
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Harmonic.harmonic_dyadic
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Harmonic.harmonic_dyadic_closed
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper.subst_blockInv
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper.block_up
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper.subst_dyInv
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper.block_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper.harmonic_upper
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper.harmonic_upper_closed
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.modulus_exponent
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.floor_bound
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.dyadic_rate
