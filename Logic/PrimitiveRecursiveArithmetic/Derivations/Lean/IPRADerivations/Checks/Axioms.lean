@@ -10891,6 +10891,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.RodriguesMap.rowB
 #print axioms LeanProofs.IPRA.Geometry.RodriguesMap.rowC
 #print axioms LeanProofs.IPRA.Geometry.RodriguesMap.unitHyps
+#print axioms LeanProofs.IPRA.Geometry.RodriguesFixedLine.fixed_line_x
+#print axioms LeanProofs.IPRA.Geometry.RodriguesFixedLine.fixed_line_y
+#print axioms LeanProofs.IPRA.Geometry.RodriguesFixedLine.fixed_line_z
+#print axioms LeanProofs.IPRA.Geometry.RodriguesFixedLine.line_fixed_x
+#print axioms LeanProofs.IPRA.Geometry.RodriguesFixedLine.line_fixed_y
+#print axioms LeanProofs.IPRA.Geometry.RodriguesFixedLine.line_fixed_z
+#print axioms LeanProofs.IPRA.Geometry.RodriguesFixedLine.displacement_norm
+#print axioms LeanProofs.IPRA.Geometry.RodriguesFixedLine.gap_cancel
 #print axioms LeanProofs.IPRA.Probability.ProductTelescope.PInv
 #print axioms LeanProofs.IPRA.Probability.ProductTelescope.inst2_sd
 #print axioms LeanProofs.IPRA.Probability.ProductTelescope.pinv_base
