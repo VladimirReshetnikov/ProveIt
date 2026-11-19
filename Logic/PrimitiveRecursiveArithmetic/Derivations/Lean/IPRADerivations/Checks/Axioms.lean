@@ -10120,6 +10120,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.OdeUniqueness.recurrence
 #print axioms LeanProofs.IPRA.Foundations.OdeUniqueness.uniqueness_nodes
 #print axioms LeanProofs.IPRA.Foundations.OdeUniqueness.uniqueness_const
+#print axioms LeanProofs.IPRA.Foundations.CoherentMinimizer.two_pos
+#print axioms LeanProofs.IPRA.Foundations.CoherentMinimizer.gap_le
+#print axioms LeanProofs.IPRA.Foundations.CoherentMinimizer.coherent_le
+#print axioms LeanProofs.IPRA.Foundations.CoherentMinimizer.coherent_ge
+#print axioms LeanProofs.IPRA.Foundations.CoherentMinimizer.mn_le_left
+#print axioms LeanProofs.IPRA.Foundations.CoherentMinimizer.mn_le_right
+#print axioms LeanProofs.IPRA.Foundations.CoherentMinimizer.pw_min
+#print axioms LeanProofs.IPRA.Foundations.CoherentMinimizer.cauchy
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing

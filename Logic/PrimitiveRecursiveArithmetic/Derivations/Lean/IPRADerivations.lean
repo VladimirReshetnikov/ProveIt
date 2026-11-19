@@ -909,6 +909,7 @@ import IPRADerivations.Foundations.SealingVariants
 import IPRADerivations.Foundations.NegativeTranslation
 import IPRADerivations.Foundations.TreeDescent
 import IPRADerivations.Foundations.OdeUniqueness
+import IPRADerivations.Foundations.CoherentMinimizer
 import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization
