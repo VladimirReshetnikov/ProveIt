@@ -1,6 +1,8 @@
 import IPRADerivations.Analysis.PowerGap
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Foundations.EigenvalueBound
+import IPRADerivations.Probability.Variance
 
 /-!
 # The Lipschitz bound of a polynomial
@@ -20,7 +22,11 @@ coefficients split into two natural polynomials):
 * `term_le`: for `Z = W + d ≤ M`, `c_j Z^j ≤ c_j W^j + d c_j j M^{j−1}` (`PowerGap.power_gap` for `j ≥ 1`;
   `j = 0` is constant);
 * `poly_lip` (P-Lip): `P(Z) ≤ P(W) + (Z − W) L(M)` for `W ≤ Z ≤ M`, by induction on the number `D` of
-  coefficients; with `P(W) ≤ P(Z)` this is `|P(Z) − P(W)| ≤ |Z − W| L(M)`.
+  coefficients; with `P(W) ≤ P(Z)` this is `|P(Z) − P(W)| ≤ |Z − W| L(M)`;
+* `poly_mono`: `P(W) ≤ P(Z)` for `W ≤ Z`;
+* `poly_lip_signed`: for a signed polynomial `P = P⁺ − P⁻` (two natural coefficient bodies),
+  `|(P⁺(Z) − P⁻(Z)) − (P⁺(W) − P⁻(W))| ≤ (Z − W)(L⁺(M) + L⁻(M))`, written
+  `ad(P⁺(Z) + P⁻(W), P⁺(W) + P⁻(Z)) ≤ d (L⁺(M) + L⁻(M))`: the bound with `|c_j| = c⁺_j + c⁻_j`.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -30,6 +36,8 @@ namespace LeanProofs.IPRA.Analysis.PolynomialLipschitz
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open LeanProofs.IPRA.Analysis.PowerGap (power_gap shift_le' shift_eq')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
+open LeanProofs.IPRA.Foundations.EigenvalueBound (ad_le_of)
+open LeanProofs.IPRA.Probability.Variance (ad)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
@@ -131,6 +139,32 @@ theorem poly_lip {Z W M d x : PTm n} (hd : Γ ⊢[PRAAx] Z ≐ W + d) (hU : Γ �
   have h := Prf.allE D hall
   simpa only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
     Syn.inst_zero, Syn.subst_inst_shift] using h
+
+/-- `P(W) ≤ P(Z)` for `W ≤ Z`. -/
+theorem poly_mono {W Z x : PTm n} (h : Γ ⊢[PRAAx] le W Z) (D : PTm n) :
+    Γ ⊢[PRAAx] le (ap2 (sumF (polyB c)) D (pairT W x)) (ap2 (sumF (polyB c)) D (pairT Z x)) := by
+  refine sum_le_params _ _ _ _ _ (.allI (.impI ?_))
+  simp only [shift_pairT]
+  have h' := (shift_le' h).wk (ψ := lt (var 0) (Syn.shift D))
+  have p := pw_le_pw (var 0) h'
+  refine le_congr (poly_at c _ _ _).eqSymm (poly_at c _ _ _).eqSymm ?_
+  ipra_le 𝔟 (inst2 c (var 0) (Syn.shift x)) * sl p
+
+/-- `eq:poly-lip` with signed coefficients `c⁺ − c⁻`. -/
+theorem poly_lip_signed (c' : PTm 2) {Z W M d x : PTm n} (hd : Γ ⊢[PRAAx] Z ≐ W + d)
+    (hU : Γ ⊢[PRAAx] le Z M) (D : PTm n) :
+    Γ ⊢[PRAAx] le
+      (ad (ap2 (sumF (polyB c)) D (pairT Z x) + ap2 (sumF (polyB c')) D (pairT W x))
+        (ap2 (sumF (polyB c)) D (pairT W x) + ap2 (sumF (polyB c')) D (pairT Z x)))
+      (d * (ap2 (sumF (lipB c)) D (pairT M x) + ap2 (sumF (lipB c')) D (pairT M x))) := by
+  have hWZ : Γ ⊢[PRAAx] le W Z := le_of_eq_add hd
+  have l₁ := poly_lip (c := c) (x := x) hd hU D
+  have l₂ := poly_lip (c := c') (x := x) hd hU D
+  have m₁ := poly_mono (c := c) (x := x) hWZ D
+  have m₂ := poly_mono (c := c') (x := x) hWZ D
+  refine ad_le_of ?_ ?_
+  · ipra_le sl l₁ + sl m₂ + 𝔟 d * 𝔟 (ap2 (sumF (lipB c')) D (pairT M x))
+  · ipra_le sl l₂ + sl m₁ + 𝔟 d * 𝔟 (ap2 (sumF (lipB c)) D (pairT M x))
 
 end Poly
 

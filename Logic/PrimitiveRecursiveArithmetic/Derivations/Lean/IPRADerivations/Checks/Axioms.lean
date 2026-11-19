@@ -10161,6 +10161,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.term_le
 #print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.lip_step
 #print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.poly_lip
+#print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.poly_mono
+#print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.poly_lip_signed
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
