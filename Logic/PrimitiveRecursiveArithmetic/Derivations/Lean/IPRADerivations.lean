@@ -421,6 +421,13 @@ import IPRADerivations.Geometry.KerrNewmanRiemannP
 import IPRADerivations.Geometry.KerrNewmanPairMatrix
 import IPRADerivations.Geometry.KerrNewmanPairProductA
 import IPRADerivations.Geometry.KerrNewmanPairProductB
+import IPRADerivations.Geometry.KerrNewmanTraceRowTR
+import IPRADerivations.Geometry.KerrNewmanTraceRowTX
+import IPRADerivations.Geometry.KerrNewmanTraceRowTP
+import IPRADerivations.Geometry.KerrNewmanTraceRowRX
+import IPRADerivations.Geometry.KerrNewmanTraceRowRP
+import IPRADerivations.Geometry.KerrNewmanTraceRowXP
+import IPRADerivations.Geometry.KerrNewmanKretschmann
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
