@@ -13888,6 +13888,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanExtensions.ballot
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanExtensions.ballot_closed
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanExtensions.fuss
+#print axioms LeanProofs.IPRA.Combinatorics.SuperCatalanFloor.succ_pos₁
+#print axioms LeanProofs.IPRA.Combinatorics.SuperCatalanFloor.two_quo_le
+#print axioms LeanProofs.IPRA.Combinatorics.SuperCatalanFloor.two_quo_succ_le
+#print axioms LeanProofs.IPRA.Combinatorics.SuperCatalanFloor.add_quo_lt
+#print axioms LeanProofs.IPRA.Combinatorics.SuperCatalanFloor.add_quo_ge
+#print axioms LeanProofs.IPRA.Combinatorics.SuperCatalanFloor.half_cases
+#print axioms LeanProofs.IPRA.Combinatorics.SuperCatalanFloor.case_lt
+#print axioms LeanProofs.IPRA.Combinatorics.SuperCatalanFloor.case_ge₁
+#print axioms LeanProofs.IPRA.Combinatorics.SuperCatalanFloor.case_ge₂
+#print axioms LeanProofs.IPRA.Combinatorics.SuperCatalanFloor.super_floor
+#print axioms LeanProofs.IPRA.Combinatorics.SuperCatalanFloor.super_floor_closed
 #print axioms LeanProofs.IPRA.Combinatorics.HankelCongruence.congruence_ring
 #print axioms LeanProofs.IPRA.Combinatorics.HankelCongruence.lagrange_ring
 #print axioms LeanProofs.IPRA.Combinatorics.HankelCongruence.toZ_diag
