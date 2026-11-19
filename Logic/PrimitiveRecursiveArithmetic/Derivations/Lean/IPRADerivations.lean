@@ -376,6 +376,7 @@ import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.StPetersburg
 import IPRADerivations.Probability.HermiteCoefficients
 import IPRADerivations.Probability.PoissonShift
+import IPRADerivations.Probability.HarmonicRearrangement
 import IPRADerivations.Probability.TruncationEstimate
 import IPRADerivations.Probability.MomentDeterminacy
 import IPRADerivations.Probability.Variance
@@ -404,6 +405,7 @@ import IPRADerivations.Probability.SampleMedian
 import IPRADerivations.Probability.SampleMedianPmf
 import IPRADerivations.Probability.MedianL1
 import IPRADerivations.Probability.MedianWeighted
+import IPRADerivations.Probability.MedianIndex
 import IPRADerivations.Probability.MedianSymmetry
 import IPRADerivations.Probability.MedianRobust
 import IPRADerivations.Probability.Ninther

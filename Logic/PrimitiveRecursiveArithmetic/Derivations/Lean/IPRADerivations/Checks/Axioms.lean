@@ -549,6 +549,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.PoissonShift.ff_ratio
 #print axioms LeanProofs.IPRA.Probability.PoissonShift.po_ratio
 #print axioms LeanProofs.IPRA.Probability.PoissonShift.poisson_shift
+#print axioms LeanProofs.IPRA.Probability.HarmonicRearrangement.parity_split
+#print axioms LeanProofs.IPRA.Probability.HarmonicRearrangement.halving
+#print axioms LeanProofs.IPRA.Probability.HarmonicRearrangement.alt_harmonic
+#print axioms LeanProofs.IPRA.Probability.HarmonicRearrangement.odd_sum
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.trunc_pt
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.truncation
 #print axioms LeanProofs.IPRA.Probability.MomentDeterminacy.back_unique
@@ -812,6 +816,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.MedianWeighted.weighted_l1
 #print axioms LeanProofs.IPRA.Probability.MedianWeighted.sum_triangle
 #print axioms LeanProofs.IPRA.Probability.MedianWeighted.mean_median
+#print axioms LeanProofs.IPRA.Probability.MedianIndex.median_index
 #print axioms LeanProofs.IPRA.Probability.MedianSymmetry.refl_monus
 #print axioms LeanProofs.IPRA.Probability.MedianSymmetry.cdf_of_med
 #print axioms LeanProofs.IPRA.Probability.MedianSymmetry.med_of_cdf
