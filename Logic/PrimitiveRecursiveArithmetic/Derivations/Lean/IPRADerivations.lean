@@ -286,6 +286,7 @@ import IPRADerivations.DiophantineNumberTheory.PellGeneral
 import IPRADerivations.DiophantineNumberTheory.PellDirichlet
 import IPRADerivations.DiophantineNumberTheory.PellNegUnits
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
+import IPRADerivations.DiophantineNumberTheory.HurwitzDenominator
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
@@ -511,6 +512,8 @@ import IPRADerivations.Topology.DimensionObstruction
 import IPRADerivations.Topology.DimensionRational
 import IPRADerivations.Topology.DimensionSchema
 import IPRADerivations.Topology.DimensionAlternative
+import IPRADerivations.Topology.DimensionCollision
+import IPRADerivations.Topology.DimensionIdentity
 import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Topology.DimensionTwo
