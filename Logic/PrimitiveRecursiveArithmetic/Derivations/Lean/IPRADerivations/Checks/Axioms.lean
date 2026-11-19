@@ -926,6 +926,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.Quintic.bring_scaling
 #print axioms LeanProofs.IPRA.Algebra.Quintic.de_moivre_root
 #print axioms LeanProofs.IPRA.Algebra.Quintic.reducible_example
+#print axioms LeanProofs.IPRA.Algebra.QuinticCertificates.disc_common_root
+#print axioms LeanProofs.IPRA.Algebra.QuinticCertificates.bring_odd
+#print axioms LeanProofs.IPRA.Algebra.QuinticCertificates.residual_square
 #print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.mul_comm
 #print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.mul_assoc
 #print axioms LeanProofs.IPRA.Algebra.QuadraticExtension.distrib
@@ -3047,6 +3050,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.PullbackCertificates.euler_R0
 #print axioms LeanProofs.IPRA.Analysis.PullbackCertificates.pfaff_R0
 #print axioms LeanProofs.IPRA.Analysis.PullbackCertificates.pfaff_R1
+#print axioms LeanProofs.IPRA.Analysis.OdeCertificates.wronskian
+#print axioms LeanProofs.IPRA.Analysis.OdeCertificates.partial_fractions
+#print axioms LeanProofs.IPRA.Analysis.OdeCertificates.jacobi_leading
+#print axioms LeanProofs.IPRA.Analysis.OdeCertificates.jacobi_first
+#print axioms LeanProofs.IPRA.Analysis.OdeCertificates.jacobi_zero
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.pascal_sum
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.E_succ
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.O_succ

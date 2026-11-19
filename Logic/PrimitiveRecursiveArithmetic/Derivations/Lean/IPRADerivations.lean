@@ -51,6 +51,7 @@ import IPRADerivations.Analysis.ChuVandermonde
 import IPRADerivations.Analysis.ContiguousRelations
 import IPRADerivations.Analysis.HypergeometricQForm
 import IPRADerivations.Analysis.PullbackCertificates
+import IPRADerivations.Analysis.OdeCertificates
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BetaAssociativity
@@ -120,6 +121,7 @@ import IPRADerivations.Core.EuclidLemma
 import IPRADerivations.Algebra.PolynomialFormulas
 import IPRADerivations.Algebra.TrisectionCubic
 import IPRADerivations.Algebra.Quintic
+import IPRADerivations.Algebra.QuinticCertificates
 import IPRADerivations.Algebra.QuadraticExtension
 import IPRADerivations.Algebra.ObservationAlgebra
 import IPRADerivations.Algebra.JacobiRotation
