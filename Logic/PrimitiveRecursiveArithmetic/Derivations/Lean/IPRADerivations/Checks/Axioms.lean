@@ -10106,6 +10106,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.TreeDescent.exact_descent
 #print axioms LeanProofs.IPRA.Foundations.TreeDescent.epsA_at
 #print axioms LeanProofs.IPRA.Foundations.TreeDescent.metric_descent
+#print axioms LeanProofs.IPRA.Foundations.OdeUniqueness.step_tri
+#print axioms LeanProofs.IPRA.Foundations.OdeUniqueness.unique_step
+#print axioms LeanProofs.IPRA.Foundations.OdeUniqueness.eB_at
+#print axioms LeanProofs.IPRA.Foundations.OdeUniqueness.dB_at
+#print axioms LeanProofs.IPRA.Foundations.OdeUniqueness.shift_add
+#print axioms LeanProofs.IPRA.Foundations.OdeUniqueness.recurrence
+#print axioms LeanProofs.IPRA.Foundations.OdeUniqueness.uniqueness_nodes
+#print axioms LeanProofs.IPRA.Foundations.OdeUniqueness.uniqueness_const
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
