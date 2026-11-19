@@ -13993,6 +13993,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.PowerGap.gap_step
 #print axioms LeanProofs.IPRA.Analysis.PowerGap.shift_eq'
 #print axioms LeanProofs.IPRA.Analysis.PowerGap.shift_le'
+#print axioms LeanProofs.IPRA.Analysis.PowerGap.strict_power_gap
 #print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.upper_squeeze
 #print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.lower_squeeze
 #print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.bracket_order
@@ -15865,5 +15866,18 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ObservationEstimates.pw_exp_le
 #print axioms LeanProofs.IPRA.Foundations.ObservationEstimates.defect_weight
 #print axioms LeanProofs.IPRA.Foundations.ObservationEstimates.defects
+#print axioms LeanProofs.IPRA.Foundations.RunningIntersection.lo_ge
+#print axioms LeanProofs.IPRA.Foundations.RunningIntersection.hi_le
+#print axioms LeanProofs.IPRA.Foundations.RunningIntersection.lo_mono
+#print axioms LeanProofs.IPRA.Foundations.RunningIntersection.hi_mono
+#print axioms LeanProofs.IPRA.Foundations.RunningIntersection.lo_lub
+#print axioms LeanProofs.IPRA.Foundations.RunningIntersection.hi_glb
+#print axioms LeanProofs.IPRA.Foundations.RunningIntersection.nonempty_at
+#print axioms LeanProofs.IPRA.Foundations.RunningIntersection.nonempty
+#print axioms LeanProofs.IPRA.Foundations.RunningIntersection.width
+#print axioms LeanProofs.IPRA.Foundations.RiseAlternative.rise_step
+#print axioms LeanProofs.IPRA.Foundations.RiseAlternative.rise_all
+#print axioms LeanProofs.IPRA.Foundations.RiseAlternative.rise_alternative
+#print axioms LeanProofs.IPRA.Foundations.RiseAlternative.nonrise_of_bound
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side

@@ -13,7 +13,10 @@ bound `U` of both brackets (`U = 1/q` in the paper), so that `B^b − A^b ≤ (B
 
 * `power_gap`: for natural numerators with `B = A + d` and `B ≤ U`, and every `b`,
   `B^{b+1} ≤ A^{b+1} + d (b + 1) U^b`;
-* `power_gap_lower`: `A^b ≤ B^b` for `B = A + d` (the left inequality).
+* `power_gap_lower`: `A^b ≤ B^b` for `B = A + d` (the left inequality);
+* `strict_power_gap` (`foundations/ipra_framework`, `dio:gap`, for naturals `u < v`):
+  `u^{e+1} + v^e ≤ v^{e+1}`. With `U = B`, `power_gap` is also the finite loss estimate `dio:loss` of that
+  packet, `(X − L)^n ≥ X^n − n L X^{n−1}`.
 
 The induction on `b` avoids the explicit sum: its step is the certificate
 `B · (ih) + d (U^{b+1} − A^{b+1}) + d (b + 1) U^b (U − B)`. The bracket width `eq:width` and the bound `1/q`
@@ -98,5 +101,15 @@ theorem power_gap_lower (hd : Γ ⊢[PRAAx] B ≐ A + d) (b : PTm n) : Γ ⊢[PR
   pw_le_pw b (le_of_eq_add hd)
 
 end Gap
+
+/-- The integer power gap (`foundations/ipra_framework`, `dio:gap`, the case of naturals `u < v`):
+`u^{e+1} + v^e ≤ v^{e+1}`, i.e. `v^m − u^m ≥ v^{m−1}`. -/
+theorem strict_power_gap {u v : PTm n} (h : Γ ⊢[PRAAx] lt u v) (e : PTm n) :
+    Γ ⊢[PRAAx] le (pw u (succ e) + pw v e) (pw v (succ e)) := by
+  have h' : Γ ⊢[PRAAx] le (succ u) v := h
+  have hu : Γ ⊢[PRAAx] le u v := by ipra_le sl h' + 1
+  have hp := pw_le_pw e hu
+  have a₁ := natEq (pw_succ (Γ := Γ) u e); have a₂ := natEq (pw_succ (Γ := Γ) v e)
+  ipra_le 𝔟 (pw v e) * sl h' + 𝔟 u * sl hp using rw [a₁, a₂]; ring
 
 end LeanProofs.IPRA.Analysis.PowerGap
