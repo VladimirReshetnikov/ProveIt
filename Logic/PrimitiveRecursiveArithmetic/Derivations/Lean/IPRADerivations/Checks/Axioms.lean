@@ -152,6 +152,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.BoxProduct.t_at
 #print axioms LeanProofs.IPRA.Geometry.BoxProduct.dt_at
 #print axioms LeanProofs.IPRA.Geometry.BoxProduct.box_product
+#print axioms LeanProofs.IPRA.Geometry.RationalCut.lt_of_monus_ne
+#print axioms LeanProofs.IPRA.Geometry.RationalCut.monus_ne_of_lt
+#print axioms LeanProofs.IPRA.Geometry.RationalCut.c_at
+#print axioms LeanProofs.IPRA.Geometry.RationalCut.cross
+#print axioms LeanProofs.IPRA.Geometry.RationalCut.cut
 #print axioms LeanProofs.IPRA.Geometry.HypercubeEdge.bit_succ
 #print axioms LeanProofs.IPRA.Geometry.HypercubeEdge.bit_zero
 #print axioms LeanProofs.IPRA.Geometry.HypercubeEdge.sum_lin3
