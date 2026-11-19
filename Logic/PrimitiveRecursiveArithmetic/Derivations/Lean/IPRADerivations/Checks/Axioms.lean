@@ -966,6 +966,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.JacobiRotation.low_branch
 #print axioms LeanProofs.IPRA.Algebra.JacobiRotation.lagrange2
 #print axioms LeanProofs.IPRA.Algebra.JacobiRotation.lagrange3
+#print axioms LeanProofs.IPRA.Algebra.StableRootBounds.cos_diff
+#print axioms LeanProofs.IPRA.Algebra.StableRootBounds.sin_diff
+#print axioms LeanProofs.IPRA.Algebra.StableRootBounds.ad_sq_diff
+#print axioms LeanProofs.IPRA.Algebra.StableRootBounds.cos_lipschitz
+#print axioms LeanProofs.IPRA.Algebra.StableRootBounds.sqrt_scalar
 #print axioms LeanProofs.IPRA.Algebra.PowerDifference.gd_zero
 #print axioms LeanProofs.IPRA.Algebra.PowerDifference.gd_succ
 #print axioms LeanProofs.IPRA.Algebra.PowerDifference.power_diff

@@ -130,6 +130,7 @@ import IPRADerivations.Algebra.QuinticCertificates
 import IPRADerivations.Algebra.QuadraticExtension
 import IPRADerivations.Algebra.ObservationAlgebra
 import IPRADerivations.Algebra.JacobiRotation
+import IPRADerivations.Algebra.StableRootBounds
 import IPRADerivations.Algebra.PowerDifference
 import IPRADerivations.Algebra.FTABounds
 import IPRADerivations.Algebra.HenselStep
