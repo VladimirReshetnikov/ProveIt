@@ -11094,6 +11094,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RiemannSumRules.rs_bound
 #print axioms LeanProofs.IPRA.Analysis.RiemannSumRules.rs_close
 #print axioms LeanProofs.IPRA.Analysis.RiemannSumRules.rs_close_const
+#print axioms LeanProofs.IPRA.Analysis.BernsteinContraction.weighted_bound
+#print axioms LeanProofs.IPRA.Analysis.BernsteinContraction.convex_bound
+#print axioms LeanProofs.IPRA.Analysis.BernsteinContraction.ramp_bound
+#print axioms LeanProofs.IPRA.Analysis.BernsteinContraction.bernstein_contraction
 #print axioms LeanProofs.IPRA.Analysis.RiemannRefinement.RefDn
 #print axioms LeanProofs.IPRA.Analysis.RiemannRefinement.RefUp
 #print axioms LeanProofs.IPRA.Analysis.RiemannRefinement.StepDn
@@ -13904,6 +13908,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.PowerGap.gap_step
 #print axioms LeanProofs.IPRA.Analysis.PowerGap.shift_eq'
 #print axioms LeanProofs.IPRA.Analysis.PowerGap.shift_le'
+#print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.upper_squeeze
+#print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.lower_squeeze
+#print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.bracket_order
+#print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.bracket_width
+#print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.raw_width
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.WInv
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.w_all
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.w_at
