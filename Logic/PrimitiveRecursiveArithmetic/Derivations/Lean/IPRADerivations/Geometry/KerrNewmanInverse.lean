@@ -31,7 +31,8 @@ denominator.
 (`eq:twoMaxwell`).
 
 The differentiations themselves (that the displayed numerators are the derivatives) and the
-curvature computations of the packet are not formalized.
+curvature computations of the packet are not formalized in this module; the latter are in
+`Geometry/KerrNewmanConnection` and `Geometry/KerrNewmanRicci`.
 -/
 
 namespace LeanProofs.IPRA.Geometry.KerrNewmanInverse

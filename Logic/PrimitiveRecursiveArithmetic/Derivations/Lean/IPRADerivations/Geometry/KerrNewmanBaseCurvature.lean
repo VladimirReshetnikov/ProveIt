@@ -30,7 +30,8 @@ Lean as an identity of fractions cleared of denominators, a closed sentence of i
 every commutative ring. The signs of the nine terms in each sum follow the displayed formula:
 `+ t1 + t2 − t3 + t4 + t5 − t6 − t7 − t8 − t9`.
 
-Not derived: the fiber block, the traces `eq:traces` and the assembly of `lem:offshell`.
+The fiber block and the traces `eq:traces` are not derived; `lem:offshell` is derived directly
+in four dimensions in `Geometry/KerrNewmanRicci`.
 -/
 
 namespace LeanProofs.IPRA.Geometry.KerrNewmanBaseCurvature
