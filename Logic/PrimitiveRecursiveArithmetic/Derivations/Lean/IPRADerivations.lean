@@ -53,6 +53,8 @@ import IPRADerivations.Analysis.HypergeometricQForm
 import IPRADerivations.Analysis.PullbackCertificates
 import IPRADerivations.Analysis.OdeCertificates
 import IPRADerivations.Analysis.HypergeometricOdeFormal
+import IPRADerivations.Analysis.HypergeometricSpecialCases
+import IPRADerivations.Analysis.GeometricSquareSum
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BetaAssociativity
