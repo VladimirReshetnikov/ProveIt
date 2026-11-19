@@ -344,6 +344,7 @@ import IPRADerivations.Geometry.SphericalVariation
 import IPRADerivations.Geometry.TetrahedralGram
 import IPRADerivations.Geometry.SphericalSolidAngle
 import IPRADerivations.Geometry.RodriguesFixedLine
+import IPRADerivations.Geometry.RodriguesComposition
 import IPRADerivations.Geometry.SphericalPlanarLimit
 import IPRADerivations.Geometry.SphericalDelambre
 import IPRADerivations.Geometry.SphericalArea
@@ -356,6 +357,7 @@ import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
 import IPRADerivations.Geometry.ConwayAlgebra
 import IPRADerivations.Geometry.PathShoelace
+import IPRADerivations.Geometry.PathHalfTurn
 import IPRADerivations.Geometry.ConstantMultiplicity
 import IPRADerivations.Geometry.ConwayLattice
 import IPRADerivations.Geometry.ConwayOrbit
