@@ -49,10 +49,13 @@ import IPRADerivations.Analysis.HypergeometricRatio
 import IPRADerivations.Analysis.TerminatingSeries
 import IPRADerivations.Analysis.ChuVandermonde
 import IPRADerivations.Analysis.ContiguousRelations
+import IPRADerivations.Analysis.HypergeometricQForm
+import IPRADerivations.Analysis.PullbackCertificates
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BetaAssociativity
 import IPRADerivations.Analysis.BinomialCdf
+import IPRADerivations.Analysis.BetaBinomialSum
 import IPRADerivations.Analysis.NewtonCertificates
 import IPRADerivations.Analysis.LambertAlgebra
 import IPRADerivations.Analysis.RatioMajorant

@@ -3009,6 +3009,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.contig_b_minus
 #print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.contig_c_plus
 #print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.gauss_chain
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricQForm.gauge
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricQForm.q_form
+#print axioms LeanProofs.IPRA.Analysis.PullbackCertificates.euler_R1
+#print axioms LeanProofs.IPRA.Analysis.PullbackCertificates.euler_R0
+#print axioms LeanProofs.IPRA.Analysis.PullbackCertificates.pfaff_R0
+#print axioms LeanProofs.IPRA.Analysis.PullbackCertificates.pfaff_R1
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.pascal_sum
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.E_succ
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.O_succ
@@ -3025,6 +3031,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_general
 #print axioms LeanProofs.IPRA.Analysis.BetaAssociativity.rbeta_assoc
 #print axioms LeanProofs.IPRA.Analysis.BinomialCdf.cdf_pascal
+#print axioms LeanProofs.IPRA.Analysis.BetaBinomialSum.term_eq
+#print axioms LeanProofs.IPRA.Analysis.BetaBinomialSum.beta_binomial_sum
 #print axioms LeanProofs.IPRA.Analysis.NewtonCertificates.halley_denominator
 #print axioms LeanProofs.IPRA.Analysis.NewtonCertificates.newton_residual
 #print axioms LeanProofs.IPRA.Analysis.NewtonCertificates.newton_quadratic
