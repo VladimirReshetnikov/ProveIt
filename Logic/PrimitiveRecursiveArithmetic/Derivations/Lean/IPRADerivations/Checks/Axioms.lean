@@ -584,6 +584,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.density_ode
 #print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.inflection
 #print axioms LeanProofs.IPRA.Probability.GaussianDerivatives.stein_local
+#print axioms LeanProofs.IPRA.Probability.CompleteSquare.hellinger_square
+#print axioms LeanProofs.IPRA.Probability.CompleteSquare.product_square
+#print axioms LeanProofs.IPRA.Probability.BoxMuller.polar_jacobian
+#print axioms LeanProofs.IPRA.Probability.BoxMuller.radial_density
+#print axioms LeanProofs.IPRA.Probability.BoxMuller.cartesian_exponent
 #print axioms LeanProofs.IPRA.Probability.PoissonShift.shift_identity
 #print axioms LeanProofs.IPRA.Probability.PoissonShift.ff_ratio
 #print axioms LeanProofs.IPRA.Probability.PoissonShift.po_ratio

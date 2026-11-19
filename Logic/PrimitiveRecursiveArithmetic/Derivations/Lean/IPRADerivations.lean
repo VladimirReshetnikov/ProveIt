@@ -401,6 +401,8 @@ import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.StPetersburg
 import IPRADerivations.Probability.HermiteCoefficients
 import IPRADerivations.Probability.GaussianDerivatives
+import IPRADerivations.Probability.CompleteSquare
+import IPRADerivations.Probability.BoxMuller
 import IPRADerivations.Probability.PoissonShift
 import IPRADerivations.Probability.HarmonicRearrangement
 import IPRADerivations.Probability.TruncationEstimate
