@@ -395,6 +395,7 @@ import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Topology.DimensionTwo
 import IPRADerivations.Topology.DimensionUnits
+import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.Core.PolynomialImplications
 import IPRADerivations.Geometry.JoinMeet
 import IPRADerivations.Geometry.MorleyCertificate

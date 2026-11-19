@@ -10701,6 +10701,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.DimensionUnits.usep0F
 #print axioms LeanProofs.IPRA.Topology.DimensionUnits.usep1F
 #print axioms LeanProofs.IPRA.Topology.DimensionUnits.usmallF
+#print axioms LeanProofs.IPRA.Topology.CollisionScales.lt_pw_two
+#print axioms LeanProofs.IPRA.Topology.CollisionScales.small_bound
+#print axioms LeanProofs.IPRA.Topology.CollisionScales.final_bound
+#print axioms LeanProofs.IPRA.Topology.CollisionScales.delta_units
 #print axioms LeanProofs.IPRA.Topology.InjectionBound.boundFormula
 #print axioms LeanProofs.IPRA.Topology.InjectionBound.collisionFormula
 #print axioms LeanProofs.IPRA.Topology.InjectionBound.injBelow
