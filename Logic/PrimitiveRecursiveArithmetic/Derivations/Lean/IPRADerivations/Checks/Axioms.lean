@@ -1157,6 +1157,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.IsoperimetricInequalities.cap_union_two_le
 #print axioms LeanProofs.IPRA.Geometry.IsoperimetricInequalities.triangle_amgm_doubled
 #print axioms LeanProofs.IPRA.Geometry.IsoperimetricInequalities.signcount_contradiction
+#print axioms LeanProofs.IPRA.Geometry.RootOrthogonality.allE_under
+#print axioms LeanProofs.IPRA.Geometry.RootOrthogonality.subst_up_shift
+#print axioms LeanProofs.IPRA.Geometry.RootOrthogonality.shift_pair
+#print axioms LeanProofs.IPRA.Geometry.RootOrthogonality.sum_pair_congr
+#print axioms LeanProofs.IPRA.Geometry.RootOrthogonality.shift_anti
+#print axioms LeanProofs.IPRA.Geometry.RootOrthogonality.off_at
+#print axioms LeanProofs.IPRA.Geometry.RootOrthogonality.off2_at
+#print axioms LeanProofs.IPRA.Geometry.RootOrthogonality.block_point
+#print axioms LeanProofs.IPRA.Geometry.RootOrthogonality.block_cancel
+#print axioms LeanProofs.IPRA.Geometry.RootOrthogonality.blocks_step
+#print axioms LeanProofs.IPRA.Geometry.RootOrthogonality.blocks_cancel
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanProducts.oddProd_zero
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanProducts.oddProd_succ
 #print axioms LeanProofs.IPRA.Combinatorics.CatalanProducts.fact_prod_base

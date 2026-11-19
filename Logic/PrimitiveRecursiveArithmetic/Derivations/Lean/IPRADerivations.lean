@@ -411,6 +411,7 @@ import IPRADerivations.Geometry.MonotileSubstitution
 import IPRADerivations.Combinatorics.FibonacciLucasMore
 import IPRADerivations.Core.PolynomialInequalities
 import IPRADerivations.Geometry.IsoperimetricInequalities
+import IPRADerivations.Geometry.RootOrthogonality
 import IPRADerivations.Combinatorics.CatalanProducts
 import IPRADerivations.Combinatorics.CatalanGrowth
 import IPRADerivations.Combinatorics.CatalanPrimes
