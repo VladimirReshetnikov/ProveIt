@@ -94,6 +94,7 @@ import IPRADerivations.Analysis.RiemannRefinement
 import IPRADerivations.Analysis.EvenPowerIntegrals
 import IPRADerivations.Analysis.EulerPiSeries
 import IPRADerivations.Analysis.FiniteFTC
+import IPRADerivations.Analysis.RiemannSumRules
 import IPRADerivations.Analysis.RobbinsTelescope
 import IPRADerivations.Analysis.WeightedAMGM
 import IPRADerivations.Analysis.EulerBrackets
@@ -405,6 +406,7 @@ import IPRADerivations.Combinatorics.CatalanPrimes
 import IPRADerivations.Combinatorics.CatalanSmallPrimes
 import IPRADerivations.Combinatorics.HankelGram
 import IPRADerivations.Combinatorics.CatalanExtensions
+import IPRADerivations.Combinatorics.SuperCatalanFloor
 import IPRADerivations.Combinatorics.HankelCongruence
 import IPRADerivations.Combinatorics.SegnerUnique
 import IPRADerivations.Foundations.PresentedCategory
@@ -447,6 +449,10 @@ import IPRADerivations.Foundations.VandermondeDeterminant
 import IPRADerivations.Foundations.GenericDirection
 import IPRADerivations.Foundations.LexFuelMonotone
 import IPRADerivations.Foundations.DemandRecursion
+import IPRADerivations.Foundations.LexPotential
+import IPRADerivations.Foundations.LexChain
+import IPRADerivations.Foundations.AutomaticLexFuel
+import IPRADerivations.Foundations.AutomaticLexFuelExample
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.EigenvalueIntegral
 import IPRADerivations.Foundations.EigenvalueGrid
