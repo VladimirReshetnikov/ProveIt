@@ -10150,6 +10150,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.CubicInverse.inv_lip_of_le
 #print axioms LeanProofs.IPRA.Foundations.CubicInverse.inverse_lipschitz
 #print axioms LeanProofs.IPRA.Foundations.CubicInverse.approx_unique
+#print axioms LeanProofs.IPRA.Foundations.FilteredFixedPoint.size_at
+#print axioms LeanProofs.IPRA.Foundations.FilteredFixedPoint.agree_at
+#print axioms LeanProofs.IPRA.Foundations.FilteredFixedPoint.fixed_point
+#print axioms LeanProofs.IPRA.Foundations.FilteredFixedPoint.unique
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing

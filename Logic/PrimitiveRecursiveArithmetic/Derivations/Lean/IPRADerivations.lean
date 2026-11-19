@@ -913,6 +913,7 @@ import IPRADerivations.Foundations.OdeUniqueness
 import IPRADerivations.Foundations.CoherentMinimizer
 import IPRADerivations.Analysis.GridIntegral
 import IPRADerivations.Foundations.CubicInverse
+import IPRADerivations.Foundations.FilteredFixedPoint
 import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization
