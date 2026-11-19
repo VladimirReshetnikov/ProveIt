@@ -210,6 +210,8 @@ import IPRADerivations.Combinatorics.BellModularRecurrence
 import IPRADerivations.Combinatorics.BellWindowPeriod
 import IPRADerivations.Combinatorics.BellWindowBackward
 import IPRADerivations.Combinatorics.BellPeriodExists
+import IPRADerivations.Foundations.ProductSumDomination
+import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Combinatorics.DobinskiTruncation
 import IPRADerivations.Combinatorics.StirlingInclusion
 import IPRADerivations.Combinatorics.BellDobinski
