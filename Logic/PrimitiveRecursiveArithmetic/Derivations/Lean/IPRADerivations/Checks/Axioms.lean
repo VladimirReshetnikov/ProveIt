@@ -10075,6 +10075,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.retained_equivalence
 #print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.lift_classical
 #print axioms LeanProofs.IPRA.Foundations.NegativeTranslation.retained_transfer
+#print axioms LeanProofs.IPRA.Foundations.TreeDescent.anc_zero
+#print axioms LeanProofs.IPRA.Foundations.TreeDescent.anc_succ
+#print axioms LeanProofs.IPRA.Foundations.TreeDescent.inst_shifted
+#print axioms LeanProofs.IPRA.Foundations.TreeDescent.descent_step
+#print axioms LeanProofs.IPRA.Foundations.TreeDescent.exact_descent
+#print axioms LeanProofs.IPRA.Foundations.TreeDescent.epsA_at
+#print axioms LeanProofs.IPRA.Foundations.TreeDescent.metric_descent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing

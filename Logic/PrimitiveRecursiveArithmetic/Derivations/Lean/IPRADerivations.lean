@@ -904,6 +904,7 @@ import IPRADerivations.Foundations.GuardedTrace
 import IPRADerivations.Foundations.StructuralRules
 import IPRADerivations.Foundations.SealingVariants
 import IPRADerivations.Foundations.NegativeTranslation
+import IPRADerivations.Foundations.TreeDescent
 import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization
