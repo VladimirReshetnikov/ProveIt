@@ -404,6 +404,7 @@ import IPRADerivations.Combinatorics.CatalanGrowth
 import IPRADerivations.Combinatorics.CatalanPrimes
 import IPRADerivations.Combinatorics.CatalanSmallPrimes
 import IPRADerivations.Combinatorics.HankelGram
+import IPRADerivations.Combinatorics.CatalanExtensions
 import IPRADerivations.Combinatorics.HankelCongruence
 import IPRADerivations.Combinatorics.SegnerUnique
 import IPRADerivations.Foundations.PresentedCategory
@@ -435,13 +436,17 @@ import IPRADerivations.Foundations.RationalRootDegree
 import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Foundations.RationalRootScan
 import IPRADerivations.Foundations.RationalRootFactor
+import IPRADerivations.Foundations.RationalRootList
 import IPRADerivations.Foundations.MixedRadixGrid
+import IPRADerivations.Foundations.FiniteLimits
+import IPRADerivations.Foundations.FiniteLimitTest
 import IPRADerivations.Foundations.AnnihilatorGrid
 import IPRADerivations.Foundations.IntersectionEnumeration
 import IPRADerivations.Foundations.EliminationRoot
 import IPRADerivations.Foundations.VandermondeDeterminant
 import IPRADerivations.Foundations.GenericDirection
 import IPRADerivations.Foundations.LexFuelMonotone
+import IPRADerivations.Foundations.DemandRecursion
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.EigenvalueIntegral
 import IPRADerivations.Foundations.EigenvalueGrid
@@ -751,6 +756,7 @@ import IPRADerivations.Foundations.VectorRank
 import IPRADerivations.Foundations.VectorStabilization
 import IPRADerivations.Foundations.ProofSchedule
 import IPRADerivations.Foundations.ReachableFrontier
+import IPRADerivations.Foundations.GraphDemand
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion

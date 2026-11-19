@@ -27,6 +27,13 @@ all members of `A` derives `φ`:
 * `compose` ("Composition of local rules", "Closure by producer contracts"): contracts `A_i ⇒ φ_i` and a
   contract from `φ_0, …, φ_{m−1}, B` to `χ` give a contract from `A_0 ++ ⋯ ++ A_{m−1} ++ B` to `χ`.
 
+Two discharge statements of `foundations/darc_ipra_framework_2026-11-16`:
+
+* `full_discharge` ("Full discharge"): if every residual is a theorem, `⊢ B_i`, the compiled conclusion is a
+  theorem, `⊢ Φ`;
+* `discharge_some` (`cor:incremental-discharge`, "Incremental producer discharge"): from `R, Γ ⊢ Φ`, if every
+  residual of `R` is either kept in `R'` or derivable from `Γ`, then `R', Γ ⊢ Φ`.
+
 The statements are about derivability in iPRA and are proved in the metatheory from simultaneous cut,
 weakening and substitution of the deduction kernel.
 -/
@@ -98,5 +105,22 @@ theorem compose (rs : List (List (Fm PTm n) × Fm PTm n)) (hrs : ∀ r ∈ rs, C
     · obtain ⟨r, hr, rfl⟩ := List.mem_map.mp h₁
       exact hrs r hr Δ fun ξ hξ => k ξ (List.mem_append_left _ (List.mem_flatMap.mpr ⟨r, hr, hξ⟩))
     · exact k θ (List.mem_append_right _ h₂)
+
+/-! ## Discharging residuals -/
+
+/-- "Full discharge": a contract whose premises are all theorems has a theorem as conclusion. -/
+theorem full_discharge (c : Contract A φ) (h : ∀ θ ∈ A, ([] : List (Fm PTm n)) ⊢[PRAAx] θ) :
+    ([] : List (Fm PTm n)) ⊢[PRAAx] φ :=
+  c [] h
+
+/-- `cor:incremental-discharge`: residuals that are derivable from `Γ` may be dropped; the others stay. -/
+theorem discharge_some {R R' Γ : List (Fm PTm n)} (h : (R ++ Γ) ⊢[PRAAx] φ)
+    (hR : ∀ θ ∈ R, θ ∈ R' ∨ (Γ ⊢[PRAAx] θ)) : (R' ++ Γ) ⊢[PRAAx] φ :=
+  h.trans fun θ hθ => by
+    rcases List.mem_append.mp hθ with h₁ | h₂
+    · rcases hR θ h₁ with hk | hd
+      · exact .hyp (List.mem_append_left _ hk)
+      · exact hd.weaken (List.subset_append_right _ _)
+    · exact .hyp (List.mem_append_right _ h₂)
 
 end LeanProofs.IPRA.Foundations.OpenContracts
