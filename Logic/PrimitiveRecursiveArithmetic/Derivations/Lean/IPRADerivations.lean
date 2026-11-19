@@ -437,6 +437,7 @@ import IPRADerivations.Foundations.RationalRootScan
 import IPRADerivations.Foundations.RationalRootFactor
 import IPRADerivations.Foundations.MixedRadixGrid
 import IPRADerivations.Foundations.FiniteLimits
+import IPRADerivations.Foundations.FiniteLimitTest
 import IPRADerivations.Foundations.AnnihilatorGrid
 import IPRADerivations.Foundations.IntersectionEnumeration
 import IPRADerivations.Foundations.EliminationRoot

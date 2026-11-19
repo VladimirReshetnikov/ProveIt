@@ -14694,6 +14694,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimits.factor_lt
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimits.factor_proj
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimits.limit_unique
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.eqbProd_ne
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.eq_of_eqbProd
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.subst_eqbProd
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.subst_dig
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bt_at
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.testK_at
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.test_sound
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.test_complete
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.limit_cone
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.limit_factor_lt
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.limit_factor_proj
 #print axioms LeanProofs.IPRA.Foundations.NetTransfer.chain
 #print axioms LeanProofs.IPRA.Foundations.RationalRootScan.absd
 #print axioms LeanProofs.IPRA.Foundations.RationalRootScan.box
