@@ -10128,6 +10128,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.CoherentMinimizer.mn_le_right
 #print axioms LeanProofs.IPRA.Foundations.CoherentMinimizer.pw_min
 #print axioms LeanProofs.IPRA.Foundations.CoherentMinimizer.cauchy
+#print axioms LeanProofs.IPRA.Analysis.GridIntegral.subst_CellUp
+#print axioms LeanProofs.IPRA.Analysis.GridIntegral.subst_CellDn
+#print axioms LeanProofs.IPRA.Analysis.GridIntegral.up_at
+#print axioms LeanProofs.IPRA.Analysis.GridIntegral.dn_at
+#print axioms LeanProofs.IPRA.Analysis.GridIntegral.fine_lt
+#print axioms LeanProofs.IPRA.Analysis.GridIntegral.off_at
+#print axioms LeanProofs.IPRA.Analysis.GridIntegral.cell_up
+#print axioms LeanProofs.IPRA.Analysis.GridIntegral.cell_dn
+#print axioms LeanProofs.IPRA.Analysis.GridIntegral.grid_upper
+#print axioms LeanProofs.IPRA.Analysis.GridIntegral.grid_lower
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
