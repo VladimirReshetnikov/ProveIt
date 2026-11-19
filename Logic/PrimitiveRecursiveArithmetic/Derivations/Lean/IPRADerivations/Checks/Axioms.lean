@@ -12345,6 +12345,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.PathShoelace.rvB
 #print axioms LeanProofs.IPRA.Geometry.PathShoelace.trX
 #print axioms LeanProofs.IPRA.Geometry.PathShoelace.trY
+#print axioms LeanProofs.IPRA.Geometry.ConstantMultiplicity.inst2_eqB
+#print axioms LeanProofs.IPRA.Geometry.ConstantMultiplicity.prop_step
+#print axioms LeanProofs.IPRA.Geometry.ConstantMultiplicity.propagate
+#print axioms LeanProofs.IPRA.Geometry.ConstantMultiplicity.constant_multiplicity
 #print axioms LeanProofs.IPRA.Analysis.GaussianNameArithmetic.actual_addition_equivalence_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNameArithmetic.actual_addition_name_at_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNameArithmetic.actual_addition_name_canonical_closed
