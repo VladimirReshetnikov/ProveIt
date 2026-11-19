@@ -214,6 +214,7 @@ import IPRADerivations.Combinatorics.BellWindowPeriod
 import IPRADerivations.Combinatorics.BellWindowBackward
 import IPRADerivations.Combinatorics.BellPeriodExists
 import IPRADerivations.Foundations.ProductSumDomination
+import IPRADerivations.Foundations.FiniteAMGM
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Combinatorics.BellLogConcave
 import IPRADerivations.Combinatorics.DobinskiTruncation

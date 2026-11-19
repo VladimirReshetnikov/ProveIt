@@ -2672,6 +2672,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ProductSumDomination.dom_alg
 #print axioms LeanProofs.IPRA.Foundations.ProductSumDomination.shift_inst2
 #print axioms LeanProofs.IPRA.Foundations.ProductSumDomination.dom_step
+#print axioms LeanProofs.IPRA.Foundations.FiniteAMGM.prod_succ''
+#print axioms LeanProofs.IPRA.Foundations.FiniteAMGM.amgm_step
+#print axioms LeanProofs.IPRA.Foundations.FiniteAMGM.finite_amgm
+#print axioms LeanProofs.IPRA.Foundations.FiniteAMGM.amgm_sum
 #print axioms LeanProofs.IPRA.Combinatorics.CoefficientLogConcave.inst2_sub2
 #print axioms LeanProofs.IPRA.Combinatorics.CoefficientLogConcave.inst2_mul
 #print axioms LeanProofs.IPRA.Combinatorics.CoefficientLogConcave.inst2_monus
