@@ -459,6 +459,7 @@ import IPRADerivations.Foundations.LexFuelMonotone
 import IPRADerivations.Foundations.DemandRecursion
 import IPRADerivations.Foundations.TermCompiler
 import IPRADerivations.Foundations.ExhaustiveWitness
+import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Foundations.LexPotential
 import IPRADerivations.Foundations.LexChain
 import IPRADerivations.Foundations.AutomaticLexFuel

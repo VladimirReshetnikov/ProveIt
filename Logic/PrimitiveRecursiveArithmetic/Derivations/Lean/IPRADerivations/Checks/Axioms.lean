@@ -15810,6 +15810,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.exhaustive_sound
 #print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.first_unique
 #print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.singleton_list
+#print axioms LeanProofs.IPRA.Foundations.AuxiliaryEnvelope.inst2_kB
+#print axioms LeanProofs.IPRA.Foundations.AuxiliaryEnvelope.sum_le_const
+#print axioms LeanProofs.IPRA.Foundations.AuxiliaryEnvelope.envelope_card
+#print axioms LeanProofs.IPRA.Foundations.AuxiliaryEnvelope.shift_pair
+#print axioms LeanProofs.IPRA.Foundations.AuxiliaryEnvelope.pair_congr
+#print axioms LeanProofs.IPRA.Foundations.AuxiliaryEnvelope.fibre_count
+#print axioms LeanProofs.IPRA.Foundations.AuxiliaryEnvelope.cover_card
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bc
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bt
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.eqbProd
