@@ -200,6 +200,7 @@ import IPRADerivations.Combinatorics.BellPrimePeriod
 import IPRADerivations.Combinatorics.LinearFactorTable
 import IPRADerivations.Combinatorics.BellPeriodNp
 import IPRADerivations.Combinatorics.BellLeastPeriod
+import IPRADerivations.Combinatorics.DobinskiTruncation
 import IPRADerivations.Combinatorics.StirlingInclusion
 import IPRADerivations.Combinatorics.BellDobinski
 import IPRADerivations.Combinatorics.Vandermonde
