@@ -323,6 +323,7 @@ import IPRADerivations.Geometry.TriangleFormulas
 import IPRADerivations.Geometry.Circumcircle
 import IPRADerivations.Geometry.ConwayAlgebra
 import IPRADerivations.Geometry.PathShoelace
+import IPRADerivations.Geometry.ConstantMultiplicity
 import IPRADerivations.Geometry.PentagonArithmetic
 import IPRADerivations.Geometry.PappusSegment
 import IPRADerivations.Geometry.TriangularNorm
@@ -461,6 +462,7 @@ import IPRADerivations.Foundations.TermCompiler
 import IPRADerivations.Foundations.ExhaustiveWitness
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Foundations.WeightedMonomials
+import IPRADerivations.Foundations.LinearCertificates
 import IPRADerivations.Foundations.LexPotential
 import IPRADerivations.Foundations.LexChain
 import IPRADerivations.Foundations.AutomaticLexFuel
@@ -783,6 +785,9 @@ import IPRADerivations.Foundations.SplitBranches
 import IPRADerivations.Foundations.ObservationEstimates
 import IPRADerivations.Foundations.RunningIntersection
 import IPRADerivations.Foundations.RiseAlternative
+import IPRADerivations.Foundations.WindowStability
+import IPRADerivations.Foundations.FiniteReplay
+import IPRADerivations.Foundations.PrecisionGate
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion

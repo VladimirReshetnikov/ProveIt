@@ -12345,6 +12345,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.PathShoelace.rvB
 #print axioms LeanProofs.IPRA.Geometry.PathShoelace.trX
 #print axioms LeanProofs.IPRA.Geometry.PathShoelace.trY
+#print axioms LeanProofs.IPRA.Geometry.ConstantMultiplicity.inst2_eqB
+#print axioms LeanProofs.IPRA.Geometry.ConstantMultiplicity.prop_step
+#print axioms LeanProofs.IPRA.Geometry.ConstantMultiplicity.propagate
+#print axioms LeanProofs.IPRA.Geometry.ConstantMultiplicity.constant_multiplicity
 #print axioms LeanProofs.IPRA.Analysis.GaussianNameArithmetic.actual_addition_equivalence_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNameArithmetic.actual_addition_name_at_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNameArithmetic.actual_addition_name_canonical_closed
@@ -15823,6 +15827,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.WeightedMonomials.weight_unique
 #print axioms LeanProofs.IPRA.Foundations.WeightedMonomials.weight_unique_closed
 #print axioms LeanProofs.IPRA.Foundations.WeightedMonomials.weighted_cover
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.incompatible_ring
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.transport_ring
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.border_ring
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.incompatible
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.incompatible_cert
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.toZ_delta
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.solution_transport
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.border_step
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bc
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bt
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.eqbProd
@@ -15884,6 +15896,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.RiseAlternative.rise_all
 #print axioms LeanProofs.IPRA.Foundations.RiseAlternative.rise_alternative
 #print axioms LeanProofs.IPRA.Foundations.RiseAlternative.nonrise_of_bound
+#print axioms LeanProofs.IPRA.Foundations.WindowStability.window_of_nonrise
+#print axioms LeanProofs.IPRA.Foundations.WindowStability.sum_lower
+#print axioms LeanProofs.IPRA.Foundations.WindowStability.telescope_incr
+#print axioms LeanProofs.IPRA.Foundations.WindowStability.min_gap
+#print axioms LeanProofs.IPRA.Foundations.FiniteReplay.replay_step
+#print axioms LeanProofs.IPRA.Foundations.FiniteReplay.replay
+#print axioms LeanProofs.IPRA.Foundations.FiniteReplay.replay_at
+#print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_mul
+#print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_step
+#print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_all
+#print axioms LeanProofs.IPRA.Foundations.PrecisionGate.gate_at
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 
