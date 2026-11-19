@@ -16555,6 +16555,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.ExponentialBinomialSum.en_le
 #print axioms LeanProofs.IPRA.Analysis.ExponentialBinomialSum.eb_upper3
 #print axioms LeanProofs.IPRA.Analysis.ExponentialBinomialSum.b_lower
+#print axioms LeanProofs.IPRA.Analysis.LambertNewton.newton_residual
+#print axioms LeanProofs.IPRA.Analysis.LambertNewton.newton_error
+#print axioms LeanProofs.IPRA.Analysis.LambertNewton.halley_form
+#print axioms LeanProofs.IPRA.Analysis.LambertNewton.log_newton_form
+#print axioms LeanProofs.IPRA.Analysis.LambertNewton.log_newton_fixed
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.WInv
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.w_all
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.w_at

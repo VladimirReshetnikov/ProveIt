@@ -124,6 +124,7 @@ import IPRADerivations.Analysis.EulerApproximants
 import IPRADerivations.Analysis.ErrorBudgets
 import IPRADerivations.Analysis.SignedTelescope
 import IPRADerivations.Analysis.ExponentialBinomialSum
+import IPRADerivations.Analysis.LambertNewton
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BrunElementary
