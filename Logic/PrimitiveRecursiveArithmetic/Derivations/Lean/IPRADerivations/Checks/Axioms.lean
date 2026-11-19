@@ -15700,6 +15700,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.TermCompiler.transport_equation
 #print axioms LeanProofs.IPRA.Foundations.TermCompiler.symbol_inst1
 #print axioms LeanProofs.IPRA.Foundations.TermCompiler.symbol_inst2
+#print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.pos_of_ne
+#print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.ne_mul
+#print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.ne_of_mul_left
+#print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.ne_of_mul_right
+#print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.ex_bit_mono
+#print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.goodR_at
+#print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.goodM_at
+#print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.exhaustive_complete
+#print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.exhaustive_sound
+#print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.first_unique
+#print axioms LeanProofs.IPRA.Foundations.ExhaustiveWitness.singleton_list
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bc
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bt
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.eqbProd
