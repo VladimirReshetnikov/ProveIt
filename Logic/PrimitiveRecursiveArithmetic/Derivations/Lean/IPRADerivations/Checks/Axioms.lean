@@ -10138,6 +10138,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GridIntegral.cell_dn
 #print axioms LeanProofs.IPRA.Analysis.GridIntegral.grid_upper
 #print axioms LeanProofs.IPRA.Analysis.GridIntegral.grid_lower
+#print axioms LeanProofs.IPRA.Foundations.CubicInverse.fn_mono
+#print axioms LeanProofs.IPRA.Foundations.CubicInverse.inv_lip_of_le
+#print axioms LeanProofs.IPRA.Foundations.CubicInverse.inverse_lipschitz
+#print axioms LeanProofs.IPRA.Foundations.CubicInverse.approx_unique
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
