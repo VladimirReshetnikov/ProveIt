@@ -15687,6 +15687,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.DemandRecursion.appF
 #print axioms LeanProofs.IPRA.Foundations.DemandRecursion.fwdBase
 #print axioms LeanProofs.IPRA.Foundations.DemandRecursion.fwdStep
+#print axioms LeanProofs.IPRA.Foundations.TermCompiler.symbol_correct
+#print axioms LeanProofs.IPRA.Foundations.TermCompiler.transport_equation
+#print axioms LeanProofs.IPRA.Foundations.TermCompiler.symbol_inst1
+#print axioms LeanProofs.IPRA.Foundations.TermCompiler.symbol_inst2
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bc
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bt
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.eqbProd
