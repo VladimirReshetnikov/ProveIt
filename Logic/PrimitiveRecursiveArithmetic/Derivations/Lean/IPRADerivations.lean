@@ -203,6 +203,7 @@ import IPRADerivations.Combinatorics.BellLeastPeriod
 import IPRADerivations.Combinatorics.BellModularRecurrence
 import IPRADerivations.Combinatorics.BellWindowPeriod
 import IPRADerivations.Combinatorics.BellWindowBackward
+import IPRADerivations.Combinatorics.BellPeriodExists
 import IPRADerivations.Combinatorics.DobinskiTruncation
 import IPRADerivations.Combinatorics.StirlingInclusion
 import IPRADerivations.Combinatorics.BellDobinski
