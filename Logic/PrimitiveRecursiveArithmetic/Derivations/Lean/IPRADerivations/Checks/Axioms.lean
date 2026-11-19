@@ -16483,6 +16483,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.EulerApproximants.en_factor
 #print axioms LeanProofs.IPRA.Analysis.EulerApproximants.defect_step
 #print axioms LeanProofs.IPRA.Analysis.EulerApproximants.product_defect
+#print axioms LeanProofs.IPRA.Analysis.ErrorBudgets.ad_tri
+#print axioms LeanProofs.IPRA.Analysis.ErrorBudgets.ad_prod_step
+#print axioms LeanProofs.IPRA.Analysis.ErrorBudgets.sum_budget
+#print axioms LeanProofs.IPRA.Analysis.ErrorBudgets.prod_budget
+#print axioms LeanProofs.IPRA.Analysis.ErrorBudgets.inv_budget
+#print axioms LeanProofs.IPRA.Analysis.SignedTelescope.ad_eq_of_cross
+#print axioms LeanProofs.IPRA.Analysis.SignedTelescope.tel_step
+#print axioms LeanProofs.IPRA.Analysis.SignedTelescope.signed_telescope
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.WInv
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.w_all
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.w_at

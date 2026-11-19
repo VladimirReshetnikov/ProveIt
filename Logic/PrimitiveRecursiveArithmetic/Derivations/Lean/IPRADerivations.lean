@@ -121,6 +121,8 @@ import IPRADerivations.Analysis.EulerSqueeze
 import IPRADerivations.Analysis.EulerLogConvex
 import IPRADerivations.Analysis.BohrMollerupUniqueness
 import IPRADerivations.Analysis.EulerApproximants
+import IPRADerivations.Analysis.ErrorBudgets
+import IPRADerivations.Analysis.SignedTelescope
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BrunElementary
