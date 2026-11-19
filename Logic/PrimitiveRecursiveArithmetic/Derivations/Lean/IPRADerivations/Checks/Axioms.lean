@@ -14685,6 +14685,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.code
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.dig
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixGrid.prodT
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimits.code_congr
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimits.proj_lt
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimits.proj_compat
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimits.compat_kept
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimits.factor_lt
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimits.factor_proj
+#print axioms LeanProofs.IPRA.Foundations.FiniteLimits.limit_unique
 #print axioms LeanProofs.IPRA.Foundations.NetTransfer.chain
 #print axioms LeanProofs.IPRA.Foundations.RationalRootScan.absd
 #print axioms LeanProofs.IPRA.Foundations.RationalRootScan.box
