@@ -230,6 +230,8 @@ import IPRADerivations.Foundations.EliminationDegree
 import IPRADerivations.Foundations.InvolutionParity
 import IPRADerivations.Foundations.BoundedDecision
 import IPRADerivations.Foundations.GridSums
+import IPRADerivations.Foundations.TermSums
+import IPRADerivations.Foundations.GridSumsContext
 import IPRADerivations.Foundations.PowerBezout
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Combinatorics.BellLogConcave
@@ -477,6 +479,8 @@ import IPRADerivations.Probability.SortingBound
 import IPRADerivations.Probability.MedianOfMedians
 import IPRADerivations.Topology.Sperner
 import IPRADerivations.Topology.Sperner2D
+import IPRADerivations.Topology.KuhnSimplices
+import IPRADerivations.Topology.SpernerCube
 import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Topology.DimensionTwo
