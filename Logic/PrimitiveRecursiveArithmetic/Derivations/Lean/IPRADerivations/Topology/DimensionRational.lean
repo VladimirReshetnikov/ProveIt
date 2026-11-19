@@ -26,7 +26,7 @@ grid point: `offset_ge`). `RationalFloors.rat_far` turns `rhSep` into `Dimension
 `G` (`sep_nat`) and `RationalFloors.rat_near` turns `rhSmall` into `DimensionObstruction.hSmall`
 (`small_nat`); `DimensionObstruction.no_table` finishes (`rat_no_table`). `rat_obstruction` is the
 closed sentence `∀ N p. ¬(eq:sep for every coordinate ∧ eq:small)`. No witness is extracted
-(`thm:alternative` is not derived).
+(the witness of `thm:alternative` is `Topology/DimensionAlternative`).
 -/
 
 namespace LeanProofs.IPRA.Topology.DimensionRational

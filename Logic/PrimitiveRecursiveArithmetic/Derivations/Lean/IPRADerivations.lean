@@ -241,6 +241,7 @@ import IPRADerivations.Foundations.TermSums
 import IPRADerivations.Foundations.GridSumsContext
 import IPRADerivations.Foundations.GridSumsPoints
 import IPRADerivations.Foundations.RationalFloors
+import IPRADerivations.Foundations.DigitCodes
 import IPRADerivations.Foundations.PowerBezout
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Combinatorics.BellLogConcave
@@ -509,6 +510,7 @@ import IPRADerivations.Topology.DimensionOccupancy
 import IPRADerivations.Topology.DimensionObstruction
 import IPRADerivations.Topology.DimensionRational
 import IPRADerivations.Topology.DimensionSchema
+import IPRADerivations.Topology.DimensionAlternative
 import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Topology.DimensionTwo
