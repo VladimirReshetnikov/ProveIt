@@ -497,6 +497,7 @@ import IPRADerivations.Foundations.WeightedMonomials
 import IPRADerivations.Foundations.LinearCertificates
 import IPRADerivations.Foundations.FiniteAvoidance
 import IPRADerivations.Geometry.GenericHeight
+import IPRADerivations.Geometry.CauchySignCount
 import IPRADerivations.Foundations.LexPotential
 import IPRADerivations.Foundations.LexChain
 import IPRADerivations.Foundations.AutomaticLexFuel
