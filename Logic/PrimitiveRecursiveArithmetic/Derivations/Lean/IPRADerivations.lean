@@ -245,6 +245,7 @@ import IPRADerivations.Foundations.GridSumsPoints
 import IPRADerivations.Foundations.RationalFloors
 import IPRADerivations.Foundations.DigitCodes
 import IPRADerivations.Foundations.IntervalCover
+import IPRADerivations.Foundations.LatticeCount
 import IPRADerivations.Foundations.PowerBezout
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Combinatorics.BellLogConcave
@@ -292,6 +293,7 @@ import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.HurwitzDenominator
 import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
 import IPRADerivations.DiophantineNumberTheory.KhinchinConvergence
+import IPRADerivations.DiophantineNumberTheory.KhinchinLattice
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
