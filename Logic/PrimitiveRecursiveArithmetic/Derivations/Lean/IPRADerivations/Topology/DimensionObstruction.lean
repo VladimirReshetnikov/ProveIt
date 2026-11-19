@@ -26,8 +26,8 @@ exact one the vertex `u_g` of colour `g < D` is occupied in grid `g` while the v
 `D` is not, so their cell vectors differ in grid `g` at some coordinate; by
 `StaggeredGrids.staggered_grid` no coordinate serves two grids, and `StaggeredGrids.pigeon` forbids
 this for `m < D`. The count is then both odd and `0`. No witness is extracted
-(`thm:alternative` is not derived). The rescaling of a general rational table to natural units is
-not formalized (as in `Topology/DimensionTwo`).
+(`thm:alternative` is not derived). The rational version (a rescaling of the table) is
+`Topology/DimensionRational`.
 -/
 
 namespace LeanProofs.IPRA.Topology.DimensionObstruction

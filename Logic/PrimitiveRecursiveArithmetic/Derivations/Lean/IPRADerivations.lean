@@ -240,6 +240,7 @@ import IPRADerivations.Foundations.GridSums
 import IPRADerivations.Foundations.TermSums
 import IPRADerivations.Foundations.GridSumsContext
 import IPRADerivations.Foundations.GridSumsPoints
+import IPRADerivations.Foundations.RationalFloors
 import IPRADerivations.Foundations.PowerBezout
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Combinatorics.BellLogConcave
@@ -503,6 +504,7 @@ import IPRADerivations.Topology.StaggeredGrids
 import IPRADerivations.Topology.LeadingBits
 import IPRADerivations.Topology.DimensionOccupancy
 import IPRADerivations.Topology.DimensionObstruction
+import IPRADerivations.Topology.DimensionRational
 import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Topology.DimensionTwo
