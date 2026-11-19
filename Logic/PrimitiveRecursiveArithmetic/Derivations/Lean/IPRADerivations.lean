@@ -389,6 +389,10 @@ import IPRADerivations.Geometry.KerrNewmanConnection
 import IPRADerivations.Geometry.KerrNewmanRicci
 import IPRADerivations.Geometry.KerrNewmanMaxwell
 import IPRADerivations.Geometry.KerrNewmanEinstein
+import IPRADerivations.Geometry.KerrNewmanIngoingConnection
+import IPRADerivations.Geometry.KerrNewmanIngoingRicci
+import IPRADerivations.Geometry.KerrNewmanIngoingMaxwell
+import IPRADerivations.Geometry.KerrNewmanStatic
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
