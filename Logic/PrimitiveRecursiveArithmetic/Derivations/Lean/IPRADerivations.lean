@@ -775,6 +775,8 @@ import IPRADerivations.Foundations.ReachableFrontier
 import IPRADerivations.Foundations.GraphDemand
 import IPRADerivations.Foundations.FrontierSoundness
 import IPRADerivations.Foundations.ModulusNormalization
+import IPRADerivations.Foundations.UniformCertificates
+import IPRADerivations.Foundations.SplitBranches
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
