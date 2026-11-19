@@ -229,6 +229,7 @@ import IPRADerivations.Foundations.FiniteAMGM
 import IPRADerivations.Foundations.EliminationDegree
 import IPRADerivations.Foundations.InvolutionParity
 import IPRADerivations.Foundations.BoundedDecision
+import IPRADerivations.Foundations.GridSums
 import IPRADerivations.Foundations.PowerBezout
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Combinatorics.BellLogConcave
@@ -408,6 +409,14 @@ import IPRADerivations.Geometry.KerrNewmanIngoingMaxwell
 import IPRADerivations.Geometry.KerrNewmanStatic
 import IPRADerivations.Geometry.KerrNewmanHorizon
 import IPRADerivations.Geometry.KerrNewmanAtlas
+import IPRADerivations.Geometry.KerrNewmanConnectionDerivatives
+import IPRADerivations.Geometry.KerrNewmanRiemannT
+import IPRADerivations.Geometry.KerrNewmanRiemannR
+import IPRADerivations.Geometry.KerrNewmanRiemannX
+import IPRADerivations.Geometry.KerrNewmanRiemannP
+import IPRADerivations.Geometry.KerrNewmanPairMatrix
+import IPRADerivations.Geometry.KerrNewmanPairProductA
+import IPRADerivations.Geometry.KerrNewmanPairProductB
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
