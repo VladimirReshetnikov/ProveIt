@@ -461,6 +461,7 @@ import IPRADerivations.Foundations.TermCompiler
 import IPRADerivations.Foundations.ExhaustiveWitness
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Foundations.WeightedMonomials
+import IPRADerivations.Foundations.LinearCertificates
 import IPRADerivations.Foundations.LexPotential
 import IPRADerivations.Foundations.LexChain
 import IPRADerivations.Foundations.AutomaticLexFuel

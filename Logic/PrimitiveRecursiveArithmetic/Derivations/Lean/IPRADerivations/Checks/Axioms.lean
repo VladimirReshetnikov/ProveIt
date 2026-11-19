@@ -15823,6 +15823,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.WeightedMonomials.weight_unique
 #print axioms LeanProofs.IPRA.Foundations.WeightedMonomials.weight_unique_closed
 #print axioms LeanProofs.IPRA.Foundations.WeightedMonomials.weighted_cover
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.incompatible_ring
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.transport_ring
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.border_ring
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.incompatible
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.incompatible_cert
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.toZ_delta
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.solution_transport
+#print axioms LeanProofs.IPRA.Foundations.LinearCertificates.border_step
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bc
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.Bt
 #print axioms LeanProofs.IPRA.Foundations.FiniteLimitTest.eqbProd
