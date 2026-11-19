@@ -2894,6 +2894,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.ff_binom
 #print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.termination
 #print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.termination_vanish
+#print axioms LeanProofs.IPRA.Analysis.ChuVandermonde.poch_top
+#print axioms LeanProofs.IPRA.Analysis.ChuVandermonde.TE_succ
+#print axioms LeanProofs.IPRA.Analysis.ChuVandermonde.TO_succ
+#print axioms LeanProofs.IPRA.Analysis.ChuVandermonde.chu_vandermonde
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.pascal_sum
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.E_succ
 #print axioms LeanProofs.IPRA.Combinatorics.BinomialSigned.O_succ
@@ -2909,6 +2913,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_poch
 #print axioms LeanProofs.IPRA.Analysis.BetaIntegers.rbeta_general
 #print axioms LeanProofs.IPRA.Analysis.BetaAssociativity.rbeta_assoc
+#print axioms LeanProofs.IPRA.Analysis.BinomialCdf.cdf_pascal
 #print axioms LeanProofs.IPRA.Analysis.NewtonCertificates.halley_denominator
 #print axioms LeanProofs.IPRA.Analysis.NewtonCertificates.newton_residual
 #print axioms LeanProofs.IPRA.Analysis.NewtonCertificates.newton_quadratic
@@ -16147,6 +16152,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.RationalWindow.r_at
 #print axioms LeanProofs.IPRA.Foundations.RationalWindow.floor_nonrise
 #print axioms LeanProofs.IPRA.Foundations.RealWindow.selected_increase
+#print axioms LeanProofs.IPRA.Foundations.ShiftedInduction.shifted_induction
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 

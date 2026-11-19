@@ -46,9 +46,11 @@ import IPRADerivations.Analysis.Products
 import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.Analysis.HypergeometricRatio
 import IPRADerivations.Analysis.TerminatingSeries
+import IPRADerivations.Analysis.ChuVandermonde
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.BetaIntegers
 import IPRADerivations.Analysis.BetaAssociativity
+import IPRADerivations.Analysis.BinomialCdf
 import IPRADerivations.Analysis.NewtonCertificates
 import IPRADerivations.Analysis.LambertAlgebra
 import IPRADerivations.Analysis.RatioMajorant
@@ -822,6 +824,7 @@ import IPRADerivations.Foundations.CubicEnclosure
 import IPRADerivations.Foundations.SerialChoice
 import IPRADerivations.Foundations.RationalWindow
 import IPRADerivations.Foundations.RealWindow
+import IPRADerivations.Foundations.ShiftedInduction
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
