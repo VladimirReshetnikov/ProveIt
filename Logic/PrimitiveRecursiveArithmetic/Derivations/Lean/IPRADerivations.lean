@@ -363,6 +363,10 @@ import IPRADerivations.Probability.BinomialLaw
 import IPRADerivations.Probability.ProductReplacement
 import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.StPetersburg
+import IPRADerivations.Probability.HermiteCoefficients
+import IPRADerivations.Probability.PoissonShift
+import IPRADerivations.Probability.TruncationEstimate
+import IPRADerivations.Probability.MomentDeterminacy
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Probability.ExpectationCorollaries
 import IPRADerivations.Probability.UnionUtility
