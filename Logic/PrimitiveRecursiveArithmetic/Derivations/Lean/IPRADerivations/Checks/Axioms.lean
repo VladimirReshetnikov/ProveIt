@@ -11198,6 +11198,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.PentagonLedger.root3
 #print axioms LeanProofs.IPRA.Geometry.PentagonLedger.sq2
 #print axioms LeanProofs.IPRA.Geometry.PentagonLedger.sub2
+#print axioms LeanProofs.IPRA.Geometry.PentagonTypeOne.hex_edge_u
+#print axioms LeanProofs.IPRA.Geometry.PentagonTypeOne.hex_edge_v
+#print axioms LeanProofs.IPRA.Geometry.PentagonTypeOne.hex_edge_w
+#print axioms LeanProofs.IPRA.Geometry.PentagonTypeOne.shared_side
+#print axioms LeanProofs.IPRA.Geometry.PentagonTypeOne.merge_at_B
+#print axioms LeanProofs.IPRA.Geometry.PentagonTypeOne.merge_at_C
+#print axioms LeanProofs.IPRA.Geometry.PentagonTypeOne.union_area
+#print axioms LeanProofs.IPRA.Geometry.PentagonTypeOne.hexagon_area
 #print axioms LeanProofs.IPRA.Geometry.PlatonicAlgebra.diskHyps
 #print axioms LeanProofs.IPRA.Geometry.RodriguesMap.colA
 #print axioms LeanProofs.IPRA.Geometry.RodriguesMap.colB
