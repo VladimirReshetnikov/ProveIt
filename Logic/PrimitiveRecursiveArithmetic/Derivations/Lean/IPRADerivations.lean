@@ -110,6 +110,7 @@ import IPRADerivations.Analysis.EvenPowerIntegrals
 import IPRADerivations.Analysis.EulerPiSeries
 import IPRADerivations.Analysis.FiniteFTC
 import IPRADerivations.Analysis.TaggedFTC
+import IPRADerivations.Analysis.EulerMaclaurinCertificate
 import IPRADerivations.Analysis.RiemannSumRules
 import IPRADerivations.Analysis.BernsteinContraction
 import IPRADerivations.Analysis.RobbinsTelescope

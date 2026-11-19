@@ -12041,6 +12041,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.up_step
 #print axioms LeanProofs.IPRA.Analysis.TaggedFTC.tagged_upper
 #print axioms LeanProofs.IPRA.Analysis.TaggedFTC.tagged_lower
+#print axioms LeanProofs.IPRA.Analysis.EulerMaclaurinCertificate.local_defect
+#print axioms LeanProofs.IPRA.Analysis.EulerMaclaurinCertificate.three_products
+#print axioms LeanProofs.IPRA.Analysis.EulerMaclaurinCertificate.defect_bound
+#print axioms LeanProofs.IPRA.Analysis.EulerMaclaurinCertificate.constant_compare
+#print axioms LeanProofs.IPRA.Analysis.EulerMaclaurinCertificate.toZ_zs
+#print axioms LeanProofs.IPRA.Analysis.EulerMaclaurinCertificate.toZ_alt
+#print axioms LeanProofs.IPRA.Analysis.EulerMaclaurinCertificate.em_ring
+#print axioms LeanProofs.IPRA.Analysis.EulerMaclaurinCertificate.em_identity
+#print axioms LeanProofs.IPRA.Analysis.EulerMaclaurinCertificate.za_alt
+#print axioms LeanProofs.IPRA.Analysis.EulerMaclaurinCertificate.zs_bound
+#print axioms LeanProofs.IPRA.Analysis.EulerMaclaurinCertificate.em_bound
 #print axioms LeanProofs.IPRA.Analysis.RiemannSumRules.rs_additive
 #print axioms LeanProofs.IPRA.Analysis.RiemannSumRules.rs_add
 #print axioms LeanProofs.IPRA.Analysis.RiemannSumRules.rs_scale
