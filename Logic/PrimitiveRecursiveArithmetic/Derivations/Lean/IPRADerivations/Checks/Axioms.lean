@@ -512,6 +512,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.ProductReplacement.repl_step
 #print axioms LeanProofs.IPRA.Probability.ProductReplacement.replacement_all
 #print axioms LeanProofs.IPRA.Probability.ProductReplacement.replacement_bound
+#print axioms LeanProofs.IPRA.Probability.SymmetrizedMoments.dsum_le
+#print axioms LeanProofs.IPRA.Probability.SymmetrizedMoments.symm_second_moment
+#print axioms LeanProofs.IPRA.Probability.SymmetrizedMoments.cube_le
+#print axioms LeanProofs.IPRA.Probability.SymmetrizedMoments.symm_third_moment
+#print axioms LeanProofs.IPRA.Probability.SymmetrizedMoments.discard_pt
+#print axioms LeanProofs.IPRA.Probability.SymmetrizedMoments.discarded_moment
 #print axioms LeanProofs.IPRA.Probability.TailSum.tail_pt
 #print axioms LeanProofs.IPRA.Probability.TailSum.tail_col_pt
 #print axioms LeanProofs.IPRA.Probability.TailSum.tail_sum
@@ -11318,6 +11324,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.tp_step
 #print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.up_base
 #print axioms LeanProofs.IPRA.Analysis.ExponentialSeries.up_step
+#print axioms LeanProofs.IPRA.Analysis.ExponentialMajorant.geom
+#print axioms LeanProofs.IPRA.Analysis.ExponentialMajorant.exp_le_geom
+#print axioms LeanProofs.IPRA.Analysis.ExponentialMajorant.exp_majorant
+#print axioms LeanProofs.IPRA.Analysis.ExponentialMajorant.rem_le_geom
+#print axioms LeanProofs.IPRA.Analysis.ExponentialMajorant.rem_majorant
+#print axioms LeanProofs.IPRA.Analysis.ExponentialMajorant.exp_split
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.weierstrass_lower
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.weierstrass_upper
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.DnInv

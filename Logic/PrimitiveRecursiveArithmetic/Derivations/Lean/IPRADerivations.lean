@@ -90,6 +90,7 @@ import IPRADerivations.Analysis.WallisRecurrence
 import IPRADerivations.Analysis.WallisFinite
 import IPRADerivations.Analysis.RobbinsSeries
 import IPRADerivations.Analysis.ExponentialSeries
+import IPRADerivations.Analysis.ExponentialMajorant
 import IPRADerivations.Analysis.WeierstrassProduct
 import IPRADerivations.Analysis.BinomialExponentialGap
 import IPRADerivations.Analysis.StirlingElimination
@@ -364,6 +365,7 @@ import IPRADerivations.Probability.Lotus
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Probability.BinomialLaw
 import IPRADerivations.Probability.ProductReplacement
+import IPRADerivations.Probability.SymmetrizedMoments
 import IPRADerivations.Probability.TailSum
 import IPRADerivations.Probability.StPetersburg
 import IPRADerivations.Probability.HermiteCoefficients
