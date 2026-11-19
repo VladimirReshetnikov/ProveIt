@@ -2500,6 +2500,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchardPower.level_all
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchardPower.touchard_power
 #print axioms LeanProofs.IPRA.Combinatorics.BellTouchardPower.touchard_power_closed
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.cong_drop
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.cong_cancel
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.shift_pp
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.period_succ
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.period_zero
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.bell_period
+#print axioms LeanProofs.IPRA.Combinatorics.BellPrimePeriod.bell_period_closed
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.gb_ratio
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.gb_absorb
 #print axioms LeanProofs.IPRA.Combinatorics.StirlingInclusion.sum_affine
