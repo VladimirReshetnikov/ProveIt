@@ -9423,6 +9423,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.substitution
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.residual_discharge
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.compose
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.full_discharge
+#print axioms LeanProofs.IPRA.Foundations.OpenContracts.discharge_some
 #print axioms LeanProofs.IPRA.Foundations.ExtensionalComposition.ext_compose
 #print axioms LeanProofs.IPRA.Foundations.ExtensionalComposition.ext_compose_closed
 #print axioms LeanProofs.IPRA.Foundations.GuardedTotalization.sel_one
