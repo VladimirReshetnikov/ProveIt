@@ -754,6 +754,9 @@ import IPRADerivations.Foundations.ReachableFrontier
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
+import IPRADerivations.Foundations.RuntimePermutationWords
+import IPRADerivations.Analysis.GaussianPolynomialDeterminantTerms
+import IPRADerivations.Analysis.GaussianPolynomialDeterminant
 import IPRADerivations.Foundations.FiniteStabilization
 import IPRADerivations.Foundations.DisjointSums
 import IPRADerivations.Foundations.LeastBoundedWitness
@@ -763,6 +766,7 @@ import IPRADerivations.Foundations.PrecisionArithmetic
 import IPRADerivations.Foundations.ObserverErasure
 import IPRADerivations.Foundations.BoundedEnumeration
 import IPRADerivations.Foundations.FilteredEnumerationCode
+import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.AnalyticNumberTheory.DyadicBandSum
 import IPRADerivations.Analysis.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Analysis.GaussianRationalSyntheticCoefficientValues
@@ -833,3 +837,5 @@ import IPRADerivations.Analysis.GaussianPolynomialMultiplicationMatrix
 import IPRADerivations.Analysis.GaussianRationalFiniteRoots
 import IPRADerivations.Analysis.GaussianRationalPolynomialDegree
 import IPRADerivations.Analysis.GaussianRationalPolynomialProductDegree
+import IPRADerivations.Analysis.GaussianRationalValueEquality
+import IPRADerivations.Analysis.GaussianRationalFiberGrouping
