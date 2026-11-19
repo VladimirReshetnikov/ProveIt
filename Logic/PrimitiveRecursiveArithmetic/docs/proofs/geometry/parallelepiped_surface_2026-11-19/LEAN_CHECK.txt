@@ -1,0 +1,33 @@
+Lean 4.32.0, x86_64-unknown-linux-gnu, release commit
+8c9756b28d64dab099da31a4c09229a9e6a2ef35
+Command: lean SurfaceCore.lean
+Result: exit 0, no warnings or errors. No external packages.
+All declarations have bodies. No sorry, axiom declarations or native_decide.
+
+Selected #print axioms results:
+  extend_complete           propext, Quot.sound
+  allGeneratedWordsValid    propext
+  countsForEveryPair        none
+  reflected_squared_chord   propext, Quot.sound
+  checkRootInterval_sound   none
+  scanFloorRootBounds       propext, Quot.sound
+  scanCeilRootCovers        propext, Quot.sound
+  floorRootBounds           propext, Classical.choice, Quot.sound
+  ceilRootCovers            propext, Classical.choice, Quot.sound
+
+This is a Lean verification of the finite statements declared in the source.
+The report gives the first-order constructive proofs and the roadmap to
+independent iPRA checking. Standard Lean theorem dependencies are recorded
+above so the difference between these forms of verification is explicit.
+
+Command: lean QuarticCertificate.lean
+Result: exit 0, no warnings or errors. Each of the following facts is proved
+by kernel decide, using only the Lean distribution:
+  QuarticCertificate.monicReduction             no axioms
+  QuarticCertificate.powerRemainder             no axioms
+  QuarticCertificate.bezoutCoefficients         propext
+  QuarticCertificate.noLinearOrQuadratic        no axioms
+  QuarticCertificate.rootBracket                propext
+  QuarticCertificate.derivativeUpperNegative    propext
+The coefficient checks are finite arithmetic. The report proves their
+geometric interpretation and supplies the factor-degree argument.
