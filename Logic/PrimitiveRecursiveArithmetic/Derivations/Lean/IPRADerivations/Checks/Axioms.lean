@@ -16404,6 +16404,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.EulerSqueeze.raw_width
 #print axioms LeanProofs.IPRA.Analysis.EulerLogConvex.prod_mono
 #print axioms LeanProofs.IPRA.Analysis.EulerLogConvex.euler_log_convex
+#print axioms LeanProofs.IPRA.Analysis.BohrMollerupUniqueness.bernoulli
+#print axioms LeanProofs.IPRA.Analysis.BohrMollerupUniqueness.pow_inj
+#print axioms LeanProofs.IPRA.Analysis.BohrMollerupUniqueness.squeeze_close
+#print axioms LeanProofs.IPRA.Analysis.BohrMollerupUniqueness.uniqueness_core
+#print axioms LeanProofs.IPRA.Analysis.BohrMollerupUniqueness.uniqueness_rate
+#print axioms LeanProofs.IPRA.Analysis.BohrMollerupUniqueness.rB_at
+#print axioms LeanProofs.IPRA.Analysis.BohrMollerupUniqueness.iterated_recurrence
+#print axioms LeanProofs.IPRA.Analysis.EulerApproximants.off_at
+#print axioms LeanProofs.IPRA.Analysis.EulerApproximants.en_factor
+#print axioms LeanProofs.IPRA.Analysis.EulerApproximants.defect_step
+#print axioms LeanProofs.IPRA.Analysis.EulerApproximants.product_defect
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.WInv
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.w_all
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.w_at

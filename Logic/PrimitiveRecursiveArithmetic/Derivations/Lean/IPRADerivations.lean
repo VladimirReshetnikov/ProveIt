@@ -119,6 +119,8 @@ import IPRADerivations.Analysis.EulerBrackets
 import IPRADerivations.Analysis.PowerGap
 import IPRADerivations.Analysis.EulerSqueeze
 import IPRADerivations.Analysis.EulerLogConvex
+import IPRADerivations.Analysis.BohrMollerupUniqueness
+import IPRADerivations.Analysis.EulerApproximants
 import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.BrunCounting
 import IPRADerivations.AnalyticNumberTheory.BrunElementary
