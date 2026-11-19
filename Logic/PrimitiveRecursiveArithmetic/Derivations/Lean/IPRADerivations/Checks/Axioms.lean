@@ -607,6 +607,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.HarmonicRearrangement.halving
 #print axioms LeanProofs.IPRA.Probability.HarmonicRearrangement.alt_harmonic
 #print axioms LeanProofs.IPRA.Probability.HarmonicRearrangement.odd_sum
+#print axioms LeanProofs.IPRA.Probability.KolmogorovStep.inst3_monus
+#print axioms LeanProofs.IPRA.Probability.KolmogorovStep.inst2_monus
+#print axioms LeanProofs.IPRA.Probability.KolmogorovStep.cleared_square
+#print axioms LeanProofs.IPRA.Probability.KolmogorovStep.past_bound
+#print axioms LeanProofs.IPRA.Probability.KolmogorovStep.future_bound
+#print axioms LeanProofs.IPRA.Probability.KolmogorovStep.crossing_step
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.trunc_pt
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.truncation
 #print axioms LeanProofs.IPRA.Probability.MomentDeterminacy.back_unique

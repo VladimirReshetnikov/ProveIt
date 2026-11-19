@@ -433,6 +433,7 @@ import IPRADerivations.Probability.CompleteSquare
 import IPRADerivations.Probability.BoxMuller
 import IPRADerivations.Probability.PoissonShift
 import IPRADerivations.Probability.HarmonicRearrangement
+import IPRADerivations.Probability.KolmogorovStep
 import IPRADerivations.Probability.TruncationEstimate
 import IPRADerivations.Probability.MomentDeterminacy
 import IPRADerivations.Probability.Variance
