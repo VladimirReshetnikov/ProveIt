@@ -1,0 +1,148 @@
+\section{A distance algorithm using only arithmetic and square roots}
+\label{sec:formal}
+The Lean observer below computes the distances at every requested precision. It obtains its own approximation to the developed arcs by finite sums. The much faster certificate computation of the printed table uses elementary functions.
+
+\paragraph{One regular gate coordinate.}
+Put $u=\tan(t/2)/\sqrt3\in[0,1]$. Write $a(u)$ for the lower developed
+arc with $a(0)=0$. Its velocity follows by multiplying the unit tangent
+by $dt/du=2\sqrt3/(1+3u^2)$:
+\[
+ a(u)=\int_0^u F(v)\,dv,\qquad
+ F(v)=\frac{2\sqrt3}{(1+3v^2)^2}
+       \big((1-v^2)\sqrt{1-v^2},\ v(3+v^2)\big).
+\]
+The tangent identity proved in \texttt{ObjectIdentities.lean} gives
+$\|F(v)\|=2\sqrt3/(1+3v^2)<4$.
+Here $C=a(1)+(0,\sqrt3)$ is the central-reflection vector. The four
+gates are $a(v)$, $C-a(v)$, $(0,v\sqrt3)$ and $a(1)+(0,v\sqrt3)$.
+The ruling with $h=\tan(t/2)$ has planar endpoints $a(u)$ and $C-a(v)$,
+where
+\[
+ u^2=h^2/3,\qquad v^2=(3-h^2)/(3(1+h^2)).
+\]
+For the second identity insert $c'=-c/(1+c)$ into
+$v^2=(1-c')/[3(1+c')]$. The selected point is the convex
+combination with weights $1-s,s$.
+
+\paragraph{A uniform rational evaluator.}
+Given precision $n$, put $N=2^{n+6}$ and $M=2^{n+12}$.
+An input $q=A/B\ge0$ with $B>0$ has the lower root approximation
+\[
+ R_M(q)=M^{-1}\operatorname{isqrt}\!\left(\left\lfloor
+                M^2 A/B\right\rfloor\right).
+\]
+Its error is less than $1/M$ by the two integer square inequalities.
+For $i=0,\ldots,M-1$ evaluate $F(i/M)$, using $R_M(3)$ and
+$R_M(1-(i/M)^2)$ for the two roots. Round each final coordinate down
+to a multiple of $1/M$. Sum these vectors and divide by $M$ to form
+all prefix left sums $a_M(k)$, $0\le k\le M$.
+To evaluate $a(u)$ or $a(v)$ at a selected endpoint, take the mesh
+index $\lfloor M u\rfloor$ or $\lfloor M v\rfloor$ by the same integer
+square root. For a gate contact $i/N$, use index $iM/N$, an integer.
+Use the same corner and constant for all reflections. All operations have
+explicitly bounded loops.
+
+For the error estimate, $v\mapsto v^2$ is 2-Lipschitz and
+$t\mapsto t\sqrt t$ is $3/2$-Lipschitz on $[0,1]$.
+For the latter factor $a^3-b^3$ and $a^2-b^2$ with
+$a=\sqrt t$, $b=\sqrt{t'}$:
+$a^2+ab+b^2\le 3(a+b)/2$. The equality case $a=b=0$ is immediate,
+and the resulting non-strict inequality can be used without division by
+$a+b$. The factor $(1+3v^2)^{-2}$ is 12-Lipschitz by the difference
+of reciprocals, and $v(3+v^2)$ is 6-Lipschitz and lies in $[0,4]$.
+The two coordinates of $F$ therefore have Lipschitz bounds $60$ and
+$216$, giving the Euclidean bound $225$.
+At a mesh node the two root replacements and coordinate roundings have
+combined Euclidean error at most $16/M$, since before rounding, coordinate
+errors are at most $6/M$ and $8/M$, respectively. Each full left sum
+has error at most $225/(2M)+16/M$. Truncating an endpoint costs at
+most $4/M$. Thus every evaluated $a$ is within $140/M$,
+$C$ is within $141/M$, and every developed endpoint, gate point, or
+chosen convex combination is within $300/M$ of its exact value.
+
+For every permissible word sample all contact coordinates on the
+$N$-mesh. Evaluate a chord of the approximated endpoints by $R_M$
+applied to its squared norm. Take the minimum $O_n$ of these integer
+costs divided by $M$. Each word has at most three legs, so each sampled
+cost differs from its true cost by at most $3(600+1)/M=1803/M$.
+Moving one contact changes the two incident chords by at most $8/N$.
+Moving two costs at most $16/N$. Comparing every exact competitor
+with its rounded competitor, and comparing the finite minimizing
+witness with its own exact mesh cost, yields the asymmetric enclosure
+\[
+ O_n - 1803/M -16/N\ \le\ d\ \le\ O_n+1803/M .
+\]
+In particular $|O_n-d|<2^{-n}$. This is a uniform algorithm with a
+proof of its precision in ordinary mathematics. The implementation is
+in \texttt{Observer.lean}. The branch certificates serve the same 45
+pairs more efficiently at the decimal precision of the tables.
+
+\paragraph{What iPRA can express.}
+Encode a signed integer by a pair of naturals, rational comparisons
+by cross multiplication, rational lists by primitive recursive pairing,
+and each finite candidate by its word and its two mesh indices (use
+dummy indices for shorter words). A bounded scan selects the smallest
+index of minimum cost. Arrays in the implementation can equivalently be
+recomputed by prefix sums. These encodings use composition and primitive
+recursion only. For a formula with integer quantities over a common
+positive denominator, $a\le b$ is the quantifier-free equation
+$a\mathbin{\dot-}b=0$ on natural numerators after moving negative
+parts across the inequality. A bounded universal check is the test
+that the sum of its Boolean failures vanishes. Thus the target Cauchy
+theorem can be stated internally, for every $m\ge n$, as
+$|O_m-O_n|\le2^{-m}+2^{-n}$ with denominators cleared.
+The finite-chain formulation of the surface restriction and the moduli in Section~\ref{sec:arith} give geometric meaning to this arithmetic target.
+
+\section{Lean verification and the remaining derivations}
+The enclosed files were checked with Lean 4.32.0 and, where specified,
+the ProveIt development at commit
+\texttt{09fe17194da14cdd100947737952e44100bb71b8}.
+\begin{itemize}
+\item \texttt{SurfaceDistance.lean} checks the older metric definitions,
+the contraction of spatial variation under folding, zero-coordinate hits by continuity, the lower bound for all four sign patterns conditional on the chamber estimates, and the statements
+\texttt{ExactTable}, \texttt{NumericalTable}. These last two are
+definitions of propositions. Their proofs are open.
+\item \texttt{FiniteRoutes.lean} proves attainment of the one- and
+two-index mesh search, the two-sided stability of minima under explicit
+maps with error bounds, and soundness of recursive certificate coverage
+at every rational parameter pair. The last theorem takes proven local
+leaf bounds as hypotheses.
+\item \texttt{Observer.lean} implements the above total arithmetic
+observer and the ten inputs. \texttt{ReplayObserver.lean} evaluates one
+example in each contact-count class. The proved error bounds above
+have yet to be attached to the executable as kernel theorems.
+\item \texttt{ObjectIdentities.lean} supplies five universally closed
+ordinary iPRA derivations of the type
+$[]\vdash_{\rm PRAAx}\varphi$: the squared ruling identity, the tangent
+identity, the two-dimensional Lagrange identity behind the support bound,
+the two-by-two Sylvester identity, and completion of squares for a
+gradient residual. These are object-language equations over signed
+pairs of arbitrary natural terms.
+\item \texttt{DecimalTable.lean} uses \texttt{by decide} to check integer interval nesting, widths, 8- and 40-place rounding, pair coverage and the stated residual bounds across the concrete rows. Its inputs are the rational endpoints from the separate analytic enclosure proof.
+\item \texttt{ObjectMesh.lean} derives an iPRA minimum-transfer
+sequent. Let $f,g$ be coarse and fine costs in common integer units
+and $j$ the fine least minimizer. If $r(j)$ is a feasible coarse index
+and $f(r(j))\le g(j)+E$, then $\min f\le\min g+E$. The closed sequent
+is uniform in the bounds, packed geometric input and error numerator
+for each fixed choice of three primitive recursive expressions.
+\end{itemize}
+
+\paragraph{Remaining implementation steps.}
+First compile the displayed rational routines to the existing
+\texttt{PR}/\texttt{PTm} definitions of ordinary iPRA. Use the modules for pairing, integer division and bounded sums. The least-witness operation is provided by \texttt{ApproximateWitness}. For the Cauchy derivation,
+compare two prefix sums by grouping fine cells into coarse cells.
+Over a coarse block the sum of the distances to its left endpoint is
+at most the number of fine cells times $1/(2M_{\rm coarse})$.
+Apply the algebraic Lipschitz and square-root inequalities above
+termwise. For a partial final block use the endpoint error bound.
+Map fine contacts to coarse contacts by integer division and embed
+coarse contacts by multiplication. Applying minimum transfer in the
+two directions now gives the cleared-denominator Cauchy inequality.
+This step uses quantifier-free induction on prefix sums and finite
+Boolean invariants. For the sharper decimal tables, implement sound
+enclosures of the chart coordinates and the oloid-specific leaf-tube
+bound, then instantiate rational tree coverage at the published
+certificate input. Finally prove the length equality for the chamber development
+and path lifting in mathlib for the external bridge to the stated class
+of continuous paths. These three interfaces distinguish the arithmetic
+observer, the verified decimals, and the external geometric theorem.

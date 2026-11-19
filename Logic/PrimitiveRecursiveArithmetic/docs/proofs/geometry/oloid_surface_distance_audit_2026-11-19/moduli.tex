@@ -1,0 +1,64 @@
+\subsection{Explicit inverse moduli for the two charts}
+The same rectangular parameter $(s,\theta)$ represents the spatial and
+planar quarters, with $v=\sin\theta$, $w=\cos\theta$, $d=1+3v^2$.
+Suppose $\theta\le\eta$ and put $\delta=\eta-\theta$. For arbitrary
+$r,s\in[0,1]$ we claim
+\begin{equation}
+ |X(r,\eta)-X(s,\theta)|\ge \delta^4/2048,\qquad
+ |F(r,\eta)-F(s,\theta)|\ge \delta^5/4096 .
+ \label{eq:invmod}
+\end{equation}
+These deliberately coarse constants include the two singular corners.
+
+Take the spatial supporting normal $n(\theta)=(-c,\sin t,\sqrt{1+2c})$.
+Its projected lengths on the two circle planes are $1,1+c$, and
+$|n|=\sqrt{2(1+c)}\le2$. The support deficiency of the point
+$X(r,\eta)$, measured from the plane containing $X(s,\theta)$, is
+\[
+ \frac{1-r}{2}|A(\eta)-A(\theta)|^2
+     +\frac{r(1+c)}{2}|B(\eta)-B(\theta)|^2 .
+\]
+Indeed a unit circle point at chord distance $b$ from its maximizer
+loses $b^2/2$ in unit support height. Here $A(\xi), B(\xi)$ denote the
+two spatial endpoints at parameter $\xi$. The absolute derivatives of
+the two angular arclengths are respectively $2\sqrt3 w/d$ and
+$2\sqrt3 v/\sqrt d$; the second follows from
+$\theta^*=\pi/2-\beta$, $d^*=4/d$. They are bounded below by
+$(\sqrt3/2)\cos\theta$ and $\sqrt3\sin\theta$. The integrals of either
+sine or cosine on any subinterval of length $\delta$ of $[0,\pi/2]$
+are at least $\delta^2/4$, since $\sin x\ge x/2$ there. Both circular
+angle increments exceed or equal $\delta^2/8$, and both chord lengths
+are at least $\delta^2/16$. The inequalities $1+c\ge1/2$ and $|n|\le2$
+now yield the first bound.
+
+For the plane write $e=(e_U,e_V)$ for the unit ruling direction in
+$(U,V)$ coordinates. The perpendicular $\nu=(e_V,-e_U)$ has
+nonnegative entries and $\nu_U\ge1/4$ from
+$e_V=(1+v^2+2v^4)/d$. Both coordinates of both endpoints $a,b$
+increase with $\theta$. Their $U$ derivatives are
+\[
+    a_U'=2\sqrt3 w^4/d^2\ge(\sqrt3/8)w^4,\qquad
+    b_U'=4\sqrt3 v^4/d\ge\sqrt3 v^4 .
+\]
+Now take the scalar product of
+$F(r,\eta)-F(s,\theta)$ with $\nu(\theta)$; the contribution of
+$F(r,\theta)-F(s,\theta)$ vanishes. The remaining projection is at least
+a quarter of the $U$ increment, a convex combination of the two endpoint
+increments. On any interval of length $\delta$, the integrals of
+$\sin^4\theta$ and $\cos^4\theta$ are each at least $\delta^5/80$,
+using $\sin x\ge x/2$ again. This proves the planar inequality.
+For either $Y=X,F$ we also have
+\[
+ \sqrt3|s-r|\le |Y(s,\theta)-Y(r,\eta)|+
+                       4\delta .
+\]
+In fact $|Y_\theta|$ is bounded above by the greater of the two endpoint
+speeds, at most $2\sqrt3<4$, by linear interpolation and the derivative
+formulas for the endpoint arclengths. These polynomial bounds turn
+inverse-chart evaluation into a bounded grid search. To find parameters
+to prescribed tolerance choose an image tolerance small enough by
+\eqref{eq:invmod}, enumerate a parameter grid fine enough by the forward
+Lipschitz bounds, and use rational approximations to choose a grid image
+within that tolerance. The first inequality applies to points named in
+spatial coordinates and the second to planar names, including the
+planar chords used in lifting paths.
