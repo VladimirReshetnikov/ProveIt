@@ -1779,6 +1779,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzDenominator.no_golden_unit
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzDenominator.denominator_core
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzDenominator.denominator_lemma
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.two_uv_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.min_weight
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.margin_core
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.le_mul_mono
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.sq_le_sq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.add_le_add'
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.cert_one
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.cert_core
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.certificate
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul

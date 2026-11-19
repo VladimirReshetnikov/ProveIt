@@ -287,6 +287,7 @@ import IPRADerivations.DiophantineNumberTheory.PellDirichlet
 import IPRADerivations.DiophantineNumberTheory.PellNegUnits
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
 import IPRADerivations.DiophantineNumberTheory.HurwitzDenominator
+import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
