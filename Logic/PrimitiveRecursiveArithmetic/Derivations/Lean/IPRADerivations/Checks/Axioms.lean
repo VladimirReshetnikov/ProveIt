@@ -2721,6 +2721,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.EliminationDegree.inst2_var0
 #print axioms LeanProofs.IPRA.Foundations.EliminationDegree.dl_sum
 #print axioms LeanProofs.IPRA.Foundations.EliminationDegree.elim_degree
+#print axioms LeanProofs.IPRA.Foundations.PowerBezout.shift_add
+#print axioms LeanProofs.IPRA.Foundations.PowerBezout.shift_pw
+#print axioms LeanProofs.IPRA.Foundations.PowerBezout.g_at
+#print axioms LeanProofs.IPRA.Foundations.PowerBezout.q_point
+#print axioms LeanProofs.IPRA.Foundations.PowerBezout.p_point
+#print axioms LeanProofs.IPRA.Foundations.PowerBezout.power_bezout
 #print axioms LeanProofs.IPRA.Combinatorics.CoefficientLogConcave.inst2_sub2
 #print axioms LeanProofs.IPRA.Combinatorics.CoefficientLogConcave.inst2_mul
 #print axioms LeanProofs.IPRA.Combinatorics.CoefficientLogConcave.inst2_monus
