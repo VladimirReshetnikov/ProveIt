@@ -397,6 +397,7 @@ import IPRADerivations.Geometry.RodriguesMap
 import IPRADerivations.Geometry.IsoperimetricIdentities
 import IPRADerivations.Geometry.PlatonicAlgebra
 import IPRADerivations.Geometry.PappusCell
+import IPRADerivations.Geometry.PappusGrid
 import IPRADerivations.Geometry.CircumcentreUnique
 import IPRADerivations.Geometry.MonotileSubstitution
 import IPRADerivations.Combinatorics.FibonacciLucasMore
