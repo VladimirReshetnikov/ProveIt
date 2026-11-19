@@ -379,6 +379,7 @@ import IPRADerivations.Geometry.KerrNewmanInverse
 import IPRADerivations.Geometry.KerrNewmanIngoing
 import IPRADerivations.Foundations.FormalDerivation
 import IPRADerivations.Geometry.KerrNewmanBase
+import IPRADerivations.Geometry.KerrNewmanBaseCurvature
 import IPRADerivations.Core.IntCancel
 import IPRADerivations.Geometry.PowerOfPoint
 import IPRADerivations.Probability.Expectation
