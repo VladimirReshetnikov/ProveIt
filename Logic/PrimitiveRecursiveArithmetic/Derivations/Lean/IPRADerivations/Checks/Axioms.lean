@@ -3309,6 +3309,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyRecurrence.bb_ext
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyRecurrence.apery_split
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyRecurrence.apery_rec
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HeightContraction.pw_exp_mono
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HeightContraction.exponent_compare
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HeightContraction.height_contraction
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus.p_gt_one
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus.p_coprime
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus.poch_ge_pow
