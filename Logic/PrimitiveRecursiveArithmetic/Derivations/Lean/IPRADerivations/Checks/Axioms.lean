@@ -17792,6 +17792,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.OverlapBranches.left_branch
 #print axioms LeanProofs.IPRA.Foundations.OverlapBranches.right_branch
 #print axioms LeanProofs.IPRA.Foundations.OverlapBranches.branch_cover
+#print axioms LeanProofs.IPRA.Foundations.LexicographicRank.tail_congr
+#print axioms LeanProofs.IPRA.Foundations.LexicographicRank.prefix_lt
+#print axioms LeanProofs.IPRA.Foundations.LexicographicRank.lex_rank
+#print axioms LeanProofs.IPRA.Foundations.LexicographicRank.descent_fuel
+#print axioms LeanProofs.IPRA.Foundations.LexicographicRank.fuel_bound
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 
