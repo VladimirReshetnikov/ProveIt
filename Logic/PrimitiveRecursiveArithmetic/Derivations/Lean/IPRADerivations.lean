@@ -800,6 +800,8 @@ import IPRADerivations.Foundations.BisectionInvariant
 import IPRADerivations.Foundations.CubicBisection
 import IPRADerivations.Foundations.BoundedChoice
 import IPRADerivations.Foundations.DyadicNames
+import IPRADerivations.Foundations.EmptyWindow
+import IPRADerivations.Foundations.RobustControl
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion

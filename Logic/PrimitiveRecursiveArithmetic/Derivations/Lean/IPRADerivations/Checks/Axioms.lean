@@ -15990,6 +15990,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.DyadicNames.sample_stability
 #print axioms LeanProofs.IPRA.Foundations.DyadicNames.add_regular
 #print axioms LeanProofs.IPRA.Foundations.DyadicNames.reciprocal_gap
+#print axioms LeanProofs.IPRA.Foundations.EmptyWindow.pos_of_ne
+#print axioms LeanProofs.IPRA.Foundations.EmptyWindow.empty_window
+#print axioms LeanProofs.IPRA.Foundations.RobustControl.overlap_branch
+#print axioms LeanProofs.IPRA.Foundations.RobustControl.robust_pivot
+#print axioms LeanProofs.IPRA.Foundations.RobustControl.robust_pivot_argmax
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side
 
