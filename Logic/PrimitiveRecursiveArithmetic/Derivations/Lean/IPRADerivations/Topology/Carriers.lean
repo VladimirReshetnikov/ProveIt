@@ -32,8 +32,8 @@ is assumed bounded or decidable, and the derivation is first-order logic in iPRA
   `ι(p)` (rules `himg₁`: `ι(p) ⊆ C(p)`, `himg₂`: `C(p) ⊆ ι(p)`), then every `r ⊆ (D ∘ C)(p)` over a simplex
   `p` of `K` is a simplex of `M`. This is the reassociation of finite unions in the proof of the paper.
 
-Associativity and identities of the composition, the prism identity and the homology statements of the
-section are not derived here.
+Associativity and identities of the composition are `Topology/CarrierComposition`. The prism identity and
+the homology statements of the section are not derived here.
 -/
 
 namespace LeanProofs.IPRA.Topology.Carriers

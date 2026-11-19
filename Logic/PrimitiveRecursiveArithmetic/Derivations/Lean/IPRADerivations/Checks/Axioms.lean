@@ -12251,6 +12251,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.LeastBoundedWitness.fnd
 #print axioms LeanProofs.IPRA.Foundations.LeastBoundedWitness.fnd_congr
 #print axioms LeanProofs.IPRA.Foundations.LeastBoundedWitness.not_found_of_eq
+#print axioms LeanProofs.IPRA.Foundations.LeastBoundedWitness.witness_of_bound
+#print axioms LeanProofs.IPRA.Foundations.LeastBoundedWitness.decide_of_bound
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixExpansion.dgB
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixExpansion.exp_all
 #print axioms LeanProofs.IPRA.Foundations.MixedRadixExpansion.exp_at
@@ -13935,6 +13937,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.Carriers.Carried2
 #print axioms LeanProofs.IPRA.Topology.Carriers.InImages
 #print axioms LeanProofs.IPRA.Topology.Carriers.shift_inst1
+#print axioms LeanProofs.IPRA.Topology.CarrierComposition.subst_CompAt
+#print axioms LeanProofs.IPRA.Topology.CarrierComposition.app_comp
+#print axioms LeanProofs.IPRA.Topology.CarrierComposition.comp_intro
+#print axioms LeanProofs.IPRA.Topology.CarrierComposition.comp_elim
+#print axioms LeanProofs.IPRA.Topology.CarrierComposition.comp_assoc
+#print axioms LeanProofs.IPRA.Topology.CarrierComposition.comp_id_left
+#print axioms LeanProofs.IPRA.Topology.CarrierComposition.comp_id_right
 
 -- State-adaptive realizers, concrete cyclic demand closure and remaining reviewed helpers.
 #print axioms LeanProofs.IPRA.Analysis.PowerGap.gap_all
@@ -15780,5 +15789,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FrontierSoundness.succ_hold
 #print axioms LeanProofs.IPRA.Foundations.FrontierSoundness.loc_of_frontier
 #print axioms LeanProofs.IPRA.Foundations.FrontierSoundness.frontier_soundness
+#print axioms LeanProofs.IPRA.Foundations.ModulusNormalization.index_le
+#print axioms LeanProofs.IPRA.Foundations.ModulusNormalization.modulus_le
+#print axioms LeanProofs.IPRA.Foundations.ModulusNormalization.mx_mono
+#print axioms LeanProofs.IPRA.Foundations.ModulusNormalization.mhat_mono
+#print axioms LeanProofs.IPRA.Foundations.ModulusNormalization.pair_modulus
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.rootK
 #print axioms LeanProofs.IPRA.Foundations.RationalRootList.side

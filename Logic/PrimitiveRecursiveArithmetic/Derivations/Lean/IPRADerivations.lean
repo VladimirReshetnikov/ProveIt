@@ -497,6 +497,7 @@ import IPRADerivations.Foundations.SquareRootRelationalCertificate
 import IPRADerivations.Topology.CrossingParity
 import IPRADerivations.Topology.FinitePreorder
 import IPRADerivations.Topology.Carriers
+import IPRADerivations.Topology.CarrierComposition
 
 import IPRADerivations.Algebra.PolynomialFiniteRoots
 import IPRADerivations.Analysis.LogisticName
@@ -773,6 +774,7 @@ import IPRADerivations.Foundations.ProofSchedule
 import IPRADerivations.Foundations.ReachableFrontier
 import IPRADerivations.Foundations.GraphDemand
 import IPRADerivations.Foundations.FrontierSoundness
+import IPRADerivations.Foundations.ModulusNormalization
 import IPRADerivations.Foundations.StableCubicRoot
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Foundations.MixedRadixExpansion
