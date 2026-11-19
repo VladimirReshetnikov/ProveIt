@@ -506,6 +506,7 @@ import IPRADerivations.Topology.LeadingBits
 import IPRADerivations.Topology.DimensionOccupancy
 import IPRADerivations.Topology.DimensionObstruction
 import IPRADerivations.Topology.DimensionRational
+import IPRADerivations.Topology.DimensionSchema
 import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.Topology.DimensionTwo
