@@ -1,0 +1,42 @@
+python3 scripts/icosahedron.py
+Icosahedron: both convex strips, averaged matrix, ring calibration verified.
+python3 scripts/dodeca_model.py
+Dodecahedron: 12 oriented support planes, unit edges after scaling, and antipodes verified.
+python3 scripts/dodeca_lower.py
+a b multiplicity  (squared unfolded displacement = a+b*phi)
+5 7 4
+5 8 6
+7 6 2
+7 8 2
+7 9 4
+7 11 4
+9 14 6
+11 10 2
+11 16 2
+13 17 4
+13 21 4
+17 26 6
+19 20 2
+19 30 2
+All 50 strips have squared displacement at least 5+7*phi.
+python3 scripts/dodeca_upper.py
+Face strip: (0, 2, 8, 11)
+100 times squared distances, each entry is the pair (a,b) for a+b*phi
+[(500, 700), (475, 750), (340, 520)]
+[(475, 600), (450, 675), (315, 470)]
+[(640, 820), (615, 920), (460, 680)]
+200 times gap between D^2 and transpose-averaged squared lengths
+[(0, 0), (50, 50), (20, 60)]
+[(50, 50), (100, 50), (70, 10)]
+[(20, 60), (70, 10), (80, 40)]
+python3 scripts/dodeca_calibration.py
+Distinct sites by face: 7 7 7 15 12 12 15 20 15 12 20 20
+Edges   Nondominated endpoint pairs (a,b stands for a+b*phi)
+3 (((0, 0), (1, 0)),)
+6 (((1, 0), (1, 1)),)
+3 (((1, 1), (1, 1)),)
+6 (((1, 1), (3, 2)),)
+3 (((2, 3), (3, 2)), ((3, 2), (2, 3)))
+6 (((2, 3), (3, 4)), ((3, 2), (4, 4)))
+3 (((3, 4), (5, 7)),)
+All 30 edges glue and h(0)^2=0, h(7)^2=5+7*phi.

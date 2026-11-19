@@ -1,0 +1,103 @@
+\subsection{A sharp lower bound between opposite dodecahedral vertices}
+\label{sec:dodlower}
+
+Write $\phi=(1+\sqrt5)/2$ and normalize edges to length one.
+Take the twenty vertices obtained by multiplying the following vectors by
+$\phi/2$. Vertices $0,\ldots,7$ are the lexicographically ordered sign
+triples $(\pm1,\pm1,\pm1)$, with $-1$ first. Vertices $8,\ldots,19$ are
+three blocks of four. In block $s=0,1,2$, cyclically shift
+$(0,i/\phi,j\phi)$ right by $s$ places, taking the four sign choices
+$(i,j)$ in lexicographic order.
+The endpoints will be $V=0$ and $W=7=-V$, where the last identification
+is in spatial coordinates. In particular $V=-(\phi/2)(1,1,1)$.
+Here are the outward cyclic orders of the pentagons. Cyclically changing
+the starting vertex of a row has no effect on the strip construction.
+\[
+\begin{array}{c|l@{\qquad}c|l}
+0&0,16,1,14,12 &6&17,19,6,10,2\\
+1&0,12,2,10,8 &7&3,11,7,19,17\\
+2&0,8,4,18,16 &8&4,13,15,5,18\\
+3&9,11,3,14,1 &9&8,10,6,13,4\\
+4&16,18,5,9,1 &10&5,15,7,11,9\\
+5&2,12,14,3,17 &11&6,19,7,15,13
+\end{array}
+\]
+These rows can also be recovered by joining vertex pairs at unit distance
+and following the five-cycles bounding their supporting planes.
+
+Consider any finite facewise polygonal path between $V$ and $W$.
+If a face occurs twice in its face list, replace the intervening portion,
+including the two portions in that face, by a chord of the face. Convexity
+keeps the chord on the surface and the triangle inequality bounds its
+length by the former length. Repetition removal terminates since the list
+gets shorter. In the resulting list, start in the last face incident to
+$V$ by replacing the whole prefix ending at the exit of that face by a
+chord from $V$. End at the first subsequent face incident to $W$, again
+by a chord. The two kinds of faces are disjoint. Consecutive faces meet
+in an edge, even when the original transition was at a vertex, since
+three pentagons meet at each vertex. The threefold rotation about
+$VW$ permits us to call the initial face $0$. We must thus check simple
+strips starting at $0$, avoiding faces $1,2$, and stopping as soon as
+one of $7,10,11$ is reached.
+
+For completeness, the following finite computation gives a lower bound for
+\emph{every} resulting strip, including any in which the developed segment
+exits the strip. Put $z=\exp(2\pi i/5)$ as a planar description of an
+algebraic constant. Computations use $z^4=-1-z-z^2-z^3$ and $\bar z=z^4$.
+In an outward face order, the unit pentagon template has vertices
+$P_k=\sum_{r=0}^{k-1}z^r$, $0\leq k\leq4$. Start with this chart on face
+zero. When crossing from the known chart $T$ into a fresh face with
+template positions $P(a),P(b)$ for its two shared vertex labels $a,b$,
+use
+\[
+ T'(k)=T(a)+(T(b)-T(a))\,\overline{P(b)-P(a)}\,(P(k)-P(a)).
+\]
+The multiplier has unit norm, and the cyclic orders on a common edge are
+opposite. Hence $T'$ is the development on the other side of that edge.
+At a terminal face, record $|T'(W)-T_0(V)|^2$. The branch rule is to append
+each unused face sharing two vertex labels with the current face, except
+for faces $1,2$. The following table gives the pair $(a,b)$ representing
+each terminal value $a+b\phi$, followed by its multiplicity.
+\[
+\begin{array}{rr|r@{\qquad\qquad}rr|r}
+a&b&\#&a&b&\#\\ \hline
+5&7&4&11&10&2\\
+5&8&6&11&16&2\\
+7&6&2&13&17&4\\
+7&8&2&13&21&4\\
+7&9&4&17&26&6\\
+7&11&4&19&20&2\\
+9&14&6&19&30&2
+\end{array}
+\]
+Here is a short way to reproduce or formalize every entry. Store a
+ring element as the coefficients of $1,z,z^2,z^3$. Multiply by convolution
+and reduce coefficients of degrees $6,5,4$ in that order. Conjugation
+sends $(a,b,c,d)$ to $(a-b,-b,d-b,c-b)$. A squared norm has the form
+$(u,0,v,v)$, which is $u-v\phi$. Depth-first enumeration through the listed
+faces has depth at most twelve, so the displayed recurrence with fuel
+twelve is primitive recursive. The companion
+\texttt{dodeca\_lower.py} implements these same rules using integers.
+Every entry is at least $5+7\phi$ (the only entry with a smaller second
+coefficient is $7+6\phi$, whose excess is $2-\phi>0$). A path within each
+strip develops to a planar path, possibly with bends. Its length is at
+least the displacement of its endpoints. This proves the required lower
+bound for all finite facewise paths, and the finite approximation of
+continuous paths gives the same lower bound for the continuous metric.
+
+The minimum can be seen directly on the strip $(0,3,10)$. Its initial
+endpoint is the origin and its final endpoint is
+$Q=2+2z+z^2-z^3$. On the first hinge, ordered $(1,14)$, and the second,
+ordered $(9,11)$, the point $tQ$ has edge parameter $t$ for
+$t_1=2-\phi$ and $t_2=(2+\phi)/5$, respectively. Substitution in the
+chart gives the two identities, and $0<t_1<t_2<1$. Convexity puts the
+three intervening segment portions in their prescribed faces. Thus the
+distance is
+\[
+ d(V,W)=\sqrt{5+7\phi}=\sqrt{(17+7\sqrt5)/2}.
+\]
+Every other vertex lies within four edges of $V$. Indeed the successive
+edge-distance shells about $0$, omitting $0$ itself, are
+$\{8,12,16\}$, $\{1,2,4,10,14,18\}$, $\{3,5,6,9,13,17\}$,
+$\{11,15,19\}$, $\{7\}$. Since $5+7\phi>16$, any other vertex pair
+except an antipodal pair is strictly closer.

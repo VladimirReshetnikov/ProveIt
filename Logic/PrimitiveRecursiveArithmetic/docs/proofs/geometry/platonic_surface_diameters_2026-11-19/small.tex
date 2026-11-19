@@ -1,0 +1,40 @@
+\section{The tetrahedron: a vertex and the opposite face centre}
+Write $e=(1,0)$ and $f=(1/2,\sqrt3/2)$ and put $L=\mathbb Ze+\mathbb Zf$. Mark the vertices of the unit equilateral triangular tiling by the four classes of $L/2L$. Each triangle has three distinct marks. Map it isometrically to the face of the unit tetrahedron with those three vertex labels. The maps agree along edges. The resulting folding identifies precisely
+\[
+ u\sim u+2\ell\sim -u+2\ell\qquad(\ell\in L).
+\]
+Indeed a fundamental parallelogram of $2L$ has eight unit triangles. Opposite triangles modulo $2L$ under $u\mapsto-u$ give four pairs, one for each possible missing mark. On interiors there is one image per pair. The sides are glued according to their two endpoint marks, and the four lattice marks give the four tetrahedron vertices. This verifies the identification also on the boundary of a triangle.
+
+Put $\delta(w)=\min_{k\in2L}|w-k|$. For two lifts $u,v$ the surface distance is
+\[
+ d([u],[v])=\min\{\delta(u-v),\delta(u+v)\}.
+\]
+Each minimizing planar segment folds to a path of the same length. For the reverse bound, with $u$ fixed the right side is the planar distance from $v$ to the orbit of $u$. It is invariant under the identifications and is $1$-Lipschitz on each face, by the triangle inequality. It is consequently $1$-Lipschitz along surface paths, and has value zero at $[u]$. Equivalently one can sum its changes along any broken line crossing faces. Only finitely many lattice shifts are necessary when the lifts are in a bounded fundamental parallelogram: in the coordinates $e,f$, $|me+nf|^2=m^2+mn+n^2\ge(m^2+n^2)/2$.
+
+The large triangles of the tiling on $2L$ have side $2$. In one such triangle the region closest to a given vertex is the quadrilateral with corners the vertex, the two adjacent edge midpoints, and the triangle centre. Their respective distances to the vertex are $0,1,1,2/\sqrt3$. Squared distance is convex. Hence every point has $\delta\le 2/\sqrt3$, with equality only at the large triangle centres. At a centre the three vertices are nearest: for the representative $h=2(e+f)/3$ this follows directly by minimizing $|h-2me-2nf|^2$; any other possibility of distance at most $2/\sqrt3$ would have $m,n\in\{0,1\}$ by the displayed quadratic bound, and the fourth choice $(1,1)$ is further away. An alternative integer certificate for this last lower bound is
+\[
+ Q(1-3m,1-3n)=3+9(m^2+mn+n^2-m-n),\qquad Q(x,y)=x^2+xy+y^2 .
+\]
+A nonnegative integer congruent to three modulo nine is at least three, and the squared distance under consideration is $4Q(1-3m,1-3n)/9$. All centres have residues $h$ or $-h$ modulo $2L$.
+
+For the fixed vertex $[0]$ the two centre classes identify, giving a unique farthest point $[h]$. The unit triangle with vertices $e,f,e+f$ has its centre there and has exactly the three marks other than $[0]$. Thus $Y$ is the centroid of the opposite face. For a concrete embedding take $X=(1,1,1)/(2\sqrt2)$ and the other vertices obtained by changing two signs. Then $Y=-X/3$. The free and fixed maxima both equal $2/\sqrt3$. In fact if the free maximum is attained, $u-v$ and $u+v$ must both represent holes $\pm h$ modulo $2L$. Equal hole residues give $2v\in 2L$, so $[v]$ is a vertex. Opposite residues give $2u\in2L$, so $[u]$ is a vertex. The unique fixed-vertex result classifies every maximizing pair.
+
+\section{The octahedron: six strips and a constant average}
+Use the unit-edge realization with vertices $\pm e_i/\sqrt2$, where $e_i$ are the standard coordinate vectors in $\mathbb R^3$. Faces correspond to choices of three signs. By symmetry a source $p$ belongs to the positive face $ABC$. For any target $q$ put $q'=-(|q_1|,|q_2|,|q_3|)$ on the all-negative face. Whenever $q_i>0$, fold the $i$th coordinate to its absolute value. These folds fix $p$, send $q'$ to $q$ and preserve the surface equation $\sum |x_i|=1/\sqrt2$. They are Euclidean $1$-Lipschitz and so do not increase surface path lengths. Faces, with an assigned sign also on a zero coordinate, give the same construction without any sign test on a real coordinate. Thus it suffices to bound $d(p,q')$.
+
+Choose any permutation of the axes and cross the three sign walls in that order. For order $A,B,C$, use coordinates in the planar triangular basis $(e,f)$ above. The positive face has vertices $(0,0),(1,0),(0,1)$ respectively. The successive reflected vertices $A',B',C'$ are $(1,1),(0,2),(1,2)$. Each new vertex is the sum of the two shared endpoints minus the vertex it replaces. The four triangles tile the convex parallelogram $[0,1]\times[0,2]$ in these coordinates. Thus the segment between \emph{any} barycentric points of the first and last triangle folds to a legal surface path. The squared distances between its possible endpoint vertices form the following matrix, rows in order $A,B,C$ and columns in order $A',B',C'$:
+\[
+ M=\begin{pmatrix}3&4&7\\1&3&4\\1&1&3\end{pmatrix}.
+\]
+Let $p$ and $q'$ have probability vectors of barycentric weights $a_i$ and $b_i$ in matched axis order. For a strip $s$, call its developed endpoints $P_s,Q_s$. The usual variance identity, applied to independent choices of the endpoint vertices with these weights, gives
+\[
+ |P_s-Q_s|^2=\sum_{i,j}a_i b_j M^s_{ij}
+ -\sum_{i<j}a_i a_j-\sum_{i<j}b_i b_j.
+\]
+Here all the intervertex distances \emph{within} each endpoint triangle equal one. As the six orders vary, their matrices $M^s$ simultaneously permute the rows and columns of $M$. Their average has every entry equal to $3$: each diagonal entry is $3$, and the sum of the off-diagonal entries is $18$. Taking a shortest one of these six paths yields the stronger bound
+\[
+ d(p,q)^2\le 3-\sum_{i<j}a_i a_j-\sum_{i<j}b_i b_j.
+\]
+In particular equality at $3$ requires each vector of weights to be supported on a single vertex. This deduction also has a direct apartness version: if the sum of the three products vanishes, choose an index with weight at least $1/4$ by a fixed coarse approximation, so each other weight is zero.
+
+Finally fix the poles $X=e_3/\sqrt2$ and $Y=-X$. Equatorial edges lie in $z=0$. Define a scalar height $H$ by affine interpolation on faces, giving values $\sqrt3/2$ at $X$, $0$ on the equator, and $-\sqrt3/2$ at $Y$. Each triangle has altitude $\sqrt3/2$, so its affine gradient has length one. Therefore every surface path joining the poles has length at least $\sqrt3$, the change in $H$. Unfolding two faces sharing an equatorial edge, their two altitudes form a straight path of that length. Any two other distinct vertices are joined by a unit edge. The fixed and free maxima are both $\sqrt3$, and the three pairs of opposite vertices are precisely all unordered diametral pairs.

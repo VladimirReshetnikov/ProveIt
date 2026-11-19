@@ -1,0 +1,99 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=.86in,top=.79in,bottom=.79in,headheight=16pt]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,xcolor,hyperref,fancyhdr}
+\definecolor{ink}{RGB}{27,55,67}
+\definecolor{teal}{RGB}{33,100,98}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal,pdftitle={Intrinsic diameters of four regular solids}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\sffamily Intrinsic diameters of four regular solids}\rhead{\small\sffamily Surface geometry}\cfoot{\small\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{.43em plus .05em minus .04em}
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 2pt}\setlength{\belowdisplayskip}{7pt plus 2pt minus 2pt}
+\setlength{\emergencystretch}{1.5em}
+\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}\newcommand{\Q}{\mathbb Q}
+\newcommand{\1}{\mathbf 1}
+
+\renewcommand{\labelitemi}{\(\bullet\)}
+\begin{document}
+\thispagestyle{plain}
+{\large\sffamily\color{teal} Polyhedral geometry and constructive arithmetic}\par\medskip
+{\LARGE\bfseries\color{ink} Intrinsic diameters of four regular solids}\par
+{\large Farthest points from a vertex and from a freely chosen point}\par\smallskip
+{\small 19 November 2026}\par\medskip
+For a solid $P$ of unit edge length let $d(x,y)$ be the infimum of the lengths of all continuous rectifiable paths on $\partial P$ from $x$ to $y$. A path can cross an edge or run along it. Write $R_V=\max_y d(V,y)$ for a chosen vertex $V$, and $D=\max_{x,y}d(x,y)$. These are the two questions in the supplied cuboid reports. The origins in the following results are the centers of the solids.
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}llll@{}}\toprule
+Solid & Unique farthest point from $V$ & $R_V=D$ & Unordered pairs\\\midrule
+Tetrahedron & Opposite face centroid $-V/3$ & $2/\sqrt3$ & $4$\\
+Octahedron & Opposite vertex $-V$ & $\sqrt3$ & $3$\\
+Icosahedron & Opposite vertex $-V$ & $\sqrt7$ & $6$\\
+Dodecahedron & Opposite vertex $-V$ & $\sqrt{(17+7\sqrt5)/2}$ & $10$\\\bottomrule
+\end{tabular}
+\end{center}
+The last column counts \emph{all} pairs attaining $D$. Thus freeing the first endpoint gives no increase for any of the four solids. Symmetry has two meanings here. Every maximizing pair lies on a rotation axis. Central inversion exchanges the two ends in the last three cases. No tetrahedral symmetry exchanges a vertex and a face centroid. For edge length $a>0$, multiply the distances and the unit-model coordinates by $a$.
+\paragraph{Coordinates.} Write $\phi=(1+\sqrt5)/2$. In the order of the table, one can take
+\[
+ V=\frac{(1,1,1)}{2\sqrt2},\qquad
+ V=\frac{(0,0,1)}{\sqrt2},\qquad
+ V=\frac{(0,1,\phi)}2,\qquad
+ V=-\frac{\phi}2(1,1,1).
+\]
+The tetrahedron consists of the four sign patterns with positive product. The octahedron has the six coordinate-axis vertices. The icosahedron has the cyclic permutations of $(0,\pm1,\pm\phi)/2$. The full dodecahedral coordinate model appears in Section~\ref{sec:dod}. The symmetry group acts transitively on the vertices in each case.
+\begin{center}
+\includegraphics[width=.80\linewidth]{figures/unfoldings.pdf}\par
+\small Left, the segment from a tetrahedral vertex lift to the nearest lift of the opposite face center. Right, a four-face octahedral development joining points on opposite faces.
+\end{center}
+\clearpage
+\section{Folding and comparing surface routes}
+A \emph{facewise path} is a finite list of segments, each contained in a specified closed face, with matching endpoints. An unfolding along a list of edge-adjacent faces puts the polygons in one plane by successive hinge rotations, placing consecutive interiors on opposite sides of their common edge. It preserves the length of a path following that list. To fold a straight segment back to the surface one must verify that it meets the listed hinges in order and within each closed edge. Then each intermediate subsegment is a chord of the appropriate convex face. This distinction matters in the dodecahedron. Section~\ref{sec:continuity} proves that facewise paths suffice for lower bounds even on paths with arbitrarily many edge crossings.
+\paragraph{Reduction to two opposite chambers.}
+Divide each polygonal face into triangles with corners a vertex, an incident edge midpoint, and the face center. Call each such closed triangle a chamber. In the octahedron, icosahedron, and dodecahedron, if $C$ is one chamber, it suffices for an upper bound to treat $C\times(-C)$. More precisely, for any $p,q$ there exist $x\in C$, $y\in-C$ and a length-nonincreasing map sending $x,y$ to $p,q$, respectively. Each endpoint is transported by a symmetry of the solid, possibly a different one at each end.
+\par
+Here is the folding argument. Cone each chamber from the center of the solid. Reflection in the plane of each cone wall is a symmetry, interchanging the two flags that share this wall. For example the three wall reflections exchange the two ends of an edge, the two edges of a face at the vertex, or the two faces at the edge. This follows from regularity of the flag action: the symmetry between adjacent flags fixes the other two corner rays and the origin. It thus fixes their plane and is the reflection. The mirrors of these reflections form a finite plane arrangement. They do not meet a chamber interior there: a symmetry fixing an interior point of a flag must preserve its chamber, hence the vertex, edge and face of the flag, and fixing all three corners forces identity. Thus the open chamber cones are exactly the open cells of the arrangement. In particular two adjacent cones differ in the sign of just their common wall.
+\par
+By one isometry move $p$ to $x\in C$ and let $q$ lie in a tagged chamber $B$. If $B\ne-C$, some facet of its cone has the interior of $-C$ on its far side. Indeed, a closed cone is the intersection of its facet halfspaces. Reflect $B$ across that wall. The number of mirror signs that differ from $-C$ decreases by one. In at most the number of mirrors this gives a gallery from $B$ to $-C$ and transports $q$ to $y$. Reverse the gallery. At every step, fold the space by reflecting the halfspace on the $-C$ side of the wall into the halfspace containing $C$. This piecewise isometry preserves the surface and fixes $x$. It takes the moving endpoint back across that wall. Such a fold is nonexpansive for Euclidean distances (the normal coordinate becomes its signed absolute value), so it is nonexpansive for path lengths. Composing with the initial inverse isometry gives the assertion. Edge and vertex endpoints allow either incident chamber.
+\paragraph{Interpolation on a strip.}
+Suppose paths between the corners $s_i,t_j$ of two chamber triangles use the same face list. On each hinge take the weighted mean of their crossing points with weights $w_{ij}=\lambda_i\mu_j$. These points still belong to the hinges. Join them face by face, starting at $\sum_i\lambda_i s_i$ and ending at $\sum_j\mu_j t_j$. Within each face the new segment is the weighted sum of the old displacement vectors. If the old lengths are $l_{ij}$, the new path has length at most $\sum w_{ij}l_{ij}$, hence square at most $\sum w_{ij}l_{ij}^2$. This proves a uniform upper bound from nine paths, including for a nonconvex development. When two strips are available, the shorter squared length is bounded above by their average.
+\input{small}
+\input{icosahedron}
+\section{The dodecahedron}\label{sec:dod}
+\input{dodeca_lower}
+\subsection{A four-face bound for both moving endpoints}
+Let $C$ in face $0$ have corners the vertex $0$, the midpoint of $(0,16)$, and the face center. Its antipodal chamber in face $11$ uses vertex $7$ and edge $(7,19)$. Develop the strip $(0,2,8,11)$ with the pentagon recurrence above. Take the nine segments between the three corners in each end face. Denote their squared lengths by $M_{ij}$, in vertex, midpoint, center order. For a compact exact table write $[a,b]=a+b\phi$. Then
+\[
+100M=\begin{pmatrix}
+ [500,700]&[475,750]&[340,520]\\
+ [475,600]&[450,675]&[315,470]\\
+ [640,820]&[615,920]&[460,680]
+\end{pmatrix}.
+\]
+To verify visibility, use the three hinges in the physical label order $(0,16),(4,18),(13,15)$. If $s,t$ are developed end corners and $a,b$ are hinge ends, set $d=t-s$, $e=b-a$, and use $[u,v]_{\det}=\operatorname{Im}(\bar u v)/\sin(2\pi/5)$. Intersection of $s+rd$ and $a+he$ gives
+\[
+ r=\frac{[a-s,e]_{\det}}{[d,e]_{\det}},\qquad
+ h=\frac{[a-s,d]_{\det}}{[d,e]_{\det}}.
+\]
+Substituting the five-vertex charts yields the following simultaneous bounds over the nine corner pairs. In each row the denominator is nonzero.
+\[
+\begin{array}{c|ccc}
+\text{hinge}&(0,16)&(4,18)&(13,15)\\ \hline
+r&[0,1/5]&[1/3,1/2]&[2/3,5/6]\\
+h&[0,1]&[0,1]&[0,1]
+\end{array}
+\]
+All entries can be checked with integer arithmetic. Multiply chart points by ten to clear midpoint and centroid denominators. For $u=u_0+u_1z+u_2z^2+u_3z^3$ the imaginary part divided by $\sin(2\pi/5)$ is $u_1+(u_2-u_3)(\phi-1)$. Multiply the two numerator bounds by the positive sign-normalized denominator. This is the complete intersection test in \texttt{dodeca\_upper.py}. In particular all nine segments fold to actual paths.
+\begin{center}
+\includegraphics[width=.83\linewidth]{figures/dodeca_strips.pdf}\par
+\small Left, the attaining three-face strip. Right, the two chamber triangles and their nine legal corner-to-corner routes in the four-face strip.
+\end{center}
+Reversing this family of paths and applying central inversion gives another strip from $C$ to $-C$, whose corner matrix is $M^{\mathsf T}$. Put $D_0^2=5+7\phi$. The gap table is particularly simple:
+\[
+ 200\left(D_0^2\mathbf{1}_{3\times3}-\frac{M+M^{\mathsf T}}2\right)=
+ \begin{pmatrix}
+ [0,0]&[50,50]&[20,60]\\
+ [50,50]&[100,50]&[70,10]\\
+ [20,60]&[70,10]&[80,40]
+ \end{pmatrix}.
+\]
+Here $\mathbf{1}_{3\times3}$ is the all-ones matrix. Each entry except the first is greater than $60$. Interpolation in the two strips bounds $d(x,y)^2$ by $D_0^2-\frac3{10}(1-\lambda_1\mu_1)$, with subscript $1$ marking the vertex corner. Equality requires both weights to equal one. The folding lemma preserves vertex type. The four-edge bound for the remaining vertices now gives exactly ten unordered extremal pairs and a unique farthest point from each vertex.
+\input{calibration}
+\input{arithmetic}
+\end{document}
