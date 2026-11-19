@@ -343,6 +343,7 @@ import IPRADerivations.Geometry.ConwayAlgebra
 import IPRADerivations.Geometry.PathShoelace
 import IPRADerivations.Geometry.ConstantMultiplicity
 import IPRADerivations.Geometry.ConwayLattice
+import IPRADerivations.Geometry.ConwayOrbit
 import IPRADerivations.Geometry.PentagonArithmetic
 import IPRADerivations.Geometry.PappusSegment
 import IPRADerivations.Geometry.TriangularNorm
