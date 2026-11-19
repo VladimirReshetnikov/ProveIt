@@ -438,6 +438,9 @@ import IPRADerivations.Probability.HarmonicRearrangement
 import IPRADerivations.Probability.KolmogorovStep
 import IPRADerivations.Probability.KolmogorovAssembly
 import IPRADerivations.Probability.ProductSplit
+import IPRADerivations.Probability.FirstCrossing
+import IPRADerivations.Probability.KolmogorovIid
+import IPRADerivations.Probability.KolmogorovIidGlue
 import IPRADerivations.Probability.TruncationEstimate
 import IPRADerivations.Probability.MomentDeterminacy
 import IPRADerivations.Probability.Variance
