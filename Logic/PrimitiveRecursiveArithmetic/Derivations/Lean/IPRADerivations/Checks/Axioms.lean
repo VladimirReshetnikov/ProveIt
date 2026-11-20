@@ -10243,6 +10243,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ObservedRelation.out_unique
 #print axioms LeanProofs.IPRA.Foundations.ProofPlan.compile
 #print axioms LeanProofs.IPRA.Foundations.ProofPlan.sealed_chain
+#print axioms LeanProofs.IPRA.Foundations.PointList.inst2_KB
+#print axioms LeanProofs.IPRA.Foundations.PointList.rel_subst
+#print axioms LeanProofs.IPRA.Foundations.PointList.subst_sel
+#print axioms LeanProofs.IPRA.Foundations.PointList.bit_one
+#print axioms LeanProofs.IPRA.Foundations.PointList.sound
+#print axioms LeanProofs.IPRA.Foundations.PointList.complete_at
+#print axioms LeanProofs.IPRA.Foundations.PointList.complete
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
