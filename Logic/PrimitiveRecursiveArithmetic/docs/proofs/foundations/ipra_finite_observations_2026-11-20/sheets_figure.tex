@@ -1,0 +1,26 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\small, line width=.7pt]
+\begin{scope}[x=.85cm,y=.65cm,shift={(-2.8,0)}]
+\coordinate (a) at (1,0); \coordinate (b) at (0,2); \coordinate (c) at (-1,0); \coordinate (d) at (0,-2);
+\draw[accent,thick,->] (a) -- (.46,1.08); \draw[accent,thick] (.46,1.08) -- (b) -- (c) -- (d) -- (a);
+\foreach \p in {a,b,c,d} {\fill[ink] (\p) circle(2pt);}
+\node[right] at (a) {$1$}; \node[above] at (b) {$2i$};
+\node[left] at (c) {$-1$}; \node[below] at (d) {$-2i$};
+\node[ink] at (0,0) {$0$};
+\node[font=\small\sffamily] at (0,-3.6) {Base polygon};
+\end{scope}
+\begin{scope}[shift={(2.7,0)}]
+\foreach \k in {0,...,7} {\coordinate (v\k) at ({180-45*\k}:1.27);}
+\draw[accent,thick] (v0)--(v1)--(v2)--(v3)--(v4);
+\draw[ink,dashed] (v4)--(v5)--(v6)--(v7)--(v0);
+\foreach \k in {0,...,7} {\fill[ink] (v\k) circle(2pt);}
+\node[left] at (v0) {$0^+$}; \node[above left] at (v1) {$1^+$};
+\node[above] at (v2) {$2^+$}; \node[above right] at (v3) {$3^-$};
+\node[right] at (v4) {$0^-$}; \node[below right] at (v5) {$1^-$};
+\node[below] at (v6) {$2^-$}; \node[below left] at (v7) {$3^+$};
+\node[font=\small\sffamily] at (0,-2.34) {Lifted graph};
+\end{scope}
+\end{tikzpicture}
+\caption{One counterclockwise traversal of the base polygon lifts to the solid path from $0^+$ to $0^-$. Here $v^{\pm}$ denotes the address $(v,\pm1)$. A second traversal follows the dashed path back to $0^+$.}\label{fig:lift}
+\end{figure}

@@ -1,0 +1,111 @@
+\section{Rational primes and Dirichlet characters}
+\label{sec:dirichlet}
+For integers $x\geq 0$, $q\geq1$ and $0\leq a<q$, set
+\[
+ M_{q,a}(x)=\sum_{\substack{1\leq n\leq x\\n\bmod q=a}}\mu(n),
+ \qquad M(x)=M_{1,0}(x).
+\]
+Here $\mu(1)=1$. A square prime divisor of $n$ gives $\mu(n)=0$.
+Otherwise each distinct prime divisor contributes a factor $-1$.
+We call $a$ a reduced residue when $\gcd(a,q)=1$. This deliberately
+includes $a=0$ for $q=1$. For example,
+$M_{3,1}(10)=\mu(1)+\mu(4)+\mu(7)+\mu(10)=1$,
+whereas $M(10)=-1$.
+
+\paragraph{Finite evaluation.}
+\texttt{DirichletData.lean} tests primality of $p$ by exhausting
+$2\leq d<p$. To evaluate $\mu(n)$ for $n>0$, it starts at $+1$ and
+visits $p=1,\ldots,n$. At a prime divisor it replaces the accumulator
+by $0$ if $p^2\mid n$ and changes its sign otherwise. After step $p$
+the accumulator is the product of the local factors for primes at most
+$p$. This invariant follows immediately by the three cases in the
+update. Every prime divisor of $n$ is eventually visited. Finally the
+recursion for $M_{q,a}(x+1)$ adds $\mu(x+1)$ exactly when
+$(x+1)\bmod q=a$. These two finite invariants identify the evaluator
+with the displayed sums. The file proves the two recursion branches and
+their specialization to $M$. Its convention $\mu(0)=0$ never
+contributes. All loops have input-supplied bounds. Signed numbers can
+be coded by the parity of a natural, and $\gcd(a,q)$ can equivalently
+be computed by retaining the last common divisor up to $q$ for $q>0$.
+
+\paragraph{From zeros to the arithmetic sentences.}
+We work externally in classical analytic number theory throughout this
+paragraph and the converse below. Put $\theta=1/2+\delta$, where
+$\delta>0$. Under RH, Littlewood's estimate is $|M(x)|\ll_\delta
+x^\theta$. One can also deduce it from
+\href{https://arxiv.org/abs/0705.0723}{Soundararajan, \emph{Partial sums
+of the M\"obius function}, Theorem~1}: the extra factor beyond
+$\sqrt{x}$ has logarithm $o(\log x)$. This deduction uses RH for
+$\zeta$ alone. Under Dirichlet GRH,
+\href{https://arxiv.org/abs/1406.7326}{Lynnelle Ye, \emph{Bounding sums
+of the M\"obius function over arithmetic progressions}, Theorem~1.1}
+gives on reduced residues, for all sufficiently large $x$,
+\[
+ |M_{q,a}(x)|\ll \sqrt{x}
+ \exp\!\left((\log x)^{1/2}(\log\log x)^4\right)
+\]
+with an absolute implied constant (fix the theorem's parameter at $1$).
+The ratio $(\log\log x)^4/\sqrt{\log x}$ tends to zero. Consequently
+one integer $B_\delta\geq1$ works simultaneously for every $q,a$ in
+$|M_{q,a}(x)|\leq B_\delta x^\theta$ for $x\geq1$. To include the
+small values of $x$, use the uniform bound $|M_{q,a}(x)|\leq x$.
+This proves the stated uniformity without a search over moduli.
+Rounding a classical constant upwards proves existence of an integer
+witness in the standard model. It supplies no proof of the conjectured
+witnesses in iPRA.
+
+\paragraph{Recovering the zeros.}
+In the reverse direction even constants depending on $q,a,\delta$
+suffice. Fix a character $\chi$ modulo $q$, extended by zero on
+nonunits. Its twisted summatory function is
+\[
+ A_\chi(x)=\sum_{n\leq x}\mu(n)\chi(n)
+ =\sum_{\substack{0\leq a<q\\(a,q)=1}}\chi(a)M_{q,a}(x).
+\]
+This exact regrouping uses finiteness and periodicity. Conversely the
+character orthogonality relation recovers each reduced-residue sum as
+$\varphi(q)^{-1}\sum_\chi\overline{\chi(a)}A_\chi(x)$.
+In particular the arithmetic assertions control the full complex values,
+including characters of order greater than two. The triangle inequality
+gives $|A_\chi(x)|\leq B x^\theta$, where one may sum the finitely many
+class constants to form $B$. The bound extends to real $x\geq1$ by
+taking its integer part.
+
+Choose a compact subset of $\Re s>1/2$. Take $\delta>0$ small enough
+that $\theta<\inf\Re s$ on this set. With $\sigma=\Re s$, summation by
+parts for $1\leq N<Y$ gives the exact tail
+\[
+ A_\chi(Y)Y^{-s}-A_\chi(N)N^{-s}
+       +s\int_N^Y A_\chi(t)t^{-s-1}\,dt .
+\]
+Its modulus is at most
+$B(2+|s|/(\sigma-\theta))N^{-(\sigma-\theta)}$.
+Thus $F_\chi(s)=\sum_{n\geq1}\mu(n)\chi(n)n^{-s}$ is holomorphic
+in $\Re s>1/2$ by locally uniform convergence. For $\Re s>1$,
+absolute convergence of the Euler product gives
+$L(s,\chi)F_\chi(s)=1$. The identity theorem extends this identity
+through the half-plane, with $s=1$ removed when $L$ has a pole.
+A zero there would make the product vanish. For primitive $\chi$,
+the functional equation pairs zeros in $0<\Re s<1$ with zeros of the
+conjugate character reflected across $\Re s=1/2$. The gamma factors
+are finite and nonzero in this strip. Since the argument applies to
+every character, a zero on the left would give a forbidden zero on the
+right. This proves Dirichlet GRH. Extra Euler factors for imprimitive
+characters can vanish only on $\Re s=0$, outside the open strip.
+Taking just the unique character modulo $1$ throughout gives the
+converse to the RH estimate, without assuming any other progression
+bound.
+
+\paragraph{Precision obtained from a witness.}
+For positive integers $h,T$, restrict to $\Re s\geq1/2+1/h$ and
+$|s|\leq T$. Request a growth witness at any available slack
+$\delta\leq 1/(2h)$ and let $B\geq1$ be the resulting integer
+bound for $A_\chi$ (for a uniform progression bound $C$, $B=qC$
+suffices). The preceding calculation bounds every tail beyond
+\[
+ N=\bigl(2^j B(2+2hT)+1\bigr)^{2h}
+\]
+by $2^{-j}$. This explicit primitive-recursive expression explains what
+a supplied arithmetic witness buys at a prescribed precision. The
+complex analytic identity theorem and the functional equation in the
+correspondence argument are external results.

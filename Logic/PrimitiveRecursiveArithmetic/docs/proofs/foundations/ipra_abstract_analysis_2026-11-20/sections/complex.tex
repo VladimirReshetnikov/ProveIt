@@ -1,0 +1,305 @@
+\section{Complex analysis with a radius gap and simultaneous derivative control}
+\label{sec:complex}
+
+The function-space construction in Section~\ref{sec:function-topology}
+requires an explicit common modulus. For analytic families that information
+can be produced from a coefficient bound and a radius gap. We give a
+direct construction that controls every derivative up to a requested order,
+using only rational polynomial calculations and geometric bounds.
+This is a quantitative normal-family statement in a \(C^J\) metric, without
+asserting the existence of a computable subsequence.
+
+The information supplied with an analytic function is significant.
+Representing a function in a continuous-function space and additionally
+knowing that it is analytic is not generally equivalent to having an analytic
+representation with effective radius and bound data
+\cite{PaulySteinberg2018}. We therefore specify this data as part of the
+presentation and show exactly what follows from it.
+
+\subsection{A coefficient presentation}
+
+Fix positive rational \(R\), nonnegative rational \(M\), and coefficients
+\(a_n\in\C\) with a joint primitive-recursive Gaussian-rational evaluator.
+The normalized coefficients
+\[
+                         b_n=R^n a_n
+\]
+have Gaussian-rational approximants to every dyadic precision, and the input
+certificate asserts
+\[
+                             |b_n|\leq M\quad(n\in\N).
+\tag{A1}
+\]
+This is a schema in one fixed joint evaluator. It does not enumerate all
+analytic functions. The case \(M=0\) yields the zero function and can be
+handled separately.
+
+Put \(P_N(z)=\sum_{n=0}^Na_nz^n\).
+For \(j\geq0\) write
+\((n)_j=n(n-1)\cdots(n-j+1)\), with \((n)_0=1\) and
+\((n)_j=0\) when \(n<j\). Then
+\[
+                 P_N^{(j)}(z)=
+                   \sum_{n=j}^N(n)_j a_n z^{n-j}
+\]
+is a finite identity. The superscript is initially only formal polynomial
+differentiation; the theorem below proves agreement with analytic
+differentiation.
+
+\begin{lemma}[A finite differentiated geometric bound]
+\label{lem:derivative-geometric}
+For rational \(0\leq t<1\), all \(j,L\in\N\),
+\[
+            \sum_{n=j}^L(n)_j t^{n-j}
+                      \leq \frac{j!}{(1-t)^{j+1}}.
+\tag{A2}
+\]
+The assertion is a finite rational inequality, with no differentiated
+infinite series in its proof.
+\end{lemma}
+\begin{proof}
+If \(L<j\), the left side is zero. Otherwise the following finite expansion
+has nonnegative degrees throughout.
+There are \(\binom{m+j}{j}\) ordered \((j+1)\)-tuples of nonnegative
+integers with sum \(m\). This identity follows by finite induction, or by
+placing \(j\) separators among \(m+j\) positions.
+Expand
+\((1+t+\cdots+t^L)^{j+1}\).
+All its coefficients are nonnegative, and its terms of total degree
+at most \(L-j\) include every such tuple. Consequently
+\[
+\sum_{m=0}^{L-j}\binom{m+j}{j}t^m
+ \leq(1+t+\cdots+t^L)^{j+1}
+ \leq(1-t)^{-j-1}.
+\]
+Multiply by \(j!\) and use
+\((m+j)_j=j!\binom{m+j}{j}\).
+If \(L<j\), the left side of (A2) is zero.
+The tuple count, expansion, and geometric inequality are all finite
+primitive-recursive calculations.
+\end{proof}
+
+\subsection{A uniform tail for all requested derivatives}
+
+Fix rational \(0\leq r<R\) and an order \(J\in\N\). Define
+\[
+s=\frac{r+R}{2},\qquad
+\rho=\frac rR,\qquad \theta=\frac rs,\qquad \sigma=\frac sR ,
+\]
+so \(0\leq\theta<1\), \(0<\sigma<1\). For \(0\leq j\leq J\) put
+\[
+ K_j=\frac{M j!}
+ {s^j(1-\theta)^{j+1}(1-\sigma)},\qquad
+ D_j=\frac{j!}{R^j(1-\rho)^{j+1}}.
+\tag{A3}
+\]
+These constants are rational and explicitly computable, including at \(r=0\).
+
+\begin{theorem}[Derivative-tail estimate and holomorphic interpretation]
+\label{thm:analytic-tail}
+For every \(L\geq N\geq J\), \(0\leq j\leq J\), and \(|z|\leq r\),
+\[
+          |P_L^{(j)}(z)-P_N^{(j)}(z)|
+                          \leq K_j\sigma^{N+1}.
+\tag{A4}
+\]
+The series thus supplies jointly primitive-recursive uniform names of
+\(f,f',\ldots,f^{(J)}\) on the smaller disk, and \(f\) is holomorphic on
+\(|z|<R\).
+\end{theorem}
+\begin{proof}
+For \(n>N\geq j\), the coefficient bound gives
+\[
+ |(n)_ja_nz^{n-j}|
+ \leq M s^{-j}(n)_j\theta^{n-j}\sigma^n.
+\]
+By (A2), each nonnegative factor
+\((n)_j\theta^{n-j}\) is at most
+\(j!/(1-\theta)^{j+1}\).
+The finite sum of \(\sigma^n\), \(N<n\leq L\), is at most
+\(\sigma^{N+1}/(1-\sigma)\).
+Multiplication proves (A4). This also constructs the limit names:
+choose \(N\) by the explicit clock below and evaluate the finitely many
+coefficients to a precision whose finite weighted error is small enough.
+No unbounded search for a convergent tail is involved.
+
+To justify analytic differentiation rather than merely name a formal
+derivative, first work with \(j=0,1,2\) and an intermediate disk.
+For a finite polynomial, binomial expansion gives
+\[
+P_N(z+h)-P_N(z)-hP_N'(z)
+ =h^2\sum_{n=2}^N a_n
+               \sum_{\ell=2}^n\binom n\ell z^{n-\ell}h^{\ell-2}.
+\]
+If \(|z|\leq r\) and \(|h|\leq s-r\), the absolute value of the right side
+is bounded by
+\[
+\frac{|h|^2}{2}\sum_{n=2}^N n(n-1)|a_n|s^{n-2}
+ \leq \frac{M}{R^2(1-s/R)^3}|h|^2 .
+\tag{A5}
+\]
+The first inequality follows termwise from
+\(\binom n\ell\leq n(n-1)\binom{n-2}{\ell-2}/2\)
+and \(|z|+|h|\leq s\); the second is (A2).
+Pass to arbitrarily accurate polynomial approximants in (A5), with the
+explicit errors from (A4). The resulting difference-quotient error is at
+most a known constant times \(|h|\), proving that the named first
+derivative is the complex derivative. Division by \(h\) is used only for
+increments apart from zero; the remainder inequality itself holds without
+that restriction.
+The same argument applied to the formally differentiated polynomials,
+using (A2) with the higher orders required, proves every further
+derivative. For derivative order \(j\), an explicit remainder constant is
+\[
+             \frac{M(j+2)!}{2R^{j+2}(1-s/R)^{j+3}}.
+\]
+For a chosen interior point one chooses a rational smaller disk
+and collar before making this argument. Thus holomorphicity and all
+differentiation claims follow from finite identities and specified moduli.
+\end{proof}
+
+\paragraph{Relation with Cauchy integral presentations.}
+One can instead supply a function on a certified neighborhood of
+\(\{|z|\leq R\}\), a bound \(M\), a primitive-recursive contour evaluator,
+and a proved Cauchy formula. The coefficient formula then gives (A1).
+If the bound is available only on smaller circles, include the corresponding
+radius loss. The repository's Cauchy and residue packet develops the
+required finite contour estimates under explicit differentiability and
+geometric hypotheses \cite{repoCauchy}; it is a proposed source of this
+adapter, not a silently completed new Lean dependency.
+The present theorem itself starts at the coefficient certificate and needs
+no contour theorem as an unproved premise.
+
+\subsection{A completely explicit finite \texorpdfstring{\(C^J\)}{C-J} approximation family}
+
+Let
+\[
+\begin{split}
+K&=\max_{j\leq J}K_j,\qquad D=\max_{j\leq J}D_j,\\
+U&=\max(1,\lceil K\rceil),\qquad
+V=\max(1,\lceil8D\rceil),\qquad L_0=\max(1,\lceil M\rceil),\\
+h&=\ceil{1/(1-\sigma)},\\
+N&=J+h(k+U+2),\qquad p=k+V,\qquad \Delta=2^{-p}.
+\end{split}
+\tag{A6}
+\]
+Use the real rational grid
+\[
+       G_p=\{j\Delta:j\in\Z,\ -L_0\,2^p\leq j\leq L_0\,2^p\}.
+\]
+For every \(N+1\) tuple \(q_0,\ldots,q_N\in G_p+iG_p\), form
+\[
+                         Q_q(z)=\sum_{n=0}^N q_n R^{-n}z^n .
+\tag{A7}
+\]
+The list contains exactly
+\[
+                      H=(2L_0\,2^p+1)^{\,2(N+1)}
+\tag{A8}
+\]
+polynomials. Listing all of them can be extremely expensive, but is
+primitive recursive. A chosen approximant can be computed without
+enumerating the entire list.
+
+\begin{theorem}[Simultaneous derivative entropy bound]
+\label{thm:analytic-entropy}
+For every family member satisfying (A1), finite observations select a
+polynomial \(Q_q\) in (A7) for which
+\[
+ \max_{0\leq j\leq J}\ 
+        \sup_{|z|\leq r}|f^{(j)}(z)-Q_q^{(j)}(z)|
+                        \leq2^{-k-1}.
+\tag{A9}
+\]
+The selecting algorithm, degree, coefficient precision and cardinality
+bound are primitive recursive in the supplied rational data, \(J,k\),
+and the fixed coefficient evaluator.
+\end{theorem}
+\begin{proof}
+The proof of Lemma~\ref{lem:clock}, with \(q=\sigma\), gives
+\(\sigma^h\leq1/2\). Since \(K\leq U\leq2^U\),
+\[
+K\sigma^{N+1}\leq U\,2^{-(k+U+2)}\leq2^{-k-2}.
+\tag{A10}
+\]
+This is a common bound for the derivative tails.
+
+Approximate each real and imaginary part of \(b_n\), \(0\leq n\leq N\),
+within \(\Delta/4\), round to a nearest grid point, and clip to
+\([-L_0,L_0]\). The true component lies in this interval, so clipping cannot
+increase its error. Each coordinate error is at most \(3\Delta/4<\Delta\),
+and hence \(|b_n-q_n|\leq2\Delta\).
+At derivative order \(j\), (A2) gives the uniform polynomial error
+\[
+\left|\sum_{n=j}^N(n)_j(a_n-q_nR^{-n})z^{n-j}\right|
+ \leq 2\Delta R^{-j}\sum_{n=j}^N(n)_j\rho^{n-j}
+ \leq2\Delta D.
+\]
+By \(V\geq8D\) and \(2^V\geq V\), this is at most \(2^{-k-2}\).
+Add (A10) to obtain (A9).
+All selection decisions are comparisons of rational observations; none
+is a decision about equality or sign of an exact complex coefficient.
+\end{proof}
+
+The approximating polynomials lie in the ambient \(C^J\) space; they need not
+belong to the original analytic family or obey its original coefficient
+bound. Selecting representatives inside an arbitrary family would be
+an additional existence problem. The theorem gives an explicit total
+boundedness result for the analytic family viewed in the smaller-disk
+\(C^J\) metric. It does not choose a convergent subsequence from an arbitrary
+sequence in that family.
+
+\subsection{An example with exact rational derivative checks}
+
+Take \(R=2\), \(M=1\) and \(a_n=2^{-n}\). Then
+\[
+                      f(z)=\frac1{1-z/2},\qquad
+          f^{(j)}(z)=\frac{j!\,2^{-j}}{(1-z/2)^{j+1}}.
+\]
+For rational complex \(z\) with \(|z|\leq r<2\), both the finite polynomial
+jets and the right-hand expressions are exactly Gaussian rational.
+The reference program compares them using squared norms and verifies
+(A4), (A10) and (A9)'s error budgets at several radii and derivative orders.
+The integer schedules in (A6) are intentionally conservative; their purpose
+is an unconditional primitive-recursive bound, not good numerical complexity.
+
+\subsection{The radius gap and the analytic structure cannot be discarded}
+
+On the closed unit disk the polynomials \(z^n/n\) tend uniformly to zero,
+while their derivatives \(z^{n-1}\) have uniform norm \(1\).
+Thus differentiation is not continuous for the same-disk uniform metric.
+The supplied smaller radius changes the conclusion: the powers of
+\(\sigma<1\) absorb all polynomial derivative factors. This explains the
+appearance of a collar in analytic arguments, rather than treating it as
+a technical artifact.
+
+The continuous partitions of unity from the topology section must also be
+used with care. They glue approximately compatible continuous data, but
+their weights are generally not holomorphic. An approximately glued result
+is therefore not automatically holomorphic. If the local holomorphic
+functions agree exactly on the relevant overlaps, the glued function equals
+them locally and is holomorphic; otherwise a separate analytic correction
+argument is needed. This is one reason to retain domain-specific
+interpretation lemmas even in a common framework.
+
+\subsection{Object statements and the Lean path}
+
+Encode a Gaussian rational as a pair of rationals, a polynomial as a finite
+coefficient list, and a jet as the list of its formal derivatives through
+order \(J\). Horner evaluation, finite differentiation, factorials, powers,
+grid rounding, and (A6) are fixed primitive-recursive programs.
+The core object statements quantify over finite \(L,N,J\), a rational query
+\(z\), and rational coefficient observations, with explicit error terms for
+those observations. The majorant conclusion is a rational squared-norm
+inequality; all denominators \(R,s,1-\rho,1-\theta,1-\sigma\) have proved positive
+lower bounds.
+
+The needed derivations are: the finite geometric identity; (A2) by a bounded
+coefficient count; a triangle estimate for finite complex sums; the monomial
+derivative identity; the split-radius majorant (A4); the dyadic clock;
+the rounded-coefficient estimate; and the finite difference identity (A5).
+Their induction invariants are bounds for finite partial sums or coefficient
+lists, not holomorphicity assertions. After these are obtained, regularity,
+extensionality, and analytic interpretation are assembled as in
+Theorem~\ref{thm:compilation}. The actual object proof terms for these new
+complex-analytic statements remain explicit formalization targets.

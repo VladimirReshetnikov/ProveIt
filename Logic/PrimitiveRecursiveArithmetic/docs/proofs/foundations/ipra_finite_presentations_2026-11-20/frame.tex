@@ -1,0 +1,27 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=.82cm,y=.82cm,font=\small]
+  \fill[accent!22] (0,0) rectangle (3,3);
+  \fill[white] (1,1) rectangle (2,2);
+  \foreach \x in {0,2} \foreach \y in {0,2}
+    {\fill[accent!52] (\x,\y) rectangle ++(1,1);}
+  \draw[ink] (0,0) rectangle (3,3);
+  \draw[ink] (1,1) rectangle (2,2);
+  \foreach \x in {1,2} {\draw[ink!60] (\x,0)--(\x,3);}
+  \foreach \y in {1,2} {\draw[ink!60] (0,\y)--(3,\y);}
+  \node at (1.5,.5) {1}; \node at (2.5,1.5) {2};
+  \node at (1.5,2.5) {3}; \node at (.5,1.5) {4};
+  \node[anchor=north] at (1.5,-.15) {Four closed strips};
+  \begin{scope}[shift={(6.5,1.5)}]
+    \coordinate (a) at (0,-1.15); \coordinate (b) at (1.15,0);
+    \coordinate (c) at (0,1.15); \coordinate (d) at (-1.15,0);
+    \draw[accent,thick] (a)--(b)--(c)--(d)--cycle;
+    \foreach \pt in {a,b,c,d} {\fill[ink] (\pt) circle (2.5pt);}
+    \node[below] at (a) {1}; \node[right] at (b) {2};
+    \node[above] at (c) {3}; \node[left] at (d) {4};
+    \node[anchor=north] at (0,-1.65) {Intersection nerve};
+  \end{scope}
+\end{tikzpicture}
+\caption{Each darker square is an intersection of two strips and gives one edge of the nerve. There are no triple intersections. Both spaces have one independent loop.}
+\label{fig:frame}
+\end{figure}

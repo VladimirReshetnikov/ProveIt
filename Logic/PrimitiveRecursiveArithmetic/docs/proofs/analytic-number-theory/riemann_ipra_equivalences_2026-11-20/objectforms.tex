@@ -1,0 +1,41 @@
+\section{Counting failed packets inside iPRA}\label{sec:audits}
+Fix the polynomial parameters \(p=(d_0,H,u,v)\). Write \(e_p(j)=E(d_0,H,u,v,j)\), so that \(j=0\) tests the first cutoff \(n=100\). Define an integer count by primitive recursion:
+\[
+ C_p(0)=0,\qquad C_p(j+1)=
+ \begin{cases} C_p(j)&e_p(j)=0,\\ C_p(j)+1&e_p(j)\ne0.\end{cases}
+\]
+The index \(j\) is excluded from the prefix counted by \(C_p(j)\). For RH take \(p=(0,0,0,1)\). For GRH universally quantify the first component of \((d_0,0,0,1)\). For ERH universally quantify all four components. The following equivalences hold \emph{inside} first-order iPRA, parameter by parameter. Thus they also hold after each indicated closure.
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}\toprule
+Reading & Formula for a fixed \(p\) (subscripts suppressed)\\\midrule
+Pointwise pass & \(\forall j\ e(j)=0\)\\
+Clean prefixes & \(\forall j\ C(j)=0\)\\
+Stationary count & \(\forall j\ C(j+1)=C(j)\)\\
+Preserved invariant & \(\forall j\,(C(j)=0\to C(j+1)=0)\)\\
+No first failure & \(\neg\exists j\,(C(j)=0\wedge e(j)\ne0)\)\\
+Cofinal clean prefixes & \(\forall j\,\exists k\ C(j+1+k)=0\)\\
+Eventually clean & \(\exists k\,\forall j\ C(j+1+k)=0\)\\
+Prescribed samples & \(\forall j\ C(j+1+h(j))=0\), each fixed unary PR \(h\)\\\bottomrule
+\end{tabular}
+\end{center}
+For instance, \(h(j)=j^2+j\) gives the square cutoffs \(1,4,9,16,\dots\). The term for \(h\) is fixed when constructing the sentence. The uniformity over PR syntax belongs to Lean's metatheory. Each resulting sentence quantifies exclusively over natural numbers.
+
+\paragraph{Two local identities.}
+The update first tests an arbitrary \(x\) and updates an old count \(a\). Its defining PR equations are \(U(0,a)=a\) and \(U(Sx,a)=Sa\). Quantifier-free induction proves \(Sa\ne a\): at zero this is successor separation and at a successor it follows from injectivity. Another quantifier-free induction, now in \(x\), gives
+\[
+ U(x,a)=a\ \longleftrightarrow\ x=0,\qquad
+ U(x,a)=0\ \longleftrightarrow\ x=0\wedge a=0.
+\]
+In the zero branch both assertions reduce to facts about equality. In the successor branch their left sides contradict respectively \(Sa\ne a\) and \(Sa\ne0\), and the right sides contradict \(Sx\ne0\). Substituting \(x=e(j),a=C(j)\) proves the corresponding step identities for the count.
+
+\paragraph{Deriving the equivalences.}
+The first identity gives the stationary formulation pointwise. The second shows that a universal pass preserves cleanliness, and that \(C(j+1)=0\) certifies both \(e(j)=0\) and \(C(j)=0\). From preservation, apply induction to the single equality \(C(j)=0\), starting at \(C(0)=0\). A universal pass excludes a first failure. Conversely, assume there is no first failure and \(C(j)=0\). The decidable test \(e(j)=0\) either succeeds or gives the prohibited witness \(j\). Hence the zero-count invariant is preserved. This proof uses the internal decidability of a zero-test, already derived in the supplied framework.
+
+For arbitrary \(j,k\), iPRA proves \(C(j+1+k)=0\to e(j)=0\). At \(k=0\) use the second local identity. In the successor step the same identity removes the last cutoff, and the induction hypothesis applies. The induction formula is an implication between two equalities. This argument makes each of the last three rows imply the pointwise test: instantiate \(j\) and use the delivered witness \(k\), the fixed offset, or \(h(j)\), respectively. Cleanliness of all prefixes proves each converse, with \(k=0\) for the existential choices. Alternating number quantifiers in these presentations thus introduce no choice or search principle. \code{ObjectForms.lean} provides \code{PacketAudit.rh_iff}, \code{PacketAudit.grh_iff}, and \code{PacketAudit.erh_iff}, all of type \code{Prf PRAAx []} applied to the respective biconditional.
+
+\paragraph{Extracting a first failure from a given failure.}
+A witness for \(\exists j\,e(j)\ne0\) can itself be converted into a first-failure witness by a fixed PR term. Put \(F(0)=0\), and at step \(t\) set \(F(t+1)=t\) if \(C(t)=0\), retaining \(F(t)\) otherwise. The quantifier-free induction invariant is
+\[
+ C(t)\ne0\ \longrightarrow\ C(F(t))=0\ \wedge\ e(F(t))\ne0.
+\]
+The base case is vacuous. If \(C(t)=0\) and \(C(t+1)\ne0\), the step identity gives \(e(t)\ne0\), and the update selects \(t\). If \(C(t)\ne0\), the preceding witness is retained. A supplied failure at \(j\) makes \(C(j+1)\ne0\), so \(F(j+1)\) has the desired property. Conversely a first failure is a failure by conjunction elimination. The theorems \code{rh_counter_iff_first}, \code{grh_counter_iff_first}, and \code{erh_counter_iff_first} establish this \emph{positive} existential equivalence. For a family they retain the polynomial tuple and locate the first failing cutoff for that tuple. The hypotheses themselves supply no counterexample witness.

@@ -1,0 +1,117 @@
+\section{Exact boundaries and counterexamples}
+\label{sec:boundaries}
+
+The hypotheses identify useful mathematical structure. Several of them
+cannot be discarded merely because each finite computation terminates.
+The following elementary examples make the boundaries testable.
+
+\subsection{Separately contracting implementations can disagree}
+
+On \([0,1]\cap\Q\), let \(E_p(x)=0\) for even \(p\) and
+\(E_p(x)=1\) for odd \(p\). Each map is a constant, hence a
+contraction of factor zero with zero fixed-point residual. Their
+fixed points alternate. No regular name follows.
+
+The mixed-precision estimate (SG3) fails: for large adjacent
+precisions its right side at equal input is \(2^{-p}+2^{-p-1}\),
+while its left side is one. Thus cross-precision coherence is a
+separate input property, and cannot be inferred from contraction of
+each implementation in isolation.
+
+\subsection{Vanishing commutation defects do not overcome a closing gap}
+
+Take \(D_n=[0,1]\cap\Q\), identity restrictions,
+\(\eps_n=2^{-n-2}\), and
+\[
+ F_n(x)=(1-\eps_n)x+\eps_nc_n,
+ \qquad
+ c_n=\begin{cases}0&n\text{ even},\\1&n\text{ odd}.
+ \end{cases}
+\]
+Each map has the exact rational fixed point \(y_n=c_n\), and
+contraction factor \(q_n=1-\eps_n<1\). Direct subtraction gives
+\[
+ \sup_{0\le x\le1}|F_n(x)-F_{n+1}(x)|\le\eps_n.
+\]
+For example, when \(c_n=0,c_{n+1}=1\), the difference is
+\(-\eps_nx/2-\eps_n/2\); the other parity is analogous.
+The commutation defect tends to zero with an explicit dyadic rate,
+but the exact fixed points alternate between zero and one.
+
+There is no contradiction with (R2): the defect divided by the
+contraction gap is \(\eps_n/(1-q_n)=1\). It does not have a
+vanishing tail. This example shows why any theorem that omits the gap
+factor would be false even for one-dimensional affine maps.
+
+\subsection{A local numerical certificate is not a circular proof rule}
+
+A system of equations may have cycles in its dependency graph. The
+present method handles a subclass by replacing an implicit solution
+with a finite sequence of explicit updates and proving an error
+invariant for that sequence. The proof of each update estimate is
+already available before the iteration theorem is applied.
+
+This does not license a proof graph in which a claim assumes itself
+through another unproved claim. No equation such as ``certificate
+\(c_1\) is valid because \(c_2\) is valid, and conversely'' is
+accepted merely because its dataflow diagram is finite. An unrelated
+cyclic certificate system would need a sound induction, descent or
+guardedness argument of its own. Thus the open cyclic-execution item
+in the repository is narrowed for numerical feedback with small-gain
+data, not solved in its full generality.
+
+\subsection{No total primitive recursive universal evaluator}
+
+Suppose a total PR function \(U(e,n)\) evaluated every unary PR
+program at its code \(e\). Then \(g(n)=U(n,n)+1\) would itself be
+PR, with some code \(a\). The defining property at \((a,a)\)
+would give
+\(U(a,a)=g(a)=U(a,a)+1\), a contradiction. Consequently
+``all producer codes are PR'' cannot be implemented by adding a
+single total PR evaluator for them.
+
+Our two legitimate uses of uniformity are different. A fixed PR
+body can have arbitrarily many numerical parameters. Alternatively,
+a fixed bounded syntax such as finite rational polynomials has its
+own PR evaluator. General program traces can also be checked with a
+supplied fuel bound, but the claim that the bound is sufficient is
+then an explicit obligation.
+
+\subsection{Metastability and convergence remain different outputs}
+
+A finite stable window does not by itself supply a tail modulus or
+a coherent name. The proof-mining literature explicitly distinguishes
+rates of convergence, finite learning information, and rates of
+metastability \cite{kohlenbachsafarik}. The current construction obtains
+a full modulus because the gap and the error schedule give a finite
+geometric estimate. A theorem lacking those data may still have
+valuable metastable consequences; it must retain that weaker output
+instead of applying the regular-name theorem without its hypotheses.
+
+\subsection{Cardinality is not a complete enumeration}
+
+Even a bound of one possible witness does not generally produce a
+search cutoff. For a program code \(e\), the relation ``\(t\) is
+the first halting time of program \(e\)'' is decidable by bounded
+simulation and has at most one witness. A uniform computable bound
+containing that witness whenever it exists would decide halting by
+simulation up to the returned bound. The usual diagonal argument
+rules this out.
+
+This elementary example explains the logical distinction; it is not
+a reduction proving anything about the particular curves in the
+Faltings or Siegel packets. Their requested height bounds, complete
+lists, cardinality statements and finite-tuple obstructions are
+different arithmetical targets. A new proof of one target would
+need its own exact hypotheses and argument. No inference of
+independence, unprovability in iPRA, or impossibility of every
+constructive approach is made here.
+
+\subsection{Failure of a certificate is inconclusive}
+
+A failed weighted-row test does not prove nonexistence of a solution.
+Weights, a smaller box, a different preconditioner, or another
+mathematical method may succeed. Likewise, a passing local test does
+not establish global continuation, uniqueness outside its region,
+or behavior at a singular parameter. The numerical inequalities
+state the scope of the result exactly.

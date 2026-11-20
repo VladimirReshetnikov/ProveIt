@@ -1,0 +1,128 @@
+\section{Proper subspaces, finite covers, and examples}
+\label{sec:applications}
+
+\subsection{Constructing an annihilator by bounded elimination}
+
+For $m,d\ge1$ and $L\in\N$, enumerate the monomial list
+\[
+ \mathcal B_L=\{X^iY^j:0\le j<m,\quad mi+dj\le L\}.
+\]
+It is obtained by scanning $j<m$ and $i\le L$, so no basis-existence principle is involved. Its length is the explicit finite sum
+\[
+ n_L=\sum_{\substack{j<m\\dj\le L}}
+       \left(1+\left\lfloor\frac{L-dj}{m}\right\rfloor\right).
+\]
+In particular $n_L\ge1$ because the constant monomial occurs. No eventual dimension formula or genus calculation is required. Let $\Phi_L(x,y)$ be the vector of monomial evaluations in this declared order.
+
+Suppose a subspace is supplied by an $s$ by $n_L$ matrix $H$ of spanning rows. There is an actual bounded algorithm that either computes full rank or produces a nonzero annihilating column.
+
+\begin{lemma}[Runtime annihilator producer]\label{lem:annihilator}
+From an exactly coded $s$ by $n$ matrix over $K$, $n\ge1$, bounded Gaussian elimination computes a rank $r\le\min(s,n)$. If $r<n$, it computes $\lambda\in K^n$ with
+\[
+ H\lambda=0,\qquad \lambda\ne0.
+\]
+Every row in the supplied row span also annihilates $\lambda$.
+\end{lemma}
+\begin{proof}
+Scan columns $j=0,\ldots,n-1$, retaining a count $r$ of pivot rows. In column $j$, inspect only rows $r,\ldots,s-1$. If all entries are zero, mark this column free. Otherwise choose the first nonzero entry, swap it into row $r$, divide that row by the nonzero pivot, and eliminate the column in every other row. Then increment $r$. A zero test is a decidable exact-field test; every division carries its actual nonzero witness.
+
+Maintain the inverse elementary row operations alongside the current matrix. The finite identities $R=EH$ and $H=E^{-1}R$ hold at each stage. The processed pivot columns have a single one and zeros elsewhere, and later row operations preserve them. When the scan ends, nonpivot rows are zero. These assertions are all bounded coefficient predicates on the current arrays.
+
+If $r<n$, choose the first free column $j_0$. Put $\lambda_{j_0}=1$, put all other free coordinates equal to zero, and for each pivot row $i$ put its pivot coordinate equal to $-R_{i,j_0}$. Each row dot product is then zero by construction. Since $\lambda_{j_0}=1$, the vector is nonzero. The identity $H=E^{-1}R$ gives $H\lambda=0$. A supplied linear combination of rows has dot product zero by finite distributivity.
+
+There are at most $n$ pivot searches and at most $n$ elimination steps, each over at most $s(n+1)$ entries. The algorithm is primitive recursive even with naive coefficient growth. If one wants a separate arithmetic size bound, start with $H_0\ge2$ bounding all absolute numerators and positive denominators. Each scalar addition, subtraction, multiplication or guarded division is bounded by $H_{t+1}=2H_t^2+2$. Iterating this bound through a generous finite operation budget gives a primitive recursive code bound; efficient complexity is not needed for the theorem.
+\end{proof}
+
+Here ``proper subspace'' is represented by the computed guard $r<n$, or by a certificate implying that guard. The algorithm must not be run on approximate real coefficients while pretending that a zero pivot is decidable. It is uniform in the numerical dimensions for the fixed exact-field implementation.
+
+\begin{theorem}[Proper-subspace fiber bound]\label{thm:subspace}
+Suppose $F$ satisfies the global guard of Lemma~\ref{lem:global-weight}. Assume either a local Newton certificate, or $F=Y^m-f$ with the divisor certificate of Theorem~\ref{thm:divisor-norm} (including the automatic derivative-coprime case of Theorem~\ref{thm:squarefree-norm}). Let $H$ present a proper subspace of $K^{n_L}$. Then every finite list of pairwise distinct points on $F=0$ whose vectors $\Phi_L(x,y)$ lie in that row span has length at most $L$.
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{lem:annihilator} and define the actual polynomial
+\[
+ G(X,Y)=\sum_{\mu\in\mathcal B_L}\lambda_\mu\mu(X,Y).
+\]
+Distinct listed monomials have distinct exponent pairs, so the nonzero coefficient vector makes $G$ a nonzero reduced polynomial. Every listed monomial has weight at most $L$, hence $W(G)\le L$. Each supplied point is a zero of $G$, since its evaluation vector is a linear combination of the spanning rows and those rows annihilate $\lambda$. The appropriate norm nonvanishing theorem and Theorem~\ref{thm:finite-zero} give the result.
+\end{proof}
+
+\begin{corollary}[Finite cover bound]\label{cor:cover}
+Under the same curve hypotheses, if a finite list of distinct points is assigned to $C$ supplied proper subspaces with verified membership, its length is at most $CL$.
+\end{corollary}
+\begin{proof}
+Group the points by their assigned label in $\{0,\ldots,C-1\}$. Each group has at most $L$ points by Theorem~\ref{thm:subspace}. Summing the $C$ bounded counts gives the result. If the input only supplies that at least one label works, exact membership is checked by elimination and the least valid label is found by bounded search. If $C=0$, the coverage premise forces the point list to be empty.
+\end{proof}
+
+This replaces a divisor-theoretic zero-count obligation by explicit polynomial arithmetic for the stated families. It does not manufacture the finite cover required by a general Diophantine theorem. The inspected Siegel route already identifies existence of an appropriate cover as a separate substantial obligation \cite{repo-siegel}.
+
+\subsection{Examples where the new certificate is useful}
+
+\paragraph{All exponents in $Y^m=X^d+X$.}
+For $m,d\ge2$, the global weights are $m,d$, while the point $a=0$ has local order $e=1$ and coefficient $c=1$. Theorem~\ref{thm:local-norm} proves nonvanishing for every reduced nonzero $G$, regardless of $\gcd(m,d)$. Thus all proper-subspace and finite-cover bounds above apply. This requires no search for a local point: zero is supplied by the formula.
+
+\paragraph{Complete top cancellation but nonzero norm.}
+For
+\[
+ F=Y^2-X^4-X,\qquad G=Y-X^2,
+\]
+the multiplication matrix in basis $(1,Y)$ is
+\[
+ M_G=\begin{pmatrix}-X^2&X^4+X\\1&-X^2\end{pmatrix},
+ \qquad \Norm_F(G)=-X.
+\]
+Both terms of $G$ have global weight four; the leading determinant test gives zero. At zero, however, the two local weights are four and one. The unique lower weight is one, so the local theorem proves that the first norm term is $-X$. The only common point is $(0,0)$, even though the general weight cap is four.
+
+For $m=3,d=6$ the analogous pair $F=Y^3-X^6-X$, $G=Y-X^2$ has norm $X$. The sign changes exactly as predicted by $((-1)^{m-1}c)^k$.
+
+\paragraph{A mixed equation.}
+Let
+\[
+ F=Y^2+XY-X^4-X,\qquad G=Y-X^2.
+\]
+The global lower terms have weights at most eight. At zero the constant row has order one, while the mixed row $XY$ has local weight $2+1>2$. The local Newton certificate therefore applies. Direct computation gives
+\[
+ \Norm_F(G)=X^3-X.
+\]
+The three points $(-1,1),(0,0),(1,1)$ are common zeros. The common-zero theorem counts all three, and the computed degree three gives the sharp bound for this $G$.
+
+\paragraph{A smaller leading determinant.}
+For $m=6,d=4$, $f=X^4+X$, and $G=Y^3+2X^2$, the leading norm has dimension $g=\gcd(6,4)=2$. Here $H(Z)=Z^3+2$, $P(U)=U+2$, and
+\[
+ \kappa_g=\Norm_{U^2-1}(U+2)=3,\qquad\kappa=3^3=27.
+\]
+Indeed the full norm is $(3X^4-X)^3$. The compressed test certifies its highest coefficient using a two-dimensional calculation. The local theorem independently gives order three and coefficient $-1$ at zero.
+
+\paragraph{A curve with no rational point available for the local input.}
+The squarefree producer applies to $Y^m=X^4+1$ for every $m\ge1$. The rational polynomial $X^4+1$ has no rational zero, so there is no rational simple root to supply. Its Bezout certificate with its derivative nevertheless constructs a finite algebra with the exact properties needed for nonvanishing. No actual root is selected.
+
+\paragraph{Why some guard remains necessary.}
+For $F=Y^2-X^4$ and $G=Y-X^2$, the norm is identically zero and every $(x,x^2)$ is a common rational point. The local order at zero is four, not coprime to two; the derivative-coprime test for $X^4$ also fails. This is a counterexample to simply dropping every nonvanishing guard.
+
+\paragraph{A higher-degree divisor certificate.}
+The general divisor theorem goes further than either a rational local point or squarefreeness of the whole $f$. Put $g=X^2+1$, $h=(X+2)^2$, $f=g^3h$, $m=4$, and $G=g^2+gY$. The quotient by $g$ is reduced, $g$ and $h$ are coprime, and $\gcd(4,3)=1$. Thus Theorem~\ref{thm:divisor-norm} applies although $f$ is not squarefree and $\gcd(4,\deg f)=4$. Its only rational root is $-2$, of order two, so that rational local point does not pass the earlier coprimality test. The two division weights are eight and seven, giving
+\[
+ \Norm(G)=g^7(g-h)=-(X^2+1)^7(4X+3).
+\]
+Its exact $g$-division order is seven, its degree is fifteen, and its global weight cap is sixteen.
+
+\subsection{Induction audit for the full algebraic construction}
+
+\begin{longtable}{@{}P{0.22\textwidth}P{0.25\textwidth}P{0.47\textwidth}@{}}
+\toprule
+Loop & Explicit bound & Booleanized invariant\\
+\midrule
+\endhead
+Monic reduction & Input $Y$ degree plus one & Actual quotient/remainder identity; processed leading slots zero.\\[3pt]
+Companion columns & $m$ columns & Actual column is the reduced product $GY^j$; all coefficient weights satisfy the current budget.\\[3pt]
+Determinant & $m^m$ words, $m$ entries each & Current polynomial equals the signed sum over the processed valid words; support bounded.\\[3pt]
+Local translation & Finite coefficient buffer & Translated prefix equals the binomial/Horner expansion; all below-order coefficients vanish.\\[3pt]
+Local minimum & $m$ rows & Retained candidate is least among nonzero processed rows; tie exclusion uses the computed Bezout relation.\\[3pt]
+Polynomial Euclid & Degree sum plus two & Remainders have the recorded Bezout expressions; active degree decreases.\\[3pt]
+Quotient powers & Requested exponent & Current remainder equals the represented power; auxiliary Bezout identities stay valid.\\[3pt]
+Fiber grouping & Input point count squared & Each processed point belongs to one retained group; equality classes and total counts are preserved.\\[3pt]
+Factor removal & Total point count & Norm equals the accumulated monic factor times the actual quotient; remaining vanishing guards retained.\\[3pt]
+Row elimination & Matrix column count & Reversible row transformation, pivot shape, processed-column zeros, nonzero pivot guards.\\
+\bottomrule
+\end{longtable}
+
+All dimensions and bounds in this table are object-language numbers. The induction formulas concern finite coded buffers. The presentation does not rely on an external induction over a fixed Lean dimension and then quietly promote that family to a single arithmetic theorem.

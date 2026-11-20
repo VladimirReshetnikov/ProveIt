@@ -1,0 +1,525 @@
+\section{Quantifying over continuous objects without a universal evaluator}
+\label{sec:relational-codes}
+\label{sec:relational}
+
+There are two different reasons for using a finite numerical presentation. A
+fixed primitive-recursive family gives an executable observation procedure
+whose termination is already available in \ipra. A code for a partially
+computable procedure gives a numerical \emph{object} over which first-order
+quantifiers can range, but its termination becomes a formula. Confusing these
+roles either unnecessarily excludes abstract mathematics or silently increases
+the strength of the base theory. This section supplies an explicit bridge
+between them. Its results are human proofs and a formalization specification;
+they are not new kernel-checked declarations in the accompanying archive.
+
+\subsection{Three levels that must be kept distinct}
+
+\begin{enumerate}
+\item An \emph{executable schema} fixes actual primitive-recursive programs
+before its arithmetic formula is formed. Numerical parameters, dimensions,
+precisions, and finite list lengths can still vary internally. The schema does
+not have a variable ranging over arbitrary primitive-recursive evaluators.
+\item A \emph{relational presentation} quantifies over program codes and uses
+an arithmetic evaluation graph. Membership in a sort includes the totality and
+regularity needed by its operations. An operation on objects can be a
+primitive-recursive constructor of program codes even when evaluating the
+constructed program is not uniformly primitive recursive.
+\item An \emph{external semantic interpretation} assigns ordinary continuous
+objects to those presentations in the standard model. Its use of a completed
+metric space is a metatheoretic explanation, not an additional object-theory
+axiom. A numerical sort does not enumerate all classical reals.
+\end{enumerate}
+
+The repository already distinguishes the first and third levels in
+\texttt{Universal\allowbreak Evaluator\allowbreak Obstruction.lean}~\cite{repo-evaluator}; its
+\texttt{SetoidInterpretation.lean}~\cite{repo-setoid} permits arbitrary arithmetic formulas for a
+presented domain and equality. Thus the relational level is compatible with
+the existing interpretation machinery. The additional work here is to make
+continuous-object totality, finite witness assembly, and completion explicit.
+
+\subsection{A bounded trace relation}
+
+Fix a deterministic register-machine coding. A configuration contains the
+program counter, registers, and a halt flag. The one-step map is primitive
+recursive; a halted configuration is unchanged by further steps. Invalid
+instructions have a specified error behavior. All encoding and decoding maps
+are total primitive-recursive maps. Write
+\[
+ \mathsf T(e,x,t,a)
+\]
+for the quantifier-free predicate saying that the machine with code $e$, on
+input $x$, is halted after $t$ steps and has output $a$. It is defined by
+primitive recursion on $t$. Pairing permits multiple inputs. There is no
+assertion that a suitable $t$ always exists.
+
+\begin{lemma}[Determinism and finite trace assembly]
+\label{lem:trace-assembly}
+The following are available by quantifier-free induction and elementary
+arithmetic in \ipra.
+\begin{enumerate}
+\item If $\mathsf T(e,x,t,a)$ and $\mathsf T(e,x,u,b)$, then $a=b$.
+\item There are primitive-recursive constructors for an input substitution,
+for sequential composition of two codes, and for a fixed finite number of
+calls followed by a fixed primitive-recursive computation. Each constructor
+has a primitive-recursive trace assembler: given the successful component
+traces and all their numerical outputs, it produces a successful trace of
+the constructed code with the specified output. Conversely, a successful
+trace of the constructed code yields successful traces of all the component
+calls actually made, with the specified input and output identities.
+\item In particular, currying $e$ at a numerical parameter $p$ produces a code
+$\mathsf{row}(e,p)$ whose outputs on $n$ are exactly the outputs of $e$ on
+$\langle p,n\rangle$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For determinism, compare both runs at time $\max(t,u)$. The transition is a
+function and the halting state is absorbing. The equalities of the two finite
+runs and the absorption identity are quantifier-free induction invariants.
+
+For a constructor, reserve disjoint register blocks, copy the finite input
+values, execute each component, and pass its output to the next block. A trace
+of the composite consists of the input-copy trace, the supplied component
+traces with renamed registers, and the output-copy or arithmetic trace. Its
+length and entries are primitive-recursive functions of the supplied finite
+data. Verification is induction over this explicitly given concatenation.
+Conversely, a bounded scan of a successful composite trace finds the entry
+and exit positions of each call and decodes the component runs between them.
+For a fixed primitive-recursive arithmetic operation, its implementation and
+termination derivation are fixed in advance. We do not claim a uniform
+primitive-recursive runtime for all such operations as their program code
+varies. The currying case simply inserts the pairing routine before the
+original machine.
+\end{proof}
+
+These elementary machine-code lemmas are part of the remaining formalization
+work. They must be instantiated by actual constructors and assembler programs;
+an abstract Lean interface whose fields assume them is a specification of the
+boundary, not a proof that the boundary has been discharged.
+
+Define the arithmetic formulas
+\[
+ \mathsf{Eval}(e,x,a)\;:\!\!\iff\;\exists t\,\mathsf T(e,x,t,a),
+ \qquad
+ \mathsf{Tot}(e)\;:\!\!\iff\;\forall x\exists t\exists a\,
+       \mathsf T(e,x,t,a).
+\]
+The graph is single-valued wherever it is defined. The formula
+$\mathsf{Tot}(e)$ is not being replaced by a quantifier-free bit and is not
+used as an induction invariant below.
+
+\subsection{A genuine arithmetic sort of real names}
+
+Every output number is decoded as a rational number with positive denominator,
+using a fixed total decoder. Rational addition, absolute value, comparison,
+and canonicalization are primitive recursive on these codes. Let
+$\delta_n=2^{-n}$. Every rational expression in this section abbreviates a
+fixed arithmetic formula obtained by clearing positive denominators. Thus
+none of the displayed inequalities requires a real-number sort in \ipra.
+
+\begin{definition}[Relational regular name]
+A code $e$ is a regular real name, written $\mathsf{RN}(e)$, when
+$\mathsf{Tot}(e)$ holds and
+\[
+ \forall i,j,t,u,a,b\quad
+ \bigl(\mathsf T(e,i,t,a)\wedge\mathsf T(e,j,u,b)\bigr)
+ \ \longrightarrow\ |a-b|\leq\delta_i+\delta_j.
+ \tag{RN}
+\]
+For two such codes define, for a nonnegative rational $r$,
+\[
+ \mathsf{Near}(e,f;r)\;:\!\!\iff\;
+ \forall i,j,t,u,a,b\quad
+ \bigl(\mathsf T(e,i,t,a)\wedge\mathsf T(f,j,u,b)\bigr)
+ \longrightarrow |a-b|\leq r+\delta_i+\delta_j.
+ \tag{N}
+\]
+Set $e\sim f$ when $\mathsf{Near}(e,f;0)$. The occurrences of $a,b$ in the
+inequality mean their decoded rational values.
+\end{definition}
+
+All quantifiers in these definitions are ordinary first-order numerical
+quantifiers. In particular, $e$ really is an internal variable. We have not
+introduced a primitive-recursive function that evaluates $e$ on arbitrary
+inputs, and have not claimed that every program code satisfies (RN).
+
+The following elementary fact replaces repeated appeals to a real-valued
+limit. It is especially useful when exact equality is the conclusion.
+
+\begin{lemma}[Rational slack removal]
+\label{lem:relational-slack}
+For rational $v,w$ and a nonnegative rational $C$,
+\[
+  \bigl(\forall k\;v\leq w+C2^{-k}\bigr)\ \longrightarrow\ v\leq w
+ \tag{S}
+\]
+has an intuitionistic \ipra\ proof. A tail version, with $k\geq K_0$, has
+the same conclusion. The instance required to obtain a contradiction from
+$w<v$ has an explicit primitive-recursive index.
+\end{lemma}
+
+\begin{proof}
+Write the two rational denominators as positive integers $d_v,d_w$, put
+$D=d_vd_w$, and choose a natural $A\geq C$; for example, use the absolute
+numerator of $C$ plus one. Rational order is decidable. If $w<v$, clearing
+denominators gives $v-w\geq1/D$. Quantifier-free induction proves
+$2^k\geq k+1$. At
+\[
+       k=\max\{K_0,(A+1)D\}
+\]
+we therefore have $C2^{-k}\leq A/(k+1)<1/D$, contradicting the displayed
+premise. Eliminate the decidable alternative $w<v$ to obtain $v\leq w$.
+Only a comparison of rationals has been decided. No principle deciding the
+sign of a represented real, and no double-negation elimination for an
+arbitrary formula, has been used.
+\end{proof}
+
+\begin{theorem}[The name sort is a setoid]
+\label{thm:relational-setoid}
+On $\mathsf{RN}$, the relation $\sim$ is reflexive, symmetric, and transitive.
+More generally,
+\[
+ \mathsf{Near}(e,f;r)\wedge\mathsf{Near}(f,g;s)
+       \ \longrightarrow\ \mathsf{Near}(e,g;r+s)
+ \tag{NT}
+\]
+provided $\mathsf{Tot}(f)$ holds. These are first-order \ipra\ derivations
+from the displayed assumptions.
+\end{theorem}
+
+\begin{proof}
+Reflexivity is (RN), and symmetry uses symmetry of rational distance. For
+(NT), fix arbitrary successful traces giving $a$ from $e$ at precision $i$
+and $c$ from $g$ at precision $j$. For an arbitrary natural $k$, totality of
+$f$ supplies one successful trace with output $b$ at $k$. Existential
+elimination and the rational triangle inequality give
+\[
+ |a-c|\leq |a-b|+|b-c|
+       \leq r+s+\delta_i+\delta_j+2\delta_k.
+\]
+The conclusion is independent of that trace and of $b$, so its existential
+witnesses can be eliminated. Introduce the universal quantifier on $k$ and
+apply Lemma~\ref{lem:relational-slack}. Finally introduce the quantifiers on
+the initially arbitrary traces. Transitivity is $r=s=0$.
+
+This proof performs no induction on a statement about all precisions. Its
+only nontrivial induction is the already fixed arithmetic lemma
+$2^k\geq k+1$.
+\end{proof}
+
+\subsection{Code constructors give continuous operations}
+
+Let $\mathsf{addCode}(e,f)$ be a code which, on input $n$, executes $e$ and
+$f$ at $n+2$ and returns their rational sum. The constructor of this code is
+primitive recursive in $(e,f)$. Its runtime need not be primitive recursive
+uniformly in $(e,f,n)$.
+
+\begin{theorem}[Addition and substitution on the relational sort]
+\label{thm:relational-addition}
+\ipra\ proves
+\[
+ \mathsf{RN}(e)\wedge\mathsf{RN}(f)
+    \ \longrightarrow\ \mathsf{RN}(\mathsf{addCode}(e,f)).
+ \tag{A1}
+\]
+If $e\sim e'$ and $f\sim f'$, then
+$\mathsf{addCode}(e,f)\sim\mathsf{addCode}(e',f')$.
+The analogous constant-name and negation constructors preserve the name
+sort and its equality. Addition is associative and commutative up to $\sim$,
+with zero and negation supplying the usual group laws.
+\end{theorem}
+
+\begin{proof}
+Fix $n$. Totality supplies the two traces required at $n+2$. Assemble them
+by Lemma~\ref{lem:trace-assembly}, existentially introduce the composite
+trace, and then universally introduce $n$. This is a fixed two-witness
+argument, with no induction on a quantified totality assertion.
+
+For regularity, unpack two successful composite traces into component
+outputs $a_i,b_i$ and $a_j,b_j$. Such unpacking is a further elementary
+trace correctness lemma for this specific constructor. Apply (RN) to each
+input and add:
+\[
+ |(a_i+b_i)-(a_j+b_j)|
+   \leq 2(\delta_{i+2}+\delta_{j+2})
+   =\tfrac12(\delta_i+\delta_j)
+   \leq\delta_i+\delta_j.
+\]
+Use exactly the same estimate with cross-name inequalities to obtain
+congruence.
+
+For associativity, the two programs use different precision shifts for
+their three input names. Compare their samples through the common rational
+sum of the same three input samples at an auxiliary precision $l$. Each
+input comparison is bounded by its two sample errors. The accumulated
+errors at the original left output precision $i$ are at most
+$\delta_i$, and those at the right output precision $j$ are at most
+$\delta_j$; the auxiliary contribution is a fixed multiple of $\delta_l$.
+Rational associativity identifies the two common sums. Slack removal gives
+the required inequality $\delta_i+\delta_j$. The proofs of commutativity,
+the unit law, and the inverse law use the same argument with fewer terms.
+Constant names and negation need no precision-dependent search.
+\end{proof}
+
+Multiplication illustrates why numerical bounds remain part of an analytic
+interface even in the relational layer. Query the two names at $0$, with
+outputs $a_0,b_0$, and put
+\[
+ B_e=\lceil |a_0|\rceil+2,\qquad
+ B_f=\lceil |b_0|\rceil+2,\qquad S=B_e+B_f.
+\]
+All samples of the corresponding name have absolute value at most its $B$.
+Output $a_{n+S}b_{n+S}$. Each execution uses four input calls, a fixed number.
+Determinism makes $S$ the same for all precisions. The product inequality
+\[
+ |ab-a'b'|\leq B_f|a-a'|+B_e|b-b'|
+\]
+and $2^S\geq S$ prove regularity. Congruence across different representatives
+uses an auxiliary common high precision and slack removal; the bounds and
+shifts of the two representatives need not agree. This supplies a
+formalizable multiplication constructor. A reciprocal requires a positive
+separation witness. Its absence cannot be repaired by deciding exact zero.
+
+\subsection{Diagonal completion from jointly total observations}
+
+A particularly useful consequence is completion of a represented sequence
+whose modulus is known. It gives a continuous construction while making only
+one call to the double-name program at each output precision.
+
+Fix a primitive-recursive, nondecreasing modulus $\mu(p,k)$; $p$ is a
+numerical parameter. If an initially given primitive-recursive modulus is
+not monotone, replace it by its prefix maximum, computed directly by
+primitive recursion. This normalization is not being applied to an arbitrary
+relationally total modulus code without an additional finite-batch argument.
+
+Let $E$ be a code with inputs $\langle n,i\rangle$. Assume:
+\begin{description}
+\item[Joint totality.]
+$\forall n,i\exists t,a\;\mathsf T(E,\langle n,i\rangle,t,a)$.
+\item[Row regularity.]
+Each row obeys (RN), with $n$ an arbitrary numerical parameter.
+\item[Uniform Cauchy contract.]
+For every $k$ and $n,m\geq\mu(p,k)$, any two row samples satisfy
+\[
+ \left|a_{n,i}-a_{m,j}\right|
+      \leq\delta_k+\delta_i+\delta_j.
+ \tag{UC}
+\]
+Here the displayed sample notation is shorthand for universally quantified
+successful trace outputs, exactly as in (RN).
+\end{description}
+
+\begin{theorem}[Relational completion]
+\label{thm:relational-completion}
+There is a primitive-recursive code constructor $\mathsf{diag}(E,p)$ that
+on input $k$ makes the single observation
+\[
+       x_k=a_{\mu(p,k+2),\,k+2}.
+ \tag{D}
+\]
+From the preceding assumptions, \ipra\ derives
+\[
+ \mathsf{RN}(\mathsf{diag}(E,p))
+ \tag{D1}
+\]
+and, for every $n\geq\mu(p,k+2)$,
+\[
+ \mathsf{Near}\bigl(\mathsf{row}(E,n),
+                    \mathsf{diag}(E,p);\delta_{k+2}\bigr).
+ \tag{D2}
+\]
+The construction does not require a uniform primitive-recursive runtime for
+$E$, a universal total evaluator, or a countable-choice principle.
+\end{theorem}
+
+\begin{proof}
+Joint totality at the one pair in (D) gives totality of the constructed code
+by input substitution and trace assembly. Fix samples at $k\leq l$.
+Monotonicity of $\mu$ makes both row indices at least $\mu(p,k+2)$.
+Applying (UC) at precision $k+2$ gives
+\[
+ |x_k-x_l|\leq 2\delta_{k+2}+\delta_{l+2}
+       \leq\delta_k+\delta_l.
+\]
+The case $l\leq k$ is symmetric. The split uses decidable numerical order,
+so this proves (D1) intuitionistically.
+
+To prove (D2), fix an arbitrary sample $a_{n,i}$ and arbitrary output sample
+$x_j$. For any $l\geq\max(k,j)$, (UC) applies to rows $n$ and
+$\mu(p,l+2)$, yielding
+\[
+ |a_{n,i}-x_l|\leq\delta_{k+2}+\delta_i+\delta_{l+2}.
+\]
+The already proved regularity of the diagonal gives
+$|x_l-x_j|\leq\delta_l+\delta_j$. Consequently
+\[
+ |a_{n,i}-x_j|
+ \leq\delta_{k+2}+\delta_i+\delta_j
+             +\tfrac54\delta_l.
+\]
+Use totality to obtain the one auxiliary sample at each $l$, eliminate its
+trace witnesses, and apply the tail form of rational slack removal. This is
+(D2) for all original sample indices, not merely the tail indices.
+\end{proof}
+
+\begin{proposition}[Independence of the completion presentation]
+\label{prop:relational-completion-independence}
+Suppose two jointly total row programs have equivalent rows at every $n$ and
+each satisfies a Cauchy contract of the preceding kind, possibly with
+different primitive-recursive moduli. Their diagonal completions are
+equivalent.
+\end{proposition}
+
+\begin{proof}
+For arbitrary $r$, take a numerical row index at least both of the two
+modulus values at $r+2$. Each completed name is within $\delta_{r+2}$ of
+its corresponding row by (D2), and those rows are equivalent by hypothesis.
+Apply the triangle law (NT) twice. The completed names are therefore
+$\mathsf{Near}$ with allowance $2\delta_{r+2}$. For each fixed pair of
+samples, slack removal in $r$ reduces that allowance to zero. Only finitely
+many trace witnesses are used for each $r$.
+\end{proof}
+
+This theorem has an exact semantic reading. In the standard model, a regular
+name has a real limit and its sample error is at most $\delta_i$. The
+construction takes a jointly computable Cauchy sequence with a supplied
+modulus to its computable real limit. It does not say that every sequence of
+computable reals has a computable joint presentation, that every Cauchy
+sequence has a computable modulus, or that the entire classical real line
+is internally enumerated.
+
+\subsection{The finite-batch issue}
+\label{subsec:batch-totality}
+
+There is a crucial restriction on the preceding positive results. For a
+fixed list $L$ of requested inputs, let
+\[
+ \mathsf{Batch}(e,L,w)
+\]
+be a quantifier-free predicate checking a list $w$ of one successful trace
+and output for every entry of $L$. It checks length, input matching, and all
+trace predicates using a primitive-recursive fold. A useful additional
+contract is
+\[
+ \mathsf{BatchTot}(e):\quad
+       \forall L\exists w\;\mathsf{Batch}(e,L,w).
+ \tag{BT}
+\]
+
+For each externally fixed number of requests, scalar totality supplies the
+required tuple by a fixed number of applications of existential elimination.
+This is precisely what was used for addition, multiplication, the triangle
+law, and the diagonal construction. If the number of requests is an
+\emph{internal variable}, the usual informal instruction ``inductively
+collect the traces'' instead uses an invariant of the form
+$\exists w\,\mathsf{Batch}(e,L_{<n},w)$. It is not quantifier-free. Neither
+the fact that each requested computation terminates nor the fact that a
+certificate checker is primitive recursive justifies that induction rule.
+
+We therefore do not use a blanket implication
+$\mathsf{Tot}(e)\Rightarrow\mathsf{BatchTot}(e)$ in this framework. This is
+an explicit retained obligation, not a claimed unprovability theorem for
+that implication. A client must discharge its precise finite-collection
+requirement or choose an interface that supplies it.
+
+\begin{proposition}[Three sound interfaces for a finite computation]
+\label{prop:batch-interfaces}
+The finite-query backend can be used in any of the following ways.
+\begin{enumerate}
+\item \emph{Primitive-recursive runtime.} Supply a fixed primitive-recursive
+clock and output routine, with a proof of their trace specification for all
+requested inputs. The entire table is then primitive recursive, and its
+correctness is a quantifier-free induction on the actual table.
+\item \emph{Batch certificate.} Supply $w$ with
+$\mathsf{Batch}(e,L,w)$, or a proof of (BT), for the nonadaptive request list
+$L$. The algorithm runs over the returned finite table. No repeated
+unbounded search for scalar witnesses is needed.
+\item \emph{Specific adaptive contract.} For an adaptive loop, supply a
+verified finite execution trace or a totality theorem for that particular
+loop. A batch contract suffices if an independently proved finite envelope
+contains all possible requested inputs; without such an envelope, the
+adaptive case remains a separate obligation.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+In the first case, primitive recursion constructs all the certificate
+fields. The prefix assertion that each field passes its test is represented
+by a Boolean product, and the source arithmetic proves its induction.
+In the second case, bounded lookup in $w$ retrieves each requested output
+and its trace. Its validity follows by bounded elimination from the table
+checker. A fixed primitive-recursive finite simulation on those values can
+then be verified with the same prefix invariant. The third case uses either
+that verified simulation after proving the query-envelope inclusion, or the
+explicit execution certificate itself. No case infers the existence of an
+arbitrarily long tuple of unbounded witnesses merely from scalar totality.
+\end{proof}
+
+This is relevant to continuous mathematics, not just to implementation.
+A finite-net extremum computation makes a precision-dependent number of
+calls. A variable-step Euler method makes an adaptive succession of calls.
+They are directly covered when the evaluator is a fixed primitive-recursive
+family. When the evaluator is instead an arbitrary code admitted only by
+$\mathsf{Tot}$, the appropriate batch or iteration contract must be stated.
+The same distinction applies to finite-net interpretations of quantifiers
+in continuous model theory. The existing finite-query backend supplies the
+checked bounded-prefix machinery once its numerical observations and local
+contracts are actually available~\cite{repo-finite-query}.
+
+\subsection{How this supplies genuine first-order interpretations}
+
+The domain formula $D(e)=\mathsf{RN}(e)$ and equality $E(e,f)=(e\sim f)$
+are legitimate inputs to the repository's numerical setoid interpretation.
+Constants and operations are primitive-recursive \emph{code constructors}.
+Their closure and congruence laws have just been proved without assuming a
+primitive-recursive evaluator. Once the interpreted source axioms have
+actual derivations, the existing interpretation theorem transports each
+fixed intuitionistic first-order proof.
+
+This yields a precise route for categories, analytic structures, and
+model-theoretic signatures. Object and morphism domains can be arbitrary
+arithmetic formulas; names and continuity moduli can appear in those
+formulas; composition and other finite structural operations can be code
+constructors. Categorical laws are proved up to the chosen extensional
+equality. Numerical parameters remain internal. The source proof and its
+term translation are handled by an external structural recursion already
+available in \texttt{SetoidInterpretation.sound}. That external theorem is
+not internal uniform reflection for all iPRA proofs.
+
+An interpreted source axiom demanding compactness, a discontinuous choice,
+or a variable sequence of unbounded computations does not become valid
+merely because the language has been translated. It remains an axiom
+obligation. The benefit of the relational layer is that genuine first-order
+quantification over represented continuous objects is available without
+misidentifying their arithmetic graphs with primitive-recursive evaluators.
+
+\subsection{Lean targets and the exact remaining work}
+
+The formalization should use the existing object syntax
+\texttt{Fm PTm n}, derivations \texttt{Prf PRAAx}, and arity-indexed
+substitution. The numerical programs for the bounded trace checker and
+code constructors must first be realized as \texttt{PR} terms. Define
+\texttt{totalFm}, \texttt{nameFm}, and \texttt{nearFm} by literal
+first-order formulas. The principal targets are the closed sentences
+corresponding to Lemma~\ref{lem:relational-slack},
+Theorems~\ref{thm:relational-setoid}, \ref{thm:relational-addition}, and
+\ref{thm:relational-completion}.
+
+The proof order matters. First derive rational arithmetic and denominator
+positivity for actual trace outputs. Then implement the trace assembler and
+its two directions of correctness. Next prove slack removal as an
+object-theory rule under arbitrary contexts. This makes the name equality
+proofs purely first-order compositions of already checked arithmetic rules.
+Finally instantiate \texttt{SetoidInterpretation.Presentation}, where the
+term translation sends an abstract operation to its code constructor.
+Quantifier-free induction is reserved for bounded trace simulation,
+encoding, and explicit finite tables. No induction is performed on
+\texttt{nameFm}, \texttt{totalFm}, or an unbounded-existential batch predicate.
+
+The generic scalar-name completion is intentionally separated from the
+already checked specialized root-distance completion in
+\texttt{Analysis/GaussianRootDistanceCompletion.lean}. That existing result
+constructs an actual primitive-recursive diagonal observation program for a
+specific continuous observable. The present result explains a larger
+relational domain and its obligations; it does not supersede the stronger
+executable guarantee of that specific program.

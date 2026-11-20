@@ -1,0 +1,158 @@
+\section{What has been resolved, what remains, and how to reuse the work}
+\label{sec:synthesis}
+
+\subsection{A common framework with substantive domain theorems}
+
+The unifying object is a \emph{specified presentation}, not a discrete
+replacement of the mathematical object. A name may represent a point in an
+infinite-dimensional Hilbert space, a function on an arbitrary presented
+compact metric space, or a germ of a holomorphic function. What is finite
+is a requested observation and the computation proving its error bound.
+Four recurring ingredients determine the successful cases:
+\begin{enumerate}
+\item A dense family of finite objects with primitive-recursive operations.
+\item A modulus converting the desired output precision to input demands.
+\item A stability inequality converting approximate local work into a
+coherent global result.
+\item A semantic theorem identifying the represented result with the
+intended continuous object.
+\end{enumerate}
+None of the four is automatic. The report produces them for concrete
+classes rather than adding them as names for the desired conclusion.
+
+\begin{longtable}{p{.25\textwidth}p{.36\textwidth}p{.30\textwidth}}
+\toprule
+Difficulty & Result supplied here & Exact remaining boundary\\
+\midrule
+\endfirsthead
+\toprule
+Difficulty & Result supplied here & Exact remaining boundary\\
+\midrule
+\endhead
+An operation is given only on dense finite data &
+Theorem~\ref{thm:cm-extension} constructs its extension and proves independence
+of names from a joint modulus. &
+The dense evaluator and its joint modulus must actually be supplied.\\[2mm]
+A change of presentation appears to change the object &
+Proposition~\ref{prop:cm-products-density} constructs inverse name maps from
+a dense isometry and an approximate inverse selector. &
+A mere assertion of density does not uniformly provide that selector.\\[2mm]
+Continuous formulas contain alternating quantifiers &
+Theorems~\ref{thm:cm-backforth} and \ref{thm:cm-values} construct finite
+approximations to their values, retaining alternation. &
+Numerical approximation does not decide exact zero truth or prove
+logical compactness.\\[2mm]
+A family of continuous functions needs a common finite representation &
+Theorem~\ref{thm:quant-ascoli} constructs tent interpolants and an explicit
+entropy bound. Proposition~\ref{prop:ascoli-converse} gives a quantitative
+converse. &
+A common modulus and effective domain nets are required; pointwise
+continuity alone is insufficient.\\[2mm]
+Local formulas must be assembled without dividing by an uncertified
+denominator &
+Theorem~\ref{thm:guarded-gluing} derives a denominator lower bound, an
+evaluator, a Lipschitz constant, and the gluing error. &
+Approximate continuous gluing need not preserve holomorphicity.\\[2mm]
+Finite approximations need to define one solution &
+Theorem~\ref{thm:hilbert-solver} compares two finite runs directly.
+The minimax example also produces a coherence modulus from a proved gap. &
+Unstable approximate solutions need not admit any effective coherent choice.\\[2mm]
+An infinite-dimensional equation needs an actual solution producer &
+Theorem~\ref{thm:hilbert-solver} derives the contraction gap, clock and
+precision; Theorem~\ref{thm:pde} constructs a weak elliptic solution. &
+The strong operator data and positive coercivity margin are essential.\\[2mm]
+Weak Hilbert data lack a norm name &
+Theorem~\ref{thm:tail-equivalence} identifies the exact tail information
+needed; Proposition~\ref{prop:riesz-obstruction} proves it cannot be
+manufactured in general. &
+No blanket Riesz or weak-data Lax--Milgram algorithm follows.\\[2mm]
+Differentiation consumes uncontrolled precision &
+Theorems~\ref{thm:analytic-tail} and \ref{thm:analytic-entropy} construct
+simultaneous derivative approximants with explicit degree and precision. &
+A radius gap and coefficient bound are retained; there is no same-disk
+uniform differentiation modulus.\\
+\bottomrule
+\end{longtable}
+
+\subsection{The source audit changes some apparent problems}
+
+The review found that several general proof-transport ideas are already
+implemented in the current source, even where old packet README files still
+describe uncompiled proposals. Conversely, not every declaration located
+under \sourcepath{Derivations/} has an object-theory conclusion.
+The inspected \sourcepath{Foundations/FiniteUseSignObstruction.lean}
+expressly concerns external Lean propositions about oracle computation.
+\sourcepath{Foundations/CoherenceObstruction.lean} supplies finite
+arithmetic diagonal derivations while explicitly leaving its full
+simulator-index noncomputability argument outside the formalized result.
+The source ledger records these distinctions. Merely counting files,
+theorem declarations, or compilation successes would obscure the real
+verification boundary.
+
+The work therefore gives priority to new mathematical instances and to
+closing concrete representation obligations. A new general-purpose
+proof-graph wrapper would have contributed less than the explicit PDE
+operator construction, the continuous function-space cover, or the
+tail-modulus equivalence.
+
+\subsection{Formal and executable deliverables}
+
+\begin{center}
+\small
+\begin{tabular}{p{.29\textwidth}p{.62\textwidth}}
+\toprule
+Artifact & Status and purpose\\
+\midrule
+\sourcepath{report.tex}, included sections, and \sourcepath{report.pdf} &
+Full human mathematical proofs, logical interpretation, source discussion,
+and formalization plan.\\
+\sourcepath{lean/QuantitativeKernel.lean} &
+19 fully proved host Lean lemmas, compiled with Lean 4.32.0; no
+\texttt{sorry} and no newly declared axioms.\\
+\sourcepath{lean/Audit.lean} and \sourcepath{lean/verification.log} &
+Actual axiom audit and replay output. Some rational lemmas inherit standard
+Lean metatheoretic axioms, including \texttt{Classical.choice}.\\
+\sourcepath{lean/OBJECT_LANGUAGE_PLAN.md} &
+Exact denominator-cleared invariants, source interfaces and remaining
+\texttt{Prf PRAAx} targets.\\
+\sourcepath{code/} &
+Four standard-library Python programs using exact rational arithmetic.\\
+\sourcepath{evidence/} &
+Source audit, finite check results, and document/build verification.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The finite examples include the alternating minimax formula and its optimizer;
+continuous interpolation, clipping and guarded gluing; a genuinely
+infinite diagonal Hilbert equation evaluated through finite support;
+the variable-coefficient elliptic equation of Example~\ref{ex:pde}; and
+complex derivative jets. Their success is evidence about implementations
+and constants. The universal theorems rest on the printed mathematical
+proofs, and their fully internal formalizations remain the enumerated targets.
+
+\subsection{An ordered path into the existing repository}
+
+The most useful first addition to the object library is the
+denominator-cleared perturbed-contraction and clock package.
+It has a small arithmetic dependency surface and immediately supports the
+Hilbert, analytic-tail and stability applications.
+Next come rational polynomial energy operations and the finite
+two-run comparison. The operator and PDE endpoints can then be stated in
+the same named-object style as existing analysis derivations.
+
+In parallel, the partition-of-unity rational evaluator can be built on the
+existing finite-net and rational-arithmetic infrastructure. That supplies
+a reusable function-space layer. A continuous-formula module should
+then implement fixed syntax and finite quantifier restrictions explicitly,
+instead of treating a finite net as a finite submodel. Finally, the
+split-radius complex estimates provide a specialized \(C^J\) family
+presentation to which both function-space and continuous-logic observations
+can be applied.
+
+Each integration step should end with an explicit closed arithmetic
+sentence or open contract and a kernel-checked
+\(\texttt{Prf PRAAx}\) term, followed by an axiom audit.
+The semantic completion or PDE explanation belongs beside that endpoint,
+so a future user can see both what was proved internally and what continuous
+mathematics it represents.

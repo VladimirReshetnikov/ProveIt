@@ -1,0 +1,325 @@
+\section{A concrete Lean route, and its present status}
+\label{sec:lean-route}
+
+The relevant target judgment in the inspected repository is
+\begin{center}
+\texttt{Prf PRAAx \(\Gamma\) \(\varphi\)},
+\end{center}
+where \texttt{PTm n} is the syntax of primitive-recursive terms and
+\texttt{Fm PTm n} is the syntax of formulas in a common finite scope.
+This target must be kept distinct from a theorem about Lean's natural
+numbers, rationals, reals, or matrices.  The existing bridge translates
+ordinary ConciseIPRA proofs to the Foundation presentation of ordinary
+iPRA; the bridge does not convert arbitrary host-level mathematics into
+object-theory proofs.
+
+\paragraph{Verification status.}
+All repository APIs discussed here were read at revision
+\path{3ee850b4c2d650cf01263823fd5415963747c5d0}.
+That revision requests Lean \texttt{v4.32.0}.
+No Lean executable was available in the preparation environment.
+The new Lean source is therefore an \emph{unelaborated formalization
+outline}, including a complete proposed proof of the finite cancellation
+lemma below.  No new kernel-checked Lean theorem is claimed.
+The three runtime norm targets are definitions of remaining obligations,
+not admitted theorems.  The absence of an admitted-proof command in those
+files is not evidence that the obligations have been discharged.
+
+\subsection{An object-theory lemma with an explicit certificate}
+
+The repository represents an integer term by two natural terms
+\(u^+,u^-\), with intended value \(u^+-u^-\).
+Its integer comparison \texttt{zle u v} expands to the natural comparison
+\(u^++v^-\leq v^++u^-\).
+The module \texttt{Core/IntOrder.lean} associates the natural slack
+\[
+ s(u,v)=(v^++u^-)\mathbin{\dot-}(u^++v^-)
+\]
+with a proof of this comparison.  Here \(\dot-\) is truncated subtraction.
+Thus a signed comparison is usable through an equality with an explicit
+nonnegative witness, without deciding the sign of an arbitrary real.
+
+Suppose signed numerators \(A,B,C\) and natural terms \(w,P,e_L,e_R\)
+satisfy
+\[
+ A\leq C+e_L,\qquad B\leq C+e_R,\qquad
+ 2wC+P\leq w(A+B).
+\]
+Let their respective slacks be \(s_1,s_2,s_3\).  The whole argument is
+the polynomial identity
+\[
+ w(e_L+e_R)=P+s_3+w(s_1+s_2).
+\]
+Its right-hand remainder is a natural term, so it proves
+\(P\leq w(e_L+e_R)\) in iPRA.
+The file \texttt{MidpointCancellation.lean} implements this certificate
+using the existing \texttt{zle\_toZ}, \texttt{le\_of\_eq\_add}, and
+\texttt{deriveNat} interfaces.  The latter interface reflects a proved
+identity in the ring of provable term-equivalence classes back to an
+object equation.  It is not reflection from arbitrary truth in the
+standard model.
+
+For the cloud theorem, use
+\[
+ A=2F_z(x),\quad B=2F_z(y),\quad
+ C=2F_z((x+y)/2),\quad w=1,\quad P=\|x-y\|_2^2.
+\]
+The parallelogram identity supplies the third premise.  The two repaired
+midpoints supply the first two with
+\[
+ e_L=L(2\eta_S+h)+2\epsilon_S,\qquad
+ e_R=L(2\eta_T+h)+2\epsilon_T.
+\]
+The resulting object inequality has the exact constant
+\[
+ \|x-y\|_2^2\leq
+ 2L(\eta_S+\eta_T+h)+2(\epsilon_S+\epsilon_T).
+\]
+All rational quantities must first be placed on a common positive
+denominator.  The source gives the integral cancellation step; rational
+scaling and the geometric hypotheses remain explicit adapter obligations.
+The identity itself was independently expanded to zero with exact
+symbolic arithmetic.  That check does not constitute Lean elaboration.
+
+\subsection{The finite-cloud implementation}
+
+The dimension, cloud lengths, point coordinates, precision indices, and
+error bounds are numerical inputs.  Fix the finite-list and rational
+codecs once.  A vector is a numerical list of signed rational coordinate
+codes; a cloud is a nonempty numerical list of vectors.  The assertions
+of a box bound, sup-norm proximity, Hausdorff proximity, approximate
+midpoint closure, and approximate minimality are bounded formulas over
+these lists.  Their Boolean translations, rather than the displayed
+quantified formulas themselves, are used as induction invariants.
+
+The primitive-recursive selector chooses the least cost-minimizing
+index.  The repository already supplies
+\texttt{ApproximateWitness.argmin}, its range and attainment theorem,
+and \texttt{argmin\_minimal}.  All finitely many costs can be converted
+to natural numerators on a common positive denominator.  The selector
+therefore compares exact integers; no real comparison is hidden in it.
+The actual nearest-neighbor and Hausdorff scans in
+\texttt{FiniteHausdorff.lean} can similarly be reused after proving the
+chosen vector metric and scaling adapter.
+
+There are four new geometric verification loops.  First, accumulate the
+cost over coordinates.  The invariant says that the current accumulator
+equals the sum of the first \(i\) squared differences.  Second, prove
+the Lipschitz estimate by accumulating the first \(i\) coordinate
+estimates, with bound \(4iBh\).  Third, accumulate the coordinatewise
+parallelogram identities.  Fourth, apply the bounded midpoint and
+Hausdorff witnesses and the argmin theorem to obtain the two comparisons
+used above.  All loop lengths are displayed numerical bounds; even a
+cubic exhaustive midpoint scan is primitive recursive.
+
+The regular-name theorem then contains only finite comparisons at two
+independent precision indices and the explicit precision schedule.
+The usual interpretation as a completed real vector belongs to the
+external semantic explanation.  No completion, compactness, or infinite
+choice axiom is added to the arithmetic theory.
+
+\subsection{The runtime norm targets}
+
+The source \texttt{GaussianPolynomialMonicNorm.lean} already computes
+an actual polynomial-valued multiplication matrix and its determinant.
+Its inputs \(F,G,m,a,c\) are numerical: \(m\) is not a host-level matrix
+dimension.  The stored norm has coarse degree cap
+\[
+ m\bigl(a+(m-1)c\bigr).
+\]
+The inspected implementation proves coefficient and evaluation formulas
+and binds the actual returned matrix to the source curve equations.
+It explicitly leaves norm nonvanishing, sharp degree, the runtime
+matrix-kernel implication, fiber multiplicity, and the general coded-field
+adapter as further obligations.
+
+The coefficient convention matters.  The array \(F\) stores only the
+lower coefficients of a monic polynomial in \(Y\), in descending
+\(Y\)-order.  Each row is itself a descending coefficient list in
+\(X\).  Row \(i<m\), slot \(j\leq c\), therefore corresponds to
+\(X^{c-j}Y^{m-1-i}\).  The shape predicate fixes each used row's width;
+it does not require raw rational codes to be canonical.  Weighted support
+is consequently tested after coefficient normalization.
+
+The file \texttt{RuntimeNormTargets.lean} defines the exact closed
+object-theory target saying that a common zero of the original monic
+polynomial and \(G\) is a zero of the actual computed norm.  This target
+does not accept a determinant-kernel theorem as an input assumption.
+The existing \texttt{returned\_zero\_action} gives every coordinate of
+the relevant left-kernel equation.  The remaining finite determinant
+argument must use the actual numerical determinant and the fact that
+the first evaluation-vector coordinate is one.
+
+For the weighted-degree target, use integer weights
+\(w_X\geq1\), \(w_Y\geq0\).  The finite support requirements are
+\[
+ w_X(c-j)+w_Y(m-1-i)\leq mw_Y
+\]
+for nonzero lower coefficients of \(F\), and the analogous inequality
+with cap \(D\) for \(G\).  The conclusion states that the actual norm's
+leading slots above \(\lfloor mD/w_X\rfloor\) vanish.  It is a support
+statement, not a claim that the already allocated buffer gets shorter.
+
+The required induction invariant for the \(j\)-th companion iterate is
+\[
+ w_X\deg_X h_r+w_Yr\leq D+w_Yj,
+\]
+for each nonzero coefficient polynomial \(h_r(X)\) of \(Y^r\).
+Use bounded coefficient convolution and the monic relation to prove one
+step.  Apply quantifier-free induction to the Booleanized support
+predicate over the actual column loop.  In each determinant term the
+row-weight sum equals the column-weight sum because the numeric word
+encodes a permutation.  The \(w_Y\)-contributions cancel; hence every
+term has \(X\)-degree at most \(\lfloor mD/w_X\rfloor\).
+A second bounded induction over the permutation scan proves the leading
+zero coefficients of the stored determinant.
+
+The repository's fixed-size determinant laws give useful mathematical
+templates.  They are not already the numerical-dimension theorem just
+described.  The runtime scan, its coverage and uniqueness, and an actual
+adjacent-column alternation implementation are available and should be
+the starting point.  The archive's formalization plan lists the exact
+source paths and the remaining steps, including the separate
+nonvanishing and fiber-multiplicity arguments.
+
+\subsection{A finite-place certificate for nonvanishing}
+
+The third target, \texttt{LocalNewtonNormTarget}, uses the existing
+numeric translation program
+\texttt{GaussianRationalTranslation.translated}.
+For a stored polynomial of degree cap \(C\), its entry at \(C-i\)
+is the coefficient of \(T^i\) in \(P(a+T)\).
+The predicate \texttt{exactOrder} requires a specified nonzero leading
+coefficient and zero coefficients at every smaller index.
+All these checks are finite; no formal-series object or infinity-valued
+valuation is a term of the arithmetic language.
+
+The local certificate for
+\(F=Y^m+\sum_{j<m} f_j(X)Y^j\) gives \(e\geq1\),
+\(\gcd(m,e)=1\), and \(c_0\ne0\), such that \(f_0(a+T)\)
+has order \(e\) and leading coefficient \(-c_0\).
+For \(0<j<m\), every coefficient of \(T^i\) with
+\(mi+ej\leq me\) vanishes.  This finite support condition handles a
+zero coefficient polynomial without a special valuation convention.
+For reduced \(G\), a second certificate identifies a nonzero coefficient
+\(bT^vY^k\), \(k<m\), at minimal weight \(s=mv+ek\).
+The coprimality condition makes the minimal pair unique.
+
+The proposed endpoint asserts that the actual computed norm has exact
+order \(s\) at \(a\), with leading coefficient
+\[
+ b^m\bigl((-1)^{m-1}c_0\bigr)^k.
+\]
+It also gives the independent global degree bound under the global
+weighted-support hypotheses.  Both conclusions refer to the original
+numeric norm program; the desired nonvanishing statement is not an
+input premise.
+
+For formalization, one need not introduce Puiseux roots.  At initial
+weight the reduction relation is \(Y^m=c_0T^e\).  In multiplication
+column \(j\), the initial monomial goes to row
+\((k+j)\bmod m\), with coefficient
+\(b c_0^{\lfloor(k+j)/m\rfloor}\) and \(T\)-exponent
+\(v+e\lfloor(k+j)/m\rfloor\).
+This row pattern is a permutation.  Its product has order \(mv+ek\),
+and its cyclic-shift sign is \((-1)^{(m-1)k}\).
+For any other contribution, the strict weight excess survives after the
+row and column weights cancel.  Finite support induction, the actual
+permutation codec, and coefficient convolution therefore provide a direct
+path to the displayed coefficient formula.  Proving these connections in
+Lean remains work identified by the target, not work reported as checked.
+
+\subsection{Formalizing the polynomial-division nonvanishing certificate}
+\label{sec:squarefree-lean}
+
+The squarefree norm theorem admits a direct numerical formalization that
+does not construct roots or formal branches.  Its input is a list of
+exact coefficient codes for \(g,h,A_0,\ldots,A_{m-1}\), numerical
+\(m,e\geq1\), and finite certificates
+\[
+ f=g^e h,\qquad \alpha g+\beta h=1,\qquad
+ Ug+Vg'=1,\qquad \gcd(m,e)=1,\qquad\deg g\geq1.
+\]
+Coefficient equality and zero tests mean equality after normalization,
+checked over an explicitly padded finite list.  The theorem to be
+exported concerns the existing numeric norm program for \(Y^m-f\).
+The ordinary Mathlib goals in the archive are semantic targets; they do
+not themselves have the object-theory type \texttt{Prf PRAAx}.
+For the existing constructor, store \(m\) descending \(Y\)-rows for
+\(F\), all zero except the last row \(-f\), and store
+\(A_{m-1},\ldots,A_0\) for \(G\).  Pad each row to a common
+displayed \(X\)-degree cap.  These finite constructions discharge the
+existing row-shape guards.
+
+\paragraph{The producer and its bounded invariant.}
+General long division over the coefficient field can be implemented in
+\(\operatorname{degcap}(A)+1\) steps; an arbitrary nonzero leading coefficient is
+handled by exact rational inversion.  Repeating division by \(g\) uses
+another loop with the same cap, freezing at the first nonzero remainder.
+For nonzero \(A\), the active-state invariant is
+\[
+ A=g^aB,\qquad B\ne0,\qquad
+ \deg B+a\deg g=\deg A.
+\]
+This proves termination because \(\deg g\geq1\).
+A separate zero flag handles \(A=0\); no infinity-valued order is
+encoded.  All degrees are bounded scans of normalized coefficients.
+The resulting factors \(A_j=g^{a_j}B_j\) determine the least weight
+\(s=ma_k+ek\), using a finite scan over nonzero indices.
+
+\paragraph{The actual determinant identity.}
+In column \(c\), reduction of \(A_jY^{j+c}\) uses
+\(j+c=r+m\delta\), with \(r<m\) and \(\delta\in\{0,1\}\).
+Its matrix entry is \(A_jf^\delta\).  For each numerical permutation
+word, summing this identity gives
+\(\sum_c j_c=m\sum_c\delta_c\).
+Thus its \(g\)-exponent \(E\) satisfies
+\[
+ mE=\sum_c(ma_{j_c}+ej_c)\geq ms.
+\]
+Equality forces every \(j_c=k\), so the unique minimal term is the
+cyclic row permutation \(c\mapsto(k+c)\bmod m\).  Its carries sum to
+\(k\), and its sign is \((-1)^{k(m-1)}\).
+All other nonzero terms have \(E\geq s+1\).  The remainder polynomial
+\(Q\) is therefore constructed directly by summing their signed
+products with exponents \(E-s-1\).  This proves the finite certificate
+\[
+ N=g^s\left((-1)^{k(m-1)}B_k^m h^k+gQ\right).
+\]
+The existing permutation scan has horizon \(m^m\).
+Prefix identities for products and sums, together with the actual
+coefficient Leibniz theorem, provide the quantifier-free induction route.
+
+\paragraph{Reducedness by explicit Bezout identities.}
+To prove \(g\mid B^r\Rightarrow g\mid B\), compute
+\(D=\gcd(g,B)\), write \(g=DC\), \(B=DE\), and retain an extended
+gcd certificate.  It yields a Bezout identity for \(C,E\).
+Substituting \(g=DC\) into \(Ug+Vg'=1\) gives
+\[
+ C(UD+VD')+D(VC')=1.
+\]
+Multiplying these two identities gives \(HC+JB=1\).
+If \(C\mid B^r\), the finite identity
+\[
+ 1-(JB)^r=HC\sum_{i<r}(JB)^i
+\]
+exhibits an inverse for \(C\).  Consequently \(g\mid B\).
+The zero-polynomial case is immediate; all other cancellations have
+explicit nonzero factors.  This is a finite polynomial-gcd proof of the
+required reduced quotient property, with no factorization step.
+
+Because \(B_k\) has nonzero remainder and \(h\) is invertible modulo
+\(g\), the parenthesized factor in the norm identity has nonzero
+remainder.  It follows that the norm is nonzero and its exact
+\(g\)-divisibility order is \(s\).  A bounded scan of its actual output
+buffer then returns a nonzero coefficient: if the scan failed, every
+coefficient would be zero, contradicting the residue calculation.
+
+For squarefree nonconstant rational \(f\), take \(g=f,e=1,h=1\).
+The extended gcd of \(f,f'\) supplies the reducedness certificate.
+The new Lean obligations are the general polynomial-division and gcd
+loops, their invariants, the runtime carry/sign proof, and binding the
+coefficient identity to the existing norm output.  Existing synthetic
+division and monic reduction are useful templates; this report does not
+assert that a general-divisor API is already available.
+The attached source and roadmap remain uncompiled formalization outlines.

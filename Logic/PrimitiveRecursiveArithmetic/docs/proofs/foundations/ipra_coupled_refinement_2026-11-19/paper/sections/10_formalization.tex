@@ -1,0 +1,238 @@
+\section{Lean definitions and a path to complete object formalization}
+\label{sec:formalization}
+
+The formalization has three different products. The distinction prevents
+the common error of replacing an object-theory proof by a theorem of
+the surrounding prover.
+
+\begin{enumerate}
+\item \texttt{AffineBounds.lean} contains eighteen proved theorems in
+Lean about natural-number recurrences and finite sums. It is compiled.
+\item The blueprint modules contain compiled definitions of rational
+data, algorithms, guards and named target propositions. Defining a
+proposition does not prove it. These modules introduce no new axiom
+asserting their targets.
+\item \texttt{ObjectAdapter.lean} is an uncompiled integration outline
+for actual \texttt{Prf PRAAx} derivations, at the pinned ProveIt
+revision. Its proof fields must be populated by ordinary iPRA proof
+objects.
+\end{enumerate}
+
+The arithmetic proofs can be checked independently of Mathlib and
+ProveIt. The final object export requires the existing repository
+arithmetic library and the additional instances described here.
+
+\subsection{Finite rational definitions}
+
+The coupled blueprint uses the host definitions
+\begin{lstlisting}
+abbrev Vec (d : Nat) := Fin d -> Rat
+abbrev Mat (d : Nat) := Fin d -> Fin d -> Rat
+
+structure Data (d : Nat) where
+  matrix : Mat d
+  weights : Vec d
+  reciprocalGap : Nat
+
+def contraction (c : Data d) : Rat :=
+  1 - 1 / (c.reciprocalGap : Rat)
+\end{lstlisting}
+
+It defines finite sums and maxima by folds, and defines
+\texttt{weightedNorm}, \texttt{InBox}, \texttt{SmallGain},
+\texttt{Diameter} and \texttt{ActionContract} exactly as in the
+human theorem. The precision and iteration functions are literal
+natural-number expressions, and \texttt{orbit} is a primitive
+recursion. Other definitions include vector residuals, finite Neumann
+prefixes, automatic weights, finite state histories, delay guards,
+and update-coverage guards.
+
+The named propositions include
+\nolinkurl{WeightedMaximumTarget}, \nolinkurl{ResidualSeparationTarget},
+\nolinkurl{ProducerTarget}, \nolinkurl{NeumannCertificateTarget},
+\nolinkurl{AutomaticWeightsTarget}, \nolinkurl{PosteriorErrorTarget},
+\nolinkurl{DelayedRunTarget} and \nolinkurl{AsynchronousProducerTarget}.
+They expose all assumptions. For example, the producer target is
+the conjunction of box membership, the finite residual estimate,
+and regularity of the explicitly defined sampler. It does not
+conclude that some unspecified function exists.
+
+These host functions are specifications for the coded backend, not
+an assertion that every Lean function is PR. The object backend
+replaces \texttt{Fin d -> Rat} by a length-\(d\) sequence code,
+and each evaluator parameter by a registered PR body with its
+representation equations. The definitions in \cref{sec:arithmetic}
+specify the full numerical representation needed for that step.
+
+\clearpage
+\subsection{Core theorem dependency order}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.21\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\toprule
+Target & Definitions and prerequisite lemmas & Proof to implement\\
+\midrule
+\endhead
+Weighted comparison & Rational order; finite maximum with attaining index;
+nonnegative matrix multiplication & The positive-maximum contradiction in
+\cref{lem:weighted-maximum}, after denominator clearing\\
+Residual separation & Weighted triangle inequality; mixed action contract &
+Three intermediate vectors and cancellation of \((s-1)d\)\\
+Geometric clock & Natural powers; Bernoulli bound; rational division &
+QF induction on \(q^n(1+n/s)\le1\), then on block count\\
+Regular producer & PR orbit; box bit; diameter; affine envelope &
+QF orbit invariant followed by substitution of \(P(k),N(k)\)\\
+Neumann enclosure & Matrix powers; finite sum identity &
+QF induction on the prefix identity, then weighted comparison\\
+Inverse sampler & Induced matrix norm; submultiplicativity; powers &
+Finite two-sided telescoping and geometric tail\\
+Polynomial chart & Sparse polynomial evaluation, substitution and
+formal derivative & Monomial factorization, exact coefficient cancellations,
+then the explicit radius inequalities\\
+Delayed execution & Finite history; read-time table; update mask &
+QF history-window invariant and the bounded coverage bit\\
+Refinement coherence & Coded restrictions; nonexpansiveness; residuals &
+One rational cancellation, then finite telescoping over model levels\\
+Lattice sampler & Dyadic floor; uniform polynomial evaluator; prefix &
+Box, contraction, commutation and rounding lemmas, followed by substitution\\
+\bottomrule
+\end{longtable}
+
+\subsection{The actual induction formulas}
+
+Fix all input parameters and one finite horizon. The following are
+the essential invariants, written with rational abbreviations:
+\begin{align*}
+ \mathcal I_{\mathrm{orbit}}(t):\quad&
+ x_t\in D\ \wedge\ x_{t+1}\in D\ \wedge\
+ d_w(x_t,x_{t+1})\le q^tR+2s2^{-p};\\
+ \mathcal I_{\mathrm{matrix}}(t):\quad&
+ A^tw\le q^tw\ \wedge\
+ A\sum_{j<t}A^jr+r=\sum_{j<t}A^jr+A^tr;\\
+ \mathcal I_{\mathrm{round}}(t):\quad&
+ v_t,z_t\in D_n\ \wedge\ d_n(v_t,z_t)\le2h;\\
+ \mathcal I_{\mathrm{tower}}(t):\quad&
+ d_n(y_n,P_{n,n+t}y_{n+t})\le
+       \sum_{j=n}^{n+t-1}e_j.
+\end{align*}
+Every coordinate conjunction is bounded by a dimension, and every
+sum is a PR term. Replace the bounded predicates by their
+characteristic-bit equations and clear positive denominators.
+The resulting formulas are quantifier-free. If hypotheses are
+supplied only through a finite trace, conjoin the corresponding
+prefix-validation bit or use its implication form (6).
+
+For a delayed block, the state includes the finite history, the
+block counter, and a Boolean mask for coordinates already updated
+in that block. The invariant says that all entries in the last
+delay window satisfy the old bound, that updated coordinates
+satisfy the improved bound, and that all states remain in the
+Cartesian box. All time quantifiers range over the finite stored
+history. The coverage hypothesis is another bounded bit.
+
+For the tower, compute \(P_{n,m}(z)\) by a loop of length
+\(m-n\) that applies \(P_{m-1},P_{m-2},\ldots,P_n\) in
+that order. Its level counter decreases by truncated subtraction,
+and its vector code is the current state. This is an ordinary
+first-order PR implementation of restriction composition; no
+higher-type recursion on arbitrary maps is required.
+
+\subsection{Clearing rational denominators correctly}
+
+The compiled integer envelope theorem is not applied to rational
+errors without an encoding step. There are two convenient choices.
+One can carry numerator and denominator fields through the proof
+and use the rational comparison bit directly. Alternatively, for
+one finite horizon \(T\), compute a common positive multiple of
+all denominators appearing in the data and the finite trace. A
+product is sufficient; a least common multiple is unnecessary.
+More precisely, let \(e_t\ge0\) be the rational error for
+\(t\le T\), and let \(f_t\ge0\) be the rational forcing term
+for \(t<T\). Let \(L_T>0\) be that denominator product, including
+the denominator of every \(e_t\) through \(T\) and every
+\(f_t\) before \(T\). Then
+\[
+ a_t=L_Te_t\quad(t\le T),\qquad
+ r_t=L_Tf_t\quad(t<T)
+\]
+are nonnegative integers. In the coded implementation they are PR
+integer terms, obtained by integer multiplication and division;
+divisibility by each original denominator follows from the product
+definition. The terms retain \(T\) and the original input as
+numerical parameters. Multiplication by the positive \(L_T\)
+preserves each recurrence inequality on this finite horizon.
+
+The guarded-loop interface needs these inequalities only for
+\(t<T\). To instantiate the compiled host theorem in its
+all-natural-index form, one may instead extend \(a_t\) by zero
+for \(t>T\), and \(r_t\) by zero for \(t\ge T\).
+The transition at \(T\) then has zero left side, and every later
+transition is \(0\le0\). This explicit totalization preserves
+the value at \(T\) and requires no common denominator for an
+infinite sequence.
+
+For the scalar contraction route, the coefficient is exactly
+\((s-1)/s\), so the cleared recurrence has the form
+\(s a_{t+1}\le(s-1)a_t+r_t\). This matches the compiled clock
+and the constant-forcing lemmas. If rational matrix entries are
+cleared directly, the resulting numerator and denominator need
+not differ by one. Use the general
+\texttt{coupled\_envelope} with arbitrary \(c,d\), or first
+pass to the rational weighted maximum and then use the scalar
+route. This distinction avoids imposing an accidental integrality
+restriction on the matrix theorem.
+
+The denominator product may be large, but is a PR function of the
+finite trace. The proof does not require a complexity bound from
+a stronger arithmetic theory. In the dyadic lattice implementation,
+the working denominators are particularly simple because each
+state is rounded back to its declared dyadic grid.
+
+\subsection{Object-level packaging and discharged assumptions}
+
+The adapter's \texttt{Package} contains actual PR terms for initial
+state, step and fuel; a bounded invariant syntax; a guard and
+result formula; and a \texttt{GuardedLoop.Loop} certificate.
+The certificate requires actual object proofs of the base,
+preservation, and final implication. The export has the form
+\begin{lstlisting}
+Gamma |- [PRAAx] guard(u)
+------------------------------------------
+Gamma |- [PRAAx] result(Run(init, step, fuel(u), u), u)
+\end{lstlisting}
+The displayed notation is explanatory; the file uses the repository's
+literal judgment and constructors.
+
+For the general approximate-action theorem, the box and mixed-action
+contracts remain assumptions in the sequent. For the polynomial
+frontend they are discharged by coefficient algebra. For the
+infinite lattice, the concrete polynomial, weight, floor and
+boundary estimates discharge every such analytic assumption.
+The remaining premises in an object proof are then only its
+ordinary numerical input conditions, such as positive dimension.
+The construction should export the actual universally quantified
+rational-code sentences listed in \cref{sec:lattice}.
+
+No global principle ``every accepted proof trace is true'' is
+postulated. The existing \texttt{Prf.trans}, substitution and
+loop theorems compose proof values supplied at the relevant
+formulas. The elementary arithmetic obligations still need to
+be encoded and checked in that calculus.
+
+\subsection{Semantic interpretation is an additional theorem}
+
+The principal iPRA outputs are finite rational estimates. In an
+ordinary semantic layer one may interpret their regular samplers
+as real vectors, coordinate functions or inverse-limit objects.
+The norm estimates and residuals prove that these interpreted
+objects satisfy the advertised equations. That interpretation
+does not strengthen the object induction rule, nor does a proof
+about external real numbers automatically return an object
+derivation.
+
+A complete Lean development should therefore expose two named
+endpoints for each application: its literal coded iPRA sentence
+with a \texttt{Prf PRAAx} proof, and its semantic adequacy theorem
+in the chosen represented-object library. The present packet
+contains the human proofs and the detailed construction path;
+it does not claim those two final layers have already been
+implemented in full.

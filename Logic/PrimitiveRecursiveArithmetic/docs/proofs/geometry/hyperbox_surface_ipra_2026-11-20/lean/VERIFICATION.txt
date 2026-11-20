@@ -1,0 +1,67 @@
+Lean verification receipt
+2026-11-19
+Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)
+ProveIt commit 09fe17194da14cdd100947737952e44100bb71b8
+Tracked modifications in the provider checkout: none
+Each source check used the unmodified file identified by its SHA-256 digest.
+
+HyperboxGrid.lean
+SHA-256 d2de9063a703f4d534e76c7a5afff499e5edd53378252ddfbb3f5e7bbab5eb65
+Command: lean HyperboxGrid.lean
+Working directory: directory containing the packet source
+stdout
+(empty)
+stderr
+(empty)
+exit status 0
+
+Axiom audit: same source plus #print axioms for the following declarations
+stdout
+'Hyperbox.mem_grid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hyperbox.share_iff' depends on axioms: [propext, Quot.sound]
+'Hyperbox.rootBracket' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hyperbox.foldMin_le_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hyperbox.distanceCost_correct' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hyperbox.bestFrom_spec' depends on axioms: [propext, Quot.sound]
+stderr
+(empty)
+exit status 0
+
+IPRASquareRoot.lean
+SHA-256 d066404bcac1bbba54f6439f3390b2fa3e766a2ac7a04bbe6f543c95f5515f68
+Command: lake env lean IPRASquareRoot.lean
+Working directory: ProveIt checkout; source passed by absolute path
+stdout
+(empty)
+stderr
+(empty)
+exit status 0
+
+Axiom audit: same source plus #print axioms for the following declarations
+stdout
+'Hyperbox.IPRA.ceilRoot_majorizes' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hyperbox.IPRA.ceilRoot_minimal' depends on axioms: [propext, Classical.choice, Quot.sound]
+stderr
+(empty)
+exit status 0
+
+IPRAFiniteMinimum.lean
+SHA-256 b81c74b16430d12329245096ba38343b1ce19afcf24d659abc2d84cfee3b0c8c
+Command: lake env lean IPRAFiniteMinimum.lean
+Working directory: ProveIt checkout; source passed by absolute path
+stdout
+(empty)
+stderr
+(empty)
+exit status 0
+
+Axiom audit: same source plus #print axioms for the following declarations
+stdout
+'Hyperbox.IPRA.Optimization.attained_minimum' depends on axioms: [propext, Classical.choice, Quot.sound]
+stderr
+(empty)
+exit status 0
+
+The axiom inventory reports Lean metatheory dependencies of the proof terms.
+In the two object-language files, the derived judgments use the object axiom set PRAAx.
+The geometric reductions and their full arithmetization are given in the report.

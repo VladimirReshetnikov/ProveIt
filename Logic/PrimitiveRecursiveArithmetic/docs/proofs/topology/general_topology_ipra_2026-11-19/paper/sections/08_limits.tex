@@ -1,0 +1,165 @@
+\section{Remaining targets, finite replacements, and logical limits}
+\label{sec:limits}
+
+The breadth of the index makes a precise account of the unresolved targets part of the mathematics. None of the limitations below is an assertion of unprovability in \ipra\ without a specified formal statement. They explain what is and is not established by this packet.
+
+\subsection{The compactness theorem for currents}
+
+The source statement concerns rectifiable currents in a ball with bounded area and boundary length, compact in the flat norm \cite{MWCurrents}. A proof of that theorem needs control of arbitrarily refined meshes and a theorem that limits remain in the intended current class. A fixed mesh alone does not supply either step.
+
+Here is an exact finite replacement. Fix rational oriented $2$-cells $\sigma_1,\ldots,\sigma_s$ with positive rational weights $a_i$, and a finite rational or integer boundary matrix to oriented $1$-cells with positive weights. For an integral chain $T=\sum_i t_i\sigma_i$, define
+\[
+ M_2(T)=\sum_i a_i|t_i|,\qquad
+ M_1(\partial T)=\sum_j \ell_j|(\partial T)_j|.
+\]
+On a cubical mesh the weights can be the actual rational areas and lengths. General weights are an explicit discrete mass functional, not an assertion about arbitrary curved surfaces.
+
+\begin{theorem}[L01: bounded integral chains on a fixed mesh]\label{thm:finite-currents}
+For positive rational $M$, the chains satisfying
+$M_2(T)\leq M$ and $M_1(\partial T)\leq M$ form an explicitly enumerable finite set. Its cardinality is at most
+\[
+ N_M=\prod_{i=1}^s\left(2\left\lfloor M/a_i\right\rfloor+1\right).
+\]
+A sequence of $N_M+1$ such chains contains a repeated chain, found by a bounded scan.
+\end{theorem}
+\begin{proof}
+Every coefficient satisfies
+$|t_i|\leq\lfloor M/a_i\rfloor$ because its positive weighted contribution is at most $M$. Enumerate the Cartesian product of these integer intervals and discard chains violating the two rational inequalities. This is a complete list. Searching all pairs among $N_M+1$ inputs finds an equal pair by the finite pigeonhole argument, applied to their positions in the unfiltered coefficient box. The boundary constraint only removes candidates.
+\end{proof}
+
+A flat-distance upper bound has a useful certificate form. In a supplied finite chain complex, a certificate
+\[
+ T-S=A+\partial B,\qquad M(A)+M(B)\leq\eta
+\]
+exhibits geometric flat distance at most $\eta$ when the supplied geometric realization sends boundaries to boundaries and each displayed mass dominates the actual geometric mass. These calibration hypotheses hold, for example, for cubical cells weighted by their actual volumes in the relevant degrees. Arbitrary positive discrete weights alone do not give a geometric flat-norm estimate. Its verification is finite coefficient arithmetic; no infimum need be computed.
+
+\begin{proposition}[L02: finite-scale compactness from deformation certificates]
+Suppose $N+1$ chains $T_j$ come with certificates of cost at most $\eta$ relating them to chains $P_j$ in one enumerated set of at most $N$ chains. A bounded algorithm finds $i<j$ and a certificate of cost at most $2\eta$ relating $T_i$ and $T_j$.
+\end{proposition}
+\begin{proof}
+Find $P_i=P_j$. Subtract their certificate equations:
+\[
+ T_i-T_j=(A_i-A_j)+\partial(B_i-B_j).
+\]
+The weighted $\ell^1$ triangle inequality bounds the new cost by the sum of the old costs, at most $2\eta$. This also proves the triangle rule for these certificate bounds.
+\end{proof}
+
+To obtain the full current theorem, one must additionally \emph{produce} uniformly bounded deformation certificates at every requested mesh, control the masses of their approximants and boundaries, and establish an appropriate closure/completion theorem. Those are not proved here. L02 is a concrete reusable endpoint for such a future development, not a substitute proof of the full compactness theorem.
+
+\subsection{A bounded and geometric replacement for Dehn's lemma}
+
+We keep the correct boundary or nonsingular-boundary hypotheses discussed in Section~\ref{sec:scope}. The following special case has a short constructive proof.
+
+\begin{theorem}[L03: convex polygonal loops bound explicit embedded disks]
+A rational convex polygon with $m\geq3$ vertices in an affine plane in $\Q^3$, supplied in cyclic order with rank-two plane data and strict interior-side inequalities for every nonincident vertex of each edge, bounds a rational piecewise-linear embedded disk. Its fan triangulation and an inverse on each triangle are computable by bounded rational arithmetic.
+\end{theorem}
+\begin{proof}
+Computational points are represented by a triangle and barycentric coordinates; no exact face selector on arbitrary named real inputs is asserted. Take the average $c$ of the vertices. The strict side inequalities show that $c$ is interior: each side functional is nonnegative on every vertex and strictly positive on at least one, hence positive on their average. Join $c$ to each boundary edge.
+
+Every ray from $c$ meets the polygon boundary in exactly one point before leaving it; equivalently, solve the finitely many side inequalities along that ray and take the least positive upper bound. The resulting fan triangles cover the polygon and meet exactly in their prescribed edges or vertices. On each triangle, barycentric coordinates solve a nonsingular rational $2\times2$ system. They give an explicit affine inverse to its parameter triangle. The formulas agree on common edges. This proves the embedding directly. All decisions use the supplied strict convexity margins and finite rational tests.
+\end{proof}
+
+For nonplanar loops, a useful certificate has the following form. Start with a fixed rational convex parameter polygon, triangulated as a fan from an interior point. Supply distinct rational images of its vertices and center. Require:
+\begin{enumerate}
+\item every image triangle has affinely independent vertices;
+\item two image triangles meet exactly in the image of their common parameter face;
+\item each image triangle is contained in a specified ambient tetrahedron, or in a supplied finite subdivision of ambient tetrahedra;
+\item the parameter boundary maps to the prescribed loop, in its specified order.
+\end{enumerate}
+The ambient-containment checks may be verified by rational barycentric coordinates. For intersection, write the six barycentric variables of two triangles as $z\geq0$ and the two sum-to-one equations and three coordinate-equality equations as $Ez=b$. Let $c$ be the $0$--$1$ vector selecting the barycentric entries outside their common parameter face. Include in the candidate code a rational vector $y$ with
+\[
+ E^{\mathsf T}y\geq c,\qquad b^{\mathsf T}y\leq0.
+\]
+Then every intersection point satisfies
+$c^{\mathsf T}z\leq y^{\mathsf T}Ez=y^{\mathsf T}b\leq0$.
+The selected nonnegative entries must all vanish, so the intersection lies in the common face. The reverse inclusion follows from the shared vertices. These are finite rational certificate checks. No completeness theorem for linear programming, and no bound on when such certificates will be found, is assumed.
+
+\begin{proposition}[L04: soundness and bounded search for fan-disk certificates]\label{prop:disk-certificate}
+A certificate passing these tests supplies a PL embedded disk spanning the loop in the given ambient complex. Given a finite list of candidate codes, a primitive recursive scan either returns the first valid disk certificate or returns a correct statement that no candidate in that list passes.
+\end{proposition}
+\begin{proof}
+The affine map on each parameter triangle is injective by the rank test. If two parameter points have the same image, the intersection test places their images in the common face of their two triangles. On that face the affine coordinate maps agree and are injective, so the parameter points coincide. Thus the glued map is injective. Its inverse on its image is given by the finitely many compatible affine inverses. Continuity follows by finite closed-face pasting; alternatively it follows from the same finite rational polyhedral subdivision formulas. Containment puts the disk in the ambient complex, and the boundary check identifies its boundary loop.
+
+All candidate tests are finite. The correctness of the least-valid-candidate scan is Lemma~\ref{lem:bounded-search}.
+\end{proof}
+
+This certificate format is deliberately restrictive: many embedded disks need more general triangulations than a fan. Its bounded search is \emph{not} a proof that a null-homotopy produces a valid certificate, nor that every valid target has a primitive recursive certificate-size bound. General Dehn disk production remains unresolved in this report. We do not infer it from a disk verifier or from the decidability of a more general knot problem.
+
+\subsection{Local finiteness and sigma families}
+
+On a finite preorder space let $N_x$ be the least neighborhood of $x$. A finite indexed family $(A_j)_{j<t}$ is discrete exactly when
+\[
+ \sum_{j<t}[\ N_x\cap A_j\ne\varnothing\ ]\leq1
+ \qquad\text{for every }x.
+\]
+Indeed, any neighborhood witnessing discreteness contains $N_x$, while $N_x$ itself is a possible witness. The test is bounded and exact. Countably many discrete or locally finite subfamilies are the defining data of the two sigma-family entries \cite{MWSigmaDiscrete,MWSigmaLocal}. They need not come with an algorithm extracting their supports.
+
+\begin{proposition}[L05: local support bounds become a global finite support]
+Let $A_j$ be a fixed primitive-recursive family of subsets of a finite space $X=\{0,\ldots,n-1\}$. Suppose numbers $b(x)$ are supplied with proofs that
+\[
+ j>b(x)\Longrightarrow N_x\cap A_j=\varnothing .
+\]
+Then $B=\max_{x<n}b(x)$, with default $0$ for the empty space, satisfies
+$j>B\Longrightarrow A_j=\varnothing$. Conversely, a supplied global support bound gives all the local support bounds.
+\end{proposition}
+\begin{proof}
+For $j>B$, if $y\in A_j$, reflexivity gives $y\in N_y\cap A_j$, contrary to $j>b(y)$. Because $A_j$ is a finite mask, this proves that every bit is zero. For the converse use the global bound at every point. The maximum is a finite fold. The proof works for each free numerical $j$ and does not induct on an unbounded universal statement.
+\end{proof}
+
+For a sigma family supplied as rows $A_{r,j}$, this applies to every fixed row with its supplied support data. It does not produce one finite bound for the union of all rows, nor does a finite-prefix checker establish all future row assertions.
+
+\subsection{Why unbounded union formation cannot be silently coded}
+
+The algebraic chapter proves finite Boolean-algebra results. The following elementary reduction explains why merely having a finite underlying set does not make all countable operations computable.
+
+\begin{proposition}[L06: an exact arbitrary-union extractor would decide halting]
+There is no uniform total computable operation which, for every index $e$ of the family described below, returns the Boolean mask of its countable union on the one-point set.
+\end{proposition}
+\begin{proof}
+Let $A_{e,t}$ be the singleton if program $e$ on input $e$ halts within $t$ steps, and the empty set otherwise. The relation is primitive recursive in $e,t$, since it is a bounded simulation. Its union is the singleton exactly when program $e$ halts on input $e$. An exact union-mask extractor would therefore decide halting.
+
+For completeness, a total halting decider $h(e)$ is impossible by diagonalization: define $D(x)$ to loop if $h(x)$ predicts that program $x$ halts on input $x$, and to halt otherwise. Let $d$ be the code of $D$ and evaluate $D(d)$. Either value of $h(d)$ contradicts its specification. Thus no such union extractor exists. In particular there is no primitive recursive one.
+\end{proof}
+
+The claim concerns a uniform \emph{mask-producing operation}; it does not deny that one can write the arithmetic formula $\exists t\,(x\in A_{e,t})$. It also does not prevent bounded unions or unions with a supplied stabilization bound. Conflating a formula with a decided finite mask is precisely the mistake the reduction excludes.
+
+\subsection{Surface classification and other broad entries}
+
+The Homeomorphic Type entry states the classification by orientability, boundary-component count and Euler characteristic. The familiar classification requires a compact connected surface (or componentwise data in a specified finite family); unrestricted noncompact surfaces have additional end information. Our algebraic chapter computes these invariants for supplied polygonal surface models. It does not prove a normal-form algorithm for every triangulated surface, and therefore does not claim the classification theorem. Likewise, Euler--Poincare here is not a proof of the general curvature integral formula, and the graph coloring results are not a proof of the four-color theorem. These residual claims are recorded in the source map.
+
+\subsection{What remains of the major classical theorems}
+
+\begin{longtable}{P{.22\textwidth}P{.32\textwidth}P{.37\textwidth}}
+\toprule
+Target & Proven replacement & Remaining general step\\
+\midrule
+\endhead
+Tychonoff &
+Finite-space products; equipped countable metric nets and supplied completion procedures. &
+Arbitrary products and arbitrary open covers; production of choices, subcovers, or convergence data from bare existence.\\
+Urysohn separation &
+Finite normal spaces; supplied located functions and local/global denominator gaps. &
+Uniform construction of those functions and gaps from arbitrary normal-space axioms.\\
+Urysohn metrization &
+Finite metrization; supplied separating coordinates and inverse neighborhood data; metric dense-sequence construction. &
+Constructing all the required coordinates and witnesses from bare regularity and second countability.\\
+Dimension invariance &
+Full finite obstruction and locally uniformly equipped Euclidean homeomorphisms. &
+Representing arbitrary classical functions without supplied evaluation and uniformity data.\\
+Hairy ball &
+Exact odd field, exact linear obstruction, approximate zeros for rational Lipschitz fields. &
+General exact zero selection and completion of the real-valued evaluator extension.\\
+Surface classification &
+Invariants of supplied standard polygonal presentations. &
+A bounded normal-form construction for arbitrary compact triangulated surfaces and a classification proof.\\
+Current compactness &
+Fixed-mesh finite enumeration and deformation-certificate comparison. &
+Uniform deformation, tightness/closure, and the relevant completion theorem.\\
+Dehn's lemma &
+Convex planar loops; sound bounded fan-disk certificates. &
+A general disk-producing construction with a proved primitive recursive resource bound.\\
+\bottomrule
+\end{longtable}
+
+The correct response to a missing hypothesis is to state it as data, prove a weaker explicit theorem, or leave the target open. Treating a classical compactness assertion as a subroutine would hide the central issue rather than solve it.
+

@@ -1,0 +1,75 @@
+\section{What is being interpreted?}\label{sec:meaning}
+A functor on a finite category can be given by tables. A holomorphic function on an annulus generally cannot. A proof about the latter can still use a table at each requested accuracy, provided that a specified program produces the table and another argument justifies its use. Confusing these two obligations loses exactly the hypotheses on which the analytic theorem depends.
+
+We use the repository's ordinary iPRA: intuitionistic first-order logic with equality, successor axioms, the equations of all primitive recursive (PR) symbols, and induction for quantifier-free formulas with parameters. The following are three readings of variables used throughout.
+\begin{enumerate}
+\item A graph, finite category, matrix, precision or rational polygon is a number in the object theory. A theorem uniform in these inputs has numerical quantifiers.
+\item An evaluator such as $A(j,n)$ is fixed PR syntax outside the object theory. Its numerical arguments remain arbitrary inside the theorem. Different fixed evaluators give a schema; a single family with a uniform evaluator may carry an additional numerical index. The ring of Gaussian rationals is denoted by $\mathbb Q(i)$.
+\item A completed object is interpreted through its stipulated names and observations. Statements about all represented functions abbreviate families of first-order implications from their contracts. Statements about all classical functions would require a separate adequacy theorem for that source language.
+\end{enumerate}
+An elementary diagonal argument explains the distinction in the second item. If a total PR function $E(e,x)$ evaluated every unary PR program for some index $e$, then $x\mapsto E(x,x)+1$ would have an index $d$, giving $E(d,d)=E(d,d)+1$. Supplying finite tables or a fixed evaluator avoids this universal evaluation assumption.
+
+\paragraph{Arithmetic conventions.}
+For a list of $l$ entries below $B$, take the pair of $l$ and a base-$\max(2,B)$ word, with the first entry the least significant digit. Store numerical bounds separately when needed. Take, for example, the injective pair $2^a(2b+1)$ with a reserved value $0$. For positive inputs its projections are obtained by counting divisions by two up to the input. Totalize exceptional divisions and invalid projections to zero, and test validity before using their equations. Signed integers can be given by a sign and magnitude and rationals by a signed numerator and a positive denominator. Order and equality are checked by multiplication, including for noncanonical fractions. Maxima over empty numerical lists are zero. Bounded Boolean conjunction, disjunction, sum, minimum with a sentinel, table lookup and replacement are PR. Binary vectors of length $N$ are integers below $2^N$.
+
+For a fixed bounded numerical formula its truth bit can be proved equivalent to the formula in iPRA. For example, for a bounded disjunction scan indices while recording a bit and the first successful index; induction on the scan proves that the bit is one exactly when a witness is present. Negation and implication on decidable bits have their Boolean truth tables intuitionistically. Use this construction recursively on the fixed formula, or apply the repository's \src{Derivations/Lean/IPRADerivations/Foundations/BoundedSyntax.lean}{bounded-syntax compiler}. In particular a bounded conjunction of invariants at a variable number of addresses is a single quantifier-free bit equation for induction. An outer universal parameter can be fixed before the induction when the step preserves that parameter.
+
+\paragraph{An observation and its obligations.}
+In the most general interface used here an input presentation $p$, an observation request $q$, an answer $u$ and evidence $e$ have a fixed PR verifier $V(p,q,u,e)$. The client states what a successful check implies in its chosen interpretation. A solver additionally gives a PR producer with a proof of success under its explicitly stated input hypotheses. To pass from named inputs to intrinsic conclusions it must also prove invariance: two admissible presentations of the same input give equivalent observations at the promised accuracy. For example, equality of name samples at one index rarely suffices, while an exact path parity can be invariant under every change of local square-root signs. Composition discharges the next operation's input checks with the previous operation's output proofs. A modulus is used where that next check requires a more accurate sample. No unrestricted choice of witnesses enters this procedure.
+
+\input{completion}
+
+\section{Cyclic systems of finite observations}\label{sec:closure}
+The \src{Derivations/FIBER-CLAIMS.md}{FIBER audit} distinguishes closure of precision demands from execution of mutually dependent certificate producers. An inequality specifying how much data to request does not produce evidence for either of two rules which call each other. We handle a precisely delimited case of cyclic execution: all relevant states, evidence values and local rule instances can be grounded in PR-bounded finite sets, and previously established facts occur positively. This includes cyclic systems with several simultaneous premises and several possible producers of the same conclusion.
+
+\begin{definition}
+Fix a numerical input $p$ (including the observation request if needed). The ground atoms are $[N]=\{0,\ldots,N-1\}$. Rules $i<M$ consist of a head $h_i<N$ and a bit mask $B_i\subseteq[N]$. Read $B_i\Rightarrow h_i$ as a production. A rule with empty body is a seed. A local decidable guard can delete a rule. For a schema, $N,M,h_i,B_i$ and the guard are fixed PR functions of their numerical inputs. A property tested negatively in the guard must already be decidable from the input.
+\end{definition}
+Addresses can contain a tag, a request and its answer payload. To ground a producer depending on its predecessors' actual evidence, enumerate allowed tuples of predecessor addresses and evidence in their supplied finite bounds, run the guard, and put exactly the matched tuple in the body. If two premises must use the same witness, one tuple must encode that agreement. Unrelated existential facts at two addresses do not guarantee compatible witnesses.
+
+Define the inflationary operator and its layers by
+\[
+ T(X)=X\cup\{h_i:B_i\subseteq X\},\qquad X_0=\varnothing,\qquad X_{j+1}=T(X_j).
+\]
+The producer reads a frozen copy of $X_j$ throughout round $j+1$. A certificate for $a$ is a list of at most $N$ distinct addresses ending in $a$, each with a rule for its head whose premises occur earlier. A \emph{cut} for $a$ is a mask $C$ with $a\notin C$ and $B_i\subseteq C\Rightarrow h_i\in C$ for every rule. These definitions include $M=0$ and $N=0$; requests for a particular atom require $a<N$.
+
+\begin{theorem}[Production or obstruction]\label{th:closure}
+After $N$ rounds the layer $L=X_N$ is the least closed mask. A PR algorithm produces, for each $a<N$, either a certificate for $a$ or a cut for $a$. No atom admits both. Under any assignment of iPRA formulas $P_a$ and any context $\Gamma$, local derivations taking the $P_b$ for $b\in B_i$ to $P_{h_i}$ over $\Gamma$ replay each positive certificate as a derivation of $\Gamma\vdash P_a$.
+\end{theorem}
+\begin{proof}
+Every step preserves old bits. If it changes a mask, the first new bit exists by bounded search, and counting the bits gives an increase of at least one. If it leaves a mask fixed, all subsequent masks are equal to it by the defining equation of iteration. More precisely, at each $j$, either $T(X_j)=X_j$ or $j\le |X_j|$. The base is immediate. In the nonstationary case use the strict increase to carry the inequality forward; in the stationary case substitute the fixed mask at the next step. Since a subset of $[N]$ of size $N$ is the whole set, $X_N$ is stationary. If $C$ is closed, $X_0\subseteq C$ and $X_j\subseteq C$ implies $T(X_j)\subseteq C$ by checking every firing rule. Induction with $C$ fixed gives leastness.
+
+For each new bit store its round and the first enabling rule. Sort the addresses by (round,address); for a requested $a$ keep its backward dependencies, or just take the prefix ending in $a$. Every premise has a strictly smaller round. Pointers may be reused at multiple heads. A cut certificate for an absent bit is $L$ itself. A scan of any positive certificate shows its entries belong to every closed $C$, proving incompatibility. Replay the positive list in order, using the local derivation at each line and simultaneous cut on previously obtained derivations. Induction in this last assertion is in the metatheory on a particular finite derivation; it introduces no object-theory induction for arbitrary $P_a$.
+\end{proof}
+
+The list has at most $N$ pairs with entries below, for instance, $1+N(M+1)$. Its word bound is $\max(2,1+N(M+1))^N$. Invalid rules or addresses can be rejected by a bounded precheck. A table of birth rounds and rule numbers fits in the same type of coding, with base $2+(N+1)(M+1)$. The report's cardinality proof uses the bit equation for the dichotomy and the bounded sum of bits. Thus the proof for numerical inputs has only quantifier-free inductions once the bounded predicates are compiled. A rank for a one-line self-call with no seed is never manufactured. The empty mask is a cut excluding that head when this is the only rule.
+
+\paragraph{Source meaning and completeness.}
+If every production has been justified, acceptance suffices for its source observation. A cut only excludes proof by these productions. To interpret rejection as mathematical impossibility one needs a converse: every source witness can be converted to a finite production proof in the chosen finite model. In the monodromy example a path gives such a proof by reading its edges; for an unconstrained existence theorem a converse may fail. If grounding uses a subgraph of a larger presentation, negative certificates extend when \emph{all} rules with a retained head are covered, with their bodies in the retained subgraph (or with verified summaries for discarded premises). Restrict any global proof down its branches to see this. Dropping incoming rules from outside a chosen precision budget generally loses completeness.
+
+\subsection{When may two addresses be identified?}\label{sec:quotient}
+Payloads often dominate the number of ground states. The following test computes the coarsest refinement of a proposed identification that preserves \emph{one-step behaviour on every union of classes}. The extra universal condition permits reuse of the same quotient with arbitrary blockwise initial data.
+
+Let $P$ be a partition of $[N]$ and $[a]_P$ its block. For head $a$ collect the finite family
+\[
+ D_P(a)=\{\{[a]_P\}\}\cup
+   \bigl\{\{[b]_P:b\in B_i\}: h_i=a\bigr\}.
+\]
+Discard duplicate sets and proper supersets of another member, leaving an antichain $S_P(a)$. The first singleton records persistence. A seed gives the empty set and dominates every other term. A partition is \emph{stable} when $T$ sends every union of its blocks to a union of its blocks.
+
+\begin{theorem}[Coarsest stable refinement]\label{th:quot}
+A partition is stable exactly when $S_P(a)=S_P(b)$ for every pair in a common block. Split every block by this signature and repeat up to $N$ times. The resulting partition is the unique coarsest stable refinement of the starting partition, up to block names. Its quotient iteration lifts exactly at every round for every blockwise initial mask. Each split has a finite counterexample to stability at that stage.
+\end{theorem}
+\begin{proof}
+For a set $U$ of blocks write $\widehat U$ for their union. By the rule equation,
+$a\in T(\widehat U)$ iff some $D\in D_P(a)$ is contained in $U$, equivalently some minimal member is. The Boolean implication from the family for $a$ to that for $b$ on all $U$ holds iff every term $D$ for $a$ contains some term for $b$: necessity follows by setting $U=D$, and sufficiency by inclusion. Mutual implication of two finite antichains forces equality: given $D$ on the first side choose $E\subseteq D$ on the second and $D'\subseteq E$ on the first. Minimality gives $D'=E=D$. A failure of one implication supplies a specific $U=D$ witnessing a split.
+
+A proper refinement increases the number of nonempty blocks, bounded by $N$. If a round is unchanged its signature test succeeded. Hence $N$ rounds suffice, including the empty partition. Let $Q$ be any stable refinement of the original partition. If $Q$ refines the current $P$, any $P$-block union is a $Q$-block union. Equal $Q$-colours then have identical next-step bits on it. By the signature criterion they survive the next split together. Induction shows $Q$ refines the eventual result, proving the asserted universal property. For a stable $P$ put one rule per signature member on its quotient, with that block as head. The defining test gives $\widehat{\overline T(U)}=T(\widehat U)$, whence equality at every round by induction.
+\end{proof}
+Choose each block's least address as its name. Every family has at most $M+1$ input terms per head and every term fits in $N$ bits. Pairwise subset tests and a scan over heads suffice for each refinement, with no search over partitions. One may avoid even explicit antichains by the mutual implication test in the proof. These loops with the $N$-round cap give a PR refinement algorithm. Eager reachability from the empty set alone can permit coarser identifications: the universal property specifies exactly what this stronger test computes.
+
+\paragraph{A failed quotient.}
+Take six atoms $P_0,P_1,Q_0,Q_1,R_0,R_1$; seed $P_0,Q_1$ and add $P_i,Q_i\Rightarrow R_i$ for $i=0,1$. Forgetting $i$ in all three pairs gives a false derivation of $R$. The original least mask is $\{P_0,Q_1\}$. The first refinement separates the seeded and unseeded $P$ and $Q$ addresses. The next separates the two $R$ addresses, since their premises now use different blocks. This is the loss of a shared witness in a join that shares an index; the procedure detects it before the quotient is used as a proof.
+
+\paragraph{Use across the applications.}
+Connectivity predicates for a comma category, path classes in a diagram quotient, and compatible choices of a sheet on an edge are finite rule systems directly. In the nerve construction the larger objects are finite chain matrices; a linear solve produces the witnesses needed by transfer rules. In the residue construction infinitely many observations are handled one request at a time. Chart estimates translate the precision request into finitely many local computations and justify the transfer of their answers. The analytic argument does not rely on treating all holomorphic functions as a finite collection of states.

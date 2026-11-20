@@ -1,0 +1,91 @@
+\section{Composition and reconstruction of metric kernels}\label{sec:category}
+
+Consider a traveler going from \(x\) to \(z\) through a point \(y\) of a compact metric space. The optimal cost is an infimum over \(y\). One can compute it and compose further such trips even if no program selects optimal intermediate points. This gives an effective category of the metric distributors underlying \href{https://www.tac.mta.ca/tac/reprints/articles/1/tr1abs.html}{Lawvere's enriched metric spaces}. We give error estimates for its composition and recover a distributor from its action on scalar distance observations.
+
+\subsection{The category on presentations}
+
+For each object \(X\) give a nonempty dense rational pseudometric presentation \(D_X\) as in Section~\ref{sec:framework}. At each \(i\) supply a nonempty PR finite list \(N^X_i\subset D_X\) with proved covering radius \(h_i=2^{-i}\) on \(D_X\). This means \(\forall x\in D_X\,\exists b<|N^X_i|,\ d_X(x,N^X_i[b])\le h_i\). A PR selector follows by bounded rational search. Nesting of nets is optional. A morphism \(K:X\to Y\) is a fixed program giving nonnegative rational observations \(K_i(x,y)\), with the arithmetical law
+\begin{equation}
+ |K_i(x,y)-K_j(x',y')|\le d_X(x,x')+d_Y(y,y')+h_i+h_j .
+ \label{eq:cost-law}
+\end{equation}
+Two morphisms represent the same arrow when their names agree at all pairs of dense codes. At named endpoints the sample at precision \(k\) is \(K_{k+2}(x_{k+2},y_{k+2})\). Its cross-stage bound is at most \(3(h_k+h_j)/4\) by regularity in the two coordinates and the table. Equivalent regular inputs give the same result by \eqref{eq:cost-law}. Each represented kernel is separately 1-Lipschitz. Conversely, an externally given nonnegative such kernel together with a uniform PR sampler of error \(h_i\) and proofs of these estimates gives precisely the required arithmetic data. Rational pseudometrics, circle charts and cubes already give infinite examples. For clarity we use finite costs.
+
+For \(H:Y\to Z\) define a raw table and its shifted representative by
+\begin{equation}
+ C_i(x,z)=\min_{b\in N^Y_i}\big(K_i(x,b)+H_i(b,z)\big),\qquad
+ (H\circ K)_k=C_{k+2}.
+ \label{eq:convolution}
+\end{equation}
+The identity on \(X\) is the exact table \(d_X(x,x')\) at all levels.
+\begin{theorem}[Effective composition]\label{thm:cat}
+Equation \eqref{eq:convolution} satisfies \eqref{eq:cost-law}, respects equivalence of representatives and gives an associative composition with the stated identities on equivalence classes. Its represented value is the infimum of \(K(x,y)+H(y,z)\) over represented \(y\). The finite minimizer at each precision is an approximate witness.
+\end{theorem}
+\begin{proof}
+Relate the intermediate grids at distance at most \(\max(h_i,h_j)\). They cover each other in both directions. For related \(b,b'\) the two costs differ by at most
+\[
+ d_X(x,x')+d_Z(z,z')+2\max(h_i,h_j)+2(h_i+h_j).
+\]
+Theorem~\ref{thm:compare} gives the same bound for \(C_i,C_j\). The last two terms are at most \(4(h_i+h_j)\). Shifting by two gives the defining law including its exact coefficient on the free endpoint distances.
+
+Here and below a symbol without a stage subscript is shorthand for the real determined by its regular observations. In particular \(|K_i(x,y)-K(x,y)|\le h_i\) at dense codes, by comparison with all later stages. Write \(V\) for the name in \eqref{eq:convolution}. For a dense \(y\), a grid point within \(h_i\) gives
+\[
+ C_i(x,z)\le K(x,y)+H(y,z)+4h_i.
+\]
+Passing to arbitrary precision gives \(V\le K(x,y)+H(y,z)\). A represented \(y\) follows by substituting its dense approximants and using their regularity. Conversely, let \(b_i\) attain \(C_i\). Then \(K(x,b_i)+H(b_i,z)\le C_i+2h_i\). Every lower bound for all dense candidates is therefore at most \(V\). More quantitatively, since \(V\) is already a lower bound and a greatest lower bound, \(C_i-4h_i\) is a lower bound by the preceding covering inequality, so
+\[
+ -2h_i\le C_i-V\le 4h_i,\qquad
+ K(x,b_i)+H(b_i,z)\le V+6h_i.
+\]
+This proof constructs the infimum using only comparisons of names. Its lower-bound and approximate-witness properties give uniqueness and invariance under equivalent input kernels.
+
+For an identity on the left or the right the triangle bound for a kernel makes each candidate at least the desired kernel entry. Taking the unchanged endpoint as intermediate gives equality. For associativity consider three arrows \(K,H,J\) with endpoint pair held fixed. The finite flat sum has entries \(K(x,b)+H(b,c)+J(c,w)\). The two nested minima of an exact finite rectangle are equal. Indeed, evaluating either at a minimizing pair of the other proves one inequality in each direction. We give the error argument also, since the two expressions in \eqref{eq:convolution} use different levels. Put \(s=k+2\) and use \(N_s^Y,N_s^Z\) and all three stage-\(s\) tables for the flat calculation. In either parenthesization exactly one intermediate grid and two tables are at level \(s+2\). Replacing them by level \(s\) changes the inner minimum by at most \(2h_s+2(h_s+h_{s+2})\) by the two-grid calculation, uniformly in the unchanged intermediate point. Taking the outer minimum preserves this bound. The difference of parenthesizations is at most twice this number, tending to zero with a PR rate. All checks also apply if intermediate representatives are substituted first. The category laws are therefore identities of represented arrows.
+\end{proof}
+
+A sharpness check isolates the mesh contribution. On \([0,1]\), take \(K=H=d=|\cdot-\cdot|\), both endpoints \(1/2\), and the intermediate net \(\{0,1\}\) of radius \(1/2\). The true composite is zero and the finite cost is one. Thus exact leaf evaluation alone cannot remove the \(2h\) displacement term.
+
+\subsection{Distance probes test every scalar observation}
+
+Let \(f\) be a represented nonnegative 1-Lipschitz real observation on \(X\), with sample law \(|f_i(x)-f_j(x')|\le d_X(x,x')+h_i+h_j\). Define
+\[
+ T_K f(y)=\inf_{x\in X}\{ f(x)+K(x,y)\},\qquad d_a(x)=d_X(a,x).
+\]
+The infimum is computed by \eqref{eq:convolution}, regarding \(f\) as a kernel from a one-point object. A nonnegative constant added to \(f\) adds that constant to \(T_K f\). The transform preserves finite nonempty pointwise minima, by the rectangular-minimum argument, and is nonexpansive for uniform error because the same error bounds each summand. It also takes values in 1-Lipschitz observations on \(Y\).
+
+\begin{theorem}[Probe identity and finite equality test]\label{thm:probe}
+One has \(T_Kd_a(y)=K(a,y)\). A uniform bound \(e\) on the difference of the actions \(T_K,T_H\) on all distance probes is equivalent to the same bound on their actions on all nonnegative 1-Lipschitz observations. At stage \(i\), compute
+\[
+ m_i=\max_{a\in N_i^X,\ b\in N_i^Y}|K_i(a,b)-H_i(a,b)|.
+\]
+The supremum discrepancy \(D\) of the two kernels, equivalently that of their actions, has the certified interval
+\begin{equation}
+ \max(0,m_i-2h_i)\le D\le m_i+6h_i. \label{eq:probe-distance}
+\end{equation}
+Consequently \(D=0\) if and only if \(m_i\le2h_i\) at every stage.
+\end{theorem}
+\begin{proof}
+The Lipschitz law gives \(K(a,y)\le d(a,x)+K(x,y)\) for each \(x\), and \(x=a\) attains equality. The same-argument comparison in the infimum shows that \(|K-H|\le e\) everywhere implies \(|T_K f-T_H f|\le e\) everywhere. Restriction to probes, then the identity, gives the converse. This is the scalar Yoneda calculation for these distributors.
+
+At a pair of samples the kernel discrepancy differs from its computed value by at most \(2h_i\). Rounding both arguments of a dense pair distorts each kernel by at most \(2h_i\). Thus the discrepancy grows by at most \(4h_i\), yielding the upper bound. For represented arguments apply it at dense approximants and pass to the requested accuracy. A maximizing sample gives the lower bound. For an internal construction of \(D\), compare \(m_i,m_j\) directly by rounding every sample pair into the other net. The bound \(4\max(h_i,h_j)+2(h_i+h_j)\) makes \(k\mapsto m_{k+3}\) regular. Every point discrepancy is at most this name by the upper estimate, and the maximizing samples approximate it by the lower and upper estimates. This constructs its least-upper-bound meaning. The zero criterion follows using \(h_i\to0\) in the upper estimate in one direction and pointwise equality at samples in the other.
+\end{proof}
+
+\paragraph{Which transformations come from kernels?}
+A converse makes the probe test applicable even when a transformation has been specified by an algorithm on observations. Let \(T\) produce nonnegative short observations on \(Y\) from such observations on \(X\) (short means 1-Lipschitz). Assume it preserves uniform error bounds, nonempty finite pointwise minima, and addition of nonnegative constants. For the arithmetic statement supply its uniform action on the family \(d_a\) and its finite minimum law for PR-coded nonempty families of translates; these laws are open arithmetic interfaces for the chosen programs. Then \(K_T(a,b)=(T d_a)(b)\) is a kernel. Its second-variable bound holds because the output is short. Since \(\|d_a-d_{a'}\|_\infty\le d(a,a')\), the first-variable bound follows from preservation of uniform error. Sampling its output at error \(h_i\) gives \eqref{eq:cost-law}.
+
+On dense codes, for every \(f\), define \(g_i(x)=\min_{a\in N_i^X}(f(a)+d(a,x))\). Shortness gives \(f(x)\le g_i(x)\); choosing a sample within \(h_i\) gives \(g_i(x)\le f(x)+2h_i\). Therefore \(Tf\) differs by at most \(2h_i\) from \(Tg_i=\min_{a\in N_i^X}(f(a)+K_T(a,-))\). The same covering bound puts the latter within \(2h_i\) of \(T_{K_T}f\). These bounds tend to zero, so \(Tf=T_{K_T}f\); the probe identity proves uniqueness. For an interface admitting only rational translations use \(\max(0,f_i(a))\) as the constants: each of the two finite envelopes changes by at most \(h_i\). All flat bounds remain PR and vanish with \(i\). This is a representation theorem for the stated class of presented operators. Its quantification over \(T\) is external. It needs the finite-family law uniformly when list size depends on a numerical precision.
+
+\subsection{A scalar gluing problem with an optimal error}
+
+Local instruments return intervals \([\ell_i,u_i]\) at finitely many sites \(x_i\) in a rational metric presentation. How much must all intervals expand before a single \(L\)-Lipschitz scalar function fits them? Assume at least one site, \(\ell_i\le u_i\), and rational \(L\ge0\). The exact smallest expansion on each side is
+\begin{equation}
+ \rho=\tfrac12\max_{i,j}\big(\ell_i-u_j-Ld(x_i,x_j)\big)_+ .
+ \label{eq:glue}
+\end{equation}
+Indeed any fit with radius \(r\) implies \(\ell_i-r\le u_j+r+Ld(x_i,x_j)\) for every ordered pair. Conversely build the two finite envelopes
+\[
+ A(x)=\max_i\{\ell_i-\rho-Ld(x_i,x)\},\qquad
+ B(x)=\min_i\{u_i+\rho+Ld(x_i,x)\}.
+\]
+The pairwise inequalities and the triangle inequality make every lower summand at most every upper summand. Thus \(A\le B\). Each envelope is \(L\)-Lipschitz by the triangle inequality and the comparison principle. At site \(x_i\), \(A(x_i)\ge\ell_i-\rho\) and \(B(x_i)\le u_i+\rho\); either envelope or their midpoint is a valid global fit. At every point any valid fit lies between the two envelopes by shortness with constant \(L\). At distance at most \(h\) from \(x_i\) the gap is at most \(u_i-\ell_i+2\rho+2Lh\). This is the finite interval-data version of the classical \href{https://doi.org/10.1090/S0002-9904-1934-05978-0}{McShane extension formula}. It produces a global function without choosing a compatible sequence of minimizing indices. Signed rational costs in this finite application can be translated by a common constant before a minimum scan.
+
+For example take the three sites \(0,1/3,1\) on the interval with point observations \(0,1,0\) and \(L=1\). The ordered pair \(1/3,0\) gives excess \(2/3\), larger than any other pair, so the optimal radius is \(1/3\). The upper envelope gives values \(1/3,2/3,1/3\) there. A two-site comparison supplies the lower bound and the displayed PR formula supplies an attaining map on the whole continuum. Both certificates can be checked on the original rational data.

@@ -1,0 +1,660 @@
+\section{Metric topology with explicit computational data}
+\label{sec:metric}
+
+\subsection{What the metric replacements assert}
+
+The four entries treated here are Tychonoff's theorem,\footnote{\url{https://mathworld.wolfram.com/TychonoffTheorem.html}}
+Urysohn's lemma,\footnote{\url{https://mathworld.wolfram.com/UrysohnsLemma.html}}
+Urysohn's metrization theorem,\footnote{\url{https://mathworld.wolfram.com/UrysohnsMetrizationTheorem.html}}
+and the compact-open topology.\footnote{\url{https://mathworld.wolfram.com/Compact-OpenTopology.html}}  They concern
+infinite objects in their usual formulations.  The replacements below are
+families of arithmetic assertions about names, moduli, finite nets, and
+finite computations.  The displayed real-valued notation is an explanatory
+interpretation of those assertions; it does not add a sort of arbitrary
+real numbers or arbitrary subsets to \ipra.
+
+A named real is given by a fixed primitive-recursive rational approximation
+procedure with its error estimate.  We write $q(k)\simeq_k r$ for
+$|q(k)-r|\leq 2^{-k}$.  A named point has enough data to compute the
+rational approximations of the distances used below.  All operations are
+understood in a fixed, explicitly given primitive-recursive presentation.
+When a family of spaces is indexed by $i$, the procedures involving $i$
+must be uniformly primitive recursive.  The phrase ``given a procedure''
+means a particular function symbol with its defining equations and the
+stated hypotheses, or a proof schema after substituting that procedure.
+It never means that arbitrary primitive-recursive program codes can be
+uniformly evaluated by another primitive-recursive program.
+
+For a metric space $X$, the following data have different roles.
+\begin{itemize}
+\item A modulus for a map $f:X\to Y$ is a function $\mu$ satisfying
+\begin{equation}\label{eq:metric-modulus}
+d_X(x,y)\leq 2^{-\mu(k)}\quad\Longrightarrow\quad
+ d_Y(f(x),f(y))\leq 2^{-k}.
+\end{equation}
+Replacing $\mu(k)$ by $\max_{j\leq k}\mu(j)$ makes it monotone.
+\item A net is a finite list $P_k=(p_{k,j})_{j<M(k)}$ together with a
+selector $\sigma_k(x)<M(k)$ and a proof of
+$d_X(x,p_{k,\sigma_k(x)})\leq 2^{-k}$.  The selector is useful data;
+it is not obtained by deciding inequalities between arbitrary reals.
+\item A Cauchy modulus for a sequence $(x_n)$ is a function $m$ such that
+$n,l\geq m(k)$ implies $d_X(x_n,x_l)\leq 2^{-k}$.
+\item A completion operation, when assumed, takes the particular supplied
+Cauchy data to a point name and a convergence modulus.  The existence of
+an arbitrary limit is not being used as a choice principle.
+\end{itemize}
+Distances can be truncated at $1$ without changing the metric topology:
+$\bar d=\min(1,d)$ is a metric because
+$\min(1,a+b)\leq\min(1,a)+\min(1,b)$.  The triangle inequality for
+$\bar d$ follows immediately.  The balls of radius less than $1$ coincide
+with the corresponding $d$-balls.  Finite minima and maxima of named reals
+are computed by $\max(a,b)=(a+b+|a-b|)/2$, so their use does not invoke
+real-order decidability.
+
+\begin{remark}[Finite-demand meaning]\label{rem:metric-finite-demand}
+Every precision-$k$ conclusion below depends on explicitly bounded lists,
+finite sums, and rational inequalities.  Rational inequalities are tested
+by cross multiplication with positive denominators.  A proof can replace
+all finite bounded quantifiers by their primitive-recursive Boolean folds.
+The correctness invariant for the relevant loop is then quantifier free
+with the input codes as parameters.  Analytic notation abbreviates these
+uniform estimates, not an unproved global soundness theorem for all such
+notations.  The Lean file supplied with this chapter checks some abstract
+metric-interface lemmas and states the remaining implementation targets;
+it is not a derivation of every displayed theorem inside an encoded
+\ipra\ proof calculus.
+\end{remark}
+
+\subsection{Products: a constructive Tychonoff replacement}
+
+\begin{theorem}[Finite products of explicit nets]\label{thm:finite-metric-product}
+Let $X_0,\ldots,X_{r-1}$ have nets at every precision, and equip their
+product with $d_{\max}(x,y)=\max_{i<r}d_i(x_i,y_i)$.  The Cartesian
+product of the precision-$k$ nets is a precision-$k$ net, of size
+$\prod_{i<r}M_i(k)$.  Its selector and list are primitive recursive.
+For $r=0$ the product consists of one empty tuple.
+\end{theorem}
+\begin{proof}
+For each coordinate choose the supplied index $\sigma_{i,k}(x_i)$.
+Every coordinate distance to the resulting tuple is at most $2^{-k}$,
+so their maximum is at most $2^{-k}$.  Mixed-radix enumeration of the
+finite tuple of indices gives both the list and the selected index.
+Only bounded products and bounded loops are used.  If a factor is empty,
+there is no input product point to select; its empty net is appropriate.
+\end{proof}
+
+For a countable family assume bounded metrics $0\leq d_i\leq 1$ and
+specified base points $p_i$.  A product point is a uniformly presented
+family $(x_i)$, not an arbitrary externally chosen sequence.  Define
+\begin{equation}\label{eq:product-metric}
+ D(x,y)=\sum_{i=0}^{\infty}2^{-i-1}d_i(x_i,y_i),\qquad
+ D_N(x,y)=\sum_{i<N}2^{-i-1}d_i(x_i,y_i).
+\end{equation}
+The sum is shorthand for a name with the certified bound
+\begin{equation}\label{eq:product-tail}
+0\leq D(x,y)-D_N(x,y)\leq 2^{-N}.
+\end{equation}
+
+\begin{theorem}[Weighted product metric and its neighborhoods]
+\label{thm:weighted-product}
+The procedure in \eqref{eq:product-metric} defines a named metric.
+It satisfies
+\begin{equation}\label{eq:coordinate-bound}
+ 2^{-i-1}d_i(x_i,y_i)\leq D(x,y).
+\end{equation}
+Its neighborhoods agree with the finite-coordinate product neighborhoods,
+with explicit transformations in both directions.
+\end{theorem}
+\begin{proof}
+The finite geometric sum gives
+$\sum_{i=N}^{L-1}2^{-i-1}\leq 2^{-N}$ for every $L\geq N$;
+this proves the Cauchy estimate defining the sum.  For a precision-$k$
+name, sum the first $k+2$ terms using distance approximations of error
+$2^{-k-2}$.  Their weighted error is at most $2^{-k-2}$, and the omitted
+tail has the same bound.  Thus the total error is at most $2^{-k-1}$.
+Nonnegativity, symmetry, and the triangle inequality hold first for finite
+sums and then at every demanded precision.  If $D(x,y)=0$, the nonnegative
+summand bound gives $d_i(x_i,y_i)=0$ for every fixed $i$, hence coordinate
+identity.  No decision between equality and inequality is involved.
+
+For a finite cylinder requiring $d_i(x_i,y_i)<r_i$ for $i<N$, the positive
+rational radius
+$\rho=\min_{i<N}2^{-i-1}r_i$ satisfies
+$D(x,y)<\rho\Rightarrow d_i(x_i,y_i)<r_i$ for all its coordinates.
+The empty cylinder is the whole space.  Conversely, to obtain
+$D(x,y)<2^{-k}$, put $N=k+2$ and require
+$d_i(x_i,y_i)<2^{-k-2}$ for $i<N$.  The partial sum is less than
+$2^{-k-2}$ and the tail is at most $2^{-k-2}$; their sum is less than
+$2^{-k-1}<2^{-k}$.  General positive rational radii are reduced to dyadic
+ones by a bounded calculation on their numerator and denominator.
+\end{proof}
+
+\begin{theorem}[Countable products of explicit nets]
+\label{thm:countable-net-product}
+Suppose the base points, nets, and selectors are supplied uniformly in
+$i$.  The product has a primitive-recursive net of size
+\begin{equation}\label{eq:product-net-size}
+ M(k)=\prod_{i<k+2}M_i(k+2).
+\end{equation}
+A net point uses a net coordinate in positions $i<k+2$ and the fixed base
+point $p_i$ in every remaining position.  Its distance from the selected
+input point is at most $2^{-k-1}$.
+\end{theorem}
+\begin{proof}
+For the first $k+2$ coordinates the error is at most $2^{-k-2}$.
+Their weighted contribution is at most that quantity.  The unused tail
+is at most $2^{-k-2}$.  Sum these bounds.  Listing and selecting the finite
+coordinate tuple uses the algorithm of
+Theorem~\ref{thm:finite-metric-product}; evaluating its other coordinates
+uses the given base-point procedure.  In particular, no countable choice
+of points in unspecified nonempty factors occurs.
+\end{proof}
+
+\begin{theorem}[Transport of supplied completion procedures]
+\label{thm:product-completion}
+Suppose coordinate completion is available uniformly: from the specific
+coordinate Cauchy data it produces a name $z_i$ and a convergence modulus
+$c_i$.  Then completion of the corresponding product sequence is
+primitive recursive.  A valid product convergence modulus is
+\begin{equation}\label{eq:product-completion-rate}
+ c(k)=\max_{i<k+2}c_i(k+2).
+\end{equation}
+Product Cauchy data with modulus $m$ furnish coordinate-$i$ Cauchy data
+with modulus $k\mapsto m(k+i+1)$.
+\end{theorem}
+\begin{proof}
+The second assertion follows from
+$d_i\leq 2^{i+1}D$.  Apply the given coordinate completion procedure to
+these data, uniformly in $i$.  If $n\geq c(k)$, each of the first $k+2$
+coordinate distances from $z_i$ is at most $2^{-k-2}$.  The same
+partial-sum and tail estimate used for the net gives
+$D(x_n,z)\leq 2^{-k-1}$.  Each finite request to the product name makes
+only finitely many calls to the supplied uniform procedure.
+\end{proof}
+
+Theorems~\ref{thm:countable-net-product} and
+\ref{thm:product-completion} are a useful version of countable product
+compactness when compactness is represented by completeness data and
+finite nets.  They do not assert the open-cover compactness of an
+arbitrary product or extract a modulus from an arbitrary cover.
+The distinction is essential: the MathWorld Tychonoff entry discusses an
+arbitrary family, and explicitly records its relation to choice.
+There is also a classical edge case in the entry's opening ``if and only
+if'': an empty product space may be compact even if one of its other
+factors is noncompact.  The converse from compact product to compact
+factors requires a nonempty product, for example specified base points.
+
+\begin{proposition}[Uniform images preserve nets]\label{prop:image-nets}
+If $f$ has modulus $\mu$ and $P_k$ is a net for $X$, then
+$(f(p))_{p\in P_{\mu(k)}}$ covers the represented image of $f$ at
+precision $k$, with a selector supplied by the preimage presentation.
+\end{proposition}
+\begin{proof}
+For an image point presented as $f(x)$, use
+$f(p_{\mu(k),\sigma_{\mu(k)}(x)})$ and apply
+\eqref{eq:metric-modulus}.  This does not choose a preimage from a bare
+extensional membership assertion.  Completeness of an image is not
+claimed merely from this net calculation.
+\end{proof}
+
+\subsection{Urysohn functions from located distance data}
+
+A distance function to a general closed set need not be computable from
+a negative description of that set.  We therefore include the functions
+needed for the construction in the input.  Let $a,b:X\to[0,\infty)$ be
+supplied $1$-Lipschitz named functions, with $a=0$ on $A$ and $b=0$ on
+$B$.  They may be the located distances to $A$ and $B$.
+
+\begin{theorem}[Urysohn separation with a positive gap]
+\label{thm:metric-urysohn}
+If $a(x)+b(x)\geq\delta>0$ for all $x$, where $\delta$ is a positive
+rational input, then
+\begin{equation}\label{eq:urysohn-function}
+ u(x)=\frac{a(x)}{a(x)+b(x)}
+\end{equation}
+is a named function with values in $[0,1]$, is $1/\delta$-Lipschitz,
+and equals $0$ on $A$ and $1$ on $B$.  Its approximation procedure and
+modulus are primitive recursive in the supplied data.
+\end{theorem}
+\begin{proof}
+Write $a=a(x)$, $b=b(x)$, $a'=a(y)$, $b'=b(y)$, and $s=a+b$,
+$s'=a'+b'$.  The denominator is positive and
+\[
+ \left|\frac{a}{s}-\frac{a'}{s'}\right|
+ =\frac{|ab'-a'b|}{ss'}
+ \leq\frac{a|b'-b|+b|a-a'|}{ss'}
+ \leq\frac{d(x,y)}{s'}\leq\frac{d(x,y)}{\delta}.
+\]
+This proof gives the sharper constant $1/\delta$, with no factor of $2$.
+The interval bound follows from $0\leq a\leq s$.  On $A$ the numerator
+vanishes, while on $B$ one has $s=a\geq\delta$.
+
+For computation approximate $a,b$ with error $\eta$ and clamp the
+approximations to be nonnegative.  Clamping cannot increase the error.
+If $2\eta\leq\delta/2$, their approximate sum $\widehat s$ is at least
+$\delta/2$.  The same numerator calculation gives
+\[
+ \left|\frac{a}{s}-\frac{\widehat a}{\widehat s}\right|
+ \leq\frac{\eta}{\widehat s}\leq\frac{2\eta}{\delta}.
+\]
+Choose a natural number $h$ with
+$2^{-h}\leq\min(1,\delta)/8$, and evaluate at precision $k+h$.
+The error is at most $2^{-k-2}$.  Such an $h$ can be obtained by a
+bounded search using the denominator of the positive rational $\delta$.
+A uniform-continuity modulus is obtained by choosing $\mu(k)$ so that
+$2^{-\mu(k)}\leq\delta 2^{-k}$.  Every division is by an explicitly
+positive rational approximation.
+\end{proof}
+
+\begin{proposition}[Local-gap Urysohn separation]
+\label{prop:local-urysohn}
+A global lower bound is unnecessary for pointwise continuity.  It is
+enough to supply, for every presented $x$, a positive rational
+$\delta_x\leq a(x)+b(x)$, by a primitive-recursive procedure.  Formula
+\eqref{eq:urysohn-function} then has a computable local modulus: if
+$d(x,y)\leq\delta_x/4$, then
+\[
+ |u(x)-u(y)|\leq 2d(x,y)/\delta_x.
+\]
+\end{proposition}
+\begin{proof}
+Since $a+b$ is $2$-Lipschitz,
+$a(y)+b(y)\geq\delta_x-2d(x,y)\geq\delta_x/2$.
+Use the numerator estimate from the preceding proof with this denominator.
+Evaluation at $x$ uses $\delta_x$ exactly as in that proof.  Thus a
+local modulus may demand simultaneously
+$d(x,y)\leq\delta_x/4$ and
+$d(x,y)\leq\delta_x 2^{-k-1}$.
+Disjointness alone does not supply the distance functions or this local
+lower-bound procedure.
+\end{proof}
+
+\begin{corollary}[Finite rational metric sets]
+\label{cor:finite-metric-urysohn}
+Let $A,B$ be nonempty disjoint finite subsets of a rational metric space,
+and suppose their displayed points are pairwise distinguishable by the
+metric.  Put
+\[
+ a(x)=\min_{p\in A}d(x,p),\quad b(x)=\min_{q\in B}d(x,q),\quad
+ \delta=\min_{p\in A,q\in B}d(p,q)>0.
+\]
+The data satisfy Theorem~\ref{thm:metric-urysohn}.
+\end{corollary}
+\begin{proof}
+Each distance-to-a-point function is $1$-Lipschitz; taking a finite minimum
+preserves that bound.  A rational finite minimum attains its value by
+bounded comparison.  At minimizing $p,q$, the triangle inequality gives
+$\delta\leq d(p,q)\leq d(p,x)+d(x,q)=a(x)+b(x)$.
+Finite disjointness and positivity of rational nonzero distances make
+the displayed minimum positive.  All lists and comparisons are bounded.
+If one of the sets is empty, a constant function supplies the required
+nonempty-side boundary value instead.
+\end{proof}
+
+\subsection{Metrization by separating coordinates}
+
+The existence of many separating functions does not by itself provide
+a computable inverse for the map they define.  The following formulation
+records exactly the extra local information that is used.
+
+\begin{theorem}[Coordinate metrization with a neighborhood certificate]
+\label{thm:coordinate-metrization}
+Let $X$ have a represented neighborhood basis.  Suppose a uniformly
+presented family $u_i:X\to[0,1]$ is given with local continuity moduli.
+Assume two further pieces of data.
+\begin{enumerate}
+\item Coordinate equality identifies points: if $u_i(x)=u_i(y)$ for
+all $i$, then $x=y$ in the chosen representation.
+\item Given a certified basic neighborhood $V$ of $x$, a procedure returns
+$N$ and a positive rational $\varepsilon$ such that
+\[
+ (\forall i<N)\ |u_i(x)-u_i(y)|<\varepsilon\quad\Longrightarrow\quad y\in V.
+\]
+\end{enumerate}
+Then
+\[
+ d_u(x,y)=\sum_{i\geq0}2^{-i-1}|u_i(x)-u_i(y)|
+\]
+is a compatible named metric, and $x\mapsto(u_i(x))_i$ is a homeomorphism
+onto its represented image in the Hilbert cube.  The inverse
+neighborhood transformation can use radius $2^{-N}\varepsilon$.
+\end{theorem}
+\begin{proof}
+The metric axioms and computation follow from
+Theorem~\ref{thm:weighted-product}.  Its zero-distance implication is the
+first hypothesis.  For continuity at precision $k$, use $N=k+2$ and
+intersect the finitely many neighborhoods on which the first $N$
+coordinates change by less than $2^{-k-2}$.  The finite sum and tail
+give a change less than $2^{-k}$.  The finite intersection and its
+refinement are part of the presented basis operations.
+
+Conversely, if $d_u(x,y)<2^{-N}\varepsilon$, then for $i<N$,
+\[
+ |u_i(x)-u_i(y)|\leq 2^{i+1}d_u(x,y)
+ <2^{i+1-N}\varepsilon\leq\varepsilon.
+\]
+The second hypothesis now gives $y\in V$.  Both neighborhood transformations
+are explicit finite calculations.  An inverse is considered only on the
+represented image, whose points carry an $X$-name; no algorithm extracting
+an arbitrary preimage is implicit.
+\end{proof}
+
+This theorem isolates a constructive part of Urysohn's metrization proof.
+It does not produce the coordinate functions and their neighborhood
+certificates from bare regularity and a bare countable basis.  Those are
+additional proof obligations for a particular presentation.
+
+\begin{theorem}[An explicit Hilbert-cube embedding for a separable metric
+presentation]\label{thm:dense-hilbert-embedding}
+Let $X$ have a specified dense sequence $(p_i)$ and a primitive-recursive
+locator $\lambda(x,k)$ satisfying
+$d(x,p_{\lambda(x,k)})\leq2^{-k}$.  Define
+\[
+ u_i(x)=\min(1,d(x,p_i)),\qquad E(x)=(u_i(x))_{i\geq0}.
+\]
+Then $E$ is an embedding into the Hilbert cube.  Its forward map is
+$1$-Lipschitz for the weighted metric, and an explicit inverse local
+modulus is
+\begin{equation}\label{eq:dense-embedding-inverse}
+ D(E(x),E(y))<2^{-(\lambda(x,k+2)+k+2)}
+ \quad\Longrightarrow\quad d(x,y)<2^{-k}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Truncation and the reverse triangle inequality give
+$|u_i(x)-u_i(y)|\leq\min(1,d(x,y))$; summing the weights gives
+$D(E(x),E(y))\leq d(x,y)$.  Put $r=2^{-k}\leq1$ and
+$i=\lambda(x,k+2)$.  The hypothesis of
+\eqref{eq:dense-embedding-inverse} and the coordinate bound imply
+$|u_i(x)-u_i(y)|<r/2$.  Since $u_i(x)\leq r/4$,
+$u_i(y)<3r/4<1$.  Thus the truncation is inactive at $y$, and
+\[
+ d(x,y)\leq d(x,p_i)+d(p_i,y)<r/4+3r/4=r.
+\]
+This also proves that coordinate equality forces point equality.  Every
+index and requested precision in this argument is explicitly computable.
+The inverse modulus depends on $x$; no uniform bound on the locator's
+index is asserted.
+\end{proof}
+
+\subsection{Euclidean examples and explicit homeomorphisms}
+
+The Euclidean-topology and homeomorphism entries supply the classical
+terminology for the following concrete constructions.\footnote{\url{https://mathworld.wolfram.com/EuclideanTopology.html};
+\url{https://mathworld.wolfram.com/Homeomorphism.html}}
+
+\begin{proposition}[Euclidean norm comparisons]
+\label{prop:euclidean-norms}
+For $v\in\R^d$, with $d\geq1$,
+\[
+ \|v\|_\infty\leq\|v\|_2\leq\|v\|_1
+ \leq d\|v\|_\infty.
+\]
+Consequently these metrics induce the same topology by explicit rational
+moduli.  Rational grids give nets for bounded rational boxes, and rational
+vectors give a dense sequence with a locator for represented points.
+\end{proposition}
+\begin{proof}
+Each $v_i^2$ is at most $\sum_jv_j^2$, so
+$|v_i|\leq\|v\|_2$.  Expanding
+$(\sum_i|v_i|)^2$ gives $\sum_iv_i^2$ plus nonnegative cross terms,
+which proves the middle inequality.  The last inequality sums
+$|v_i|\leq\|v\|_\infty$.  Squaring reduces the only square-root
+comparisons to rational inequalities with nonnegative sides; the
+nonnegative square root has its usual bisection name on a supplied bounded
+interval.  For a requested Euclidean error $2^{-k}$, choose a grid of
+sup-norm mesh at most $2^{-k}/d$.  Clamping coordinate approximations
+to a bounded box preserves the required bounds.  Finite products enumerate
+the grid, and standard rational-tuple coding enumerates the dense sequence.
+The grid selector uses rational approximations with extra slack, not exact
+comparison of a real coordinate with a grid boundary.
+\end{proof}
+
+\begin{proposition}[A named homeomorphism between Euclidean space and an
+open cube]\label{prop:euclidean-open-cube}
+Coordinatewise application of
+\[
+ h(t)=\frac{t}{1+|t|},\qquad h^{-1}(s)=\frac{s}{1-|s|}
+\]
+gives a homeomorphism $\R^d\cong(-1,1)^d$.  The forward map is
+$1$-Lipschitz in sup norm.  On the subcube $|s_i|\leq1-\delta$,
+$\delta>0$, the inverse is $\delta^{-2}$-Lipschitz.
+\end{proposition}
+\begin{proof}
+The two formulas are inverse by elementary substitution, separately on
+the nonnegative and nonpositive rational approximations, or directly
+using the identities for absolute value.  For two real numbers of the
+same sign,
+\[
+ |h(t)-h(u)|=\frac{|t-u|}{(1+|t|)(1+|u|)}\leq|t-u|.
+\]
+For opposite signs, $|h(t)-h(u)|=|h(t)|+|h(u)|\leq|t|+|u|=|t-u|$.
+The inverse calculation on a same-sign interval has denominator
+$(1-|s|)(1-|v|)\geq\delta^2$; across zero use the sum of the two
+one-sided estimates.  These inequalities can also be proved by rational
+case splits followed by approximation, so they require no trichotomy for
+arbitrary named reals.  Evaluation of the inverse at an open-cube point
+uses a supplied positive distance from each coordinate to the endpoints.
+Taking a finite minimum of those distances supplies $\delta$.
+\end{proof}
+
+\subsection{Function spaces and the compact-open topology}
+
+Let $K$ be an inhabited represented metric space equipped with nets.
+For maps $f,g:K\to Y$ with supplied moduli, the function
+$h(x)=d_Y(f(x),g(x))$ has modulus
+\begin{equation}\label{eq:distance-function-modulus}
+ \nu(k)=\max\{\mu_f(k+1),\mu_g(k+1)\}.
+\end{equation}
+Indeed, the reverse triangle inequality gives
+$|h(x)-h(y)|\leq d(f(x),f(y))+d(g(x),g(y))$.
+
+\begin{theorem}[Computable uniform metric]
+\label{thm:computable-uniform-metric}
+With the above data, the quantity
+\[
+ d_\infty(f,g)=\sup_{x\in K}d_Y(f(x),g(x))
+\]
+has a primitive-recursive real name.  It is obtained from finite maxima
+on nets, and is a metric on maps identified pointwise.  No exact
+maximizing point is required.
+\end{theorem}
+\begin{proof}
+At precision $k$ put $\eta=2^{-k-3}$ and take a net at
+precision $\nu(k+3)$.  Approximate each of the finitely many values
+$h(p_j)$ by $q_j$ with error at most $\eta$, and let $Q_k=\max_jq_j$,
+using ordinary rational comparisons.  For every $x$, the selected net
+point gives
+\[
+ h(x)\leq h(p_{\sigma(x)})+\eta\leq Q_k+2\eta.
+\]
+For a rational maximizing index $j_k$,
+$h(p_{j_k})\geq Q_k-\eta$.  Thus $[Q_k-\eta,Q_k+2\eta]$ is a
+certified interval for the supremum.  Any two such intervals are
+compatible: each upper endpoint bounds every actual value, including the
+net value witnessing the other's lower endpoint.  Consequently the
+$Q_k$ form a Cauchy name with the displayed error bounds, defining a real
+$S$ satisfying $h(x)\leq S$ for every $x$ and
+$S\leq Q_k+2\eta$.  If $b$ bounds every $h(x)$ then
+$Q_k\leq b+\eta$ for every $k$, hence $S\leq b$ at all precisions.
+This proves the claimed supremum property without assuming a general
+least-upper-bound axiom.
+
+Symmetry and nonnegativity are inherited pointwise.  For every $x$,
+$d(f(x),h(x))\leq d(f(x),g(x))+d(g(x),h(x))$; taking the certified
+upper bounds gives the triangle inequality.  If $d_\infty(f,g)=0$,
+every pointwise distance is zero, so the maps agree in the chosen
+pointwise equivalence.  Every computation made at precision $k$ is a
+finite maximum on an explicitly sized net.
+\end{proof}
+
+\begin{corollary}[Approximate extrema]
+\label{cor:approximate-extrema}
+For a real-valued uniformly continuous function $v$ on a represented
+inhabited space with nets, a primitive-recursive procedure returns
+$x_k\in K$ with
+\[
+ (\forall x\in K)\quad v(x)\leq v(x_k)+2^{-k}.
+\]
+An analogous procedure gives an approximate minimum.
+\end{corollary}
+\begin{proof}
+Take a net fine enough that the variation of $v$ between a point and its
+selected net point is at most $\eta=2^{-k-2}$.  Approximate the net
+values with error at most $\eta$ and choose a largest rational
+approximation, at $x_k$.  For every $x$,
+\[
+ v(x)\leq v(p_{\sigma(x)})+\eta
+ \leq q_{\sigma(x)}+2\eta
+ \leq q_{x_k}+2\eta
+ \leq v(x_k)+3\eta<v(x_k)+2^{-k}.
+\]
+Apply the same algorithm to $-v$ for minima.  An exact maximizer or a
+convergent subsequence of maximizing points is a different assertion and
+is not extracted here.
+\end{proof}
+
+For the next result take $K=[0,1]^d$ with the sup metric and its usual
+dyadic box data.  Write
+\[
+ [C,U]=\{g:g(C)\subseteq U\}
+\]
+for a compact-open subbasic condition.  The closed dyadic boxes used
+below have explicit product nets and completion procedures.  Thus the
+word ``compact'' here comes with the data already constructed, and not
+with a universal open-cover elimination principle.
+
+\begin{theorem}[An explicit compact-open neighborhood comparison on a
+cube]\label{thm:compact-open-cube}
+Let $f:[0,1]^d\to Y$ have a supplied uniform modulus and let
+$\varepsilon>0$ be rational.  A primitive-recursive procedure constructs
+finitely many closed dyadic boxes $C_j$ covering the cube, points
+$p_j\in C_j$, and balls
+$U_j=B(f(p_j),\varepsilon/2)$ such that
+\begin{equation}\label{eq:compact-open-sandwich}
+ B_{\infty}(f,\varepsilon/4)
+ \ \subseteq\ \bigcap_j[C_j,U_j]
+ \ \subseteq\ B_{\infty}(f,\varepsilon).
+\end{equation}
+In particular these finitely certified compact-open neighborhoods
+and the uniform metric generate the same local neighborhoods for the
+represented maps in question.
+\end{theorem}
+\begin{proof}
+Choose a dyadic step $h=2^{-N}$ fine enough that the modulus guarantees
+$d_Y(f(x),f(p))\leq\varepsilon/4$ whenever
+$\|x-p\|_\infty\leq h$.  Enumerate the grid centers $p_j$ with
+coordinates in $\{0,h,2h,\ldots,1\}$ and set
+$C_j=\prod_i[\max(0,p_{j,i}-h),\min(1,p_{j,i}+h)]$.
+These boxes overlap.  To cover a named point $x$, approximate each
+coordinate within $h/4$, clamp the rational approximation to $[0,1]$,
+and round it to a nearest grid value.  The resulting center has distance
+at most $3h/4$ from $x$, so it selects a containing box with slack.
+Enumeration, rational rounding, and the required mesh exponent are
+primitive recursive.
+
+If $d_\infty(f,g)<\varepsilon/4$, then for $x\in C_j$,
+\[
+ d(g(x),f(p_j))
+ \leq d(g(x),f(x))+d(f(x),f(p_j))<\varepsilon/2.
+\]
+This proves the first inclusion.  If $g$ lies in all the displayed
+subbasic conditions, select any box containing $x$; then
+\[
+ d(f(x),g(x))<\varepsilon/4+\varepsilon/2=3\varepsilon/4.
+\]
+Taking the supremum gives $d_\infty(f,g)\leq3\varepsilon/4<\varepsilon$,
+which proves the second inclusion with a uniform positive margin.
+The overlap matters constructively: an exact partition into adjacent
+closed boxes would ask for a side decision at an arbitrary real boundary.
+Our rational-approximation selector makes no such decision.
+\end{proof}
+
+For a general compact-open condition $[C,U]$, the analogous finite-demand
+statement assumes a supplied margin $\delta>0$ such that
+$B(f(x),\delta)\subseteq U$ for all $x\in C$.  Then
+$B_\infty(f,\delta)\subseteq[C,U]$ by direct substitution.
+No procedure obtaining such a margin from a bare assertion
+$f(C)\subseteq U$ has been claimed.  This is the precise limitation of
+the comparison with the unrestricted compact-open theorem.
+
+\begin{proposition}[Evaluation with an explicit local modulus]
+\label{prop:metric-evaluation}
+For modulus-equipped maps on $K$, evaluation $(f,x)\mapsto f(x)$ is
+continuous in the uniform metric.  At $(f,x)$, it is enough to require
+\[
+ d_\infty(f,g)\leq2^{-k-1},\qquad
+ d_K(x,y)\leq2^{-\mu_f(k+1)}
+\]
+to obtain $d_Y(f(x),g(y))\leq2^{-k}$.
+\end{proposition}
+\begin{proof}
+Insert $f(y)$ and use the triangle inequality:
+$d(f(x),g(y))\leq d(f(x),f(y))+d(f(y),g(y))
+\leq2^{-k-1}+2^{-k-1}$.
+The dependence of this local modulus on $f$ is explicit.
+\end{proof}
+
+\begin{theorem}[A quantitative exponential-law fragment]
+\label{thm:metric-currying}
+Suppose $H:K\times Z\to Y$ has a supplied uniform modulus $\mu$ for
+the maximum product metric.  Then its curry
+$\widehat H(z)(x)=H(x,z)$ has the same modulus as a map to the uniform
+metric on $C(K,Y)$.  Conversely, suppose the curry has a modulus
+$\alpha$, and all its slices have a common modulus $\beta$ in $x$.
+Then $H$ has modulus
+\[
+ \gamma(k)=\max\{\alpha(k+1),\beta(k+1)\}.
+\]
+\end{theorem}
+\begin{proof}
+If $d_Z(z,z')\leq2^{-\mu(k)}$, apply uniform continuity of $H$ to
+$(x,z),(x,z')$ for every $x$.  The supremum of their distances is at most
+$2^{-k}$.  In the converse direction insert $H(x,z')$:
+\[
+ d(H(x,z),H(x',z'))
+ \leq d(H(x,z),H(x,z'))+d(H(x,z'),H(x',z'))
+ \leq2^{-k-1}+2^{-k-1}.
+\]
+The first term is bounded by the uniform metric between the slices and
+the second by their common modulus.  This is a quantitative statement
+with supplied uniformity; it is not a derivation of the unrestricted
+locally-compact Hausdorff exponential law from bare continuity.
+\end{proof}
+
+\subsection{Arithmetic and Lean implementation route}
+
+The finite sum identity behind \eqref{eq:product-tail}, mixed-radix tuple
+enumeration, finite maxima, and rational cross-multiplication are the
+arithmetic core.  A direct implementation has the following layers.
+\begin{enumerate}
+\item Encode integers, positive-denominator rationals, lists, tuples, and
+finite tables by natural numbers.  Define rational comparison by the
+integer cross products, and define every list fold by primitive recursion.
+\item Implement each fixed approximation, net, selector, and modulus
+procedure as primitive-recursive syntax.  Prove the finite numerical
+invariant of each loop by quantifier-free induction.  Rational arithmetic
+identities can be proved in the standard definitional extension for
+primitive-recursive functions and translated to the selected presentation
+of \ipra.
+\item Represent a real equation or inequality by its finite precision
+tests.  Division carries a positive-denominator certificate; suprema and
+infinite sums carry the explicit Cauchy bounds proved above.  The
+product construction requests at most $k+2$ coordinates for a
+precision-$k$ output.  The embedding requests the one locator index
+shown in \eqref{eq:dense-embedding-inverse}.
+\item In Lean, first formalize these finite rational statements, then
+prove the representation theorems interpreting them as the usual metric
+claims.  The supplied \texttt{MetricBlueprint.lean} checks the basic
+precision-space product and modulus-composition arguments without
+\texttt{sorry}.  Its semantic function fields are interfaces, not claims
+that all Lean functions are primitive recursive.
+\item For an actual internal endpoint, compile the selected algorithms
+and proof invariants into the repository's object-language syntax and
+produce its proof predicate.  This last compilation is an explicitly
+remaining formalization task; Lean's ordinary kernel checking of an
+external semantic theorem does not perform it automatically.
+\end{enumerate}
+These steps distinguish useful fully proved constructive mathematical
+reductions from an assertion that the entire classical topology library
+has already been formalized inside \ipra.

@@ -1,0 +1,91 @@
+\section{A general discipline for embedding mathematics}
+\label{sec:framework}
+
+\subsection{The exact target theory}
+
+We use first-order intuitionistic logic with equality, numerical variables, zero and successor, and a function symbol for each \emph{fixed} primitive recursive definition. Its nonlogical axioms are the defining equations of these symbols, successor injectivity, the impossibility of a successor being zero, and quantifier-free induction. In schematic notation the latter is
+\[
+ \bigl(A(0,\vec p)\wedge
+       \forall n\,[A(n,\vec p)\to A(n+1,\vec p)]\bigr)
+       \to\forall n\,A(n,\vec p),
+\]
+where $A$ is quantifier-free. Arbitrary numerical parameters $\vec p$ are allowed. First-order quantifiers may appear in theorems and in hypotheses; it is the induction formula that is restricted. The actual repository judgment is \code{Prf PRAAx}, with syntax and translations provided by ConciseIPRA \cite{repo-concise,repo-derivations}.
+
+The logical rules are the ordinary intuitionistic introduction and elimination rules for $\wedge,\vee,\to,\bot,\forall,\exists$, structural substitution and weakening, and equality substitution. Quantifier-free numerical tests are decidable because their fixed primitive recursive characteristic functions have correctness proofs. This does not authorize excluded middle for arbitrary unbounded formulas.
+
+\subsection{Fixed schema versus internal data}
+
+An algorithm such as polynomial multiplication is fixed once. Polynomial coefficient lists, list lengths, degrees, matrix sizes, bounds and precision requests are numerical inputs to that algorithm. The theorem must quantify over those inputs internally. By contrast, a completely arbitrary primitive recursive program supplied as a code is not automatically available as a total arithmetic function.
+
+\begin{proposition}[No primitive recursive universal evaluator]
+There is no total primitive recursive function $U(e,n)$ that evaluates every unary primitive recursive function from its code in an enumeration containing every such function.
+\end{proposition}
+\begin{proof}
+If $U$ existed, $D(n)=U(n,n)+1$ would be primitive recursive. Choose a code $e$ for $D$. Then $D(e)=U(e,e)+1=D(e)+1$, a contradiction. The argument concerns a total evaluator on all codes. Bounded simulation of programs for a supplied number of steps is a different, primitive recursive operation.
+\end{proof}
+
+Accordingly, a name $q(n,p)$ for a real number means one fixed primitive recursive rational-valued program with internal precision $n$ and persistent data $p$. A family of such programs indexed externally by $e$ is not a single internal evaluator unless a separate uniform compilation theorem supplies one. This distinction also applies to a field interface or a metric. All the actual algorithms below are fixed finite programs; dimensions and coefficients remain internal.
+
+\subsection{Four parts of an embedding}
+
+For a mathematical construction, specify the following four parts.
+
+\begin{enumerate}
+\item \textbf{Representation.} Numerical codes, a bounded well-formedness predicate, and the meaning of the finite observations. For example, a polynomial is a coefficient buffer and a length; a compact set is observed by a nonempty finite rational list and a precision.
+\item \textbf{Producer.} A fixed primitive recursive term that computes the output, including its bounds and any auxiliary witnesses. A successful certificate test is a producer only when a finite search bound and an existence proof are also supplied.
+\item \textbf{Arithmetic derivation.} An object-theory proof of the finite input/output contract, with an explicit induction invariant for each loop. The formulas quantify over the actual returned output; merely proving that some suitable output exists is weaker when a program is requested.
+\item \textbf{Semantic bridge.} A separately stated theorem interpreting the finite arithmetic output as a field element, a Cauchy real, a compact set, or a geometric object. Such a theorem is normally proved in the metatheory. It is not silently imported as an axiom of $\ipra$.
+\end{enumerate}
+
+For example, the norm construction returns a particular polynomial. Its degree and nonvanishing are finite coefficient statements, while ``this polynomial is the field norm'' is a useful semantic description. The finite common-zero theorem can be proved without using that description as a premise. Similarly, the selector returns rational points with a finite cross-stage inequality; completeness of $\R^d$ interprets that output as a point only in the semantic bridge.
+
+\subsection{Booleanization and the precise use of induction}
+
+A bounded formula built from decidable numerical atoms and bounded quantifiers has a fixed primitive recursive characteristic function. Conjunction and disjunction are Boolean operations; bounded universal quantification is a finite conjunction; bounded existence is a finite disjunction, with least-witness search available when needed. Correctness is proved structurally for the fixed formula. ProveIt now implements this in \code{Foundations/BoundedSyntax} \cite{repo-audit}.
+
+One must still distinguish the following two steps:
+\[
+ \text{bounded formula }B(n,p)
+ \quad\longleftrightarrow\quad
+ \text{Boolean equation }b(n,p)=1,
+\]
+and
+\[
+ b(0,p)=1,\quad b(n,p)=1\to b(n+1,p)=1.
+\]
+The first is a representation theorem; the second contains the mathematical work. Induction on $b(n,p)=1$ is then legal quantifier-free induction. This is how a runtime list or runtime matrix dimension is treated without using induction on a quantified statement about all matrices.
+
+\begin{example}[A finite invariant rather than an infinitary one]
+To prove a coefficient identity for a computed polynomial prefix, keep the current coefficient buffer and assert equality at every index below its explicit length. The assertion is a bounded conjunction and can be Booleanized. Do not induct on ``the represented analytic functions are equal for all real arguments.'' First prove the coefficient identity; evaluate at any supplied numerical point afterwards.
+\end{example}
+
+Quantifiers over a fixed ambient parameter can be introduced after the finite invariant is established. If the recursion itself asks for changing input precision, use the existing backward-demand program to compute the required initial observation before the forward calculation. A proof that requires an unspecified future observation is not justified merely by calling the name regular.
+
+\subsection{Concrete number and list encodings}
+
+The new reference programs use exact fractions. For an independent arithmetic realization, encode a signed integer by $2z$ for $z\ge0$ and $2|z|-1$ for $z<0$. Encode a rational by a signed numerator and a positive denominator, normalized by gcd; zero has denominator one. Addition, multiplication, equality and order reduce to integer arithmetic and positive-denominator cross-products. Inversion is totalized arbitrarily at zero and proved correct only under a nonzero guard.
+
+Use any primitive recursive pairing with primitive recursive projections, such as the Cantor pairing
+\[
+ \langle a,b\rangle=\frac{(a+b)(a+b+1)}2+b.
+\]
+Its projections can be found by bounded search up to the code. Set $\operatorname{nil}=0$ and $\operatorname{cons}(a,s)=1+\langle a,s\rangle$. Repeated tail extraction is bounded primitive recursion. Length and decoding can be bounded by the list code, with arbitrary values on junk codes. For efficient implementations use the repository's existing sequence code; the mathematical claims do not depend on the inefficient bound.
+
+Encode a vector by a list plus its explicit dimension, a matrix by row-major entries plus its dimensions, and a polynomial by a finite coefficient list in a declared order. Our mathematical exposition uses ascending powers; the actual Gaussian-polynomial provider uses descending coefficients and descending $Y$ rows. The Lean plan includes the explicit index reversal rather than treating those arrays as identical.
+
+For $\Q(i)$ use two rational coordinates. Equality is exact. For another explicitly coded field the arithmetic and decidability laws must be supplied as actual object proofs for the fixed implementation. Arbitrary real Cauchy names do not have decidable equality and cannot be substituted at this boundary.
+
+\subsection{A useful compositional rule, with its exact limits}
+
+Suppose actual programs $F$ and $G$ satisfy
+\[
+ P(x)\to Q(x,F(x)),\qquad
+ Q(x,y)\to R(x,y,G(x,y)).
+\]
+Substitution and cut give
+\[
+ P(x)\to R(x,F(x),G(x,F(x))).
+\]
+Bounds, shape guards and positive denominators travel with $Q$. For a bounded loop, retain a Booleanized invariant of the actual state. If the output is sealed as an existential certificate, it can be used only through conclusions proved independent of its particular code. Neither cut nor sealing creates a missing producer.
+
+This is a general framework because it permits a common representation discipline across exact algebra, approximating analysis and finite geometry. It is not a theorem that every true mathematical assertion is provable in $\ipra$. General proof-mining and conservation results have precise hypotheses and can change when apparently small principles are added \cite{kohlenbach-pra}; here we justify the concrete finite inductions directly.

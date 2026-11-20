@@ -1,0 +1,45 @@
+\section{One graph seen by all three theories}\label{sec:monodromy}
+A choice of square root on each of several overlapping pieces must return to its starting value around every cycle. This question can be expressed as analytic continuation, as transport along paths, or as a finite production system. Here is a representation where the three interpretations can be proved to agree, including a diagnosis when gluing fails.
+
+Let a finite undirected graph have a specified nonzero Gaussian rational $a_v$ at each vertex and base value $z_v=a_v^2$. Realize an edge $v w$ by the straight segment $z(t)=(1-t)z_v+t z_w$. As a domain we use the abstract graph with these edge parametrizations; if different edges of a drawn image are to meet at a geometric crossing, that crossing must be made a vertex. Require for every edge
+\[
+       \operatorname{Re}(a_w\overline{a_v})\ne0 .
+\]
+This is a decidable rational condition. It excludes exactly the case of antipodal directions for the two squared values: $q^2$ is a negative real for $q\ne0$ iff $q$ is purely imaginary. Put $\epsilon_{vw}=\operatorname{sign}\operatorname{Re}(a_w\overline{a_v})\in\{-1,1\}$, the same in both directions.
+
+\begin{lemma}[Transport on an edge]\label{lem:sqrt-edge}
+There is an effective continuous lift of the segment under $w\mapsto w^2$ beginning at $a_v$. It ends at $\epsilon_{vw}a_w$. It is unique among continuous lifts with this initial value and a supplied continuity modulus in the arithmetic reading.
+\end{lemma}
+\begin{proof}
+Write $a=a_v$, $b=\epsilon_{vw}a_w$, $q=b/a$. The real parts of $q$ and $1/q$ are positive. Put
+\[
+  y(t)=(1-t)/q+tq,\quad
+  \mu=\min(\operatorname{Re}q,\operatorname{Re}(1/q))>0.
+\]
+On $\operatorname{Re}y\ge\mu$ choose
+\[
+ S(x+iu)=v+i\,u/(2v),\qquad
+ v=\sqrt{(\sqrt{x^2+u^2}+x)/2}.
+\]
+Then $v^2\ge x\ge\mu$ and expansion using $(\sqrt{x^2+u^2}-x)(\sqrt{x^2+u^2}+x)=u^2$ gives $S(y)^2=y$. Its positive real part singles it out: two such roots have sum with positive real part, so their difference vanishes by the difference of squares. Since $1/S(q)$ also has positive real part, $S(1/q)=1/S(q)$. The required lift is $a S(q)S(y(t))$. Its square is $a^2q y(t)=z(t)$, and evaluation at the endpoints gives $a,b$.
+
+For explicit evaluation on rational inputs, bound all intermediate magnitudes by interval arithmetic, starting from the rational endpoints and the taxicab norm. A square root of a rational $x\in[0,H^2]$ is enclosed by $m$ bisections of $[0,H]$ using rational-square comparisons, with width $H2^{-m}$. For enclosed arguments use both endpoints (clip the lower bound to zero). The inequality $|\sqrt{s}-\sqrt{t}|\le\sqrt{|s-t|}$ follows by squaring the larger of $\sqrt{s},\sqrt{t}$ minus the smaller. Thus input error $2^{-2j}$ suffices for square-root error $2^{-j}$ before rounding. One may replace $\sqrt\mu$ in all divisor lower bounds by $\min(1,\mu)$, a positive rational. For division use $|1/x-1/y|\le |x-y|/\delta^2$ when both positive arguments exceed $\delta$. Multiplication on bounded intervals satisfies $|xy-x'y'|\le |x||y-y'|+|y'||x-x'|$. These inequalities read backwards through the fixed displayed expression give PR precisions and a modulus on the edge. Rational evaluations and the same bounds extend the result to regular names.
+
+For uniqueness divide another lift by this one. A lower bound for the squared modulus of the constructed lift is $|z(t)|=|ab|\,|y(t)|\ge\lVert ab\rVert_\infty\mu>0$, so inversion has a uniform modulus here. The other lift is bounded as well since its square is the same bounded $z(t)$. Their quotient $e=x+iu$ satisfies $e^2=1$. Thus $x^2=1+u^2$ and $xu=0$, which allow division by the separated $x$, giving $u=0$. A sample of $x$ of accuracy $1/4$ now distinguishes $+1$ from $-1$. Choose a mesh fine enough, by the quotient modulus, that the change on one subinterval is at most $1/2$. For any rational $t\in[0,1]$, partition $[0,t]$ into that many equal pieces. The sign cannot change between consecutive samples. Bounded induction gives $e(t)=e(0)=1$. The modulus transfers equality to all named arguments. This is the connectedness argument with the decision and mesh made explicit.
+\end{proof}
+
+\begin{theorem}[Global section or a reversing loop]\label{th:mon}
+There is a PR procedure which either labels all vertices by signs and constructs compatible edge lifts, or gives a closed edge walk of negative sign product. In the latter case a continuous square-root section on the graph is impossible. Replacing any local representative $a_v$ by $-a_v$ preserves the answer.
+\end{theorem}
+\begin{proof}
+Consider addresses $(v,s)$ with $s\in\{-1,1\}$, with rules $(v,s)\Rightarrow(w,\epsilon_{vw}s)$ in both directions. In each component choose its least vertex and seed just its positive address; the components can first be computed by the finite merge construction. Use Theorem~\ref{th:closure} with $N=2|V|$. A path from the seed is a production proof by reading its edges. Conversely each newly reached address has one earlier predecessor or is a seed, so following the stored rules constructs a path. There is at least one reached sign at each vertex, because it belongs to the component of its seed.
+
+If both signs occur at a vertex, concatenate one path with the reverse of the other. It is a closed walk with product $-1$, of length at most $2(2|V|-1)$ after deleting repeated lifted vertices from each path. By Lemma~\ref{lem:sqrt-edge}, the two possible initial roots both change sign on continuation round this walk. Conversely, if each vertex has just one sign $s_v$, closure implies $s_w=\epsilon_{vw}s_v$. The lift on an oriented edge is $s_v$ times the edge lift of the lemma. Its endpoints match the assigned values, so the finitely many lifts glue to a continuous section on the graph. Quantitatively, one may take the maximum of the finitely many edge moduli with one precision bit of slack for two points joined across a common vertex; choose a distance below half a unit edge length in the graph path metric. Replacing $a_v$ by $\eta_v a_v$ multiplies the edge label by $\eta_v\eta_w$. These factors telescope on a closed walk. On a component a global assignment transforms by $s_v\mapsto\eta_v s_v$, with an optional common flip to restore the seed convention.
+\end{proof}
+
+The triangle relation on a filled face has the same interpretation: requiring product $+1$ around its boundary makes path transport invariant under replacement of two boundary edges by the remaining edge. On a graph, path reversal and deletion of an immediately retraced edge already give a functor from its free path groupoid to the permutations of two sheets. Saturation tests whether it admits a compatible choice of sheet; there is no need to enumerate the morphisms of this usually infinite groupoid. The numerical theorem speaks only about finite words, with the witness length bound given above.
+
+\paragraph{A computation.}
+Take the cycle in order with representatives $1,1+i,i,1-i$. Its projection is the polygon with vertices $1,2i,-1,-2i$. The edge labels are $+,+,-,+$. The procedure produces a negative loop, so the four local square roots cannot glue round this polygon. Removing its closing edge gives a path with the consistent representatives $1,1+i,i,-1+i$. Both are exercised by the accompanying code using only integer dot products.
+
+\input{sheets_figure}

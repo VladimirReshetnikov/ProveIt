@@ -1,0 +1,457 @@
+\section{Coupled rational actions: producing convergence and error bounds}
+\label{sec:small-gain}
+
+The previously reviewed scalar implicit-branch constructions already turn
+specific polynomial contractions into regular names.  The extension here is
+a reusable \emph{matrix} interface: it handles mutually dependent coordinates,
+precision-dependent rational actions, anisotropic error certificates, and
+bounded-delay coordinate evaluation.  Its hypotheses and conclusions concern
+only finite rational calculations.  No ideal map on a completed real space is
+needed to construct the output.
+
+\subsection{Finite input data and the approximate-action contract}
+
+Fix a positive dimension $d$.  Let
+$D=\prod_{i<d}[\ell_i,u_i]\subseteq\mathbb Q^d$ be a nonempty rational box,
+with a specified seed $x_0\in D$.  Let $w_i>0$ be rational weights and put
+\[
+ |v|_w=\max_{i<d}\frac{|v_i|}{w_i},\qquad
+ d_w(x,y)=|x-y|_w,\qquad e_p=2^{-p}.
+\]
+The maximum is the output of a finite scan.  For an integer $s\ge1$ put
+$c=1-1/s$.  A small-gain certificate consists of a nonnegative rational
+matrix $A$ and the finite inequalities
+\begin{equation}
+ Aw\le cw.                                      \tag{SG1}
+\end{equation}
+All vector inequalities are componentwise.  A rational number $R\ge0$
+with $u_i-\ell_i\le Rw_i$ is a diameter certificate.
+
+Let $E(x,p)$ be a \emph{fixed} primitive recursive rational-vector program.
+Its input contracts are
+\begin{align}
+ x\in D&\Longrightarrow E(x,p)\in D,              \tag{SG2}\\
+ |E(x,p)-E(y,q)|
+ &\le A|x-y|+(e_p+e_q)w\quad(x,y\in D).           \tag{SG3}
+\end{align}
+These formulas are universally closed arithmetic contracts for the fixed
+program, not a proposed universal evaluator for arbitrary primitive
+recursive program codes.  In particular, putting $x=y$ in (SG3) supplies
+the required coherence between work precisions.  From (SG1)--(SG3),
+\begin{equation}
+ d_w(E(x,p),E(y,q))\le c\,d_w(x,y)+e_p+e_q.       \tag{SG4}
+\end{equation}
+Indeed $|x-y|\le d_w(x,y)w$; multiply this inequality by $A\ge0$,
+use (SG1), and divide each coordinate by its positive weight.
+
+\subsection{A finite comparison principle}
+
+\begin{lemma}[Weighted maximum principle]
+\label{lem:weighted-maximum}
+Suppose (SG1) holds.  For rational vectors $v,r,z$, if
+\[
+ v\le Av+r,\qquad z\ge Az+r,
+\]
+then $v\le z$.
+\end{lemma}
+\begin{proof}
+Set $h=v-z$.  The two hypotheses give $h\le Ah$.
+Compute $M=\max_{i<d}h_i/w_i$ and an index attaining the maximum.
+If $M\le0$, the conclusion follows.  If $M>0$, choose an attaining
+index $i$.  Since $h_j\le Mw_j$ and $A_{ij}\ge0$,
+\[
+ Mw_i=h_i\le(Ah)_i\le M(Aw)_i\le cMw_i.
+\]
+Thus $(1-c)Mw_i\le0$, contrary to $1-c=1/s>0$.
+This is a decidable rational case split and a finite maximum, not a maximum
+principle for functions on an infinite domain.
+\end{proof}
+
+Define the scalar and vector residuals by
+\[
+ r_p(x)=d_w(x,E(x,p))+e_p,\qquad
+ \rho_p(x)=|x-E(x,p)|+e_pw.
+\]
+The triangle inequality and (SG3) give
+\begin{equation}
+ |x-y|\le A|x-y|+\rho_p(x)+\rho_q(y).             \tag{SG5}
+\end{equation}
+The scalar consequence of (SG5) is
+\begin{equation}
+ d_w(x,y)\le s\bigl(r_p(x)+r_q(y)\bigr).         \tag{SG6}
+\end{equation}
+For completeness, the triangle inequality first gives
+$d_w(x,y)\le c\,d_w(x,y)+r_p(x)+r_q(y)$.
+Multiply by $s$ and cancel $(s-1)d_w(x,y)$ on the two sides.
+This produces an explicit isolation modulus from a finite matrix
+certificate.  It does not ask the user to supply an unspecified uniqueness
+modulus.
+
+\subsection{A regular-name producer with an explicit schedule}
+
+Choose natural numbers $H,G$ satisfying
+\[
+ sR\le2^H,\qquad s(2s+1)\le2^G.                 \tag{SG7}
+\]
+These can be found by bounded search: for a nonnegative rational $b$,
+search $h\le\lceil b\rceil+1$ for $b\le2^h$.
+The elementary inequality $h+1\le2^h$ proves the bound sufficient.
+For fixed work precision $p$, define
+\[
+ x^p_0=x_0,\qquad x^p_{n+1}=E(x^p_n,p).
+\]
+For requested output precision $k$, set
+\begin{equation}
+ P(k)=k+G+1,\qquad N(k)=s(k+H+1),\qquad
+ Q(k)=x^{P(k)}_{N(k)}.                           \tag{SG8}
+\end{equation}
+
+\begin{theorem}[Coupled approximate-action producer]
+\label{thm:small-gain-producer}
+Under (SG1)--(SG3) and the diameter certificate, the fixed primitive
+recursive program (SG8) satisfies, for all $k,l$,
+\begin{align}
+ Q(k)&\in D,                                    \tag{SG9}\\
+ s\,r_{P(k)}(Q(k))&\le e_k,                     \tag{SG10}\\
+ d_w(Q(k),Q(l))&\le e_k+e_l.                    \tag{SG11}
+\end{align}
+It therefore produces a regular rational name.  Every other pair of fixed
+programs $Z(k),P_Z(k)$ satisfying $Z(k)\in D$ and
+$s r_{P_Z(k)}(Z(k))\le e_k$ names the same solution, with the explicit
+cross-bound
+\[
+ d_w(Q(k),Z(l))\le e_k+e_l.
+\]
+Moreover, for every $k,p$,
+\begin{equation}
+ d_w(Q(k),E(Q(k),p))\le e_k/s+e_p.              \tag{SG12}
+\end{equation}
+Thus the fixed-point assertion itself has a finite requested-precision
+meaning.
+\end{theorem}
+\begin{proof}
+Invariance (SG9) follows by induction from (SG2).
+Put $\delta_n=d_w(x^p_n,x^p_{n+1})$.
+The diameter certificate gives $\delta_0\le R$, and (SG4) gives
+$\delta_{n+1}\le c\delta_n+2e_p$.
+Induction proves
+\[
+ \delta_n\le c^nR+2se_p:
+\]
+the step uses $cs=s-1$ to obtain
+$c(c^nR+2se_p)+2e_p=c^{n+1}R+2se_p$.
+Consequently
+\begin{equation}
+ r_p(x^p_n)\le c^nR+(2s+1)e_p.                 \tag{SG13}
+\end{equation}
+
+Here is a purely rational estimate for the contraction clock.
+Induction on $n$ proves
+$c^n(1+n/s)\le1$, because
+\[
+ c\bigl(1+(n+1)/s\bigr)
+ =1+n/s-(n+1)/s^2\le1+n/s.
+\]
+Taking $n=s$ gives $c^s\le1/2$.  Induction on $a$ therefore gives
+$c^{sa}\le2^{-a}$.  This proof includes $s=1$, when $c=0$.
+Substitute $n=N(k)$ and $p=P(k)$ into (SG13).  By (SG7),
+\[
+ \begin{split}
+ s r_{P(k)}(Q(k))
+ &\le sR\,2^{-(k+H+1)}
+       +s(2s+1)2^{-(k+G+1)}\\
+ &\le e_k/2+e_k/2=e_k.
+ \end{split}
+\]
+This proves (SG10).  Apply (SG6) to prove (SG11) and the uniqueness
+cross-bound.  Finally, apply (SG3) with equal point inputs and precisions
+$P(k),p$.  Its contribution $e_{P(k)}+e_p$, together with the direct
+residual, is $r_{P(k)}(Q(k))+e_p\le e_k/s+e_p$.
+\end{proof}
+
+The construction proves regularity before invoking any interpretation by
+real numbers.  If regular names are subsequently interpreted as real
+vectors, (SG12) is exactly the fixed-point conclusion.  An arbitrary
+primitive recursive sequence is not declared convergent, and an arbitrary
+computable map is not declared an admissible input.
+
+\subsection{Anisotropic a posteriori error and perturbation}
+
+\begin{theorem}[A finite supersolution is an error certificate]
+\label{thm:anisotropic-residual}
+Let $x\in D$, let $p$ be a work precision, and let $z\ge0$ be a rational
+vector satisfying the finite test
+\begin{equation}
+ z\ge Az+\rho_p(x).                             \tag{SG14}
+\end{equation}
+Then every output of (SG8) satisfies
+\begin{equation}
+ |x-Q(k)|\le z+e_kw.                            \tag{SG15}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $v=|x-Q(k)|$.  Equation (SG5) gives
+$v\le Av+\rho_p(x)+\rho_{P(k)}(Q(k))$.
+Since (SG10) bounds the last vector by $(e_k/s)w$, the vector
+$z+e_kw$ is a supersolution:
+\[
+ A(z+e_kw)+\rho_p(x)+(e_k/s)w
+ \le z+e_k(c+1/s)w=z+e_kw.
+\]
+Apply Lemma~\ref{lem:weighted-maximum}.
+\end{proof}
+
+The same proof treats parameter variation.  Suppose $E,F$ share the box,
+weights and small-gain matrix, and have a cross-contract
+\[
+ |E(x,p)-F(y,q)|\le A|x-y|+b+(e_p+e_q)w
+\]
+with a nonnegative rational vector $b$.  If $z\ge Az+b$, their produced
+names satisfy
+\begin{equation}
+ |Q_E(k)-Q_F(l)|\le z+(e_k+e_l)w.               \tag{SG16}
+\end{equation}
+Indeed the vector of their differences satisfies the comparison inequality
+with forcing $b+(e_k+e_l)w/s$; add $(e_k+e_l)w$ to the supersolution.
+When $b=B|a-a'|$ for finite parameter data, this is an explicit modulus
+for the solution's dependence on those parameters.
+
+\subsection{Producing action contracts from polynomial data}
+
+The approximate-action interface has a concrete finite source.  Work in the
+centred box $|x_i|\le R_i$ and fix a finite list of multi-indices $\alpha$.
+For every output coordinate, let $a_{i\alpha}(p)$ be fixed rational
+coefficient programs with certified bounds
+\[
+ |a_{i\alpha}(p)|\le M_{i\alpha},\qquad
+ |a_{i\alpha}(p)-a_{i\alpha}(q)|
+       \le\beta_{i\alpha}(e_p+e_q).
+\]
+Set $F_i(x,p)=\sum_\alpha a_{i\alpha}(p)x^\alpha$, and calculate
+\[
+ V_i=\sum_\alpha\beta_{i\alpha}\prod_jR_j^{\alpha_j},\qquad
+ A_{ij}=\sum_{\alpha:\alpha_j>0}
+ M_{i\alpha}\alpha_jR_j^{\alpha_j-1}
+                    \prod_{h\ne j}R_h^{\alpha_h}.
+\]
+An empty product is $1$, and the displayed restriction excludes negative
+exponents even when a radius is zero.  Successively change the coordinates
+in $x^\alpha$ to the coordinates of $y^\alpha$ and use
+$u^n-v^n=(u-v)\sum_{h<n}u^hv^{n-1-h}$.  This proves the finite inequality
+\[
+ |F(x,p)-F(y,q)|\le A|x-y|+(e_p+e_q)V.
+\]
+If the rational test
+\[
+ \sum_\alpha M_{i\alpha}\prod_jR_j^{\alpha_j}\le R_i
+ \quad(i<d)
+\]
+passes, every $F(\cdot,p)$ maps the box into itself.  Choose a natural $g$
+with $V_i\le2^gw_i$ for every coordinate and define
+$E(x,p)=F(x,p+g)$.  The preceding inequality becomes precisely (SG3),
+and invariance gives (SG2).  The weights can be supplied directly or
+constructed by (SG17).  These are polynomial coefficient, matrix, and
+rational tests; no analytic mean-value theorem or real equality decision
+is being imported.
+
+A rational approximate inverse $B$ for a polynomial system $P(x)=0$ can
+be used by expanding $F(x)=x-BP(x)$ about a rational centre.  Whenever
+the finite box and small-gain tests pass, the theorem supplies a local
+root and all the preceding error and perturbation estimates.  To conclude
+$P=0$ from the fixed-point equation, include a finite inverse certificate
+for $B$, or directly a left-inverse certificate $CB=I$.  Without that
+certificate the fixed-point assertion only implies $BP=0$.
+More explicitly, if the rational family is expanded exactly as
+$E(x,p)=x-BP_{p+g}(x)$, then (SG12) and $CB=I$ give
+\[
+ |P_{p+g}(Q(k))|\le (e_k/s+e_p)|C|w,
+\]
+where $|C|$ is entrywise absolute value.  For requested coordinate error
+$e_n$, compute $M=\max_i(|C|w)_i$, choose $a$ with $2M\le2^a$, and
+take $k=p=n+a$.  The displayed residual is at most $e_n$.
+For named coefficients, these finite inequalities, together with the
+coefficient contracts, are the asserted equality $P=0$.  The construction
+makes no decision about a singular Jacobian or the existence of a suitable
+local box.
+
+\subsection{Producing the certificates by finite matrix arithmetic}
+
+One need not guess weights.  Suppose a supplied positive integer $m$ and
+rational $0\le\theta<1$ pass the test
+\begin{equation}
+ A^m\mathbf1\le\theta\mathbf1.                 \tag{SG17}
+\end{equation}
+Set
+\[
+ w=\sum_{j<m}A^j\mathbf1,\qquad W=\max_iw_i,
+ \qquad s=\max\left(1,\left\lceil\frac{W}{1-\theta}\right\rceil\right).
+\]
+Then $w_i\ge1$ and
+\[
+ Aw+\mathbf1=w+A^m\mathbf1,
+ \qquad Aw+(1-\theta)\mathbf1\le w.
+\]
+Since $w_i/s\le W/s\le1-\theta$, this proves (SG1).
+Only a finite power and finite sums occur.  The supplied value $m$, or a
+separately proved bounded search for such a value, is essential; the rule
+does not say to keep taking powers until success.
+
+There is also a finite constructor for (SG14), without inverting a matrix.
+For any nonnegative rational vector $r$ and any natural $n$, put
+\begin{equation}
+ u_n=\sum_{j<n}A^jr,\qquad
+ t_n=|A^nr|_w,\qquad z_n=u_n+s t_nw.             \tag{SG18}
+\end{equation}
+The finite geometric identity is
+$Au_n+r=u_n+A^nr$.  Therefore
+\[
+ Az_n+r
+ =u_n+A^nr+s t_nAw
+ \le u_n+t_nw+sct_nw=z_n.
+\]
+Taking $r=\rho_p(x)$ constructs an error certificate for every $n$.
+The remainder has the explicit estimate
+$s t_n\le s c^n|r|_w$, by induction using (SG1).
+Increasing $n$ improves the certified truncation error at the known block
+rate $c^s\le1/2$.  No matrix inverse, spectral-radius oracle, or infinite
+Neumann series is a premise of this construction.
+
+\subsection{A coupled example that fails the unweighted row test}
+
+On $D=[0,4]\times[0,1]$ consider the rational map
+\[
+ T(x,y)=(1+2y,\ x/8+1/4),\qquad
+ A=\begin{pmatrix}0&2\\1/8&0\end{pmatrix}.
+\]
+It maps $D$ into $D$, and its first row has sum $2$, so the unweighted
+supremum norm does not certify contraction.  With $w=(4,1)$ and $s=2$,
+however, $Aw=w/2$.  Its fixed point is $(2,1/2)$.
+The approximate action can be obtained by rounding each coordinate of
+$T(x,y)$ down to a multiple of $w_ie_p$; the result remains in $D$ and
+has coordinate error at most $w_ie_p$.  Thus (SG3) holds exactly.
+The diameter bound is $R=1$; the choices $H=1,G=4$ give the complete
+schedule $N(k)=2(k+2)$ and $P(k)=k+5$.
+
+For an exact-action residual demonstration, take
+$x=(199/100,501/1000)$ and use
+$r=|x-T(x)|=(3/250,9/4000)$.  The scalar weight certificate gives
+$z_0=(3/125,3/500)=(0.024,0.006)$.
+Formula (SG18) at $n=2$ gives
+$z_2=(9/400,21/4000)=(0.0225,0.00525)$.
+Both pass the exact rational supersolution test $z\ge Az+r$.
+For comparison, the exact solution of $(I-A)z=r$ is
+$(11/500,1/200)=(0.022,0.005)$, which also passes.  These are bounds
+for the error of the supplied candidate, not assertions that the bounds
+are attained.  The accompanying reference program checks every fraction.
+
+\subsection{Bounded-delay coordinate evaluation}
+\label{sec:async-small-gain}
+
+The matrix interface also permits cyclic dependencies to be evaluated one
+coordinate at a time.  A finite run consists of states $X^t\in D$.
+At step $t$, a specified set of coordinates is updated.  For an updated
+coordinate $i$, choose indices
+\[
+ \max(0,t-D_0)\le\tau(t,i,j)\le t\quad(j<d),
+\]
+form the mixed vector $v_j=X^{\tau(t,i,j)}_j$, and set
+$X^{t+1}_i=E_i(v,p)$; other coordinates are retained.
+The Cartesian-box hypothesis ensures that every mixed vector belongs to
+$D$.  Let $B\ge1$ be an update-window bound, and put $L=B+D_0$.
+It suffices that, in the first $B$ steps of each block
+$[nL,(n+1)L)$ used by the run, every coordinate is updated at least once.
+This is a decidable finite coverage certificate.
+
+\begin{theorem}[A certified clock for delayed coordinate runs]
+\label{thm:async-small-gain}
+For any finite run with the stated delay and coverage certificates, any
+$j$, and any block count $n$, one has
+\begin{equation}
+ d_w(X^{nL},Q(j))\le c^nR+se_p+e_j.            \tag{SG19}
+\end{equation}
+Consequently, choose $H_0,G_0$ with $R\le2^{H_0}$ and $s\le2^{G_0}$.
+Run the certified schedule at precision
+$p(k)=k+G_0+2$ for
+\[
+ T(k)=L\,s(k+H_0+2)
+\]
+steps, and call its output $Y(k)$.  Then $Y$ is a regular name for the same
+solution as $Q$, with
+\begin{equation}
+ d_w(Y(k),Q(j))\le e_k/2+e_j.                  \tag{SG20}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Fix $j$.  When a coordinate is updated from a mixed vector whose
+coordinates are all within weighted error $M$ of $Q(j)$, (SG3) and the
+residual estimate (SG10) bound its new weighted error by
+\[
+ cM+e_p+r_{P(j)}(Q(j))
+ \le cM+e_p+e_j/s.
+\]
+Put $K=se_p+e_j$; then $cK+e_p+e_j/s=K$.
+At the beginning of block $n$, use the invariant that every state in
+the most recent delay window is within $c^nR+K$ of $Q(j)$.
+It holds at block zero by the diameter bound, with any prehistory replaced
+by the seed.  An update preserves the envelope and improves that coordinate
+to $c^{n+1}R+K$.  After the first $B$ steps every coordinate has received
+such an update.  During the next $D_0$ steps the weaker old-history
+envelope still applies, so every further update also obeys the improved
+bound.  At the end of the block all states in the last delay window are
+past the first $B$ steps and hence obey the improved bound.  This proves
+the block invariant and (SG19).
+
+At the declared horizon, $c^{s(k+H_0+2)}R\le e_k/4$ and
+$se_{p(k)}\le e_k/4$, proving (SG20).
+To prove regularity without an infinitary limiting argument, for any
+$k,l$ choose the finite index $j=k+l+2$.  The triangle inequality through
+$Q(j)$ gives
+\[
+ d_w(Y(k),Y(l))\le(e_k+e_l)/2+2e_j\le e_k+e_l.
+\]
+Taking $j=k$ in (SG20) gives
+$d_w(Y(k),Q(k))\le3e_k/2$, the usual regular-name equality bound.
+\end{proof}
+
+There is no assertion here about an arbitrary fair schedule.  The finite
+coverage and delay bounds are the resources that produce the primitive
+recursive clock.  They may be supplied by a periodic scheduler, or verified
+for the concrete finite run.  Without them, a coordinate may be neglected
+for an unbounded amount of time.
+
+\subsection{Primitive recursion and the induction audit}
+
+Encode signed rationals by an integer numerator and a positive natural
+denominator; all comparisons are cross-products.  Finite vectors and
+matrices are sequence codes with explicit dimensions.  Bounds such as
+$Aw\le cw$ and membership in $D$ are Boolean folds over the dimension.
+The maximum in Lemma~\ref{lem:weighted-maximum} is a left-to-right finite
+scan returning both its value and a first attaining index.
+
+Every displayed procedure is built from composition and primitive recursion:
+matrix products and powers, finite sums, rational maxima, the bounded search
+for $H,G$, the precision map, and the fixed-precision orbit.  The necessary
+induction invariants are finite arithmetic formulas:
+\begin{itemize}
+\item for an orbit, $x_n\in D$ together with
+      $d_w(x_n,x_{n+1})\le c^nR+2se_p$;
+\item for a matrix power, $A^nw\le c^nw$ and the finite geometric identity;
+\item for a Neumann certificate, the computed prefix identity
+      $Au_n+r=u_n+A^nr$;
+\item for an asynchronous block, the Boolean conjunction of the old-history
+      envelope, the update mask, and the improved envelope for coordinates
+      already updated in that block.
+\end{itemize}
+The requested precision, work precision, matrix data, comparison-name index,
+and full finite horizon are held as numerical parameters during induction.
+No invariant quantifies over all names, all precisions, or a completed
+function space.  All bounded conjunctions are compiled to characteristic
+primitive recursive predicates before quantifier-free induction is used.
+
+To implement the results in the repository, first prove the rational and
+sequence-code algebra in the ordinary \texttt{Prf PRAAx} interface.  Then
+instantiate quantifier-free induction with the listed invariants and use
+simultaneous cut to insert the concrete action contracts.  A host Lean proof
+of the weighted inequalities is useful for checking the mathematics, but is
+not itself the corresponding object-iPRA derivation.  The attached outline
+records both boundaries explicitly.

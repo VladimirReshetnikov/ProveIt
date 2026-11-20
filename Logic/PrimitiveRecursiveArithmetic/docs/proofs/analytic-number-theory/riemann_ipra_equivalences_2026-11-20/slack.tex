@@ -1,0 +1,17 @@
+\subsection{A positive arithmetic certificate for each dyadic inequality}\label{sec:slack}
+Put \(a=D_n^2\) and \(b=nW^2\) for one packet. Its comparison can be expressed by positive equality alone. Keeping precisely the polynomial and cutoff quantifiers of each hypothesis, iPRA proves that its original matrix \(a\mathbin{\dot-}b=0\) can be replaced by any of
+\[
+  \exists w\;(w+a=b),\qquad
+  \exists! w\;(w+a=b),\qquad
+  J(b,a)+a=b.
+\]
+Here \(w\) is a natural number, allowing zero. \(J\) is a fixed primitive-recursive function. The first two formulations turn each inequality into a request for an additive witness. The third computes that witness from the two sides before checking an equality. No choice of witnesses across cutoffs is required.
+
+\paragraph{Extracting the witness.}
+Starting with \(R_0=a,\ J_0=0\), perform \(b\) steps. At step \(i\) put \(R_{i+1}=\operatorname{pred}(R_i)\), with \(\operatorname{pred}(0)=0\). If \(R_i=0\) put \(J_{i+1}=J_i+1\), and otherwise keep \(J_{i+1}=J_i\). Then \(R_i=a\mathbin{\dot-}i\) by the defining equations, and \(J(b,a)=J_b\). Quantifier-free induction proves
+\[
+                        R_i+i=J_i+a .
+\]
+At zero this is \(a=a\). If \(R_i=0\), both sides increase by one. Otherwise \(R_i=S(\operatorname{pred}(R_i))\); the decrement to \(R_i\) cancels the increment to \(i\) and the right side stays fixed. The case disjunction is itself a quantifier-free induction on a single natural. If \(a\mathbin{\dot-}b=0\), the invariant gives \(J(b,a)+a=b\).
+
+Conversely, \(a\mathbin{\dot-}(w+a)=0\) for every \(w\). For the base \(w=0\), induction on \(t\) first gives \(Sa\mathbin{\dot-}St=a\mathbin{\dot-}t\) with \(a\) free; diagonal induction then gives \(a\mathbin{\dot-}a=0\). Increasing \(w\) applies predecessor to an already zero residual. Thus any proposed equality \(w+a=b\) implies the original test. Finally, cancellation of the common summand \(a\) follows by quantifier-free induction on \(a\) using successor injectivity, giving uniqueness. The Lean proof expands the actual outer composition of \code{RiemannIPRA.excess} to identify exactly these two inputs. The three existential theorems are \code{PacketSlack.rh_iff}, \code{PacketSlack.grh_iff}, and \code{PacketSlack.erh_iff}; the corresponding \code{_iff_cert} theorems cover the calculated and uniquely witnessed versions.

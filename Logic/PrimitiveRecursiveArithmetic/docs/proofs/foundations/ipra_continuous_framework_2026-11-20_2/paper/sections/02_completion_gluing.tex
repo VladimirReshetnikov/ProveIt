@@ -1,0 +1,765 @@
+\providecommand{\anE}{\varepsilon}
+\providecommand{\anD}{\mathcal D}
+\providecommand{\anH}{\widehat}
+
+\section{Continuous completion as a reusable interface}
+\label{sec:continuous-completion}
+
+The present section isolates three operations that turn finite analytic
+estimates into continuous mathematics: extending a map to a completion,
+gluing local maps with explicit weights, and identifying a completed point
+from an approximate solution procedure.  The distinction between these
+operations matters.  A Cauchy estimate by itself does not identify the
+completed value of a function, and a collection of correct local answers
+does not by itself give a continuous global answer.
+
+There is already substantial relevant work in the inspected repository.
+\path{CoherentMinimizer.cauchy} derives a regular name from a quantitative
+uniqueness modulus; its source explicitly leaves canonical evaluation and
+uniqueness of the completed point outside that theorem.
+\path{StrongMinimizer.selected_pair_stable} obtains a distance estimate
+for actual finite-net minimizers from a strong-convexity certificate.
+\path{FiniteGluing.glue_restrict} glues exactly agreeing finite tables by
+the first applicable patch.  The earlier analytic embedding packet also
+constructs simple analytic branches under a derivative separation
+certificate.  We reuse these principles.  The additions here are the
+completion interface that finishes the value-identification step, a
+quantitative continuous gluing theorem with approximate data, and a
+singular inverse example that needs a H\"older modulus rather than a
+nonzero derivative.
+
+\subsection{Metric presentations and the scope of the statements}
+
+Put $\anE_n=2^{-n}$.  For the exact rational core, a metric presentation
+consists of a decidable set $D$ of natural-number codes and a fixed
+primitive-recursive rational function $d:D\times D\to\Q_{\ge0}$ satisfying
+symmetry, $d(x,x)=0$, and the triangle inequality.  Distinct codes may have
+distance zero.  All membership and metric laws have explicitly specified
+arithmetic formulas; an application must prove them or retain them as
+premises.  We do not derive a metric law from the fact that its checker
+terminates.
+
+A regular name is a sequence $x=(x_n)_{n\ge0}$ in $D$ with
+\begin{equation}
+ d(x_m,x_n)\le\anE_m+\anE_n.
+ \label{eq:an-regular}
+\end{equation}
+For internal use the sequence is a fixed primitive-recursive evaluator
+$a(p,n)$, where $p$ is an ordinary numerical parameter.  Quantifying over
+all names is external notation.  Each arithmetic theorem is a schema in
+the fixed evaluator and its supplied contracts; it does not evaluate an
+arbitrary code for a primitive-recursive program.
+
+The semantic statements below also hold for arbitrary metric spaces.
+For a general effective presentation, the distance itself has rational
+approximants $\Delta(x,y,t)$ with error at most $\anE_t$.  Then
+$d(x,y)\le q$ abbreviates
+\[
+ \forall t\quad \Delta(x,y,t)\le q+\anE_t.
+\]
+The exact rational version makes the arithmetic kernel easiest to see.
+The extension to distance names is addressed after the main construction.
+No induction is performed on a statement quantifying over real points.
+
+\begin{lemma}[Removing a vanishing rational error]
+\label{lem:an-small-error}
+For rational numbers $u,v$, if $u\le v+C\anE_n$ for every natural $n$,
+where $C\ge0$ is rational, then $u\le v$.  The contradiction index can be
+chosen primitive recursively from the rational codes of $u,v,C$.
+\end{lemma}
+
+\begin{proof}
+Rational order is decidable.  In the case $u>v$, write $u-v=a/b$ with
+positive integers $a,b$, so $u-v\ge1/b$.  Choose an integer $K\ge C$ and
+put $n=Kb+1$.  The elementary inequality $2^n> Kb$ gives
+$C\anE_n<1/b$ when $K>0$, contradicting the assumed inequality.  If
+$K=0$, the contradiction is immediate.  Integer arithmetic, bounded
+rounding, and the proof of $2^n\ge n+1$ use quantifier-free induction.
+The universal premise is instantiated once, at the displayed numerical
+index; it is not the induction formula.
+\end{proof}
+
+Define the represented distance bound
+\begin{equation}
+ \anH d(x,y)\le q
+ \quad\Longleftrightarrow\quad
+ \forall m,n\;
+ d(x_m,y_n)\le q+\anE_m+\anE_n,
+ \qquad q\in\Q_{\ge0}.
+ \label{eq:an-completion-order}
+\end{equation}
+Write $x\sim y$ when this holds with $q=0$.  Reflexivity and symmetry
+follow immediately.  For transitivity, insert an intermediate sample
+$y_t$ and use the two hypotheses to obtain
+$d(x_m,z_n)\le\anE_m+\anE_n+2\anE_t$; then apply
+Lemma~\ref{lem:an-small-error}.  The same proof gives the triangle
+inequality for the represented distance bounds.  Thus regular names
+modulo $\sim$ form the represented completion $\anH D$.  Here
+completeness is asserted for Cauchy families with a supplied joint family
+of names, as in Theorem~\ref{thm:an-diagonal}.  No choice of representatives
+for an arbitrary abstract sequence of quotient points is inferred.
+Its distance is
+represented by the rational samples
+\[
+ d(x_{n+2},y_{n+2}).
+\]
+The reverse triangle inequality bounds their pairwise difference by
+$2\anE_{m+2}+2\anE_{n+2}\le\anE_m+\anE_n$.
+Constant names embed $D$ into $\anH D$, and
+\begin{equation}
+ \anH d(x,\operatorname{const}(x_n))\le\anE_n.
+ \label{eq:an-density}
+\end{equation}
+Indeed, the defining inequalities are precisely regularity, with an
+additional nonnegative error allowance for the constant name.
+
+\begin{theorem}[Explicit diagonal completion]
+\label{thm:an-diagonal}
+Let $x_{i,p}\in D$ be a fixed two-parameter family such that every
+row $p\mapsto x_{i,p}$ is a regular name, and suppose
+\[
+ d(x_{i,p},x_{j,q})
+ \le\anE_i+\anE_j+\anE_p+\anE_q
+ \quad\text{for all }i,j,p,q.
+\]
+The diagonal $z_n=x_{n+2,n+2}$ is a regular name, and its completed
+distance from the $j$th name is at most $\anE_j$.  In particular, a
+regular sequence of regular names with this explicit joint evaluator
+can be flattened primitive recursively.
+\end{theorem}
+
+\begin{proof}
+Substitute $(i,p)=(m+2,m+2)$ and $(j,q)=(n+2,n+2)$ to obtain
+$d(z_m,z_n)\le2\anE_{m+2}+2\anE_{n+2}$, which is at most the
+regularity budget.  For the distance to the $j$th name, substitute only
+$(i,p)=(m+2,m+2)$:
+$d(z_m,x_{j,q})\le2\anE_{m+2}+\anE_j+\anE_q
+\le\anE_m+\anE_j+\anE_q$.
+This is exactly~\eqref{eq:an-completion-order}.  There is one fixed
+joint evaluator in the hypothesis; the proof never chooses a name for
+each member of an arbitrary sequence of completed points.
+\end{proof}
+
+\subsection{Extension, continuity, and uniqueness}
+
+Let $f:D\to E$ be a fixed primitive-recursive map between rational
+metric presentations.  A dyadic uniform-continuity modulus is a function
+$\mu:\N\to\N$ satisfying
+\begin{equation}
+ d_D(u,v)\le\anE_{\mu(k)}
+ \quad\Longrightarrow\quad
+ d_E(f(u),f(v))\le\anE_k.
+ \label{eq:an-map-modulus}
+\end{equation}
+Replace $\mu(k)$ by $\max_{j\le k}\mu(j)$ to make it nondecreasing.
+This replacement is primitive recursive, and its maximum invariant is
+quantifier free.  Define
+\begin{equation}
+ h(n)=\mu(n+2)+2,
+ \qquad (\mathsf{Ext}_f x)_n=f(x_{h(n)}).
+ \label{eq:an-extension}
+\end{equation}
+
+\begin{theorem}[Quantitative universal extension]
+\label{thm:an-extension}
+Formula~\eqref{eq:an-extension} produces a regular name, respects
+$\sim$, and extends $f$ on constant names.  The induced map
+$\anH f:\anH D\to\anH E$ has modulus
+\[
+ \nu(k)=\mu(k+2)+2.
+\]
+It is the unique uniformly continuous extension of $f$ to these
+completions.  All sample constructions and index changes are primitive
+recursive when the input routines and moduli are fixed primitive
+recursive functions.
+\end{theorem}
+
+\begin{proof}
+If $m\ge n$, monotonicity of $h$ and regularity give
+\[
+ d_D(x_{h(m)},x_{h(n)})
+ \le2\anE_{h(n)}
+ =\tfrac12\anE_{\mu(n+2)}.
+\]
+The modulus therefore bounds the output distance by $\anE_{n+2}$,
+which is stronger than the required regularity inequality.
+
+Suppose now $\anH d_D(x,y)\le\anE_{\nu(k)}$.  For $m,n\ge k$,
+the corresponding input distance is at most
+\[
+ \anE_{\nu(k)}+\anE_{h(m)}+\anE_{h(n)}
+ \le 3\anE_{\mu(k+2)+2}
+ \le\anE_{\mu(k+2)}.
+\]
+Consequently the distance between these output samples is at most
+$\anE_{k+2}$.  Insert such sufficiently late samples between any two
+fixed output samples, use their regularity, and let their indices tend
+to infinity by Lemma~\ref{lem:an-small-error}.  This proves that the
+completed output distance is at most $\anE_{k+2}$, hence at most
+$\anE_k$.  If $x\sim y$, the same argument applies for every $k$ and
+proves output equivalence.  Constant names are preserved by inspection.
+
+For uniqueness, let $g$ be another extension with a supplied uniform
+modulus $\lambda$.  Fix a name $x$ and an output precision $k$.
+Choose
+$n\ge\max(\nu(k+2),\lambda(k+2))$.  By
+\eqref{eq:an-density}, both $\anH f(x)$ and $g(x)$ are within
+$\anE_{k+2}$ of the common value $f(x_n)$.  Their mutual distance is
+at most $2\anE_{k+2}$ for every $k$, so they are equivalent.
+This argument uses a maximum of two known indices, not a search for a
+continuity modulus.
+\end{proof}
+
+Identity maps and composition are preserved by this extension, as
+equalities of represented maps.  For composition, both candidate maps
+are uniformly continuous and agree on every constant name; uniqueness
+applies.  Equality of the raw output programs is neither needed nor
+generally true.  This is the useful categorical universal property of
+completion at the interface of the arithmetic and semantic layers.
+
+\paragraph{Distance names.}
+The proof used only triangle inequalities, uniform-continuity
+implications, and explicit positive slack.  With named distances,
+replace every final bound $d\le q$ by all rational tests
+$\Delta_t\le q+\anE_t$.  When an intermediate inequality contains a
+sum of $r$ distance observations, evaluate each to a precision $t$ for
+which $r\anE_t$ is below the allocated slack.  The displayed factors
+$1/2$ and $3/4$ provide such slack; non-strict limiting bounds are
+closed with Lemma~\ref{lem:an-small-error}.  The query index is computed
+by bounded doubling from the number of terms and requested precision.
+For real-valued semantic distances, this lemma is applied to the
+rational distance tests, not directly to an unencoded real quantity.
+The triangle and modulus laws for $\Delta$ are still explicit
+hypotheses.  This gives the same extension schema for effective metric
+presentations, including function spaces whose sup distances have only
+certified rational approximants.
+
+\section{Quantitative gluing of continuous local data}
+\label{sec:analytic-gluing}
+
+Exact membership in a chart is often a poor interface for a represented
+point near the chart boundary.  For a convex target, a finite weighted
+construction removes the need to select one chart.  Unlike exact
+finite-table gluing, it also remains quantitatively stable when the
+local values are only approximately compatible.
+
+\subsection{Data and the rational algorithm}
+
+Let $D$ be a rational metric presentation, let $c_1,\ldots,c_N\in D$,
+and let $r_i>0$ be rational.  Define
+\[
+ w_i(x)=\max(0,r_i-d(x,c_i)),
+ \qquad S(x)=\sum_{i=1}^N w_i(x).
+\]
+Fix a presented subdomain $D_0\subseteq D$ and assume a rational
+$\delta>0$ satisfies $S(x)\ge\delta$ for every valid code in $D_0$.
+All local contracts below are restricted to $D_0$, and every regular
+input name used in this section has all its samples in $D_0$.
+Thus the completed domain is $\widehat{D_0}$.  Membership of the limit
+alone would not justify denominator bounds for the sampled codes.
+The implementation retains the ambient metric presentation and a
+separate predicate for $D_0$, so centers may lie outside $D_0$ while
+remaining valid ambient points.  For each $i$ there is a fixed rational-vector
+evaluator $f_i(p,x)\in\Q^d$.  The finite family is either fixed
+externally or given by one fixed indexed evaluator; indices do not
+encode arbitrary programs.  It is required to be correct only when
+$w_i(x)>0$.  Use the $\ell^1$ norm
+$\norm{v}_1=\sum_{j<d}|v_j|$, which is an exact rational finite sum.
+Assume the finite local contracts
+\begin{align}
+ \norm{f_i(p,x)}_1&\le M,
+ && w_i(x)>0,
+ \label{eq:an-local-bound}\\
+ \norm{f_i(p,x)-f_i(q,y)}_1
+ &\le Ld(x,y)+\anE_p+\anE_q,
+ && w_i(x),w_i(y)>0,
+ \label{eq:an-local-lip}
+\end{align}
+where $M,L\ge0$ are rational.  These formulas include precision
+coherence by taking $x=y$.  The targets can be real vectors, or complex
+numbers represented by pairs of rationals; no complex order is used.
+
+Set a summand to zero when its weight is zero, and otherwise evaluate
+the local routine.  Define
+\begin{equation}
+ A_p(x)=\sum_i w_i(x)f_i(p,x),
+ \qquad U_p(x)=\frac{A_p(x)}{S(x)}.
+ \label{eq:an-glue}
+\end{equation}
+This is a total rational algorithm: division has a harmless zero
+default outside the certified domain, and the positive denominator
+contract proves that the default is never used on that domain.  No
+local routine is required to satisfy an analytic assertion outside its
+guard.  With exact rational distances the weight comparison is simply
+a decidable rational comparison.
+
+\begin{theorem}[Weighted gluing with sample errors]
+\label{thm:an-glue}
+The algorithm satisfies
+\begin{align}
+ \norm{U_p(x)}_1&\le M,\label{eq:an-glue-bound}\\
+ \norm{U_p(x)-U_q(y)}_1
+ &\le C d(x,y)+\anE_p+\anE_q,
+ \qquad C=L+\frac{2NM}{\delta}.
+ \label{eq:an-glue-lip}
+\end{align}
+If $j$ is active at $x$ and every active $i$ satisfies
+\begin{equation}
+ \norm{f_i(p,x)-f_j(q,x)}_1
+ \le\eta+\anE_p+\anE_q,
+ \label{eq:an-overlap}
+\end{equation}
+then
+\begin{equation}
+ \norm{U_p(x)-f_j(q,x)}_1
+ \le\eta+\anE_p+\anE_q.
+ \label{eq:an-glue-restrict}
+\end{equation}
+The error does not acquire a factor $N$ in this last estimate.
+\end{theorem}
+
+\begin{proof}
+The reverse triangle inequality and the fact that the positive-part
+function is $1$-Lipschitz give
+$|w_i(x)-w_i(y)|\le d(x,y)$ and
+$|S(x)-S(y)|\le Nd(x,y)$.  The coefficients $w_i(x)/S(x)$ are
+nonnegative and sum to one, proving~\eqref{eq:an-glue-bound}.
+
+Write $\alpha=w_i(x)$ and $\beta=w_i(y)$.  If both are positive,
+split the difference as
+\[
+ \alpha f_i(p,x)-\beta f_i(q,y)
+ =(\alpha-\beta)f_i(q,y)
+   +\alpha\bigl(f_i(p,x)-f_i(q,y)\bigr).
+\]
+Its norm is at most
+$M|\alpha-\beta|+
+\alpha(Ld(x,y)+\anE_p+\anE_q)$.
+If $\alpha=0$ or $\beta=0$, the same bound remains valid: the
+nonzero summand has norm at most $M|\alpha-\beta|$, and the extra
+term is nonnegative.  Thus no assertion about an inactive local
+value has been used.  Summing gives
+\[
+ \norm{A_p(x)-A_q(y)}_1
+ \le NMd(x,y)+S(x)
+       \bigl(Ld(x,y)+\anE_p+\anE_q\bigr).
+\]
+Finally,
+\[
+ \frac{A_p(x)}{S(x)}-\frac{A_q(y)}{S(y)}
+ =\frac{A_p(x)-A_q(y)}{S(x)}
+  +A_q(y)\frac{S(y)-S(x)}{S(x)S(y)}.
+\]
+Since $\norm{A_q(y)}_1\le MS(y)$ and $S(x)\ge\delta$, the first
+term contributes at most $(L+NM/\delta)d(x,y)+\anE_p+\anE_q$,
+and the second contributes at most $(NM/\delta)d(x,y)$.
+This proves~\eqref{eq:an-glue-lip}.
+To prove~\eqref{eq:an-glue-restrict}, subtract $f_j(q,x)$ inside
+the convex sum and apply~\eqref{eq:an-overlap} term by term.
+\end{proof}
+
+\subsection{Completion, coverage certificates, and exact gluing}
+
+Choose a natural $c\ge2$ with $C\le2^{c-2}$.  For a regular input
+name $x$, define the output samples
+\begin{equation}
+ b_n=U_{n+2}(x_{n+c}).
+ \label{eq:an-glue-name}
+\end{equation}
+Equation~\eqref{eq:an-glue-lip} gives
+\[
+ \norm{b_m-b_n}_1
+ \le C2^{-c}(\anE_m+\anE_n)
+      +\anE_{m+2}+\anE_{n+2}
+ \le\tfrac12(\anE_m+\anE_n).
+\]
+Hence the output is a regular name.  Applying the same finite estimate
+to equivalent input names proves extensionality.  The induced map on
+the completion is $C$-Lipschitz; the proof follows by inserting late
+samples and removing the vanishing error.  This argument directly
+allows approximate local evaluators, so it does not require an exact
+rational value of the local functions.
+
+The denominator hypothesis can itself be certified by a finite net.
+Suppose a finite list $v_1,\ldots,v_s$ covers the domain within distance
+$\rho$, and a finite calculation verifies
+\[
+ S(v_j)\ge\delta+N\rho\quad(j<s).
+\]
+For any covered point choose its supplied covering witness, use the
+$N$-Lipschitz bound for $S$, and obtain $S(x)\ge\delta$.  Internally
+the coverage witness is a bounded search result or part of the domain
+contract.  A claimed arbitrary open cover does not manufacture this
+net or its coverage proof.
+
+If the fixed local routines agree on every overlap to all requested
+precisions, use~\eqref{eq:an-glue-restrict} with
+$\eta=\anE_k$ for arbitrary $k$.  The completed global value equals
+each active local value.  At a completed point with positive clearance
+inside a chart, sufficiently late rational samples remain in that
+chart, so the same equality holds there.  Positive clearance follows
+from the robust cover data for at least one chart; exact chart identity
+need not be selected by the program.
+
+If one has only a fixed overlap tolerance $\eta$, the theorem gives
+approximate gluing with exactly that tolerance.  A different family of
+local answers at every precision must additionally have a cross-stage
+coherence contract.  Same-stage agreement is insufficient: all charts
+could agree on $0$ at even stages and on $1$ at odd stages.  Thus the
+construction does not turn independent approximate local solutions
+into an exact global solution without a coherence premise.
+
+\paragraph{Named distances and safe support tests.}
+If $d(x,c_i)$ is approximated by $\Delta_i(t)$ with error
+$\anE_t$, use the inner weight
+\[
+ \widetilde w_i=\max(0,r_i-\Delta_i(t)-\anE_t).
+\]
+Then $0\le\widetilde w_i\le w_i$,
+$w_i-\widetilde w_i\le2\anE_t$, and
+$\widetilde w_i>0$ certifies genuine membership in the local domain.
+If $2N\anE_t\le\delta/2$, their sum is at least $\delta/2$.
+Replacing the exact weights by these inner weights changes the
+normalized sum by at most
+\[
+ \frac{8MN}{\delta}\anE_t.
+\]
+Indeed, the numerator changes by at most
+$M\sum_i(w_i-\widetilde w_i)$; the denominator correction contributes
+the same amount before division by a denominator at least $\delta/2$.
+Choose $t$ so this additional error fits the requested output budget.
+This supplies a finite safe algorithm even when exact chart membership
+is not decidable from a metric name.
+
+The target convexity is essential.  Weighted averages of manifold
+points need not lie on the manifold.  A manifold-valued version needs
+an explicit retraction from the convex neighborhood, together with its
+domain margin and continuity modulus.  None is inferred from the
+word ``manifold.''
+
+\section{From approximate solutions to an identified completed point}
+\label{sec:residual-recovery}
+
+The repository's coherence obstruction prevents an unrestricted
+inference from finite solvability at every horizon to one computable
+coherent branch.  A positive theorem must specify the extra information
+that rules out that obstruction.  Here it is a modulus bounding the
+diameter of the approximate solution sets.  This is the same core
+principle already used by \texttt{CoherentMinimizer}; completion now
+also identifies the limiting value and proves its uniqueness.
+
+\subsection{The generic residual theorem}
+
+Let $r:D\to\Q_{\ge0}$ be a fixed uniformly continuous residual, with
+a supplied dyadic modulus.  Assume a fixed primitive-recursive
+procedure $a:\N\to D$ and a primitive-recursive function $\kappa$
+satisfy
+\begin{align}
+ r(a(n))&\le\anE_n,\label{eq:an-residual-witness}\\
+ r(u),r(v)\le\anE_{\kappa(k)}
+ &\quad\Longrightarrow\quad d(u,v)\le\anE_k.
+ \label{eq:an-diameter}
+\end{align}
+The approximate witnesses are an assumption to prove in the application;
+they are not extracted from an assertion that an exact zero exists.
+Normalize $\kappa$ to the nondecreasing majorant
+\[
+ \kappa^*(k)=k+\max_{j\le k}\kappa(j).
+\]
+It is at least $k$ and at least $\kappa(k)$.
+
+\begin{theorem}[Recovery and identification by a diameter modulus]
+\label{thm:an-residual-recovery}
+The samples
+\[
+ z_n=a(\kappa^*(n+2))
+\]
+form a regular name.  The continuous extension $\anH r$ satisfies
+$\anH r(z)=0$.  This is the unique completed zero of $\anH r$.
+Every construction is primitive recursive relative to the fixed
+displayed procedures.  The same statement holds for a named residual
+when the finite witness and diameter contracts include its sample
+error allowances.
+\end{theorem}
+
+\begin{proof}
+For $m\ge n$, both residuals are at most
+$\anE_{\kappa^*(n+2)}\le\anE_{\kappa(n+2)}$.
+Equation~\eqref{eq:an-diameter} therefore gives
+$d(z_m,z_n)\le\anE_{n+2}$, proving regularity.
+Also $r(z_n)\le\anE_{n+2}$ because $\kappa^*(n+2)\ge n+2$.
+
+Let $\nu_r$ be the extension modulus furnished by
+Theorem~\ref{thm:an-extension}.  To bound $\anH r(z)$ at output
+precision $k$, choose
+$n\ge\max(k+2,\nu_r(k+2))$.  Density gives
+$\anH d(z,\operatorname{const}(z_n))\le\anE_n$, so
+$|\anH r(z)-r(z_n)|\le\anE_{k+2}$.
+Together with $r(z_n)\le\anE_{k+2}$ this bounds
+$|\anH r(z)|$ by $2\anE_{k+2}$ for every $k$.  Hence it is zero.
+This is the canonical-evaluation step missing from a Cauchy estimate
+alone.
+
+For uniqueness, let $y$ be a regular name with $\anH r(y)=0$.
+Fix $k$ and put $t=\kappa^*(k+3)$.  Choose
+\[
+ n\ge\max(k+3,\nu_r(t+1)),\qquad
+ m\ge\max(k+3,t).
+\]
+Uniform continuity and density imply
+$r(y_n)\le\anE_{t+1}$, while
+$r(z_m)\le\anE_{m+2}\le\anE_t$.
+Both are below $\anE_{\kappa(k+3)}$, so
+$d(z_m,y_n)\le\anE_{k+3}$.
+The completed distance between $z$ and $y$ is consequently at most
+\[
+ \anE_m+\anE_{k+3}+\anE_n
+ \le3\anE_{k+3}<\anE_k.
+\]
+This holds at every $k$ and proves $y\sim z$.  Every index in the
+proof is an explicitly displayed primitive-recursive composition or
+maximum.  No exact solution was chosen at an intermediate stage.
+\end{proof}
+
+There are two separate assumptions here.  Approximate solvability
+supplies points; the diameter modulus forces any sufficiently accurate
+points to agree.  Neither replaces the other.  Mere uniqueness of a
+semantic zero does not automatically supply a primitive-recursive
+diameter modulus, and a diameter bound without approximate solvability
+could be vacuous.
+
+\subsection{A complete contraction instance}
+
+Let $F:D\to D$ be a fixed map with
+$d(Fu,Fv)\le qd(u,v)$ for a supplied rational $0\le q<1$.
+Choose a starting point $x_0$ and integer $B\ge0$ such that
+$d(x_0,Fx_0)\le2^B$.  Let $H\ge1$ be an integer satisfying
+$H(1-q)\ge1$.  Both $B$ and $H$ can be found by bounded searches from
+the rational data.
+
+For $\gamma=1-q$, the identity
+$q(1+\gamma)=1-\gamma^2\le1$ and the finite Bernoulli inequality
+$(1+\gamma)^H\ge1+H\gamma\ge2$ imply $q^H\le1/2$.
+The Bernoulli inequality is proved by induction on the exponent with
+a polynomial inequality as invariant.  Iterating the contraction
+gives
+\[
+ d(F^j x_0,F^{j+1}x_0)\le q^j2^B.
+\]
+For the residual $r(x)=d(x,Fx)$, set
+\[
+ a(n)=F^{H(n+B)}x_0.
+\]
+Then $r(a(n))\le\anE_n$.  This constructs approximate solutions
+directly from finite iteration; it assumes no fixed point.
+
+The triangle inequality gives
+\[
+ (1-q)d(u,v)\le r(u)+r(v).
+\]
+Choose $c$ with $2^{1-c}\le1-q$.  Then
+$\kappa(k)=k+c$ is a diameter modulus.
+Moreover $|r(u)-r(v)|\le(1+q)d(u,v)$, so the residual is uniformly
+continuous.  Theorem~\ref{thm:an-residual-recovery} now constructs a
+unique completed zero.  By the extension theorem, the residual
+identifies with $x\mapsto\anH d(x,\anH F(x))$: these two continuous
+functions agree on the dense constant names.  Thus the zero is the
+unique fixed point of $\anH F$.
+
+The source module \texttt{ContractionIterates} already supplies
+quantifier-free induction proofs of contraction estimates for
+iterations.  The additional reusable step here is the completed
+fixed-point identity and its uniqueness, with the exact dependency
+on continuity and density exposed.
+
+\section{A singular inverse that does not need derivative separation}
+\label{sec:singular-cube-root}
+
+Derivative separation is a sufficient way to obtain a diameter
+modulus, but it is not necessary.  The real cube root is continuous at
+zero even though the derivative of $y\mapsto y^3$ vanishes there and
+the inverse is not locally Lipschitz.  Its quantitative inverse
+modulus is still primitive recursive.
+
+The inspected modules \texttt{StableCubicRoot} and
+\texttt{CubicInverse} concern $y^3+y=x$, whose extra linear term
+gives inverse Lipschitz constant one.  The example here deliberately
+uses $y^3=x$ and includes negative inputs and the singular value zero.
+It does not produce a holomorphic branch of a complex cube root near
+zero, nor does it decide the sign of a represented real number.
+
+\begin{lemma}[A global cubic separation inequality]
+\label{lem:an-cubic-separation}
+For all rational $u,v$,
+\begin{equation}
+ |u-v|^3\le4|u^3-v^3|.
+ \label{eq:an-cubic-separation}
+\end{equation}
+The same inequality holds for represented reals by approximation.
+\end{lemma}
+
+\begin{proof}
+If $u,v$ have the same sign, change both signs if necessary and assume
+$u\ge v\ge0$.  Then
+\[
+ u^3-v^3=(u-v)(u^2+uv+v^2)\ge(u-v)^3,
+\]
+because $u^2+uv+v^2-(u-v)^2=3uv\ge0$.
+If they have opposite signs, put $s=|u|$ and $t=|v|$.  The exact
+identity
+\[
+ 4(s^3+t^3)-(s+t)^3=3(s+t)(s-t)^2\ge0
+\]
+proves the result.  All case splits compare rational integers, and
+all substantive steps are polynomial identities and nonnegative
+products.  Passing to real names uses the explicit product error
+bounds on a supplied bounded interval and
+Lemma~\ref{lem:an-small-error}.
+\end{proof}
+
+Let $A_p$ be a fixed regular name of $a\in[-1,1]$.  Semantically
+$|A_p-a|\le\anE_p$; internally this is expressed by the
+corresponding cross-sample inequalities.  Define
+$C_p=\max(-1,\min(1,A_p))$.  Clipping is $1$-Lipschitz and fixes
+$[-1,1]$, so $|C_p-a|\le\anE_p$.
+
+For a requested residual index $n$, put
+\[
+ p=n+4,\qquad J=2^{n+5},\qquad q_j=-1+2j/J\quad(0\le j\le J).
+\]
+Use bounded search to select the largest $j\le J$ for which
+$q_j^3\le C_p$ and return $a_n=q_j$.  There is always at least one
+candidate because $q_0=-1$ and $C_p\ge-1$.  All comparisons concern
+the rational sample $C_p$, so even the input $a=0$ causes no exact
+real comparison.
+
+\begin{proposition}[Primitive-recursive approximate cubic roots]
+\label{prop:an-cubic-approx}
+The returned point lies in $[-1,1]$ and satisfies
+\begin{equation}
+ |a_n^3-a|\le\anE_{n+2}.
+ \label{eq:an-cubic-residual}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+If $j=J$, maximality forces $C_p=1$ and the error relative to
+$C_p$ is zero.  Otherwise
+$q_j^3\le C_p<q_{j+1}^3$.  For $x,y\in[-1,1]$,
+\[
+ |x^3-y^3|=|x-y||x^2+xy+y^2|\le3|x-y|.
+\]
+The mesh length is $2/J$, so
+$0\le C_p-a_n^3\le6/J$.
+Adding the input sample error yields
+\[
+ |a_n^3-a|\le6\,2^{-(n+5)}+2^{-(n+4)}
+ =\tfrac14\,2^{-n}=\anE_{n+2}.
+\]
+The maximum-search invariant states that the selected index lies
+within the finite grid, passes the comparison, and every later
+inspected index fails it.  A Boolean fold expresses the last condition;
+the invariant is quantifier free.  No intermediate-value theorem or
+compactness principle has been used to produce the witness.
+\end{proof}
+
+If $|u^3-a|$ and $|v^3-a|$ are at most
+$\anE_{3k+3}$, then
+\[
+ |u-v|^3\le4\bigl(|u^3-a|+|v^3-a|\bigr)
+ \le8\anE_{3k+3}=\anE_k^3.
+\]
+Monotonicity of the cube on nonnegative rationals proves
+$|u-v|\le\anE_k$.  Thus
+\begin{equation}
+ \kappa(k)=3k+3
+ \label{eq:an-cubic-kappa}
+\end{equation}
+is an explicit residual-diameter modulus.  The finite contractions in
+this proof remain valid with rational sample errors: use an arbitrary
+sufficiently precise common sample $A_t$, apply the rational triangle
+inequality, and remove $2\anE_t$ by
+Lemma~\ref{lem:an-small-error}.
+
+In particular, the simple schedule
+\[
+ z_k=a_{3k+9}
+\]
+already gives a regular name: for $m\ge k$ both residuals meet the
+threshold $\kappa(k+2)=3k+9$, so
+$|z_m-z_k|\le\anE_{k+2}$.
+The residual is continuous on $[-1,1]$, with Lipschitz constant three,
+so the recovery proof identifies $z^3=a$ and proves uniqueness.
+For a supplied integer bound $B\ge1$ with $|a|\le B$, apply the
+construction to $a/B^3\in[-1,1]$ and multiply the output by $B$.
+An extra sample shift $s$ with $B\le2^s$ restores the regularity
+budget.  This extends the construction to every bounded real-name
+family using only rational scaling and bounded doubling.
+
+Moreover, for the outputs $x=\sqrt[3]{a}$ and $y=\sqrt[3]{b}$,
+\[
+ |x-y|^3\le4|a-b|.
+\]
+Thus the inverse itself has dyadic modulus $k\mapsto3k+2$.
+There is no discontinuous branch decision.  A loss from $k$ output
+bits to roughly $3k$ input bits expresses the conditioning at the
+singular value.  This resolves the construction at this singularity
+without making the much stronger, false assertion that every
+singular analytic branch can be chosen continuously.
+
+\section{Formalization obligations for the continuous layer}
+\label{sec:analytic-lean-obligations}
+
+The accompanying Lean blueprint names the semantic interfaces and the
+finite statements to implement.  These are not completed new
+\texttt{Prf PRAAx} proofs.  The reliable order of implementation is
+as follows.
+
+\begin{enumerate}
+\item Encode rational vectors, their $\ell^1$ norm, the positive-part
+operation, and the finite sums in~\eqref{eq:an-glue}.  Denominators
+are positive natural codes; signed numerators are handled by the
+existing integer arithmetic layer.  Prove the one-summand inequality
+in the proof of Theorem~\ref{thm:an-glue} first.
+
+\item Derive the finite weighted-sum bound by induction on the list
+length.  The invariant is the cleared rational inequality for the
+partial numerator and partial weight sum.  Retain $\delta>0$ as an
+explicit premise before cancelling denominators.  This produces an
+object theorem for arbitrary finite chart tables and precision
+parameters.
+
+\item Formalize the reindexing inequalities for
+Theorem~\ref{thm:an-extension} and the diagonal theorem.  Their
+internal conclusions are universal closures of rational inequalities
+between samples of specified \texttt{PR} programs.  Regularity and
+modulus hypotheses are instantiated at the displayed indices.
+There is no induction over names or real numbers.
+
+\item Reuse the maximum-normalization and coherence lemmas from
+\texttt{CoherentMinimizer}; add canonical-evaluation and uniqueness
+lemmas using the completion interface.  The proof goal is the
+explicit sample equality formula for the residual name, not merely a
+Lean equality in an ambient complete space.
+
+\item Obtain the two cubic identities through the existing polynomial
+derivation mechanism.  Derive the same-sign and opposite-sign cases
+using decidable rational sign tests.  Implement the finite grid
+selector with the existing bounded-search interface; discharge its
+endpoint, maximality, mesh, and residual inequalities.  Finally
+compose the residual contracts with the explicit cubic diameter
+modulus.
+
+\item Only after these deep arithmetic endpoints are available,
+state the external semantic theorems about completions, continuous
+maps, and real cube roots.  Prove that the represented evaluations
+agree with those semantic objects.  An ambient Lean theorem alone
+does not replace any of the preceding endpoints.
+\end{enumerate}
+
+For a general distance presentation, every object formula additionally
+contains the finite distance-query index and its error allowance.
+The trust boundary includes the proofs of those distance contracts,
+of coverage, and of the local moduli.  These are useful explicit
+obligations, rather than implicit appeals to compactness or a
+qualitative continuity theorem.

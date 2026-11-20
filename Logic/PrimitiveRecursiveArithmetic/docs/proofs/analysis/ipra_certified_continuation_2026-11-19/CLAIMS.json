@@ -1,0 +1,87 @@
+{
+  "baseline": "3ee850b4c2d650cf01263823fd5415963747c5d0",
+  "new_lean_compiled": false,
+  "new_object_ipra_endpoint_checked": false,
+  "claims": [
+    {
+      "id": "F1",
+      "claim": "Finite weighted feedback",
+      "assumptions": "Positive weights, nonnegative gain, 2Aw<=w, domain and gain contracts",
+      "proof": "paper/sections/03_feedback.tex",
+      "artifact": "lean/FeedbackReference.lean",
+      "status": "Full human finite proof; ambient Lean proof candidate uncompiled"
+    },
+    {
+      "id": "P1",
+      "claim": "Polynomial certificate compiler",
+      "assumptions": "Accepted coefficient/inverse/radius certificate",
+      "proof": "paper/sections/04_polynomial.tex",
+      "artifact": "lean/PolynomialBlueprint.lean",
+      "status": "Full human proof; definitions and unproved Lean goals"
+    },
+    {
+      "id": "P2",
+      "claim": "Automatic Jacobian radius",
+      "assumptions": "Verified inverse and explicit residual bound",
+      "proof": "paper/sections/04_polynomial.tex",
+      "artifact": "lean/PolynomialBlueprint.lean",
+      "status": "Human corollary with exact example; no object proof implemented"
+    },
+    {
+      "id": "H1",
+      "claim": "Stable factor transport",
+      "assumptions": "Monic approximate factors, verified Sylvester inverse, residual threshold",
+      "proof": "paper/sections/05_factors.tex",
+      "artifact": "lean/FactorBlueprint.lean",
+      "status": "Full human proof and exact example; Lean goals unproved"
+    },
+    {
+      "id": "C1",
+      "claim": "Matching from complete multiplicity covers",
+      "assumptions": "Two complete count-correct covers of the same occurrence multiset",
+      "proof": "paper/sections/06_clusters.tex",
+      "artifact": "lean/ClusterBlueprint.lean",
+      "status": "Full finite constructive proof; root-count producer remains separate"
+    },
+    {
+      "id": "C2",
+      "claim": "Component-bound correction",
+      "assumptions": "Positive weights and balanced components with bounded edge lengths",
+      "proof": "paper/sections/06_clusters.tex",
+      "artifact": "code/cluster_transport.py",
+      "status": "Full proof plus exact 14/5 counterexample"
+    },
+    {
+      "id": "C3",
+      "claim": "Stable locator labels",
+      "assumptions": "Complete singleton cover, fixed anchor gap, epsilon<=gamma/4",
+      "proof": "paper/sections/06_clusters.tex",
+      "artifact": "lean/ClusterBlueprint.lean",
+      "status": "Full proof; metric separation alone insufficient"
+    },
+    {
+      "id": "O1",
+      "claim": "Produced Euler recurrence and coherent name",
+      "assumptions": "A fixed PR rational kernel with K/L contract and bounded initial data",
+      "proof": "paper/sections/07_ode.tex",
+      "artifact": "lean/OdeBlueprint.lean",
+      "status": "Full finite proof; new object endpoints not implemented"
+    },
+    {
+      "id": "O2",
+      "claim": "Gauss and Meijer companion continuation",
+      "assumptions": "Finite rational path with computed clearance and certified initial jet",
+      "proof": "paper/sections/07_ode.tex",
+      "artifact": "code/ode_exact_checks.py",
+      "status": "Explicit rational producer; named special-function identification retains initial-jet obligations"
+    },
+    {
+      "id": "A1",
+      "claim": "Spanning-algebra correction",
+      "assumptions": "Finite multiplication relations, spanning unit, Cayley-Hamilton premise",
+      "proof": "paper/sections/09_boundaries.tex",
+      "artifact": "paper/sections/09_boundaries.tex",
+      "status": "Human implication and counterexample; no intrinsic trace claim"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+\section{Constructing a path around the parameter poles}\label{sec:detours}
+
+The nonresonant connection theorem in the repository asks for a parameter-continuation chain avoiding poles and resonance \cite{hyper}. The forbidden values include entire integer translates of hyperplanes, so a path in the real parameter space need not exist. In the complex parameter space we can compute a polygon with a uniform positive clearance. The result is independent of the special functions to be transported along it.
+
+\begin{theorem}[Five-segment detour]\label{thm:detour}
+Let $\ell_j(z)=b_j+u_j\cdot z$ ($1\le j\le J$) be nonconstant affine forms with real rational coefficients on $\mathbb C^d$. For each form prescribe $S_j=\mathbb Z$, $\mathbb Z_{\le0}$ or $\{0\}$. From Gaussian rational endpoints $x,y$ satisfying $\ell_j(x),\ell_j(y)\notin S_j$, a PR algorithm produces at most five rational line segments from $x$ to $y$ and a positive rational $\gamma$ such that at every point of the polygon
+\[
+ \max\{|\Re\ell_j(z)-n|,|\Im\ell_j(z)|\}\ge\gamma
+ \quad(j\le J,\ n\in S_j).
+\]
+It also produces a subdivision and overlapping parameter boxes on which half the clearance persists. The dimension, forms and number of families are allowed to vary as input data.
+\end{theorem}
+
+\begin{proof}
+Use the maximum of the absolute values of all real and imaginary coordinates as the parameter norm. Empty families allow the straight segment with any positive clearance. Assume $J>0$. First find an integer vector $v$ on which every $u_j$ is nonzero. Clear each row's denominators, write its integer coefficients as $a_{ji}$ indexed from zero, and take
+\[
+ T=2+\max_j\sum_i|a_{ji}|,\qquad v=(1,T,\ldots,T^{d-1}).
+\]
+In a row of degree $h>0$ the leading term has magnitude at least $T^h$, whereas the sum of the magnitudes of the lower terms is at most $(T-2)T^{h-1}<T^h$. Degree zero is immediate. One may scan smaller positive integers first and select the first passing the same nonzero tests. Use the \emph{original} rational rows to set
+\[
+ s_j=u_j\cdot v,\qquad A=\max(1,\max_j|s_j|),\qquad m=\min_j|s_j|>0 .
+\]
+
+For $p=x,y$ let $q_j=\Re\ell_j(p)$ and let $\rho_{jp}$ be the exact maximum-norm distance of $\ell_j(p)$ from $S_j$. Compute it as the maximum of $|\Im\ell_j(p)|$ and the real distance from $q_j$ to $S_j$. The latter uses just floor and ceiling, with the candidates clipped at zero for the nonpositive ray. For a singleton it is $|q_j|$. Let $\eta_p$ be the minimum of $1$, the positive $\rho_{jp}$ and the distances of all \emph{nonintegral} $q_j$ to $\mathbb Z$; discard integral $q_j$ only in this last list. It follows that $\eta_p>0$. Set $\delta_p=\eta_p/(4A)$. The six vertices of the polygon are
+\[
+ \begin{gathered}
+ x,\qquad x+\delta_xv,\qquad \Re x+\delta_xv+i v,\\
+ \Re y+\delta_yv+i v,\qquad y+\delta_y v,\qquad y .
+ \end{gathered}
+\]
+On the two short end segments the value of every form varies by at most $\eta_p/4$ from its endpoint, so its distance to its forbidden set remains at least $3\eta_p/4$. At the shifted real part $q_j+\delta_p s_j$, a nonintegral $q_j$ still has distance at least $3\eta_p/4$ from every integer. An integral $q_j$ has moved by a nonzero amount at most $1/4$, so its new distance to the integers is $\delta_p|s_j|\ge\delta_pm$. On each vertical segment that real part stays fixed. The middle segment has fixed imaginary vector $v$, so the imaginary part of every form has magnitude at least $m$. Consequently a valid choice is
+\[
+ \gamma=\min\{3\eta_x/4,\,3\eta_y/4,\,\delta_xm,\,\delta_ym,\,m\}.
+\]
+This argument covers allowed integral real values of gamma arguments as well as nonreal endpoints whose real part is a forbidden integer.
+
+Put $B=\max(1,\max_j\sum_i |u_{ji}|)$ and $r=\gamma/(4B)$. On a closed coordinate box of radius $2r$ around a polygon point, each form moves by at most $2Br=\gamma/2$. Subdivide an edge of norm length $b$ into $\max(1,\lceil b/r\rceil)$ equal intervals. Successive centers are at distance at most $r$, and their $2r$ boxes have an overlap with positive width. All coordinates, counts and bounds are rational or integral. For the arithmetic assertion fix a rational position on a segment and an arbitrary signed integer $n$ in the permitted set. The inequalities above give the desired result without enumerating infinitely many parallel hyperplanes. Generalize over the position and $n$ after the bounded computations. On named positions the same bound follows at every precision by affine evaluation and the rational-gap argument.
+\end{proof}
+
+\paragraph{Named endpoints.}
+If $x,y$ have fixed PR regular names instead, supply lower bounds $\beta_p>0$ on all the endpoint distances. Sample each endpoint to norm error at most $\beta_p/(8B)$. For regular names the approximation to the represented point has the specified error at its working precision; equivalently use finer pairs and their regularity inequalities. The resulting rational endpoint has clearance at least $7\beta_p/8$. The segment connecting the endpoint to its approximant stays within $\beta_p/(8B)$ of the original endpoint. Attach these two segments to the rational polygon, taking the minimum of the clearance bounds. This avoids deciding whether a real part given by a name is an integer. A certificate of mere nonequality at an unnamed point does not supply the required margin.
+
+\paragraph{Gauss's connection at one.}
+In the standard nonresonant two-term formula let $d_0=c-a-b$. The coefficients have the forms
+\[
+ \frac{\Gamma(c)\Gamma(d_0)}{\Gamma(c-a)\Gamma(c-b)},\qquad
+ \frac{\Gamma(c)\Gamma(-d_0)}{\Gamma(a)\Gamma(b)} .
+\]
+Use the five forms $c,c-a,c-b,a,b$ with $S=\mathbb Z_{\le0}$ and the form $d_0$ with $S=\mathbb Z$. The last guard also excludes the denominator singularities of the two local series at $1$, whose lower parameters are $1\pm d_0$. All normals are rational. Starting chambers can be represented, for example, by $a=1/4,b=1/3,c=5/4$ (positive $d_0$) and $a=1/2,b=2/3,c=1$ (negative $d_0$), satisfying the indicated gamma guards. The theorem connects either point to every admissible Gaussian rational triple and returns radii and a finite overlap chain. This discharges the \emph{geometric path and clearance} part of item 3 of the repository theorem on that parameter domain. It applies as well to any additional finite list of real-rational affine pole families with the same form of guard if the endpoints pass their tests. The analytic identities and parameter-jet estimates needed to propagate the gamma evaluation through those boxes are distinct obligations. To continue an identity in the parameters one needs matching parameter jets, for instance from an identity valid on an initial open chamber. Equality at a single starting triple does not determine a holomorphic function of three parameters. For the integer resonances excluded here, Section~\ref{sec:resonance} constructs a basis directly.
+
+\paragraph{One crossing in parameter space.}
+Fix $a=1/4,b=1/3$, and vary only $c$ between $5/4$ and $1/2$. A real segment crosses $c=a+b=7/12$. In dimension one take $v=1$ and omit the already checked constant forms $a,b$. The normal slopes of the remaining four forms are one. Both endpoints satisfy the hypotheses, although $c-a$ at the first one is the allowed integer $1$. The executable certificate computes the polygon and verifies the clearance on \emph{whole} segments using independent rational minimization. This example crosses between nonresonant chambers; it prescribes no traversal through the resonant point.
+Concretely the four interior vertices are $61/48$, $61/48+i$, $25/48+i$, $25/48$. The certificate gives $\gamma=1/48$, a subdivision scale of $1/192$, and interval counts $4,192,144,192,4$. The checks in \texttt{Detour.lean} cover the single-form clearance inequalities along all three kinds of segment.

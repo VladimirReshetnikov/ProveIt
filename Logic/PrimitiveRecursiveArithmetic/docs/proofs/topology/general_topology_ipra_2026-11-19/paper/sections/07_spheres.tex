@@ -1,0 +1,228 @@
+\section{Spheres and constructive hairy-ball results}
+\label{sec:spheres}
+
+The classical entry asserts that an even-dimensional sphere has no everywhere nonzero continuous tangent field, and that odd-dimensional spheres do have such a field \cite{MWHairy}. Exact zero selection is stronger than the finite conclusions needed here. We first prove a finite antipodal obstruction, then turn it into a bounded approximate-zero procedure for explicitly given rational Lipschitz fields. This gives substantial mathematical content without assuming compactness to select a limit.
+
+\subsection{A rational sphere and its fundamental chain}
+
+Put $d=n+1$ and let $C_n$ be the boundary complex of the $d$-dimensional cross-polytope. Its vertices are $+e_i,-e_i$ for $0\leq i<d$. A simplex contains at most one vertex from each opposite pair. Its rational geometric realization is
+\[
+ P_n(\Q)=\{x\in\Q^d:\|x\|_1=1\}.
+\]
+Each point is in the simplex given by the signs of its nonzero coordinates, with barycentric coordinates $|x_i|$. We use oriented integer chains, with repeated vertices interpreted as zero, exactly as in the finite algebraic chapter.
+
+\begin{lemma}[S01: cross-polytope cycle and antipodal action]\label{lem:sphere-cycle}
+For $n\geq1$ define the nonzero $n$-chain
+\[
+ z_n=\sum_{\epsilon\in\{-1,1\}^{d}}
+ \left(\prod_{i=0}^{d-1}\epsilon_i\right)
+ [\epsilon_0e_0,\ldots,\epsilon_{d-1}e_{d-1}].
+\]
+Then $\partial z_n=0$. If $A(x)=-x$ is the antipodal vertex map, then
+\[
+ A_\#z_n=(-1)^{n+1}z_n.
+\]
+\end{lemma}
+\begin{proof}
+Fix a boundary face obtained by deleting coordinate $j$. It occurs for the two choices $\epsilon_j=1,-1$. Their boundary signs are both $(-1)^j$, whereas their coefficient products have opposite signs. They cancel. Every boundary occurrence is paired this way.
+
+For the antipodal action replace the sign tuple $\epsilon$ by $\eta=-\epsilon$. The vertex order stays in coordinate order, and
+$\prod_i\epsilon_i=(-1)^d\prod_i\eta_i$. This is the asserted factor. The coefficient of $[e_0,\ldots,e_{d-1}]$ in $z_n$ is $1$, so the chain is not zero.
+\end{proof}
+
+\subsection{Subdivision, with its mesh bound proved}
+
+The barycentric subdivision of a simplex has one vertex $b_\tau$ for each nonempty face $\tau$, and a simplex for each strictly nested flag of faces. The vertex $b_\tau$ is the rational average of the original vertices.
+
+This really covers each simplex by a finite rational construction. If a point has barycentric coordinates arranged as
+$\lambda_{\pi_0}\geq\cdots\geq\lambda_{\pi_n}\geq0$, put $\lambda_{\pi_{n+1}}=0$. Then
+\[
+ x=\sum_{j=0}^n
+ (j+1)(\lambda_{\pi_j}-\lambda_{\pi_{j+1}})
+ b_{\{\pi_0,\ldots,\pi_j\}}.
+\]
+The coefficients are nonnegative and sum to one, by telescoping. Sorting finitely many rational coordinates locates a simplex. Equal coordinates simply put the point on a common face.
+
+\begin{lemma}[S02: subdivision chain and contraction estimate]\label{lem:sphere-subdivision}
+Barycentric subdivision gives a chain map $s:C_\bullet(K)\to C_\bullet(\operatorname{sd}K)$ supported in each original simplex. For an $n$-dimensional complex with simplex diameter at most $D$ in the sup norm, one subdivision has simplex diameter at most $nD/(n+1)$. If $n\geq1$, after $r=n(k+1)$ subdivisions an initial diameter bound $2$ is reduced to at most $2^{-k}$.
+\end{lemma}
+\begin{proof}
+For a vertex let $s[v]=[v]$. Recursively define
+$s(\sigma)=b_\sigma*s(\partial\sigma)$ on a positive-dimensional oriented simplex, where $*$ denotes the oriented cone. The cone identity
+$\partial(b*c)=c-b*(\partial c)$ and $\partial^2=0$ give
+$\partial s(\sigma)=s(\partial\sigma)$. The construction is supported in flags of faces of $\sigma$, so it is the required subdivision chain.
+
+For nested faces $\tau\subseteq\upsilon$, of sizes $p\leq q$, write
+$b_\upsilon=(p/q)b_\tau+(1/q)\sum_{v\in\upsilon\setminus\tau}v$.
+Hence $\|b_\upsilon-b_\tau\|_\infty\leq(q-p)D/q\leq nD/(n+1)$.
+Every pair of vertices in a subdivided simplex comes from nested faces, proving the diameter estimate.
+
+Finally $(1+1/n)^n\geq2$ by the first two binomial terms. Therefore $(n/(n+1))^n\leq1/2$. After $n(k+1)$ subdivisions the bound is at most $2\cdot2^{-(k+1)}=2^{-k}$. All quantities are rational and the induction ranges over the finite subdivision count.
+\end{proof}
+
+\begin{lemma}[S03: carrier degree one]\label{lem:carrier-degree-one}
+Let $K=\operatorname{sd}^{\,r}C_n$. Suppose a simplicial map $u:K\to C_n$ is carried by original simplices: for every original simplex $\sigma$, all subdivided simplices contained in $\sigma$ map into $\sigma$. Then
+\[
+ u_\#s^{\,r}(z_n)=z_n.
+\]
+\end{lemma}
+\begin{proof}
+The two chain maps $u_\#s^{\,r}$ and the identity are carried by the original simplex on every simplex of $C_n$. The simplex-carrier lemma (Theorem~\ref{thm:simplex-carrier}) constructs a chain homotopy between them: on $\sigma$, cone the residual cycle at a fixed vertex of $\sigma$. The construction agrees with the augmentation in degree zero. Applying the homotopy identity to $z_n$, its boundary term vanishes because $\partial z_n=0$, and the other term vanishes because $C_n$ has no $(n+1)$-chains. The displayed equality follows. This argument only uses the finite cone calculation, not an externally assumed degree theorem.
+\end{proof}
+
+\subsection{The finite antipodal obstruction}
+
+Triangulate $K\times[0,1]$ by choosing a global order on the vertices of $K$, subdividing the time interval into $T$ equal intervals, and using the usual prism simplices. Over $[v_0,\ldots,v_q]$ in one time interval they are
+\[
+[(v_0,0),\ldots,(v_i,0),(v_i,1),\ldots,(v_q,1)]
+ \quad(0\leq i\leq q),
+\]
+with the appropriate rescaled time coordinates. Their signed sum is the prism operator. Its boundary is the top minus the bottom, minus the prisms on the boundary. Interior occurrences cancel in pairs; this is the same finite identity used in Proposition~\ref{prop:simplicial-prism}.
+
+\begin{theorem}[S04: finite identity--antipodal obstruction]\label{thm:antipodal-finite}
+Let $n\geq2$ be even and $K=\operatorname{sd}^{\,r}C_n$.
+There is no simplicial map from this triangulated cylinder to $C_n$ whose bottom map $u$ is carried by original simplices and whose top map is $A\circ u$.
+\end{theorem}
+\begin{proof}
+Let $c=s^{\,r}z_n$ and let $P(c)$ be the sum of its time prisms. Then
+$\partial P(c)=c_{\rm top}-c_{\rm bottom}$, since $\partial c=0$. Push this identity forward by the proposed simplicial map. Every $(n+1)$-simplex maps degenerately to the $n$-dimensional target, so its chain image is zero. The boundary identity would consequently say
+\[
+ (A\circ u)_\#c=u_\#c.
+\]
+By Lemmas~\ref{lem:carrier-degree-one} and \ref{lem:sphere-cycle}, this is $-z_n=z_n$. The coefficient of the positive facet says $-1=1$ in $\Z$, a contradiction.
+\end{proof}
+
+\begin{theorem}[S05: quantitative no-homotopy schema]\label{thm:no-antipodal-homotopy}
+For even $n\geq2$, there is no fixed primitive-recursive rational map
+\[
+ H:P_n(\Q)\times([0,1]\cap\Q)\longrightarrow P_n(\Q)
+\]
+with $H(x,0)=x$, $H(x,1)=-x$, and a supplied rational Lipschitz bound $K_H$ for the product sup metric.
+\end{theorem}
+\begin{proof}
+Increase $K_H$ to at least one. Choose a dyadic mesh $\rho$ with
+$K_H\rho<1/(2d)$. Lemma~\ref{lem:sphere-subdivision} supplies a subdivision whose simplices have diameter at most $\rho$; take $T$ with $1/T\leq\rho$.
+
+At each cylinder vertex choose the least coordinate with maximal absolute value of $H$ and use its signed basis vector as the label. Since $\|H\|_1=1$, the selected magnitude is at least $1/d$. Vertices of one cylinder simplex are at product distance at most $\rho$, so their images differ in every coordinate by less than $1/(2d)$. They cannot receive opposite labels: opposite choices would differ in that coordinate by at least $2/d$. Thus the labels define a simplicial map into $C_n$.
+
+At the bottom a chosen coordinate of $x$ is nonzero with its actual sign. Hence a subdivided simplex is sent into its original facet, so the bottom map is carried by original simplices. At the top use the same tie-breaking coordinate as at the bottom and the opposite sign; the labels are precisely $A\circ u$. The finite obstruction gives a contradiction.
+
+Every operation reads a finite rational table. For names instead of exact rational values, the same label construction works with error at most $1/(8d)$: the chosen true coordinate has magnitude at least $3/(4d)$, so the opposite-label contradiction still has a margin. That robustness is useful for a later represented-real implementation, but the stated theorem needs only exact rational evaluation.
+\end{proof}
+
+\subsection{A positive approximate hairy-ball theorem}
+
+\begin{definition}[Rationally presented tangent field]
+A field is a fixed primitive recursive rational map
+$F:P_n(\Q)\to\Q^d$, supplied with rational $L,M\geq1$ and proofs, for all rational domain points, of
+\[
+ x\cdot F(x)=0,\qquad
+ \|F(x)\|_\infty\leq M,\qquad
+ \|F(x)-F(y)\|_\infty\leq L\|x-y\|_\infty.
+\]
+The constants are data. Rational polynomial tangent fields and many rational-function fields admit such bounds by finite coefficient estimates. This is a first-order schema with fixed function symbols, not quantification over arbitrary continuous functions.
+\end{definition}
+
+\begin{theorem}[S06: bounded approximate zeros on even spheres]\label{thm:approx-hairy}
+For even $n$ and a rationally presented tangent field $F$, there is a primitive recursive function which, on any positive rational input $\varepsilon$, returns a rational $x\in P_n(\Q)$ satisfying
+\[
+ \|F(x)\|_\infty\leq\varepsilon.
+\]
+A bound on the search is obtained from $n,L,\varepsilon$ by the explicit subdivision construction.
+\end{theorem}
+\begin{proof}
+For $n=0$, take $x=1$; tangency forces $F(1)=0$. Assume $n\geq2$. Replace $\varepsilon$ by $\min(\varepsilon,1)$ if desired. Choose a dyadic $h$ with $Lh\leq\varepsilon/4$ and use Lemma~\ref{lem:sphere-subdivision} to make a finite rational triangulation of mesh at most $h$. Evaluate $F$ at all its vertices. Return the first value with norm at most $\varepsilon$.
+
+To prove that the bounded scan succeeds, suppose every tested norm is $>\varepsilon$. Any rational point of $P_n$ lies in a subdivided simplex; the finite barycentric-coordinate sorting formula gives such a simplex. Choose one of its vertices $v$. Then
+\[
+ \|F(x)\|_\infty
+ \geq\|F(v)\|_\infty-L\|x-v\|_\infty
+ >3\varepsilon/4.
+\]
+In particular, $\|F(x)\|_\infty\geq\delta$, where $\delta=\varepsilon/2$, at every rational point.
+
+This positive lower bound would give an explicit forbidden homotopy. Put
+\[
+ a(t)=1-2t,\qquad b(t)=t(1-t),\qquad
+ w(x,t)=a(t)x+b(t)F(x),\qquad
+ H(x,t)=\frac{w(x,t)}{\|w(x,t)\|_1}.
+\]
+Tangency gives the exact rational identity
+\[
+ \|w\|_2^2=a(t)^2\|x\|_2^2+b(t)^2\|F(x)\|_2^2.
+\]
+If $|a(t)|\geq1/2$, then $\|x\|_1=1$ and the finite Cauchy inequality imply
+$\|w\|_1\geq\|w\|_2\geq1/(2d)$.
+If $|a(t)|<1/2$, then $1/4<t<3/4$, whence $b(t)\geq3/16$ and
+$\|w\|_1\geq\|w\|_2\geq3\delta/16\geq\delta/8$.
+These square-norm comparisons can be proved by squaring positive rational quantities; no square-root function is used by the algorithm. Thus
+\[
+ \|w(x,t)\|_1\geq
+ \lambda:=\min(1/(2d),\delta/8)>0.
+\]
+
+For two points $(x,t),(y,s)$ one has
+\[
+ \|w(x,t)-w(y,s)\|_\infty
+ \leq(1+L/4)\|x-y\|_\infty+(2+M)|t-s|.
+\]
+For nonzero vectors with $\ell^1$ norms at least $\lambda$, normalization satisfies
+\[
+ \left\|\frac u{\|u\|_1}-\frac v{\|v\|_1}\right\|_\infty
+ \leq \frac{d+1}{\lambda}\|u-v\|_\infty.
+\]
+Indeed, subtract the fractions, use
+$|\|u\|_1-\|v\|_1|\leq d\|u-v\|_\infty$, and use
+$\|v\|_\infty\leq\|v\|_1$.
+Consequently
+\[
+ K_H=\frac{(d+1)(3+L+M)}{\lambda}
+\]
+is a rational Lipschitz bound. The rational map $H$ has endpoints $x,-x$ and lies in $P_n$. It contradicts Theorem~\ref{thm:no-antipodal-homotopy}.
+
+Thus the failed-scan flag is impossible. Lemma~\ref{lem:bounded-search} supplies the successful index directly. The argument proves success of a finite decidable search, rather than converting an arbitrary negated universal statement into an existential one.
+\end{proof}
+
+For an explicit search bound, after $r=n(k+1)$ refinements each original facet has at most $((n+1)!)^r$ top simplices. Hence there are at most
+\[
+ B=2^{n+1}(n+1)((n+1)!)^r
+\]
+vertex occurrences to scan, duplicates included. Choose $k$ by a bounded dyadic comparison so that $2^{-k}\leq\varepsilon/(4L)$. For a positive rational $u/v$, an integer bounded by a simple expression in $u+v+1$ makes $2^{-k}\leq u/v$; no unbounded logarithm search is needed. The larger auxiliary subdivision used in the contradiction is also explicitly bounded by $K_H,d$. These are primitive recursive bounds.
+
+\subsection{Odd spheres and exact linear fields}
+
+\begin{theorem}[S07: explicit nonvanishing odd-sphere field]\label{thm:odd-field}
+If $n$ is odd, $d=n+1$ is even. Pair the coordinates and define
+\[
+ J(x_0,x_1,x_2,x_3,\ldots)
+   =(-x_1,x_0,-x_3,x_2,\ldots).
+\]
+Then $x\cdot Jx=0$ and $\|Jx\|_2=\|x\|_2$. Thus $Jx$ is an explicit nowhere-zero tangent field on the Euclidean unit sphere, with exact rational formulas on rational inputs.
+\end{theorem}
+\begin{proof}
+In each coordinate pair the dot-product contributions cancel:
+$x_{2i}(-x_{2i+1})+x_{2i+1}x_{2i}=0$.
+The sum of squares is unchanged. On the unit sphere it equals one, so the field never vanishes. The formulas are finite permutations and sign changes.
+\end{proof}
+
+\begin{theorem}[S08: exact zeros for even-sphere linear tangent fields]\label{thm:linear-hairy}
+Let $n$ be even and $A$ a rational $(n+1)\times(n+1)$ matrix satisfying $A^{\mathsf T}=-A$. There is a primitive recursively computable $x\in P_n(\Q)$ with $Ax=0$.
+\end{theorem}
+\begin{proof}
+Since $d=n+1$ is odd,
+\[
+ \det A=\det A^{\mathsf T}=\det(-A)=(-1)^d\det A=-\det A.
+\]
+Rational arithmetic gives $\det A=0$. Bounded Gaussian elimination produces a nonzero rational kernel vector: choose a free variable equal to one, the other free variables zero, and back-substitute. Normalize it by its nonzero rational $\ell^1$ norm. This gives the required $x$.
+
+Conversely, a linear field tangent in all directions has a skew matrix: apply $x^{\mathsf T}Ax=0$ to the coordinate vectors to obtain zero diagonal entries, then to $e_i+e_j$ to get $a_{ij}+a_{ji}=0$. Homogeneity permits these unnormalized test vectors. Thus the theorem covers all rational linear tangent fields.
+\end{proof}
+
+\subsection{Meaning on the round sphere and remaining extension}
+
+Radial normalization $x\mapsto x/\|x\|_2$ identifies the cross-polytope boundary with the round sphere; its inverse is $y\mapsto y/\|y\|_1$. On these domains the denominators have explicit positive lower bounds. Square roots on positive rational intervals can be given primitive recursive dyadic names by bisection. The Lipschitz estimate extends $F$ to a named field $\overline F$ on the completed polyhedral sphere: normalize rational approximants to lie in $P_n$, evaluate $F$, and use the supplied Lipschitz bound as the Cauchy estimate. Define the round-sphere field explicitly by $V(y)=\overline F(y/\|y\|_1)$; this is a value assignment, not the differential pushforward of a vector field. Tangency is preserved because the two position vectors are positive multiples. At the output $y=x/\|x\|_2$, one has $V(y)=F(x)$, so the proved sup-norm bound is unchanged. Its Euclidean norm is at most $d\varepsilon$; request tolerance $\varepsilon/d$ to obtain a Euclidean tolerance $\varepsilon$.
+
+The exact theorem proved above has rational values and a Lipschitz bound on rational points. To cover arbitrary fixed \emph{real-valued} evaluators with Lipschitz data, one must formalize interval evaluation of the normalized homotopy and its finite labels. The robustness margin in Theorem~\ref{thm:no-antipodal-homotopy} gives the route: take a vertex evaluation error at most $\varepsilon/8$, accept when the sampled norm is at most $3\varepsilon/4$, and otherwise infer a positive lower bound on a net of mesh at most $\varepsilon/(8L)$. Evaluate the auxiliary homotopy with error at most $1/(8d)$. This extension is a detailed formalization target; it is not silently included in S06.
+
+Even for S06, a sequence of approximate zeros need not have a primitive recursive Cauchy subsequence. The report therefore makes no general claim to select an exact zero of every represented tangent field.
+

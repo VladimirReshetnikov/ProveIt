@@ -1,0 +1,49 @@
+\section{Resolved interfaces, limitations, and further mathematical uses}\label{sec:boundaries}
+
+\subsection{What has been established}
+
+The framework now has concrete producers in two broad classes. A finite polynomial certificate produces a local implicit solution with a residual and stability modulus. A rational linear differential system with coefficient bounds produces a coherent solution observation along a supplied finite path; Gauss and Meijer companion systems have explicit coefficient and clearance producers. These are sufficiently general to support many algebraic and special-function applications without proving a new existence theorem every time.
+
+The root-cluster results resolve the specific mathematical ambiguities in FIBER G1 and G2. With complete occurrence covers, a bounded matching algorithm obtains the sharp sum-of-radii matching bound. With only component balance, the weaker component-diameter bound is the correct theorem. Stable locators or stable factor coefficients replace unguarded lexicographic root labels. Producing the multiplicity covers from arbitrary polynomial coefficients remains a separate task.
+
+The new human proofs deliberately end in finite statements strong enough to be useful: a computable observation, its admissibility guard, a finite error law, and an explicit precision demand. The new object-language Lean proofs remain implementation work. This is a substantive mathematical extension and a formalization blueprint, not a report of newly checked endpoints.
+
+\subsection{A further correction: spanning is not a basis certificate}
+
+The same discipline clarifies the FIBER G3 finite-algebra boundary. A list spanning a finite algebra does not make the trace of an arbitrary lifted multiplication matrix intrinsic.
+
+For a concrete counterexample, let \(A=\Q[X]/(X)\), and use the redundant spanning list \((1,1)\). Multiplication by the residue class of \(X\) is zero. For any rationals \(a,b\), the matrix
+\[
+ M=\begin{pmatrix}a&b\\-a&-b\end{pmatrix}
+\]
+represents that zero action on the spanning list, because each column sums to zero. Yet \(\operatorname{tr}M=a-b\) is arbitrary. The true one-dimensional algebra has trace zero for this endomorphism. Thus neither an intrinsic trace nor a characteristic polynomial of the quotient follows from spanning alone.
+
+There is a useful positive replacement. Let \(b_1,\ldots,b_N\) span a commutative algebra over \(\Q\), let \(x\) be an algebra element, and suppose a matrix \(M\) satisfies the finite relations
+\(xb_j=\sum_iM_{ij}b_i\). If the finite Cayley--Hamilton identity
+\(\chi_M(M)=0\) is available, then \(\chi_M(x)b_j=0\) for every \(j\): first prove the assertion for each power by induction, then take the finite linear combination defining \(\chi_M\). Since the list spans the unit, there are coefficients \(c_j\) with \(1=\sum_jc_jb_j\), and
+\[
+ \chi_M(x)=\sum_j c_j\chi_M(x)b_j=0.
+\]
+Thus the matrix supplies a valid annihilating polynomial. It need not supply intrinsic spectral multiplicities or trace data. To obtain those, require an explicit basis/freeness certificate, or a proved invariant under the particular change of presentation. In iPRA all relations and coefficients in this argument must be supplied by finite arithmetic certificates; a general algebra object is only an external explanatory shorthand.
+
+\subsection{Why these methods do not settle arbitrary difficult theorems}
+
+There are several distinct possible obstructions, and conflating them would hide the real work.
+
+\textbf{An absent quantitative producer.} A proof may assert that a favorable radius, separation, height bound or finite cover exists, without constructing a PR bound or a verified finite certificate. The weighted contraction theorem does not create such data. The polynomial and ODE applications are useful precisely because they compute the needed majorants and acceptance tests for their declared input class.
+
+\textbf{A discontinuous requested observation.} Exact sign of an unrestricted real name, arbitrary complex-root ordering, and choice of a unique branch through a singularity can fail finite-use continuity. This report changes neither the input representation nor the theorem silently: it states a gap, locator or branch certificate when one is needed. The repository already contains a finite-use sign obstruction \cite{repo-sign}.
+
+\textbf{A nonuniform termination argument.} Showing that an algorithm eventually succeeds does not itself exhibit a primitive recursive clock. The clocks here are explicit: geometric precision shifts, bounded graph exploration, finite Gaussian elimination, and Euler mesh sizes. If a future application repeatedly subdivides until a certificate accepts, it must supply a prior bound or a separate termination theorem in iPRA. Calling the loop ``adaptive'' does not discharge that obligation.
+
+\textbf{A missing identity with the intended mathematical object.} A solution of a companion ODE with some initial jet is not automatically the particular special function named by a contour integral. Gamma connection formulas, residue expansions and initial jets keep their own proofs. Likewise, a small polynomial residual is not a complete root-multiplicity certificate. The present framework exposes these exact interfaces and supplies some of their producers; it does not rename an unproved hypothesis as a theorem.
+
+\textbf{A stronger foundational requirement.} These techniques do not prove general Siegel or Faltings theorems in iPRA, nor do they prove such statements impossible there. A missing effective bound is evidence about the current argument, not by itself an independence theorem. One must state the precise arithmetical version, give its actual finite witnesses or negative interpretation, and analyze its induction/choice requirements separately.
+
+\subsection{How to reuse the framework in another packet}
+
+For a new application, first specify the finite observable. Choose a representation whose equality and approximation claims have a finite arithmetic meaning. Then write the actual evaluator or producer and state its domain. Identify the numerical quantities that control perturbations: a coefficient majorant matrix, an inverse bound, a path clearance, a coverage count, or a locator gap.
+
+Next derive the appropriate local inequality from the input data. If the local errors depend cyclically on one another, certify a positive weighted gain instead of composing the same contract around a cycle. Compute the resource/precision schedule from that certificate. Prove the finite tail, residual, or matching statement with a named QF invariant. Finally show that the resulting observation is independent of representation choices and agrees with the particular mathematical object in the packet.
+
+This sequence separates reusable arithmetic from the substantive mathematics of each application. It also makes progress measurable: a formerly assumed local contract is replaced by a concrete producer and a finite proof, while any remaining source obligation stays visible in the endpoint.

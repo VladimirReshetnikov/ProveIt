@@ -1,0 +1,80 @@
+INDEPENDENT CODE REVIEW RECEIPT
+===============================
+
+Scope: code/richardson.py, code/test_certificates.py, code/README.txt,
+lean/LogicalCore.lean, lean/Syntax.lean; selected report source.
+Review date: 19 November 2026.
+
+RESULT
+------
+The corrected Python implementation passed an independent run of
+  python3 -B test_certificates.py
+with exit code 0: all 14 exact implementation checks passed.
+The packaged code/test_results.txt reports the same current count.
+
+One actual defect was found and corrected before this receipt:
+the evaluator cached intervals by Python object id without retaining the
+expression. Reusing one evaluator on temporary rat(n) roots could read a
+stale cached interval after object-id recycling (reproduced at n=2).
+The code author changed the cache to retain (Expr, Interval) pairs, checks
+object identity on retrieval, and added a regression covering 100 temporary
+roots. The independent 14-check run includes that regression.
+
+MANUAL MATHEMATICAL CHECKS
+-------------------------
+- Polynomial coefficient/degree bounds and the emitted expression agree
+  with the report's displayed compiler.
+- Interval multiplication checks all four endpoint products.
+- Absolute value and the dependent |v|-v interval use correct images.
+- Directed dyadic rounding is outward for both signs.
+- Machin's formula uses correctly oriented alternating arctangent bounds.
+- Sine truncation has a finite primitive recursive upper bound.
+  At j >= max(r^2, bits+5, 1),
+    (2j+1)! >= 2^(j-1) (j+1)^(j+1),
+    r^(2j+1) <= (j+1)^(j+1).
+  Hence the first omitted absolute term is <=2^(1-j), twice that term
+  is <=2^(-bits-3), and its tail ratio is <=1/2.
+  The implemented limit r^2+r+bits+8 includes such an index.
+- The B,W recurrences correctly propagate endpoint magnitudes and interval
+  widths, provided W_root * 2^(-work_bits) <= 1.
+- All parent W bounds dominate their child bounds.
+- The predetermined working precision meets the final width target.
+- Decimal strings are display-only; exact rational endpoints determine
+  certificate validity.
+- There is no unbounded search in the Python approximation routines.
+
+LEAN REVIEW
+-----------
+The two Lean files were manually re-read. Their logical arguments are
+constructive, the two Boolean diagonal cases are correctly oriented, and
+no obvious source syntax issue was found. The source contains no axiom
+declarations, sorry, or admit. Arithmetic/analytic/compilation dependencies
+remain explicit structure fields or theorem parameters.
+
+Lean was NOT run. No kernel verification or object-language Prf PRAAx
+derivation is certified by this receipt.
+
+REPORT SOURCE FINDINGS
+-----------------------
+Reported to the report author:
+- the title's accidental control sequence \\primitive;
+- two single trailing backslashes in the identity-definition align
+  environment in sections/02_arithmetic.tex.
+The report author owns those edits and the subsequent LaTeX build.
+The negative-MRDP and diagonal sections passed the selected logical review.
+
+SCOPE LIMITS
+------------
+These checks validate the reference implementation's finite behavior and
+the listed bound arguments. They do not constitute a formal proof of
+density, formalized MRDP, global undecidability, or the final iPRA sentence.
+The code does not implement a universal MRDP polynomial or compiler.
+
+SHA-256 OF REVIEWED FILES
+------------------------
+ed953220c350104ac890ee7796242a4146da5eda899b36714e52fc4333b9411c  code/richardson.py
+942f452c0e1c2c1d1cbf9c983cdab39ada2c3469e039949d842b04552489063c  code/test_certificates.py
+57355b0b824cb9465ece8ba32c296f703051aa2df0079e5827bbd2c0305e4bd8  code/test_results.txt
+edb2027db2e40e9c748ea4dd976454496a1647b0509f39872c6a2181e1f0354a  lean/LogicalCore.lean
+68ad0a17393c1a562dde6e28ffb5b09e142df8a7c6108521c0c3adfc854a16ed  lean/Syntax.lean
+

@@ -1,0 +1,134 @@
+\section{All number fields from finite polynomial arithmetic}
+\label{sec:dedekind}
+
+For each monic $F\in\mathbb Z[X]$ of degree $D\ge1$ and rational prime $p$,
+define an integer polynomial
+\[
+ U_{F,p}(T)=\prod_{g\mid\overline F}^{*}(1-T^{\deg g}).
+\]
+The star takes each distinct monic irreducible divisor of the reduction
+$\overline F\in\mathbb F_p[X]$ once. Define $u_F(1)=1$ and, for $n>1$,
+\[
+ u_F(n)=\prod_{p^e\parallel n}[T^e]U_{F,p}(T),\qquad
+ M_F(x)=\sum_{1\le n\le x}u_F(n).
+\]
+The arithmetic ERH asks for square-root growth with arbitrary positive
+slack for each $M_F$, with a witness depending on $F$ and the slack.
+Every monic polynomial of positive degree is admissible, including those
+with repeated factors over $\mathbb Q$.
+
+\paragraph{How one integer names the polynomial.}
+Write $P(a,b)=2^a(2b+1)-1$. Each $f\ge0$ has a unique decomposition
+$f=P(D-1,P(B-2,w))$ with $D\ge1$, $B\ge2$. Read the first $D$ digits
+of $w$ in base $B$, starting from the units digit and filling missing
+places with zeros. Decode a digit $2j$ as $j$, and a digit $2j+1$ as
+$-j-1$. These are the coefficients in ascending order below the
+leading $1$. Every prescribed list is represented by choosing $B$ larger
+than its largest signed digit code and taking $w$ to have those digits.
+In particular $f=0$ represents $X$ and $f=37$ represents $X^2+1$.
+
+\paragraph{An exhaustive evaluation and its invariant.}
+For a fixed degree $d$ there are exactly $p^d$ monic candidates $g$
+over $\mathbb F_p$. Use the base-$p$ digits of $0,\ldots,p^d-1$ for their
+lower coefficients. To test divisibility by a monic $g$ of degree
+$d\le D$, enumerate $p^{D-d}$ monic quotients and compare the $D+1$
+coefficients of the product modulo $p$. To test irreducibility, apply
+that divisibility test to $g$ for all candidates of degrees $1$ through
+$d-1$. A reducible monic polynomial over a field has a proper monic
+divisor in this list. Thus every accepted candidate is exactly one of
+the required factors, including at ramified primes.
+
+To compute $[T^e]U_{F,p}$, start from $1$ and visit these candidates.
+On accepting a degree $d$, replace the vector $v$ by
+$v'_j=v_j-v_{j-d}$ for $0\le j\le e$, using zero for negative or missing
+indices. After any number of visits the vector gives the product of
+the accepted factors modulo $T^{e+1}$, by the coefficient rule for
+multiplication. Missing high entries in the initial vector are zeros.
+Trial division up to $n$ finds the contributing primes and at most $n$
+divisions find each exponent. Multiplication and summation then
+implement the two displayed definitions. The only special arithmetic
+branch is $f=0$, where every local factor is $1-T$ and the already defined
+ordinary Mertens function gives precisely the same sum.
+
+The loops for the residue polynomials, including all quotient searches,
+have the displayed primitive-recursive bounds. A vector uses at most
+$e+1$ signed integers. After $j$ accepted factors its entries have
+absolute value at most $2^j$, and $j\le D$, since the distinct
+irreducible divisors have total degree at most $D$. These bounds also
+give an explicit implementation by natural codes (for instance in base
+$2^{D+2}+1$ with signed digits encoded by parity). The sum of coefficient
+products for testing a divisor has at most $D+1$ terms, each at most
+$p^2$. No factorization algorithm for number fields occurs in the
+arithmetic formula.
+
+\paragraph{Why the field zeta functions are recovered.}
+Factor $F=\prod_{i=1}^r h_i^{m_i}$ over $\mathbb Q$. The distinct $h_i$
+are monic integral polynomials by Gauss's lemma. Set
+$K_i=\mathbb Q[X]/h_i$ and let $\alpha_i$ be the class of $X$.
+Exclude primes dividing any nonzero
+$\operatorname{disc}(h_i)$, $[\mathcal O_{K_i}:\mathbb Z[\alpha_i]]$,
+or $\operatorname{Res}(h_i,h_j)$ for $i\ne j$. This excludes finitely
+many primes. At all other primes the reductions of the $h_i$ are
+square-free and pairwise coprime. The inclusion of orders induces
+\[
+ \mathbb F_p[X]/\overline h_i
+       \simeq \mathcal O_{K_i}/p\mathcal O_{K_i},
+\]
+since the finite cokernel has order prime to $p$. By the Chinese
+remainder theorem the left side splits into fields, one for each
+irreducible factor $g$, with $p^{\deg g}$ elements. Hence the degrees
+in $U_{F,p}$ are exactly the residue degrees of the prime ideals over
+$p$ in the respective $K_i$. The powers $m_i$ disappear because the
+list of factors is taken without repetitions. This is the good-prime
+case of Dedekind's factorization theorem.\footnote{K.~Conrad,
+\href{https://kconrad.math.uconn.edu/math5230f12/handouts/dedekindfactor.pdf}
+{\emph{Factoring after Dedekind}}, Theorem 1.}
+
+For $\sigma=\Re s>1$, absolute convergence is immediate, since
+\[
+ \sum_{n\ge1}|u_F(n)|n^{-\sigma}
+  \le \prod_p (1+p^{-\sigma})^D \le \zeta(\sigma)^D.
+\]
+Indeed the absolute-coefficient sum of a local product at
+$T=p^{-\sigma}$ is bounded above by the product of $1+p^{-\sigma\deg g}$.
+In this half-plane comparison of the Euler factors gives
+\[
+ H_F(s):=\sum_{n\ge1}u_F(n)n^{-s}
+     =\frac{E_F(s)}{\prod_i\zeta_{K_i}(s)}.
+\]
+Here $E_F$ is a finite product of factors $(1-p^{-js})^{\pm1}$
+with $j\ge1$. It and its inverse are holomorphic and bounded on
+$\Re s\ge b$ for each $b>0$, since
+$1-p^{-jb}\le|1-p^{-js}|\le1+p^{-jb}$ there. In particular the
+exceptional primes can change the values of $M_F$ but cannot mask a
+zero in the critical strip.
+
+Under ERH every $\zeta_{K_i}$ is zero-free on $\Re s>1/2$ away from
+its pole at $1$ (using the standard nonvanishing on $\Re s=1$).
+The reciprocal Dirichlet-series estimate proved in this report gives the
+asserted growth for every coded polynomial, with its allowed
+field-dependent constant. Conversely the growth bound for $M_F$ makes
+$H_F$ holomorphic on that half-plane by partial summation. Given any
+number field $K$, choose a primitive element $\beta$ and a positive
+integer $m$ such that $m\beta$ is integral (clear denominators in a
+monic rational equation). Its minimal polynomial $F$ is monic,
+irreducible, represented by a natural code, and gives the single field
+$K$. Now $H_F\zeta_K=E_F$ continues to the half-plane away from $1$.
+The right side never vanishes there, which excludes a zero of
+$\zeta_K$ to the right of the critical line. The functional equation
+for the completed Dedekind zeta function, whose archimedean factors
+are regular and nonzero inside the open strip, excludes a zero to the
+left as well. This proves the external classical equivalence for the
+entire family, including non-Galois extensions.
+
+\paragraph{Two local computations.}
+For $X^2+1$ the factors $U_{F,p}$ at $p=2,3,5$ are $1-T$, $1-T^2$,
+and $(1-T)^2$ respectively. This distinguishes a repeated linear
+factor, an irreducible quadratic and two split linear factors.
+For $F=X^2-5$ the code at $2$ gives $1-T$ because
+$\overline F=(X+1)^2$. In the maximal order of
+$\mathbb Q(\sqrt5)$ the element $(1+\sqrt5)/2$ instead has minimal
+polynomial $X^2-X-1$, irreducible modulo $2$, so the true inverse
+Euler factor is $1-T^2$. Their ratio $1/(1+T)$ illustrates the
+correction $E_F$. The finite evaluator checks the polynomial
+coefficients in these examples.

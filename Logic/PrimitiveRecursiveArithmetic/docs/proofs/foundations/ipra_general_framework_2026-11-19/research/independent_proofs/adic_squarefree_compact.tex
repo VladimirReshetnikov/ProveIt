@@ -1,0 +1,127 @@
+\subsection{Automatic nonzero norms by polynomial-adic division}
+\label{sec:adic-squarefree-compact}
+
+Let \(K\) be an exact field with a primitive-recursive arithmetic
+presentation.  Let \(f\in K[X]\) have degree \(d\geq1\), and suppose
+\(K[X]/(f)\) is reduced.  A sufficient, effectively checkable input is
+a Bezout certificate \(Uf+Vf'=1\); over \(\mathbb Q\) this is the
+ordinary squarefree condition.  Over imperfect fields, the displayed
+certificate means separability, which must not be confused with the
+weaker ring-theoretic absence of repeated irreducible factors.
+
+\begin{theorem}[The polynomial-adic norm certificate]
+\label{thm:adic-squarefree-compact}
+Let \(m\geq1\), and let
+\(G=\sum_{j<m}A_j(X)Y^j\ne0\) be reduced in \(Y\).
+Then \(N=N_{Y^m-f}(G)\ne0\), and
+\[
+ \deg N\leq W:=\max_{A_j\ne0}(m\deg A_j+jd).
+\]
+More precisely, bounded division computes an index \(k<m\), an integer
+\(a\geq0\), and a polynomial \(B\not\equiv0\pmod f\), with
+\(s=ma+k\), such that the exact quotient \(H=N/f^s\) exists and
+\begin{equation}
+ \label{eq:adic-exact-residue}
+ H\equiv(-1)^{k(m-1)}B^m\pmod f,
+ \qquad H\bmod f\ne0.
+\end{equation}
+Neither \(\gcd(m,d)=1\) nor a rational root of \(f\) is assumed.
+\end{theorem}
+
+\begin{proof}
+For each nonzero \(A_j\), repeatedly divide by \(f\) while the
+remainder is zero.  Since a successful division reduces the degree by
+\(d\geq1\), at most \(\deg A_j+1\) divisions give
+\[
+ A_j=f^{a_j}B_j,\qquad B_j\bmod f\ne0,
+ \qquad a_jd\leq\deg A_j.
+\]
+The weights \(w_j=ma_j+j\) have distinct residues modulo \(m\), so
+their minimum is attained at a unique index \(k\).  Set
+\(a=a_k\), \(B=B_k\), and \(s=w_k\).
+
+Expand the multiplication determinant in the basis
+\(1,Y,\ldots,Y^{m-1}\).  In column \(i\), the coefficient
+\(A_jY^j\) contributes to row \(r\equiv i+j\pmod m\), with entry
+\(A_j f^q\), where \(i+j=r+mq\) and \(q\in\{0,1\}\).
+For a determinant permutation \(r=\sigma(i)\), the selected indices
+\(j_i\) and carries \(q_i\) therefore satisfy
+\[
+ \sum_i j_i=m\sum_iq_i,\qquad
+ \sum_i a_{j_i}+\sum_iq_i=\frac1m\sum_iw_{j_i}.
+\]
+The latter integer is at least \(s\), and exceeds \(s\) if any
+\(j_i\ne k\).  Terms selecting a zero coefficient vanish.
+The unique term selecting \(k\) in every column is the cyclic
+permutation \(i\mapsto i+k\pmod m\), of sign
+\((-1)^{k(m-1)}\), and its total carry is \(k\).
+Thus, by factoring the displayed powers from the finite determinant sum,
+one obtains an actual polynomial identity
+\[
+ N=f^s\bigl((-1)^{k(m-1)}B^m+fQ\bigr).
+\]
+This constructs the exact division quotient
+\(H=(-1)^{k(m-1)}B^m+fQ\), and proves its residue formula.
+In the reduced ring \(K[X]/(f)\), the nonzero residue of \(B\) has
+nonzero \(m\)-th power.  Hence \(H\bmod f\ne0\), so \(H\ne0\).
+Because \(K[X]\) is a domain and \(f\ne0\), also \(N\ne0\).
+
+For the degree bound, every nonzero determinant term has degree at most
+\[
+ \sum_i\deg A_{j_i}+d\sum_iq_i
+ =\frac1m\sum_i(m\deg A_{j_i}+dj_i)\leq W.
+\]
+Addition cannot increase this bound.  Furthermore
+\(sd=(ma+k)d\leq m\deg A_k+kd\leq W\), so the quotient has
+degree at most \(W-sd\).  If \(D=\max_j\deg A_j\), the selected
+exponent has the explicit bound \(s\leq mD+m-1\).
+The integer-count equalities involving \(1/m\) do not divide by an
+element of \(K\), so characteristics dividing \(m\) cause no problem.
+\end{proof}
+
+\paragraph{The reducedness certificate, without factorization.}
+Suppose \(Uf+Vf'=1\), and \(f\mid b^r\), with \(r\geq1\).
+Compute \(g=\gcd(f,b)\), \(f=gh\), \(b=gq\), and
+\(Af+Bb=g\).  Cancelling \(g\ne0\) gives \(Ah+Bq=1\).
+Differentiating \(f=gh\) in the squarefree certificate gives
+\(Ch+Dg=1\), where \(C=Ug+Vg'\), \(D=Vh'\).
+Multiplying these two identities gives
+\[
+ 1=Eh+Fb,
+ \quad E=CAh+CBq+DAg,
+ \quad F=DB.
+\]
+Write \(b^r=hR\).  The finite geometric identity now gives
+\[
+ 1=(Fb)^r+(1-Fb)\sum_{i<r}(Fb)^i
+   =h\left(F^rR+E\sum_{i<r}(Fb)^i\right)=hJ.
+\]
+Therefore \(b=gq=gh(qJ)=f(qJ)\).  This is an explicit witness that
+\(f\mid b\), proving reducedness.  After this one lemma, the norm
+producer uses no derivative inverse, formal root, or extension-field
+construction.
+
+\paragraph{Concrete gain.}
+For \(m=2\), \(f=X^4+1\), and \(G=Y-X^2\) over \(\mathbb Q\),
+the global degree weights tie at \(4\), \(\gcd(m,d)=2\), and
+\(f\) has no rational root.  The polynomial-adic weights are \(0,1\),
+and \eqref{eq:adic-exact-residue} detects
+\(N=X^4-(X^4+1)=-1\).
+The residue algebra need not be a field: for \(f=X^2-1\),
+\(G=(X-1)+Y\), the least residue \(u-1\) is a nonzero zero divisor,
+but its square is \(2-2u\ne0\), and the norm is \(2-2X\).
+
+\paragraph{iPRA and Lean obligations.}
+The implementation consists of bounded coefficient scans, Euclidean
+division, a degree-bounded gcd computation with Bezout witnesses,
+at most \(\deg A_j+1\) repeated divisions per row, and a
+division-free determinant computation bounded by \(m!\).
+The proof records the exact quotient identity, the carry-sum identity,
+and the finite geometric identity as quantifier-free loop invariants.
+Nonzero residue yields nonzero norm, and the degree cap \(W\) then
+bounds a scan returning an actual nonzero coefficient.  Normalize a
+divisor for remainder computation while retaining its leading-coefficient
+unit in the proved identities.  Never invert an arbitrary nonzero residue
+of \(K[X]/(f)\).  The corresponding Lean endpoint must export an
+object-iPRA derivation for these fixed primitive-recursive programs;
+an abstract-field Lean theorem alone is a separate semantic specification.

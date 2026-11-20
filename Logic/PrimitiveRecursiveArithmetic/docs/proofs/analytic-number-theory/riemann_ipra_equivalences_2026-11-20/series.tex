@@ -1,0 +1,37 @@
+\section{A convergent series with a primitive-recursive tail bound}\label{sec:series}
+Square-root cancellation also has a positive constructive reading as convergence with a prescribed modulus. We give the details because a bare assertion that a Dirichlet series continues analytically does not provide a rate for summing its coefficients.
+
+Use any row of Section~\ref{sec:matrices} and set $M(0)=0$, $a_n=M(n)-M(n-1)$. Fix $r\ge1$ and put $B=2^{2r}$. The weight is constant on each shell $B^j\le n<B^{j+1}$:
+\[
+ j(n)=\left\lfloor\frac{\lfloor\log_2 n\rfloor}{2r}\right\rfloor,\quad
+ u_n=2^{(r+1)j(n)},\qquad S_r(N)=\sum_{n=1}^N\frac{a_n}{u_n},\quad S_r(0)=0 .
+\]
+These are dyadic rational approximations to the weighting of a Dirichlet series with exponent $(r+1)/(2r)$. The common denominator of $S_r(N)$ divides $u_N$ for $N>0$. The formulas below use the exact shell weights.
+
+\begin{theorem}\label{thm:rate}
+For each of the four families, the following are equivalent by primitive-recursive witness transformations.
+\begin{enumerate}
+\item For each $r$ there is $c$ with $|M(N)|^{2r}\le cN^{r+1}$ for all $N\ge1$.
+\item For each $r$ there is $K$ with $|S_r(N)|\le2^K$ for all $N$.
+\item For each $r$ there is $K$ satisfying the preceding prefix bound and
+\[
+  P,Q\ge 2^{4r(t+K)}\quad\Longrightarrow\quad
+  |S_r(P)-S_r(Q)|\le 2^{-t}\qquad(t\ge0).
+\]
+\end{enumerate}
+The modulus and residue in the uniform progression form are quantified after the constant, exactly as in the determinant row.
+\end{theorem}
+\begin{proof}
+For (1) to (3), use the supplied witness $c$ at index $2r$, giving $|M(i)|^{4r}\le c i^{2r+1}$. For any $i<B^{j+1}$ this implies
+\[
+ |M(i)|\le(c+1)2^{r(j+1)+\lceil(j+1)/2\rceil}.
+\]
+Raise to $4r$ to verify the inequality in integers. An interval of consecutive terms within shell $j$ has constant weight; summing $a_n$ over it subtracts two values of $M$. The earlier value may precede the shell but satisfies the same upper bound. Thus any partial shell contributes in absolute value at most $4(c+1)2^r2^{-\lfloor j/2\rfloor}$. For a tail with all shell indices $j\ge2L$ the sum of the geometric majorants is bounded by $16(c+1)2^r2^{-L}$, since each integer $\lfloor j/2\rfloor$ occurs twice. This also bounds an arbitrary prefix at $L=0$. Take $K=r+4+(c+1)$; $2^{c+1}\ge c+1$. If $P,Q\ge B^{2(t+K)}$, the difference consists of a finite interval of such shells with $L=t+K$. This proves (3), and dropping the tail condition proves (2).
+
+For (2) to (1), finite summation by parts gives
+\[
+ M(N)=u_NS_r(N)-\sum_{i=1}^{N-1}(u_{i+1}-u_i)S_r(i).
+\]
+Because $u_i$ is nondecreasing, the absolute value is at most $2^{K+1}u_N$. Now $u_N^{2r}=(B^{j(N)})^{r+1}\le N^{r+1}$. Hence the output witness is $c=2^{2r(K+1)}$. All arguments use only bounded sums, order, integer powers, telescoping identities and PR substitutions of witnesses. The forward direction uses one supplied instance at $2r$; it never forms an infinite sequence of choices.
+\end{proof}
+\code{DyadicSeries.statement} builds both versions as closed iPRA sentences for each family. For the rate test it ranges over $P=2^{4r(t+K)}+i$ and $Q=2^{4r(t+K)}+j$ and clears the two positive dyadic denominators. The prefix bound has a separate cutoff. For (2) the unused tail quantifiers are vacuous. \code{AbelIdentity.recover} proves the finite Abel recovery inequality in Lean over the rationals. The shell-majorant proof, including the specific modulus, is given above.

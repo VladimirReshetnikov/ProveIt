@@ -1,0 +1,185 @@
+\section{iPRA, finite codes, and the meaning of identity}
+\label{sec:arithmetic}
+
+\subsection{The object theory}
+
+We use first-order intuitionistic logic with equality over the natural
+numbers. The language has $0$, successor, and a symbol for every primitive
+recursive definition. Each symbol has its defining equations. The
+nonlogical axioms also include successor injectivity, $Sx\ne0$, and
+induction for quantifier-free formulas, with parameters:
+\[
+ A(0,\boldsymbol y)\land
+ \forall x\bigl(A(x,\boldsymbol y)\to A(Sx,\boldsymbol y)\bigr)
+ \ \longrightarrow\ \forall x\,A(x,\boldsymbol y).
+\]
+The formula $A$ must be syntactically quantifier-free. Classical excluded
+middle for arbitrary formulas is not an axiom. Equality and order on
+natural numbers, integers encoded by natural numbers, and rational numbers
+are decidable by primitive recursive comparisons.
+
+A useful derived rule is induction for each fixed bounded formula whose
+atomic relations are primitive recursive. Its characteristic function is
+constructed by finite Boolean folds. A bounded existential is a finite
+disjunction and a bounded universal is a finite conjunction. The resulting
+formula is internally equivalent to a quantifier-free equation
+$\chi(\boldsymbol x)=1$, to which the original induction scheme applies.
+This observation does not grant induction for an unbounded existential
+formula.
+
+\subsection{Coding conventions}
+
+Any explicit elementary coding with primitive recursive constructors and
+projections works. For definiteness, use Cantor pairing
+\[
+ \langle a,b\rangle=\frac{(a+b)(a+b+1)}2+b.
+\]
+The division is exact; the inverse is obtained by bounded search below the
+code. Encode an integer $z$ by $2z$ when $z\ge0$ and by $-2z-1$ when
+$z<0$. Encode a rational as a pair consisting of an integer code and a
+natural number $d$, interpreted as denominator $d+1$. Reduction to lowest
+terms is optional. Exact rational comparisons cross-multiply positive
+denominators.
+
+Finite lists can be encoded by their length and a nested sequence of pairs.
+Their projections, bounded sums, products, maxima, and bounded searches are
+primitive recursive. An expression is a finite list of tagged nodes in
+which every child index is smaller than its parent index. The final node
+is the root. Tags distinguish rational constants, the variable, $\pi$,
+$\log2$, addition, multiplication, sine, exponential, and absolute value.
+The predicate $\WF(e)$ checks tags, arities, denominators, and child-index
+bounds. A tree can be expanded from a directed acyclic graph if literal
+expression syntax is desired. All conversions are primitive recursive.
+
+A polynomial is a finite list of pairs $(c,\boldsymbol\alpha)$ with
+$c\in\Z$ and $\boldsymbol\alpha\in\N^n$. Its value is
+$\sum c\prod_i x_i^{\alpha_i}$. Zero coefficients and repeated monomials
+are permitted; collecting like terms is not required for any proof.
+The degree and coefficient-norm bounds used below are computed from this
+finite list. A dummy variable handles a polynomial with no variables.
+
+These conventions specify ordinary data, rather than adding new sorts to
+iPRA. Symbols such as $q\in\Q$ or $\boldsymbol m\in\N^n$ abbreviate
+natural-number codes and their primitive recursive decoding operations.
+
+\subsection{Rational approximation and finite evidence}
+
+\begin{lemma}[Uniform approximation]\label{lem:approx}
+There is a primitive recursive rational-valued function $\App(e,q,k)$
+such that, for every well-formed expression $e$ and rational $q$,
+\begin{equation}\label{eq:approx-error}
+ \abs{\App(e,q,k)-\llbracket e\rrbracket(q)}\le2^{-k}.
+\end{equation}
+The elementary approximation laws needed in the proof have iPRA
+derivations after replacing real-valued notation by their finite rational
+error statements.
+\end{lemma}
+
+The brackets denote the ordinary real interpretation for readability.
+Appendix~\ref{app:primitives} gives concrete Taylor cutoffs, approximations
+to the constants, and a global primitive recursive precision bound.
+In particular, this lemma is not justified by an alleged primitive
+recursive interpreter for arbitrary primitive recursive programs. Its
+syntax has a fixed, small set of elementary operations.
+
+\begin{definition}[Strict certificate and identity]
+For a valid expression code $e$, put
+\begin{align}
+ \NZ(e,q,k)&:\Longleftrightarrow
+       \abs{\App(e,q,k)}>2^{-k},\label{eq:nz}\\
+ W(e)&:\Longleftrightarrow\exists q\,\exists k\;\NZ(e,q,k),\label{eq:w}\\
+ \Id(e)&:\Longleftrightarrow
+       \forall q\,\forall k\;\abs{\App(e,q,k)}\le2^{-k}.
+       \label{eq:id}
+\end{align}
+Rational input codes range over a surjective enumeration of $\Q$.
+\end{definition}
+
+The relation $\NZ$ is a decidable primitive recursive relation. Thus $W$
+is an existential finite-certificate statement and $\Id$ is a universal
+arithmetical statement. Intuitionistic logic proves
+\begin{equation}\label{eq:id-neg-w}
+ \Id(e)\longleftrightarrow\neg W(e).
+\end{equation}
+For the right-to-left direction, fix $q,k$. The rational comparison is
+decidable, so exclusion of its strict alternative proves the displayed
+nonstrict inequality. No unbounded logical principle is involved.
+
+\begin{proposition}[Agreement with real identity]\label{prop:semantics}
+In the standard interpretation, $\Id(e)$ holds exactly when
+$\llbracket e\rrbracket(x)=0$ for every real $x$.
+Moreover, a specified nonzero value with a positive separation from zero
+can be converted into a strict rational certificate using a local
+continuity modulus.
+\end{proposition}
+\begin{proof}
+If the function vanishes everywhere, \eqref{eq:approx-error} immediately
+gives \eqref{eq:id}. Conversely, fix a rational $q$. If \eqref{eq:id}
+holds then
+\[
+ \abs{\llbracket e\rrbracket(q)}
+ \le \abs{\App(e,q,k)}+2^{-k}\le2^{1-k}
+\]
+for every $k$. This is precisely equality to zero in rational-approximation
+semantics.
+
+On every bounded interval, an expression has a computable rational
+magnitude bound and a computable Lipschitz bound. Addition, multiplication,
+sine, exponential on a bounded interval, and absolute value preserve such
+bounds. Induction on the finite syntax therefore gives an explicit local
+modulus. Approximating any real $x$ by rationals within that modulus shows
+that its value is zero too. This does not require a choice function for all
+real numbers: a supplied Cauchy name is evaluated at a specified precision.
+
+For the positive assertion, suppose a supplied point has value of absolute
+size at least $\delta>0$, where $\delta$ is rational. Approximate the point
+closely enough that the function value changes by less than $\delta/4$.
+Then approximate the value at this rational point with error
+$2^{-k}<\delta/4$. Its rational approximation has absolute value greater
+than $\delta/2>2^{-k}$, furnishing \eqref{eq:nz}.
+\end{proof}
+
+\begin{remark}[A logical distinction that must be preserved]
+From \eqref{eq:id-neg-w}, intuitionistically $\neg\Id(e)$ implies
+$\neg\neg W(e)$. It does \emph{not} in general imply $W(e)$.
+Nowhere below do we replace a negated universal statement by a positive
+counterexample. Our positive polynomial-to-expression equivalence is
+proved directly with witness transformations, and only then negated.
+\end{remark}
+
+\subsection{Finite computations}
+
+Fix a standard effective enumeration of deterministic machines whose
+terminating instruction emits a Boolean output. This loses no halting
+generality: simulate any ordinary program and emit $0$ when it halts.
+Intermediate computations may manipulate arbitrary finite data. A
+configuration records the state, a finite tape segment, and the head
+position, or equivalently the data of a register-machine configuration.
+A certificate records a finite sequence of configurations, its initial
+input, each legal transition, and its final output. Write
+$\Run(d,x,s,b)$ when $s$ is such a valid terminating computation of program
+$d$ on input $x$ with output bit $b$, encoded by $0$ or $1$.
+Verification is bounded by the length
+and entries of the supplied certificate and is primitive recursive.
+
+The fixed halting formula is
+\begin{equation}\label{eq:halt-def}
+ \Halt(e):\Longleftrightarrow
+ \exists s\,\exists b\;\Run(e,e,s,b).
+\end{equation}
+Thus halting is on the machine's own input code, not on a blank tape.
+One can encode configurations by a standard bounded arithmetic sequence
+coding (for example the remainder coding used for computation tableaux).
+Initiality, local transitions, and finality then have bounded arithmetic
+definitions, and \eqref{eq:halt-def} is a specific $\Sigma_1$ formula.
+If an exponential coding is used, its finitely many auxiliary computations
+are included in the existential certificate. This is the fixed formula to
+which formalized MRDP will be applied.
+
+Two elementary internal facts are used later. Valid terminating
+computations of a deterministic program on the same input have equal
+outputs. Also, a finite program that calls another program and then
+branches has primitive recursive transformations between the corresponding
+finite run certificates. Both facts are proved by bounded induction on
+the supplied computation sequences. There is no totality assumption for
+the universal machine in these facts.

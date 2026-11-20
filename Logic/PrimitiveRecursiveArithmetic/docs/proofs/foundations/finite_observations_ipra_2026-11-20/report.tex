@@ -1,0 +1,53 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.94in,top=0.86in,bottom=0.91in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,graphicx,booktabs,array,microtype,xcolor,fancyhdr}
+\usepackage[hyphens]{url}
+\definecolor{ink}{HTML}{173A48}
+\definecolor{blueink}{HTML}{145C73}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=blueink,pdfauthor={OpenAI},pdftitle={Finite observations of continuous mathematics in iPRA}]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\eps}{\varepsilon}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{2pt}
+\setcounter{tocdepth}{1}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{ink}Finite observations of continuous mathematics}
+\fancyhead[R]{\small\color{ink}\ipra}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\emergencystretch=2em
+\begin{document}
+\thispagestyle{plain}
+{\small\bfseries\color{blueink} CONSTRUCTIVE MATHEMATICS \hfill NOVEMBER 2026}\par
+\vspace{14pt}
+{\fontsize{26}{30}\selectfont\bfseries\color{ink}Finite observations of continuous\\[2pt] mathematics in iPRA\par}
+\vspace{7pt}
+{\large Metric kernels, continuous quantifiers, exact crossings, and residues\par}
+\vspace{13pt}
+\noindent A finite calculation can determine an infimum to high accuracy while its minimizing arguments move between distant points. This distinction governs which parts of a continuous proof can be carried out in intuitionistic primitive recursive arithmetic. We give a comparison principle for finite observations, a condition for extracting a point from local witnesses, and four applications. For metric kernels we compute composition and test equality by distance probes. For continuous logic an atomic error bound survives every quantifier in a fixed nonexpansive formula. For paths crossing a Jordan curve we give a condition producing actual parameter names and verify it for polynomial paths under an algebraic hypothesis. For residues we move rational contours around separated singularities given by regular names. Each use of a continuous object is traced to rational operations, finite bounds, or explicit hypotheses about a presentation.\par
+\vspace{7pt}
+\noindent The Lean files include derivations in ProveIt's object calculus and ordinary Lean theorems about the finite algorithms. Section~\ref{sec:verification} states the scope of each check.
+\vspace{7pt}
+\tableofcontents
+\medskip
+\noindent\small\textbf{Three values computed in the text.}
+An interval-data set first admits a global short fit at error \(1/3\). Three centers cover the unit interval at optimal radius \(1/6\). A rectangular contour separating the two roots of \(z^2-2\) has integral \(\pi i/\sqrt{2}\) for the reciprocal polynomial.\normalsize
+\clearpage
+\input{manuscript/framework}
+\input{manuscript/category}
+\input{manuscript/model}
+\input{manuscript/topology}
+\input{manuscript/complex}
+\input{manuscript/verification}
+\end{document}

@@ -1,0 +1,163 @@
+/-
+OBJECT-THEORY OUTLINE -- NOT A COMPILED MODULE
+
+Purpose: turn the checked semantic kernel in this directory into actual
+`Prf PRAAx` derivations at the pinned ProveIt revision
+5f3be02388442f16487d2dc5c2529961dd783d2b.
+
+This file is deliberately not given a `.lean` extension.  No missing proof
+is represented as an axiom, `sorry`, or an accomplished derivation.
+
+1. EXISTING IMPORTS AND EXACT API NAMES
+
+import IPRADerivations.Foundations.BoundedSyntax
+import IPRADerivations.Foundations.BoundedSyntaxInduction
+import IPRADerivations.Foundations.GuardedLoop
+import IPRADerivations.Foundations.FiniteQueryDemand
+import IPRADerivations.Foundations.ApproximateWitness
+import IPRADerivations.Analysis.RationalArgmin
+import IPRADerivations.Foundations.SetoidInterpretation
+
+open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open LeanProofs.IPRA.Foundations
+open Syn
+open scoped Fm
+
+Relevant existing endpoints, inspected in the pinned source:
+
+* BoundedSyntax.BFm n: bounded formulas with their actual variable arity.
+* BoundedSyntax.formula A: literal first-order formula represented by A.
+* BoundedSyntax.bitF A : PR n: compiled program for one FIXED syntax A.
+* BoundedSyntax.bounded_reflection A xs:
+      Γ ⊢[PRAAx] ((bit A xs = 1) ↔ (formula A).subst xs).
+* BoundedSyntax.boolean_reflection_closed A: the universally closed
+  object-theory form for `app (bitF A)`.
+* BoundedSyntaxInduction.induction_at A k h0 hs: derived induction on a
+  fixed bounded formula using only QF induction on its Boolean compiler.
+* GuardedLoop.Loop and GuardedLoop.loop_at: checked bounded-loop interface
+  with a QF invariant, open guard, base, step below the bound, and finish.
+* FiniteQueryDemand.finiteMaximum body N x: actual max over i < N,
+  with empty maximum 0.
+* ApproximateWitness.argmin and argmin_spec: actual least argmin on 0..K.
+* Probability.FiniteLaws.Mn body K x: actual minimum on 0..K.
+* Analysis.RationalArgmin.selected v K x, selected_spec,
+  selected_minimal, selected_least: the independently denominated rational
+  alternative, with `v : PR 2` fixed in the metatheory.
+* SetoidInterpretation.Presentation and SetoidInterpretation.sound:
+  syntactic transport after supplying domain, equivalence, term congruence,
+  closure, and derivations of all translated source axioms.
+
+2. DATA AND FORMULAS TO ADD
+
+Fix evaluator programs f,g : PR 2 and a relation-bit program R : PR 3.
+Their arguments are `(index, packed_parameter)` and
+`(left_index,right_index,packed_parameter)`.  The common parameter packs
+the finite environment, numerical precision, and other application data.
+The programs are fixed before any proof is generated; they are NOT runtime
+codes passed to a total universal evaluator.
+
+Use the following object terms (n free numerical variables):
+
+  closeT (e a b : PTm n) : Fm PTm n :=
+    le a (b + e) ⋏ le b (a + e)
+
+  score (f : PR 2) (i x : PTm n) : PTm n := ap2 f i x
+
+  maxT (f : PR 2) (N x : PTm n) : PTm n :=
+    FiniteQueryDemand.finiteMaximum (score f (var 0) (var 1)) (succ N) x
+
+  minT (f : PR 2) (N x : PTm n) : PTm n :=
+    Probability.FiniteLaws.Mn (score f (var 0) (var 1)) N x
+
+The `R` atom is `ap3 R i j x = 1`.  Define the following bounded formulas
+using BFm.all/BFm.ex, .and, and BFm.le.  `≤ N` is implemented as the bound
+`< N+1`; substitution into each binder uses Syn.shift and Syn.up.
+
+  TotalL(N,M,x) := forall i <= N, exists j <= M, R(i,j,x)=1
+  TotalR(N,M,x) := forall j <= M, exists i <= N, R(i,j,x)=1
+  Atomic(N,M,e,x) := forall i <= N, forall j <= M,
+      R(i,j,x)=1 -> closeT(e,score(f,i,x),score(g,j,x)).
+
+The desired single-step endpoints are precisely
+
+  [] ⊢[PRAAx] forall N M e x,
+    TotalL(N,M,x) -> TotalR(N,M,x) -> Atomic(N,M,e,x) ->
+      closeT(e,minT(f,N,x),minT(g,M,x))
+
+and the same statement with maxT.  All bounds, errors, and parameters
+remain internal numerical variables.  There is no quantification over
+arbitrary functions, arbitrary compact sets, or all PR programs.
+
+3. PROOF OF THE ENDPOINTS
+
+For the first inequality between minima, instantiate TotalR at the
+actual right argmin.  Its range proof comes from argmin_spec.  Eliminate
+the bounded existential j using Prf.exE.  `minT(f) <= f(j)` follows from
+the actual minimum specification; Atomic gives `f(j) <= minT(g)+e` after
+rewriting the argmin attainment equality.  Compose object order proofs.
+The other inequality uses TotalL at the actual left argmin.  Maxima use
+the dual argument.  This construction is exactly the proof of
+min_correspondence/max_correspondence, but the arithmetic steps must be
+replaced by the existing object order/congruence lemmas.
+
+No unbounded search is needed.  The relation may also be supplied as an
+arbitrary object formula if the existential witnesses are sealed; only
+an executable selected correspondence requires a fixed decidable relation
+and a bounded search implementation.
+
+4. FIXED-FORMULA COMPILER
+
+Perform EXTERNAL structural recursion on one Formula φ, one finite list
+of atomic PR programs, and one packed-environment convention.  Generate
+a PR evaluator symbol Eφ by PR composition and the already specified
+finite min/max folds.  Constants, min, max, complement, and binders are
+handled by their finite constructors.  Each subformula has fixed arity.
+Environment extension is the actual pairing/list constructor, with its
+projection equations proved in the object theory.
+
+Perform a second external structural recursion generating object proof
+terms.  The atomic cases use supplied finite-tuple error premises;
+min/max/complement use the scalar inequalities; inf/sup instantiate the
+new correspondence lemmas.  Close the remaining numerical variables
+with closeUniv.  The result is one derivation per fixed φ.  Neither the
+formula nor arbitrary evaluator code becomes an internal parameter.
+
+When atomic premises contain variable-length tuples or bounded families,
+construct a BFm for the finite family, then use bounded_reflection and
+BoundedSyntaxInduction.  Do not induct on an unbounded statement saying
+that a trace is valid for all future precisions.  All continuous limit
+interpretations occur externally, or as fixed-program name schemas.
+
+5. REQUIRED ADAPTERS FOR CONTINUOUS APPLICATIONS
+
+(a) Rational scores: either clear a known positive common denominator,
+    or use the actual rational argmin implementation and object rational
+    arithmetic.  Never reverse an inequality before proving the sign of
+    the denominator.  A bounded signed score may first be shifted.
+(b) Nets: produce their actual finite lists, nonemptiness, and the used
+    coverage/correspondence certificates.  The finite formula proof does
+    not prove the existence of these certificates automatically.
+(c) Atomic predicates: provide PR approximants and fixed moduli.  Related
+    input tuples must satisfy each leaf's precision demand.
+(d) Coherence: instantiate the two-net transfer at any requested pair of
+    precisions, with an explicit common scale.  The resulting arithmetic
+    statement has a QF/Boolean finite certificate; the external name
+    interpretation then obtains a real value.  The limit itself is not
+    an internally quantified real object.
+(e) Functions/terms: first compile each fixed term and derive its modulus;
+    an atomic formula containing that term then uses the composed modulus.
+
+6. COMPLETION GATES
+
+The remaining implementation is complete only after:
+* the two correspondence endpoints have actual `Prf PRAAx` proof values;
+* the formula compiler returns `PR` syntax plus proof values, not merely
+  Lean facts about `PR.ev`;
+* an application proves and discharges the particular finite input
+  certificates, retaining any undischarged hypotheses in the final type;
+* the pinned repository builds these modules and `#print axioms` confirms
+  absence of sorryAx/custom correctness axioms.
+
+The current package reaches the checked Lean semantic kernel plus this
+explicit reification plan.  It does not claim these remaining gates passed.
+-/

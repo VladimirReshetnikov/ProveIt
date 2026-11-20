@@ -1,0 +1,591 @@
+{
+  "schema_version": 1,
+  "report": "Abstract and continuous mathematics through explicit iPRA presentations",
+  "reviewed_repository_commit": "5f3be02388442f16487d2dc5c2529961dd783d2b",
+  "global_scope": {
+    "base_theory": "Intuitionistic first-order primitive recursive arithmetic with equality, PR defining equations, successor axioms, and quantifier-free induction.",
+    "producer_scope": "Schemes in fixed specified PR producers, moduli and nets; only their numerical parameters are quantified internally. No universal PR evaluator or numerical universe of all functions.",
+    "human_complete_meaning": "The report gives human arguments at the displayed hypotheses. This status is not a claim that the corresponding new Prf PRAAx proof values have been constructed.",
+    "semantic_layer": "Completions, continuous functions, metric structures, Hilbert solutions and holomorphic functions interpret the finite arithmetic estimates externally.",
+    "new_object_proofs_delivered": false,
+    "no_custom_axioms_or_sorry_in_checked_project": true
+  },
+  "checked_host_development": {
+    "compiler_version": "Lean 4.32.0",
+    "compiler_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35",
+    "source": "lean/QuantitativeKernel.lean",
+    "verification_log": "lean/verification.log",
+    "theorem_count": 19,
+    "theorems": [
+      "IPRAAbstractAnalysis.related_push",
+      "IPRAAbstractAnalysis.positive_transfer",
+      "IPRAAbstractAnalysis.allFin_true",
+      "IPRAAbstractAnalysis.anyFin_true",
+      "IPRAAbstractAnalysis.eval_correct",
+      "IPRAAbstractAnalysis.error_step_identity",
+      "IPRAAbstractAnalysis.stationary_error",
+      "IPRAAbstractAnalysis.perturbed_contraction",
+      "IPRAAbstractAnalysis.perturbed_contraction_of_noise",
+      "IPRAAbstractAnalysis.rat_pow_add",
+      "IPRAAbstractAnalysis.rat_pow_mul",
+      "IPRAAbstractAnalysis.rat_pow_mono",
+      "IPRAAbstractAnalysis.reciprocal_decay",
+      "IPRAAbstractAnalysis.block_halving",
+      "IPRAAbstractAnalysis.block_decay",
+      "IPRAAbstractAnalysis.amplitude_absorb",
+      "IPRAAbstractAnalysis.shifted_amplitude",
+      "IPRAAbstractAnalysis.radius_at_clock",
+      "IPRAAbstractAnalysis.solver_budget"
+    ],
+    "audited_dependencies": {
+      "positive_transfer": [],
+      "allFin_true": [
+        "propext"
+      ],
+      "anyFin_true": [
+        "propext"
+      ],
+      "eval_correct": [
+        "propext",
+        "Quot.sound"
+      ],
+      "audited_rational_error_and_clock_theorems": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    "boundary": "These are host Lean theorems. Rat-library axiom dependencies are disclosed; the new arithmetic object proofs remain planned. Existing ProveIt interfaces are integration targets, not imports of this standalone checked project."
+  },
+  "claims": [
+    {
+      "latex_label": "lem:boolean",
+      "title": "Bounded conjunctions require only quantifier-free induction",
+      "hypotheses": [
+        "A fixed decidable PR predicate with a Boolean characteristic and explicit finite scan bounds."
+      ],
+      "conclusion": "Bounded universal/existential assertions have Boolean-fold representations, and bounded loop invariants can use quantifier-free induction.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [
+        "allFin_true",
+        "anyFin_true",
+        "eval_correct"
+      ],
+      "diagnostics": [],
+      "key_exclusions": [
+        "Does not permit induction on an arbitrary unbounded universal formula."
+      ]
+    },
+    {
+      "latex_label": "lem:separation",
+      "title": "Rational separation",
+      "hypotheses": [
+        "Rational r,s,C with C>=0; r<=s+C*2^(-k) for every natural k."
+      ],
+      "conclusion": "r<=s, by an explicit rational precision contradiction.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [],
+      "key_exclusions": [
+        "An intuitionistic rational-order argument, not a general real limit or Markov principle."
+      ]
+    },
+    {
+      "latex_label": "thm:compilation",
+      "title": "Compilation of the finite parts",
+      "hypotheses": [
+        "Fixed PR symbols.",
+        "Input contracts supplied as actual iPRA derivations.",
+        "Each loop has a specified quantifier-free or Booleanized bounded invariant with derived base and step inequalities."
+      ],
+      "conclusion": "An effective transformation composes these supplied proof terms into a finite-correctness iPRA derivation.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "External transformation of supplied derivations; not an internal self-soundness theorem. New application proof terms remain to be implemented.",
+      "checked_host_support": [],
+      "diagnostics": [],
+      "key_exclusions": [
+        "Conditional metatheorem; does not assert that every true PR specification is provable or every constructive proof compiles to iPRA."
+      ]
+    },
+    {
+      "latex_label": "thm:cm-extension",
+      "title": "Dense extension with explicit demand",
+      "hypotheses": [
+        "Rational metric presentations and a fixed PR dense evaluator E(a,r).",
+        "A fixed monotone PR demand mu with mu(k)>=k.",
+        "The supplied joint law dX(a,b)<=2^(-mu(k)), r,s>=k+2 implies dY(E(a,r),E(b,s))<=2^(-k)."
+      ],
+      "conclusion": "q maps to the regular name n |-> E(q(mu(n)),n+2); equivalent names have equivalent images. Semantically the extension is continuous and uniquely determined among uniformly continuous extensions by its dense values.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [],
+      "key_exclusions": [
+        "No numerical universe of all PR programs or all Cauchy names is formed."
+      ]
+    },
+    {
+      "latex_label": "prop:cm-products-density",
+      "title": "Products and change of dense presentation",
+      "hypotheses": [
+        "Products use the maximum metric.",
+        "For change of presentation: a fixed PR isometry f and a supplied PR selector s with dY(f(s(b,k)),b)<=2^(-k)."
+      ],
+      "conclusion": "Completion preserves finite products; the dense isometry becomes an isomorphism with inverse name n |-> s(y(n+2),n+2).",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [],
+      "key_exclusions": [
+        "Bare density without a PR approximation selector does not supply the effective inverse."
+      ]
+    },
+    {
+      "latex_label": "thm:cm-backforth",
+      "title": "Quantitative back-and-forth for finite restrictions",
+      "hypotheses": [
+        "Fixed finite continuous-formula syntax with min, max, 1-u, inf and sup.",
+        "Nonempty finite domain lists in each sort with two-sided delta-covering.",
+        "Free environments are delta-close and all atomic occurrences differ by at most eta on delta-close tuples."
+      ],
+      "conclusion": "Finite formula values differ by at most eta, without quantifier-depth loss. Atomic evaluation errors eA,eB add at most eA+eB.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [
+        "positive_transfer",
+        "eval_correct"
+      ],
+      "diagnostics": [
+        "compact_logic"
+      ],
+      "key_exclusions": [
+        "The checked positive Boolean transfer lemma is only a logical nucleus of this numerical theorem.",
+        "Finite quantifier restrictions need not be finite submodels: ambient dense operations need not close the finite domains."
+      ]
+    },
+    {
+      "latex_label": "thm:cm-values",
+      "title": "PR values for compactly presented metric formulas",
+      "hypotheses": [
+        "A fixed finite signature/formula with PR dense constants, function/predicate evaluators and proved moduli.",
+        "Each sort has a nonempty PR finite-net producer with its covering theorem over the dense presentation.",
+        "Free inputs have specified PR regular-name families.",
+        "For the extension beyond exact dense atoms: supplied uniform PR atomic approximations with explicit errors; named constants are handled through this approximate variant."
+      ],
+      "conclusion": "The explicit finite-net evaluations form a PR regular Cauchy name of the continuous formula value, independent of valid input names and net choices.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [
+        "positive_transfer",
+        "eval_correct"
+      ],
+      "diagnostics": [
+        "compact_logic"
+      ],
+      "key_exclusions": [
+        "No compactness/completeness theorem for arbitrary consistent theories.",
+        "No exact truth decision from a value name.",
+        "Quantification over non-totally-bounded sorts is not covered."
+      ]
+    },
+    {
+      "latex_label": "eq:cm-minimax-value",
+      "title": "Alternating minimax example and coherent optimizer",
+      "hypotheses": [
+        "c,x range over [0,1]; P(c,x)=abs(x^2-c*x)."
+      ],
+      "conclusion": "inf_c sup_x P(c,x)=3-2*sqrt(2), with unique optimizer c*=2*sqrt(2)-2. The gap w(c)-v>=abs(c-c*)/4 implies a dyadic grid minimizer at mesh 2^(-j) is within 32*2^(-j), so j=n+6 yields a PR regular optimizer name.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [
+        "compact_logic"
+      ],
+      "key_exclusions": [
+        "Coherent witness recovery uses the proved quantitative gap, not generic compactness."
+      ]
+    },
+    {
+      "latex_label": "lem:tent-partition",
+      "title": "Quantitative partition of unity",
+      "hypotheses": [
+        "Positive rational r and an inhabited finite r/2-net with n centers.",
+        "Tent weights w_i=max(0,r-d(x,c_i)); normalized weights lambda_i=w_i/sum(w)."
+      ],
+      "conclusion": "The denominator is at least r/2; the normalized weights sum to one and their l1 variation is at most (4n/r)d(x,y). Reconstruction from coefficients bounded by B has Lipschitz constant 4Bn/r and is nonexpansive in coefficient sup distance.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [
+        "topology"
+      ],
+      "key_exclusions": [
+        "Weights are continuous and Lipschitz; smoothness or holomorphicity is not asserted."
+      ]
+    },
+    {
+      "latex_label": "thm:quant-ascoli",
+      "title": "Finite continuous approximants with an entropy bound",
+      "hypotheses": [
+        "Rational metric basis with nonempty PR nets and their covering proofs.",
+        "A fixed PR real-valued family evaluator, integer range bound B>=0, and common PR spatial modulus mu with the stated rational error contracts."
+      ],
+      "conclusion": "At precision k a PR-selected continuous reconstruction approximates each family member within 2^(-k-1); the explicit exterior cover has H_k=(2B*2^(k+3)+1)^(N(mu(k+2)+2)) entries.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [
+        "topology"
+      ],
+      "key_exclusions": [
+        "Cover centers need not belong to the original family.",
+        "No selection of a convergent subsequence.",
+        "Bare pointwise equicontinuity is not used as a replacement for the supplied common modulus."
+      ]
+    },
+    {
+      "latex_label": "cor:finite-rank",
+      "title": "Finite-rank approximation of continuous functions",
+      "hypotheses": [
+        "The same metric nets and common function modulus as in the quantitative Ascoli construction."
+      ],
+      "conclusion": "P_k f=sum_i lambda_i f(c_i) is positive, linear, constant-preserving, of norm at most one and finite-dimensional range; its uniform error is at most 2^(-k-2).",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [
+        "topology"
+      ],
+      "key_exclusions": [
+        "Continuous-function-space language is semantic; all continuous functions are not made into one numerical sort."
+      ]
+    },
+    {
+      "latex_label": "prop:ascoli-converse",
+      "title": "Finite approximants recover regularity",
+      "hypotheses": [
+        "At each precision j, a finite nonempty list covers the family to uniform error 2^(-j).",
+        "The approximants have supplied PR moduli; the j=0 list has supplied integer range bounds."
+      ],
+      "conclusion": "The family has range bound 1+max_i C_i and common modulus max_{i<L_(k+2)} nu(k+2,i,k+1).",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [],
+      "key_exclusions": [
+        "A covering-index algorithm is unnecessary for this implication; the finite cover assertion remains a hypothesis."
+      ]
+    },
+    {
+      "latex_label": "thm:guarded-gluing",
+      "title": "Continuous gluing with a produced modulus",
+      "hypotheses": [
+        "A finite r/2-net with n centers.",
+        "Local functions on the 2r-balls with bounds B and Lipschitz constant L; total PR local evaluators are correct inside their guards.",
+        "Discrepancy is at most alpha where both center distances are less than r."
+      ],
+      "conclusion": "Guarded tent-weighted gluing is bounded by B, has Lipschitz constant 2nL+4nB/r, and differs from f_j by at most alpha on its r-ball. Exact agreement gives a global gluing of the restrictions to the r-balls.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [
+        "topology"
+      ],
+      "key_exclusions": [
+        "No assertion of agreement on the full 2r-balls.",
+        "No finite cover is manufactured from an arbitrary open-cover enumeration.",
+        "Approximate holomorphic agreement does not make the weighted output holomorphic."
+      ]
+    },
+    {
+      "latex_label": "lem:perturb",
+      "title": "Perturbed contraction",
+      "hypotheses": [
+        "0<=q<1; delta=1-q; e_(j+1)<=q*e_j+eta and e_0<=R, with nonnegative errors."
+      ],
+      "conclusion": "e_j<=q^j R+eta sum_{i<j}q^i<=q^j R+eta/delta.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [
+        "perturbed_contraction",
+        "perturbed_contraction_of_noise"
+      ],
+      "diagnostics": [
+        "hilbert"
+      ],
+      "key_exclusions": []
+    },
+    {
+      "latex_label": "lem:clock",
+      "title": "A clock without logarithms",
+      "hypotheses": [
+        "0<delta<=1, q=1-delta, integer h with h*delta>=1; integer R>=1."
+      ],
+      "conclusion": "q^h<=1/2 and R*q^(h(n+R+3))<=2^(-n-3).",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [
+        "reciprocal_decay",
+        "block_halving",
+        "block_decay",
+        "amplitude_absorb",
+        "shifted_amplitude",
+        "radius_at_clock"
+      ],
+      "diagnostics": [
+        "hilbert",
+        "complex"
+      ],
+      "key_exclusions": []
+    },
+    {
+      "latex_label": "lem:coercive-contraction",
+      "title": "Coercivity supplies the contraction gap",
+      "hypotheses": [
+        "A real-linear strong operator with <Av,v>>=m||v||^2 and ||Av||<=M||v||, where 0<m<=M."
+      ],
+      "conclusion": "lambda=m/M^2, delta=m^2/(2M^2), q=1-delta make T(v)=v-lambda Av+lambda b a q-contraction.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [
+        "hilbert"
+      ],
+      "key_exclusions": [
+        "No spectral theorem or orthonormal basis is used."
+      ]
+    },
+    {
+      "latex_label": "thm:hilbert-solver",
+      "title": "Quantitative operator Lax-Milgram",
+      "hypotheses": [
+        "A rational pre-Hilbert presentation.",
+        "Fixed PR strong evaluators a(v,k),b(k) with errors at most 2^(-k), and their derived finite contracts.",
+        "Positive rational coercivity/norm bounds 0<m<=M and a rational data bound B>=0."
+      ],
+      "conclusion": "The finite recurrence with the displayed H7 clock produces a regular name c_n of the unique Au=b solution; ||c_n-u||<=2^(-n-2), ||c_n-c_l||<=2^(-n-1) for l>=n, and ||u||<=B/m.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [
+        "solver_budget",
+        "perturbed_contraction_of_noise",
+        "radius_at_clock"
+      ],
+      "diagnostics": [
+        "hilbert"
+      ],
+      "key_exclusions": [
+        "The compiled scalar budget is not a formalization of the Hilbert operator or its finite radius contract.",
+        "Weak functional/bilinear values alone do not supply the strong inputs.",
+        "No extension to zero coercivity is claimed."
+      ]
+    },
+    {
+      "latex_label": "cor:residual",
+      "title": "Residual certification and stability",
+      "hypotheses": [
+        "The strong operator solver hypotheses and a represented comparison v.",
+        "For perturbation: a second operator with the same coercivity lower bound m, data norm bound Btilde, data difference beta and operator-norm difference xi."
+      ],
+      "conclusion": "||v-u||<=||Av-b||/m and ||u-utilde||<=beta/m+xi*Btilde/m^2.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [
+        "hilbert"
+      ],
+      "key_exclusions": []
+    },
+    {
+      "latex_label": "lem:green",
+      "title": "Polynomial inequalities and Green operator",
+      "hypotheses": [
+        "Rational polynomials; P0 consists of those vanishing at 0 and 1, with energy inner product integral(p prime*q prime)."
+      ],
+      "conclusion": "Energy norm dominates uniform and L2 norms on P0. The explicit polynomial G has zero endpoints, -G(p) double-prime=p, <Gp,v>_E=integral(pv), and ||Gp||_E<=||p||_L2.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [
+        "hilbert"
+      ],
+      "key_exclusions": [
+        "The derivative of a general energy name is an L2 name, not automatically a pointwise derivative."
+      ]
+    },
+    {
+      "latex_label": "thm:pde",
+      "title": "Weak elliptic Dirichlet equation",
+      "hypotheses": [
+        "a has a fixed PR rational-polynomial uniform name and rational bounds 0<m<=a(x)<=M on [0,1].",
+        "f has a fixed PR polynomial name in the L2 completion, errors <=2^(-k), and norm bound B."
+      ],
+      "conclusion": "A PR regular sequence of rational zero-boundary polynomials names the unique u with integral(a*u prime*v prime)=integral(fv) for all energy-space v. Energy and uniform errors at index n are <=2^(-n-2). The strong operator and Green data are constructed explicitly.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [
+        "solver_budget"
+      ],
+      "diagnostics": [
+        "hilbert"
+      ],
+      "key_exclusions": [
+        "The theorem concerns a weak solution in the stated named completions; classical pointwise second derivatives are not asserted."
+      ]
+    },
+    {
+      "latex_label": "thm:tail-equivalence",
+      "title": "Exact missing datum for a rational ell2 vector",
+      "hypotheses": [
+        "A fixed PR rational coordinate sequence with a supplied common bound on finite sums of squares."
+      ],
+      "conclusion": "A PR strong ell2 name is equivalent, by explicit transformations, to a PR tail modulus tau satisfying sum_{tau(k)<=i<L}a_i^2<=4^(-k) for every finite L>=tau(k).",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [],
+      "key_exclusions": [
+        "No tail modulus is inferred merely from the bound on finite squared sums."
+      ]
+    },
+    {
+      "latex_label": "prop:riesz-obstruction",
+      "title": "Bounded functional without a computable strong representative",
+      "hypotheses": [
+        "The specified bounded-simulation encoding of first halting times into rational coordinates."
+      ],
+      "conclusion": "An exact PR bounded functional on finite rational vectors, with norm <=1, has no computable strong Riesz representative.",
+      "human_proof_status": "human_complete_metatheoretic_obstruction",
+      "object_ipra_status": "External noncomputability argument; not claimed as a newly formalized object-iPRA theorem or a sentence-independence proof.",
+      "checked_host_support": [],
+      "diagnostics": [],
+      "key_exclusions": [
+        "External noncomputability theorem; not a newly formalized independence result for a particular iPRA sentence."
+      ]
+    },
+    {
+      "latex_label": "cor:bilinear-obstruction",
+      "title": "Coercive bilinear values need not supply a strong operator",
+      "hypotheses": [
+        "The preceding functional L and the exact rational form a(v,w)=<v,w>+L(v)L(w)."
+      ],
+      "conclusion": "The form has coercivity >=1 and boundedness constant <=2, but has no computable strong representing operator.",
+      "human_proof_status": "human_complete_metatheoretic_obstruction",
+      "object_ipra_status": "External noncomputability argument; not claimed as a newly formalized object-iPRA theorem or a sentence-independence proof.",
+      "checked_host_support": [],
+      "diagnostics": [],
+      "key_exclusions": [
+        "The positive operator/PDE theorems require stronger input representations."
+      ]
+    },
+    {
+      "latex_label": "lem:derivative-geometric",
+      "title": "Finite differentiated geometric bound",
+      "hypotheses": [
+        "Rational 0<=t<1 and natural j,L."
+      ],
+      "conclusion": "sum_{n=j}^L (n)_j t^(n-j)<=j!/(1-t)^(j+1), proved by finite tuple counting and geometric sums.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [
+        "complex"
+      ],
+      "key_exclusions": [
+        "The proof does not differentiate an infinite series."
+      ]
+    },
+    {
+      "latex_label": "thm:analytic-tail",
+      "title": "Derivative-tail estimate and holomorphic interpretation",
+      "hypotheses": [
+        "Positive rational R, nonnegative rational M, and a fixed joint PR Gaussian-rational evaluator for b_n=R^n a_n with proved |b_n|<=M.",
+        "Rational 0<=r<R, requested derivative order J, and finite L>=N>=J."
+      ],
+      "conclusion": "All derivative tails j<=J satisfy |P_L^(j)-P_N^(j)|<=K_j*sigma^(N+1) on |z|<=r, with the declared rational K_j and sigma. The coefficient presentation gives PR uniform derivative names and a holomorphic semantic function on |z|<R.",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [],
+      "diagnostics": [
+        "complex"
+      ],
+      "key_exclusions": [
+        "A certified radius and coefficient bound are inputs; bare analyticity is not used as an effective replacement."
+      ]
+    },
+    {
+      "latex_label": "thm:analytic-entropy",
+      "title": "Simultaneous derivative entropy bound",
+      "hypotheses": [
+        "The analytic-tail inputs and a requested precision k; the explicit A6 integer schedules and coefficient grid."
+      ],
+      "conclusion": "Finite rational observations select an ambient polynomial with C^J error <=2^(-k-1); the explicit cover cardinality is (2L0*2^p+1)^(2(N+1)).",
+      "human_proof_status": "human_complete_at_stated_hypotheses",
+      "object_ipra_status": "Planned Prf PRAAx derivations; no new literal object proof value for this result is delivered.",
+      "checked_host_support": [
+        "block_halving",
+        "shifted_amplitude"
+      ],
+      "diagnostics": [
+        "complex"
+      ],
+      "key_exclusions": [
+        "Cover polynomials need not satisfy the original coefficient bound or belong to the input family.",
+        "No convergent-subsequence selector.",
+        "Differentiation on the same closed disk is not asserted continuous in uniform norm."
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "id": "compact_logic",
+      "script": "code/compact_logic.py",
+      "evidence": "evidence/compact_logic_checks.json",
+      "status": "passed",
+      "scope": "Six direct-versus-reduced finite formula evaluations; eight refined minimax values and optimizer bounds checked against exact rational sqrt(2) brackets.",
+      "not_a_proof": "Finite diagnostics do not establish arbitrary-instance correctness or object-iPRA derivability."
+    },
+    {
+      "id": "topology",
+      "script": "code/topology_demo.py",
+      "evidence": "evidence/topology_checks.json",
+      "status": "passed",
+      "scope": "Twenty-four finite Ascoli demonstrations on 194 rational queries each; guarded gluing on 257 queries. Exact rational arithmetic.",
+      "not_a_proof": "Finite diagnostics do not establish arbitrary-instance correctness or object-iPRA derivability."
+    },
+    {
+      "id": "hilbert",
+      "script": "code/hilbert_solver.py",
+      "evidence": "evidence/hilbert_checks.json",
+      "status": "passed",
+      "scope": "Seven diagonal ell2 truncation runs and four exact-polynomial PDE runs; 44 exact inner-product identities and 38 pairwise regularity comparisons. All pass/fail calculations exact.",
+      "not_a_proof": "Finite diagnostics do not establish arbitrary-instance correctness or object-iPRA derivability."
+    },
+    {
+      "id": "complex",
+      "script": "code/complex_jets.py",
+      "evidence": "evidence/complex_checks.json",
+      "status": "passed",
+      "scope": "868 finite geometric checks, 378 exact geometric-function jet checks, 378 noisy-coefficient jet checks, and 27 integer schedules; exact rational/integer comparisons.",
+      "not_a_proof": "Finite diagnostics do not establish arbitrary-instance correctness or object-iPRA derivability."
+    }
+  ],
+  "key_exclusions": [
+    "No new main theorem is delivered as a literal Prf PRAAx derivation.",
+    "No general embedding of arbitrary continuous or analytic theories into iPRA.",
+    "No exact truth or arbitrary-real zero decision from finite observations.",
+    "No general logical compactness, model existence, ultrafilter or saturation construction.",
+    "No general computable subsequence extraction or automatic coherence of approximate witnesses.",
+    "No strong Riesz representative or strong operator synthesized from merely weak bounded values.",
+    "No uniform analytic radius/bound extraction from a merely continuous representation plus bare analyticity.",
+    "No claim that exterior approximation centers are selected from an arbitrary original family."
+  ],
+  "definition_consistency_review": {
+    "regular_name_equality": "The shifted equality test in foundations and eventual equality in category/model are equivalent on regular names; transitivity uses finer stages and rational separation.",
+    "exact_dense_constants": "The exact finite metric-formula variant uses dense codes for constants. Arbitrary named constants are handled through the later approximate-atomic evaluator variant.",
+    "local_gluing_domains": "The global function agrees with restrictions to r-balls; the input local domains are larger 2r-balls.",
+    "serious_unresolved_mismatches_found": false
+  }
+}

@@ -1,0 +1,317 @@
+\section{Checked Lean nucleus and a concrete formalization route}
+\label{sec:formalization}
+
+The archive separates an executable, kernel-checked development from the
+larger object-language implementation that remains to be written. This
+section records that boundary and gives the definitions and induction
+targets needed to cross it. The detailed module plan is also supplied in
+\path{lean/OBJECT_LANGUAGE_PLAN.md}.
+
+\subsection{Exactly what the delivered Lean development proves}
+
+\path{lean/QuantitativeKernel.lean} contains 19 theorem declarations with
+complete proofs. It and \path{lean/Examples.lean} were checked using Lean
+4.32.0, compiler commit
+\texttt{8c9756b28d64dab099da31a4c09229a9e6a2ef35}.
+There are no \texttt{sorry} placeholders and no new axiom declarations.
+The complete replay output is in \path{lean/verification.log}.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.27\textwidth}p{0.63\textwidth}}
+\toprule
+Delivered component & Exact status and scope\\
+\midrule
+\path{positive_transfer} & Checked host Lean theorem: preservation of positive
+formulas under an atomic transfer contract and explicit forward/backward
+witness selectors. No axiom dependencies.\\[2pt]
+\path{allFin_true}, \path{anyFin_true}, \path{eval_correct} & Checked Boolean
+folds and finite-domain evaluator correctness. The reported dependencies
+are \texttt{propext}, and additionally \texttt{Quot.sound} for the evaluator.\\[2pt]
+Rational error and clock lemmas & Checked perturbation invariant, block
+halving, amplitude absorption, and the full explicit
+\path{solver_budget} schedule. The dependency audit reports
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}.\\[2pt]
+New main analytic results & Human proofs with explicit arithmetic targets;
+no new main theorem in this archive has been delivered as a literal
+\texttt{Prf PRAAx} proof value.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The arithmetic axioms in the third row are inherited from the standard
+\texttt{Rat} library: even its elementary power and order lemmas report
+those dependencies. Thus the arithmetic host development is not advertised
+as choice-free. Its proposed \(\ipra\) implementation uses the
+denominator-cleared natural inequalities below. Host metatheoretic axioms
+and the axioms available to an object derivation are different questions.
+
+The checked project imports only \texttt{Std} and
+\path{Init.Data.Rat.Lemmas}; it has no Mathlib or ProveIt import.
+All project sources and their transitive project dependencies are included.
+The external prerequisite is the pinned Lean distribution with its standard
+library. \path{lean/PROVENANCE.json} records the compiler, distribution
+checksum, and inspected repository sources. The command
+\texttt{bash replay.sh} in the \texttt{lean} directory builds the library,
+prints the dependency audit, and checks the examples. The compiler itself
+and disposable build files are not included in the archive.
+
+\subsection{Definitions at the semantic and arithmetic boundaries}
+
+The checked logical syntax is completely explicit.
+\texttt{Env X} means \texttt{Nat -> X}; \texttt{push} places a newly bound
+variable at index zero and shifts the previous environment. The relation
+\texttt{Related R} compares environments pointwise.
+\texttt{PosFormula Atom} has constructors for an atom, truth, falsity,
+conjunction, disjunction, and the two first-order quantifiers.
+\texttt{Holds} recursively interprets those constructors.
+\texttt{positive\_transfer} takes maps \(X\to Y\) and \(Y\to X\)
+choosing related points. Existential transfer uses the first map;
+universal transfer uses the second. Different margins can be incorporated
+into the source and target atomic interpretations. Neither connective nor
+quantifier adds a further margin. The Boolean evaluator uses
+\texttt{allFin} and \texttt{anyFin}, proved correct by induction on the
+finite domain size.
+
+These definitions are ordinary Lean types. For an arithmetic instance, a
+host function parameter is replaced by a specified PR term or a finite
+input table with its proved contract. The additional data for the analytic
+modules are as follows; all displayed predicates have been defined
+mathematically in the preceding sections.
+
+\begin{description}[style=nextline,leftmargin=1em]
+\item[Rational and dense codes.]
+A rational code is a signed integer numerator and a positive natural
+denominator. Gaussian rational codes are pairs of these. A metric basis
+has a decidable domain of natural codes, a fixed rational distance program,
+and derived metric laws. For a pre-Hilbert basis use rational vector
+operations and a rational inner product. The finite radius predicate is
+\[
+ \operatorname{Ball}(v,w,r)\;:\Longleftrightarrow\;
+ r\geq0\ \land\ \langle v-w,v-w\rangle\leq r^2,
+ \tag{F1}\label{eq:formal-ball}
+\]
+with validity of the two vector codes included in its domain guard.
+It does not require an exact rational value of a generally irrational norm.
+
+\item[Names, moduli, and observation contracts.]
+For a fixed producer \(p(a,n)\), \(\Reg_p(a)\) is the formula from
+Definition~\ref{def:regular}, with universal precision variables and
+explicit metric tests. \(\Eq_{p,q}(a,b)\) is the stated finer-index equality
+test. A dense evaluator stores its fixed evaluation term, monotone demand
+term, and joint continuity derivations. Net data comprise a positive size,
+an indexed list of valid centers, and the covering formula
+\eqref{eq:top-net}. An evaluator for a function family includes exactly the
+three rational contracts \eqref{eq:top-name}--\eqref{eq:top-space}.
+
+\item[Polynomial and formula codes.]
+A polynomial is a finite coefficient list; multiplication is convolution,
+differentiation sends coefficient \(p_{j+1}\) to \((j+1)p_{j+1}\), and
+integration from zero sends \(p_j\) to coefficient \(p_j/(j+1)\) at
+index \(j+1\). A fixed multisorted signature records arities, input/output
+sorts, symbol evaluators, and moduli. Terms and continuous formulas are
+finite trees with the constructors in Section~\ref{sec:cm-model}; finite
+environments respect the recorded sorts. Finite restriction replaces each
+quantifier by a minimum or maximum scan, preserving its scope.
+\end{description}
+
+In the object implementation, tuple coding collects numerical parameters
+into the arguments of fixed \texttt{PTm} terms. Inequality predicates are
+quoted as \texttt{Fm PTm} formulas, with positive denominators cleared.
+The intended output is \(\Gamma\vdash[\mathrm{PRAAx}]\varphi\).
+The context \(\Gamma\) retains every input law that has not already been
+proved. Merely filling a semantic record with assumptions does not
+discharge those hypotheses.
+
+\subsection{Two fully specified quantifier-free induction targets}
+
+The new scalar estimates already have explicit arithmetic invariants.
+Write the contraction factor as \(q=a/b\), initial majorant as \(R=r/s\),
+per-step error as \(p/t\), and reserve as \(e/f\), with natural numerators,
+positive denominators, and \(a\leq b\). The stationary-noise condition is
+\[
+                    pbf\leq(b-a)et.
+\]
+Define a PR numerator sequence
+\[
+ U_0=rt,\qquad U_{j+1}=aU_j+psb^{j+1}.
+\]
+Then \(U_j/(stb^j)\) is the exact majorant recurrence. The induction formula
+is the quantifier-free inequality
+\[
+              fU_j\leq rtf a^j+est b^j.
+ \tag{F2}\label{eq:formal-noise-invariant}
+\]
+Its base case is immediate. The next-step slack is identically
+\[
+ a\bigl[rtf a^j+estb^j-fU_j\bigr]
+       +sb^j\bigl[(b-a)et-pbf\bigr].
+\]
+Both bracketed slacks are nonnegative. The repository's polynomial
+inequality machinery can therefore prove the step with those two explicit
+weights; \texttt{PRA.qfInd} yields the invariant. A trace whose error
+certificates satisfy the local recurrence is compared with this majorant
+by another bounded induction. No induction on a Cauchy predicate is used.
+
+For the clock, put \(\delta=d/b\), \(0<d\leq b\). The corresponding
+natural-number invariant is
+\[
+             (b+jd)(b-d)^j\leq b^{j+1}.
+ \tag{F3}\label{eq:formal-clock-invariant}
+\]
+The exact step identity is
+\[
+ (b-d)\bigl(b+(j+1)d\bigr)+(j+1)d^2=b(b+jd).
+\]
+Multiply by \((b-d)^j\), discard the nonnegative term, and apply the
+previous invariant. If desired, use a separate nonnegative parameter
+\(a\) with \(a+d=b\) to eliminate truncated subtraction from the identity.
+When \(hd\geq b\), specialization and positive cancellation give
+\(2(b-d)^h\leq b^h\), the halving step. The elementary induction
+\(C\leq2^C\) supplies the remaining precision offsets.
+
+The checked declaration \texttt{solver\_budget} verifies the resulting
+rational statement:
+\[
+\begin{gathered}
+ 0\leq\delta\leq1,\quad h\delta\geq1,\quad2\lambda\leq\delta C,\\
+ x_0\leq R,\qquad
+ x_{j+1}\leq(1-\delta)x_j+2\lambda2^{-(n+3+C)}
+ \quad\Longrightarrow\quad
+ x_{h(n+R+3)}\leq2^{-n-2}.
+\end{gathered}
+\]
+Here \(h,C,R,n\) are natural numbers and \(x_j\) is a rational majorant.
+The Hilbert application must establish its local radius contract
+\eqref{eq:formal-ball}; this checked scalar theorem does not by itself
+formalize an infinite-dimensional operator.
+
+\subsection{Formalizing the main constructions in dependency order}
+
+\paragraph{Completion and categorical operations.}
+First quote the metric and joint evaluator laws, prove their substitution
+instances, and apply the explicit demand in
+Theorem~\ref{thm:cm-extension}. To derive preservation of \(\Reg\), introduce
+arbitrary precision variables, instantiate the joint law, and combine its
+rational inequalities. To derive preservation of \(\Eq\), use the finer
+input indices and rational separation. These proofs do not apply
+quantifier-free induction to the quantified formulas \(\Reg\) or \(\Eq\).
+Product and change-of-basis maps use the same rules with maxima of demands.
+Only after these obligations are proved should the fixed numerical family
+be passed to \texttt{SetoidInterpretation.Presentation} and
+\texttt{SetoidInterpretation.sound} \cite{repoSetoid}.
+
+\paragraph{Function-space approximation and gluing.}
+Define the rational positive part, the weights \(w_i\), partial sums
+\(W_\ell\), and coefficient reconstruction. Prove the denominator bound
+\(W_n\geq r/2\) from a bounded covering witness before invoking division.
+For a fixed query \(x\) and evaluation precision \(p\), the central
+sum invariant is
+\[
+ \left|\sum_{i<\ell}w_i(x)
+            \bigl(h_i-E(a,x,p)\bigr)\right|
+       \leq\bigl(2^{-k-1}+2^{-p}\bigr)W_\ell(x).
+\]
+The coefficient and support cases are decidable rational comparisons.
+At the final sum, division yields \eqref{eq:top-object-target}.
+Mixed-radix list coding proves the cardinality bound independently.
+Gluing uses the same nonnegative-sum invariants and the already supplied
+local bounds. None of these steps needs a decision about which arbitrary
+profile classes are inhabited.
+
+\paragraph{Continuous formulas and finite restrictions.}
+Implement rational \(\min\), \(\max\), and \(1-u\), then finite extrema
+with a first attaining index. The scan invariant says that the current
+value is attained and is a lower, respectively upper, bound for the
+processed prefix; its bounded universal part is Booleanized.
+Prove that two finite lists related by the stated atomic-error relation
+have extrema within that error. External structural induction on the
+\emph{fixed} formula then constructs the arithmetic derivation of
+Theorem~\ref{thm:cm-backforth}. Net comparison gives the coherent name in
+Theorem~\ref{thm:cm-values}. The checked \texttt{positive\_transfer} is the
+logical core of this argument; the numeric extrema lemma is additional
+work, not a result already contained in that Boolean theorem.
+
+\paragraph{The Hilbert solver and the Dirichlet application.}
+Prove the dense inner-product identities and the finite Cauchy--Schwarz
+inequality. Express approximate contraction as the rational rule
+\[
+ \operatorname{Ball}(v,w,r)\Longrightarrow
+ \operatorname{Ball}\bigl(F_n(v),F_\ell(w),
+                    qr+\eta_n+\eta_\ell\bigr).
+ \tag{F4}\label{eq:formal-local-contraction}
+\]
+Derive this rule from the finite operator contracts; auxiliary approximation
+errors are removed by the explicit rational separation lemma. Its
+application to the ball, two-run, and adjacent-state invariants (H12)--(H14)
+uses the same quantifier-free majorant calculations as
+\eqref{eq:formal-noise-invariant}. The output name and its residual are
+then proved coherent before the semantic fixed point is introduced.
+
+For the PDE, define \(\operatorname{Int}(p)=\sum_jp_j/(j+1)\),
+\(P_0\) by its two rational endpoint equations, and
+\(\operatorname{Energy}(p,q)=\operatorname{Int}(p'q')\).
+Polynomial antiderivatives implement \(G\) exactly. The approximating
+operator has derivative
+\(a_kv'-\operatorname{Int}(a_kv')\) and zero initial value.
+Coefficient identities prove the endpoints, mean-subtraction identity,
+and Green identity. Finite Riemann estimates with the polynomial modulus
+prove the required nonnegative-integral inequalities. These derive the
+strong approximation, coercivity, and norm contracts needed by
+Theorem~\ref{thm:hilbert-solver}. Extension of the final bilinear identity
+uses its explicit error bounds; no general Riesz or weak compactness
+theorem is an omitted prerequisite.
+
+\paragraph{Complex derivatives and finite analytic covers.}
+Use finite Gaussian-rational coefficient lists and the derivative operation
+defined above. Prove the finite differentiated-geometric inequality
+of Lemma~\ref{lem:derivative-geometric}, including the \(L<j\) zero case,
+by its finite coefficient-counting identity. This supplies the uniform
+tail and coefficient-perturbation bounds for all \(j\leq J\).
+The constants \(K_j,D_j\) and the positive radius gaps are rational;
+Booleanized maxima over \(j\leq J\) allocate one common precision.
+The clock calculations reuse the same block-halving arithmetic.
+Finite binomial expansion proves the quadratic difference-quotient remainder
+(A5); substitution of arbitrarily fine polynomial observations identifies
+the formal derivatives with the complex derivatives. Finally encode the
+coefficient grid by mixed radix and quote the explicit count (A8).
+This proves the finite \(C^J\) cover, without selecting a convergent
+subsequence or assuming that its centers belong to the input family.
+
+\subsection{Repository interfaces and the final acceptance criterion}
+
+The following existing imports provide the intended object backend; they
+are not dependencies of the standalone checked project:
+\begin{center}
+\small
+\begin{tabular}{p{0.42\textwidth}p{0.48\textwidth}}
+\toprule
+Within \path{IPRADerivations/} & Intended use\\
+\midrule
+\path{Foundations/ObservationComposition} &
+\path{compose_obs}: combine finite queries and their maximum demand.\\
+\path{Foundations/FiniteReplay} &
+\path{replay}: preserve a completed trace when the input table is extended.\\
+\path{Foundations/SetoidInterpretation} &
+\path{sound}: transport a fixed presented first-order theory after its
+domain, congruence, and axiom obligations are proved.\\
+\path{Foundations/ContractionIterates} &
+Existing exact half-contraction induction; extend it with the stationary
+noise invariant rather than silently treating it as already present.\\
+\path{Foundations/DiscreteGronwall} &
+Existing denominator-cleared recurrence proofs. Its growth-factor theorem
+is not itself the new contraction-reserve theorem.\\
+\path{Analysis/ErrorBudgets} &
+Finite sums, products, triangle estimates, and separated reciprocals.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A completed integration should export explicit \texttt{Prf PRAAx}
+declarations for the finite approximation, coherence, and residual targets,
+retain their actual hypotheses, and audit their transitive proof
+dependencies. Semantic adequacy should then identify each endpoint with
+the represented theorem. A successful host Lean build is valuable evidence
+for the arithmetic and structural arguments; it becomes evidence of
+object-\(\ipra\) provability only when those additional proof values have
+actually been constructed and checked.

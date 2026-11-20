@@ -1,0 +1,213 @@
+\section{A constructive gap around the natural-number lattice}
+\label{sec:gap}
+
+We now give the analytic part of the reduction. Its classical ingredients are
+Richardson's lattice penalty and a dense elementary curve; see
+\cite{richardson,poonen}. Every estimate and numerical bound needed below is
+derived explicitly. In particular, our rounding rule acts on rational
+approximations, and our density argument produces a rational witness by bounded
+search.
+
+\subsection{The polynomial and its majorant}
+
+Let
+\[
+ P(X_1,\ldots,X_n)=\sum_\alpha c_\alpha X^\alpha
+ \quad(c_\alpha\in\Z),\qquad n\ge1.
+\]
+The decision problem concerns roots in $\N^n$. A dummy variable may be added
+when necessary, so the condition $n\ge1$ loses nothing. Define the positive
+integers
+\[
+ C=\max\left(1,\sum_\alpha\abs{c_\alpha}\right),\qquad
+ D=\max\left(1,\deg P\right),
+\]
+with degree zero assigned to the zero polynomial for this convention. For a
+tuple $u=(u_1,\ldots,u_n)$ put
+\begin{align}
+ R(u)&=1+\sum_{i=1}^n u_i^2,
+ &L(u)&=CD\,[2R(u)]^D,\label{eq:majorant}\\
+ H_P(u)&=P(u)^2+L(u)^2\sum_{i=1}^n\sin^2(\pi u_i),
+ &F_P(u)&=4H_P(u)-1.\label{eq:gap-function}
+\end{align}
+These are finite elementary expressions. The number $D$ is a fixed exponent
+once the input polynomial is given; its power is expanded by repeated
+multiplication in the expression syntax. We will apply $F_P$ only to
+nonnegative tuples. Later, squaring the coordinates of a dense curve will
+enforce this condition without importing a theorem about sums of squares.
+
+\subsection{Rounding without a real comparison}
+
+\begin{lemma}[Coarse rational rounding]\label{lem:rounding}
+Suppose $r\in\Q$ approximates a real quantity $x$ with
+$\abs{x-r}\le1/8$. Set
+\[
+ z=\lfloor r+1/2\rfloor\in\Z.
+\]
+Then
+\[
+ \abs{x-z}\le5/8,
+ \qquad
+ \abs{x-z}\le\abs{\sin(\pi x)}.
+\]
+If $x\ge0$, the computed integer $z$ is nonnegative.
+\end{lemma}
+
+\begin{proof}
+Rational floor is an exact integer-division operation. It gives
+$\abs{r-z}\le1/2$, and consequently
+\[
+ \abs{x-z}\le\abs{x-r}+\abs{r-z}\le5/8.
+\]
+For $0\le a\le5/8$, the elementary enclosures
+$3<\pi<16/5$ imply $0\le\pi a\le2$. The alternating sine series gives
+$\sin s\ge s-s^3/6$ on $[0,2]$. Therefore
+\[
+ \sin(\pi a)
+ \ge\pi a\left(1-\frac{(\pi a)^2}{6}\right)
+ \ge\frac{\pi a}{3}\ge a.
+\]
+Apply this to $a=\abs{x-z}$. Sine's parity and its change of sign on
+translation by an integer multiple of $\pi$ show that
+$\abs{\sin(\pi x)}=\sin(\pi a)\ge a$. Finally, if $x\ge0$, then
+$r\ge-1/8$, whence $r+1/2\ge3/8$ and its rational floor is nonnegative.
+\end{proof}
+
+This lemma does not ask whether a real number lies above or below a
+half-integer. Even at a half-integer the rational rule is well defined, and
+its stated error estimate suffices. The numerical bounds on $\pi$, the sine
+series estimate, and the addition identities have finite rational
+approximation proofs; explicit approximation primitives are given in the
+appendix.
+
+\subsection{A direct perturbation estimate}
+
+\begin{lemma}[Polynomial perturbation]\label{lem:perturbation}
+If $\abs{u_i-z_i}\le1$ for every $i$ and
+$\delta=\max_i\abs{u_i-z_i}$, then
+\[
+ \abs{P(u)-P(z)}\le L(u)\delta.
+\]
+\end{lemma}
+
+\begin{proof}
+Since $R(u)\ge1+u_i^2\ge\abs{u_i}$ and $R(u)\ge1$,
+\[
+ \abs{z_i}\le\abs{u_i}+1\le2R(u).
+\]
+For a monomial of total degree $d$, regard its value as a product of $d$
+factors, allowing repetitions of a coordinate. The telescoping identity
+\[
+ \prod_{j=1}^d a_j-\prod_{j=1}^d b_j
+ =\sum_{j=1}^d
+   \left(\prod_{\ell<j}b_\ell\right)
+   (a_j-b_j)
+   \left(\prod_{\ell>j}a_\ell\right)
+\]
+bounds its change by $d[2R(u)]^{d-1}\delta$. For $1\le d\le D$ this is at
+most $D[2R(u)]^D\delta$. Constant monomials have zero change. Multiplying
+by the absolute values of the coefficients and summing proves the estimate.
+\end{proof}
+
+A finite maximum of real quantities is constructively definable using
+$\max(a,b)=(a+b+\abs{a-b})/2$. Thus the maximum in this proof is not a
+choice principle. Alternatively one can carry a common rational error bound
+through the same telescoping calculation. Neither presentation adds a
+maximum operation to the compiled expression.
+
+\begin{theorem}[The lattice gap]\label{thm:lattice-gap}
+For every nonnegative tuple $u$, the rational rounding construction produces
+$z\in\N^n$ satisfying
+\begin{equation}
+ P(z)^2\le2H_P(u).\label{eq:integer-gap-bound}
+\end{equation}
+Consequently:
+\begin{enumerate}
+\item if $P$ has no root in $\N^n$, then $F_P(u)\ge1$ for every
+      nonnegative $u$;
+\item if $F_P(u)<1$, the constructed tuple $z$ is a natural-number root
+      of $P$;
+\item at every natural-number root $m$, one has $F_P(m)=-1$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Approximate each $u_i$ by a rational to error at most $1/8$ and apply
+Lemma~\ref{lem:rounding}. The integers obtained are nonnegative and satisfy
+\[
+ \delta^2:=\max_i\abs{u_i-z_i}^2
+ \le\sum_i\sin^2(\pi u_i).
+\]
+By Lemma~\ref{lem:perturbation} and $(a+b)^2\le2a^2+2b^2$,
+\[
+ P(z)^2
+ \le2P(u)^2+2\abs{P(z)-P(u)}^2
+ \le2P(u)^2+2L(u)^2\delta^2
+ \le2H_P(u).
+\]
+If there is no root, the particular integer $P(z)$ is nonzero. Integer
+comparison is decidable, and a nonzero integer has square at least one.
+Thus $H_P(u)\ge1/2$, giving $F_P(u)\ge1$. Conversely, $F_P(u)<1$ means
+$H_P(u)<1/2$. Equation~\eqref{eq:integer-gap-bound} then puts the
+nonnegative integer $P(z)^2$ below one, forcing $P(z)=0$. At a root $m$,
+both $P(m)$ and every $\sin(\pi m_i)$ vanish, so $H_P(m)=0$ and
+$F_P(m)=-1$.
+\end{proof}
+
+The first conclusion is a uniform gap, not just pointwise positivity. In
+the second conclusion the root is computed from coarse approximations to
+the given tuple. No search through all Diophantine tuples is involved.
+
+The growing coefficient $L(u)^2$ has an essential role. For example,
+$P(X,Y)=2XY-1$ has no natural-number root, since $2XY$ is even. Yet at
+$u=N$, $v=1/(2N)$, with $N\ge1$ an integer, one has $P(u,v)=0$ and
+\[
+ \sin^2(\pi u)+\sin^2(\pi v)
+ =\sin^2\!\left(\frac{\pi}{2N}\right),
+\]
+which becomes arbitrarily small. Thus the unweighted expression
+$4(P(u,v)^2+\sin^2(\pi u)+\sin^2(\pi v))-1$ becomes negative despite
+the absence of a root. Near the lattice, the polynomial can vary rapidly
+when another coordinate is large. The explicit majorant compensates for
+exactly this effect: it bounds the change in $P$ between the tested point
+and the rounded lattice point. Merely adding a fixed sine penalty would
+not give the reduction.
+
+\subsection{A specified neighborhood of each root}
+
+We also need a rational radius on which the negative value survives. Given
+a natural-number root $m$, define
+\begin{equation}
+ \begin{gathered}
+ M=\max_i m_i,\qquad B_0=M+1,\\
+ L_0=CD\,[2(1+nB_0^2)]^D,
+ \qquad \rho=\frac{1}{16(n+1)L_0}.
+ \end{gathered}\label{eq:root-radius}
+\end{equation}
+
+\begin{lemma}[Explicit negative neighborhood]\label{lem:root-neighborhood}
+If $u_i\ge0$ and $\abs{u_i-m_i}\le\rho$ for every $i$, then
+$F_P(u)\le-3/4$.
+\end{lemma}
+
+\begin{proof}
+We have $\rho\le1$, so $0\le u_i\le B_0$ and $L(u)\le L_0$.
+The same monomial telescoping calculation, now on the box $[0,B_0]^n$,
+gives $\abs{P(u)}=\abs{P(u)-P(m)}\le L_0\rho$.
+By sine's Lipschitz estimate and integer periodicity,
+\[
+ \abs{\sin(\pi u_i)}
+ =\abs{\sin(\pi(u_i-m_i))}\le\pi\rho\le4\rho.
+\]
+It follows that
+\[
+ H_P(u)\le L_0^2(1+16n)\rho^2
+ =\frac{1+16n}{256(n+1)^2}\le\frac1{16},
+\]
+where the last inequality uses $1+16n\le16(n+1)^2$. Hence
+$F_P(u)=4H_P(u)-1\le-3/4$.
+\end{proof}
+
+The proof supplies a radius by integer and rational arithmetic. An
+unquantified appeal to continuity would not supply the witness transformation
+needed later; equation~\eqref{eq:root-radius} does.

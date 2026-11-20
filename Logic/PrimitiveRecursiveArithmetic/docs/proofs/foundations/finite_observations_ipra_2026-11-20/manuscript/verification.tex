@@ -1,0 +1,45 @@
+\section{Verification and remaining proof obligations}\label{sec:verification}
+
+A Lean proof concerning numbers or functions in its standard library is a proof about the algorithm in the metatheory. A term of type \(\Gamma\vdash_{\mathsf{PRAAx}}\phi\) additionally constructs a proof in the specific arithmetic of the repository. Table~\ref{tab:verify} records this distinction. In both settings the compilation target is Lean 4.32.0. Exact rational examples exercise the constructions separately.
+
+\begin{table}[ht]
+\centering\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}p{0.20\linewidth}p{0.37\linewidth}p{0.36\linewidth}@{}}
+\toprule
+Application & Object calculus & Standard Lean \\
+\midrule
+Metric kernels & Minimum transfer over two variable numerical horizons. Finite disjunctive cover and exact diagonal calculation for an unrolled row. & The finite comparison theorem for a nonexpansive formula is in the model module.\\
+Continuous logic & Transport of upper cuts through arbitrary fixed finite nests of lattice connectives and quantifiers, given the atomic implication proofs. & Two-sided numerical transfer for arity-indexed formulas, and construction of a minimizing list entry.\\
+Jordan crossing & Polynomial forward-difference identity with integer term coefficients and a specified degree. & Bracket iteration, width rate, exact Horner difference identity, and sample-size lower bound.\\
+Residues & Signed incidence cancellation on a rational contour strip after specifying the finite edge data. & Strip telescoping, shell clearance, Gaussian norm inequalities and derivative-variation estimate.\\
+\bottomrule
+\end{tabular}
+\caption{Scope of the supplied formal lemmas. The object results allow numerical parameters in the terms.}\label{tab:verify}
+\end{table}
+
+\paragraph{How to read the object endpoints.}
+For \texttt{MetricKernel.Row.cover\_transfer}, fix two nonempty row shapes \(s,r\) externally. Their entries and error \(e\) are arbitrary numerical terms. On a common scale the actual formula is
+\[
+ \bigwedge_{x\in r}\ \bigvee_{y\in s}\; y\le x+e
+ \quad\longrightarrow\quad \min s\le\min r+e.
+\]
+The term for the binary minimum is \(a\mathbin{\dot-}(a\mathbin{\dot-}b)\), where \(\dot-\) denotes truncated subtraction. The proof internally splits on the derived order-totality disjunction. It never asks the metatheory to pick which entry wins. The companion \texttt{diagonal\_exact} takes lower-bound proofs for all alternatives and an equality proof for the specified diagonal. For a probe this lower bound is the triangle law of the kernel, and the diagonal equality uses \(d(a,a)=0\). The statement handles any externally fixed row shape. For the scalar gluing test, clearing positive denominators and using signed-pair arithmetic implements the two comparisons in \eqref{eq:glue} and its witness. The global kernel laws, the converse representation theorem and the interval formula have human proofs in this report.
+
+\paragraph{A kernel-checked theorem with both horizons internal.}
+The main reusable arithmetic endpoint is \texttt{UniformMinimum.transfer\_closed}. Fix arbitrary binary PR symbols \(f,g\) and put \(M_f(K,x)=\min_{i\le K} f(i,x)\). The checked conclusion is an empty-context proof in \(\mathsf{PRAAx}\) of the universal closure in \(K,H,x,y,e\) of
+\[
+ \big[\forall j\le H\ \exists i\le K\quad f(i,x)\le g(j,y)+e\big]
+ \quad\Longrightarrow\quad M_f(K,x)\le M_g(H,y)+e .
+\]
+The companion \texttt{symmetric\_closed} proves both inequalities from the two directed covers. Both scans are actual PR terms, starting at index zero. To see why a bounded existential in the premise is harmless, first fix a source index \(i\). Induct on \(k\) with quantifier-free invariant \(i\le k\Rightarrow M_f(k,x)\le f(i,x)\). The new index either equals \(i\) or retains the previous bound. For each \(j\le H\) eliminate its covering witness locally. This yields \(M_f(K,x)\le g(j,y)+e\). Put \(z=M_f(K,x)\) and induct once more with invariant \(j\le H\Rightarrow z\le M_g(j,y)+e\). At a successor the minimum is one of its two arguments, both already bounded below after adding \(e\). Universal closure comes after these inductions. In particular, the proof produces the numerical inequality without a choice function for the matches.
+
+\paragraph{From a presentation to a closed sentence.}
+Fix the PR codes for the metric, nets, atomic evaluators, moduli and any other program supplied by the chosen case. Encode the finite tables of rational outputs together with one positive denominator (the product of the entry denominators suffices). Each cost in a comparison then has one integer representative. Translate signed values by a common nonnegative offset if a natural minimum is used; both sides of the min-transfer inequality acquire the same offset. Rationals with independent denominators also have a repository-native \texttt{RationalArgmin} implementation. Store a quantified assignment or bracket state in the repository's pairing/sequence coding and apply bounded reflection to the PR test for its validity. For variable-size finite comparisons, use a minimum over \(0,\ldots,M\), where \(M\) is the last valid index, with a separate guard for a possibly empty incoming list.
+
+The next arithmetic statements are the displayed cross-stage estimates, with only the actual finite bound or term for each requested index used in a proof. For example, instantiate the one-way minimum inequality on the two nets with scores \(K_i(x,b)+H_i(b,z)\), the computed common denominator and error \(2\max(h_i,h_j)+2(h_i+h_j)\). Produce the required index using the stated net cover and prove its score bound by two uses of \eqref{eq:cost-law}. Repeat with the levels reversed and apply the two-step shift. Generalizing \(i,j,x,z\) yields an actual object target for regularity of composition. For model formulas perform the same pair of instantiations at a binder using the child theorem in place of the cost estimate. This is a structural proof generator on fixed formulas. The rows, covers, scores and bounds remain numerical data in its uniform version. For topology and residues the implementation paragraphs of the respective sections identify the additional arithmetic and geometric lemmas. Each output sentence can retain its presentation contracts as antecedents. Obtaining a closed theorem for one specific presentation additionally requires object proofs of those contracts.
+
+The repository's \href{https://github.com/VladimirReshetnikov/ProveIt/blob/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic/Derivations/README.md}{arithmetic derivation library} and \href{https://github.com/VladimirReshetnikov/ProveIt/blob/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}{presentation and transfer theorems} identify the ordinary proof predicate and its connection to the scalar core. Proofs of the general Jordan separation interface and of rational triangle Cauchy and Laurent evaluation remain analytic obligations for a complete deep embedding. Our use of these results in the corresponding human proofs is relative to the hypotheses stated in those sections. Independent concrete examples, including the scalar sign proof and the circle, avoid the full Jordan interface.
+
+\paragraph{Further research questions.}
+Can the probe estimate in Theorem~\ref{thm:probe} be made adaptive by refining only cells whose observed discrepancy is near the current maximum, with a PR bound derived from local moduli? Which effective quasianalytic or sublevel-set estimates can replace the polynomial forward-difference bound and still give a middle-bracket probe? For known separated zero clusters of a holomorphic function, can a cluster boundary yield a PR residue sum without any individual centre names? These questions concern different missing data: a stopping bound for refinement, a supply of clear points, and a local analytic chart for a whole cluster.

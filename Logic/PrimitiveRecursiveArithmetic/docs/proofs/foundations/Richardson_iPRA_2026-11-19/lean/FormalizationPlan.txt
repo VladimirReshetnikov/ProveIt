@@ -1,0 +1,263 @@
+FORMALIZATION PLAN: RICHARDSON'S THEOREM IN iPRA
+================================================
+
+STATUS
+------
+LogicalCore.lean and Syntax.lean are complete source files inspected manually.
+They were NOT COMPILED in this session. No compiler output or kernel verification
+is claimed. The formalization of the full theorem in ConciseIPRA remains a plan.
+
+LogicalCore.lean is a parametric metatheory proof. Its Framework structure has
+explicit assumptions for numerical computation semantics, compiler simulation,
+and identity/nonhalting calibration. Constructing an inhabitant of Framework
+with the intended arithmetic semantics is a separate obligation.
+
+The human-readable mathematical report may use the established formalized-MRDP
+metatheorem. This does not mean a machine-checked Lean formalization of that
+metatheorem has been supplied here.
+
+1. EXACT TARGET THEORY
+----------------------
+Use ProveIt's ordinary ConciseIPRA presentation:
+  namespace LeanProofs.ConciseIPRA
+  PR   : Nat -> Type
+  PTm  : Nat -> Type
+  Fm PTm n
+  PRAAx
+  Prf PRAAx
+
+The final object-theory endpoint must have the type
+
+  richardsonSentence : Fm PTm 0
+
+  theorem richardson :
+    ([] : List (Fm PTm 0)) ⊢[PRAAx] richardsonSentence
+
+Here richardsonSentence is the explicitly coded sentence saying there is no
+total correct Boolean program for identity of the expression codes.
+
+A theorem merely asserting that a Lean proposition about real functions is true
+does not meet this target. Neither does noDeciderExists in LogicalCore.lean:
+that theorem is useful logic with explicit parameters, not a Prf PRAAx value.
+
+2. SOURCE REFERENCES ACTUALLY INSPECTED
+--------------------------------------
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Pinned commit: eb8eb6653c85aa44f1e18dd4efa243f41b5a9e98
+
+a. Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean
+   Defines the exact PR and PTm constructors, PRAAx, and PRA.qfInd.
+   PRA.qfInd requires a syntactically quantifier-free formula.
+
+b. Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Search.lean
+   Namespace LeanProofs.IPRA.Search; bounded search, search_spec,
+   search_minimal, search_found. Failed search returns the given bound.
+
+c. Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/DiophantineNumberTheory/Pell.lean
+   Object-level Brahmagupta identity and composition of Pell solutions.
+   This file does not prove full Diophantine exponentiation.
+
+d. Computability/HilbertTenthProblem/Lean/MRDP.md
+   States the checked Lean/Mathlib MRDP interfaces and their semantic scope.
+
+e. Computability/HilbertTenthProblem/Lean/Diophantine/Common/MRDPCore.lean
+   Ordinary-natural-number MRDP proof, with pow_dioph, CRT bounded-quantifier
+   elimination, fixed PR graph representation, and a bounded evaluator.
+
+f. Computability/HilbertTenthProblem/Lean/Diophantine/Paper1984/DPR.lean
+   The alternate exponential Diophantine representation endpoint.
+
+g. Logic/PrimitiveRecursiveArithmetic/README.md
+   Distinguishes checked object derivations from unverified research packets.
+
+h. Logic/PrimitiveRecursiveArithmetic/DEPENDENCIES.md
+   Records isolation of the ordinary Diophantine library from iPRA/bridge
+   modules and the intended portable proof-library boundary.
+
+i. Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md
+   Explicitly distinguishes semantic H10 results from object-level iPRA
+   reductions and leaves general internal MRDP as a separate project.
+
+No repository build was rerun as part of this source inspection.
+
+3. ARITHMETICAL SENTENCES AND CODES
+----------------------------------
+Encode integers by a sign/natural code, positive denominators by predecessor,
+rational numbers by a pair, and finite syntax trees by tagged pairing.
+Fix primitive-recursive encoders, decoders, validity checks, substitution,
+and expression normalization. Invalid expressions may normalize to the
+constant-zero expression; this convention must be stated.
+
+Syntax.lean supplies the uncoded AST:
+  rational, pi, logTwo, variable, addition, multiplication,
+  sine, exponential, absolute value.
+Composition is substitution; subtraction uses the rational constant -1.
+
+Required arithmetic symbols:
+  validExpr(code)
+  normalizeExpr(code)
+  compile(e)
+  diagonal(d)
+  run(d, input, trace, bit)
+  observe(expr, rationalCode, precision)
+
+Use natural bits 0 and 1 in the first-order language. LogicalCore.lean's Bool
+is only a convenient two-case metatheory presentation.
+
+The trace predicate run=1 must verify one finite terminating computation.
+It must be primitive recursive. The source halting formula for EFA-MRDP must
+also have an actual bounded/elementary arithmetical presentation, rather than
+being an unexplained symbol for an arbitrary PR predicate.
+
+Define:
+  H(e) := exists trace, bit in {0,1}, Run(e,e,trace,bit).
+  Id(a) := forall q,k, observe(a,q,k)=0.
+
+The observer tests a rational approximation interval for certified exclusion
+of zero. Thus Id is a first-order arithmetical sentence, with no quantification
+over real numbers. Prove the external adequacy statement connecting Id(a) to
+the ordinary real function being identically zero.
+
+One sufficient restricted decider specification is:
+  TotalC(d) :=
+    forall e, exists trace,bit,
+      (bit=0 or bit=1) and Run(d,compile(e),trace,bit).
+
+  CorrectC(d) :=
+    [forall e,trace, Run(d,compile(e),trace,1) -> Id(compile(e))]
+    and
+    [forall e,trace, Run(d,compile(e),trace,0) -> not Id(compile(e))].
+
+First derive:
+  not exists d, TotalC(d) and CorrectC(d).
+
+A total correct decider on all valid expressions restricts to this compiled
+domain because compile(e) is always valid.
+
+4. NEGATIVE MRDP INTERFACE
+--------------------------
+Import, as a mathematical theorem, the formalized MRDP result of Gaifman and
+Dimitracopoulos: for each fixed Sigma_1 formula there is a fixed polynomial
+representation whose equivalence is provable in I-Delta_0 + exp.
+
+Current primary confirmation:
+  Y. Chen, M. Mueller, K. Yokoyama,
+  A parameterized halting problem, Delta_0 truth and the MRDP theorem,
+  Journal of Symbolic Logic 90 (2025), 483-508, section 1.4.
+  DOI: 10.1017/jsl.2024.44
+
+Original:
+  H. Gaifman, C. Dimitracopoulos,
+  Fragments of Peano's arithmetic and the MRDP theorem,
+  Logic and Algorithmic, Monographies de L'Enseignement Mathematique 30
+  (1982), 187-206.
+
+Specialize externally to the single fixed H above. Obtain a fixed finite
+polynomial P and an EFA derivation of:
+  forall e, H(e) iff exists w, P(e,w)=0.
+
+For a complete Lean development, either:
+  (i) formalize this fixed source proof and verify it; or
+  (ii) formalize the cited metatheorem and instantiate it.
+The existing ProveIt theorem Diophantine.mrdp over natural numbers is not a
+substitute for this source-theory derivation.
+
+Implement Goedel-Gentzen translation of the finite classical proof. For each
+fixed bounded formula B, construct its PR characteristic function and internal
+proof of B iff chi_B=1. This derives bounded-formula decidability and bounded
+induction by PRA.qfInd. Translate the exponentiation totality axiom using the
+ordinary PR exponentiation function.
+
+Required internal conclusion:
+  forall e, not not H(e) iff not not Sol(e).
+
+Derive internally, by intuitionistic logic:
+  forall e, not H(e) iff not Sol(e).
+
+LogicalCore.negIffOfDoubleNegIff and negativeCalibration give completely
+written metatheory versions of the logical steps. Their object-language
+counterparts must be assembled using ConciseIPRA's natural-deduction rules.
+
+No Markov principle, positive existential extraction from double negation,
+or full positive internal MRDP theorem is required by this route.
+
+5. ANALYTIC AND APPROXIMATION OBLIGATIONS
+----------------------------------------
+Supply PR syntax constructors and prove:
+  Observation(compile(e)) iff Sol(e).
+  Id(compile(e)) iff not Observation(compile(e)).
+
+Here Observation is the existence of a finite rational nonzero certificate.
+The report gives the mathematical constructions. Their Lean completion needs:
+
+a. Rational arithmetic, finite Taylor sums, and explicit remainders.
+b. Rational approximation procedures for pi (and logTwo if used).
+c. Finite continuity/error propagation for expression codes.
+d. The quantitative integer-rounding/gap lemma.
+e. The quantitative one-variable substitution/density lemma.
+f. The absolute-value sign detector.
+g. Validity of every constructed expression code.
+h. Uniform PR bounds on every finite search and approximation procedure.
+
+Do not use exact equality or sign tests for arbitrary real expression values.
+Use rational interval tests with explicit margins.
+
+A uniform PR evaluator for this fixed syntax is legitimate. A universal PR
+program evaluator is not. To justify the former, use a global value and
+precision bound instead of an unqualified structural-recursion assertion:
+
+  B_0 >= 8 + input and literal magnitude bounds
+  B_(j+1) = 2^(4 B_j)
+  B = B_N, where N is normalized syntax size
+  L = 2^(4(B+1))
+  K = k + (N+1)(4(B+1)+2) + 4.
+
+B bounds exact node values; L bounds local Lipschitz amplification when
+approximation errors are below one; precision K at every node yields final
+error at most 2^(-k). The variable-height tower defining B is primitive
+recursive by ordinary primitive recursion.
+
+For a Taylor routine at |x|<=T, integer T>=1, choose
+  m >= 2T^2 + k + 3
+and truncate below degree 2m. Since (2m)! >= m^m, the first omitted absolute
+term is at most 2^(-m), and subsequent ratios are <=1/2. Thus the tail is at
+most 2^(1-m). This provides a simple PR cutoff for exp and the sine subseries.
+
+6. MACHINE AND DIAGONAL OBLIGATIONS
+----------------------------------
+Construct a PR compiler diagonal(d) whose program, on input z, computes
+compile(z), simulates d on that expression, halts on bit 1, and loops on bit 0.
+
+Prove finite trace translations:
+  Run(d,compile(diagonal(d)),s,1) -> H(diagonal(d)).
+  H(diagonal(d)) -> exists s, Run(d,compile(diagonal(d)),s,1).
+
+Prove deterministic output:
+  Run(d,a,s,b) and Run(d,a,t,c) -> b=c.
+
+All proofs should use explicit finite computation traces and QF induction on
+bounded invariants. The construction uses ordinary diagonal input; it needs
+no recursion theorem or claim that a program knows its own code.
+
+LogicalCore.noTotalCorrectDecider proves the contradiction from precisely
+these fields. It uses correctness of both Boolean output branches.
+
+7. COMPLETION GATES
+-------------------
+- Typecheck Syntax.lean and LogicalCore.lean with a real Lean compiler.
+- Inspect the five #print axioms outputs; no result is claimed until that run.
+- Define all object-language symbols and the closed richardsonSentence.
+- Supply the negative-MRDP source-theory derivation or verified metatheorem.
+- Prove each analytic and machine interface as a Prf PRAAx derivation.
+- Compose those object proofs to prove richardsonSentence.
+- Check the final theorem type and its transitive assumptions.
+- Separately prove external adequacy for usual real-function identity.
+
+A successful check of LogicalCore.lean alone completes only the elementary
+logical part. It does not certify Richardson's theorem in iPRA.
+
+
+PINNED TOOLCHAIN
+The audited repository lean-toolchain is leanprover/lean4:v4.32.0.
+The included lean-toolchain records that exact value. It is a reproducibility
+pin, not a claim that the new Lean files were compiled.

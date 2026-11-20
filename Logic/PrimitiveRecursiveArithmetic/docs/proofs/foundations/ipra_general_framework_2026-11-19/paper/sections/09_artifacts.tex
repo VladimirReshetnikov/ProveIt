@@ -1,0 +1,48 @@
+\section{Artifacts, reproducibility, and exact proof status}
+\label{sec:artifacts}
+
+\subsection{Contents of the archive}
+
+The main source is \path{paper/report.tex}, with section files and this compiled PDF. The \path{code/} directory contains exact-arithmetic reference implementations for polynomial norm certificates and convex clouds. The \path{lean/} directory contains the proposed midpoint-cancellation proof, explicit runtime norm targets, the pinned toolchain identifier, a checking script and the formalization roadmap. The \path{research/} directory records the source audit, inspected predecessor relationships and independent mathematical checks. The \path{validation/} directory records executed finite checks.
+
+The selected upstream source snapshots are evidence for the audit, not a complete self-contained Lean dependency closure. To elaborate the new candidate sources, use the pinned ProveIt checkout and its declared package dependencies. The checking script verifies the checkout's commit before invoking the upstream build. No new repository-wide build was performed for this report.
+
+\subsection{Validation that was actually run}
+
+The norm program constructs multiplication matrices by actual monic remainder, computes their determinants by a literal signed permutation expansion, and compares them with an independent resultant calculation. It checks:
+\begin{itemize}
+\item 54 mixed local-Newton cases, including translated rational centers, varying local orders, and the predicted nonzero initial coefficient;
+\item 41 compressed leading-coefficient cases, including successful certificates and exact leading cancellation;
+\item 80 squarefree finite-algebra cases, including quotient rings with zero divisors, against the local formal-root version of the argument;
+\item 29 separate polynomial-division-order certificates over $\Q$, $\mathbb F_2$ and $\mathbb F_3$, including characteristic dividing $m$, positive division order and nonzero zero-divisor residues;
+\item explicit fiber multiplicity and zero-norm counterexamples.
+\end{itemize}
+
+The convex-cloud program uses \code{fractions.Fraction} throughout. It checked 4,474 cloud/anchor combinations against both finite comparison inequalities, 3,101 simplex-rounding cases, 3,101 midpoint certificates, and 1,127 cross-cloud transfer certificates. It includes the alternating nonconvex counterexample and 12 exact projection examples through affine rank collapse.
+
+These are finite execution checks. The universal results rest on the proofs in this report. In particular, checking many resultants does not prove the numerical-dimension norm theorem; checking a proposed Lean statement as a definition would not prove it either.
+
+\subsection{Formalization ledger}
+
+\begin{longtable}{@{}P{0.33\textwidth}P{0.27\textwidth}P{0.34\textwidth}@{}}
+\toprule
+Result & Present evidence & Further Lean work\\
+\midrule
+\endhead
+Global norm support and mixed local order & Full human proofs, coefficient invariants, exact examples & Actual runtime support and rescaling/word identities.\\[4pt]
+Reduced quotient and polynomial-division-order norm & Full factorization-free human proof; exact finite-field checks & Runtime polynomial Euclid, divisibility witness and determinant carry export.\\[4pt]
+Compressed leading coefficient & Full block decomposition proof; exact comparisons & Basis permutation and block determinant for the actual codec.\\[4pt]
+Common-zero and subspace caps & Full human proofs; source-specific integration plan & Runtime multiplicativity/fiber factors and nonzero annihilator producer.\\[4pt]
+Finite midpoint cancellation & Explicit proposed \code{Prf PRAAx} proof; symbolic slack identity & Elaborate the candidate and resolve any API issues.\\[4pt]
+Convex selector and hull-cloud producer & Full human proofs and exact rational tests & Rational scaling adapters, coordinate identities, actual returned-name contract.\\[4pt]
+Projection in completed $\R^d$ & External semantic argument & A separate Lean semantic theorem, distinguished from object arithmetic.\\
+\bottomrule
+\end{longtable}
+
+The new Lean sources are unelaborated: no Lean executable or compiled dependency cache was available in this environment. They are labeled accordingly. There are no claims that the new norm theorem, canonical selector, or their object-language endpoints have already been kernel-checked. Existing upstream checked status is reported from the exact inspected source revision.
+
+\subsection{Recommended implementation order}
+
+The shortest useful algebraic path begins with the special superelliptic matrix, not the full mixed-curve machinery. Prove the coefficient support budget and the determinant carry identity, then the repeated-division and reducedness lemmas. This yields the new nonzero-norm endpoint. In parallel, use the existing fiber grouping and completed-matrix inverse to obtain determinant fiber divisibility; this gives the finite zero count. Finally add the runtime annihilator producer for the proper-subspace corollary. The mixed local-rescaling theorem and compressed leading determinant can be independent later modules.
+
+For the selector, first elaborate the short integral cancellation lemma. Then connect the rational squared-distance code and the finite nearest/midpoint witnesses to it. The dyadic reindexing theorem needs only the resulting pairwise estimate. The convex-hull input producer has a direct rounding proof and no rank analysis. Only after these arithmetic endpoints are checked should a completed-real interpretation be exported.

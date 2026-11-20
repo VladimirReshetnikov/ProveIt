@@ -1,0 +1,819 @@
+% Continuous model-theoretic chapter. Shared macros supplied by the main paper.
+\providecommand{\val}[1]{\lVert #1\rVert}
+\providecommand{\qval}{\operatorname{qval}}
+\providecommand{\Amp}{\operatorname{Amp}}
+\providecommand{\CM}{\mathcal M}
+\providecommand{\CN}{\mathcal N}
+\section{Continuous model theory from finite correspondences}
+\label{sec:continuous-models}
+
+The repository already contains presented categories, a presentation-wise
+Yoneda theorem, finite limits and colimits, and a setoid interpretation of
+intuitionistic first-order derivations. Repeating those constructions would
+not solve the present analytic problem. The contribution of this section is
+a quantitative interpretation of \emph{real-valued formulas on continuous
+structures}. Its central estimate is unusually economical: a two-sided
+correspondence with atomic error $\eta$ preserves every formula built from
+$\min,\max,1-(-),\inf,\sup$ with the \emph{same} error $\eta$.
+Quantifier alternation does not multiply the error.
+
+This is a restricted, effective part of continuous model theory. In the usual
+semantic setting, predicates take values in $[0,1]$ and quantifiers are
+infima and suprema; uniform continuity makes passage to completions
+meaningful. These conventions and their general model-theoretic setting
+are described in Ben Yaacov--Berenstein--Henson--Usvyatsov,
+\emph{Model theory for metric structures}, Sections 2--4
+(\url{https://math.univ-lyon1.fr/~begnac/articles/mtfms.pdf}).
+Here we supply finite algorithms and arithmetic error proofs for specified
+compact presentations. We do not import that work's compactness,
+ultraproduct, saturation, or model-existence theorems into iPRA.
+
+\subsection{The syntax and the scope of a presentation}
+
+Fix a finite collection of sorts and a finite collection of atomic
+recipes. An atomic recipe $P$ has a specified finite list of argument sorts.
+For a semantic interpretation its value is a uniformly continuous function
+into $[0,1]$. A formula is obtained from atomic recipes and rational constants
+in $[0,1]$ by the operations
+\begin{equation}
+ \min(\varphi,\psi),\qquad
+ \max(\varphi,\psi),\qquad
+ 1-\varphi,\qquad
+ \inf_{x:s}\varphi,\qquad
+ \sup_{x:s}\varphi .
+ \label{eq:cm-syntax}
+\end{equation}
+Free variables carry sorts. Quantification always uses a nonempty sort.
+The operations in \eqref{eq:cm-syntax} are numerical operations on formula
+values, not replacements for the intuitionistic implication and
+quantifiers of the ambient arithmetic.
+
+The fixed-atom convention includes ordinary terms. For a fixed formula,
+an occurrence $P(t_1(\bar x),\ldots,t_r(\bar x))$ can first be compiled into
+one atomic recipe, with its own approximation procedure and modulus.
+The syntax tree of each $t_i$ is fixed in advance. This avoids requiring a
+finite grid to be closed under the structure's operations. Such a grid
+usually is not a substructure: rounded addition on a grid, for example,
+need not satisfy the original algebraic identities.
+The approximation evaluates the original composite predicates at grid
+points. It does not replace the operations by arbitrary rounded tables.
+
+For clarity we first use the basis \eqref{eq:cm-syntax}.
+One may also use a specified rational-evaluable connective
+$C:[0,1]^r\to[0,1]$ with a proved rational Lipschitz bound $L_C$ for the
+maximum metric. Define its formula amplification by
+\begin{equation}
+\begin{split}
+ A_P&=1,\qquad A_c=0,\\
+ A_{\min(\varphi,\psi)}=A_{\max(\varphi,\psi)}
+   &=\max(A_\varphi,A_\psi),\qquad A_{1-\varphi}=A_\varphi,\\
+ A_{\inf_x\varphi}=A_{\sup_x\varphi}&=A_\varphi,\\
+ A_{C(\varphi_1,\ldots,\varphi_r)}
+   &=L_C\max_i A_{\varphi_i}.
+\end{split}
+\label{eq:cm-amplification}
+\end{equation}
+Use $A=\max(1,A_\varphi)$ when choosing a precision budget.
+For the core basis, $A_\varphi\leq1$ regardless of formula size or
+quantifier depth. Truncated addition is permitted by taking $L_C=2$;
+averaging has $L_C=1$. A separate proof or modulus is needed for any
+additional connective. Arbitrary continuous connectives are not silently
+treated as primitive recursive.
+
+\subsection{The sharp finite transfer theorem}
+
+Let $A_s$ and $B_s$ be nonempty finite sets for each sort $s$. Atomic
+interpretations are rational-valued tables. For finite structures,
+$\inf$ and $\sup$ mean the minimum and maximum of a finite nonempty list.
+A \emph{total correspondence} consists of relations
+$R_s\subseteq A_s\times B_s$ such that every member of either carrier
+has a related member of the other. Assume
+\begin{equation}
+ \bigl|P^A(a_1,\ldots,a_r)-P^B(b_1,\ldots,b_r)\bigr|
+ \leq\eta
+ \quad\text{whenever }a_iR_{s_i}b_i\text{ for every }i.
+ \label{eq:cm-atomic-distortion}
+\end{equation}
+The hypothesis concerns \emph{all related tuples}, not merely tuples
+chosen by one matching algorithm. This distinction matters when a variable
+occurs more than once or several variables are quantified.
+
+\begin{theorem}[Finite approximate elementarity]
+\label{thm:cm-transfer}
+For every fixed formula $\varphi(\bar x)$ and coordinatewise related
+assignments $\bar a,\bar b$,
+\begin{equation}
+ \bigl|\varphi^A(\bar a)-\varphi^B(\bar b)\bigr|
+ \leq A_\varphi\eta.
+ \label{eq:cm-transfer}
+\end{equation}
+In particular the bound is $\eta$ for the basis
+\eqref{eq:cm-syntax}. The finite correspondence and all numerical tests
+can be coded by natural numbers. For each fixed formula this theorem
+has an iPRA proof using rational arithmetic, bounded scans, and
+quantifier-free induction.
+\end{theorem}
+
+\begin{proof}
+For two pairs of numbers satisfying $|u-u'|,|v-v'|\leq e$, the inequalities
+$u\leq u'+e$ and $v\leq v'+e$ imply
+$\max(u,v)\leq\max(u',v')+e$. Interchanging the pairs proves the
+reverse inequality. The same argument, or complementation, proves the
+minimum case. Also
+$|(1-u)-(1-u')|=|u-u'|$. A connective $C$ obeys the asserted estimate by
+its Lipschitz hypothesis.
+
+It remains to prove the quantifier step without introducing an extra
+error. Write $u(a)$ and $v(b)$ for the two subformula values after fixing
+the already related parameters. Suppose $|u(a)-v(b)|\leq e$ whenever
+$aRb$. Choose an index $a_*$ attaining $\max_Au$ by a finite scan.
+Totality gives $b$ with $a_*Rb$, and therefore
+\[
+ \max_Au=u(a_*)\leq v(b)+e\leq\max_Bv+e.
+\]
+Choose an index attaining $\max_Bv$ and use the other half of totality
+to obtain the reverse inequality. Thus the maxima differ by at most
+$e$. For minima, choose $a_*$ attaining $\min_Au$ and a related $b$:
+$\min_Bv\leq v(b)\leq u(a_*)+e=\min_Au+e$.
+The reverse inequality follows from a minimizer on $B$.
+This proves both quantifier cases with no increase in $e$.
+Structural induction on the fixed syntax proves
+\eqref{eq:cm-transfer}.
+
+For the arithmetic implementation, represent a finite set by its length
+and entries, a relation by a Boolean matrix, and rational values by
+signed numerator and positive denominator. For the core basis a common
+denominator reduces the proof to inequalities on natural numerators.
+A finite scan stores its current extremal value and the first index
+attaining it. Its invariant says that the index is in the scanned prefix,
+its value equals the current extremum, and every scanned entry lies on
+the appropriate side of that value. All these assertions are bounded.
+After Booleanization they form a quantifier-free induction formula.
+The uses of totality eliminate bounded existential witnesses; they do
+not choose an infinite family.
+Formula induction is a metatheoretic construction of one iPRA proof per
+fixed syntax tree. No induction on an unbounded semantic satisfaction
+predicate is asserted.
+\end{proof}
+
+Two-sided totality is essential. A one-point subset of $[0,1]$ preserves
+the distance predicate on its own points exactly, but its value of
+$\sup_x\sup_y d(x,y)$ is zero, whereas the interval's value is one.
+The missing part of the comparison is coverage of the interval.
+
+\begin{proposition}[Composition of approximate interpretations]
+\label{prop:cm-compose}
+If $R$ is a total correspondence of atomic error $\eta$ from $A$ to $B$
+and $S$ one of error $\theta$ from $B$ to $C$, their relational composite
+is total and has atomic error at most $\eta+\theta$.
+\end{proposition}
+\begin{proof}
+For $a$ choose a related $b$ and then a related $c$; the reverse direction
+uses the other two totality assertions. For a tuple related by the
+composite, take the finitely many intermediate entries $b_i$ witnessing
+its coordinates. Applying the two atomic inequalities and adding them
+gives the stated bound. Finite relational composition is a bounded
+disjunction over the middle carrier, so its table is primitive recursive.
+Associativity follows by reassociating the two finite existential
+quantifiers; the diagonal relation is an identity. Reversing a
+correspondence preserves its error.
+\end{proof}
+
+Consequently finite presentations and total correspondences form a
+category whose errors compose additively. The value of each sentence
+is stable under its arrows with the amplification in
+\eqref{eq:cm-amplification}. This supplies an abstract comparison
+calculus for continuous observations. It does not assert that every
+correspondence is the graph of a continuous map, or that arbitrary
+metric spaces have been assembled into an internal category of iPRA.
+
+\subsection{Primitive-recursive compact presentations}
+\label{subsec:cm-presentations}
+
+For each sort $s$, take a rational pseudometric $d_s$ on numerical
+codes $D_s$ with diameter at most one, and a fixed primitive-recursive
+procedure producing a nonempty finite list $N_s(n)$ of codes. If a
+validity predicate is needed, all operations are totalized outside it,
+and every assertion below is guarded by validity. The central net
+contract is
+\begin{equation}
+ \forall a\in D_s\ \exists j<|N_s(n)|\quad
+ d_s(a,N_s(n)_j)\leq 2^{-n}.
+ \label{eq:cm-net}
+\end{equation}
+Its proof is supplied in iPRA; it is not inferred by inspecting a
+finite list. Because distances are rational, a least suitable index
+can alternatively be found by a bounded scan.
+
+For each fixed atomic recipe $P$, supply rational approximants
+$p_P(\bar a,p)\in[0,1]$ and a nondecreasing primitive-recursive
+modulus $\mu_P$. Their arithmetical contracts are coherence and stability:
+\begin{equation}
+\begin{split}
+ |p_P(\bar a,p)-p_P(\bar a,q)|
+   &\leq 2^{-p}+2^{-q},\\
+ d_\infty(\bar a,\bar b)\leq2^{-\mu_P(h)}
+ \quad&\Longrightarrow\quad
+ |p_P(\bar a,p)-p_P(\bar b,q)|
+   \leq2^{-p}+2^{-q}+2^{-h}.
+\end{split}
+\label{eq:cm-atom-contract}
+\end{equation}
+Here $d_\infty$ is the maximum of the coordinate distances, and the
+maximum over an empty tuple is zero. These are first-order statements
+about fixed numerical functions. Denominators are cleared before
+placing them in the object language. One can require dyadic
+approximants, with a fixed extra factor for the formula's rational
+constants, to make the common-denominator implementation immediate.
+
+The usual semantic description follows constructively: the coherent
+sequence $p_P(\bar a,p)$ is a real number; its value is uniformly
+continuous on the dense presentation and hence extends to the
+completion. This interpretation takes place outside first-order iPRA.
+It is not an enumeration of all real numbers by primitive-recursive
+program codes.
+
+Let
+\begin{equation}
+ U(h)=\max\bigl(h,\mu_P(j):
+       P\text{ occurs in the fixed formula},\ j\leq h\bigr).
+ \label{eq:cm-common-modulus}
+\end{equation}
+This is a primitive-recursive, nondecreasing common modulus. The
+additional maximum over $j\leq h$ makes monotonicity explicit even if
+the original moduli were not normalized.
+
+Given dense free parameters $\bar a$, append their entries to the
+appropriate lists $N_s(n)$, obtaining finite nonempty carriers
+$K_s(n,\bar a)$. Duplicates cause no problem. Interpret every atom
+on these carriers by $p_P(-,p)$ and evaluate the formula by finite
+minimum and maximum. Denote the resulting rational number by
+\begin{equation}
+ E_\varphi(\bar a;n,p).
+ \label{eq:cm-evaluator}
+\end{equation}
+The same carrier is used at every quantifier in a single evaluation.
+Appending free parameters permits the evaluation to be described
+literally as a finite structure with an assignment. Finite supports
+may contain any additional specified points: none of the estimates
+depends on which extra points were appended.
+
+\begin{theorem}[Cross-mesh estimate]
+\label{thm:cm-cross-mesh}
+If $n,m\geq U(h)$, then
+\begin{equation}
+ |E_\varphi(\bar a;n,p)-E_\varphi(\bar a;m,q)|
+ \leq A_\varphi\bigl(2^{-p}+2^{-q}+2^{-h}\bigr).
+ \label{eq:cm-cross-mesh}
+\end{equation}
+More generally the same estimate compares parameters $\bar a,\bar b$
+when $d_\infty(\bar a,\bar b)\leq2^{-U(h)}$.
+\end{theorem}
+\begin{proof}
+Relate an entry of the first carrier to an entry of the second whenever
+their distance is at most $2^{-\min(n,m)}$, in the equal-parameter
+case. Every entry has a partner by \eqref{eq:cm-net}: the net contained
+in the other carrier covers \emph{all} dense codes, including any
+appended parameters. Thus the relation is total both ways.
+Identical free parameters are related.
+The inequality $n,m\geq U(h)$ and
+\eqref{eq:cm-atom-contract} give atomic distortion at most
+$2^{-p}+2^{-q}+2^{-h}$ on every related tuple. Apply
+Theorem~\ref{thm:cm-transfer}.
+
+For different parameters, use instead the relation
+$d_s(a,b)\leq2^{-U(h)}$. Net coverage again gives totality; the specified
+parameter pairs now belong to this relation by hypothesis. The same
+atomic bound and the same transfer theorem apply.
+Every relation test and carrier search in this proof is finite and
+rational.
+\end{proof}
+
+Fix an integer $\ell$ with $A=\max(1,A_\varphi)\leq2^\ell$ and define
+\begin{equation}
+ p_k=k+\ell+2,\qquad n_k=U(p_k)+1,\qquad
+ v_\varphi(\bar a,k)=E_\varphi(\bar a;n_k,p_k).
+ \label{eq:cm-canonical-value}
+\end{equation}
+Then $v_\varphi$ is primitive recursive. Indeed the syntax is fixed,
+each atomic procedure and net generator is fixed, and every quantifier
+is a bounded fold over a primitive-recursively generated list.
+Nested quantifiers can make this computation extremely large; no
+polynomial or elementary complexity bound is claimed.
+
+\begin{corollary}[A real-valued interpretation with an iPRA Cauchy proof]
+\label{cor:cm-cauchy}
+For all dense parameters and all $k,l$,
+\begin{equation}
+ |v_\varphi(\bar a,k)-v_\varphi(\bar a,l)|
+ \leq \tfrac12\bigl(2^{-k}+2^{-l}\bigr).
+ \label{eq:cm-cauchy}
+\end{equation}
+For each fixed formula, the contracts
+\eqref{eq:cm-net}--\eqref{eq:cm-atom-contract} therefore yield an iPRA
+derivation of the regular-name condition for the fixed numerical
+function $v_\varphi$.
+\end{corollary}
+\begin{proof}
+In \eqref{eq:cm-cross-mesh} set $h=\min(p_k,p_l)$.
+Monotonicity of $U$ makes its mesh hypotheses hold. Since
+$2^{-h}=\max(2^{-p_k},2^{-p_l})\leq2^{-p_k}+2^{-p_l}$, the right side
+is at most
+$2A(2^{-p_k}+2^{-p_l})
+\leq(2^{-k}+2^{-l})/2$.
+This is a rational calculation for arbitrary numerical $k,l$.
+No limit is taken inside the object theory.
+\end{proof}
+
+Define $\varphi^\CM(\bar a)$ externally to be the real represented by
+this regular name. The comparison theorem gives two useful consequences:
+\begin{equation}
+\begin{aligned}
+ |E_\varphi(\bar a;n,p)-\varphi^\CM(\bar a)|
+   &\leq A_\varphi(2^{-p}+2^{-h})
+       &&(n\geq U(h)),\\
+ |\varphi^\CM(\bar a)-\varphi^\CM(\bar b)|
+   &\leq A_\varphi2^{-h}
+       &&(d_\infty(\bar a,\bar b)\leq2^{-U(h)}).
+\end{aligned}
+\label{eq:cm-semantic-bounds}
+\end{equation}
+For the first inequality, compare the given evaluation with
+\eqref{eq:cm-canonical-value} at successively finer precisions using
+\eqref{eq:cm-cross-mesh}, with $h$ fixed. The term $2^{-q}$ tends to
+zero and all remaining terms are fixed.
+The second follows similarly from the different-parameter estimate.
+These are constructive properties of the represented real values.
+They are semantic adequacy statements, separate from the finite
+arithmetical theorem \eqref{eq:cm-cross-mesh}.
+
+Thus $\mu_\varphi(k)=U(k+\ell)$ is a modulus on the dense presentation.
+The completion-extension theorem, Theorem~\ref{thm:an-extension},
+gives the safe completed-parameter modulus
+\begin{equation}
+ \nu_\varphi(k)=\mu_\varphi(k+2)+2=U(k+\ell+2)+2.
+ \label{eq:cm-completed-modulus}
+\end{equation}
+The margin matters because a closed-threshold modulus on dense points
+need not extend with its original indices.
+For a tuple $\bar x$ of regular names, whose $j$th entries are
+$\bar x_j$, an explicit output schedule is
+\begin{equation}
+ j_k=U(k+\ell+3)+2,\qquad p=k+\ell+2,\qquad n=U(p)+1,
+ \qquad E_\varphi(\bar x_{j_k};n,p).
+ \label{eq:cm-named-parameters}
+\end{equation}
+The distance from $\bar x_{j_k}$ to its completed tuple is at most
+$2^{-j_k}$, so \eqref{eq:cm-completed-modulus} bounds the parameter
+error by $2^{-(k+1)}$. The first inequality of
+\eqref{eq:cm-semantic-bounds}, with $h=p$, bounds the evaluation
+error by $2A_\varphi2^{-p}\leq2^{-(k+1)}$.
+Thus the returned rational has total error at most $2^{-k}$.
+This finite schedule is primitive recursive after fixing the input
+name routines.
+For arbitrary external names this is a finite-query construction
+relative to the names; it is not a new first-order quantification over
+all such names.
+
+\subsection{The extension to distances given by regular names}
+\label{subsec:cm-named-distance}
+
+The exact rational pseudometric was a simplifying presentation choice.
+The function sort in Section~\ref{sec:functionspaces} has a
+primitive-recursive \emph{approximation} to its supremum distance;
+the preceding theorem must therefore be extended before it is applied
+to that sort. The required extension preserves a decidable comparison
+relation by reserving an explicit margin.
+
+Let $\Delta_s(a,b,r)$ be a symmetric rational distance sampler,
+with values differing from the represented distance by at most $2^{-r}$.
+Symmetry can be imposed by averaging the samplers at $(a,b)$ and $(b,a)$.
+Its arithmetic coherence theorem is
+\begin{equation}
+ |\Delta_s(a,b,r)-\Delta_s(a,b,t)|\leq2^{-r}+2^{-t}.
+ \label{eq:cm-distance-coherence}
+\end{equation}
+Define the first-order upper-bound formula
+\begin{equation}
+ \operatorname{Upper}_s(a,b,\rho)\quad\equiv\quad
+ \forall r\ 
+    \Delta_s(a,b,r)\leq \rho+2^{-r}.
+ \label{eq:cm-upper}
+\end{equation}
+This formula is not decidable and will not be used as a scan condition.
+Its semantic meaning is exactly $d_s(a,b)\leq\rho$.
+Supply the net contract
+$\forall a\ \exists j<|N_s(n)|\
+\operatorname{Upper}_s(a,N_s(n)_j,2^{-n})$
+and the atomic stability contract \eqref{eq:cm-atom-contract} with
+the metric premise replaced by the conjunction of these
+$\operatorname{Upper}$ formulas at radius $2^{-\mu_P(h)}$.
+These are explicit object-theory obligations for the presentation.
+
+\begin{lemma}[A decidable relation for named distances]
+\label{lem:cm-named-relation}
+Fix $h$, put $u=U(h)$ and $\delta=2^{-u}$, and take nets of indices
+$n,m\geq u+2$. On their augmented finite carriers define
+\begin{equation}
+ aR_sb\quad\Longleftrightarrow\quad
+ \Delta_s(a,b,u+3)\leq \tfrac58\delta.
+ \label{eq:cm-slack-relation}
+\end{equation}
+Then $R_s$ is total both ways, identical free parameters are related,
+and every related pair satisfies
+$\operatorname{Upper}_s(a,b,\tfrac34\delta)$.
+Consequently the cross-mesh estimate
+\eqref{eq:cm-cross-mesh} holds for named distances under the stronger
+mesh assumptions $n,m\geq U(h)+2$.
+\end{lemma}
+\begin{proof}
+The other net covers a specified carrier point within
+$2^{-m}\leq\delta/4$. Instantiate its $\operatorname{Upper}$
+certificate at precision $u+3$:
+the sampled distance to the covering center is at most
+$\delta/4+\delta/8=3\delta/8$, and therefore passes
+\eqref{eq:cm-slack-relation}. This proves each coverage direction;
+symmetry handles orientation. A diagonal pair has sampled distance
+at most $\delta/8$.
+
+For a pair passing the test, coherence at an arbitrary precision $r$
+gives
+\[
+ \Delta_s(a,b,r)
+ \leq \Delta_s(a,b,u+3)+2^{-(u+3)}+2^{-r}
+ \leq \tfrac34\delta+2^{-r}.
+\]
+Generalizing over $r$ proves the $\operatorname{Upper}$ assertion.
+Since $\tfrac34\delta\leq2^{-\mu_P(h)}$, the supplied atomic stability
+contract gives the atomic distortion used in
+Theorem~\ref{thm:cm-transfer}. The relation test itself is rational
+and primitive recursive. Although an all-precision upper bound is
+derived, no induction formula contains that unbounded quantifier:
+$r$ was arbitrary in one arithmetic inequality.
+\end{proof}
+
+In this version replace \eqref{eq:cm-canonical-value} by
+\begin{equation}
+ p_k=k+\ell+2,\qquad
+ n_k=U(p_k)+2,\qquad
+ v_\varphi(\bar a,k)=E_\varphi(\bar a;n_k,p_k).
+ \label{eq:cm-named-schedule}
+\end{equation}
+The Cauchy calculation is unchanged. To compare different parameters,
+a distance at most $2^{-(U(h)+1)}=\delta/2$ suffices:
+its sampled distance is at most $5\delta/8$, so those parameter pairs
+also pass the relation test. The resulting dense-parameter modulus is
+$U(k+\ell)+1$. The safe modulus after completion is consequently
+\begin{equation}
+ \nu_\varphi^{\mathrm{named}}(k)=U(k+\ell+2)+3.
+ \label{eq:cm-completed-named-modulus}
+\end{equation}
+For free parameter names, replace the schedule
+\eqref{eq:cm-named-parameters} by
+$j_k=U(k+\ell+3)+3$, $p=k+\ell+2$, and $n=U(p)+2$.
+The same two errors, each at most $2^{-(k+1)}$, prove output
+accuracy $2^{-k}$.
+The first inequality of \eqref{eq:cm-semantic-bounds} remains valid
+with $n\geq U(h)+2$.
+
+The quantifier-adequacy proof below uses only this version of the
+cross-mesh estimate, its uniform parameter modulus, and finite net
+coverage. In the named-distance case take $n=U(p)+2$ throughout
+that proof: its net radius is at most $2^{-(U(p)+2)}$, which is
+smaller than the parameter radius just specified. Thus the constants
+in its displayed value and witness estimates are unchanged.
+In particular, the rational supremum-distance sampler of
+Lemma~\ref{lem:function-distance} and the envelope net satisfy exactly
+the numerical interfaces required to use a compact function class as
+a quantified sort. No exact comparison of two real distances is used.
+
+\subsection{Why the interpretation really has infimum and supremum}
+\label{subsec:cm-quantifier-adequacy}
+
+The construction above did not assume that every bounded subset of the
+reals has a supremum. We now prove that its numerical quantifier
+operations have exactly the intended meanings.
+
+\begin{theorem}[Constructive quantifier adequacy]
+\label{thm:cm-adequacy}
+The values just constructed respect every connective in
+\eqref{eq:cm-syntax} and satisfy
+\begin{equation}
+ (\sup_{y:s}\psi)^\CM(\bar a)
+    =\sup_{b\in\widehat D_s}\psi^\CM(\bar a,b),
+ \qquad
+ (\inf_{y:s}\psi)^\CM(\bar a)
+    =\inf_{b\in\widehat D_s}\psi^\CM(\bar a,b).
+ \label{eq:cm-adequacy}
+\end{equation}
+Here the displayed suprema and infima exist because the proof constructs
+them. In addition, a primitive-recursive bounded scan supplies a dense
+point whose value is within $2^{-k}$ of the requested extremum at
+precision $k$.
+\end{theorem}
+\begin{proof}
+For a connective, use one common sufficiently fine mesh and atomic
+precision for its immediate subformulas. Their finite evaluations obey
+the connective equation exactly. The uniform estimates
+\eqref{eq:cm-semantic-bounds}, together with the connective's Lipschitz
+bound, pass that equation to the represented values. It is immaterial
+that the independently defined canonical names might use different
+precisions: \eqref{eq:cm-cross-mesh} compares them.
+
+Consider a supremum and write $S$ for its constructed value. At mesh
+$n=U(p)+1$, let
+\[
+ M_{n,p}=\max_{b\in K_s(n,\bar a)}
+                 E_\psi(\bar a,b;n,p),
+\]
+where all subformula quantifiers use the fixed carriers of this
+evaluation. The extra-support version of
+\eqref{eq:cm-semantic-bounds} yields, uniformly in these $b$,
+\begin{equation}
+ |E_\psi(\bar a,b;n,p)-\psi^\CM(\bar a,b)|
+       \leq 2A_\psi2^{-p}.
+ \label{eq:cm-child-error}
+\end{equation}
+Given any dense $c$, choose $b$ in the finite net with
+$d_s(c,b)\leq2^{-n}\leq2^{-U(p)}$.
+The second inequality of \eqref{eq:cm-semantic-bounds} and then
+\eqref{eq:cm-child-error} give
+\[
+ \psi^\CM(\bar a,c)
+ \leq\psi^\CM(\bar a,b)+A_\psi2^{-p}
+ \leq M_{n,p}+3A_\psi2^{-p}.
+\]
+Taking arbitrarily fine $p$ proves $\psi^\CM(\bar a,c)\leq S$.
+Uniform continuity extends this upper-bound property to every completed
+point $c$.
+
+Conversely, suppose $z$ bounds $\psi^\CM(\bar a,b)$ above at every
+dense point. For every member of the finite net,
+\eqref{eq:cm-child-error} gives
+$E_\psi(\bar a,b;n,p)\leq z+2A_\psi2^{-p}$.
+Taking the finite maximum and then the represented limit gives
+$S\leq z$. Hence $S$ is the least upper bound. This proves existence
+and the supremum equation without selecting an infinite sequence of
+maximizers. The infimum proof reverses all inequalities.
+
+Finally choose by a finite scan a $b_*$ attaining $M_{n,p}$.
+The first estimate in \eqref{eq:cm-semantic-bounds}, applied to the
+supremum formula, bounds $|S-M_{n,p}|$ by $2A_\psi2^{-p}$.
+Together with \eqref{eq:cm-child-error},
+\[
+ S-\psi^\CM(\bar a,b_*)\leq4A_\psi2^{-p}.
+\]
+Choose $p=k+\ell+2$ with $A_\psi\leq2^\ell$. The right side is at most
+$2^{-k}$. The maximizing index, its point code, and all precision
+choices are primitive recursive. The minimizing case is identical.
+\end{proof}
+
+There need be no coherent choice of the approximate witnesses as $k$
+varies. The theorem constructs a real value and finite witnesses for
+each requested accuracy. Constructing an \emph{exact} optimizing point
+is a further problem and may need a uniqueness or separation modulus.
+This distinction is exactly what prevents the argument from
+reintroducing an unproved branch-selection principle.
+
+\subsection{A worked sentence with genuine quantifier alternation}
+
+Take the sort $[0,1]$, rational dense points, dyadic grids, and the
+atomic predicate $P(x,y)=|x-y|$. For this atom,
+\[
+ \bigl||x-y|-|x'-y'|\bigr|
+ \leq |x-x'|+|y-y'|
+ \leq2d_\infty((x,y),(x',y')),
+\]
+so $\mu_P(h)=h+1$ is valid. Consider
+\begin{equation}
+ \Phi=\inf_x\sup_y |x-y|.
+ \label{eq:cm-radius-sentence}
+\end{equation}
+For a fixed $x$, the triangle inequality on the line shows
+$|x-y|\leq\max(x,1-x)$ for $0\leq y\leq1$, while $y=0,1$
+give equality. Also $\max(x,1-x)\geq1/2$ because one of $x,1-x$
+is at least their average; at $x=1/2$ the maximum is $1/2$.
+Consequently $\Phi=1/2$.
+
+Every dyadic grid containing $0,1,1/2$ already returns this exact value
+under the finite evaluator. More complicated alternating expressions
+need not stabilize exactly, but the same cross-mesh estimate applies.
+The logical construction handles $\inf\sup\inf\sup$ without allocating
+an additional precision loss for each quantifier: the common net
+correspondence handles all of them simultaneously. The price of more
+quantifiers is the number of bounded evaluations, not a deterioration
+of the proven error bound.
+
+The sorts need not consist of scalar points. In particular, using
+the named-distance extension in
+Section~\ref{subsec:cm-named-distance}, the compact
+class of bounded $L$-Lipschitz functions constructed elsewhere in this
+report can be a sort. Evaluation $P(f,x)=f(x)$, after affine rescaling
+to $[0,1]$, is uniformly continuous because
+\[
+ |f(x)-g(y)|\leq\|f-g\|_\infty+L\|x-y\|_\infty.
+\]
+The supplied finite nets consist of actual Lipschitz functions, so a
+formula may quantify over that function class and over points, using
+the same theorem. This is a controlled interpretation of apparently
+higher-order analytic statements. It is restricted to the specified
+compact equicontinuous class; it does not quantify over all continuous
+functions or over all primitive-recursive programs.
+
+\subsection{A witness form of the Tarski--Vaught argument}
+
+Global compactness can be replaced by more local data when only a
+specified family of formulas is of interest. Let $A$ be a nonempty
+subdomain of a structure $M$, with all atomic interpretations obtained
+by restriction. Fix a finite family of formulas closed under
+subformulas. For every subformula $\inf_y\psi(\bar x,y)$, suppose a
+specified finite nonempty list $W_{\psi,\bar a,k}\subseteq A$ satisfies
+\begin{equation}
+ \forall b\in M\ \exists w\in W_{\psi,\bar a,k}\quad
+ \psi^M(\bar a,w)\leq\psi^M(\bar a,b)+2^{-k}.
+ \label{eq:cm-witness-test}
+\end{equation}
+For a supremum use the reverse inequality. The list generator and
+the proof of its contract are input data. In an arithmetic application
+they must have numerical realizations and iPRA proofs; an informal
+existence assertion is not a generator.
+
+\begin{proposition}[Supplied witnesses yield elementary observations]
+\label{prop:cm-tarski-vaught}
+For the specified subformula family, the values computed over $A$
+and over $M$ agree at every tuple from $A$, provided those values
+are constructed. With a uniform witness tolerance $\tau$ instead of
+arbitrarily small $2^{-k}$, the error for the core basis is at most
+$q(\varphi)\tau$, where $q$ is defined by
+\begin{equation}
+\begin{aligned}
+ q(P)=q(c)&=0,\qquad q(1-\varphi)=q(\varphi),\\
+ q(\min/\max(\varphi,\psi))&=\max(q(\varphi),q(\psi)),\\
+ q(\inf/\sup_y\varphi)&=q(\varphi)+1.
+\end{aligned}
+ \label{eq:cm-rank-budget}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The atomic case is equality, and the connective steps follow from
+nonexpansiveness. Suppose the subformula values differ by at most
+$e$ on tuples from $A$, and consider an infimum. Use only the two
+constructed values
+\[
+ L_A=\inf_{w\in A}\psi^A(\bar a,w),\qquad
+ L_M=\inf_{b\in M}\psi^M(\bar a,b).
+\]
+For every $w\in A$,
+$L_M\leq\psi^M(\bar a,w)\leq\psi^A(\bar a,w)+e$.
+Therefore $L_M-e$ is a lower bound for all the values defining
+$L_A$, and $L_M\leq L_A+e$.
+For each $b\in M$, the witness contract supplies $w\in A$ with
+\[
+ L_A\leq\psi^A(\bar a,w)
+      \leq\psi^M(\bar a,w)+e
+      \leq\psi^M(\bar a,b)+\tau+e.
+\]
+Consequently $L_A-\tau-e$ is a lower bound for all the values
+defining $L_M$, so $L_A\leq L_M+\tau+e$.
+These two inequalities give the asserted error $e+\tau$.
+No auxiliary infimum of $\psi^M$ over $A$ is assumed to exist.
+The supremum argument is dual.
+Induction gives \eqref{eq:cm-rank-budget}.
+When the witness contract is available at every precision, let the
+explicit tolerance tend to zero in the represented real values.
+\end{proof}
+
+This is weaker input than a metric net if a particular formula has an
+efficient approximate minimizer even when the entire domain is not
+totally bounded. It is also a more precise statement of the unresolved
+obligation: one must produce and verify the lists in
+\eqref{eq:cm-witness-test}. The theorem does not produce elementary
+submodels from arbitrary existence claims, and its conclusion does
+not supply a general first-order satisfaction decision procedure.
+
+\begin{proposition}[Observable quotients]
+\label{prop:cm-observable-quotient}
+Suppose each sort has a projection $\pi_s:M_s\to K_s$ with a
+specified section $j_s:K_s\to M_s$, so $\pi_sj_s$ is the identity.
+Suppose every atomic recipe factors exactly through $\pi$:
+\[
+ P^M(\bar a)=P^K(\pi\bar a).
+\]
+Then every formula in the chosen language has
+$\varphi^M(\bar a)=\varphi^K(\pi\bar a)$ whenever the values are
+constructed. If $K$ has the compact presentation above, its finite
+evaluator supplies these values even when $M$ itself is not compact.
+\end{proposition}
+\begin{proof}
+For an atomic formula this is the factorization hypothesis.
+Connectives preserve equality. For a quantifier the two sets of
+subformula values coincide: projection sends every $M$-argument to a
+$K$-argument, and the supplied section lifts every $K$-argument back.
+Therefore their constructed suprema and infima coincide. Equivalently,
+the graph of $\pi$ is a total correspondence of atomic error zero.
+This proves the result without choosing any representative not already
+provided by the section.
+\end{proof}
+
+For a constructive noncompact example, let $M$ be the closed unit ball
+of $c_0$: its elements are real sequences $(x_j)$ with $|x_j|\leq1$,
+supplied with a modulus $b_x(k)$ such that
+$j\geq b_x(k)$ implies $|x_j|\leq2^{-k}$.
+The supremum distance is a represented real, not an assumed supremum
+of an arbitrary bounded set. To approximate it to precision $k$,
+take the finite prefix ending before
+$B=\max(1,b_x(k+2),b_y(k+2))$. At each of its coordinates,
+approximate $x_j,y_j$ separately to error $2^{-(k+3)}$ and take
+the absolute difference of the two rational samples. These are
+nonnegative approximants to $|x_j-y_j|$ with error at most
+$2^{-(k+2)}$. Their finite maximum
+approximates the full distance to error at most $2^{-(k+1)}$:
+outside the prefix every difference is at most $2^{-(k+1)}$,
+and inside it the specified sampling bound applies. Rescaling by
+$1/2$ gives diameter at most one if required.
+
+Let $K=[-1,1]^d$. Projection takes the first $d$ coordinates; the
+section pads with zeros and supplies the constant tail bound $d$.
+The domain $M$ is not totally bounded: the coordinate unit vectors
+are pairwise at supremum distance one, so a ball of radius less than
+$1/2$ contains at most one of them. Nevertheless every formula whose
+atoms depend only on the first $d$ coordinates reduces exactly to the
+compact cube $K$. Rational coordinate formulas therefore have the
+finite arithmetic interpretation above. Adding the full
+supremum-distance predicate would invalidate the factorization
+hypothesis. The scope of the observable language is part of the theorem.
+
+\subsection{Exact formalization boundary and the remaining Lean work}
+\label{subsec:cm-lean}
+
+The supplied file \texttt{ContinuousSyntax.lean} defines arity-indexed
+syntax \path{QuantitativeIPRA.Continuous.Formula}, a finite numerical
+\texttt{Model}, environment extension, a finite evaluator, and
+\texttt{Correspondence}. Its theorem
+\path{QuantitativeIPRA.Continuous.formula_transfer} proves the
+unchanged-error result for the full core basis, including arbitrary
+alternation of finite infima and suprema. It uses the checked
+\texttt{min\_correspondence} and \texttt{max\_correspondence}
+lemmas in \texttt{FiniteExtrema.lean}. All carriers are nonempty ranges
+$0,\ldots,\mathit{last}$. A rational score is represented by a natural
+numerator over a common positive denominator. The predicate
+\[
+ \operatorname{Close}(e,a,b)\quad\equiv\quad
+       a\leq b+e\ \wedge\ b\leq a+e
+\]
+avoids an incorrect use of truncated natural subtraction for absolute
+error. Truncated complement agrees with $B-a$ on $0\leq a\leq B$.
+
+These are checked Lean propositions about finite semantic structures,
+\emph{not} terms of the repository's
+$\texttt{Prf PRAAx}$ object theory. The full compact-presentation
+compiler and its semantic adequacy theorem have the human proofs above
+and the following explicit formalization path:
+\begin{enumerate}
+\item Introduce a record \texttt{CompactPresentation} containing the
+      dense-code validity predicate, rational pseudometric, net lengths
+      and entries, and object-theory derivations of
+      \eqref{eq:cm-net}. Introduce \texttt{AtomicRecipe} with fixed
+      $\PR$ terms for its evaluator and modulus, together with
+      derivations of \eqref{eq:cm-atom-contract}. No field is a
+      universal evaluator for arbitrary programs.
+\item Compile each fixed formula to numerical $\PR$ terms using
+      composition and the bounded folds already used for
+      \texttt{ApproximateWitness}. For the core basis use one positive
+      denominator, normalize rational constants, and compile complements
+      as bounded subtraction.
+\item Prove object-theory finite correspondence transport. The existing
+      \texttt{FiniteNet}, \texttt{NetTransfer}, and
+      \texttt{ApproximateWitness} modules supply net elimination and
+      extremal-index infrastructure. Reproduce the four rational
+      inequalities in the proof of
+      Theorem~\ref{thm:cm-transfer}, then assemble one derivation per
+      fixed syntax tree by the usual substitution and cut operations.
+\item Define the finite relation
+      $d_s(a,b)\leq2^{-U(h)}$ and prove its two coverage directions
+      from \eqref{eq:cm-net}. Instantiate the object correspondence
+      theorem to derive \eqref{eq:cm-cross-mesh}, and then
+      \eqref{eq:cm-cauchy}. These are arithmetic endpoints with every
+      mesh, precision, parameter and denominator explicit.
+\item In a separate semantic namespace, define the real value by the
+      regular Cauchy name. Prove \eqref{eq:cm-semantic-bounds} and
+      Theorem~\ref{thm:cm-adequacy}, using the completion-extension
+      theorem. A Mathlib realization may use completed metric spaces
+      here, but that realization is an adequacy theorem and must not
+      be relabeled an iPRA derivation.
+\end{enumerate}
+
+The fixed-formula proof transformation is enough for the proposed
+applications. A uniform compiler on numerical syntax codes would
+require its own primitive-recursive size bounds, proof-code encoding,
+and correctness theorem. The checked Lean induction above is useful
+evidence for that future implementation; it does not by itself supply
+those additional object-theory results.
+
+Finally, zero-valued truth remains different from finite observation.
+The algorithm returns intervals of decreasing width containing
+$\varphi^\CM(\bar a)$. It can certify a strict inequality when the
+interval separates from its threshold. It need not decide the
+statement $\varphi^\CM(\bar a)=0$. Neither equality of arbitrary real
+names nor the complete theory of an arbitrary presented structure
+has become decidable.

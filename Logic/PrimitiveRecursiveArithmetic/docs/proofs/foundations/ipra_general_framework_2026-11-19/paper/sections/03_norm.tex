@@ -1,0 +1,108 @@
+\section{Finite polynomial algebras and multiplicity of fibers}
+\label{sec:norm}
+
+This section supplies the common algebraic mechanism used by the extension. The finite norm zero bound and its Vandermonde proof already occur in the finite-demand packet \cite{repo-norm}; they are included here in full so the new local argument has an explicit foundation. The current implementation has constructed the norm and several fiber programs, but the full numerical-dimension determinant and multiplicity endpoint is still open in its source audit \cite{repo-audit}.
+
+\subsection{The actual finite algebra}
+
+Fix an exactly coded field $K$, principally $\Q$ or $\Q(i)$, with decidable equality and primitive recursive arithmetic on codes. Let
+\[
+ F(X,Y)=Y^m+\sum_{j=0}^{m-1}f_j(X)Y^j,\qquad m\ge1.
+\]
+Represent a reduced polynomial by the vector $(A_0,\ldots,A_{m-1})$, meaning $G=\sum_{j<m}A_j(X)Y^j$. Reduction modulo $F$ is a bounded monic-division algorithm: remove the highest $Y$ term, using the coefficient one of $Y^m$, until the degree is below $m$. The loop bound is the input $Y$ degree minus $m$ plus one; no test of a potentially vanishing leading coefficient of $F$ is needed.
+
+The free $K[X]$-module with basis $1,Y,\ldots,Y^{m-1}$ and this reduced multiplication is the finite presentation of $K[X,Y]/(F)$. For each $j<m$, reduce $GY^j$ and put its coefficient vector in column $j$ of a matrix $M_G(X)$. Define
+\[
+ \Norm_F(G)(X)=\det M_G(X).
+\]
+This is a finite polynomial, not an infinitary algebraic object. The determinant can be defined by a sum over all words in $\{0,\ldots,m-1\}^m$, retaining precisely the words with no repeated entry. Compute their signs from inversion parity and multiply the selected entries. This has an explicit $m^m$ candidate bound. The determinant of the empty matrix is one; our curve theorem uses $m\ge1$.
+
+If the degrees of the $f_j$ are at most $c$ and those of the $A_j$ at most $a$, the companion matrix of multiplication by $Y$ has entries of degree at most $c$. Thus $M_G=\sum_{j<m}A_jT^j$ has entries of degree at most $a+(m-1)c$, and a safe allocated degree for the determinant is
+\begin{equation}\label{eq:coarse-degree}
+ D=m\bigl(a+(m-1)c\bigr).
+\end{equation}
+The allocated buffer can contain leading zero coefficients. Computing the actual degree is a separate bounded nonzero-coefficient scan, with a zero tag rather than an ambiguous degree-zero convention.
+
+\subsection{Finite identities behind the determinant}
+
+Only the following elementary identities are needed: multilinearity in rows, alternation, $\det(AB)=\det A\det B$, and specialization of coefficient polynomials. Each has a finite algebraic proof from the permutation definition. To be explicit about the less immediate identity, expand $\det(AB)$ and distribute the product of the $m$ sums in its entries. A term is indexed by a permutation and a word of intermediate column choices. If that word repeats an index, pair permutations differing by the transposition of the first repeated pair; their products agree and signs are opposite, so their sum is zero. If there is no repeated index, the word is a permutation. Reindexing the two permutations splits the remaining sum into $\det A\det B$.
+
+All index sets in this argument have explicit finite bounds, and the first repeated pair is a bounded search. Cancellation is valid in characteristic two as well: the additive inverse of a value is then the same value, but their sum remains zero. The proof is a finite signed-ring calculation, not an appeal to a field of eigenvalues.
+
+Specialization is proved coefficientwise because evaluation respects finite sums and products. Multilinearity follows by distributing one row sum; alternation pairs the two row choices. These are precisely the kinds of identities that can be proved by Booleanized prefix invariants over the numerical word enumeration. The formalization plan must connect them to the repository's actual determinant code; importing a fixed-size semantic matrix lemma would not supply that connection.
+
+\begin{lemma}[Evaluation action]\label{lem:evaluation-action}
+If $F(a,b)=0$, then, with $v(b)=(1,b,\ldots,b^{m-1})$,
+\[
+ v(b)M_G(a)=G(a,b)v(b).
+\]
+\end{lemma}
+\begin{proof}
+The $j$th column of $M_G$ is the remainder of $GY^j$. Monic division supplies an actual polynomial identity
+\[
+ GY^j=FQ_j+\sum_{r<m}(M_G)_{rj}Y^r.
+\]
+Evaluate at $(a,b)$ and use $F(a,b)=0$. This gives the $j$th coordinate of the displayed row-vector identity. In particular, a common zero of $F$ and $G$ supplies a left-kernel row whose first entry is one.
+\end{proof}
+
+\begin{lemma}[Synthetic division and finite root removal]\label{lem:synthetic}
+For an explicitly given polynomial $P$ and $a\in K$, a bounded coefficient recursion constructs $Q$ with
+\[
+ P(X)=(X-a)Q(X)+P(a).
+\]
+A nonzero polynomial of degree $D$ has at most $D$ roots in any supplied list of pairwise distinct field elements.
+\end{lemma}
+\begin{proof}
+For $P=\sum_{i=0}^{D}p_iX^i$, set $q_{D-1}=p_D$ and $q_{i-1}=p_i+aq_i$ downwards, with remainder $p_0+aq_0$. Comparing coefficients gives the identity and identifies the remainder with Horner evaluation. If $P(a)=0$, divide by $X-a$. At another root $b\ne a$, the identity gives $(b-a)Q(b)=0$ and hence $Q(b)=0$. Removing the listed roots in order reduces the degree by one each time. The nonzero initial polynomial cannot have a nonzero quotient of negative degree. The invariant is the current factorization and the remaining bounded list of root equations.
+\end{proof}
+
+\subsection{Why a fiber contributes its full number of points}
+
+Counting just the distinct $X$ coordinates would lose a factor as large as $m$. The determinant records more information.
+
+\begin{lemma}[Fiber divisibility]\label{lem:fiber}
+Suppose $b_1,\ldots,b_r$ are distinct and
+\[
+ F(a,b_i)=G(a,b_i)=0\quad(1\le i\le r).
+\]
+Then $r\le m$ and
+\[
+ (X-a)^r\mid\Norm_F(G)(X).
+\]
+\end{lemma}
+\begin{proof}
+The polynomial $F(a,Y)$ is monic of degree $m$, so Lemma~\ref{lem:synthetic} gives $r\le m$. Form the constant $m$ by $m$ matrix $U$ whose first $r$ rows are $v(b_i)$, and whose last $m-r$ rows are the standard rows with indices $r,\ldots,m-1$. Its determinant is the determinant of the leading $r$ by $r$ Vandermonde block:
+\[
+ \det U=\prod_{1\le i<j\le r}(b_j-b_i)\ne0.
+\]
+For completeness, the Vandermonde formula follows by induction on the row count. Regard the last ordinate as an indeterminate $T$. Its determinant has degree at most $r-1$, vanishes at each previous ordinate by alternation, and has leading coefficient the previous Vandermonde determinant. Lemma~\ref{lem:synthetic} removes these $r-1$ distinct factors, proving the formula. The empty product is one.
+
+By Lemma~\ref{lem:evaluation-action}, every entry of the first $r$ rows of $UM_G(X)$ vanishes at $X=a$. Divide each entry in those rows by $X-a$. Row multilinearity gives
+\[
+ \det(UM_G(X))=(X-a)^r H(X)
+\]
+for the actual determinant $H$ of the divided-row matrix. Determinant multiplicativity gives
+\[
+ (\det U)\Norm_F(G)=(X-a)^rH.
+\]
+Invert the nonzero scalar $\det U$ to obtain the required quotient. No derivative, smoothness hypothesis, or inverse of an ordinate is used.
+\end{proof}
+
+The existing \code{GaussianRationalFiberRightInverse} implementation already constructs a completed evaluation matrix and an actual right inverse. In a shortest object-theory implementation, its identity $UZ=I$ can establish $\det U\ne0$ after determinant multiplicativity is available. Thus the literal Vandermonde product formula need not delay the zero-count endpoint. The human proof above gives an independent explicit reason.
+
+\begin{theorem}[Finite common-zero bound]\label{thm:finite-zero}
+If $\Norm_F(G)\ne0$, every supplied finite list of pairwise distinct points of $K^2$ satisfying $F=G=0$ has length at most $\deg\Norm_F(G)$.
+\end{theorem}
+\begin{proof}
+Group the points by equality of their first coordinates, using bounded exact-field comparisons. Distinct points in one group have distinct second coordinates. By Lemma~\ref{lem:fiber}, a group of size $r_a$ supplies $(X-a)^{r_a}\mid\Norm_F(G)$.
+
+We justify multiplying those divisibilities without a factorization oracle. Suppose the factors for earlier abscissae have already been removed, so $\Norm_F(G)=CQ$, with $C(a)\ne0$ at the new abscissa. If $(X-a)^r\mid CQ$ and $r>0$, evaluation at $a$ yields $Q(a)=0$. Synthetic division gives $Q=(X-a)Q_1$. Cancellation of the nonzero polynomial $X-a$ leaves $(X-a)^{r-1}\mid CQ_1$. Repeating exactly $r$ times removes the desired new power from $Q$.
+
+Thus the actual nonzero norm is divisible by
+\[
+ \prod_a(X-a)^{r_a}.
+\]
+The product is monic and has degree $\sum_a r_a$, equal to the original list length. The degree of a nonzero multiple is at least that of the monic divisor. This proves the bound. Every repetition is bounded by an input list length or polynomial degree.
+\end{proof}
+
+The proof remains valid on singular curves and at ramified fibers. If the norm is zero, the conclusion need not hold: $F=Y^2-X^2$ and $G=Y-X$ have infinitely many common rational points. The next section constructs useful nonvanishing certificates instead of silently assuming away this case.

@@ -1,0 +1,49 @@
+\section{Formalization ledger and remaining questions}\label{sec:formalization}
+The canonical deep endpoint in this report is a Lean term of type \texttt{Prf PRAAx} for the translated arithmetic formula. Kernel checking a theorem about Lean finite sets or rational numbers is also useful: it tests the mathematical argument, while leaving the translation to the arithmetic proof system as a separate task. The files below compile without proof holes. Each works at the level indicated.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.31\linewidth}>{\raggedright\arraybackslash}p{.63\linewidth}@{}}
+\toprule
+\textbf{Checked file} & \textbf{Conclusion and scope}\\
+\midrule
+\texttt{lean/Completion.lean} & A rational distance estimate proving that changing the input name preserves the extension, including its explicit service precision.\\[4pt]
+\texttt{lean/Closure.lean} & Finset saturation at $N$, leastness, and exclusion by a cut. For externally given rules and local sequents, \texttt{System.replay} yields an actual ordinary iPRA derivation.\\[4pt]
+\texttt{lean/Quotient.lean};\newline\texttt{StableQuotient.lean} & The term-family test for identical transitions; coarseness at a fixed refinement round and lifting through all rounds for the semantic operator.\\[4pt]
+\texttt{Merge.lean}; \texttt{Finality.lean} & Native graph, cocone and representable lemmas. \texttt{PathDerivation.lean} compiles fixed-path and merge witnesses into actual iPRA sequents.\\[4pt]
+\texttt{NervePolarity.lean};\newline\texttt{NerveTransfer.lean};\newline\texttt{ElementaryCollapse.lean} & A closed iPRA incidence sequent, barycentric collapse identities, and native filtered elimination, cycle lifting, and boundary reflection under the interface in Section~\ref{sec:nerve}.\\[4pt]
+\texttt{Secant.lean};\newline\texttt{ContourRibbon.lean} & Native rational derivative comparison and cancellation of the triangulated strip. The full Cauchy and Laurent estimates are human proofs.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{A deep endpoint for completion.}
+Fix symbols for the two validity bits, rational distances, $a,b,E,\mu$. Code each $B_X$ as a pair of outer universal numerical quantifiers with a denominator-cleared comparison. Define $e_n$ by the rational pair $(1,2^n)$; implement $s,L,j$ by bounded integer maximum and composition. For fixed $n,m$ specialize name coherence at exactly the indices in Theorem~\ref{th:completion}, apply the triangle and rational order derivations, then universally close. For the rational gap step, if a positive rational difference is $u/v$ with $u\ge1$, then $2^{-(v+3)}<1/(4v)$ for $v\ge1$ by the elementary induction $2^v\ge v+1$. This gives a numerical index defeating the proposed strict gap without a real-order decision. Composition uses two eliminations of the universal contracts and numerical substitution, so its program parameters remain external throughout.
+
+\paragraph{A concrete next layer for the cyclic calculus.}
+Here is a specification for the uniform deep file that remains to be written. Its free numerical parameters are packed into $p=(N,M,(h_i,B_i)_{i<M})$; $W(p)$ checks its lengths and ranges. Define
+\[
+ \operatorname{en}(i,X)=\prod_{b<N}(1-[b\in B_i](1-[b\in X])),\qquad
+ T(X)_a=\max\bigl([a\in X],\ \max_{i<M}[h_i=a]\operatorname{en}(i,X)\bigr).
+\]
+The outer mask is $\sum_{a<N}2^a T(X)_a$. Define $X(p,j)$ by PR from zero using this expression. Define $\mathsf{pc}(p,a,d)$ by checking length, distinctness, every rule-head pair, its earlier premises and the last head. Define $\mathsf{cut}(p,a,C)$ by the three tests $C<2^N$, $a\notin C$, $T(C)=C$. Let $P(p,a)$ read the table of first rounds and producers and encode the prefix from Theorem~\ref{th:closure}; let $L(p)=X(p,N)$. For $W(p)$ and $a<N$ the target is the universal closure of
+\[
+ \bigl([a\in L]=1\to\mathsf{pc}(p,a,P(p,a))=1\bigr)
+ \ \land\ 
+ \bigl([a\in L]=0\to\mathsf{cut}(p,a,L)=1\bigr)
+\]
+together with $\mathsf{pc}(p,a,d)=1\to\mathsf{cut}(p,a,C)=0$ for arbitrary $d,C$. These formulas do not call an internal interpreter for Lean proofs.
+
+Build the PR symbols from \texttt{PR.comp} and \texttt{PR.prec}. Reuse bounded sums, bit extraction by division with remainder, and \src{Derivations/Lean/IPRADerivations/Foundations/BoundedSyntax.lean}{bounded reflection}. Prove bit replacement and the first-new-bit counting inequality by induction over a prefix of $[N]$. Use Theorem~\ref{th:closure}'s stationary-or-cardinality invariant (or instantiate the repository's \src{Derivations/Lean/IPRADerivations/Foundations/BoundedFixpoint.lean}{bounded fixed-point ascent}). Extend that invariant with the bounded test that each stored birth uses a rule whose premises have earlier nonzero births, and an entry has birth zero iff its current bit is zero. The prefix sorted by birth can be emitted by a double loop over round and address; use $N$ as the bound on its output length. Induct over a checked proof prefix to exclude a simultaneous cut. For refinement, encode a partition by $N$ canonical colour numbers below $N$, a class-union by an $N$-bit mask, and each family term by the image mask of its premises. Bounded reflection applies even to the semantic stability test quantifying over masks $<2^N$. During iteration fix an arbitrary candidate stable refinement $Q$; the invariant that $Q$ refines the current partition is a bounded implication on pairs of addresses. These are direct single-induction targets for the PR formulas behind the native proofs.
+
+\paragraph{From two sheets to arithmetic.}
+For the graph of Section~\ref{sec:monodromy}, write $\mathsf{sgn}(v,w)$ as the signed rational inner-product comparison, check each input numerator is separated from zero after clearing denominators, and use $2v+j$ as the address for sign bit $j$. The arithmetic path checker updates $(v,j)$ by an oriented edge and exclusive-or with its negative-label bit. Its prefix invariant is the product formula for the sign of the lifted endpoint. The finite decision theorem now follows from the closure target and the graph-to-path converse. For the analytic adapter, implement dyadic bisection with invariant $l^2\le x\le u^2$, $0\le l\le u$ and the stated interval width. Register the primitive estimates in Lemma~\ref{lem:sqrt-edge}, then derive the mesh argument by an induction whose Boolean invariant compares the computable sign bits. This supplies all data for a complete formalization of the example. This archive includes its finite executable calculation.
+
+\paragraph{Repository evidence and relation to earlier work.}
+The pinned revision is \href{https://github.com/VladimirReshetnikov/ProveIt/tree/3ee850b4c2d650cf01263823fd5415963747c5d0/Logic/PrimitiveRecursiveArithmetic}{\texttt{3ee850b4c2d6}}. The \src{README.md}{directory guide} distinguishes delivered packets from kernel-checked derivations. The \src{Derivations/FINITE-DEMAND-CLAIMS.md}{finite-demand audit} already records checked bounded reflection, backward demand, and parameter-changing recursion. The \src{Derivations/FIBER-CLAIMS.md}{FIBER audit} and \src{Derivations/Lean/IPRADerivations/Foundations/TwoCoordinateDemandClosure.lean}{two-coordinate closure} describe the residual cyclic-certificate problem. Our finite positive production result treats one fragment of it. The \src{Derivations/Lean/IPRADerivations/Foundations/FiniteCoequalizer.lean}{coequalizer module}, \src{docs/proofs/topology/ipra_topology_framework_2026-11-15/paper/sections/12_limits.tex}{topology research questions}, and \src{docs/proofs/analysis/cauchy_residue_ipra/report.tex}{Cauchy--residue manuscript} give the specific boundaries addressed in the three applications. Classical finality and nerve comparisons are established mathematics. The claims here concern explicit arithmetic hypotheses, constructions, witnesses and derivations.
+
+\paragraph{Further research questions.}
+\begin{enumerate}
+\item Can the positive production calculus be integrated with the FIBER compiler so that a finite bound on all jointly used evidence values is itself inferred for additional cyclic source constructs? An informative test case is a cycle whose individual requests are bounded but whose successful witnesses must agree on a long common partial map.
+\item Can the geometric construction of Section~\ref{sec:collapse-nerve} be extended beyond collapsible intersections using PR-bounded expansions followed by collapses? The homological test already handles a wider class over $\mathbb F_2$, where it produces a linear contraction. A geometric extension would have to produce actual homotopies on the represented spaces.
+\item Can rational proxy holes and a valid global filling be generated from a more economical input, such as an effective polygonal domain with an explicit collar radius? Section~\ref{sec:named-residue} supplies centre translation with quantified margins; producing those margins from mere negative information about a singular set remains a separate problem.
+\end{enumerate}

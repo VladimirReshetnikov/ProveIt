@@ -1,0 +1,306 @@
+\section{Effective nerve comparisons}\label{sec:nerve}
+
+A cover may make a complicated space easier to describe. Its nerve remembers
+which subfamilies meet and forgets the shapes of their intersections. When does
+it preserve topology, and who supplies the local filling data? The repository's
+topology report explicitly leaves an effective nerve theorem with produced
+contractions as a research problem.\footnote{Under
+\texttt{docs/proofs/topology}, see
+\texttt{ipra\_topology\_framework\_2026-11-15}, section 12,
+and the homology entry of its difficulty ledger.}
+For a cover by simplices we construct a rational
+piecewise-linear homotopy equivalence, including its homotopies. A cover by
+arbitrary subcomplexes admits a different test based on linear algebra. This
+one produces local contractions or an obstruction, and in the successful
+case gives a natural homology isomorphism. For covers with collapsible intersections we then produce geometric contractions and a homotopy inverse, including on the three-arc cover of a hexagon.
+
+\subsection{A homotopy equivalence one can evaluate}
+
+A simplicial complex $K$ on $v$ vertices is a downward-closed list of
+nonempty subsets, with the empty set treated separately. Code a subset by
+its $v$-bit mask. Assume first that the listed cover consists of simplices
+$S_1,\ldots,S_r$ and all their nonempty faces. Every simplex of $K$ must
+lie in one of the $S_i$. The nerve $N$ contains a nonempty index set $I$
+exactly when $\bigcap_{i\in I}S_i$ is nonempty. For example, $S_i$ may
+be the maximal faces of any finite simplicial complex, found by a scan.
+For a finite poset $P$, its order complex has the nonempty strict chains
+of $P$ as simplices. The order complex of the nonempty face poset $P(K)$
+is the barycentric subdivision $\operatorname{sd}K$. A rational point of a
+realization is a nonnegative rational weight vector of sum one whose
+positive support is a simplex. A named point is a regular Cauchy name of
+such vectors in the sup norm. This lets consecutive samples lie on
+different simplices meeting along a boundary.
+
+\begin{theorem}\label{thm:nerve-pl}
+There are rational piecewise-linear maps between the realizations of $K$
+and $N$ whose composites are piecewise-linearly homotopic to the respective
+identities. There are uniform primitive-recursive evaluators on rational
+barycentric coordinates and moduli for the resulting maps and homotopies.
+\end{theorem}
+\begin{proof}
+On face posets put
+\[
+ F(\sigma)=\{i:\sigma\subseteq S_i\},\qquad
+ G(I)=\bigcap_{i\in I}S_i .
+\]
+The cover test makes $F(\sigma)$ nonempty, and every vertex of $\sigma$
+belongs to the displayed intersection for $I=F(\sigma)$. For $I$ in
+the nerve, $G(I)$ is itself a simplex of $K$: it is a nonempty subset
+of any $S_i$ in the list $I$. Both assignments reverse inclusion. Sending
+vertices of a chain to their images and summing the weights of repetitions
+therefore defines simplicial maps between the two subdivisions. Their
+composites come from monotone maps satisfying
+$\sigma\subseteq GF(\sigma)$ and $I\subseteq FG(I)$.
+
+Here is the homotopy for any monotone $u:P\to P$ with $x\le u(x)$.
+Order the vertices of $P$ by a linear extension (for face posets, use size
+and then mask). A point is a list of nonnegative barycentric weights
+$\lambda_i$ of sum one whose positive support is a chain. Put
+$A_i=\sum_{j\le i}\lambda_j$ and $A_0=0$, indexing vertices from 1.
+At time $0\le t\le1$, place weight
+\[
+ b_i=\min(1-t,A_i)-\min(1-t,A_{i-1})
+ \quad\text{at }x_i,\qquad
+ \lambda_i-b_i\quad\text{at }u(x_i).
+\]
+Accumulate weights when vertices coincide. The bottom weights use an initial
+portion of the chain and the top weights the remaining portion. Whenever
+a bottom index $i$ and a top index $j$ both contribute, $i\le j$,
+so $x_i\le x_j\le u(x_j)$. The top vertices form a chain by monotonicity.
+The output belongs to the order complex. The formulas give the identity at
+$t=0$ and $u$ at $t=1$. Zero coordinates do not affect the calculation.
+This is an explicit prism homotopy, including at times when a weight splits.
+With $D$ vertices the cumulative sums change by at most $D\epsilon$ for
+input sup error $\epsilon$. If the time also changes by at most $\epsilon$,
+each $b_i$ changes by at most $2(D+1)\epsilon$, so
+$8(D+1)^2\epsilon$ bounds the change of each accumulated output. This
+bound also applies to the endpoint maps on that poset.
+
+To pass between a subdivision and the original space, send a face $A$
+linearly to its barycenter. In the opposite direction the coordinate of
+each nonempty face $A$ at a point $x=(x_i)$ is
+\[
+ w_A=|A|\max\!\left(0,\min_{i\in A} x_i-\max_{j\notin A}x_j\right),
+ \qquad \max\varnothing=0 .
+\]
+Indeed, sort the rational coordinates $x_1\ge\cdots\ge x_v$ temporarily
+(relabeling the vertices), and set $x_{v+1}=0$. Only prefixes with a
+strict drop contribute. The prefix of length $j$ has weight
+$j(x_j-x_{j+1})$, and its barycenter gives $x_j-x_{j+1}$ to each of
+the first $j$ coordinates. Summing telescopes to the original coordinates.
+Conversely, for weights on nested faces, adding their barycenters creates
+one coordinate drop of exactly $w_A/|A|$ at each positively weighted
+face. Thus these maps are inverse. The formula for $w_A$ is
+$2v$-Lipschitz in the sup norm, and barycenter accumulation has
+Lipschitz bound $2^v$. The same arguments apply to the nerve with $r$
+vertices. Compose the displayed bounds, using
+$D\le\max(2^v,2^r)$ for subdivisions. All formulas are finite rational
+arithmetic with primitive-recursive list lengths. Evaluating input names
+to precision $k+\lceil\log_2 L\rceil+1$ suffices for output precision
+$k$ when $L\ge1$ is the resulting Lipschitz bound. The identities on
+named points follow at each precision by these bounds. No comparison of
+two exact named coordinates occurs in an evaluator.
+\end{proof}
+
+\subsection{Producing local contractions or refuting local acyclicity}
+
+Now let $K=\bigcup_{i=1}^r K_i$ be a simplexwise cover by finite
+subcomplexes. Set $K_I=\bigcap_{i\in I}K_i$ for every nonempty $I$.
+Its nonemptiness is the vertex test, and $I\in N$ precisely when that
+test succeeds. Chains below have coefficients in $\mathbb F_2$. The
+ordinary boundary of a positive-dimensional simplex sums its codimension-one
+faces, and the ordinary boundary of a vertex is zero. In the
+\emph{augmented} complex add one empty face in degree $-1$ and let
+every vertex have boundary that generator. In either complex
+$\partial^2=0$: a pair of distinct deletions occurs in both orders. A
+cycle is a vector with zero boundary. Two cycles represent the same
+homology class when their sum is a boundary.
+
+\begin{lemma}\label{lem:contraction-producer}
+For a finite complex $L$, a uniform primitive-recursive algorithm either
+returns a linear operator $h$ on its augmented chains, raising degree by
+one and satisfying $\partial h+h\partial=1$, or returns a cycle $z$ and a
+linear functional $\ell$ in the same degree with $\ell(z)=1$ and
+$\ell\partial=0$ on the next degree. The first output occurs exactly
+when every augmented cycle bounds.
+\end{lemma}
+\begin{proof}
+Begin in degree $-1$ and visit basis elements $b$ by increasing degree.
+With $h$ already known one degree lower, form $z=b+h\partial b$,
+taking the second term as zero in degree $-1$. The identity on lower
+degrees gives
+$\partial z=\partial b+\partial h\partial b
+=\partial b+\partial b+h\partial^2 b=0$.
+Solve $\partial w=z$ over the next-degree basis, setting $h b=w$
+when a solution is found. Extending linearly establishes the identity
+on the whole current degree. This includes top degree, where the next
+basis may be empty.
+
+For explicit linear solving, sweep the boundary columns. Keep rows indexed
+by their highest nonzero coordinate and a preimage for each row. Reduce
+a new column by visiting existing pivots in descending order, adding the
+pivot row whenever its lead bit is set. A nonzero remainder becomes a new
+row, with preimage obtained by adding the corresponding previously kept
+preimages to the new basis vector. Pivot leading coordinates are distinct.
+After the sweep, reduction $R$ is linear, since each step adds the row
+multiplied by one coordinate functional. Every vector is congruent to its
+remainder modulo the column span, and the remainder vanishes on that span:
+the rows span all input columns and reduction kills each row. Thus a zero
+remainder supplies the required $w$ by the recorded preimages. Given a
+nonzero remainder $Rz$, choose a set bit $j$ and output
+$\ell(a)=(Ra)_j$. This bit functional annihilates each boundary column.
+It proves that $z$ cannot bound. Conversely, applying the contraction
+identity to any cycle gives it a filler. All loops visit listed simplices,
+coordinates or pivots. This argument produces both kinds of certificate.
+\end{proof}
+
+\subsection{The double complex and naturality}
+
+\begin{theorem}\label{thm:nerve-homology}
+If Lemma~\ref{lem:contraction-producer} succeeds on each $K_I$ with
+$I\in N$, then ordinary homology over $\mathbb F_2$ agrees in every degree
+for $K$ and $N$. Isomorphisms in both directions can be computed on cycle
+representatives. They commute on homology with simplicial maps of covered
+complexes equipped with a compatible map of cover indices.
+\end{theorem}
+\begin{proof}
+Use the finite array $D_{p,q}$ with one basis pair $(I,\sigma)$ for
+$|I|=p+1$, $|\sigma|=q+1$, $\sigma\in K_I$, $p,q\ge0$.
+The horizontal boundary $d_h$ deletes one index, and the vertical boundary
+$d_v$ deletes one vertex, using ordinary boundaries on the two outermost
+axes. Deletions on opposite axes commute, so
+$d=d_h+d_v$ squares to zero. Regard a pair as having degree $p+q$.
+There are two chain maps
+\[
+ C(K)\ \xleftarrow{\ a\ }\ (D,d)\ \xrightarrow{\ b\ }\ C(N).
+\]
+The first forgets a singleton $I$ and kills the terms with $p>0$. The
+second forgets a singleton $\sigma$ and kills terms with $q>0$.
+For $a$, the two ways to delete from a two-element $I$ give the same
+$\sigma$ and cancel after forgetting. Other horizontal terms vanish after
+$a$, and $a$ commutes with vertical deletions. The same computation with
+axes exchanged proves the assertion for $b$.
+
+Augment $D$ on the left by the column $D_{-1,q}=C_q(K)$, letting
+horizontal deletion of a singleton act as $a$. For fixed $\sigma$ the
+horizontal complex is the augmented simplex on the nonempty set
+$T_\sigma=\{i:\sigma\in K_i\}$. Put $c=\min T_\sigma$. A horizontal
+contraction sends $I$ to $I\cup\{c\}$ if $c\notin I$, and to zero
+otherwise, also sending the empty face to $\{c\}$. If $c\notin I$,
+deleting $c$ returns $I$, while all other deletions pair with the coned
+faces of $I$. If $c\in I$, only deletion of $c$ contributes to coning
+the boundary. This proves the contraction identity in both cases.
+
+Any cycle $u$ in this augmented array has a filler. Sweep the rows by
+decreasing $q$. In the current highest remaining row, the cycle equation
+says $d_h u_q=0$, as there is no incoming term from a higher row of $u$.
+Apply the horizontal contraction to $u_q$, obtaining $v_q$ with
+$d_hv_q=u_q$. Replace $u$ by $u+d v_q$. Its top row vanishes, its
+cycle condition persists, and all new terms have smaller $q$. At $q=0$
+there is no outgoing vertical boundary. The sum of recorded $v_q$ fills
+the original cycle. Empty rows can be visited with zero filler, so the
+sweep length is fixed in advance.
+
+Independently augment downward by $D_{p,-1}=C_p(N)$ using $b$. For
+each $I$, the vertical complex is exactly the augmented complex of $K_I$.
+Use the $h_I$ from Lemma~\ref{lem:contraction-producer} and the identical
+sweep in decreasing $p$. This fills all cycles in the second augmented
+array.
+
+To see what these fillers compute, write an augmented chain as $(x,y)$,
+where $x$ is in $D$ in degree $k$ and $y$ is in the target in degree
+$k+1$. Its boundary is $(dx,f x+\partial y)$ for $f=a$ or $f=b$.
+For a target $0$-cycle this convention puts $(0,y)$ in total degree
+$-1$; all ordinary chain groups below degree zero are zero. If $K$ is
+empty, so is $N$, and both ordinary homology groups vanish in every
+degree. Given a target cycle $y$, fill $(0,y)$ to get $(z,w)$. Then $dz=0$
+and $fz+\partial w=y$, which lifts the class. Given a cycle $x$ whose
+image bounds, say $fx=\partial y$, fill $(x,y)$ to get a $z$ with
+$dz=x$. Thus each map reflects boundaries and induces an isomorphism.
+Applying one projection after lifting through the other gives the two
+claimed algorithms. Choices of lifts give homologous results by boundary
+reflection.
+
+For naturality let $g$ send vertices simplicially to another covered
+complex and $s$ send cover indices with $g(K_i)\subseteq K'_{s(i)}$.
+Use $(I,\sigma)\mapsto(s(I),g(\sigma))$ when both maps are injective
+on those faces, and zero otherwise. This respects the incidence condition.
+For one axis, deleting commutes with the mapping rule when there is no
+duplicate image. With just one duplicate pair, the two deletions that
+could remove the duplication have the same image and cancel. With any
+further duplication every deletion still has a duplicate. This proves
+the chain-map rule on both axes and also for the maps of $K$ and $N$.
+Both projections commute with these maps, by inspection on singleton
+faces and on faces of larger size. Invert the two projection isomorphisms
+on homology to get the naturality square. In particular the comparison
+commutes with every supplied refinement in a tower of such covers.
+\end{proof}
+
+\paragraph{Bounds and interpretation.}
+Let $V=2^v$ and $R=2^r$. There are fewer than $R$ intersections, each
+with at most $V$ augmented basis vectors. Each pivot calculation visits
+at most $V$ columns with at most $V$ pivot additions per reduction, on
+vectors of at most $V$ bits. Evaluating the obstruction functional on
+the original basis costs at most $V$ further reductions in the failing
+degree. Boundary and contraction matrices can be stored in $V^2$ bits
+per matrix, and the augmented comparison arrays have at most $RV$ entries
+as chain masks. The two sweeps use at most $v$ rows or $r$ columns;
+all nested loops therefore have specified primitive-recursive limits.
+Finite bitwise identities such as $\partial h+h\partial=1$ can be checked
+on all basis columns by a bounded Boolean fold. For the sweep the
+inductive assertion is that all processed rows vanish, the remainder is
+closed, and its sum with the boundary of the accumulated filler is the
+original input. Each clause is a bounded equality of arrays at the fixed
+input size. In first-order iPRA one can state boundary reflection as the
+universal closure of a conditional between such equalities, supplying the
+input cycle and a purported image filler as numbers. A failed local test
+certifies failure of the acyclicity hypothesis. Some particular nerves
+can still have the right homology by other arguments.
+
+\paragraph{Example.}
+Take the boundary of a hexagon with vertices $0,\ldots,5$. Three subcomplexes
+are the two-edge paths $0,1,2$, $2,3,4$, and $4,5,0$. Each pair has a
+single common endpoint, and the triple intersection is empty. The nerve
+has three edges and no face of dimension two. The accompanying implementation
+lifts the full hexagon cycle and projects it to the three-edge cycle;
+the reverse transfer gives the original hexagon. Covering the same hexagon
+with just one member instead produces the six-edge obstruction cycle.
+The dual functional tests a single edge. It evaluates to one on the
+cycle and vanishes on the boundaries from degree two because there are no
+two-simplices. An independent small-input check exhausts all $19^2$
+ordered pairs of complexes on three labeled vertices as covers of their
+union. Literal enumeration of cycles and boundaries identifies 109
+admissible covers and 252 local obstructions, agreeing with the solver.
+It also checks 1,553 cycle round trips modulo boundaries and 1,788
+naturality squares for index permutations and admissible index mergers.
+
+\paragraph{Lean completion path.}
+The companion \texttt{NervePolarity.lean} constructs an actual closed
+\texttt{Prf PRAAx} derivation for arbitrary unary and binary arithmetic formulas $A,R$ of
+$\forall x\,i\,[(A(x)\land\forall z(A(z)\to R(z,i)))\to R(x,i)]$.
+With $R$ the incidence relation, this is the logical unit $A\subseteq GF(A)$;
+transposing incidence supplies the dual unit. The file
+\texttt{NerveTransfer.lean} checks
+\texttt{bounded\_eliminate}, the algebraic filtration argument, and
+\texttt{lift\_cycle} and \texttt{reflect\_boundary}, the two augmented-complex
+inferences. The latter expose all hypotheses in \texttt{ConeExact}.
+To instantiate them, define a simplex as a bounded mask and a chain as its
+Boolean coefficient array. Construct deletion by toggling the indicated
+bit and define each differential by a parity fold. Pair the two deletion
+orders to prove $d^2=0$. Implement the pivot scan with its leading-coordinate
+and preimage invariants, then store $h$ as a table of vectors. Instantiate
+the stage predicate of \texttt{bounded\_eliminate} by vanishing above a
+row (or column) in the augmented array. The explicit local operators in
+the proof supply its step and the two projections give its
+\texttt{ConeExact} instances. In the object language expand each of these
+finite operations at natural-number type and use the indicated Boolean
+invariants in quantifier-free induction. For Theorem~\ref{thm:nerve-pl}
+the independent implementation path consists of face inclusion, incidence
+transpose, ordered cumulative sums, and the min/max formulas. The order
+inequalities and coordinate identities are rational tests on finite
+arrays. Denominator clearing gives their object-language form. A semantic
+Lean proof of these operations and an object derivation of their identities
+are separate outstanding steps.
+
+\input{collapsible}
+\input{threefold}

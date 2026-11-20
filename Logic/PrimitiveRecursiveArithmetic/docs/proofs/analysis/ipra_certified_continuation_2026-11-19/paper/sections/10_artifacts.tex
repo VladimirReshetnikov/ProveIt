@@ -1,0 +1,31 @@
+\section{Artifacts, checks, and reproducibility}\label{sec:artifacts}
+
+The archive contains the complete LaTeX source and this compiled PDF, the Lean reference files and implementation plan, four exact-rational reference programs, a batch verification driver, a source manifest, and a claim ledger. The source is designed to build with an ordinary LaTeX installation; the Python reference programs require only the standard library.
+
+The four computational checks have deliberately limited but useful roles.
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item The polynomial check compares the generated shifted polynomial against direct evaluation, tests the coefficient-derived gain inequality, verifies the coupled nonlinear orbit estimates, checks the exact Sylvester inverse and residual identity, and compares factor iterates under changed coefficients.
+\item The feedback check exercises a cyclic positive matrix whose unweighted row bound is too large, a nonlinear invariant-box example, finite residual comparison and perturbation, the zero-dimensional case and a rejected gain certificate.
+\item The cluster check exhausts every bipartite Boolean graph with equal side size at most three, validating either the returned permutation or the returned Hall defect. It also verifies the exact component counterexample and the locator/lexicographic examples.
+\item The ODE check verifies exact even/odd residual identities, refinement inequalities at rational samples, coefficient perturbation, exact segment clearance, and the Gauss coefficient and parameter majorants on complex-rational paths.
+\end{itemize}
+
+All reported inequalities in these programs use exact rational arithmetic. Decimal values, when present, are explicitly for orientation. Sampling is never used in the mathematical proof of a universal bound. For example, the ODE Lipschitz theorem follows from the finite algebraic estimates in the paper, not from its sampled test points.
+
+From the archive root run
+\begin{lstlisting}
+python3 code/run_all.py
+python3 code/build_report.py
+\end{lstlisting}
+The first command regenerates the numerical evidence and a summary. The second compiles the LaTeX source and places the resulting report at the archive root, using the local LaTeX engine. It does not download anything. The delivery environment needed local TeX search/format preparation; the build helper supports that reproducible fallback when the installed distribution has packages but no generated format.
+
+To begin checking the Lean reference layer in an environment with Lean installed, run
+\begin{lstlisting}
+cd lean
+lake update
+lake build
+lake env lean AxiomAudit.lean
+\end{lstlisting}
+The pinned dependency is recorded in \nolinkurl{lakefile.toml}. These commands are instructions for subsequent checking; they were not executed successfully in the delivery environment, which had no Lean compiler. Any elaboration errors must be repaired before the candidate proofs acquire checked status. Even a successful reference build would leave the separate object-theory port in Section~\ref{sec:lean}.
+
+The claim ledger records each result's assumptions, proof location, executable evidence and Lean status. The source manifest pins the repository commit, inspected paths and byte hashes. This avoids using an evolving branch as if it were a fixed theorem provider, and avoids confusing historical packet status with current derivation status.

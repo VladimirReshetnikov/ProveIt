@@ -1,0 +1,203 @@
+\section{Growing finite models and approximate commutation}
+\label{sec:refinement}
+
+Coupled contraction solves a fixed finite-dimensional problem. Many
+mathematical constructions require another step: a solver on a small
+model must agree with a solver on a larger model after restriction.
+Exact commutation is often false because of boundary conditions,
+truncation, or quadrature. This section derives the needed agreement
+from a quantitative commutation defect.
+
+\subsection{Finite-level data}
+
+For each level \(n\ge1\), let \(D_n\) be an explicitly coded domain of
+finite rational data, and let \(d_n\) be a rational-valued metric on it.
+A pseudometric also suffices if equality of observations is understood
+modulo zero distance. The domain predicate, metric, updates, restrictions, returned points
+\(y_n\), and numerical bounds \(q_n,L_n,\eta_n,r_n\) are fixed PR families. Their algebraic properties are
+proved locally or retained as explicit hypotheses.
+
+Suppose
+\[
+ F_n:D_n\longrightarrow D_n,\qquad
+ P_n:D_{n+1}\longrightarrow D_n
+\]
+satisfy, for rational \(0\le q_n<1\), \(L_n\ge0\), and
+\(\eta_n\ge0\),
+\begin{align}
+ d_n(F_nx,F_ny)&\le q_n d_n(x,y),
+                                    \label{eq:level-contraction}\\
+ d_n(P_nu,P_nv)&\le L_n d_{n+1}(u,v),
+                                    \label{eq:restriction-lipschitz}\\
+ d_n(F_nP_nz,P_nF_{n+1}z)&\le\eta_n.
+                                    \label{eq:commutation-defect}
+\end{align}
+Let the actual finite computations return \(y_n\in D_n\) with
+\[
+ d_n(y_n,F_ny_n)\le r_n.             \label{eq:level-residual}\tag{R1}
+\]
+In particular, \(y_n\) need not be an exact fixed point. It can be a
+rounded iterate with a residual certificate checked after computation.
+
+\begin{theorem}[Residual and commutation bound]
+\label{thm:commutation}
+For the preceding finite data,
+\[
+ d_n(y_n,P_ny_{n+1})\le e_n,
+ \qquad
+ e_n=\frac{r_n+\eta_n+L_nr_{n+1}}{1-q_n}.
+ \label{eq:adjacent-error}\tag{R2}
+\]
+\end{theorem}
+\begin{proof}
+Set \(a=d_n(y_n,P_ny_{n+1})\). Insert the intermediate points
+\(F_ny_n\), \(F_nP_ny_{n+1}\), and \(P_nF_{n+1}y_{n+1}\).
+The four successive distances are bounded respectively by
+\(r_n\), \(q_na\), \(\eta_n\), and \(L_nr_{n+1}\). Thus
+\[
+ a\le r_n+q_na+\eta_n+L_nr_{n+1}.
+\]
+Cancellation gives \((1-q_n)a\le r_n+\eta_n+L_nr_{n+1}\).
+The denominator is a supplied positive rational, so division is an
+ordinary rational operation. Equivalently, keep this last inequality
+as the denominator-free endpoint.
+\end{proof}
+
+The result is asymmetric in the two contraction factors: it uses only
+the lower-level factor \(q_n\). Reversing the comparison would require
+a suitable lift and its own properties. No such lift is assumed here.
+
+\subsection{Finite telescoping through restrictions}
+
+Define \(P_{n,n}\) to be the identity and
+\(P_{n,m+1}=P_{n,m}\circ P_m\). This fixes the orientation of every
+restriction and gives coherence by definition. Put
+\[
+ L_{n,n}=1,\qquad L_{n,j}=\prod_{t=n}^{j-1}L_t\quad(j>n).
+\]
+For the iPRA proof, fix both endpoints and two input vector codes.
+Run the two descending restriction trajectories in parallel, with the
+current level \(m-t\). Induct on the rational inequality
+\[
+ d_{m-t}(z_t,z'_t)\le
+ \left(\prod_{j=m-t}^{m-1}L_j\right)d_m(z_0,z'_0),
+\]
+with the two domain-membership bits. The step is one instance of (\ref{eq:restriction-lipschitz}).
+All endpoints and input vectors remain numerical parameters. Thus the
+finite composition has the asserted Lipschitz bound without an induction
+on a universally quantified statement about all vectors.
+
+\begin{theorem}[Finite refinement estimate]
+\label{thm:finite-refinement}
+For \(m\ge n\),
+\[
+ d_n(y_n,P_{n,m}y_m)
+ \le\sum_{j=n}^{m-1}L_{n,j}e_j.
+ \label{eq:refinement-sum}\tag{R3}
+\]
+In particular, if every \(L_j\le1\), then
+\[
+ d_n(y_n,P_{n,m}y_m)\le\sum_{j=n}^{m-1}e_j.
+\]
+\end{theorem}
+\begin{proof}
+The case \(m=n\) has zero distance and empty sum. For the successor
+step, insert \(P_{n,m}y_m\), apply the induction hypothesis to the
+first distance, and use the Lipschitz bound of \(P_{n,m}\) and (R2)
+for the second distance. This adds precisely \(L_{n,m}e_m\).
+The induction is on a finite rational inequality. Its coded form is
+quantifier-free.
+\end{proof}
+
+This proof does not take an infinite sum. A tail modulus means a PR
+function \(T(n)\) with a separately proved finite assertion
+\[
+ \sum_{j=n}^{m-1}e_j\le T(n)\quad(m\ge n).
+ \label{eq:finite-tail}\tag{R4}
+\]
+For example, \(e_j\le C2^{-j}\) gives \(T(n)=2C2^{-n}\) by the
+finite geometric identity. When restrictions expand, the required
+bound applies instead to the weighted sum in (R3). A bound on the
+unweighted errors would then be insufficient.
+
+\subsection{Producing named observations}
+
+An observation index \(i\) specifies a minimal level \(b(i)\).
+For \(n\ge b(i)\), suppose a PR observer \(O_{n,i}:D_n\to\Q\)
+satisfies
+\begin{align*}
+ |O_{n,i}(x)-O_{n,i}(y)|&\le B_i d_n(x,y),\\
+ O_{n,i}(P_nz)&=O_{n+1,i}(z),
+\end{align*}
+with a known rational \(B_i\ge0\). Exact observational
+compatibility can be replaced by an explicit adjacent error, as
+described below.
+
+\begin{theorem}[A coordinate sampler from a refinement tower]
+\label{thm:tower-sampler}
+Assume nonexpansive restrictions and (R4). Suppose a PR schedule
+\(\nu(i,k)\ge b(i)\), nondecreasing in \(k\), satisfies
+\[
+ B_iT(\nu(i,k))\le2^{-k-2}.
+\]
+Then
+\[
+ X(i,k)=O_{\nu(i,k),i}(y_{\nu(i,k)})
+\]
+is a PR family of regular rational names. More precisely,
+\[
+ |X(i,k)-X(i,l)|\le2^{-\min(k,l)-2}.
+ \label{eq:tower-name}\tag{R5}
+\]
+\end{theorem}
+\begin{proof}
+If \(k\le l\), set \(n=\nu(i,k)\), \(m=\nu(i,l)\).
+The compatibility equations, composed finitely many times, identify
+\(O_{m,i}(y_m)\) with \(O_{n,i}(P_{n,m}y_m)\). Now apply the
+Lipschitz bound of the observer, (R3), (R4), and the schedule inequality.
+The case \(l\le k\) is symmetric. Natural order is decidable, so
+the case split is intuitionistically valid.
+\end{proof}
+
+If instead
+\(\abs{O_{n,i}(P_nz)-O_{n+1,i}(z)}\le\zeta_{i,n}\), the adjacent
+observation difference is at most \(B_ie_n+\zeta_{i,n}\). A finite
+tail bound for that sum gives exactly the same argument. Thus observers
+may themselves be approximations, provided their errors are budgeted.
+
+\subsection{How residual budgets are chosen}
+
+The factor \((1-q_n)^{-1}\) is a numerical resource. For example,
+suppose \(L_n\le1\), positive rationals \(a_n\) have a known
+summable tail, and the input data satisfy
+\[
+ \eta_n\le\frac{1-q_n}{2}a_n,
+ \qquad
+ r_n+r_{n+1}\le\frac{1-q_n}{2}a_n.
+\]
+Then \(e_n\le a_n\). The first condition is a property of the
+models and their restrictions; the second can be enforced by running
+the finite solvers accurately enough. It is not possible to repair an
+arbitrary model defect merely by performing more iterations of each
+solver. More iterations reduce \(r_n\), not \(\eta_n\).
+
+When gaps vary, one conservative local choice for a desired error
+majorant \(a_n\) is to choose each \(r_n\), for \(n>1\), below
+both \((1-q_n)a_n/4\) and \((1-q_{n-1})a_{n-1}/4\), and to
+require \(\eta_n\le(1-q_n)a_n/2\). Endpoints are handled using
+only the available neighboring condition. These are finite positive
+rational budgets, and the approximate-action producer gives a bounded
+precision and iteration schedule for meeting them whenever its
+local certificates are available.
+
+\subsection{Why this is a useful embedding interface}
+
+The theorem permits one to work entirely with finite models, then
+derive coherent observations without assuming an inverse-limit element
+or choosing one exact solution at every level. It is applicable to
+truncated coupled recurrences, finite sections of linear systems, and
+certified spatial or spectral approximations when their actual
+commutation defects can be bounded. These are application patterns,
+not a claim that every PDE or every spectral scheme automatically
+supplies those estimates. The next section supplies all the data for
+one infinite nonlinear example.

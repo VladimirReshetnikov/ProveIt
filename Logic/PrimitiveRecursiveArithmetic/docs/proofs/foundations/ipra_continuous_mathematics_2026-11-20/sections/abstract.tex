@@ -1,0 +1,301 @@
+\section{Correspondences and continuous model theory}
+\label{sec:metric-logic}
+
+How much of a statement about a metric space survives if all we have is a
+finite table of distances? The diameter survives a small uniform distortion
+of the table. So does the radius, even though its definition alternates two
+quantifiers. An entire fragment of continuous first-order logic survives with
+the \emph{same} error as its atomic formulas. This gives both a way to evaluate
+sentences and a way to refute a proposed identification of two spaces. The
+quantifiers are the real-valued $\sup$ and $\inf$ of metric model theory.
+We use a relational, bounded fragment of the semantics of Ben Yaacov,
+Berenstein, Henson and Usvyatsov.%
+\footnote{I.~Ben Yaacov, A.~Berenstein, C.~W.~Henson and A.~Usvyatsov,
+\emph{Model theory for metric structures}, especially section~3.
+\href{https://math.univ-lyon1.fr/~begnac/articles/mtfms.pdf}{Authors' text}.}
+
+\subsection{A category of finite observations}
+
+Fix a finite signature of relation symbols with declared arities, including
+a binary symbol for distance. A stage $A$ has vertices $0,\ldots,a$, with
+$a\geq0$, and a rational $[0,1]$-valued table $P_A$ for each symbol $P$.
+A metric stage also requires the distance axioms, which are finite tests.
+The transfer argument needs only the tables, so it applies to pseudometrics.
+A correspondence of grade $e\geq0$ from $A$ to $B$ is a Boolean matrix $R$
+in which every row and column contains a one. For each $k$-ary $P$ and each
+$k$-tuple of paired vertices $x_i R y_i$, require
+\[
+  |P_A(x_1,\ldots,x_k)-P_B(y_1,\ldots,y_k)|\leq e.             \tag{C}
+\]
+For a nullary relation this tests its two values. The finite test loops over
+at most $(|A||B|)^k$ tuples for $P$. Multiplying all rational entries,
+constants and grades by a common positive denominator converts the
+comparisons in a given instance to integer arithmetic.
+
+If $A\xrightarrow{R,e} B\xrightarrow{S,d} C$, put
+$x(SR)z$ when $xRy$ and $ySz$ for some $y\in B$. Search up to $|B|$
+for the middle vertex. Successive uses of row coverage and of column
+coverage prove both cover conditions. For paired tuples in $SR$, choose
+the first witnessing middle vertex in each coordinate. Apply (C) to each
+side and the triangle inequality to get grade $e+d$. The diagonal has
+grade zero. In a triple composite both bracketings assert the existence of
+the same two successive intermediate vertices, so their Boolean matrices
+are equal. The diagonal laws follow by substituting its single forced
+coordinate. Thus correspondences compose in a category, with upper
+bounds on distortion that add under composition. The same arrow can have
+several upper bounds.
+
+This gives an instance of the repository's
+\emph{PresentedCategory} interface. Use natural numbers for validated
+stage and matrix codes, extensional equality of Boolean entries for
+parallel arrows, and the bounded matrix product above. Omit the grade
+from the arrow code and carry (C) as a predicate. Every two-sided covering
+relation has grade one in the bounded signature. The existing
+presentation-wise Yoneda calculation applies to this instance once
+its coding laws have been internalized. Formula transfer uses the
+additional quantitative information in (C).%
+\footnote{ProveIt, under \nolinkurl{Derivations/Lean/IPRADerivations/Foundations},
+\texttt{PresentedCategory.lean} and \texttt{Yoneda.lean}. Repository paths in
+this section are relative to \nolinkurl{Logic/PrimitiveRecursiveArithmetic}.}
+
+\subsection{Quantifier transfer with a depth-independent error}
+
+Formulas are built from predicates on variable tuples and rational
+constants in $[0,1]$ by $1-u$, $u\mathbin{\dot-}q=\max(0,u-q)$,
+$\min(u,v)$, $\max(u,v)$, $\sup_x u$, and $\inf_x u$. On a stage,
+the last two operations take the maximum and minimum over its vertices.
+Every stage is nonempty. A closed formula thus has an exact rational
+stage value $v_A(\varphi)$. An open formula has a value for each assignment
+of its free variables.
+
+\paragraph{Transfer theorem.}
+If $R$ has grade $e$ and the two assignments agree along $R$ coordinate
+by coordinate, then the two values of any such $\varphi$ differ by at most
+$e$. This holds for every fixed formula and arbitrary encoded stages.
+
+\begin{proof}
+An atom gives precisely (C). A constant gives zero discrepancy. Reflection
+around $1/2$ and truncated subtraction are 1-Lipschitz, as are minimum
+and maximum on pairs with the maximum norm. For the last assertion, if
+$u_i\leq v_i+e$ for $i=1,2$, monotonicity bounds the minimum (respectively
+maximum) of the two $u_i$ by the corresponding extremum of the two $v_i$
+plus $e$. Interchange the lists for the other inequality.
+
+Suppose $\varphi=\sup_x\psi$. Select a maximizing vertex $x$ of $A$ by a
+finite scan, then select $y$ from its row of $R$. The inductive assertion
+bounds $\psi_A(x)$ by $\psi_B(y)+e$, hence by $\max_B\psi_B+e$.
+A maximizer of $B$ and coverage of its column give the converse bound.
+For $\inf_x\psi$, a minimizer of $A$ and row coverage give
+$\min_B\psi_B\leq\min_A\psi_A+e$, and a minimizer of $B$ gives the converse.
+Every binder inherits the same $e$ as its body. Row coverage alone only
+gives one direction of each quantified estimate.
+\end{proof}
+
+The proof is a derivation scheme by external recursion on the fixed
+formula. For a binder, the internal loop invariant records an index in
+the scanned prefix, its evaluated value, and the fact that this value
+dominates (or is dominated by) the prefix. This is a bounded Boolean
+test. With the formula fixed, the evaluator and the relation test are PR
+by nested bounded scans and composition. Variables are represented by
+de Bruijn indices in a numerical tuple. Adding a binder shifts the old
+indices and places the tested vertex at index zero. A proof for a new
+connective requires an explicit modulus. For example
+$\min(1,u+v)$ propagates two errors to $2e$. The depth-independent
+constant in the theorem uses the displayed fragment.
+
+\paragraph{A uniform arithmetic theorem for encoded formulas.}
+For this finite grammar the scheme also admits a single formula-code
+version. Give the syntax in postorder, with $h$ instruction rows and
+all child indices smaller than their parent. Choose $K$ one above the
+largest variable index in any atom, or zero if none occurs. Use integer
+units with a positive common denominator $D$, and reject malformed
+instructions, arities and constants by bounded tests. For a stage of
+size $a$, allocate $h a^K$ table cells with entries in $[0,D]$.
+Column $u<a^K$ is an assignment in base $a$ with $K$ digits, treating
+$a=1$ as the unique all-zero assignment. For a binder, prepend a
+vertex to the assignment and retain the first $K$ coordinates.
+Take the maximum or minimum over the $a$ resulting child entries.
+When $K=0$ there is just the empty assignment. An atom indexes its
+predicate table, and all other instructions use at most two child
+rows. Thus there is a uniform PR evaluator on formula and structure
+codes. Its evaluation tables can be packed in base $D+1$ with bound
+$(D+1)^{h a^K}$. These bounds express finite table evaluation even
+for signatures that include an arbitrarily large numerical table.
+
+For related stages of sizes $a,b$, induct on the number of rows filled.
+The invariant says that in every completed row, entries in related
+columns differ by at most $e$. Checking it costs a scan over at most
+$h a^K b^K$ triples and $K$ matrix entries per column test. In a binder
+row the selected extremum and the row or column witness produce a pair
+of extended related assignments; that child row has already passed the
+invariant. Each remaining row rule is one of the numerical inequalities
+above. The empty prefix is vacuous. This is a single QF induction on
+a Boolean equation and gives the code-uniform transfer theorem, also
+for a postorder circuit which shares subformulas. It interprets each predicate by lookup in its bounded numerical table.
+
+\paragraph{Arithmetical meaning of a model value.}
+Suppose a fixed PR family of stages $A_n$ comes with verified matrices
+from $A_n$ to $A_{n+1}$ of grades at most $2^{-n-1}$. For a sentence
+$\varphi$ compute $v_n=v_{A_n}(\varphi)$. For $m\geq n$ transfer and finite
+summation give
+\[
+ |v_n-v_m|\leq\sum_{j=n}^{m-1}2^{-j-1}=2^{-n}-2^{-m}.
+\]
+The summation uses QF induction on a cross-multiplied rational inequality
+with the endpoint $n$ fixed. Hence $v_n$ names a real value with error at
+most $2^{-n}$, even when the stages have different denominator grids.
+Its upper cut at a rational $q$ can be observed strictly whenever
+$v_n+2^{-n}<q$. The analogous lower test uses $q<v_n-2^{-n}$.
+The zero condition is the arithmetic assertion
+$\forall n\ (v_n\leq 2^{-n})$, by the tail bound and nonnegativity.
+It need not be decidable. Strict tests on opposite sides cannot both pass,
+and any positive margin eventually appears in a test by the geometric
+error bound. A second presentation related at accuracy tending effectively
+to zero yields the same cuts by the transfer theorem and these bounds.
+
+\paragraph{When this evaluates an ordinary metric structure.}
+Suppose a nonempty compact metric structure $M$ is supplied with finite
+$r_n$-nets of actual sample points, $r_n\to0$ with a stated PR rate,
+and evaluations of its atomic predicates at those samples with error
+$\eta_n\to0$ of stated PR rate. Assume each predicate has a specified
+Lipschitz bound $L_P$ for the maximum metric on its tuples. The distance
+predicate has $L_d=2$. Let $L$ be the largest bound. Relate a point of
+$M$ to each sample within $r_n$ of it. A sample is related to itself and
+coverage supplies a sample for each point. The atomic discrepancy is at
+most $e_n=Lr_n+\eta_n$. With this relation the preceding induction works
+for ordinary suprema as well. For the upper bound on a supremum, bound
+\emph{every} value on $M$ by the finite maximum plus $e_n$. For the
+reverse, use a maximizing sample and its copy in $M$. The analogous
+bounds for an infimum reverse the comparisons. This proof needs no
+assumption that a supremum is attained in $M$.
+
+Here is a constructive reading if those suprema have yet to be defined.
+Induct externally through the formula. At a quantifier, finite extrema on
+two nets agree to within $e_n+e_m$. Pair samples through a common point
+of $M$, use net coverage in both directions and the atomic bounds on
+both sides, and apply finite formula transfer. Its proof also applies to
+this externally specified relation, which supplies witnesses for every
+row and column. For free variables retain their common assigned points.
+These extrema have a regular Cauchy name after applying the supplied
+rates. Its upper-bound property for a supremum follows by approximating
+each argument with a net point to arbitrarily small error. Its leastness
+follows because every selected maximizing sample is itself a point of
+$M$, where the already interpreted body has value within $e_n$ of the
+sample evaluation. The dual proof gives infima. This proves the semantic
+bridge for the supplied presentation. Inside iPRA the statements concern
+numerical stage comparisons and cuts for fixed presented names. To apply
+the bridge, a classical description still requires nets, evaluation
+algorithms and moduli.
+
+\paragraph{Constructing the comparison matrices.}
+There is a direct numerical construction when distances between sample
+points of different levels can also be approximated. Suppose a PR table
+$\widehat d_{nm}$ approximates all such distances within $\tau$, and
+each sample of either level has a covering witness on the other level
+with the advertised net radius. Write $r=\max(r_n,r_m)$. Retain the
+pair $(i,j)$ if $\widehat d_{nm}(i,j)\leq r+\tau$. Every supplied
+covering pair passes. Every retained pair has true distance at most
+$r+2\tau$. Consequently (C) holds with
+\[
+       e=\eta_n+\eta_m+L(r+2\tau).
+\]
+Each assertion is a bounded scan or a direct instantiation of a supplied
+metric or predicate estimate. Thus we obtain the required Boolean
+matrix even when exact comparison of a real distance with $r$ is
+undecidable. For example, thin the levels by their PR rates so that
+$r_n,\eta_n$ at the new index $j$ are at most
+$2^{-j-4}/(L+1)$, using prefix maxima of requested indices if needed.
+Compute cross-distances at that same accuracy for successive levels.
+The displayed grade is at most $2^{-j-1}$, as required by the Cauchy
+argument. This supplies a numerical bridge for named spaces with common
+distance evaluation.
+
+\subsection{A sentence separating two continua of the same diameter}
+
+Let $I=[0,1]$ and let $T=\mathbb R/2\mathbb Z$ carry its shorter-arc
+metric. Both have diameter $1$. Consider
+\[
+                    \rho=\inf_x\sup_y d(x,y).
+\]
+For $m\geq1$ use units $1/(2m)$. The interval stage consists of
+$0,\ldots,2m$ with ordinary distance in integer units. The circle stage
+consists of $0,\ldots,4m-1$, with
+$d(i,j)=\min(|i-j|,4m-|i-j|)$. Each point is within $1/(2m)$ of a
+sample, and all sample distances are exact. For a constructive name
+a rational approximation finer than one quarter of the mesh and rounding
+it to a nearest sample give an explicit covering witness, including at a
+circle seam by reduction modulo $4m$.
+At an interval vertex $i$ the farther endpoint is at distance at least
+$m$, while all vertices are within $m$ of the midpoint $m$.
+At every circle vertex its antipode has distance $2m$, and no distance
+exceeds $2m$. Thus the normalized interval and circle values are
+$1/2$ and $1$ at every stage. The net bridge gives those same values
+on the continua. Any proposed correspondence between these grids has
+distortion at least $1/2$ even with arbitrarily fine mesh. The same
+obstruction holds for a two-sided correspondence on the continua with
+uniform distance distortion, by the supremum/infimum inequalities in
+the transfer proof.
+
+\subsection{Descent with a stated overlap error}
+
+The repository's categorical methods paper proves exact gluing and
+explicitly flags the missing error estimate for approximate overlap
+data.%
+\footnote{ProveIt, \nolinkurl{docs/proofs/foundations/ipra_categorical_methods/paper/sections/05_descent.tex},
+subsection on a finite sheaf of function tables.}
+Let a finite source stage $X$ be covered by masks $U_i$.
+At each $x\in U_i$ there is a value $f_i(x)$ in a rational
+pseudometric table $Y$. On overlaps assume
+$d(f_i(x),f_j(x))\leq e$. Inside a patch, suppose a specified symmetric
+nearness test $N(x,y)$ implies $d(f_i(x),f_i(y))\leq w$
+when both points are in $U_i$. Finally require the finite cover
+condition that every $N$-near pair lies in some common patch.
+
+Choose the first patch $s(x)$ containing $x$, and set
+$g(x)=f_{s(x)}(x)$. Every local value at $x$ is within $e$ of $g(x)$,
+so every two patch selectors agree to within $e$. For any $N$-near
+pair choose a common patch $i$. The three successive comparisons
+\[
+ g(x),\quad f_i(x),\quad f_i(y),\quad g(y)
+\]
+have costs $e,w,e$, so $d(g(x),g(y))\leq2e+w$. Any other global
+table within $e$ of every patch is within $e$ of this particular selector
+at each point, and two arbitrary such tables are within $2e$ of one
+another. The $2e+w$ bound for arbitrary selectors is sharp with two singleton
+patches followed by a two-point common patch. Take the common-patch
+values $e,e+w$ in the rational line and the singleton values $0,2e+w$,
+respectively. The first-cover selector takes both extreme values.
+Rescale if a unit-diameter target is desired.
+
+All hypotheses, including the common-patch condition, can be tested by
+bounded table scans. Without the common-patch condition two nearby
+points in disjoint singleton patches can be assigned unrelated values
+even when $e=w=0$. A continuous application requires these estimates on
+a refining family with accuracy tending to zero and coherence between
+its selected global tables. For example, if matched vertices on two
+levels admit corresponding patches whose local values agree within
+$c$ in a common target, then their selected global values differ by at most
+$e_n+c+e_{n+1}$, by the same three comparisons. With a summable PR
+bound and PR tail modulus on these successive discrepancies one obtains
+Cauchy names along specified compatible vertex names.
+
+\begingroup\setlength{\emergencystretch}{3em}
+\paragraph{Formalization.}
+In \texttt{lean/Abstract.lean}, the correspondence laws underpin
+\texttt{formula\_\allowbreak transport}. The calculations of both radii give
+\texttt{circle\_\allowbreak line\_\allowbreak obstruction}, and the patch estimate is
+\texttt{glue\_\allowbreak oscillation}. Its truth values and errors are integer units,
+so arbitrary rational finite instances use one common denominator. The
+file quantifies over Lean functions to state reusable lemmas. For a literal
+object-theory derivation, instantiate the vertex sets by bounds, encode
+each relation by a Boolean matrix and each predicate by its table,
+totalizing malformed accesses by zero. The maximum/minimum loop needs
+the extremum index and the bounded prefix domination test described
+above. Relate variable assignments by a bounded conjunction over the
+free positions. Derive the two quantifier inequalities by those extremum
+indices and the two covering scans, then compile connective cases by
+substitution. This produces an object proof for each fixed formula. The preceding postorder invariant gives the alternative route for one theorem over formula codes.
+The Lean file checks the reusable semantic proof and the exact grid
+calculation. The table-code compiler and its object-proof output for
+this complete fragment remain to be mechanized.
+\par\endgroup

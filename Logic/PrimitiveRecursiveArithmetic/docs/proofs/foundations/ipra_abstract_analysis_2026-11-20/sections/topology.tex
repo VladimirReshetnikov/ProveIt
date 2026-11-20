@@ -1,0 +1,557 @@
+\section{Function-space topology from explicit finite-rank operators}
+\label{sec:function-topology}
+
+The earlier topology packet already supplies covers, carriers, finite
+homology calculations, and a careful warning about coherent witnesses.
+The next useful step is to construct \emph{continuous functions} from
+finite observations, with all denominators and continuity constants
+controlled.  We give such a construction on an arbitrary presented
+totally bounded metric space.  It yields a quantitative form of
+Arzel\`a--Ascoli, a converse, and a gluing theorem.  These results concern
+infinite spaces and function spaces even though their arithmetic proofs
+use finite lists.
+
+\subsection{The input presentation and the meaning of the statement}
+
+Write $d_s=2^{-s}$.  A rational metric basis is a decidable collection
+$A\subseteq\N$ with a fixed PR rational-valued distance $d(a,b)$ satisfying
+the pseudometric laws.  Zero distance is quotiented extensionally.
+For each $s$, the presentation supplies a positive natural number $N(s)$
+and a list
+\[
+ c(s,0),\ldots,c(s,N(s)-1)\in A
+\]
+with the covering assertion
+\begin{equation}\label{eq:top-net}
+ a\in A\quad\Longrightarrow\quad
+ \exists i<N(s)\;d(a,c(s,i))\le d_s.
+\end{equation}
+The list functions and $N$ are fixed PR programs, and the covering
+assertion is an explicit premise or a previously derived theorem.
+Let $X$ denote the metric completion in the external interpretation.
+The list at scale $s+1$ covers $X$ at radius $d_s$ constructively:
+given a regular name for $x$, take a rational approximation $a$ within
+$d_{s+1}$ of $x$, and then use \eqref{eq:top-net} to find a list
+member within $d_{s+1}$ of $a$.  The triangle inequality gives the
+claimed bound.  This extra precision bit avoids selecting a minimum
+among finitely many real distances.  All arithmetic calculations
+below are performed at rational queries; extension to $X$ uses their
+displayed continuity moduli.
+
+For readers wishing to avoid any use of a real-valued supremum, every
+assertion $\|f-g\|_\infty\le\eta$ below means
+$\forall x\in X\;|f(x)-g(x)|\le\eta$.  It does not invoke existence of a
+supremum as a new mathematical principle.
+
+Fix a family $(f_a)_{a\in D}$ of real-valued functions on $X$, an integer
+$B\ge0$, and a fixed PR modulus $\mu$ such that
+\begin{equation}\label{eq:top-family}
+ |f_a(x)|\le B,\qquad
+ d(x,y)\le 2^{-\mu(j)}\quad\Longrightarrow\quad
+ |f_a(x)-f_a(y)|\le 2^{-j}.
+\end{equation}
+The same modulus must work for every family member.  The symbol $a$ is
+a parameter for one fixed evaluator, not a code fed to a universal PR
+interpreter.  At the arithmetic level, observations of $f_a$ are
+rationals $E(a,x,p)$ with error at most $d_p$ at a rational query
+$x\in A$.  A fully rational specification is given below.  The family
+need not have decidable equality, and its members need not be specified
+by a single finite polynomial or by a discrete table.
+
+\subsection{A denominator bound produced by the net}
+
+\begin{lemma}[Quantitative partition of unity]\label{lem:tent-partition}
+Let $r>0$ be rational and let $c_0,\ldots,c_{n-1}$ be an $r/2$-net in
+$X$, with $n\ge1$.  Define
+\[
+ w_i(x)=\max\{0,r-d(x,c_i)\},\qquad
+ W(x)=\sum_{i<n}w_i(x),\qquad
+ \lambda_i(x)=\frac{w_i(x)}{W(x)}.
+\]
+Then $W(x)\ge r/2$, $\lambda_i(x)\ge0$, and
+$\sum_{i<n}\lambda_i(x)=1$.  Moreover,
+\begin{equation}\label{eq:tent-lipschitz}
+ \sum_{i<n}|\lambda_i(x)-\lambda_i(y)|
+ \le\frac{4n}{r}d(x,y).
+\end{equation}
+If $h=(h_i)_{i<n}$ and $|h_i|\le B$, the reconstructed function
+\[
+ R(h)(x)=\sum_{i<n}\lambda_i(x)h_i
+\]
+is bounded by $B$ and is Lipschitz with constant $4Bn/r$.
+For two coefficient vectors,
+\begin{equation}\label{eq:tent-coefficient}
+ |R(h)(x)-R(\widetilde h)(x)|
+ \le\max_{i<n}|h_i-\widetilde h_i|.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose a covering index $j$ for $x$.  Then
+$w_j(x)=r-d(x,c_j)\ge r/2$, and all other weights are nonnegative.
+This proves the denominator bound and the first three assertions.
+The triangle inequality gives
+$|d(x,c_i)-d(y,c_i)|\le d(x,y)$.  The real function
+$t\mapsto\max(0,r-t)$ does not increase distances, so
+\[
+ |w_i(x)-w_i(y)|\le d(x,y),\qquad
+ |W(x)-W(y)|\le n\,d(x,y).
+\]
+Using positive denominators, add and subtract $w_i(y)/W(x)$ to obtain
+\[
+ |\lambda_i(x)-\lambda_i(y)|
+ \le\frac{|w_i(x)-w_i(y)|}{W(x)}
+  +\frac{w_i(y)|W(y)-W(x)|}{W(x)W(y)}.
+\]
+Sum this inequality.  In the second term the sum of $w_i(y)$ is
+$W(y)$, and hence
+\[
+ \sum_i|\lambda_i(x)-\lambda_i(y)|
+ \le\frac{n\,d(x,y)+|W(y)-W(x)|}{W(x)}
+ \le\frac{4n}{r}d(x,y).
+\]
+Multiply by the coefficient bound $B$ to obtain the Lipschitz assertion.
+The bound $|R(h)(x)|\le B$ and \eqref{eq:tent-coefficient} follow by
+nonnegativity of the weights and their sum being one.  No cancellation,
+choice of a nearest centre, or decision about equality of real points
+is used.
+\end{proof}
+
+The formula is a continuous partition of unity; smoothness is not
+claimed.  On the rational basis, all weights and all denominators are
+exact rational numbers.  The inverse operation is justified by a
+\emph{derived} lower bound $r/2$, rather than by a new oracle promising
+that a denominator is nonzero.
+
+\subsection{An explicit quantitative Arzel\`a--Ascoli theorem}
+
+\begin{theorem}[Finite continuous approximants with an entropy bound]
+\label{thm:quant-ascoli}
+Under \eqref{eq:top-net} and \eqref{eq:top-family}, put
+\begin{align*}
+ s_k&=\mu(k+2)+2,& r_k&=2^{-\mu(k+2)},& n_k&=N(s_k),\\
+ \delta_k&=2^{-(k+3)},&
+ M_k&=2B\,2^{k+3}+1,& H_k&=M_k^{n_k}.
+\end{align*}
+The basis list has mesh $r_k/4$ and hence covers $X$ with mesh $r_k/2$.
+Using the centres $c(s_k,i)$, form the weights of
+Lemma~\ref{lem:tent-partition} with radius $r_k$.
+There is an explicit list of $H_k$ continuous functions $g_{k,h}$
+such that
+\begin{enumerate}
+ \item $|g_{k,h}(x)|\le B$ and each $g_{k,h}$ is Lipschitz with
+ constant at most $4Bn_k/r_k$;
+ \item for every $a\in D$, finitely many evaluations of $f_a$ at the
+ $n_k$ net points, each to accuracy $\delta_k$, produce an index
+ $h<H_k$ satisfying
+ \begin{equation}\label{eq:ascoli-cover}
+  \|f_a-g_{k,h}\|_\infty\le 2^{-(k+1)};
+ \end{equation}
+ \item the list size, its rational evaluators, the selected index, and
+ every bound above are PR in $k,B$ and the numerical presentation data,
+ for each fixed collection of input programs.
+\end{enumerate}
+The centres of this cover lie in the ambient space of continuous
+functions.  They are not asserted to belong to the original family.
+\end{theorem}
+
+\begin{proof}
+The grid
+\[
+ G_k=\{-B,-B+\delta_k,\ldots,B-\delta_k,B\}
+\]
+has exactly $M_k$ members because $B$ is an integer and
+$\delta_k^{-1}=2^{k+3}$.  If $B=0$, the single vector is the zero
+vector.  Otherwise enumerate all vectors in $G_k^{n_k}$ by
+base-$M_k$ digits.  For such a vector $h$, define
+$g_{k,h}=R(h)$.  Lemma~\ref{lem:tent-partition} gives the first
+assertion.  Each list element has a rational evaluator on $A$ given by
+the displayed finite sum and quotient; the Lipschitz bound extends it
+uniquely to the completion.
+
+For a particular $f_a$, obtain a rational $e_i$ satisfying
+$|e_i-f_a(c(s_k,i))|\le\delta_k$.  Define
+\[
+ h_i=\operatorname{clip}_{[-B,B]}
+       \bigl(\delta_k\lfloor e_i/\delta_k\rfloor\bigr).
+\]
+This is a decidable rational operation, including at grid boundaries.
+Projection onto an interval does not increase distance from a point of
+that interval.  Rounding down changes a rational by at most $\delta_k$.
+Since $f_a(c(s_k,i))\in[-B,B]$, it follows that
+\begin{equation}\label{eq:ascoli-sample-error}
+ |h_i-f_a(c(s_k,i))|\le 2\delta_k=2^{-(k+2)}.
+\end{equation}
+The resulting vector lies in $G_k^{n_k}$, so its base-$M_k$ code is
+less than $H_k$.
+
+First fix $x\in A$, so that every support comparison is decidable.
+If $w_i(x)>0$, then
+$d(x,c(s_k,i))<r_k=2^{-\mu(k+2)}$.  The common modulus therefore gives
+\[
+ |f_a(c(s_k,i))-f_a(x)|\le 2^{-(k+2)}.
+\]
+For these indices, \eqref{eq:ascoli-sample-error} implies
+$|h_i-f_a(x)|\le 2^{-(k+1)}$.  Indices with zero weight contribute
+zero.  Taking the weighted average yields
+\[
+ |g_{k,h}(x)-f_a(x)|
+ \le\sum_i\lambda_i(x)|h_i-f_a(x)|
+ \le 2^{-(k+1)}\sum_i\lambda_i(x)=2^{-(k+1)}.
+\]
+This estimate holds for every rational query.  For a regular name of
+an arbitrary $x\in X$, the supplied modulus for $f_a$ and the proved
+Lipschitz bound for $g_{k,h}$ pass the same non-strict estimate to $x$.
+No sign decision about a real distance is needed.
+
+For the PR claim, exponentiation, finite list formation, base expansion,
+signed rational floors, clipping, and bounded sums are PR.  The call
+depth of the input evaluator is fixed; only its numerical arguments
+vary.  Every loop is bounded by a displayed natural number, although
+$H_k$ can be very large.  In particular no test of the form ``does this
+function agree with some earlier function?'' is part of the enumeration.
+\end{proof}
+
+\begin{remark}[What the theorem supplies]
+This is a uniform finite cover in the supremum-distance sense.  If one
+uses a definition of total boundedness demanding that the centres
+belong to the given family, additional witnesses for the inhabited
+profile classes are needed.  Given one member of the family in each
+inhabited profile class, the triangle inequality changes the radius
+from $2^{-(k+1)}$ to $2^{-k}$.  The displayed construction itself does
+not decide which profile classes are inhabited.
+Likewise, replacing the supplied common modulus by bare pointwise
+equicontinuity is an extra theorem; it is not a consequence of the
+finite enumeration.
+\end{remark}
+
+\begin{corollary}[Finite-rank approximation of continuous functions]
+\label{cor:finite-rank}
+With the same weights, let
+\[
+ (P_k f)(x)=\sum_{i<n_k}\lambda_i(x)f(c(s_k,i)).
+\]
+Then $P_k$ is a positive linear operator, preserves constants, has
+operator norm at most one, and its image is contained in the span of
+$\lambda_0,\ldots,\lambda_{n_k-1}$.  Every function satisfying the
+given modulus obeys
+\[
+ \|P_k f-f\|_\infty\le 2^{-(k+2)}.
+\]
+Thus the metric presentation produces finite-rank approximation
+operators with an explicit convergence rate on every family with a
+common modulus.
+\end{corollary}
+
+\begin{proof}
+Linearity is distributivity of a finite sum.  Positivity, preservation
+of constants, and the norm bound follow from the nonnegative weights
+adding to one.  The range statement is immediate from the formula.
+At a rational query $x$, every nonzero weight comes from a centre within
+$2^{-\mu(k+2)}$ of $x$.  Apply the modulus to each such summand and
+average, exactly as in the preceding proof but without quantization;
+then extend the estimate along regular names.
+\end{proof}
+
+The operator statement uses ordinary continuous-function language in
+the external interpretation.  Its arithmetic content is the family
+of finite sum identities and error estimates.  It does not assert that
+all continuous functions form a numerical sort of \ipra.
+
+For example, on $[0,1]^d$ with the maximum metric, the dyadic grid
+gives $N(s)=(2^s+1)^d$.  Functions bounded by the integer $B$ and
+Lipschitz with constant at most $2^\ell$ have
+$\mu(j)=j+\ell$.  The theorem therefore gives the entirely explicit
+covering bound
+\[
+ H_k=(2B\,2^{k+3}+1)^{(2^{k+\ell+4}+1)^d}.
+\]
+The estimate is deliberately conservative.  Its purpose is to expose
+the full primitive-recursive dependence and provide a reusable proof,
+not to claim optimal metric entropy.
+
+\subsection{The converse: finite approximants recover regularity}
+
+\begin{proposition}[A quantitative converse]\label{prop:ascoli-converse}
+Suppose that for every $j$ a finite nonempty list
+$g_{j,0},\ldots,g_{j,L_j-1}$ covers a family $\mathcal F$ within
+supremum distance $2^{-j}$.  Suppose each $g_{j,i}$ has an explicit
+uniform modulus $\nu(j,i,t)$, and the list at $j=0$ has integer bounds
+$|g_{0,i}|\le C_i$.  Then all $f\in\mathcal F$ satisfy
+\[
+ |f|\le1+\max_{i<L_0}C_i
+\]
+and share the modulus
+\begin{equation}\label{eq:ascoli-converse-modulus}
+ \mu_*(k)=\max_{i<L_{k+2}}\nu(k+2,i,k+1).
+\end{equation}
+If the displayed data are given by fixed PR programs, these new data
+are PR as well.  It is enough to have the finite-cover assertion;
+an algorithm choosing a covering index is not required for this
+direction.
+\end{proposition}
+
+\begin{proof}
+For the range bound, take a covering index for $f$ in the list at
+$j=0$ and use the triangle inequality.  For the modulus, take a
+covering index $i$ at $j=k+2$.  If
+$d(x,y)\le2^{-\mu_*(k)}$, it is at most
+$2^{-\nu(k+2,i,k+1)}$.  Consequently
+\begin{align*}
+ |f(x)-f(y)|
+ &\le |f(x)-g_{k+2,i}(x)|
+   +|g_{k+2,i}(x)-g_{k+2,i}(y)|
+   +|g_{k+2,i}(y)-f(y)|\\
+ &\le 2^{-(k+2)}+2^{-(k+1)}+2^{-(k+2)}=2^{-k}.
+\end{align*}
+The index is eliminated from a finite existential hypothesis after
+this estimate; no countable choice is used.  Maxima of finite lists
+are computed by a bounded recursion.
+\end{proof}
+
+The forward and reverse results identify the effective content of
+Ascoli approximation.  Uniform range and continuity information
+produce finite approximants, and finite approximants with their own
+regularity information recover a common modulus.  Convergence of an
+arbitrary sequence is a separate question.
+
+\subsection{Gluing guarded local data}
+
+\begin{theorem}[Continuous gluing with a produced modulus]
+\label{thm:guarded-gluing}
+Let $c_0,\ldots,c_{n-1}$ be an $r/2$-net.  For each $i$, suppose a
+local function $f_i$ is given on the open ball
+$\{x:d(x,c_i)<2r\}$.  Assume that on this ball $|f_i|\le B$ and
+$f_i$ is Lipschitz with constant $L$.  Assume also that on every
+overlap where both distances are less than $r$,
+\[
+ |f_i(x)-f_j(x)|\le\alpha.
+\]
+On the rational basis define $p_i(x)=w_i(x)f_i(x)$ when
+$d(x,c_i)<r$ and $p_i(x)=0$ otherwise; these are decidable rational
+support tests.  Here $w_i$ is as in Lemma~\ref{lem:tent-partition}.
+The products have unique Lipschitz extensions to $X$.  For those
+extensions,
+\[
+ g(x)=\frac{\sum_{i<n}p_i(x)}{W(x)}
+\]
+is a globally defined function with $|g|\le B$,
+\begin{equation}\label{eq:gluing-lip}
+ |g(x)-g(y)|\le
+ \left(2nL+\frac{4nB}{r}\right)d(x,y),
+\end{equation}
+and $|g(x)-f_j(x)|\le\alpha$ whenever $d(x,c_j)<r$.
+In particular exact overlap agreement yields a genuine global
+continuous gluing of the restrictions to the $r$-balls.  The assertions
+also hold for complex values, with
+the absolute value replaced by the complex norm.
+\end{theorem}
+
+\begin{proof}
+First take $x,y$ in the rational basis.  The function $p_i$ is
+well-defined because the support where its
+formula uses $f_i$ lies strictly inside the domain of $f_i$.
+If $x$ and $y$ both lie in this support, then
+\begin{align*}
+ |p_i(x)-p_i(y)|
+ &\le w_i(x)|f_i(x)-f_i(y)|
+   +|w_i(x)-w_i(y)|\,|f_i(y)|\\
+ &\le (rL+B)d(x,y).
+\end{align*}
+If neither lies in the support, both products vanish.  If only $x$
+does, the reverse triangle inequality gives
+$w_i(x)=r-d(x,c_i)\le d(x,y)$ because $d(y,c_i)\ge r$.
+Thus $|p_i(x)|\le B\,d(x,y)$, which is also bounded by
+$(rL+B)d(x,y)$.  The case with only $y$ is symmetric.  Therefore every
+$p_i$ extends continuously across the support boundary and has the
+stated global Lipschitz bound.
+
+Put $P=\sum_i p_i$.  We have
+\[
+ |P(x)-P(y)|\le n(rL+B)d(x,y),\qquad |P(y)|\le B W(y).
+\]
+Use $W(x)\ge r/2$ and $|W(x)-W(y)|\le n\,d(x,y)$ to estimate
+\begin{align*}
+ \left|\frac{P(x)}{W(x)}-\frac{P(y)}{W(y)}\right|
+ &\le \frac{|P(x)-P(y)|}{W(x)}
+   +\frac{|P(y)|\,|W(y)-W(x)|}{W(x)W(y)}\\
+ &\le\frac{2n(rL+2B)}{r}d(x,y),
+\end{align*}
+which is \eqref{eq:gluing-lip}.  These rational-query estimates give
+unique extensions to $X$ and remain true there by passage along
+regular names with the displayed modulus.  The range bound follows
+from $|P(x)|\le BW(x)$.  Finally, at a rational query with
+$d(x,c_j)<r$, every index contributing
+to the weighted average also has $d(x,c_i)<r$.  The overlap hypothesis
+therefore gives
+\[
+ |g(x)-f_j(x)|
+ \le\sum_i\lambda_i(x)|f_i(x)-f_j(x)|\le\alpha.
+\]
+For an arbitrary $x\in X$ with $d(x,c_j)<r$, sufficiently accurate
+rational approximations lie in the same guarded ball; the Lipschitz
+bounds for $g$ and $f_j$ transfer this estimate to $x$.
+Only positivity, the triangle inequality, and finite sums were used,
+so the proof is unchanged for complex values.
+\end{proof}
+
+For an implementation on the rational basis, the support test compares
+two rationals.  The uniform arithmetic theorem uses one fixed total
+PR program $E(i,x,t)$ for the patch parameter $i<n$, whose correctness
+is required only inside the corresponding guard.  An externally
+fixed finite collection of local programs may instead be compiled into
+such an evaluator.  This does not permit unbounded interpretation of
+arbitrary input program codes.  The program never
+uses a local value outside the support of its weight.  The larger
+radius $2r$ supplies room for evaluating names near support boundaries;
+the preceding global modulus then extends the rational construction to
+$X$.  For real queries one uses this extension, not an exact decision
+whether $d(x,c_i)=r$.
+
+More explicitly, if $E_i(x,t)$ approximates $f_i(x)$ within $2^{-t}$
+on its guard, evaluate
+\[
+ G(x,t)=\frac{\sum_{i:\,d(x,c_i)<r}w_i(x)E_i(x,t)}{W(x)}.
+\]
+Every rational query to a local evaluator is within its guard, and
+$|G(x,t)-g(x)|\le2^{-t}$ because the nonnegative normalized weights
+sum to one.  Thus the gluing construction also supplies an explicit
+regular-name evaluator, not just a semantic existence assertion.
+
+This solves a specific presentation problem: local continuous data
+with a certified finite metric cover can be glued by a concrete
+formula, and the reciprocal bound and continuity modulus are computed
+from the cover.  The construction does not manufacture finite covers
+from an arbitrary open-cover enumeration, or smooth local data from
+mere continuous data.
+
+\subsection{Why regular subsequence extraction remains unavailable}
+
+The distinction between approximation and subsequence selection is
+already visible for constant functions.  Here is a self-contained
+computability obstruction of the type introduced by Specker
+\cite{Specker1949}; it also explains why one should keep the different
+Ascoli principles separate \cite{Kreuzer2014}.
+
+Fix a bounded PR simulator for Turing machines and set
+\[
+ q_s=\sum_{\substack{e<s\\ \text{machine }e\text{ on }e
+                      \text{ halts by step }s}}4^{-(e+1)}.
+\]
+This is a PR sequence of rational numbers, is increasing, and lies in
+$[0,1/3]$.  In the external classical interpretation its limit is
+\[
+ q=\sum_{e\in K}4^{-(e+1)},
+\]
+where $K$ is the diagonal halting set.  This real is not computable.
+Indeed, after the bits of $K$ below $e$ have been determined, subtract
+their contributions.  If $e\notin K$, the remaining value is at most
+$4^{-(e+1)}/3$, whereas if $e\in K$ it is at least $4^{-(e+1)}$.
+An approximation with error less than $4^{-(e+1)}/6$ distinguishes
+these cases by comparison with $2\,4^{-(e+1)}/3$.  A computable name
+for $q$ would consequently decide $K$, a contradiction.
+
+Now let $f_s(x)=q_s$ on $[0,1]$.  The family has bound $B=1$ and the
+common modulus $\mu(j)=0$ for every $j$.  Its finite approximants are
+particularly easy.  Nevertheless, a computable strictly increasing
+subsequence together with a computable modulus of uniform convergence
+would compute $q$: evaluate a constant subsequence member at the index
+specified by the modulus.  Thus no such regular subsequence can be
+produced in general.  This is an external impossibility theorem about
+uniform computations, not a new internally formalized incompleteness
+claim for \ipra.  It does not rule out a particular sequence having a
+supplied modulus or a problem-specific compactness argument producing
+one.
+
+\subsection{The exact rational target and a Lean development path}
+
+For implementation, the semantic functions $f_a$ can be replaced
+throughout by the following rational contracts, where $x,y\in A$ and
+$p,q,j\in\N$:
+\begin{align}
+ |E(a,x,p)-E(a,x,q)|&\le d_p+d_q,\label{eq:top-name}\\
+ |E(a,x,p)|&\le B+d_p,\label{eq:top-range}\\
+ d(x,y)\le2^{-\mu(j)}\quad&\Longrightarrow\quad
+ |E(a,x,p)-E(a,y,q)|\le d_j+d_p+d_q.
+ \label{eq:top-space}
+\end{align}
+Together with the metric and net laws, these are sufficient for the
+finite approximation theorem.  They state precisely what a rational
+evaluation interface must provide.  They are hypotheses about fixed
+programs, not automatically true properties of arbitrary program
+codes.
+
+At precision $k$, use $e_i=E(a,c(s_k,i),k+3)$ and the clipped floor
+defined above.  Since \eqref{eq:top-range} gives
+$e_i\in[-B-\delta_k,B+\delta_k]$, a direct three-case comparison
+shows
+\[
+ |h_i-e_i|\le\delta_k.
+\]
+For $e_i\in[-B,B]$ this is the rounding bound.  For $e_i>B$ or
+$e_i<-B$, clipping returns the respective endpoint and the range
+contract gives the same bound.  If $w_i(x)>0$,
+\eqref{eq:top-space} with $j=k+2$ now gives
+\[
+ |h_i-E(a,x,p)|
+ \le\delta_k+d_{k+2}+d_{k+3}+d_p
+ =d_{k+1}+d_p.
+\]
+Averaging proves the exact first-order target
+\begin{equation}\label{eq:top-object-target}
+ \boxed{\quad
+ |g_k(a,x)-E(a,x,p)|\le 2^{-(k+1)}+2^{-p}.
+ \quad}
+\end{equation}
+Every term in this formula is a rational code.  After checking
+positive denominators, multiplication clears them, yielding a
+quantifier-free integer inequality.  The net witness needed for the
+denominator is an existential premise used outside the induction over
+the finite sum.  In particular there is no induction on a statement
+quantifying over all functions, all real points, or all precisions.
+
+A Lean implementation should use two deliberately separate layers.
+The following list gives the definitions and theorem order; the names
+are proposed module names, not claims about compiled code delivered
+elsewhere in this repository.
+\begin{enumerate}
+ \item \texttt{RationalMetricBasis} contains a decidable domain, a
+ rational distance program, the pseudometric laws, \texttt{netSize},
+ \texttt{netPoint}, and \eqref{eq:top-net}.  The arithmetic version
+ stores PR syntax and object derivations for those laws; an ordinary
+ Lean record with rational functions is the semantic specification.
+ \item \texttt{TentWeights} defines the rational positive part,
+ weights, denominator, and coefficient reconstruction.  Prove
+ \texttt{weight\_nonnegative}, \texttt{denominator\_lower},
+ \texttt{weight\_difference}, \texttt{partition\_variation}, and
+ \texttt{reconstruction\_nonexpansive}, in that order.  Finite-sum
+ estimates use existing sum linearity and rational-order derivations.
+ \item \texttt{EquicontinuousEvaluator} stores $B,\mu,E$ and the
+ three contracts \eqref{eq:top-name}--\eqref{eq:top-space}.  Add
+ \texttt{clipFloor}, its grid-membership and error lemmas, and
+ mixed-radix encoding of coefficient lists.
+ \item \texttt{AscoliApproximation} defines $s_k,r_k,n_k,M_k,H_k$
+ and $g_k$ literally as above.  Derive
+ \texttt{ascoli\_finite\_error} with target
+ \eqref{eq:top-object-target}, and separately the grid-code bound.
+ No existential over function names is needed: $g_k$ is an explicit
+ rational expression from the given observations.
+ \item \texttt{GuardedGluing} handles the two support cases for each
+ product, proves its Lipschitz bound, then sums and divides using
+ \texttt{denominator\_lower}.  A semantic completion theorem
+ identifies the resulting regular name with the continuous gluing.
+ \item \texttt{AscoliConverse} introduces a bounded covering index,
+ uses the three-term triangle estimate, and removes the index by
+ existential elimination.  The maximum of a finite list supplies
+ \eqref{eq:ascoli-converse-modulus}.
+\end{enumerate}
+
+For the object endpoint, the goal is an actual derivation
+$\Gamma\vdash[\mathrm{PRAAx}]\varphi$ after inserting the chosen
+PR metric, net, and evaluator terms.  The context $\Gamma$ retains
+their explicit contracts.  A semantic Lean proof about
+\texttt{MetricSpace} or \texttt{ContinuousMap} is useful for the
+external interpretation but cannot by itself discharge this endpoint.
+The required arithmetic induction invariants concern finite partial
+sums and bounded coefficient lists and therefore fit the existing
+quantifier-free derivation discipline.

@@ -1,0 +1,116 @@
+# ProveIt audit for Richardson in iPRA
+
+Read-only audit, 19 November 2026 (America/Los_Angeles).
+Pinned repository: VladimirReshetnikov/ProveIt, commit
+`eb8eb6653c85aa44f1e18dd4efa243f41b5a9e98`.
+
+## Main conclusion
+
+The repository provides a checked ordinary iPRA proof calculus and substantial
+object-level arithmetic, and it provides a separate checked Lean/Mathlib MRDP theorem.
+It does **not** thereby provide an internal iPRA MRDP or Richardson theorem.
+The repository's own unification plan explicitly records that boundary.
+
+## Read sources and precise status
+
+1. `Logic/PrimitiveRecursiveArithmetic/README.md`.
+   Defines iPRA as intuitionistic first-order equality plus all PR definitions,
+   successor axioms, and quantifier-free induction. Its status table separates:
+   - `ConciseIPRA/`: kernel-checked proof-system and bi-interpretation results;
+   - `Derivations/`: kernel-checked derivations of type `[] ⊢[PRAAx] φ`;
+   - `Bridge/`: checked transport between Foundation iPRA and ConciseIPRA;
+   - `docs/proofs/`: 115 delivered packets, not rerun/checked/compiled.
+   It explicitly says none of those packets has been verified and that no packet
+   claims an object derivation for one of its main theorems.
+
+2. `Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md`.
+   Its H10 table row says `Diophantine` supplies mathematical results over ℕ
+   and needs object-language representation plus two derivations for each
+   concrete reduction selected for iPRA reuse.
+   Phase 4 says: “General internal MRDP can proceed as a separate project if a
+   client needs that stronger interface.”
+   Thus an ordinary use of `Diophantine.mrdp` is not an internal iPRA proof.
+
+3. `Computability/HilbertTenthProblem/Lean/MRDP.md`.
+   States `Diophantine.mrdp`:
+   for each recursively enumerable `S : Set ℕ`, some finite integer polynomial
+   represents membership by existential natural witnesses.
+   Witnesses may be zero; k may be zero. The public result has no numerical
+   degree/witness bound or practical polynomial-generating algorithm.
+   The hard-direction proof is `Common/MRDPCore.lean`.
+   Rebuild targets and axiom probes are documented, but not rerun in this audit.
+
+4. `Computability/HilbertTenthProblem/Lean/Diophantine/Common/MRDPCore.lean`.
+   Source has a genuine proof (no declared MRDP axiom):
+   binomial digit coding → factorial coding → CRT bounded-universal elimination
+   → fixed primitive-recursive graph representation → bounded evaluator →
+   one finite integer polynomial.
+   Important formalization boundary:
+   - imports Mathlib `pow_dioph`;
+   - `boundedForall_dioph` uses finite choice `choose!` and CRT witnesses;
+   - `recursionTrace_iff` uses beta-coded traces;
+   - `primrec_diophFn` is external structural induction on a PR derivation;
+   - `mrdp` uses `primrec_evaln` for a fixed semidecider code.
+   These are excellent mathematical proof templates, not object-level iPRA
+   derivations.
+
+5. `Computability/HilbertTenthProblem/Lean/Diophantine/Paper1984/DPR.lean`.
+   Gives an alternate checked semantic route:
+   `JM1984.RM.re_single_equation`, `re_exp_diophantine`.
+   Every r.e. set is represented by unary/general exponential terms;
+   the theorem even provides uniqueness of the witness tuple.
+   This does not remove the need for internal witness-map and PR-bound proofs.
+
+6. `Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean`.
+   Actual reusable API:
+   `PR.zero`, `PR.succ`, `PR.proj`, `PR.comp`, `PR.prec`;
+   `PTm.var`, `PTm.app`;
+   `PRAAx.proj`, `comp`, `precZero`, `precSucc`, `succNeZero`,
+   `succInj`, and `ind`.
+   `PRA.qfInd` accepts a syntactically quantifier-free formula,
+   a base derivation, and a step derivation.
+   The namespace is `LeanProofs.ConciseIPRA`.
+
+7. `Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Core/Search.lean`.
+   Checked object-level bounded search:
+   `LeanProofs.IPRA.Search.mu`, `search_spec`, `search_minimal`,
+   `search_found`. The result is the least zero below N, or N on failure.
+   This is directly relevant to rational-grid search and finite certificate
+   verification.
+
+8. `Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/DiophantineNumberTheory/Pell.lean`.
+   This small source proves the Brahmagupta polynomial identity and
+   composition of Pell solutions as object-level iPRA sentences.
+   It is not the full Pell/exponentiation Diophantine representation theorem.
+
+9. `Logic/PrimitiveRecursiveArithmetic/DEPENDENCIES.md` and `ENDPOINTS.md`.
+   Confirm the `Diophantine` closure has no iPRA/bridge/Foundation imports.
+   Strong specific iPRA equation/consistency endpoints exist separately in
+   `DiophantineConsistency`, but these are fixed consistency instances,
+   not a uniform halting-to-polynomial reduction.
+
+## Recommended safe reuse
+
+- Use the ordinary `Prf PRAAx` calculus as the intended Lean target.
+- Reuse arithmetic, order, rational coding and bounded search as checked bases.
+- For the Richardson reduction, separate mathematical semantics over real
+  functions from first-order arithmetical certificate predicates.
+- Specialize a fixed bounded universal-machine evaluator; do not claim a
+  primitive-recursive evaluator for arbitrary PR function codes.
+- State the fixed Diophantine representation with PR witness transformations
+  and internal proofs of both directions. Do not hide it behind an opaque
+  “MRDP is formalizable” claim.
+- If its object derivation is not supplied, label it an outstanding internal
+  foundation obligation even when the classical semantic theorem is proved.
+- A fixed ZFC-consistency equation is insufficient for full algorithmic
+  undecidability unless a separate uniform input reduction is developed.
+
+## Files saved for parent use
+
+`repo_sources/PR.lean`, `Search.lean`, `Pell.lean`,
+`MRDPCore.lean`, `MRDP.md`, `DiophantineTrace.lean`,
+`DPR.lean`, `UNIFICATION-PLAN.md`, and `audit_manifest.json`.
+These are internal reference downloads, not a requested publication bundle.
+All source claims above were read through the GitHub plugin; no repository
+mutation or local Lean build was performed.
+

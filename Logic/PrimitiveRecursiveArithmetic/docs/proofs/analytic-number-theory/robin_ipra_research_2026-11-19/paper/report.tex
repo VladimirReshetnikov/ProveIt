@@ -1,0 +1,522 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,needspace}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,
+ citecolor=MidnightBlue,pdftitle={Robin's theorem in iPRA: finite components and analytic obligations},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\pra}{\mathsf{PRA}}
+\newcommand{\RH}{\mathsf{RH}}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\Pos}{\mathsf{Pos}}
+\newcommand{\Neg}{\mathsf{Neg}}
+\newcommand{\Bad}{\mathsf{Bad}}
+\newcommand{\Rstr}{\mathsf{Robin}_{<}}
+\newcommand{\Rweak}{\mathsf{Robin}_{\geq}}
+\newcommand{\Rdn}{\mathsf{Robin}_{\neg\neg}}
+\newcommand{\RHc}{\mathsf{RH}_{\rm cert}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+ columns=fullflexible,keepspaces=true,frame=single,
+ rulecolor=\color{black!20},backgroundcolor=\color{black!2}}
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{12mm}
+{\Large Constructive number theory and proof foundations\par}
+\vspace{14mm}
+{\huge\bfseries Robin's theorem in intuitionistic\\[3mm]
+primitive recursive arithmetic\par}
+\vspace{8mm}
+{\Large Verified finite components and a precise analytic completion problem\par}
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov\\19 November 2026\par}
+\vfill
+\begin{minipage}{0.92\textwidth}
+\textbf{Status of the requested theorem.}
+This report does \emph{not} establish the full equivalence in $\ipra$.
+It gives complete human proofs of explicit finite arithmetic reductions,
+an exact interval construction, a finite verification through $100000$,
+and a locally compiled constructive Lean core. It identifies the analytic
+and object-theory obligations which remain before the requested equivalence
+can honestly be claimed.
+
+The distinction is substantive: neither a classical Lean theorem nor a
+record whose fields request the missing proofs constitutes a proof in
+first-order $\ipra$. No impossibility or independence result is asserted.
+\end{minipage}
+\vfill
+{\small Source snapshots, exact certificate data, replay code, Lean source,
+and verification records accompany this report.}
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{The exact problem and the results obtained}
+
+Robin's theorem is the classical equivalence
+\begin{equation}\label{eq:target}
+ \RH\quad\Longleftrightarrow\quad
+ \forall n\ge5041,\quad \sigma(n)<e^\gamma n\log\log n,
+\end{equation}
+where
+\[
+ \sigma(n)=\sum_{\substack{1\le d\le n\\d\mid n}}d,\qquad
+ H_m=\sum_{j=1}^{m}\frac1j,\qquad
+ \gamma=\lim_{m\to\infty}(H_m-\log m).
+\]
+The requested task is to prove the equivalence, not to prove $\RH$.
+The numerical cutoff and the strict inequality are both essential.
+The statement agrees with the supplied MathWorld page and Robin's original
+Theorem~1 \cite{MathWorld,Robin}.
+
+For clarity put
+\begin{equation}\label{eq:gap}
+ B(n)=e^\gamma\log\log n,\qquad
+ A(n)=\frac{\sigma(n)}n,\qquad
+ G(n)=B(n)-A(n).
+\end{equation}
+The right side of \eqref{eq:target} is $G(n)>0$ for every $n>5040$.
+A positive real inequality is represented below by an explicit positive
+rational lower bound, not merely by failure to certify a negative value.
+
+\subsection{What is proved here}
+
+The main completed mathematical components are as follows.
+\begin{enumerate}[leftmargin=*]
+\item Explicit rational enclosures for logarithms, $\gamma$, $e^\gamma$,
+and $B(n)$, with primitive-recursive precision schedules. The correctness
+proof uses finite geometric identities, finite telescoping, and specified
+tails.
+\item Exact certificates for all $99999$ integers $2\le n\le100000$.
+Every comparison is strict; no case is left undetermined.
+\item A uniform infinite subcase: every $n\ge5041$ with at most three
+distinct prime factors satisfies Robin's inequality.
+\item An elementary counterexample transfer. For $m\ge16$ and
+\[
+ F(m^2)=e^\gamma\log\vartheta(m^2)
+        \prod_{p\le m^2}(1-p^{-1}),
+\]
+the inequality $-\log F(m^2)>12/m$ produces a specific counterexample
+$\operatorname{lcm}(1,\ldots,m^2)>5040$.
+\item A constructive Lean core for the logic of strict certificates,
+negative certificates, stable negative RH, and bounded witness search.
+Eight printed axiom audits return no axioms.
+\item A useful conditional metatheorem: an appropriately arithmetized
+\emph{classical PRA} proof of this $\Pi^0_1$--$\Pi^0_2$ equivalence would
+yield an intuitionistic PRA proof. Thus the use of classical logic by
+itself is not an impossibility argument.
+\end{enumerate}
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.34\textwidth}
+ >{\raggedright\arraybackslash}p{.58\textwidth}@{}}
+\toprule
+Component & Status in this archive\\
+\midrule
+Finite arithmetic and LCM arguments & Complete human proofs; object iPRA
+derivations outlined, not constructed.\\
+Finite interval data & Generated and replayed using exact integers.\\
+Constructive logical shell & Compiled locally in Lean 4.32.0; no axioms
+in the eight audited declarations.\\
+Concrete zero-certificate checker & Detailed arithmetic specification;
+not implemented or proved as an iPRA derivation.\\
+RH-dependent sharp analytic bound & Identified precisely from a classical
+development; iPRA interpretation not established here.\\
+Nicolas--Landau analytic converse & Its finite output reduction is proved;
+the required iPRA analytic argument remains open in this work.\\
+Full equivalence \eqref{eq:target} in iPRA & Not established.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Why the distinction matters}
+
+A computable real function can be evaluated at every specified precision
+without admitting a primitive-recursive bound on a search for a strictly
+positive margin. Likewise, a classical theorem in Lean's ambient logic
+does not identify the induction and comprehension used by its proof.
+Conversely, the existence of classical steps does not establish that the
+theorem is unprovable constructively. The remaining mathematical task is
+to supply the appropriate arithmetic proof, or a proof in a conservative
+extension with an applicable conservation theorem.
+
+This report therefore provides useful proved components and a precise
+completion route, while keeping the uncompleted analytic theorem visible.
+
+\section{The object theory and its arithmetic representations}
+
+\subsection{Language, axioms, and inference}
+
+We use first-order intuitionistic primitive recursive arithmetic. Its
+objects are natural numbers. There is a function symbol for each fixed
+primitive-recursive definition, formed from zero, successor, projections,
+composition, and primitive recursion. Its nonlogical axioms are the
+defining equations, successor nonzero and injectivity, and the induction
+scheme
+\[
+ \bigl(Q(0,\vec a)\wedge
+ \forall t(Q(t,\vec a)\to Q(t+1,\vec a))\bigr)
+ \to\forall t\,Q(t,\vec a)
+\]
+for quantifier-free $Q$. Logic is intuitionistic first-order natural
+deduction with equality; negation means implication to false. No excluded
+middle, Markov principle, countable choice, or unrestricted induction is
+added.
+
+Each fixed bounded predicate has a primitive-recursive Boolean
+characteristic function. A bounded universal assertion is compiled into
+the Boolean fold which checks each entry. Induction on the value of this
+fold is quantifier-free. This observation must be applied to a
+\emph{specified} predicate and specified bounds; it is not a general
+reflection principle for arbitrary statements.
+
+\subsection{Finite arithmetic codes}
+
+Signed integers can be represented by a sign and a magnitude; rational
+numbers by a signed numerator and a positive denominator. Reduction to
+lowest terms is optional. Equality and order are checked by signed
+cross-multiplication. Finite sequences use any standard primitive-recursive
+pairing and list code with bounded projections. All constructions below
+can instead use denominator-cleared integers.
+
+For $n>0$, divisibility is checked by bounded division. Trial division
+through $n$ gives a factorization trace. The prime predicate
+\[
+ \operatorname{Prime}(p)\;\equiv\;
+ p\ge2\ \wedge\
+ \forall d\le p\,\bigl(d\mid p\to(d=1\vee d=p)\bigr)
+\]
+is bounded and hence primitive recursive. The divisor sum above is a
+bounded sum. Factorials, binomial coefficients, finite products, integer
+square roots, and
+\[
+ L_1=1,\qquad L_{j+1}=\operatorname{lcm}(L_j,j+1)
+\]
+are primitive recursive. Euclid's gcd algorithm may be replaced by
+bounded search if a particularly simple totality argument is wanted.
+
+Exact rational intermediate values can be large. Their size does not
+invalidate primitive recursiveness: every loop and every recursion in
+these definitions has an explicitly supplied natural-number argument.
+Claims about computational practicality are kept separate.
+
+\subsection{Real names are abbreviations for fixed programs}
+
+A rational interval name $x$ consists, externally, of a fixed pair of
+primitive-recursive endpoint functions $l_x(k),u_x(k)$ and proofs of
+compatibility and an explicit shrinking bound. Its rational comparisons
+are arithmetic predicates. No quantification over arbitrary real
+numbers is needed for the numerical Robin side.
+
+We write $x>0$ positively as
+\[
+ \exists k\quad l_x(k)>0.
+\]
+The negative weak statement $x\ge0$ is
+$\forall k\,\neg(u_x(k)<0)$. These are different formulas.
+When different names denote the same quantity, a finite comparison
+estimate must justify substitution; a semantic assertion in $\RR$ is
+not automatically an object derivation.
+
+There is no total primitive-recursive universal evaluator for all
+primitive-recursive programs. The present convention fixes each program
+before its representing term is introduced. The Lean shell later
+parametrizes Boolean functions for readability, and explicitly does not
+claim that arbitrary Lean functions are primitive recursive.
+
+\section{Explicit interval arithmetic and its human correctness proof}
+\label{sec:intervals}
+
+\subsection{A logarithm enclosure from a finite geometric identity}
+
+For $0\le z<1$ set
+\[
+ S_K(z)=2\sum_{j=0}^{K-1}\frac{z^{2j+1}}{2j+1}.
+\]
+The finite identity
+\[
+ \frac1{1-t^2}=\sum_{j=0}^{K-1}t^{2j}
+                   +\frac{t^{2K}}{1-t^2}
+\]
+gives, on integrating between $0$ and $z$,
+\begin{equation}\label{eq:logtail}
+ 0\le
+ \log\frac{1+z}{1-z}-S_K(z)
+ \le\frac{2z^{2K+1}}{(2K+1)(1-z^2)}.
+\end{equation}
+The upper estimate follows by replacing $(1-t^2)^{-1}$ by
+$(1-z^2)^{-1}$ in the remainder. In a rational-name presentation the same
+formula is the consistency bound between finite polynomials: subtract two
+partial sums and bound the resulting finite tail by a geometric sum.
+There is no unbounded search in either presentation.
+
+For $1\le q\le2$, put $z=(q-1)/(q+1)\le1/3$. Thus
+\begin{equation}\label{eq:uniform-log-tail}
+ 0\le\log q-S_K(z)
+ \le r_K:=\frac{9}{4(2K+1)3^{2K+1}}
+ \le3^{-2K}.
+\end{equation}
+For an arbitrary positive rational $q\ge1$, bounded binary range
+reduction produces $q=2^a y$, with $a\ge0$ and $1\le y<2$.
+The enclosure is the sum of $a$ copies of the enclosure of $\log2$ and
+the enclosure of $\log y$. For $q<1$ evaluate $1/q$ and negate the
+interval. Taking
+\[
+ K=k+a+4
+\]
+makes the interval width at most
+$(a+1)3^{-2K}\le2^{-k}$. The inequality follows, for example, from
+$a+1\le2^{a+1}$ and $9^K\ge2^{2K}$.
+
+This defines a fixed primitive-recursive rational interval
+$\operatorname{LogI}(q,k)$ of width at most $2^{-k}$. Powers,
+denominators, and the finite summation length are explicit.
+
+\subsection{Euler's constant without an unspecified convergence rate}
+
+Let
+\[
+ a_m=H_m-\log m-\frac1{2m}\qquad(m\ge1).
+\]
+
+\begin{lemma}\label{lem:gamma}
+For every $m\ge1$,
+\begin{equation}\label{eq:gamma-bound}
+ a_m\le\gamma\le a_m+\frac1{12m^2}.
+\end{equation}
+Moreover these bounds follow from a finite telescoping estimate with an
+explicit tail.
+\end{lemma}
+\begin{proof}
+Set $z=1/(2m+1)$. Direct subtraction gives
+\[
+ a_{m+1}-a_m
+ =\frac1{2m}+\frac1{2(m+1)}-\log(1+1/m)
+ =\frac{2z}{1-z^2}-2\operatorname{artanh}z.
+\]
+Using the geometric expansion already bounded in
+\eqref{eq:logtail}, this difference is
+\[
+ 4\sum_{j=1}^{\infty}\frac{j}{2j+1}z^{2j+1}.
+\]
+It is positive. Since $(2j+1)^{-1}\le1/3$ for $j\ge1$,
+\begin{align*}
+ 0<a_{m+1}-a_m
+ &\le\frac43\sum_{j=1}^{\infty}jz^{2j+1}
+ =\frac{4z^3}{3(1-z^2)^2}\\
+ &=\frac1{12m^2}-\frac1{12(m+1)^2}.
+\end{align*}
+Each displayed infinite sum can be replaced by a finite sum and its
+explicit geometric tail. For $M>m$, finite telescoping therefore gives
+\[
+ 0\le a_M-a_m
+ \le\frac1{12m^2}-\frac1{12M^2}.
+\]
+This is a Cauchy estimate with an explicit modulus. It defines a limit
+name; and $H_m-\log m=a_m+1/(2m)$ identifies that name with the usual
+Euler constant. Letting the explicitly bounded remainder tend to zero
+gives \eqref{eq:gamma-bound}. Equivalently one works directly with the
+nested intervals, without a completed real field inside $\ipra$.
+\end{proof}
+
+The case $m=1$ gives $1/2\le\gamma\le7/12$, useful for every subsequent
+domain check. For a rational enclosure at precision $k$, choose
+$m=2^{k+4}$, evaluate $\log m$ with precision $k+4$, and use
+\eqref{eq:gamma-bound}. The resulting width is less than $2^{-k}$.
+Intersecting with $[1/2,7/12]$ is legitimate and ensures that all
+exponential evaluations below lie in $[0,1]$.
+
+\subsection{The exponential enclosure}
+
+For $0\le x\le1$ put $E_K(x)=\sum_{j=0}^{K}x^j/j!$. The ratio of
+consecutive omitted terms is at most $1/(K+2)$, so
+\begin{equation}\label{eq:exptail}
+ 0\le e^x-E_K(x)\le\frac2{(K+1)!}.
+\end{equation}
+This too is a finite tail estimate, with the usual power series as its
+external interpretation. If $x\in[l,u]\subseteq[0,1]$, monotonicity gives
+\[
+ E_K(l)\le e^x\le E_K(u)+\frac2{(K+1)!}.
+\]
+The difference $e^u-e^l$ is at most $3(u-l)$, since $e<3$.
+The same Lipschitz bound follows by factoring $u^j-l^j$ in the finite
+series and applying \eqref{eq:exptail}.
+
+Use the $\gamma$ enclosure at precision $k+8$, and take $K=2k+32$.
+Since $(K+1)!\ge2^K$, the width of the resulting enclosure of $e^\gamma$
+is below $2^{-k}$. Intersecting with $[1,3]$ is harmless.
+
+\subsection{Composing the double logarithm}
+
+For $n\ge2$ let $\ell(n)$ denote the binary bit length of $n$ and put
+\[
+ r=k+\ell(n)+16.
+\]
+Enclose $\log n$ at precision $r$, then enclose the logarithms of its
+two endpoints at the same precision. The first interval lies above
+$1/2$, because $\log2\ge2/3$ and its width is tiny. On this domain
+the logarithm has Lipschitz constant $2$. The double-log interval
+therefore has width at most $4\cdot2^{-r}$. It can be intersected with
+$[-1,n]$, which contains $\log\log n$ for $n\ge2$.
+
+Multiply it by the $[1,3]$-bounded enclosure of $e^\gamma$ at precision
+$r$, using the minimum and maximum of all four endpoint products.
+The resulting rational interval $[L(n,k),U(n,k)]$ contains $B(n)$
+and has width at most
+\[
+ (n+12)2^{-r}\le2^{-k}.
+\]
+This last inequality follows from $n<2^{\ell(n)}$ and the spare factor
+$2^{16}$. All intermediate domains and all loop lengths have now been
+specified. Define the fixed arithmetic predicates
+\begin{align}
+ \Pos(n,k)&:\Longleftrightarrow n\ge2\ \wedge\
+                 nL(n,k)>\sigma(n),\label{eq:pos}\\
+ \Neg(n,k)&:\Longleftrightarrow n\ge2\ \wedge\
+                 nU(n,k)<\sigma(n).\label{eq:neg}
+\end{align}
+After clearing positive denominators these are primitive-recursive
+Boolean checks on integers. They are mutually incompatible, even when
+different precisions are used.
+
+\subsection{The executable dyadic implementation}
+
+The certificate generator uses the same inequalities with directed
+rounding to denominator $S=2^{72}$, rather than the slower exact-rational
+precision schedule just specified. It uses $32$ logarithm and exponential
+terms and $m=2048$ for the Euler-constant bound. A rational operation
+whose result is $a/b$ is rounded down by $\lfloor aS/b\rfloor$ for a
+lower endpoint and up by $\lceil aS/b\rceil$ for an upper endpoint.
+The four-corner product rule handles the negative value $\log\log2$.
+
+For $\log q$ on $[1,2]$, the implementation rounds $z$, $z^2$, each odd
+power, and each summand outward, then adds the ceiling of $Sr_K$.
+For $\gamma$, it rounds $H_m$, $\log m$, $1/(2m)$ and $1/(12m^2)$
+outward. For $e^\gamma$, it uses the nonnegative Taylor recurrence
+$t_j=t_{j-1}x/j$ and adds the ceiling of $2S/(K+1)!$.
+Monotonicity proves each loop invariant by induction on its bounded
+counter. Final acceptance is solely one of
+\[
+ nL_{\rm int}>\sigma(n)S,\qquad
+ nU_{\rm int}<\sigma(n)S.
+\]
+
+The dyadic program is a finite numerical verification tool. It is not
+described as a formal proof checker for the entire object theory.
+The human interval proof explains its exact certificate meanings;
+the file \code{verification/arithmetic\_audit.md} records a separate
+implementation audit.
+Every accepted dyadic row supplies a positive rational gap. Choosing
+$k$ with $2^{-k}$ smaller than that supplied gap converts it to a
+canonical certificate \eqref{eq:pos} or \eqref{eq:neg}. A bound follows
+immediately from the numerator and denominator bit lengths, so this
+conversion does not require unbounded precision search.
+
+\section{Finite verification and an infinite elementary subcase}
+
+\subsection{Results through one hundred thousand}
+
+The sieve computes $\sigma(n)$ by adding $d$ to every multiple of $d$.
+Its invariant is that, after processing $d$, each array entry contains
+the sum of its divisors at most $d$. Thus it is an exact bounded
+arithmetic computation.
+
+The generator classified every $2\le n\le100000$. The complete set of
+strict failures in this range is
+\begin{align*}
+ &2,3,4,5,6,8,9,10,12,16,18,20,24,30,36,48,60,\\
+ &72,84,120,180,240,360,720,840,2520,5040.
+\end{align*}
+Consequently every $5041\le n\le100000$ passes. This is a finite theorem
+only. It does not justify any statement about all larger integers.
+
+Here are the common exact enclosures, all with denominator
+$S=4722366482869645213696$:
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Quantity & Lower numerator & Upper numerator\\
+\midrule
+$\gamma$ & $2725823815493325450478$ & $2725823909318317689830$\\
+$e^\gamma$ & $8410876523171405724439$ & $8410876690280509860046$\\
+$B(5041)$ & $18024888747257598183496$ & $18024889105379965383064$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For orientation, the last interval lies between $3.81691865$ and
+$3.81691874$. These decimal figures are explanatory; the comparisons
+in the archive use the integers.
+
+Among the checked $n>5040$, the smallest certified lower bound for
+$G(n)$ occurs at $n=10080$ and equals
+\[
+ \frac{2670582172179503638522368}
+      {47601454147326023754055680}
+ >0.05610.
+\]
+The CSV records $n,\sigma(n)$, both interval numerators, the binary
+scale, and the accepted sign. Its SHA-256 is recorded in
+\code{certificates/summary.json}. The independent replay recomputes
+the arithmetic and checks row continuity, the advertised range, signs,
+and the file digest.
+
+\subsection{All integers with at most three distinct prime factors}
+
+\begin{theorem}\label{thm:three}
+If $n\ge5041$ has at most three distinct prime factors, then
+$\sigma(n)<e^\gamma n\log\log n$.
+\end{theorem}
+\begin{proof}
+For $n>1$ write $n=\prod_{i=1}^r p_i^{a_i}$ with distinct increasing
+primes and $a_i\ge1$. Finite geometric summation gives
+\[
+ A(n)=\prod_{i=1}^r
+       \frac{1-p_i^{-a_i-1}}{1-p_i^{-1}}
+ <\prod_{i=1}^r\frac{p_i}{p_i-1}.
+\]
+Every factor removed from the numerator lies strictly between zero and
+one. Since $p_1\ge2$, $p_2\ge3$, $p_3\ge5$ and $p/(p-1)$ decreases,
+for $r\le3$ the right side is at most
+\[
+ 2\cdot\frac32\cdot\frac54=\frac{15}4.
+\]
+The certificate above proves $B(5041)>15/4$ by a single integer
+cross-multiplication. Both logarithms and $e^\gamma$ are increasing
+or positive on the relevant domains, so $B(n)\ge B(5041)$.
+Combining the two estimates proves the strict inequality.
+\end{proof}
+
+Only fixed finite factorization, finite product induction, elementary
+logarithm monotonicity, and one displayed rational certificate are used.
+This gives an actual infinite family of Robin inequalities without RH.
+The object-theory proof would compile these specific finite recurrences;
+it would not appeal to the unproved full criterion.
+
+\input{lcm_bridge.tex}
+\input{foundations.tex}
+\input{analytic_obligations.tex}
+\input{formalization.tex}
+\input{references.tex}
+\end{document}

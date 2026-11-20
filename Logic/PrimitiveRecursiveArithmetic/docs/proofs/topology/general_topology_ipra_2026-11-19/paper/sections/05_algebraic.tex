@@ -1,0 +1,633 @@
+\section{Finite algebraic topology, sheaves, and Boolean algebras}
+\label{sec:algebraic}
+
+This section treats the index entries \emph{Betti Number}, \emph{Euler
+Characteristic}, \emph{Genus}, \emph{Coloring}, the sheaf-related entries, and
+\emph{Sigma-Algebra}.  The objects are finite tables or finite presentations.
+Consequently the results below are uniform arithmetic theorems about those
+presentations, not assertions that an arbitrary topological space has a
+finite presentation.  The distinction matters especially for homotopy
+invariance, surface classification, and countable unions.
+
+\subsection{Chain complexes and exact computation of homology}
+
+A finite rational chain complex consists of a natural number $d$, dimensions
+$c_0,\ldots,c_d$, and rational matrices
+\[
+ D_k:\Q^{c_k}\longrightarrow\Q^{c_{k-1}}
+ \qquad(1\leq k\leq d)
+\]
+whose consecutive products vanish.  Put $c_{-1}=c_{d+1}=0$ and let $D_0$ and
+$D_{d+1}$ be the zero maps to and from the zero-dimensional spaces.  A matrix
+is a rectangular list; a rational entry is an integer numerator and a
+positive integer denominator.  All equalities in this subsection are
+checked by cross multiplication.  In particular, no equality test for real
+numbers occurs.  Write
+\[
+ Z_k=\ker D_k,\qquad B_k=\operatorname{im}D_{k+1},\qquad
+ H_k=Z_k/B_k.
+\]
+The quotient notation will be implemented by a chosen basis and a projection,
+as described below, rather than by a primitive quotient sort.
+
+\begin{proposition}[A01: the simplicial boundary squares to zero]
+\label{prop:boundary-square}
+Let $K$ be a finite list of nonempty increasing vertex lists, closed under
+nonempty sublists.  For $k>0$ define
+\[
+ \partial[v_0,\ldots,v_k]
+   =\sum_{i=0}^{k}(-1)^i[v_0,\ldots,\widehat v_i,\ldots,v_k],
+ \qquad \partial[v]=0.
+\]
+The resulting integer matrices satisfy $\partial^2=0$.
+\end{proposition}
+\begin{proof}
+Fix two distinct deleted vertices with original indices $i<j$.  Deleting
+$j$ first and then $i$ contributes sign $(-1)^{i+j}$ to the remaining
+face.  Deleting $i$ first and then the vertex now in position $j-1$
+contributes $(-1)^{i+j-1}$.  These contributions cancel.  Every term in the
+double sum belongs to exactly this pair, indexed by $i<j$.  For $k=1$ the
+second boundary is zero by definition.  This is a finite reindexing of
+integer sums, formalizable by bounded induction on the two indices.
+\end{proof}
+
+\begin{proposition}[A02: homology with explicit normal forms]
+\label{prop:effective-homology}
+There is a primitive recursive algorithm computing integers $r_k$ and
+$b_k$, rational matrices giving cycle and boundary bases, and mutually inverse
+coordinate maps
+\[
+ H_k\cong\Q^{b_k},\qquad
+ r_k=\operatorname{rank}D_k,\qquad
+ b_k=c_k-r_k-r_{k+1}.
+\]
+In particular $r_k+r_{k+1}\leq c_k$.
+\end{proposition}
+\begin{proof}
+Process the columns of a matrix from left to right.  At each step scan the
+unused rows in their fixed order; if a nonzero entry exists, choose the first
+one, exchange rows, divide the pivot row by that entry, and subtract its
+appropriate multiples from every other row.  If there is no such entry,
+move to the next column.  The procedure performs at most the number of
+columns many stages, each with a bounded row scan.  Every row operation has
+an explicitly recorded inverse.  The final reduced matrix therefore has
+the same kernel as the original matrix and has $r$ pivot columns.  Its
+nonpivot variables are free; assigning each in turn the value $1$ and the
+others $0$, and solving the pivot equations, gives $c-r$ independent kernel
+vectors spanning the kernel.  The original pivot columns form an image
+basis: the invertible row transformation preserves their independence and
+their spanning relations.  This proves rank--nullity without selecting an
+unspecified basis.
+
+Apply this construction to $D_k$ and $D_{k+1}$.  The chain identity says that
+each of the $r_{k+1}$ image-basis vectors is a cycle.  Express these vectors
+in the computed basis of $Z_k$, by the same elimination.  They remain
+independent.  Starting with them, scan the cycle basis and append a vector
+exactly when the enlarged list remains independent.  The resulting list is
+a basis of $Z_k$ beginning with a basis of $B_k$.  Its remaining
+$c_k-r_k-r_{k+1}$ vectors span a complement $L_k$, and
+$Z_k=B_k\oplus L_k$.  Projection onto the last coordinates is the desired
+normal form for a homology class.  Its kernel is precisely $B_k$, so it
+also proves independence of the chosen cycle representative.
+
+All scans have explicit finite bounds.  For a size bound, encode an
+unreduced rational by a pair with absolute numerator and denominator at
+most $S$.  Any addition, subtraction, multiplication, or division by a
+tested nonzero rational produces a pair bounded by $2(S+1)^2$.
+Starting from the largest input entry, iterate this bound for the number of
+arithmetic operations of the fixed elimination schedule.  For a matrix
+with at most $N$ rows and columns, $20(N+1)^4$ elementary arithmetic and
+comparison operations is a sufficient loose bound for elimination,
+recording row operations, and extracting bases.  A finite composition of
+these schedules gives a primitive recursive bound for the entire complex.
+Thus the proof is about bounded lists and identities of rational pairs.
+\end{proof}
+
+\begin{theorem}[A03: finite Euler--Poincar\'e formula]
+\label{thm:euler-poincare}
+For every finite rational chain complex,
+\[
+ \chi(C):=\sum_{k=0}^{d}(-1)^kc_k
+       =\sum_{k=0}^{d}(-1)^kb_k.
+\]
+For a finite simplicial complex, $c_k$ is its number of $k$-simplices.
+\end{theorem}
+\begin{proof}
+The preceding proposition gives $c_k=b_k+r_k+r_{k+1}$.  Substitute this in
+the alternating sum.  The occurrence of $r_j$ from index $j$ has sign
+$(-1)^j$; its occurrence from index $j-1$ has sign $(-1)^{j-1}$.  They
+cancel for $1\leq j\leq d$, and the two endpoint terms are zero because
+$r_0=r_{d+1}=0$.  This cancellation is a finite sum identity.  There is no
+limit and no infinite-dimensional quotient.
+\end{proof}
+
+\begin{theorem}[A04: certified chain-homotopy invariance]
+\label{thm:chain-homotopy}
+A list of matrices $F_k:C_k\to C'_k$ satisfying
+$D'_kF_k=F_{k-1}D_k$ induces computable linear maps on the normal forms
+$H_k(C)\to H_k(C')$.  If
+\[
+ F_k-G_k=D'_{k+1}S_k+S_{k-1}D_k,
+\]
+then $F$ and $G$ induce the same homology map.  Consequently, supplied
+chain maps $F,G$ and supplied chain homotopies $GF\simeq 1$ and
+$FG\simeq 1$ imply equality of all Betti numbers and Euler characteristics.
+\end{theorem}
+\begin{proof}
+For a cycle $z$, the commuting-square identity gives $D'Fz=FDz=0$.
+For a boundary $D w$, it gives $F D w=D'F w$, a boundary.  Apply $F$ to
+the chosen complement basis and project onto the target complement to
+obtain its homology matrix.  Changes of representatives alter the answer
+by a boundary and hence by zero after projection.  If $Dz=0$, the
+homotopy equation reduces to $(F-G)z=D'Sz$, proving equality of the
+induced maps.  Applying this to the two supplied homotopies yields inverse
+homology matrices.  Independent columns and their inverse images then
+give equal dimensions by finite rank--nullity.  The Euler conclusion
+follows from Theorem~\ref{thm:euler-poincare}.
+\end{proof}
+
+This is an invariance theorem for \emph{certified chain homotopies}.
+Turning an arbitrary continuous homotopy into such a certificate is a
+separate theorem and is not smuggled into its hypothesis.
+
+\begin{proposition}[A05: elementary collapse]
+\label{prop:collapse}
+Suppose $\sigma$ is a codimension-one face of $\tau$ in a finite
+simplicial complex, and $\tau$ is the only simplex properly containing
+$\sigma$.  Deleting $\sigma$ and $\tau$ gives a subcomplex $K'$ with the
+same rational Betti numbers and Euler characteristic.
+\end{proposition}
+\begin{proof}
+Write $\partial\tau=\varepsilon\sigma+b$, where
+$\varepsilon\in\{1,-1\}$ and $b\in C(K')$.  Let $i:C(K')\to C(K)$ be
+inclusion.  Define $r(\tau)=0$, $r(\sigma)=-\varepsilon b$, and let $r$
+fix every other basis simplex.  Define $h(\sigma)=\varepsilon\tau$ and
+let $h$ vanish on all other basis simplices.  Directly on $\sigma$ and
+$\tau$ one checks
+\[
+ ir=1-\partial h-h\partial,\qquad ri=1.
+\]
+For any other simplex the identity holds because its boundary cannot
+contain $\sigma$: that would make it another proper coface of $\sigma$.
+Commuting $\partial$ with the displayed identity and using
+$\partial^2=0$ shows that $r$ is a chain map; inclusion is visibly a
+chain map.  These are the certificates required by
+Theorem~\ref{thm:chain-homotopy}.  Alternatively the Euler characteristic
+changes by deleting exactly one $k$-simplex and one $(k+1)$-simplex, whose
+signed contributions sum to zero.  Repeating this argument for a supplied
+finite collapse sequence preserves both conclusions.
+\end{proof}
+
+\begin{proposition}[A06: Euler additivity]
+For finite subcomplexes $A,B$ of a common complex,
+\[
+ \chi(A\cup B)=\chi(A)+\chi(B)-\chi(A\cap B).
+\]
+Disjoint union adds each Betti number.
+\end{proposition}
+\begin{proof}
+At each dimension, partition the simplex lists into those in $A\setminus
+B$, those in $B\setminus A$, and those in $A\cap B$.  Counting this
+partition proves the first assertion after taking alternating sums.  For
+disjoint union, the boundary matrices are block diagonal.  Elimination
+within each block gives the disjoint union of its cycle, boundary, and
+complement bases, so the homology dimensions add.
+\end{proof}
+
+\begin{proposition}[A19: simplicial maps and the finite prism identity]
+\label{prop:simplicial-prism}
+An ordered vertex tuple denotes its oriented simplex: exchanging two
+vertices changes its sign, and a tuple with repeated vertices denotes
+zero.  A simplicial vertex map $f$ induces the chain map
+$f_\#[v_0,\ldots,v_k]=[f(v_0),\ldots,f(v_k)]$.
+If $f,g:K\to L$ are contiguous, meaning that the union of their vertex
+images of each source simplex is a target simplex, then
+\[
+ P[v_0,\ldots,v_k]
+ =\sum_{i=0}^{k}(-1)^i
+ [f(v_0),\ldots,f(v_i),g(v_i),\ldots,g(v_k)]
+\]
+is a finite chain homotopy satisfying
+$\partial P+P\partial=g_\#-f_\#$.
+\end{proposition}
+\begin{proof}
+The alternating face sum is well defined under the oriented-tuple
+conventions.  For a tuple with a repeated vertex, the two terms deleting
+one of those repetitions cancel after orienting the remaining tuples;
+all other terms still have a repetition and vanish.  The face sum also
+respects the sign under an adjacent exchange, as checked by pairing the
+two exchanged-index terms and reindexing the others.  Adjacent exchanges
+generate every reordering.  The chain-map identity therefore follows
+by applying $f$ to each term of the face sum, whether its image is
+nondegenerate or degenerate.
+
+To verify the prism identity, expand the two finite double sums.
+Deleting an $f(v_j)$ with $j<i$, or a $g(v_j)$ with $j>i$, pairs with the
+prism summand for the face omitting $v_j$; their signs are opposite on
+the two sides of $\partial P+P\partial$.  Among the remaining terms,
+deleting the last $f$-vertex in one summand cancels deleting the first
+$g$-vertex in the preceding summand.  The first and last unpaired terms
+are respectively $[g(v_0),\ldots,g(v_k)]$ and
+$-[f(v_0),\ldots,f(v_k)]$.  This proves the identity.  The same
+pairings remain valid when some terms vanish by repetition.  Contiguity
+ensures that every displayed tuple belongs to $L$.  All index ranges
+are bounded by $k+1$, so the calculation is a finite integer identity.
+\end{proof}
+
+\begin{theorem}[A20: an explicit simplex-carrier homotopy]
+\label{thm:simplex-carrier}
+Assign to each simplex $\sigma$ of a finite complex $K$ a nonempty
+simplex $C(\sigma)$ of $L$, with
+$C(\rho)\subseteq C(\sigma)$ whenever $\rho$ is a nonempty face of
+$\sigma$.  Suppose two supplied chain maps $F,G$ have their value on
+$\sigma$ supported in $C(\sigma)$ and preserve augmentation in degree
+zero.  There is a primitive recursively constructed chain homotopy
+between them, also supported in these carriers.
+\end{theorem}
+\begin{proof}
+Augment each simplex chain complex by $C_{-1}=\Q$ and
+$\partial[v]=1$.  For a chosen vertex $a$ of a simplex, let
+$c_a[w_0,\ldots,w_k]=[a,w_0,\ldots,w_k]$ and $c_a(1)=[a]$.
+Deleting the first vertex gives the original tuple; every other face
+cancels its counterpart in $c_a\partial$.  Hence
+$\partial c_a+c_a\partial=1$, including degree zero.  Choose for
+$a_\sigma$ the least vertex of $C(\sigma)$.
+
+Define $H_{-1}=0$.  After $H$ has been defined on proper faces of
+$\sigma$, put
+\[
+ z_\sigma=G(\sigma)-F(\sigma)-H(\partial\sigma),\qquad
+ H(\sigma)=c_{a_\sigma}z_\sigma.
+\]
+The induction hypothesis on the faces, the chain-map identities, and
+$\partial^2=0$ give
+\[
+ \partial z_\sigma
+   =(G-F)(\partial\sigma)-\partial H(\partial\sigma)=0.
+\]
+For a vertex this says that $G(v)-F(v)$ has augmentation zero, precisely
+the stated hypothesis.  Nested carriers ensure that all terms of
+$z_\sigma$ lie in $C(\sigma)$.  The cone identity gives
+$\partial H(\sigma)=z_\sigma$, which rearranges to
+$G-F=\partial H+H\partial$.  This completes induction in increasing
+simplex dimension.  Only faces already processed are consulted; the
+number of simplices and their dimensions bound this recursion.  Thus
+the construction consists entirely of bounded list operations and
+rational additions and yields the promised explicit certificate.
+\end{proof}
+
+\subsection{Graphs and surface presentations}
+
+\begin{theorem}[A07: graph Betti numbers and a cycle basis]
+\label{thm:graph-betti}
+Let a finite loopless undirected graph have $v$ vertices, $e$ edges, and
+$c$ connected components, with $c=0$ for the empty graph.  Viewed as a
+one-dimensional chain complex over $\Q$,
+\[
+ b_0=c,\qquad b_1=e-v+c,\qquad \chi=v-e.
+\]
+A spanning forest and a basis of $b_1$ cycles are primitive recursively
+computable from the adjacency table.
+\end{theorem}
+\begin{proof}
+Start from the least unvisited vertex; repeatedly add the least edge with
+exactly one endpoint visited until none remains, then start the next
+component.  At most $v$ vertices are added and every edge scan has length
+$e$.  The selected edges form a tree in each component.  Orient all
+edges, and assign to $u\to w$ the boundary $w-u$.  In a component with
+root $r$, the boundaries of the tree paths from $r$ to its other vertices
+span the vectors $w-r$.  These $v_i-1$ vectors are independent by their
+nonroot coordinates and span exactly the vectors whose coordinate sum on
+that component is zero.  Every edge boundary has coordinate sum zero.
+Thus the boundary rank is $v-c$.
+
+For each nontree edge, take that oriented edge minus the oriented tree
+path with the same endpoints.  Its boundary is zero.  These cycles are
+independent because each has coefficient $1$ on its own nontree edge
+and coefficient $0$ on the others.  Subtracting their suitable multiples
+from any cycle leaves a cycle supported on the forest.  A leaf of a
+nontrivial tree forces the coefficient of its unique incident edge to
+vanish; removing leaves by at most $v$ bounded stages shows that a forest
+has no nonzero cycles.  Hence these $e-(v-c)$ cycles form a basis.
+The stated formulas follow, including the zero-size case.
+\end{proof}
+
+\begin{proposition}[A08: genus formulas for supplied polygonal models]
+\label{prop:polygon-genus}
+For the orientable polygonal cellular presentation with one vertex,
+$2g$ oriented edges, and one two-cell attached along
+$\prod_{i=1}^{g}a_i b_i a_i^{-1}b_i^{-1}$, its rational cellular chain
+complex has
+\[
+ (b_0,b_1,b_2)=(1,2g,1),\qquad \chi=2-2g.
+\]
+For the nonorientable presentation with one vertex, $h\geq1$ edges, and
+attaching word $a_1^2\cdots a_h^2$,
+\[
+ (b_0,b_1,b_2)=(1,h-1,0),\qquad \chi=2-h.
+\]
+\end{proposition}
+\begin{proof}
+Every edge begins and ends at the same vertex, so $D_1=0$.  In the
+specified cellular complex, the coefficient of an edge in $D_2$ is its
+signed number of traversals in the attaching word.  The commutator word
+has coefficient zero on every edge, giving $D_2=0$.  The square word gives
+the nonzero column $(2,\ldots,2)^t$, of rank one over $\Q$.
+Proposition~\ref{prop:effective-homology} gives the formulas.  At $g=0$
+the presentation has no edges and a two-cell attached to the sole vertex,
+giving the indicated sphere chain complex.
+\end{proof}
+
+The theorem calculates the \emph{supplied} cellular presentation.  To
+transfer it to a particular finite complex one may supply a chain-homotopy
+equivalence and apply Theorem~\ref{thm:chain-homotopy}.  No assertion is
+made here that an arbitrary surface can be recognized, classified, or
+reduced to one of these presentations.  In particular a table of homology
+matrices alone does not certify that its realization is a surface.
+
+\begin{proposition}[A09: a bounded coloring theorem]
+A loopless graph of maximum degree $\Delta$ has a proper coloring with
+$\Delta+1$ colors.  A coloring, and the least number of colors admitting a
+coloring, can be found by primitive recursive bounded search.
+\end{proposition}
+\begin{proof}
+Process vertices in order.  The already colored neighbors use at most
+$\Delta$ colors, so scanning $0,\ldots,\Delta$ finds an unused color.
+At the step when the later endpoint of any edge is processed, it receives
+a different color from the earlier endpoint.  This proves correctness of
+the greedy construction by induction on the vertex index.  To find the
+chromatic number, test all $q^v$ assignments for $q=0,1,\ldots,v$; the
+unique assignment for the empty graph is handled separately.  The
+$v$-color assignment exists by giving distinct colors to distinct
+vertices, so the bounded search succeeds.  This is not a proof of the
+four-color theorem mentioned in the source entry.
+\end{proof}
+
+\begin{theorem}[A10: two colors or an odd-cycle certificate]
+A finite loopless graph admits a two-coloring if and only if it has no
+odd cycle.  A bounded algorithm returns either a two-coloring or a simple
+odd cycle of length at most $v$.
+\end{theorem}
+\begin{proof}
+Construct a spanning forest by breadth-first search and color each vertex
+by the parity of its tree distance from the root.  If every edge joins
+opposite parities, this is the required coloring.  Otherwise take an edge
+$u w$ with equal endpoint parities.  The unique tree path from $u$ to
+$w$ has even length: removing the common initial segment of their root
+paths removes twice the same number of edges.  The offending edge cannot
+be a tree edge.  Appending it to that simple tree path gives a simple odd
+cycle, using at most $v$ vertices.  Conversely, colors alternate around
+every cycle in a proper two-coloring; returning to the original color
+requires an even number of edges.  Every search and path extraction is
+bounded by the finite graph size.
+\end{proof}
+
+\subsection{Finite sheaves with executable gluing}
+
+Fix a finite topological space $X=\{0,\ldots,n-1\}$ with its open subsets
+listed as bit masks.  Let $N_x$ be the intersection of its open
+neighborhoods.  This is open, contains $x$, and is contained in every
+open set containing $x$.  A finite-set-valued presheaf is a table of
+finite sets $F(U)=\{0,\ldots,m_U-1\}$ and restriction tables
+\[
+ \rho_{U,V}:F(U)\longrightarrow F(V)\quad(V\subseteq U)
+\]
+satisfying $\rho_{U,U}=1$ and
+$\rho_{V,W}\rho_{U,V}=\rho_{U,W}$.  These identities are bounded tests.
+A matching family on a listed finite cover $(U_i)_{i<\ell}$ of $U$
+consists of $s_i\in F(U_i)$ with equal restrictions to every
+$U_i\cap U_j$.  A gluing is $s\in F(U)$ restricting to all $s_i$.
+
+\begin{theorem}[A11: canonical-cover test for a finite sheaf]
+\label{thm:canonical-sheaf}
+Such a presheaf has unique gluing on every finite open cover if and only
+if it has unique gluing on the covers $(N_x)_{x\in U}$ for every open
+$U$.  The $U=\varnothing$ case requires $F(\varnothing)$ to be a
+singleton.  Both this property and the resulting gluing operation are
+primitive recursively decidable from the tables.
+\end{theorem}
+\begin{proof}
+One implication is immediate by using these particular covers.  For the
+other, let $(U_i,s_i)$ be an arbitrary finite matching family.  For each
+$x\in U$, select the least index $i(x)$ with $x\in U_{i(x)}$, and put
+$t_x=s_{i(x)}|_{N_x}$.  If $x,y\in U$, their two original sections agree
+on $U_{i(x)}\cap U_{i(y)}$, hence $t_x,t_y$ agree on
+$N_x\cap N_y$ by restriction transitivity.  Canonical gluing supplies
+$s\in F(U)$.  For every $i$ and $x\in U_i$, compatibility of the original
+family gives $s|_{N_x}=s_i|_{N_x}$.  Canonical uniqueness on $U_i$
+therefore gives $s|_{U_i}=s_i$.  Two possible global gluings agree on
+every $N_x$, so canonical uniqueness on $U$ gives equality.
+
+For the algorithm, let $M=1+\max_U m_U$.  There are at most $2^n$ open
+sets, at most $M^n$ tuples on any canonical cover, and at most $M$
+candidate global sections.  Test compatibility, then count global
+sections whose restrictions have the prescribed values; require this
+count to be exactly one.  This bounds all tests.  Once the test succeeds,
+searching the $m_U$ entries of $F(U)$ returns the unique gluing.
+\end{proof}
+
+\begin{proposition}[A12: function sheaves, continuity, and rings]
+For a finite set $A$, the assignment $U\mapsto A^U$ is a finite sheaf.
+For a finite topological space $Y$, its subassignment consisting of
+continuous maps $U\to Y$ is also a sheaf.  If $R$ is a finite ring with
+discrete topology, locally constant $R$-valued maps form a sheaf of rings.
+\end{proposition}
+\begin{proof}
+For matching local functions $f_i$, define $f(x)=f_{i(x)}(x)$ using the
+least covering index.  Agreement on overlaps proves that this value is
+independent of the covering member, and proves that $f|_{U_i}=f_i$.
+Any other gluing has the same value at each point, proving uniqueness.
+For an open subset $V$ of $Y$,
+$f^{-1}(V)=\bigcup_i f_i^{-1}(V)$.  Each inverse image on the right is
+open in $U_i$, hence in $U$, and their finite union is open.  Thus the
+gluing is continuous.  Into a discrete finite space, continuity is
+equivalent to local constancy: fibers are open, and conversely the open
+fibers give inverse images of all subsets.  Pointwise addition, negation,
+and multiplication of locally constant maps remain locally constant
+by intersecting their finitely many relevant neighborhoods.  Ring laws
+hold at each point, and restrictions preserve these operations and the
+unit.  This gives the ring-valued assertion, including the one-element
+section ring on the empty set.
+\end{proof}
+
+\begin{proposition}[A13: restriction preserves the sheaf property]
+If $W$ is open in $X$, define $(F|_W)(U)=F(U)$ for open $U\subseteq W$,
+using the same restrictions.  A finite sheaf restricts to a finite sheaf,
+and repeated restrictions agree exactly.
+\end{proposition}
+\begin{proof}
+Since $W$ is open, every open subset of $W$ is open in $X$.  A cover,
+matching family, or gluing in $W$ is consequently the same finite data
+in $X$.  Existence and uniqueness are inherited unchanged.  Restricting
+again merely deletes more rows from the same tables, which proves the
+composition assertion.
+\end{proof}
+
+\begin{proposition}[A14: finite stalks and local equality]
+\label{prop:finite-stalk}
+For any finite presheaf, its stalk at $x$ has the canonical model
+$F_x=F(N_x)$.  Two local sections have the same germ at $x$ precisely when
+their restrictions to $N_x$ agree.  For a sheaf and $s,t\in F(U)$,
+\[
+ s=t\quad\Longleftrightarrow\quad
+       (\forall x\in U)\ s|_{N_x}=t|_{N_x}.
+\]
+\end{proposition}
+\begin{proof}
+Every neighborhood $V$ of $x$ contains $N_x$, giving the map
+$(V,s)\mapsto s|_{N_x}$.  If two representatives agree on some smaller
+neighborhood of $x$, they agree after restricting further to $N_x$.
+Conversely, equality on $N_x$ itself witnesses equality of germs.
+Every element of $F(N_x)$ is represented by $(N_x,s)$, proving the
+claimed model and its inverse.  The last assertion is exactly uniqueness
+on the canonical cover of $U$.
+\end{proof}
+
+\begin{theorem}[A15: stalkwise isomorphisms of finite sheaves]
+Let $\alpha:F\to G$ be tables commuting with restrictions between finite
+sheaves.  If every $\alpha_{N_x}$ is bijective, then every $\alpha_U$ is
+bijective.  An inverse natural transformation is primitive recursively
+computable.
+\end{theorem}
+\begin{proof}
+If $\alpha_U(s)=\alpha_U(t)$, restrict to each $N_x$ and use injectivity
+there.  Proposition~\ref{prop:finite-stalk} gives $s=t$; hence every
+$\alpha_U$ is injective.  Given $t\in G(U)$, use bounded search for the
+unique $s_x\in F(N_x)$ mapping to $t|_{N_x}$.  On
+$V=N_x\cap N_y$, the images of $s_x|_V$ and $s_y|_V$ agree.  The
+already proved injectivity of $\alpha_V$ gives agreement of the two
+restrictions.  Glue the $s_x$ to $s\in F(U)$.  Its image equals $t$ on
+all $N_x$, and hence equals $t$.  This proves surjectivity, including
+$U=\varnothing$ because both sheaves have one empty section.
+The inverse commutes with restrictions by applying $\alpha$ and using
+its injectivity.  All searches have lengths bounded by the section
+tables.
+\end{proof}
+
+\begin{proposition}[A16: local subobjects and equalizer sheaves]
+Suppose $F$ is a finite sheaf and $G(U)\subseteq F(U)$ are decidable
+subsets preserved by restrictions.  Assume locality: if a section
+$s\in F(U)$ has its restrictions in $G(U_i)$ on a finite cover, then
+$s\in G(U)$.  Then $G$ is a sheaf.  In particular, for two morphisms
+$\alpha,\beta:F\to H$ between finite sheaves, the tables
+$G(U)=\{s:\alpha_U(s)=\beta_U(s)\}$ form a subsheaf.  For ring
+morphisms these are subrings.
+\end{proposition}
+\begin{proof}
+A matching family in $G$ has a unique gluing in $F$; locality puts that
+gluing in $G$.  Uniqueness is inherited from $F$.  In the equalizer
+case, commuting with restrictions gives restriction stability.  If
+$\alpha(s)$ and $\beta(s)$ agree on a cover, uniqueness in $H$ gives
+their global equality, proving locality.  Preservation of ring operations
+by $\alpha$ and $\beta$ proves closure under those operations.
+\end{proof}
+
+\paragraph{Presheaves of categories: precise limited coverage.}
+Finite categories can be encoded by object and arrow lists, source,
+target, identity, and composition tables.  A finite diagram of restriction
+functors is checked by bounded tests of these tables.  For the
+category-valued entry's more general pseudofunctor convention, include
+the components of its natural isomorphisms, their inverse tables, and
+the coherence equations; each displayed equation is again a bounded
+test.  This supplies definitions and a checker interface for a
+\emph{specified finite diagram}.  We do not infer descent for categories
+from the set-valued sheaf theorem, nor construct all local homeomorphisms
+of an unrestricted space.  Those would be additional results.
+
+\subsection{Finite Boolean algebras and the countable-union boundary}
+
+\begin{theorem}[A17: generated Boolean algebras by membership atoms]
+\label{thm:boolean-atoms}
+Given subsets $E_0,\ldots,E_{s-1}$ of a finite $n$-element set, define
+$x\equiv y$ when their $s$ membership bits agree.  The nonempty
+equivalence classes are the atoms of the generated Boolean algebra.
+The generated algebra is exactly the collection of unions of these
+atoms; if there are $a$ atoms, it has $2^a$ members, with
+$a\leq\min(n,2^s)$.  Its complete table is primitive recursively
+computable.
+\end{theorem}
+\begin{proof}
+Compute the membership word of every point.  For each word $w<2^s$,
+the corresponding class is
+\[
+ A_w=\bigcap_{i<s}
+ \begin{cases}E_i,&w_i=1,\\ X\setminus E_i,&w_i=0.\end{cases}
+\]
+The empty intersection is $X$.  Thus every nonempty class belongs to
+every Boolean algebra containing the generators.  Unions of the
+nonempty classes are closed under union and complement, because the
+classes partition $X$, and contain every generator.  They are therefore
+exactly the smallest Boolean algebra containing the generators.
+Different subsets of the nonempty classes have different unions: choose
+the least point in a class appearing in just one of the subsets.  This
+gives the cardinality $2^a$.  Each class contains a different least point
+and has a different word, giving both bounds for $a$.  Enumerating the
+$2^s$ words and $2^a$ unions supplies explicit bounded algorithms.
+\end{proof}
+
+\begin{proposition}[A18: bounded and stabilization-certified unions]
+For such an algebra, the union of any listed finite family is a member
+and its mask is computed by bitwise disjunction.  For a fixed PR sequence
+$E(t)$ of algebra members, if a number $T$ and the property
+\[
+   \forall t\quad E(t)\subseteq\bigcup_{i<T}E(i)
+\]
+are supplied, the finite union on the right represents the unbounded
+union predicate $x\mapsto\exists t\,(x\in E(t))$.
+\end{proposition}
+\begin{proof}
+Finite union closure follows either from its Boolean operations or from
+the atom representation.  Under the supplied property, a membership
+witness $t$ for the unbounded union implies membership in the finite
+union.  Conversely, membership in a finite union gives an index $i<T$
+by bounded search, hence a witness for the existential predicate.  These
+are intuitionistically valid implications.  The displayed universal
+property is a hypothesis; a numerical cutoff alone does not certify it.
+\end{proof}
+
+\paragraph{Why this is not automatic countable-union closure.}
+An arbitrary unbounded union of coded finite sets need not have a
+\emph{uniformly computable Boolean code}.  On $X=\{0\}$ let $E_e(t)$
+be $\{0\}$ when machine $e$ on input $e$ has halted within $t$ steps and empty
+otherwise.  This is uniformly primitive recursive.  A uniform algorithm
+returning the one-bit code of $\bigcup_t E_e(t)$ would decide halting by
+reading its sole bit.  Indeed, if that total decider were $D$, the program
+which on input $j$ halts exactly when $D(j)=0$ has some index $p$.
+Running it on $p$ contradicts either answer of $D(p)$.  Thus finiteness of the underlying set does not
+provide a uniform terminating union algorithm.  A monotone chain can
+change at most $n$ times while its last change still has no computable
+bound.  The theorem above is the exact replacement used here for the
+\emph{Sigma-Algebra} entry: generated finite Boolean algebras, finite
+unions, and unions with an explicitly justified stabilization bound.
+
+\subsection{Formalization and the arithmetic proof boundary}
+
+The file \texttt{AlgebraicBlueprint.lean} gives executable rational
+matrix operations and precise propositions for finite chain-complex
+certificates.  It includes checked structural lemmas for integral-chain
+homotopies on cycles, for gluing supplied compatible functions, and for
+the full Euler telescoping identity from supplied rank--nullity data.
+Uncompleted matrix-rank and finite-sheaf
+theorems are named propositions with their required data, not axioms or
+theorems with hidden proof holes.
+
+For a complete formalization, first prove the rational-pair arithmetic
+and bounded row-operation invariants, then the cycle/boundary basis
+algorithm of Proposition~\ref{prop:effective-homology}.  The
+Euler--Poincar\'e theorem is then a finite telescoping identity; chain
+homotopies and collapses are matrix identities.  Independently, encode
+open and section tables by bounded lists and implement the canonical-cover
+checker of Theorem~\ref{thm:canonical-sheaf}.  Its proof only uses bounded
+selection and the table equations.  The graph and atom constructions
+use bounded graph searches and bit-mask loops.
+
+For the claimed \ipra\ interpretation, the sizes, loops, rational-height
+bounds, and matrix identities must be re-expressed with the chosen
+primitive recursive coding and quantifier-free induction.  A universal
+quantifier over a finite list is a Boolean fold with an explicit bound;
+its induction invariant is a Boolean equality about the current prefix.
+The human proofs above specify those loops and invariants, and therefore
+give a direct route.  Checked Lean proofs about functions, matrices, or
+finite types in the ambient metatheory are not themselves an
+object-language derivation in \ipra.  The supplied tests likewise check
+examples and implementations, not universal arithmetic provability.

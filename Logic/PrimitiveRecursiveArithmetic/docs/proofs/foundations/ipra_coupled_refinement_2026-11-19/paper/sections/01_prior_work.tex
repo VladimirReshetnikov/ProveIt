@@ -1,0 +1,229 @@
+\section{What this extension adds to the existing programme}
+\label{sec:source-audit}
+
+\subsection{Audit boundary and proof interface}
+
+The source comparison is pinned to ProveIt commit
+\nolinkurl{3ee850b4c2d650cf01263823fd5415963747c5d0}.
+It uses the current unification plan and derivation inventory, the proof-packet
+index, and the particular analytic and foundational chapters cited below.
+It is a focused audit of the relevant interfaces, not a verification of every
+research packet. The repository already contains many frameworks for bounded
+certificates, finite observations, scoped witnesses, reverse precision
+demands, and residual hypotheses. Merely giving those constructions another
+name would not resolve a new mathematical difficulty.
+
+The maintained interface is ordinary intuitionistic primitive recursive
+arithmetic: intuitionistic first-order logic with equality, defining equations
+for primitive recursive functions, successor axioms, and quantifier-free
+induction. In the Lean development the public object judgment is
+\(\Gamma\vdash[\texttt{PRAAx}]\varphi\).
+The current unification plan expressly distinguishes an object derivation
+from an ambient Lean theorem about standard natural numbers, and the
+derivation inventory records the precise assumptions of each checked
+endpoint \cite{audit-unification,audit-progress}.
+Consequently a new rational estimate, a proof-producing arithmetic lemma,
+and a completed analytic application have separate statuses throughout this
+report.
+
+\subsection{Scalar contractions and polynomial ODEs are established predecessors}
+
+Two earlier analytic constructions should be credited explicitly.
+The first embedding packet proves a finite scalar contraction estimate for
+a normalized polynomial \(Q(X,Z)\), with contraction factor \(1/4\);
+coefficient stabilization and a geometric tail then give a simple analytic
+branch. Its perturbation estimate is independent of the number of iterations.
+It also constructs a complex reciprocal from a finite derivative-separation
+certificate, rather than assuming a reciprocal operation on arbitrary
+Cauchy names \cite{audit-scalar}.
+
+A subsequent chapter goes further. Given a root name \(b\), an inverse
+derivative name \(w\), the identities
+\[
+ P(0,b)=0,\qquad wP_Y(0,b)=1,
+\]
+and numerical magnitude bounds, it chooses rational samples and small
+radii by explicit formulas. It thereby \emph{produces} a passing
+simple-root contraction certificate \cite{audit-scalar-producer}.
+Thus the present work does not claim to introduce scalar contraction,
+quantitative inversion, or the idea of producing an analytic chart.
+
+Similarly, the local-to-global packet already gives a detailed human
+construction of solutions to rational polynomial differential systems.
+Dimension and degree are numerical parameters. Finite coefficient sums
+produce bounds \(M,L\); a local horizon \(T=1/(2M)\) is constructed;
+Euler polygons are compared through discrete Gronwall and adjacent-mesh
+estimates; an explicit reindexing gives a regular solution name.
+The same chapter proves uniqueness, perturbation estimates, and polynomial
+first integrals \cite{audit-ode}.
+Its perturbation discussion already accommodates rounded steps or
+Cauchy-named coefficients when common domain and invariance contracts are
+available.
+
+The remaining formal boundary is narrower than the absence of an ODE
+argument. The maintained progress inventory describes
+\texttt{Foundations/DiscreteGronwall} as checked cleared arithmetic, and
+\texttt{Foundations/OdeRefinement} as checked refinement arithmetic with the
+error recurrence supplied. It keeps the complete rational polygon and
+regular-name frontends separate \cite{audit-progress}.
+A Picard or quadrature application of the present theorem is therefore an
+alternative, more modular presentation of part of this analysis and an
+extension to appropriately presented integrands. It is not the first
+constructive polynomial ODE theorem in the repository.
+
+\subsection{The specific gap: numerical feedback and a produced modulus}
+
+The distinction between a cyclic precision calculation and execution of a
+cyclic mathematical system is explicit in the current sources.
+The checked two-coordinate demand example iterates
+\[
+ (x,y)\longmapsto
+   \bigl(\min(B,y+1),\,\min(C,x+1)\bigr)
+\]
+and derives stabilization by the sum \(B+C\).
+Its module documentation identifies it as a precision-demand instance, not
+certificate execution \cite{audit-demand}.
+The state-adaptive realizer implementation likewise handles bounded folds
+using finite candidate tables and explicit paired selector alignment;
+its inventory leaves broader cyclic execution and producer scopes
+separate \cite{audit-adaptive,audit-progress}.
+
+The new sufficient condition is quantitative and numerical.
+For a finite family of state components, let \(A\) be a nonnegative rational
+gain matrix. Supply positive rational weights \(w_i\) and a rational
+\(q<1\) such that
+\[
+                     Aw\le q w
+\]
+coordinatewise. Local implementations have prescribed error budgets and
+preserve a certified domain. The weighted maximum norm then turns the
+coupled system into a contraction. A finite recurrence controls
+iteration error and produces a Cauchy schedule, including the accumulation
+of local approximation errors.
+
+This addresses the feedback subclass for which the gain and domain
+certificates hold. It does not justify circular proofs. Every local
+inequality must already have an ordinary derivation; those derivations
+are composed and used in a finite iteration argument. Nor does it solve
+arbitrary recursive certificate systems. The numerical contraction is
+additional mathematical information, and the theorem makes its use
+visible.
+
+This also strengthens the existing summable-motion interface in a useful
+direction. The FIBER analysis chapter correctly distinguishes individually
+valid approximations, finite stable windows, and a global Cauchy modulus.
+Its telescoping theorem consumes a primitive recursive bound on every
+finite tail \cite{audit-fiber}. Here the geometric tail is derived from
+the gain certificate and the local error schedule. The contribution is the
+\emph{producer of the tail and of a compatible sampler}; finite
+telescoping and Booleanized induction are reused foundations.
+
+\subsection{Approximate commutation extends the earlier tower methods}
+
+There are already two distinct tower constructions in the repository.
+The coherent-methods packet presents exact restrictions
+\(\pi_{m,n}\) and proves coherence when a fixed producer satisfies a
+specification preserved by restriction and unique at each finite level
+\cite{audit-coherent}.
+The topology framework uses finite simplicial complexes and refinement
+carriers. Its map-coherence datum is naturality up to a common carrier,
+hence contiguity, rather than equality of selected vertices
+\cite{audit-topology}.
+FINER's observational descent transports supplied agreement estimates
+along a finite spanning tree \cite{audit-finer}.
+
+None of these inspected chapters supplies the following analytic comparison
+from a commutation defect. Let \(T_n,T_m\) be two finite-level updates,
+\(R\) a restriction of Lipschitz constant \(L_R\), and suppose
+\[
+ \|RT_m z-T_n Rz\|\le\delta .
+\]
+Assume \(T_n\) contracts by \(q<1\), and the actual returned observations
+satisfy
+\[
+ \|x_n-T_nx_n\|\le\varepsilon_n,\qquad
+ \|x_m-T_mx_m\|\le\varepsilon_m .
+\]
+The triangle inequality and the contraction give the finite estimate
+\[
+ (1-q)\,\|x_n-Rx_m\|
+       \le
+       \varepsilon_n+L_R\varepsilon_m+\delta .
+\]
+Indeed insert \(T_nx_n\), \(T_nRx_m\), and \(RT_mx_m\)
+between \(x_n\) and \(Rx_m\), bound the four differences, and move the
+term \(q\|x_n-Rx_m\|\) to the left. This derivation uses only
+finite rational inequalities; it does not assume exact fixed points.
+
+An explicit bound on \(\delta\), together with selected numerical
+precisions and a lower bound on \(1-q\), therefore converts finite-level
+solvers into coherent finite observations. This is the precise new
+connection with projective and spatial discretization.
+The arithmetic target quantifies over finite level, observed coordinate,
+iteration count, and demanded precision. An external interpretation as an
+infinite sequence or inverse-limit object is justified by these contracts;
+no function quantifier or compactness axiom is inserted into iPRA.
+
+The denominator \(1-q\) is substantive. If the contraction factors
+approach one, refinement defects must decrease sufficiently rapidly to
+compensate, and the required schedule must be given explicitly.
+Neither exact restriction coherence nor a useful limiting modulus follows
+from small defects alone.
+
+\subsection{Which further difficulties the theorem addresses}
+
+The same finite comparison supports three reusable constructions.
+A Neumann identity for finite matrix sums produces an inverse name and
+a residual-to-solution error estimate whenever a rational
+preconditioner has a certified contraction defect.
+A multidimensional implicit system can use
+\(T(x)=x-BF(x)\), with a finite box-invariance test and a bound on
+\(I-BJ(x)\), to produce simultaneous root coordinates.
+A finite quadrature implementation of a Picard map can use the same
+error recurrence to control its discretization and evaluation errors.
+Each application must derive its local bounds from its actual numerical
+presentation. A claim that an inverse, derivative gap, or quadrature
+modulus merely exists does not discharge that work.
+
+These are extensions of the existing local scalar and ODE constructions
+to coupled and approximately commuting computations.
+They do not remove the need for separation where a problem asks for
+a discontinuous label, or the need for a domain invariant on a longer
+time interval. In particular, singular branch selection and global
+existence beyond the certified region are not consequences of a local
+contraction theorem.
+
+\subsection{Diophantine and ineffective-constant boundaries remain distinct}
+
+The Faltings packet distinguishes a positive height/list theorem from
+a cardinality statement: a complete list and a height bound are equivalent
+for its concrete point coding, but a bound on the number of points does not
+tell an enumeration when to stop \cite{audit-faltings}.
+This is not an assertion that every possible arithmetization of finiteness
+must first produce a height bound.
+
+The general-route chapter of the Siegel packet makes that distinction
+especially clear. It proposes a finite-tuple covering theorem followed
+by a zero-count theorem to rule out lists of too many distinct points.
+That route could establish a cardinality conclusion without locating
+all points. However, the finite approximation-cover theorem, the required
+geometric presentations, and the cover-and-lift estimates are not supplied
+by the finite counting combinator \cite{audit-siegel}.
+The new contraction machinery can help evaluate local analytic data once
+the needed quantitative contracts have been proved. It does not produce
+these global arithmetic contracts.
+
+The prime-distribution packet similarly isolates an effective
+Siegel-type input needed for its requested uniform bounds, while proving
+finite ingredients such as a weighted Vaughan identity and a rational Gram
+certificate \cite{audit-primes}. Explicit local error budgets cannot turn
+an ineffective existence proof into numerical constants.
+
+Accordingly the resolution is partial but substantive: a broad class of
+coupled and discretized constructions gains an actual primitive recursive
+solver, a produced modulus, and a finite arithmetic proof route.
+General Faltings, general Siegel, unrestricted branch choice, and the
+missing effective prime-distribution inputs remain separate research
+problems. Their unresolved status is not a proof of independence or
+unprovability in iPRA.
+

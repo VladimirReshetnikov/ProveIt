@@ -1,0 +1,105 @@
+\section{Results and intended use}
+\label{sec:overview}
+
+The useful extension is a way to produce compatible mathematical
+observations from a system of numerical dependencies. It applies to
+simultaneous equations, approximate inverses, interacting analytic
+constructions, and finite models whose size increases as more information
+is requested. Its input is finite algebra and explicit error estimates;
+its output is a primitive recursive sampler with a proved modulus.
+
+There are two central statements. First, suppose a rational implementation
+\(E_p\) maps a certified box into itself and satisfies, componentwise,
+\[
+ |E_p(x)-E_r(y)|\le A|x-y|+(2^{-p}+2^{-r})w,
+ \qquad Aw\le(1-1/s)w,
+ \tag{1}\label{eq:overview-action}
+\]
+where \(A\ge0\), \(w_i>0\), and \(s\ge1\) is an integer. The weighted
+distance is \(d_w(x,y)=\max_i |x_i-y_i|/w_i\). A finite iteration with an
+explicit precision schedule constructs \(Q(k)\) satisfying
+\[
+ d_w(Q(k),Q(l))\le2^{-k}+2^{-l}.
+ \tag{2}\label{eq:overview-name}
+\]
+Moreover, its residual tends to zero at a supplied rate, and any other
+small-residual computation agrees quantitatively with this one. There
+is no assumption that a completed real fixed point has already been
+constructed. The maps \(E_p\) may be discontinuous rounding procedures;
+the mixed estimate in (1) is the property used in the proof.
+
+Second, suppose finite-level updates \(F_n\) and restrictions \(P_n\)
+satisfy a commutation estimate
+\[
+ d_n(F_nP_n z,P_nF_{n+1}z)\le\eta_n,
+\]
+and the actual returned points \(y_n\) have residual at most \(r_n\).
+If \(F_n\) contracts by \(q_n<1\), then
+\[
+ d_n(y_n,P_ny_{n+1})\le
+ \frac{r_n+\eta_n+r_{n+1}}{1-q_n}
+ \tag{3}\label{eq:overview-refinement}
+\]
+for nonexpansive restrictions. An explicit summable bound on the right
+produces a coherent family of observations. This supplies the missing
+quantitative connection between solving a finite model and obtaining one
+object across successive models.
+
+\subsection{A concrete infinite-dimensional endpoint}
+
+For \(i\in\N\), consider
+\[
+ x_i=\frac1{4(i+1)}+\frac{x_i^2}{8}+\frac{x_{i+1}}8,
+ \qquad 0\le x_i\le1.                         \tag{4}\label{eq:overview-lattice}
+\]
+The report constructs a single primitive recursive rational function
+\(X(i,k)\). To answer one query it uses only
+\(i+k+3\) coordinates, \(i+k+7\) rounded iterations, and
+\(i+k+11\) binary fractional digits. It proves
+\[
+ \begin{split}
+ |X(i,k)-X(i,l)|&\le2^{-\min(k,l)-2},\\
+ \left|X(i,k)-\frac1{4(i+1)}-
+ \frac{X(i,k)^2}{8}-\frac{X(i+1,k)}8\right|&\le2^{-k-4}.
+ \end{split}                                                  \tag{5}
+\]
+These are uniform arithmetic assertions, not a finite table of test
+values. They express a unique solution to (4) within the specified box.
+Uniqueness is not asserted among all bounded sequences.
+
+\subsection{What is proved, and at what level}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.41\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
+\toprule
+Result & Mathematical endpoint & Evidence in this packet\\
+\midrule
+\endhead
+Coupled approximation & Explicit residual bound and regular sampler from
+(1) & Full human proof; arithmetic core compiled in Lean\\
+Matrix certificates & Positive weights, componentwise supersolutions,
+finite Neumann bounds & Full finite proofs and exact reference checks\\
+Polynomial systems & Root names and parameter stability from a finite
+box certificate & Full human proof and explicit coefficient algorithms\\
+Refinement towers & Coherence from residuals, commutation defects and
+contraction gaps & Full finite proof and formalization definitions\\
+Infinite nonlinear system & PR coordinate sampler, equations and uniqueness
+on \([0,1]^{\N}\) & Full human proof and exact reference computation\\
+Object-theory export & \(\Gamma\vdash[\texttt{PRAAx}]\varphi\) for the
+coded endpoints & Detailed invariant plan and an uncompiled adapter\\
+\bottomrule
+\end{longtable}
+
+The human arguments identify the primitive recursive definitions and
+quantifier-free induction formulas required for iPRA. The compiled
+Lean arithmetic lemmas check important finite identities and bounds.
+They do not, by themselves, certify the entire syntactic translation into
+\texttt{Prf PRAAx}. This separation is part of the deliverable's exact
+claim, rather than a condition left for the reader to discover.
+
+The underlying contraction and verified-numerics ideas are established
+mathematics; compare Rump's finite-system treatment and the radii-polynomial
+method \cite{rump1994,radii}. The contribution here is the particular
+finitary organization, the approximate-action and cross-level interfaces,
+the explicit schedules, and their integration with the existing iPRA
+programme. No claim of priority for the general contraction principle is
+made.

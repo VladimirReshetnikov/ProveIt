@@ -1,0 +1,109 @@
+\section{Arithmetic foundation and representation contracts}
+\label{sec:arithmetic}
+
+\subsection{The theory}
+
+We use first-order intuitionistic logic with equality. The numerical language contains $0$, successor, and symbols for each \emph{fixed} primitive recursive definition needed in a theorem. The nonlogical axioms are successor injectivity, successor distinct from zero, the defining equations for composition and primitive recursion, and quantifier-free induction:
+\[
+ \bigl(A(0,\vec a)\wedge
+   \forall t(A(t,\vec a)\to A(t+1,\vec a))\bigr)
+       \longrightarrow \forall t\,A(t,\vec a),
+\]
+where $A$ is quantifier-free. Ordinary intuitionistic natural-deduction rules, equality reflexivity and substitution are the logical rules. Finite conjunctions, disjunctions and implications are allowed in a quantifier-free formula; bounded quantifiers in the exposition are compiled into primitive recursive Boolean folds before induction is applied.
+
+This is the ordinary \ipra\ interface used by the inspected ProveIt libraries \cite{RepoReadme,RepoNative}. The report does not add excluded middle for arbitrary formulas, countable choice, a power-set sort, a real-number sort, or induction for arbitrary arithmetic formulas.
+
+\subsection{Concrete finite codes}
+
+One possible pairing code is
+\[
+ \langle a,b\rangle=2^a(2b+1)-1.
+\]
+For a code $z$, its two projections are recovered by bounded division and a bounded search below $z+1$. Lists carry an explicit length and an iterated pairing of their entries; invalid or truncated codes decode to default values. Signed integers use the zigzag code
+\[
+ 0\mapsto0,\qquad t>0\mapsto2t,\qquad -t\mapsto2t-1.
+\]
+A rational is a pair $(a,b)$ with $a\in\Z$, $b\in\N_{>0}$; reduction by a gcd is optional. Equality and order are decided by cross-multiplication. Division by zero is totalized to zero and accompanied by a validity guard whenever its intended meaning is used.
+
+A subset of $\{0,\ldots,n-1\}$ is a mask below $2^n$. A binary relation is a mask below $2^{n^2}$. A finite complex is a family of masks closed under taking submasks. A rational matrix is a list of row lists with checked dimensions. Every displayed bounded operation on these codes is primitive recursive, including exponentiation, finite sums, permutations, integer determinants, and rational Gaussian elimination.
+
+\begin{lemma}[Finite decision and witness extraction]\label{lem:bounded-search}
+For a fixed primitive recursive Boolean predicate $p(a,i)$ and a supplied bound $B(a)$, the conjunction and disjunction over $i<B(a)$ are primitive recursive. If the disjunction is $1$, a primitive recursive least-index scan returns an $i<B(a)$ with $p(a,i)=1$. If the scan fails, every entry is $0$.
+\end{lemma}
+\begin{proof}
+Set $c(0)=1$ and $c(t+1)=c(t)p(a,t)$ for conjunction, and use Boolean or for disjunction. The witness scan maintains a flag and the first successful index, retaining a default index $B(a)$ until success. Its state after step $t$ is computed by primitive recursion.
+
+For a free index $j$, quantifier-free induction verifies the guarded assertions that a recorded index lies below the processed prefix, satisfies $p=1$, and has all preceding tests zero; the last condition is itself a Boolean fold. The failure flag equals the conjunction of the negated processed tests. These are equations and bounded order tests on the state. Reading the terminal invariant proves the claims. Extracting a witness from a nonzero \emph{finite} disjunction uses no unbounded double-negation elimination.
+\end{proof}
+
+\begin{lemma}[Verified bounded-loop rule]\label{lem:loop-rule}
+Let $s_0(a)$, $S(t,s,a)$, and $T(a)$ be fixed primitive recursive functions. Suppose a quantifier-free predicate $I(t,s,a)$ has an \ipra\ proof of its initial case and of preservation under $S$ for $t<T(a)$. Then \ipra\ proves $I(T(a),s(T(a),a),a)$ for the primitive recursive run
+\[
+s(0,a)=s_0(a),\qquad s(t+1,a)=S(t,s(t,a),a).
+\]
+Any quantifier-free output consequence therefore has an \ipra\ proof.
+\end{lemma}
+\begin{proof}
+Apply quantifier-free induction to
+$t\leq T(a)\to I(t,s(t,a),a)$, using the defining equations of $s$. The guard is a characteristic-function equation. Instantiate the result at $T(a)$ and use the terminal consequence. This rule assumes actual proofs of the invariant conditions; it does not assert that every true program specification is provable.
+\end{proof}
+
+\subsection{First-order schemas for infinite objects}
+
+A map on an infinite metric space is not quantified over as an arbitrary set-theoretic function inside \ipra. There are three accepted interfaces:
+\begin{enumerate}
+\item Fix the primitive recursive syntax trees of an evaluator and its moduli, and prove a theorem in the numerical parameters. This is a \emph{schema} indexed externally by fixed definitions.
+\item Give a finite observation table, its dimensions, and a Boolean validity predicate. The theorem is uniform in the table code.
+\item Give a program together with an explicit finite time bound and trace. Verify the trace by a bounded scan. The theorem is conditional on that trace, unless its production has separately been proved.
+\end{enumerate}
+
+There cannot be a total primitive recursive evaluator $U(e,x)$ for all primitive recursive programs: $x\mapsto U(x,x)+1$ would itself have an index $d$, contradicting its value at $d$. The distinction matters for countable products, dense sequences, moduli and families of matrices. Each fixed uniform family used below must have a fixed joint evaluator; a list of arbitrary PR program codes is not enough.
+
+\begin{definition}[Rational real-name convention]
+A real name is a fixed rational evaluator $q(k)$ with a certified estimate
+\[
+ |q(k)-q(\ell)|\leq 2^{-k}+2^{-\ell}.
+\]
+Semantic notation $x=\lim_kq(k)$ abbreviates the corresponding rational approximation assertions. A displayed inequality involving named reals is used internally through rational approximants with explicit error slack. Finite-dimensional vectors use coordinatewise names and the sup norm.
+\end{definition}
+
+For a metric presentation, the same convention applies to $d(x,y)$, and the distance laws are supplied as arithmetic approximation contracts. A continuity modulus $\mu$ specifies, with a fixed convention,
+\[
+ d(x,y)\leq2^{-\mu(k)}
+   \quad\Longrightarrow\quad d(fx,fy)\leq2^{-k}.
+\]
+An inverse modulus, net locator or distance-to-set evaluator is additional data. It is never inferred merely from the negation of a counterexample.
+
+A countable name need not be collected into an actual set in the object language. To prove an assertion at precision $k$, the proof computes all required precision and index bounds first, builds the finite table, verifies its inequalities, and concludes the requested arithmetic statement. Universal quantification over $k$ comes after this finite construction.
+
+\subsection{What approximate existence means}
+
+A theorem
+\[
+ \forall k\ \exists w\ R(k,w)
+\]
+with a primitive recursive witness $w=W(k)$ and bounded $R$ is meaningful positive information. It does not imply that the witnesses are a coherent Cauchy sequence, nor that an exact root or fixed point has a primitive recursive name. A sequence of near-maximizers, for example, can alternate between distant maxima. The metric and sphere chapters carefully distinguish an approximate witness from an exact selected point.
+
+Total boundedness is a net construction. Completeness requires a specified way to interpret a Cauchy name with a modulus. Arbitrary open-cover compactness, sequential compactness without a convergence modulus, and total boundedness are not interchangeable in this constrained setting.
+
+\subsection{Induction audit used throughout}
+
+The arithmetical proof cores below use the verified-loop rule and fixed finite algebra. The relevant invariants are given where a nontrivial construction appears. The common patterns are:
+\begin{center}
+\begin{tabular}{P{.29\textwidth}P{.60\textwidth}}
+\toprule
+Construction & Quantifier-free invariant after bounded expansion\\
+\midrule
+Relation closure & The current table contains exactly paths of length at most the current bound.\\
+Finite topology tests & The Boolean accumulator equals the tested prefix of the topology or separation axioms.\\
+Gaussian elimination & Elementary matrices give the current matrix from the original; completed pivot rows have the required zeros.\\
+Chain and prism sums & Each coefficient equals its processed incidence sum; interior terms cancel in matched pairs.\\
+Dimension parity & The parity for a fixed restricted labeling equals its previous-face parity.\\
+Product nets & The constructed tuple covers the already processed coordinates; the remaining tail has a numerical bound.\\
+Barycentric refinement & Every resulting simplex lies in its parent and obeys the stated mesh estimate.\\
+Finite sheaf gluing & The partial tuple agrees on all processed overlaps.\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are plans for object-language proofs with explicit witnesses and bounds, backed by the human arguments. They are not a claim that all such proofs have already been constructed in Lean.
+

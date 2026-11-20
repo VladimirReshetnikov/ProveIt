@@ -1,0 +1,136 @@
+\section{A complex-analytic interface: power series and exact descent}\label{sec:complex}
+
+Continuous gluing is not automatically holomorphic gluing. The weights in a partition of unity are usually not holomorphic, and averaging local holomorphic functions that disagree can destroy complex differentiability. We now state the extra data under which the continuous interface does preserve analytic structure. The construction uses finite Taylor sums, explicit tail bounds, and exact overlap equality expressed at every precision.
+
+\subsection{A power-series presentation on an inner disk}
+
+Identify \(\Q(i)\) with rational pairs and use the submultiplicative norm
+\[
+ |x+iy|_1=|x|+|y|.
+\]
+All calculations of this norm on rational pairs are PR. Its open balls are diamonds, which are also open in the usual complex topology. Let \(c\in\Q(i)\), \(R>0\), \(M>0\) be rational, and let \(a_n\in\Q(i)\) be a fixed PR coefficient sequence with a proved bound
+\begin{equation}
+ |a_n|_1R^n\leq M\qquad(n\in\N).
+ \label{eq:complex-coeff}
+\end{equation}
+Fix a rational inner radius \(0<\rho<R\) and put \(\theta=\rho/R<1\). The finite evaluator is
+\[
+ P_N(z)=\sum_{n=0}^N a_n(z-c)^n.
+\]
+At rational \(z\) this is exact rational arithmetic. For \(|z-c|_1\leq\rho\), a finite geometric-sum calculation gives, for all \(m>N\),
+\begin{equation}
+ |P_m(z)-P_N(z)|_1
+ \leq M\sum_{n=N+1}^{m}\theta^n
+ \leq \frac{M\theta^{N+1}}{1-\theta}.
+ \label{eq:complex-tail}
+\end{equation}
+This constructs a uniform Cauchy name without first assuming convergence of an infinite series.
+
+The cutoff is explicitly PR. Choose natural \(H\geq1\) and \(b\geq0\) with
+\[
+ H(1-\theta)\geq1,\qquad M/(1-\theta)\leq2^b.
+\]
+The finite Bernoulli argument used for contractions gives \(\theta^H\leq1/2\). Thus
+\[
+  N(k)=H(k+b+1)
+\]
+makes the tail at most \(2^{-(k+1)}\). Both \(H\) and \(b\) can be chosen by bounded searches on the rational codes, or supplied as certificates. This is a PR sequence of finite polynomials representing a function \(f\) on the closed inner diamond.
+
+\subsection{A derivative name and an explicit Taylor remainder}
+
+The formal derivative polynomials, with \(N\geq1\), are
+\(P_N'(z)=\sum_{n=1}^N n a_n(z-c)^{n-1}\). Put
+\(\sigma=(1+\theta)/2\) and \(u=\theta/\sigma<1\). The finite estimate
+\(n u^{n-1}\leq(1-u)^{-2}\) follows by bounding a term in the square of a finite geometric sum. Consequently
+\begin{equation}
+ \sum_{n>N}\frac{M}{R}n\theta^{n-1}
+ \leq B_1\sigma^N,
+ \qquad B_1=\frac{M}{R(1-u)^2(1-\sigma)}.
+ \label{eq:derivative-tail}
+\end{equation}
+The notation on the left abbreviates the bound for every finite tail and its constructed limit. Choosing \(H_1(1-\sigma)\geq1\), \(B_1\leq2^{b_1}\), and \(N_1(k)=H_1(k+b_1+1)\) gives a PR Cauchy name \(g\) for the derivative series.
+
+\begin{theorem}[Certified complex differentiability]\label{thm:complex-derivative}
+For \(|z-c|_1+|h|_1\leq\rho\),
+\begin{equation}
+ |f(z+h)-f(z)-g(z)h|_1
+ \leq T|h|_1^2,
+ \qquad T=\frac{M}{R^2(1-\theta)^3}.
+ \label{eq:complex-remainder}
+\end{equation}
+Thus \(f\) is complex differentiable at every point of the open inner diamond, with derivative \(g\). Given a positive margin to its boundary, the derivative condition has an explicit PR modulus. Also
+\begin{equation}
+ |f(z)|_1\leq\frac{M}{1-\theta},\qquad
+ |f(z)-f(w)|_1\leq\frac{M}{R(1-\theta)^2}|z-w|_1
+ \label{eq:complex-lip}
+\end{equation}
+for \(|z-c|_1,|w-c|_1\leq\rho\).
+\end{theorem}
+
+\begin{proof}
+For \(n\geq2\), the binomial identity gives
+\[
+ |(v+h)^n-v^n-nv^{n-1}h|_1
+ \leq |h|_1^2\sum_{j=2}^n \binom{n}{j}|v|_1^{n-j}|h|_1^{j-2}.
+\]
+Since
+\(\binom{n}{j}=\frac{n(n-1)}{j(j-1)}\binom{n-2}{j-2}\leq\binom{n}{2}\binom{n-2}{j-2}\),
+the sum is at most
+\(\binom{n}{2}(|v|_1+|h|_1)^{n-2}\leq\binom{n}{2}\rho^{n-2}\).
+Multiply by the coefficient bounds and sum over \(n\). Every finite partial sum is bounded by
+\[
+ \frac{M}{R^2}|h|_1^2
+       \sum_{n=2}^{N}\binom{n}{2}\theta^{n-2}
+ \leq\frac{M}{R^2(1-\theta)^3}|h|_1^2.
+\]
+The last inequality uses only finite sums: the coefficient of \(\theta^r\) for \(r\leq N\) in \((\sum_{j=0}^N\theta^j)^3\) is \(\binom{r+2}{2}\), and all omitted terms are nonnegative. The finite geometric sum is at most \((1-\theta)^{-1}\). The Cauchy bounds \eqref{eq:complex-tail} and \eqref{eq:derivative-tail} let the finite polynomial inequality pass to the represented limits.
+
+For a requested derivative tolerance \(2^{-k}\), take \(|h|_1\leq2^{-k}/\max(1,T)\), together with the supplied inner-domain margin. Equation~\eqref{eq:complex-remainder} then bounds the linearization error by \(2^{-k}|h|_1\). This is the complex-linear derivative condition; no division by an undecidably zero increment is required.
+
+There is also an explicit stability bound for the derivative approximations. Factoring the differences of powers in \(P_N'\) gives
+\[
+ |P_N'(z)-P_N'(w)|_1
+ \leq\frac{M}{R^2}\sum_{n=2}^N n(n-1)\theta^{n-2}|z-w|_1
+ \leq2T|z-w|_1.
+\]
+Together with \eqref{eq:derivative-tail}, this proves that the derivative name itself extends continuously to represented inputs, with Lipschitz constant \(2T\). The value name has the stability estimate proved next. Apply the completion extension to both names before transporting \eqref{eq:complex-remainder} from rational inputs to represented ones. Thus the notation \(g(z)\) at a represented point carries an actual evaluation procedure and modulus.
+
+The value bound is the geometric estimate including the constant term. For the Lipschitz bound, factor
+\(v^n-w^n=(v-w)\sum_{j=0}^{n-1}v^{n-1-j}w^j\).
+Its norm is at most \(n\rho^{n-1}|v-w|_1\). The sum of the coefficient majorants is at most \(M/[R(1-\theta)^2]\), by the square-geometric-sum estimate. Passing through the uniform tails proves \eqref{eq:complex-lip}.
+\end{proof}
+
+The coefficient-majorant premise is substantial. A formal power series with no proved growth or tail bound is not automatically a continuous function. On the other hand, the premise is compatible with singularities outside the chosen disk and with arbitrary requested precision inside it. Rational coefficients already include many familiar analytic functions; coefficients given by regular names can also be used by allocating their finite-sum errors. At stage \(N\), bound the finite sum of absolute weights \(\sum_{n\leq N}|z-c|_1^n\), then query every coefficient deeply enough that this bound times the individual sample error fits half the output budget. The finite number of queries and their common precision are PR. Their coefficient coherence and majorant proofs remain explicit inputs.
+
+\subsection{Exact analytic descent across finitely many charts}
+
+Take \(N\geq1\) such series centered at \(c_i\), with inner radii \(r_i<R_i\). Let
+\[
+ w_i(z)=(r_i-|z-c_i|_1)_+,\qquad S(z)=\sum_iw_i(z).
+\]
+Choose \(\delta>0\), and use the certified subdomain \(D_0\) of rational points with \(S(z)\geq\delta\). Let \(\Omega=\{z:S(z)>\delta\}\). Strict membership in \(\Omega\) means a supplied positive rational margin, as usual for represented open sets. Every point of \(\Omega\) has rational names in \(D_0\); sufficiently accurate rational approximations remain there by the Lipschitz bound for \(S\).
+
+Assume the local analytic functions agree on overlaps. The finite formulation is: at every rational \(z\) with positive weights in charts \(i,j\), the local sample values satisfy
+\begin{equation}
+ |f_i(p,z)-f_j(q,z)|_1\leq2^{-p}+2^{-q}.
+ \label{eq:analytic-overlap}
+\end{equation}
+Uniform continuity extends this equality to represented overlap points. Let \(M_0\) and \(L_0\) be common rational bounds obtained from \eqref{eq:complex-lip}, with the sample-error allowance included in \(M_0\). The weighted gluing theorem applies.
+
+\begin{corollary}[Holomorphic descent with quantitative guards]\label{cor:analytic-descent}
+The weighted evaluation procedure defines a single represented function on the completion of \(D_0\). On \(\Omega\) it agrees with each active local analytic function and is holomorphic. A local derivative name and its remainder modulus are obtained from any chart with supplied positive clearance, using Theorem~\ref{thm:complex-derivative}. No chart is chosen by an exact sign test on a real number.
+\end{corollary}
+
+\begin{proof}
+Equation~\eqref{eq:analytic-overlap} and the overlap estimate for the weighted sum show, at every requested precision, that the glued value agrees with each active chart. At \(z\in\Omega\), let \(\gamma>0\) witness \(S(z)\geq\delta+\gamma\). Since \(S\) is \(N\)-Lipschitz, increments of norm at most \(\gamma/(2N)\) stay inside the certified domain. At least one chart has positive weight with a rational lower bound; a finite evaluation of the weights with sufficient error slack supplies an index with weight at least \(\delta/(2N)\). For example, approximating each weight to error at most \(\delta/(8N)\) and scanning its rational lower endpoint finds such an index, since the maximum true weight is at least \(\delta/N\).
+
+Increments smaller than \(\delta/(4N)\) stay in that chart. On this neighborhood the global function equals the chart function exactly. Its local derivative and remainder bound therefore apply to the global function. Combine the two domain margins with the derivative-error margin in \eqref{eq:complex-remainder}. These are explicit rational minima, so the resulting local modulus is PR. This proves holomorphicity on \(\Omega\), without differentiating the generally nonholomorphic weights.
+\end{proof}
+
+If overlap agreement is only within a fixed positive tolerance, the conclusion is only continuous approximate gluing. It does not imply holomorphicity. Nor does the theorem derive exact agreement merely from finitely many equal samples. In applications, agreement must come from a proved common expression, a controlled analytic identity, or another explicit all-precision argument. Branches with monodromy cannot be glued globally when this compatibility premise fails.
+
+\subsection{Object formulas and the Lean route}
+
+The new object-level endpoints are finite: the geometric tail inequality for two cutoffs; the derivative tail inequality; the polynomial Taylor remainder with a positive radius gap; and the weighted overlap estimate. Coefficients and sample points are coded rational pairs. The invariant for a partial polynomial tracks its value, derivative value, accumulated error, and geometric majorant. The three finite convolution sums used above are PR loops with cleared polynomial inequalities as quantifier-free invariants. The repository's rational and Gaussian-rational arithmetic modules provide the intended numerical backend.
+
+In the semantic Lean layer, define \code{PowerSeriesPresentation} by its coefficient evaluator, coefficient bound, rational radii, and PR cutoff functions. Define \code{valueName}, \code{derivativeName}, and the exact proposition \code{TaylorRemainderGoal} using \eqref{eq:complex-remainder}. Prove the finite polynomial identity first; then the geometric majorants; then the Cauchy names; finally the derivative and descent interpretation. This ordering keeps the difficult analytic conclusion attached to explicit finite proof obligations. The blueprint supplied with the package states these definitions and targets; their completed \code{Prf PRAAx} proofs remain work to be implemented.

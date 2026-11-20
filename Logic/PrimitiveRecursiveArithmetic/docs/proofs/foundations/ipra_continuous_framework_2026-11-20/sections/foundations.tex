@@ -1,0 +1,256 @@
+\section{Purpose, claims, and the current repository boundary}\label{sec:scope}
+
+The aim is to make abstract and continuous mathematics usable in intuitionistic
+primitive recursive arithmetic without changing that arithmetic. The main
+mathematical objects in this report are metric completions, spaces of uniformly
+continuous maps, compact metric structures, local sections, solutions of
+differential equations, and holomorphic functions. Finite encodings are their
+implementation, rather than a replacement of the subject by finite combinatorics.
+
+There are three different, compatible meanings of an embedding. First, a fixed
+primitive recursive family can compute approximations, and \ipra\ can prove the
+numerical error estimates. Second, an arithmetical formula can define a sort of
+program codes satisfying totality and coherence conditions. Quantification over
+this sort is genuine first-order quantification inside \ipra. Third, a mathematical
+interpretation identifies these names with points of an ordinary metric space.
+The third statement is a semantic adequacy theorem; it must not be passed off as
+an internal quantification over all sets or all real numbers.
+
+The distinction matters in both directions. Restricting the entire project to
+finite tables discards useful internal abstract structure. Conversely, introducing
+an arbitrary Lean type of real numbers and proving a theorem about it does not
+produce an \ipra\ derivation. The framework below keeps the three meanings
+separate and supplies explicit bridges between them.
+
+\subsection{What was actually inspected}
+
+The audit is pinned to ProveIt commit
+\texttt{5f3be02388442f16487d2dc5c2529961dd783d2b}, retrieved on 20 November 2026.
+The root \texttt{README.md}, \texttt{UNIFICATION-PLAN.md}, \texttt{ENDPOINTS.md},
+the definitions of \texttt{PR}, \texttt{PTm}, \texttt{PRAAx}, and \texttt{Prf},
+and the relevant derivation modules were read. The source inventories and the
+exact paths used are recorded in the archive. This is a source audit, not a new
+execution of the repository's build or its axiom audit. The repository reports a
+Lean 4.32.0 toolchain; no Lean executable was available in the present environment.
+
+The top-level description of older packets substantially understates the current
+derivation library. In particular, the repository already contains object-theory
+derivations for presented categories, Yoneda components, finite gluing, regular
+names, coherent towers, finite-net transport, strong minimizers, contraction
+estimates, and discrete Gronwall bounds. We reuse these ideas and identify their
+precise boundaries rather than announce them again as new results. The canonical
+target is the ordinary judgment
+\[
+       \Gamma\;\vdash_{\mathsf{PRAAx}}\;\varphi,
+\]
+implemented by \texttt{Prf PRAAx}; this follows the repository's unification
+plan \cite{repo-plan,repo-pr,repo-setoid}.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.22\linewidth}XX@{}}
+\toprule
+Topic & Existing reusable boundary & Development in this report\\
+\midrule
+Abstract structures & Relative setoid interpretation and categorical equations &
+Three-level interpretation, relational names, completion and extension of continuous maps\\
+Quantification & Finite nets and bounded syntax &
+Continuous formulas with explicit error coefficients and arithmetical cross-mesh semantics\\
+Local topology & Finite masks, gluing and rational covers &
+Margin certificates for continuous charts, extensional gluing and transitions\\
+Differential equations & Gronwall and refinement inequalities with supplied recurrences &
+An actual rational Euler program, tube invariance, residual, convergence schedule and uniqueness\\
+Complex analysis & Rational complex arithmetic and finite analytic estimates &
+Guarded polygonal Cauchy transforms, coefficient programs and a quantified Taylor remainder\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Status of the results}
+
+The mathematical arguments in the following sections are developed in full at
+the level of the stated hypotheses. Their numerical conclusions are presented in
+a form intended for direct \ipra\ derivation. The archive also contains exact
+rational reference programs, executable checks of representative instances, and
+Lean source outlines with explicit outstanding obligations. It does \emph{not}
+contain a completed, newly kernel-checked formalization of the analytic theorems.
+An abstract contract with a field requesting a proof is an interface, not a
+proof of that field. This distinction is maintained in the Lean files and in
+the final claim ledger.
+
+Several broad statements are deliberately not claimed: completeness of arbitrary
+metric spaces without a rate, classical compactness as a source of algorithms,
+arbitrary model existence from consistency, all holomorphic functions from a
+bare differentiability predicate, unrestricted cartesian closure of all computable
+maps, and a uniform reflection principle for \ipra. These omissions have specific
+mathematical reasons, explained alongside the positive results.
+
+\section{The arithmetic foundation and the three levels}\label{sec:levels}
+
+\subsection{The base theory is unchanged}
+
+We use first-order intuitionistic natural deduction with equality. The numerical
+language has symbols generated from zero, successor, projections, composition,
+and primitive recursion. Every such symbol has its defining equations. The
+nonlogical axioms also include successor injectivity, nonzeroness of a successor,
+and induction for quantifier-free formulas. Quantifier-free formulas may use
+intuitionistic propositional connectives; no induction schema for arbitrary
+existential formulas is added. These are precisely the ingredients of the
+repository's \texttt{PRAAx} \cite{repo-pr}.
+
+A useful explicit coding convention is
+\[
+ \langle a,b\rangle=(a+b)^2+a.
+\]
+The pairing is injective because the intervals
+$[s^2,s^2+s]$ are disjoint as $s$ varies. Both projections are obtained by search
+bounded by the code, returning zero on malformed codes. A signed integer is a
+pair $(u,v)$ with value $u-v$. A rational is $(u,v,d)$ with denominator $d+1$ and
+value $(u-v)/(d+1)$. Reduction to lowest terms is unnecessary. Equality and order
+are tested by cross multiplication. Complex rationals are pairs of rationals.
+These are all numerical codes, and every arithmetic operation used below is
+primitive recursive after a default value is specified on invalid input.
+
+Lists use the empty code zero and the constructor
+$\operatorname{cons}(x,s)=1+\langle x,s\rangle$. The tail of a nonempty valid
+list has smaller code. Length, indexing with a default, concatenation, bounded
+folds, and finite tables can therefore be defined using bounded primitive
+recursion. Coding growth can be enormous. Primitive recursiveness is the
+logical requirement; efficiency is a separate question, and the executable
+examples use ordinary exact rational data structures.
+
+If $R(\vec x,i)$ has a primitive recursive characteristic function, the statement
+$\forall i<N\,R(\vec x,i)$ can be represented by a single Boolean fold equal
+to one. Quantifier-free induction applies to that fold. This does not license
+the same maneuver when $R$ is an arbitrary arithmetical formula such as
+$\exists t\,\operatorname{Trace}(e,i,t,y)$ with an unbounded witness.
+
+\subsection{Level E: executable numerical families}
+
+At the executable level, a mathematical parameter is a tuple $p$ of numbers,
+and a name is a fixed primitive recursive map $a(p,n)$ returning a rational
+point at precision $n$. A modulus $\mu(p,k)$, a net $\mathcal N(p,k)$, and an
+evaluator $E(p,q,k)$ are also fixed primitive recursive definitions. The word
+``fixed'' concerns the program syntax; $p$ and $k$ remain arbitrary numerical
+variables. Thus the result is a uniform theorem about the entire numerical
+family, not a list of isolated calculations.
+
+An endpoint typically has the form
+\begin{equation}\label{eq:ep}
+ \ipra\vdash\forall p,k\,
+   \bigl(H(p)\longrightarrow
+   V(p,k,A(p,k),C(p,k))=1\bigr),
+\end{equation}
+where $A,C,V$ are fixed primitive recursive functions, $C$ is a certificate
+or execution table, and $H$ states the mathematical hypotheses. The output
+checker is quantifier-free. The hypothesis $H$ need not be decidable: for
+example, it may assert all required rational Lipschitz inequalities for a
+fixed family. The proof uses the appropriate instances of $H$ when deriving
+the finite Boolean invariants. Thus general mathematical hypotheses remain
+visible without becoming new logical axioms.
+
+\subsection{Level R: internally represented objects}
+
+An arithmetical formula $D(e)$ may say that a program with code $e$ is a
+total regular name. It may contain number quantifiers. A second formula
+$e\simeq f$ expresses equality of the represented objects. This gives an
+interpreted sort. Its quantifiers are
+\[
+ (\forall x\,\phi)^I=\forall e\,(D(e)\to\phi^I),\qquad
+ (\exists x\,\phi)^I=\exists e\,(D(e)\land\phi^I).
+\]
+No new universe is postulated. The domain and equivalence are formulas over
+numbers. Operations can often be implemented by primitive recursive
+\emph{code constructors}: given names $e,f$, return the code of a program
+which adds their approximations. The code constructor is primitive recursive
+even when the programs being composed have no common primitive recursive
+running-time bound. Its correctness and conditional totality must be proved.
+Section~\ref{sec:relational} gives the details.
+
+For one-sorted equation-based theories this fits the repository's
+\texttt{SetoidInterpretation.\allowbreak Presentation}: its domain and equality formulas
+are unrestricted, while operations are translated by fixed numerical terms.
+For a relational signature, translate each atomic predicate to its own
+arithmetical formula and prove invariance under the chosen equality. The
+natural-deduction proof of interpretation soundness is unchanged at the
+connective and quantifier steps; the atomic congruence obligations become
+additional interface fields. This many-sorted relational adapter is proved on paper here,
+not supplied by the existing one-sorted equational implementation. Many sorts can be kept separate or encoded by
+numerical tags. Neither device supplies an unproved source axiom.
+
+\subsection{Level S: semantic adequacy}
+
+In the metatheory, a regular rational Cauchy name denotes a point of a complete
+metric space. A proof that the algorithm's output name denotes the intended
+solution connects the arithmetic theorem to the usual mathematical statement.
+This is where statements such as ``the solution is differentiable'' are read
+in familiar analytic language. The corresponding internal content is the
+family of quantitative rational difference-quotient estimates.
+
+Level E names are primitive recursive in their numerical parameters. Level R
+names range over the codes satisfying the chosen formulas. In the standard
+model they represent at most computable objects for a computable evaluator;
+they do not name every real number. Level S may also formulate the same
+estimates with external arbitrary names or oracle parameters. Such an
+external theorem is broader semantically, but it is not thereby a
+first-order \ipra\ theorem about arbitrary oracles.
+
+\subsection{A general interpretation principle}
+
+\begin{theorem}[Relative interpretation, with a visible boundary]\label{thm:interpretation}
+Fix a finite or effectively presented first-order intuitionistic theory $T$.
+For each of its sorts supply a domain formula and an equivalence formula of
+\ipra, with a derivable inhabitant if the source logic requires nonempty sorts.
+For each operation supply a numerical code constructor, proofs that it
+preserves the domains and equivalence, and, for each relation, an extensional
+arithmetical interpretation. Suppose the interpreted axioms of $T$ are
+derivable in \ipra\ from a specified context $\Gamma$.
+Then every fixed $T$-derivation of $\phi$ translates to an \ipra\ derivation
+of $\phi^I$ from $\Gamma$ and the domain assumptions on its free variables.
+\end{theorem}
+
+\begin{proof}
+Translate terms by their code constructors and atomic formulas by the supplied
+formulas. Domain closure and extensionality give, by structural induction on
+each fixed source term, well-definedness under substitutions. Prove by
+structural induction on each fixed formula that replacing its free variables
+by equivalent domain elements preserves its interpretation. At an atomic
+formula this is an interface hypothesis. Conjunction, disjunction and
+implication use their introduction and elimination rules. At a universal
+formula, introduce an arbitrary domain element, use the induction hypothesis,
+and discharge its domain premise. At an existential formula, eliminate the
+witness and its domain proof and use the same witness after transport.
+
+Now induct on the given source derivation, in the metatheory. Hypotheses are
+translated hypotheses; source axioms use their supplied derivations. The
+logical rules are the corresponding intuitionistic rules with the domain
+guards carried through the quantifier rules. Equality substitution uses the
+formula-extensionality result. Every leaf and step is therefore an actual
+\ipra\ derivation. The induction here constructs a finite derivation externally;
+it does not introduce a reflection principle or prove the truth of every
+\ipra\ proof inside \ipra.
+\end{proof}
+
+This theorem is the correct sense in which an abstract theory can be embedded.
+It does not say that all axioms of category theory, topology, or analysis
+automatically satisfy the premises. A supplied completeness operation,
+effective net, chart margin, or evaluation clock is part of the interpretation
+data, and its necessary laws remain explicit until proved.
+
+\subsection{Why finite calculations do not by themselves prove an analytic theorem}
+
+Four separate obligations recur. \emph{Existence} provides an output at each
+requested precision. \emph{Coherence} shows that these outputs name one
+object, rather than unrelated approximate witnesses. \emph{Extensionality}
+makes the result independent of the chosen name. \emph{Adequacy} relates the
+name to the mathematical property, such as the integral equation of an ODE.
+An endpoint that establishes only a residual bound has not yet discharged
+the other three obligations.
+
+The literature on proof mining and constructive completions motivates this
+separation, but no unrestricted metatheorem from a stronger arithmetic is used
+as a black box here \cite{oconnor2007,kohlenbach-oliva,avigad-feferman}.
+In particular, a primitive recursive functional of higher type need not
+become a first-order primitive recursive function when its functional input
+is supplied only as an arbitrary program code with a totality assertion.
+Every passage to first-order computation in this report specifies the
+actual evaluators, clocks, or residual totality hypotheses.

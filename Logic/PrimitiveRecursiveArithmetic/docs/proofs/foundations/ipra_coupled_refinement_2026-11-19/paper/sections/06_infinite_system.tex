@@ -1,0 +1,317 @@
+\section{A fully constructed infinite nonlinear system}
+\label{sec:lattice}
+
+We now eliminate every abstract domain, evaluator and tail premise in
+one example. The equation is
+\[
+ x_i=a_i+\frac{x_i^2}{8}+\frac{x_{i+1}}8,
+ \qquad a_i=\frac1{4(i+1)},\qquad 0\le x_i\le1
+ \quad(i\in\N).
+ \label{eq:lattice-system}\tag{L1}
+\]
+This is a genuinely infinite dependency: computing a coordinate by
+recursion on its successors would not terminate. The construction
+below instead proves a bounded amount of successor information
+sufficient for any specified precision.
+
+\subsection{Finite models and their certificates}
+
+For \(n\ge1\), let \(D_n=([0,1]\cap\Q)^n\), with
+\[
+ d_n(x,y)=\max_{i<n}2^{-i}|x_i-y_i|.
+\]
+These are weighted maximum distances with weights \(w_i=2^i\).
+Let \(P_n\) delete the last coordinate. Prefix restrictions are
+nonexpansive and compose exactly.
+
+Define \(F_n\) by
+\[
+ (F_nx)_i=a_i+\frac{x_i^2}{8}+\frac{x_{i+1}}8,
+ \quad i<n,
+ \qquad x_n:=0.
+ \label{eq:lattice-finite}\tag{L2}
+\]
+All coordinates are nonnegative, and
+\((F_nx)_i\le1/4+1/8+1/8=1/2\). Thus the map preserves the box,
+with room for downward rounding.
+
+For \(u,v\in[0,1]\),
+\(\abs{u^2-v^2}=\abs{u-v}(u+v)\le2\abs{u-v}\).
+Consequently
+\[
+ |(F_nx)_i-(F_ny)_i|
+ \le\frac14|x_i-y_i|+\frac18|x_{i+1}-y_{i+1}|.
+\]
+The absent last-coordinate difference is zero. Multiplication by
+\(2^{-i}\) bounds the two terms by \(d_n(x,y)/4\) and
+\(d_n(x,y)/4\), respectively. Hence
+\[
+ d_n(F_nx,F_ny)\le\tfrac12d_n(x,y).             \tag{L3}
+\]
+The gain matrix has diagonal entries \(1/4\), superdiagonal entries
+\(1/8\), and zeros elsewhere. With \(w_i=2^i\), every nonterminal
+weighted row equals \(w_i/2\). This is a literal finite instance of
+the matrix certificate.
+
+The vectors \(F_nP_nz\) and \(P_nF_{n+1}z\) agree at every
+coordinate except \(n-1\); there the difference is \(z_n/8\).
+Thus
+\[
+ d_n(F_nP_nz,P_nF_{n+1}z)
+ \le2^{-(n-1)}/8=2^{-n-2}.                     \tag{L4}
+\]
+This is the required commutation defect. It comes from the boundary
+truncation, not from a numerical roundoff estimate.
+
+\subsection{A bounded dyadic implementation}
+
+For a nonnegative rational \(u\), define
+\[
+ \lfloor u\rfloor_p=2^{-p}\lfloor2^pu\rfloor.
+\]
+Integer division computes it, and
+\(0\le u-\lfloor u\rfloor_p<2^{-p}\). Use
+\emph{synchronous} iterations: all new coordinates are computed from
+the previous vector. Set
+\begin{align*}
+ p_n&=n+8, & t_n&=n+4,\\
+ v_{n,0}&=0, &
+ v_{n,t+1,i}&=\left\lfloor(F_nv_{n,t})_i\right\rfloor_{p_n},\\
+ y_n&=v_{n,t_n}.&&
+\end{align*}
+The rounded states lie in \([0,1/2]^n\). Each step has weighted
+error at most \(h_n=2^{-p_n}\), since every factor \(2^{-i}\le1\).
+
+Let \(z_{n,t}=F_n^t(0)\) be the exact rational iterates. These are
+used for the proof; the reference implementation need not construct
+their large denominators. With
+\(\delta_t=d_n(v_{n,t},z_{n,t})\), (L3) gives
+\[
+ \delta_0=0,\qquad
+ \delta_{t+1}\le\tfrac12\delta_t+h_n,
+ \qquad \delta_t\le2h_n.                       \tag{L5}
+\]
+The last bound is a single quantifier-free induction.
+
+The initial exact increment has distance
+\(d_n(0,F_n0)=1/4\). Repeated use of (L3) bounds the exact residual
+after \(t\) steps by \(2^{-t-2}\). Therefore
+\begin{align*}
+ d_n(y_n,F_ny_n)
+ &\le d_n(y_n,z_{n,t_n})
+       +d_n(z_{n,t_n},F_nz_{n,t_n})
+       +d_n(F_nz_{n,t_n},F_ny_n)\\
+ &\le3h_n+2^{-t_n-2}
+   =7\,2^{-n-8}
+   \le2^{-n-4}.
+\end{align*}
+This is a proved residual budget, not a stopping criterion based on
+observed agreement of successive decimals.
+
+\subsection{Coherence and the actual coordinate formula}
+
+Apply \cref{thm:commutation} with \(q_n=1/2\), \(L_n=1\),
+\(\eta_n=2^{-n-2}\), and \(r_n=2^{-n-4}\). It yields
+\[
+ d_n(y_n,P_ny_{n+1})
+ \le2(2^{-n-4}+2^{-n-2}+2^{-n-5})
+ =\frac{11}{16}2^{-n}<2^{-n}.                  \tag{L6}
+\]
+The finite geometric sum and \cref{thm:finite-refinement} imply
+\[
+ d_n(y_n,P_{n,m}y_m)\le2^{1-n}\quad(m\ge n).
+ \tag{L7}
+\]
+Coordinate \(i\) is an observer at every level \(n>i\), with
+Lipschitz bound \(2^i\). Define the output by the explicit formula
+\[
+ \boxed{X(i,k)=(y_{i+k+3})_i.}                 \label{eq:lattice-name}\tag{L8}
+\]
+
+\begin{theorem}[Uniform solution sampler]
+\label{thm:lattice-name}
+The function (L8) is primitive recursive and takes values in \([0,1]\).
+For every \(i,k,l\in\N\),
+\begin{align}
+ |X(i,k)-X(i,l)|&\le2^{-\min(k,l)-2},          \tag{L9}\\
+ \left|X(i,k)-a_i-\frac{X(i,k)^2}{8}
+                      -\frac{X(i+1,k)}8\right|
+ &\le2^{-k-4}.                               \tag{L10}
+\end{align}
+Thus it represents a solution of (L1) by entirely arithmetic contracts.
+\end{theorem}
+\begin{proof}
+Every operation in (L8) is a bounded list operation, integer division,
+or a PR iteration with the explicit bounds \(n=i+k+3\),
+\(t=n+4\), \(p=n+8\). Membership in the box has already been
+proved. If \(k\le l\), (L7) gives
+\[
+ |X(i,k)-X(i,l)|\le2^i2^{1-(i+k+3)}=2^{-k-2}.
+\]
+The reverse order gives (L9).
+
+For (L10), put \(n=i+k+3\). In particular \(i+1<n\), so
+the \(i\)-th equation of \(F_n\) uses the actual next coordinate,
+not the zero boundary. Its residual contributes at most
+\(2^ir_n\). The value \(X(i+1,k)\), however, is taken at level
+\(n+1\). Replacing \((y_n)_{i+1}\) by \((y_{n+1})_{i+1}\)
+contributes at most \(2^{i+1}2^{-n}/8\), by (L6). Therefore
+\[
+ \left|X(i,k)-a_i-\frac{X(i,k)^2}{8}-\frac{X(i+1,k)}8\right|
+ \le2^{i-n-4}+2^{i-n-2}
+ =5\,2^{-k-7}<2^{-k-4}.
+\]
+This also explains why the difference between successive model
+dimensions must be included in the equation proof.
+\end{proof}
+
+\subsection{Uniqueness in the specified box}
+
+Call a candidate admissible if it is a regular rational array \(U(i,p)\)
+with \(0\le U(i,p)\le1\), and its same-precision residual satisfies
+\[
+ \left|U(i,p)-a_i-\frac{U(i,p)^2}{8}
+                     -\frac{U(i+1,p)}8\right|\le2^{-p}
+ \quad(i,p\in\N).                              \tag{L11}
+\]
+This is one useful normalized representation. Ordinary regular
+solution names with a known residual modulus can be reindexed to
+this format. No algorithm for extracting such a modulus from an
+unspecified external function is assumed.
+
+\begin{theorem}[Finite uniqueness certificate]
+\label{thm:lattice-unique}
+If \(U,V\) are admissible, then, for every \(i,k\), putting
+\(p=i+k+5\) gives
+\[
+ |U(i,p)-V(i,p)|\le2^{-k-2}.                    \tag{L12}
+\]
+Consequently their represented coordinates are equal. In particular,
+(L8) is the unique represented solution in this class.
+\end{theorem}
+\begin{proof}
+Let \(N=i+k+3\), and form the first \(N\) coordinates of
+\(U(-,p)\) and \(V(-,p)\), denoted \(u,v\). For each of the
+first \(N-1\) equations their finite-map residual is at most
+\(2^{-p}\). The last equation has the additional omitted boundary
+coordinate, contributing at most \(2^{-N-2}\) in weighted distance.
+Thus both finite-map residuals are at most
+\(2^{-p}+2^{-N-2}\). The triangle inequality and (L3) give
+\[
+ d_N(u,v)\le2(2^{-p}+2^{-N-2})+\tfrac12d_N(u,v),
+\]
+and hence \(d_N(u,v)\le4\,2^{-p}+2^{-N}\). Multiplication by
+\(2^i\) yields
+\[
+ |U(i,p)-V(i,p)|
+ \le2^{i+2-p}+2^{i-N}
+ =2^{-k-3}+2^{-k-3}=2^{-k-2}.
+\]
+Only coordinates through \(N\) and one finite precision are queried.
+For an entirely explicit equality bound at a fixed shift, apply
+(L12) with target index \(k+2\), so the common work precision is
+\(p=i+k+7\). Regularity of each candidate, between \(k+2\)
+and \(p\), then gives
+\[
+ |U(i,k+2)-V(i,k+2)|
+ \le 2\bigl(2^{-k-2}+2^{-i-k-7}\bigr)+2^{-k-4}
+ \le\frac{37}{64}2^{-k}<2^{-k}.
+\]
+Thus equality itself has a supplied finite precision schedule. The
+constructed sampler satisfies the stronger residual (L10), so it is
+admissible.
+\end{proof}
+
+\subsection{The box is mathematically necessary}
+
+Uniqueness among \emph{all bounded} solutions would be false. The
+following independent finite construction produces another solution,
+with every coordinate in \([6,8]\).
+
+\paragraph{A completely finite upper-branch construction.}
+For $z\in[6,8]\cap\Q$, put
+$R_i(z)=16-z-2/(i+1)\in[6,10]$.
+Starting with $[2,4]$, perform $p+4$ rational bisections, retaining an
+interval $[l,u]$ with $l^2\le R_i(z)\le u^2$; at each step test the
+square of the midpoint.  Define $b_i(z,p)$ to be the final midpoint and
+$E_i(z,p)=4+b_i(z,p)$.  The final interval width is $2^{-p-3}$.
+Since $2\le l\le b_i\le u\le4$,
+\[
+ |b_i(z,p)^2-R_i(z)|\le 8\,(u-l)/2=2^{-p-1}.
+\]
+The exact identities for differences of squares give, entirely over
+rationals,
+\[
+ \begin{split}
+ 6\le E_i(z,p)&\le8,\\
+ |E_i(z,p)-E_i(z',q)|
+ &\le\tfrac14|z-z'|+\tfrac18(2^{-p}+2^{-q}),\\
+ \left|E_i(z,p)-a_i-E_i(z,p)^2/8-z/8\right|
+ &\le2^{-p}/16.
+ \end{split}
+\]
+For the second inequality, factor the difference of the two midpoint
+squares and use that their sum is at least four.  For the third, multiply
+the expression by eight; it becomes $R_i(z)-b_i(z,p)^2$.
+
+Define the finite backward chain by
+$x_N^{N,p}=7$ and $x_j^{N,p}=E_j(x_{j+1}^{N,p},p)$ for $j<N$.
+For $M\ge N$ and $i<N$, its cross-precision estimate is
+\[
+ |x_i^{N,p}-x_i^{M,q}|
+ \le4^{-(N-i)}+\tfrac16(2^{-p}+2^{-q}).
+\]
+Indeed the terminal discrepancy at coordinate $N$ is at most one, and
+finite iteration of the preceding contraction inequality gives the first
+term and a geometric sum bounded by
+$(2^{-p}+2^{-q})(1/8)(4/3)$.
+
+Now define the actual rational sampler
+\[
+ Y(i,k)=x_i^{\,i+k+3,\,k+4}.
+\]
+It uses exactly $k+3$ backward applications, each with $k+8$ bisections.
+For $k\le l$, the cross-precision estimate gives
+\[
+ |Y(i,k)-Y(i,l)|
+ \le4^{-k-3}+\frac{2^{-k-4}+2^{-l-4}}6
+ \le\frac7{192}2^{-k}<2^{-k-2}.
+\]
+Thus $Y$ is a regular PR name with every sample in $[6,8]$.
+To verify the original equation, the internal next coordinate of
+$x^{i+k+3,k+4}$ differs from $Y(i+1,k)$ by at most
+$4^{-k-2}+2^{-k-4}/3$.  Adding its contribution divided by eight
+to the local residual gives
+\[
+ \left|Y(i,k)-a_i-Y(i,k)^2/8-Y(i+1,k)/8\right|
+ \le\frac{2^{-k-4}}{16}
+    +\frac{4^{-k-2}+2^{-k-4}/3}{8}
+ \le\frac{11}{768}2^{-k}<2^{-k-6}.
+\]
+This constructs a separate bounded upper solution with explicit finite
+contracts.  No completed real function or unspecified square-root routine
+was used to define it.  Both the bisection invariant and the finite backward
+error invariant are rational inequalities suitable for quantifier-free
+induction.
+
+\subsection{The exact first-order endpoint}
+
+Let \(\mathsf{lat}(i,k)\) be the registered PR rational code defined
+by (L8). Then the main iPRA targets are the universal closures of:
+\[
+ \begin{gathered}
+ \mathsf{inUnit}(\mathsf{lat}(i,k))=1,\\
+ \mathsf{ratLe}\bigl(
+   |\mathsf{lat}(i,k)-\mathsf{lat}(i,l)|,
+   2^{-\min(k,l)-2}\bigr)=1,\\
+ \mathsf{ratLe}\bigl(
+   |\mathsf{lat}(i,k)-a_i-\mathsf{lat}(i,k)^2/8
+                            -\mathsf{lat}(i+1,k)/8|,
+   2^{-k-4}\bigr)=1.
+ \end{gathered}
+\]
+Here vertical bars and fractions abbreviate the explicit rational
+code operations from \cref{sec:arithmetic}. Each displayed matrix
+is quantifier-free after this notation is expanded. The universal
+closures are logical introductions after the finite invariant
+proofs, not additional induction axioms.

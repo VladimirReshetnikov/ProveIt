@@ -1,0 +1,25 @@
+\section{The divisor sum without transcendental symbols}\label{sec:lagarias}
+Lagarias's criterion involves $\sigma(n)=\sum_{d\mid n}d$, the harmonic number $h=H_n=\sum_{j=1}^n 1/j$, and the real expression $T=h+e^h\log h$. Its two natural constructive readings have different quantifiers. We build both as literal iPRA formulas with explicit rational enclosures.
+
+For $n\ge1$ let $B=n!$, $A=\sum_{j=1}^n B/j$, and choose $m=2n+k+1$ with $k\ge0$. Thus $1\le h=A/B\le n<m/2$. Define
+\begin{align*}
+ L_e&=(1+h/m)^m,& U_e&=(1-h/m)^{-m},\\
+ L_\ell&=\sum_{j=1}^m\frac{A-B}{mB+j(A-B)},&
+ U_\ell&=\sum_{j=0}^{m-1}\frac{A-B}{mB+j(A-B)}.
+\end{align*}
+The function $1/x$ decreases on $[1,h]$. Its right and left rectangle sums with $m$ equal intervals are $L_\ell,U_\ell$. Thus $L_\ell\le\log h\le U_\ell$, with equality of both at $n=1$. The inequalities $\log(1+x)\le x\le-\log(1-x)$ for $0\le x<1$ give $L_e\le e^h\le U_e$. All bounds are nonnegative, so
+\[
+       L(n,k)=h+L_e L_\ell\ \le T\le\ h+U_e U_\ell=U(n,k).
+\]
+For an explicit width, integrating $s/(1-s)$ and $s/(1+s)$ shows that the endpoints of the exponent interval differ by at most $3n^2/m$. Its upper endpoint is at most $2n$, hence the exponential varies by at most $8^n(3n^2/m)$ by the mean value theorem. Also $U_\ell-L_\ell\le n/m$ by cancellation of adjacent rectangles and $U_\ell\le n$. Thus $U-L\le 8^n(3n^3+n)/m$. A precision of $2^{-t}$ is assured by $k=8^n(3n^3+n)2^t$.
+
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}\toprule
+Reading & Closed arithmetic assertion & Lean declaration\\\midrule
+Weak order & $\forall n\ge1\;\forall k\quad \sigma(n)\le U(n,k)$ & \code{Lagarias.upperRH}\\
+Strict order & $\forall n\ge2\;\exists k\quad \sigma(n)< L(n,k)$ & \code{Lagarias.strictRH}\\\bottomrule
+\end{tabular}
+\end{center}
+Both are fixed PR comparisons after clearing denominators. The common product $D=\prod_{j=0}^m(mB+j(A-B))$ clears both log sums; every division of $D$ by a factor is exact. Clearing the additional denominator of the exponential gives an integer strict comparison via $x+1\le y$. Each rational upper test follows from $\sigma(n)\le T$, and every strict violation of $\sigma(n)\le T$ eventually violates a rational upper test. Similarly, an actual gap $\sigma(n)<T$ gives a lower-test precision, and any successful lower test exhibits a positive gap. This explains why using lower enclosures for non-strict order would mishandle equality at $n=1$.
+
+The analytic identification uses Lagarias's Theorem 1.1 \cite{lagarias}. Under RH the strict inequality holds for every $n\ge2$ and equality holds at $n=1$. Conversely, failure of RH gives infinitely many strict violations of the weak inequality: the excess term in Robin's Theorem 3.2 of \cite{lagarias} dominates the $4n/\log n$ error in Lemma 3.2 there. This last step matters for the weak-order version, because its universal rational approximants admit equality. The two sentences therefore both characterize ordinary RH in the classical standard model. \code{Lagarias.upper_no_counterexample} is an internal derivation for the upper sentence. A deep iPRA implication extracting the lower-test precision from the upper sentence is not used here.

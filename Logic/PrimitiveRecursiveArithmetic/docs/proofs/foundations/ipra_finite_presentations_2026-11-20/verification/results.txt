@@ -1,0 +1,55 @@
++ python3 code/atlas.py
+atlas: square margin 1/6, witness (Fraction(0, 1), Fraction(1, 2)); punctured path clearance 1/3
++ python3 code/box_homotopy.py
+Exact rational homotopies at 5 times: 96 spatial points; 24 frame and 165 filled-nerve points.
++ python3 code/check_category.py
+{
+  "sheafification": {
+    "inverse_pairs": 94,
+    "presheaves": 18,
+    "topologies": 6
+  },
+  "stable_images": {
+    "coherent_edges": 153744,
+    "rates": 7680,
+    "towers": 64,
+    "valid_rates": 3792
+  }
+}
++ python3 code/cyclic.py
+cyclic: 21956 table/port cases; both goals and all minimal supports checked
++ python3 code/nerve.py
+rectangular frame: cone columns [168, 128], Betti [1, 1, 0]
+six faces of cube: cone columns [124, 124], Betti [1, 0, 1]
+rational endpoints: cone columns [12, 10], Betti [1, 0]
+zero dimensions, duplicate boxes: cone columns [8, 14], Betti [1, 0, 0]
+three paths: cone columns [42, 30], Betti [1, 1]
+disconnected overlap correctly rejected: acyclicity fails on intersection (0, 1), cell (2,)
++ python3 code/resonance.py
+392 Gaussian-rational parameter triples passed all coefficient checks.
+For a=b=1/2 and m=2, the log coefficient is 9/64.
++ lean --version
+Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)
++ lean lean/AtlasCase.lean
+'IPRAReport.AtlasCase.transfer_guard' depends on axioms: [propext, Classical.choice, Quot.sound]
++ lean lean/CategoryCase.lean
+'IPRAReport.CategoryCase.local_iff_stable' does not depend on any axioms
+'IPRAReport.CategoryCase.walk_proj' does not depend on any axioms
++ lean lean/CyclicReplay.lean
+'ScopedReplay.stabilized' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ScopedReplay.all_heights' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ScopedReplay.successful_iff_contains_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ScopedReplay.two_supports' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ScopedReplay.replay' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ScopedReplay.least' depends on axioms: [propext, Classical.choice, Quot.sound]
++ lean lean/Resonance.lean
+'Resonance.product_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Resonance.truncation_budget' depends on axioms: [propext, Quot.sound]
++ lean lean/SheafCase.lean
+'IPRAReport.SheafCase.along_extend' depends on axioms: [Quot.sound]
+'IPRAReport.SheafCase.extend_along' depends on axioms: [Quot.sound]
++ lean lean/TopologyCase.lean
+'NerveCase.F2Group.contraction' depends on axioms: [propext]
+'NerveCase.F2Group.bounded_lowering' depends on axioms: [propext, Quot.sound]
+'NerveCase.overlap_bound' depends on axioms: [propext, Quot.sound]
+Every requested check passed.

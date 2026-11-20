@@ -1,0 +1,603 @@
+\section{Completion as a categorical construction with arithmetic interfaces}
+\label{sec:cm-completion}
+
+The existing repository already has a substantial abstract interface.  In
+\path{Foundations/SetoidInterpretation.lean}, numerical domain and equality
+formulas interpret a source theory, and the theorem \texttt{sound} transports
+its intuitionistic derivations once closure, congruence, and interpreted axioms
+have been proved.  \texttt{PresentedCategory.lean} and \texttt{Yoneda.lean}
+supply actual arithmetic derivations for specified categorical presentations.
+Consequently the missing step is usually not the equational manipulation of a
+category.  It is constructing a suitable presentation of its continuous
+objects and proving that its proposed operations preserve those objects.
+This section supplies one such step, without asserting that every analytic
+category has a numerical universe.
+
+\subsection{Two levels that must remain distinct}
+
+A \emph{rational metric presentation} consists of a decidable set of numerical
+codes $D$, a distinguished valid code, and a fixed primitive recursive rational
+pseudometric $d:D\times D\to\Q_{\geq0}$, with proofs of its pseudometric laws.
+The use of a pseudometric permits different rational codes to denote the same
+point.  Rational arithmetic means coded integer numerators and positive
+natural denominators; all inequalities below can be cleared of denominators.
+There is no assumption that $D$ is finite or discrete in its metric.
+
+Externally, its completion $\widehat D$ has the usual mathematical meaning.
+Internally, a family of names is given by a \emph{specified} PR function
+$q(p,n)\in D$, where $p$ is a finite tuple of numerical parameters.  Its
+validity is an arithmetic formula in $p$.  A different producer $q'$ is a
+different instance of the scheme, unless a fixed uniform PR family containing
+both has actually been supplied.  We do not form a numerical sort of all PR
+programs equipped with a total PR evaluator.  The repository's
+\texttt{UniversalEvaluatorObstruction.lean} is directly relevant to this
+restriction.
+
+\begin{definition}[Fast names and equality]
+\label{def:cm-fast}
+A fast name is a sequence $q_n\in D$ satisfying
+\[
+             n\leq m\quad\Longrightarrow\quad d(q_n,q_m)\leq 2^{-n}.
+\tag{C1}\label{eq:cm-fast}
+\]
+Two fast names are equivalent if
+\[
+ q\sim r\quad\Longleftrightarrow\quad
+ \forall k\ \exists N\ \forall n\geq N\quad d(q_n,r_n)\leq 2^{-k}.
+\tag{C2}\label{eq:cm-eq}
+\]
+For fixed PR producers these are first-order arithmetic formulas, not
+quantification over functions.
+\end{definition}
+
+Reflexivity and symmetry of $\sim$ follow from the metric laws.  For
+transitivity, instantiate the two equivalences at $k+1$, take the maximum of
+the resulting two indices, and apply the triangle inequality.  This uses
+intuitionistic existential elimination and introduction and contains no choice
+principle.  Constant names embed $D$.  The rational sequence
+$d(q_{n+1},r_{n+1})$ is fast, since the reverse triangle inequality gives, for
+$m\geq n$,
+\[
+ |d(q_{n+1},r_{n+1})-d(q_{m+1},r_{m+1})|
+ \leq 2^{-n-1}+2^{-n-1}=2^{-n}.
+\]
+It therefore supplies the completed distance in the semantic interpretation.
+A fast name is at distance at most $2^{-n}$ from its $n$th constant
+approximation.  These observations explain the completion notation.  They do
+not imply that an arbitrary sequence of PR names has a PR limit; a uniform
+producer and an effective outer Cauchy rate are needed for that assertion.
+
+\subsection{A dense evaluator extends with one precision substitution}
+
+Let $D_X,D_Y$ be two presentations.  A dense evaluator is a fixed PR function
+$E:D_X\times\N\to D_Y$.  Its output need only approximate the value at a dense
+input; square roots, special functions, and bounded linear operators can be
+handled this way.  Let $\mu:\N\to\N$ be a specified PR function, nondecreasing
+and satisfying $\mu(k)\geq k$.  The essential hypothesis is the following
+finite, rational inequality:
+\[
+\begin{split}
+ d_X(a,b)\leq 2^{-\mu(k)},\quad r,s\geq k+2
+ \quad\Longrightarrow\quad
+ d_Y(E(a,r),E(b,s))\leq2^{-k}.
+\end{split}
+\tag{C3}\label{eq:cm-joint}
+\]
+The theorem uses a proof of this implication; it does not test its universal
+validity.  When $E(a,r)$ is known to approximate a map $f(a)$ within $2^{-r}$
+and $f$ has spatial modulus $\mu_0$, the normalized choice
+\[
+     \mu(k)=\max\{k,\mu_0(0),\ldots,\mu_0(k+1)\}
+\]
+suffices: the three contributions are $2^{-k-2}$, $2^{-k-1}$,
+and $2^{-k-2}$.  Thus \eqref{eq:cm-joint} is a convenient way to combine
+spatial continuity and evaluation error.
+
+\begin{theorem}[Dense extension with explicit demand]
+\label{thm:cm-extension}
+Under \eqref{eq:cm-joint}, define
+\[
+             (\widehat E q)_n=E(q_{\mu(n)},n+2).
+\tag{C4}\label{eq:cm-extension}
+\]
+This is a fast name.  Equivalent input names give equivalent output names.
+For a specified PR input family it is a specified PR output family, and both
+assertions are first-order schemes over the two families.  Semantically this
+construction is a continuous extension to the completions, and it is the
+unique uniformly continuous extension of its values on the dense points.
+\end{theorem}
+
+\begin{proof}
+If $m\geq n$, monotonicity gives $\mu(m)\geq\mu(n)$, so
+\eqref{eq:cm-fast} gives
+$d_X(q_{\mu(n)},q_{\mu(m)})\leq2^{-\mu(n)}$.
+The output precisions $n+2,m+2$ satisfy the two guards in
+\eqref{eq:cm-joint}.  Its instance at $k=n$ proves
+\[
+      d_Y((\widehat E q)_n,(\widehat E q)_m)\leq2^{-n}.
+\]
+This is the whole fast-name calculation.
+
+Now suppose $q\sim r$, and fix an output challenge $k$.  Use
+\eqref{eq:cm-eq} at input precision $\mu(k)$, obtaining $N$.  For
+$n\geq\max(N,k)$, the inequality $\mu(n)\geq n$ makes
+$d_X(q_{\mu(n)},r_{\mu(n)})\leq2^{-\mu(k)}$.  Both evaluator precisions
+are $n+2\geq k+2$.  Equation \eqref{eq:cm-joint} at the fixed challenge $k$
+therefore gives the required output distance $\leq2^{-k}$.  This proves
+extensionality without selecting a function of the existential witnesses in
+\eqref{eq:cm-eq}.
+
+For continuity in the semantic completion, give the input distance a spare
+factor of two.  If
+$d_{\widehat X}(x,y)\leq2^{-\mu(k+1)-1}$, sufficiently late approximations
+have distance at most $2^{-\mu(k+1)}$.  Applying
+\eqref{eq:cm-joint} to those approximations and passing to the named limit
+gives output distance at most $2^{-k-1}$, hence at most $2^{-k}$.  Thus
+$k\mapsto\mu(k+1)+1$ is a safe modulus for the extension.  This semantic
+sentence can equally be replaced by its finite rational inequalities.
+
+For uniqueness, suppose $F,G:\widehat X\to\widehat Y$ are uniformly
+continuous and agree on constant names.  Given $x=[q]$ and $k$, choose a dense
+approximation $q_N$ close enough to $x$ for both output errors to be at most
+$2^{-k-1}$.  Then
+\[
+ d(Fx,Gx)\leq d(Fx,Fq_N)+d(Fq_N,Gq_N)+d(Gq_N,Gx)\leq2^{-k}.
+\]
+The middle term is zero.  Since this holds at every precision, the two output
+names are equivalent.  For specified moduli, $N$ is the maximum of their
+explicit input demands; no compactness argument is hidden here.
+\end{proof}
+
+For exact dense maps $f:D_X\to D_Y$ with modulus $\mu_f$, the simpler lift
+$(\widehat f q)_n=f(q_{\mu_f(n)})$ is already fast.  The identity has
+$\mu_{\mathrm{id}}(n)=n$.  For $g\circ f$, use
+$\mu_{g\circ f}=\mu_f\circ\mu_g$; the two composite lifted expressions are
+literally identical.  Approximate dense evaluators compose by substitution of
+the corresponding name transformations, and uniqueness identifies different
+valid schedules for the same dense map.  In this precise external or
+schematic sense completion is functorial.  It is not an internal category
+whose objects are all possible PR implementations.
+
+\begin{proposition}[Products and change of dense presentation]
+\label{prop:cm-products-density}
+The completion construction preserves finite products equipped with the
+maximum metric.  Moreover, suppose $f:D_X\to D_Y$ is a specified PR isometry
+and a PR selector $s:D_Y\times\N\to D_X$ satisfies
+\[
+                    d_Y(f(s(b,k)),b)\leq2^{-k}.
+\tag{C5}\label{eq:cm-dense-selector}
+\]
+Then $\widehat f$ is an isomorphism of the presented completions, with an
+explicit inverse on names.
+\end{proposition}
+
+\begin{proof}
+A name in the maximum product metric is fast exactly when both coordinate
+names are fast.  Equivalence in the product is equivalent to equivalence in
+both coordinates: the forward implication follows by projection; for the
+reverse implication take the maximum of the two eventual indices.  Pairing
+and projection therefore give inverse name transformations.  The terminal
+one-point presentation covers the empty product.
+
+For the second assertion, define
+\[
+                  (Hy)_n=s(y_{n+2},n+2).
+\tag{C6}\label{eq:cm-density-inverse}
+\]
+For $m\geq n$, the isometry law and three applications of the triangle
+inequality give
+\[
+\begin{split}
+ d_X((Hy)_n,(Hy)_m)
+ &=d_Y(f(Hy)_n,f(Hy)_m)\\
+ &\leq2^{-n-2}+d_Y(y_{n+2},y_{m+2})+2^{-m-2}\\
+ &\leq3\,2^{-n-2}\leq2^{-n}.
+\end{split}
+\]
+Here $f(Hy)_n$ denotes $f((Hy)_n)$.  Thus $H$ produces a fast name.  Also
+$d_Y(f((Hy)_n),y_{n+2})\leq2^{-n-2}$, so $\widehat f(Hy)\sim y$.
+For an $X$-name $x$, the isometry law similarly gives
+$d_X((H\widehat f x)_n,x_{n+2})\leq2^{-n-2}$, hence
+$H\widehat f x\sim x$.  Finally, if $y\sim z$, applying the triangle
+inequality to $f((Hy)_n),y_{n+2},z_{n+2},f((Hz)_n)$ proves $Hy\sim Hz$.
+All output indices in these estimates are displayed; for example an
+$n$-stage error bounded by $5\,2^{-n-2}$ is below $2^{-k}$ once
+$n\geq k+1$.  Thus the two inverse equations are first-order equality
+statements about the supplied name families.
+\end{proof}
+
+Condition \eqref{eq:cm-dense-selector} is positive information.  An unadorned
+assertion that $f(D_X)$ is dense need not provide a PR approximation selector.
+This is the continuous analogue of the finite-cover versus cardinality-bound
+distinction already identified in the repository's categorical packet.
+The proposition permits safe transport between, for example, rational and
+dyadic descriptions of a compact interval, or two explicit dense descriptions
+of a normed space, once the displayed selector is proved.
+
+\subsection{A direct Lean implementation boundary}
+
+The first implementation should keep codes, rational distances, and producers
+explicit.  One can use the following metatheoretic records and then replace
+the fields asserting inequalities by the corresponding derivations in
+\texttt{Prf PRAAx}:
+\begin{verbatim}
+structure MetricPresentation where
+  valid : Nat -> Bool
+  dist  : Nat -> Nat -> RatCode
+  -- Proofs: closure, nonnegativity, symmetry, triangle.
+
+def Fast (D : MetricPresentation) (q : Nat -> Nat) : Prop :=
+  (forall n, D.valid (q n) = true) /\
+  (forall n m, n <= m -> D.dist (q n) (q m) <= dyadic n)
+
+structure DenseEvaluator (X Y : MetricPresentation) where
+  eval : Nat -> Nat -> Nat
+  mu   : Nat -> Nat
+  -- PR realizers and monotonicity proofs are separate fields.
+  joint : forall a b k r s, ValidInputs a b ->
+    X.dist a b <= dyadic (mu k) -> k + 2 <= r -> k + 2 <= s ->
+    Y.dist (eval a r) (eval b s) <= dyadic k
+
+def extend (E : DenseEvaluator X Y) (q : Nat -> Nat) (n : Nat) :=
+  E.eval (q (E.mu n)) (n + 2)
+\end{verbatim}
+
+This block is a blueprint, not compilable source and not an assertion that
+\texttt{Nat -> Nat} is an object-language sort.  In the arithmetic layer it is
+replaced by an explicit PR term $q(p,n)$ and by formulas
+$\mathrm{Fast}_q(p)$ and $\mathrm{Eq}_{q,r}(p,p')$.  The principal target is
+\[
+ \ipra\vdash\forall p\bigl(\mathrm{Fast}_q(p)
+                  \to\mathrm{Fast}_{\widehat E q}(p)\bigr),
+\]
+with the modulus and joint-law hypotheses supplied as derivations.  Its proof
+instantiates those hypotheses at arbitrary terms and combines rational
+inequalities; it does not induct on $\mathrm{Fast}_q$, which contains
+unbounded quantifiers.  Product and density-selector targets use the same
+procedure.  The existing setoid-interpretation theorem then applies to a
+\emph{fixed} numerical family closed under the operations that have actually
+been defined.
+
+\section{A finite-observation semantics for compact metric structures}
+\label{sec:cm-model}
+
+Continuous model theory uses metric structures, uniformly continuous symbols,
+real-valued predicates, and $\inf/\sup$ quantifiers; this is the setting
+surveyed by Ben Yaacov, Berenstein, Henson, and Usvyatsov
+\cite{bbhu2008}.  The following development supplies a deliberately narrower
+arithmetic realization with explicit total-boundedness data.  It preserves
+quantifier order, including alternation.  It neither imports the general
+compactness theorem of continuous logic nor replaces it by a finite-model
+claim.
+
+\subsection{Language, moduli, and finite restrictions}
+
+Fix finitely many metric sorts and a finite signature. In the exact dense
+version, constants have supplied dense codes; named constants are covered
+by the approximate-evaluation variant below. For simplicity first suppose
+that function symbols act by fixed
+PR maps between the dense presentations and that the predicates are fixed
+PR rational functions taking values in $[0,1]$.  Each symbol is accompanied
+by a PR modulus and proofs of its continuity inequalities.  The dense
+extension theorem interprets the symbols on the completions.
+
+Terms are variables, constants, and finite applications of function symbols.
+An atomic expression is a predicate applied to terms, including the bounded
+metric predicate.  Formulas are built from atoms and rational constants in
+$[0,1]$ by $\min$, $\max$, $1-u$, and the quantifiers
+$\inf_{x:s}$ and $\sup_{x:s}$.  With the convention that $0$ is true,
+$\max$ plays the role of conjunction and $\min$ that of disjunction.
+The operation $1-u$ is an arithmetic connective in the object being studied;
+its use does not add classical excluded middle to the surrounding iPRA
+proof.
+
+A modulus of a term or atom is computed by composition.  For a variable use
+$\alpha(k)=k$.  If $f$ has modulus $\mu_f$ and the arguments have moduli
+$\alpha_i$, use
+\[
+            \alpha_{f(t_1,\ldots,t_r)}(k)
+                    =\max_i\alpha_i(\mu_f(k)).
+\tag{M1}\label{eq:cm-atom-modulus}
+\]
+Use the same rule for a predicate.  The metric has safe modulus $k+1$ with
+respect to the maximum distance on its two arguments.  Constants have no
+input demand.  Extend the modulus trivially to unused variables.  For a fixed
+formula $\varphi$, let $\alpha_\varphi(k)$ be the maximum of the moduli of
+all its atomic occurrences, normalized to be nondecreasing and at least $k$.
+Then $\delta=2^{-\alpha_\varphi(k)}$-close assignments make every atomic
+value differ by at most $2^{-k}$.
+
+For each sort choose a finite nonempty list $A_s$ of dense points.  The finite
+restriction $V_A(\varphi,\bar a)\in\Q\cap[0,1]$ is defined recursively:
+use the dense evaluations at atoms, the indicated rational operations at
+connectives, and the finite minimum or maximum over $A_s$ at a quantifier of
+sort $s$.  Bound variables have their usual scope; the recursion does not
+interchange two quantifiers.  Terms continue to be evaluated in the ambient
+dense presentation.  Thus $A_s$ need not be closed under a function symbol.
+In particular $V_A$ is not being advertised as a finite submodel of the
+original structure.
+
+\begin{theorem}[Quantitative back-and-forth for finite restrictions]
+\label{thm:cm-backforth}
+Let $A_s,B_s$ be finite nonempty lists for every sort.  Suppose each point of
+$A_s$ is within $\delta$ of some point of $B_s$, and conversely.  Suppose
+also that corresponding free-variable assignments are coordinatewise within
+$\delta$, and that every atomic occurrence of $\varphi$ changes by at most
+$\eta$ on $\delta$-close assignments.  Then
+\[
+                |V_A(\varphi,\bar a)-V_B(\varphi,\bar b)|\leq\eta.
+\tag{M2}\label{eq:cm-transfer}
+\]
+The error does not acquire a factor from the number of quantifier alternations.
+If atomic values are themselves evaluated with errors at most $e_A,e_B$, the
+right side becomes $\eta+e_A+e_B$.
+\end{theorem}
+
+\begin{proof}
+We use structural induction on the fixed formula to produce its arithmetic
+proof.  The atom case is the hypothesis.  For $1-u$, the error is unchanged.
+For $\min$ and $\max$, the elementary inequality
+\[
+ |\max(u_1,u_2)-\max(v_1,v_2)|
+ \leq\max\{|u_1-v_1|,|u_2-v_2|\}
+\]
+and its minimum counterpart preserve the same bound.  Each follows by the
+two inequalities $u_i\leq v_i+\eta$ and $v_i\leq u_i+\eta$; taking the
+appropriate maximum or minimum proves both directions.
+
+Consider $\inf_{x:s}\psi$.  For any $a\in A_s$, choose a $b\in B_s$
+within $\delta$.  The extended assignments still satisfy the same
+coordinatewise relation.  The induction hypothesis gives
+\[
+ V_A(\psi,\bar a,a)\geq V_B(\psi,\bar b,b)-\eta
+             \geq\min_{b'\in B_s}V_B(\psi,\bar b,b')-\eta.
+\]
+Taking the finite minimum over $a$ proves one inequality.  The reverse
+covering direction proves the other, with $A$ and $B$ exchanged.  Alternatively,
+a first minimizing entry can be selected by a bounded scan and used as the
+witness.  For $\sup$, replace minima by maxima and reverse the inequalities.
+The error at a child is not added to a new rounding error: the corresponding
+bound-variable choices were already included in its atom-level hypothesis.
+This explains the absence of a depth factor.
+
+Finally, evaluating every atom within an error $e$ changes the entire finite
+formula by at most $e$, by the identical induction with the same domains.
+Applying this on both sides of \eqref{eq:cm-transfer} gives
+$e_A+\eta+e_B$.  Only rational operations and finite minima, maxima, and
+searches appear in this proof.
+\end{proof}
+
+The finite covering relation is a bounded formula: after fixing the lists,
+all its existential witnesses have an explicit list-length bound.  It may be
+Booleanized.  Induction used to compute a minimum is on a finite prefix with
+its rational lower-bound invariant.  Thus the proof does not require induction
+on a formula involving quantification over an entire completion.  An external
+induction on the fixed source syntax generates a finite iPRA proof, much as
+in the existing interpretation theorem.
+
+\subsection{From nets to names of formula values}
+
+Assume each sort has a fixed PR net producer $N_s(t)$, of positive PR length,
+with the supplied covering theorem
+\[
+       \forall a\in D_s\ \exists j<|N_s(t)|\quad
+                   d_s(a,N_s(t)_j)\leq2^{-t}.
+\tag{M3}\label{eq:cm-nets}
+\]
+The unbounded quantifier over $a$ in this theorem is a hypothesis already
+proved; validity of a purported net producer is not decided by inspecting one
+finite list.  This is a quantitative total-boundedness assumption, stronger
+than merely calling a sort bounded.
+
+\begin{theorem}[PR values for compactly presented metric formulas]
+\label{thm:cm-values}
+Fix the signature, its PR producers, and a formula $\varphi$.  For specified
+fast input names $q^1,\ldots,q^r$, put
+\[
+ v_n=V_{N(\alpha_\varphi(n))}
+       \bigl(\varphi,q^1_{\alpha_\varphi(n)},\ldots,
+                          q^r_{\alpha_\varphi(n)}\bigr).
+\tag{M4}\label{eq:cm-formula-name}
+\]
+Then $v_n$ is a PR fast Cauchy name.  Its represented value is independent of
+valid input names and of the chosen net producers.  In the semantic
+completion it gives the usual continuous $\inf/\sup$ interpretation of the
+formula.  Each instance has a first-order iPRA realization by finite
+inequalities.
+\end{theorem}
+
+\begin{proof}
+For $m\geq n$, the free-variable tuples in \eqref{eq:cm-formula-name} are
+within $\delta=2^{-\alpha_\varphi(n)}$ by fastness and monotonicity.  Every
+point of the coarser net is a dense point, so the finer net covers it within
+$2^{-\alpha_\varphi(m)}\leq\delta$; the coarser net covers every point of
+the finer net within $\delta$ as well.  Theorem~\ref{thm:cm-backforth} gives
+$|v_n-v_m|\leq2^{-n}$.  This is an explicit Cauchy proof; an independently
+assumed existence of a real infimum is unnecessary.
+
+The same comparison proves independence from two choices of net producers.
+For equivalent input names, fix an output precision, instantiate the
+input equivalences at the required atomic precision, and take stages beyond
+the maximum of the resulting finitely many indices.  Applying
+Theorem~\ref{thm:cm-backforth} at that fixed precision shows that the two
+output names are equivalent.
+
+To identify the quantifier semantics, it is enough to handle an infimum.
+Fix the other variables.  For any dense $a$, the net theorem supplies points
+within the required atomic modulus of $a$; their formula values bound the
+finite minimum from above up to the displayed error.  Hence the named value
+is a lower bound for all dense-input values.  Conversely every finite
+minimum is attained at a net entry.  Those entries give values arbitrarily
+close above the named lower bound.  Continuity extends the lower-bound
+inequality from the dense points to arbitrary named points.  This is exactly
+the defining lower-bound and approximate-attainment property of the infimum.
+The supremum argument is dual.  Notice that the approximate minimizing net
+entry may change with precision.  No coherent convergent sequence of
+minimizers has been asserted.
+
+Every evaluator in \eqref{eq:cm-formula-name} uses fixed PR symbols and a
+finite syntax tree.  Evaluation at a quantifier is a bounded scan through a
+PR-length list; nested scans have a fixed finite nesting depth.  Consequently
+the displayed producer is PR.  The arithmetic proof applies the covering
+theorems only to the particular finite entries used by the scans, and uses
+bounded invariants for those scans.  It does not induce on a real-valued
+satisfaction predicate.
+\end{proof}
+
+A useful version permits PR rational approximations to dense atomic values.
+Evaluate all atoms to error $2^{-n-2}$, use nets and free-variable stages at
+$\alpha_\varphi(n+2)$, and retain the same finite evaluation.  Comparing
+stages $n\leq m$ gives an error at most
+\[
+                2^{-n-2}+2^{-n-2}+2^{-m-2}\leq 2^{-n}.
+\]
+Thus the conclusion includes predicates defined by analytic evaluation
+algorithms, not only rational polynomials.  For an approximate dense function
+symbol, first compose its evaluator with the finitely many surrounding term
+and predicate evaluators, allocating precision along that fixed term tree.
+The resulting atomic evaluator and atomic modulus are the explicit inputs to
+the theorem.
+
+The theorem gives a practical model-theoretic transfer principle.  If two
+compact presentations have uniformly close finite observations, and
+corresponding atomic evaluations satisfy the required error bounds, then
+every fixed continuous formula has the same controlled error.  If all errors
+tend to zero with a supplied PR rate, their sentence values agree.  This is a
+restricted, quantitatively witnessed form of elementary equivalence.  It
+contains no assertion that every finitely satisfiable theory has a model.
+
+\subsection{A nontrivial alternating-quantifier example}
+\label{subsec:cm-minimax}
+
+On the compact sort $[0,1]$, consider the rationally evaluated atom
+\[
+                  P(c,x)=|x^2-cx|
+\]
+and the continuous sentence
+\[
+             v=\inf_{c\in[0,1]}\ \sup_{x\in[0,1]} P(c,x).
+\tag{M5}\label{eq:cm-example}
+\]
+Its quantifier order is essential: $c$ is chosen once before the adversarial
+choice of $x$.  The atom takes values in $[0,1]$, and if both coordinates
+change by at most $\delta$, then
+\[
+ |P(c,x)-P(c',x')|
+ \leq |x^2-x'^2|+|cx-c'x'|\leq4\delta.
+\]
+Hence dyadic nets of mesh $2^{-k-2}$ give a formula-value error at most
+$2^{-k}$.  Exact finite rational minimax calculations therefore define the
+value in iPRA, without a real optimization oracle.
+
+The semantic value and optimizer can also be identified explicitly.  For
+$0\leq c\leq1$,
+\[
+       x^2-cx=(x-c/2)^2-c^2/4,
+\]
+so its negative part has maximum $c^2/4$, attained at $x=c/2$.
+Its positive part has maximum $1-c$, attained at $x=1$: indeed
+\[
+       (1-c)-(x^2-cx)=(1-x)(1+x-c)\geq0.
+\]
+Consequently
+\[
+        \sup_x P(c,x)=\max\{c^2/4,1-c\}.
+\]
+The first expression increases and the second decreases.  Their common value
+occurs at $c_*=2\sqrt2-2\in[0,1]$, and is
+\[
+                         v=3-2\sqrt2.
+\tag{M6}\label{eq:cm-minimax-value}
+\]
+The following order cases may be performed first on rational $c$: its side
+of the algebraic number $c_*$ is determined by the rational sign test on
+$(c+2)^2-8$.  The factorization
+$(c+2)^2-8=(c-c_*)(c+c_*+4)$ has a positive second factor.
+The resulting non-strict estimates then extend to arbitrary named $c$ by
+continuity.  Thus no exact sign test on an arbitrary real name is required.
+For $c\leq c_*$ the second term is at least $1-c_*$; for $c\geq c_*$ the
+first term is at least $c_*^2/4$.  This proves global minimality, and the strict
+versions prove uniqueness.  The occurrence of $\sqrt2$ can be interpreted by
+a fixed rational square-root name with its elementary inequalities.  All the
+displayed algebraic estimates are denominator-cleared arithmetic statements.
+The accompanying reference code computes the finite restricted sentence and
+its minimizing net entry with exact integers and rational output.
+
+In this example a quantitative uniqueness estimate upgrades the finite
+witnesses to a coherent optimizer name.  Write
+$w(c)=\max\{c^2/4,1-c\}$.  Since $c_*\geq1/2$, the two cases give
+\[
+                 w(c)-v\geq\tfrac14|c-c_*|.
+\tag{M7}\label{eq:cm-minimax-gap}
+\]
+For $c\leq c_*$ use $1-c=v+c_*-c$; for $c\geq c_*$ use
+$(c^2-c_*^2)/4=(c+c_*)(c-c_*)/4\geq(c-c_*)/4$.
+Let $c_j$ be the first minimizing entry of the dyadic restriction with mesh
+$\delta=2^{-j}$.  The generic formula bound gives $|v_j-v|\leq4\delta$,
+and the inner supremum at $c_j$ differs from its finite maximum by at most
+$4\delta$.  Hence $w(c_j)\leq v+8\delta$, so
+$|c_j-c_*|\leq32\,2^{-j}$.  Therefore $a_n=c_{n+6}$ satisfies
+$|a_n-c_*|\leq2^{-n-1}$, and
+$|a_n-a_m|\leq2^{-n}$ for $m\geq n$.
+The first-minimum scan thus constructs a PR fast name of the exact optimizer.
+The additional ingredient is the proved gap \eqref{eq:cm-minimax-gap}, not
+an assumption that arbitrary approximate minimizers are coherent.
+
+\subsection{Sharp boundaries and the remaining Lean work}
+
+There are three limitations with mathematical content.
+First, boundedness is not enough for \eqref{eq:cm-nets}.  For example, the unit
+ball of an infinite-dimensional Hilbert space has infinitely many orthogonal
+unit vectors separated by a fixed positive distance.  No finite sufficiently
+small net covers it.  The compact formula evaluator therefore cannot be
+applied to arbitrary quantification over that unit ball.  A specified compact
+subset with a uniform tail bound, a finite-rank restriction, or a different
+witness contract is needed.
+
+Second, a name of a formula value is not a decision procedure for whether it
+is zero.  For a uniform example, let $h(e,t)$ be the fixed PR test that a
+machine $e$ first halts at step $t\geq1$, with a harmless one-step delay
+ensuring no halt at step zero.  On a one-point metric sort, give a predicate
+the value $r_e=2^{-t}$ if such a first halting time exists, and $0$ otherwise.
+Its $k$th rational approximation is $2^{-t}$ if a first halt is found with
+$t\leq k$, and $0$ otherwise.  Bounded simulation is PR and the approximation
+error is at most $2^{-k-1}$.  Its spatial modulus is trivial, and its sort has
+a one-point net at every precision.  A total algorithm deciding whether
+$r_e=0$ would decide nonhalting and hence halting.  Thus even this simplest
+compact metric semantics cannot supply uniform exact truth tests.  This is a
+metatheoretic obstruction to a proposed uniform procedure, not an
+independence claim about any particular named sentence.
+
+Third, the finite minima used above supply approximate witnesses.  They do not
+supply a coherent exact witness unless an additional mechanism, such as a
+contraction or a quantitative uniqueness modulus, is available.  Likewise
+this construction provides no ultrafilter, saturated model, or model of an
+arbitrary consistent theory.
+
+For Lean, the principal new definitions are a fixed finite multisorted
+signature, its term and continuous-formula syntax, finite environments,
+rational finite evaluation, the two-sided finite covering relation, and
+per-atom modulus contracts.  The first central lemma is
+Theorem~\ref{thm:cm-backforth}; its proof follows the displayed syntax cases,
+with the quantifier case reduced to a lemma about minima of two finite lists
+related in both directions.  The second central lemma is
+Theorem~\ref{thm:cm-values}, obtained by substituting two net stages and two
+name stages into that result.  Approximate attainment is the first minimizing
+entry from the finite scan.  No real-number library is needed for these
+arithmetic endpoints; a separate semantic interpretation can identify the
+result with conventional continuous logic.
+
+The delivered \texttt{QuantitativeKernel.lean} checks a qualitative nucleus:
+positive formulas built from atoms, conjunction, disjunction, and the two
+quantifiers transfer across a relation with selected forward and backward
+lifts, provided atoms transfer.  Its \texttt{positive\_transfer} theorem
+contains no quantifier-depth loss; \texttt{eval\_correct} connects finite
+Boolean evaluation to the corresponding finite-domain semantics.  These are
+Lean metatheorems.  They are not a completed formalization of the numerical
+continuous-logic estimates above, nor are they silently identified with
+\texttt{Prf PRAAx} derivations.  To reach that endpoint, instantiate the finite
+minimum lemmas in the repository's rational arithmetic, Booleanize their
+bounded list invariants, and construct the syntax-indexed family of
+\texttt{Prf PRAAx} proof terms.  The existing
+\texttt{SetoidInterpretation.sound} provides the subsequent interpretation
+interface for numerical sort families whose closure has been established.

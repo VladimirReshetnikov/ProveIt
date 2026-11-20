@@ -1,0 +1,30 @@
+\thispagestyle{plain}
+{\sffamily\small\textcolor{accent}{MATHEMATICAL LOGIC \enspace / \enspace ANALYTIC NUMBER THEORY}}\par
+\vspace{9pt}
+{\LARGE\bfseries\color{ink} Three Riemann hypotheses in intuitionistic primitive recursive arithmetic\par}
+\vspace{6pt}
+{\large Equivalent forms using prime powers, divisor matrices and Farey discrepancies\par}
+\vspace{7pt}{\small November 20, 2026}\par
+\bigskip
+An off-line zero of the Riemann zeta function can be detected, classically, by a failure of a finite integer inequality. The ordinary Riemann hypothesis can therefore be stated in first-order intuitionistic primitive recursive arithmetic (iPRA) even though iPRA quantifies only over natural numbers. The same construction covers Dirichlet characters of every conductor and Dedekind zeta functions of every number field.
+
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}\toprule
+Name in this report & Analytic assertion in $0<\Re s<1$ & Input to the prime test\\\midrule
+RH & Every zero of $\zeta$ has $\Re s=1/2$ & $F=X-1$\\
+Dirichlet GRH & Same for every primitive $L(s,\chi)$ & Every $F=X^m-1$\\
+Dedekind ERH & Same for every $\zeta_K$, $[K:\Q]<\infty$ & Every monic $F\in\Z[X]$, $\deg F>0$\\\bottomrule
+\end{tabular}
+\end{center}
+\noindent
+For example, let $B(n)$ be the highest set-bit index of $\mathrm{lcm}(1,\ldots,n)$. Ordinary RH is equivalent in the classical standard model to the assertion that every integer $n\ge100$ satisfies
+\[
+ |B(2n)-2B(n)|^2\le n\,\bigl[64{,}000(1+\lfloor\log_2(2n)\rfloor)^2\bigr]^2 .
+\]
+A failing $n$ is finite evidence that can be checked with integer arithmetic. For the other families, a finite tuple specifies a polynomial and a cutoff. Their common syntax gives the internal hierarchy $\ERH_{\ip}\Rightarrow\GRH_{\ip}\Rightarrow\RH_{\ip}$.
+
+\paragraph{What equivalence means here.}
+An \emph{internal} equivalence is a biconditional derivable using intuitionistic logic and quantifier-free induction. The strongest formal evidence of this kind in the project has type \code{Prf PRAAx [] (Fm.iff A B)}. A separate Lean judgment can prove that two closed formulas have the same truth value under the standard-natural-number interpretation. Finally, identifying an arithmetic sentence with the usual assertion about complex zeros uses classical analytic number theory. The guide on the next page identifies which kind of proof is supplied.
+
+\paragraph{What the reformulations change.}
+The universal tests prescribe their entire allowance. The determinant and energy tests ask for a growth constant, and a convergent-series version asks for a modulus as well. Explicit witness transformations connect these last forms by finite arithmetic. Their classical equivalence to a universal prime test does not by itself convert its truth into a constructive witness. The scope here is the formulation of the conjectures and the implications between formulations.

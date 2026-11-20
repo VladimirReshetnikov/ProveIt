@@ -1,0 +1,279 @@
+\section{The logical form of the intended theorem}
+\label{sec:logic}
+
+With the fixed predicates \eqref{eq:pos}--\eqref{eq:neg}, define
+\begin{align*}
+ \Rstr&:\ \forall n>5040\ \exists k\ \Pos(n,k),\\
+ \Rdn&:\ \forall n>5040\ \neg\neg\exists k\ \Pos(n,k),\\
+ \Rweak&:\ \forall n>5040\ \forall k\ \neg\Neg(n,k).
+\end{align*}
+The first is the intended positive strict Robin statement. It is
+$\Pi^0_2$ in the language with fixed primitive-recursive function
+symbols. The last is the absence of a certified strict violation,
+a $\Pi^0_1$ formula after pairing its universal variables.
+
+\begin{proposition}\label{prop:logic}
+Intuitionistically, $\Rstr\to\Rdn\to\Rweak$.
+The weak condition does not imply either of the other two in general.
+\end{proposition}
+\begin{proof}
+The first implication introduces double negation. For the second,
+suppose a negative certificate at $n$ is given. Incompatibility of
+interval signs refutes every positive certificate at the same $n$,
+contradicting $\neg\neg\exists k\,\Pos(n,k)$.
+
+For the failure of a generic reverse rule, use the constant exact
+interval $[0,0]$. It has no negative certificate and no positive
+certificate, even under double negation. This example concerns a
+logical rule; it makes no assertion that an actual Robin gap is zero.
+\end{proof}
+
+Replacing the strict inequality by $\Rweak$ thus changes the immediate
+constructive content. Negative translation of a classical proof with
+$\Rstr$ as conclusion ordinarily yields $\Rdn$, not $\Rstr$.
+Removing the remaining double negation would be a Markov-type
+witness-extraction step unless a bound or a separate theorem is supplied.
+For example, encode a decidable predicate by the rapid rational name
+which is zero until its first witness $j$ is found and then equals
+$2^{-j}$. Positive apartness of its limit is precisely existence of a
+witness. A generic double-negation removal rule would yield Markov's
+principle for that predicate.
+There is no need to speculate about the irrationality of $e^\gamma$,
+and no such speculation would supply the missing proof.
+
+\subsection{A concrete negative RH coding: the eta function}
+\label{sec:etacert}
+
+To avoid defining RH through Robin's criterion itself, use certificates
+for zeros in rational rectangles strictly to the right of the critical
+line. The following specifies a fixed primitive-recursive checker
+design. Its analytic adequacy is a separate proof obligation, not a
+completed result of the supplied Lean shell.
+
+For $\Re s>0$ use the paired Dirichlet eta series
+\[
+ \eta(s)=\sum_{j=1}^{\infty}
+       \bigl((2j-1)^{-s}-(2j)^{-s}\bigr).
+\]
+Let $R=[a,b]+i[c,d]$ be rational, with $1/2<a<b<1$, and let the
+integer $M\ge1$ bound $|s|$ on $R$, for instance by the sum of the
+largest absolute real and imaginary coordinates, rounded upward.
+The identity
+\[
+ (2j-1)^{-s}-(2j)^{-s}
+   =s\int_{2j-1}^{2j}t^{-s-1}\,dt
+\]
+yields the explicit tail
+\begin{equation}\label{eq:eta-tail}
+ \left|\eta(s)-\sum_{j=1}^{N}
+       ((2j-1)^{-s}-(2j)^{-s})\right|
+ \le\frac{M}{a}(2N+1)^{-a}
+ \le\frac{2M}{\sqrt{2N}}.
+\end{equation}
+Indeed the omitted disjoint intervals are contained in
+$[2N+1,\infty)$, and integration of $t^{-a-1}$ gives the first
+inequality. Differentiating the displayed integrand gives
+$(1-s\log t)t^{-s-1}$; the integrable majorant proves
+\begin{equation}\label{eq:eta-derivative}
+ |\eta'(s)|\le \frac1a+\frac{M}{a^2}\le 2+4M.
+\end{equation}
+These are explicit analytic estimates, with their finite-tail
+counterparts available by the same inequalities.
+
+For requested error $\varepsilon=2^{-k}$, choose
+$N\ge8M^2\varepsilon^{-2}$. The tail is at most $\varepsilon/2$.
+Evaluate each of the $2N$ finite terms with error at most
+$\varepsilon/(4N)$. Each term is
+$\exp(-s\log j)$, so the rational logarithm algorithm and a bounded
+complex exponential Taylor sum suffice. For $|z|\le D$ with integer
+$D\ge1$, a particularly crude adequate Taylor cutoff is
+\[
+ K=2\max(2D^2,p+4).
+\]
+The factorial lower bound from the final half of the factors and a
+geometric ratio bound show that the tail after degree $K$ is at most
+$2^{-p-3}$. Here $D$ must bound the approximate argument as well.
+For a fully specified, deliberately generous schedule set
+\[
+ \begin{split}
+ N&=8M^2\,2^{2k},\qquad p=k+\ell(N)+4,\\
+ D&=M(2N+1)+1,\qquad
+ h=p+\ell(M)+2(D+1)+4 .
+ \end{split}
+\]
+For each $j\le2N$, choose the lower endpoint of
+$\operatorname{LogI}(j,h)$, use it in $-s\log j$, and evaluate the
+complex Taylor polynomial through degree $K$ as above. Since
+$\log j\le j$ and the approximation error is at most one, $D$
+bounds both arguments. The input perturbation is at most
+$3^{D+1}M2^{-h}<2^{-p-4}$, and the Taylor tail is at most
+$2^{-p-3}$. Each term therefore has error below
+$2^{-p}<\varepsilon/(4N)$. These large but fixed
+primitive-recursive bounds specify the rational eta observations
+without invoking a universal program evaluator.
+
+\Needspace{6\baselineskip}
+The certificate code contains:
+\begin{enumerate}[leftmargin=*]
+\item The rational rectangle $R$ and an ordered rational subdivision
+$z_0,\ldots,z_t=z_0$ of its positively oriented boundary.
+\item A precision $k$ and the canonical rational eta approximations
+$w_j$ at these vertices, each with coordinate error at most
+$\varepsilon$. The checker recomputes them; it does not trust them.
+\item A rational ray direction avoiding the polygon vertices, used to
+compute an exact winding number.
+\end{enumerate}
+Put $L=2+4M$ and
+\[
+ \delta_j=|\Re(z_{j+1}-z_j)|+|\Im(z_{j+1}-z_j)|,\qquad
+ E_j=2\varepsilon+L\delta_j.
+\]
+Require, for each $j$, that the coordinate square centered at $w_j$
+of radius $E_j$ avoid zero. This is the rational disjunction
+$|\Re w_j|>E_j$ or $|\Im w_j|>E_j$.
+The eta image of the boundary segment and the straight polygon chord
+from $w_j$ to $w_{j+1}$ both lie in that square. A straight homotopy
+therefore avoids zero, and the endpoint homotopies agree between
+adjacent segments.
+
+Multiply all values by the complex conjugate of the chosen nonzero
+Gaussian-rational direction. This is an orientation-preserving
+rational similarity taking that direction to the positive real ray.
+Require every transformed vertex to have nonzero imaginary coordinate.
+Polygon winding is then computed by signed crossings.
+For an edge with endpoint imaginary parts of opposite signs, its
+real coordinate at height zero is
+\[
+ \frac{x_jy_{j+1}-x_{j+1}y_j}{y_{j+1}-y_j}.
+\]
+An upward crossing on the positive ray contributes $+1$; a downward
+one contributes $-1$. Degenerate cases are rejected or avoided by
+the supplied direction. Every decision is rational arithmetic.
+The checker accepts when all the checks pass and this integer
+winding number is positive. Malformed codes return false.
+Call this fixed predicate $\Bad(c)$.
+
+The analytic argument principle would establish soundness:
+an accepted code encloses a zero of $\eta$. On $b<1$,
+\[
+ \eta(s)=(1-2^{1-s})\zeta(s),\qquad
+ |2^{1-s}|\ge2^{1-b}>1,
+\]
+so the factor is separated from zero and the enclosed zero is a
+zeta zero to the right of the critical line.
+
+Define
+\begin{equation}\label{eq:rhc}
+ \RHc:\Longleftrightarrow \forall c\ \neg\Bad(c).
+\end{equation}
+This is a negative $\Pi^0_1$ formula and is intuitionistically stable:
+$\neg\neg\RHc\to\RHc$. To see this, fix $c$ with $\Bad(c)$; it
+would refute $\RHc$, contrary to the given double negation.
+
+\paragraph{Adequacy that must still be proved.}
+The finite evaluator, the homotopy argument, and the argument principle
+need certified coded versions. Completeness requires surrounding every
+off-line zero with a rational rectangle whose boundary has a positive
+lower modulus, then finding an adequate finite subdivision. The functional
+equation reflects left-half-strip zeros to the right. If the target RH
+definition ranges beyond zeros in $0<\Re s<1$, the zero-free boundary
+and exterior, and the trivial zeros, also need the usual interfaces.
+None of these internal derivations is supplied by giving the checker
+a name. No completed implementation of this checker is claimed here.
+
+In particular the positive assertion that every zero-free compact
+rectangle has a finite positive lower-bound certificate must not be
+silently substituted for the negative assertion \eqref{eq:rhc}.
+That conversion has its own proof requirements.
+
+\subsection{Exactly sufficient certificate transformations}
+
+Suppose four fixed primitive-recursive functions $u,p,v,q$ have been
+constructed and $\ipra$ proves
+\begin{align}
+ n>5040&\ \to\
+       \bigl(\Bad(u(n))\vee\Pos(n,p(n))\bigr),\label{eq:F}\\
+ \Bad(c)&\ \to\
+       \bigl(v(c)>5040\ \wedge\ \Neg(v(c),q(c))\bigr).\label{eq:R}
+\end{align}
+These statements must concern the actual specified checkers. They are
+not axioms adopted in this report.
+
+\begin{theorem}[Conditional assembly]\label{thm:assembly}
+If the indicated object proofs of \eqref{eq:F}, \eqref{eq:R}, and
+sign incompatibility are supplied, then $\ipra$ proves
+$\RHc\leftrightarrow\Rstr$.
+\end{theorem}
+\begin{proof}
+Assume $\RHc$ and fix $n>5040$. It rules out the first disjunct of
+\eqref{eq:F}; $p(n)$ is the required positive witness.
+Conversely assume $\Rstr$ and a particular $\Bad(c)$.
+Equation \eqref{eq:R} gives a negative certificate at $v(c)>5040$,
+while $\Rstr$ gives a positive certificate at that same integer.
+Their incompatibility gives false.
+\end{proof}
+
+The theorem is compiled in the attached Lean file with both
+transformations as explicit hypotheses. It is useful proof assembly,
+not Robin's theorem with the analytic work concealed.
+
+There is also a less witness-intensive legitimate converse. Because
+$\RHc$ is stable, an intuitionistic proof of
+$\neg\RHc\to\neg\Rstr$ suffices for $\Rstr\to\RHc$.
+One must still prove that contrapositive in the correct theory;
+it is not legitimate to turn $\neg\RHc$ into a positive
+$\exists c\,\Bad(c)$ by an unstated Markov principle.
+
+\subsection{A positive transfer metatheorem}
+
+\begin{theorem}[Classical PRA is a sufficient intermediate target]
+\label{thm:transfer}
+Let $A\equiv\forall c\,a(c)$ and
+$B\equiv\forall n\,\exists k\,b(n,k)$, where $a,b$ are
+quantifier-free formulas over a fixed primitive-recursive language.
+If classical first-order $\pra$ proves $A\leftrightarrow B$, then
+$\ipra$ proves $A\leftrightarrow B$.
+\end{theorem}
+\begin{proof}
+Classically, $A\to B$ implies the $\Pi^0_2$ sentence
+\[
+ \forall n\ \exists c,k\quad
+       \bigl(\neg a(c)\vee b(n,k)\bigr).
+\]
+Herbrand witnessing for PRA supplies primitive-recursive terms
+$c(n),k(n)$ and a quantifier-free PRA proof of
+$\neg a(c(n))\vee b(n,k(n))$; a pair code handles the two witnesses.
+The witnessing theorem is stated explicitly in
+\cite[p.~13]{AvigadMining}. Quantifier-free arithmetic predicates
+are decidable in $\ipra$, so this quantifier-free derivation can be
+read intuitionistically. Under $A$ the first disjunct is impossible,
+and $k(n)$ supplies the desired witness. This proves $A\to B$.
+
+Apply the standard negative translation to the classical derivation
+of $B\to A$. Decidability of quantifier-free formulas identifies
+the translation of $A$ with $A$, and the translation of $B$ with
+\[
+ B^N\equiv\forall n\,\neg\neg\exists k\,b(n,k).
+\]
+Translated quantifier-free induction instances remain equivalent
+to the permitted induction instances. Hence $\ipra$ proves
+$B^N\to A$. Since $B\to B^N$ is intuitionistically valid, it also
+proves $B\to A$.
+\end{proof}
+
+For Robin, fold the decidable condition $n>5040$ into $b(n,k)$ and
+use a dummy witness below the cutoff. The theorem then applies to
+$\RHc$ and $\Rstr$.
+
+This metatheorem resolves one logical concern: strict witnesses are
+not intrinsically incompatible with an initial classical approach.
+Its premise is nevertheless a proof in \emph{classical PRA}, not
+an arbitrary classical Lean proof. Establishing the necessary
+arithmetic strength of the analytic argument remains the central
+uncompleted task.
+
+Likewise, conservation of a stronger theory for $\Pi^0_2$ sentences
+can be applied to concrete witness statements such as
+\eqref{eq:F}--\eqref{eq:R}. It cannot automatically be applied to
+an implication with a $\Pi^0_2$ antecedent merely by calling the
+whole implication arithmetical.

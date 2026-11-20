@@ -1,0 +1,57 @@
+\section{What a continuous assertion means in arithmetic}
+\label{sec:framework}
+
+Take the repository's ordinary \ipra{} with intuitionistic first-order logic with equality, a symbol with defining equations for every primitive-recursive (PR) definition, the successor axioms, and quantifier-free induction. Its Lean judgement is \( \Gamma\vdash_{\mathsf{PRAAx}}\phi \). Our snapshot is \texttt{5f3be02388} of ProveIt. The \href{https://github.com/VladimirReshetnikov/ProveIt/blob/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic/Derivations/FINITE-DEMAND-CLAIMS.md}{finite-demand audit} already records object derivations for bounded reflection, changing-parameter recursion, and several finite Hausdorff estimates. In particular, its aggregate optimization works with approximate support witnesses. The \href{https://github.com/VladimirReshetnikov/ProveIt/tree/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_categorical_methods}{categorical packet} treats finite Kan extensions, gluing and the difficulty of choosing a coherent branch. We use these as starting points. A metric kernel below has a continuum of possible intermediate points, and its finite composites need only agree up to a computable error.
+
+\paragraph{The interpretation.}
+A presentation has a decidable PR domain of dense codes \(D\subseteq\N\), total PR operations (with defaults on invalid codes) and arithmetical proofs of their laws on valid inputs. Different spaces can have different domains. A rational pseudometric on \(D\) gives a convenient common case. For an external, fixed PR program \(x(p,i)\), with numerical parameter \(p\), the assertion that it names a point reads
+\[
+ \operatorname{Reg}(x,p)\quad\Longleftrightarrow\quad
+ \forall i,j\quad x(p,i)\in D\ \land\
+ d(x(p,i),x(p,j))\le 2^{-i}+2^{-j}.
+\]
+The omitted membership for \(j\) follows by instantiation. In this formula \(x\) is the function symbol for the given program. A complete metric space may serve as the external interpretation. The formulas themselves need only dense codes. For two regular names \(x,y\), equality means
+\(\forall k\,\exists N\,\forall i,j\ge N,\ d(x_i,y_j)\le 2^{-k}\).
+Equivalently \(d(x_i,y_j)\le 2^{-i}+2^{-j}\) for all \(i,j\). For the forward direction insert sufficiently fine \(x_t,y_u\) between \(x_i,y_j\), then use the decidable order of the rational endpoints. If the displayed bound failed, choose the errors \(2^{-t},2^{-u}\) and the cross-distance smaller than one quarter of the positive rational gap. The reverse implication takes \(N=k+1\). Thus equivalence of regular names has a universal formulation with a decidable matrix.
+
+An operation on names is a proof-generating construction on fixed input programs. Its conclusions assert regularity and independence of equivalent representations. A claim about every represented input is a schema of these arithmetical conclusions. A single uniform family is possible when the presentations are already given by one fixed PR program with data parameters. An arbitrary code for a PR program is insufficient. A PR universal evaluator \(U(e,x)\) total and correct on every unary PR code would make \(x\mapsto U(x,x)+1\) PR, contradicting its own entry. We pass finite tables as data when a signature or index set is truly variable.
+
+\paragraph{Coding and comparison.}
+Use the repository's pairing and finite-sequence definitions. An alternative concrete coding stores zero for nil and \(1+\langle a,s\rangle\) for cons, with Cantor pairing. Projections are bounded searches through the code, and taking at most code-many tails terminates for every code. Integers are differences of two naturals. Rational numbers are a signed numerator and a positive denominator. Products of denominators convert finitely many rational comparisons into integer ones, including strict inequalities. The matrices below are finite lists of rows. A precision, an index, a numerator or a length in such a matrix can be an object variable. All malformed inputs have a fixed output supplied by the program. Each assertion about the intended semantics retains its input guards.
+
+\subsection{A principle for transferring an estimate}
+\label{sec:principle}
+At stage \(i\), an experiment has a finite nonempty list of legal answers. Pair two experiments by a decidable relation \(R\) between their answers. In both directions, every legal answer must have a relative. For a rational terminal observable \(F\) the useful condition is a bound
+\[
+ |F_i(u)-F_j(v)|\le b\qquad(uRv).
+\]
+The relation can depend on the previous answers and the stage pair. One only needs the two coverage implications at the histories being compared. For a fixed finite expression built from these observations, form its value as follows. At a choice node take the minimum or maximum of its continuations, and at a deterministic node apply a rational connective \(C\). Suppose a PR function \(\omega_C(e_1,\ldots,e_s)\) bounds the output discrepancy when the inputs differ by at most \(e_1,\ldots,e_s\), with the same domain guard on both evaluations.
+
+\begin{theorem}[Comparison of two finite evaluations]\label{thm:compare}
+Assign a bound to each pair of related terminal histories. At a choice node take any common upper bound for the bounds on related child pairs. At a deterministic node apply \(\omega_C\). The resulting bound at the root bounds the discrepancy of the two evaluations. In particular, if all terminal discrepancies are at most \(b\) and all connectives are nonexpansive in the maximum metric, the root discrepancy is at most \(b\), independently of nesting.
+\end{theorem}
+\begin{proof}
+At a minimum node select the least index attaining the second minimum. Coverage supplies a matching first answer. The first minimum is at most the value at that answer, which is at most the second minimum plus the child bound. Exchange the experiments for the other inequality. A maximum uses the maximizing answer in the first experiment to bound the first maximum from above, and then exchanges experiments. A deterministic node uses its stated inequality. These steps prove the claim by induction on the external expression. Each terminal comparison is used only at related histories. Locally one cover gives one inequality, with the direction reversed at maxima. To propagate a single inequality through a whole tree, use the required direction at each binder and a suitable monotonicity law at each deterministic node. An empty choice has no selected index, which explains the nonemptiness condition.
+\end{proof}
+
+If all stage-pair bounds are \(b_{ij}\le c(2^{-i}+2^{-j})\), taking \(i=k+s\) with \(2^s\ge c\) constructs a regular name for the result. When a terminal conclusion is a discrete label, a separate separation inequality can identify it exactly. For example, two integer certificates within a proven distance \(<1\) are equal. Precision loss can also be incurred in changing coordinates. The contour argument in Section~\ref{sec:namedresidue} uses clearance for precisely this purpose.
+
+\paragraph{A value versus a point.}
+A different invariant turns local witnesses into a point. Start with a validated state and suppose a fixed PR program sends each validated state \(s_i\) to \(s_{i+1}\) and supplies a dense code \(p_i\). Assume a PR rational bound \(b_i\ge0\), a PR rate \(g(k)\) with \(b_{g(k)}\le2^{-k}\), and verified finite implications giving \(d(p_i,p_j)\le b_i\) whenever \(j\ge i\). Then \(k\mapsto p_{g(k)}\) is regular. Compare the two selected indices in order, and use the small bound at the earlier one. If a residual \(F\) has a supplied modulus of uniform continuity and the selected \(F(p_{g(k)})\) tend to zero at a PR rate, its value at the resulting name is zero. Evaluate \(F\) on a sufficiently fine representative so its evaluation error and residual are each below half the requested tolerance. This is the mechanism behind the crossing proof. The Cantor-space example in Section~\ref{sec:continuous-models} explains why a PR answer at each stage alone cannot replace it.
+
+\paragraph{Changing a coordinate chart by a name.}
+A geometric construction may require rational grid vertices even when its natural origin is a represented point. Write \(h_n=2^{-n}\). For a query \(t\) in the new chart, let \(q_m(t)\) be PR rational coordinates in the original chart, regular in \(m\). Suppose that for \(m\ge B(t)\) these coordinates lie in a carrier where the same evaluator and modulus are certified. Assume \(B\) is PR and the old rational evaluator satisfies
+\[
+ d(u,v)\le 2^{-\mu(l)}
+ \ \Longrightarrow\quad
+ |F_i(u)-F_j(v)|\le 2^{-l}+h_i+h_j.
+\]
+The norm may also be a coded vector norm satisfying the triangle inequality. Define
+\[
+ a(k,t)=\max\{B(t),1+\mu(k+2)\},\qquad
+ G_k(t)=F_{k+2}\big(q_{a(k,t)}(t)\big).
+\]
+For \(T\ge a(k,t)\), regularity puts \(q_T(t)\) within \(2h_{a(k,t)}\) of the sampled coordinate. Consequently \(|G_k(t)-F_b(q_T(t))|\le 2h_{k+2}+h_b\) for every \(b\). Insert the same \(T,b\) between two evaluations at precisions \(k,j\), then discard the arbitrarily small \(2h_b\) by rational comparison. This proves regularity of \(G\). To transport an identity among finitely many queries, use \(T\) at least the maximum of their demands and evaluate the original identity there. For example, an equality of two weighted sums with rational weights \(w_\nu\) incurs at most \(\sum_\nu |w_\nu|(2h_{k+2}+h_b)\), taking the sum over terms on both sides. A positive target error fixes both precisions by bounded search using its rational denominator and the sum of weights. Products use \(|ab-a'b'|\le |a|\,|b-b'|+|b'|\,|a-a'|\) with supplied magnitude bounds. Strict guards require a positive margin before moving the coordinates. In Section~\ref{sec:namedresidue} the carrier is a shell, the chart change preserves differences exactly at a common \(T\), and an incidence identity identifies the two contour boundaries. The same rule applies to charted observables on real intervals or presented manifolds wherever the carrier and bounds are supplied.
+
+\paragraph{Induction budget.}
+For a fixed expression the tree induction is in the metatheory. It constructs a finite proof for that expression. The object inductions in a bounded scan use a Boolean prefix invariant, such as the assertion that the winner lies in the prefix and its value is no larger than every entry seen. A bounded universal is a fold of Boolean conjunction, with prefix recursion on the length. Reflect the bounded comparison to its bit using the fixed-formula bounded-reflection theorem, use the fold equations for base and step, then apply quantifier-free induction to equality of the bit with one. A coverage premise is consulted at the particular entry under discussion by existential elimination. For an iterated state use a componentwise validity bit and, when bounds involve earlier rows, a bounded scan through the computed prefix. Universal numerical parameters outside these loops are generalized after the induction. Claims about input programs involving unbounded quantifiers remain explicit hypotheses.

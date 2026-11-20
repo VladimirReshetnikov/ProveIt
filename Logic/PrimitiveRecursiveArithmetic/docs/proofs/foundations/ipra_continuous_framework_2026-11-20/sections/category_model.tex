@@ -1,0 +1,649 @@
+\section{Completion, quantitative function objects, and categorical structure}
+\label{sec:categorical-completion}
+
+The repository already derives elementary category laws, presentation-wise
+Yoneda, and several finite universal constructions in its actual object
+calculus. In particular, the inspected \texttt{PresentedCategory.lean} and
+\texttt{Yoneda.lean} return derivations in \texttt{Prf PRAAx}; these results
+are stronger than the uncompiled categorical outlines alone would suggest
+\cite{repo-presented,repo-yoneda}. The extension needed for analysis is a
+category whose arrows carry continuity information, and whose universal
+properties explain how infinite mathematical objects can be manipulated
+through their approximations. Completion and quantitative currying provide
+such examples. The completion approach is related to the regular-function
+construction of constructive reals \cite{oconnor2007}; the particular budgets
+below are given explicitly so their arithmetic obligations are visible.
+
+\subsection{Rational metric presentations and regular names}
+
+\begin{definition}[Rational metric presentation]
+A rational metric presentation consists of a decidable set of natural-number
+codes $A$, a specified PR rational-valued function $d_A$ on valid pairs, and
+proofs of the metric laws. A rational is represented by an integer numerator
+and a positive natural denominator. All comparisons below therefore reduce
+to integer inequalities after multiplication by positive denominators.
+A regular name in this presentation is a sequence $a_n\in A$ satisfying
+\begin{equation}
+ d_A(a_m,a_n)\leq 2^{-m}+2^{-n}\qquad(m,n\in\N).
+ \label{eq:cat-regular}
+\end{equation}
+\end{definition}
+
+There are two readings of ``sequence'' here. In the computational reading,
+$a(p,n)$ is one specified PR family, and the theorem is uniform in its
+numerical parameter $p$. In the relational reading, a number $e$ is a program
+code and a formula asserts total, single-valued evaluation and
+\eqref{eq:cat-regular}. The latter is an internal arithmetical sort; it does
+not require a PR universal evaluator. Its constructors must separately prove
+that their resulting evaluation relations are total. Neither reading says
+that one natural-number code represents every arbitrary set-theoretic real.
+
+Externally, names are identified when they have the same limit. An entirely
+arithmetical expression for this equivalence is
+\begin{equation}
+ a\sim b\quad\Longleftrightarrow\quad
+ \forall m,n\ d_A(a_m,b_n)\leq 2^{-m}+2^{-n}.
+ \label{eq:cat-equivalence}
+\end{equation}
+In the relational reading each displayed evaluation is replaced by its trace
+relation, and the formula quantifies over the returned values. Totality and
+single-valuedness make the expansion unambiguous. Equality is not a Boolean
+test on codes.
+
+For completeness, transitivity does not require a hidden limit rule. If
+$a\sim b$ and $b\sim c$, the triangle inequality gives, for every $j$,
+\[
+ d_A(a_m,c_n)\leq 2^{-m}+2^{-n}+2^{1-j}.
+\]
+If the desired rational inequality were false, its positive rational gap
+would have some integer denominator $D>0$ and would be at least $1/D$.
+Taking $j=D+2$ makes $2^{1-j}<1/D$, a contradiction. This uses decidable
+rational order and a specified PR index. It is intuitionistically valid.
+The same rational separation argument removes the vanishing slack in all
+subsequent equalities. In the metatheoretic completion, the distance from
+the class of $a$ to the embedded core point $a_n$ is at most $2^{-n}$.
+This assertion is itself represented by the rational inequalities obtained
+from \eqref{eq:cat-regular}.
+
+\begin{lemma}[Completeness with supplied Cauchy data]
+\label{lem:cat-complete}
+Suppose $a(r,n)$ is a family of regular names and its outer Cauchy property
+is supplied in the directly arithmetical form
+\[
+ d_A(a(r,m),a(s,n))
+ \leq 2^{-r}+2^{-s}+2^{-m}+2^{-n}.
+\]
+Then $b_n=a(n+2,n+2)$ is regular, and its completion class is within
+$2^{-r}$ of the class named by $a(r,-)$.
+\end{lemma}
+\begin{proof}
+The hypothesis gives
+\[
+ d_A(b_m,b_n)\leq 2^{-(m+1)}+2^{-(n+1)}
+ \leq2^{-m}+2^{-n}.
+\]
+For fixed $r,m$ it also gives
+\[
+ d_A(a(r,m),b_n)\leq2^{-r}+2^{-m}+2^{-(n+1)}.
+\]
+This is exactly the approximation inequality saying that the limiting
+distance is at most $2^{-r}$. The constructor makes one matrix evaluation
+per output. A general Cauchy family with a supplied modulus is first sampled
+at the prescribed increasing indices to obtain the displayed regular rate.
+Neither arbitrary Cauchy convergence nor a modulus-extraction principle is
+assumed.
+\end{proof}
+
+\subsection{An extension operator with an explicit diagonal}
+
+Let $A,B$ be rational metric presentations. Suppose a map on the core is
+represented by a family $F(u,n)\in B$. For each valid $u$, this family is a
+regular name. Let $\mu:\N\to\N$ be a specified nondecreasing modulus.
+The directly usable continuity assumption is
+\begin{equation}
+\begin{split}
+ d_A(u,v)\leq 2^{-\mu(k)}\quad\Longrightarrow\quad
+ d_B(F(u,r),F(v,s))
+ \leq 2^{-k}+2^{-r}+2^{-s}.
+\end{split}
+\label{eq:cat-core-map}
+\end{equation}
+This is a formula about rational approximations. It includes the usual
+continuity assertion and the errors in the two output names. The monotonicity
+of $\mu$ is part of the input interface. For specified PR moduli one may
+replace an arbitrary modulus by its running maximum. For relationally total
+modulus codes, the totality of that variable-length normalization needs its
+own argument; it is simpler to supply a monotone modulus from the outset.
+
+\begin{theorem}[Diagonal extension]
+\label{thm:cat-extension}
+Put
+\[
+ \nu(n)=\mu(n+3)+n+3,
+ \qquad q_n=F(a_{\nu(n)},n+3).
+\]
+If $a$ is regular and \eqref{eq:cat-core-map} holds, then $q$ is regular.
+Equivalent source names give equivalent output names. Thus this construction
+extends the core map to completion classes. For fixed PR data it is a PR
+constructor. For relationally total input codes it has a relationally total
+output, using only finitely many sequential evaluation calls for each output
+precision.
+\end{theorem}
+
+\begin{proof}
+Let $r=\min(m,n)$. Monotonicity gives
+$\nu(m),\nu(n)\geq \mu(r+3)+r+3$, so regularity implies
+\[
+ d_A(a_{\nu(m)},a_{\nu(n)})
+ \leq 2^{1-\mu(r+3)-r-3}
+ \leq 2^{-\mu(r+3)}.
+\]
+Apply \eqref{eq:cat-core-map} with $k=r+3$ and output precisions $m+3,n+3$.
+Then
+\begin{equation}
+ d_B(q_m,q_n)
+ \leq 2^{-(r+3)}+2^{-(m+3)}+2^{-(n+3)}
+ \leq 2^{-m}+2^{-n}.
+ \label{eq:cat-diagonal-bound}
+\end{equation}
+For $a\sim b$ exactly the same calculation, with the cross-name inequality
+in place of regularity, proves the defining inequality for
+$q(a)\sim q(b)$. All these estimates concern four selected source/output
+approximations and rational arithmetic; no induction over an unbounded
+formula about names is used.
+
+The output program first evaluates $\mu(n+3)$, then $a$ at $\nu(n)$, and
+then $F$ at the resulting core point and precision $n+3$. In the relational
+reading the three totality hypotheses provide three witnesses in this order.
+First-order existential elimination combines them into a terminating trace.
+There is no collection of an unbounded family of termination witnesses.
+\end{proof}
+
+The extension is uniformly continuous. For example, if the distance between
+two completed inputs is at most $2^{-\mu(k+2)-1}$, sufficiently accurate
+core approximations are at distance at most $2^{-\mu(k+2)}$.
+Applying \eqref{eq:cat-core-map} and removing the output slacks gives
+output distance at most $2^{-(k+2)}$, hence at most $2^{-k}$.
+The source-index choice is explicit: request core error at most
+$2^{-\mu(k+2)-3}$. Thus $k\mapsto\mu(k+2)+1$ is a valid, deliberately
+conservative modulus for the completed map under the non-strict convention.
+For the embedded core point $u$, the constant name $a_n=u$ gives a subsequence
+of $F(u,n)$, so the extension agrees with $F$.
+
+\begin{theorem}[The completion universal property, with its interpretation]
+\label{thm:cat-universal}
+A uniformly continuous map from a rational metric core into a target
+represented as a completion $\widehat B$ has a unique uniformly continuous
+extension to the
+completion, up to the represented equality. The constructor and uniqueness
+proof are schematic iPRA results for specified PR data. They also give
+internal conditional results for relational code sorts when the continuity,
+regularity, and totality formulas are included in the hypotheses.
+\end{theorem}
+
+\begin{proof}
+Existence is Theorem~\ref{thm:cat-extension}, followed by the supplied
+interpretation of regular output names in $\widehat B$. For another
+representation of a complete target, a certified limit operator translating
+these regular names into that representation is additional interface data.
+To prove
+uniqueness, let $H,G$ be two extensions and fix a source name $a$.
+Given $k$, choose $n$ so large that $2^{-n}$ is below the two input
+thresholds needed for output error $2^{-(k+2)}$. This is a maximum of two
+specified modulus values, plus a fixed offset. Since the core point $a_n$
+is within $2^{-n}$ of $a$ and both maps agree there,
+\[
+ d(H(a),G(a))
+ \leq d(H(a),H(a_n))+d(G(a_n),G(a))
+ \leq 2^{-(k+1)}.
+\]
+The approximation form of this estimate is a rational inequality with
+additional explicitly chosen output errors. Rational separation removes
+those errors and then establishes represented equality. Only fixed instances
+of the modulus and equality hypotheses were used.
+\end{proof}
+
+This is a categorical assertion with content: precomposition with the dense
+embedding identifies uniformly continuous maps from the completion with
+uniformly continuous maps from its core into complete targets, where the
+maps and their moduli are part of the representation. Completion preserves
+identity and composition because both candidate composites are continuous
+extensions of the same core map, so uniqueness applies. These equations give
+the functorial and universal-property laws. In the PR reading the category of
+all presentations is metatheoretic bookkeeping for a family of iPRA theorems;
+in the relational reading the chosen code sorts, equality formulas, and
+composition relations can be interpreted internally. Neither construction
+needs decidable equality of real points.
+
+\subsection{A quantitative function object and the correct product metric}
+
+Suppose $X$ has finite $2^{-n}$-nets
+\[
+ N_n=(x_{n,0},\ldots,x_{n,t(n)-1}),\qquad t(n)>0,
+\]
+with specified PR lengths, points, and a certified selector covering the
+rational core. Let $Y$ be a complete metric space of diameter at most one.
+For maps $f,g:X\to Y$ with a common Lipschitz bound $L\geq 1$, write
+\[
+ D(f,g)=\sup_{x\in X}d_Y(f(x),g(x)).
+\]
+The supremum has an effective meaning here. If $\widetilde f(x,n)$ and
+$\widetilde g(x,n)$ approximate the two values within $2^{-n}$, and target
+distances between approximations are exact rationals, put
+\[
+ M_n=\max_{j<t(n)}
+ d_Y(\widetilde f(x_{n,j},n),\widetilde g(x_{n,j},n)).
+\]
+For every core point $x$, select a net point $x_{n,j}$ within $2^{-n}$.
+The resulting inequality extends to completion points by regular
+approximation and removal of rational slack. The triangle inequality gives
+\[
+ d_Y(f(x),g(x))
+ \leq d_Y(f(x_{n,j}),g(x_{n,j}))+2L2^{-n}
+ \leq M_n+(2L+2)2^{-n}.
+\]
+Conversely each sampled distance is at most $D(f,g)+2^{1-n}$. Consequently
+\begin{equation}
+ |M_n-D(f,g)|\leq (2L+2)2^{-n}.
+ \label{eq:cat-sup-distance}
+\end{equation}
+As in the formula evaluator below, the finite comparison version of this
+proof establishes that a shifted $M_n$ is a regular rational name, before any
+semantic supremum is mentioned. This provides a represented metric on the
+class of maps with the common bound. It does not construct a decidable
+rational metric core for that function class: its supremum distances are
+generally represented reals, and no dense rational function presentation has
+been supplied. Accordingly, closure of the original category of rational
+cores under these function objects is not claimed. The bound cannot be
+discarded while retaining this sampling rate.
+
+Evaluation satisfies
+\begin{equation}
+ d_Y(f(x),g(y))\leq D(f,g)+L d_X(x,y).
+ \label{eq:cat-eval}
+\end{equation}
+A Cauchy family of $L$-Lipschitz maps in $D$, with a supplied uniform Cauchy
+modulus, has a pointwise diagonal limit in $Y$. Passing the two finite
+approximation errors through the Lipschitz inequality shows that the limit
+is still $L$-Lipschitz. The same uniform error bound establishes convergence
+in $D$, not merely pointwise convergence. Thus this function class is
+complete in its represented supremum metric whenever the required value
+families and uniform Cauchy data are provided.
+
+\begin{theorem}[Quantitative currying]
+\label{thm:cat-currying}
+For nonexpansive maps, the assignment
+\[
+ H:Z\times X\longrightarrow Y
+ \quad\longleftrightarrow\quad
+ \widehat H:Z\longrightarrow [X,Y],
+ \qquad \widehat H(z)(x)=H(z,x),
+\]
+is an inverse correspondence when the left-hand maps satisfy
+\[
+ d_Y(H(z,x),H(z',x'))\leq d_Z(z,z')+d_X(x,x')
+\]
+and the right-hand maps are nonexpansive for the supremum metric.
+Here $[X,Y]$ denotes the represented class of nonexpansive maps, not a PR
+universal evaluator on all function codes.
+\end{theorem}
+
+\begin{proof}
+The displayed bound with $z=z'$ makes every slice nonexpansive. With $x=x'$
+it gives $D(\widehat H(z),\widehat H(z'))\leq d_Z(z,z')$. Conversely,
+\eqref{eq:cat-eval} with $L=1$ gives the displayed bound for an uncurried
+map. The two round trips are pointwise identities, so they are equal under
+the represented function equality. A finite query to either round trip is
+literally the same underlying value query.
+\end{proof}
+
+The additive product metric is essential: this is the familiar metric
+\emph{tensor} version of an internal hom. It does not assert cartesian closure
+for the maximum product metric. For $H(z,x)=\min(1,z+x)$ on $[0,1]^2$, each slice is nonexpansive,
+but the distance between the values at $(0,0)$ and $(\eps,\eps)$ is
+$2\eps$ when $0<\eps\leq1/2$, while the maximum product distance is
+only $\eps$. Thus a sum of two coordinate error budgets cannot be
+replaced by their maximum. The proof
+establishes exactly the additive inequality stated above.
+
+There is also an arithmetic qualification. With specified PR evaluation,
+scanning $t(n)$ net values is primitive recursion. With merely relationally
+total function codes, one must provide a bounded evaluation table, a clocked
+batch realizer, or an explicit proof that the necessary batch exists.
+The formula $\forall x\,\exists t\,\operatorname{Trace}(e,x,t)$ must not
+silently become an induction principle for collecting variable-length lists
+of witnesses. The conditional theorem about any supplied batch remains an
+iPRA theorem, and its semantic adequacy remains unchanged.
+
+\section{Continuous model theory as certified numerical semantics}
+\label{sec:continuous-models}
+
+Metric model theory evaluates formulas in a bounded real interval, uses
+continuous connectives, and interprets quantifiers by suprema and infima
+\cite{metric-model-theory}. This vocabulary is a good match for represented
+analysis, but its full compactness and model-existence theory is not a free
+consequence of a finite evaluator. We give a narrower result with a complete
+arithmetic proof: for compact metric presentations with effective nets and
+uniformly approximable predicates, every formula in a fixed Lipschitz
+continuous language has a regular name for its value, with an explicit
+precision budget. We then prove a quantitative form of preservation under
+approximately dense maps.
+
+\subsection{Syntax and the data required from a structure}
+
+Use a fixed finite relational signature. Each predicate $P_i$ has fixed
+arity $r_i$ and takes values in $[0,1]$. This does not exclude familiar
+analytic operations: a finite collection of composed terms can first be
+compiled using their supplied value approximations and continuity bounds,
+and then regarded as atomic predicates for the formula in question.
+The basic connectives may include rational constants, $1-u$, $\min$, $\max$,
+$(u+v)/2$, and truncated subtraction $\max(u-v,0)$. These have known
+Lipschitz constants in the maximum metric on their arguments: one for all
+listed connectives except truncated subtraction, for which two suffices.
+More general finitely many Lipschitz connectives are allowed with supplied
+integer bounds $\lambda_c$, provided their restrictions to rational inputs
+are exact PR rational-valued functions. The error recurrence below assumes
+exact connective evaluation. If a connective is itself approximated with
+error at most $b_c2^{-K}$, its recurrence must instead include that budget:
+$C_c=b_c+\lambda_c\max_j C_{\varphi_j}$; the corresponding uniform
+approximation and continuity estimates become additional hypotheses.
+
+Formulas are generated by
+\[
+ \varphi ::= P_i(x_{j_1},\ldots,x_{j_{r_i}})
+ \mid c(\varphi_1,\ldots,\varphi_r)
+ \mid \inf_x\psi\mid\sup_x\psi.
+\]
+Bound variables can be represented by de Bruijn indices in the implementation.
+An arity check rejects references outside the current environment.
+
+The structure supplies a rational metric core $A$, nonempty finite lists
+$N_K\subseteq A$, and a specified selector $\sigma(K,a)<|N_K|$ with
+\begin{equation}
+ d_A(a,N_K[\sigma(K,a)])\leq 2^{-K}
+ \quad(a\in A).
+ \label{eq:model-net}
+\end{equation}
+It also supplies rational values $V_i(K,\bar a)\in[0,1]$ satisfying the
+cross-precision, cross-input estimate
+\begin{equation}
+ |V_i(K,\bar a)-V_i(K',\bar b)|
+ \leq L_i d_\infty(\bar a,\bar b)+2^{-K}+2^{-K'}.
+ \label{eq:model-atoms}
+\end{equation}
+Here $L_i$ is a known integer, and $d_\infty$ is the maximum coordinate
+distance, zero for an empty tuple. Exact rational atoms satisfy the same
+condition with the last two terms omitted. All signature functions and
+net/selector operations are fixed PR functions in the computational reading.
+Their laws are supplied object-theory derivations or explicit premises, not
+assertions certified by a finite inspection of all core points.
+
+\subsection{A finite evaluator and its exact error calculation}
+
+Define $E_\varphi(K,\bar a)$ recursively. At an atomic node use
+$V_i(K,\bar a)$; at a connective apply that rational connective; at an
+$\inf_x$ node take the finite minimum over $x\in N_K$, and at a $\sup_x$
+node take the finite maximum. The same mesh precision $K$ is used throughout.
+Define two integer coefficients by the following recursion:
+\begin{align*}
+ W_{P_i}&=L_i, & C_{P_i}&=1,\\
+ W_c&=\lambda_c\max_j W_{\varphi_j},
+ &C_c&=\lambda_c\max_j C_{\varphi_j},\\
+ W_{\inf_x\psi}=W_{\sup_x\psi}&=W_\psi,
+ &C_{\inf_x\psi}=C_{\sup_x\psi}&=C_\psi+W_\psi.
+\end{align*}
+For a rational constant both coefficients are zero. For exact rational atomic
+predicates one may set $C_{P_i}=0$. The weight $W$ is deliberately allowed to
+remain positive even when a variable is bound; it is a safe common modulus
+bound, not an optimized dependency analysis.
+
+\begin{theorem}[Finite comparison theorem]
+\label{thm:model-comparison}
+From \eqref{eq:model-net} and \eqref{eq:model-atoms}, iPRA proves the
+finite arithmetic estimate
+\begin{equation}
+ |E_\varphi(K,\bar a)-E_\varphi(K',\bar b)|
+ \leq W_\varphi d_\infty(\bar a,\bar b)
+       +C_\varphi(2^{-K}+2^{-K'}).
+ \label{eq:model-comparison}
+\end{equation}
+The statement is schematic for each fixed formula. It can also be made
+uniform over formulas in the fixed finite signature by a bounded
+syntax-table implementation with a quantifier-free invariant.
+\end{theorem}
+
+\begin{proof}
+The atomic step is \eqref{eq:model-atoms}. For a connective, apply its
+Lipschitz inequality to the maximum of the child estimates. This gives the
+two recurrences containing $\lambda_c$.
+
+For an infimum, put $\psi=\psi(x,\bar y)$,
+$A=\min_{u\in N_K}E_\psi(K,u,\bar a)$, and
+$B=\min_{v\in N_{K'}}E_\psi(K',v,\bar b)$.
+Choose a minimizer $u$ of the first finite table; this is bounded rational
+search, including deterministic tie-breaking. Use
+$v=N_{K'}[\sigma(K',u)]$. The child estimate and
+$d_A(u,v)\leq2^{-K'}$ imply
+\[
+ B\leq A+W_\psi d_\infty(\bar a,\bar b)
+       +C_\psi(2^{-K}+2^{-K'})+W_\psi2^{-K'}.
+\]
+Interchange the two tables to get the reverse inequality with the last
+term $W_\psi2^{-K}$. Both are bounded by
+\eqref{eq:model-comparison} with $C=C_\psi+W_\psi$.
+The supremum case uses maximizers and the same estimates with the
+inequalities reversed. Nonemptiness of every net is used exactly where a
+finite minimizer or maximizer is selected.
+
+For the uniform arithmetic reading, topologically order the finite syntax
+nodes and record their values on every needed finite assignment. If the
+formula has $s$ nodes, there are at most $s$ bound variables. For a generous explicit bound, put
+$B=|N_K|+|N_{K'}|+2|\bar a|+1$. The number of node-indexed pairs of
+environments needed for the comparison table is at most
+$(s+1)B^{2s+2|\bar a|+2}$. This bounds both environments simultaneously,
+including all parameter and bound-variable slots. The invariant states the
+already established rational comparisons for these bounded lists of nodes
+and pairs of assignments. Every conjunction is bounded and
+Booleanizable; induction is quantifier-free. This replaces an illicit
+induction on an unbounded assertion about all real parameter tuples.
+\end{proof}
+
+Let $c=\max(1,C_\varphi)$ and choose
+$K(n)=n+\lceil\log_2 c\rceil$. The ceiling logarithm here is a bounded
+integer operation, the least $j\leq c$ with $c\leq2^j$.
+Then $E_\varphi(K(n),\bar a)$ is a regular rational name for fixed rational
+parameters. For completed parameters represented by the regular tuple name
+$\bar a_n$, refine both the evaluator and its input, explicitly setting
+\[
+ K(n)=n+\lceil\log_2\max(1,C_\varphi+W_\varphi)\rceil,
+ \qquad q_n=E_\varphi(K(n),\bar a_{K(n)}).
+\]
+The comparison theorem and tuple regularity give
+\[
+ |q_m-q_n|\leq(C_\varphi+W_\varphi)
+       (2^{-K(m)}+2^{-K(n)})\leq2^{-m}+2^{-n}.
+\]
+No extra offset is required for the non-strict regularity convention
+\eqref{eq:cat-regular}. Merely refining the evaluator while keeping a
+fixed coarse parameter would not give this conclusion. Thus formula
+evaluation produces a represented real value without a truth decision
+procedure.
+
+\begin{theorem}[Semantic adequacy on the completion]
+\label{thm:model-adequacy}
+Suppose the rational presentation and predicates have their intended metric
+completion interpretation. The regular name just constructed denotes the
+usual continuous-logic value $\varphi(\bar a)$, and for core parameters
+\begin{equation}
+ |E_\varphi(K,\bar a)-\varphi(\bar a)|
+ \leq C_\varphi2^{-K}.
+ \label{eq:model-semantic-error}
+\end{equation}
+For a quantified node the limiting value has the infimum or supremum
+universal property; no exact optimizing point is produced by this theorem.
+\end{theorem}
+
+\begin{proof}
+The atomic value is the limit of its coherent approximants. The cross-input
+estimate gives its $L_i$-Lipschitz property. The connective step follows by
+continuity and its displayed Lipschitz bound. Consider an infimum and first
+fix a core point $a$. Choosing its net neighbor bounds the finite minimum
+above by $\psi(a)$ plus the child evaluation error and
+$W_\psi2^{-K}$. Conversely every sampled value is bounded below by
+$\inf_x\psi(x)$ minus the child error. Hence the limiting minimum is bounded
+above by every core value and below by their infimum. Core density and the
+Lipschitz bound extend the lower-bound characterization to completed points.
+Equivalently, these two inequalities construct the infimum value itself:
+finite minima are coherent by Theorem~\ref{thm:model-comparison}, and their
+limit is a lower bound approached to arbitrary prescribed error. This route
+does not presuppose an abstract real supremum axiom. The supremum proof is
+dual. The same two inequalities give \eqref{eq:model-semantic-error}.
+\end{proof}
+
+An external compactness interpretation of the nets is convenient, but the
+object proof uses their explicit core-covering selectors. If the selectors
+are only hypothesized, the theorem is conditional. For relationally coded
+predicates, the finite evaluator is certified from a supplied bounded batch
+of evaluations; unconditional termination is a separate obligation.
+
+\subsection{Quantitative elementarity and completion invariance}
+
+Suppose $M,N$ are two such structures and $h:M\to N$ is a specified map.
+Assume that every atomic predicate changes by at most $\delta$ on tuples
+under $h$, and the image has an explicit $\eta$-density selector: for any
+point required by a finite observation in $N$, the selector provides a point
+$x$ of $M$ with $d_N(hx,y)\leq\eta$. Semantic formulations may state this
+for all points; arithmetic formulations retain the finite observation and
+its selected witnesses. Define $A_\varphi,B_\varphi$ by
+\[
+ A_{P_i}=1,\quad B_{P_i}=0,
+\]
+use $\lambda_c$ times the respective child maxima at connectives, and use
+\[
+ A_{\inf\psi}=A_{\sup\psi}=A_\psi,
+ \qquad B_{\inf\psi}=B_{\sup\psi}=B_\psi+W_\psi
+\]
+at quantifiers. Constants have zero coefficients.
+
+\begin{theorem}[Approximate elementary preservation]
+\label{thm:approx-elementarity}
+For every formula in the fixed language,
+\begin{equation}
+ |\varphi^M(\bar a)-\varphi^N(h\bar a)|
+ \leq A_\varphi\delta+B_\varphi\eta.
+ \label{eq:approx-elementarity}
+\end{equation}
+Every prescribed finite-precision version follows from the corresponding
+finite atomic and density certificates by an iPRA derivation. In particular,
+completion preserves the values of uniformly continuous formulas on a dense
+core whenever the indicated values are represented.
+\end{theorem}
+
+\begin{proof}
+Atoms and connectives follow exactly as before. Suppose the child formula
+has error $E=A_\psi\delta+B_\psi\eta$. Write
+$a=\inf_{x\in M}\psi^M(x,\bar a)$ and
+$b=\inf_{y\in N}\psi^N(y,h\bar a)$. Every $x\in M$ gives
+$b\leq\psi^N(hx,h\bar a)\leq\psi^M(x,\bar a)+E$, hence $b\leq a+E$.
+Conversely, for any required $y$ choose an $x$ with
+$d_N(hx,y)\leq\eta$. Then
+\[
+ a\leq\psi^M(x,\bar a)
+ \leq\psi^N(hx,h\bar a)+E
+ \leq\psi^N(y,h\bar a)+E+W_\psi\eta.
+\]
+Taking approximate infimum witnesses, or the finite minima of the
+construction above, gives $a\leq b+E+W_\psi\eta$. This proves the quantifier
+recurrence. Supremum is identical after reversing inequalities.
+For a dense core embedded in its completion the atomic distortion is zero
+and the density tolerance can be chosen $2^{-k}$ for every $k$. Rational
+separation removes the resulting arbitrarily small error, so the two
+represented values are equal. This proves completion invariance rather
+than assuming it as a semantic convention.
+\end{proof}
+
+This theorem makes one part of model-theoretic reasoning quantitative:
+small atomic distortion and a positive density budget control every fixed
+formula. It supports approximate diagrams and comparison of analytic
+presentations. It does not replace an approximately dense embedding by an
+isomorphism, decide exact formula satisfaction, or construct a model from
+arbitrary finite satisfiability assertions.
+
+\subsection{Concrete analytic structures and sharp boundaries}
+
+For $X=[0,1]$ with $d(x,y)=|x-y|$, dyadic grids give the required nets and
+rational distance is an exact atom with Lipschitz bound two in the maximum
+metric on pairs. The sentence
+\[
+ \inf_x\sup_y d(x,y)
+\]
+has value $1/2$. Indeed $\sup_y|x-y|=\max(x,1-x)$ because the endpoints
+attain both candidates and every intermediate point is no farther away.
+The latter maximum is at least $1/2$, since its two arguments sum to one,
+and equals $1/2$ at $x=1/2$. For grids containing $0,1,1/2$, the finite
+evaluator already returns this value exactly. The general error certificate
+remains valid for all precisions, including grids where the exact minimizer
+has not yet appeared.
+
+On a rational box $[-R,R]^d$, clipped polynomial predicates also fit the
+language. If $p(x)=\sum_\alpha c_\alpha x^\alpha$ and $R\geq1$, then
+\[
+ |p(x)-p(y)|\leq
+ \left(\sum_\alpha |c_\alpha|\,|\alpha|\,R^{|\alpha|-1}\right)
+ \|x-y\|_\infty.
+\]
+For a monomial, replace its factors one at a time and use
+$u^m-v^m=(u-v)\sum_{j<m}u^{m-1-j}v^j$; the displayed bound follows by
+finite summation. Clipping to $[0,1]$ is nonexpansive. Rounding the rational
+constant upwards gives an integer $L_i$. Analytic predicates with explicit
+polynomial approximants and certified uniform tails can be treated in the
+same interface after their continuity bounds have been proved. Infinite
+dimensional bounded balls, however, generally lack finite norm nets of this
+kind; mere boundedness does not supply this quantifier evaluator.
+
+Exact zero remains a different problem from approximation. Let
+$H(e,t)$ be the PR indicator that program $e$ first halts at step $t$ and put
+\[
+ r_e(n)=\sum_{t<n}2^{-t-1}H(e,t).
+\]
+The tails are bounded by $2^{-n}$ uniformly in $e$, so this is a uniformly
+PR family of regular real names after a fixed shift. Its value is zero
+exactly when the program never halts. A total decision procedure for exact
+zero on these names would decide halting. The predicates here can even be
+constant functions on $[0,1]$, with Lipschitz bound zero. Thus compactness,
+excellent continuity bounds, and fast value approximation do not turn
+zero-valued satisfaction into a decidable relation.
+
+Likewise, a formula value $\inf_xP(x)=0$ expresses arbitrarily accurate
+approximate witnesses. A coherent name of an exact witness requires an
+additional selector or stability theorem. The categorical completion theorem
+constructs a limit of a \emph{supplied coherent} family; it does not supply
+that family from separate existence assertions. These distinctions are
+precisely what prevents the framework from importing compactness, choice,
+or a model-construction principle without its required hypotheses.
+
+\subsection{Lean obligations for this chapter}
+
+The accompanying \texttt{CategoryModelBlueprint.lean} specifies the interfaces
+and the intended dependency order. Its host records are organizational
+objects, not a claim that their fields have been proved in iPRA. The target
+object results are:
+\begin{enumerate}
+\item rational separation and the regular-name diagonal estimate
+\eqref{eq:cat-diagonal-bound};
+\item identity, composition, and uniqueness derivations for extension, using
+an arithmetical name domain and name equivalence;
+\item finite-net supremum estimates and the additive evaluation inequality;
+\item bounded syntax well-formedness, exact rational table evaluation, and the
+Boolean invariant for Theorem~\ref{thm:model-comparison};
+\item explicit translations of atomic hypotheses and net-cover selectors into
+\texttt{Prf PRAAx}, followed by the semantic adequacy theorem outside the
+object theory;
+\item the error recurrences for approximate elementary preservation, with
+completion invariance obtained from rational separation.
+\end{enumerate}
+The existing presented-category and setoid-interpretation APIs are appropriate
+integration points. The central new obligation is the quantitative
+continuous semantics; reproving finite categorical algebra would not discharge
+it. Compilation and kernel checking of this proposed chapter are future
+formalization work, and are not represented as completed verification.

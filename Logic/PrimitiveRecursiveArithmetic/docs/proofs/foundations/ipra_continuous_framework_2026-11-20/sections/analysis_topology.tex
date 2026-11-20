@@ -1,0 +1,438 @@
+\section{From quantitative names to differential and complex analysis}
+\label{sec:analytic-realization}
+
+The analytic work needed after a finite error estimate is often more substantial than the estimate itself.  One must show that the numerical program produces a coherent function name, that its value is independent of the precision schedule, and that the represented function has the advertised derivative or integral.  This section supplies two worked instances of that passage: an existence and stability theorem for ordinary differential equations, and a holomorphic Cauchy transform on the positively separated complement of a polygonal contour.  Their common method is to construct a sequence of finite rational objects with a proved uniform error, then establish the analytic laws by finite comparison estimates.
+
+These results build on actual source rather than on the status of older packets.  At the pinned repository revision, \texttt{Foundations.DiscreteGronwall} derives the rational growth estimate used below~\cite{repo-gronwall}.  \texttt{Foundations.OdeRefinement} derives a node estimate and a geometric Cauchy estimate while retaining the polygon recurrence as a hypothesis~\cite{repo-ode-refinement}.  \texttt{Foundations.OdeUniqueness} derives the finite comparison estimate, but its header explicitly leaves the precision choices and equality of the resulting name families outside that module~\cite{repo-ode-uniqueness}.  \texttt{Analysis.OdeCertificates} proves algebraic Wronskian and Jacobi identities and explicitly does not formalize differential calculus~\cite{repo-ode-certificates}.  The contribution here is the surrounding construction and its adequacy proof, with a concrete route from those finite lemmas to represented solutions.  The human proofs below are complete under their displayed hypotheses; the new object-language derivations are formalization targets, not claims of a completed Lean build.
+
+\subsection{Analytic data and the meaning of a proof in arithmetic}
+
+Write $\eps_n=2^{-n}$.  Rational vectors are finite lists of pairs of signed numerators and positive denominators.  Their norm is the maximum of the absolute values of the coordinates.  Every comparison in that norm is a finite conjunction of rational comparisons.  For complex numbers we use Gaussian rationals; absolute-value estimates can be checked by squaring nonnegative quantities, so square roots need not occur in the arithmetic programs.
+
+An evaluator below is a \emph{fixed} primitive-recursive program with numerical parameters.  Its runtime inputs include precision, a rational argument, and any coded problem data.  We require proofs in \ipra\ of its rational error and compatibility contracts.  This is stronger than assuming that the program happens to be primitive recursive, and more specific than supplying a code for an arbitrary total function.  The framework contains no total universal evaluator for all primitive-recursive programs.  If program codes are variable, a clocked evaluator and the corresponding finite execution certificates must replace the fixed evaluator.
+
+The continuous function denoted by an evaluator is defined in the semantic completion.  For example, the following entirely numerical assumptions specify a bounded Lipschitz vector field.  Its rational evaluator $E(t,x,p)$ satisfies
+\begin{align}
+ \|E(t,x,p)\|_\infty&\le M+\eps_p, \label{eq:analytic-eval-bound}\\
+ \|E(t,x,p)-E(s,y,q)\|_\infty
+ &\le L_t|t-s|+L_x\|x-y\|_\infty+\eps_p+\eps_q.\label{eq:analytic-eval-lip}
+\end{align}
+The arguments range over a stated rational tube, and $M,L_t,L_x$ are nonnegative rationals.  At the same argument, the second inequality is a regularity bound.  Completion therefore gives a vector field $F$ with
+\[
+ \|E(t,x,p)-F(t,x)\|_\infty\le\eps_p,
+ \qquad \|F(t,x)\|_\infty\le M,
+\]
+and with the stated Lipschitz constants.  Extension from rational arguments is uniquely determined by the same inequality.  Internally, theorems use \eqref{eq:analytic-eval-bound}--\eqref{eq:analytic-eval-lip} and rational observations.  Symbols such as $F$ and $\int F$ in the human proof explain their semantic meaning; they are not additional higher-type objects quantified over by \ipra.
+
+There are two distinct adequacy obligations.  First, the input program must satisfy these contracts; a classical assertion that $F$ is smooth does not provide them.  Second, the output arithmetic laws must be connected with the chosen definition of a continuous function, derivative, or integral.  Both obligations remain visible throughout the construction.
+
+\subsection{Rational integration and uniform limits}
+
+We first isolate the integration operation used later.  Let $g:[a,b]\to\R^d$ have a fixed rational evaluator with error at most $\eps_p$.  Suppose its extension has Lipschitz constant $H$.  Put $T=b-a\ge0$ and let
+\[
+ S_{N,p}(g)=\frac{T}{N}\sum_{j<N}
+ E_g\left(a+\frac{jT}{N},p\right),\qquad N\ge1.
+\]
+
+\begin{lemma}[Finite quadrature and its represented integral]
+\label{lem:analytic-quadrature}
+There is a represented integral $I(g)$, uniquely determined by the above sums, with
+\begin{equation}
+ \|S_{N,p}(g)-I(g)\|_\infty
+ \le \frac{HT^2}{N}+T\eps_p.\label{eq:analytic-quadrature}
+\end{equation}
+The operation is linear and satisfies
+\begin{equation}
+ \|I(g)-I(h)\|_\infty\le T\sup_{t\in[a,b]}\|g(t)-h(t)\|_\infty.\label{eq:analytic-integral-stability}
+\end{equation}
+The supremum in this last display may be replaced by any supplied rational upper bound.  No algorithm for computing the supremum is required.
+\end{lemma}
+
+\begin{proof}
+Refine a partition into a common subdivision.  On a coarse interval of length $T/N$, replacing its left endpoint value by any value inside that interval changes the weighted sum by at most $H(T/N)$ times that interval's length.  Adding over the intervals gives $HT^2/N$.  The error caused by evaluating the function at precision $p$ is at most $T\eps_p$, because the nonnegative weights sum to $T$.  Consequently any two such sums differ by at most the sum of their displayed error budgets.  Taking $N$ and $p$ from an explicit precision schedule gives a regular name; the same comparison proves that a different admissible schedule denotes the same integral.
+
+Linearity is an exact identity for finite sums.  The norm inequality for a weighted sum is a finite triangle inequality.  Applying it to the differences of two lists gives the stability estimate with the chosen rational bound.  Passing to the regular names means proving the same rational inequality at every requested precision, with the evaluation errors included; it does not mean invoking an unbounded convergence theorem inside arithmetic.
+
+For a fully numerical schedule, define
+\[
+ \lambda(u)=\min\{m\le\lceil u\rceil+1:2^m\ge\max(1,u)\}
+ \quad(u\in\Q_{\ge0}).
+\]
+The search is bounded and primitive recursive: $2^m\ge m+1$ proves that the set is nonempty.  Choosing
+\[
+ N=2^{k+2+\lambda(HT^2)},\qquad
+ p=k+2+\lambda(T)
+\]
+makes the right side of \eqref{eq:analytic-quadrature} at most $\eps_k/2$.  A bounded common refinement, or the product of two partition sizes, suffices for the finite comparison.  Every induction is over a finite sum or subdivision index and has a quantifier-free rational inequality as its invariant.
+\end{proof}
+
+The same construction works for a supplied uniform continuity modulus rather than a Lipschitz constant.  Given desired oscillation $\eta$, use a mesh small enough that the modulus bounds the oscillation by $\eta$; the geometric part of the error is then $T\eta$.  The Lipschitz form is convenient here because it makes every subsequent error budget explicit and simple.
+
+\begin{proposition}[Quantitative fundamental theorem for a named integrand]
+\label{prop:analytic-ftc}
+Let $g$ have Lipschitz constant $H$, and define $J(t)=I_{[a,t]}(g)$.  Then $J$ is differentiable at interior points, with $J'(t)=g(t)$, and for $t,t+h\in[a,b]$,
+\begin{equation}
+ \|J(t+h)-J(t)-h g(t)\|_\infty\le H|h|^2.\label{eq:analytic-ftc}
+\end{equation}
+Also, if $\|g(t)\|_\infty\le M$, then $J$ is $M$-Lipschitz.
+\end{proposition}
+
+\begin{proof}
+Additivity over adjacent intervals follows by subdividing finite sums and applying Lemma~\ref{lem:analytic-quadrature}.  Subtract the constant function $g(t)$ on the interval with endpoints $t$ and $t+h$.  Its difference from $g(s)$ is at most $H|h|$ there.  Integral stability gives \eqref{eq:analytic-ftc}.  For $h\ne0$, division by the positive rational $|h|$ gives a difference-quotient error at most $H|h|$.  This is a derivative modulus.  The bound on $J(t+h)-J(t)$ follows from the bound $M$ by the same argument.
+
+To interpret the derivative statement internally, first ask for a rational increment with a positive denominator and nonzero numerator.  Request the names of $J$ and $g$ accurately enough that their evaluation errors divided by $|h|$ fit the target error.  The additional precision is the bounded number $\lambda(1/|h|)$ plus a fixed safety offset.  Thus the proof gives a finite demand transformation for the derivative; it never divides by an undecided real number.
+\end{proof}
+
+\subsection{An actual Euler program with a guarded domain}
+
+Let $x_0\in\Q^d$, let $T>0$, and let the tube be
+\[
+ \mathcal T=\{(t,x):0\le t\le T,\ \|x-x_0\|_\infty\le R\}.
+\]
+Assume \eqref{eq:analytic-eval-bound}--\eqref{eq:analytic-eval-lip} on this tube and assume the positive domain condition
+\begin{equation}
+ T(M+1)\le R.\label{eq:analytic-tube}
+\end{equation}
+Put
+\[
+ B=M+1,\qquad K=L_t+L_xB,\qquad
+ A=\lceil L_xT\rceil,\qquad G=3^A.
+\]
+For integers $N\ge1$ and $p\ge0$, define the rational Euler table by primitive recursion:
+\begin{align*}
+ h&=T/N,& t_j&=jh,& X_0&=x_0,\\
+ V_j&=E(t_j,X_j,p),& X_{j+1}&=X_j+hV_j\quad(j<N).
+\end{align*}
+Its polygon $P_{N,p}$ is affine on every interval $[t_j,t_{j+1}]$ with these endpoint values.  Rational evaluation of this polygon uses integer division to find the cell, with the endpoint $T$ handled separately.  There is no iteration on a function space in this implementation: the state is the finite vector $X_j$, and the loop length is the numerical integer $N$.
+
+\begin{lemma}[Domain invariant and finite residual]
+\label{lem:analytic-euler-defect}
+Every Euler node belongs to the tube, every polygon is $B$-Lipschitz, and on each cell its constant slope satisfies
+\begin{equation}
+ \|V_j-F(t,P_{N,p}(t))\|_\infty
+ \le \rho_{N,p}:=\eps_p+KT/N.\label{eq:analytic-residual}
+\end{equation}
+The finite arithmetic version, for a rational query $t$ in that cell and an additional precision $q$, is
+\begin{equation}
+ \|V_j-E(t,P_{N,p}(t),q)\|_\infty
+ \le\rho_{N,p}+\eps_q.\label{eq:analytic-residual-finite}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Use the invariant $\|X_j-x_0\|_\infty\le jhB$ for $j\le N$.  It is true at $j=0$.  If it holds at $j<N$, then $jhB\le TB\le R$, so the bound on the evaluator is applicable and $\|V_j\|_\infty\le M+\eps_p\le B$.  The next step gives $\|X_{j+1}-x_0\|_\infty\le(j+1)hB$.  This is a quantifier-free induction with a numerical parameter $N$.  Convexity of the max-norm ball places the entire affine segment in the tube, and the slope bound proves the polygon's Lipschitz bound.
+
+For a point $t$ in the cell, $|t-t_j|\le h$ and $\|P_{N,p}(t)-X_j\|_\infty\le Bh$.  Apply \eqref{eq:analytic-eval-lip} at the two displayed arguments.  The result is \eqref{eq:analytic-residual-finite}.  Its interpretation in the completion is \eqref{eq:analytic-residual}.  The tube guard is essential: the invariant establishes the hypotheses needed to evaluate the next slope.  Bounds assumed only along a hypothetical unknown solution would not justify this program.
+\end{proof}
+
+\begin{lemma}[Comparison of arbitrary constructed polygons]
+\label{lem:analytic-euler-comparison}
+For two Euler polygons with the same initial point,
+\begin{equation}
+ \|P_{N,p}-P_{N',p'}\|_\infty
+ \le GT(\rho_{N,p}+\rho_{N',p'}).\label{eq:analytic-euler-comparison}
+\end{equation}
+Here the norm is uniform over $[0,T]$; the assertion is proved first at rational arguments.  No solution of the differential equation is presumed to exist.
+\end{lemma}
+
+\begin{proof}
+Use a uniform common refinement of the two meshes, for example one with $NN'$ cells.  Write its step as $\Delta=T/(NN')$ and write $e_i$ for the max-norm difference at the $i$th common node.  Let $a,b$ be the left endpoints of the coarse cells containing that node.  The corresponding slopes are $E(a,P(a),p)$ and $E(b,Q(b),p')$.  Their difference is bounded by
+\[
+ L_xe_i+K(T/N+T/N')+\eps_p+\eps_{p'}
+ =L_xe_i+\rho_{N,p}+\rho_{N',p'}.
+\]
+Indeed, compare $a$ and $b$ through the common node, and compare the two coarse endpoint states through the two polygon values there; each polygon moves by at most $B$ times the elapsed time.  This derivation uses only the evaluator compatibility law, with no semantic limit removal.
+
+Consequently
+\[
+ e_{i+1}\le(1+L_x\Delta)e_i+
+ \Delta(\rho_{N,p}+\rho_{N',p'}),\qquad e_0=0.
+\]
+Finite induction gives
+\[
+ e_i\le(1+L_x\Delta)^i
+ i\Delta(\rho_{N,p}+\rho_{N',p'}).
+\]
+For $i\le NN'$, the rational growth estimate
+\[
+ (1+L_xT/(NN'))^{NN'}\le3^{\lceil L_xT\rceil}=G
+\]
+gives the claimed node bound.  Here is a finite proof of the growth estimate.  Put $m=NN'\ge1$.  Bernoulli's inequality gives $1+A/m\le(1+1/m)^A$, and the binomial theorem gives\[
+ (1+1/m)^m\le\sum_{j=0}^{m}\frac1{j!}\le3,
+\]
+since $j!\ge2^{j-1}$ for $j\ge1$ and the corresponding finite geometric sum is bounded by $2$.  Raising the first inequality to the $m$th power proves the bound $3^A$.  These are finite inductions and rational inequalities.  This is also the existing \texttt{DiscreteGronwall} estimate after positive denominator clearing.  Between two common nodes, the difference of the polygons is affine.  The max norm of an affine interpolation is at most the larger of the endpoint bounds.  Thus the same estimate holds at every rational parameter and hence for the represented functions.  The proof has supplied the geometric recurrence that the existing refinement module takes as an input.
+\end{proof}
+
+\begin{theorem}[Constructive ODE existence with a primitive-recursive schedule]
+\label{thm:analytic-ode-existence}
+Set
+\[
+ C=GT(1+KT),\qquad c=\lambda(8\max(1,C)),\qquad
+ N_n=2^{n+c},\quad p_n=n+c,
+\]
+and let $P_n=P_{N_n,p_n}$.  The program $n\mapsto P_n$ is a uniform function name satisfying
+\begin{equation}
+ \|P_n-P_m\|_\infty\le\eps_{n+3}+\eps_{m+3}.
+ \label{eq:analytic-ode-name}
+\end{equation}
+Its represented limit $y$ obeys
+\begin{equation}
+ \|P_n-y\|_\infty\le GT\rho_{N_n,p_n}\le\eps_{n+3},\qquad
+ y(0)=x_0,\qquad y'(t)=F(t,y(t)).\label{eq:analytic-ode-solution}
+\end{equation}
+The solution is defined on $[0,T]$, with one-sided derivatives at its endpoints, and is $M$-Lipschitz.  All requested rational observations are produced by a fixed primitive-recursive evaluator.
+\end{theorem}
+
+\begin{proof}
+The chosen step and precision satisfy
+\[
+ GT\rho_{N_n,p_n}
+ =GT(1+KT)2^{-(n+c)}=C2^{-(n+c)}\le\eps_{n+3}.
+\]
+Lemma~\ref{lem:analytic-euler-comparison} gives \eqref{eq:analytic-ode-name}.  A uniformly Cauchy sequence of rational polygons with their explicit common Lipschitz bound defines a continuous function name by the completion construction.  More concretely, at a rational query $t$ the output is $P_n(t)$; at a named real query in $[0,T]$, first request a rational approximation to $t$ with error at most $\eps_{n+3}/\max(1,B)$, clip it by $q\mapsto\min(T,\max(0,q))$, and then evaluate the same polygon.  Clipping is rational, nonexpansive, and fixes $t$, so it preserves the error bound while keeping every query in the domain.  The Lipschitz bound pays for that substitution.  The regularity comparison is uniform in the argument, so this operation is extensional.
+
+It remains to prove the differential equation.  On each cell of $P_n$, integrate \eqref{eq:analytic-residual}.  Finite additivity of the integral and exact integration of the constant slope give
+\[
+ \left\|P_n(t)-x_0-\int_0^tF(s,P_n(s))\,ds\right\|_\infty
+ \le T\rho_{N_n,p_n}.
+\]
+The integrand $F(s,P_n(s))$ has Lipschitz constant at most $K$; its integral is therefore available from Lemma~\ref{lem:analytic-quadrature}, uniformly in $n$.  To evaluate $F(s,y(s))$ at a rational time, use the rational in-tube point $P_m(s)$ and the call $E(s,P_m(s),q)$.  Its error is at most $L_xGT\rho_{N_m,p_m}+\eps_q$, so $m$ and $q$ are chosen by the displayed bounded precision rules.  An arbitrary rounding of $y(s)$ is not used, since it could leave the tube.  Named time inputs are first clipped as above, with the extra time error paid by $K$.  Integral stability gives
+\[
+ \left\|\int_0^tF(s,P_n(s))\,ds-
+             \int_0^tF(s,y(s))\,ds\right\|_\infty
+ \le TL_x\|P_n-y\|_\infty.
+\]
+Thus the rational error in the proposed integral equation can be made as small as desired by the displayed schedule.  At each requested output precision one takes a concrete larger $n$ and the concrete quadrature precisions.  The result is equality of the two names:
+\[
+ y(t)=x_0+\int_0^tF(s,y(s))\,ds.
+\]
+This is a constructive equality obtained from explicit approximation estimates.  It involves neither a subsequence nor compactness nor a choice of compatible approximate solutions.
+
+The limit $y$ is $B$-Lipschitz because every $P_n$ is, so the integrand in this equation has Lipschitz constant $K$.  Proposition~\ref{prop:analytic-ftc} gives $y'=F(\cdot,y)$, with local remainder at most $K|h|^2$.  Finally the sharper bound $\|F\|_\infty\le M$ in the integral equation gives the $M$-Lipschitz bound.  The initial condition follows directly from every table's initial entry.
+
+No unbounded collection is used in the iteration.  For each $n$ the table has exactly $N_n+1$ vectors and is constructed by primitive recursion.  The statements about two precisions are first-order formulas with numerical variables $n,m,t$ after rational coding.  Their finite invariants use only quantifier-free induction.  Uniform quantification over abstract continuous functions appears in the metatheorem about this construction, not in an extra object-language induction principle.
+\end{proof}
+
+For a named rather than rational initial point, use rational approximations to the initial point and a tube with a positive reserve for that approximation error.  The comparison proof then has the additional initial error $e_0$, multiplied by $G$.  A proof of the tube invariant must reserve that error before the first step.  This gives the usual parameter dependence after a harmless extra precision shift.  A local theorem on a larger time interval can be obtained by finitely many guarded patches with a supplied finite schedule; a claim of global existence needs a bound preventing escape at all those stages.
+
+\subsection{Uniqueness, perturbations, and explicit equality of names}
+
+\begin{theorem}[Quantitative uniqueness and perturbation]
+\label{thm:analytic-ode-stability}
+Let $y,z$ be represented integral solutions on $[0,T]$ that remain in a common comparison domain where both fields $F,H$ are defined; the integral equation is part of this specification.  The solution names have fixed PR evaluators, or the finite node-evaluation batches required below are supplied as additional certificates.  For differentiably presented candidates it suffices to supply the same quantified increment remainder obtained in Proposition~\ref{prop:analytic-ftc}.  Suppose $F$ is $L_x$-Lipschitz in the state, $\|F(t,u)-H(t,u)\|_\infty\le\xi$ on the comparison domain, and both solution integrands have supplied Lipschitz constants $K_y,K_z$.  Put $G=3^{\lceil L_xT\rceil}$.  Then
+\begin{equation}
+ \|y-z\|_\infty
+ \le G\bigl(\|y(0)-z(0)\|_\infty+T\xi\bigr).
+ \label{eq:analytic-ode-stability}
+\end{equation}
+In particular, the solution of Theorem~\ref{thm:analytic-ode-existence} is unique among these represented solutions, and its denotation is independent of the admissible Euler precision schedule.
+\end{theorem}
+
+\begin{proof}
+Use a uniform partition of $[0,t]$ with $N$ cells, $h=t/N$.  Proposition~\ref{prop:analytic-ftc} gives the controlled Euler defects
+\[
+ \|y(t_{j+1})-y(t_j)-hF(t_j,y(t_j))\|_\infty\le K_yh^2,
+\]
+and the analogous estimate for $z$.  The triangle inequality therefore gives
+\[
+ e_{j+1}\le(1+L_xh)e_j+h\xi+(K_y+K_z)h^2.
+\]
+After finite Gronwall,
+\begin{equation}
+ e_N\le G\bigl(e_0+T\xi+(K_y+K_z)T^2/N\bigr).
+ \label{eq:analytic-uniqueness-grid}
+\end{equation}
+This is the semantic form of the finite inequality already isolated in \texttt{OdeUniqueness}.  To complete the argument at the level of names, keep all evaluation errors.  Evaluate the two solution names at every node within $\eps_p$, and let $d_j$ be the rational distance between these two approximations.  Then $|d_j-e_j|\le2\eps_p$.  Substitution into the exact recurrence gives the entirely rational recurrence\[
+ d_{j+1}\le(1+L_xh)d_j+h\xi+(K_y+K_z)h^2+
+                    (4+2L_xh)\eps_p.
+\]
+The initial comparison costs another $2\eps_p$, and the terminal comparison costs $2\eps_p$.  Finite Gronwall therefore bounds the total added error by $G H_N\eps_p$, where $H_N=4N+2L_xT+4$.  This formulation uses the original name evaluators and has no unspecified rounding convention.
+
+Here is a sufficient explicit schedule for total residual below $\eps_k/2$:
+\[
+ N=1+\left\lceil4G(K_y+K_z)T^2\,2^k\right\rceil,
+ \qquad
+ p=\lambda\bigl(4G H_N2^k\bigr).
+\]
+The truncation term is at most $\eps_k/4$, and the displayed table error is at most $\eps_k/4$.  Rational comparisons of the actual node tables now imply the desired observation at precision $k$.  In an implementation that separately approximates field displacements, their additional errors are explicitly added to the recurrence; the above schedule applies to the direct sample-distance adapter just defined.
+
+For identical initial data and identical fields, this proves arbitrarily small distance by a specified finite calculation for every $k$.  This is precisely equality of the represented function names.  In the general case it proves \eqref{eq:analytic-ode-stability} in the located order on names.  There is no inference from the negation of a strict inequality to a positive separation witness, and no assertion that numerical agreement at a fixed finite precision decides equality.
+\end{proof}
+
+The uniqueness theorem also gives a way to certify an independently generated approximation.  A candidate polygon with a supplied initial error and a certified residual bound can be compared with the constructed solution by the same recurrence.  Thus a numerical method need not be identical to the construction used for existence.  What it must provide is the explicit tube guard, stepwise residual, and finite error schedule.  This is the appropriate interface for higher-order solvers, validated power-series integrators, and local analytic continuation along a specified path.
+
+\subsection{A holomorphic operation with a positive geometric guard}
+
+Let $v_0,\ldots,v_s=v_0\in\Q(i)$ be a closed rational polygon $\Gamma$, with edges
+\[
+ \gamma_j(u)=v_j+u(v_{j+1}-v_j),\qquad 0\le u\le1.
+\]
+Self-intersections are allowed.  The operation below needs no inside/outside decision.  Let
+\[
+ \ell=\sum_{j<s}\bigl(|\operatorname{Re}(v_{j+1}-v_j)|+
+                            |\operatorname{Im}(v_{j+1}-v_j)|\bigr)
+\]
+be a rational upper bound for the contour's length.  Suppose the boundary datum $g$ has a fixed Gaussian-rational evaluator, a bound $|g|\le M$, and a Lipschitz constant $K$ along the contour.  An edgewise version of the Lipschitz assumption is sufficient, since only points in one edge are compared in quadrature.
+
+A query $w\in\Q(i)$ is accompanied by $\delta>0$ and the certificate
+\begin{equation}
+ |\gamma_j(u)-w|\ge\delta
+ \quad(0\le u\le1,\ j<s).\label{eq:analytic-clearance}
+\end{equation}
+For a rational polygon and rational $w$, this certificate reduces to exact rational arithmetic.  On a nonzero edge, minimize the quadratic
+\[
+ |v_j-w+u(v_{j+1}-v_j)|^2
+\]
+at the rational number obtained by clamping
+\[
+ -\frac{\operatorname{Re}((v_j-w)\overline{(v_{j+1}-v_j)})}
+ {|v_{j+1}-v_j|^2}
+\]
+to $[0,1]$.  Check that the resulting minimum is at least $\delta^2$.  A zero-length edge is checked at its endpoint.  A finite loop over the edges proves the whole guard.  This procedure verifies a proposed clearance; it does not decide whether an arbitrary named point lies exactly on the contour.
+
+Define the unnormalized Cauchy transform
+\[
+ C_g(w)=\int_\Gamma\frac{g(z)}{z-w}\,dz.
+\]
+Multiplication by the fixed name $1/(2\pi i)$ gives the conventional normalization if desired.  Omitting that harmless constant makes the arithmetic kernel entirely Gaussian rational.
+
+\begin{theorem}[Certified Cauchy transform and its Taylor expansion]
+\label{thm:analytic-cauchy-transform}
+Under the above hypotheses, $C_g$ has a primitive-recursive evaluator on every guarded region \eqref{eq:analytic-clearance}.  If each edge is subdivided into $N$ equal parts and $g$ is evaluated within $\eta$, the sum
+\[
+ Q_{N,\eta}(w)=\sum_{j<s}\frac{v_{j+1}-v_j}{N}
+      \sum_{a<N}\frac{E_g(\gamma_j(a/N),\eta)}{\gamma_j(a/N)-w}
+\]
+satisfies the following estimate.  In the notation $E_g(z,\eta)$, $\eta=\eps_p$ is the guaranteed evaluator error; a positive rational target is converted to such a precision by the bounded function $\lambda$.
+\begin{equation}
+ |Q_{N,\eta}(w)-C_g(w)|
+ \le\left(\frac K\delta+\frac M{\delta^2}\right)
+             \frac{\ell^2}{N}+\frac{\ell\eta}{\delta}.
+ \label{eq:analytic-cauchy-quadrature}
+\end{equation}
+At a center $w_0$ with clearance $\delta$, define
+\[
+ a_r=\int_\Gamma\frac{g(z)}{(z-w_0)^{r+1}}\,dz.
+\]
+Then
+\begin{align}
+ |a_r|&\le\ell M\delta^{-r-1},\label{eq:analytic-cauchy-coeff}\\
+ \left|C_g(w_0+h)-\sum_{r<m}a_rh^r\right|
+ &\le\frac{2\ell M}{\delta}
+             \left(\frac{|h|}{\delta}\right)^m
+       \quad\text{if }|h|\le\delta/2.\label{eq:analytic-cauchy-taylor}
+\end{align}
+Consequently the represented transform is holomorphic on the open domain of points having positive clearance from the contour.  Its $r$th derivative at $w_0$ is $r!a_r$, and every coefficient and derivative is effectively evaluable with an explicit precision demand.
+\end{theorem}
+
+\begin{proof}
+On one edge, write $u=z-w$ and $v=z'-w$.  The positive denominator guard gives
+\[
+ \left|\frac1u-\frac1v\right|
+ =\frac{|u-v|}{|u||v|}\le\delta^{-2}|z-z'|.
+\]
+Therefore $g(z)/(z-w)$ has Lipschitz constant at most
+\[
+ H=K/\delta+M/\delta^2
+\]
+along that edge.  A subdivision cell of length at most $|v_{j+1}-v_j|/N$ has integrand oscillation at most $H|v_{j+1}-v_j|/N$.  After multiplying by its length and adding all cells and edges, the discretization error is at most
+\[
+ \frac HN\sum_j|v_{j+1}-v_j|^2\le H\ell^2/N.
+\]
+The evaluator error contributes at most $\ell\eta/\delta$.  This proves \eqref{eq:analytic-cauchy-quadrature} by the same finite refinement argument as Lemma~\ref{lem:analytic-quadrature}.  Gaussian-rational division is exact because the squared denominator is a positive rational with a certified lower bound.
+
+For coefficient evaluation, put $b=r+1$.  The factorization of the difference of two $b$th powers of reciprocals gives
+\[
+ |u^{-b}-v^{-b}|\le b\delta^{-b-1}|u-v|.
+\]
+Thus the coefficient integrand has Lipschitz constant
+\[
+ H_r=K\delta^{-r-1}+M(r+1)\delta^{-r-2}.
+\]
+Its quadrature error is at most
+\[
+ H_r\ell^2/N+\ell\eta\delta^{-r-1}.
+\]
+All powers and all finite sums are primitive recursive, even when $r$ is numerical input.  In particular, choose $N$ and the evaluator precision so that each of these two rational terms is at most half of the requested coefficient error.  To obtain $r!a_r$ to error $\eps_k$, request $a_r$ to error $\eps_k/\max(1,r!)$.  This is another bounded precision transformation.
+
+The Taylor formula is based on the exact finite identity
+\begin{equation}
+ \frac1{u-h}=\sum_{r<m}\frac{h^r}{u^{r+1}}+
+             \frac{h^m}{u^m(u-h)}.\label{eq:analytic-geometric-identity}
+\end{equation}
+It is proved by multiplying by $u^m(u-h)$ and telescoping a finite geometric sum.  On the contour, $|u|\ge\delta$ and $|u-h|\ge\delta/2$.  Multiply the identity by $g(z)$ and integrate.  Finite linearity gives the polynomial part, and the length bound gives the stated remainder.  The coefficient bound is immediate from the same length estimate.
+
+The case $m=2$ implies
+\[
+ \left|\frac{C_g(w_0+h)-C_g(w_0)}h-a_1\right|
+ \le 2\ell M\delta^{-3}|h|
+ \qquad(0<|h|\le\delta/2),
+\]
+which is a complex derivative modulus.  Higher derivatives can be obtained directly, without an unproved termwise-differentiation rule.  Let
+\[
+ A_b(w)=\int_\Gamma g(z)(z-w)^{-b}\,dz.
+\]
+Expanding the finite rational difference
+\[
+ (u-h)^{-b}-u^{-b}-bhu^{-b-1}
+\]
+by a common denominator shows that its numerator has the factor $h^2$.  On $|h|\le\delta/2$ its norm is bounded by an explicit rational multiple of $|h|^2$ depending only on $b$ and $\delta$.  A direct bound is
+\[
+ 2^{b+2}\delta^{-b-2}|h|^2.
+\]
+To verify it using only finite algebra, put $z=h/u$ and $v=z/(1-z)$.  Then $|v|\le2|z|\le1$, $|v-z|\le2|z|^2$, and $(1-z)^{-b}=(1+v)^b$.  The finite binomial theorem gives
+\[
+ |(1+v)^b-1-bz|
+ \le 2b|z|^2+4|z|^2\sum_{j=2}^{b}\binom bj
+ \le 2^{b+2}|z|^2.
+\]
+Multiplication by $|u|^{-b}$ yields the asserted remainder bound.  Integration yields $A_b'=bA_{b+1}$.  An external induction on derivative order identifies $C_g^{(r)}=r!A_{r+1}$ in the semantic completion, and evaluation at $w_0$ gives $r!a_r$.  Internally, the uniform numerical theorem is the finite rational kernel increment and remainder identity with its precision program; there is no induction over an object-language formula about arbitrary higher derivatives.  Only the finite algebra and positive denominator estimates are needed for each requested order.
+
+Finally, if $|h|\le\delta/2$, the remainder in \eqref{eq:analytic-cauchy-taylor} is at most $2\ell M\delta^{-1}2^{-m}$.  Thus
+\[
+ m=k+\lambda(2\ell M/\delta)
+\]
+is sufficient for a Taylor tail of at most $\eps_k$.  The coefficient errors can be budgeted separately using the finite weights $\sum_{r<m}|h|^r$; no interchange of two uncontrolled infinite limits is used.
+\end{proof}
+
+The analyticity assertion is local and agrees on overlaps because every local name is a limit of the same rational kernel sums.  The analytic operation is therefore naturally indexed by positive clearance and local precision.  It avoids the discontinuity of deciding the boundary of an open domain, while describing an actual holomorphic function on that domain.  If $g$ is itself holomorphic in an interior region, identifying this transform with a multiple of $g$ is a further Cauchy integral theorem, requiring the appropriate contour and interior hypotheses.  That identification is not a consequence of the quadrature theorem alone.
+
+\begin{proposition}[Stability under boundary and query perturbations]
+\label{prop:analytic-cauchy-stability}
+Keep the polygon fixed.  Suppose $|g-\widetilde g|\le\eta$ on it, $|g|\le M$, the query $w$ has clearance $\delta$, and $|w-\widetilde w|\le\delta/2$.  Then
+\[
+ |C_g(w)-C_{\widetilde g}(\widetilde w)|
+ \le \frac{2\ell\eta}{\delta}+
+       \frac{2\ell M}{\delta^2}|w-\widetilde w|.
+\]
+\end{proposition}
+
+\begin{proof}
+The perturbed query has clearance at least $\delta/2$.  Split the integrand difference into a boundary-data difference at that query and a kernel difference for the original datum.  The first is at most $2\eta/\delta$; the reciprocal identity bounds the second by $2M|w-\widetilde w|/\delta^2$.  Multiply by the length bound and use finite integral stability.  This also supplies the extensionality estimate needed to accept a named query instead of a rational one.
+\end{proof}
+
+\subsection{Lean targets and the remaining implementation work}
+
+The arithmetic representation should reuse the repository's positive-denominator rational codes and max-metric primitives.  The public interface has numerical inputs for dimension, tube data, precision, time numerator and denominator, and the fixed problem parameter.  The evaluator is a fixed \texttt{PR} term.  The displayed contracts are formulas over those terms, not propositions about arbitrary Lean functions silently inserted into the object theory.
+
+The following dependency order makes the path to a complete formalization concrete.
+\begin{enumerate}
+ \item \textbf{Polygon program.} Define the vector Euler step, its primitive-recursive iteration, and the rational polygon evaluator.  Prove the exact node and interpolation equations and the invariant $\|X_j-x_0\|_\infty\le jhB$.  This discharges the tube and geometric assumptions instead of passing them to later theorems.
+ \item \textbf{Comparison adapter.} Instantiate the finite rational vector metric and derive the common-refinement recurrence from the two field evaluator contracts.  Clear the independently positive denominators, apply \texttt{DiscreteGronwall.gronwall\_three}, and transport back to the original rational vectors.  Extend the node bound to affine cells by the coordinatewise triangle inequality.
+ \item \textbf{Precision program.} Implement the bounded function $\lambda$, the numbers $N_n,p_n$, and the actual Euler-table generator.  Prove their budget inequalities.  Export the universal closure of \eqref{eq:analytic-ode-name} as a derivation in \texttt{Prf PRAAx}; this is the named-function regularity theorem.
+ \item \textbf{Integral bridge.} Define finite vector Riemann sums and prove common-refinement error, linearity, interval additivity and stability.  State the integral equation as equality of the particular regular names.  Produce each equality observation by substitution of the precision programs and the polygon residual theorem.
+ \item \textbf{Derivative bridge.} Use the finite increment estimate \eqref{eq:analytic-ftc}; carry a positive rational increment denominator and a nonzero increment numerator.  Export an explicit function sending a requested difference-quotient error to the necessary time and value precisions.
+ \item \textbf{Uniqueness bridge.} Instantiate \texttt{OdeUniqueness.uniqueness\_const} with the actual controlled node tables and the new precision schedule.  The conclusion must identify the two original name evaluators, not merely unnamed error tables.  This is the omitted reindexing and evaluation step that closes the source module's stated boundary.
+ \item \textbf{Complex kernel.} Add the exact segment-clearance checker and Gaussian-rational reciprocal identities.  Establish the polygon quadrature estimate, then the finite identity \eqref{eq:analytic-geometric-identity}.  Generate coefficient and derivative evaluators with their exact error demands.  The arithmetic theorems express Taylor-remainder and difference-quotient observations; the semantic interpretation identifies their named function as holomorphic.
+\end{enumerate}
+
+In each step the required object theorem has the form
+\[
+ []\ \vdash_{\mathrm{PRAAx}}\
+ \forall\mathbf u\,
+   (\mathrm{InputContracts}(\mathbf u)\to
+    \mathrm{OutputObservation}(\mathbf u)),
+\]
+with the programs fixed in the metatheory.  The output observation is a bounded rational inequality or a regularity/equality formula whose precision variables are ordinary natural numbers.  Bounded loops may be Booleanized using the existing bounded-syntax compiler.  There is no need to strengthen induction to a formula quantifying over all precisions: while proving an observation at precision $k$, all finer precisions and loop horizons are explicit numerical terms of $k$ and the data.
+
+This extension resolves a specific difficulty with analytical claims in the existing portfolio.  A finite certificate for an error recurrence now has a route to a function with its actual differential or holomorphic meaning.  The route is conditional on explicit input moduli, positive domain guards, and proofs of the evaluator contracts.  It does not manufacture those inputs from arbitrary classical descriptions, and it does not erase the difference between a proved human argument and a checked object-language derivation.

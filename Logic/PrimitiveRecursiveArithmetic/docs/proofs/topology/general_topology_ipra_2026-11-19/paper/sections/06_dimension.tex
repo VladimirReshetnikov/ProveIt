@@ -1,0 +1,162 @@
+\section{A finite proof of dimension invariance}
+\label{sec:dimension}
+
+This chapter reconstructs the staggered-grid argument in ProveIt's dimension packet \cite{RepoDimension}. Its strength is that the central statement concerns only rational tables. The classical source target is $\R^n\cong\R^m$ if and only if $n=m$ \cite{MWDimension}; our infinite-space version requires the explicit computational and uniformity data specified below.
+
+\subsection{The rational obstruction}
+
+For $d\geq1$ and $N\geq1$, let
+\[
+G_d(N)=\{0,\ldots,N\}^d,\qquad
+L_i=\{v:v_i=0\},\quad U_i=\{v:v_i=N\}.
+\]
+Coordinates are numbered $1,\ldots,d$. A Kuhn simplex is specified by $a\in\{0,\ldots,N-1\}^d$ and a permutation $\pi$ of the coordinates; its vertices are
+\[
+v_t=a+\sum_{s=1}^t e_{\pi_s}\qquad(0\leq t\leq d).
+\]
+There are $N^d d!$ such lists. Distances in a rational target $\Q^m$ use the sup norm; for $m=0$ the distance is zero.
+
+\begin{theorem}[D01: finite dimension obstruction]\label{thm:dimension-obstruction}
+Let $F:G_d(N)\to\Q^m$ be a finite table and $h>0$ rational. Suppose
+\[
+\|F(u)-F(v)\|_\infty\geq h
+\quad(u\in L_i,\ v\in U_i,\ 1\leq i\leq d),
+\]
+and
+\[
+\|F(u)-F(v)\|_\infty<h/d
+\quad\text{for vertices of each Kuhn simplex}.
+\]
+Then $d\leq m$. Moreover, if $d>m$, a primitive recursive algorithm returns either an opposite-face pair at distance $<h$, or two vertices of one Kuhn simplex at distance $\geq h/d$.
+\end{theorem}
+
+We prove the finite parity statement and the geometric arithmetic needed for this theorem in full.
+
+\subsection{Cubical Sperner parity}
+
+\begin{lemma}[D02: cubical parity]\label{lem:cubical-parity}
+Let $\lambda:G_d(N)\to\{0,\ldots,d\}$ satisfy
+\[
+ v_i=0\Longrightarrow \lambda(v)<i,\qquad
+ v_i=N\Longrightarrow \lambda(v)\ne i-1.
+\]
+The number of Kuhn simplices bearing all $d+1$ colors is odd.
+\end{lemma}
+\begin{proof}
+A facet occurrence of a Kuhn simplex is its vertex list with $v_t$ removed. Interior occurrences have the following explicit mates.
+If $0<t<d$, swap the adjacent increments $\pi_t,\pi_{t+1}$ and again remove the intermediate vertex $t$.
+If $t=0$, use base $a+e_{\pi_1}$, move $\pi_1$ to the end of the permutation, and remove the last vertex. This mate exists exactly when $a_{\pi_1}<N-1$.
+If $t=d$, use base $a-e_{\pi_d}$, move $\pi_d$ to the beginning, and remove the first vertex. This mate exists exactly when $a_{\pi_d}>0$.
+
+The rules are inverse and have no fixed points. To check that no occurrence is missed, sort the remaining vertices by the sum of their coordinates. Their successive sums normally differ by one. An interior deletion leaves exactly one gap of two, whose two distinct coordinate increments can be supplied in precisely two orders. An endpoint deletion leaves $d-1$ increments, and the missing coordinate can be supplied at the beginning or the end. Thus the unpaired occurrences are exactly boundary facets.
+
+Call a facet a door if it has colors $0,\ldots,d-1$, once each. A full $d$-simplex has one door. A simplex missing one of these $d$ colors has none. The remaining kind has two doors, since color $d$ is absent and exactly one of the other colors repeats. Therefore the number of door occurrences and the number of full simplices have the same parity.
+
+Interior doors cancel in pairs. An upper $i$-face has no door, because color $i-1$ is forbidden. A lower $i$-face with $i<d$ has no door, because all its colors are $<i$. Only the lower $d$-face contributes. Deleting its last coordinate gives exactly the same admissible labeling problem in dimension $d-1$. In dimension zero there is one vertex, of color zero. Repeating the parity equality down to that vertex proves oddness.
+
+For the induction audit, fix the original table and define $P(r)$ as the parity on its restriction to $x_{r+1}=\cdots=x_d=0$. The displayed boundary rules force the restricted labels to be $\leq r$. The invariant $r\leq d\to P(r)=1$ is quantifier-free after the finite sums are encoded. This is not induction over all labelings. The involution count is also arithmetic: each pair has a unique smaller code, so its cardinality is twice the sum of those smaller-code indicators.
+\end{proof}
+
+\subsection{Staggered target cells}
+
+For source direction $i$, let $s_i=(i-1)/d$ and define the rational cell index
+\[
+ \operatorname{Cell}_i(y)
+   =\left(\left\lfloor y_j/h-s_i\right\rfloor\right)_{j=1}^m.
+\]
+Each coordinate cell is the half-open interval
+$[h(k+s_i),h(k+1+s_i))$.
+
+\begin{lemma}[D03: separated threshold arithmetic]\label{lem:staggered-cells}
+Equal cell tuples imply sup distance $<h$. Distinct cell indices in coordinate $j$ give a threshold $t=h(k+s_i)$ between the two sample coordinates, strictly above the smaller sample and at most the larger. Thresholds from different shifts $i\ne i'$ in the same coordinate differ by at least $h/d$.
+\end{lemma}
+\begin{proof}
+The first assertion is the width of a half-open interval. For the second take $k$ one larger than the smaller cell index. For the third subtract:
+\[
+ h(k+s_i)-h(k'+s_{i'})
+   =\frac hd\bigl(d(k-k')+i-i'\bigr).
+\]
+The integer factor is nonzero, since $0<|i-i'|<d$, so its absolute value is at least one. All comparisons, including the floors, concern rationals.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:dimension-obstruction}]
+First scan all opposite-face pairs. If one is closer than $h$, output it. Otherwise all are separated; rational comparisons are decidable.
+
+For each $i$ form the finite list
+$S_i=\{\operatorname{Cell}_i(F(w)):w\in L_i\}$ and define a bit $b_i(v)$ to be zero when $\operatorname{Cell}_i(F(v))\in S_i$, and one otherwise. It is zero on $L_i$. It is one on $U_i$, because otherwise two opposite-face samples would share a cell and be less than $h$ apart.
+
+Give $v$ the color $i-1$ at its first zero bit, or color $d$ if all bits are one. On $L_i$ the first zero is no later than $i$, and on $U_i$ it cannot be $i$. Thus Lemma~\ref{lem:cubical-parity} applies. Find a full simplex by bounded search and let $v^{(r)}$ be its color-$r$ vertex.
+
+For every $i$, bit $i$ is zero at $v^{(i-1)}$ and one at $v^{(d)}$, so their cell tuples differ. Select a differing coordinate $j_i$ and a threshold $t_i$ between the corresponding samples. If $m=0$, distinct empty tuples are already impossible. If $m>0$, each $t_i$ belongs to
+\[
+ I_{j_i}
+ =\left[\min_{v\in\sigma}F(v)_{j_i},
+          \max_{v\in\sigma}F(v)_{j_i}\right].
+\]
+Under the small-simplex hypothesis these intervals have length $<h/d$, so no two directions can select the same coordinate. Their thresholds would otherwise be at least $h/d$ apart by Lemma~\ref{lem:staggered-cells}. Consequently $i\mapsto j_i$ is an injection into $m$ coordinates, proving $d\leq m$.
+
+For the positive alternative when $d>m$, use the same construction after the unsuccessful face scan. A repeated coordinate $j_i=j_{i'}$ must exist. The interval $I_{j_i}$ contains thresholds at distance at least $h/d$. Its finitely attained minimum and maximum supply two vertices at least $h/d$ apart. This is the promised output.
+
+The pigeonhole step is a finite sum identity: if $c_j$ is the number of directions selecting $j$, then $\sum_jc_j=d$, while injectivity would give $c_j\leq1$ and hence $d\leq m$.
+\end{proof}
+
+\subsection{Explicit resource bounds and an example}
+
+The table has $(N+1)^d$ entries. The face scan uses at most $d(N+1)^{2d-2}$ pairs. The simplex scan has $N^d d!$ candidates; permutations may alternatively be found by checking all $d^d$ coordinate lists. Cell membership can be checked by at most $d(N+1)^{2d}m$ integer comparisons. Every arithmetic operation has positive-denominator guards, and its operand sizes are bounded by a primitive recursive iteration of addition and multiplication. These bounds prove primitive recursiveness without claiming efficiency.
+
+For $d=2,m=1,N=1,h=1$, take
+\[
+ F(0,0)=0,\quad F(0,1)=1,\quad F(1,0)=3,\quad F(1,1)=2.
+\]
+Opposite faces remain at least one apart. The colors at the four displayed vertices are $0,0,1,2$, and $(0,0),(1,0),(1,1)$ is full. The integer-shift and half-integer-shift grids yield thresholds $1$ and $5/2$ in the single target coordinate. Thus the simplex cannot have image diameter $<1/2$. The archive includes this table and an independently checkable witness.
+
+\subsection{Equipped maps and first-order consequences}
+
+Write $C_d=[0,1]^d$ and use rational source points. Fix a primitive recursive evaluator
+$E(q,p)\in\Q^m$, a modulus $\mu:\N\to\N$, and an inverse scale $a\in\N$. For the following theorem it is enough to assume the two arithmetic contracts
+\begin{align}
+ \|q-q'\|_\infty\leq2^{-\mu(k)}
+ &\Longrightarrow
+ \|E(q,p)-E(q',p)\|_\infty
+       \leq2^{-k}+2^{1-p}, \label{eq:dimension-forward}\\
+ \|E(q,p)-E(q',p)\|_\infty+2^{1-p}<2^{-a}
+ &\Longrightarrow \|q-q'\|_\infty\leq\tfrac12 .
+ \label{eq:dimension-inverse}
+\end{align}
+They quantify only over rational codes and precision integers. Contract~\eqref{eq:dimension-forward} is what an evaluator with error $\leq2^{-p}$ and a uniform modulus gives. Contract~\eqref{eq:dimension-inverse} is one explicit scale of inverse uniformity.
+
+\begin{theorem}[D04: arithmetic dimension schema]\label{thm:dimension-schema}
+For fixed $E,\mu$ satisfying \eqref{eq:dimension-forward} and \eqref{eq:dimension-inverse}, one has $d\leq m$.
+\end{theorem}
+\begin{proof}
+For $d=0$ there is nothing to prove. For $d\geq1$, put
+\[
+ h=2^{-a-1},\qquad k=p=a+d+5,\qquad N=2^{\mu(k)},
+ \qquad F(v)=E(v/N,p).
+\]
+Let $e=2^{-p}$. The elementary inequality $2^d\geq d$ gives
+$3e<h/d$ and $h+2e<2^{-a}$.
+
+If an opposite-face pair of table entries had distance $<h$, contract~\eqref{eq:dimension-inverse} would say that the source points are at most $1/2$ apart. Their distance is one, a contradiction. Since the table distance is rational, it is therefore at least $h$.
+
+Vertices of a Kuhn simplex have source distance at most $1/N=2^{-\mu(k)}$. Contract~\eqref{eq:dimension-forward} gives table distance at most $2^{-k}+2^{1-p}=3e<h/d$. The finite obstruction applies.
+\end{proof}
+
+\begin{corollary}[D05: quantitative dimension invariance]\label{cor:equipped-dimension}
+Suppose a homeomorphism $\R^n\to\R^m$ and its inverse have fixed primitive recursive rational evaluators, supplied uniform moduli on the relevant bounded boxes, and certified inverse identities. Suppose their presentations supply the corresponding one-scale inverse contracts on one positive-size rational cube in each direction. Then $n=m$. Conversely, when $n=m$ the identity gives such a presentation.
+\end{corollary}
+\begin{proof}
+Rescale the two cubes rationally to unit cubes. Apply Theorem~\ref{thm:dimension-schema} to the forward map and then to the inverse, obtaining $n\leq m$ and $m\leq n$. Antisymmetry gives equality. The identity has exact evaluation and modulus $\mu(k)=k$.
+\end{proof}
+
+If a containing target box and a genuine modulus of the inverse on that box are supplied, they imply the inverse contract. A containing box can itself be bounded from a finite source net, a single-precision evaluation table, and forward uniformity. It is essential that the inverse modulus applies to the \emph{represented image points}; a modulus stated only on unrelated rational inputs is not enough without an extension argument.
+
+\begin{corollary}[D06: approximate opposite-face collision]\label{cor:face-collision}
+For $d>m$, a map on $C_d$ supplied with evaluations of certified error $\leq2^{-p}$ and a uniform forward modulus admits, at each requested positive rational tolerance $\varepsilon$, a boundedly computable pair of rational points on opposite faces with image distance $<\varepsilon$.
+\end{corollary}
+\begin{proof}
+Choose rational $h=\varepsilon/2$. Take a precision and mesh making every table simplex have diameter $<h/d$ and the two evaluation errors total $<\varepsilon/2$. The finite alternative cannot return the large-simplex case. It returns an opposite-face pair with table distance $<h$, whose actual image distance is $<\varepsilon$. The inequalities are checked using explicit powers of two, with extra slack if the modulus uses non-strict inequalities.
+\end{proof}
+
+This argument needs neither differentiability nor a Lipschitz inverse. It does not prove invariance of domain or produce an exact collision point. No sequential-compactness step is used to pass from the approximate witnesses to a limit.
+

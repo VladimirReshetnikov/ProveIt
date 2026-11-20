@@ -1,0 +1,103 @@
+\section{Dilation, prime roots, and repeated summation}\label{sec:smoothing}
+
+For ordinary RH one may replace the least common multiple by the primorial, compare cutoffs $3n$ and $n$, and sum the signed discrepancies up to $N$. Remarkably, this single accumulated statistic still detects every off-line zero. The same choices work for the character and field families. Two facts account for this. Higher prime powers have total weight of square-root order. Summation smooths a discrepancy, but transfers finite differences to its Mellin kernel. We give the arithmetic estimates and the analytic converse separately.
+
+\subsection*{Closed formulas}
+
+Keep the polynomial code, $C=C(d,H)$ and $L$ from Section~\ref{sec:sentence}. Use either the original integer $B_F(y)$ or
+\[
+  b_F(y)=\left\lfloor\log_2\prod_{p\le y}p^{\nu_F(p)}\right\rfloor,
+  \qquad \nu_F(p)=\#\{z<p:F(z)\equiv0\pmod p\}.
+\]
+The letter $T$ below denotes the selected integer function. For a fixed dilation $a\ge2$, put $f(n)=0$ for $n<100$ and
+\[
+ f(n)=T(an)-aT(n)\quad(n\ge100),\qquad H_0(N)=f(N),\qquad
+ H_{j+1}(N)=\sum_{n=1}^N H_j(n).
+\]
+These are signed sums. Bounding $|H_1|$ allows large terms of opposite sign to cancel. For each order $j\ge0$, our prescribed-envelope sentence tests the inequality
+\begin{equation}\label{eq:smoothedtest}
+       H_j(N)^2\ \le\ N\bigl[a C N^j L(aN)^2\bigr]^2
+       \qquad(N\ge100).
+\end{equation}
+Use $F=X-1$ for RH, $F=X^m-1$ for every $m\ge1$ for GRH, and every coded $F$ for ERH. A second sentence quantifies $a,j,N$ simultaneously for each polynomial. A third choice, for fixed $a,j$, replaces $aC$ by a witness $K$ under $\forall F\,\exists K\,\forall N$. The single-polynomial case drops the field quantifier. The fixed test at $a=2,j=0,T=B_F$ here has twice the allowance of Section~\ref{sec:sentence}; the original sharper test retains its own proof.
+
+All these are literal closed formulas in \code{PrimeForms.lean}: \code{packet}, \code{allPackets} and \code{witness}, respectively. Supply \code{RiemannIPRA.logProduct} or \code{PrimeForms.primeLog} as data. The fixed interfaces use the offset $a-2$. For a varying order one need not iterate a recursive functional. For $j\ge1$, the coefficient of $f(m)$ in $H_j(N)$ is
+\[
+                   \binom{N-m+j-1}{j-1}\qquad(100\le m\le N).
+\]
+Indeed it counts chains $m\le t_1\le\cdots\le t_{j-1}\le N$, by recording the $j$ nonnegative gaps with total $N-m$. Equivalently Pascal's identity proves the formula by finite summation. Factorial, bounded quotient and a single bounded sum compile the binomial expression uniformly in $j$. The program accumulates contributions from $T(am)$ and $aT(m)$ separately, takes their absolute difference by truncated subtraction and then squares. For \code{rootsMod}, evaluating $F(z)$ requires comparing the positive and negative coefficient words modulo $p$ after adding $z^d$ to the positive side. Thus the prime-only version needs neither polynomial factorization nor an extension field.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrl@{}}\toprule
+$F$ & $a$ & $N$ & $H_1(N)$ from $B_F$ & $H_1(N)$ from $b_F$\\\midrule
+$X-1$ &2&103&52&72\\
+$X^2+1$ &2&103&38&40\\
+$X^3-1$ &2&103&138&162\\\bottomrule
+\end{tabular}
+\end{center}
+For instance, the four full-product discrepancies for $X-1$ are $27,13,13,-1$. Their signed sum is $52$. For the same cutoffs the prime-only discrepancies are $32,18,18,4$.
+
+\subsection*{An arithmetic bound for removing higher prime powers}
+
+For $y\ge1$ write $s=\lfloor\sqrt y\rfloor$ and $l=L(y)$. The identity $h_F(p,1)=\nu_F(p)$ follows because $X^p-X$ is the product of the $p$ distinct linear factors $X-z$. In the quotient of the two integer products, a remaining prime base $p$ satisfies $p\le s$. Its total contribution is at most
+$p^{d\lfloor\log_p y\rfloor}\le y^d$. There are at most $s$ choices of $p$, so the quotient is at most $y^{ds}\le 2^{dsl}$. A power-of-two shift translates the highest set-bit index exactly. Consequently
+\begin{equation}\label{eq:primeperturb}
+                  0\le B_F(y)-b_F(y)\le d\lfloor\sqrt y\rfloor L(y).
+\end{equation}
+All steps have a finite arithmetic reading. Compute $s$ by bounded maximum of the integers with square at most $y$, and compute $\lfloor\log_p y\rfloor$ by a bounded power scan. The bound on $h_F(p,k)$ is the degree bound for distinct factors in \eqref{eq:h}. In the enumeration of Section~\ref{sec:kernel}, their running product divides $\overline F$ and has degree equal to the sum of their degrees. This invariant can also be represented by a bounded quotient-word search. Multiplying the individual integer inequalities and using monotonicity of binary length proves \eqref{eq:primeperturb}.
+
+For a fixed $a$ the two choices of $f(n)$ differ by at most
+$2ad\sqrt n\,L(an)$, since $\sqrt{an}\le a\sqrt n$. Repeated summation preserves subtraction. If the absolute value of a sequence is bounded by $M$ through $N$, the absolute value of its $j$-fold sum there is bounded by $N^j M$: each of the $N$ summands in the next prefix has the preceding bound, and $m^j\le N^j$ for $m\le N$. Thus the same-order witness transfers in \emph{both} directions by the explicit substitution
+\[
+                         K\longmapsto K+2ad.
+\]
+This equivalence of the two existential-coefficient formulations has a finitary proof. In particular no selection of one witness for an infinite list of fields is used. The square roots in the reasoning abbreviate integer inequalities. If $x^2\le NA^2$ and $y^2\le NB^2$, multiplication and order reflection of squaring give $xy\le NAB$. Expanding $(x+y)^2$ then gives $(x+y)^2\le N(A+B)^2$. Bounds for all samples in a finite prefix may be replaced by the bound at $N$. The finite sum, product, digit and order invariants just used admit quantifier-free induction, using the bounded tests as PR functions. Lean proves the abstract integer lemmas \code{repeated_bound}, \code{repeated_sub}, \code{square_budget} and \code{transfer_envelope}. The finite-field identification and the resulting witness substitution for the concrete data are proved here on paper.
+
+\subsection*{Additional exact formulas for the Dirichlet family}
+
+When $F=X^m-1$, polynomial factor searches in every local coefficient can be replaced by either of the two arithmetic expressions
+\begin{equation}\label{eq:gcdcyclo}
+ h_F(p,k)=\gcd(m,p^k-1)=
+ \sum_{\substack{e\mid m\\p^k\equiv1\pmod e}}\varphi(e).
+\end{equation}
+In the polynomial gcd defining $h_F$, $X$ is coprime to $X^m-1$. Remove that factor from $X^{p^k}-X$. For positive $u\ge v$, subtracting $X^{u-v}(X^v-1)$ from $X^u-1$ gives $X^{u-v}-1$. The Euclidean algorithm on exponents therefore computes the monic polynomial gcd as $X^{\gcd(m,p^k-1)}-1$, including cases with $p\mid m$. For the second equality, the integers $1\le t\le g$ with $g/\gcd(g,t)=e$ correspond bijectively to the units $1\le z\le e$ by $t=(g/e)z$. Summing their counts gives $g=\sum_{e\mid g}\varphi(e)$, also for $g=1$. These are exact integer identities, so both replacements preserve even the original numerical allowance at each input. For the prime-only test take $k=1$ throughout. For $m=1$ every exponent is $1$, and $b_F(y)$ is the highest set-bit index of the primorial $\prod_{p\le y}p$.
+
+The constructor \code{cyclotomicLog} accepts \code{gcdCode} or \code{progressionWeight}; a Boolean selects primes alone or all prime powers. Use these data with the Dirichlet or Riemann specialization only. The code implements bounded gcd, divisor and totient searches. The proof of the polynomial identity in \eqref{eq:gcdcyclo} is a finite Euclidean argument in the text. As an example, for $m=6$, $p=3$, $k=2$, both exponents are $\gcd(6,8)=\varphi(1)+\varphi(2)=2$.
+
+\subsection*{Equivalence to the analytic hypotheses in the standard model}
+
+\begin{theorem}\label{thm:smoothing}
+For each of the three families, every fixed pair $(a,j)$ in \eqref{eq:smoothedtest}, using either data source, is classically equivalent in the standard integers to the corresponding analytic hypothesis. This also holds for the one sentence quantifying all $a,j$, and for each fixed-pair witness version.
+\end{theorem}
+
+\begin{proof}
+For the forward implication, Section~\ref{sec:forward} gives
+$|\Psi_F(y)-r y|\le13d^3(H+2)\sqrt y\,L(y)^2$ for $y\ge100$, with $r$ the number of distinct monic irreducible rational factors. Subtract $a$ times the estimate at $n$ from the value at $an$ to cancel $r$. Division by $\log 2$ and the floors cost a further $a+1$ in the resulting integer bound. Since $1/\log 2<2$ and $\sqrt a\le a$, this gives
+\[
+ |B_F(an)-aB_F(n)|\le54a d^3(H+2)\sqrt n\,L(an)^2 .
+\]
+For $b_F$ add at most $2ad\sqrt n\,L(an)$ by \eqref{eq:primeperturb}. Both expressions are bounded by $aC\sqrt n L(an)^2$. Repeated summation supplies $N^j$, with no further constant depending on $j$. This proves even the joint universal sentence. The choice $K=aC$ proves each witness version.
+
+Conversely fix $F,a,j$ and assume an integer $K$ satisfies the bound for $H_j$. Write $q_s(n)=n^{-s}$, $\delta q_s(n)=q_s(n)-q_s(n+1)$. For $\Re s>1$ summing by parts $j$ times gives
+\begin{equation}\label{eq:partialsmoothing}
+ D(s):=\sum_{n\ge1} f(n)\,\delta q_s(n)
+       =\sum_{n\ge1}H_j(n)\,\delta^{j+1}q_s(n).
+\end{equation}
+To justify the reindexing on that initial half-plane, the elementary bound $T(n)=O_F(n\log(2n))$ follows from $h_F\le d$ and at most $n$ contributing prime powers, with base at most $n$. It gives $H_i(n)=O_{F,a,i}(n^{i+1}\log(2n))$ unconditionally. For $v\ge1$, successive applications of the fundamental theorem of calculus give
+\[
+ \delta^v q_s(n)=s(s+1)\cdots(s+v-1)
+ \int_{[0,1]^v}(n+t_1+\cdots+t_v)^{-s-v}\,d\vec t.
+\]
+Thus the boundary term at each partial summation tends to zero when $\Re s>1$, and both series there converge absolutely. With the assumed estimate $H_j(n)=O_{F,a,j,K}(n^{j+1/2}(1+\log n)^2)$, the right series in \eqref{eq:partialsmoothing} converges normally for $\Re s>1/2$. It provides a holomorphic continuation of $D$ to that half-plane.
+
+Set $V_a(x)=\Psi_F(ax)-a\Psi_F(x)$. The function
+$V_a(x)-(\log 2)f(\lfloor x\rfloor)$ is $O_{F,a}(\sqrt x(1+\log x))$ for $x\ge1$. Indeed, on replacing $x$ by $n=\lfloor x\rfloor$, the interval $(an,ax]$ contains at most $a-1$ integers and each jump of $\Psi_F$ is at most $d\log(ax+1)$. At an integer the bit floors cost at most $(a+1)\log 2$ for the full product; \eqref{eq:primeperturb} handles the prime-only product. The omission of $n<100$ changes only a bounded interval. The Mellin integral of this error against $s x^{-s-1}$ is holomorphic on $\Re s>1/2$. Integrating the step function $f(\lfloor x\rfloor)$ on unit intervals gives $D(s)$ on $\Re s>1$. Consequently the Mellin integral for $V_a$ has holomorphic continuation to $\Re s>1/2$.
+
+With $J_F$ as in \eqref{eq:mellin}, the same integral on $\Re s>1$ equals
+\[
+  (a^s-a)J_F(s)-a^s s\int_1^a\Psi_F(y)y^{-s-1}\,dy .
+\]
+The second term is entire; retaining it matters for $a>2$. Thus $(a^s-a)J_F(s)$ extends holomorphically to $\Re s>1/2$. At an off-line zero with $1/2<\Re s<1$, the first factor cannot vanish, since $|a^s|<a$. The logarithmic derivative identity \eqref{eq:mellin} would give $J_F$ a pole with negative residue equal to the total zero multiplicity of the field factors. This contradiction, the functional equation, and the family identifications in Section~\ref{sec:families} complete the proof. Specialization to any single pair gives the converse for the joint assertion.
+\end{proof}
+
+The summation-by-parts continuation is an external classical argument. In particular, applying an ordinary finite difference to the bound on $H_1$ alone would give an order-$N^{3/2}$ bound for $f(N)$. The passage back to the zero statement uses its Mellin transform. The Lean files construct the object-language sentences for all these orders; Theorem~\ref{thm:smoothing} is the analytic interpretation of those sentences.

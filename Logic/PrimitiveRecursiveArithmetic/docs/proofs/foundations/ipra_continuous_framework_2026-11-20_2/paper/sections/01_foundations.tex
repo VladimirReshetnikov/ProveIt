@@ -1,0 +1,117 @@
+\section{The target theory and the actual gap}\label{sec:foundation}
+
+\subsection{Scope: continuous mathematics with a numerical interface}
+
+Our target is first-order intuitionistic primitive recursive arithmetic: equality, a symbol for each fixed primitive-recursive definition, its defining equations, the successor axioms, and induction for quantifier-free formulas. Formulas may have quantifiers; the restriction is on induction. The ordinary target in ProveIt is a derivation
+\[
+  []\ \vdash[\mathsf{PRAAx}]\ \varphi,
+\]
+where \(\varphi\) is a concrete first-order formula over its primitive-recursive terms. A Lean theorem about natural numbers, rational numbers, or a metric space is not by itself a derivation of this form.
+
+The objective is to use continuous mathematical objects without pretending that \ipra\ has a sort containing every real number, every map, every category, or every model. A compact metric space can be accessed by finite nets; a real-valued function by rational samples and a modulus; a function space by finite nets of genuine functions; and a continuous formula by a rational value with a certified error. All the finite computations are arithmetic. The assertion that they faithfully describe a familiar continuous object is a separate, proved adequacy statement.
+
+This distinction is productive. We will quantify over spaces of functions in the continuous semantics, while the arithmetic statement quantifies only over natural numbers encoding a finite net and a table of observations. We will obtain exact continuous solutions from error bounds at every precision, while never using an algorithm that tests equality of arbitrary real numbers.
+
+\subsection{What the current source already supplies}
+
+The source audit is pinned to \cite{repo}; it is not a claim to have rebuilt the repository. Its directory overview substantially understates the newer analytic source tree. The following interfaces were inspected directly.
+
+\begin{longtable}{@{}P{.28\textwidth}P{.32\textwidth}P{.33\textwidth}@{}}
+\toprule
+Source under \path{Derivations/Lean/IPRADerivations/} & Existing result & Boundary addressed here\\
+\midrule\endhead
+\path{Foundations/CoherentMinimizer.lean} & Quantitative uniqueness gives a Cauchy name for selected approximate minimizers. & Identify the value of the completed point and prove completed uniqueness through a general evaluation-extension theorem.\\
+\path{Foundations/StrongMinimizer.lean} & Finite-net argmin plus a strong-convexity certificate yields a distance bound. & Use an arbitrary residual-diameter modulus, including a singular inverse with a H\"older modulus.\\
+\path{Foundations/FiniteGluing.lean} & Exact compatible finite tables can be glued by choosing a patch. & Glue noisy local continuous evaluators using weights and an explicit positive denominator bound.\\
+\path{Foundations/FiniteNet.lean} & Arithmetic estimates transfer a finite minimum along a supplied covering/modulus interface. & Construct a net of valid elements of an infinite-dimensional function space.\\
+\path{Foundations/RealizerMasterInterface.lean} & An actual finite list of input certificates is packaged as a derived interface, with soundness and stability derivations. & Supply analytic and model-theoretic providers for such interfaces rather than propose another generic wrapper.\\
+\path{Foundations/CoherenceObstruction.lean} & An object-level diagonal step for a finite-branch obstruction. Its general computability conclusion is separately identified. & State exactly which positive coherence datum defeats the obstruction in our applications.\\
+\path{Foundations/UniversalEvaluatorObstruction.lean} & A fixed-program diagonal theorem and a separate external no-universal-PR-evaluator theorem. & Compile each fixed presentation; do not evaluate all PR programs through one PR function.\\
+\path{Foundations/FiniteUseSignObstruction.lean} & An external Lean theorem shows that finite observations cannot decide exact real sign. & Use continuous truth values and robust inequalities, retaining the exact-sign boundary.\\
+\bottomrule
+\end{longtable}
+
+The prior \path{docs/proofs/foundations/ipra_embedding_framework} packet already contains quantitative implicit-function arguments and finite mesh positivity. The current \path{Analysis/GridIntegral.lean} and \path{Analysis/RiemannRefinement.lean} also supply arithmetic integration estimates. Consequently, neither ``use a modulus'' nor ``replace a continuum by a mesh'' is advertised as a new idea. The contribution is the combination of a completed-value interface, a constructive function-space presentation, and continuous-formula transfer, with their exact strength and remaining proof obligations stated.
+
+\subsection{Three levels, with different quantifiers}
+
+\begin{definition}[Three meanings of a theorem]\label{def:levels}
+An \emph{arithmetic theorem} is an \ipra\ sentence involving fixed PR programs and numerical codes. A \emph{presentation schema} is a metatheoretic construction that, for every fixed tuple of PR programs and supplied \ipra\ proof values, produces such a sentence and derivation. A \emph{semantic adequacy theorem} says what the numerical theorem means for completed metric spaces or other continuous objects.
+\end{definition}
+
+The schema quantifier ``for every fixed program'' is external. It is not an object quantifier over a universal evaluator. An oracle-relative algorithm can describe a mathematical construction before the input evaluator is fixed. It becomes an unconditional PR program only after substituting fixed PR input programs, or after replacing all oracle calls by lookups in a supplied finite table. Calling the oracle-relative algorithm primitive recursive must always retain that qualification.
+
+For example, if \(a(k)\) and \(b(k)\) are fixed PR rational sequences, the regularity assertion
+\[
+ \forall k\,\forall l\quad |a(k)-a(l)|\leq 2^{-k}+2^{-l}
+\]
+is an ordinary first-order arithmetic sentence after clearing denominators. Quantifying instead over every arbitrary sequence \(a:\N\to\Q\) belongs to the schema or the semantics. We never identify those two readings.
+
+\subsection{Codes and bounded predicates}
+
+Here is a concrete coding convention sufficient to remove all hidden data types. Use
+\(\langle a,b\rangle=2^a(2b+1)-1\) for pairs. Its two inverse coordinates are obtained by searches bounded by the input plus one, so they are PR. A list is a length together with a nested pair code; list access is a bounded iteration and returns a designated default out of range. Tuples are fixed-length lists. Integers are differences of naturals. A rational is a signed numerator and a positive natural denominator; distinct codes may denote the same rational. Equality and order are decided by cross multiplication, without requiring a canonical fraction.
+
+All well-formedness tests, finite sums and products, rational minima and maxima, dyadic powers, rounding of rational numbers, and scans of a list are PR. A failed positive-denominator test returns an error flag and a default rational. Every claimed output theorem retains the well-formedness guard; default values never turn malformed data into a certificate.
+
+A bounded numerical statement is represented by its characteristic function. For example,
+\[
+  \bigwedge_{i<b}P(i)\quad\hbox{means}\quad
+  \mathsf{all}_P(b)=1,
+\]
+where \(P\) is decidable by a fixed PR bit. Bounded existential statements are treated by a finite search or a stored witness. Their correspondence with the displayed bounded formulas is proved by quantifier-free induction on the relevant scan. Consequently, an invariant containing finite bounded quantifiers is legitimate only after this translation. Merely describing an invariant in ordinary mathematical prose does not grant an unrestricted induction principle.
+
+\subsection{What a presented continuous object contains}
+
+\begin{definition}[Metric presentation]\label{def:presentation}
+A metric presentation has numerical codes for a dense family of basic points, a decidable well-formedness predicate, and a rational distance evaluator \(\Delta(a,b,p)\). Its finite contracts prove the nonnegativity, symmetry, and triangle inequalities with the error associated with precision \(p\), and prove that the distance samples form a regular name. Equivalently, in its semantic interpretation it has a metric \(d\) such that
+\[
+ |\Delta(a,b,p)-d(a,b)|\leq 2^{-p}.
+\]
+The equivalence is an adequacy theorem; the finite contracts, not this semantic equation alone, are the arithmetic input. An exact rational metric is the special case in which \(\Delta\) is independent of \(p\).
+
+A point name gives basic-point codes at each precision with a proved Cauchy bound. A map presentation gives finite rational/basic-point output approximations, an input modulus, a range guard, and stability under equivalent input names. A compact presentation additionally gives a nonempty PR finite net at every scale and a covering contract. Completeness and total boundedness are separate data.
+\end{definition}
+
+For distance approximations, a useful finite list of laws is
+\begin{align*}
+ |\Delta(a,b,p)-\Delta(a,b,q)|&\leq 2^{-p}+2^{-q},\\
+ \Delta(a,c,p)&\leq\Delta(a,b,p)+\Delta(b,c,p)+3\cdot2^{-p},\\
+ |\Delta(a,b,p)-\Delta(b,a,p)|&\leq2\cdot2^{-p}.
+\end{align*}
+Add nonnegativity up to \(2^{-p}\), a vanishing self-distance bound, and a specified zero-distance equivalence. Sending the error to zero gives the corresponding pseudometric on basic points; quotienting by zero distance is only semantic notation. The arithmetic development uses the setoid relation and its finite approximations. Function spaces below naturally use this approximate-distance form, even though their basic functions are evaluated exactly on rational inputs.
+
+\begin{definition}[Observation contract]\label{def:observation}
+A finite query consists of a code \(q\), a precision \(k\), and numerical parameters \(u\). An input table \(T\) records the answers to all required subqueries. A PR predicate \(\mathsf{Good}(T,q,k,u)\) checks its finite shape, domain guards, demanded compatibility inequalities, and all retained certificates. A fixed PR transformer \(A\) produces the output. Its arithmetic obligation is
+\begin{equation}
+ \forall T,q,k,u\quad
+ \mathsf{Good}(T,q,k,u)\ \longrightarrow\
+ \mathsf{Out}(A(T,q,k,u),q,k,u).
+ \label{eq:contract}
+\end{equation}
+An independent provider theorem constructs good tables from a chosen presentation. An independent adequacy theorem interprets \(\mathsf{Out}\) as the desired continuous estimate.
+\end{definition}
+
+Checking a finite table is not evidence that every later table exists or that successive choices are coherent. Formula \eqref{eq:contract} deliberately cannot conceal either issue. The completion and residual theorems below supply coherence in specific cases. The compact-function-space theorem supplies actual net centers, avoiding a hidden search for a function satisfying a quantized sample table.
+
+\subsection{A precise finite-realization principle}
+
+\begin{theorem}[Finite arithmetic realization]\label{thm:realization}
+Fix a finite collection of PR numerical primitives, with \ipra\ derivations of their required finite contracts. Form a program using composition, finite tuples, rational arithmetic with checked denominators, decidable branches, finite extrema, and primitive recursion. For every recursive loop supply a quantifier-free encoded invariant, derivations of its initial and step clauses, and a derivation from its final clause to the output contract. Then the program has a PR numerical implementation and an \ipra\ derivation of \eqref{eq:contract}. Replacing each closed primitive by its definition gives a theorem in the original language of \ipra.
+\end{theorem}
+
+\begin{proof}
+Composition substitutes PR terms and cuts the constituent derivations. Tuples and rational operations are defined by the fixed coding routines. A branch condition is a PR equality or comparison; its decidability is proved inside arithmetic, and intuitionistic disjunction elimination combines the branch derivations. A recursive loop is a PR iterator on its coded state. Apply quantifier-free induction to its encoded invariant, then substitute the actual loop bound. A finite nesting of these constructions uses only a finite nesting of PR recursion. Finally expand the definitions of the finitely many derived symbols. Each step is an intuitionistic derivation transformation, so no appeal to the semantic truth of arbitrary \ipra\ proofs occurs.
+
+For a minimum scan, store both the running minimum \(m_j\) and its index \(r_j\). The invariant says \(r_j\leq j\), \(m_j=a_{r_j}\), and \(m_j\leq a_i\) for every \(i\leq j\). The last assertion is its bounded characteristic bit. On inserting \(a_{j+1}\), use the decidable comparison to retain \((m_j,r_j)\) or replace it by \((a_{j+1},j+1)\). Both branch implications are finite ordered arithmetic. This gives attained minima and all the extrema estimates used later without induction on an unbounded quantified formula. Maxima are analogous.
+\end{proof}
+
+The theorem is a deliberately explicit proof-construction principle, not a theorem that arbitrary terminating algorithms or arbitrary true inequalities are provable in \ipra. The substantive work in each application is to prove its local estimates and give the invariants. Our later sections do that at the human level; the Lean plan identifies where each is reified. When a local estimate is only an assumption, it remains an assumption in the resulting arithmetic theorem.
+
+\subsection{Errors, equality, and the strength of the interpretation}
+
+Use \(\eps_k=2^{-k}\). If one execution returns an approximation within \(\eps_k\) and another within \(\eps_l\) of the same semantic value, their outputs differ by at most \(\eps_k+\eps_l\). Conversely, a proved bound of that form constructs a regular real name without first assuming a semantic value. Many ``exact'' conclusions below mean equality of such names: every requested rational error is met.
+
+This does not give a Boolean equality test. A robust inequality \(x<r\) can be witnessed by a sample whose upper error endpoint is below \(r\). Equality is an all-precision property and generally has no finite deciding sample. Division requires an explicit positive lower bound on the denominator, and branch choices based on sign require an explicit gap or a continuous replacement.
+
+The conservative claim is correspondingly limited. New arithmetic notation expands into PR terms and derived rules, so the numerical theory is a definitional extension of \ipra. We do not assert that unrestricted real analysis, ordinary model-theoretic compactness, all categories, or a higher-order system with arbitrary choice is conservative over \ipra. Even classical conservation results over PRA must be read in their stated theories and formula classes; they do not automatically transfer to an intuitionistic language with witnesses \cite{kohlenbach}.

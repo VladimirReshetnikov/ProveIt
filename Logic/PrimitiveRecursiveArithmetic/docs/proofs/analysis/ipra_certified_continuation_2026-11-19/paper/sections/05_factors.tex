@@ -1,0 +1,139 @@
+\section{Stable polynomial factors through internal root collisions}\label{sec:factors}
+
+\subsection{The problem and the relevant boundary}
+
+One cannot obtain stable labels for arbitrary complex roots by sorting approximate boxes lexicographically. Even when all roots are distinct and well separated in the complex metric, small changes in real coordinates can reverse that sorting. Repeated roots cause an additional difficulty for individual-root derivatives. A useful alternative is to transport a whole monic factor. Its coefficient vector can remain well conditioned even when several roots inside that factor collide.
+
+The existing \texttt{HenselStep} module proves the ring algebra of a lifting step, while its index explicitly leaves the convergence theorem outside that module \cite{repo-hensel}. Here we give a complete convergent finite construction under an explicit rational inverse certificate. This is an Archimedean coefficient estimate; it should not be confused with an automatic proof of every modular or Puiseux lifting theorem.
+
+\subsection{Norms and the linear inverse certificate}
+
+Work over \(K=\Q\), or \(K=\Q(i)\) with \(\abs{a+ib}_1=\abs a+\abs b\). For a polynomial \(p=\sum_jp_jX^j\), put
+\[
+ \norm p_1=\sum_j\abs{p_j}_1.
+\]
+Finite convolution and the triangle inequality give
+\(\norm{pq}_1\le\norm p_1\norm q_1\).
+For a pair of correction polynomials use
+\(\norm{(u,v)}=\norm u_1+\norm v_1\).
+
+Let \(g_0,h_0\) be monic of degrees \(r,s\ge1\), and let \(f\) be monic of degree \(r+s\). Corrections satisfy \(\deg u<r\), \(\deg v<s\). Define the square linear map
+\begin{equation}\label{eq:sylvester-map}
+ \mathcal L(u,v)=h_0u+g_0v.
+\end{equation}
+Its input and output coefficient spaces both have dimension \(r+s\). Its matrix is formed directly by shifted copies of the two coefficient lists. A certificate is a rational matrix \(S\) satisfying
+\(S\mathcal L=\mathcal LS=I\). Exact multiplication checks these equations.
+
+Define
+\[
+ K_0=\max_j\sum_i\abs{S_{ij}}_1,\qquad K=\max(1,K_0).
+\]
+Then \(\norm{SP}\le K\norm P_1\). The matrix can be produced by bounded rational Gaussian elimination or by the adjugate formula with a checked nonzero determinant. Failure to find an inverse is a failed certificate. In the usual field interpretation, invertibility of \(\mathcal L\) is equivalent to coprimeness of \(g_0,h_0\); the theorem only needs the explicitly checked inverse equations.
+
+\subsection{The convergent finite lifting algorithm}
+
+Put \(E=f-g_0h_0\), \(\epsilon=\norm E_1\), and choose a rational radius \(\rho>0\) such that
+\begin{equation}\label{eq:factorcertificate}
+ K\rho\le\tfrac14,\qquad K\epsilon\le\rho/2.
+\end{equation}
+A convenient automatic choice is
+\(\rho=1/(4K)\), with acceptance condition
+\(\epsilon\le1/(8K^2)\).
+The recurrence is
+\begin{equation}\label{eq:factoriteration}
+ (u_0,v_0)=(0,0),\qquad
+ (u_{n+1},v_{n+1})=S\bigl(E-u_nv_n\bigr).
+\end{equation}
+All products have degree below \(r+s\), so the finite-dimensional type is preserved.
+
+\begin{theorem}[Certified factor transport]\label{thm:factortransport}
+Under \eqref{eq:factorcertificate}, recurrence \eqref{eq:factoriteration} is a PR rational algorithm. Writing \(z_n=(u_n,v_n)\), it satisfies
+\begin{align}
+ \norm{z_n}&\le\rho,\label{eq:factorball}\\
+ \norm{z_{n+1}-z_n}&\le K\epsilon\,2^{-n},\label{eq:factorstep}\\
+ \norm{z_{n+m}-z_n}&\le2K\epsilon\,2^{-n},\label{eq:factortail}\\
+ \norm{f-(g_0+u_n)(h_0+v_n)}_1
+ &\le L_0K\epsilon\,2^{-n},\label{eq:factorresidual}
+\end{align}
+where \(L_0\) is the induced column-sum norm of the explicitly computed matrix \(\mathcal L\). The represented limits \(g,h\) are monic of degrees \(r,s\), satisfy \(f=gh\), and are the unique such pair with correction norm at most \(\rho\).
+\end{theorem}
+\begin{proof}
+For \(z=(u,v)\) in the ball,
+\[
+ \norm{S(E-uv)}\le K\epsilon+K\norm u_1\norm v_1
+ \le\rho/2+K\rho^2\le3\rho/4.
+\]
+Thus the map preserves the ball with spare room. For \(z'=(u',v')\) in the same ball, write
+\(uv-u'v'=(u-u')v+u'(v-v')\). Then
+\[
+ \norm{uv-u'v'}_1
+ \le\rho\bigl(\norm{u-u'}_1+\norm{v-v'}_1\bigr)
+ =\rho\norm{z-z'}.
+\]
+The update therefore has gain at most \(K\rho\le1/4\), and in particular at most \(1/2\). The first displacement is at most \(K\epsilon\). Finite induction and the finite geometric sum prove \eqref{eq:factorball}--\eqref{eq:factortail}.
+
+The inverse identity gives
+\(\mathcal Lz_{n+1}=E-u_nv_n\). Hence the \emph{exact} finite residual identity is
+\[
+ f-(g_0+u_n)(h_0+v_n)
+ =E-\mathcal Lz_n-u_nv_n
+ =\mathcal L(z_{n+1}-z_n).
+\]
+Taking its coefficient norm proves \eqref{eq:factorresidual}. An explicit precision shift makes both the coefficient tail and the residual arbitrarily small. The leading coefficients stay one because the correction arrays omit the top coefficient. Finally, every pair of exact factors in the ball is a fixed point of the same update. Its contraction estimate, or the finite a posteriori argument of the previous section, proves uniqueness of its represented coefficient name.
+\end{proof}
+
+This proof does not start by assuming a limit factorization exists. It constructs the rational coefficient names and proves their multiplication law. It is valid with numerical degrees and coefficient lists because matrix formation, inversion verification, polynomial multiplication, and iteration are all bounded arithmetic programs.
+
+\subsection{Parameter stability and continuation of factors}
+
+Fix the reference pair \(g_0,h_0\), inverse \(S\), and radius \(\rho\). Let \(f,\widetilde f\) both satisfy the residual test. Their iterations have the same nonlinear term and the same preconditioner. Consequently
+\[
+ \norm{z_{n+1}-\widetilde z_{n+1}}
+ \le K\norm{f-\widetilde f}_1+\tfrac12\norm{z_n-\widetilde z_n}.
+\]
+Since both initial corrections are zero, finite induction gives
+\begin{equation}\label{eq:factorstability}
+ \norm{z_n-\widetilde z_n}\le2K\norm{f-\widetilde f}_1
+\end{equation}
+for every \(n\). Passing only to the represented interpretation yields the same coefficient stability bound for the produced factors. Thus real or complex coefficient names can be handled by the reindexing construction from the preceding section, as long as their approximants remain in the certified residual neighborhood.
+
+For continuation along a finite chain of coefficient neighborhoods, the output of one stage supplies an approximate reference factorization for the next. At each stage the algorithm must verify the new inverse and residual bounds. A finite chain of accepted stages gives a proof by finite composition. There is no assertion that an arbitrary path admits such a chain with a uniform PR length, especially if the factors become non-coprime across the chosen split.
+
+\subsection{A worked example containing two multiple roots}
+
+Take
+\[
+ g_0=X^2,\qquad h_0=(X-2)^2=X^2-4X+4,
+ \qquad f_\delta=X^2(X-2)^2+\delta.
+\]
+In coordinates \((u_0,u_1,v_0,v_1)\), the matrices are
+\[
+ \mathcal L=
+ \begin{pmatrix}
+ 4&0&0&0\\-4&4&0&0\\1&-4&1&0\\0&1&0&1
+ \end{pmatrix},\qquad
+ S=\begin{pmatrix}
+ 1/4&0&0&0\\1/4&1/4&0&0\\3/4&1&1&0\\-1/4&-1/4&0&1
+ \end{pmatrix}.
+\]
+Their products are the identity, and \(\det\mathcal L=16\). The largest column sum of \(S\) is \(K=3/2\). Thus \(\rho=1/6\), and every \(\abs\delta\le1/18\) passes the stated residual test. The first corrections are
+\[
+ u_1=\tfrac\delta4(1+X),\qquad
+ v_1=\tfrac\delta4(3-X).
+\]
+In particular, \(\delta=1/100\) gives a fully numerical nontrivial example. The coefficient correction in the limit is at most
+\(2K\abs\delta=3/100\), and the joint correction error at iteration \(n\) is at most \((3/100)2^{-n}\).
+
+At \(\delta=0\), the reference polynomial has a repeated root at zero and another repeated root at two. This causes no singularity in the factor certificate because the two factors remain coprime. Individual roots within either factor may split as \(\delta\) changes, but the two monic degree-two coefficient vectors stay within the explicit Lipschitz bound \eqref{eq:factorstability}.
+
+There is even an elementary locator interpretation for \(\abs\delta\le1/100\). Write the limiting corrections as \(u,v\), with \(\norm u_1+\norm v_1\le3/100\). A root \(z\) of \(X^2+u\) satisfies
+\(\abs z^2\le(3/100)\max(1,\abs z)\), which excludes \(\abs z\ge1/2\): for \(1/2\le\abs z\le1\) the two sides are at least \(1/4\) and at most \(3/100\), while for \(\abs z\ge1\) division gives \(\abs z\le3/100\). If \(2+w\) is a root of \((X-2)^2+v\), then
+\[
+ \abs w^2\le(3/100)(2+\abs w).
+\]
+For \(t=\abs w\ge1/2\), writing \(t=1/2+s\) shows
+\(t^2-(3/100)(2+t)=7/40+(97/100)s+s^2>0\), a contradiction. Thus the two factors have all their roots in the disjoint radius-\(1/2\) disks centered at zero and two. This root interpretation uses the ordinary modulus in the ambient complex field; the coefficient construction and its proof need only rational norms. In an iPRA application, a root name and its finite residual contract give the corresponding approximate locator statement.
+
+\subsection{What has and has not been resolved}
+
+The construction supplies stable \emph{factor} labels through internal collisions, with a numerical modulus and a verified coefficient producer. It does not derive the existence of arbitrary disjoint root boxes, certify their multiplicities from scratch, or provide a uniformly stable ordering of individual complex roots. The next section treats finite multiplicity covers and locators on their own precise terms. Combining that interface with polynomial factor information still requires the corresponding coverage/count certificate; it is not obtained from small coefficient residual alone.

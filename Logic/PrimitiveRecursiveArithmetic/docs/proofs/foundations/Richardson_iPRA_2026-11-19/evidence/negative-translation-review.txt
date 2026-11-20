@@ -1,0 +1,153 @@
+# Independent review: negative MRDP route to Richardson
+
+## Verdict
+
+The proposed route is logically sound, provided the report makes its fixed
+classical MRDP dependency and its finite computation/analytic interfaces explicit.
+It avoids both Markov's principle and extraction of positive Diophantine witnesses
+from a negative translation.
+
+## Published base theorem
+
+A primary current source independently confirms the required metatheorem:
+Yijia Chen, Moritz Müller, Keita Yokoyama,
+“A parameterized halting problem, Δ₀ truth and the MRDP theorem,”
+Journal of Symbolic Logic 90 (2025), 483–508, §1.4,
+DOI 10.1017/jsl.2024.44.
+It says Gaifman and Dimitracopoulos showed that
+IΔ₀ + ∀x ∃y (2^x = y) proves MRDP.
+
+Original reference:
+H. Gaifman and C. Dimitracopoulos,
+“Fragments of Peano's arithmetic and the MRDP theorem,”
+Logic and Algorithmic, Monographies de L'Enseignement Mathématique 30
+(1982), 187–206.
+
+Source:
+https://www.cambridge.org/core/journals/journal-of-symbolic-logic/article/parameterized-halting-problem-delta-0-truth-and-the-mrdp-theorem/B945A5DF3DBA483FD9B34FF600A593F6
+
+This verifies existence of an EFA proof of each fixed representation instance.
+It is not a supplied Lean derivation of that instance. Keep this distinction.
+
+## Exact negative-translation argument
+
+Choose H(e) = ∃t Trace(e,e,t), with Trace an actual bounded/elementary
+computation-certificate formula in the source arithmetic language.
+An arbitrary unexplained PR predicate is not automatically a Σ₁ source formula
+with a correctness proof in EFA.
+
+For the fixed formula H, take the fixed polynomial P and fixed EFA proof:
+  ∀e (H(e) ↔ Sol(e)),
+where Sol(e) := ∃w P(e,w)=0.
+
+Translate that finite classical proof by Gödel–Gentzen negative translation.
+Atomic arithmetic equality is decidable in iPRA. For each fixed bounded source
+formula B, primitive-recursive bounded folds give a Boolean χ_B and an internal
+proof B ↔ χ_B=1. Therefore B is decidable and B^N ↔ B is derivable.
+Each translated bounded-induction instance follows by induction on χ_B=1,
+which is quantifier-free. The source total-exponentiation axiom is witnessed
+by iPRA's primitive-recursive exponentiation function.
+This embeds the translated source proof into iPRA.
+
+The result is:
+  ¬¬H(e) ↔ ¬¬Sol(e).
+
+From that obtain:
+  ¬H(e) ↔ ¬Sol(e)
+by intuitionistic propositional logic only.
+For example, ¬H and Sol give ¬¬Sol, hence ¬¬H, contradicting ¬H.
+The converse is symmetric.
+
+Do not claim the translation gives H ↔ Sol, Sol from ¬¬Sol, or a PR
+map from arbitrary halting witnesses to polynomial roots.
+
+## Diagonal proof: exact required interfaces
+
+Let d be a purported total Boolean decider for valid expressions.
+Let C(e) be the PR expression constructor with
+  Id(C(e)) ↔ ¬H(e).
+
+Define diag(d) as the code of the program that, on input z:
+  runs d(C(z));
+  if its returned bit is 1, halts;
+  if its returned bit is 0, enters a permanent loop.
+Take e = diag(d).
+No recursion theorem is needed, because H(e) denotes machine e on input e.
+
+The finite simulation proofs must establish:
+  Run(d,C(e),s,1) → H(e),
+  H(e) → ∃s Run(d,C(e),s,1).
+
+Totality yields a concrete Boolean result for d(C(e)).
+- On result 1, correctness gives Id(C(e)), hence ¬H(e), while simulation gives H(e).
+- On result 0, determinism plus the second simulation lemma gives ¬H(e);
+  the reduction gives Id(C(e)); output-0 correctness gives ¬Id(C(e)).
+
+Thus no total correct decider exists.
+No branch uses ¬¬∃t→∃t.
+
+“Correctness” must cover output 0 too:
+  Run(...,1)→Id and Run(...,0)→¬Id,
+or equivalently Yes(d,a)↔Id(a), with totality and deterministic Boolean output.
+Only the one-sided implication output1→Id is insufficient.
+
+If the formal theorem instead uses H(e)=blank-input halting, adjust the
+compiler/self-input convention; do not silently mix the two.
+
+## Uniform PR evaluation of expression syntax
+
+A uniform PR rational approximation evaluator for this fixed elementary
+expression grammar is plausible and can be justified concretely. It must not
+be conflated with a universal interpreter for arbitrary PR function codes.
+
+Normalize composition into unary term syntax by finite substitution; this is PR.
+Let N be the resulting number of syntax nodes. Let H bound all rational
+constant magnitudes and the rational input magnitude; take H≥8.
+Define:
+  B_0=H,
+  B_{j+1}=2^(4 B_j).
+Then every exact subexpression magnitude is bounded by B=B_N.
+This is variable-height exponentiation, but it is primitive recursive.
+
+For approximate child values within one of exact values, a common operation
+Lipschitz bound is L=2^(4(B+1)), covering +, ×, sin, exp, and abs.
+Choose a common node precision
+  K = k + (N+1)(4(B+1)+2) + 4.
+If each local evaluator has error at most 2^-K, elementary induction over
+the node evaluation table bounds final error by 2^-k and keeps intermediate
+errors below one.
+
+The basic sine/exponential approximations are PR finite Taylor sums.
+A fully explicit safe truncation works as follows. For |x|≤T with integer T≥1,
+choose m≥2T²+k+3 and truncate the exponential series below degree 2m.
+The bound (2m)!≥m^m gives
+  |x|^(2m)/(2m)! ≤ (T²/m)^m ≤ 2^-m.
+Successive remaining term ratios are ≤1/2, so the omitted absolute tail
+is ≤2^(1-m). The same absolute-tail bound works for the sine subseries.
+All arithmetic is rational and all loop bounds are PR.
+
+π and ln 2 need their own explicitly bounded rational approximation routines;
+Leibniz or Machin for π and the geometric-log series for ln 2 suffice.
+Exact sign/equality of arbitrary expression values is never used.
+
+A PR global majorant of this kind is preferable to the bare assertion
+“structural recursion makes the evaluator PR”: evaluation with recursively
+increasing precision needs an actual uniform bound.
+
+## Presentation traps
+
+1. State that using a deep established theorem as a lemma does not make the
+   resulting human proof independent of MRDP; the Lean implementation of its
+   negative translation remains a formalization task if not supplied.
+2. The source representation is fixed before e varies. No internally uniform
+   compiler over all formulas is required.
+3. Derive bounded induction through characteristic functions explicitly.
+   Negative translation does not magically remove induction strength.
+4. Quantification over all real numbers belongs to the external reading.
+   Id should be an arithmetical rational-observation sentence with an exact
+   proof that it matches the ordinary identity problem.
+5. Integer/natural witness domains need explicit transfer. Replacing natural
+   witnesses with unrestricted integers requires a verified coding, not
+   omission of the nonnegativity constraints.
+6. Keep numerical test results separate from exact analytic error bounds.
+

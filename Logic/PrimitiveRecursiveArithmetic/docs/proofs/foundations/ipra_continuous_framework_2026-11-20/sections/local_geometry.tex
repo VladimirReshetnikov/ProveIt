@@ -1,0 +1,220 @@
+\section{Local topology, guarded charts, and gluing}\label{sec:gluing}
+
+A single global continuity modulus is often the wrong interface. Reciprocal,
+logarithm, resolvents, coordinate charts and contour kernels are continuous only
+on domains with appropriate separation from singularities. This section gives
+a local interface and a precise gluing theorem. Its finite backend is related
+to the repository's \texttt{FiniteGluing}, but the conclusion concerns maps on
+a continuous represented domain, with extensionality and a global modulus
+on the specified compact part \cite{repo-gluing,repo-guard}.
+
+\subsection{Positive margins replace exact membership decisions}
+
+Let $D=\Q^d$ have the sup metric. We regard a real point $x$ as given by a
+regular name $a$; its semantic distance from $a_n$ is at most $\eps_n=2^{-n}$.
+The internal version of this assertion is the regular-name ball relation.
+Let
+\[
+ U_i=\prod_{j<d}(l_{ij},u_{ij})\quad (i<s)
+\]
+be a nonempty finite list of rational open boxes. Fix a rational $\lambda>0$.
+For $c>0$, write
+\[
+ U_i[c\lambda]=\{x:\ l_{ij}+c\lambda\le x_j\le u_{ij}-c\lambda
+                         \text{ for every }j<d\}.
+\]
+This is a closed inner part of $U_i$ and can be empty. Assume the represented
+domain $K$ has the following positive-margin cover:
+\begin{equation}\label{eq:margincover}
+        \forall x\in K\ \exists i<s\quad x\in U_i[4\lambda].
+\end{equation}
+This hypothesis is quantitative data. It is not inferred from a bare assertion
+that the open boxes cover a compact space.
+
+Choose $d_0$ with $\eps_{d_0}\le\lambda$. Given $a$, scan the list of boxes
+and select the first $i$ for which
+\begin{equation}\label{eq:safeguard}
+              a_{d_0}\in U_i[2\lambda].
+\end{equation}
+If no box passes, return a fixed invalid marker. Under
+\eqref{eq:margincover} the marker cannot occur: a box containing $x$ with
+margin $4\lambda$ contains $a_{d_0}$ with margin $3\lambda$.
+For the selected box, the true point lies in $U_i[\lambda]$.
+Notice that the algorithm never asks whether an exact real coordinate is
+equal to a boundary. All its decisions are rational comparisons.
+
+\begin{lemma}[Obtaining the margin from a finite certificate]\label{lem:margin-net}
+Suppose $G$ is a finite rational $h$-net for $K$, with a supplied net selector,
+$h\le\lambda$, and every $g\in G$ belongs to some $U_i[5\lambda]$.
+Then \eqref{eq:margincover} holds. The condition on $G$ is a bounded rational
+test, and the selected box for each $g$ can be found by bounded search.
+\end{lemma}
+
+\begin{proof}
+Given $x\in K$, use the selector to choose $g\in G$ with
+$\|x-g\|_\infty\le h$. Select a box having margin $5\lambda$ at $g$.
+Each coordinate of $x$ differs from the corresponding coordinate of $g$ by
+at most $\lambda$, leaving margin $4\lambda$. Clearing the positive rational
+denominators turns this into an integer inequality. The universal check over
+$G$ and the existential check over the box list are bounded Boolean folds;
+the argument is therefore an \ipra\ derivation for every fixed primitive
+recursive family of these finite data.
+\end{proof}
+
+An arbitrary open cover need not come with this certificate or a primitive
+recursive bound for finding it. The theorem resolves the use of a supplied
+effective compact cover, not the unrestricted compactness principle.
+
+\subsection{Gluing continuous local realizers}
+
+For each box let $f_i:U_i\to\widehat Y$, where $\widehat Y$ is a completed
+rational metric presentation. Suppose the following are provided.
+
+\begin{enumerate}
+\item A modulus $\mu_i$ such that $d(x,y)\le2^{-\mu_i(k)}$ implies
+      $d(f_i(x),f_i(y))\le2^{-k}$ for points of $U_i$.
+\item A rational evaluator $E_i(q,p)$, defined for rational $q\in U_i$,
+      whose error from $f_i(q)$ is at most $2^{-p}$.
+\item Overlap agreement: $f_i(x)=f_j(x)$ whenever $x\in U_i\cap U_j$.
+\end{enumerate}
+At Level E, the finite family of evaluators and moduli is primitive recursive
+and its laws are proved in \ipra. At Level R, each required call must have a
+total evaluation relation; a variable-size scan needs a bounded batch or a
+clock as explained in Section~\ref{sec:relational}.
+
+After choosing $i$ by \eqref{eq:safeguard}, set
+\[
+ m_i(n)=\max\{d_0+1,\mu_i(n+3)\},\qquad
+ b_n=E_i(a_{m_i(n)},n+3).
+\]
+The finer argument stays in $U_i$: its distance from $x$ is at most
+$\lambda/2$, while $x$ has margin at least $\lambda$. The evaluator's error
+and the continuity error are each at most $2^{-n-3}$. Hence
+\begin{equation}\label{eq:glueerror}
+             d(b_n,f_i(x))\le2^{-n-2}.
+\end{equation}
+
+\begin{theorem}[Continuous gluing with an effective cover]\label{thm:gluing}
+Under these hypotheses, $b$ is a regular name of a map $f:K\to\widehat Y$.
+Its value is independent of the input name and of the chosen admissible box.
+It agrees with every $f_j$ wherever $x\in K\cap U_j$. A global modulus on
+$K$ is
+\[
+        \nu(k)=\max\{d_0+1,\max_{i<s}\mu_i(k)\}.
+\]
+All numerical algorithms are primitive recursive for a fixed primitive
+recursive family of input presentations.
+\end{theorem}
+
+\begin{proof}
+For one selected box, \eqref{eq:glueerror} gives
+$d(b_n,b_m)\le2^{-n-2}+2^{-m-2}$, stronger than regularity. If another
+box is selected, both functions are defined at $x$ and overlap agreement
+identifies their exact values. The same estimate gives equivalent names.
+If $a$ and $a'$ represent the same point, the two possible selections are
+again boxes containing that point; therefore the output is independent of
+the input name. Agreement with an arbitrary $f_j$ is the identical overlap
+argument.
+
+For continuity, select a safe box at $x$. Its distance to the boundary at
+$x$ is at least $\lambda$. If $d(x,y)\le2^{-\nu(k)}$, then
+$d(x,y)\le\lambda/2$, so $y\in U_i$. Also
+$d(x,y)\le2^{-\mu_i(k)}$. Both glued values agree with $f_i$ there,
+and the local modulus gives $d(f(x),f(y))\le2^{-k}$.
+
+The semantic wording can be eliminated from the proof. To compare outputs
+from two names, choose a sufficiently fine common rational approximant
+inside both selected boxes, apply the rational overlap and continuity
+contracts, and keep the resulting dyadic error terms. They are bounded by
+explicit powers of two. Remove an arbitrarily small surplus from a rational
+inequality by the rational-gap lemma of Section~\ref{sec:relational}.
+Only fixed finite compositions, bounded box scans, rational inequalities and
+quantifier-free induction for their Boolean folds are needed. This produces
+the stated family of first-order arithmetic contracts; it does not assume
+an exact real evaluation oracle.
+\end{proof}
+
+\subsection{A useful guarded analytic example: inversion}
+
+Let complex numbers be represented by rational pairs with the usual modulus;
+comparisons of squared rational moduli are exact. Suppose a domain satisfies
+$|z|\ge\delta>0$. If an approximant $q$ satisfies
+$|z-q|\le\delta/2$, then $|q|\ge\delta/2$, and
+\[
+ \left|\frac1q-\frac1z\right|
+   =\frac{|z-q|}{|q|\,|z|}
+   \le \frac{2}{\delta^2}|z-q|.
+\]
+Choose an input precision $m$ with
+\[
+ 2^{-m}\le\min\{\delta/2,\delta^2 2^{-k-1}\}.
+\]
+Then the exact rational inverse of $q$ approximates $1/z$ with error at most
+$2^{-k}$. A bounded search using the numerator and denominator of $\delta$
+finds such $m$ primitive recursively; one may use a simple linear upper
+bound for the necessary binary logarithm. On failure of the decidable rational test $|q|^2\ge(\delta/2)^2$, return
+zero; this is not a test of exact membership for the named input. No correctness claim is attached to that default.
+
+This small calculation is structurally important. The same separation
+parameter supplies safety, a continuity modulus, and a precision budget.
+For the Cauchy kernel, $\delta$ is the distance to a contour. For a matrix
+inverse it is replaced by a supplied lower bound controlling the inverse
+norm, not merely a statement that the determinant is nonzero. For a
+coordinate transition it is a bound keeping the image inside the next
+chart. Such parameters belong in a reusable presentation interface.
+
+\subsection{Coordinate changes and bundles}
+
+Equal local values are not the correct compatibility condition for every
+geometric object. Suppose over a base point $x$ the chart $i$ has fiber
+$Y_i$, and the transition $g_{ij}(x):Y_j\to Y_i$ is supplied on overlaps.
+Assume, as interpreted equations,
+\[
+ g_{ii}(x)=\operatorname{id},\qquad
+ g_{ij}(x)g_{ji}(x)=\operatorname{id},\qquad
+ g_{ij}(x)g_{jk}(x)=g_{ik}(x).
+\]
+Define
+\[
+        (i,v)\sim_x(j,w)\quad\Longleftrightarrow\quad
+                          v=g_{ij}(x)(w).
+\]
+Reflexivity follows from the first equation. Applying $g_{ji}$ to the
+displayed equality and using the inverse equation proves symmetry.
+Substitution and the cocycle equation prove transitivity. Extensionality
+of the transition maps gives the same properties for represented names.
+This is an arithmetically definable setoid when the chart membership,
+name-validity and transition relations are arithmetical.
+
+Compatible local sections satisfy
+$s_i(x)=g_{ij}(x)(s_j(x))$. Choosing a safe chart by the bounded selector
+therefore gives a section of this setoid, independent of that selection.
+Finite compositions of chart changes carry explicitly composed moduli.
+This supplies a concrete route to represented bundles and atlases.
+It does not trivialize the bundle or identify it with one globally chosen
+Euclidean coordinate system.
+
+Complex logarithms illustrate the distinction. Local logarithm branches
+differ on suitable overlaps by multiples of $2\pi i$; they generally do
+not satisfy the equal-value gluing hypothesis. The framework records the
+transition or the chosen branch. It cannot manufacture a global logarithm
+on a punctured plane by suppressing the overlap equation. The obstruction
+is mathematical, not a defect of the numerical encoding.
+
+\subsection{Scope of the topological interpretation}
+
+The positive results concern represented metric spaces, finite effective
+atlases and covers with supplied margins. Many familiar topological
+arguments become quantitative at exactly these interfaces: continuous
+image constructions use composed moduli, finite products use maximum
+metrics, quotient constructions use explicitly proved setoids, and local
+sections use overlap contracts. Arbitrary spaces specified only as a set
+with an arbitrary collection of open subsets do not carry these data.
+Nor does a theorem about such spaces acquire an executable interpretation
+merely by writing a code for its syntax.
+
+For each intended application, the right question is which observations
+must be computed and which hypotheses supply their bounds. The theorem
+above provides such observations for a substantial continuous class while
+leaving general nonmetrizable topology, unrestricted covering principles
+and global topological classification outside its proved scope.
