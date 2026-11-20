@@ -952,6 +952,7 @@ import IPRADerivations.Foundations.StriveCompilation
 import IPRADerivations.Foundations.TraceCertificate
 import IPRADerivations.Foundations.RelationalCertificate
 import IPRADerivations.Foundations.TraceClosure
+import IPRADerivations.Foundations.ContractionTrace
 import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization

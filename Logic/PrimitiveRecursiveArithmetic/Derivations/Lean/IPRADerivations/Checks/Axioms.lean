@@ -10509,6 +10509,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.TraceClosure.app1_branchStep
 #print axioms LeanProofs.IPRA.Foundations.TraceClosure.branch_preserved
 #print axioms LeanProofs.IPRA.Foundations.TraceClosure.loop_preserved
+#print axioms LeanProofs.IPRA.Foundations.ContractionTrace.trace_step
+#print axioms LeanProofs.IPRA.Foundations.ContractionTrace.contraction_iter
+#print axioms LeanProofs.IPRA.Foundations.ContractionTrace.contraction_unique
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
