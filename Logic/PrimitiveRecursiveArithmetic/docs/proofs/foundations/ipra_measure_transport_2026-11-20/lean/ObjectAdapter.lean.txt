@@ -1,0 +1,29 @@
+-- UNCOMPILED integration candidate, excluded from the standalone Lake build.
+-- Intended for the pinned ProveIt workspace with its existing Mathlib provider.
+-- These wrappers expose exact repository APIs; they do not prove the new
+-- measure-theoretic statements or convert arbitrary Lean truth to iPRA.
+import ConciseIPRA.PR
+
+namespace IPRAIntegration.ObjectAdapter
+open LeanProofs.ConciseIPRA
+open Syn
+open scoped Fm
+
+variable {n m : Nat} {Γ Δ : List (Fm PTm n)} {φ : Fm PTm n}
+
+theorem discharge (h : Γ ⊢[PRAAx] φ)
+    (hs : ∀ ψ ∈ Γ, Δ ⊢[PRAAx] ψ) : Δ ⊢[PRAAx] φ :=
+  Prf.trans h hs
+
+theorem specialize (h : Γ ⊢[PRAAx] φ) (σ : Fin n → PTm m) :
+    Γ.map (fun ψ => ψ.subst σ) ⊢[PRAAx] φ.subst σ :=
+  Prf.subst h σ
+
+theorem finiteLoop (I : Fm PTm (n + 1)) (hI : I.QF)
+    (hzero : Γ ⊢[PRAAx] I.subst (inst PTm.zero))
+    (hstep : I :: Γ.map Fm.shift ⊢[PRAAx]
+      I.subst (repl (PTm.succ (var 0)))) :
+    Γ ⊢[PRAAx] Fm.all I :=
+  PRA.qfInd I hI hzero hstep
+
+end IPRAIntegration.ObjectAdapter

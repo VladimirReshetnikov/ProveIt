@@ -1,0 +1,228 @@
+\section{One Taylor center and one sign suffice}\label{sec:cayley}
+An ordinary Taylor disk centered at $5$ misses points just to the right of
+the critical line at large height. A rational change of variable sends
+\emph{the entire right half-plane} to the unit disk. At every positive
+real radius the transformed function can already be evaluated by an
+absolutely convergent series. This extra information lets us discard one
+sign of every coefficient. We give closed integer tests, including a version
+requiring only one precision per coefficient.
+
+\subsection*{The data and the six tests per family}
+Let $F$ be the coded monic polynomial of degree $d\ge1$, with the height
+parameter $H$ of the input packet, and put $C=1000(d+1)^4(H+2)^2$.
+For reference, write
+\[
+ h_F(p,k)=\deg\gcd(\bar F,X^{p^k}-X),\quad
+ B(y)=\left\lfloor\log_2\prod_{p^k\le y}p^{h_F(p,k)}\right\rfloor,
+ \quad a_n=B(n)-B(n-1).
+\]
+Primes $p$ and positive integers $k$ occur in the product, with $B(0)=0$.
+Define $b_n=a_n-2a_{n/2}$ at even $n$, and $b_n=a_n$ at odd $n$.
+For a cutoff $N\ge1$ let
+\[
+ J_n=\sum_{i=1}^{N(n-1)}\left\lfloor\frac{N^2}{N+i}\right\rfloor,
+ \qquad A_k=\sum_{n=1}^N b_n J_n^k (N!/n)^5,
+ \qquad D_k=k!N^{2k}(N!)^5 .
+\]
+All denominators below are positive. At each order $m\ge1$ put
+\begin{align*}
+ T_{m,N}
+   &=\sum_{k=1}^m (-9)^k\binom{m-1}{k-1}
+       \frac{m!}{k!}N^{2(m-k)} A_k,\\
+ E_m&=81(d+1)10^{m-1},\qquad V_m=13500C(m+1)^4 .
+\end{align*}
+Choose \emph{one} of the upper, lower and two-sided comparisons
+\begin{equation}\label{eq:cayleytest}
+  NT_{m,N}\le D_m(N V_m+E_m),\qquad
+  -NT_{m,N}\le D_m(N V_m+E_m),\qquad
+  N|T_{m,N}|\le D_m(N V_m+E_m).
+\end{equation}
+Quantify over every $m\ge1$. Independently choose between testing
+\emph{every} $N\ge1$ and testing only $N=E_m$.
+For RH use $F=X-1$, for GRH use every $F=X^q-1$ with
+$q\ge1$, and for ERH use every polynomial packet. Thus no zero, contours,
+real constants, choice functions, or numerical witnesses occur in a test.
+A signed inequality is compiled by moving its two nonnegative sums to
+opposite sides and testing whether their truncated difference is zero.
+
+\paragraph{Theorem.}
+Each of these six universal sentences, interpreted in the standard
+integers, is equivalent to the corresponding analytic hypothesis. A single
+sign at the prescribed precision is sufficient. In the two-sided direction
+the coefficient estimate loses at most one power of $m+1$ when recovered
+from one sign. The explicit bound is given below.
+
+\subsection*{From off-line zeros to poles of one germ}
+Use $H_F(s)=\sum_{n\ge1} b_n n^{-s}$ for $\Re s>1$.
+We recall the analytic inputs from the attached prime-product construction.
+If $J_F(s)=\sum_{p,k}h_F(p,k)(\log p)p^{-ks}$ and
+$\Psi_F(x)=\sum_{p^k\le x}h_F(p,k)\log p$, Abel summation gives
+\[
+ H_F(s)=(1-2^{1-s})\left(\frac{J_F(s)}{\log 2}
+ +s\int_1^\infty
+ \left(B(\lfloor x\rfloor)-\frac{\Psi_F(x)}{\log 2}\right)x^{-s-1}\,dx\right).
+\]
+The discrepancy inside the integral is bounded by $1$, so the integral
+is holomorphic on $\Re s>0$. Outside finitely many bad primes, the local
+factors identify $J_F$ with minus the sum of logarithmic derivatives of
+the Dedekind zeta functions belonging to the distinct irreducible factors
+of $F$ over $\mathbb Q$. At a bad prime the correction is holomorphic on
+$\Re s>0$ by its geometric-series expression. At a common zero the
+residues of the logarithmic derivatives add with the same sign. In
+$1/2<\Re s<1$, the factor $1-2^{1-s}$ is nonzero; it cancels the
+possible pole at $s=1$. Consequently an off-line zero on the right gives
+a genuine pole. The functional equations reflect zeros on the left.
+The cyclotomic factorization accounts for all primitive Dirichlet
+characters, and an integral primitive element gives a packet for every
+number field. These are classical identification steps.
+
+The other input is the numerical bound under the corresponding hypothesis,
+\begin{equation}\label{eq:cayleysum}
+   \left|\sum_{n\le x} b_n\right|\le 100 C\sqrt{x}(1+\log x)^2
+   \qquad(x\ge1).
+\end{equation}
+Indeed the prefix is $B(\lfloor x\rfloor)-2B(\lfloor x/2\rfloor)$.
+At an even cutoff $2n\ge200$ this is the original dyadic gap with bound
+$C\sqrt n(1+\lfloor\log_2(2n)\rfloor)^2$. An adjacent odd cutoff
+adds at most $d\log_2(2n+1)+1$. The elementary bound
+$B(y)\le d y\log_2 y$ covers $1\le y<200$. These give
+\eqref{eq:cayleysum} with the displayed constant.
+
+Use the change of coordinate
+\[
+ s(z)=\frac{5+4z}{1-z},\quad z(s)=\frac{s-5}{s+4},\quad
+ \Re s(z)-\tfrac12=\frac{9(1-|z|^2)}{2|1-z|^2}.
+\]
+In particular $s(0)=5$ and the map is biholomorphic between the unit disk
+and $\Re s>1/2$. Write $f(z)=H_F(s(z))=\sum_{m\ge0}v_m z^m$ locally
+at zero. These $v_m$ are real. Introduce the ordinary Taylor coefficients
+$u_k=\sum_{n\ge1} b_n(\log n)^k/(k!n^5)$ of $H_F(5-w)$. Near zero,
+$5-s(z)=-9z/(1-z)$. Expanding $(1-z)^{-k}$ gives
+\[
+ v_0=u_0,\qquad
+ v_m=\sum_{k=1}^m(-9)^k\binom{m-1}{k-1}u_k .
+\]
+For example, $v_1=-9u_1$, $v_2=-9u_1+81u_2$ and
+$v_3=-9u_1+162u_2-729u_3$.
+
+\paragraph{Certified finite approximation.}
+The bound $|u_k-A_k/D_k|\le9(d+1)/N$ is uniform in $k$.
+For completeness, comparing the right rectangle sum for $1/x$ on
+$[1,n]$ with mesh $1/N$ to its integral, then allowing $1/N^2$ per
+floor, gives $0\le\log n-J_n/N^2\le n/N$.
+For $k\ge1$ the derivative of $t^k/k!$ there is bounded by $n$.
+Also $|b_n|\le3(d+1)n$ and $(\log n)^k/k!\le n$. The first $N$
+terms therefore cost at most $3(d+1)\sum n^{-2}/N\le6(d+1)/N$,
+and the tail costs at most $3(d+1)\sum_{n>N}n^{-3}\le3(d+1)/N$.
+For $k=0$ the prefix has zero error. The binomial theorem gives
+$\sum_{k=1}^m9^k\binom{m-1}{k-1}=9\cdot10^{m-1}$. Clearing the
+common denominator now gives
+\[
+              |v_m-T_{m,N}/D_m|\le E_m/N .
+\]
+At $N=3$ the RH packet gives approximations $-299/1944$, $383/1944$,
+$-121/5832$ for the first three coefficients. These are small-cutoff
+exact arithmetic examples; the certified errors here are large.
+
+\paragraph{Forward implication.}
+Under \eqref{eq:cayleysum}, partial summation gives
+$H_F(s)=s\int_1^\infty S(x)x^{-s-1}\,dx$ for $\Re s>1/2$,
+where $S(x)=\sum_{n\le x}b_n$. On $|z|=r<1$ we have
+$|s|\le9/(1-r)$ and $\delta=\Re s-1/2\ge(9/4)(1-r)$.
+Substituting $x=e^t$ gives the integral majorant
+$100C|s|(\delta^{-1}+2\delta^{-2}+2\delta^{-3})$.
+Thus $|f(z)|\le4500C(1-r)^{-4}$. At $r=m/(m+1)$, Cauchy's
+estimate and $(1+1/m)^m<3$ give $|v_m|\le V_m$. Adding the finite
+approximation error proves every assertion in \eqref{eq:cayleytest}.
+
+\subsection*{Recovering the missing sign}
+A strict one-sided estimate on the growth order is generally insufficient
+for an arbitrary power series. Here the positive real interval is special:
+$s(x)\ge5$ when $0\le x<1$. We prove the requisite positivity
+argument directly and give finite translation bounds.
+
+It is enough to assume the upper comparison at $N=E_m$. It gives
+$v_m\le V_m+2$; the error $1$ occurs once in the test and once in passing
+to the true coefficient. For the lower comparison replace $f$ by $-f$.
+Let $K=13500C+2$, write $g=f$ in the upper case and $g=-f$ in the
+lower case, and denote the coefficients of $g$ by $g_j$. Then
+$c_j=K(j+1)^4-g_j\ge0$, including $j=0$ since $|u_0|\le6(d+1)$.
+Put
+\[
+ G(z)=K\sum_{j\ge0}(j+1)^4z^j-g(z).
+\]
+The first term is rational on the disk, obtained by applying
+$(1+z\,d/dz)^4$ to $(1-z)^{-1}$. The definition of $g$ by its
+Dirichlet series supplies analytic neighborhoods along $[0,1)$.
+
+We claim $c_m r^m\le G(r)$ for rational $0<r<1$. Subtract the finite
+prefix $P(z)=\sum_{j=0}^m c_j z^j$. All Taylor coefficients of $G-P$
+at $0$ are nonnegative. At a real center $x$, translating its Taylor
+coefficients through a positive distance $h$ inside a disk of convergence
+uses only nonnegative weights $\binom{j+k}{j}h^k$. Thus nonnegativity
+passes along finitely many overlapping disks to $r$, proving
+$G(r)-P(r)\ge0$. Since $P(r)\ge c_m r^m$, this is the claim.
+This also explains the classical Pringsheim argument in this setting.
+
+For an explicit mesh take $R=(1-r)/8$ and positive steps $h\le R/4$.
+On $|z-x|\le R$, $0\le x\le r$, we have $\Re s(z)\ge4$. Indeed
+the real part of $1/(1-z)$ is at least $1/(1-x+R)$ on this disk, and
+$s=9/(1-z)-4$. Hence $|g(z)|\le3(d+1)\sum n^{-3}\le6(d+1)$
+there. Since $(j+1)^4\le24\binom{j+4}{4}$,
+\[
+  G(r)\le 24K(1-r)^{-5}+6(d+1).
+\]
+At $r=m/(m+1)$ we obtain $c_m\le 3[24K(m+1)^5+6(d+1)]$ and hence
+$|v_m|\le100K(m+1)^5$. The Taylor series now converges absolutely on
+the whole disk. It agrees near zero with the meromorphic continuation
+of $H_F(s(z))$ and by uniqueness cannot hide any pole there. The pole
+comparison proves the converse for each family.
+
+\paragraph{How many derivatives and bits does positivity require?}
+This detail matters if induction is to be restricted to bounded,
+decidable computations. All derivatives at a point need never be
+propagated in a single induction invariant. Let $L(z)=G(z)-P(z)$.
+A uniform integer bound $M\ge1$ on $|L|$ on the mesh disks is obtained
+by rounding up
+\[
+ 1+24K\bigl(1-r-R\bigr)^{-5}+6(d+1)
+       +\sum_{j=0}^m \bigl(K(j+1)^4+54(d+1)10^j\bigr).
+\]
+Indeed $|u_k|\le6(d+1)$ follows by absolute summation, hence the
+unconditional rough bound on $|v_j|$ used in this expression.
+Let $w_j(x)=R^j L^{(j)}(x)/(j!M)$. Cauchy's estimate gives
+$|w_j(x)|\le1$. Translation from $x$ to $x+h$ yields
+\[
+ w_j(x+h)=\sum_{k\ge0}\binom{j+k}{j}(h/R)^k w_{j+k}(x).
+\]
+The total weight is at most $2^{j+1}$ and the tail after $k=b$ is at most
+$2^{j-b}$, using $\binom{j+k}{j}\le2^{j+k}$ and $h/R\le1/4$.
+To prove $w_j(x+h)\ge-2^{-e}$ for every $0\le j\le J$, retain
+$0\le k\le J+e+1$. It is enough to know
+$w_i(x)\ge-2^{-(e+J+2)}$ for $i\le2J+e+1$. The weighted error
+and the tail each cost at most $2^{-e-1}$. Start at the endpoint with
+$(J,e)=(0,t)$ and work backwards by
+\[
+             (J,e)\longmapsto(2J+e+1,e+J+2).
+\]
+There are at most $\lceil32r/(1-r)\rceil$ steps. Every requested
+entry at zero is nonnegative, so $L(r)\ge-M2^{-t}$ for arbitrary
+$t$. Taking this as the definition of closed order on rational Cauchy
+names gives $L(r)\ge0$. The mesh, order, precision, and sums are
+primitive recursive in the rational data. This argument isolates the
+finite propagation from the analytic certificates that justify Taylor
+translation and its tails.
+
+\paragraph{Formal scope.}
+\texttt{CayleyPackets.lean} constructs the 18 closed object formulas.
+\texttt{matrix\_reading} and \texttt{statement\_reading} identify their
+integer meanings. \texttt{weightSum} proves the exact binomial amplification.
+\texttt{translation\_step} proves the finite weighted error inequality over
+rationals and \texttt{finite\_propagation} verifies the backwards budget
+recursion. The object derivations \texttt{scheduled} and
+\texttt{certified\_failure} identify, respectively, equivalent single-index
+cube tests and least-radius positive counterexample certificates in iPRA.
+The holomorphic identification, Cauchy estimates, and analytic re-expansion
+on the mesh are human proofs. The Lean development supplies neither an
+internal iPRA derivation from the prime-gap sentence to the one-sided tests
+nor an internal derivation of the analytic limit identities.

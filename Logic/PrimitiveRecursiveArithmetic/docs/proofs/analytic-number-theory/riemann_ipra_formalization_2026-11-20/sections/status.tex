@@ -1,0 +1,40 @@
+\section{Verification and the earlier criteria}\label{sec:status}
+\paragraph{Using the archive.}
+The Lean project builds against Lean 4.32.0 with its Mathlib revision pinned by the manifest. The entry point is \code{RiemannIPRA.lean}. The shell commands in the README rebuild the sources and re-run the arithmetic examples. The files under \code{verification/} include the build result, theorem-type and axiom audit, and exact example outputs. Kernel axiom reports can list \code{Classical.choice} for Lean's ambient matrix or finite-sum theorems. An object derivation remains a term built from ProveIt's scoped intuitionistic deduction rules. In particular, kernel axiom output alone does not distinguish the two forms of proof.
+
+\paragraph{Locating the proofs.}
+The notation in the last column specifies how far each correspondence has been checked. A standard-model reading interprets the actual compiled closed formula in the natural numbers.
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.23\linewidth}>{\raggedright\arraybackslash}p{.35\linewidth}>{\raggedright\arraybackslash}p{.35\linewidth}@{}}\toprule
+Criteria & Kernel-checked part & Analytic or finite argument in the paper\\\midrule
+One-sided sampling & Object derivations for splitting signs and selecting samples. Standard-model reading and finite interpolation. & Landau's argument from the sparse upper bound back to zero-freeness.\\[2pt]
+Cayley coefficients & Compiled integer readings, finite propagation, and object transformations of universal tests. & Approximation error, coefficient growth and analytic continuation.\\[2pt]
+Taylor convolution & Integer readings, finite quadratic and determinant identities, and object changes of schedule. & Uniform analytic estimates, transfer between precisions, and the converse through the first column.\\[2pt]
+Robin and Nicolas & Rational comparisons in the standard model. Object derivations for the first successful precision. & Convergence of the enclosures and the classical oscillation theorems.\\[2pt]
+Residues and Gram matrices & Closed readings and conversions between cutoff tests. Rational elimination and positivity lemmas. & Changes of target, identification of the integer determinants, and the link to Hilbert-space density.\\[2pt]
+Countdowns and budgets & All displayed pointwise equivalences and their specializations to the primary hypotheses are object derivations. & Only the interpretation of the primary hypotheses invokes analysis.\\\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{What the attachments contribute.}
+The complete cumulative mathematical report from the third attachment is included as \code{background/report.pdf}, with its TeX sources beside it. The new development reuses its actual Lean modules. The first attachment introduced the polynomial prime-power tests, the second added the arithmetic equivalences, and the third added the splitting-prime, Taylor and perfect-power work. The following table locates several mathematically distinct routes beyond those developed in the main text.
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.27\linewidth}>{\raggedright\arraybackslash}p{.20\linewidth}>{\raggedright\arraybackslash}p{.46\linewidth}@{}}\toprule
+Earlier criterion & Family & Arithmetic content and location\\\midrule
+Prime splitting & All three & One residue class, or primes of complete splitting, with the conductor or field allowed to grow. \code{SplitPrimes.lean}.\\[3pt]
+Mertens and Liouville sums & RH, progressions for GRH, Euler coefficients for ERH & Integer power inequalities with growth witnesses. Perfect-power convolution and inversion convert related bounds. \code{MertensSyntax.lean}, \code{LiouvilleCriterion.lean}.\\[3pt]
+Divisibility determinants & All three with the appropriate coefficients & First-column determinant expansion encodes summatory inverse coefficients. \code{DivisorMatrices.lean}, \code{MatrixIdentity.lean}.\\[3pt]
+Farey discrepancies & Ordinary RH & A quadratic Farey energy is expressed using gcd sums and controlled with Mertens witnesses. \code{FareyRH.lean}, \code{EnergyInequality.lean}.\\[3pt]
+Divisor sums & Ordinary RH & Weak and strict versions of Lagarias's $\sigma(n)\le H_n+e^{H_n}\log H_n$. \code{Lagarias.lean}.\\[3pt]
+Witness transformations & All three & Arithmetic slack, prefix totals, and first finite failures have explicit derivations in object iPRA. \code{SlackForms.lean}, \code{ObjectForms.lean}, \code{CubeTests.lean}.\\\bottomrule
+\end{tabular}
+\end{center}
+The Mertens formulation, for example, has the familiar RH meaning $\forall\epsilon>0\ |\sum_{n\le x}\mu(n)|=O_\epsilon(x^{1/2+\epsilon})$. The object formula uses integer powers $|M(N)|^{2(k+1)}\le C N^{k+2}$ with $\forall k\exists C\forall N$. The positive witness $C$ is part of this reading. In the Dedekind case the analogous summand comes from the reciprocal local Euler factors; it is not the ordinary M\"obius function on rational integers in every field. The companion report gives the field and residue-class bridges separately.
+
+\paragraph{ProveIt sources.}
+The submitted copies of Syntax, Deduction, PR and Semantics have Git blob hashes beginning \code{a3c8ec97}, \code{0969040f}, \code{32516315} and \code{c39a7004}, respectively. These agree with the corresponding files on the repository's main branch when checked. ProveIt's separate contour project specifies rational error, clearance and winding data, and describes its analytic interface as uncompiled. The prime-power approach here uses the ordinary iPRA presentation directly. See \href{https://github.com/VladimirReshetnikov/ProveIt/tree/ce0e3ceaf41a83e653857e5f60e0460733cc230c/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{the pinned arithmetic framework} and the \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/analytic-number-theory/zeta_zeros_ipra_2026-11-15/lean/ObjectTargets.lean}{contour proof specification}.
+
+\input{sections/ambient}
+
+\paragraph{Further research questions.}
+Can the one-sided Mellin proof be replaced by bounded finite inequalities, giving an object derivation from the sparse upper test back to the two-sided test? Can the Cayley translation bounds be combined with verified PR approximations to analytic continuation on a common domain for every field? For the residue-vector criterion, can a supplied prime-discrepancy bound be converted into explicit coefficients with a primitive recursive norm-error rate? 

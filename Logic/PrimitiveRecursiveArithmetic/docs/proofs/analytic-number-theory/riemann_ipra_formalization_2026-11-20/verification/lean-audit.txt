@@ -1,0 +1,292 @@
+RiemannIPRA.RH : Fm PTm 0
+RiemannIPRA.GRH : Fm PTm 0
+RiemannIPRA.ERH : Fm PTm 0
+RiemannIPRA.erh_implies_grh : [] ⊢[PRAAx] ERH.imp GRH
+RiemannIPRA.grh_implies_rh : [] ⊢[PRAAx] GRH.imp RH
+RiemannIPRA.erh_iff_no_counterexample : [] ⊢[PRAAx] ERH.iff (RHCounterexamples.neg (RHCounterexamples.counter ERH))
+'RiemannIPRA.erh_implies_grh' depends on axioms: [propext, Quot.sound]
+'RiemannIPRA.erh_iff_no_counterexample' depends on axioms: [propext, Quot.sound]
+'RiemannIPRA.naturalTerms_sound' depends on axioms: [propext, Quot.sound]
+'RiemannIPRA.erh_reading' depends on axioms: [propext, Quot.sound]
+'PacketLanguage.value_program' depends on axioms: [propext, Quot.sound]
+'PacketLanguage.value_primeCode' depends on axioms: [propext, Quot.sound]
+PacketAudit.rh_iff (form : PacketAudit.Form) : [] ⊢[PRAAx] RH.iff (PacketAudit.RH form)
+PacketAudit.grh_iff (form : PacketAudit.Form) : [] ⊢[PRAAx] GRH.iff (PacketAudit.GRH form)
+PacketAudit.erh_iff (form : PacketAudit.Form) : [] ⊢[PRAAx] ERH.iff (PacketAudit.ERH form)
+PacketAudit.erh_counter_iff_first : [] ⊢[PRAAx] (RHCounterexamples.counter ERH).iff PacketAudit.erhFirst
+PacketSlack.rh_iff_cert (style : PacketSlack.Certificate) : [] ⊢[PRAAx] RH.iff (PacketSlack.certRH style)
+PacketSlack.grh_iff_cert (style : PacketSlack.Certificate) : [] ⊢[PRAAx] GRH.iff (PacketSlack.certGRH style)
+PacketSlack.erh_iff_cert (style : PacketSlack.Certificate) : [] ⊢[PRAAx] ERH.iff (PacketSlack.certERH style)
+'PacketAudit.erh_iff' depends on axioms: [propext, Quot.sound]
+'PacketAudit.erh_counter_iff_first' depends on axioms: [propext, Quot.sound]
+'PacketSlack.erh_iff_cert' depends on axioms: [propext, Quot.sound]
+'Lagarias.upper_no_counterexample' depends on axioms: [propext, Quot.sound]
+RiemannIPRA.Discrete.statement_equivalent (s : Discrete.Family) (m : Discrete.Form) :
+  naturalTerms.Holds (s.close excess) Fin.elim0 ↔ naturalTerms.Holds (Discrete.statement s m) Fin.elim0
+RiemannIPRA.Sparse.sparse_sentence_iff (s : Discrete.Family) :
+  naturalTerms.Holds (s.close excess) Fin.elim0 ↔ naturalTerms.Holds (s.close Sparse.eventMatrix) Fin.elim0
+'RiemannIPRA.Discrete.statement_equivalent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'RiemannIPRA.Sparse.sparse_sentence_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+PrimeForms.allPackets (family : PrimeForms.Family) (data : PR 5) : Fm PTm 0
+PrimeForms.witness (family : PrimeForms.Family) (data : PR 5) (offset order : ℕ) : Fm PTm 0
+MertensSyntax.progressionGRH : Fm PTm 0
+DivisorMatrices.ERH : Fm PTm 0
+FareyEnergy.cyclotomicGRH : Fm PTm 0
+DyadicSeries.statement (family : DyadicSeries.Family) (withRate : Bool) : Fm PTm 0
+FareyRH.GRH (squared : Bool) : Fm PTm 0
+Lagarias.upperRH : Fm PTm 0
+Lagarias.strictRH : Fm PTm 0
+MatrixIdentity.masked_determinant (b : ℕ → ℤ) (n : ℕ) (v : Fin (n + 1) → ℤ) :
+  ((MatrixIdentity.triangle b (n + 1)).updateCol 0 v).det = ∑ i, MatrixIdentity.invRow b ↑i * v i
+EnergyInequality.jordanPairs_eq (d : ℕ) :
+  EnergyInequality.jordanPairs d = {z ∈ (Finset.range d).product (Finset.range d) | (z.1.gcd z.2).gcd d = 1}.card
+EnergyInequality.jordan_quarter (d : ℕ) : ↑d ^ 2 ≤ 4 * ↑(EnergyInequality.jordanPairs d)
+EnergyInequality.jordan_inverse_mass (n : ℕ) (μ : ℕ → ℚ) (hμ : ∀ i < n, μ i ^ 2 ≤ 1) :
+  ∑ i ∈ Finset.range n, μ i ^ 2 / ↑(EnergyInequality.jordanPairs (i + 1)) ≤ 8
+EnergyInequality.recover_eight.{u_1} {ι : Type u_1} (s : Finset ι) (w t μ : ι → ℚ) (M : ℚ) (hw : ∀ i ∈ s, 0 < w i)
+  (hm : ∑ i ∈ s, μ i * t i = M) (hk : ∑ i ∈ s, μ i ^ 2 / w i ≤ 8) : M ^ 2 ≤ 8 * ∑ i ∈ s, w i * t i ^ 2
+AbelIdentity.recover (u S M : ℕ → ℚ) (B : ℚ) (hu : Monotone u) (hu0 : 0 ≤ u 0) (hS0 : S 0 = 0) (hM0 : M 0 = 0)
+  (delta : ∀ (i : ℕ), M (i + 1) - M i = u (i + 1) * (S (i + 1) - S i)) (n : ℕ) (hS : ∀ i ≤ n, |S i| ≤ B) :
+  |M n| ≤ 2 * B * u n
+'MatrixIdentity.masked_determinant' depends on axioms: [propext, Classical.choice, Quot.sound]
+'EnergyInequality.jordan_quarter' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AbelIdentity.recover' depends on axioms: [propext, Classical.choice, Quot.sound]
+CubeTests.rh_cube : [] ⊢[PRAAx] RH.iff CubeTests.rhBlock.diagonal
+CubeTests.grh_cube : [] ⊢[PRAAx] GRH.iff CubeTests.grhBlock.diagonal
+CubeTests.erh_cube : [] ⊢[PRAAx] ERH.iff CubeTests.erhBlock.diagonal
+CubeTests.schedule_iff {n : ℕ} (b : CubeTests.Block n) (lag : PR 1) : [] ⊢[PRAAx] b.form.iff (b.schedule lag)
+CubeTests.failure_iff {n : ℕ} (b : CubeTests.Block n) :
+  [] ⊢[PRAAx] (RHCounterexamples.counter b.form).iff (RHCounterexamples.counter b.diagonal)
+CubeTests.failure_iff_first_radius (b : CubeTests.Block 0) :
+  [] ⊢[PRAAx] (RHCounterexamples.counter b.form).iff b.firstRadius
+'CubeTests.failure_iff_first_radius' depends on axioms: [propext, Quot.sound]
+'CubeTests.diagonal_iff' depends on axioms: [propext, Quot.sound]
+RiemannIPRA.ProductCertificate.rh_iff : [] ⊢[PRAAx] RH.iff ProductCertificate.RH
+RiemannIPRA.ProductCertificate.grh_iff : [] ⊢[PRAAx] GRH.iff ProductCertificate.GRH
+RiemannIPRA.ProductCertificate.erh_iff : [] ⊢[PRAAx] ERH.iff ProductCertificate.ERH
+'RiemannIPRA.ProductCertificate.erh_iff' depends on axioms: [propext, Quot.sound]
+RiemannIPRA.SymmetricPrefixes.statement_iff (s : Discrete.Family) (k : SymmetricPrefixes.Test) :
+  naturalTerms.Holds (SymmetricPrefixes.statement s k) Fin.elim0 ↔ naturalTerms.Holds (s.close excess) Fin.elim0
+RiemannIPRA.CoefficientTest.coefficients_iff (a b : ℕ → ℕ) (n : ℕ) :
+  CoefficientTest.nonnegative (CoefficientTest.coefficients a b n) ↔ ∀ i < n, a i ≤ b i
+RiemannIPRA.CoefficientTest.grid_iff (a b : ℕ → ℕ) (n : ℕ) :
+  (∀ (t : ℕ), 0 < t → t ≤ Discrete.total a n → 0 < CoefficientTest.evaluate (CoefficientTest.coefficients a b n) ↑t) ↔
+    ∀ i < n, a i ≤ b i
+'RiemannIPRA.SymmetricPrefixes.statement_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'RiemannIPRA.CoefficientTest.coefficients_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+RiemannIPRA.SplitPrimes.split_iff (d H u v p : ℕ) :
+  PacketLanguage.value SplitPrimes.polynomialSplit (packetArgs d H u v p) = 1 ↔
+    ∀ j < d - 1, ∀ a < p ^ (j + 2), SplitPrimes.obstruction d H u v p j a = 0
+RiemannIPRA.SplitPrimes.rh_reading :
+  naturalTerms.Holds SplitPrimes.RH Fin.elim0 ↔
+    ∀ (t : ℕ), SplitPrimes.gap 2 (t + 100) ^ 2 ≤ SplitPrimes.budget (t + 100)
+RiemannIPRA.SplitPrimes.grh_reading (s : SplitPrimes.Schedule) :
+  naturalTerms.Holds (SplitPrimes.GRH s) Fin.elim0 ↔
+    ∀ (i t : ℕ), SplitPrimes.gap (s.modulus i) (t + 100) ^ 2 ≤ SplitPrimes.budget (t + 100)
+RiemannIPRA.SplitPrimes.unary_grh_iff :
+  naturalTerms.Holds SplitPrimes.unaryGRH Fin.elim0 ↔
+    naturalTerms.Holds (SplitPrimes.GRH SplitPrimes.Schedule.ordinary) Fin.elim0
+RiemannIPRA.SplitPrimes.unary_erh_reading :
+  naturalTerms.Holds SplitPrimes.unaryERH Fin.elim0 ↔
+    ∀ (t : ℕ), SplitPrimes.restrictedFieldPeak (t + 100) ^ 2 ≤ SplitPrimes.budget (t + 100)
+RiemannIPRA.SplitPrimes.erh_reading :
+  naturalTerms.Holds SplitPrimes.ERH Fin.elim0 ↔
+    ∀ (i H u v t : ℕ),
+      Discrete.delta (SplitPrimes.fieldB (i + 1) H u v (2 * (t + 100)))
+            (2 * SplitPrimes.fieldB (i + 1) H u v (t + 100)) ^
+          2 ≤
+        SplitPrimes.fieldBudget (i + 1) H (t + 100)
+RiemannIPRA.SplitPrimes.prog_grh_to_rh : [] ⊢[PRAAx] (SplitPrimes.GRH SplitPrimes.Schedule.ordinary).imp SplitPrimes.RH
+RiemannIPRA.SplitPrimes.linear_field_log (H u v y : ℕ) (hy : 2 ≤ y) :
+  SplitPrimes.fieldB 1 H u v y = SplitPrimes.progB 2 y + 1
+'RiemannIPRA.SplitPrimes.unary_grh_iff' depends on axioms: [propext, Quot.sound]
+'RiemannIPRA.SplitPrimes.unary_erh_reading' depends on axioms: [propext, Quot.sound]
+'RiemannIPRA.SplitPrimes.prog_grh_to_rh' depends on axioms: [propext, Quot.sound]
+RiemannIPRA.Taylor.statement (family : Discrete.Family) (mode : Taylor.Schedule) : Fm PTm 0
+RiemannIPRA.Taylor.numerator_reading (p : Discrete.Data) (negative : Bool) (c k N : ℕ) :
+  PacketLanguage.value (Taylor.numerator negative) (RiemannIPRA.Taylor.seven✝ p c k N) = Taylor.sumSide p negative c k N
+RiemannIPRA.Taylor.statement_reading (family : Discrete.Family) (mode : Taylor.Schedule) :
+  naturalTerms.Holds (Taylor.statement family mode) Fin.elim0 ↔
+    family.allData fun p =>
+      ∀ (i j k t : ℕ), Taylor.check p (mode.atCentre i) (mode.atIndex (mode.atCentre i) j) k (t + 1)
+RiemannIPRA.Taylor.full_to_diagonal (f : Discrete.Family) :
+  naturalTerms.Holds (Taylor.statement f Taylor.Schedule.allDisks) Fin.elim0 →
+    naturalTerms.Holds (Taylor.statement f Taylor.Schedule.diagonal) Fin.elim0
+RiemannIPRA.Taylor.diagonal_to_lacunary (f : Discrete.Family) :
+  naturalTerms.Holds (Taylor.statement f Taylor.Schedule.diagonal) Fin.elim0 →
+    naturalTerms.Holds (Taylor.statement f Taylor.Schedule.lacunary) Fin.elim0
+'RiemannIPRA.Taylor.statement_reading' depends on axioms: [propext, Classical.choice, Quot.sound]
+PowerDivisorSyntax.statement (family : PowerDivisorSyntax.Family) (offset : Option ℕ) (direct : Bool := false) :
+  Fm PTm 0
+PowerDivisorBounds.power_divisor_transfer (r c N : ℕ) (hr : 0 < r) (t : ℕ → ℤ) (m : ℕ → ℕ)
+  (harg : ∀ i < N, (i + 1) ^ 2 * m i ≤ N) (hterm : ∀ i < N, (t i).natAbs ^ (4 * r) ≤ c * m i ^ (2 * r + 1)) :
+  (∑ i ∈ Finset.range N, t i).natAbs ^ (2 * r) ≤ (c + 1) * (8 * r) ^ (2 * r) * N ^ (r + 1)
+PowerDivisorInversion.act_mul (h : ℕ) (hh : 0 < h) (u v : ArithmeticFunction ℤ) (A : ℕ → ℤ) (hA : A 0 = 0) (N : ℕ) :
+  PowerDivisorInversion.act h u (PowerDivisorInversion.act h v A) N = PowerDivisorInversion.act h (u * v) A N
+PowerDivisorInversion.growth_iff (h : ℕ) (hh : 2 ≤ h) (A : ℕ → ℤ) (ha : A 0 = 0) :
+  PowerDivisorInversion.Growth A ↔
+    PowerDivisorInversion.Growth (PowerDivisorInversion.act h (↑ArithmeticFunction.zeta) A)
+PowerDivisorInversion.uniform_growth_iff (A : ℕ → ℤ) (ha : A 0 = 0) :
+  PowerDivisorInversion.Growth A ↔
+    ∀ r > 0, ∃ C, ∀ h ≥ 2, PowerDivisorInversion.growthAt (PowerDivisorInversion.act h (↑ArithmeticFunction.zeta) A) r C
+LiouvilleCriterion.mertens_iff_liouville :
+  PowerDivisorInversion.Growth (LiouvilleCriterion.summatory ArithmeticFunction.moebius) ↔
+    PowerDivisorInversion.Growth (LiouvilleCriterion.summatory ArithmeticFunction.liouville)
+'PowerDivisorInversion.uniform_growth_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LiouvilleCriterion.mertens_iff_liouville' depends on axioms: [propext, Classical.choice, Quot.sound]
+RiemannIPRA.SplitPrimes.split_iff_no_irred_divisor (d H u v p : ℕ) :
+  PacketLanguage.value SplitPrimes.polynomialSplit (packetArgs d H u v p) = 1 ↔
+    ∀ j < d - 1,
+      ∀ a < p ^ (j + 2),
+        SplitPrimes.isIrred p (j + 2) a → ¬SplitPrimes.isDivisor p (j + 2) a d (SplitPrimes.reduction d H u v p)
+'RiemannIPRA.SplitPrimes.split_iff_no_irred_divisor' depends on axioms: [propext, Quot.sound]
+RiemannIPRA.UniversalCriteria.taylorScheduled (f : Discrete.Family) (s : Taylor.Schedule) (g : PR 1) :
+  [] ⊢[PRAAx] (Taylor.statement f s).iff ((UniversalCriteria.block (Taylor.statement f s)).schedule g)
+RiemannIPRA.UniversalCriteria.taylorFirstFailure (f : Discrete.Family) (s : Taylor.Schedule) :
+  [] ⊢[PRAAx]
+    (RHCounterexamples.counter (Taylor.statement f s)).iff (UniversalCriteria.block (Taylor.statement f s)).firstRadius
+RiemannIPRA.UniversalCriteria.splitFirstFailure :
+  [] ⊢[PRAAx]
+    (RHCounterexamples.counter SplitPrimes.unaryERH).iff (UniversalCriteria.block SplitPrimes.unaryERH).firstRadius
+RiemannIPRA.UniversalCriteria.symmetricScheduled (f : Discrete.Family) (s : SymmetricPrefixes.Test) (g : PR 1) :
+  [] ⊢[PRAAx]
+    (SymmetricPrefixes.statement f s).iff ((UniversalCriteria.block (SymmetricPrefixes.statement f s)).schedule g)
+'RiemannIPRA.UniversalCriteria.taylorFirstFailure' depends on axioms: [propext, Quot.sound]
+RiemannIPRA.OneSided.split (f : Discrete.Family) :
+  [] ⊢[PRAAx] (f.close excess).iff ((OneSided.statement f true).and (OneSided.statement f false))
+RiemannIPRA.OneSided.to_rotating (f : Discrete.Family) (u : Bool) (g : OneSided.Grid) :
+  [] ⊢[PRAAx] (OneSided.statement f u).imp (OneSided.rotating f u g)
+RiemannIPRA.OneSided.rotating_reading (f : Discrete.Family) (u : Bool) (g : OneSided.Grid) :
+  naturalTerms.Holds (OneSided.rotating f u g) Fin.elim0 ↔
+    ∀ (j : ℕ),
+      have p := OneSided.selectedData f j;
+      have n := (PacketLanguage.value (OneSided.offset g) fun x => j) + 100;
+      OneSided.sideSize p u n ^ 2 ≤ p.cost n
+RiemannIPRA.OneSided.rotating_no_counterexample (f : Discrete.Family) (u : Bool) (g : OneSided.Grid) :
+  [] ⊢[PRAAx]
+    (OneSided.rotating f u g).iff (RHCounterexamples.neg (RHCounterexamples.counter (OneSided.rotating f u g)))
+RiemannIPRA.OneSided.compiled_log_grid (j : ℕ) :
+  (PacketLanguage.value (OneSided.offset OneSided.Grid.logSquares) fun x => j) + 100 = GridInterpolation.grid j
+RiemannIPRA.OneSided.selectedData_return (a b c d h : ℕ) :
+  OneSided.selectedData Discrete.Family.dedekind (GridInterpolation.returnTime a b c d h - 1) =
+    { degreeOffset := a, height := b, pos := c, neg := d }
+'RiemannIPRA.OneSided.split' depends on axioms: [propext, Quot.sound]
+'RiemannIPRA.OneSided.selectedData_return' depends on axioms: [propext, Classical.choice, Quot.sound]
+RiemannIPRA.GridInterpolation.valuation_reading (p n : ℕ) (hp : Nat.Prime p) (hn : n ≠ 0) :
+  (PacketLanguage.value DivisorMatrices.valuation fun i => Fin.cases p (fun x => n) i) = n.factorization p
+RiemannIPRA.GridInterpolation.clock_return (a b c d h : ℕ) :
+  GridInterpolation.clock (GridInterpolation.returnTime a b c d h) = (a, b, c, d)
+RiemannIPRA.GridInterpolation.square_span (j h : ℕ) :
+  GridInterpolation.grid (j + h) ≤
+    GridInterpolation.grid j + 2 * GridInterpolation.root (j + h) * (h * (1 + (j + h).log2))
+RiemannIPRA.GridInterpolation.interpolate_upper (B : ℕ → ℤ) (n h : ℕ) (K : ℤ) (mono : B n ≤ B (n + h))
+  (bound : ∀ j < 2 * h, B (2 * n + j + 1) - B (2 * n + j) ≤ K) :
+  B (2 * (n + h)) - 2 * B (n + h) ≤ B (2 * n) - 2 * B n + 2 * ↑h * K
+'RiemannIPRA.GridInterpolation.valuation_reading' depends on axioms: [propext, Classical.choice, Quot.sound]
+'RiemannIPRA.GridInterpolation.interpolate_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+RiemannIPRA.Cayley.statement_reading (f : Discrete.Family) (side : Cayley.Side) (mode : Cayley.Precision) :
+  naturalTerms.Holds (Cayley.statement f side mode) Fin.elim0 ↔
+    f.allData fun p => ∀ (t h : ℕ), Cayley.check side p t (Cayley.prec mode p.degreeOffset t h)
+RiemannIPRA.Cayley.certified_failure (f : Discrete.Family) (side : Cayley.Side) (mode : Cayley.Precision) :
+  [] ⊢[PRAAx]
+    (RHCounterexamples.counter (Cayley.statement f side mode)).iff
+      (UniversalCriteria.block (Cayley.statement f side mode)).firstRadius
+RiemannIPRA.Cayley.scheduled (f : Discrete.Family) (side : Cayley.Side) (mode : Cayley.Precision) (g : PR 1) :
+  [] ⊢[PRAAx] (Cayley.statement f side mode).iff ((UniversalCriteria.block (Cayley.statement f side mode)).schedule g)
+RiemannIPRA.Cayley.translation_step (n : ℕ) (a w : ℕ → ℚ) (M eps y : ℚ) (hM : 0 < M) (he : 0 ≤ eps)
+  (hw : ∀ i ∈ Finset.range n, 0 ≤ w i) (ha : ∀ i ∈ Finset.range n, -(eps / (2 * M)) ≤ a i)
+  (hweight : ∑ i ∈ Finset.range n, w i ≤ M) (htail : ∑ i ∈ Finset.range n, w i * a i - eps / 2 ≤ y) : -eps ≤ y
+RiemannIPRA.Cayley.finite_propagation (P : ℕ → ℕ → ℕ → Prop) (J E n : ℕ)
+  (base : P 0 (Cayley.budgets J E n).1 (Cayley.budgets J E n).2)
+  (step : ∀ (i k t : ℕ), P i (2 * k + t + 1) (t + k + 2) → P (i + 1) k t) : P n J E
+'RiemannIPRA.Cayley.statement_reading' depends on axioms: [propext, Classical.choice, Quot.sound]
+'RiemannIPRA.Cayley.finite_propagation' depends on axioms: [propext, Quot.sound]
+RiemannIPRA.HardyToeplitz.statement_check (family : Discrete.Family) (mode : HardyToeplitz.Test) :
+  naturalTerms.Holds (HardyToeplitz.statement family mode) Fin.elim0 ↔
+    family.allData fun p => ∀ (i h t w j : ℕ), j < w + 1 → HardyToeplitz.check mode p i (h + 1) (t + 1) w (j + 2)
+RiemannIPRA.HardyToeplitz.contraction_iff_block.{u_1, u_2} {ι : Type u_1} {κ : Type u_2} (s : Finset ι) (t : Finset κ)
+  (M : (κ → ℤ) → ι → ℤ) (S : ℤ) :
+  (∀ (x : κ → ℤ), ∑ i ∈ s, M x i ^ 2 ≤ S ^ 2 * ∑ j ∈ t, x j ^ 2) ↔
+    ∀ (x : κ → ℤ) (y : ι → ℤ), 2 * ∑ i ∈ s, y i * M x i ≤ S ^ 2 * ∑ j ∈ t, x j ^ 2 + ∑ i ∈ s, y i ^ 2
+RiemannIPRA.HardyToeplitz.leading_scheduled (family : Discrete.Family) (g : PR 1) :
+  [] ⊢[PRAAx]
+    (HardyToeplitz.leadingStatement family).iff
+      ((UniversalCriteria.block (HardyToeplitz.leadingStatement family)).schedule g)
+RiemannIPRA.HardyToeplitz.nonneg_iff_all_shifts (a b : ℤ) (hb : 0 < b) : 0 ≤ a ↔ ∀ (k : ℕ), 0 < b + ↑k * a
+RiemannIPRA.HardyToeplitz.remove_allowance (A B J : ℕ) (h : ∀ (n : ℕ), (n + 1) * A ≤ (n + 1) * B + J) : A ≤ B
+'RiemannIPRA.HardyToeplitz.statement_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'RiemannIPRA.HardyToeplitz.remove_allowance' depends on axioms: [propext, Quot.sound]
+RiemannIPRA.RobinNicolas.strict_iff_first (c : RobinNicolas.Named) :
+  [] ⊢[PRAAx] (RobinNicolas.strictForm c).iff (RobinNicolas.firstCertificate c)
+RiemannIPRA.RobinNicolas.strict_rational_reading (c : RobinNicolas.Named) :
+  naturalTerms.Holds (RobinNicolas.strictForm c) Fin.elim0 ↔
+    ∀ (s : ℕ),
+      ∃ j,
+        have pr := RobinNicolas.nativeParts c (RobinNicolas.endpointSign c true) s (j + 1);
+        RobinNicolas.rational pr.1 < RobinNicolas.rational pr.2
+RiemannIPRA.RobinNicolas.weak_rational_reading (c : RobinNicolas.Named) :
+  naturalTerms.Holds (RobinNicolas.weak c) Fin.elim0 ↔
+    ∀ (s j : ℕ),
+      have pr := RobinNicolas.nativeParts c (RobinNicolas.endpointSign c false) s (j + 1);
+      RobinNicolas.rational pr.1 ≤ RobinNicolas.rational pr.2
+RiemannIPRA.RobinNicolas.scaled_rational_reading (d : RobinNicolas.Direction) :
+  naturalTerms.Holds (RobinNicolas.scaled d) Fin.elim0 ↔ ∀ (s j : ℕ), RobinNicolas.scaledRational d s (j + 1)
+'RiemannIPRA.RobinNicolas.strict_iff_first' depends on axioms: [propext, Quot.sound]
+'RiemannIPRA.RobinNicolas.scaled_rational_reading' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidueSpace.reading_prefix (tar : ResidueSpace.Target) :
+  naturalTerms.Holds (ResidueSpace.sentence tar ResidueSpace.Test.prefixes) Fin.elim0 ↔
+    ∀ (m t : ℕ), ∃ k h u w d, ∀ (N : ℕ), (ResidueSpace.residueWitness tar (m + 1) k h u w d).good (t + 1) N
+ResidueSpace.closed_fixed_iff_prefix (tar : ResidueSpace.Target) :
+  naturalTerms.Holds (ResidueSpace.sentence tar ResidueSpace.Test.fixedCutoff) Fin.elim0 ↔
+    naturalTerms.Holds (ResidueSpace.sentence tar ResidueSpace.Test.prefixes) Fin.elim0
+'ResidueSpace.reading_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ResidueSpace.closed_fixed_iff_prefix' depends on axioms: [propext, Classical.choice, Quot.sound]
+ResidueGram.sentence (tar : ResidueSpace.Target) : Fm PTm 0
+ResidueGram.eliminate.{u_1} {ι : Type u_1} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℚ) [Invertible A] (b : ι → ℚ)
+  (d t s : ℚ) (hs : A.transpose = A) (hpos : ∀ (y : ι → ℚ), 0 ≤ y ⬝ᵥ A.mulVec y) (hdet : 0 < A.det) (ht : 0 ≤ t) :
+  (∃ x, t * ResidueGram.objective A b x d ≤ s) ↔
+    t * (Matrix.fromBlocks A (ResidueGram.col b) (ResidueGram.row b) (ResidueGram.corner d)).det ≤ s * A.det
+ResidueGram.ridge_pos.{u_1, u_2} {ι : Type u_1} [Fintype ι] [DecidableEq ι] {ν : Type u_2} [Fintype ν] [DecidableEq ν]
+  (X : Matrix ν ι ℚ) (a : ν → ℚ) (d v : ι → ℚ) (ha : ∀ (j : ν), 0 ≤ a j) (hd : ∀ (i : ι), 0 < d i) (h : ∃ i, v i ≠ 0) :
+  0 < v ⬝ᵥ (ResidueGram.ridge X a d).mulVec v
+'ResidueGram.sentence' depends on axioms: [propext, Quot.sound]
+'ResidueGram.ridge_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+CountdownTests.equivalence {n : ℕ} (m : CountdownTests.Mode) {A : Fm PTm n} (ha : RHCounterexamples.UniversalZero A) :
+  [] ⊢[PRAAx] A.iff (CountdownTests.transform m A)
+CountdownTests.rh (m : CountdownTests.Mode) : [] ⊢[PRAAx] RH.iff (CountdownTests.transform m RH)
+CountdownTests.grh (m : CountdownTests.Mode) : [] ⊢[PRAAx] GRH.iff (CountdownTests.transform m GRH)
+CountdownTests.erh (m : CountdownTests.Mode) : [] ⊢[PRAAx] ERH.iff (CountdownTests.transform m ERH)
+'CountdownTests.equivalence' depends on axioms: [propext, Quot.sound]
+'CountdownTests.erh' depends on axioms: [propext, Quot.sound]
+PrecisionBounds.finite_recovery {n : ℕ} {Γ : List (Fm PTm n)} (J z : PTm n) :
+  Γ ⊢[PRAAx] (Fm.eq (CountdownTests.drop J (PrecisionBounds.scale z J.succ)) PTm.zero).imp (Fm.eq z PTm.zero)
+PrecisionBounds.fixed_budget {n : ℕ} (J z : PTm n) :
+  [] ⊢[PRAAx] (Fm.eq z PTm.zero).iff (PrecisionBounds.allMultiples J z)
+PrecisionBounds.bounded_iff {n : ℕ} (z : PTm n) : [] ⊢[PRAAx] (Fm.eq z PTm.zero).iff (PrecisionBounds.bounded z)
+PrecisionBounds.numerical_scale (z k : ℕ) :
+  (PacketLanguage.value PrecisionBounds.scaleR fun i => Fin.cases z (fun x => k) i) = z * k
+PrecisionBounds.rh : [] ⊢[PRAAx] RH.iff (PrecisionBounds.transform RH)
+PrecisionBounds.grh : [] ⊢[PRAAx] GRH.iff (PrecisionBounds.transform GRH)
+PrecisionBounds.erh : [] ⊢[PRAAx] ERH.iff (PrecisionBounds.transform ERH)
+'PrecisionBounds.finite_recovery' depends on axioms: [propext, Quot.sound]
+'PrecisionBounds.erh' depends on axioms: [propext, Quot.sound]
+RiemannIPRA.StripReflection.fromFunctionalEquation.{u_1, u_2, u_3, u_4} {R : Type u_1} {A : Type u_2} {I : Type u_3}
+  [Field R] [LinearOrder R] {V : Type u_4} [MulZeroClass V] (re : A → R) (F W : I → A → V) (dual : I → I)
+  (mirror : A → A) (coord : ∀ (s : A), re (mirror s) = 1 - re s)
+  (eqn : ∀ (i : I) (s : A), 0 < re s → re s < 1 → F (dual i) (mirror s) = W i s * F i s) :
+  StripReflection.Reflects re fun i s => F i s = 0
+RiemannIPRA.StripReflection.removeFactor.{u_1, u_2, u_3, u_4} {R : Type u_1} {A : Type u_2} {I : Type u_3} [Field R]
+  [LinearOrder R] {V : Type u_4} [MulZeroClass V] [NoZeroDivisors V] (re : A → R) (F C : I → A → V)
+  (hc : ∀ (i : I) (s : A), 0 < re s → re s < 1 → C i s ≠ 0) :
+  (StripReflection.StripLine re fun i s => C i s * F i s = 0) ↔ StripReflection.StripLine re fun i s => F i s = 0
+RiemannIPRA.StripReflection.halves_iff.{u_1, u_2, u_3} {R : Type u_1} {A : Type u_2} {I : Type u_3} [Field R]
+  [LinearOrder R] [IsStrictOrderedRing R] {re : A → R} {Z : I → A → Prop} (h : StripReflection.Reflects re Z) :
+  StripReflection.RightFree re Z ↔ StripReflection.LeftFree re Z
+RiemannIPRA.StripReflection.line_iff_right.{u_1, u_2, u_3} {R : Type u_1} {A : Type u_2} {I : Type u_3} [Field R]
+  [LinearOrder R] [IsStrictOrderedRing R] {re : A → R} {Z : I → A → Prop} (h : StripReflection.Reflects re Z) :
+  StripReflection.StripLine re Z ↔ StripReflection.RightFree re Z
+RiemannIPRA.StripReflection.line_iff_left.{u_1, u_2, u_3} {R : Type u_1} {A : Type u_2} {I : Type u_3} [Field R]
+  [LinearOrder R] [IsStrictOrderedRing R] {re : A → R} {Z : I → A → Prop} (h : StripReflection.Reflects re Z) :
+  StripReflection.StripLine re Z ↔ StripReflection.LeftFree re Z
+'RiemannIPRA.StripReflection.fromFunctionalEquation' depends on axioms: [propext, Quot.sound]
+'RiemannIPRA.StripReflection.line_iff_left' depends on axioms: [propext, Classical.choice, Quot.sound]

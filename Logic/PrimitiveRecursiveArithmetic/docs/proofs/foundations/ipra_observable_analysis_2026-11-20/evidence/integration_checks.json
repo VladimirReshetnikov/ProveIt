@@ -1,0 +1,201 @@
+{
+  "status": "passed",
+  "python": "3.12.14",
+  "arithmetic": "exact rational/integer acceptance checks",
+  "scope": "finite implementation validation, not universal proofs or iPRA derivations",
+  "checks": [
+    {
+      "name": "budget",
+      "source": "code/budget_reference.py",
+      "sha256": "53ad4e31f0ce5059fd899af4215e1a4d70e4b912c9c52b74860c951e00e40780",
+      "exit_code": 0,
+      "seconds": 0.0522,
+      "summary": {
+        "status": "passed",
+        "cases": 9,
+        "cyclic_bound": "1/200"
+      }
+    },
+    {
+      "name": "measure",
+      "source": "code/measure_reference.py",
+      "sha256": "2a7ab53073454cd8e26105e5e1c7187650cacd56a8bdb93bf897e3e5f2ec8f12",
+      "exit_code": 0,
+      "seconds": 1.535,
+      "summary": {
+        "scope": "exact finite arithmetic examples, not formal iPRA derivations",
+        "finite_vitali_cases": 33750,
+        "finite_fubini_cases": 81,
+        "example_vitali": {
+          "lhs": "15/8",
+          "rhs": "11/4",
+          "tail_u": "5/4",
+          "tail_v": "0",
+          "bad_mass": "1/2",
+          "total_mass": "1",
+          "clipped_l1": "5/8"
+        },
+        "example_fubini": {
+          "xy_integral": "29/12",
+          "yx_integral": "29/12",
+          "product_l1": "35/12",
+          "partial_y_l1": "31/12",
+          "partial_x_l1": "29/12"
+        },
+        "moving_spikes": [
+          {
+            "n": 0,
+            "height": "1",
+            "support_mass": "3/4",
+            "spike_l1": "3/4",
+            "majorant_partial_integral": "0",
+            "majorant_tail": "3/2",
+            "majorant_square_partial_integral": "0"
+          },
+          {
+            "n": 1,
+            "height": "2",
+            "support_mass": "3/16",
+            "spike_l1": "3/8",
+            "majorant_partial_integral": "3/4",
+            "majorant_tail": "3/4",
+            "majorant_square_partial_integral": "3/4"
+          },
+          {
+            "n": 2,
+            "height": "4",
+            "support_mass": "3/64",
+            "spike_l1": "3/16",
+            "majorant_partial_integral": "9/8",
+            "majorant_tail": "3/8",
+            "majorant_square_partial_integral": "3/2"
+          },
+          {
+            "n": 3,
+            "height": "8",
+            "support_mass": "3/256",
+            "spike_l1": "3/32",
+            "majorant_partial_integral": "21/16",
+            "majorant_tail": "3/16",
+            "majorant_square_partial_integral": "9/4"
+          },
+          {
+            "n": 4,
+            "height": "16",
+            "support_mass": "3/1024",
+            "spike_l1": "3/64",
+            "majorant_partial_integral": "45/32",
+            "majorant_tail": "3/32",
+            "majorant_square_partial_integral": "3"
+          },
+          {
+            "n": 5,
+            "height": "32",
+            "support_mass": "3/4096",
+            "spike_l1": "3/128",
+            "majorant_partial_integral": "93/64",
+            "majorant_tail": "3/64",
+            "majorant_square_partial_integral": "15/4"
+          },
+          {
+            "n": 6,
+            "height": "64",
+            "support_mass": "3/16384",
+            "spike_l1": "3/256",
+            "majorant_partial_integral": "189/128",
+            "majorant_tail": "3/128",
+            "majorant_square_partial_integral": "9/2"
+          },
+          {
+            "n": 7,
+            "height": "128",
+            "support_mass": "3/65536",
+            "spike_l1": "3/512",
+            "majorant_partial_integral": "381/256",
+            "majorant_tail": "3/256",
+            "majorant_square_partial_integral": "21/4"
+          },
+          {
+            "n": 8,
+            "height": "256",
+            "support_mass": "3/262144",
+            "spike_l1": "3/1024",
+            "majorant_partial_integral": "765/512",
+            "majorant_tail": "3/512",
+            "majorant_square_partial_integral": "6"
+          },
+          {
+            "n": 9,
+            "height": "512",
+            "support_mass": "3/1048576",
+            "spike_l1": "3/2048",
+            "majorant_partial_integral": "1533/1024",
+            "majorant_tail": "3/1024",
+            "majorant_square_partial_integral": "27/4"
+          }
+        ],
+        "result": "all finite checks passed"
+      }
+    },
+    {
+      "name": "probability",
+      "source": "code/probability_models.py",
+      "sha256": "e2c6402bcadff4d167f0d78a4e394f969a52ff05a026119a5979e5b35bda6442",
+      "exit_code": 0,
+      "seconds": 0.0314,
+      "summary": {
+        "arithmetic": "fractions.Fraction (exact)",
+        "transport_two_points": "1/4",
+        "transport_masks_examined": 16,
+        "primal_dual_certificate": "accepted; altered invalid certificate rejected",
+        "zero_marginal_gluing": "passed",
+        "triangle_distances": [
+          "1/4",
+          "1/3",
+          "11/24"
+        ],
+        "probability_net_size": 45,
+        "selected_net_law": [
+          "1/4",
+          "1/8",
+          "5/8"
+        ],
+        "selected_transport_distance": "1/6",
+        "moment_infimum": "1/8",
+        "attaining_endpoint_weights": [
+          "3/8",
+          "5/8"
+        ],
+        "scope": "Finite implementation checks, not an iPRA proof or a general measure construction"
+      }
+    },
+    {
+      "name": "analytic",
+      "source": "code/analytic_reference.py",
+      "sha256": "c2f85be1ced4a0483de2a42a1cfced78f76fdc6761168aedf8e098112b65fa00",
+      "exit_code": 0,
+      "seconds": 0.0618,
+      "summary": {
+        "status": "passed",
+        "output": "/workspace/scratch/2be952ef4b7e/output/ipra_observable_analysis_2026-11-20/evidence/analytic_checks.json",
+        "coefficient_cases": 66,
+        "doubling_cases": 6,
+        "inverse_cases": 6,
+        "derivative_cases": 4
+      }
+    },
+    {
+      "name": "homotopy",
+      "source": "code/check_chain_contraction.py",
+      "sha256": "1f8d65924dbd715e85e5fce9c42437c5f8888f3803f1bb137f5d6b55eaf1146f",
+      "exit_code": 0,
+      "seconds": 0.0532,
+      "summary": {
+        "status": "passed",
+        "output": "/workspace/scratch/2be952ef4b7e/output/ipra_observable_analysis_2026-11-20/evidence/chain_contraction_check.json",
+        "finite_cases": 6,
+        "precision_cases": 9
+      }
+    }
+  ]
+}

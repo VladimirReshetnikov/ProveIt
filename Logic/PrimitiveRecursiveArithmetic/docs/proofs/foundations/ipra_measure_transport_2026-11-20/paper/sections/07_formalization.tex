@@ -1,0 +1,184 @@
+\section{Lean definitions, proof targets, and verification boundaries}
+\label{sec:lean}
+
+\subsection{What has actually compiled}
+
+The standalone project in \texttt{lean/} uses Lean 4.32.0, with no
+Mathlib dependency. It contains 35 named theorem declarations and eight
+checked examples across four Lean files. The successful build and
+\texttt{\#print axioms} output are retained in
+\texttt{lean/verification.log}. The files contain no admitted proof and
+introduce no new axiom declaration.
+
+\begin{center}
+\begin{tabular}{p{0.24\textwidth}p{0.66\textwidth}}
+\toprule
+File & Checked content \\
+\midrule
+\texttt{Truncation.lean} & Rational clipping, clipping residual,
+Lipschitz estimates, the bounded metric, the corrected weighted
+truncation inequality, and the sharp excess-tail square bound. \\
+\texttt{Energy.lean} & Binary and finite weighted energy identities,
+telescoping, and an executable bounded search for a small energy
+increment with its soundness and existence proof. \\
+\texttt{Examples.lean} & A named counterexample to the unsafe
+separate-tail shortcut, plus eight concrete exact examples. \\
+\texttt{Audit.lean} & Axiom-dependency receipts for the principal
+declarations. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The central declaration
+\texttt{truncation\_rho\_integrated} proves the repaired bound for an
+arbitrary finite length and arbitrary nonnegative rational weights.
+It is not merely a finite collection of examples. Similarly,
+\texttt{energy\_window} produces a successful result of the executable
+search \texttt{smallWindow}. Applied to the energy sequence along the
+iterated challenge endpoints, it supplies the finite search used in
+Theorem~\ref{m:metastability}.
+
+These are host-Lean theorems. Their axiom audit lists
+\texttt{propext}, \texttt{Classical.choice}, and
+\texttt{Quot.sound}, inherited through the standard rational library
+and proof infrastructure. They are not already proofs in
+\(\Prf\,\mathrm{PRAAx}\), and we do not call them axiom-free or
+choice-free formalizations. The human proofs use explicit rational
+case splits and finite invariants, so their object-theory translation
+has a clear route independent of these host axioms.
+
+\subsection{The exact object-language endpoint}
+
+The inspected canonical syntax is
+\texttt{LeanProofs.ConciseIPRA.PTm}, with formulas
+\texttt{Fm PTm n}. The intended judgment is
+\[
+ \Prf\,\mathrm{PRAAx}\,\Gamma\,\varphi,
+ \qquad\text{written }\Gamma\vdash[\mathrm{PRAAx}]\varphi.
+\]
+The existing substitution, weakening, and cut interfaces are
+\texttt{Prf.subst}, \texttt{Prf.weaken}, and \texttt{Prf.trans}.
+The actual induction wrapper is \texttt{PRA.qfInd}; its step premise
+has the induction formula added to the shifted context. The companion
+\texttt{ObjectAdapter.lean.txt} records these exact inspected signatures
+as an uncompiled integration candidate. It is excluded from the
+standalone build.
+
+We inspected existing object derivations for finite expectation,
+signed parts, common denominators, finite kernels, Cauchy--Schwarz,
+common-envelope truncation, block partition sums, error budgets, and
+coherent presentations. Their precise source paths and hashes are
+in \texttt{lean/source\_manifest.json}. We did not rebuild the full
+repository, and do not turn old repository build receipts into a claim
+of new verification.
+
+\subsection{All data types needed for the next formalization stage}
+
+The blueprint files specify the following data, with their coding and
+proof fields kept separate.
+
+\begin{description}
+\item[Finite rational code.] A numerator pair \((p,n)\) and a
+denominator \(d+1\), denoting \((p-n)/(d+1)\). All finite order
+tests clear positive denominators.
+\item[Dyadic step.] A level \(r\) and a vector of exactly \(2^r\)
+finite rational codes. Product steps add a dimension and rectangular
+level data. Refinement is explicit repetition and reindexing.
+\item[Strong name.] A fixed PR producer of steps and the arithmetic
+contract \(q\geq p\to\|a_q-a_p\|_1\leq2^{-p}\).
+Program-code alternatives carry a fixed clock or supplied batch trace.
+\item[Coherent mass presentation.] A fixed PR table
+\(v(n,i)\), nonnegativity, and the equation
+\(v(n,i)=v(n+1,2i)+v(n+1,2i+1)\). Derived programs produce the
+density table and its exact rational energy.
+\item[Quantitative tail data.] A fixed PR cutoff with a proved
+first-order inequality. For Vitali it is \(U(p)\); for energy
+convergence it is \(R(p)\). They are not arbitrary unproved function
+fields whose existence is claimed by the framework.
+\item[Bounded map.] A specified finite linear or bilinear map, a
+norm bound, and its finite inequality. A pullback additionally records
+partition compatibility and a compression bound.
+\item[Formula with measured context.] Context dimension, atom
+occurrence names in that context, rational connectives and their
+sensitivities, integration, and permitted pullbacks. A shared
+expression graph records its exact dependencies.
+\item[Topological certificate.] Labelled rational distance table or
+interval table, finite correspondence, parity-coded chains, scale,
+and explicit prism output. Metric and chain equations are bounded
+tests on the input data.
+\item[Analytic input.] An \(L^1\) name, rational norm bounds, a
+column-norm kernel name when required, and a positive denominator or
+contraction gap. Complex rationals are pairs of rational codes.
+\end{description}
+
+The three accompanying blueprint files cover measure theory,
+categorical and topological constructions, and analytic constructions.
+Their pseudocode and Lean-shaped interfaces give the definitions and
+theorem targets.
+They are explicitly marked as blueprints. Their assumptions specify
+missing proof obligations; they are not counted as established
+theorems by being written as structure fields.
+
+\subsection{Reifying the two central inequalities}
+
+At a positive common denominator \(D\), let signed integers \(X,Y\)
+represent the two values and let the natural threshold numerator be
+\(K\), with \(D\leq K\). Define
+\[
+ A=|X-Y|,\quad R=\min(D,A),\quad
+ T_X=\max(|X|-K,0),\quad T_Y=\max(|Y|-K,0).
+\]
+The denominator-cleared clipping statement is
+\[
+ D A\leq2KR+DT_X+DT_Y.
+ \tag{C}\label{eq:clearedclip}
+\]
+The excess-square statement is
+\[
+                    4KT_X\leq X^2.
+ \tag{S}\label{eq:clearedsquare}
+\]
+For \eqref{eq:clearedclip}, derive the three clipping-region identities
+and nonexpansiveness by decidable signed-integer order cases. The
+case split \(A\leq D\) or \(D\leq A\) bounds the clipped middle
+term. The proof uses only semiring inequalities after moving negative
+parts. For \eqref{eq:clearedsquare}, the nonzero branch has slack
+\((|X|-2K)^2\). This is an explicit nonnegative polynomial
+certificate.
+
+To integrate, let \(w_i\) be nonnegative natural weights after common
+denominator conversion. The induction invariant at prefix \(J\) is
+\[
+ D\sum_{i<J}w_i A_i
+ \leq 2K\sum_{i<J}w_i R_i
+       +D\sum_{i<J}w_i T_{X_i}+D\sum_{i<J}w_i T_{Y_i}.
+\]
+Replace each finite sum by its fixed PR symbol. The formula is
+quantifier-free, its base is \(0\leq0\), and the successor step adds
+one instance of \eqref{eq:clearedclip}. Existing expectation
+monotonicity and linearity can implement this lifting. Modulus
+composition then consists of term substitution and the proved rational
+budget inequalities. No induction on ``all later terms converge'' is
+needed.
+
+For energy, derive the finite polynomial identity
+\(2(a^2+b^2)=(a+b)^2+(a-b)^2\). Block-average coherence cancels the
+cross term in the general identity. Existing regrouping and weighted
+Cauchy--Schwarz supply the two bridges. The energy-window search
+has the quantifier-free failed-search invariant
+\(H_{t_J}\geq H_{t_0}+J\delta\); at the explicit bound this
+contradicts the energy cap. This is the precise internal proof
+architecture behind the new density and metastability constructions.
+
+\subsection{Completion priorities}
+
+The shortest useful next implementation is the object-theory version
+of \eqref{eq:clearedclip}, its weighted lifting, and the rational
+Vitali budget. That would close a concrete source gap and reuse the
+existing arithmetic library. Next come the finite orthogonal-energy
+identity and the local sibling bound. Completion and equality of names
+then require only precision substitution and the specified rational
+separation lemmas. The formula and Rips modules are independent
+consumers of the same finite-array and error infrastructure. The
+analytic applications come last, after the column-norm and moment
+lemmas have actual object derivations.

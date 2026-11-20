@@ -1,0 +1,68 @@
+\section{An interval modulus from the program}
+\label{sec:interval}
+The binary chart sends bits $\alpha(0),\alpha(1),\ldots$ to $\sum_{q\ge0}\alpha(q)2^{-q-1}$. A prefix of length $N$ describes a closed interval of width $2^{-N}$. The sole overlaps at a given level are neighboring endpoints. We use precisely these overlaps to pass from a prefix modulus to a Euclidean one. No procedure for finding a binary expansion of an arbitrary constructive real is needed.
+
+\subsection{Two finite arithmetic tests}
+Write $v_k(\alpha)$ for the output of one run. For finite partial maps $P,T$ write $P\parallel T$ when they agree on common addresses. The following are universally indexed hypotheses, each individual instance a decidable finite test:
+\begin{align}
+ |v_s-v_t| &\le \eps_k+\eps_l
+ &&(s\in L_k,\ t\in L_l,\ P_s\parallel P_t), \tag{C}\label{eq:C}\\
+ |v_s-v_t| &\le 2\eps_k
+ &&(s,t\in L_k,\ \operatorname{Carry}(P_s,P_t)). \tag{G}\label{eq:G}
+\end{align}
+Here $\operatorname{Carry}(P,T)$ means that $P$ and $T$ extend, respectively, to the lower-cell and upper-cell expansions $u0\,111\ldots$ and $u1\,000\ldots$ of an interior dyadic. The digit at address $j=|u|$ is the carry. This apparently unbounded condition has a short decision procedure.
+
+\begin{lemma}[Sparse carry test]\label{lem:carry}
+Let $A=\operatorname{dom}P\cup\operatorname{dom}T$. It suffices to test $j$ in
+$\{0\}\cup A\cup\{q+1:q\in A\}$. At each candidate require:
+\begin{enumerate}[label=(\roman*),leftmargin=24pt]
+\item below $j$, no address is assigned different bits by both maps.
+\item at $j$, any specified left bit is $0$ and any specified right bit is $1$.
+\item above $j$, all specified left bits are $1$ and all specified right bits are $0$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+These conditions are necessary. When they hold, fill the common prefix by the union of the restricted maps, putting zero in empty positions. Append the indicated differing bit and constant tails. This proves sufficiency with concrete total extensions. A candidate in $A$ is tested itself. For $j$ outside $A$, all three tests depend only on the gap of the ordered addresses containing $j$. The first integer of that gap is zero or the successor of an address. It gives exactly the same outcomes, including in the infinite last gap.
+\end{proof}
+
+Condition (C) is equivalent to regularity at all pairs of precisions on a single bit stream because compatible maps have the explicit common extension obtained by filling their union with zeros. Given (C), condition (G) is equivalent to equality of the two named values on every dyadic overlap. Indeed, equal completed values give the bound $2\eps_k$ by the two approximation errors. Conversely, comparison through a common fine level $r$ on both expansions gives the mixed bound $\eps_k+\eps_l+4\eps_r$. Any positive excess over $\eps_k+\eps_l$ would be a rational gap contradicted by a sufficiently fine $r$. This tightening uses only rational order. For a gap $a/b>0$ in lowest terms one can, for example, take $r=b+4$. The tests are obligations for all precisions. Passing finitely many tests on a program does not establish those obligations.
+
+\subsection{The translation theorem}
+For a rational $x\in[0,1)$ use its terminating-zero convention at dyadics, and at $1$ use all ones. Its bit at $q$ is $\lfloor 2^{q+1}x\rfloor\bmod 2$, except for that endpoint. Let $V_k(x)$ be the output on this particular rational name. Binary digits of rationals are PR, including for non-dyadic rationals. If $x=a/b$, one may first reduce $a2^{q+1}$ modulo $2b$ and compare to $b$. This modular powering avoids constructing a prefix of length $q$.
+
+\begin{theorem}[Conversion in both directions]\label{thm:interval}
+A clocked binary evaluator satisfying (C) and (G) induces an extensional function on regular Cauchy names in $[0,1]$, with a PR Euclidean modulus. In particular, take $N_k=M_k(0)$. A modulus for error $\eps_j$ is
+\[
+                    \mu(j)=N_{j+2}+1 .
+\]
+Conversely, a fixed PR rational evaluator with a supplied PR uniform modulus and the usual mixed-precision error contract on $[0,1]$ has a clocked binary evaluator satisfying (C) and (G) for the same function.
+\end{theorem}
+\begin{proof}
+First consider rationals $x,y$ with $|x-y|\le 2^{-N}$, $N=M_k(\eta)$. If they lie in the same prefix cell, their observed outputs differ by at most $\eta$. Otherwise the canonical cell indices $\min(2^N-1,\lfloor 2^Nx\rfloor)$ and its analogue for $y$ differ by one. The two expansions of the common endpoint have the respective cell prefixes. Comparison with these two expansions, with (G) between them, gives
+\begin{equation}
+            |V_k(x)-V_k(y)|\le 2\eta+2\eps_k.             \tag{1}\label{eq:adj}
+\end{equation}
+This works at $0$ and $1$ as well. At $N=0$ only the single-cell case occurs. In particular the rational observation at $\eta=0$ varies by at most $2\eps_k$ over the indicated distance. By (C), $V_k(x)$ is a regular name at each rational $x$.
+
+Here is the actual evaluator on a regular input $a$. Define
+\[
+ H(k)=\max_{i\le k}N_i,\qquad p(n)=H(n+3)+2,\qquad
+                         y_n=V_{n+3}\bigl(a(p(n))\bigr).
+\]
+For $m\ge n$ the two rational arguments lie within $2\eps_{p(n)}\le 2^{-N_{n+3}}$. Apply (1) at level $n+3$ followed by (C) at the second argument. This gives
+\[
+                |y_n-y_m|\le3\eps_{n+3}+\eps_{m+3}
+                         \le\eps_n+\eps_m .
+\]
+The same proof with two equivalent input names gives the mixed inequality $|y_n(a)-y_m(b)|\le\eps_n+\eps_m$ (interchange them when $n>m$). Thus the evaluator respects name equality. Constant input names give the original rational values.
+
+For the Euclidean modulus, fix $k=j+2$ and suppose two represented inputs are at distance at most $2^{-N_k-1}$. In finite comparisons their samples of sufficiently high precision differ by at most $2^{-N_k}$ because the spare half-cell pays for both sampling errors. On these rationals (1) with $\eta=0$ bounds the difference at level $k$ by $2\eps_k$. Comparing each fine observation at level $n+3$ with its level-$k$ observation by (C) costs at most $2(\eps_k+\eps_{n+3})$ in total. Letting the rational slack decrease gives the bound $4\eps_k=\eps_j$. More explicitly, for arbitrarily fine sample indices use $p(n)\ge H(k)+2$ when $n+3\ge k$, so both input sampling errors are at most $2^{-N_k-2}$. The terms $2\eps_{n+3}$ and the output regularity errors tend to zero. If $p(n)$ stays bounded, that same half-cell estimate still applies. All comparisons can be made with the finite definition of distance $\le r$, namely $|a_i-b_l|\le r+\eps_i+\eps_l$.
+
+A bit stream itself presents a regular name by truncation to $n$ digits (tail $\le\eps_n$). Its image under the new evaluator equals its old output name. For a fixed $k$ compare to the rational truncation of length $p(n)$. Whenever $n+3\ge k$ it shares the first $N_k$ bits. Even when the infinite stream ends in all ones, each finite truncation is strictly below 1 and its terminating expansion has the prescribed finite prefix. Hence its level-$k$ observation agrees exactly with the original for these truncations. Use (C) on the truncation and then let the precision grow. This also explains why ordinary nonredundant binary digits cause no discontinuous choice in the translation.
+
+Conversely let $E(x,p)$ approximate the value at rational $x$ with error $\eps_p$, with modulus $\nu$ on completed values. At output level $k$, read $m=\nu(k+1)$ initial bits and use $E(u/2^m,k+1)$, where $u$ is their unsigned integer. The stream's point is within $2^{-m}$ of the truncation. The modulus and sample error give at most $2\eps_{k+1}=\eps_k$ total error. This implies (C) and (G). Directly in finite arithmetic, compare any two truncations of one stream through a longer common truncation. Each is within the mesh of its own requested modulus. Applying the mixed evaluator inequalities through a fine intermediate evaluation gives (C) after the rational slack is removed. At a carry use the common rational endpoint instead. This proves the same bounds without quantifying over real points. The finite prefix loop and the fixed evaluator have PR state descriptions and clocks in the stated PR operation model.
+\end{proof}
+
+For immediate use by a rational-domain client, set $E(x,p)=V_p(x)$. On qualifying rational pairs compare $V_p(x)$ and $V_q(y)$ through level $j+2$ at both arguments. Equations (C) and (1) give exactly $\eps_p+\eps_j+\eps_q$. Thus the hypotheses used by the root and calculus routines are available with an explicit $\mu$. The bounds also extend coordinatewise to a fixed product of intervals by tagging queries by coordinate, applying the carry condition with common other coordinates and changing one coordinate at a time. For $d$ factors the sum of the $d$ coordinate errors replaces the single error. Requesting $\lceil\log_2 d\rceil$ extra bits per coordinate suffices.
+\paragraph{Discarding digits that change only the rounding error.}
+Equation (1) also offers a cheaper modulus when exact finite equality is too demanding. With $k=j+3$ and $\eta=\eps_k$, completed inputs at distance at most $2^{-M_k(\eps_k)-1}$ give output distance at most $2\eta+4\eps_k=6\eps_k\le\eps_j$. To see this without assuming that the original Cauchy-name evaluator samples sufficiently finely, represent each input by its shifted name $a'(i)=a(i+M_k(\eps_k)+3)$, and use the proved extensionality. Equivalently, the original samples already suffice because $M_k(\eps_k)\le N_k$ and eventually $p(n)\ge N_k+2$. Take the smaller of this modulus and the exact-prefix modulus from Theorem~\ref{thm:interval}. As an example, the program returning $\eps_{k+2}\alpha(J)$ represents the zero function. Its least exact prefix has length $J+1$, while its least prefix at tolerance $\eps_k$ is zero. The optimization concerns input precision. The finite output is still obtained from its specified program.

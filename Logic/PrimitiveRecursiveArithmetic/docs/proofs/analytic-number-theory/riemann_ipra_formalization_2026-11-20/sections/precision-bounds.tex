@@ -1,0 +1,50 @@
+\subsection{Removing a fixed additive error by one finite multiplier}
+
+A frequent final step in a rational estimate is to remove an additive
+rounding allowance $J$ that is independent of precision. Suppose the
+discrepancy has already been cleared of denominators and its positive part
+is $z\in\mathbb N$. The following are interderivable inside first-order
+iPRA, for each $J$:
+\[
+ z=0,\qquad (J+1)z\le J,\qquad
+                 \forall k\ k z\le J .
+\]
+One can even allow $J$ to be an existential witness. Thus
+$z=0\leftrightarrow\exists J\,\forall k\,kz\le J$. The order of the
+quantifiers matters. For $z=1$ the variant
+$\forall k\,\exists J\,kz\le J$ is satisfied by $J=k$.
+In the motivating comparison $ka\le kb+J$ for naturals $a,b$,
+ordinary finite arithmetic rewrites the discrepancy as
+$z=a\mathbin{\dot-} b$. Its positive part obeys $kz\le J$, hence $a\le b$.
+The Lean derivation below treats the excess $z$ as its input.
+
+\paragraph{An object proof of the separating multiplier.}
+Use the countdown $D(j,x)$ from the preceding argument. Since
+$D(j,x)=x\mathbin{\dot-}j$, the order test $x\le j$ is the quantifier-free
+equation $D(j,x)=0$. Define $M(0,k)=0$ and
+$M(z+1,k)=k+M(z,k)$. This computes $kz$ with suitably ordered summands.
+First prove
+\[
+              D(j,(j+1)+y)=y+1
+\]
+by quantifier-free induction on $j$. At $j=0$ it is the defining
+zero-step equation. For the successor, rewrite the input as
+$1+((j+1)+y)$ and apply $D(j+1,x+1)=D(j,x)$.
+It follows that at a positive excess,
+\[
+           D(J,M(z+1,J+1))=M(z,J+1)+1.
+\]
+The right side is a successor, so it cannot equal zero. For $z=0$ all
+the multiples are zero. This proves the finite test at $J+1$ and, by
+specializing a universal hypothesis, the universal test. An existential
+budget is eliminated by this same derivation with the supplied $J$.
+In the forward direction zero itself can serve as a budget.
+Every induction in this proof has a quantifier-free invariant.
+
+\texttt{PrecisionBounds.finite\_recovery},
+\texttt{fixed\_budget} and \texttt{bounded\_iff} are object derivations.
+Applying the last theorem to the excess in each of the three primary
+sentences allows a separate budget for each packet and gives three more
+closed biconditionals of type \texttt{Prf PRAAx []}. In particular,
+no uniform budget across different number fields, conductors or cutoffs
+is assumed. The multiplier $J+1$ eliminates the budget for its own packet.

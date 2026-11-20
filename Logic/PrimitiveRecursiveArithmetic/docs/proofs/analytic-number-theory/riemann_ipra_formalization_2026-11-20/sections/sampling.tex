@@ -1,0 +1,88 @@
+\section{An upper prime discrepancy on sparse cutoffs}\label{sec:sparse}
+For a fixed polynomial let $D_F(n)=B_F(2n)-2B_F(n)$ as in Section~\ref{sec:foundation}. The two-sided test treats upward and downward fluctuations alike. The following result identifies a sign that works for number fields even in the presence of a possible real zero. Write $x_+=\max(0,x)$.
+
+\begin{theorem}\label{thm:oneside}
+Fix a code for $F$. The critical-strip zeros of every field factor of $F$ are on the critical line if and only if
+\[
+     D_F(n)_+^2\le nC^2L(2n)^4\qquad(n\ge100).
+\]
+The reverse implication holds with \emph{any} fixed finite coefficient in place of $C$ and with any finite initial segment omitted. For $F=X-1$ the same conclusions hold with $(-D_F(n))_+$.
+\end{theorem}
+\begin{proof}
+The forward implication follows from the two-sided estimate in Section~\ref{sec:foundation}. For the converse write $V(x)=\Psi_F(2x)-2\Psi_F(x)$ for real $x\ge1$. Passing from $D_F(n)$ to $V(n)$ changes the quantity by a factor $\log 2$ and at most $3\log 2$ from the two floors. On the interval $n\le x<n+1$, $\Psi_F(x)$ is constant and $\Psi_F(2x)$ has at most one extra jump, of size at most $d\log(2n+1)$. A jump can occur only at a prime power. Hence for some constant $K>0$ depending on the fixed data we have
+\[
+     V(x)\le W(x):=K\sqrt{x}(1+\log x)^2\qquad(x\ge1).
+\]
+Increasing $K$ handles any initial omissions. Define $J_F(s)=\sum_{p,k} h_F(p,k)\log p\, p^{-ks}$. For $\Re s>1$, integration of the step functions gives
+\begin{align*}
+ \int_1^\infty V(x)x^{-s}\,\frac{dx}{x}&=\frac{2^s-2}{s}J_F(s),\\
+ J_F(s)&=-\sum_i\frac{\zeta_{K_i}'(s)}{\zeta_{K_i}(s)}+U_F(s).
+\end{align*}
+Absolute convergence justifies both the change of scale and termwise integration, since the coefficient at an integer $n$ is at most $d\log n$. The lower endpoint causes no term because $\Psi_F(x)=0$ for $1\le x<2$. The good primes give the displayed logarithmic derivatives. The correction $U_F$ is holomorphic on $\Re s>0$ because its coefficients at each of finitely many primes are bounded in modulus by $d\log p$ and the resulting power series converge geometrically there.
+
+Take the Mellin transform $A(s)$ of the nonnegative function $W-V$. Its transform converges absolutely for $\Re s>1$. It admits the meromorphic continuation
+\[
+ A(s)=K\left(\frac1z+\frac2{z^2}+\frac2{z^3}\right)
+      -\frac{2^s-2}{s}J_F(s),\qquad z=s-\tfrac12.
+\]
+There is no pole at $1$ since the zero of $2^s-2$ cancels the simple logarithmic-derivative poles. The zeta factors have no zeros on the real ray $s>1$ by their Euler products. Any real pole at $\beta\in(1/2,1)$ must come from zeros of total multiplicity $m_\beta>0$. Its residue in $A$ is
+\[
+                   \frac{(2^\beta-2)m_\beta}{\beta}<0.
+\]
+The sign matters here. Each field factor contributes the same sign, including when the same field occurs twice.
+
+Let $\sigma_c$ be the real abscissa of convergence for the nonnegative integral. If it is $-\infty$ the integral is entire. If it is finite, Landau's lemma makes $\sigma_c$ a singularity. To see the lemma directly, put $x=e^t$. If the integral had an analytic continuation near $\sigma_c$, take a real center $a$ just to its right so that its open Taylor disk reaches a real point $a-h<\sigma_c$. The disk exists by choosing $a$ sufficiently near the center of the hypothetical analytic neighborhood. For the expansion in $a-s$, every coefficient is the integral of $(W(e^t)-V(e^t))e^{-at}t^k/k!$, which is nonnegative. Differentiation is justified using the convergent integral at a real number between $a$ and $\sigma_c$. Summing at $h$ and using monotone convergence gives the finite integral at $a-h$, a contradiction.
+
+If $\sigma_c>1/2$, the meromorphic formula and $\sigma_c\le1$ now force a simple real pole at $\sigma_c$ with negative residue. Along real $s\downarrow\sigma_c$ this makes $A(s)$ tend to $-\infty$, impossible for an integral of a nonnegative function. Therefore $\sigma_c\le1/2$. Absolute convergence locally in $\Re s>1/2$ makes $A$ holomorphic there. A zero $\rho$ with $1/2<\Re\rho<1$ would leave a pole, because $|2^\rho|<2$ and the logarithmic residues add. The functional equations give the other half of the strip.
+
+For the lower bound on ordinary $\zeta$, use the nonnegative function $W+V$. There are no real zeta zeros in $(1/2,1)$: the alternating eta series is strictly positive there by pairing consecutive terms and $1-2^{1-s}$ is strictly negative. Thus the real abscissa argument applies even with the sign reversed. Extending this last proof to an arbitrary field would need a way of handling its possible real zeros. The upper-bound proof already handles those zeros.
+\end{proof}
+
+\subsection*{Testing a single polynomial at a given cutoff}
+Let $\nu_p(m)$ be the exponent of $p$ in a positive integer $m$. It is a PR function, given by a maximum over $0\le e\le m$ with $p^e\mid m$. For $j\ge0$ define
+\[
+ Q_j=\sum_{1\le i\le j} L(i),\qquad n_j=(10+Q_j)^2.
+\]
+Thus $Q_j$ counts the bits in the ordinary binary representations of $1,\ldots,j$, and $n_0=100$. Choose the polynomial data at stage $j$ by the following table. In each entry the valuations are taken at $j+1$.
+\begin{center}
+\begin{tabular}{@{}lcccc@{}}\toprule
+Family &$d_0$&$H$&$u$&$v$\\\midrule
+RH&0&0&0&1\\
+Dirichlet GRH&$\nu_2$&0&0&1\\
+Dedekind ERH&$\nu_2$&$\nu_3$&$\nu_5$&$\nu_7$\\\bottomrule
+\end{tabular}
+\end{center}
+The entry for ERH with all four coordinates zero codes $F=X$; the ordinary RH specialization uses $F=X-1$. Denote the selected polynomial by $F_j$ and its particular allowance by $C_j$.
+\begin{theorem}\label{thm:rotate}
+For each row the corresponding analytic conjecture is equivalent in the standard model to the single closed $\Pi^0_1$ sentence
+\begin{equation}\label{eq:rotating}
+ \boxed{\quad\forall j\in\N\qquad D_{F_j}(n_j)_+^2\le n_j\,C_j^2 L(2n_j)^4.\quad}
+\end{equation}
+The same assertion with $n_j=(10+j)^2$ or $n_j=100+j$ is equivalent as well. Each version visits just one polynomial at a given stage. For ordinary RH either sign suffices on each of the three grids.
+\end{theorem}
+\begin{proof}
+Under the relevant zero hypothesis each row satisfies the original bound at every cutoff. It remains to prove that visiting many fewer cutoffs and field codes still detects every offending field.
+
+Fix an ERH code $(a,b,c,e)$, put $M=2^a3^b5^c7^e$ and $P=210M$. Each stage $j_h=M(1+210h)-1$ has exactly the required valuations. Indeed $1+210h$ is coprime to $2,3,5,7$. Consecutive such stages are exactly $P$ indices apart. For the Dirichlet row one can simply take the subsequence with the other three exponents zero. For ordinary RH all stages test the required polynomial. No scheduling constant uniform in the field is needed for the converse.
+
+Set $r_j=10+Q_j$. On the displayed progression,
+\[
+ r_{j+P}-r_j\le P L(j+P),\qquad
+ n_{j+P}-n_j\le 2r_jP L(j+P)+P^2L(j+P)^2 .
+\]
+For fixed $P$ and large $j$, $r_j\ge j$, $L(j+P)=O_P(1+\log r_j)$, and the right side is $O_P(\sqrt{n_j}(1+\log n_j))$. In particular $n_{j+P}/n_j\to1$. The same mesh bound holds for the ordinary square grid and the linear grid by taking their differences explicitly.
+
+Take any real $x$ between two successive cutoffs $N,N'$ for this fixed code. The integer jumps of $\Psi_F$ are bounded by $d\log(2N')$ up to $2N'$, whence
+\[
+ |V(x)-V(N)|\le 4d(N'-N+1)\log(2N').
+\]
+This follows by counting the possible jumps on $(2N,2x]$ and twice those on $(N,x]$. The mesh estimate makes this error $O_F(\sqrt{x}(1+\log x)^2)$. Thus the upper bound at the selected nodes yields the upper envelope $V(x)\le K_F\sqrt x(1+\log x)^2$ for all large $x$. The proof of Theorem~\ref{thm:oneside} applies. The same interpolation is valid for the ordinary lower test. Since $F$ was arbitrary, Section~\ref{sec:foundation} gives precisely the indicated family.
+\end{proof}
+
+The number of sampled cutoffs below $X$ is asymptotic to $2\sqrt X/\log_2 X$, since $Q_j=j\log_2 j+O(j)$ by summing $\log_2 i+O(1)$. This counts evaluations only. The PR program at a particular cutoff can be very expensive. A fixed offending field would force arbitrarily large positive values of $D_F(n_j)/(\sqrt{n_j}L(2n_j)^2)$ even along its prescribed return progression: otherwise the same interpolation and transform proof would exclude its zero. This argument proves existence in classical analysis and supplies no bound on the first violating index.
+
+\paragraph{Exact check of the schedules.}
+The first five $n_j$ are $100,121,169,225,324$. For $F=X-1$ the corresponding signed discrepancies are $27,8,-7,28,14$. At the third cutoff the upper test sees zero positive discrepancy. At that same index the ERH scheduler selects $(0,1,0,0)$ and hence $F=X$. The script \code{check_sampling.py} reproduces the values from lcms and checks specified returns for 256 distinct four-word codes.
+
+\paragraph{Object-theoretic content.}
+\code{OneSided.lean} uses truncated subtraction to compute $p=(B_F(2n)-2B_F(n))_+$ and routes the original excess to one of two cells. For $p=0$ these cells are $(0,E)$, and for $p>0$ they are $(E,0)$. At a tie $E=0$. Induction on $p$ with a quantifier-free invariant proves that $E=0$ is equivalent to both cells being zero. Lifting across all family binders gives the object theorem \code{OneSided.split}. Specializing those binders at the scheduled valuation terms proves \code{to_rotating}. The file also constructs derivations connecting finite failures to the one-parameter tests and checks their arithmetic interpretation in the natural numbers. The accompanying \code{GridInterpolation.lean} identifies the compiled valuation with prime factorization, verifies the four-prime return progression and the mesh estimate, and proves a signed interpolation inequality from bounds on individual jumps. The declarations \code{compiled_log_grid} and \code{selectedData_return} connect the compiled sample to that grid and the return progression. The converse from the sparse upper test to the full two-sided test uses the preceding Landau argument. Its proof here is classical.

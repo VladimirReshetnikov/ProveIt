@@ -1,0 +1,205 @@
+\section{Holomorphic parameter integrals from integrable names}\label{sec:complex-integrals}
+
+The measure construction also supports analysis of continuous parameters.
+The relevant principle is that a proved bounded linear map commutes with a
+series having a supplied norm-tail schedule. This is stronger than simply
+approximating one finite integral, and it does not require a pointwise
+decision of convergence on a null set.
+
+\subsection{Series in a presented normed space}
+
+Let $B$ be the completion of a PR-presented normed rational vector space;
+for complex scalars use rational pairs and a compatible submultiplicative
+norm. Suppose $a_n\in B$ have jointly PR names and rational data $M,R>0$
+satisfy
+\begin{equation}\label{eq:coefficient-majorant}
+ \norm{a_n}_B R^n\le M\qquad(n\in\N).
+\end{equation}
+For $|z|\le r<R$, put $q=r/R$. Define finite sums
+$F_N(z)=\sum_{n<N}a_nz^n$.
+
+\begin{lemma}[Norm-tail schedule]\label{lem:banach-series}
+For $N\le L$,
+\begin{equation}\label{eq:banach-tail}
+ \norm{F_L(z)-F_N(z)}_B
+ \le M\frac{q^N}{1-q}.
+\end{equation}
+Thus $F(z)=\sum_{n\ge0}a_nz^n$ has a regular name, uniformly on the
+closed disk $|z|\le r$. If a finite approximation $\widetilde a_n$ has
+error $\eta_n$, the extra finite-sum error is at most
+$\sum_{n<N}r^n\eta_n$.
+\end{lemma}
+\begin{proof}
+Apply the triangle inequality and the coefficient bound termwise:
+$\sum_{n=N}^{L-1}\norm{a_n}|z|^n\le M\sum_{n=N}^{L-1}q^n$.
+The finite geometric identity bounds this by
+$Mq^N/(1-q)$. The second assertion is the same weighted triangle
+inequality applied to coefficient errors.
+
+Here is a PR clock without logarithmic search. For a rational $0\le q<1$,
+let $s=\lceil1/(1-q)\rceil$. Induction gives
+$q^j\le1/(1+j(1-q))$, so $q^s\le1/2$ and $q^{st}\le2^{-t}$.
+Choose a natural $b$ with $M/(1-q)\le2^b$, using the binary length of
+its ceiling. Then $N=s(p+b+2)$ makes the tail at most $2^{-p-2}$.
+Evaluate the finite coefficients so that their weighted error is at most
+$2^{-p-2}$; for example a common error
+$2^{-p-2}/(1+\sum_{n<N}r^n)$ suffices. Comparison of two such runs
+gives a regular name. All loops and all rational operations have explicit
+PR bounds. The case $q=0$ can instead use one term exactly.
+\end{proof}
+
+For a named $z$ with $|z|\le r$, evaluate a rational approximation inside
+a larger certified radius $s_0=(r+R)/2$. A precision making its error
+at most $(R-r)/2$ guarantees that bound. The derivative estimate below
+supplies a Lipschitz constant for the additional input error. This is a
+positive radius-gap calculation, not an exact test of whether a named
+complex number lies on a circle.
+
+\subsection{Integration and differentiation}
+
+Take $B=L^1(\mu;\C)$ with its usual complex norm, obtained by completing
+complex simple functions. The complex integral is obtained by integrating
+real and imaginary parts; its norm is at most the $L^1$ norm, and
+$\norm{zv}_B=|z|\norm v_B$. These are the norms used in all disk
+estimates below. Exact rational calculations may use
+$|\cdot|_\square$ as an upper certificate, since
+$|z|\le|z|_\square\le2|z|$. A conversion back to a square-norm error
+therefore incurs a factor at most $2$, which must be budgeted explicitly;
+the same disk constants are not silently asserted for that different
+norm. Rational upper certificates or rational square-root enclosures
+give PR presentations of the usual norm with these guard factors.
+
+\begin{theorem}[Constructive holomorphic parameter integration]\label{thm:holomorphic-integral}
+Under \eqref{eq:coefficient-majorant}, let $f(z)=\sum_na_nz^n$ as an
+$L^1$-valued name. Then the scalar function $H(z)=I(f(z))$ satisfies
+\begin{equation}\label{eq:integral-series}
+ H(z)=\sum_{n\ge0}I(a_n)z^n\qquad(|z|<R).
+\end{equation}
+It is holomorphic, and for every requested natural derivative order $j$,
+\begin{equation}\label{eq:integral-derivative}
+ H^{(j)}(z)=I\left(\sum_{m\ge0}\frac{(m+j)!}{m!}
+                    a_{m+j}z^m\right).
+\end{equation}
+The series, its derivatives, and the identities have uniform PR
+finite-observation schedules on every supplied smaller radius $r<R$.
+\end{theorem}
+\begin{proof}
+Linearity gives the identity for every finite sum. The integral contraction
+bounds the difference between the integral of the limiting name and the
+finite scalar sum by \eqref{eq:banach-tail}. Consequently both sides of
+\eqref{eq:integral-series} are the same regular scalar name. This already
+justifies the exchange of integration and the infinite sum.
+
+To justify differentiation directly, choose $r<s_0<R$. For
+$|z|\le r$ and $|z|+|h|\le s_0$, the finite polynomial identity for
+the second-order remainder gives
+\[
+ |(z+h)^n-z^n-nz^{n-1}h|
+ \le \binom n2s_0^{n-2}|h|^2\qquad(n\ge2).
+\]
+One proof is to expand the telescoping difference twice; the remaining
+sum has $\binom n2$ terms, each a product of $n-2$ factors bounded by
+$s_0$. Multiplying by the coefficient majorant and summing yields
+\begin{equation}\label{eq:holomorphic-remainder}
+ \norm{f(z+h)-f(z)-h\sum_{n\ge1}na_nz^{n-1}}_1
+ \le\frac{M|h|^2}{R^2(1-s_0/R)^3}.
+\end{equation}
+The finite identity
+$\sum_{n\ge2}\binom n2t^{n-2}=(1-t)^{-3}$ is read here through its
+finite partial sums and geometric tails; alternatively the needed upper
+bound follows from multiplying three nonnegative geometric sums and
+counting triples. Thus it has a bounded-sum proof. Dividing by $|h|>0$
+gives an explicit difference-quotient modulus. Applying the integral
+contraction proves complex differentiability of $H$ with the stated first
+derivative. To repeat the argument, for any $r<R'<R$ the derivative
+coefficient sequence $b_m=(m+j)!a_{m+j}/m!$ has majorant
+\[
+ \norm{b_m}_1(R')^m\le
+ \frac{Mj!}{R^j(1-R'/R)^{j+1}}.
+\]
+This follows from the nonnegative binomial-generating bound used below.
+Thus the differentiated series again satisfies the hypotheses on the
+smaller radius, and the same argument proves every finite order.
+
+For an explicit tail for order $j$, put
+\[
+ q=r/R,\qquad\theta=(1+q)/2,\qquad\alpha=q/\theta<1.
+\]
+If $q>0$, then
+\begin{align}
+ \sum_{m\ge N}\frac{(m+j)!}{m!}\norm{a_{m+j}}_1r^m
+ &\le\frac{Mj!}{R^j}
+       \sum_{m\ge N}\binom{m+j}{j}q^m\notag\\
+ &\le \frac{Mj!}{R^j(1-\theta)^{j+1}}
+                  \frac{\alpha^N}{1-\alpha}.\label{eq:derivative-tail}
+\end{align}
+Indeed $\binom{m+j}{j}\theta^m\le(1-\theta)^{-j-1}$,
+as seen by taking one term of the nonnegative binomial generating series.
+The remaining geometric series proves the second inequality. All constants
+are rational and factorials are PR, so Lemma~\ref{lem:banach-series}'s
+block clock applies to $\alpha$. When $r=0$, only the term $m=0$ is
+needed and $H^{(j)}(0)=j!I(a_j)$.
+
+Finally, evaluating the finitely many derivative coefficients with errors
+$\eta_{m+j}$ costs at most
+$\sum_{m<N}(m+j)!/m!\,r^m\eta_{m+j}$. This supplies a direct weighted
+precision schedule for \eqref{eq:integral-derivative}. No convergence
+principle without a norm-tail bound has been used.
+\end{proof}
+
+This theorem reuses standard geometric/derivative arguments from the
+repository's complex-series interfaces \cite{repo-complex-series}.
+Its additional ingredient is the constructed $L^1$ integral and its
+contraction property. In particular, the integrand may have an unbounded
+spatial factor. If $g\in L^1[0,1]$ has a supplied name, put
+$a_n(t)=g(t)t^n$. Bounded multiplication supplies jointly PR coefficient
+names, and $\norm{a_n}_1\le\norm g_1$. Hence
+\[
+ H(z)=\int_0^1\frac{g(t)}{1-zt}\,dt\qquad(|z|<1)
+\]
+has the stated constructive analytic interpretation. To identify the
+quotient with the named series, use the exact finite identity
+\[
+ \frac{g(t)}{1-zt}-g(t)\sum_{n<N}(zt)^n
+ =\frac{g(t)(zt)^N}{1-zt}.
+\]
+For $|z|\le r<1$ its $L^1$ norm is at most
+$\norm g_1 r^N/(1-r)$. The reciprocal is a bounded multiplier because
+$|1-zt|\ge1-r$, so this also constructs the quotient's $L^1$ name.
+A rational upper
+bound for $\norm g_1$ suffices; a pointwise bound for $g$ is unnecessary.
+
+\subsection{A complete rational example}
+
+For $g=1$, the coefficient integral is $I(t^n)=1/(n+1)$, and
+\begin{equation}\label{eq:log-example}
+ H(z)=\int_0^1\frac{dt}{1-zt}
+     =\sum_{n\ge0}\frac{z^n}{n+1}.
+\end{equation}
+The identity for $I(t^n)$ has an entirely finite proof. Factor
+\[
+ (k+1)^{n+1}-k^{n+1}
+ =\sum_{j=0}^{n}(k+1)^{n-j}k^j.
+\]
+Each summand lies between $k^n$ and $(k+1)^n$.
+Sum for $0\le k<m$ and divide by $(n+1)m^{n+1}$. The resulting
+inequality places $1/(n+1)$ between the left and right Riemann sums for
+$t^n$ on the $m$-mesh. Their difference is exactly $1/m$ for $n\ge1$
+and zero for $n=0$. Hence they construct the asserted integral with
+the PR mesh $m=2^{p+2}$. Factoring $x^n-y^n$ also gives the uniform
+cell-oscillation bound $n/m$, useful when constructing the full $L^1$
+name of $t^n$. The reference program checks these rational brackets
+and the finite series identities.
+
+On $|z|\le1/2$ the $N$-term scalar approximation has error at most
+$2^{1-N}$. The value at the center is $H(0)=1$. If the analytic logarithm
+on $|z|<1$ is defined by its usual series, then for $z\ne0$
+$H(z)=-\log(1-z)/z$. Formula~\eqref{eq:log-example} is the definition
+used at zero, so it introduces neither a spurious singularity nor a
+branch-selection problem.
+
+The same construction gives
+$H^{(j)}(0)=j!/(j+1)$. This is an equality of named complex numbers;
+for the rational coefficient values it is an exact arithmetic identity.
+The code checks both series-tail and derivative-tail certificates, while
+the general statements are proved above.

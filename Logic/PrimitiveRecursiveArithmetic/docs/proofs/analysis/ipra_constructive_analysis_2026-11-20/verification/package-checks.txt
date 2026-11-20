@@ -1,0 +1,18 @@
+Validation on 20 November 2026
+
+ProveIt revision b2341af5370cd8a43f72ebb2341c0d7d7395b634.
+Mathlib revision 81a5d257c8e410db227a6665ed08f64fea08e997.
+The Syntax, Deduction and PR Lean source blobs were obtained from that ProveIt
+revision and independently recompiled locally against the Mathlib dependencies.
+The public object replay theorem and its closed example passed a Lean axiom audit.
+
+check_examples.sh was run from the working sources and again after extraction.
+The two runs' outputs matched. The PDF was rebuilt from the extracted TeX and
+figure sources. Its 18 pages matched the text of the distributed PDF.
+The final TeX log had no undefined references, missing glyphs or overfull boxes.
+The page images and both vector figures were visually inspected.
+
+check_proveit.sh was replayed using the pinned numerical proof sources in an
+isolated Lake workspace with the matching cached Mathlib dependencies. Results
+appear in upstream-replay.txt. This exercise built the required imports.
+The rest of ProveIt's derivation library was not rebuilt.

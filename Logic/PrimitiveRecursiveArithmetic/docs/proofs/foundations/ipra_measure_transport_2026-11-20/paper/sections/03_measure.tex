@@ -1,0 +1,707 @@
+\section{Measure and integration from stable finite observations}
+\label{sec:measure}
+
+The measure-theoretic improvement is to use two compatible distances on the
+same finite data.  The strong distance controls integration; a bounded
+distance controls convergence in measure.  A quantitative tail estimate
+converts the second into the first.  This produces limits rather than
+assuming an integrable limit in advance.  A second construction recovers a
+density from dyadic masses.  Its convergence certificate can be derived from
+local oscillation bounds on those masses, so a density evaluator is not an
+input to the construction.
+
+\subsection{The rational dyadic interface}
+
+\begin{definition}[Dyadic step data]\label{m:step}
+A step function of level \(r\) is a vector
+\(a=(a_0,\ldots,a_{2^r-1})\) of rational numbers.  Its intended value is
+\(a_i\) on \([i2^{-r},(i+1)2^{-r})\).  The right endpoint of the unit interval
+is immaterial.  Refinement from level \(r\) to level \(s\ge r\) repeats each
+entry \(2^{s-r}\) times.  Define
+\[
+ I(a)=2^{-r}\sum_{i<2^r}a_i,\qquad
+ \|a\|_1=2^{-r}\sum_{i<2^r}|a_i|,\qquad
+ Q(a)=2^{-r}\sum_{i<2^r}a_i^2.
+\]
+For two steps, first refine to the larger level.  All three quantities are
+unchanged by refinement.
+\end{definition}
+
+This definition is an arithmetic data type.  Signed integers encode rational
+numerators, and positive natural numbers encode denominators.  Comparison,
+refinement, finite summation, and the functions
+\(\min,\max,|\cdot|\) have primitive recursive implementations.  In
+particular, the length \(2^r\) is an explicit loop bound.  None of these
+operations requires selecting a point of an abstract measurable space.
+
+\begin{lemma}[Finite integral estimates]\label{m:finite}
+For rational steps on a common refinement,
+\[
+ |I(a)|\le\|a\|_1,\qquad
+ \|a+b\|_1\le\|a\|_1+\|b\|_1,\qquad
+ \bigl|\|a\|_1-\|b\|_1\bigr|\le\|a-b\|_1,
+ \qquad
+ \|a\|_1^2\le Q(a).
+\]
+The integral is rational linear and preserves entrywise order.
+\end{lemma}
+
+\begin{proof}
+The first three assertions follow by summing the corresponding rational
+inequalities entry by entry.  For the last, write \(J=2^r\) and \(u_i=|a_i|\).
+The exact identity
+\[
+ J\sum_{i<J}u_i^2-\Bigl(\sum_{i<J}u_i\Bigr)^2
+   =\sum_{0\le i<j<J}(u_i-u_j)^2
+\]
+has a nonnegative right side.  Divide by \(J^2>0\).
+Linearity and monotonicity are finite distributivity and addition of
+inequalities.  Alternatively, clear the common denominator throughout; the
+proof is then an integer polynomial identity and natural-number inequalities.
+\end{proof}
+
+\begin{definition}[Strong names]\label{m:l1}
+An \(L^1\) name is a fixed primitive recursive producer \(p\mapsto a_p\) of
+dyadic steps, together with proofs of
+\[
+ q\ge p\quad\Longrightarrow\quad \|a_q-a_p\|_1\le2^{-p}.
+ \tag{M1}
+\]
+Equivalent names have \(L^1\) distance zero, witnessed by explicit precision
+maps.  For example, a certificate of equivalence may supply a primitive
+recursive \(e(k)\) and prove
+\(\|a_p-b_q\|_1\le2^{-k}\) whenever \(p,q\ge e(k)\).
+We use \(L^1_{\rm dyad}\) for this represented completion.
+\end{definition}
+
+Normalization (M1) is slightly stronger than the core regular-name bound
+\(\|a_p-a_q\|\le2^{-p}+2^{-q}\).  Replacing \(a_p\) by \(a_{p+1}\) converts
+that bound into (M1) for \(q\ge p\); the representations therefore differ
+only by a fixed precision shift.
+
+The notation \(f\in L^1_{\rm dyad}\) describes a represented object.  In the
+object theory, each theorem is about the fixed producers, rational
+inequalities, and their certificates.  It is not a quantification over a
+new set of all functions.  The finite estimates give names for
+\(I(f)\) and \(\|f\|_1\).  The notation
+\(\|f-a_p\|_1\le2^{-p}\) abbreviates the corresponding regular-real
+inequality obtained from (M1).  Linearity, positivity, and the integral
+estimate extend by applying the finite results with guard bits.
+Lattice operations such as absolute value and positive part extend by
+their Lipschitz estimates.  In particular, the order \(u\le v\) means
+\(\|(u-v)^+\|_1=0\).  This defines the domination hypothesis used below
+without selecting pointwise representatives.
+
+\subsection{Boolean completion and effective countable additivity}
+
+A dyadic set is a step vector whose entries belong to \(\{0,1\}\).
+Its measure is the average of its entries, and
+\[
+ d(A,B)=I(|1_A-1_B|)=\lambda(A\mathbin{\triangle}B).
+\]
+Complement is an isometry.  Union and intersection satisfy
+\[
+ d(A\cup B,A'\cup B')\le d(A,A')+d(B,B'),
+ \qquad
+ d(A\cap B,A'\cap B')\le d(A,A')+d(B,B').
+ \tag{M2}
+\]
+These follow by checking the finitely many Boolean possibilities at one
+entry and summing.  Consequently they act on strong Boolean names.
+This is an effective measure algebra: equality means zero measure of the
+symmetric difference and does not decide pointwise membership.
+
+\begin{theorem}[Effective unions]\label{m:union}
+Let \(A_i\) be a uniformly presented sequence of Boolean names.  Suppose a
+primitive recursive \(T\) and finite certificates give
+\[
+ m\ge n\ge T(p)
+ \quad\Longrightarrow\quad
+ \lambda\Bigl(\bigcup_{n\le i<m} A_i\Bigr)\le2^{-p}.
+ \tag{M3}
+\]
+Then the union of the sequence has a Boolean name.  If the \(A_i\) are
+pairwise disjoint modulo zero measure, its measure is the regular-real sum
+\[
+ \lambda\Bigl(\bigcup_{i=0}^{\infty}A_i\Bigr)
+       =\sum_{i=0}^{\infty}\lambda(A_i).
+ \tag{M4}
+\]
+A sufficient input for (M3) is the stronger bound
+\(\sum_{n\le i<m}\lambda(A_i)\le2^{-p}\).
+\end{theorem}
+
+\begin{proof}
+Put \(U_n=\bigcup_{i<n}A_i\).  Boolean algebra gives
+\(U_m\mathbin{\triangle}U_n\subseteq\bigcup_{n\le i<m}A_i\) for \(m\ge n\).
+Thus (M3) is exactly a Cauchy estimate for the prefix unions.
+
+For an explicit finite output at precision \(p\), let
+\(N=T(p+2)\) and approximate each \(A_i\), \(i<N\), with error at most
+\(2^{-h}\), where
+\[
+ h=p+2+\lceil\log_2(\max(1,N))\rceil.
+\]
+Take the finite union of those approximants.  Repeated application of (M2)
+bounds its error from \(U_N\) by \(N2^{-h}\le2^{-p-2}\).
+For two requested precisions \(p,q\), compare both finite outputs with the
+finite prefix \(U_{\max(T(p+2),T(q+2))}\).  Condition (M3) bounds the two
+prefix discrepancies by \(2^{-p-2}\) and \(2^{-q-2}\), respectively.
+The two approximation errors and these two tail errors show that outputs
+at \(p\le q\) differ by at most
+\(2^{-p-1}+2^{-q-1}\le2^{-p}\).  This constructs the strong Boolean name
+without first assuming that an infinite union exists.
+The case \(N=0\) is the empty union.
+
+For disjoint sets, the finite identity
+\(\lambda(U_n)=\sum_{i<n}\lambda(A_i)\) follows from Boolean additivity.
+Apply the same tail estimate to both sides.  This proves (M4) with an actual
+regular-real modulus, rather than an unmodulated supremum.
+The word union also has its order-theoretic meaning.  Define \(A\le B\) by
+\(\lambda(A\setminus B)=0\).  Every \(A_i\) lies below each sufficiently long
+prefix and hence below the constructed limit.  Any upper bound of all
+\(A_i\) bounds every finite prefix.  Continuity of Boolean difference and
+measure then makes it an upper bound of the limit.  The constructed union
+is therefore the least upper bound in the completed Boolean algebra.
+\end{proof}
+
+The adjective \emph{uniformly} above includes a bound for producing the
+variable-length list of approximants.  For fixed primitive recursive
+producers, the bounded loop is primitive recursive.  A relational
+presentation instead supplies one batch trace and its verification
+certificate.  Individual totality assertions for each \(A_i\) alone do not
+license this batch construction.
+
+\subsection{Fubini and conditional averages}
+
+On the square, a rational rectangle step is an array
+\(a_{ij}\), \(i<2^r,\ j<2^s\), with integral and \(L^1\) norm given by the
+average of its entries and absolute entries.  Define the partial average
+\[
+ (P_y a)_i=2^{-s}\sum_{j<2^s}a_{ij}.
+\]
+
+\begin{theorem}[Fubini as an operator on names]\label{m:fubini}
+Partial averaging is an \(L^1\) contraction:
+\[
+ \|P_y a-P_y b\|_1\le\|a-b\|_1.
+ \tag{M5}
+\]
+It therefore sends each strong rectangle name directly to a strong
+one-dimensional name.  On these completions,
+\[
+ I_x(P_y f)=I_{x,y}(f)=I_y(P_x f).
+ \tag{M6}
+\]
+\end{theorem}
+
+\begin{proof}
+For each row, the absolute value of an average is no larger than the average
+of absolute values.  Average this row inequality over \(i\) to obtain (M5).
+For a finite array, both iterated integrals equal
+\(2^{-r-s}\sum_{i,j}a_{ij}\).  Apply that exact identity to the \(p\)-th
+array in a strong name.  By (M5), all three scalar names have the same
+finite values and compatible moduli.  This proves (M6).
+\end{proof}
+
+This formulation constructs the iterated integral without selecting
+pointwise sections on null exceptional sets.  A separate comparison with a
+classical measure-space interpretation may identify it with the usual
+Fubini integral.  No claim that every individual section is integrable is
+needed internally.
+
+For \(n\in\mathbb N\), define \(E_n a\) to be the average of \(a\) on each
+level-\(n\) dyadic cell.  If \(a\) has level below \(n\), simply refine it.
+If it has level \(r>n\), average each block of \(2^{r-n}\) entries.
+
+\begin{theorem}[Conditional averages with a derived rate]\label{m:tower}
+The operators \(E_n\) preserve the integral and positivity, are \(L^1\)
+contractions, and satisfy
+\[
+ E_nE_m=E_{\min(n,m)}.
+ \tag{M7}
+\]
+Every strong name \(f=(a_p)\) has a primitive recursive convergence modulus
+for \(E_n f\to f\).  In fact, if \(\ell(a)\) denotes the level of a step,
+\[
+ n\ge\ell(a_{p+1})
+ \quad\Longrightarrow\quad
+ \|E_n f-f\|_1\le2^{-p}.
+ \tag{M8}
+\]
+\end{theorem}
+
+\begin{proof}
+Each property in (M7) is a finite identity of block averages.  In particular,
+averaging twice over nested dyadic partitions averages over the coarser
+partition.  The contraction follows exactly as in (M5).  If
+\(n\ge\ell(a_{p+1})\), then \(E_n a_{p+1}=a_{p+1}\), and hence
+\[
+ \|E_nf-f\|_1
+ \le\|E_n(f-a_{p+1})\|_1+\|a_{p+1}-f\|_1
+ \le2\|f-a_{p+1}\|_1\le2^{-p}.
+ \]
+The displayed level is computed from one finite approximation.  Thus no
+independent martingale-convergence oracle is required once a strong
+\(L^1\) name is already available.
+\end{proof}
+
+\subsection{Stable tests, clipping, and the repaired Vitali estimate}
+
+Define, for rational \(x,y\) and \(K\ge1\),
+\[
+ c_K(x)=\max(-K,\min(K,x)),\qquad
+ t_K(x)=\max(|x|-K,0),\qquad
+ \rho(x,y)=\min(1,|x-y|).
+\]
+On finite steps put
+\[
+ d_0(a,b)=I(\rho(a,b)),\qquad \tau_K(a)=I(t_K(a)).
+\]
+The functions \(t_K\) and \(x\mapsto c_K(x)\) are \(1\)-Lipschitz, and
+\(\rho\) is \(1\)-Lipschitz in each argument.  These quantities consequently
+extend to \(L^1\) names with explicit moduli.  Their use avoids deciding a
+sharp threshold event for an arbitrary real-valued name.  For finite steps,
+\[
+ \lambda(|a-b|>\eta)\le \frac{d_0(a,b)}{\min(1,\eta)}
+ \quad(\eta>0),
+ \qquad
+ d_0(a,b)\le\eta+\lambda(|a-b|>\eta)\quad(0<\eta\le1).
+ \tag{M9}
+\]
+The first inequality follows entry by entry on the indicated event; the
+second splits that event from its complement.  Thus \(d_0\) is a stable
+quantitative substitute for convergence in measure.
+The inequality
+\(\min(1,a+b)\le\min(1,a)+\min(1,b)\) for \(a,b\ge0\) proves the triangle
+inequality for \(d_0\).  Moreover \(d_0\le\|\cdot\|_1\).
+On \(L^1\) names it separates equivalence classes: the excess tails of each
+fixed name can be made arbitrarily small by Proposition~\ref{m:ui}, and
+(M10) then turns \(d_0(f,g)=0\) into \(\|f-g\|_1=0\).
+
+\begin{lemma}[Clipping kernel]\label{m:clipping}
+For rational steps and \(K\ge1\),
+\[
+ \|a-b\|_1
+ \le 2K\,d_0(a,b)+\tau_K(a)+\tau_K(b).
+ \tag{M10}
+\]
+The same inequality holds for strong \(L^1\) names.
+\end{lemma}
+
+\begin{proof}
+First, \(|x-c_K(x)|=t_K(x)\).  The triangle inequality gives
+\[
+ |x-y|\le t_K(x)+|c_K(x)-c_K(y)|+t_K(y).
+ \]
+Clipping is nonexpansive and its image has diameter \(2K\), so its middle
+term is at most \(\min(|x-y|,2K)\).  If \(|x-y|\le1\), this is at most
+\(2K|x-y|\), since \(2K\ge1\).  If \(|x-y|\ge1\), it is at most \(2K\).
+In both cases the bound is \(2K\rho(x,y)\).  Sum the resulting pointwise
+inequality.  The passage to names uses only the already proved Lipschitz
+estimates, so it preserves the rational bound without threshold-event
+selection.
+\end{proof}
+
+\paragraph{A precise repair of a repository argument.}
+The \emph{Vitali form} proof in the inspected
+\texttt{expected\_value\_ipra\_2026-11-16} packet, section
+\texttt{12\_convergence.tex}, displays the shortcut
+\[
+ |x-y|\ \le\
+ |x-y|1_{\{|x|\le K,\ |y|\le K\}}
+ +|x|1_{\{|x|>K\}}+|y|1_{\{|y|>K\}}.
+ \tag{M11}
+\]
+This displayed inequality is false: \(x=2,\ y=-1,\ K=1\) gives \(3\le2\).
+The omitted contribution is the bounded coordinate on a region where only
+the other coordinate exceeds the threshold.  Clipping gives a correct proof
+of the intended conclusion, with the excess tails \(t_K\).  This correction
+does not invalidate the repository's separate common-envelope theorem
+\texttt{Probability/TruncationEstimate.lean}.  That module proves the
+different, valid estimate with \(|X-Y|\le2G\) and a tail of the common
+envelope \(G\); its own documentation explicitly leaves normalization and
+refinement outside its derived result.
+
+\subsection{A limit-producing quantitative Vitali theorem}
+
+\begin{theorem}[Vitali without a pre-supplied limit]\label{m:vitali_cauchy}
+Let \(f_n\) be a fixed primitive recursive sequence of rational dyadic
+steps.  Suppose there are primitive recursive functions \(N,U\), with
+\(U(p)\ge1\), and proofs of
+\[
+ m,n\ge N(q)\ \Longrightarrow\ d_0(f_m,f_n)\le2^{-q},
+ \qquad
+ \tau_{U(p)}(f_n)\le2^{-p}\quad\hbox{for every }n.
+ \tag{M12}
+\]
+Define
+\[
+ K_p=U(p+2),\quad
+ h_p=\lceil\log_2 K_p\rceil,\quad
+ M(p)=N(p+3+h_p),\quad
+ \widehat M(p)=\max_{j\le p}M(j).
+ \tag{M13}
+\]
+The logarithm notation means bounded search for the least integer \(h\)
+with \(K_p\le2^h\).  Then
+\[
+ m,n\ge M(p)\quad\Longrightarrow\quad
+ \|f_m-f_n\|_1\le\tfrac34\,2^{-p}.
+ \tag{M14}
+\]
+In particular \(a_p=f_{\widehat M(p)}\) is an \(L^1\) name, and
+\(f_n\) converges to its represented limit with an explicit \(L^1\) modulus.
+\end{theorem}
+
+\begin{proof}
+Use (M10) with \(K=K_p\).  The two excess tails are each at most
+\(2^{-p-2}\).  For \(m,n\ge M(p)\), the metric contribution is at most
+\[
+ 2K_p\,2^{-p-3-h_p}\le2^{-p-2}.
+ \]
+This proves (M14).  If \(q\ge p\), then both
+\(\widehat M(p)\) and \(\widehat M(q)\) are at least \(M(p)\), proving
+\(\|a_q-a_p\|_1\le(3/4)2^{-p}\le2^{-p}\).
+The limiting object has therefore been constructed by a concrete producer.
+
+To prove convergence of the original sequence, fix \(n\ge M(p+1)\).
+For every \(q\ge p+1\), (M14) bounds
+\(\|f_n-a_q\|_1\) by \((3/4)2^{-p-1}\).
+The resulting regular-real inequality is smaller than \(2^{-p}\).
+Since \(|I(f_n)-I(a_q)|\le\|f_n-a_q\|_1\), the same schedule controls
+convergence of expectations.  The proof uses no choice of a subsequence
+converging pointwise and no Fatou lemma.
+\end{proof}
+
+The theorem also applies to uniformly presented \(L^1\) names.  First use
+(M14) for those names, then let the output step be an approximation to
+\(f_{\widehat M(p+2)}\) with \(L^1\) error at most \(2^{-p-3}\).
+For two output precisions \(q\ge p\), the two approximation errors and
+(M14) sum to at most
+\[
+ 2^{-p-3}+2^{-q-3}+\tfrac34\,2^{-p-2}<2^{-p}.
+ \]
+The batch-production requirement remains explicit.
+
+\begin{proposition}[Two producers for uniform integrability]\label{m:ui}
+\begin{enumerate}
+\item If \(Q(f_n)\le C\) for every \(n\), then
+\[
+ \tau_K(f_n)\le C/(4K)\qquad(K>0).
+ \tag{M15}
+\]
+For any integer \(C_0\ge\max(1,C)\),
+\(U(p)=C_0\,2^p\) satisfies the tail part of (M12).
+\item If \(|f_n|\le G\) and a strong \(L^1\) name \(G=(g_p)\) is supplied,
+the latter name computes a valid \(U\).  It suffices to take
+\[
+ U(p)=\max\bigl(1,\max_i |(g_{p+1})_i|\bigr).
+ \tag{M16}
+\]
+Thus a strong dominating name supplies its own amplitude-tail modulus.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For \(u\ge0\), the inequality \(4K(u-K)^+\le u^2\) is immediate when
+\(u\le K\); otherwise it is equivalent to \((u-2K)^2\ge0\).
+Average it to prove (M15).
+For the second claim, put \(B=\max_i|(g_{p+1})_i|\).  Since \(|g_{p+1}|\le B\),
+\[
+ (|G|-B)^+\le |G-g_{p+1}|,
+ \qquad
+ \tau_{U(p)}(G)\le2^{-p-1}.
+ \]
+The map \(t_K\) is increasing in \(|x|\), so domination gives the same bound
+for every \(f_n\).  The argument is a Lipschitz estimate on names and does
+not require evaluating \(G\) pointwise.
+More explicitly, the finite inequality
+\[
+ t_K(x)\le(|x|-y)^+ +(y-K)^+
+          \le(|x|-y)^+ +t_K(y)
+ \]
+passes to names.  The order definition
+\(\|(|f_n|-G)^+\|_1=0\) removes the first term and yields
+\(\tau_K(f_n)\le\tau_K(G)\).
+\end{proof}
+
+\subsection{Density construction from masses}
+
+\begin{definition}[Coherent dyadic mass data]\label{m:masses}
+Supply nonnegative rational numbers \(v_{n,i}\), \(i<2^n\), produced by a
+fixed primitive recursive algorithm, with exact coherence
+\[
+ v_{n,i}=v_{n+1,2i}+v_{n+1,2i+1}.
+ \tag{M17}
+\]
+Their dyadic density steps and energies are
+\[
+ d_{n,i}=2^n v_{n,i},\qquad H_n=Q(d_n).
+ \]
+Write \(\nu(A)\) for the finite sum of masses of any dyadic set \(A\) at a
+common level.  Coherence makes this independent of refinement.
+\end{definition}
+
+\begin{lemma}[Orthogonal energy identity]\label{m:energy}
+For \(m\ge n\),
+\[
+ E_n d_m=d_n,\qquad
+ Q(d_m-d_n)=H_m-H_n\ge0,\qquad
+ \|d_m-d_n\|_1^2\le H_m-H_n.
+ \tag{M18}
+\]
+\end{lemma}
+
+\begin{proof}
+Repeated use of (M17) says that the average of the finer densities over each
+coarse cell is its coarse density.  This is the first assertion.
+Consequently
+\[
+ I(d_m d_n)=I\bigl((E_nd_m)d_n\bigr)=I(d_n^2)=H_n.
+ \]
+Expand \(I((d_m-d_n)^2)\) and cancel the cross term to obtain the second
+assertion.  Nonnegativity follows because a square has nonnegative entries.
+The last assertion is the finite Cauchy--Schwarz estimate of
+Lemma~\ref{m:finite}.  All products in this proof are finite products of
+rational steps; no unrestricted multiplication map on \(L^1\) is asserted.
+\end{proof}
+
+\begin{theorem}[Effective Radon--Nikodym fragment]\label{m:rn}
+Suppose coherent dyadic masses have an energy-tail certificate
+\[
+ m\ge n\ge R(p)\quad\Longrightarrow\quad H_m-H_n\le4^{-p}
+ \tag{M19}
+\]
+for a primitive recursive \(R\).  Let
+\[
+ r(p)=\max\bigl(p,\max_{j\le p}R(j)\bigr).
+ \]
+Then \(p\mapsto d_{r(p)}\) is a nonnegative \(L^1\) name \(f\), and
+\[
+ \nu(A)=\int_A f\,d\lambda
+ \tag{M20}
+\]
+for every dyadic set \(A\).  The represented density is unique among
+\(L^1_{\rm dyad}\) names satisfying (M20).
+\end{theorem}
+
+\begin{proof}
+If \(q\ge p\), then \(r(q)\ge r(p)\ge R(p)\).  By (M18),
+\(\|d_{r(q)}-d_{r(p)}\|_1^2\le4^{-p}\).
+Both sides are nonnegative rationals, so
+\(\|d_{r(q)}-d_{r(p)}\|_1\le2^{-p}\); a proof by multiplication of
+inequalities avoids a square-root operation.  Each approximant is
+nonnegative.
+
+If \(A\) has level \(k\), then
+\(\int_A d_n\,d\lambda=\nu(A)\) whenever \(n\ge k\), by (M17).
+The schedule \(r(p)\ge p\) eventually exceeds \(k\).
+Moreover, integration over \(A\) is an \(L^1\) contraction.
+Thus the scalar name for the left integral in (M20) is the constant name
+\(\nu(A)\).
+
+If \(f\) and \(g\) both represent the masses, then the cell integrals show
+\(E_n f=E_n g\) for every \(n\).  Theorem~\ref{m:tower} supplies convergence
+rates for both conditional averages.  At a precision where both errors are
+at most \(2^{-p-1}\),
+\[
+ \|f-g\|_1\le\|f-E_nf\|_1+\|E_ng-g\|_1\le2^{-p}.
+ \]
+This is effective equality of the density names.  No Lebesgue differentiation
+theorem is used.
+\end{proof}
+
+Condition (M19) already gives a global energy bound:
+\(C=H_{R(0)}+1\) bounds \(H_n\), by monotonicity for \(n<R(0)\) and
+the precision-zero tail estimate for \(n\ge R(0)\).
+Choose an integer \(J\ge1\) with \(J^2\ge C\).
+Finite Cauchy--Schwarz gives
+\[
+ |\nu(A)-\nu(B)|
+ \le J\sqrt{\lambda(A\mathbin{\triangle}B)}.
+ \tag{M21}
+\]
+The square root is only notation for the squared rational inequality.
+It supplies a modulus that extends \(\nu\) to the effective measure algebra:
+to obtain value error \(2^{-p}\), request set error at most
+\(4^{-p}/J^2\).  The density integral extends with the same modulus, and
+(M20) holds there as well.  Explicitly, if \(J\le2^h\) and \(A_p\) is a
+rapid Boolean name, then \(p\mapsto\nu(A_{2p+2h})\) is a rapid scalar name.
+The integral is first defined on dyadic sets by its \(L^1\) contraction and
+then extended by (M21); this does not introduce unrestricted multiplication
+of \(L^1\) names.  Countable additivity is obtained for the
+tail-controlled unions of Theorem~\ref{m:union}, with the measure tail
+converted by (M21): a \(\lambda\)-tail cutoff \(T\) yields the
+\(\nu\)-tail cutoff \(p\mapsto T(2p+2h)\).
+This is a represented Radon--Nikodym theorem on the
+specified effective algebra, not an assertion about arbitrary
+\(\sigma\)-algebras.
+
+\begin{theorem}[A local producer for the energy modulus]\label{m:oscillation}
+An energy-tail certificate need not be an oracle.  Suppose the dyadic
+densities satisfy the uniform sibling bound
+\[
+ |d_{n+1,2i}-d_{n+1,2i+1}|\le L\,2^{-n}
+ \quad(i<2^n)
+ \tag{M22}
+\]
+for a supplied nonnegative rational \(L\).  Then
+\[
+ H_m-H_n\le\frac{L^2}{3}\,4^{-n}\quad(m\ge n).
+ \tag{M23}
+\]
+Choose \(h\) with \(L\le2^h\).  The primitive recursive schedule
+\(R(p)=p+h\) satisfies (M19), so the masses construct their own density name.
+\end{theorem}
+
+\begin{proof}
+For siblings \(u,v\), their parent density is \((u+v)/2\), and
+\[
+ \frac{u^2+v^2}{2}-\left(\frac{u+v}{2}\right)^2
+   =\frac{(u-v)^2}{4}.
+ \]
+Average this identity over the level-\(n\) cells and apply (M22):
+\(H_{n+1}-H_n\le(L^2/4)4^{-n}\).
+For \(m\ge n\), telescope this inequality.  The finite geometric sum gives
+\[
+ H_m-H_n
+ \le\frac{L^2}{4}\sum_{j=n}^{m-1}4^{-j}
+ =\frac{L^2}{3}4^{-n}(1-4^{-(m-n)})
+ \le\frac{L^2}{3}4^{-n}.
+ \]
+At \(n\ge p+h\), the right side is at most \(4^{-p}/3\), hence at most
+\(4^{-p}\).  The same calculation also derives the global energy bound
+\(H_n\le H_0+L^2/3\).
+\end{proof}
+
+\paragraph{An explicit example from masses.}
+For a dyadic interval \([a,b)\), supply
+\[
+ \nu([a,b))=\frac23(b-a)+\frac13(b^2-a^2).
+ \]
+These are rational, positive, coherent masses of total one.  Direct finite
+calculation gives
+\[
+ d_{n,i}=\frac23+\frac{2i+1}{3\cdot2^n},
+ \qquad
+ H_n=\frac{28}{27}-\frac{4^{-n}}{27},
+ \qquad
+ |d_{n+1,2i+1}-d_{n+1,2i}|=\frac13\,2^{-n}.
+ \]
+Thus the construction produces the density \(f(t)=2(1+t)/3\), with
+\(H_\infty-H_n=4^{-n}/27\).  The formula for \(f\) verifies the interpretation
+after the construction; the algorithm itself needs only the masses and the
+sibling certificate.
+
+\subsection{What an energy bound alone does give}
+
+\begin{theorem}[Finite energy metastability]\label{m:metastability}
+Assume only \(H_n\le C_0\), where \(C_0\) is a positive integer.
+For every fixed primitive recursive challenge \(g\) and precision \(p\),
+one can primitive recursively find \(N\) such that
+\[
+ m,n\in[N,\max(N,g(N))]
+ \quad\Longrightarrow\quad
+ \|d_m-d_n\|_1\le2^{-p}.
+ \tag{M24}
+\]
+An explicit search bound is obtained by setting
+\[
+ t_0=0,\quad t_{j+1}=\max(t_j,g(t_j)),\quad
+ B=C_0\,4^p+1
+ \]
+and searching \(j<B\) for
+\(H_{t_{j+1}}-H_{t_j}\le4^{-p}\), then taking \(N=t_j\).
+\end{theorem}
+
+\begin{proof}
+If all \(B\) increments were larger than \(4^{-p}\), telescoping would give
+\[
+ H_{t_B}-H_0>B\,4^{-p}>C_0,
+ \]
+contrary to \(0\le H_0\le H_{t_B}\le C_0\).
+The search therefore succeeds.  Monotonicity of \(H\) implies that any two
+levels in the selected interval have energy difference at most the endpoint
+increment.  Apply (M18).
+The recursion for \(t_j\) is primitive recursion using the fixed function
+symbol for \(g\).  No evaluator uniform over all primitive recursive program
+codes has been introduced.
+\end{proof}
+
+This is a substantive finite conclusion from a bare energy bound.  It is
+weaker than an \(L^1\) name: the interval depends on the challenge \(g\), and
+the construction does not supply one index after which all later levels are
+close.
+
+\begin{proposition}[A uniform rate cannot be extracted from the energy bound]
+\label{m:no_rate}
+There is no computable operation that takes an arbitrary coherent
+primitive recursive dyadic mass producer, together with a fixed bound
+\(H_n\le5/4\), and always returns an \(L^1\) Cauchy rate for its density steps.
+\end{proposition}
+
+\begin{proof}
+Fix a machine index \(e\).  At level \(n\), simulate the machine for \(n\)
+steps.  If it has not halted at a time \(t<n\), put \(d_n=1\).
+If it first halted at \(t<n\), put
+\[
+ d_n=1+\tfrac12 r_{t+1},
+ \]
+where \(r_k\) is the level-\(k\) dyadic Rademacher step taking alternating
+values \(1,-1\) on sibling cells.  This is a fixed bounded-simulation
+algorithm, hence primitive recursive in \(e,n,i\).
+At the first nonconstant level, the sibling perturbations average to zero;
+all subsequent levels merely refine the same step.  The masses
+\(v_{n,i}=2^{-n}d_{n,i}\) are therefore nonnegative, coherent, and normalized.
+The energy is either \(1\) or \(5/4\).
+
+If a Cauchy rate returned an index \(N\) valid for distance tolerance \(1/4\),
+the machine could not first halt at a time \(t\ge N\): in that case the
+distance between \(d_N=1\) and \(d_{t+1}\) would be \(1/2\).
+Simulating the machine for \(N\) steps would therefore decide whether it
+ever halts.  This contradicts the undecidability of the halting problem.
+The argument is a metatheoretic obstruction to a uniform algorithm, not an
+unproved claim that one particular numerical sentence is independent of
+iPRA.
+\end{proof}
+
+\subsection{Object-language proof obligations and efficiency}
+
+The new mathematical proofs reduce to a small number of reusable finite
+identities.  For the clipping kernel, the loop invariant after \(j\) cells is
+\[
+ \sum_{i<j}w_i|a_i-b_i|
+ \le 2K\sum_{i<j}w_i\rho(a_i,b_i)
+      +\sum_{i<j}w_i t_K(a_i)+\sum_{i<j}w_i t_K(b_i),
+ \qquad w_i=2^{-r}.
+ \tag{M25}
+\]
+After denominator clearing this is quantifier-free.  Its base case is zero;
+its step adds the proved one-cell inequality.  For refinement, the invariant
+says that a processed block of repeated entries contributes the original
+entry times its exact multiplicity.  For Fubini, it is equality of two
+processed rectangular sums.  For the energy identity, it is the accumulated
+identity
+\(\sum(d_m-d_n)^2=\sum d_m^2-\sum d_n^2\), together with the
+coarse-cell sum identity that cancels the cross term.
+
+The metastability search uses the quantifier-free prefix invariant
+\[
+ H_{t_j}-H_0=\sum_{i<j}(H_{t_{i+1}}-H_{t_i}),
+ \]
+and a Boolean accumulator recording whether a good interval has been
+found.  All searches have the stated finite bounds.  Proofs of the
+unbounded universal conclusions instantiate these finite kernels at
+arbitrary precision and level parameters; they do not perform induction on
+a formula asserting an infinite convergence statement.
+
+The principal efficiencies are mathematical.  Clipping uses continuous
+tests, so sharp-event separation certificates disappear.  The \(L^1\) name
+of a dominating function already supplies the required tail data.
+Conditional-average convergence obtains its rate from a finite step level.
+Radon--Nikodym construction reuses one exact energy identity, and local
+sibling bounds discharge the otherwise missing convergence obligation.
+The supplied Lean and implementation ledgers separately record which
+finite scalar lemmas have been kernel checked and which completion and
+object-iPRA derivations remain formalization targets.

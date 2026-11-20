@@ -1,0 +1,59 @@
+\section{Robin and Nicolas with exact rational witnesses}\label{sec:named}
+Let $T(n)=e^\gamma\log\log n$, where $\gamma$ is Euler's constant. Two classical criteria for ordinary RH compare this number with rational numbers in opposite directions. With $P_y=\prod_{p\le y}p$ they are
+\[
+ \frac{\sigma(n)}n<T(n)\quad(n\ge5041),\qquad
+ T(P_y)<\frac{P_y}{\varphi(P_y)}\quad(y\ge3).
+\]
+Here $\sigma(n)=\sum_{a\mid n}a$ and $\varphi(P_y)=\prod_{p\le y}(p-1)$. Starting at $y=3$ means that the first primorial considered is six. A composite cutoff repeats a primorial and cannot change the assertion. Robin's lower cutoff is on $n$, including $5041$.
+
+We construct rational brackets $T_m^-(n)\le T(n)\le T_m^+(n)$ with both ends tending to $T(n)$ for every allowed input. This supports two different assertions for each comparison. A strict comparison gives a finite successful precision as evidence. A weak comparison checks every rational enclosure for a violation. The quantifier order is part of the formulation.
+
+\paragraph{Logarithms from rational rectangles.}
+For rational $x\ge1$ and $m\ge1$ use the equal-width right and left sums for $1/t$:
+\[
+ \ell^-_m(x)=\sum_{j=1}^{m}\frac{x-1}{m+j(x-1)},\qquad
+ \ell^+_m(x)=\sum_{j=0}^{m-1}\frac{x-1}{m+j(x-1)}.
+\]
+They enclose $\log x$ since the integrand is decreasing. Their difference is $(x-1)(1-1/x)/m$. At $x=1$ both vanish. Evaluate the first logarithm of an integer through binary range reduction. For $h=\lfloor\log_2 n\rfloor$ set
+\[
+ b_m^{\pm}(n)=h\ell_m^{\pm}(2)+\ell_m^{\pm}(n/2^h),\quad
+ c_m^{\pm}(n)=\ell_m^{\pm}(\max(1,b_m^{\pm}(n))).
+\]
+All inputs used here have $\log n>1$. Monotonicity of the actual logarithm, followed by the rectangle inequality, therefore gives
+$c_m^-(n)\le\log\log n\le c_m^+(n)$. For fixed $n$, the $b_m^{\pm}$ converge to $\log n$ and stay in a bounded interval. The rectangle error on that interval is $O_n(1/m)$, so both $c_m^{\pm}$ converge to $\log\log n$. At the code level, for $x=a/b$, set $e=(a-b)_+$, $w=mb$. The common denominator $\prod_{j=0}^{m}(w+je)$ is positive and each selected numerator contribution is $e$ times an exact quotient. Thus every division in the evaluation has a specified nonzero denominator.
+
+\paragraph{Bounding Euler's constant.}
+Let $H_m=\sum_{i=1}^m 1/i$ and $r=2m$. Use
+\[
+ g^-_m=\frac{(1+H_m/r)^r}{m+1},\qquad
+ g^+_m=\frac{1}{m(1-H_m/r)^r},\qquad
+ T_m^\pm(n)=g_m^\pm c_m^\pm(n).
+\]
+The increasing sequence $H_m-\log(m+1)$ and decreasing sequence $H_m-\log m$ have common limit $\gamma$. This follows by comparison with the integral of $1/t$ on each unit interval. The binomial factors enclose $e^{H_m}$ by $\log(1+x)\le x\le-\log(1-x)$ for $0\le x<1$. Here $H_m/r\le1/2$ and $H_m\le1+\log m$. The logarithmic errors incurred in either binomial factor are at most $r(H_m/r)^2$ by integrating the errors of the two logarithmic derivatives on $[0,H_m/r]$. This tends to zero with $m$. Hence $g^-_m\le e^\gamma\le g^+_m$, with convergence at both ends. The products defining $T_m^\pm$ preserve the inequalities since all factors are nonnegative.
+
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}\toprule
+Criterion & Strict certificate for each input & Weak order at every input and precision\\\midrule
+Robin & $\exists m\ge1:\ \sigma(n)/n<T^-_m(n)$ &
+ $\sigma(n)/n\le T^+_m(n)$\\
+Nicolas, $P=P_y$ & $\exists m\ge1:\ T^+_m(P)<P/\varphi(P)$ &
+ $T^-_m(P)\le P/\varphi(P)$\\\bottomrule
+\end{tabular}
+\end{center}
+\begin{theorem}
+Each of the four sentences in the table characterizes ordinary RH in the classical standard model. The strict rows are $\Pi^0_2$ and the weak rows are $\Pi^0_1$ in the PR language.
+\end{theorem}
+\begin{proof}
+Rational comparison is exact after multiplying by positive denominators. A strictly positive real gap is eventually certified by the indicated endpoint, since both endpoints converge. A successful strict finite comparison implies the original strict inequality. A weak test passes at all precisions exactly when the limiting weak comparison holds. For Robin's theorem the failure of RH produces infinitely many strict reverse inequalities. For Nicolas's theorem, off RH the signed normalized deviation below is unbounded in both directions on primorials, so there are strictly negative deviations. Thus allowing equality in the weak versions preserves the classical RH characterization. This step uses the oscillation results: enclosure convergence alone would not turn a weak inequality into a strict one. See Robin (1984), as stated with its strengthened converse in \href{https://arxiv.org/pdf/math/0008177}{Lagarias, Theorems 3.1--3.2}, and \href{https://arxiv.org/pdf/1202.0729}{Nicolas, Theorem 1.1 and its converse discussion}.
+\end{proof}
+
+\paragraph{A bounded-error criterion for primorials.}
+Write $R=P/\varphi(P)$ and $c(P)=(R-T(P))\sqrt{\log P}$. Under RH, Nicolas proves $0<c(P)<5$ for the primorials considered here (in fact the global maximum in his bound is about $4.063$). If RH fails, the primorial values are unbounded above and below. Thus each of $c(P)\le5$, $c(P)\ge-5$, and $|c(P)|\le5$ for all these primorials characterizes RH. The three corresponding universal rational tests use
+\[
+  b^-_m(P)\,(R-T^+_m(P))_+^2\le25,\qquad
+  b^-_m(P)\,(T^-_m(P)-R)_+^2\le25.
+\]
+Use respectively the first, the second, or their conjunction, with $m\ge1$. Each left side approaches its exact signed-part square from below, by the enclosures above and continuity of positive part. Therefore the universal test admits equality and introduces no square root or real constant. This use of a fixed $5$ is justified by Nicolas's quantitative theorem; an arbitrary positive number would change the claim.
+
+\paragraph{Lean and examples.}
+\code{RobinNicolas.lean} constructs all seven sentences using rational numerators and denominators, the primitive recursive divisor sum, a bounded prime product, and the factorial numerator for $H_m$. The theorems \code{strict_rational_reading}, \code{weak_rational_reading} and \code{scaled_rational_reading} interpret those formulas as inequalities of exact rationals, with positivity of the denominators checked. For each strict comparison it also proves \code{strict_iff_first} in object iPRA. Given a successful precision, bounded search through that precision produces its least successful one; the verified invariant keeps the first positive margin. This argument preserves the order $\forall n\exists m$, without choosing a function of $n$. With the actual enclosures above the least successful $m$ at $n=5041$ in the Robin test is 2. For $P=6,30,210,2310$ in the Nicolas test the values are $3,7,12,21$. They are exact rational comparisons. These finite cases illustrate the meaning of a witness.

@@ -1,0 +1,112 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,longtable,tabularx,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,pdftitle={Continuous mathematics in iPRA: measures, stochastic operators, and homological transfer},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\E}{\mathbb E}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\clip}{\operatorname{clip}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\pin}{\texttt{b2341af5370cd8a43f72ebb2341c0d7d7395b634}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Continuous mathematics in iPRA}
+\fancyhead[R]{\small 20 November 2026}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},backgroundcolor=\color{black!2},showstringspaces=false}
+\begin{document}
+\begin{titlepage}
+\vspace*{14mm}
+{\Large\color{MidnightBlue} Constructive mathematics / Research extension\par}
+\vspace{14mm}
+{\huge\bfseries Continuous mathematics in iPRA\par}
+\vspace{6mm}
+{\LARGE Measures, stochastic operators,\par and homological transfer\par}
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 20 November 2026\par}
+\vspace{12mm}
+\begin{minipage}{0.94\textwidth}
+\textbf{Purpose.} Extend the repository's finite-presentation framework with a
+measure-sensitive calculus that preserves the distinction between uniform,
+integral, and operator error. The applications include a corrected constructive
+Vitali theorem with an explicit limit constructor, conditional expectations,
+probability-preserving operators, integrated continuous formulas, holomorphic
+parameter integrals, and quantitative homological perturbation.
+
+\medskip
+\textbf{Proof status.} The report gives human-readable constructive proofs and
+explicit arithmetic compilation obligations. The accompanying standalone Lean
+project checks finite quantitative kernels. Its new theorems are host Lean
+theorems; the full analytic results have not been exported as new proof values
+of type \texttt{Prf PRAAx}. The repository's existing object-theory arithmetic
+is identified precisely for reuse. No unrestricted interpretation of analysis
+in first-order arithmetic is claimed.
+\end{minipage}
+\vfill
+\textbf{Reviewed repository snapshot}\par
+\smallskip
+\url{https://github.com/VladimirReshetnikov/ProveIt}\par
+\smallskip
+{\small\pin\par}
+\end{titlepage}
+\begin{abstract}
+Finite observations become substantially more useful when their error is
+measured in the topology consumed by the next construction. We develop this
+principle for probability-algebra presentations and normed complexes. Stable
+clipping replaces discontinuous event tests and repairs a false inequality in
+an existing Vitali argument. Quantitative uniform integrability then upgrades
+a Cauchy name in measure to a constructed $L^1$ name, without assuming an
+integrable limit in advance. Finite conditional averages extend by contraction
+and inherit explicit approximation rates. A category of presented
+probability-preserving operators composes through strong action data, avoiding
+an unjustified operator-norm approximation of the identity. Finite nets and
+probability quadratures support a mixed infimum/supremum/integration logic with
+syntax-directed error bounds. Integration of $L^1$-valued power series gives
+effective holomorphic parameter integrals. Finally, a signed homological
+perturbation construction uses either a supplied nilpotence bound or a
+certified norm gap, with explicit residuals and Neumann tails. All numerical
+schedules are primitive recursive in the stated data. We separate these
+mathematical arguments, checked Lean kernels, and the remaining first-order
+proof compilation work.
+\end{abstract}
+\tableofcontents
+\clearpage
+\input{sections/introduction}
+\input{sections/foundations}
+\input{sections/measure}
+\input{sections/operators}
+\input{sections/logic}
+\input{sections/complex_integrals}
+\input{sections/homological}
+\input{sections/formalization}
+\input{sections/conclusions}
+\input{references}
+\end{document}

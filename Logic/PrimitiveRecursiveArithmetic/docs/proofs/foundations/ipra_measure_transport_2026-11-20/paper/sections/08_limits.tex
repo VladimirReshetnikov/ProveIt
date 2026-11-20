@@ -1,0 +1,79 @@
+\section{Resolved difficulties and remaining boundaries}
+\label{sec:limits}
+
+The following table records the mathematical outcome of the source
+audit. ``Resolved'' means resolved for the explicit represented class
+and hypotheses in the referenced section; it does not mean that the
+unrestricted classical statement has acquired an \ipra\ proof.
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}}
+\toprule
+Difficulty & Result in this report & Remaining requirement \\
+\midrule
+\endhead
+Unsafe separate-tail Vitali step & Correct clipping kernel, checked in
+host Lean; actual \(L^1\) limit producer (Theorem~\ref{m:vitali_cauchy})
+& A metric Cauchy rate and a uniform tail bound, or a stated producer for
+that tail bound. \\
+Existence-only density extraction & A dyadic mass presentation and
+sibling oscillation bound construct a unique density
+(Theorems~\ref{m:rn}, \ref{m:oscillation})
+& Coherence and the quantitative local bound; bare absolute continuity
+does not supply them. \\
+Bounded energy without a rate & Explicit finite stability window
+(Theorem~\ref{m:metastability})
+& A limit name still requires an energy-tail modulus; no uniform
+algorithm extracts it from the cap. \\
+Fubini with exceptional sections & Contractive partial averaging of
+rectangle names (Theorem~\ref{m:fubini})
+& This constructs \(L^1\) section classes, not pointwise values on every
+exceptional section. \\
+Substitution of averaged predicates & Compression-certified pullbacks;
+Lipschitz upgrade restores pointwise substitution
+(Section~\ref{ct:logic})
+& Diagonal restriction and supremum remain invalid on arbitrary
+\(L^1\) classes. \\
+Exact distance thresholds in topology & Interval tables and explicit
+Rips interleavings (Section~\ref{ct:topology})
+& Exact homology at a collision and geometric reconstruction require
+separate data and hypotheses. \\
+Continuous inverse or solution choice & An explicit integral-equation
+solution with a certified contraction gap (Theorem~\ref{thm:resolvent})
+& No inversion theorem is claimed at singular or unguarded parameters. \\
+Repeated approximation and proof work & Shared input evaluations,
+moment tables, and a reverse error pass (Theorem~\ref{thm:dagbudget})
+& Bit complexity and input-production cost remain representation
+dependent. \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+The limitations are mathematical rather than merely a shortage of
+formalization. The halting reduction in Proposition~\ref{m:no_rate}
+rules out a uniform convergence-rate extractor on the stated class.
+The diagonal example rules out a continuous operation on the proposed
+\(L^1\) quotient itself. The kernel example rules out a norm estimate
+that would incorrectly replace a column bound by an average bound.
+These counterexamples help choose the correct statements before
+writing proof code.
+
+Related constructive and reverse-mathematical work confirms that
+the formulation and data attached to convergence matter
+\cite{avigad-dean-rute,metastable-dct}. We use those sources for context,
+not as a theorem asserting that every classical convergence principle
+is unprovable in our exact presentation of \ipra. Our own obstruction
+is the explicit bounded-simulation example above. Similarly, a
+general proof-mining result may produce a functional of higher
+recursion strength; it must not be called primitive recursive without
+an independent bound. Here the finite energy argument supplies that
+bound directly for each fixed primitive-recursive challenge.
+
+The framework therefore separates three productive outcomes:
+construct a named object when a rate is available; construct a finite
+stable observation when only a finite stability theorem is justified;
+or exhibit the exact missing datum when neither construction follows.
+For the concrete classes developed here, that distinction supplies
+working constructions in integration, categorical analysis,
+continuous semantics, complex analysis, and algebraic topology, with
+their finite arithmetic proof obligations visible.

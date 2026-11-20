@@ -1,0 +1,101 @@
+\section{Multiplying polynomials on a Taylor disk}\label{sec:hardy-toeplitz}
+
+A coefficient bound detects the radius of convergence. A different test asks what happens to the coefficients of every integer polynomial when it is multiplied by the Taylor series. Truncating the product gives a triangular Toeplitz matrix. The full test controls its largest singular value. A smaller test uses just its first column. Both admit explicit error allowances at every finite precision, including when the matrix is singular.
+
+\paragraph{Analytic and arithmetic input.}
+We use the prime-product construction of Section~\ref{sec:foundation} and the Taylor estimates in the companion report. For the monic polynomial $F$ of degree $d$ and height parameter $H$, let $B(n)$ be the integer part of the binary logarithm of its prime product, with $B(0)=0$. The three families use $F=X-1$, every $X^q-1$, or every monic integral $F$, respectively. Write $a_n=B(n)-B(n-1)$ and $b_n=a_n-2\mathbf1_{2\mid n}a_{n/2}$, where the last term is zero for odd $n$. Use the series
+\[
+ H_F(s)=\sum_{n\ge1} b_n n^{-s}\qquad(\Re s>1).
+\]
+Its continuation has a pole at every zero of the field zeta product with $1/2<\Re s<1$. Indeed the binary-log rounding contributes the Mellin transform of an error bounded by one, holomorphic for $\Re s>0$. The remaining logarithmic derivative has residues of one sign at zeros. The multiplier $1-2^{1-s}$ cancels the pole at $1$ and does not vanish in the interior of the strip. The bad-prime corrections to the field logarithmic derivatives are holomorphic for $\Re s>0$.
+
+For $i\ge0$ put $c=4+2^i$, $Q=2c$, $P=(2c-1)c-1$ and $r=P/Q$. Write $C=1000(d+1)^4(H+2)^2$ and $U=1000cCQ^3$. Under the relevant zero hypothesis the prime-product estimate in the attached report implies $|\sum_{n\le x}b_n|\le 100C\sqrt{x}(1+\log x)^2$. Partial summation on $|s-c|\le r$ gives $|H_F(s)|\le U$. Here $|s|\le2c$, $\Re s\ge1/2+1/Q$ and
+$\int_0^\infty(1+t)^2 e^{-t/Q}\,dt\le5Q^3$. This implication uses the attached explicit prime-product theorem as its analytic input.
+
+Write $H_F(c-z)=\sum_{k\ge0}u_k z^k$ locally at zero. For $N\ge1$ use the integers
+\[
+ \begin{split}
+ J(n,N)&=\sum_{j=1}^{N(n-1)}\left\lfloor\frac{N^2}{N+j}\right\rfloor,\qquad
+ D_k=k!N^{2k}(N!)^c,\\
+ A_k&=\sum_{n=1}^N b_n J(n,N)^k(N!/n)^c.
+ \end{split}
+\]
+Then $|A_k/D_k-u_k|\le9(d+1)/N$ for every $k$. Indeed $u_k=\sum b_n(\log n)^k/(k!n^c)$, $|b_n|\le3(d+1)n$, and right Riemann sums followed by a floor error give $0\le\log n-J(n,N)/N^2\le n/N$. The derivative of $t^k/k!$ on $[0,\log n]$ is at most $n$ when $k\ge1$. Summing the resulting errors costs at most $3(d+1)\sum_{n\le N}n^{3-c}/N\le6(d+1)/N$. For the tail use $(\log n)^k/k!\le n$ and $c\ge5$. The $k=0$ case has zero rounding error.
+
+\paragraph{Three finite tests.}
+At length $m\ge1$ take a common denominator and an integer budget
+\[
+ L=Q^m m! N^{2m}(N!)^c,\qquad
+ S=L\{NU+9m(d+1)(1+c)^m\}.
+\]
+The lower triangular Toeplitz matrix $M$ has subdiagonal entries
+\[
+ T_k=N P^k A_k Q^{m-k}\frac{m!}{k!}N^{2(m-k)}
+ \qquad(0\le k<m).
+\]
+Thus $T_k/(NL)=r^k A_k/D_k$. Write $(Mx)_i=\sum_{j=0}^{i}T_{i-j}x_j$ and $e_0=(1,0,\ldots,0)$. Each of the following assertions quantifies over all allowed $F,i,m,N$. All vectors have integer coefficients and length $m$.
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+First column & $\sum_{k<m}T_k^2\le S^2$.\\[2pt]
+Polynomial multiplication & $\|Mx\|_2^2\le S^2\|x\|_2^2$ for every $x$.\\[2pt]
+Block quadratic form & $2y^{\mathsf T}Mx\le S^2\|x\|_2^2+\|y\|_2^2$ for every $x,y$.
+\end{tabular}
+\end{center}
+
+\paragraph{Proof of the analytic equivalence.}
+Assume the zero hypothesis. On the unit circle $f(z)=H_F(c-rz)$ has modulus at most $U$ and extends to a neighborhood of the closed disk. For $X(z)=\sum_{j<m}x_j z^j$, apply $\int_0^{2\pi}|fX|^2\,dt/(2\pi)\le U^2\int_0^{2\pi}|X|^2\,dt/(2\pi)$, evaluating at $z=e^{it}$. Orthogonality gives $\sum_{k<m}|[z^k](fX)|^2\le U^2\sum_{j<m}|x_j|^2$. This follows by subtracting the first $m$ Fourier coefficients and integrating the resulting nonnegative square. In these first $m$ coefficients replacing $r^ku_k$ by $T_k/(NL)$ introduces a Toeplitz matrix whose entries have absolute value at most $\delta=9(d+1)(1+c)^m/N$. Its operator norm is at most $m\delta$. Indeed it is a sum of $m$ scalar multiples of truncated shifts, each summand of norm at most $\delta$. Thus $\|Mx\|_2\le NL(U+m\delta)\|x\|_2=S\|x\|_2$.
+
+Testing $x=e_0$ gives the first-column condition. Conversely, assume only that condition. For each fixed $i,k$ take $m=k+1$ and let $N$ tend to infinity after dividing by $(NL)^2$. This gives $|r^k u_k|\le U$. The geometric majorant gives convergence throughout $|s-c|<r$. Uniqueness of meromorphic continuation excludes poles there. For a fixed $x+iy$ with $x>1/2$, put $a_c=1/2+1/(2c)$. Membership in the open disk is equivalent to $2c(x-a_c)>x^2+y^2-a_c^2$, eventually true along $c=4+2^i$. Every off-line zero in the right half of the strip would therefore produce a pole in one of these disks. Reflection and the identification of the three polynomial families with their zeta or character products finish the converse. The passage through analytic continuation is a standard-model argument.
+
+\paragraph{A direct iPRA equivalence.}
+The second and third tests are interderivable by finite arithmetic without the analytic bridge. For any integer $x,y$, the right side of the third inequality minus its left side is
+\[
+   S^2\|x\|_2^2-\|Mx\|_2^2+\sum_{i<m}(y_i-(Mx)_i)^2.
+\]
+The final sum is nonnegative. Conversely choose $y=Mx$. Integer entries are differences of naturals. For a concrete radix representation, store positive and negative parts of $x_i,y_i$ in four consecutive digits of a word, in radix $B\ge2$. To synthesize the witness, choose $B=2+\sum_{i<m}(|x_i|+|(Mx)_i|)$, form the digit word, and add $B^{4m}$. This high unused digit ensures the word bounds the radix offset. Digit extraction follows by division with remainder. Its induction invariant states the corresponding prefix remainder and quotient identities, and the square identity follows by summing the polynomial identity one term at a time. These are quantifier-free inductions on bounded accumulators. Substitution of the resulting primitive-recursive word witnesses the reverse implication. At fixed $m$ the block matrix is $\left(\begin{smallmatrix}S^2 I&-M^{\mathsf T}\\-M&I\end{smallmatrix}\right)$.
+
+\paragraph{Recovering the archive's coefficient test inside arithmetic.}
+There is also a direct finitary implication to the prior lacunary Taylor test. It asks for
+\[
+  r^k |A_{k,N}/D_{k,N}|\le U+Er^k/N,\qquad E=9(d+1).
+\]
+The numerator and denominator subscripts now indicate the cutoff explicitly. At first sight the first-column bound only gives a larger slack of order $m(1+c)^m/N$. The following finite argument recovers the stated allowance exactly.
+
+Set $L_N(n)=J(n,N)/N^2$ and $R_N(n)=\sum_{j=1}^{N(n-1)}1/(N+j)$. If $V$ is a multiple of $N$, monotonicity of the right and left rectangle sums gives
+\[
+  0\le R_V(n)-R_N(n)\le (1-1/n)/N,\qquad
+  0\le R_V(n)-L_N(n)\le n/N.
+\]
+These are finite comparisons: group the finer rectangles belonging to each coarse one, telescope the left-minus-right sum, and allow at most $(n-1)/N$ for the floors. A second finite bound replaces the exponential function. Write $t_j=1/(V+j)$ for $1\le j\le V(n-1)$. The multinomial expansion, followed by the finite geometric sum, gives for all $k\ge0$
+\[
+ \frac{R_V(n)^k}{k!}\le \prod_j\sum_{e=0}^k t_j^e
+ \le \prod_j(1-t_j)^{-1}=n.
+\]
+Indeed the terms with total exponent $k$ acquire factors $1/e!$ in the multinomial expansion. The last product telescopes, also for $n=1$ with an empty product. For $0\le u\le t\le R_V(n)$ and $k\ge1$, factor $t^k-u^k$ as $(t-u)\sum_{j<k}t^{k-1-j}u^j$. This bounds its quotient by $k!$ by $n(t-u)$.
+
+Put $v_N=A_{k,N}/D_{k,N}$, keeping $c,k$ fixed. To compare $v_N$ with $v_K$ take $V=NK$ and apply the preceding inequalities for each $n\le\min(N,K)$. Replacing $L_N,L_K$ by $R_V$ in the common terms costs at most
+\[
+  3(d+1)(N^{-1}+K^{-1})\sum_{n\le\min(N,K)}n^{3-c}.
+\]
+This uses the elementary prime-product jump bound $|b_n|\le3(d+1)n$. For $k=0$ the common terms agree exactly. The unmatched terms cost at most $3(d+1)/\min(N,K)$, by $L_N(n)^k/k!\le n$ and its counterpart at $K$. Both estimates follow from $c\ge5$ and $1/n^2\le1/(n-1)-1/n$ for $n\ge2$. Therefore
+\[
+  |v_N-v_K|\le E(1/N+1/K).
+\]
+All the grids, multi-indices, and products just used have explicit primitive-recursive bounds. The finite sum comparisons, telescoping, multinomial identity, and digit and degree bounds admit quantifier-free induction on their finite accumulators after clearing denominators.
+
+Take $m=k+1$ in the first-column test at precision $K$. One term of its nonnegative sum of squares gives $r^k|v_K|\le U+Em(1+c)^m/K$. Combining with the finite comparison yields
+\[
+ r^k|v_N|\le U+Er^k/N+\frac{E\{r^k+m(1+c)^m\}}{K}
+ \qquad(K\ge1).
+\]
+Multiply by positive common denominators fixed by $i,k,N$ and then by $K$. This has the form $KA\le KB+J$ for every positive integer $K$. If $A>B$, the single substitution $K=J+1$ contradicts it. This proves the prior coefficient test with precisely its old allowance. In particular the first-column implication here uses neither complex analysis nor an infinitary limit rule. Lean checks the finite power increment and slack removal in \texttt{monomial\_increment} and \texttt{remove\_allowance}; the concrete rational grid and prime-packet transfer are proved on paper.
+
+\paragraph{A determinant criterion with strict comparisons.}
+There is a fourth test with no vector inputs. Set $G=S^2 I-M^{\mathsf T}M$. For every $k\ge0$ require every \emph{leading} principal determinant of $I+kG$ to be strictly positive. The shift permits a singular $G$. For example, $M=5I$ and $S=5$ gives $G=0$, with every shifted determinant equal to one. The first column and full contraction can differ for a single packet. With $m=2$, $T_0=3$, $T_1=4$ and $S=5$ the first-column inequality is an equality, but $x=(1,1)$ gives $\|Mx\|_2^2=58>50=S^2\|x\|_2^2$. The first-column converse above uses all precisions and lengths.
+
+To prove the determinant equivalence in finite arithmetic, first assume $x^{\mathsf T}Gx\ge0$ for integral $x$. Clearing denominators gives the same result for rational $x$. Hence $I+kG$ is strictly positive on each nonzero rational vector. For a symmetric rational matrix strict positivity on those vectors is equivalent to positivity of its leading determinants. Indeed the first pivot $a$ is positive and completing the square gives a first term $a(t+a^{-1}b^{\mathsf T}y)^2$ and residual matrix $D-a^{-1}bb^{\mathsf T}$. Strict positivity passes to the residual by taking $t=-a^{-1}b^{\mathsf T}y$. Every leading determinant that includes the first row is $a$ times the corresponding residual determinant, by row elimination. This also proves the converse inductively when all the leading determinants are positive. For the remaining implication fix integral $x$. If $x^{\mathsf T}Gx<0$, the integer is at most $-1$ and $x\ne0$. With $k=1+\|x\|_2^2$ one gets $x^{\mathsf T}(I+kG)x<0$, contradicting positivity of the leading determinants. The test checks all shifts without a bound on the size of the possible vector.
+
+Here the finite elimination proof can be used with quantifier-free induction. Eliminate along successive positive pivots, keeping the rational matrices and unit triangular change of variables as coded arrays. The stage invariant consists of the factorization identity and the leading-determinant product identities, both bounded entrywise tests. The determinant identity for a row addition follows by pairing the equal-row permutation terms of the Leibniz expansion. A failed pivot, after the previous positive pivots, supplies a rational test vector by back substitution, and the product of its denominators clears it to an integral vector. Thus an induction on a formula quantifying over arbitrary vectors at every recursion step is unnecessary. All rational operations can be performed by signed numerators and positive denominators. The compiled test evaluates determinants by their finite signed permutation expansion.
+
+\paragraph{Formal status.}
+\texttt{HardyToeplitz.lean} builds the twelve closed sentences and proves object-language equivalence of each to its scheduled finite-cube versions. The theorem \texttt{statement\_check} identifies the first nine sentences with explicit inequalities in sums of integer digits and signed coefficient components. The integer lemmas \texttt{polarization\_iff}, \texttt{contraction\_iff\_block}, and \texttt{nonneg\_iff\_all\_shifts} check completion of squares and the integer shift argument. The paper supplies the internal arithmetic proof for the concrete probes and elimination, including the coding of witnesses. The Lean file constructs the determinant expansion directly as a primitive-recursive program. Its interpretation as a determinant and the Sylvester argument are proved here on paper. The analytic bounds, Fourier argument, and converse through pole detection are standard-model arguments.

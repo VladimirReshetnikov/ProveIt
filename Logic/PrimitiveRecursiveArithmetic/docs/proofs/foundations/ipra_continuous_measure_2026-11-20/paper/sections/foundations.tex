@@ -1,0 +1,225 @@
+\section{A calculus that records the norm of each observation}\label{sec:foundation}
+
+\subsection{Arithmetic, coding, and the meaning of a presentation}
+
+We use intuitionistic first-order logic with equality, the natural numbers,
+a symbol for every fixed primitive-recursive definition, its defining
+equations, successor injectivity and nonzeroness, and induction for
+quantifier-free formulas. This is the repository's ordinary
+\texttt{PRAAx} presentation \cite{repo-pr}. No induction over arbitrary
+quantified statements is added.
+
+A signed integer is a difference of two naturals. A rational is an integer
+numerator and a positive natural denominator; it can be normalized by the
+PR gcd algorithm but normalization is not needed for order. Equality of
+$a/b$ and $c/d$ means $ad=bc$, and order means $ad\le bc$, with $b,d>0$.
+A finite list is coded by the repository's pairing and sequence operations.
+Every access is explicitly guarded by its stored length. Finite vectors,
+matrices, Boolean tables, and polynomials are lists with dimension and
+well-formedness checks. None requires a new arithmetic sort.
+
+For clarity, a map displayed as $a:\N\to\Q$ below denotes a \emph{fixed
+program schema} and its numerical parameters. It does not denote an
+arbitrary function variable in the language. A uniform statement over
+program codes uses a bounded evaluator $\operatorname{run}(e,x,t)$, defined
+by primitive recursion on $t$, together with a supplied PR clock and its
+termination proof. There is no total PR universal evaluator for all PR
+programs: if $U(e,x)$ were one, $U(n,n)+1$ would be a PR function and its own
+index would give a contradiction. This elementary diagonal argument is a
+useful guard against an otherwise tempting but invalid encoding shortcut.
+
+\begin{definition}[A quantitative presentation]\label{def:presentation}
+A presentation supplies a collection of finite codes, a PR admissibility
+test, a PR common-refinement operation where needed, and an exactly
+computable rational pseudodistance $d$ on finite codes after refinement.
+The pseudometric laws and refinement invariance are proved from the
+finite definitions. A regular name is a fixed PR sampler $a(n)$ satisfying
+\begin{equation}\label{eq:regular-name}
+ d(a(n),a(m))\le2^{-n}+2^{-m}\qquad(n,m\in\N).
+\end{equation}
+Two names are equivalent when their distance tends to zero with the given
+regular estimates; equivalently, after a harmless precision shift, their
+cross-distances are bounded by $2^{-n}+2^{-m}$ for all $n,m$.
+\end{definition}
+
+The usual metric completion is one semantic interpretation of these names.
+The arithmetic implementation keeps the samplers and the estimates and
+need not construct a quotient set. A fixed sampler's regularity is a
+first-order formula universally quantifying $n,m$, with a quantifier-free
+matrix. Subsequent arguments may use that formula as an assumption; their
+induction invariants remain quantifier-free.
+
+If finite distances themselves have certified rational upper and lower
+approximations, the same construction works with extra guard bits. The
+applications here deliberately use exact rational norms on simple real
+functions and finite matrices whenever possible. Complex quantities can be
+represented by two real codes and bounded by the rational norm
+$|a+ib|_\square=|a|+|b|$; Euclidean-radius guards can instead be checked by
+squaring nonnegative rational bounds. These equivalent norm presentations
+are connected by explicit inequalities, not identified literally.
+
+\begin{lemma}[Diagonal completion with a supplied clock]\label{lem:diagonal}
+Suppose $x_j$ are presented points with jointly PR names, and $N$ is a
+nondecreasing PR function such that
+\[
+ j,\ell\ge N(p)\quad\Longrightarrow\quad d(x_j,x_\ell)\le2^{-p}.
+\]
+Let $b(p)$ be a finite approximation to $x_{N(p+2)}$ within $2^{-p-2}$.
+Then $b$ is a regular name. Its limit $x$ satisfies
+$d(x_j,x)\le2^{-p}$ for $j\ge N(p)$.
+\end{lemma}
+\begin{proof}
+For $p\le q$, the common Cauchy estimate gives
+\[
+ d(b(p),b(q))\le2^{-p-2}+2^{-p-2}+2^{-q-2}
+ \le2^{-p}+2^{-q}.
+\]
+For fixed $j\ge N(p)$, compare $x_j$ with $b(q)$ for $q$ large enough that
+$N(q+2)\ge N(p)$. The bound is $2^{-p}+2^{-q-2}$; the named limit removes
+the final term. This last sentence is arithmetic shorthand for all its
+rational-precision instances. To prove any strict enlargement of $2^{-p}$,
+choose a larger explicit $q$; no choice of an unbounded limit index occurs.
+Replacing $p$ by $p+1$ supplies a direct weak $2^{-p}$ output bound if a
+one-sided name convention is desired. All samplers are compositions of
+the supplied PR programs.
+\end{proof}
+
+\subsection{Norms are part of the interface}
+
+For a finite probability vector $w=(w_i)_{i<n}$, $w_i\ge0$,
+$\sum_iw_i=1$, define
+\[
+ I_w(f)=\sum_{i<n}w_i f_i,\qquad
+ \norm f_{1,w}=\sum_iw_i|f_i|,\qquad
+ \norm f_\infty=\max_i|f_i|.
+\]
+The maximum over an empty list is defined to be zero, although a normalized
+probability vector cannot have empty support. Refinement repeats values
+on child cells and splits mass, preserving the first two expressions.
+For a real matrix use the row-sum norm
+$\norm A_\infty=\max_i\sum_j|A_{ij}|$, including dimension-zero cases with
+the same convention. All these are PR rational functions.
+
+An operation's contract names both the input and output error. Integration
+is $L^1\to|\cdot|$ nonexpansive; taking a supremum is
+$\|\cdot\|_\infty\to|\cdot|$ nonexpansive; multiplication is
+$L^\infty\times L^1\to L^1$ continuous with a supplied bounded-factor
+constant. These distinctions are logically significant.
+
+\begin{proposition}[Safe elementary transfers]\label{prop:safe-transfers}
+On a finite probability algebra, and hence on the indicated completions,
+\begin{align}
+ |I(f)-I(g)|&\le\norm{f-g}_1,\label{eq:int-lipschitz}\\
+ \norm{fg-\widetilde f\widetilde g}_1
+ &\le B\norm{g-\widetilde g}_1+C\norm{f-\widetilde f}_1,
+ \label{eq:product-lipschitz}
+\end{align}
+provided $|f|\le B$ and $|\widetilde g|\le C$ almost everywhere.
+Also $|\sup f-\sup g|\le\norm{f-g}_\infty$ when those suprema are named.
+\end{proposition}
+\begin{proof}
+The first inequality is the triangle inequality for a finite weighted sum.
+For the second write $fg-\widetilde f\widetilde g
+=f(g-\widetilde g)+(f-\widetilde f)\widetilde g$ and apply the pointwise
+triangle inequality before summation. For a supremum, $f(x)\le
+g(x)+\norm{f-g}_\infty$ gives one direction, and interchanging $f,g$ gives
+the other. Completion preserves inequalities between uniformly continuous
+operations by comparing finite approximants with arbitrarily small explicit
+errors. The bounded-factor hypotheses in the product estimate must be
+preserved or re-certified; $L^1$ names alone do not supply them.
+\end{proof}
+
+There is no general transfer from $L^1$ error to uniform error. On $[0,1]$,
+$f_n=\mathbf1_{[0,2^{-n}]}$ has $\norm{f_n}_1=2^{-n}$ and
+$\norm{f_n}_\infty=1$. Even continuous tent functions give the same
+obstruction. Likewise, finite-support atomic measures do not approximate
+Lebesgue measure in total variation: their finite support has mass one
+for the atomic measure and zero for Lebesgue measure. Finite cell
+\emph{observations} of a measure and atomic approximations for Lipschitz
+test functions are therefore separate representations. The later category
+and model-theory sections use the representation appropriate to each claim.
+
+\subsection{Weighted error and efficient demand propagation}
+
+\begin{lemma}[Mass and value perturbation]\label{lem:weighted}
+Let $w_i\ge0$, let $v_i$ be rational, and suppose
+$|a_i-b_i|\le e_i$ and $|b_i|\le B$. Then
+\begin{equation}\label{eq:weighted}
+ \left|\sum_i w_i a_i-\sum_i v_i b_i\right|
+ \le\sum_iw_i e_i+B\sum_i|w_i-v_i|.
+\end{equation}
+If $w=v$ is a probability vector and all $e_i\le e$, the bound is $e$.
+\end{lemma}
+\begin{proof}
+Subtract and add $\sum_iw_ib_i$. The difference is
+$\sum_iw_i(a_i-b_i)+\sum_i(w_i-v_i)b_i$.
+Apply the triangle inequality to each summand, then use the two supplied
+pointwise bounds. This proof works for zero weights and does not divide by
+any of them. It also makes explicit which vector weights each local error.
+\end{proof}
+
+The repository already has an internal rational error-DAG producer and a
+uniform precision schedule \cite{repo-dag,repo-dag-schedule}. A useful
+extension is to retain the actual probability coefficients and the norm
+type of every edge. The following standard finite calculation explains why.
+
+\begin{proposition}[Backward influence coefficients]\label{prop:adjoint}
+For a topologically ordered finite computation suppose its errors satisfy
+\[
+ E_v\le\delta_v+\sum_{u<v}a_{vu}E_u,\qquad a_{vu}\ge0.
+\]
+For a selected output $o$, initialize $\lambda_o=1$ and other coefficients
+to zero. Process vertices in decreasing order, adding
+$\lambda_v a_{vu}$ to $\lambda_u$ along every incoming edge. Then
+\[
+ E_o\le\sum_v\lambda_v\delta_v.
+\]
+Consequently any nonnegative local budgets with
+$\sum_v\lambda_v\delta_v\le2^{-p}$ certify the output precision.
+\end{proposition}
+\begin{proof}
+Begin with $E_o$. Substitution of the inequality for a vertex replaces its
+coefficient times $E_v$ by that coefficient times $\delta_v$ plus the
+weighted predecessor errors. Nonnegativity preserves the direction of the
+inequality. After each vertex has been processed once, no $E_v$ remains.
+The accumulated coefficient of each $\delta_v$ is exactly the value
+computed by the reverse pass. This proves the displayed bound, including
+graphs with shared subexpressions. A bounded reverse loop and rational
+addition/multiplication implement the pass by primitive recursion.
+\end{proof}
+
+For integration, $a_{vu}$ are the actual masses. A term of mass $2^{-20}$
+can tolerate much larger absolute error than one of mass $1/2$.
+Zero-influence terms need no numerical refinement once their range and
+well-formedness are established. This is a mathematical error reduction,
+not a claim that every resulting algorithm is polynomial-time. Tail
+moduli, matrix dimensions, and compact-net sizes may still be enormous.
+Max-type rules can be kept as maxima or safely overestimated by sums;
+using a sum changes the cost bound but not correctness.
+
+\subsection{Why the finite arguments fit quantifier-free induction}
+
+For \eqref{eq:weighted}, fix a common positive denominator for all finite
+input values. After clearing it, let $S_j,T_j,U_j,V_j$ be the relevant
+integer prefix sums. A convenient induction invariant is
+\[
+ -U_j-BV_j\le S_j-T_j\le U_j+BV_j,
+\]
+together with the stored positivity conditions. This is quantifier-free
+in the codes and $j$. At the successor step add the single new weighted
+inequality. The zero case is literal equality. The normalization step uses
+positive-denominator order preservation already available in the
+repository's rational arithmetic. The variable-length sum is thus an
+internal numerical function, not an externally expanded expression for
+one fixed dimension.
+
+A bounded universal condition is represented by a PR conjunction fold:
+$\operatorname{all}_P(0)=1$ and
+$\operatorname{all}_P(j+1)=\operatorname{and}
+(\operatorname{all}_P(j),P(j))$, where $P$ is a decidable numerical test.
+Proofs about a whole input table can use the equality
+$\operatorname{all}_P(n)=1$ as a quantifier-free premise and derive its
+individual bounded instances. In every main construction below we give
+either the corresponding prefix invariant or the finite algebraic identity
+that replaces it. There is no rule saying that an arbitrary true numerical
+claim is automatically provable in iPRA.

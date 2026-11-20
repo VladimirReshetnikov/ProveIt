@@ -1,0 +1,245 @@
+/-
+UNCOMPILED LEAN BLUEPRINT — declarations of data and theorem targets only.
+
+This file is deliberately named .lean.txt and is excluded from the checked
+Lean project.  A `...Target` definition below specifies a proposition to be
+proved; defining that proposition does not establish it.  The paper gives
+the complete human proofs.  No HPL object-language iPRA derivation is claimed.
+
+Suggested future dependency: a pinned Mathlib release and the repository's
+fixed natural-number/rational-array primitive-recursive coding layer.
+-/
+
+import Mathlib
+
+namespace ContinuousIPRA.HomologicalBlueprint
+
+structure GradedSpace where
+  dim : Nat
+  degree : Fin dim → Int
+
+/-- Maps X → Y are matrices with Y rows and X columns. -/
+abbrev QMat (X Y : GradedSpace) := Matrix (Fin Y.dim) (Fin X.dim) ℚ
+abbrev QEnd (X : GradedSpace) := QMat X X
+
+def HasDegree {X Y : GradedSpace} (A : QMat X Y) (shift : Int) : Prop :=
+  ∀ row col, A row col ≠ 0 → Y.degree row = X.degree col + shift
+
+structure RetractionData where
+  C B : GradedSpace
+  d : QEnd C
+  b : QEnd B
+  i : QMat B C
+  p : QMat C B
+  h : QEnd C
+
+def RetractionLaws (R : RetractionData) : Prop :=
+  HasDegree R.d (-1) ∧ HasDegree R.b (-1) ∧
+  HasDegree R.i 0 ∧ HasDegree R.p 0 ∧ HasDegree R.h 1 ∧
+  R.d * R.d = 0 ∧ R.b * R.b = 0 ∧
+  R.d * R.i = R.i * R.b ∧ R.p * R.d = R.b * R.p ∧
+  R.p * R.i = 1 ∧ R.d * R.h + R.h * R.d = 1 - R.i * R.p ∧
+  R.h * R.i = 0 ∧ R.p * R.h = 0 ∧ R.h * R.h = 0
+
+structure NormalizedRetraction extends RetractionData where
+  laws : RetractionLaws toRetractionData
+
+structure Perturbation (R : NormalizedRetraction) where
+  delta : QEnd R.C
+  degree : HasDegree delta (-1)
+  squareZero : (R.d + delta) * (R.d + delta) = 0
+
+/-- Polynomial truncation; this recursion is primitive recursive on arrays. -/
+def neumann {X : GradedSpace} (T : QEnd X) : Nat → QEnd X
+  | 0 => 0
+  | n + 1 => neumann T n + (-T) ^ n
+
+def perturbationSum (R : NormalizedRetraction) (Δ : Perturbation R)
+    (N : Nat) : QEnd R.C :=
+  Δ.delta * neumann (R.h * Δ.delta) N
+
+def remainder (R : NormalizedRetraction) (Δ : Perturbation R)
+    (N : Nat) : QEnd R.C :=
+  Δ.delta * (-(R.h * Δ.delta)) ^ N
+
+def maurerDefect (R : NormalizedRetraction) (A : QEnd R.C) : QEnd R.C :=
+  R.d * A + A * R.d + A * R.i * R.p * A
+
+/-- This builds proposed data; it supplies no new proofs of the laws. -/
+def transferredData (R : NormalizedRetraction) (Δ : Perturbation R)
+    (A : QEnd R.C) : RetractionData where
+  C := R.C
+  B := R.B
+  d := R.d + Δ.delta
+  b := R.b + R.p * A * R.i
+  i := R.i - R.h * A * R.i
+  p := R.p - R.p * A * R.h
+  h := R.h - R.h * A * R.h
+
+def geometricDefectTarget {X : GradedSpace} (T : QEnd X) (N : Nat) : Prop :=
+  (1 + T) * neumann T N = 1 - (-T) ^ N ∧
+  neumann T N * (1 + T) = 1 - (-T) ^ N
+
+def inverseEquations {X : GradedSpace} (T U : QEnd X) : Prop :=
+  (1 + T) * U = 1 ∧ U * (1 + T) = 1
+
+def exactHPLTarget (R : NormalizedRetraction) (Δ : Perturbation R)
+    (F G : QEnd R.C) : Prop :=
+  inverseEquations (R.h * Δ.delta) F →
+  inverseEquations (Δ.delta * R.h) G →
+  G * Δ.delta = Δ.delta * F ∧
+  RetractionLaws (transferredData R Δ (Δ.delta * F))
+
+def nilpotentHPLTarget (R : NormalizedRetraction) (Δ : Perturbation R)
+    (L : Nat) : Prop :=
+  0 < L → (R.h * Δ.delta) ^ L = 0 → (Δ.delta * R.h) ^ L = 0 →
+  RetractionLaws (transferredData R Δ (perturbationSum R Δ L))
+
+def residualIdentitiesTarget (R : NormalizedRetraction) (Δ : Perturbation R)
+    (N : Nat) : Prop :=
+  let A := perturbationSum R Δ N
+  let E := remainder R Δ N
+  let M := maurerDefect R A
+  let T := transferredData R Δ A
+  T.p * T.i = 1 ∧ T.h * T.i = 0 ∧ T.p * T.h = 0 ∧ T.h * T.h = 0 ∧
+  T.b * T.b = R.p * M * R.i ∧
+  T.d * T.i - T.i * T.b = E * R.i + R.h * M * R.i ∧
+  T.p * T.d - T.b * T.p = R.p * E + R.p * M * R.h ∧
+  T.d * T.h + T.h * T.d - (1 - T.i * T.p) =
+    E * R.h + R.h * E + R.h * M * R.h
+
+def multipliedMaurerTarget (R : NormalizedRetraction) (Δ : Perturbation R)
+    (N : Nat) : Prop :=
+  let A := perturbationSum R Δ N
+  let E := remainder R Δ N
+  let M := maurerDefect R A
+  let L := 1 + Δ.delta * R.h
+  let S := 1 + R.h * Δ.delta
+  let e := R.i * R.p
+  L * M * S = -(L * R.d * E) - E * R.d * S - Δ.delta * e * E
+               - E * e * Δ.delta + E * e * E
+
+/-- Rational maximum absolute row-sum norm, with value 0 on no rows. -/
+def rowNorm {X Y : GradedSpace} (A : QMat X Y) : ℚ :=
+  ((List.finRange Y.dim).map fun row =>
+    ∑ col : Fin X.dim, |A row col|).foldl
+      (fun (a b : ℚ) => max a b) 0
+
+def rowNormMulTarget {X Y Z : GradedSpace}
+    (A : QMat Y Z) (B : QMat X Y) : Prop :=
+  rowNorm (A * B) ≤ rowNorm A * rowNorm B
+
+structure NormData (R : NormalizedRetraction) (Δ : Perturbation R) where
+  D H U I P q : ℚ
+  nonnegative : 0 ≤ D ∧ 0 ≤ H ∧ 0 ≤ U ∧ 0 ≤ I ∧ 0 ≤ P ∧ 0 ≤ q
+  gap : q < 1
+  d_bound : rowNorm R.d ≤ D
+  h_bound : rowNorm R.h ≤ H
+  delta_bound : rowNorm Δ.delta ≤ U
+  i_bound : rowNorm R.i ≤ I
+  p_bound : rowNorm R.p ≤ P
+  left_product : rowNorm (R.h * Δ.delta) ≤ q
+  right_product : rowNorm (Δ.delta * R.h) ≤ q
+
+def maurerConstant {R : NormalizedRetraction} {Δ : Perturbation R}
+    (n : NormData R Δ) : ℚ :=
+  n.U * (2 * (1 + n.q) * n.D + 3 * n.U * n.I * n.P) / (1 - n.q) ^ 2
+
+def finiteBoundTarget (R : NormalizedRetraction) (Δ : Perturbation R)
+    (caps : NormData R Δ) (N : Nat) : Prop :=
+  let A := perturbationSum R Δ N
+  let T := transferredData R Δ A
+  let K := maurerConstant caps
+  rowNorm (maurerDefect R A) ≤ K * caps.q ^ N ∧
+  rowNorm (T.b * T.b) ≤ caps.P * caps.I * K * caps.q ^ N ∧
+  rowNorm (T.d * T.i - T.i * T.b) ≤
+    caps.I * (caps.U + caps.H * K) * caps.q ^ N ∧
+  rowNorm (T.p * T.d - T.b * T.p) ≤
+    caps.P * (caps.U + caps.H * K) * caps.q ^ N ∧
+  rowNorm (T.d * T.h + T.h * T.d - (1 - T.i * T.p)) ≤
+    (2 * caps.H * caps.U + caps.H ^ 2 * K) * caps.q ^ N
+
+def geometricClockTarget (q K : ℚ) (s c k : Nat) : Prop :=
+  0 ≤ q → q < 1 → 1 ≤ K → 0 < s →
+  q ≤ 1 - 1 / (s : ℚ) → K ≤ (2 : ℚ) ^ c →
+  K * q ^ (s * (k + c)) ≤ 1 / (2 : ℚ) ^ k
+
+abbrev QVector (X : GradedSpace) := Fin X.dim → ℚ
+
+def cycleTransferTarget (R : NormalizedRetraction) (z : QVector R.C) : Prop :=
+  R.d.mulVec z = 0 →
+  R.b.mulVec (R.p.mulVec z) = 0 ∧
+  z - R.i.mulVec (R.p.mulVec z) = R.d.mulVec (R.h.mulVec z)
+
+def boundaryReflectionTarget (R : NormalizedRetraction)
+    (w : QVector R.B) (v : QVector R.C) : Prop :=
+  R.i.mulVec w = R.d.mulVec v → w = R.b.mulVec (R.p.mulVec v)
+
+/- First-order representations.  These data are preliminary explicit
+   representations, not an assertion that Lean structures are iPRA sorts. -/
+
+structure RawRat where
+  negative : Bool
+  magnitude : Nat
+  denominatorMinusOne : Nat
+
+def RawRat.value (r : RawRat) : ℚ :=
+  (if r.negative then -(r.magnitude : ℚ) else (r.magnitude : ℚ)) /
+    ((r.denominatorMinusOne + 1 : Nat) : ℚ)
+
+def rawZero : RawRat := ⟨false, 0, 0⟩
+
+structure RawMatrix where
+  rows cols : Nat
+  entries : List RawRat
+
+def RawMatrix.valid (A : RawMatrix) : Bool :=
+  A.entries.length == A.rows * A.cols
+
+def RawMatrix.entry (A : RawMatrix) (row col : Nat) : RawRat :=
+  if row < A.rows ∧ col < A.cols then
+    A.entries.getD (row * A.cols + col) rawZero
+  else rawZero
+
+/- Remaining implementation sequence:
+
+1. Prove geometricDefectTarget by induction on N.  Prove the matrix
+   equalities using distributivity/associativity and the stated contraction
+   equations; do not use a commutative ring normalizer on matrix products.
+
+2. Prove multipliedMaurerTarget and residualIdentitiesTarget first.
+   The proof of finiteBoundTarget then uses only finite row sums,
+   rowNormMulTarget, the triangle inequality, and the rational margin.
+
+3. Prove the clock by the elementary invariant
+     (1-t)^n * (1+n*t) ≤ 1,  0 ≤ t ≤ 1.
+   Clear denominators, set n=s and t=1/s, and iterate blocks.
+
+4. For a supplied filtration C.column : Fin C.dim → Fin (r+1), express
+   h-delta and delta-h support only in strictly smaller columns.  Prove
+   their (r+1)-st powers vanish by finite path expansion or a support
+   induction.  Instantiate nilpotentHPLTarget and cycleTransferTarget.
+
+5. Add a Nat codec for RawRat, RawMatrix, finite lists and the entire data
+   record using ProveIt's maintained pairing/list codes.  Implement signed
+   rational arithmetic by positive denominator products; equality/order are
+   cross-multiplication tests.  No quotient or real equality test is used.
+   All size/shape tests and matrix sums are bounded Boolean/numeric folds.
+
+6. Replace each typed operation by its fixed primitive-recursive code.
+   Derive the prefix identities and norm inequalities in Prf PRAAx using
+   quantifier-free induction.  For matrix equality, the induction formula
+   is the Boolean conjunction over the finite entry prefix.  Numerical
+   code parameters may be arbitrary, including nonstandard values in a
+   model; there must be one internal derivation, not only external testing
+   of each standard input.
+
+7. The target sentence universally closes:
+     ValidContraction(w)=1 ∧ NormGuards(w,q)=1 →
+       ResidualBounds(w,N,q)=1.
+   No target here has yet been compiled into that sentence's proof object.
+   Banach completion is a separate semantic theorem interpreting the
+   finite Cauchy estimates, not an additional iPRA axiom.
+-/
+
+end ContinuousIPRA.HomologicalBlueprint

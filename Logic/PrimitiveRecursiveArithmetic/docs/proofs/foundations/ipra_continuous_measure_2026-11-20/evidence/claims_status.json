@@ -1,0 +1,1094 @@
+{
+  "schema_version": 1,
+  "title": "Continuous mathematics in iPRA: claim and verification status",
+  "review_date": "2026-11-20",
+  "scope": "Major mathematical claims and their separate human, host-Lean, implementation-example, and object-iPRA verification layers. This is not an exhaustive independent audit of every upstream theorem.",
+  "baseline": {
+    "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+    "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+    "source_manifest": "evidence/source_manifest.json",
+    "recorded_sources": 27,
+    "upstream_status": "Targeted source inspection; upstream object-iPRA modules were not rebuilt in this session."
+  },
+  "status_vocabulary": {
+    "human_argument.provided": "A developed human-readable mathematical proof is in the referenced report section under its stated hypotheses. This is not machine certification.",
+    "kernel_checked": "The stated finite or metric host-Lean theorem has been accepted by the pinned Lean kernel; its exact scope is given per claim.",
+    "partially_kernel_checked": "A precisely identified portion is checked; the broader claim remains a human argument.",
+    "supporting_kernel_only": "A general supporting arithmetic lemma is checked, but the displayed claim has not itself been formalized.",
+    "typed_targets_only": "Definitions and proposition types compile; the proposition has not been proved. A Goal definition does not assert its inhabitance.",
+    "uncompiled_outline_only": "The Lean-looking blueprint is excluded from the checked build and carries no typechecking claim.",
+    "not_formalized_as_a_theorem": "No direct Lean proof of this claim is delivered.",
+    "finite_examples_passed": "Exact finite reference calculations passed; they are not universal proofs.",
+    "new_derivation_not_delivered": "No new theorem of type Prf PRAAx for this claim has been constructed in this package."
+  },
+  "checked_host_lean": {
+    "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "dependencies": [
+      "Lean Init",
+      "Lean Std"
+    ],
+    "mathlib_dependency": false,
+    "build_and_examples_success": true,
+    "proved_theorem_declarations": 58,
+    "proved_contract_constructors": [
+      "IPRAContinuousMeasure.mapName",
+      "IPRAContinuousMeasure.composeDenseAction"
+    ],
+    "audited_declarations": 60,
+    "exact_examples": 4,
+    "axiom_union": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "new_correctness_axioms": 0,
+    "sorry_ax_in_audit": false,
+    "lean_status_record": "validation/lean_status.json",
+    "replay_log": "validation/lean_replay.log",
+    "checked_module_hashes": [
+      {
+        "path": "lean/ContinuousMeasure/ActionCompletion.lean",
+        "sha256": "de2c69eb941242ad6068307fd3de83223689786e30f18880283d8b7b87cf169c",
+        "theorem_count": 8
+      },
+      {
+        "path": "lean/ContinuousMeasure/FiniteMeasure.lean",
+        "sha256": "c0983d17fa455d7db1024fae38036d536ad5fde5f0d4b0bfdfccc1b5dd0c4de2",
+        "theorem_count": 24
+      },
+      {
+        "path": "lean/ContinuousMeasure/Presentations.lean",
+        "sha256": "923a6059a57094fd40c35f28334f96914d30b197abb0f46bb96118c42742894f",
+        "theorem_count": 10
+      },
+      {
+        "path": "lean/ContinuousMeasure/Truncation.lean",
+        "sha256": "68599d90d37b580d64c02359726d07c91da4fd2899b67914b5602fafa3fedf5e",
+        "theorem_count": 16
+      },
+      {
+        "path": "lean/ContinuousMeasure/VitaliBlueprint.lean",
+        "sha256": "31f0b84b8c83cca1276864b4798493006a8bd18c0d6c431bc412fbf5fe231085",
+        "theorem_count": 0
+      }
+    ],
+    "constructivity_boundary": "Classical.choice occurs in the actual host proof dependency audit. The host result is not by itself an intuitionistic object-language derivation or a proof-producing translation."
+  },
+  "object_ipra_summary": {
+    "new_completed_prf_praax_endpoints": 0,
+    "status": "Explicit arithmetic formulas, finite invariants, and a source-aware implementation route are supplied; endpoint construction remains.",
+    "route": [
+      "paper/sections/formalization.tex",
+      "blueprints/ObjectArithmeticPlan.txt",
+      "blueprints/HomologicalPlan.lean.txt"
+    ],
+    "upstream_backends_to_reuse": [
+      "Probability/Expectation.lean",
+      "Probability/FiniteKernel.lean",
+      "Probability/TowerCommonDen.lean",
+      "Probability/TruncationEstimate.lean",
+      "Core/Fubini.lean",
+      "Core/SumOrder.lean",
+      "Analysis/RationalFiniteSum.lean",
+      "Foundations/PrecisionCostDAG.lean",
+      "Foundations/PrecisionCostDAGSchedule.lean"
+    ],
+    "upstream_path_prefix": "Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/",
+    "required_method": [
+      "Keep each input evaluator/modulus as a fixed PR definition with proved numerical contracts, or use a bounded evaluator with an explicit PR clock.",
+      "Use natural-number and signed-rational codes with guarded lengths and positive denominators.",
+      "Represent finite universal input checks by primitive-recursive Boolean conjunction folds.",
+      "Carry the specified quantifier-free prefix invariants through induction; no induction on arbitrary quantified formulas is assumed.",
+      "Build concrete Prf PRAAx derivation terms through the existing arithmetic and proof-producing backend.",
+      "Keep semantic completions and host Lean theorems distinct from those derivation terms."
+    ]
+  },
+  "claims": [
+    {
+      "id": "finite_weighted_errors",
+      "title": "Finite weighted errors and changing masses",
+      "report": {
+        "path": "paper/sections/foundations.tex",
+        "labels": [
+          "lem:weighted"
+        ]
+      },
+      "hypotheses": [
+        "Finite rational arrays; original weights are nonnegative.",
+        "Pointwise sample error bounds and a supplied bound B for the comparison samples."
+      ],
+      "result": "Weighted expectation error and mass perturbation are bounded by the weighted sample errors plus B times the absolute mass discrepancy.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "kernel_checked",
+        "scope": "The displayed finite rational inequalities are proved for arbitrary finite lengths.",
+        "declarations": [
+          "IPRAContinuousMeasure.expectation_error",
+          "IPRAContinuousMeasure.probability_nonexpansive",
+          "IPRAContinuousMeasure.weight_product_error",
+          "IPRAContinuousMeasure.mass_perturbation"
+        ],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/operator_logic_examples.py"
+        ],
+        "records": [
+          "validation/operator_logic_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Instantiate or extend the existing object-language rational-sum backend with the stated prefix invariant."
+        ]
+      },
+      "limitations": [
+        "These elementary finite identities are reproducibility support; the repository already contains related object-language expectation and weighted-sum results."
+      ]
+    },
+    {
+      "id": "probability_refinement",
+      "title": "Coherent finite probability towers and refinement invariance",
+      "report": {
+        "path": "paper/sections/measure.tex",
+        "labels": [
+          "eq:m-refinement",
+          "eq:m-mass"
+        ]
+      },
+      "hypotheses": [
+        "Rational probability arrays with nonnegative entries and total mass one.",
+        "Finite parent maps with range, length, coherence, and exact mass-regrouping contracts."
+      ],
+      "result": "Integrals, L1 distances, capped distances, and clipping-tail integrals are invariant under refinement.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "kernel_checked",
+        "scope": "FiniteProbability, Refinement, ProbabilityTower, and SimpleTable are typed; the four finite refinement identities are proved.",
+        "declarations": [
+          "IPRAContinuousMeasure.refinement_integral",
+          "IPRAContinuousMeasure.refinement_l1",
+          "IPRAContinuousMeasure.refinement_rho",
+          "IPRAContinuousMeasure.refinement_tail"
+        ],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/measure_examples.py"
+        ],
+        "records": [
+          "validation/measure_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Encode the arrays and parent maps with the existing sequence codes and discharge Boolean well-formedness and mass-regrouping premises."
+        ]
+      },
+      "limitations": [
+        "Supplying a structure with contract fields is not a construction of an arbitrary probability space."
+      ]
+    },
+    {
+      "id": "regular_l1_completion",
+      "title": "Regular L1 names and stable finite observables",
+      "report": {
+        "path": "paper/sections/measure.tex",
+        "labels": [
+          "lem:m-extension"
+        ]
+      },
+      "hypotheses": [
+        "A coherent probability presentation and a fixed PR simple-table sampler with the regular Cauchy contract."
+      ],
+      "result": "Integral, norm, absolute value, positive part, clipping, and finite algebraic operations extend with explicit guard precisions; equality is equality of represented names.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "partially_kernel_checked",
+        "scope": "RegularL1Name and comparison functions are typed. Finite L1 pseudometric and integral bounds are proved. The full completed algebra and quotient/setoid API are not proved in Lean.",
+        "declarations": [
+          "IPRAContinuousMeasure.FiniteProbability.l1_nonneg",
+          "IPRAContinuousMeasure.FiniteProbability.l1_self",
+          "IPRAContinuousMeasure.FiniteProbability.l1_symm",
+          "IPRAContinuousMeasure.FiniteProbability.l1_triangle",
+          "IPRAContinuousMeasure.FiniteProbability.integral_l1_bound",
+          "IPRAContinuousMeasure.FiniteProbability.rho_le_l1"
+        ],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/measure_examples.py"
+        ],
+        "records": [
+          "validation/measure_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Internalize common-refinement metric laws and the guard-bit diagonal comparisons.",
+          "Export all-precision equations as formulas with numeric variables for each fixed sampler; finish the name equivalence and operation API."
+        ]
+      },
+      "limitations": [
+        "The host structure contains functions; this is not a claim of first-order quantification over all functions in iPRA.",
+        "No exact equality decision for named real values is supplied."
+      ]
+    },
+    {
+      "id": "corrected_clipping",
+      "title": "Stable clipping repairs the earlier separate-tail estimate",
+      "report": {
+        "path": "paper/sections/measure.tex",
+        "labels": [
+          "lem:m-clipping",
+          "eq:m-clipping"
+        ]
+      },
+      "hypotheses": [
+        "Rational cutoff K at least one; nonnegative finite rational weights.",
+        "For the completed version, regular L1 names on a common presentation."
+      ],
+      "result": "L1(f-g) is at most Tail_K(f)+Tail_K(g)+2K*rho(f,g), where rho is the integral of min(1,abs(f-g)).",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "kernel_checked",
+        "scope": "Scalar clipping, nonexpansiveness, tail identities, arbitrary-length weighted inequalities, and the three-quarter budget are proved over Rat. Extension to completed names is the human argument.",
+        "declarations": [
+          "IPRAContinuousMeasure.clip_bounds",
+          "IPRAContinuousMeasure.clip_nonexpansive",
+          "IPRAContinuousMeasure.clip_diameter",
+          "IPRAContinuousMeasure.tail_formula",
+          "IPRAContinuousMeasure.tail_nonexpansive",
+          "IPRAContinuousMeasure.scalar_vitali",
+          "IPRAContinuousMeasure.scalar_vitali_unit",
+          "IPRAContinuousMeasure.finite_vitali",
+          "IPRAContinuousMeasure.finite_vitali_unit",
+          "IPRAContinuousMeasure.vitali_budget"
+        ],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/measure_examples.py"
+        ],
+        "records": [
+          "validation/measure_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [
+        "blueprints/ObjectArithmeticPlan.txt"
+      ],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Prove the exact denominator-cleared scalar case split.",
+          "Lift it by quantifier-free induction on the stored prefix-sum invariant and derive the rational normalized statement."
+        ]
+      },
+      "limitations": [
+        "The old human separate-tail inequality fails at x=2K, y=-K.",
+        "The existing object-iPRA common-dominator TruncationEstimate is a different, valid result and is not refuted."
+      ]
+    },
+    {
+      "id": "vitali_limit_construction",
+      "title": "Uniform integrability plus a rho-Cauchy rate constructs an L1 limit",
+      "report": {
+        "path": "paper/sections/measure.tex",
+        "labels": [
+          "thm:m-vitali",
+          "eq:m-vitali-rate"
+        ]
+      },
+      "hypotheses": [
+        "Jointly PR regular L1 names S(n,j).",
+        "Monotone PR cutoffs U(k)>=1 with Tail_U(k)(f_n)<=2^-k uniformly in n.",
+        "A monotone PR rho-Cauchy rate R."
+      ],
+      "result": "q(k)=k+2+ceilLog2(2U(k+2)) and N(k)=R(q(k)) give an L1 Cauchy rate; b_k=S(N(k+2),k+2) is the output regular name. Its integrability and inherited tail control are conclusions.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "typed_targets_only",
+        "scope": "The finite clipping kernel is proved separately. The complete diagonal, logarithm properties, convergence, and inherited-tail statements are fully typed targets, not proved theorems.",
+        "declarations": [],
+        "unproved_typed_targets": [
+          "IPRAContinuousMeasure.CeilingLog2Goal",
+          "IPRAContinuousMeasure.VitaliNameRegularityGoal",
+          "IPRAContinuousMeasure.VitaliLiftingGoal",
+          "IPRAContinuousMeasure.VitaliInheritedTailGoal",
+          "IPRAContinuousMeasure.VitaliConvergenceGoal"
+        ]
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/measure_examples.py"
+        ],
+        "records": [
+          "validation/measure_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Discharge the bounded exponent-search specification.",
+          "Prove completed-name observer estimates and the shifted diagonal regularity.",
+          "Construct the object-language sampler and export its regularity, convergence, and inherited-tail formulas."
+        ]
+      },
+      "limitations": [
+        "No integrable limit is supplied as an input to the main lifting theorem.",
+        "UI alone does not supply the required Cauchy-in-measure rate."
+      ]
+    },
+    {
+      "id": "dominator_cutoff",
+      "title": "Extract a uniform tail cutoff from a named dominator",
+      "report": {
+        "path": "paper/sections/measure.tex",
+        "labels": [
+          "prop:m-domination"
+        ]
+      },
+      "hypotheses": [
+        "A nonnegative regular L1 name g_j for g and completed-order bounds abs(f_n)<=g."
+      ],
+      "result": "The monotone maximum of the finite sup norms of g_j supplies a PR cutoff; no additional amplitude-tail oracle for the dominator is required.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "supporting_kernel_only",
+        "scope": "The finite tail identity and tail nonexpansiveness are checked; the completed dominator-to-modulus theorem is not a Lean theorem.",
+        "declarations": [
+          "IPRAContinuousMeasure.tail_formula",
+          "IPRAContinuousMeasure.tail_nonexpansive"
+        ],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/measure_examples.py"
+        ],
+        "records": [
+          "validation/measure_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Internalize the finite maximum and lattice comparison, then transfer the regular-name error to the tail observer."
+        ]
+      },
+      "limitations": [
+        "A regular L1 name is essential input; a bare assertion that a function is integrable is not an effective modulus."
+      ]
+    },
+    {
+      "id": "conditional_expectation",
+      "title": "Conditional expectation, tower law, and input-dependent approximation rate",
+      "report": {
+        "path": "paper/sections/measure.tex",
+        "labels": [
+          "thm:m-filtration",
+          "eq:m-tower",
+          "eq:m-upward-rate"
+        ]
+      },
+      "hypotheses": [
+        "A coherent finite probability tower and a regular L1 name with the level of each simple approximation known."
+      ],
+      "result": "Finite conditional averages extend to positive linear contractions, preserve the integral, obey E_m E_n=E_min(m,n), and converge to each named input with a rate from its actual approximation levels. Their UI cutoff is derived.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "not_formalized_as_a_theorem",
+        "scope": "Finite weighted-sum and refinement kernels are available, but the new conditional-expectation operator, its tower law, and its completed convergence theorem have not been proved in this Lean project.",
+        "declarations": [],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/measure_examples.py"
+        ],
+        "records": [
+          "validation/measure_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Encode positive-mass and zero-mass branches explicitly.",
+          "Prove the cancellation of cell masses in the L1 contraction and the finite regrouping tower law.",
+          "Lift these contracts to regular names and derive the rate from sample levels."
+        ]
+      },
+      "limitations": [
+        "This is conditional expectation onto the presented finite subalgebras, not a general Radon-Nikodym or arbitrary-sub-sigma-algebra construction.",
+        "An individual posterior value still incurs reciprocal-mass precision loss."
+      ]
+    },
+    {
+      "id": "event_operations",
+      "title": "Effective measure algebra and countable unions with a continuity modulus",
+      "report": {
+        "path": "paper/sections/measure.tex",
+        "labels": []
+      },
+      "hypotheses": [
+        "Regular finite-event names on the probability tower.",
+        "For countable unions, a uniformly PR family and a supplied PR Cauchy modulus for its finite partial unions."
+      ],
+      "result": "Complement, finite unions/intersections, and modulus-equipped countable unions have regular event names; disjoint mass-tail data yields the corresponding countable-additivity statement.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "not_formalized_as_a_theorem",
+        "scope": "The event-name API and union diagonal are presented in the report, not proved in Lean.",
+        "declarations": [],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "not_claimed",
+        "programs": [],
+        "records": [],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Encode Boolean event tables and their weighted symmetric-difference metric.",
+          "Prove the finite union error accumulation and the explicit guarded diagonal."
+        ]
+      },
+      "limitations": [
+        "An arbitrary sequence of events does not supply a countable-union modulus.",
+        "The entire atomless event algebra is not treated as a compact sort."
+      ]
+    },
+    {
+      "id": "dense_action_completion",
+      "title": "Strong metric actions extend to names and compose",
+      "report": {
+        "path": "paper/sections/operators.tex",
+        "labels": [
+          "def:action",
+          "thm:action-extension"
+        ]
+      },
+      "hypotheses": [
+        "A dense-input action routine with a nonnegative rational gain and the stated two-precision stability contract.",
+        "A natural majorant for the gain is supplied to the checked constructors.",
+        "For linear, positive, unital, or integral-preserving conclusions, the corresponding additional finite contracts are supplied."
+      ],
+      "result": "Explicit precision shifts produce regular output names and composable actions; extra linear/probability contracts pass to the completion in the human argument.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "partially_kernel_checked",
+        "scope": "action_regular, mapName, mapName_respects, and composeDenseAction prove the metric action construction/composition. DenseAction stores gain : Rat; the integer majorant is a separate constructor parameter. The full linear/positive category API is not checked.",
+        "declarations": [
+          "IPRAContinuousMeasure.action_regular",
+          "IPRAContinuousMeasure.mapName",
+          "IPRAContinuousMeasure.mapName_respects",
+          "IPRAContinuousMeasure.composeDenseAction"
+        ],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/operator_logic_examples.py"
+        ],
+        "records": [
+          "validation/operator_logic_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Reify fixed action samplers and gain schedules in the object language.",
+          "Add and propagate linearity, positivity, unit, and integral-preservation contracts.",
+          "Prove name equivalence/category identity and associativity at the completed interface."
+        ]
+      },
+      "limitations": [
+        "No uniform matrix approximation in operator norm is assumed.",
+        "The checked offset uses a supplied integer majorant; the logarithmic offset in the report is a sharper outlined schedule."
+      ]
+    },
+    {
+      "id": "probability_category",
+      "title": "Probability-preserving transitions and their independent tensor",
+      "report": {
+        "path": "paper/sections/operators.tex",
+        "labels": [
+          "thm:finite-markov"
+        ]
+      },
+      "hypotheses": [
+        "Finite nonnegative row-stochastic matrices with the stated marginal-preservation equation.",
+        "For completed actions, all finite probability-preservation contracts and product presentations."
+      ],
+      "result": "Contravariant observable actions compose, preserve probability, and form the stated category with independent tensor and one-point unit.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "supporting_kernel_only",
+        "scope": "Finite-sum Fubini and error bounds are checked, but the matrix/category/tensor theorems are human proofs with reference examples.",
+        "declarations": [
+          "IPRAContinuousMeasure.qsum_exchange",
+          "IPRAContinuousMeasure.expectation_error"
+        ],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/operator_logic_examples.py"
+        ],
+        "records": [
+          "validation/operator_logic_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Implement finite kernel matrix composition and marginal contracts.",
+          "Prove tensor construction and coherences using finite sums and action extension."
+        ]
+      },
+      "limitations": [
+        "A copy map generally does not preserve the designated independent product measure.",
+        "This probability-preserving category is not claimed to be the full Markov category with its copy structure."
+      ]
+    },
+    {
+      "id": "kernel_and_conditioning_moduli",
+      "title": "Tail-sensitive kernel errors and posterior mass margins",
+      "report": {
+        "path": "paper/sections/operators.tex",
+        "labels": [
+          "prop:kernel-tail",
+          "prop:bayes"
+        ]
+      },
+      "hypotheses": [
+        "Two kernels with common source/target marginals and a presented integrable observable.",
+        "For normalized posteriors, both masses have a supplied positive lower bound tau."
+      ],
+      "result": "Kernel variation costs at most 2*Tail_K(f)+K*d_mu(P,Q); posterior total variation costs at most 2*delta/tau.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "supporting_kernel_only",
+        "scope": "The finite mass-perturbation estimate is proved; these kernel and conditioning propositions are not separately proved Lean theorems.",
+        "declarations": [
+          "IPRAContinuousMeasure.mass_perturbation"
+        ],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/operator_logic_examples.py"
+        ],
+        "records": [
+          "validation/operator_logic_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Instantiate finite weighted error with the kernel rows.",
+          "Prove denominator-guarded posterior normalization and completed tail insertion."
+        ]
+      },
+      "limitations": [
+        "No modulus for an arbitrary zero-probability conditioning event or unrestricted disintegration is claimed."
+      ]
+    },
+    {
+      "id": "tent_quadrature",
+      "title": "Construct rational quadratures from continuous tents",
+      "report": {
+        "path": "paper/sections/logic.tex",
+        "labels": [
+          "lem:tent-quadrature"
+        ]
+      },
+      "hypotheses": [
+        "A compact probability sort with PR finite nets, compatible distance-to-center L1 names, and a positive unital integral.",
+        "Lipschitz and range bounds for the queried observable."
+      ],
+      "result": "A tent partition and guarded reciprocal give rational normalized masses with error L*h+2*B*m*eta, without deciding nearest-center boundaries.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "supporting_kernel_only",
+        "scope": "The finite mass/sample perturbation rule is checked. The tent construction and quadrature theorem are human proofs, not new Lean theorems.",
+        "declarations": [
+          "IPRAContinuousMeasure.mass_perturbation"
+        ],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "not_claimed",
+        "programs": [],
+        "records": [],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Implement guarded tent, reciprocal, and product operations on names.",
+          "Export the rational mass-normalization and support-based quadrature bounds."
+        ]
+      },
+      "limitations": [
+        "Arbitrary unrelated compact and measure presentations do not supply the required compatibility.",
+        "Finite atomic quadrature is not total-variation approximation to an atomless measure."
+      ]
+    },
+    {
+      "id": "integrated_formula_evaluation",
+      "title": "Mixed infimum, supremum, and expectation evaluation",
+      "report": {
+        "path": "paper/sections/logic.tex",
+        "labels": [
+          "thm:mixed-evaluation",
+          "ex:binder-order"
+        ]
+      },
+      "hypotheses": [
+        "A fixed well-sorted finite formula over supplied compact probability sorts.",
+        "Joint PR atomic evaluators, rational coordinate Lipschitz/range bounds, and admissible bounded connectives.",
+        "Each expectation uses the sort measure independently of other free parameters unless an extra kernel-variation contract is supplied."
+      ],
+      "result": "A finite recursive evaluator preserves binder order, clips approximate arguments to certified ranges, and returns a regular scalar name with an explicit weighted error recursion.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "supporting_kernel_only",
+        "scope": "The expectation error rule is checked. Syntax, binders, structural evaluator correctness, and the mixed norm rules are human proofs with finite reference evaluation.",
+        "declarations": [
+          "IPRAContinuousMeasure.expectation_error",
+          "IPRAContinuousMeasure.probability_nonexpansive",
+          "IPRAContinuousMeasure.mass_perturbation"
+        ],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/operator_logic_examples.py"
+        ],
+        "records": [
+          "validation/operator_logic_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Encode guarded well-sorted syntax and the fixed atomic program clocks.",
+          "Prove structural preservation of range, moduli, and node budgets.",
+          "Compose the quadrature and extrema endpoint derivations without changing binder order."
+        ]
+      },
+      "limitations": [
+        "No unrestricted compactness, ultraproduct, or model-selection theorem is established.",
+        "L1 error does not by itself control a supremum; mixed-norm contracts retain the binder order.",
+        "No total PR interpreter for all PR functions is assumed."
+      ]
+    },
+    {
+      "id": "influence_budgets",
+      "title": "Backward error influences with probability coefficients",
+      "report": {
+        "path": "paper/sections/foundations.tex",
+        "labels": [
+          "prop:adjoint"
+        ]
+      },
+      "hypotheses": [
+        "A finite topologically ordered error graph with nonnegative rational edge coefficients and local errors."
+      ],
+      "result": "A reverse pass computes coefficients lambda with output error at most sum(lambda_v*delta_v), including shared subexpressions and zero-influence terms.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "not_formalized_as_a_theorem",
+        "scope": "No new standalone Lean DAG theorem is provided; the existing upstream error-DAG modules are acknowledged and are the intended arithmetic backend.",
+        "declarations": [],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/operator_logic_examples.py"
+        ],
+        "records": [
+          "validation/operator_logic_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Extend or instantiate existing PrecisionCostDAG and PrecisionCostDAGSchedule with the norm types and actual probability weights."
+        ]
+      },
+      "limitations": [
+        "This is a sound error-allocation improvement, not a claim of optimal schedules or polynomial-time complexity."
+      ]
+    },
+    {
+      "id": "holomorphic_parameter_integral",
+      "title": "Holomorphic parameter integrals with L1 coefficient bounds",
+      "report": {
+        "path": "paper/sections/complex_integrals.tex",
+        "labels": [
+          "lem:banach-series",
+          "thm:holomorphic-integral",
+          "eq:derivative-tail",
+          "eq:log-example"
+        ]
+      },
+      "hypotheses": [
+        "Jointly PR coefficient names in a presented Banach space or L1(mu;C).",
+        "Rational majorant norm(a_n)*R^n<=M with M,R>0 and a supplied smaller radius r<R.",
+        "A requested finite derivative order and explicit complex norm-conversion guards."
+      ],
+      "result": "Finite geometric and derivative-tail schedules construct the series, commute its sum and derivatives with integration, and handle unbounded integrable spatial factors. The example integral of 1/(1-z*t) includes z=0.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "not_formalized_as_a_theorem",
+        "scope": "The complex Banach-series and differentiation theorems are human arguments; no complex-analysis theorem was added to the checked Lean project.",
+        "declarations": [],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/complex_integral_examples.py"
+        ],
+        "records": [
+          "validation/complex_integral_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Instantiate existing complex-series and geometric-sum arithmetic with L1 coefficient observations.",
+          "Prove denominator-cleared coefficient and derivative remainder bounds plus norm conversions.",
+          "Assemble the integration-contraction identity on regular names."
+        ]
+      },
+      "limitations": [
+        "The smaller-radius gap and norm-tail data are required.",
+        "No pointwise convergence decision on null sets or unrestricted differentiation-under-the-integral theorem is claimed."
+      ]
+    },
+    {
+      "id": "signed_hpl",
+      "title": "Signed homological perturbation with explicit witnesses",
+      "report": {
+        "path": "paper/sections/homological.tex",
+        "labels": [
+          "thm:hpl-exact",
+          "eq:hpl-output"
+        ]
+      },
+      "hypotheses": [
+        "A normalized strong deformation retraction with exact chain, homotopy, and side-condition equations.",
+        "An exact degree-minus-one perturbation satisfying (d+delta)^2=0.",
+        "Two-sided inverses for 1+h*delta and 1+delta*h, or a supplied positive nilpotence exponent giving finite inverses."
+      ],
+      "result": "Explicit transferred differential, inclusion, projection, and homotopy satisfy the exact signed chain equations and transport cycle/boundary witnesses.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "uncompiled_outline_only",
+        "scope": "No HPL theorem is in the checked Lean build. HomologicalPlan.lean.txt supplies matrix definitions and targets as an uncompiled outline.",
+        "declarations": [],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/homological_examples.py"
+        ],
+        "records": [
+          "validation/homological_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [
+        "blueprints/HomologicalPlan.lean.txt"
+      ],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Implement or connect finite signed rational matrix algebra, dimensions, grading, and side-condition guards.",
+          "Prove the displayed resolvent and Maurer-Cartan cancellations by finite algebra.",
+          "Export each chain/homotopy equation as a bounded-entry object formula."
+        ]
+      },
+      "limitations": [
+        "The homological perturbation lemma itself is established mathematics; the package develops the quantitative presentation and residual interface.",
+        "Existing finite characteristic-two perturbation work in the repository is credited."
+      ]
+    },
+    {
+      "id": "hpl_finite_residuals",
+      "title": "Finite residual certificates and geometric clocks",
+      "report": {
+        "path": "paper/sections/homological.tex",
+        "labels": [
+          "thm:hpl-finite",
+          "lem:hpl-clock",
+          "eq:hpl-residual-identities"
+        ]
+      },
+      "hypotheses": [
+        "The exact HPL input equations and rational bounds for d,h,delta,i,p.",
+        "Both norm(h*delta) and norm(delta*h) are bounded by the supplied q<1."
+      ],
+      "result": "Finite Neumann truncations satisfy exact residual factorizations, with residuals bounded by stated rational constants times q^N; a rational block clock reaches any dyadic target.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "uncompiled_outline_only",
+        "scope": "Universal matrix residual identities are not Lean checked. Exact finite examples include a nonzero square defect, so the reference checks do not merely exercise trivially square-zero truncations.",
+        "declarations": [],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/homological_examples.py"
+        ],
+        "records": [
+          "validation/homological_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [
+        "blueprints/HomologicalPlan.lean.txt"
+      ],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Prove the finite geometric identities and inverse-free residual factorization using bounded matrix sums.",
+          "Prove the row-sum norm and denominator-cleared geometric block clock.",
+          "Export residual inequalities without asserting an exact finite square-zero differential."
+        ]
+      },
+      "limitations": [
+        "An approximate differential with small square defect is not an exact chain complex.",
+        "The finite examples validate implementations and signs, not the universal algebraic theorem."
+      ]
+    },
+    {
+      "id": "hpl_banach_and_local_models",
+      "title": "Banach completion, perturbation stability, and local-to-global models",
+      "report": {
+        "path": "paper/sections/homological.tex",
+        "labels": [
+          "thm:hpl-banach",
+          "cor:hpl-bicomplex"
+        ]
+      },
+      "hypotheses": [
+        "For Banach transfer, bounded maps, a complete presented operator space, and the same product gap q<1.",
+        "For local-to-global transfer, a finite-column signed double complex and supplied normalized column contractions onto local models.",
+        "For a geometric application, a comparison with the target chain complex; an explicit finite simplicial-subcomplex-cover comparison is developed in the report."
+      ],
+      "result": "Explicit Neumann tails construct the updated retraction, perturbation changes obey a resolvent bound, and non-acyclic local models retain their full transferred differential. Filling witnesses have quantitative norm bounds.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "uncompiled_outline_only",
+        "scope": "The Banach and geometric completion arguments are not Lean theorems in this package; the finite matrix blueprint supplies a route for their arithmetic kernels.",
+        "declarations": [],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/homological_examples.py"
+        ],
+        "records": [
+          "validation/homological_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [
+        "blueprints/HomologicalPlan.lean.txt"
+      ],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "Finish the finite residual endpoints and regular-name operator completion.",
+          "Implement nilpotent column transfers and the application-specific cover comparison.",
+          "Export cycle/boundary/filling equations rather than assuming a homology quotient object."
+        ]
+      },
+      "limitations": [
+        "Arbitrary bounded operators do not automatically have PR presentations.",
+        "Unbounded differentials require separate domain/graph-norm work.",
+        "Small perturbations need not preserve the old small-model differential or its homology.",
+        "Local models are input; no automatic construction or uniform speed advantage is asserted."
+      ]
+    },
+    {
+      "id": "quantitative_boundaries",
+      "title": "Counterexamples delimit the effective interface",
+      "report": {
+        "path": "paper/sections/conclusions.tex",
+        "labels": [
+          "sec:resolved"
+        ]
+      },
+      "hypotheses": [
+        "The explicit finite, probability, and machine-simulation examples described in the report."
+      ],
+      "result": "The report proves the need for norm-specific contracts and supplied or derived rates: bounded/UI martingales have no uniform computable Cauchy-rate extractor; conditional projections need not converge in operator norm; L1 error does not control suprema; atomless event algebras are not compact; small differential changes can change homology.",
+      "human_argument": {
+        "status": "provided",
+        "meaning": "A mathematical argument is supplied for the stated hypotheses; this status is not a kernel certificate."
+      },
+      "lean_host": {
+        "status": "partially_kernel_checked",
+        "scope": "Examples.lean checks the concrete old separate-tail counterexample and three finite numerical examples. The general computability, noncompactness, operator-norm, and homology counterarguments are human proofs.",
+        "declarations": [],
+        "unproved_typed_targets": []
+      },
+      "reference_checks": {
+        "status": "finite_examples_passed",
+        "programs": [
+          "code/measure_examples.py",
+          "code/operator_logic_examples.py",
+          "code/homological_examples.py"
+        ],
+        "records": [
+          "validation/measure_examples.json",
+          "validation/operator_logic_examples.json",
+          "validation/homological_examples.json"
+        ],
+        "scope": "Exact finite implementation examples only; no inference of a universal theorem or an object-iPRA derivation."
+      },
+      "uncompiled_outlines": [],
+      "object_ipra": {
+        "status": "new_derivation_not_delivered",
+        "remaining": [
+          "No positive object-iPRA derivation is claimed for conclusions refuted by these counterexamples.",
+          "Any future application must retain the specified moduli, norm, margin, or comparison hypothesis."
+        ]
+      },
+      "limitations": [
+        "The halting argument is an external computability limitation, not a claim that iPRA internally proves its own general soundness."
+      ]
+    }
+  ],
+  "not_claimed": [
+    "A completed new embedding of unrestricted real/complex analysis, category theory, or model theory into iPRA.",
+    "A total primitive-recursive universal evaluator for all primitive-recursive programs.",
+    "Automatic construction of missing tail, Cauchy, compactness, mass-margin, operator, or local-model data from qualitative existence assertions.",
+    "A Lean proof of the complete Vitali lifting theorem, integrated formula evaluator, complex-analysis extension, or HPL theorem.",
+    "Kernel checking of blueprints/HomologicalPlan.lean.txt.",
+    "Rebuilding or exhaustively verifying the pinned upstream repository.",
+    "Replacing the existing valid common-dominator truncation theorem by a counterexample.",
+    "Universal correctness inferred from the Python examples.",
+    "Optimal error scheduling, polynomial-time complexity, or a uniform speed improvement for every application."
+  ],
+  "consistency_checks": {
+    "readme_theorem_count_matches_sources_and_status": true,
+    "readme_constructor_count_matches_status": true,
+    "readme_axiom_count_matches_status": true,
+    "checked_lean_module_hashes_match_status": true,
+    "source_manifest_and_lean_status_commit_match": true,
+    "report_labels_referenced_here_exist": true,
+    "checked_declarations_referenced_here_are_in_axiom_audit": true,
+    "note": "LaTeX/PDF integrity is intentionally delegated to the final package manifest. The DenseAction rational-gain/separate-integer-majorant distinction is recorded explicitly above."
+  }
+}

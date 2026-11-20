@@ -1,0 +1,74 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.94in,top=0.86in,bottom=0.86in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,booktabs,tabularx,array,enumitem,xcolor,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=linkblue,urlcolor=linkblue,citecolor=linkblue,bookmarksnumbered]{hyperref}
+\usepackage{bookmark}
+\definecolor{linkblue}{HTML}{1D5269}
+\definecolor{ink}{HTML}{173747}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.6em}{}
+\setcounter{tocdepth}{1}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlist{nosep,topsep=5pt}
+\setlength{\emergencystretch}{2.5em}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\textcolor{linkblue}{Finite observations in iPRA}}\fancyhead[R]{\small\thepage}
+\setlength{\headheight}{15pt}\renewcommand{\headrulewidth}{0.3pt}
+\hypersetup{pdftitle={From oracle observations to iPRA proofs},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\newcommand{\Prf}{\mathsf{Prf}\,\mathsf{PRAAx}}
+\newcommand{\PL}{\mathrm{PL}}
+\newcommand{\epsi}[1]{2^{-#1}}
+\begin{document}
+\thispagestyle{empty}
+\noindent{\small\sffamily\bfseries\color{linkblue} CONSTRUCTIVE AND COMPUTABLE ANALYSIS \hfill 20 NOVEMBER 2026}\par
+\vspace{1.1em}
+\noindent{\Huge\bfseries\color{ink} From oracle observations\\[3pt] to iPRA proofs}\par
+\vspace{0.7em}
+\noindent{\large Finite information for roots, derivatives, and probability laws}\par
+\vspace{1em}
+\noindent A theorem about a continuous object can often be stated as a family of rational
+experiments. For each requested precision, which questions must the experiment
+ask, how long can it run, and what numerical certificate makes two valid runs
+compatible? This report answers those questions for three different operators.
+All three accept inexact observations. The proofs identify the data that permit
+an arithmetical construction and give examples where weaker data lose the
+claimed conclusion.
+\medskip
+
+\noindent\begin{tabularx}{\linewidth}{@{}p{0.22\linewidth}Y@{}}
+\toprule
+Problem & Construction and quantitative result\\
+\midrule
+Root selection & A lower separation modulus makes one midpoint observation sufficient to halve a sign bracket, even when the observed sign is ambiguous.\\[3pt]
+Differentiation & Bounds on adjacent dyadic slopes and a summable tail construct the derivative from values. This supplies the local estimate used to pass to a fundamental theorem of calculus.\\[3pt]
+Probability laws & Cumulative piecewise-linear probes recover a transport-Cauchy name for a positive expectation functional on the unit interval. Finite marginals determine sparse optimal couplings, with a proof of optimality.\\
+\bottomrule
+\end{tabularx}
+
+\medskip
+The common interface is finite replay with a numerical use bound, plus a
+separate proof of independence of names. The package includes Lean proofs in
+the ambient type theory and object-calculus derivations for sparse replay, the midpoint rule, dyadic slope refinement,
+and prefix repair. The final section specifies the remaining embeddings.
+\tableofcontents
+\clearpage
+\input{chapters/basis}
+\input{chapters/oracle}
+\input{chapters/zeros}
+\input{chapters/case}
+\input{chapters/laws}
+\input{chapters/transfer}
+\input{chapters/replay}
+\end{document}

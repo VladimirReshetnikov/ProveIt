@@ -1,0 +1,44 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.92in,top=0.88in,bottom=0.9in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,graphicx,tabularx,longtable,array,enumitem,xcolor,hyperref,xurl,fancyhdr,microtype}
+\definecolor{ink}{HTML}{132F40}
+\definecolor{accent}{HTML}{146967}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent,pdftitle={Finite queries in constructive analysis},pdfauthor={OpenAI}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\textsc{Constructive analysis in iPRA}}\rhead{\small\textsc{Finite queries}}\cfoot{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Q}{\mathbb{Q}}\newcommand{\N}{\mathbb{N}}\newcommand{\R}{\mathbb{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\repo}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/#1}{#2}}
+\newcommand{\rdir}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/#1}{#2}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setcounter{tocdepth}{1}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+\begin{document}
+\thispagestyle{plain}
+{\color{accent}\sffamily\small RESEARCH REPORT \hfill 20 NOVEMBER 2026}\par
+\vspace{8pt}{\color{ink}\Huge\bfseries Finite queries in constructive analysis}\par
+\vspace{5pt}{\Large Primitive-recursive moduli, integration and root finding}\par
+\vspace{13pt}
+\noindent A computation on a real number may ask for its ten-thousandth digit without using the preceding digits. A precision bound that records only the largest address loses this distinction. We retain the actual finite assignments that lead to each answer. They suffice to calculate the least prefix needed by a finite observation, test agreement at the two binary expansions of a dyadic point, and integrate by weighting the leaves. The proofs use finite arithmetic and give explicit primitive-recursive (PR) constructions.\par
+\medskip
+\noindent Two applications use different kinds of finite information. A finite difference forces a usable sign in every bracket of a monic real polynomial, even for named coefficients and repeated roots. A bounded-difference code gives finite nets of genuine Lipschitz functions on a cube, with the correct order of metric entropy. Each construction states the information its input must supply.\par
+\medskip
+\noindent\textbf{Formal status.} The archive contains a kernel-checked generator of object-iPRA proofs for replay of fixed binary decision trees. The general analytic results have human proofs, supporting Lean lemmas and an object-language implementation plan. The full analytic endpoint sequents are open formalization tasks.\par
+\medskip\hrule\smallskip
+\tableofcontents
+\clearpage
+\input{framework}
+\input{interval}
+\input{aggregate}
+\input{roots}
+\input{compact}
+\input{formalization}
+\end{document}

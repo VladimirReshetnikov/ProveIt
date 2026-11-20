@@ -1,0 +1,83 @@
+\subsection{Eliminating the approximating vector by two integer determinants}
+The preceding certificates contain an arbitrary list of rational coefficients.
+Two natural numbers, a matrix dimension $K$ and an observation cutoff $J$, suffice as witnesses.
+
+For each of the same targets $f$ let the columns be
+$h_i=R_{i+2}$ for $0\le i<K$, and $h_K=f$. Put
+$H_i=i+1$ for $i<K$ and $H_K=1$, so $|h_i(n)|\le H_i$. Form the
+$(K+1)\times(K+1)$ integer matrix
+\[
+ G_{ij}=(J+1)\sum_{n=1}^J h_i(n)h_j(n)
+              \prod_{\substack{1\le a\le J\\a\ne n}}a(a+1)
+       +[i=j]P_J(K+1)H_i^2.
+\]
+Let $A$ be its leading $K\times K$ submatrix and
+$S=(J+1)P_J$. At $K=0$, $\det A=1$. The new test is
+\[
+ \boxed{\qquad \forall t\ge1\ \exists K,J\ge0\qquad
+                   t\det G\le S\det A.\qquad}
+\]
+For a variable target index $m$, quantify $m$ before $t$. Every entry
+of both matrices is a nonnegative integer. Their sizes, their entries
+and both signed Leibniz sums are primitive recursive in $m,t,K,J$.
+
+To prove the test, take a candidate coefficient vector $x\in\mathbb Q^K$,
+write $e_x=f-\sum_i x_ih_i$, and put
+\[
+ Q(x)=\sum_{n=1}^J w_ne_x(n)^2+
+            \frac{K+1}{J+1}\Big(1+\sum_{i<K}H_i^2x_i^2\Big).
+\]
+The second term bounds the entire squared error past $J$ because
+$e_x(n)^2\le(K+1)(1+\sum H_i^2 x_i^2)$ by finite Cauchy, and the
+total remaining weight is $1/(J+1)$. Thus $t Q(x)\le1$ gives
+every-prefix approximation at precision $t$.
+Conversely obtain one rational approximant $x$ with the every-prefix
+bound at $2t$ and write $x_i=a_i/D$. Choose
+\[
+   J=2t(K+1)\Big(1+\sum H_i^2 a_i^2\Big).
+\]
+Since $D\ge1$, the tail allowance in $Q$ is at most $1/(2t)$.
+It follows that $tQ(x)\le1$. This proves equivalence before eliminating
+the coefficient vector.
+
+Write $G=\left(\begin{smallmatrix}A&b\\ b^T&d\end{smallmatrix}\right)$.
+Expansion of the integer matrix gives
+$S Q(x)=x^TAx-2b^Tx+d$.
+Both $G$ and $A$ are positive definite because each is a sum of nonnegative
+outer products and a positive diagonal matrix. Their determinants are
+positive over the rationals. To see this, induct on dimension. The first diagonal entry is a positive pivot. Subtracting
+its multiples from lower rows yields its Schur complement. A nonzero
+vector $y$ for that complement extends to
+$(-a_{11}^{-1}\sum_{i>1}a_{1i}y_i,y)$, so its quadratic value is
+positive. The determinant equals the pivot times the determinant of
+the smaller positive definite matrix. Include the empty determinant
+as the induction base. Hence $z=A^{-1}b$ exists over $\mathbb Q$, and
+\[
+ S Q(x)=(x-z)^TA(x-z)+d-b^Tz,\qquad
+ \det G=(\det A)(d-b^T z).
+\]
+The second identity follows by subtracting $z^T$ times the first
+$K$ rows from the last row. The minimum is attained at $x=z$, proving
+the displayed determinant test in both directions. If the test passes,
+Cramer's rule recovers integer numerators and common denominator
+$\det A$ for the witness. This construction uses no minimization over
+reals. In iPRA, common-denominator integer arithmetic suffices for the
+elimination. Each stage of rational row reduction is a primitive
+recursion; verifying the finite products, row identities and positivity
+uses quantifier-free induction. For the positivity argument one may
+carry the original diagonal lower bound through elimination because substitution of the explicit extension of $y$ retains at least the
+sum of the original lower-bound terms on the surviving coordinates.
+After clearing all positive denominators this is a coefficient identity
+and a sum of squares. Thus it requires no induction on a predicate
+quantifying over all rational vectors.
+
+\texttt{ResidueGram.sentence} builds the three closed formulas.
+\texttt{ResidueGram.eliminate} proves the finite rational equivalence
+between the coefficient search and the determinant comparison for a
+symmetric invertible core with nonnegative quadratic form and positive
+determinant. The lemmas \texttt{ridge\_square} and \texttt{ridge\_pos}
+also verify the sum-of-squares expansion and strict positivity of any
+weighted design matrix with a positive diagonal penalty. Identifying the
+compiled integer entries with this matrix and proving its determinant
+positive are carried out above on paper. In the executable checker, the empty matrix and
+cutoff are included explicitly.

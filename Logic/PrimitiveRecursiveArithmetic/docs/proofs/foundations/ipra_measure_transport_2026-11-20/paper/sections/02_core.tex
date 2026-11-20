@@ -1,0 +1,197 @@
+\section{A finite arithmetic interface for continuous objects}
+\label{sec:core}
+
+\subsection{The base theory and rational coding}
+
+We use first-order intuitionistic logic with equality, a natural-number
+function symbol for each fixed primitive-recursive definition, its
+defining equations, successor injectivity and nonzeroness, and induction
+for quantifier-free formulas. This is the ordinary \ipra\ interface
+\(\Prf\,\mathrm{PRAAx}\) used by the repository. Arithmetic quantifiers
+are permitted in statements and assumptions. They are not silently
+admitted into induction invariants.
+
+Integers are coded by a sign and a magnitude, with a fixed normalization
+of zero. A rational is a coded integer numerator and a positive natural
+denominator. Invalid codes decode to a fixed default. We may use reduced
+fractions for efficient execution, but equality and order are defined by
+cross multiplication with positive denominators. Finite arrays have an
+explicit length and a total default-valued lookup operation. Pairing,
+lists, finite sums, products, maxima, bounded search, and powers are
+primitive recursive. Every displayed rational inequality thus abbreviates
+an arithmetic formula. Negative numerators never require subtraction in
+the natural-number sort: use signed pairs or move their negative parts
+to the other side.
+
+For example, an inequality \(a/b\leq c/d\) with \(b,d>0\) means
+\(ad\leq cb\) after interpreting the signed products. A finite conjunction
+\(\forall i<N\,P(i)\), when \(P\) is given by a fixed
+primitive-recursive test with its proved Boolean specification, has the
+primitive-recursive Boolean accumulator
+\[
+ v(0)=1,\qquad v(i+1)=v(i)\mathbin{\wedge}\chi_P(i).
+\]
+The defining equations and quantifier-free induction establish the
+accumulator's finite soundness. This is bounded Booleanization, not a
+truth predicate for arbitrary formulas.
+
+\subsection{Fix programs or supply a uniform clock}
+
+There are two executable routes in this report.
+In the \emph{fixed-program route}, an approximation program and its
+moduli are specific primitive-recursive definitions before a theorem is
+formed. Numerical parameters, precision, dimension, and array lengths
+can still vary. In the \emph{clocked route}, a fixed universal transition
+function is iterated for a specified primitive-recursive bound
+\(T(a,k)\); the code \(a\) may vary, but this particular clock family is
+fixed. Failure to halt within the bound is an explicit error output.
+The hypothesis that a presentation is valid includes successful
+evaluation at each demanded precision.
+
+There is no total primitive-recursive evaluator for all
+primitive-recursive programs with arbitrary code and input. If
+\(U(e,n)\) were one, then \(n\mapsto U(n,n)+1\) would itself have an
+index \(e\), yielding \(U(e,e)=U(e,e)+1\). A primitive-recursive
+\emph{bounded} transition iterator does not contradict this argument.
+Nor does an arithmetic relation saying that a finite halting trace exists.
+
+For relational presentations, a variable-length batch must carry a
+complete trace array or a common clock. From a collection of formulas
+\(\forall i\,\exists t\,R(i,t)\), we do not simply infer, inside weak
+arithmetic, a coded array of witnesses of arbitrary requested length.
+All algorithms below either use fixed primitive-recursive functions or
+receive precisely that finite execution evidence.
+
+\subsection{Regular names and observations}
+
+Let \(V_0\) be a rationally presented vector space or abelian group of
+finite objects, with a rational-valued pseudonorm \(p\). Its finite
+operations satisfy
+\[
+ p(0)=0,\quad p(x+y)\leq p(x)+p(y),\quad
+ p(qx)=|q|p(x).
+\]
+For step functions, \(p\) is an exact finite weighted sum. The word
+``pseudonorm'' allows different codes for the same finite function.
+
+A regular \(p\)-name is a fixed or clocked producer \(u\) such that
+\[
+ p(u(k)-u(\ell))\leq 2^{-k}+2^{-\ell}\quad(k,\ell\in\mathbb N).
+ \tag{R}\label{eq:regular}
+\]
+Its validity is an arithmetic formula about all finite outputs. For two
+regular names define
+\[
+ u\simeq v\quad\Longleftrightarrow\quad
+ \forall k,\ell\ p(u(k)-v(\ell))\leq2^{-k}+2^{-\ell}.
+ \tag{E}\label{eq:equiv}
+\]
+The completion is used externally to explain these names; internally we
+use the corresponding formulas and finite witnesses. Reflexivity and
+symmetry are immediate. For transitivity, insert a common approximant
+\(v(m)\), obtain the desired bound plus \(2^{1-m}\), and eliminate the
+extra error by a rational separation argument. Concretely, if the
+desired rational inequality failed, its positive rational gap has a
+primitive-recursively computable dyadic lower bound. Substituting a
+larger \(m\) gives a contradiction. Only rational order is decided.
+
+We write \(h(C)\) for the least natural \(j\) with
+\(C\leq2^j\), for a nonnegative rational \(C\), taking \(h(C)=0\)
+when \(C\leq1\). A search bounded by the numerator of \(C\) plus one
+suffices, so \(h\) is primitive recursive. This simple shift converts
+norm constants into precision demands.
+
+\begin{lemma}[Regularization with an explicit rate]
+Suppose finite objects \(a_n\) have a primitive-recursive nondecreasing
+rate \(N\) satisfying
+\[
+ n,m\geq N(k)\quad\Longrightarrow\quad p(a_n-a_m)\leq2^{-k}.
+\]
+Then \(u(k)=a_{N(k)}\) is a regular name. If the original rate is not
+nondecreasing, replace it by the prefix maximum
+\(\max_{j\leq k}N(j)\).
+\end{lemma}
+\begin{proof}
+If \(k\leq\ell\), both selected indices are at least \(N(k)\).
+Their distance is at most \(2^{-k}\), and hence at most
+\(2^{-k}+2^{-\ell}\). The opposite ordering is symmetric. The prefix
+maximum is defined by one bounded recursion and preserves the rate
+property. No selection of an infinite subsequence is involved: there is
+one explicit numerical function of \(k\).
+\end{proof}
+
+\begin{lemma}[Stable-observation lifting]\label{lem:stable-lift}
+Let \(F:V_0\to W_0\) be a fixed finite algorithm with
+\(q(Fx-Fy)\leq C p(x-y)\), where \(C\geq0\) is rational.
+Then
+\[
+ (\widehat F u)(k)=F(u(k+h(C)))
+\]
+is a regular name, respects \(\simeq\), and gives the usual extension
+of \(F\) to the represented completion. If a local implementation has
+error \(\eta\), the output budget becomes \(C\epsilon+\eta\).
+\end{lemma}
+\begin{proof}
+Apply the finite Lipschitz inequality and
+\(C2^{-h(C)}\leq1\) to \eqref{eq:regular}, or to
+\eqref{eq:equiv}. The same calculation proves equality of output names.
+For a local implementation insert its exact finite target and apply the
+triangle inequality. For uniqueness of the extended map, every input
+name is approximated by its constant finite names, and the Lipschitz
+bound forces agreement at arbitrary precision. This is a finite
+approximation proof of the usual universal property, rather than an
+appeal to an object-language set of all limits.
+\end{proof}
+
+The significant choice is \(p\). Pointwise evaluation is not an
+\(L^1\)-continuous observation. Integration is. The supremum functional
+is stable for a uniform norm, whereas general diagonal substitution
+requires further control. An observation is assigned its correct norm
+and is rejected from a chain of constructions when no suitable bound is
+available. Later sections supply several bounds that make previously
+unavailable observations accessible.
+
+\subsection{The induction rule used for all finite algorithms}
+
+\begin{theorem}[Bounded replay rule]\label{thm:replay}
+Fix primitive-recursive functions \(s(a)\), \(F(a,i,z)\), and
+\(B(a)\), and a quantifier-free formula \(I(a,i,z)\).
+Suppose \ipra\ proves the initial and step clauses
+\[
+ I(a,0,s(a)),\qquad
+ i<B(a)\wedge I(a,i,z)\ \longrightarrow\ I(a,i+1,F(a,i,z)).
+\]
+For \(z_0=s(a)\), \(z_{i+1}=F(a,i,z_i)\), it proves
+\(I(a,B(a),z_{B(a)})\).
+\end{theorem}
+\begin{proof}
+Primitive recursion defines the entire numerical iterate. Induct on
+\(i\) with the quantifier-free invariant
+\(i\leq B(a)\to I(a,i,z_i)\). The step splits the decidable cases
+\(i<B(a)\) and \(i\geq B(a)\). At the boundary \(i=B(a)\), the
+next antecedent is false; below it, use the supplied step clause and
+the defining equation. Instantiate at \(i=B(a)\).
+\end{proof}
+
+This theorem is a proof rule with hypotheses that must actually be
+proved. It does not say that every true assertion about a
+primitive-recursive program is provable in \ipra. In finite summation,
+the invariant records the current partial sum and its bound. In
+dyadic refinement it records common denominators and the conserved
+weighted sum. In the energy-window search it records either a found
+window or accumulated strict energy increments. In a topological chain
+calculation it records coefficient identities after processing a
+bounded list of faces. All parameters, arrays, and target precisions
+remain numerical.
+
+For each fixed theorem, the resulting object statement has the form
+\[
+ \forall a\,\forall k\;\bigl(A(a,k)\to
+       Q(a,k,\mathrm{out}(a,k))\bigr),
+\]
+or a finite-certificate variant with the actual input traces and
+certificates as additional numerical parameters. Local assumptions
+about validity may be instantiated finitely. They are not treated as
+Boolean invariants unless they have separately been reduced to bounded
+conditions. The Lean roadmap specifies the required local derivations
+before this replay rule can be invoked at an analytic endpoint.

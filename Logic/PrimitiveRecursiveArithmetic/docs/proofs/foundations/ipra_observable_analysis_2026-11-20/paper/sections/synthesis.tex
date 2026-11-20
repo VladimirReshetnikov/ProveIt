@@ -1,0 +1,55 @@
+\section{Resolved difficulties, remaining boundaries, and integration}\label{sec:synthesis}
+
+\subsection{What the framework now supplies}
+
+The common interface is a finite numerical observation, a stability proof, and a stated semantic meaning. Its strength comes from sharing real mathematical work: a single completion theorem transports many stable operations; a single error verifier combines their budgets; a single geometric identity supports inverses, analytic evaluation, and homotopies; and a single finite integration calculus supports both $L^1$ convergence and continuous expectation predicates.
+
+\begin{longtable}{@{}P{.25\textwidth}P{.37\textwidth}P{.31\textwidth}@{}}
+\toprule Difficulty & Resolution proved in this report & Hypothesis retained\\\midrule\endhead
+Repeated precision choices and duplicated subcomputations & Reverse sensitivity weights compute the least nonnegative linear certificate on a DAG; one shared value serves all consumers. & Proved local amplification and guard estimates.\\
+A cyclic error system appears to require solving every coordinate & A dual supersolution bounds a requested observable directly. & The error inequality must already be proved; a valid supersolution is supplied or separately produced.\\
+Independent simple-law approximations do not define joint operations & One Boolean event algebra provides coherent common refinements. & Concrete PR Boolean and finite-measure laws.\\
+An unbounded integrable majorant seems to need an extra tail oracle & One simple approximant of the majorant produces a clipping threshold and tail bound. & Its supplied $L^1$ name; no pointwise modulus is extracted.\\
+Pointwise arguments hide a convergence rate & A finite small-bad-set certificate plus clipping tails gives the explicit Vitali budget. & Quantitative convergence in measure or the displayed finite certificate.\\
+Partial integration might depend on section representatives & A contractive map on rectangular simple functions extends to the $L^1$ completion and gives Fubini. & A supplied rectangular $L^1$ approximation family.\\
+Quantified probability distributions seem to demand measure compactness & Explicit finite rational laws and weight rounding supply valid finite nets; expectation predicates extend continuously. & A compact metric presentation of the underlying space.\\
+Formal power series are confused with convergent analytic values & A radius/majorant pair gives finite tails, Horner evaluation, a noncommutative derivative, and a quadratic remainder. & A positive radius gap and fixed coefficient evaluator.\\
+An approximate inverse may be only one-sided & Two residuals construct a two-sided inverse; the unilateral-shift example proves why both matter. & Both norm gaps, or a previously certified inverse in a perturbation theorem.\\
+Abstract homology quotients conceal witness selection & A finite contraction defect produces a bounded homotopy and, on a cone, a chain-homotopy inverse. & Exact square-zero/chain-map laws and a positive defect margin.\\
+\bottomrule
+\end{longtable}
+
+These results resolve specific missing interfaces. They do not claim that every requested continuous theorem is now automatic. In particular, a fixed convergent coefficient presentation may be evaluated through the analytic algebra machinery, but discovering pole clearance, choosing compatible branches, or proving a Mellin--Barnes tail remains a separate problem. The earlier Meijer-$G$ packet explicitly identifies such guards and its uncompiled analytic scaffolds~\cite{repo-meijer}; this report provides reusable operations for their verified portions, not a retrospective proof of all of its claims.
+
+\subsection{The model-theoretic scope is deliberately exact}
+
+Infima and suprema of fixed continuous formulas on supplied finite-net presentations have numerical observations with explicit errors. This makes model theory useful as a language for approximation and transport~\cite{bbhu2008}. It does not make the exact predicate ``this real truth value is zero'' decidable, and it does not produce a model of an arbitrary consistent theory. The probability sort is built from valid laws with explicit transport nets; the operator examples instead use universal norm estimates on potentially noncompact balls. Conflating those two inputs would make the framework false.
+
+Likewise, the category of specified represented objects and maps is external organizational language. Its identities, compositions, and witness-preserving operations are given by fixed numerical recipes with internal contracts. This does not introduce a universe of all categories, an unrestricted function type, arbitrary quotients, or a general axiom of choice into one-sorted arithmetic. The homotopy-category example is valuable precisely because it produces the inverse and its homotopies, rather than choosing representatives from an unspecified quotient.
+
+\subsection{The limits that no error budget removes}
+
+\begin{enumerate}
+\item \textbf{No universal evaluation.} Lemma~\ref{lem:no-eval} excludes a total PR interpreter for every PR program. Fixed recipes, bounded tables, and a fixed finite primitive library remain legitimate.
+\item \textbf{No automatic modulus extraction.} A true continuity or convergence statement need not arrive with the effective data required by these constructions. A proof of those data is part of the task, not a default assumption.
+\item \textbf{No arbitrary branch or representative selection.} Finite solvability and bounds on the number of components do not themselves choose a coherent infinite object. The repository's categorical obstruction remains relevant~\cite{repo-obstacles}.
+\item \textbf{No unrestricted dominated convergence claim.} The finite Vitali theorem uses a convergence-in-measure cutoff. The reverse-mathematical and metastable literature has other precisely stated inputs and conclusions~\cite{measureADR2012,measureADRMeta2012}; their higher-order recursion bounds cannot be silently identified with first-order PR functions.
+\item \textbf{No global spectral or topological decision.} Failing a norm-gap certificate does not prove that an inverse or homotopy does not exist. Conversely, a local certificate proves only its stated neighborhood. Rank, image membership, and arbitrary spectral questions remain separate.
+\item \textbf{No proof-status inflation.} Compiled host-Lean identities, exact numerical examples, human analytic arguments, and embedded-iPRA proof values are different deliverables. This package supplies the first three and a detailed path to the fourth for its new main analytic results.
+\end{enumerate}
+
+\subsection{A practical sequence for repository integration}
+
+The repository already has the proof calculus and its foundational arithmetic. The next implementation should reuse it in the following order.
+
+First, add the dual weighted-error theorem as an object derivation over coded rational arrays, together with its reverse DAG producer. This is a compact target whose complete host proof and quantifier-free invariant are supplied here. It can immediately simplify the precision accounting of several existing analytic packets.
+
+Second, complete the shared represented-metric extension theorem with explicit error shifts and distance names. The measure, probability, analytic, and homotopy constructions then all reuse the same coherence and representation-independence proof. This reduces repeated proof work and makes the semantics of a completed value uniform across packets.
+
+Third, add the measured-partition provider and finite Vitali estimate, then instantiate Fubini and the majorant-tail extraction. These modules supply new measure-theoretic content with small, transparent arithmetic proofs. In parallel, reify the noncommutative Neumann and contracting-homotopy identities for fixed coded algebras and linear cores; their universal algebraic Lean proofs are already available.
+
+Finally, assemble the probability-sort continuous semantics, analytic functional-calculus evaluators, and mapping-cone clients. Each client should export its actual finite contracts and, where warranted, its all-precision completed meaning. A proof receipt should name the exact object formula, source commit, provider identities, kernel build, and axiom audit. This turns the report into concrete, reviewable implementation work while keeping the verified boundary explicit.
+
+\subsection{Deliverable status}
+
+The human arguments in this report are complete under their displayed quantitative presentation assumptions. The accompanying source and verification files record the exact arithmetic demonstrations, the compiled finite Lean kernels, and the remaining object-language steps. The source audit identifies the baseline so that this contribution can be compared with existing work without treating repeated background as a new theorem. The central improvement is a reusable path from a meaningful continuous observation to a small finite certificate, together with explicit constructions in areas where the prior packets lacked those providers.

@@ -1,0 +1,632 @@
+\section{Measure and integration from coherent finite observations}
+\label{sec:measure}
+
+The repository already has an effective expectation theory, a dominated
+convergence statement, and a Vitali statement
+\cite{repo-expectation-packet}.  Its current object-language development is
+substantial: \texttt{FiniteKernel.pr\_evaluator} makes cross-multiplied
+expectation comparisons quantifier-free; \texttt{TowerCommonDen.regroup}
+proves the numerator regrouping used by the tower property; and
+\texttt{TruncationEstimate.truncation} proves a finite inequality with a
+common dominator
+\cite{repo-finite-kernel,repo-tower-common-den,repo-truncation}.
+The new work here concerns the passage from these finite identities to
+coherent measure-theoretic objects.  It supplies a stable convergence
+observable, constructs an integrable limit rather than presupposing one,
+extracts amplitude cutoffs from an existing integrable name, and extends
+finite conditional averages with an explicit approximation rate.
+
+There is also a specific local correction.  The earlier packet's human
+Vitali proof uses
+\[
+ |x-y|\le |x-y|\mathbf1_{|x|\le K,\ |y|\le K}
+       +|x|\mathbf1_{|x|>K}+|y|\mathbf1_{|y|>K}.
+\]
+For $K>0$, the values $x=2K$, $y=-K$ give $3K\le2K$, so that displayed
+inequality is false.  This does not affect the different, common-dominator
+inequality in the checked \texttt{TruncationEstimate} module.  The clipping
+estimate proved below repairs the Vitali argument and also avoids computing
+hard threshold events from approximations to real values.
+
+Throughout this section put $\delta_k=2^{-k}$.  Every input evaluator,
+refinement map and modulus mentioned as effective is a \emph{fixed}
+primitive-recursive program. For an iPRA export, its displayed numerical
+contracts must be supplied as object-theory derivations or retained as
+explicit premises. Numerical problem parameters may vary. This is a
+schema about fixed programs, not a claim that arbitrary codes for total
+programs have a primitive-recursive universal evaluator.
+
+\subsection{A common probability algebra and its integrable completion}
+
+\begin{definition}[Coherent rational probability presentation]
+For each $n\in\N$, let $A_n=\{0,\ldots,a(n)-1\}$ be a nonempty finite set
+of atoms, with rational weights $w_{n,i}\ge0$ summing to one.  For $m\le n$
+there is a map $\pi_{m,n}:A_n\to A_m$, satisfying
+\begin{align}
+ \pi_{n,n}(i)&=i,&
+ \pi_{\ell,n}&=\pi_{\ell,m}\circ\pi_{m,n}\quad(\ell\le m\le n),
+ \label{eq:m-refinement}\\
+ w_{m,i}&=\sum_{\substack{j<a(n)\\\pi_{m,n}(j)=i}}w_{n,j}.
+ \label{eq:m-mass}
+\end{align}
+The cardinalities, weights and maps have fixed PR evaluators.  Their range,
+normalization and compatibility equations are part of the presentation.
+\end{definition}
+
+A simple function is a code $s=(n,(s_i)_{i<a(n)})$, with rational values.
+To compare $s$ at level $n$ with $t$ at level $m$, lift both lists to
+$r=\max(m,n)$ using $\pi_{n,r}$ and $\pi_{m,r}$.  On that common level set
+\begin{equation}
+ I(s)=\sum_iw_i s_i,\qquad
+ \|s\|_1=\sum_iw_i|s_i|,\qquad
+ d_1(s,t)=\sum_iw_i|s_i-t_i|.
+ \label{eq:m-simple}
+\end{equation}
+Equation~\eqref{eq:m-mass} proves that lifting again changes none of these
+values.  It also proves independence of the chosen common refinement.
+Finite addition, scalar multiplication, minimum, maximum and absolute value
+are computed on a common level.  Zero-weight cells are retained in codes
+but have zero distance.  Thus this is a rational vector lattice with a
+pseudometric, rather than a demand for decidable equality of functions.
+
+The coherent tower matters.  Marginal probability laws alone do not
+determine a common $L^1$ geometry: two fair signs can be equal or opposite,
+giving respectively zero or two as the expectation of their absolute
+difference.  The maps \eqref{eq:m-refinement} choose the common probability
+algebra explicitly and keep every operation on that algebra.
+
+This presentation has concrete continuous models.  For dyadic intervals
+in $[0,1)$, take $a(n)=2^n$, $w_{n,i}=2^{-n}$ and
+$\pi_{m,n}(i)=\lfloor i/2^{n-m}\rfloor$.  More generally, every tower above
+has an explicit interval realization.  Give each atom of $A_0$ a half-open
+interval of its stated length.  Inside the interval for $i\in A_n$, put
+the children $j$ with $\pi_{n,n+1}(j)=i$ in increasing order, with lengths
+$w_{n+1,j}$.  The left endpoint of child $j$ is the parent's left endpoint
+plus the sum of the weights of its earlier siblings.  Compatibility makes
+these children fill the parent interval exactly.  Zero weights give empty
+intervals.  This recursive rational construction realizes all finite
+integrals as ordinary step-function integrals.  No infinite branch is
+selected.  In a usual semantic $L^1$ space the completion below is precisely
+the closure of these step functions; asserting density in a larger space
+is a separate adequacy statement.  The interval realization alone neither
+codes all measurable subsets nor supplies a rate for arbitrary countable
+unions.
+
+\begin{definition}[Regular integrable name]
+A regular $L^1$ name is a fixed PR sequence of simple-function codes
+$s_k$ satisfying
+\begin{equation}
+ d_1(s_k,s_\ell)\le\delta_k+\delta_\ell
+ \qquad(k,\ell\in\N).
+ \label{eq:m-regular}
+\end{equation}
+Its semantic value $f$ is the corresponding completion element; in
+particular $\|f-s_k\|_1\le\delta_k$.  Equivalent names denote the same
+completion element.  Internally one works with
+\eqref{eq:m-regular} and finite comparisons of the actual codes, not with
+a new sort of arbitrary measurable functions.
+\end{definition}
+
+For example, the distance between two represented elements is itself a
+regular scalar name: evaluate $d_1(s_{k+1},t_{k+1})$; the shift absorbs
+both input errors.  Addition similarly uses $s_{k+1}+t_{k+1}$ at output
+precision $k$.  Equality means that every requested
+distance observation can be made arbitrarily small.  It is an arithmetical
+formula, not an algorithm which tests exact real equality.
+
+\begin{lemma}[Stable extension of finite observables]
+\label{lem:m-extension}
+The integral and norm extend to integrable names, with
+\begin{equation}
+ |I(f)-I(g)|\le\|f-g\|_1,\qquad
+ \bigl|\|f\|_1-\|g\|_1\bigr|\le\|f-g\|_1.
+ \label{eq:m-integral-stable}
+\end{equation}
+Any finite operation $T$ satisfying
+$d_1(Ts,Tt)\le d_1(s,t)$ extends by the same precision schedule.  This
+applies to $s\mapsto |s|$, $s\mapsto s^+=\max(s,0)$, and clipping to a
+fixed rational interval.  Finite identities between such operations
+remain true on the completion.
+\end{lemma}
+
+\begin{proof}
+The finite triangle inequality gives
+$|\sum_iw_i(s_i-t_i)|\le\sum_iw_i|s_i-t_i|$.  The reverse triangle
+inequality gives the second assertion in \eqref{eq:m-integral-stable}.
+Consequently the finite values on a regular name form regular scalar
+names.  A nonexpansive $T$ carries \eqref{eq:m-regular} to the identical
+inequality for $Ts_k$.  If two input names represent the same element,
+their image names do also, by this inequality.  A finite identity is an
+identity at every common approximation level; each side's error then tends
+to zero with its displayed schedule.  This proves existence,
+well-definedness and preservation, without choosing representatives at
+individual sample points.
+\end{proof}
+
+The completed order is $f\le g$ when $\|(f-g)^+\|_1=0$.  It is stable
+under limits by the same Lipschitz argument.  Multiplication requires its
+own contract: a bounded multiplier $|h|\le M$ satisfies
+$\|hf-hg\|_1\le M\|f-g\|_1$.  Products of two unrestricted $L^1$
+elements are not part of this interface.
+
+Finite events are subsets of a level's atom set.  Their metric is
+$d_\mu(B,C)=\mu(B\mathbin\triangle C)$; their indicator functions embed
+isometrically in the simple $L^1$ space.  Complement preserves this metric,
+and union and intersection change by at most the sum of the input errors.
+Thus regular event names form an effective measure algebra.  For a
+uniformly PR-presented sequence of event names, a countable union can be
+constructed when its finite partial unions $B^{<n}$ have a PR continuity
+modulus
+\[
+ m\ge n\ge R(k)\quad\Longrightarrow\quad
+ \mu(B^{<m}\setminus B^{<n})\le\delta_k.
+\]
+Replace $R$ by its bounded monotone envelope if needed.  To make the
+diagonal explicit, take $N=R(k+2)$, approximate each of the
+first $N$ events to error
+$2^{-k-2-\lceil\log_2(N+1)\rceil}$, and take their finite union.  Its
+total sampling error is at most $\delta_{k+2}$.  Together with the
+displayed continuity bound this gives a regular output name by the same
+three-error estimate as \eqref{eq:m-output-name} below.  All logarithms
+here mean bounded integer binary-length calculations.  For disjoint
+events this premise is exactly a supplied tail estimate for their mass
+series; finite additivity and continuity of $\mu$ give countable
+additivity for this represented union.  An arbitrary sequence of event
+codes does not itself supply the displayed modulus.
+
+\subsection{Stable observations of convergence in measure}
+
+For $K\ge0$, define the scalar clipping operation and excess by
+\[
+ c_K(x)=\max(-K,\min(K,x)),\qquad
+ p_K(x)=(|x|-K)^+.
+\]
+For integrable elements set
+\begin{equation}
+ T_K(f)=I(p_K(f))=\|f-c_K(f)\|_1,
+ \qquad
+ \rho(f,g)=I\bigl(\min(1,|f-g|)\bigr).
+ \label{eq:m-stable-observers}
+\end{equation}
+Both expressions have evaluators inherited from finite rational lists.
+The function $p_K$ is 1-Lipschitz, as is $x\mapsto\min(1,|x|)$.
+Consequently
+\begin{equation}
+ |T_K(f)-T_K(g)|\le\|f-g\|_1,\quad
+ |\rho(f,g)-\rho(f',g')|
+ \le\|f-f'\|_1+\|g-g'\|_1.
+ \label{eq:m-observer-lipschitz}
+\end{equation}
+These bounds are the reason finite approximation errors can be transported
+through the observers.
+
+\begin{lemma}[Clipping estimate]
+\label{lem:m-clipping}
+For $K\ge1$ and integrable $f,g$,
+\begin{equation}
+ \|f-g\|_1\le T_K(f)+T_K(g)+2K\rho(f,g).
+ \label{eq:m-clipping}
+\end{equation}
+Also $\rho(f,g)\le\|f-g\|_1$, and $\rho$ satisfies the triangle inequality.
+\end{lemma}
+
+\begin{proof}
+For rational $x,y$, the clipping map is nondecreasing and 1-Lipschitz,
+has range $[-K,K]$, and $|x-c_K(x)|=p_K(x)$.  Hence
+\begin{align*}
+ |x-y|&\le p_K(x)+p_K(y)+|c_K(x)-c_K(y)|,\\
+ |c_K(x)-c_K(y)|&\le\min(|x-y|,2K)
+                         \le2K\min(1,|x-y|).
+\end{align*}
+For the last inequality, split the rational cases $|x-y|\le1$ and
+$|x-y|\ge1$.  Multiply by the nonnegative weights and add.  This proves
+\eqref{eq:m-clipping} on every finite common refinement.  For names,
+replace each argument by a simple approximation and use
+\eqref{eq:m-observer-lipschitz}; the total error is at most a fixed rational
+multiple of the two approximation errors, so it has an explicit PR
+precision schedule.  This establishes the same inequality in the
+completion.  Finally,
+$\min(1,a+b)\le\min(1,a)+\min(1,b)$ for $a,b\ge0$, which gives the
+triangle inequality for $\rho$ after the scalar triangle inequality.
+\end{proof}
+
+The metric $\rho$ expresses convergence in measure without a threshold
+decision.  In an ordinary probability-space interpretation, for
+$0<\eta\le1$ the finite inequalities give
+\begin{equation}
+ \eta\,\mu(|f-g|>\eta)\le\rho(f,g)
+ \le\eta+\mu(|f-g|>\eta).
+ \label{eq:m-probability-comparison}
+\end{equation}
+Thus a two-parameter convergence-in-probability rate converts to a
+$\rho$-rate, and conversely.  In the abstract numerical presentation, the
+hard event in \eqref{eq:m-probability-comparison} is used only when its
+measure has separately been justified.  The algorithm itself evaluates
+the continuous truncated distance in \eqref{eq:m-stable-observers}.
+An $L^1$ approximation alone does not compute the measure of a sharp
+threshold event: constants just below and above a threshold can be
+arbitrarily close in $L^1$ while their threshold-event probabilities are
+zero and one.
+
+One can also complete the simple space using $\rho$.  Call that completion
+$L^0$ for this presentation.  Since $\rho\le d_1$, there is a canonical
+map $L^1\to L^0$.  It is injective.  Indeed, for any fixed integrable $h$,
+choose a simple $s$ with $\|h-s\|_1\le\varepsilon$ and
+$K\ge\max(1,\|s\|_\infty)$.  Then $T_K(h)\le\varepsilon$ by
+\eqref{eq:m-observer-lipschitz}.  If $\rho(h,0)=0$, the clipping estimate
+gives $\|h\|_1\le\varepsilon$ for every supplied precision.  The theorem
+below explicitly constructs an $L^1$ preimage of an $L^0$ Cauchy limit.
+
+\subsection{A quantitative Vitali theorem that constructs its limit}
+
+\begin{theorem}[Uniform-integrability lifting]
+\label{thm:m-vitali}
+Let $f_n$ be a uniformly presented family of integrable names: a fixed PR
+program $S(n,j)$ returns a simple code with
+$\|S(n,j)-f_n\|_1\le\delta_j$.  Suppose that monotone PR functions
+$U,R:\N\to\N$, with $U(k)\ge1$, satisfy
+\begin{align}
+ T_{U(k)}(f_n)&\le\delta_k &&\text{for every }n,k,
+ \label{eq:m-ui}\\
+ \rho(f_m,f_n)&\le\delta_k &&\text{if }m,n\ge R(k).
+ \label{eq:m-rho-cauchy}
+\end{align}
+For an integer $b\ge1$ put
+\[
+ \ell(b)=\min\{j\le b: b\le2^j\}.
+\]
+Define the explicit precision program
+\begin{equation}
+ q(k)=k+2+\ell\bigl(2U(k+2)\bigr),\qquad
+ N(k)=R(q(k)).
+ \label{eq:m-vitali-rate}
+\end{equation}
+Then there is a regular integrable name $f$, produced by a PR program,
+such that
+\begin{equation}
+ n\ge N(k)\quad\Longrightarrow\quad
+ \|f_n-f\|_1\le\tfrac34\delta_k.
+ \label{eq:m-vitali-convergence}
+\end{equation}
+In particular the integrals converge with this rate.  The limit satisfies
+$T_{U(k)}(f)\le\delta_k$; no integrable limit or tail bound for a limit is
+an input assumption.
+\end{theorem}
+
+\begin{proof}
+The bounded definition of $\ell$ is total because $2^b\ge b$; this finite
+inequality is proved by quantifier-free induction.  Consequently
+$2U(k+2)2^{-\ell(2U(k+2))}\le1$.  If $m,n\ge N(k)$, apply
+Lemma~\ref{lem:m-clipping} with $K=U(k+2)$ and use the two input contracts:
+\begin{align}
+ \|f_m-f_n\|_1
+ &\le2\delta_{k+2}+2U(k+2)\delta_{q(k)}
+ \le3\delta_{k+2}=\tfrac34\delta_k.
+ \label{eq:m-pair-cauchy}
+\end{align}
+This derives an $L^1$ Cauchy modulus before introducing any limit.
+Monotonicity of $U,R,\ell$ makes $N$ monotone.  Nonmonotone supplied
+moduli can first be replaced by their bounded maxima over initial
+segments; both contracts remain valid.
+
+Now define an actual simple-code output program by
+\begin{equation}
+ b_k=S(N(k+2),k+2).
+ \label{eq:m-output-name}
+\end{equation}
+If $j\ge k$, both family indices in $b_k,b_j$ are at least $N(k+2)$.
+Their represented values have distance at most $\delta_{k+2}$ by
+\eqref{eq:m-pair-cauchy}.  Adding the two simple-approximation errors gives
+\[
+ d_1(b_k,b_j)\le2\delta_{k+2}+\delta_{j+2}
+              \le\tfrac34\delta_k\le\delta_k+\delta_j.
+\]
+Thus $b_k$ is a regular name, and defines $f$.  For $n\ge N(k)$ and
+all sufficiently large $j$, \eqref{eq:m-pair-cauchy} gives
+\[
+ \|f_n-b_j\|_1\le\tfrac34\delta_k+\delta_{j+2}.
+\]
+The definition of completion proves \eqref{eq:m-vitali-convergence}.
+Equivalently, each rational observation is obtained by choosing $j$ large
+enough for its specified remaining error; there is no search for a
+convergence stage.
+
+For each fixed $k$, continuity of the tail observable yields
+\[
+ T_{U(k)}(f)\le T_{U(k)}(f_n)+\|f-f_n\|_1
+             \le\delta_k+\|f-f_n\|_1.
+\]
+Substitute $n=N(j)$ and increase the requested numerical precision $j$.
+This proves $T_{U(k)}(f)\le\delta_k$.  Only the explicit Lipschitz bound
+for $T_K$ is used; neither Fatou's lemma nor a separately assumed
+uniform-integrability property of an unknown limit is needed.
+Finally \eqref{eq:m-integral-stable} gives the same estimate for
+$|I(f_n)-I(f)|$.
+\end{proof}
+
+This is a quantitative inverse to the inclusion $L^1\to L^0$ on a family
+equipped with $U$.  In particular, if an independently presented
+$L^0$ element is the $\rho$-limit of $f_n$, it equals the image of the
+constructed integrable $f$, by the triangle inequality.  The conclusion
+does not assume that the independently presented limit was already
+integrable.
+
+\begin{proposition}[A named dominator supplies its own cutoff]
+\label{prop:m-domination}
+Suppose $g\ge0$ has a regular integrable name $g_j$, and $|f_n|\le g$ for
+all $n$ in the completed lattice order.  Define
+\begin{equation}
+ U(k)=\max\left(1,
+       \max_{j\le k}\left\lceil\|g_j\|_\infty\right\rceil\right).
+ \label{eq:m-derived-ui}
+\end{equation}
+Then \eqref{eq:m-ui} holds.  Thus, together with the $\rho$ Cauchy rate,
+these hypotheses suffice for Theorem~\ref{thm:m-vitali}; a separate
+amplitude-tail oracle for $g$ is unnecessary.
+\end{proposition}
+
+\begin{proof}
+For $K\ge\|g_k\|_\infty$, $p_K(g_k)=0$.  By
+\eqref{eq:m-observer-lipschitz},
+$T_K(g)\le\|g-g_k\|_1\le\delta_k$.
+The scalar inequality
+\[
+ (|x|-K)^+\le (y-K)^+ + (|x|-y)^+
+\]
+shows, after integration and stable passage to names, that $|f_n|\le g$
+implies $T_K(f_n)\le T_K(g)$.  Apply this with $K=U(k)$.
+The maximum and ceiling in \eqref{eq:m-derived-ui} inspect finite rational
+tables and are PR.  They do not compute an essential supremum of $g$.
+The constructed limit remains dominated: the norm of
+$(|f|-g)^+$ is at most $\|f-f_n\|_1$ and hence is zero.
+\end{proof}
+
+The excess convention for $T_K$ is equivalent, with explicit constants,
+to the usual uniform-integrability convention when sharp tail integrals
+are available.  Pointwise,
+\[
+ (|x|-K)^+\le |x|\mathbf1_{|x|>K},\qquad
+ |x|\mathbf1_{|x|>2K}\le2(|x|-K)^+.
+\]
+The excess is preferable as the primitive observer because it is
+Lipschitz.  General quantitative and metastable convergence work provides
+broader context for making these data explicit
+\cite{neri-pischke,avigad-dean-rute}; the displayed schedules and proofs here
+follow directly from finite rational inequalities.
+
+\subsection{Conditional expectation and effective filtration convergence}
+
+For a simple function $s$ at level $m$ and a target level $n$, let
+$r=\max(m,n)$ and let $\widetilde s$ be its lift to $A_r$.  Define a
+rational list on $A_n$ by
+\begin{equation}
+ (E_ns)_i=
+ \begin{cases}
+ \displaystyle\frac{\sum_{\pi_{n,r}(j)=i}w_{r,j}\widetilde s_j}{w_{n,i}},
+       &w_{n,i}>0,\\[6pt]
+ 0,&w_{n,i}=0.
+ \end{cases}
+ \label{eq:m-condexp}
+\end{equation}
+The branch condition is an exact rational test.  If $w_{n,i}=0$, every
+descendant weight is zero, since they are nonnegative and sum to it.
+Thus the chosen value zero on that cell has no effect on any $L^1$
+observation.  This zero-mass argument is part of the algorithm's proof,
+not an implicit division convention.
+
+\begin{theorem}[Conditional expectation on the completion]
+\label{thm:m-filtration}
+The finite operators \eqref{eq:m-condexp} extend to integrable names as
+positive linear contractions.  For all $m,n$,
+\begin{equation}
+ E_mE_n=E_{\min(m,n)},\qquad I(E_nf)=I(f).
+ \label{eq:m-tower}
+\end{equation}
+If $s_k$ is a regular simple name for $f$, and $s_k$ is stored at level
+$r(k)$, then
+\begin{equation}
+ n\ge r(k+1)\quad\Longrightarrow\quad
+ \|E_nf-f\|_1\le\delta_k.
+ \label{eq:m-upward-rate}
+\end{equation}
+The family $(E_nf)_n$ has a uniform-integrability modulus derived directly
+from $(s_k)$, without reciprocal lower bounds on nonzero atom masses.
+\end{theorem}
+
+\begin{proof}
+First work on finite rational lists.  On a positive-mass cell $i$ the
+weighted triangle inequality gives
+\[
+ w_{n,i}|(E_ns)_i-(E_nt)_i|
+ \le\sum_{\pi_{n,r}(j)=i}w_{r,j}|s_j-t_j|.
+\]
+On a zero-mass cell both sides are zero.  Add over all $i$ and regroup
+the finite double sum to obtain
+\begin{equation}
+ \|E_ns-E_nt\|_1\le\|s-t\|_1.
+ \label{eq:m-ce-contraction}
+\end{equation}
+Linearity, positivity, and preservation of the integral follow from the
+same cell formula; the zero-mass branch is harmless in each identity.
+For $m\le n$, averaging the level-$n$ cell numerators over a level-$m$
+cell counts each fine atom once, and gives exactly the level-$m$
+numerator.  Division by a positive coarse weight gives $E_mE_n=E_m$;
+zero coarse weight again gives zero distance.  Also $E_ms$ is already
+constant on the finer level-$n$ cells, so $E_nE_ms=E_ms$ in $L^1$.
+This proves the tower property.  The numerator regrouping is precisely
+the reusable finite content of \texttt{TowerCommonDen.regroup}; the
+normalization and zero-cell argument complete the operator statement.
+
+By \eqref{eq:m-ce-contraction}, the sequence $E_ns_k$ is a regular name
+with the original error budget, uniformly in the numerical parameter
+$n$.  Lemma~\ref{lem:m-extension} therefore extends the operators and
+their identities.  For $n\ge r(k)$ one has $E_ns_k=s_k$ in $L^1$.
+Consequently
+\[
+ \|E_nf-f\|_1
+ \le\|E_n(f-s_k)\|_1+\|s_k-f\|_1
+ \le2\delta_k.
+\]
+Replace $k$ by $k+1$ to obtain \eqref{eq:m-upward-rate}.  If a monotone
+rate is desired, replace $r(k+1)$ by its maximum over the first $k+2$
+approximation levels.  This is a bounded PR operation.
+
+Finally put $K_k=\max(1,\lceil\|s_k\|_\infty\rceil)$.  Each conditional
+average of $s_k$ lies in $[-K_k,K_k]$, including the zero-mass branch.
+For any bounded $b$ with $|b|\le K$, the scalar inequality
+$(|a|-K)^+\le|a-b|$ yields
+\[
+ T_{K_k}(E_nf)\le\|E_nf-E_ns_k\|_1
+                    \le\|f-s_k\|_1\le\delta_k.
+\]
+Taking bounded maxima of the $K_k$ gives the required monotone cutoff
+function.  The contraction proof cancels the cell denominator against
+the cell's mass; consequently no smallest positive atom weight enters
+this $L^1$ precision budget.
+\end{proof}
+
+These operators are genuine conditional expectations on the represented
+finite subalgebras.  For every level-$n$ event $B$, finite regrouping gives
+$I(\mathbf1_BE_nf)=I(\mathbf1_Bf)$.  An element in the completed
+level-$n$ range with these cell integrals is unique in $L^1$: on each
+positive cell its constant value is determined by the cell integral,
+and zero cells contribute no norm.  This identifies the operator with
+the usual conditional expectation in the interval realization.
+It does not appeal to a general Radon--Nikodym theorem for an arbitrary
+sub-$\sigma$-algebra.
+
+There is a useful distinction between observations.  To request the
+conditional value at one specified positive atom to error $\eta$, the
+input integral over that atom must be known to error $w_{n,i}\eta$.
+That request incurs the expected reciprocal-mass precision loss.  To
+request the entire conditional expectation to error $\eta$ in $L^1$,
+the contraction \eqref{eq:m-ce-contraction} incurs no such loss.
+
+\paragraph{An unbounded worked example.}
+Let
+$A_j=[2^{-2j-2},2^{-2j-1})\subset[0,1)$ and let $s_n$ have value $2^j$
+on $A_j$ for $j<n$, and zero elsewhere.  These sets are disjoint and
+$\mu(A_j)=4^{-j-1}$.  The finite geometric-sum identity gives
+\[
+ \|s_m-s_n\|_1
+   =2^{-n-1}\bigl(1-2^{-(m-n)}\bigr)\quad(m\ge n).
+\]
+They therefore define an integrable, unbounded element $g$ with
+$I(g)=1/2$ and $\|g-s_n\|_1=2^{-n-1}$.  Use the tower whose level $n$
+exposes $A_0,\ldots,A_{n-1}$ and a single remaining atom $B_n$.  Its mass
+is $(2+4^{-n})/3$.  At level $n$, conditional expectation has the original
+values on the exposed annuli and the rational value
+\[
+ (E_ng)|_{B_n}
+   =\frac{3\,2^{-n-1}}{2+4^{-n}}.
+\]
+Indeed, the unexposed integral is $2^{-n-1}$, as follows from the same
+finite geometric identity and its explicit remainder.  On every
+unexposed annulus the value of $g$ exceeds this conditional value, while
+on the complement of all annuli $g=0$; that complement has mass $2/3$.
+Adding these two contributions gives the exact estimate
+\[
+ \|E_ng-g\|_1=\frac{2^{1-n}}{2+4^{-n}}\le2^{-n}.
+\]
+The family $(s_n)$ is dominated by $g$.  The extracted cutoff
+$U(k)=\max(1,2^{k-1})$ and the rate $R(k)=k$ meet the Vitali hypotheses,
+giving the explicit sufficient rate $N(k)=2k+4$.  This example also
+illustrates a concrete efficiency gain: the adapted tower has $n+1$
+atoms, whereas a uniform dyadic grid resolving the first $n$ annuli has
+$4^n$ cells.  The exact-arithmetic program in the archive checks the
+finite tower laws, the cutoff budgets and the displayed conditional
+values, including independent finite approximations to the last norm.
+
+\begin{corollary}[Representation of a quantitatively convergent martingale]
+\label{cor:m-martingale}
+Let $M_n$ be uniformly PR-presented integrable elements satisfying
+$E_nM_n=M_n$ and $E_mM_n=M_m$ for $m\le n$.  If they satisfy
+\eqref{eq:m-ui} and \eqref{eq:m-rho-cauchy}, the name $f$ constructed in
+Theorem~\ref{thm:m-vitali} satisfies $M_n=E_nf$ for every $n$.  It is the
+unique such integrable element in this completion.
+\end{corollary}
+
+\begin{proof}
+For fixed $n$ and every $j\ge n$, $E_nM_j=M_n$.  The contraction gives
+$\|E_nf-M_n\|_1\le\|f-M_j\|_1$, which tends to zero with the explicit
+Vitali schedule.  Hence $E_nf=M_n$.  If also $E_ng=M_n$ for all $n$,
+Theorem~\ref{thm:m-filtration} gives $E_nf\to f$ and $E_ng\to g$,
+with their respective name-dependent rates.  Comparing both limits to
+one sufficiently late common $M_n$ gives $f=g$.
+\end{proof}
+
+\begin{proposition}[Why the convergence rate is additional data]
+\label{prop:m-martingale-barrier}
+There is a uniformly PR family of rational martingales, all bounded by
+one, from which no uniform computable $L^1$ Cauchy modulus can be
+extracted.
+\end{proposition}
+
+\begin{proof}
+At level $n$ of the fair-bit probability tower expose bits
+$\omega_1,\ldots,\omega_n$.  Delay each machine by one initial step, so
+its first possible halting step is at least one.  For a machine index $e$, simulate its first
+$n$ steps.  Put $M^e_n=0$ if it has not halted.  If its first halting step
+is $t\le n$, put $M^e_n(\omega)=(-1)^{\omega_t}$.  This is a rational
+table produced by a bounded simulation and bounded search, uniformly PR
+in $e,n$ and the atom index.  If the machine has halted, the martingale
+stays unchanged.  If it first halts at the next step, its new value is the
+new independent fair sign, with conditional average zero.  In every
+case $E_nM^e_{n+1}=M^e_n$.  The absolute bound is one, so the excess-tail
+modulus is constantly one with tail zero.
+
+Suppose a computable procedure supplied $N(e)$ such that
+$\|M^e_m-M^e_n\|_1\le1/2$ for all $m,n\ge N(e)$.  Simulate $e$ through
+$N(e)$ steps.  If it has not halted, it can never halt later: at a later
+first halting step $t$, $M^e_{N(e)}=0$ and $|M^e_t|=1$, whose $L^1$
+distance is one.  Thus this procedure would decide the halting problem.
+The contradiction proves the claim.  The same argument rules out a
+uniform $\rho$ Cauchy modulus, since the jump also has truncated distance
+one.  It leaves intact the explicit modulus in
+\eqref{eq:m-upward-rate}, whose input is already a regular integrable
+name of the terminal object.
+\end{proof}
+
+\subsection{Exact internalization obligations}
+
+The mathematical induction used above is finite: regrouping sums,
+normalizing positive rational denominators, looping over atom tables,
+taking bounded maxima, and proving the power-of-two budget.  Each has a
+quantifier-free numerical invariant.  For example, the clipping endpoint
+after multiplying by positive common denominators is the universal
+closure of
+\[
+ K\ge1\ \Longrightarrow\
+ \sum_{i<a(r)}w_i|x_i-y_i|
+ \le\sum_{i<a(r)}w_ip_K(x_i)
+    +\sum_{i<a(r)}w_ip_K(y_i)
+    +2K\sum_{i<a(r)}w_i\min(1,|x_i-y_i|).
+\]
+Every symbol in this formula abbreviates a fixed PR term on numerical
+codes.  The corresponding output must ultimately have type
+\texttt{Prf PRAAx []} applied to the encoded formula.  A Lean proof about
+$\Q$-valued functions is a useful independently checked semantic kernel,
+but is not itself that derivation.
+
+The remaining formalization path is specific.  First instantiate the
+repository's rational normalization and finite sum interfaces for the
+tower codes, including the zero-mass branch.  Prove the scalar clipping
+and excess-Lipschitz inequalities by rational case splits; sum them using
+the existing order lemmas.  Reify $U,R,\ell,q,N$ and the simple output
+program \eqref{eq:m-output-name}.  For each requested finite observation,
+substitute these terms into \eqref{eq:m-pair-cauchy} and the input
+regularity formulas.  This produces output regularity, convergence, and
+the inherited-tail observations by ordinary logical rules.  Finally
+instantiate \texttt{TowerCommonDen.regroup}, prove the normalized
+contraction, and obtain \eqref{eq:m-upward-rate} from the stated level
+index.  None of these steps requires an induction hypothesis asserting
+convergence at every precision.  Precision is a free numerical
+parameter; the finite loop and all finer demands are explicit terms.
+
+The interval model supplies semantic interpretation of the resulting
+arithmetic laws.  The laws apply to the chosen completion and its
+represented subalgebras.  Finite measures follow by an explicitly
+positive normalization; extensions to an infinite ambient measure also
+need a spatial-tail or exhaustion contract.  General pointwise
+convergence, arbitrary sub-$\sigma$-algebras, and arbitrary countable
+unions do not silently provide any of those effective data.

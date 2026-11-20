@@ -1,0 +1,53 @@
+\section{An entropy bound for compact families of functions}\label{sec:entropy}
+
+A function space can itself be a domain for optimization. An important cost is the number of candidates in a finite net. For the bounded Lipschitz functions on a cube, ProveIt's second continuous-framework report assigns an independently quantized value to each grid vertex. It converts each table into a genuine Lipschitz function by taking a clipped minimum of cones. Its catalog has $B^S$ entries for $S$ vertices and $B$ possible values per vertex.\footnote{See \href{https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_continuous_framework_2026-11-20_2/paper/sections/03_function_spaces.tex}{ProveIt, \emph{Compact presentations of spaces of functions}}, especially its envelope and net-size estimates.}
+On the same spatial and value meshes, two extra bits per sample reduce the catalog to $B3^{S-1}$ entries. The construction below gives an address for a nearby function using one noisy evaluation at each grid vertex. The asymptotic order of metric entropy is classical. The result here is a numerically specified coding and decoding proof suitable for this iPRA presentation.\footnote{For the classical context see A.~N.~Kolmogorov and V.~M.~Tikhomirov, \href{https://www.mathnet.ru/eng/rm7289}{\emph{\(\varepsilon\)-entropy and \(\varepsilon\)-capacity of sets in function spaces}}, Uspekhi Mat. Nauk 14 (1959), 3--86.}
+
+\subsection{One ternary digit per grid edge}
+
+Use the maximum metric on $K=[0,1]^d$, $d\ge1$. Write $\mathcal F$ for the functions $K\to[-M,M]$ with Lipschitz constant at most the rational $L\ge0$, where $M\ge1$ is an integer and $s\ge0$ satisfies $L\le2^s$. The following symbols are local to this section. At requested error $e=2^{-k}$ put
+\[
+ \delta=e/4,\qquad m=k+3+s,\qquad h=2^{-m},\qquad
+ S=(2^m+1)^d,\qquad B=2M/\delta+1.
+\]
+Hence $Lh\le\delta/2$. Enumerate all $S$ mesh vertices along one path with consecutive vertices at distance $h$. To construct the path in dimension zero use the single empty tuple. In dimension $j+1$, visit the layers of the first coordinate in increasing order. In even-numbered layers append the path of dimension $j$ forwards, and in odd-numbered layers append it backwards. Every vertex occurs exactly once. At a layer boundary the lower-dimensional coordinates match, so the step changes a single coordinate by $h$. These identities follow successively for the dimensions using bounded arrays of grid indices.
+
+An address contains an integer $a_0$ with $-M/\delta\le a_0\le M/\delta$, followed by $S-1$ steps in $\{-1,0,1\}$. Decode by cumulative addition, giving integer labels $a_i$ at the successive vertices $v_i$. For every address let
+\[
+ P(x)=\operatorname{clip}_{[-M,M]}\min_{i<S}
+           \{\delta a_i+L\|x-v_i\|_\infty\}.
+\]
+Here $\operatorname{clip}_{[u,v]}(t)=\max(u,\min(v,t))$. Every center is legal. The triangle inequality bounds the change of each cone by $L\|x-y\|_\infty$, hence bounds the change of their finite minimum by the same amount. Clipping is nonexpansive and forces the required range. This covers all addresses, including those for which a cumulative label leaves the original range. Values of centers at rational arguments are exact rationals.
+
+\paragraph{Covering estimate.}
+For a supplied $f\in\mathcal F$, query its value at every $v_i$ within $\eta=\delta/8$. Clip each answer into $[-M,M]$ to obtain a rational $u_i$, and put $a_i=\lfloor u_i/\delta+1/2\rfloor$. The endpoints are multiples of $\delta$, so $a_0$ is a legal first label. Consecutive clipped samples differ by at most $Lh+2\eta\le3\delta/4$. Rounding each adds at most $\delta/2$. Consequently $|a_{i+1}-a_i|\le7/4$. Integrality makes each difference an allowed step. The decoded table is exactly the rounded table.
+
+At every vertex $|\delta a_i-f(v_i)|\le5\delta/8$. Each cone is at least $f(x)-5\delta/8$. For the other direction, a vertex within $h$ of $x$ gives a cone value at most $f(x)+5\delta/8+2Lh$. For rational $x$ use nearest mesh coordinates. For a named $x$, clip an approximation of error $h/4$ into the cube and round each coordinate to the nearest mesh value. The resulting distance is at most $3h/4$. Since clipping fixes $f(x)$, this proves
+\[
+ \|P-f\|_\infty\le 5\delta/8+2Lh\le13\delta/8=13e/32.
+\]
+The supremum notation abbreviates a uniform bound at every argument.
+
+\paragraph{Cost and arithmetic meaning.}
+Pack the root as an offset in $\{0,\ldots,B-1\}$ and the steps as a base-three word of length $S-1$. This gives $C=B3^{S-1}$ possible addresses. Center selection uses $S$ sample queries and $S-1$ local difference encodings. The saving concerns address size and exhaustive enumeration. For $d=M=L=1$, $s=0$, and $k=4$, the two catalogs on the same $129$ grid vertices require respectively $905$ and $210$ bits for a fixed-length address. Both counts are for addresses and can include duplicate functions. At the original sample precision $p=k+3$, errors up to $\delta/2$ give neighboring rounded labels differing by at most $5/2$ in mesh units, hence by at most two. Five possible increments then give $B5^{S-1}$ addresses and uniform error at most $\delta+2Lh\le e/2$, with the original sample budget. Even the smaller catalogs are expensive to enumerate.
+
+For the numerical translation take a fixed PR evaluator $U(v,p)$ with
+$|U(v,p)|\le M+2^{-p}$ and
+$|U(v,p)-U(w,q)|\le L\|v-w\|_\infty+2^{-p}+2^{-q}$ at rational arguments. Then $p=k+5$ gives the stipulated sample error. These comparisons after multiplication by positive denominators are its arithmetic hypotheses. Clip the evaluator on both sides of its mixed Lipschitz bound. Nonexpansiveness preserves the bound, and the range hypothesis bounds the clipping change by $2^{-p}$, so this gives the same function name. For any rational $x$ the clipped sample at precision $q$ now plays the role of $f(x)$ in the cone proof with one additional $2^{-q}$ in the error. The finite proof takes the minimum over all the lower bounds and uses the grid witness for the upper bound. Its scan invariant says that the running minimum exceeds the common lower bound (weakly) and is at most every previously inspected cone. A bounded Boolean conjunction encodes the latter comparison. All clipping, rounding and digit operations are finite integer calculations. Even for variable $d$, the reflected path can be generated by dividing a rank into a layer and its remainder and reversing that remainder in odd layers, with at most $d$ divisions and reflections per vertex.
+
+\subsection{How many bits are necessary?}
+
+Take $M=L=1$, $k\ge3$, and put $J=2^{k-3}$. Form the $T=J^d$ grid sites $c$ whose coordinates belong to $\{0,8e,\ldots,8e(J-1)\}$. For each $T$-bit mask $b$ let
+\[
+ F_b(x)=\max\bigl(\{0\}\cup
+       \{3e-\|x-c_i\|_\infty: i<T,\ b_i=1\}\bigr).
+\]
+Every $F_b$ is 1-Lipschitz, lies in $[0,1]$, and has an exact PR evaluator at rational points. At site $c_i$ its value is precisely $3e\,b_i$. Therefore any two distinct masks differ by at least $3e$ in supremum distance.
+
+Every radius-$e$ net needs at least $2^T$ centers. This counting argument has a finite constructive form. For each supplied center sample its values at the $T$ sites within $e/4$, and decode a bit by comparing the sample to $3e/2$. If the center is within $e$ of $F_b$, the sample is at most $5e/4$ at an unmarked site and at least $7e/4$ at a marked site. Its decoded mask is exactly $b$. Coverage forces the list of decoded masks to include every $T$-bit word. Finite counting now gives the lower bound. For each fixed dimension, the lower and upper bounds on the base-two logarithm of the catalog size are both of order $2^{dk}$ as $k$ grows. Constants depend on $d$. An independent value at every vertex costs an additional factor of order $k$ in its logarithm.
+
+\paragraph{Finite Arzelà--Ascoli consequence.}
+Given $C(r-1)+1$ uniformly presented members of $\mathcal F$, $r\ge2$, assign each its address by the procedure above. A bounded count finds an address occurring at least $r$ times, since otherwise the total count is at most $C(r-1)$. Return the first $r$ associated indices. Their functions have pairwise distance at most $13e/16$. This provides a PR finite cluster operation for variable $r,k$ with a fixed family evaluator. The indices need not occur consecutively. A uniform selector of a convergent subsequence together with its regular limit name encounters an obstruction already for constant functions with values in $\{0,1\}$. On an all-zero sequence, a finite-use calculation of a $1/4$-approximation to the limit at the origin sees finitely many indices. Set all later entries to one. The calculation returns the same answer, yet every strictly increasing subsequence now has limit one. For an index-uniform computable selector the same obstruction follows by using the uniformly PR sequence of flags for a machine having halted within $n$ steps. Its limit within $1/4$ decides halting. The finite cluster result does not need consistency of selections across scales.
+
+\paragraph{Lean realization.}
+The file \texttt{Entropy.lean} proves the integer edge bound by writing the two clipped samples in units of $\delta$ as $X/D,Y/D$ with a common positive denominator. If $2Da\le2X+D$, $4X\le4Y+3D$, and $2Y\le2Db+D$, then $a\le b+1$. Otherwise $a\ge b+2$ contradicts the displayed inequalities. Interchanging the two vertices gives the other side. The nearest-integer implementation computes the signed Euclidean quotient $(2X+D)\mathbin{\mathrm{div}}(2D)$, and \texttt{roundNearest\_bounds} proves its error inequalities directly from the division law. The file proves that ternary decoding recovers the entire admissible tail of labels, that its encoding has one step per tail element, and that the exhaustive suffix catalog has length $3^n$ and contains every word of length $n$. For an object-language replay, define the reflected rank map and the address primitives as PR symbols. Prove the path properties by bounded checks on rank, dimension and coordinates. The envelope inequality then uses the minimum-scan invariant above. For the lower bound build the decoded mask for each address by a bounded scan and apply finite pigeonhole to the resulting mask table under the coverage premise. All induction predicates can use bounded Boolean and integer operations. The analytic interpretation is the dense-point extension of the Lipschitz inequalities.

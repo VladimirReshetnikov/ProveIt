@@ -1,0 +1,276 @@
+\section{Real and complex analysis from integrable presentations}
+\label{sec:analytic-apps}
+
+The preceding constructions support continuous mathematics whose input
+need not have pointwise values everywhere. We give two applications with
+complete quantitative proofs: a contractive integral equation and a
+holomorphic transform of an \(L^1\) name. They also illustrate why an
+operator must be measured in a norm appropriate to its use.
+
+\subsection{The operator norm needed by an integral equation}
+
+For a rational rectangular step kernel \(K(x,t)\) on \([0,1]^2\), define
+\[
+ (T_Ku)(x)=\int_0^1 K(x,t)u(t)\,dt,\qquad
+ \|K\|_{\mathrm{col}}=\sup_t\int_0^1 |K(x,t)|\,dx.
+\]
+These expressions are finite sums and a finite maximum. On common
+dyadic levels \(a\) and \(b\), with coefficients \(k_{ij}\),
+\[
+ \|K\|_{\mathrm{col}}=
+    \max_{j<2^b}2^{-a}\sum_{i<2^a}|k_{ij}|.
+\]
+Refinement leaves this value unchanged. The finite triangle inequality
+and interchange of the two finite sums give
+\begin{equation}
+ \|T_Ku\|_1\leq\|K\|_{\mathrm{col}}\|u\|_1,
+ \qquad
+ \|(T_K-T_L)u\|_1\leq\|K-L\|_{\mathrm{col}}\|u\|_1.
+ \label{eq:colbound}
+\end{equation}
+Thus a regular name of kernels in the column norm, with a uniform norm
+bound, defines a bounded operator on the represented \(L^1\) space.
+The finite-sum proof is the object-theory kernel; extension uses only
+the indicated precision shifts.
+
+The product \(L^1\) norm of a kernel would not suffice here. For
+\(K_m(x,t)=2^m\mathbf1_{[0,2^{-m})}(t)\), its product \(L^1\) norm is
+one but its column norm is \(2^m\). Applied to
+\(u_m(t)=2^m\mathbf1_{[0,2^{-m})}(t)\), a unit \(L^1\) input, the
+output is the constant \(2^m\). All these quantities are finite rational
+calculations. This is an operational reason to record observation norms
+in the framework.
+
+\subsection{A primitive-recursive resolvent construction}
+
+\begin{theorem}[Contractive integral equation]\label{thm:resolvent}
+Suppose \(K_s\) and \(g_s\) are regular kernel and \(L^1\) names,
+respectively, with finite certificates
+\[
+ \|K_s\|_{\mathrm{col}}\leq q<1,\quad
+ \|g_s\|_1\leq M,\quad
+ \|K_s-K_t\|_{\mathrm{col}}\leq2^{-s}+2^{-t},\quad
+ \|g_s-g_t\|_1\leq2^{-s}+2^{-t}.
+\]
+Here \(q,M\) are rational, \(0\leq q<1\). Choose an integer \(b\geq2\)
+with \(q\leq1-1/b\), and put
+\[
+ C=b+Mb^2,\quad s(k)=k+h(4C),\quad
+ R(k)=k+h(4Mb)+1,\quad N(k)=bR(k).
+\]
+The finite step functions
+\[
+ y(k)=\sum_{j=0}^{N(k)-1}T_{K_{s(k)}}^j g_{s(k)}
+ \label{eq:resolvent-name}\tag{RN*}
+\]
+form a regular \(L^1\) name. Its represented value is the unique solution
+of \(f=g+T_Kf\), and \(\|f\|_1\leq M/(1-q)\).
+\end{theorem}
+
+\begin{proof}
+We first prove finite estimates. For any operator \(A\) with
+\(\|Au\|_1\leq q\|u\|_1\), induction on \(j\) gives
+\(\|A^ju\|_1\leq q^j\|u\|_1\). Hence the norm of a partial Neumann
+sum is at most \(M\sum_{j<n}q^j\leq Mb\), and any tail beginning at
+\(n\) is at most \(Mbq^n\). All sums are finite at this step.
+
+For two contractions \(A,B\), the finite identity
+\[
+ A^j-B^j=\sum_{i=0}^{j-1}A^{j-1-i}(A-B)B^i
+\]
+is proved by expanding the sum and canceling neighboring terms. Applied
+to a vector of norm at most \(M\), it yields the bound
+\(j q^{j-1}M\|A-B\|\) when \(j>0\). A direct finite geometric-sum
+calculation gives
+\(\sum_{j=1}^{n-1}j q^{j-1}\leq(1-q)^{-2}\leq b^2\).
+Consequently two partial sums of the same length, with inputs \(u,v\)
+and operators \(A,B\), differ by at most
+\[
+ b\|u-v\|_1+Mb^2\|A-B\|.
+ \tag{P}\label{eq:resolvent-perturb}
+\]
+Comparing two lengths with their common maximum adds at most the two
+tail bounds.
+
+To bound the number of iterations without logarithmic real analysis,
+Bernoulli's finite inequality gives
+\((1+1/(b-1))^{b-1}\geq2\). Thus
+\((1-1/b)^b\leq1/2\), and \(q^{bR}\leq2^{-R}\).
+It follows that
+\(C2^{-s(k)}\leq2^{-k}/4\) and
+\(Mbq^{N(k)}\leq2^{-k}/8\). Combining these bounds with
+\eqref{eq:resolvent-perturb} shows
+\[
+ \|y(k)-y(\ell)\|_1
+ \leq\tfrac38(2^{-k}+2^{-\ell}),
+\]
+which is stronger than regularity.
+
+At the finite level,
+\[
+ y(k)-g_{s(k)}-T_{K_{s(k)}}y(k)
+       =-T_{K_{s(k)}}^{N(k)}g_{s(k)}.
+\]
+Its norm is at most \(Mq^{N(k)}\). Replacing the input and kernel by
+any finer named approximations costs at most
+\((1+Mb)(2^{-s(k)}+2^{-t})\), by \eqref{eq:colbound}.
+These rational bounds prove the equation as equality of names.
+If two solutions differ by \(w\), then \(w=T_K^nw\) for every finite
+\(n\), so a rational bound \(D\) on its norm gives
+\(\|w\|_1\leq Dq^n\). Choose \(n\) by the same explicit geometric
+schedule to make this less than any requested dyadic tolerance.
+The names are equal. The partial-sum norm bound gives the stated norm
+of the solution.
+\end{proof}
+
+The theorem proves a substantial fragment of Fredholm-type integral
+equations. It requires a certified contraction gap, not merely a
+classical assertion of invertibility. In particular, it does not
+extract a gap from a spectral-radius assertion or choose a solution at
+a singular parameter.
+
+\paragraph{Worked example.}
+Take \(K(x,t)=xt/2\) and \(g(x)=1\). The column norm is \(1/4\).
+If \(f(x)=1+cx\), then
+\[
+ (T_Kf)(x)=x\left(\tfrac14+\tfrac c6\right).
+\]
+The equation is solved by \(c=3/10\), hence
+\(f(x)=1+3x/10\). This identity is checked by finite polynomial
+integration. Dyadic step approximations to \(K\) converge in the
+column norm with an explicit mesh bound, so the construction above
+produces the same name without using an exact ansatz. The example
+also checks the orientation of the column-norm bound.
+
+\subsection{A holomorphic transform of rough input}
+
+Let \(f\) be a real \(L^1([0,1])\) name with
+\(\|f\|_1\leq M\). There need be no effective pointwise evaluator for
+\(f\). For \(|z|<1\), define the represented transform
+\[
+ G_f(z)=\int_0^1\frac{f(t)}{1-zt}\,dt.
+ \tag{G}\label{eq:analytic-transform}
+\]
+The integral means extension of a bounded linear functional on step
+functions, not evaluation of an unspecified measurable representative.
+For rational complex inputs, a guard \(|z|\leq r<1\) is certified by
+\((\Re z)^2+(\Im z)^2\leq r^2\). No square-root oracle is needed.
+More generally, a rational upper bound \(|a+ib|\leq Q\), with
+\(Q\geq0\), is the squared rational inequality \(a^2+b^2\leq Q^2\).
+The triangle and product estimates used below can therefore be certified
+by finite rational inequalities, without rationality of the modulus
+itself.
+
+\begin{theorem}[Analytic observation of an \(L^1\) name]
+Fix rational \(0\leq r<1\), put \(\delta=1-r\), and take an integer
+\(b\geq2\) with \(\delta^{-1}\leq b\). On the closed disk
+\(|z|\leq r\), the transform is constructively defined and satisfies
+\[
+ |G_f(z)-G_g(z)|\leq b\|f-g\|_1,
+ \qquad
+ |G_f(z)-G_f(w)|\leq Mb^2|z-w|.
+ \label{eq:g-stability}\tag{GS}
+\]
+It is complex differentiable, with
+\[
+ D_f(z)=\int_0^1\frac{t f(t)}{(1-zt)^2}\,dt,
+ \qquad
+ |D_f(z)-D_g(z)|\leq b^2\|f-g\|_1.
+\]
+Whenever \(|z|,|z+h|\leq r\),
+\begin{equation}
+ |G_f(z+h)-G_f(z)-hD_f(z)|\leq Mb^3|h|^2.
+ \label{eq:g-derivative}
+\end{equation}
+Its Taylor coefficients at zero are the moments
+\(a_j=\int_0^1t^jf(t)\,dt\), and
+\begin{equation}
+ \left|G_f(z)-\sum_{j=0}^{N-1}a_jz^j\right|
+       \leq Mb r^N.
+ \label{eq:g-taylor}
+\end{equation}
+All approximations and schedules can be chosen primitive recursively
+from the input presentation and the stated rational guards.
+\end{theorem}
+
+\begin{proof}
+The denominator has modulus at least \(1-|z|t\geq\delta\).
+The finite identities
+\[
+ \frac1{1-zt}-\frac1{1-wt}
+       =\frac{(z-w)t}{(1-zt)(1-wt)},
+\]
+and
+\[
+ \frac1{1-(z+h)t}-\frac1{1-zt}
+        -\frac{ht}{(1-zt)^2}
+       =\frac{h^2t^2}{(1-(z+h)t)(1-zt)^2}
+\]
+give the bounds after multiplication by \(|f|\) and integration.
+Every estimate is first a weighted finite-sum inequality for step
+data and then passes to names by a uniform operator bound. The
+quadratic remainder proves differentiability directly; it does not
+invoke a general theorem about interchanging limits and integrals.
+At a point on the boundary of the displayed disk, use the wider rational
+guard \(r'=(1+r)/2<1\) when taking arbitrary sufficiently small
+increments \(h\). The same argument then proves the full derivative
+test there. This wider guard also accommodates rational approximations
+to a represented complex input: choose their error below \(r'-r\)
+before evaluation, and use the \(z\)-Lipschitz estimate to account for
+that error. The sharper bounds stated for pairs inside the original
+\(r\)-disk remain unchanged.
+
+For explicit production, take a step approximant \(f_s\) and refine
+its partition to mesh \(2^{-m}\). Midpoint quadrature of
+\(f_s(t)/(1-zt)\) is a complex rational sum. The kernel is
+\(b^2\)-Lipschitz in \(t\), so its quadrature error is at most
+\(\|f_s\|_1b^2 2^{-m}\). Input error is at most \(b2^{-s}\)
+when the name has been interpreted with its certified limit error.
+Choose both budgets below \(2^{-k-2}\), and require \(m\) at least
+the level of the step partition. In the entirely finite comparison
+version, replace \(2^{-s}\) by \(2^{-s}+2^{-t}\); the same shifts
+give a regular name.
+
+For the derivative kernel, the elementary difference estimate on
+\([0,1]\) is
+\[
+ \left|\frac{t}{(1-zt)^2}-\frac{u}{(1-zu)^2}\right|
+ \leq (b^2+4b^4)|t-u|\leq5b^4|t-u|.
+\]
+Indeed the first numerator change costs \(b^2|t-u|\); the change of
+the squared denominator costs at most
+\(|z||t-u|\,|2-z(t+u)|b^4\leq4b^4|t-u|\).
+Midpoint quadrature therefore supplies the derivative name with a
+primitive-recursive mesh shift as well.
+
+Finally the finite geometric identity
+\[
+ \frac1{1-zt}=\sum_{j<N}(zt)^j+\frac{(zt)^N}{1-zt}
+\]
+proves \eqref{eq:g-taylor}. For a step function constant at \(c_i\)
+on \([u_i,v_i)\), its moments are exactly
+\[
+ a_j(f_s)=\sum_i c_i
+       \frac{v_i^{j+1}-u_i^{j+1}}{j+1}.
+ \tag{M}\label{eq:moments}
+\]
+The coefficient error is at most the input \(L^1\) error, uniformly in
+\(j\). A partial polynomial therefore costs at most \(b\) times that
+input error. The tail is made dyadically small by
+\(N=b(k+h(4Mb)+1)\), using the elementary geometric bound from the
+previous proof. Thus one step approximant and one table of exact
+moments suffice for all coefficients up to \(N\). The entire proof
+uses finite identities and explicit remainder bounds.
+\end{proof}
+
+For the density reconstructed from the dyadic masses of
+\(f(t)=2(1+t)/3\), the moments are
+\[
+ a_j=\frac23\left(\frac1{j+1}+\frac1{j+2}\right).
+\]
+This gives an exact rational test family for the moment code. It also
+illustrates the intended connection: finite mass data first constructs
+an integrable object, after which stable integral observations construct
+an analytic object. No pointwise limit, general Radon--Nikodym oracle,
+or unrestricted dominated-convergence principle is inserted between
+the stages.

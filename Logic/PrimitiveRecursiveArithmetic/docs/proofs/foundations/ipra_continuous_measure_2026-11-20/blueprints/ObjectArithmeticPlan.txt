@@ -1,0 +1,84 @@
+OBJECT-iPRA ENDPOINT: FINITE CLIPPING-VITALI
+=========================================
+
+Status: explicit numerical definitions and proof-construction plan, not a
+compiled Prf PRAAx export. The full report supplies the mathematical proof;
+the standalone Lean finite_vitali_unit supplies a checked host analogue.
+
+1. Numerical data and total operations
+
+Input: n, D, kappa, and natural-number arrays W, XP, XM, YP, YM.
+Validity: every array has length n, D >= 1, kappa >= D.
+Out-of-range reads are defined to be 0. The validity guard is a primitive-
+recursive Boolean test. No signed-integer or rational sort is required.
+
+sub(a,b)       := truncated natural subtraction
+absPair(p,m)   := sub(p,m) + sub(m,p)
+Xabs(i)        := absPair(XP[i], XM[i])
+Yabs(i)        := absPair(YP[i], YM[i])
+distance(i)    := absPair(XP[i]+YM[i], XM[i]+YP[i])
+Xtail(i)       := sub(Xabs(i), kappa)
+Ytail(i)       := sub(Yabs(i), kappa)
+capped(i)      := min(D, distance(i))
+
+Sdist(0)=Stail(0)=Scap(0)=0
+Sdist(j+1) := Sdist(j) + W[j]*distance(j)
+Stail(j+1) := Stail(j) + W[j]*(Xtail(j)+Ytail(j))
+Scap(j+1)  := Scap(j)  + W[j]*capped(j)
+
+VitaliClear(n) :=
+  D*Sdist(n) <= D*Stail(n) + 2*kappa*Scap(n).
+
+2. Exact proof invariant
+
+Phi(j) := D*Sdist(j) <= D*Stail(j) + 2*kappa*Scap(j).
+
+Phi is quantifier-free. At j=0 both sides are zero. At a successor, add
+
+ D*W[j]*distance(j)
+ <= D*W[j]*(Xtail(j)+Ytail(j)) + 2*kappa*W[j]*capped(j).
+
+Prove that scalar inequality by the clipping identity and the finite cases
+distance(j)<=D or D<=distance(j), and the signed comparisons with +/-kappa.
+All branches are decidable natural arithmetic; no real threshold test occurs.
+For the case distance<=D, use kappa>=D to obtain 2*kappa/D>=1. For the
+other case, the clipped difference is bounded by 2*kappa.
+
+Use ConciseIPRA.PRA.qfInd on Phi, with the numerical validity/cutoff guards
+in the proof context. Universally close all actual numerical parameters.
+
+3. Existing inspected backend
+
+ConciseIPRA.PR: PR, PTm, PRAAx, PRA.qfInd.
+IPRADerivations.Core: truncated subtraction, order, bounded sums, Fubini,
+pairing, and signed-integer term representations.
+IPRADerivations.Analysis.RationalFiniteSum: rational sum producer, denominator
+positivity, monotonicity, canonical equality, variable-length closed exports.
+IPRADerivations.Probability.TruncationEstimate: a distinct valid truncation
+prefix invariant and qfInd pattern for reuse.
+IPRADerivations.Probability.FiniteKernel: conversion of rational weights to
+natural weights after clearing a common denominator.
+
+4. Normalized meaning
+
+X_i=(XP[i]-XM[i])/D, Y_i=(YP[i]-YM[i])/D, K=kappa/D.
+When total weight WT=sum_i W[i] is positive, divide the target inequality by
+WT*D^2. The result is exactly
+
+  E|X-Y| <= E(|X|-K)^+ + E(|Y|-K)^+ + 2*K*E min(1,|X-Y|).
+
+The cleared inequality is also true when WT=0. Input rationals with different
+denominators are reduced to this case by a product common denominator.
+
+5. Completed-name target
+
+Fix actual PR schemas S(n,j), U(k), R(k), with their numerical regularity,
+tail, and rho-Cauchy formulas. Define bounded ceilingLog2, q(k), N(k), b_k as
+in report Theorem 3.5 and lean/ContinuousMeasure/VitaliBlueprint.lean.
+Apply the finite theorem to common-refinement tables. Charge approximation
+errors by the proved observer Lipschitz bounds. Derive regularity of b_k,
+the cross-name convergence estimates, and the inherited-tail inequalities.
+
+No arbitrary function variable or total universal PR evaluator is added.
+No implication from 'Lean proved an arithmetic fact' to 'iPRA proves it' is
+assumed. Each exported theorem must carry an actual Prf PRAAx proof value.

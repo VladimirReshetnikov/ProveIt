@@ -1,0 +1,110 @@
+\section{Purpose, source audit, and precise claims}
+\label{sec:scope}
+
+This report develops a quantitative interface for continuous mathematics in
+intuitionistic primitive recursive arithmetic (\ipra). Its main new work,
+relative to the inspected ProveIt packets, concerns integration and
+transport: how to construct an integrable limit from weaker observations;
+how to reconstruct a density from coherent finite mass data; how to carry
+errors through operators, averaging, and topological approximation; and
+which substitutions preserve the chosen observations. These questions are
+connected. An operation is usable only after the observation in which it is
+stable has been specified.
+
+The source baseline is ProveIt commit
+\texttt{b2341af5370cd8a43f72ebb2341c0d7d7395b634}, inspected on
+20 November 2026. The source tree was obtained through GitHub, and text
+files were cross-checked against an existing local checkout at that exact
+commit. No remote repository mutation is part of this delivery.
+The repository itself separates the kernel-checked libraries
+\texttt{ConciseIPRA}, \texttt{IPRADerivations}, and \texttt{IPRABridge}
+from delivered research packets that have not necessarily been verified
+\cite{repo-main,repo-unification}.
+
+\subsection{What is inherited, what is added}
+
+The November 20 continuous-framework packets already develop regular
+names, completion, uniform extension, finite-net semantics, finite
+gluing, and several analytic constructions
+\cite{repo-continuous,repo-continuous-two}. The probability packet already
+contains finite expectation, effective integration, conditional expectation,
+and convergence statements with quantitative assumptions
+\cite{repo-expectation}. We do not rename these constructions and present
+them as new discoveries. The present contribution is a collection of
+sharper interfaces and explicit constructions that connect those areas.
+
+\begin{enumerate}
+\item A corrected, event-free truncation inequality upgrades a Cauchy
+sequence for the bounded metric
+\(\rho(f,g)=\int\min(1,|f-g|)\) to a Cauchy sequence in \(L^1\), given a
+uniform clipping-tail modulus. It constructs an actual regular name;
+the limit need not be supplied in advance.
+\item Coherent dyadic masses produce a density from an energy-tail
+modulus. A bound on sibling oscillation supplies that modulus explicitly.
+An energy bound by itself gives a primitive-recursive finite stability
+window, with a different conclusion from a limit name.
+\item Completed bounded operators, product integration, and expectation
+quantifiers share the same norm estimates. Arbitrary first-order
+substitution is not sound for an \(L^1\) semantics; bounded-compression
+pullbacks and an explicit Lipschitz upgrade repair specific cases.
+\item Rational distance intervals produce interleavings of Rips
+filtrations and finite homological certificates without deciding unstable
+distance-threshold equalities.
+\item Integral equations with a certified contraction gap and analytic
+transforms of rough \(L^1\) data are built by the same calculus. Backward
+error propagation permits reuse of one approximation across many
+observations.
+\end{enumerate}
+
+The classical ideas behind completion, Vitali convergence, conditional
+expectation, and persistence stability are established mathematics.
+Constructive integration through completion has a substantial literature
+\cite{bishopcheng,petrakiszeuner}. Our claims are explicit constructions,
+corrected proof steps, finite estimates, and an \ipra\ implementation
+discipline. We make no priority claim for the classical theorems.
+
+\subsection{A concrete repair in the inspected source}
+
+The separate-tail shortcut displayed in the proof of the ``Vitali form''
+in the probability packet's Section 12 is false. Its proposed bound has
+the form
+\[
+ |x-y|\leq |x-y|\mathbf1_{\{|x|\leq K,\ |y|\leq K\}}
+       +|x|\mathbf1_{\{|x|>K\}}+|y|\mathbf1_{\{|y|>K\}}.
+\]
+For \(x=2\), \(y=-1\), and \(K=1\), its sides are \(3\) and \(2\).
+The desired convergence theorem is repairable: clip both variables
+before comparing them, and retain both clipping residuals. The repaired
+proof appears below, with the displayed counterexample in the exact
+arithmetic checks.
+
+This defect does not invalidate the library's different, correctly stated
+\emph{common-envelope} truncation theorem. In particular,
+\texttt{Probability.TruncationEstimate} already contains object-\ipra
+derivations for a bound under \(|X-Y|\leq2G\). The source audit and Lean
+roadmap distinguish that existing result from the separate-tail statement
+repaired here.
+
+\subsection{Four kinds of evidence}
+
+Throughout the report we distinguish:
+\begin{description}
+\item[Human finite proofs.] Complete mathematical arguments whose
+operations, bounds, and induction invariants are given explicitly.
+\item[Checked host-Lean lemmas.] The accompanying small Lean modules
+prove rational clipping and energy-search lemmas in Lean's metatheory.
+They have been compiled. Their types are not \texttt{Prf PRAAx}.
+\item[Object-theory targets.] A Lean definition of an arithmetic sentence
+and a plan to construct \(\Gamma\vdash[\mathrm{PRAAx}]\varphi\).
+The new analytic endpoints have not all been reified as such derivations.
+\item[External interpretation.] In ordinary mathematics a regular name
+denotes an element of a completion. This explains its familiar meaning;
+it is not an axiom of \ipra.
+\end{description}
+
+An exact-arithmetic experiment is useful for exposing bad constants or
+indexing, but does not replace any of these proofs. The validation ledger
+states exactly what was run. In particular, this report does not claim a
+uniform embedding of unrestricted classical analysis, arbitrary measure
+spaces, classical compactness, or unrestricted higher-order logic into
+\ipra.

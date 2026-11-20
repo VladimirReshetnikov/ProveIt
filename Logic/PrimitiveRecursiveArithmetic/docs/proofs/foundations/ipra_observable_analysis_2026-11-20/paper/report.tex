@@ -1,0 +1,64 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{graphicx,xcolor,listings,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black,pdftitle={Continuous mathematics in iPRA: shared error budgets, integration, and stable homotopies},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=*}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\e}{\epsilon}
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+\DeclareMathOperator{\Lip}{Lip}
+\DeclareMathOperator{\diag}{diag}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Continuous mathematics in iPRA}
+\fancyhead[R]{\small 20 November 2026}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},showstringspaces=false}
+\title{Continuous mathematics in iPRA\\[5pt]\Large Shared error budgets, constructive integration,\\and stable inverses and homotopies}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{20 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a reusable arithmetic interface for continuous mathematics, building on the existing ProveIt framework rather than replacing its proof calculus. The organizing principle is to certify the requested observation with a finite error calculation, then construct a completed object only when its coherence has also been proved. A reverse sensitivity calculation gives output-specific error budgets on shared computation graphs; a dual certificate also handles already-established cyclic error inequalities. Coherent finite partition algebras support measure-algebra and $L^1$ completions, a quantitative dominated-convergence theorem, and Fubini. A supplied $L^1$ majorant itself produces the required amplitude-tail modulus. In normed algebras, finite Neumann identities, geometric doubling, and power-series majorants give efficient inverse and analytic evaluation algorithms. Defect repair then produces contracting homotopies and chain-homotopy inverses with explicit rates. Continuous categorical and model-theoretic interfaces connect these applications to the existing finite-observation methods.
+
+All main claims are proved in human-readable form with their quantitative premises. The arithmetic reading is a schema over fixed primitive-recursive presentations, using only finite data and quantifier-free induction. The enclosed Lean project checks substantial finite algebraic and error-budget kernels. It does not yet compile the new analytic theorems into ProveIt's embedded judgment $\mathrm{Prf}\,\mathrm{PRAAx}$. The precise remaining work, source identities, executable examples, and proof-status ledger are included.
+\end{abstract}
+\tableofcontents
+\clearpage
+\input{sections/foundations}
+\input{sections/budgets}
+\input{sections/measure}
+\input{sections/model_probability}
+\input{sections/analytic_algebras}
+\input{sections/category_models}
+\input{sections/formalization}
+\input{sections/synthesis}
+\input{references}
+\end{document}

@@ -1,0 +1,495 @@
+\section{Measure and integration from coherent finite partitions}
+\label{sec:measure}
+
+The existing expectation packet already constructs expectations from effective
+\(L^1\) simple-law names and supplies compact quadrature and improper-tail
+arguments \cite{repoExpectedValue}.  The following construction extends that
+interface in three specific directions: several functions live over one
+coherent algebra of events; convergence in measure can be converted to
+\(L^1\) convergence with an explicit budget; and integration in one variable
+extends as a contraction, giving a represented Fubini theorem.  It does not
+assert the unrestricted classical dominated convergence theorem in iPRA.
+The need for this distinction is substantive: precise second-order versions
+of dominated convergence have nontrivial reverse-mathematical strength
+\cite{measureADR2012}.  Predicative completion-based integration is an
+established approach \cite{measurePZ2024}; the additional restriction here is
+to fixed primitive-recursive presentations and their arithmetic certificates.
+
+\subsection{One algebra of events, rather than unrelated couplings}
+
+\begin{definition}[Rational measured Boolean presentation]
+Fix a numerical coding of a Boolean algebra \(\mathcal B\), with
+primitive-recursive Boolean operations, decidable coded equality, and a
+primitive-recursive rational function \(\mu\).  Its displayed laws are
+\[
+ \mu(0)=0,\qquad \mu(b)\geq0,\qquad \mu(1)=M\in\mathbb Q_{\geq0},
+ \qquad b\wedge c=0\Longrightarrow
+ \mu(b\vee c)=\mu(b)+\mu(c).
+\]
+The Boolean identities and these laws must have proofs for the chosen
+presentation.  A partition is a finite list \((b_i)_{i<r}\) with pairwise
+disjoint entries and join \(1\).  A rational simple function is such a
+partition together with rational values \((a_i)_{i<r}\).  Zero cells and
+zero-measure cells are allowed.
+\end{definition}
+
+All these objects are finite numerical codes.  A concrete continuous example
+is the algebra of finite unions of dyadic half-open intervals in \([0,1)\),
+with rational length.  Represent an event by a level and its bit vector,
+raise two levels to their maximum, and repeat the appropriate bits before
+applying Boolean operations.  Length is the number of selected cells divided
+by the number of cells.  This gives primitive-recursive operations and finite
+proofs of the measure laws; it does not introduce an arbitrary measurable-set
+parameter into first-order arithmetic.
+
+Given partitions \((b_i)\) and \((c_j)\), use the partition
+\((b_i\wedge c_j)_{i,j}\).  It is a common refinement, and a third partition
+refines it by another meet.  Associativity of meet supplies coherent joint
+refinements for any finite list of simple functions.  This coherence is an
+extra condition if one starts instead from pairwise couplings of probability
+laws: unrelated pairwise couplings alone do not specify a common joint
+probability space for three or more variables.
+
+For dyadic presentations, implement a batch of comparisons on the finest
+requested grid once.  The common grid has \(2^{\max m_i}\) cells, whereas
+repeated formal products of partitions can introduce many redundant empty
+cells.  Retain the common-grid code and its mass array for every operation
+in the batch.  This is a concrete efficiency improvement with exactly the
+same refinement proof; no polynomial bound is asserted for arbitrary Boolean
+presentations.
+
+Define
+\[
+ I(s)=\sum_{i<r}a_i\mu(b_i),\qquad
+ \|s\|_1=\sum_{i<r}|a_i|\mu(b_i),\qquad d_1(s,t)=\|s-t\|_1,
+\]
+where arithmetic on two simple functions uses their common refinement.
+
+\begin{lemma}[Finite integration calculus]\label{lem:measure-finite}
+Refinement preserves \(I\) and \(\|\cdot\|_1\).  On simple functions,
+\[
+ |I(s)-I(t)|\leq\|s-t\|_1,\qquad
+ \bigl|\|s\|_1-\|t\|_1\bigr|\leq\|s-t\|_1,
+ \qquad \||s|-|t|\|_1\leq\|s-t\|_1.
+\]
+Integration is linear and positive; \(d_1\) is a pseudometric.  The maps
+\(s\mapsto s^+=\max(s,0)\) and
+\(s\mapsto T_Ks=\max(-K,\min(K,s))\), for rational \(K\geq0\),
+are nonexpansive.  Multiplication by a simple function bounded by a supplied
+rational \(C\) is \(C\)-Lipschitz in \(d_1\).
+\end{lemma}
+
+\begin{proof}
+If \(b_i\) is subdivided into disjoint cells \(d_{ij}\), finite additivity
+gives \(\mu(b_i)=\sum_j\mu(d_{ij})\).  Replacing
+\(a_i\mu(b_i)\) by \(\sum_j a_i\mu(d_{ij})\) preserves the integral;
+the same identity with \(|a_i|\) preserves the norm.  Thus all comparisons
+may be made on one partition.  On its \(i\)-th cell, use
+\(|a_i+b_i|\leq|a_i|+|b_i|\),
+\(\bigl||a_i|-|b_i|\bigr|\leq|a_i-b_i|\), and the elementary rational
+inequalities for maximum, minimum, and multiplication by a bounded number.
+Multiply by the nonnegative cell mass and sum.  The sum of nonnegative
+terms is nonnegative, proving positivity as well.  Nothing requires deciding
+whether a completed real number is zero or positive.
+
+For an object-language proof, clear the positive rational denominators.
+Induct on the length of a partial sum using the corresponding inequality
+between its two accumulators.  The partition laws and all cell comparisons
+are primitive-recursive Boolean checks, and each accumulator inequality is
+quantifier-free.  Universal hypotheses about a presentation are instantiated
+at the cells actually used; they are not induction predicates.
+\end{proof}
+
+\subsection{Completion, order, and the exact adequacy claim}
+
+An \(L^1\) name is a fixed primitive-recursive family \(s_k\) of simple
+functions with proofs of
+\begin{equation}
+ j\geq k\quad\Longrightarrow\quad
+ \|s_j-s_k\|_1\leq2^{-k}.
+ \label{eq:measure-regular}
+\end{equation}
+This is a convenient one-sided convention.  From a name with the symmetric
+regularity bound \(\|s_j-s_k\|_1\leq2^{-j}+2^{-k}\), as used by the
+common completion interface, set \(t_k=s_{k+1}\).  For \(j\geq k\),
+\[
+ \|t_j-t_k\|_1\leq2^{-(j+1)}+2^{-(k+1)}\leq2^{-k}.
+\]
+The shift denotes the same represented object.  Conversely, a one-sided
+name satisfies symmetric regularity by ordering its two numerical indices.
+Its limit notation \(f\) means this represented completion element.
+Equality, inequalities, and norms are interpreted by the completion's
+finite-precision relations.  In particular, \(\|f-s_k\|_1\leq2^{-k}\)
+abbreviates the corresponding family of rational observations.  It does
+not supply a pointwise evaluator for an arbitrary integrable function.
+Here ``completion'' means the collection of these certified names, embedded
+in the external full metric completion.  Closure is asserted for supplied
+jointly primitive-recursive Cauchy families with explicit moduli; the
+primitive-recursive names are not asserted to form a classically complete
+Banach space under arbitrary Cauchy sequences.
+
+\begin{theorem}[Represented integration and lattice operations]
+\label{thm:measure-completion}
+The sequences \(I(s_k)\) and \(\|s_k\|_1\) are regular rational names.
+They define a well-defined positive linear integral and norm on the
+represented completion.  Absolute value, positive part, and clipping extend
+nonexpansively.  Addition uses \(s_{k+1}+t_{k+1}\); multiplication by a fixed
+rational \(c\) uses \(cs_{k+b}\), where \(|c|\leq2^b\).  These choices
+give explicit regular output names.  More generally let \(b_k\) be simple
+functions with supplied bounds
+\(\|b_k\|_\infty\leq C\) and
+\(\|b_j-b_k\|_\infty\leq2^{-k}\) for \(j\geq k\), where the finite
+supremum is the maximum of the absolute cell values.  Then multiplication
+by the represented bounded multiplier is defined by the products
+\(s_{k+h}b_{k+h}\), where
+\(C+U\leq2^h\) and \(U=\|s_0\|_1+1\).
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:measure-finite} at two indices in
+\eqref{eq:measure-regular}.  This proves regularity of the scalar output
+names and of every nonexpansive operation.  If two input names have zero
+represented distance, the same inequalities force zero distance of their
+outputs.  Addition loses the sum of two errors, which the shift by one
+compensates; scalar multiplication loses \(|c|\), which the shift by \(b\)
+compensates.  For the last assertion, \(\|s_k\|_1\leq U\) and
+\[
+ \|s_jb_j-s_kb_k\|_1
+ \leq C\|s_j-s_k\|_1+U\|b_j-b_k\|_\infty
+ \leq(C+U)2^{-k};
+\]
+the displayed shift makes the output regular.  Its extensionality follows
+from the same estimate.  Linearity follows from the exact identity at any common finite
+level, paying these already specified approximation errors.  Positivity is
+defined by equality with the positive part, or equivalently zero norm of the
+negative part, and the finite positive-integral law passes through the same
+observations.  Every requested conclusion uses finitely many indices chosen
+by these explicit schedules.
+\end{proof}
+
+For clarity, the completed order is
+\(f\leq g\) when \(\|(f-g)^+\|_1=0\).  This is order on classes modulo
+zero \(L^1\) distance.  It neither asserts nor tests pointwise order at every
+point.  The usual lattice identities follow from their exact finite
+identities and the nonexpansive estimates.
+
+The events themselves have a useful completion.  For coded events,
+\(d_\mu(b,c)=\mu(b\mathbin{\triangle}c)
+=\|\mathbf1_b-\mathbf1_c\|_1\).  A represented event is a regular name
+of indicators for this pseudometric.  Complement is an isometry, while
+\[
+ d_\mu(b\wedge c,b'\wedge c'),\quad
+ d_\mu(b\vee c,b'\vee c')
+ \ \leq d_\mu(b,b')+d_\mu(c,c').
+\]
+Indeed, changing a meet or union can only change a cell where at least one
+of its two input indicators changes; this is a finite Boolean identity and
+weighted inequality.  Thus complement extends directly and meet and union
+extend with the input shift \(k\mapsto k+1\).  Their Boolean laws pass
+through finite comparisons, and the identity
+\(\mu(b\vee c)+\mu(b\wedge c)=\mu(b)+\mu(c)\) survives completion.
+This constructs a represented measure algebra, with exact equality understood
+modulo zero measure.  It uses bounded indicator products, and does not assert
+unrestricted multiplication of \(L^1\) classes.
+
+There is a precise external interpretation.  Suppose the coded algebra is
+realized as measurable sets of an ordinary finite measure space, its rational
+measure agrees with the ambient measure, and an ordinary integrable function
+\(F\) comes with a primitive-recursive family \(s_k\) and proved estimates
+\(\int|F-s_k|\leq2^{-k}\).  These estimates give symmetric regularity,
+so use \(t_k=s_{k+1}\) to obtain \eqref{eq:measure-regular}.
+The represented integral agrees with \(\int F\), since
+\[
+ \left|I(t_k)-\int F\right|\leq\int|s_{k+1}-F|\leq2^{-(k+1)}.
+\]
+If \(u_k\) is another such approximation family for \(F\), the triangle
+inequality gives \(\|s_{k+1}-u_{k+1}\|_1\leq2^{-k}\), so both shifted
+names denote the same completion
+element.  Conversely, in ordinary measure theory a name satisfying
+\eqref{eq:measure-regular} has an \(L^1\) limit by completeness.  This last
+sentence explains the standard semantics; it is not used as an additional
+iPRA axiom or an algorithm producing a pointwise representative.  We claim
+adequacy for functions with the supplied approximation data, not that every
+classical Lebesgue-integrable function possesses such data.
+
+\begin{proposition}[Countable unions with an explicit tail]
+\label{prop:measure-union}
+Let \(b_j\) be a fixed primitive-recursive event sequence.  Suppose a
+primitive-recursive \(C\) satisfies
+\[
+ L\geq N\geq C(k)\quad\Longrightarrow\quad
+ \sum_{N\leq j<L}\mu(b_j)\leq2^{-k}.
+\]
+The indicators of the finite unions \(\bigvee_{j<N}b_j\), reindexed by a
+monotone version of \(C\), define a represented event.  If the events are
+pairwise disjoint, its measure is the represented sum \(\sum_j\mu(b_j)\).
+\end{proposition}
+
+\begin{proof}
+The difference of two union indicators is supported on the union of the
+intervening events and is bounded by the sum of their indicators.  Therefore
+its \(L^1\) norm is at most the displayed tail sum.  For disjoint events,
+finite additivity identifies the measure of every finite union with the
+finite sum, and the scalar names agree.  The tail is part of the input; no
+unrestricted countable additivity or automatic modulus extraction is inferred.
+\end{proof}
+
+\subsection{A quantitative Vitali theorem and a dominated special case}
+
+For \(K\geq0\), write
+\(R_K(t)=(|t|-K)^+\).  The rational functions \(T_K\) and \(R_K\) are
+1-Lipschitz, and \(|t-T_K(t)|=R_K(t)\).
+
+\begin{lemma}[Finite small-exception estimate]\label{lem:measure-vitali-finite}
+Let \(u,v\) be rational simple functions on a common partition, let
+\(\delta>0\), and let \(B\) be the union of cells where
+\(|u-v|>\delta\).  If \(\mu(B)\leq\eta\), then
+\begin{equation}
+ \|u-v\|_1\leq I(R_Ku)+I(R_Kv)+\delta M+2K\eta.
+ \label{eq:measure-vitali-finite}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The triangle inequality splits \(u-v\) into its two clipping remainders and
+\(T_Ku-T_Kv\).  Off \(B\), the last difference is at most \(\delta\)
+because clipping is nonexpansive.  On \(B\), it is at most \(2K\).
+Integrating the finite cellwise bound
+\[
+ |u-v|\leq R_Ku+R_Kv+\delta+2K\mathbf1_B
+\]
+proves the result.  In arithmetic this is a Boolean branch at a comparison of
+rational numbers, followed by the weighted partial-sum invariant of
+Lemma~\ref{lem:measure-finite}.  There is no comparison of completed real
+values at a point.
+\end{proof}
+
+\begin{lemma}[An \(L^1\) majorant supplies its own tail modulus]
+\label{lem:measure-majorant-tail}
+Let \(g\geq0\) have an \(L^1\) name \(g_r\).  If a rational \(K\)
+bounds every value of \(g_r\), in absolute value, then
+\[
+ I((g-K)^+)\leq\|g-g_r\|_1\leq2^{-r}.
+\]
+Consequently, if \(|f_n|\leq g\) and \(|f|\leq g\) in the completed
+lattice, then both \(I(R_Kf_n)\) and \(I(R_Kf)\) are at most \(2^{-r}\),
+uniformly in \(n\).
+\end{lemma}
+
+\begin{proof}
+On a common finite partition, the scalar inequality
+\((a-K)^+\leq|a-b|\) holds whenever \(|b|\leq K\).
+It passes to represented names by nonexpansiveness and positivity.
+The map \(a\mapsto(a-K)^+\) preserves order, so domination by \(g\)
+gives the two further bounds.  At required tail error \(2^{-r}\), one
+therefore evaluates the single simple approximant \(g_r\) and takes the
+maximum of its finitely many absolute rational values.  This maximum is a
+primitive-recursive operation; a separate amplitude-tail oracle is unnecessary.
+\end{proof}
+
+\begin{theorem}[Vitali transfer with an explicit precision budget]
+\label{thm:measure-vitali}
+Let \(f_n\) and \(f\) be uniformly specified \(L^1\) names.  Fix
+\(\varepsilon=2^{-k}\).  Suppose primitive-recursive constructions provide
+rationals \(K\geq1,\delta>0,\eta\geq0\), a precision \(r\), and a
+cutoff \(N(k)\), such that for every \(n\geq N(k)\):
+\begin{enumerate}
+ \item the chosen simple approximants \(u\) to \(f_n\) and \(v\) to
+ \(f\) have \(L^1\) errors at most \(\sigma\);
+ \item \(I(R_Kf_n),I(R_Kf)\leq\tau\);
+ \item the finite event \(B=\{|u-v|>\delta\}\) has measure at most
+ \(\eta\).
+\end{enumerate}
+Then
+\begin{equation}
+ \|f_n-f\|_1\leq4\sigma+2\tau+\delta M+2K\eta.
+ \label{eq:measure-vitali-budget}
+\end{equation}
+In particular, the choices
+\begin{equation}
+ \sigma\leq\frac{\varepsilon}{16},\quad
+ \tau\leq\frac{\varepsilon}{8},\quad
+ \delta=\frac{\varepsilon}{4(M+1)},\quad
+ \eta=\frac{\varepsilon}{8(K+1)}
+ \label{eq:measure-vitali-schedule}
+\end{equation}
+give \(\|f_n-f\|_1\leq\varepsilon\), and hence
+\(|I(f_n)-I(f)|\leq\varepsilon\).
+\end{theorem}
+
+\begin{proof}
+The outer approximation loses \(2\sigma\):
+\(\|f_n-f\|_1\leq2\sigma+\|u-v\|_1\).
+Since \(R_K\) is nonexpansive,
+\(I(R_Ku)\leq I(R_Kf_n)+\sigma\leq\tau+\sigma\), and likewise
+\(I(R_Kv)\leq\tau+\sigma\).  Substitute both inequalities into
+\eqref{eq:measure-vitali-finite}.  This proves
+\eqref{eq:measure-vitali-budget}.  In
+\eqref{eq:measure-vitali-schedule}, each of its four summands is at most
+\(\varepsilon/4\).  The scalar integral estimate follows from
+Lemma~\ref{lem:measure-finite} and completion.
+\end{proof}
+
+For the dominated special case, take
+\(K=1+\max|g_{k+3}|\) in Lemma~\ref{lem:measure-majorant-tail}.
+This gives \(\tau\leq2^{-(k+3)}\).  Choose \(r\geq k+4\) for the
+simple approximants, and supply the displayed finite small-bad-set
+certificate with its cutoff \(N(k)\).  The resulting theorem is a dominated
+convergence theorem with a quantitative convergence-in-measure witness.
+It does not obtain that witness from bare pointwise convergence.
+
+This interface has the expected standard interpretation.  Take \(\eta>0\),
+as in \eqref{eq:measure-vitali-schedule}.  In an ambient measure space,
+if a modulus already guarantees
+\(\mu(|f_n-f|>\delta/2)\leq\eta/2\), and simple approximants have
+errors at most \(\sigma\leq\delta\eta/8\), then Markov's finite-sum
+inequality, extended by the integral estimate, gives
+\[
+ \mu(|u-v|>\delta)
+ \leq\mu(|f_n-f|>\delta/2)
+    +\frac{2}{\delta}\bigl(\|u-f_n\|_1+\|v-f\|_1\bigr)
+ \leq\eta.
+\]
+Thus the required approximant precision may be chosen to satisfy both
+\(2^{-r}\leq\varepsilon/16\) and
+\(2^{-r}\leq\delta\eta/8\).  Finding such an \(r\) is bounded search
+on positive rational numerators and denominators.  This explanation uses
+ordinary level-set semantics only to connect a conventional input modulus
+to the finite certificate.  The arithmetic transfer theorem itself uses
+only the explicitly computed finite event \(B\).
+
+\paragraph{An unbounded moving-spike example.}
+In \([0,1)\), let
+\[
+ A_j=[4^{-(j+1)},4^{-j}),\qquad
+ g=\sum_{j\geq0}2^j\mathbf1_{A_j},\qquad
+ f_n=2^n\mathbf1_{A_n}.
+\]
+The endpoint convention affects only finitely or countably many null points
+in the ordinary interpretation.  Exactly,
+\[
+ \mu(A_j)=\frac{3}{4^{j+1}},\qquad
+ I(g)=\frac32,\qquad
+ \left\|g-\sum_{j<J}2^j\mathbf1_{A_j}\right\|_1
+       =\frac32\,2^{-J},\qquad
+ \|f_n\|_1=\frac34\,2^{-n}.
+\]
+These are finite geometric-sum identities with their explicit tails.
+The functions \(f_n\) converge pointwise to zero in the usual realization,
+are dominated by the single represented integrable \(g\), and have growing
+supremum \(2^n\); uniform convergence and a common pointwise constant bound
+are unavailable.  Their finite bad sets are \(A_n\), so the hypotheses of
+Theorem~\ref{thm:measure-vitali} have direct primitive-recursive witnesses.
+There is also a useful boundary check: \(g\in L^1\), but the integral of
+the square of its first \(J\) pieces is \(3J/4\).  Therefore the framework
+must not declare arbitrary multiplication \(L^1\times L^1\to L^1\).
+The bounded-multiplier hypothesis above has mathematical content.
+
+\paragraph{Explicit exhaustions of infinite-measure spaces.}
+The same norm construction can start from a ring of finite-measure events
+and simple functions of finite support; only the small-exception estimate
+needs a total-mass bound.  For that estimate, restrict to a supplied finite
+event \(E_k\) of mass \(M_k\).  If the input additionally proves
+\[
+ \|f_n\mathbf1_{E_k^c}\|_1+
+ \|f\mathbf1_{E_k^c}\|_1\leq\rho_k
+ \qquad(n\geq N(k)),
+\]
+then apply the finite theorem on \(E_k\), with \(M_k\) in place of \(M\),
+and add \(\rho_k\) to the output error.  Here \(\mathbf1_{E_k^c}f\)
+means \(f-\mathbf1_{E_k}f\), so no finite mass is assigned to the complement.
+An explicit exhaustion and these uniform spatial-tail bounds therefore
+cover improper integrals on \(\mathbb R^d\).  The proof is the triangle
+inequality after this split; neither abstract sigma-finiteness nor a bare
+assertion of integrability provides the needed schedules.
+
+\subsection{Fubini as extension of a finite contraction}
+
+Take two rational measured Boolean presentations \((\mathcal B_X,\mu)\)
+and \((\mathcal B_Y,\nu)\).  A rectangular simple function is a rational
+matrix \((a_{ij})\) on finite partitions \((b_i)\) and \((c_j)\), with
+product-cell mass \(\mu(b_i)\nu(c_j)\).  Common row and column refinements
+make the following operations independent of presentation:
+\[
+ I_{XY}(a)=\sum_{i,j}a_{ij}\mu(b_i)\nu(c_j),\qquad
+ (J_Ya)_i=\sum_j a_{ij}\nu(c_j),\qquad
+ (J_Xa)_j=\sum_i a_{ij}\mu(b_i).
+\]
+
+\begin{theorem}[Represented Fubini]\label{thm:measure-fubini}
+The operators \(J_Y\) and \(J_X\) extend to the \(L^1\) completion of
+rectangular simple functions.  They are linear contractions, and
+\[
+ I_X(J_Yf)=I_{XY}(f)=I_Y(J_Xf).
+\]
+If \(a_k\) is a regular rectangular name, the regular output names are
+\(J_Ya_k\) and \(J_Xa_k\): no additional precision shift is necessary.
+\end{theorem}
+
+\begin{proof}
+At the finite level,
+\[
+ \|J_Ya\|_{L^1(X)}
+ =\sum_i\mu(b_i)\left|\sum_j a_{ij}\nu(c_j)\right|
+ \leq\sum_{i,j}|a_{ij}|\mu(b_i)\nu(c_j)
+ =\|a\|_{L^1(XY)}.
+\]
+Apply this to a difference of two matrices on a common refinement.  It proves
+both regularity of the output and independence of equivalent names.
+Finite linearity proves linearity after completion.  Interchanging the two
+finite sums is an exact rational identity, so the three scalar output names
+agree at each finite level.  Thus their represented limits agree as well.
+For iPRA, the contraction is an iterated weighted-sum inequality and the
+interchange identity has a quantifier-free accumulator proof.  The existing
+object-level finite-grid module already illustrates the required separation
+between cell hypotheses and the two accumulated bounds \cite{repoGridIntegral}.
+\end{proof}
+
+This conclusion supplies the iterated integral as an \(L^1\) class on the
+remaining variable.  It does not assert that every point has an integrable
+section, nor select representatives of all classes.  In standard measure
+semantics, the represented operator agrees with ordinary partial integration
+on its domain of functions with the supplied rectangular \(L^1\) names.
+The finite theorem and its completion proof remain valid without building
+an entire product sigma-algebra inside iPRA.  Complex-valued integration is
+obtained by two real copies, using the rational norm
+\(|\operatorname{Re}z|+|\operatorname{Im}z|\); this gives the same
+integrability notion as the ordinary complex norm, with explicit equivalent
+norm bounds.
+
+\subsection{Lean and object-language proof obligations}
+
+The following are the additional definitions needed beyond the common
+completion interface.  A \texttt{MeasuredBooleanCode} stores numerical
+event operations and rational mass.  A \texttt{PartitionCode} stores a
+finite event array and the Boolean validity checker; a
+\texttt{SimpleCode} adds a rational value array.  Define
+\texttt{refine} by pairwise meet, \texttt{integral} and \texttt{l1} by
+primitive-recursive folds, \texttt{clip} and \texttt{tail} by rational
+minimum/maximum, and \texttt{badSet} by a finite Boolean union.
+\texttt{RectSimpleCode} adds a second partition and a rectangular array.
+These finite definitions have no quotient, choice operation, or quantified
+set of measurable functions.
+
+The proof order is: refinement invariance; scalar clipping identities;
+weighted integral and lattice inequalities; the finite bad-set estimate;
+the four-term budget; and row/column contraction and sum interchange.
+Only then instantiate the completion extension theorem.  At the formal
+arithmetic level, export the denominator-cleared finite statements as
+\texttt{Prf PRAAx} derivations, with partition validity and finite comparison
+checks as hypotheses.  Supply fixed primitive-recursive terms for the input
+names, majorant maximum, bad-set generator, and cutoff; prove their contracts
+separately.  The concluding named-integral equalities are families of
+finite-precision consequences of those derivations.  A Lean structure
+quantifying over arbitrary functions is acceptable as metatheoretic notation,
+but cannot itself replace these syntactic proof obligations.
+
+The accompanying exact-rational program checks the finite estimate on
+enumerated small weighted examples, verifies the rectangular contraction and
+sum identity, and reproduces the moving-spike formulas.  These calculations
+test the implementation of the displayed finite formulas.  They are not
+evidence that arbitrary dominated convergence, Caratheodory extension,
+Radon--Nikodym differentiation, or a completed iPRA formalization has been
+obtained.  General metastable convergence theorems also require separate
+complexity auditing: the recursion used in a general quantitative theorem
+need not be primitive recursive \cite{measureADRMeta2012}.

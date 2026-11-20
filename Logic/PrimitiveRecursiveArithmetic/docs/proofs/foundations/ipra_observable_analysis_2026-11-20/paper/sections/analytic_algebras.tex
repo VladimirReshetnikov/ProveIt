@@ -1,0 +1,248 @@
+\section{Stable inverses and analytic functional calculus}\label{sec:analytic-algebras}
+
+\subsection{A presented normed algebra}
+
+Let $A_0$ be a unital associative algebra of finite codes over $\Q$, or over Gaussian rationals with central scalar action. Addition, subtraction, multiplication, and scalar operations are fixed PR programs. The algebraic laws have finite proofs. Norm bounds have finite rational certificates proving the triangle and submultiplicative inequalities; they may use the enclosure interface of Section~\ref{sec:completion}. Assume $\norm1\le1$. Write $\widehat A$ for the external norm completion, and retain only certified PR regular names when asserting an effective construction. Multiplication extends because, on bounded inputs,
+\[
+ \norm{ab-a'b'}\le\norm a\,\norm{b-b'}+\norm{a-a'}\,\norm{b'}.
+\]
+An input norm bound is obtained from its first name entry and its regularity bound, then enlarged rationally. Theorem~\ref{thm:extension} therefore supplies multiplication on the completion. Associativity and distributivity follow from the finite identities and arbitrarily small rational error. Scalar compatibility $\norm{ca}\le |c|\norm a$ is also part of the interface, where $|c|$ is the standard scalar modulus or a proved rational upper bound for it. For complex semantic conclusions the scalar action is central and extends continuously to complex scalars. This construction does not require local compactness or finite dimension.
+
+All of the following identities are first proved for finite algebra expressions. Whenever the completion is mentioned, its use is justified by an explicit Cauchy estimate. In a semantic Banach algebra the same arguments have their familiar norm interpretation. In the arithmetic reading, every displayed norm inequality stands for its finite approximation contract.
+
+\subsection{Finite geometric sums produce actual inverses}
+
+For $R\in\widehat A$ write $S_N(R)=\sum_{j<N}R^j$, including $S_0=0$. The norm gap will always be supplied as
+\begin{equation}\label{eq:neumann-gap}
+ \norm R\le q=1-1/s,\qquad s\in\N,\quad s\ge1.
+\end{equation}
+Any rational upper bound strictly below one can be weakened to this form by choosing $s\ge1/(1-q)$ with a bounded integer ceiling.
+
+\begin{lemma}[Finite Neumann identities and tail]\label{lem:neumann-finite}
+For all $N$,
+\[
+ (1-R)S_N(R)=S_N(R)(1-R)=1-R^N.
+\]
+Under \eqref{eq:neumann-gap}, for $M\ge N$,
+\begin{equation}\label{eq:neumann-tail}
+ \norm{S_M(R)-S_N(R)}\le s q^N,
+ \qquad q^{st}\le2^{-t}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Expanding either product telescopes the finite powers; equivalently, induct on $N$. No commutativity between arbitrary algebra elements is used. The tail norm is at most $\sum_{j=N}^{M-1}q^j$. The finite scalar identity
+$(1-q)\sum_{j=N}^{M-1}q^j=q^N-q^M\le q^N$
+gives the first bound. For the second, induction on $m$ proves $q^m(1+m/s)\le1$: the step uses
+$q(1+(m+1)/s)\le1+m/s$.
+At $m=s$ this says $q^s\le1/2$; another finite induction gives the result. This also covers $s=1,q=0$, with the usual convention $q^0=1$.
+\end{proof}
+
+Choose $H$ with $s\le2^H$. Then $N(k)=s(k+H+1)$ makes the tail at most $2^{-k-1}$. The families $S_{N(k)}$ are coherent by \eqref{eq:neumann-tail}; completing them gives $S(R)$. The identities of the lemma and $q^{N(k)}\to0$ give
+\[
+ (1-R)S(R)=S(R)(1-R)=1,\qquad \norm{S(R)}\le s.
+\]
+Thus invertibility has been constructed from a finite norm-gap certificate. It has not been inferred from an undecided spectral condition.
+
+\begin{proposition}[Two residuals for a general approximate inverse]\label{prop:two-sided}
+Suppose $A,B\in\widehat A$ and both
+\[
+ \norm{1-AB}\le q<1,\qquad \norm{1-BA}\le q<1
+\]
+have the gap certificate \eqref{eq:neumann-gap}. Then $A$ has inverse
+\[
+ X=B S(1-AB)=S(1-BA)B,
+ \qquad \norm X\le s\norm B.
+\]
+The approximants $X_N=B S_N(1-AB)$ satisfy
+\[
+ AX_N=1-(1-AB)^N,\quad X_NA=1-(1-BA)^N,
+ \quad\norm{X-X_N}\le s\norm B\,q^N.
+\]
+\end{proposition}
+\begin{proof}
+Put $R=1-AB$ and $L=1-BA$. The finite relation $BR=LB$ implies $BR^j=L^jB$ by induction, so the two finite formulas for $X_N$ agree. Applying the Neumann identities gives both residual equations. The tail bound gives a completed $X$, and both residuals tend to zero. Alternatively, the two series produce a right inverse $X_R$ and a left inverse $X_L$, which agree by $X_L=X_L(AX_R)=(X_LA)X_R=X_R$.
+\end{proof}
+
+\begin{remark}[A one-sided certificate is insufficient in infinite dimension]
+Let $S(x_0,x_1,\ldots)=(0,x_0,x_1,\ldots)$ and $L(x_0,x_1,\ldots)=(x_1,x_2,\ldots)$ on $\ell^1$. Then $LS=I$, while $L$ has a nonzero kernel and $SL\ne I$. Taking $A=L,B=S$ gives zero right residual but no inverse. The two-sided hypothesis in Proposition~\ref{prop:two-sided} cannot silently be dropped when passing from square matrices to continuous operator algebras.
+\end{remark}
+
+For an already supplied inverse $B=A^{-1}$, a perturbation $E$ needs only the gap $\norm{BE}<1$, since
+$A+E=A(1+BE)$ and the inverse is $S(-BE)B$. If $\norm B\norm E\le q=1-1/s$, the finite series proves
+\[
+ \norm{(A+E)^{-1}}\le s\norm B,\qquad
+ \norm{(A+E)^{-1}-B}\le s\norm B^2\norm E.
+\]
+This is the quantitative form of openness of invertibility used below; no general spectral theorem is a premise.
+
+\subsection{Fast geometric sums and named inputs}
+
+Define
+\begin{equation}\label{eq:doubling}
+ P_0=R,\quad T_0=1,\qquad
+ P_{j+1}=P_j^2,\quad T_{j+1}=T_j+P_jT_j.
+\end{equation}
+An induction proves
+$P_j=R^{2^j}$ and $T_j=S_{2^j}(R)$, because the new summand contains exactly the powers from $2^j$ through $2^{j+1}-1$. There are two algebra multiplications per round. To reach a required term count $N\ge1$, choose the least $m$ with $2^m\ge N$ by a search bounded by $N$. This requires $2m$ multiplications rather than a linear number in $N$. The gain is in algebra operations; coefficient lengths and rational bit sizes must still be counted in an implementation-specific complexity analysis.
+
+If multiplication is performed with finite numerical errors, treat the two recurrences as a shared graph and apply Section~\ref{sec:budgets}. Upper bounds for the ideal quantities are $\norm{P_j}\le1$ and $\norm{T_j}\le s$. With guards $\norm{P'_j}\le2$ and $\norm{T'_j}\le s+1$, one obtains the concrete propagation estimates
+\[
+ E_{P,j+1}\le3E_{P,j}+\delta_{P,j},\qquad
+ E_{T,j+1}\le2E_{T,j}+(s+1)E_{P,j}+\delta_{T,j}.
+\]
+For the second identity, write the product discrepancy as
+$P_j(T_j-T'_j)+(P_j-P'_j)T'_j$.
+The error envelope and guard check are recorded together. Exact finite-code algebra, as in the reference examples, makes these operation errors zero.
+
+An abstract named $R$ is handled without pretending that its exact value is a finite input. Let $r$ be a dense approximation with $\norm{R-r}\le\eta\le1/(2s)$. Then $\norm r\le1-1/(2s)$, so its finite polynomial evaluator has gap $2s$. The inverse identity
+\[
+ S(R)-S(r)=S(R)(R-r)S(r)
+\]
+gives error at most $2s^2\eta$. To meet target $\eps$, choose
+\[
+ \eta\le\min\{1/(2s),\eps/(4s^2)\},
+\]
+and make the finite-series tail for $r$ at most $\eps/2$. These choices are PR rational demands. The computed output is then within $\eps$ of $S(R)$; comparisons at two precisions prove regularity. If operations are rounded, divide the budget into three positive parts and use the graph certificate for the extra part. This explicitly separates input approximation, truncation, and arithmetic error.
+
+\subsection{Power series in a noncommutative algebra}
+
+Let $c_j$ be central scalar coefficients with a supplied majorant
+\begin{equation}\label{eq:series-majorant}
+ |c_j|R^j\le M\quad(j\ge0),\qquad R>0,\quad M\ge0.
+\end{equation}
+The coefficient evaluator is a fixed PR family, with a proof of this bound and a supplied approximation rate when its coefficients are named. Choose a rational radius $0\le r<R$ and restrict to $\norm a\le r$. Put $q=r/R$ and $f_N(a)=\sum_{j<N}c_ja^j$.
+
+\begin{theorem}[Analytic evaluation with an explicit tail]\label{thm:analytic-evaluation}
+The finite polynomials satisfy
+\[
+ \norm{f_K(a)-f_N(a)}\le\frac{M q^N}{1-q}\quad(K\ge N).
+\]
+They define a represented value $f(a)$ and, for $\norm a,\norm b\le r$,
+\begin{equation}\label{eq:series-lipschitz}
+ \norm{f(a)-f(b)}\le\frac{M}{R(1-r/R)^2}\norm{a-b}.
+\end{equation}
+Choose $s\ge1/(1-q)$ and $H$ with $Ms\le2^H$. The term count $N=s(k+H+1)$ makes the truncation error at most $2^{-k-1}$.
+\end{theorem}
+\begin{proof}
+Submultiplicativity and \eqref{eq:series-majorant} bound each term by $Mq^j$. The finite geometric sum gives the tail and its clock. For stability, the noncommutative telescoping identity is
+\[
+ a^j-b^j=\sum_{i=0}^{j-1}a^{j-1-i}(a-b)b^i.
+\]
+Its norm is at most $jr^{j-1}\norm{a-b}$. Thus the finite-polynomial difference is bounded by
+$\frac MR\sum_{j=1}^{N-1}j q^{j-1}\norm{a-b}$.
+The sum is at most $(1-q)^{-2}$: its coefficients count pairs of nonnegative indices, so it is bounded by the product of two finite geometric sums, each at most $(1-q)^{-1}$. Pass to the coherent completion, or apply rational slack removal to finite approximants. This proves \eqref{eq:series-lipschitz}.
+\end{proof}
+
+Polynomial evaluation uses Horner's recurrence
+$v_j=c_j+av_{j+1}$, starting from $v_N=0$. The usual backward induction gives $v_0=f_N(a)$, using $N$ multiplications. The large powers do not need to be separately constructed. Centrality of the coefficients guarantees agreement with the displayed power-series convention.
+
+For named coefficients, first choose a rational guard radius $r<r'<R$ and compute the truncation clock of Theorem~\ref{thm:analytic-evaluation} using $r'$ in place of $r$. Approximate all $c_j$, $j<N$, at a precision for which
+\[
+ \e_p\sum_{j<N}r'^j\le\eps/4,
+\]
+The finite sum has the PR upper bound $N\max(1,r')^{N-1}$ when $N\ge1$. Choose the dense approximation $a'$ within $(r'-r)$ and also sufficiently close for \eqref{eq:series-lipschitz} at radius $r'$. Allocate the remaining budget to the geometric tail and, if needed, Horner-rounding errors. This gives a completely specified finite evaluator from fixed coefficient and input names. It requires no uniform evaluator for arbitrary analytic functions.
+
+\subsection{A genuine derivative, including the noncommutative case}
+
+The expression $f'(a)h$ is generally wrong in a noncommutative algebra. The correct derivative keeps the insertion position of $h$.
+
+\begin{theorem}[Derivative and quadratic remainder]\label{thm:noncomm-derivative}
+Under \eqref{eq:series-majorant}, for $\norm a\le r<R$, define
+\[
+ Df(a)[h]=\sum_{j\ge1}c_j
+                  \sum_{i=0}^{j-1}a^iha^{j-1-i}.
+\]
+This is a bounded linear map with
+\[
+ \norm{Df(a)[h]}\le\frac{M}{R(1-r/R)^2}\norm h.
+\]
+If $\norm h\le t$ and $r+t<R$, then
+\begin{equation}\label{eq:quadratic-remainder}
+ \norm{f(a+h)-f(a)-Df(a)[h]}
+ \le\frac{M}{R^2(1-(r+t)/R)^3}\norm h^2.
+\end{equation}
+The derivative series has a PR geometric tail on every supplied smaller radius, and therefore has a finite evaluator of the same kind as $f$.
+\end{theorem}
+\begin{proof}
+The linear term at degree $j$ has $j$ summands and norm at most $jMr^{j-1}R^{-j}\norm h$. The same finite double-geometric bound used in Theorem~\ref{thm:analytic-evaluation} proves boundedness. Finite partial derivatives are linear; their uniform tail transfers linearity to the completion.
+
+Expand $(a+h)^j$ as the sum of all ordered words in $a,h$. The words containing no $h$ give $a^j$, and the words containing one $h$ give precisely the displayed derivative. For each $\ell\ge2$, there are $\binom j\ell$ words containing $\ell$ copies of $h$. Their total norm is bounded by
+\[
+ \sum_{\ell=2}^j\binom j\ell r^{j-\ell}\norm h^\ell
+ \le\binom j2(r+t)^{j-2}\norm h^2.
+\]
+The inequality follows coefficientwise from
+$\binom j\ell\le\binom j2\binom{j-2}{\ell-2}$, since the right coefficient is $\binom\ell2\binom j\ell$. Sum over $j$. The coefficients $\binom j2$ count triples of nonnegative indices with sum $j-2$, so three finite geometric sums bound the result by the constant in \eqref{eq:quadratic-remainder}. The estimates apply first to finite tails and then to the completed values.
+
+For an explicit derivative tail, select $r<r'<R$. For $j\ge1$,
+\[
+ jMr^{j-1}R^{-j}
+ \le C(r'/R)^j,\qquad
+ C=\frac{Mr'}{(r'-r)^2},
+\]
+because $j(r/r')^{j-1}\le(1-r/r')^{-2}$. Thus the derivative tail after degree $N-1$, for $N\ge1$, is at most
+$C(r'/R)^N/(1-r'/R)\cdot\norm h$.
+The block clock of Lemma~\ref{lem:neumann-finite} makes this a PR modulus. Fixing $r'$ also makes the remainder constant uniform for $\norm h\le r'-r$, which is exactly the Frechet differentiability assertion.
+\end{proof}
+
+An explicit differentiability demand is available as well. Fix $r<r'<R$, set $C=M/[R^2(1-r'/R)^3]$, and choose
+\[
+ \delta(\eps)=\min\{r'-r,\eps/(1+C)\}.
+\]
+For $\norm h\le\delta(\eps)$, the remainder is at most $\eps\norm h$. This formula also handles $M=0$ without division by zero.
+
+Over a complex Banach algebra the derivative is complex linear; over the reals it is real linear. For scalar complex inputs this is holomorphicity on the certified disk. For operator inputs it is an analytic map on the norm ball in the usual semantic reading. The finite arithmetic result consists of the series evaluator, derivative evaluator, and displayed remainder demand. No commutation of $a$ with $h$ has been assumed. These formulas supply a useful common interface for analytic operators, not only for scalar special functions.
+
+\subsection{Multiplication of analytic expressions}
+
+Suppose two series have coefficient bounds $|c_j|R^j\le M_f$ and $|d_j|R^j\le M_g$. Their convolution coefficients
+$e_n=\sum_{j=0}^n c_jd_{n-j}$ satisfy
+\[
+ |e_n|R^n\le(n+1)M_fM_g.
+\]
+Choose $r<R'<R$. Then
+\[
+ |e_n|(R')^n\le\frac{M_fM_g}{(1-R'/R)^2},
+\]
+using the double-geometric estimate. Hence the product series has the same usable majorant form at radius $R'$.
+
+\begin{proposition}[Local functional-calculus product law]\label{prop:product-calculus}
+For $\norm a\le r<R'$, evaluation of the convolution series equals $f(a)g(a)$.
+\end{proposition}
+\begin{proof}
+For finite polynomials, distribute the product and group the pairs of indices by their sum. Central coefficients and $a^ia^j=a^{i+j}$ give the convolution identity. The omitted pairs with $i+j\ge N$ have total norm at most
+\[
+ M_fM_g\sum_{n\ge N}(n+1)(r/R)^n.
+\]
+Every finite part of this tail is bounded by the geometric majorant at radius $R'$ just obtained, and so has a PR vanishing bound. The two rectangular partial sums also approximate $f(a)g(a)$ by the product stability inequality. Compare the two finite expressions and let the certified errors decrease. No rearrangement of an unconditionally unspecified infinite series is used.
+\end{proof}
+
+This is a local power-series functional calculus. It does not assert general holomorphic functional calculus around an arbitrary spectrum, spectral mapping, or a spectral-radius algorithm. Those results would require extra contour, resolvent, and domain certificates. Here the radius gap is explicit and every relevant infinite operation has an actual tail modulus.
+
+\subsection{An infinite-dimensional worked example}
+
+Let $A_0$ be finite rational sequences, with convolution product and norm
+$\norm a_1=\sum_j|a_j|$. The unit is $(1,0,\ldots)$. Finite double-sum arithmetic proves $\norm{ab}_1\le\norm a_1\norm b_1$. Its completion is the presented part of $\ell^1(\N)$; a name includes a PR finite-support approximation rate. Interpreting a sequence as coefficients gives an absolutely convergent power series on the closed unit disk, since
+\[
+ \left|\sum_j a_jz^j\right|\le\sum_j|a_j|\quad(|z|\le1).
+\]
+Thus coefficient-$\ell^1$ error controls uniform complex function error.
+
+Take
+\[
+ b(z)=z/4+z^2/8,\qquad\norm b_1=3/8.
+\]
+The geometric construction produces the function
+\[
+ u(z)=\frac1{1-z/4-z^2/8}
+\]
+as one coherent $\ell^1$ name, uniformly on $|z|\le1$. Its coefficients are determined by the fixed PR recurrence
+$u_0=1$, $u_1=1/4$, and
+$u_n=u_{n-1}/4+u_{n-2}/8$ for $n\ge2$.
+Because the coefficients are nonnegative, the exact norm of the geometric-series tail after $N$ powers of $b$ is
+\[
+ \frac{(3/8)^N}{1-3/8}=\frac85(3/8)^N.
+\]
+The reference program compares the recurrence coefficients with finite convolution sums, checks the polynomial residual identity, and checks the doubling construction in exact rational arithmetic. It also demonstrates matrix inversion from two residuals and the noncommutative derivative formula with a genuine quadratic remainder. These tests validate selected implementations and constants; the universal assertions are the proofs above.
+
+The example is more than a scalar computation. The same inverse element acts by convolution as a bounded operator on $\ell^1$, and the same finite certificate controls that operator. It also supplies a contractible two-term complex with differential multiplication by $1-b$. This links complex analytic evaluation, normed algebra, and the homotopy construction of the next section through one shared approximation.

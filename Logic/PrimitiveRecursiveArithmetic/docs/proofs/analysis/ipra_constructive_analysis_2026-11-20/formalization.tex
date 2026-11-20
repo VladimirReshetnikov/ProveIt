@@ -1,0 +1,68 @@
+\section{Formalization and reproducibility}
+\label{sec:formal}
+\subsection{What Lean checks}
+The generator in \texttt{object/ObjectReplay.lean} imports the ordinary \texttt{ConciseIPRA.PR} judgment from ProveIt. A fixed finite tree has leaves that are object terms. Each address is assigned a term for its observed bit. A test with branches $l,r$ compiles to a ternary PR symbol $S(b,l,r)$ by primitive recursion on $b$, with base the first branch projection and successor case the second branch projection. The defining equations give $S(0,l,r)=l$ and $S(t+1,l,r)=r$. If $\Gamma$ proves the selected bit at each tested address on the path, structural induction on the tree yields an object derivation
+\[
+           \Gamma\vdash_{\rm PRAAx}
+           \operatorname{compile}(\mathit{read},t)=\operatorname{selected}(\alpha,t).
+\]
+At a node substitute the proved bit by congruence, apply the appropriate defining equation, and compose with the subproof for that branch. No assumption is needed at an unvisited address. The theorem \texttt{replayTwo} applies this twice with different read routines. \texttt{exampleClosed} gives an unconditional closed object sentence. Both were replayed against the pinned repository sources. Lean reports only \texttt{propext} and \texttt{Quot.sound} in their metatheoretic axiom audit. The tree argument is external. A single object sentence quantifying over numerically coded trees is a further theorem.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.32\linewidth}X@{}}
+\toprule Host Lean module & Checked statement\\ \midrule
+\texttt{Dialogue} & Evaluation, replay from visited addresses, query substitution with exact trace, and a depth bound for substitution.\\
+\texttt{Prefix}, \texttt{LeastPrefix}, \texttt{Oscillation} & Sparse compatibility characterizes extensions agreeing below $N$. On the actual pruned rows, the algorithm computes the least threshold controlling integer-output oscillation on all pairs of streams. A common denominator for labels and tolerance reduces Theorem~\ref{thm:least} to this result.\\
+\texttt{Carry} & A representative in the finite list for the carry position preserves all comparisons against stored addresses. The finite existential test is equivalent to the unrestricted index test.\\
+\texttt{CellGeometry}, \texttt{IntervalLift} & Clamped floor indices are equal or adjacent at one mesh width. Within-cell and boundary estimates give (1). From (1) and same-input coherence the explicit lift satisfies mixed regularity, extensionality and the Euclidean modulus bound.\\
+\texttt{BitIntegral}, \texttt{FiniteCube}, \texttt{DepthMean} & Finite-cube partition, mass splitting at fresh bits and reuse of a forced bit. The depth-$D$ numerator with denominator $2^D$ equals the full cube average after cross multiplication.\\
+\texttt{Root} & Finite-difference peak bound for a rational monic polynomial with an actual maximizing index, and transport of a positive certified sign to a later weak endpoint inequality.\\
+\texttt{Entropy} & Integer rounding, extraction and decoding of ternary edge differences, and completeness and length of the enumeration of words.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The standard-library modules and the Mathlib proofs were replayed with Lean 4.32.0. The executable checks compared the sparse algorithm with complete truth tables on 140 generated trees, including repeated queries, and compared 80 mixed Cauchy-name samples. Additional exact-rational checks cover the metric triangle, weak intermediate values, polynomial brackets, roundoff on Lipschitz edges, envelopes and packing masks. The verification folder gives commands and results. These finite checks exercise the implementations. The remaining host-level link identifies the prefixes of the rational binary-digit routine and the carry expansions with the geometric cell and boundary labels. That link has a human proof, as do the Riemann adequacy theorem, full polynomial-bracket algorithm and entropy bounds. The following steps specify how to obtain the remaining deep object-language proofs.
+
+\subsection{A route to the object sequents}
+\paragraph{1. Code the data.}
+One standalone encoding takes $\operatorname{nil}=0$ and $\operatorname{cons}(a,t)=2^a(2t+1)$. The head of a nonzero code is the exponent of two dividing it, bounded by the code. The tail is the remaining odd part minus one, divided by two. The tail is strictly smaller. Length, indexing, lookup, membership, reverse and append are therefore PR by bounded iteration. Pairs use the same positive encoding. Encode a signed integer by sign and magnitude, a rational by a signed numerator and positive denominator, and a row by a list of distinct address/bit pairs and a rational label. Set total defaults on bad input. Comparisons use cross products with a positive-denominator guard. Normalization of rational fractions is optional.
+
+A port can use the repository's \repo{Derivations/Lean/IPRADerivations/Foundations/DigitCodes.lean}{digit code lemmas}, \repo{Derivations/Lean/IPRADerivations/Foundations/DyadicNames.lean}{dyadic bounds}, and \repo{Derivations/Lean/IPRADerivations/Analysis/RationalArithmetic.lean}{rational arithmetic}. Check the scope of each imported result. Some digit lengths in \texttt{DigitCodes} are external naturals. Variable-length loops here need numerical folds and proofs of their defining equations.
+
+\paragraph{2. Produce the rows.}
+Fix the machine step term. Define the padded $B$-bit simulation of Section~\ref{sec:framework}, with state consisting of machine state, remaining fuel, a fresh-answer cursor and partial map. At an old address use the lookup without advancing the cursor. At a new address read the cursor bit, extend the map and advance. Scan all words below $2^B$, emitting each distinct terminal transcript once by bounded comparison. For a frozen input word the loop invariant states that all recorded answers agree with this input and that replay of the trace prefix reaches the stored state. Its bounded version tests each recorded index through the current step. With a second input that agrees on the stored addresses, either simulation makes the same next transition. To prove coverage, record the fresh replies of a given finite input in order and pad with zeros. For the converse replay with the finite-support extension. Freeze two distinct rows and find the first unequal fresh reply to prove disjointness. Check the halt test also in the state reached at time $B$. These constructions provide the uniform counterpart of the fixed-tree result. The repository's \repo{Derivations/Lean/IPRADerivations/Foundations/TraceComposition.lean}{trace-composition proof} illustrates freezing auxiliary parameters.
+
+\paragraph{3. Prove compatibility and one-cell geometry.}
+Use a first-element initializer and a left fold for minimum on a nonempty list. The invariant says the stored extremum bounds all processed values and belongs to the processed list. Compile the universal part into a bounded Boolean conjunction. Compare each forbidden pair with its least shared conflicting address. The counterexample extensions are the explicit PR functions of Theorem~\ref{thm:least}. For (G), replace an index $j$ absent from the keys by the maximum of zero and the successors of keys below it. No stored bit changes position relative to $j$. On the mesh $2^{-N}$, the one-cell estimate reduces to
+\[
+ x\le y\le x+2^{-N}\quad\Longrightarrow\quad
+        \lfloor2^Ny\rfloor\le \lfloor2^Nx\rfloor+1 .
+\]
+Prove this by division with remainder, then clamp both indices at $2^N-1$. Neighboring indices have binary forms $u0\,11\cdots1$ and $u1\,00\cdots0$ of length $N$. Use bounded search for the last zero in the smaller word. Adding one changes precisely this suffix. This covers both end cells. With (C) and (G) this gives (1) as a sequent about rational point codes.
+
+\paragraph{4. Close the indices of the analytic contracts.}
+For the actual term $y(a,n)$ in Theorem~\ref{thm:interval}, one endpoint is the universal closure, under the tests (C), (G) and the input guards, of
+\[
+ \operatorname{EqName}(a,b)\ \longrightarrow\
+ |y(a,n)-y(b,m)|\le 2^{-n}+2^{-m}.
+\]
+Here $a,b$ abbreviate fixed PR sample terms with numerical parameters, and $\operatorname{EqName}$ is the mixed cross-index inequality of Section~\ref{sec:framework}. Construct the envelope $H$ by a bounded max, then instantiate the one-cell theorem on the two computed sample codes. For the modulus endpoint use the mixed inequality with input distance $\le2^{-\mu(j)}$ and output distance $\le2^{-j}$, including both sample errors. A fully finite proof freezes output indices $i,l$ and compares both outputs through two level-$s$ samples at $s=\max(i,l,j+2)$. Their inputs are within the one-cell threshold at level $j+2$. Using (C) to compare the two fine outputs through that level costs at most $\eps_j+2\eps_{s+3}$. Transporting the original outputs to the two fine ones costs at most $3\eps_{i+3}+\eps_{s+3}$ and $3\eps_{l+3}+\eps_{s+3}$. Since $\eps_s\le\min(\eps_i,\eps_l)$, the total fits $\eps_i+\eps_j+\eps_l$. This is the proof implemented in \texttt{IntervalLift}. All indices are numerical inputs, with no induction on convergence formulas.
+
+For integration, track the remaining free coordinates during finite cube enumeration. At an unfixed query, flipping exactly that bit matches the two subpopulations bijectively. At a fixed query the full population follows the known branch. Sum scaled integer values and prove the cross-product identity before dividing by positive denominators. In the tagged-partition proof merge the sorted lists of endpoints. The invariant preserves covered length and the accumulated error bound. For the polynomial and entropy endpoints, Sections~\ref{sec:root-realizer} and \ref{sec:entropy} give the specific numerical invariants. Each final target is a sequent $\Gamma\vdash_{\rm PRAAx}\varphi$ for the chosen PR providers. The \repo{Bridge/README.md}{Foundation--Concise bridge} can transport such a proof to the other arithmetic presentation.
+
+\paragraph{5. Interpret the result.}
+A regular output with the mixed inequalities denotes a point of the completion. An integral name agreeing with sufficiently fine Riemann sums denotes the Riemann integral. For a multivalued operation the endpoint asserts that each output satisfies its defining relation. Requiring all legal coefficient names to select the same root would strengthen that statement, as the cubic example shows.
+
+\subsection{Further research questions}
+\begin{enumerate}[leftmargin=22pt]
+\item Can shared subtrees across precisions shorten independently checkable certificates for the least oscillation threshold and for the integral? A benchmark would compare certificate sizes on functions with many repeated queries.
+\item For power-series or piecewise analytic inputs, which coefficient bounds can replace $d!h^d$? The bracket theorem needs just one robust sign in every middle third. Producing such a bound from natural analytic data would extend the root theorem.
+\item On compact metric spaces presented by nets with bounded branching, when do a ternary edge code and a bump packing give matching entropy bounds? The cube proof identifies the need for both a short traversal and a large separated family.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov and contributors, \emph{ProveIt, Primitive Recursive Arithmetic}. \repo{README.md}{Pinned source overview}, revision \texttt{b2341af5370cd8a43f72ebb2341c0d7d7395b634}. Individual modules and packet comparisons are linked where used.
+\bibitem{escardo} M. Escard\'o, \emph{Continuity of G\"odel's System T definable functionals via effectful forcing}, Electronic Notes in Theoretical Computer Science 298 (2013), 119--141. \href{https://doi.org/10.1016/j.entcs.2013.09.010}{Article and DOI}.
+\bibitem{pauly} A. Pauly, \emph{On the topological aspects of the theory of represented spaces}, Computability 5 (2016), 159--180. \href{https://arxiv.org/abs/1204.3763}{Author's paper}.
+\bibitem{oconnor} R. O'Connor, \emph{A monadic, functional implementation of real numbers}, Mathematical Structures in Computer Science 17 (2007), 129--159. \href{https://arxiv.org/abs/cs/0605058}{Author's paper}. See also the completion and lifting construction there.
+\end{thebibliography}
