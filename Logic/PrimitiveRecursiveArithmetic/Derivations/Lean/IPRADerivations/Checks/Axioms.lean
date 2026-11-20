@@ -1064,6 +1064,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.NorthcottNatural.north_inj
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.NorthcottNatural.north_complete
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.NorthcottNatural.north_point
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.NorthcottLocus.kL_at
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.NorthcottLocus.locus_sound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.NorthcottLocus.locus_inj
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.NorthcottLocus.locus_complete
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
