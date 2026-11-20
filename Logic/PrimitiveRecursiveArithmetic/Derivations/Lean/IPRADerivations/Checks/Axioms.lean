@@ -3232,6 +3232,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.j_step
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.harmonic_lw
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.psi_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens.le_scale
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens.subadd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens.p_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens.p_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens.pow_sub
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens.mertens_upper
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.decline_rat
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.tail_lower
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.decline_harmonic
