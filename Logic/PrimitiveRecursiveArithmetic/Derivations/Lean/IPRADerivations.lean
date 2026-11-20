@@ -295,6 +295,7 @@ import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
 import IPRADerivations.DiophantineNumberTheory.KhinchinConvergence
 import IPRADerivations.DiophantineNumberTheory.KhinchinLattice
 import IPRADerivations.DiophantineNumberTheory.KhinchinSieve
+import IPRADerivations.DiophantineNumberTheory.KhinchinBad
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
