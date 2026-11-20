@@ -10286,6 +10286,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.PointList.sound
 #print axioms LeanProofs.IPRA.Foundations.PointList.complete_at
 #print axioms LeanProofs.IPRA.Foundations.PointList.complete
+#print axioms LeanProofs.IPRA.Foundations.ForwardValidity.forward_all
+#print axioms LeanProofs.IPRA.Foundations.ForwardValidity.forward_node
+#print axioms LeanProofs.IPRA.Foundations.ForwardValidity.exported
+#print axioms LeanProofs.IPRA.Foundations.OperationComposition.app1_cdem
+#print axioms LeanProofs.IPRA.Foundations.OperationComposition.inst2_cout
+#print axioms LeanProofs.IPRA.Foundations.OperationComposition.compose
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing

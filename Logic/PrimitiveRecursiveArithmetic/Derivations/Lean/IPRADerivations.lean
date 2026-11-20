@@ -927,6 +927,8 @@ import IPRADerivations.Foundations.SetoidInterpretation
 import IPRADerivations.Foundations.ObservedRelation
 import IPRADerivations.Foundations.ProofPlan
 import IPRADerivations.Foundations.PointList
+import IPRADerivations.Foundations.ForwardValidity
+import IPRADerivations.Foundations.OperationComposition
 import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization
