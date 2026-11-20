@@ -10474,6 +10474,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.TraceCertificate.transitions_of_fold
 #print axioms LeanProofs.IPRA.Foundations.TraceCertificate.cert_accept
 #print axioms LeanProofs.IPRA.Foundations.TraceCertificate.cert_run
+#print axioms LeanProofs.IPRA.Foundations.RelationalCertificate.app1_stepT
+#print axioms LeanProofs.IPRA.Foundations.RelationalCertificate.step_term
+#print axioms LeanProofs.IPRA.Foundations.RelationalCertificate.step_live
+#print axioms LeanProofs.IPRA.Foundations.RelationalCertificate.descent
+#print axioms LeanProofs.IPRA.Foundations.RelationalCertificate.path_viable
+#print axioms LeanProofs.IPRA.Foundations.RelationalCertificate.path_local
+#print axioms LeanProofs.IPRA.Foundations.RelationalCertificate.path_post
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
