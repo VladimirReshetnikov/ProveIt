@@ -10202,6 +10202,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.SetoidInterpretation.dom_term
 #print axioms LeanProofs.IPRA.Foundations.SetoidInterpretation.ctx_shift
 #print axioms LeanProofs.IPRA.Foundations.SetoidInterpretation.sound
+#print axioms LeanProofs.IPRA.Foundations.ObservedRelation.sigma_up
+#print axioms LeanProofs.IPRA.Foundations.ObservedRelation.var1_up
+#print axioms LeanProofs.IPRA.Foundations.ObservedRelation.out_inst
+#print axioms LeanProofs.IPRA.Foundations.ObservedRelation.cons_shift
+#print axioms LeanProofs.IPRA.Foundations.ObservedRelation.cons_up_shift
+#print axioms LeanProofs.IPRA.Foundations.ObservedRelation.up_shift_shift
+#print axioms LeanProofs.IPRA.Foundations.ObservedRelation.shift_var0
+#print axioms LeanProofs.IPRA.Foundations.ObservedRelation.out_exists
+#print axioms LeanProofs.IPRA.Foundations.ObservedRelation.out_unique
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
