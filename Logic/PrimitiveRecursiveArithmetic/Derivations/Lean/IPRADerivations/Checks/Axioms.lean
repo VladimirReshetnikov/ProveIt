@@ -1244,6 +1244,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.TetraShadow.shadow_lower
 #print axioms LeanProofs.IPRA.Geometry.CubeShadow.cube_lower
 #print axioms LeanProofs.IPRA.Geometry.CubeShadow.cube_upper
+#print axioms LeanProofs.IPRA.Geometry.BrightnessCert.lagrange3
+#print axioms LeanProofs.IPRA.Geometry.BrightnessCert.cs3
+#print axioms LeanProofs.IPRA.Geometry.BrightnessCert.finite_upper
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
