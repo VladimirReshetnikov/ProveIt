@@ -3506,6 +3506,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain.inst2_mtB
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain.mt_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain.main_term
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit.body_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit.body_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit.body_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit.head_eq
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit.mt_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit.head_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit.head_bound
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit.tail_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit.tail_off
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit.tail_bound
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit.no_growth
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
