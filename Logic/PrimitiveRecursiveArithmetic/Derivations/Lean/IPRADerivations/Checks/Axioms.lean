@@ -2157,6 +2157,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinTailMass.S_ge_one
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinWidths.hW_of_exact
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinWidths.hS_of_exact
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams.cell_hag
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams.cell_hg
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams.cell_gap
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams.cell_hD
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams.cell_hK4
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams.cell_hL
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams.four_w_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams.cell_hH
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_crB
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_t2B
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.subst_sqInv
