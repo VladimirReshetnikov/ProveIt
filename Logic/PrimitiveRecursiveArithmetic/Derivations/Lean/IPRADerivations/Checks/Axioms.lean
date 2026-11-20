@@ -10406,6 +10406,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BoundList.inst2_htLB
 #print axioms LeanProofs.IPRA.Foundations.BoundList.height_of_entry
 #print axioms LeanProofs.IPRA.Foundations.BoundList.height_of_list
+#print axioms LeanProofs.IPRA.Foundations.TraceComposition.run_invariant
+#print axioms LeanProofs.IPRA.Foundations.TraceComposition.compose
+#print axioms LeanProofs.IPRA.Foundations.TraceComposition.compose_sound
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing

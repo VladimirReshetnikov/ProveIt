@@ -940,6 +940,7 @@ import IPRADerivations.Foundations.RawDemand
 import IPRADerivations.Foundations.ObservationComposition
 import IPRADerivations.Foundations.OdeConservation
 import IPRADerivations.Foundations.BoundList
+import IPRADerivations.Foundations.TraceComposition
 import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization
