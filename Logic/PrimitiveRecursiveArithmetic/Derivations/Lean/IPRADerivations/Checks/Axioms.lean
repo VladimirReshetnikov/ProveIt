@@ -10417,6 +10417,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.TraceComposition.run_invariant
 #print axioms LeanProofs.IPRA.Foundations.TraceComposition.compose
 #print axioms LeanProofs.IPRA.Foundations.TraceComposition.compose_sound
+#print axioms LeanProofs.IPRA.Foundations.DualHorizon.query_le
+#print axioms LeanProofs.IPRA.Foundations.DualHorizon.proof_le
+#print axioms LeanProofs.IPRA.Foundations.DualHorizon.comp_le
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
