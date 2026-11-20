@@ -466,6 +466,7 @@ import IPRADerivations.Probability.GeometricMean
 import IPRADerivations.Probability.GeometricTail
 import IPRADerivations.Probability.GeometricCutoff
 import IPRADerivations.Geometry.PlatonicSections
+import IPRADerivations.Geometry.ParallelepipedQuartic
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding

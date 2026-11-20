@@ -1266,6 +1266,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.PlatonicSections.cube_slack
 #print axioms LeanProofs.IPRA.Geometry.PlatonicSections.octa_area_vector
 #print axioms LeanProofs.IPRA.Geometry.PlatonicSections.octa_slack
+#print axioms LeanProofs.IPRA.Geometry.ParallelepipedQuartic.bracket_pos
+#print axioms LeanProofs.IPRA.Geometry.ParallelepipedQuartic.bracket_neg
+#print axioms LeanProofs.IPRA.Geometry.ParallelepipedQuartic.derivative_negative
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
