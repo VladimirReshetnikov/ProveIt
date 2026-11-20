@@ -1921,6 +1921,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify.half_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify.subst_ampInv
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify.pow_amp
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_crB
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_t2B
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.subst_sqInv
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.sq_step
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.sq_sum
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.cross_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.subst_geoInv
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.geo
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.geo_lt
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul
