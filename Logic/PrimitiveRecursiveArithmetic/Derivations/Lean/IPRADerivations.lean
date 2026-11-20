@@ -399,6 +399,7 @@ import IPRADerivations.Foundations.Termination
 import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.CrossingSearch
+import IPRADerivations.Foundations.BlockPartitionSum
 import IPRADerivations.Foundations.EmbeddingBasics
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Foundations.BoundedSyntax
