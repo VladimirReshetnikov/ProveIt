@@ -1046,6 +1046,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdList.gv_dvd
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdList.gv_greatest
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdList.gv_eq_zero
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize.gcd_zero_zero
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize.gv_all_zero
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize.q_at
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize.f_eq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize.q_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize.gv_quotients
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
