@@ -1033,6 +1033,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize.norm_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize.norm_unique
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize.norm_class
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique.cross_sum
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique.mul_of_add
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique.scale_at
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique.one_of_mul
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique.vector_unique
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
