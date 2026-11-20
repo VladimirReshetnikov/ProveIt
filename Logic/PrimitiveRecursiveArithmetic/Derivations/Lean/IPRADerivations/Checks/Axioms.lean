@@ -14023,6 +14023,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BoundedDescent.predT
 #print axioms LeanProofs.IPRA.Foundations.BoundedDescent.trueT
 #print axioms LeanProofs.IPRA.Foundations.BoundedDescent.zeroTest
+#print axioms LeanProofs.IPRA.Foundations.GuardedDescent.gstep_zero
+#print axioms LeanProofs.IPRA.Foundations.GuardedDescent.gstep_pos
+#print axioms LeanProofs.IPRA.Foundations.GuardedDescent.pos_of_succ
+#print axioms LeanProofs.IPRA.Foundations.GuardedDescent.guarded_descent
+#print axioms LeanProofs.IPRA.Foundations.GuardedDescent.explicit_range
+#print axioms LeanProofs.IPRA.Foundations.GuardedDescent.explicit_range_fix
 #print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.app1_rk
 #print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.app1_fx
 #print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.descent
