@@ -1828,6 +1828,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.CrossingSearch.crossing
 #print axioms LeanProofs.IPRA.Foundations.BlockPartitionSum.inst2_blockB
 #print axioms LeanProofs.IPRA.Foundations.BlockPartitionSum.block_sum
+#print axioms LeanProofs.IPRA.Foundations.CoverLocal.congrSg'
+#print axioms LeanProofs.IPRA.Foundations.CoverLocal.cnt_below
+#print axioms LeanProofs.IPRA.Foundations.CoverLocal.cnt_above
+#print axioms LeanProofs.IPRA.Foundations.CoverLocal.cnt_out
+#print axioms LeanProofs.IPRA.Foundations.CoverLocal.cover_out
 #print axioms LeanProofs.IPRA.Foundations.EmbeddingBasics.diag_at
 #print axioms LeanProofs.IPRA.Foundations.EmbeddingBasics.no_universal_evaluator
 #print axioms LeanProofs.IPRA.Foundations.EmbeddingBasics.least_witness
