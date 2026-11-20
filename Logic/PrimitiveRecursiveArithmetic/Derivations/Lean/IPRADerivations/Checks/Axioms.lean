@@ -1871,6 +1871,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop.inv_step
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop.loop_inv_all
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop.loop_inv
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzPrefix.nxt_of_dig
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzPrefix.quo_of_between
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzPrefix.one_le_of_succ
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzPrefix.dig_agree₁
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzPrefix.dig_agree₂
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzPrefix.loop_agree
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.absurd_one_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.cancel_eq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.pos_of_eq
@@ -2004,6 +2010,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify.half_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify.subst_ampInv
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify.pow_amp
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRounds.contract
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRounds.amplify
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRounds.amplify_b0
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_crB
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_t2B
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.subst_sqInv
@@ -3009,6 +3018,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget.err_series
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget.err_mesh
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget.err_point
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaPrecision.err_tail_sharp
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaPrecision.err_mesh_sharp
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaPrecision.err_point_sharp
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaPrecision.summand_exponent
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaPrecision.four_sq
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaPrecision.xi_budget
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaPrecision.factor_budget
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.pw_mul_base
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.bernoulli
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.decr
