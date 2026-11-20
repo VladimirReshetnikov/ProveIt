@@ -1068,6 +1068,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.NorthcottLocus.locus_sound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.NorthcottLocus.locus_inj
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.NorthcottLocus.locus_complete
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SignedLine.one_of_gcd_zero
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SignedLine.mag_unique
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SignedLine.case_00
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SignedLine.case_11
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SignedLine.case_01
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SignedLine.case_10
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SignedLine.signed_unique
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
