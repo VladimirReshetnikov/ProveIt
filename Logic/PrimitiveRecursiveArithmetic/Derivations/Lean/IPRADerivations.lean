@@ -316,6 +316,9 @@ import IPRADerivations.Foundations.IntervalAdditive
 import IPRADerivations.Foundations.IntervalPacking
 import IPRADerivations.Foundations.SumFlatten
 import IPRADerivations.DiophantineNumberTheory.KhinchinSeparated
+import IPRADerivations.Foundations.PackingPointwise
+import IPRADerivations.DiophantineNumberTheory.KhinchinScale
+import IPRADerivations.DiophantineNumberTheory.KhinchinScaleCount
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
