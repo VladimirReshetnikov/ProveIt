@@ -207,6 +207,8 @@ import IPRADerivations.AnalyticNumberTheory.WeightBridge
 import IPRADerivations.AnalyticNumberTheory.MobiusSummatory
 import IPRADerivations.AnalyticNumberTheory.DivisorSwapP
 import IPRADerivations.AnalyticNumberTheory.TauAbelIdentity
+import IPRADerivations.AnalyticNumberTheory.SymmetryInstances
+import IPRADerivations.AnalyticNumberTheory.SymmetryPointwise
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.AnalyticNumberTheory.PNTOneStep
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
