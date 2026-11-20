@@ -10335,6 +10335,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.RawDemand.raw_adequate
 #print axioms LeanProofs.IPRA.Foundations.RawDemand.raw_prefixed
 #print axioms LeanProofs.IPRA.Foundations.RawDemand.raw_least
+#print axioms LeanProofs.IPRA.Foundations.ObservationComposition.inst2_uJB
+#print axioms LeanProofs.IPRA.Foundations.ObservationComposition.inst2_WJB
+#print axioms LeanProofs.IPRA.Foundations.ObservationComposition.v_le_horizon
+#print axioms LeanProofs.IPRA.Foundations.ObservationComposition.comp_le_horizon
+#print axioms LeanProofs.IPRA.Foundations.ObservationComposition.shift_horizon
+#print axioms LeanProofs.IPRA.Foundations.ObservationComposition.guarantees
+#print axioms LeanProofs.IPRA.Foundations.ObservationComposition.compose_obs
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing

@@ -932,6 +932,7 @@ import IPRADerivations.Foundations.PointList
 import IPRADerivations.Foundations.ForwardValidity
 import IPRADerivations.Foundations.OperationComposition
 import IPRADerivations.Foundations.RawDemand
+import IPRADerivations.Foundations.ObservationComposition
 import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization
