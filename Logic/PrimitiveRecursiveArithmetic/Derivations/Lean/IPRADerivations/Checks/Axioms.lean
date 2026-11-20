@@ -2959,6 +2959,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola.row_eq
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola.col_split
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola.hyperbola
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.floor_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.inst2_Ab
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.inst2_Bb
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.inst2_Cb
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.inst2_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.shift_fact'
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.sumA
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.sumB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.sumC
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.floor_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.divisor_harmonic
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
