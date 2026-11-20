@@ -3241,6 +3241,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens.p_step
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens.pow_sub
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens.mertens_upper
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower.k_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower.k_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower.lw_lower
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower.delta_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower.t_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower.t_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower.fact_lower
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower.mertens_lower
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicSignedMean.nq_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicSignedMean.signed_upper
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicSignedMean.signed_lower
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.decline_rat
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.tail_lower
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.decline_harmonic
