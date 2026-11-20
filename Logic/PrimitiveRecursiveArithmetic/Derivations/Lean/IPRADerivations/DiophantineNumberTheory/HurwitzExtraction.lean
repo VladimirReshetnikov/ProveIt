@@ -119,4 +119,86 @@ theorem floor_stable {a d a' d' Ln Ld : PTm n} (hd : Γ ⊢[PRAAx] le one d) (hd
   have hhi : Γ ⊢[PRAAx] lt a' (succ (quo a' d') * d') := by ipra_le sl hr with e
   exact .andI (floor_low hd hd1 hLn hlo close sep0) (floor_high hd hd1 hLn hhi close sep1)
 
+/-! ## The Möbius update of the complete quotient
+
+For the convergents `P/Q`, `P'/Q'` (determinant `P'Q − PQ' = ±1`) and two rational approximations
+`y = Y/W`, `z = Z/V` of `x` in the region `Qx > P`, `P' > Q'x`, the complete quotient
+`t = (P' − Q'x)/(Qx − P)` is approximated by `t(y) = A/Dn`, `A = P'W − Q'Y`, `Dn = QY − PW` and
+`t(z) = A'/Dn'`. The determinant identity
+`(P'W − Q'Y)(QZ − PV) − (P'V − Q'Z)(QY − PW) = (P'Q − PQ')(WZ − VY)` gives
+`|A Dn' − A' Dn| = |WZ − VY|` (`mobius_cross`), so the two quotients differ by
+`|y − z| / (|Qy − P| |Qz − P|)`: the exact difference formula of the packet. -/
+
+/-- `a + d = b + c` gives `|a − b| = |c − d|`. -/
+theorem adist_of_eq {a b c d : PTm n} (h : Γ ⊢[PRAAx] a + d ≐ b + c) : Γ ⊢[PRAAx] adist a b ≐ adist c d := by
+  have e := natEq h
+  refine .orE (le_total a b) ?_ ?_
+  · let Θ : List (Fm PTm n) := le a b :: Γ
+    have hab : Θ ⊢[PRAAx] le a b := Prf.hyp0
+    have hcd : Θ ⊢[PRAAx] le c d := by have e' := natEq (h.wk : Θ ⊢[PRAAx] _); ipra_le sl hab with e'
+    have q1 := adist_of_le hab
+    have q2 := adist_of_le hcd
+    have e1 := natEq (Prf.andE₁ q1)
+    have e2 := natEq (Prf.andE₂ q1)
+    have e3 := natEq (Prf.andE₁ q2)
+    have e4 := natEq (Prf.andE₂ q2)
+    have e' := natEq (h.wk : Θ ⊢[PRAAx] _)
+    apply deriveNat; ipra_simps
+    linear_combination e1 - e2 - e3 + e4 - e'
+  · let Θ : List (Fm PTm n) := le b a :: Γ
+    have hba : Θ ⊢[PRAAx] le b a := Prf.hyp0
+    have hdc : Θ ⊢[PRAAx] le d c := by have e' := natEq (h.wk : Θ ⊢[PRAAx] _); ipra_le sl hba with e'
+    have q1 := adist_of_le hba
+    have q2 := adist_of_le hdc
+    have e1 := natEq (Prf.andE₁ q1)
+    have e2 := natEq (Prf.andE₂ q1)
+    have e3 := natEq (Prf.andE₁ q2)
+    have e4 := natEq (Prf.andE₂ q2)
+    have e' := natEq (h.wk : Θ ⊢[PRAAx] _)
+    apply deriveNat; ipra_simps
+    linear_combination e1 - e2 - e3 + e4 + e'
+
+/-- The determinant identity in the region `Qx > P`, `P' > Q'x` (both approximations on the same side),
+for `P'Q = PQ' + 1`: `A Dn' + VY = A' Dn + WZ`. -/
+theorem mobius_identity {P Q P' Q' Y W Z V A Dn A' Dn' : PTm n}
+    (hdet : Γ ⊢[PRAAx] P' * Q ≐ P * Q' + one)
+    (hA : Γ ⊢[PRAAx] P' * W ≐ Q' * Y + A) (hD : Γ ⊢[PRAAx] Q * Y ≐ P * W + Dn)
+    (hA' : Γ ⊢[PRAAx] P' * V ≐ Q' * Z + A') (hD' : Γ ⊢[PRAAx] Q * Z ≐ P * V + Dn') :
+    Γ ⊢[PRAAx] A * Dn' + V * Y ≐ A' * Dn + W * Z := by
+  have ed := natEq hdet
+  have eA := natEq hA
+  have eD := natEq hD
+  have eA' := natEq hA'
+  have eD' := natEq hD'
+  apply deriveNat; ipra_simps
+  linear_combination (𝔞 W * 𝔞 Z - 𝔞 V * 𝔞 Y) * ed - 𝔞 Dn' * eA - (𝔞 P' * 𝔞 W - 𝔞 Q' * 𝔞 Y) * eD' +
+    𝔞 Dn * eA' + (𝔞 P' * 𝔞 V - 𝔞 Q' * 𝔞 Z) * eD
+
+/-- The same for `PQ' = P'Q + 1`: `A Dn' + WZ = A' Dn + VY`. -/
+theorem mobius_identity' {P Q P' Q' Y W Z V A Dn A' Dn' : PTm n}
+    (hdet : Γ ⊢[PRAAx] P * Q' ≐ P' * Q + one)
+    (hA : Γ ⊢[PRAAx] P' * W ≐ Q' * Y + A) (hD : Γ ⊢[PRAAx] Q * Y ≐ P * W + Dn)
+    (hA' : Γ ⊢[PRAAx] P' * V ≐ Q' * Z + A') (hD' : Γ ⊢[PRAAx] Q * Z ≐ P * V + Dn') :
+    Γ ⊢[PRAAx] A * Dn' + W * Z ≐ A' * Dn + V * Y := by
+  have ed := natEq hdet
+  have eA := natEq hA
+  have eD := natEq hD
+  have eA' := natEq hA'
+  have eD' := natEq hD'
+  apply deriveNat; ipra_simps
+  linear_combination (𝔞 V * 𝔞 Y - 𝔞 W * 𝔞 Z) * ed - 𝔞 Dn' * eA - (𝔞 P' * 𝔞 W - 𝔞 Q' * 𝔞 Y) * eD' +
+    𝔞 Dn * eA' + (𝔞 P' * 𝔞 V - 𝔞 Q' * 𝔞 Z) * eD
+
+/-- The exact difference formula, cleared: `|A Dn' − A' Dn| = |WZ − VY|` (either determinant sign). -/
+theorem mobius_cross {P Q P' Q' Y W Z V A Dn A' Dn' : PTm n}
+    (hdet : Γ ⊢[PRAAx] (P' * Q ≐ P * Q' + one) ⋎ (P * Q' ≐ P' * Q + one))
+    (hA : Γ ⊢[PRAAx] P' * W ≐ Q' * Y + A) (hD : Γ ⊢[PRAAx] Q * Y ≐ P * W + Dn)
+    (hA' : Γ ⊢[PRAAx] P' * V ≐ Q' * Z + A') (hD' : Γ ⊢[PRAAx] Q * Z ≐ P * V + Dn') :
+    Γ ⊢[PRAAx] adist (A * Dn') (A' * Dn) ≐ adist (W * Z) (V * Y) := by
+  refine .orE hdet ?_ ?_
+  · exact adist_of_eq (mobius_identity Prf.hyp0 hA.wk hD.wk hA'.wk hD'.wk)
+  · have h := adist_of_eq (mobius_identity' Prf.hyp0 hA.wk hD.wk hA'.wk hD'.wk)
+    -- `|A Dn' − A' Dn| = |VY − WZ| = |WZ − VY|`
+    exact h.eqTrans (add_comm _ _)
+
 end LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction

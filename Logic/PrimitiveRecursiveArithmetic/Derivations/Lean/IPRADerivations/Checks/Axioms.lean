@@ -1812,6 +1812,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.floor_low
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.floor_high
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.floor_stable
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.adist_of_eq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.mobius_identity
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.mobius_identity'
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.mobius_cross
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.absurd_one_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.cancel_eq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.pos_of_eq
