@@ -1809,6 +1809,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinLattice.lat_step
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinLattice.lattice_core
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinLattice.lattice_bounds
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSieve.inst2_sieveB
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSieve.sieve_point
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSieve.sg_scale
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSieve.inJ_scale
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul
