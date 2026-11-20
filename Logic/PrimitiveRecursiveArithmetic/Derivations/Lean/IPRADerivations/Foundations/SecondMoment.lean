@@ -3,6 +3,7 @@ import IPRADerivations.Probability.Independence
 import IPRADerivations.Foundations.IntervalCover
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.Combinatorics.FiniteBijection
+import IPRADerivations.DiophantineNumberTheory.KhinchinMoment
 
 /-!
 # The second-moment method on a finite grid
@@ -229,6 +230,94 @@ theorem sq_moment (T B x : PTm n) :
   refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
   simp only [shift_pairT]
   exact col_a b _ _ _ _
+
+/-! ## The ordered expansion `Σ_c F² = Σ_k |E_k| + 2 Σ_ℓ Σ_{k<ℓ} |E_k ∩ E_ℓ|` (for `0/1` cell sets) -/
+
+/-- `b(c, ℓ) Σ_{k<ℓ} b(c, k)` over `0 = c`, `1 = ℓ`, `2 = x`: `aB` with the bound `ℓ`. -/
+def cB2 : PTm 3 := Syn.subst ![var 0, var 1, pairT (var 1) (var 2)] (aB b)
+
+/-- `Σ_{k<ℓ} Σ_{c<T} b(c, ℓ) b(c, k)` over `0 = ℓ`, `1 = ⟨T, x⟩`. -/
+def lowB : PTm 2 := Syn.subst ![var 0, pairT (var 0) (var 1)] (oB (ppB b))
+
+theorem inst3_cB2 (c l x : PTm n) : inst3 (cB2 b) c l x = inst3 (aB b) c l (pairT l x) := by
+  simp only [cB2, inst3, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
+
+theorem inst2_lowB (l y : PTm n) : inst2 (lowB b) l y = inst2 (oB (ppB b)) l (pairT l y) := by
+  simp only [lowB, inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
+
+theorem inst2_two_mul (G : PTm 2) (c y : PTm n) : inst2 (two * G) c y = two * inst2 G c y := by
+  simp [inst2]
+
+/-- `F(c)² = F(c) + 2 Σ_{ℓ<B} b(c, ℓ) Σ_{k<ℓ} b(c, k)` for `0/1` cell sets. -/
+theorem pt_ord (c B x : PTm n)
+    (hb : ∀ {m : ℕ} (Δ : List (Fm PTm m)) (c k y : PTm m), Δ ⊢[PRAAx] inst3 b c k y * inst3 b c k y ≐ inst3 b c k y) :
+    Γ ⊢[PRAAx] inst2 (oB b) c (pairT B x) * inst2 (oB b) c (pairT B x) ≐
+      inst2 (addBody (oB b) (two * oB (cB2 b))) c (pairT B x) := by
+  rw [inst2_addBody, inst2_two_mul]
+  have hF := oB_at (Γ := Γ) b c B x
+  have sq := DiophantineNumberTheory.KhinchinMoment.sq_sum (Γ := Γ) (rowB b) B (pairT c x)
+  have e1 : Γ ⊢[PRAAx] ap2 (sumF (DiophantineNumberTheory.KhinchinMoment.t2B (rowB b))) B (pairT c x) ≐ ap2 (sumF (rowB b)) B (pairT c x) := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    rw [show inst2 (DiophantineNumberTheory.KhinchinMoment.t2B (rowB b)) (var 0) (Syn.shift (pairT c x)) =
+      inst2 (rowB b) (var 0) (Syn.shift (pairT c x)) * inst2 (rowB b) (var 0) (Syn.shift (pairT c x)) by simp [inst2],
+      inst2_rowB]
+    exact hb _ _ _ _
+  have e2 : Γ ⊢[PRAAx] ap2 (sumF (DiophantineNumberTheory.KhinchinMoment.crB (rowB b))) B (pairT c x) ≐ ap2 (sumF (rowB (cB2 b))) B (pairT c x) := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    simp only [shift_pairT]
+    rw [DiophantineNumberTheory.KhinchinMoment.inst2_crB, inst2_rowB, inst2_rowB, inst3_cB2, inst3_aB]
+    let Θ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift B) :: Γ.map Fm.shift
+    have hc : Θ ⊢[PRAAx] fstT (pairT (Syn.shift c) (Syn.shift x)) ≐ Syn.shift c := fst_pair _ _
+    have hx : Θ ⊢[PRAAx] sndT (pairT (Syn.shift c) (Syn.shift x)) ≐ Syn.shift x := snd_pair _ _
+    refine congrMul (congrInst3 b (.eqRefl _) (.eqRefl _) (snd_pair _ _).eqSymm) ?_
+    refine .eqTrans ?_ (oB_at (Γ := Θ) b _ _ _).eqSymm
+    exact congrAp2 (sumF (rowB b)) (.eqRefl _) (congrPairT hc hx).eqSymm
+  refine (congrMul hF hF).eqTrans (sq.eqTrans (congrAdd (e1.eqTrans hF.eqSymm)
+    (congrMul (.eqRefl _) (e2.eqTrans (oB_at (Γ := Γ) (cB2 b) c B x).eqSymm))))
+
+/-- One column of the ordered expansion: `Σ_c b(c, ℓ) Σ_{k<ℓ} b(c, k) = Σ_{k<ℓ} Σ_c b(c, ℓ) b(c, k)`. -/
+theorem col_ord (l T x : PTm n) :
+    Γ ⊢[PRAAx] inst2 (pB (cB2 b)) l (pairT T x) ≐ inst2 (lowB b) l (pairT T x) := by
+  rw [inst2_pB, inst2_lowB]
+  refine (congrAp2 (sumF (colB (cB2 b))) (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _))).eqTrans ?_
+  refine .eqTrans ?_ (col_a b l T l x)
+  rw [inst2_pB]
+  refine .eqTrans ?_ (congrAp2 (sumF (colB (aB b))) (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _))).eqSymm
+  refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+  simp only [shift_pairT]
+  rw [inst2_colB, inst2_colB, inst3_cB2]
+  let Θ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift T) :: Γ.map Fm.shift
+  have hl : Θ ⊢[PRAAx] fstT (pairT (Syn.shift l) (Syn.shift x)) ≐ Syn.shift l := fst_pair _ _
+  have hx : Θ ⊢[PRAAx] sndT (pairT (Syn.shift l) (Syn.shift x)) ≐ Syn.shift x := snd_pair _ _
+  have hl' : Θ ⊢[PRAAx] fstT (pairT (Syn.shift l) (pairT (Syn.shift l) (Syn.shift x))) ≐ Syn.shift l := fst_pair _ _
+  have hy' : Θ ⊢[PRAAx] sndT (pairT (Syn.shift l) (pairT (Syn.shift l) (Syn.shift x))) ≐
+      pairT (Syn.shift l) (Syn.shift x) := snd_pair _ _
+  exact congrInst3 (aB b) (.eqRefl _) (hl.eqTrans hl'.eqSymm) ((congrPairT hl hx).eqTrans hy'.eqSymm)
+
+/-- The ordered expansion `Σ_c F² = Σ_k Σ_c b(c, k) + 2 Σ_{ℓ<B} Σ_{k<ℓ} Σ_c b(c, ℓ) b(c, k)` for `0/1`
+cell sets: `∫F² = Σ_k |E_k| + 2 Σ_{k<ℓ} |E_k ∩ E_ℓ|`. -/
+theorem ord_moment (T B x : PTm n)
+    (hb : ∀ {m : ℕ} (Δ : List (Fm PTm m)) (c k y : PTm m), Δ ⊢[PRAAx] inst3 b c k y * inst3 b c k y ≐ inst3 b c k y) :
+    Γ ⊢[PRAAx] ap2 (sumF (oB b * oB b)) T (pairT B x) ≐
+      ap2 (sumF (pB b)) B (pairT T x) + two * ap2 (sumF (lowB b)) B (pairT T x) := by
+  have s1 : Γ ⊢[PRAAx] ap2 (sumF (oB b * oB b)) T (pairT B x) ≐
+      ap2 (sumF (addBody (oB b) (two * oB (cB2 b)))) T (pairT B x) := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    rw [inst2_FF]
+    simp only [shift_pairT]
+    exact pt_ord b _ _ _ hb
+  have s2 := sum_add (Γ := Γ) (oB b) (two * oB (cB2 b)) T (pairT B x)
+  have s3 := fubini (Γ := Γ) b T B x
+  have s4 : Γ ⊢[PRAAx] ap2 (sumF (two * oB (cB2 b))) T (pairT B x) ≐ two * ap2 (sumF (oB (cB2 b))) T (pairT B x) := by
+    refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
+    rw [inst2_two_mul, show Syn.shift (two : PTm n) = two by simp [Syn.shift]]
+    exact .eqRefl _
+  have s5 := fubini (Γ := Γ) (cB2 b) T B x
+  have s6 : Γ ⊢[PRAAx] ap2 (sumF (pB (cB2 b))) B (pairT T x) ≐ ap2 (sumF (lowB b)) B (pairT T x) := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    simp only [shift_pairT]
+    exact col_ord b _ _ _
+  exact s1.eqTrans (s2.eqTrans (congrAdd s3 (s4.eqTrans (congrMul (.eqRefl _) (s5.eqTrans s6)))))
 
 end SM
 

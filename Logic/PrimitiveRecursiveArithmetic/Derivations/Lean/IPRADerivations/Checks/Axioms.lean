@@ -2098,6 +2098,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.SecondMoment.colDQ_at
 #print axioms LeanProofs.IPRA.Foundations.SecondMoment.col_a
 #print axioms LeanProofs.IPRA.Foundations.SecondMoment.sq_moment
+#print axioms LeanProofs.IPRA.Foundations.SecondMoment.inst3_cB2
+#print axioms LeanProofs.IPRA.Foundations.SecondMoment.inst2_lowB
+#print axioms LeanProofs.IPRA.Foundations.SecondMoment.inst2_two_mul
+#print axioms LeanProofs.IPRA.Foundations.SecondMoment.pt_ord
+#print axioms LeanProofs.IPRA.Foundations.SecondMoment.col_ord
+#print axioms LeanProofs.IPRA.Foundations.SecondMoment.ord_moment
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul
