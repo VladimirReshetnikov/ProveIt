@@ -922,6 +922,7 @@ import IPRADerivations.Analysis.PolynomialLipschitz
 import IPRADerivations.Foundations.FiniteQueryTable
 import IPRADerivations.Foundations.SetoidInterpretation
 import IPRADerivations.Foundations.ObservedRelation
+import IPRADerivations.Foundations.ProofPlan
 import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization

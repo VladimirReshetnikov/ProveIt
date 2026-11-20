@@ -10223,6 +10223,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ObservedRelation.shift_var0
 #print axioms LeanProofs.IPRA.Foundations.ObservedRelation.out_exists
 #print axioms LeanProofs.IPRA.Foundations.ObservedRelation.out_unique
+#print axioms LeanProofs.IPRA.Foundations.ProofPlan.compile
+#print axioms LeanProofs.IPRA.Foundations.ProofPlan.sealed_chain
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
