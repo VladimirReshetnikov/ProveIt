@@ -335,6 +335,8 @@ import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
 import IPRADerivations.DiophantineNumberTheory.Siegel
 import IPRADerivations.DiophantineNumberTheory.SiegelPoints
+import IPRADerivations.DiophantineNumberTheory.AperyZetaTail
+import IPRADerivations.DiophantineNumberTheory.AperyFloor
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.DiophantineNumberTheory.Pythagoras
 import IPRADerivations.DiophantineNumberTheory.QuarticStep

@@ -991,6 +991,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SiegelPoints.neg_points
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SiegelPoints.point_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SiegelPoints.point_neg_one
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyZetaTail.term_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyZetaTail.telescope
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyZetaTail.zeta_tail
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyFloor.floor_sum_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyFloor.floor_sum_lt
 #print axioms LeanProofs.IPRA.half_par
 #print axioms LeanProofs.IPRA.even_ne_odd
 #print axioms LeanProofs.IPRA.sum_zero_elim
