@@ -50,6 +50,7 @@ import IPRADerivations.Analysis.TerminatingSeries
 import IPRADerivations.Analysis.ChuVandermonde
 import IPRADerivations.Analysis.ContiguousRelations
 import IPRADerivations.Analysis.ContiguousTruncated
+import IPRADerivations.Analysis.PolynomialRemainder
 import IPRADerivations.Analysis.HypergeometricQForm
 import IPRADerivations.Analysis.PullbackCertificates
 import IPRADerivations.Analysis.OdeCertificates
