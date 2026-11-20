@@ -474,6 +474,8 @@ import IPRADerivations.Geometry.PlatonicSurface.Icosahedron
 import IPRADerivations.Geometry.PlatonicSurface.Dodecahedron
 import IPRADerivations.Geometry.Oloid.Chart
 import IPRADerivations.Geometry.Oloid.Reduction
+import IPRADerivations.Geometry.Oloid.DistanceIdentities
+import IPRADerivations.Geometry.Oloid.DistanceMesh
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
