@@ -3477,6 +3477,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.half_square
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.dd_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.dd_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain.dl_ge
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain.fq_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain.inst2_mtB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain.mt_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain.main_term
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
