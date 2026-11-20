@@ -986,6 +986,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Siegel.siegel_nonneg
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Siegel.siegel_nonpos
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Siegel.power_gap
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SiegelPoints.u_eq_one
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SiegelPoints.pos_points
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SiegelPoints.neg_points
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SiegelPoints.point_zero
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SiegelPoints.point_neg_one
 #print axioms LeanProofs.IPRA.half_par
 #print axioms LeanProofs.IPRA.even_ne_odd
 #print axioms LeanProofs.IPRA.sum_zero_elim
@@ -3592,6 +3597,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fib_parity
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fib_parity_one
 #print axioms LeanProofs.IPRA.Combinatorics.LucasIdentities.fib_parity_two
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciAltSum.one_monus_one_monus_par
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciAltSum.shift_odd_at
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciAltSum.shift_even_at
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciAltSum.shift_odd
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciAltSum.shift_even
+#print axioms LeanProofs.IPRA.Combinatorics.FibonacciAltSum.alt_sum_fib
 #print axioms LeanProofs.IPRA.Combinatorics.Catalan.cb_fact
 #print axioms LeanProofs.IPRA.Combinatorics.Catalan.cb_rec
 #print axioms LeanProofs.IPRA.Combinatorics.Catalan.cat_spec

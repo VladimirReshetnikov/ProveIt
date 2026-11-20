@@ -271,6 +271,7 @@ import IPRADerivations.Combinatorics.LucasPrime
 import IPRADerivations.Combinatorics.FibonacciSeries
 import IPRADerivations.Combinatorics.IndependentSets
 import IPRADerivations.Combinatorics.LucasIdentities
+import IPRADerivations.Combinatorics.FibonacciAltSum
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Combinatorics.CatalanSums
@@ -332,6 +333,7 @@ import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
 import IPRADerivations.DiophantineNumberTheory.Siegel
+import IPRADerivations.DiophantineNumberTheory.SiegelPoints
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.DiophantineNumberTheory.Pythagoras
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
