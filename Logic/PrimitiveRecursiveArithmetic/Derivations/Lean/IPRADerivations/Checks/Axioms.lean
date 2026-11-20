@@ -5664,6 +5664,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiSlabCertificate.slab_closure_closed
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiSlabCertificate.doubled_facets_program
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiSlabCertificate.slab_certificate_programs_closed
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily.congrPwBase
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily.one_pw
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily.zero_pw
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily.s_eq_one
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily.pos_branch
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily.neg_branch
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily.neg_y_nonneg_x
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily.neg_y_neg_x
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily.point_zero
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily.point_neg_one
 #print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialScaling.subst_scaled
 #print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialScaling.scale_body_at
 #print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialScaling.scaled_length
