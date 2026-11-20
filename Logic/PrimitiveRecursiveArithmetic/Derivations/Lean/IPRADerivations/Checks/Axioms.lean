@@ -1247,6 +1247,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.BrightnessCert.lagrange3
 #print axioms LeanProofs.IPRA.Geometry.BrightnessCert.cs3
 #print axioms LeanProofs.IPRA.Geometry.BrightnessCert.finite_upper
+#print axioms LeanProofs.IPRA.Probability.GeometricMean.gS_zero
+#print axioms LeanProofs.IPRA.Probability.GeometricMean.gS_succ
+#print axioms LeanProofs.IPRA.Probability.GeometricMean.geo_base
+#print axioms LeanProofs.IPRA.Probability.GeometricMean.geo_step
+#print axioms LeanProofs.IPRA.Probability.GeometricMean.geometric_identity
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound

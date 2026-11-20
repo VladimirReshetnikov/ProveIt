@@ -460,6 +460,7 @@ import IPRADerivations.Geometry.CuboidGeodesicAlgebra
 import IPRADerivations.Geometry.TetraShadow
 import IPRADerivations.Geometry.CubeShadow
 import IPRADerivations.Geometry.BrightnessCert
+import IPRADerivations.Probability.GeometricMean
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
