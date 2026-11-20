@@ -340,6 +340,7 @@ import IPRADerivations.DiophantineNumberTheory.SiegelPoints
 import IPRADerivations.DiophantineNumberTheory.AperyZetaTail
 import IPRADerivations.DiophantineNumberTheory.AperyFloor
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
+import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.DiophantineNumberTheory.Pythagoras
 import IPRADerivations.DiophantineNumberTheory.QuarticStep

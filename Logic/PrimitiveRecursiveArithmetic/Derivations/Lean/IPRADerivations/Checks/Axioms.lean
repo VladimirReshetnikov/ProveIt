@@ -1004,6 +1004,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.qinv
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.shifted_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.coprime_count
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.DirichletReal.abs_nat
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.DirichletReal.real_step
 #print axioms LeanProofs.IPRA.half_par
 #print axioms LeanProofs.IPRA.even_ne_odd
 #print axioms LeanProofs.IPRA.sum_zero_elim
