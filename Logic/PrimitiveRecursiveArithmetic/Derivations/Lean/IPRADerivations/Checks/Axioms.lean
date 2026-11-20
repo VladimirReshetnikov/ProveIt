@@ -2129,6 +2129,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinDyadic.inst2_dyB
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinDyadic.dy_at
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinDyadic.dyadic
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinTailMass.tail_mass
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinTailMass.S_ge_one
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_crB
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_t2B
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.subst_sqInv
