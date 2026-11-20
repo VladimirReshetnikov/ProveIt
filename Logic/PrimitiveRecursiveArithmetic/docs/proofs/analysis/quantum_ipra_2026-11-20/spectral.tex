@@ -1,0 +1,52 @@
+\section{A spectral calculus built from finite measurements}\label{sec:spectrum}
+For a bounded self-adjoint $A$ with a supplied integer bound $L\ge1$, write $E=(I+A/L)/2$. Then $0\le E\le I$. Conversely a point $u\in[0,1]$ represents the reading $L(2u-1)$. We first solve the measurement problem for $E$. An observable can then be tested with a continuous detector response $f$. No numerical spectrum, eigenbasis or spectral-gap decision enters this construction.
+
+\begin{lemma}[Binomial measurements and the polynomial estimate]\label{lem:binomial}
+For $N\ge1$, let $W_{Nj}={N\choose j}E^j(I-E)^{N-j}$ for $0\le j\le N$. They are effects summing to $I$. If a complex polynomial $p$ with rational coefficients satisfies $|p(t)|\le K$ on rational $t\in[0,1]$, then $\|p(E)\|\le K$. A real polynomial nonnegative on this interval gives a positive operator.
+\end{lemma}
+\begin{proof}
+Products of commuting positive operators are positive by Theorem~\ref{thm:q-sqrt}; its proof by polynomials uses only Hilbert-space estimates. The binomial formula sums the products to $I$. Define $Vx=(\sqrt{W_{Nj}}x)_{j=0}^N$. Since $\sum W_{Nj}=I$, $V$ is an isometry, with adjoint the finite row $(\sqrt{W_{Nj}})_j$. For any complex list $c_j$, compression of its diagonal action yields
+\[
+ \left\|\sum_j c_jW_{Nj}\right\|\le\max_j |c_j|.
+\]
+In particular nonnegative coefficients give a positive operator. All maxima used in bounds may be replaced by given rational upper bounds.
+
+For $p(t)=\sum_{a=0}^{d}p_at^a$, $N\ge\max(1,d)$, the exact expansion of $p(E)$ in $W_{Nj}$ has coefficients
+\[
+ d_{Nj}=\sum_a p_a\frac{(j)_a}{(N)_a},\qquad (j)_a=j(j-1)\cdots(j-a+1).
+\]
+Here $(j)_0=1$ and $(j)_a=0$ for $j<a$. Indeed ${N\choose j}(j)_a/(N)_a={N-a\choose j-a}$ when $j\ge a$, and summing after extracting $E^a$ proves the identity. For a population of $N$ labels with $j$ successes, these two quantities, $(j)_a/(N)_a$ and $(j/N)^a$, are probabilities of all successes in $a$ draws without and with replacement. Couple them by keeping the independent draws when they are distinct and using a fresh uniform distinct tuple otherwise. The conditional distribution on distinct tuples is uniform, including the replacement on the collision event; this can equivalently be checked by counting ordered tuples without any division by the probability of a collision. A union bound over the pairs gives probability of collision at most $a(a-1)/(2N)$. Thus
+\[
+  |d_{Nj}-p(j/N)|\le C_p/N,\qquad C_p=\tfrac12\sum_a |p_a|a(a-1).
+\]
+A rational upper bound using the absolute values of real and imaginary parts suffices. Hence $\|p(E)\|\le K+C_p/N$. Given a rational tolerance, choose $N$ by division by that tolerance. For real nonnegative $p$ the same estimate gives $p(E)\ge-(C_p/N)I$. Remove the slack in both estimates as in Section~\ref{sec:arithmetic}. This proof is a finite counting argument, including at end points and multiple spectral values.
+\end{proof}
+
+\begin{theorem}[Continuous functional calculus and the Born distribution]\label{thm:calculus}
+Supply $f$ on rational points in $[0,1]$ by a joint PR value sampler, an integer $M\ge1$ bounding $|f|$, and a PR modulus $\mu$ such that $|u-v|\le2^{-\mu(r)}$ implies $|f(u)-f(v)|\le2^{-r}$. There is a unique complex-linear sup-norm contractive unital $*$-homomorphism from these functions (identified by their values on rationals) to presented operators taking $u\mapsto u$ to $E$. Its value $f(E)$ admits polynomial approximations with a PR operator-error bound. Each normalized state $\omega$ from the previous sections defines a positive normalized functional $f\mapsto\omega(f(E))$. The atomic distributions placing mass $\omega(W_{Nj})$ at $j/N$ approximate it at an explicit rate for each $f$.
+\end{theorem}
+\begin{proof}
+Put $B_N f(t)=\sum_j f(j/N){N\choose j}t^j(1-t)^{N-j}$. For each rational $t$, these weights are a probability distribution with mean of $j/N$ equal to $t$ and variance $t(1-t)/N$. The identities follow from the falling-factorial calculation for $a=1,2$ (or directly when $N=1$). For any $\eta=2^{-\mu(r)}$, the weight outside $|j/N-t|\le\eta$ is at most $1/(4N\eta^2)$ by summing the squared deviations. It follows that
+\[
+ \sup_{t\in\mathbb Q\cap[0,1]}|B_N f(t)-f(t)|\ \le\ 2^{-r}+\frac{M}{2N\eta^2}.
+\]
+A supremum sign here abbreviates a common bound at every rational point. For target $k$ take $r=k+4$, $N\ge\max(1,\lceil M2^{r+2\mu(r)}\rceil)$, and replace each $f(j/N)$ by a rational complex approximation within $2^{-r}$. This adds at most $2^{-r}$ in uniform error and in compressed-operator error. Call the resulting rational polynomial $p_k$. Its uniform distance from $f$ is at most $3\delta_{k+4}$. By Lemma~\ref{lem:binomial}, $p_k(E)$ is uniformly Cauchy with an explicit rate. On each finite vector it gives a Hilbert name. To compute its action to target stage $k$, use polynomial $p_{k+2+\lceil\log_2(1+M_x)\rceil}$ for input norm bound $M_x$, then evaluate its action with arithmetic error at most $\delta_{k+3}$. Column extension and conjugate coefficients provide an adjoint. The same estimates give norm bound $M$.
+
+Any other certified approximating polynomials give the same value by the polynomial estimate. In particular constant and identity functions have the indicated values. Sums, products and conjugates of approximating polynomials converge with the usual sum and product estimates, so evaluation preserves those operations. Two functions at uniform distance $b$ give outputs at distance at most $b$. Uniqueness follows by approximating at each requested tolerance by one $p_k$. If $f$ is real and nonnegative, its sampled weights may be clipped to nonnegative rationals, giving positive approximants. Evaluating a normalized state changes no operator-error bound: in a purification this is Cauchy--Schwarz on a unit vector. This proves both the probability assertion and its rate. Signed and complex detector responses are expectations, while $0\le f\le1$ gives an effect. A general bounded $A$ is handled by the indicated affine change of variable with a rescaled modulus.
+\end{proof}
+
+\subsection{Sharp questions and their extra data}
+Different physical questions about the same $A$ can require different information. Suppose first that one is given a rational threshold $a$, a rational $L\ge1$ with $\|A-aI\|\le L$, and a rational $0<g\le1$ certifying $B^2\ge g^2I$ for $B=(A-aI)/L$. There is a sharp two-outcome spectral measurement separating the two signs. Indeed $X=I-B^2$ is positive with $\|X\|\le1-g^2=q$. Put
+\[
+ S=\sum_{n\ge0} 4^{-n}{2n\choose n}X^n,\qquad J=BS,\qquad P_{\pm}=(I\pm J)/2 .
+\]
+The tail after degree $m$ is at most $q^{m+1}/g^2\le 1/((m+1)g^4)$ by the geometric inequality used in Theorem~\ref{thm:q-helstrom}. For $g=1$ only the constant term is needed. The scalar coefficients $c_n$ obey $(n+1)c_{n+1}=(n+\tfrac12)c_n$. Comparing coefficients in $(1-z)F'=F/2$, $F(0)=1$, gives $(1-z)(F^2)'=F^2$ and all coefficients of $F^2$ are one. For each fixed degree these are finite convolution identities. The geometric bounds permit their use at $X$, giving $S^2(I-X)=I$. Thus $J^*=J$, $J^2=I$, and the $P_\pm$ are complementary commuting orthogonal projections. Since $BJ=B^2S$ is positive and commutes with the projections, $B$ is positive on $P_+$ and negative on $P_-$. More precisely $(BJ)^2=B^2$, so $BJ$ is the unique positive root of $B^2$. This sign decomposition is canonical and supplies the gap-certified spectral projections without selecting an eigenspace basis.
+
+A single state's probability of an interval may exist with less information. For $0<c<1$ define clipped linear ramps $l_\eta,u_\eta$ for the event above $c$: $l_\eta$ rises from zero at $c$ to one at $c+\eta$, and $u_\eta$ rises from zero at $c-\eta$ to one at $c$. Their restrictions to $[0,1]$ are continuous effects. If a supplied PR schedule $h(k)$ proves $\omega((u_\eta-l_\eta)(E))\le\delta_k$ at $\eta=2^{-h(k)}$, the two expectations enclose a unique probability with this error. Use running maxima of $h$ to get nested intervals and sample their midpoints to two extra bits. Every continuous effect between these brackets has its expectation in the same interval. This constructs a sharp-event probability in that state. It does not purport to produce a projection on all states. Section~\ref{sec:particle} treats a different source of information: explicitly represented spatial intervals give projections directly.
+
+\begin{proposition}[A uniform sharp cutoff is impossible]\label{prop:cut}
+Even for one-dimensional uniformly PR self-adjoint matrices there is no computable general rule returning the probability of the strictly positive spectral half-line in the unit state.
+\end{proposition}
+\begin{proof}
+Given machine $e$, let its real sampler at $k$ simulate it for $k$ steps. Return $2^{-j-1}$ if it first halted at step $j\le k$, and zero otherwise. This is jointly PR, bounded by one, and satisfies the regularity inequality: a later first halt changes the answer by at most $2^{-k-1}$. Take the resulting nonnegative scalar as the one-by-one matrix. In the ordinary semantics its positive spectral probability is exactly one when the machine halts and zero otherwise. Computing it to within $1/4$ would decide halting. This external impossibility proof applies even to an algorithm receiving the explicit PR source for the sampler. It precludes a total sound PR constructor in iPRA. It does not preclude the continuous response, gap or state-specific constructions above.
+\end{proof}

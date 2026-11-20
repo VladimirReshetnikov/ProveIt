@@ -1,0 +1,59 @@
+\section{Reducing a curve to a prism}\label{sec:prism}
+For the planar input, take Keller's universal quadrilateral \cite[Thm.~4.1]{keller}. Define
+\[
+  n(t)=\frac{(1-t^2,2t)}{1+t^2},\qquad
+  C=\{q\in\mathbb R^2:n(t_i)\cdot q\le d_i,\ 0\le i\le 3\},
+\]
+where
+\[
+ (t_i)=(-631/58,-1,7/16,37/56),\qquad
+ (d_i)=(0,0,130783/250000,446199/10^6).
+\]
+Keller proves that every rectifiable plane path of length one admits an
+isometric placement in $C$. Thus $pC$ covers every plane path of length at
+most $p$, by extending a shorter path and scaling. The theorem permits planar reflections. Keller supplies a Lean proof of this statement for continuous rectifiable paths, including paths with repeated points \cite{kformal}. The archive includes
+the upstream proof sources and finite certificates in \texttt{upstream\_keller/}.
+Their file hashes and certificate manifest were checked against the pinned
+revision. The upstream Lean kernel replay is available separately using
+the commands in that directory.
+
+\paragraph{A prism for each curve.}
+For a nonplanar continuous curve $\gamma:[0,1]\to\mathbb R^3$, a unit
+vector $u$ exists for which $u\cdot\gamma$ attains its two extrema at
+four alternating parameter values. This is Ghomi's alternating support
+theorem \cite[Cor.~3.2]{ghomi}. Here is a proof of the instance used here. For $k=1,2,\ldots$,
+put $f_u(t)=u\cdot\gamma(t)$ and take probability measures on $[0,1]$
+with densities proportional to $\exp(k f_u(t))$ and $\exp(-k f_u(t))$,
+respectively. The differences of their first and second moments define
+a continuous odd map $S^2\to\mathbb R^2$. It must vanish somewhere. Otherwise its
+normalization would give an odd map $S^2\to S^1$. On the equator an odd
+map to the circle has odd degree (a continuous lift of its argument changes
+by an odd multiple of $\pi$ after a half-turn), whereas its extension to the
+hemisphere forces degree zero.
+Pass to a subsequence of zeros $u_k\to u$ along which both probability
+measures converge weakly. The limits have the same moments through degree
+two and are supported on the maximum and minimum sets of $f_u$,
+respectively. Indeed $f_{u_k}\to f_u$ uniformly. On a compact subset
+where $f_u\le\max f_u-3\varepsilon$, the mass for the positive
+weight is exponentially small by comparison with an interval of positive
+length where $f_u>\max f_u-\varepsilon$; apply this also to $-f_u$.
+The two compact extremal sets are disjoint by nonplanarity.
+If there were no four alternating times, the ordered union of the sets
+would have at most three consecutive runs of signs. The positive
+separation between the sets gives gaps between runs. A polynomial with
+one simple root in each intervening gap and an appropriate overall sign
+would be positive throughout the maximum set and negative throughout the
+minimum set. Its degree would be at most two, contradicting equality of
+the integrals. This proves the alternation.
+
+Take the $u$-direction as vertical and let $h$ be the difference of the
+extreme heights. The variation of the height is at least $3h$. In arclength
+coordinates, the integrated vector
+$(\|\gamma'_{xy}\|,|\gamma'_z|)$ has norm at most its integrated norm,
+which is one. The horizontal projection has length at most
+$p=\sqrt{1-9h^2}$. The curve therefore fits into
+$pC\times[0,h]$. A planar curve uses $h=0$ instead. A reflection in a
+planar placement extends to a proper spatial motion by also reversing the
+vertical coordinate. When $p=0$ the projection is a point and the same
+containment holds.
+

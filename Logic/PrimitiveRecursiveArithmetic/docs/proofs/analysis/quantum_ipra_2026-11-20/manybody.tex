@@ -1,0 +1,267 @@
+\section{Identical particles}
+\label{sec:q-identical}
+
+Let the one-particle space have \(d\ge1\) specified orthonormal modes.
+For \(N\) labelled particles a basis of the tensor power is indexed by
+words \(w=(i_1,\ldots,i_N)\) in these modes; the empty word is the
+vacuum. Permuting the slots by \(\pi\) defines a unitary \(U_\pi\),
+with the convention \((\pi w)_s=w_{\pi^{-1}(s)}\).
+For \(\chi=1\) or \(\chi=\operatorname{sgn}\), put
+\[
+               P_{N,\chi}=\frac1{N!}\sum_{\pi\in S_N}\chi(\pi)U_\pi .
+\]
+This rational matrix is a self-adjoint projection. Inversion preserves
+\(\chi\), giving self-adjointness, and in the square every product
+\(\tau\) occurs \(N!\) times with sign \(\chi(\tau)\).
+Relabelling gives \(U_\tau P_{N,\chi}=\chi(\tau)P_{N,\chi}\).
+Conversely, averaging fixes every vector with that transformation law.
+The two choices specify the Bose and Fermi sectors, respectively; the
+exchange law is a physical choice of sector. The finite construction may
+test all of the \(N^N\) lists of length \(N>0\) for being a permutation
+and count inversions for the sign. For \(N=0\), use one empty permutation.
+
+\paragraph{Occupation coordinates.}
+For bosons choose \(\alpha=(\alpha_1,\ldots,\alpha_d)\) in
+\(\mathbb N^d\) with \(|\alpha|=\sum_j\alpha_j=N\).
+There are \(m_\alpha=N!/\prod_j \alpha_j!\) words with these
+multiplicities, by successive choices of slots. Their sum divided by
+\(\sqrt{m_\alpha}\) is a unit vector \(|\alpha\rangle\).
+These vectors are orthogonal because their supports are disjoint and
+they span the symmetric sector because all coefficients on an orbit
+are equal. For fermions a repeated letter forces the coefficient to
+equal its negative under a transposition of equal slots. It therefore
+vanishes. For each remaining increasing word take the signed sum of
+its permutations divided by \(\sqrt{N!}\); on this orbit the
+transformation law determines all coefficients from the increasing
+word. This gives an orthonormal basis indexed by bit vectors
+\(\alpha\in\{0,1\}^d\) of weight \(N\).
+Consequently the sector dimensions are \({N+d-1\choose d-1}\) and
+\({d\choose N}\), with the latter zero for \(N>d\). The first count
+chooses the positions of \(d-1\) dividers in \(N+d-1\) slots; the
+second chooses the occupied modes. Every denominator here has a positive
+integer lower bound before taking its square root.
+
+\paragraph{Creation, annihilation and domains.}
+The Fock space is the Hilbert direct sum over \(N\) of these sectors.
+Its effective vectors can be presented by finite occupation-coordinate
+approximants with the usual \(\ell^2\) error witnesses. On finite
+support set
+\[
+ \begin{aligned}
+ a_j^*|\alpha\rangle&=\sqrt{\alpha_j+1}\,|\alpha+e_j\rangle,&
+ a_j|\alpha\rangle&=\sqrt{\alpha_j}\,|\alpha-e_j\rangle
+ &&\text{(bosons)} .
+ \end{aligned}
+\]
+The term with \(\alpha_j=0\) in the annihilation formula is zero. For
+fermions, creation is zero for an occupied mode and annihilation is zero
+for an empty mode; otherwise change that bit and multiply by
+\((-1)^{\sum_{k<j}\alpha_k}\). The two matrices are adjoints on the
+finite-support domain by transposing each allowed basis transition.
+For bosons these formulas give \([a_i,a_j^*]=\delta_{ij}I\) and
+\([a_i,a_j]=[a_i^*,a_j^*]=0\). Indeed, on the same mode the two
+number-preserving products have coefficients \(\alpha_i+1,\alpha_i\);
+on different modes the two square-root factors are independent and the
+same forbidden moves give zero in both orders. For fermions the
+three formulas hold with anticommutators \(ST+TS\) in place of
+commutators. On the same bit the two number-preserving products are its
+empty and occupied projections and each doubled creation or annihilation
+vanishes. On different bits the move at the smaller index flips the
+sign for the move at the larger index while the reverse sign is unchanged.
+An impossible move again gives zero in both orders.
+
+For bosons the sector norms of creation and annihilation are bounded by
+\(\sqrt{N+1}\) and \(\sqrt N\) because distinct admissible basis
+vectors have distinct images and the squared coefficients satisfy these
+bounds squared. On Fermi Fock space the corresponding bounds are one.
+Thus an explicit sufficient domain witness for both Bose operations
+is a cutoff \(M(p)\) with
+\[
+           \sum_{|\alpha|>M(p)} (|\alpha|+1)|c_\alpha|^2\le2^{-2p}.
+\]
+Each tail statement can equivalently be tested on every finite partial
+sum. Apply the finite matrix to sectors through \(M(p+1)\) and allocate
+the remaining half-error to the coefficients. For example take input
+norm error at most \(2^{-p-1}/(M(p+1)+1)\) on this finite truncation.
+The unboundedness is visible on states with \(N\) particles in mode
+\(j\). A supplied one-particle unitary \(U\) acts on each sector by
+\(U^{\otimes N}\), which commutes with permutations and is an isometry
+with inverse \((U^*)^{\otimes N}\). It therefore acts on the direct sum
+with the original tail bound.
+
+For real mode energies \(\omega_j\), the free Hamiltonian on the
+occupation basis multiplies by \(E_\alpha=\sum_j\omega_j\alpha_j\)
+in units with \(\hbar=1\). It equals
+\(\sum_j\omega_j a_j^*a_j\) on finite support, by the basis formulas.
+Its unitary evolution multiplies each coefficient by
+\(\exp(-itE_\alpha)\), preserving all unweighted tails and satisfying
+the group law coordinatewise. For an effective derivative at time
+\(t\), supply a cutoff for tails of
+\(\sum_\alpha |E_\alpha c_\alpha|^2\). The tail error between the
+difference quotient and \(-iE_\alpha\exp(-itE_\alpha)c_\alpha\) is at
+most twice the norm of that weighted tail, since
+\(|e^{ix}-1|\le |x|\). On a finite cutoff with \(|E_\alpha|\le K\),
+the error is at most \(|h|K^2\|c\|_2/2\) for step \(h\), from
+\(|e^{ix}-1-ix|\le x^2/2\) (integrate \(|e^{iy}-1|\le |y|\) on the
+real segment). These are explicit input-dependent moduli for
+Schr\"odinger's equation on the supplied domain.
+
+\section{Open-system dynamics}
+\label{sec:q-open}
+
+For a finite-dimensional system an explicit time-independent
+Markovian generator consists of a Hermitian matrix \(H\) and finitely
+many matrices \(L_1,\ldots,L_r\). Write
+\[
+ \begin{aligned}
+ M&=\sum_j L_j^*L_j, & \mathcal D(X)&=\sum_j L_jXL_j^*-\tfrac12(MX+XM),\\
+ \mathcal H(X)&=-i(HX-XH), & \mathcal G&=\mathcal H+\mathcal D.
+ \end{aligned}
+\]
+The following argument identifies the whole finite-dimensional class
+when an effective right derivative at zero is part of the semigroup
+data. For superoperators use the estimate
+\(\|\mathcal A(X)\|\le b\|X\|\) with matrix operator norm estimates;
+every use can equivalently be read as a bounded-vector test.
+
+\begin{theorem}[Finite Lindblad evolution]\label{thm:q-lindblad}
+For \(t\ge0\), \(S_t=\exp(t\mathcal G)\) is a channel,
+\(S_{t+s}=S_t S_s\), and \(d S_t/dt=\mathcal G S_t\) (from the right
+at zero). On a bounded interval it admits a primitive-recursive
+approximation by channels that preserve trace at every step.
+\end{theorem}
+\begin{proof}
+Choose integers \(a\ge2\|H\|\), \(\ell\ge\sum_j\|L_j\|^2\),
+\(C=1+a+2\ell\), and \(T\ge\max(1,t)\).
+For \(h=t/n\), \(n\ge CT\), take
+\[
+ K_0=(I-hM)^{1/2},\quad K_j=\sqrt h\,L_j,\quad
+ U_h=\exp(-ihH),\qquad
+ F_h(X)=U_h\left(\sum_{j=0}^{r}K_j X K_j^*\right)U_h^* .
+\]
+The input \(I-hM\) is positive since \(0\le M\le\ell I\). These
+are Kraus matrices followed by a unitary, and
+\(\sum_{j=0}^r K_j^*K_j=I\), so every \(F_h\) is a channel.
+The binomial series of Theorem~\ref{thm:q-sqrt} gives
+\[
+ \|K_0-I\|\le h\ell,\qquad
+ \|K_0-I+hM/2\|\le h^2\ell^2 .
+\]
+Indeed use \(F_m(hM)\) from that proof, whose nonconstant absolute
+coefficients sum to at most one and whose linear coefficient is
+\(-1/2\). Expanding \(K_0XK_0\) about \(X\) shows that the channel
+inside parentheses differs from \(I+h\mathcal D\) by at most
+\(3h^2\ell^2\) in superoperator norm. Here and below the identity
+superoperator is denoted by \(I\) when it acts on matrices.
+
+Unitary conjugation \(W_h(X)=U_hXU_h^*\) equals \(e^{h\mathcal H}(X)\):
+expand the two exponentials and use the binomial formula for the
+commuting operations of left and right multiplication. The same
+identity gives unitarity by multiplication of the one-matrix series.
+For \(0\le hC\le1\), the factorial series gives
+\(\|W_h-I\|\le3ha\) and
+\(\|W_h-I-h\mathcal H\|\le2h^2a^2\).
+As \(\|\mathcal D\|\le2\ell\), multiplying the two approximations
+bounds \(\|F_h-I-h\mathcal G\|\) by
+\(3h^2\ell^2+2h^2a^2+6h^2a\ell\le 8h^2 C^2\).
+The factorial tail of \(e^{h\mathcal G}\) beyond its linear part is
+at most \(2h^2 C^2\). Also \(\|F_h\|\le1+h\ell\le e^{hC}\), since
+\(K_0\) is a contraction, and \(\|e^{h\mathcal G}\|\le e^{hC}\).
+Telescoping the difference of the \(n\)-th powers yields
+\[
+             \|F_{t/n}^{\,n}-e^{t\mathcal G}\|
+               \le 10 C^2T^2\,4^{CT}/n .
+\]
+The factor \(4^{CT}\) bounds \(e^{CT}\) since \(C,T\) are integers.
+Taking \(n\ge CT+10C^2T^2 4^{CT}2^{p+1}\) leaves half the precision
+budget for finite matrix arithmetic. The limit has positive Choi
+matrix by entry convergence on the finitely many matrix units, and
+preserves trace by the same test. Thus it is a channel by
+Theorem~\ref{thm:q-choi}.
+
+For explicit series control at \(\|A\|\le D\), \(D\ge1\) integer,
+let \(k=2D\). Beyond term \(k\) consecutive absolute terms have ratio
+at most \(1/2\); term \(k\) is at most \(4^D\) by the scalar
+exponential bound. Truncating after index \(k+p+2D+2\) therefore
+makes the tail less than \(2^{-p}\). This estimate justifies
+Cauchy products by finite truncation. The binomial identity for
+commuting exponents gives the semigroup law; the linear Taylor
+remainder bound above, with \(\mathcal G\) in place of \(\mathcal H\),
+gives the derivative at each time after multiplication by \(S_t\).
+\end{proof}
+
+\begin{theorem}[Recovery of the generator]\label{thm:q-lindblad-converse}
+Suppose \(T_0=I\) and \(T_t\) is a family of channels in dimension \(d\)
+with a named right derivative \(G\) at zero and a primitive-recursive
+accuracy modulus on each matrix unit. Then \(G\) has the above Lindblad
+form with at most \(d^2\) operators \(L_j\). If the family is a semigroup,
+\(T_t=e^{tG}\).
+\end{theorem}
+\begin{proof}
+For a linear map \(A\) use its Choi matrix \(J_A\) from
+Theorem~\ref{thm:q-choi}. Set \(w=\sum_i e_i\otimes e_i\),
+\(P=ww^*/d\), \(Q=I-P\). Since \(J_I=ww^*\) and \(Qw=0\),
+\[
+       Q J_G Q=\lim_{h\downarrow0} Q J_{T_h}Q/h\ \ge0 .
+\]
+Take the limit along positive dyadics with the given modulus.
+All \(J_{T_h}\) are Hermitian, so \(J_G\) is Hermitian; also
+\(\operatorname{tr}G(X)=0\) by differentiating trace preservation.
+Factor the positive matrix \(QJ_GQ\) with its positive square root
+and reshape its \(d^2\) columns into matrices \(L_j\), as in the
+Choi proof. Their map has Choi matrix \(QJ_GQ\).
+Set
+\[
+             v=J_Gw/d-\frac{w^*J_Gw}{2d^2}w,
+             \qquad V_{ai}=v_{ia}.
+\]
+Multiplication gives
+\(J_G-QJ_GQ=J_GP+PJ_G-PJ_GP=vw^*+wv^*\). Testing matrix units,
+the latter is the Choi matrix of \(X\mapsto VX+XV^*\).
+Thus \(G(X)=\sum_j L_jXL_j^*+VX+XV^*\). Its vanishing trace on
+matrix units gives \(V+V^*=-M\). With
+\(H=(V^*-V)/(2i)\) this is the displayed generator.
+
+For uniqueness from the semigroup law one can use finite telescoping.
+In dimension \(d\), estimates on all units within \(\delta/d^2\)
+give a superoperator bound \(\delta\), since
+\(|X_{ij}|\le\|X\|\). Hence for each rational \(0<\delta\le1\) the
+derivative modulus and the exponential Taylor bound give a positive
+dyadic cutoff on \(h\) with
+\(\|T_h-e^{hG}\|\le h\delta\) and
+\(\|T_h\|\le 1+h(\|G\|+1)\) (use the derivative estimate directly for
+the latter). These two closed inequalities also hold when \(h=0\)
+by \(T_0=I\). For a general nonnegative named \(h\) below cutoff, a
+strict violation of a tested inequality would exclude \(h>0\).
+Since \(h\ge0\), this implies \(h=0\), contradicting the same violation.
+This establishes the closed inequalities without deciding equality
+to zero. For \(0\le t\le T\), take \(n\) large enough that \(h=t/n\)
+lies under the cutoff. The difference of powers is bounded by
+\(T e^{T(b+1)}\delta\) with an integer \(b\ge\|G\|\). Thus
+\(T_t=e^{tG}\), with the required \(n\) obtained from the supplied
+derivative modulus and the bound on \(T\). The modulus here applies to
+every sufficiently small positive time, as in the definition of a
+right derivative.
+\end{proof}
+
+\begin{example}[Spontaneous decay of one excited level]
+In the ordered basis \(g,e\), take \(H=\omega |e\rangle\langle e|\)
+and \(L=\sqrt\gamma\,|g\rangle\langle e|\) with \(\gamma\ge0\).
+Set \(z=e^{-(\gamma/2+i\omega)t}\), \(q=|z|^2=e^{-\gamma t}\).
+The evolved density matrix is
+\[
+ \begin{pmatrix}
+ \rho_{gg}+(1-q)\rho_{ee} & \overline z\,\rho_{ge}\\
+ z\rho_{eg} & q\rho_{ee}
+ \end{pmatrix}.
+\]
+It follows either by multiplication with Kraus matrices
+\(K_0=|g\rangle\langle g|+z|e\rangle\langle e|\) and
+\(K_1=\sqrt{1-q}\,|g\rangle\langle e|\), or by differentiating:
+the excited population solves \(x'=-\gamma x\), the ground population
+gains \(\gamma x\), and the \(ge\) entry has coefficient
+\(i\omega-\gamma/2\). The formula composes in time by multiplication
+of \(z\) and \(q\), and agrees with the identity at zero. It includes
+vanishing decay rate and vanishing initial excited population with the
+same formulas.
+\end{example}

@@ -1,0 +1,236 @@
+\section{Realizing a continuous law on the common bit space}
+\label{sec:realization}
+
+The normalization construction in Section~\ref{sec:continuous-laws} initially
+provides an integration rule on the line. To use it as a random variable on
+the common probability space, a joint realization is still needed. The
+following construction supplies one. It also separates an effective sampler
+in probability from a pointwise inverse-CDF algorithm. Strict positivity of
+the density is unnecessary for the first construction.
+
+\subsection{A finite monotone-coupling identity}
+
+Let $\mu,\nu$ be finite laws with rational ordered support points and dyadic
+weights. On a common sufficiently fine fair-bit table, allocate consecutive
+rows to the atoms in increasing order. Denote the resulting nondecreasing
+tables by $Q_\mu,Q_\nu$. Each has exactly its prescribed law. The allocations
+are compatible with prefix refinement because all cumulative weights have
+dyadic denominators.
+
+\begin{lemma}[Finite monotone coupling]\label{lem:monotone-coupling}
+If both laws are supported on $[-K,K]$, then
+\[
+ I|Q_\mu-Q_\nu|
+   =\int_{-K}^{K}|F_\mu(t)-F_\nu(t)|\,dt
+   \le 2K\sup_t|F_\mu(t)-F_\nu(t)|.
+\]
+The displayed integral is an exactly rational step-function sum.
+\end{lemma}
+\begin{proof}
+For rational $x,y$ in the interval,
+$|x-y|$ is the length of the set of thresholds where
+$\mathbf1_{x\le t}$ and $\mathbf1_{y\le t}$ differ. Subdivide the threshold
+interval at the finite combined list of support points and sum this identity
+over the common fair-bit table. At every threshold, each of the two sets of
+rows is an initial segment. Their symmetric difference therefore has mass
+$|F_\mu(t)-F_\nu(t)|$. Interchange the two finite sums. The upper bound
+multiplies the interval length by the largest integrand value. Sorting,
+prefix sums, allocation, and this proof all use bounded rational operations.
+\end{proof}
+
+Write $T_K(x)=\max(-K,\min(K,x))$. For laws with larger support, the
+same coupling satisfies
+\begin{equation}\label{eq:coupling-clipped}
+ d_0(Q_\mu,Q_\nu)
+ \le 2K\sup_t|F_\mu(t)-F_\nu(t)|
+       +\mu(|x|>K)+\nu(|x|>K).
+\end{equation}
+Indeed replace both tables by their clipped versions. The replacement costs
+at most the two indicated exceptional masses in $d_0$; the clipped CDFs
+have the same discrepancy on $(-K,K)$ and identical endpoints outside it.
+Apply the lemma and $d_0\le d_1$. This estimate, rather than an unbounded
+first-moment transport estimate, allows heavy-tailed laws.
+
+\subsection{An explicit histogram sampler}
+
+Suppose $q$ is a normalized kernel as in Section~\ref{sec:continuous-laws},
+with local bounds and continuity moduli, and a PR mass-tail cutoff. Put
+$\varepsilon_k=2^{-k}$. Choose a monotone rational $K_k\ge1$ such that
+\[
+ \int_{|x|>K_k}q(x)\,dx\le\varepsilon_k/16,
+ \qquad
+ \eta_k=\frac{\varepsilon_k}{64(K_k+1)}.
+\]
+The sequence $\eta_k$ is nonincreasing. It is essential that the following
+\emph{quadrature radius} is a separate, possibly much larger number: choose
+$H_k\ge K_k$ with mass tail at most $\eta_k/4$. A single radius need not
+meet both budgets for a heavy-tailed law.
+
+Partition $[-H_k,H_k]$, including all listed discontinuities, into $J_k$
+rational cells of width at most $1$ and with mass at most $\eta_k/4$ each.
+A supplied bound $L_{H_k}$ for the density makes any mesh of width at most
+$\eta_k/[4\max(1,L_{H_k})]$ sufficient. At each cell $I_j$, quadrature
+and downward dyadic rounding give a dyadic number
+\[
+ 0\le p_j\le\int_{I_j}q,
+ \qquad
+ \sum_j\left(\int_{I_j}q-p_j\right)\le\eta_k/4.
+\]
+For example, choose a common binary denominator so that each integration
+error plus rounding loss is at most $\eta_k/(4\max(1,J_k))$.
+Use the cell midpoint as its atom and add an atom at zero of weight
+$1-\sum_jp_j$. These are nonnegative dyadic weights summing \emph{exactly}
+to one. There is no renormalization of an uncertain total mass.
+
+Let $\mu_k$ be this finite law. Moving mass within one cell changes its CDF
+by at most the mass of that cell; moving all omitted and rounded mass to
+zero changes it by at most the total omitted mass. Consequently
+\begin{equation}\label{eq:histogram-cdf}
+ \sup_t|F_{\mu_k}(t)-F(t)|\le3\eta_k/4\le\eta_k.
+\end{equation}
+The comparison is proved from finite sums and then from their rational
+enclosures; the supremum is just notation for the uniform inequality.
+Sorted consecutive allocation turns $\mu_k$ into a cylinder table $Q_k$.
+
+\begin{theorem}[Coherent $L^0$ realization of an effective density]
+\label{thm:density-realization}
+The tables $Q_k$ form a regular $L^0$ name. Their represented law is $q(x)\,dx$.
+In particular the normal, exponential, and Cauchy density presentations
+produce random variables on the same fair-bit probability space. Independent
+copies are available for all three; conditional expectation applies to their
+represented integrable observables.
+\end{theorem}
+\begin{proof}
+For $l\ge k$, the two CDFs differ by at most $\eta_k+\eta_l$. Also
+\[
+ \mu_j(|x|>K_k)\le\varepsilon_k/16+2\eta_j
+ \quad(j=k,l),
+\]
+by the two one-sided CDF comparisons. Apply
+\eqref{eq:coupling-clipped} at the \emph{target} radius $K_k$:
+\[
+ d_0(Q_k,Q_l)
+ \le 2(K_k+1)(\eta_k+\eta_l)+\varepsilon_k/8
+ \le\varepsilon_k/16+\varepsilon_k/8
+ <\varepsilon_k.
+\]
+Every table is finite and its allocation uses a declared dyadic denominator;
+its prefix comparison with another table is therefore the very monotone
+coupling used in the proof. This supplies coherence, not merely the existence
+of a separate coupling for each pair of laws.
+
+For a bounded Lipschitz test $h$, compare its finite expectation with the
+quadrature integral. On matched cell mass the discrepancy is at most its
+Lipschitz constant times the mesh width. On omitted and rounded mass it is
+at most $2\|h\|_\infty$ times that mass. These errors tend to zero with
+explicit PR rates. The expectation stability for $L^0$ tests then identifies
+the limit with $\int hq$. This defines the law without a measure-extension
+oracle. It also proves equality of the bounded-observable and density
+presentations.
+
+For a threshold $t$, the finite band probabilities satisfy
+\[
+ \mu_k([t-\delta,t+\delta])
+ \le\int_{t-\delta}^{t+\delta}q+2\eta_k.
+\]
+For the left endpoint use the left limit of the finite CDF; continuity of
+$F$ and rational slack removal justify the same discrepancy bound there.
+A local density bound now gives the boundary certificate from
+Section~\ref{sec:prob-foundation}, constructing an event name with probability
+$F(t)$. Thus the threshold claim does not precede the sampler construction.
+\end{proof}
+
+If a moment-tail certificate for $|x|^p q(x)$ is supplied, this sampler also
+has a corresponding integrability refinement. For $p=1,2$ it gives an
+$L^p$ name after a PR reindexing. Here are the finite bounds that establish
+the assertion rather than merely identify a putative moment. Since the mesh
+width is at most one and each assigned cell mass is no larger than its true
+mass, for $K>1$,
+\[
+ \mathbb E_{\mu_j}\bigl(|x|^p\mathbf1_{|x|>K}\bigr)
+ \le 2^{p-1}\int_{|x|>K-1}(|x|^p+1)q(x)\,dx.
+\]
+The zero residual atom contributes nothing. Thus the assigned masses have
+uniform effective moment tails. For $p=1$, apply the clipping/Vitali theorem.
+For $p=2$, $K\ge1$ and finite tables $u,v$ give
+\[
+ I|u-v|^2\le12K^2d_0(u,v)+3I(R_K(u)^2)+3I(R_K(v)^2).
+\]
+Here $R_K(x)=(|x|-K)^+$. Insert the clipped values, use
+$(a+b+c)^2\le3(a^2+b^2+c^2)$, and bound their clipped squared difference
+by $4K^2\min(1,|u-v|)$. Uniform second-moment tails then give an explicit
+$d_2$ Cauchy rate. More generally continuous polynomial observables have
+$L^1$ names under their stated absolute-moment tails. The Cauchy identity
+variable has no such first-moment refinement, as proved in the distribution
+section. For exact moment agreement, first use the bounded Lipschitz test
+$x\mapsto(T_Rx)^p$. Its sampler expectation equals its density integral by
+the law identification already proved. The uniform moment tails on both
+sides permit $R$ to grow with a PR schedule, proving
+$\mathbb E Q^p=\int x^p q(x)\,dx$, and likewise for absolute moments.
+
+\subsection{Pointwise quantiles require a different certificate}
+
+A CDF can be continuous while having flat intervals. The preceding sampler
+still works, but a unique pointwise inverse need not vary continuously in
+its input data. For a safe inverse construction, suppose
+\[
+ F(b)-F(a)\ge c(b-a)\quad(-R\le a\le b\le R),\qquad c>0,
+\]
+and the target rational mass $u$ lies between $F(-R)$ and $F(R)$ with
+certified margins. To locate its inverse to distance $\epsilon$, evaluate
+$F(m)$ at the current midpoint to error $\delta=c\epsilon/4$. If the
+enclosure is below $u$, retain the upper half; if it is above $u$, retain
+the lower half. If it straddles $u$, its midpoint value has residual at most
+$2\delta$ and hence spatial error at most $\epsilon/2$ by the lower-slope
+inequality. Otherwise after a prescribed number of halvings the bracket
+width is at most $\epsilon$. No comparison decides whether two real
+numbers are exactly equal. The normal and Cauchy lower density bounds in
+Section~\ref{sec:continuous-laws} supply $c$ on any certified compact range.
+Existence is supplied by this construction itself: in the straddling case
+intersect the current bracket with $[m-\epsilon/2,m+\epsilon/2]$; the
+lower-slope estimate preserves the endpoint signs. Brackets produced at
+different precisions cannot be disjoint, since strict increase would
+contradict their opposite endpoint inequalities. Their midpoints are
+therefore Cauchy with an explicit width bound, and continuity makes their
+limit a solution. The same lower-slope estimate proves uniqueness.
+
+\subsection{Moments, covariance, and products of integrable variables}
+
+For $X,Y\in L^2$, the product has an $L^1$ name. In fact finite
+Cauchy--Schwarz gives
+\[
+ \|XY-X'Y'\|_1
+ \le\|X\|_2\|Y-Y'\|_2+\|Y'\|_2\|X-X'\|_2.
+\]
+A bound for the norm of any regular name follows from one of its finite
+entries and its error. Choose input precisions with these bounds and the
+displayed inequality supplies the product's PR modulus. The same argument
+extends Cauchy--Schwarz. Thus
+\[
+ \operatorname{Var}(X)=\mathbb E(X-\mathbb EX)^2\ge0,
+ \qquad
+ \operatorname{Cov}(X,Y)=\mathbb E(XY)-\mathbb EX\,\mathbb EY
+\]
+are represented quantities. Expanding the finite squares proves all familiar
+addition identities, and
+$|\operatorname{Cov}(X,Y)|^2\le\operatorname{Var}(X)\operatorname{Var}(Y)$.
+For every finite rational vector $(a_i)$,
+$\sum_{i,j}a_i a_j\operatorname{Cov}(X_i,X_j)
+=\mathbb E(\sum_i a_i(X_i-\mathbb EX_i))^2\ge0$.
+This gives positive semidefiniteness of covariance matrices without importing
+a classical space of random functions. An arbitrary product of two $L^1$
+variables is not covered; the $L^2$ or boundedness hypotheses do real work.
+
+There is a second useful closure rule: a represented bounded multiplier times
+an $L^1$ variable is integrable, even when the multiplier converges only in
+probability rather than uniformly. For finite $|a|,|b|\le M$ and $K\ge0$,
+\[
+ |ax-by|\le M|x-y|+K|a-b|+2M(|y|-K)^+.
+\]
+Use the $L^1$ error of the unbounded factor, the bounded multiplier's $L^1$
+error, and the automatically supplied excess tail of $y$ to allocate these
+three terms. For a bounded $L^0$ multiplier choose approximants clipped to
+$[-M,M]$ and use $d_1(a,b)\le\max(1,2M)d_0(a,b)$ to obtain that $L^1$
+error. This gives a PR product modulus. In particular $\mathbf1_A X$
+is defined for every represented event $A$ and every represented $X\in L^1$.
+This justifies the first-crossing products used in the maximal inequality.

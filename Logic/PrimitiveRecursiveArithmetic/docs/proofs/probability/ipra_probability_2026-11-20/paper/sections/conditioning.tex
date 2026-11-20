@@ -1,0 +1,169 @@
+\section{Conditioning, safe event bounds, and continuous transitions}
+\label{sec:conditioning}
+
+\subsection{What an upper probability assertion means without an event name}
+
+For a general $L^0$ variable $Y$, the expression $\{Y\ge a\}$ need not
+come with a regular event name. A numerical bound on that event should not
+be mistaken for a procedure computing its probability. There is nevertheless
+an entirely defined observation that expresses the useful estimate.
+For rational $0<\eta<a$, put
+\[
+ r_{a,\eta}(y)
+ =\min\left(1,\max\left(0,\frac{y-a+\eta}{\eta}\right)\right).
+\]
+This bounded Lipschitz function is zero below $a-\eta$ and one at and above
+$a$. Its expectation always exists for an $L^0$ name. For $Y\ge0$ in $L^1$,
+\[
+ \mathbb E r_{a,\eta}(Y)\le\frac{\mathbb EY}{a-\eta}.
+\]
+The pointwise finite inequality follows by splitting at $a-\eta$ and $a$;
+in the transition interval the right side is at least one. For $X\in L^2$,
+apply the analogous bound to $r_{a,\eta}(|X|)$ to get
+$\mathbb E r_{a,\eta}(|X|)\le\mathbb E X^2/(a-\eta)^2$.
+
+In this report an \emph{upper-envelope conclusion} refers to this family of
+defined inequalities with explicit rational slack. For any positive target
+slack, a small enough rational $\eta$ is selected from $a$ and the moment
+bound by bounded arithmetic. No unspecified outer-measure real is being
+postulated. If the hard event has a boundary certificate, the same
+observations converge to its indicator with a PR rate and give the usual
+probability bound. In standard measure semantics they majorize the hard
+event whether or not that event has a computable probability. The same
+construction applies to finite maxima, which are continuous functions of
+finitely many coordinates.
+
+\subsection{Bayes updating with a certified evidence bound}
+
+Let $\ell\ge0$ be a represented likelihood bounded by $L$, and suppose
+$Z=\mathbb E\ell\ge z_0>0$ is certified. On represented bounded
+observables define
+\[
+ \mathbb E_\ell h=\frac{\mathbb E(h\ell)}{Z},\qquad
+ \mathbb P_\ell(A)=\frac{\mathbb E(\mathbf1_A\ell)}{Z}.
+\]
+Bounded multiplication and the reciprocal construction make these regular
+real names. Positivity, normalization, and finite additivity follow from the
+corresponding expectation identities. Moreover
+\[
+ |\mathbb P_\ell(A)-\mathbb P_\ell(B)|
+ \le (L/z_0)\,\mathbb P(A\triangle B),
+\]
+so the construction respects completed event equality and transfers
+countable-union moduli with the indicated factor.
+
+The numerical stability estimate is explicit. Suppose $|h|\le M$, the
+numerator $a=\mathbb E(h\ell)$ is approximated by $a'$ to error
+$\delta_a$, and $Z$ by $Z'$ to error $\delta_Z\le z_0/2$. Since
+$|a|\le MZ$ and $Z'\ge z_0/2$,
+\begin{equation}\label{eq:bayes-budget}
+ \left|\frac{a'}{Z'}-\frac aZ\right|
+ \le\frac{2(\delta_a+M\delta_Z)}{z_0}.
+\end{equation}
+This follows by adding and subtracting $a/Z'$ and bounding the two terms.
+Conditioning on an event is the case $\ell=\mathbf1_B$. Bayes' identity is
+then an equality of intersection probabilities, with every denominator's
+positive margin retained. No search for a positive lower bound is inferred
+from a bare negation of zero.
+
+For a joint density $f(x,y)$, a pointwise conditional density can be
+constructed on a compact observation region if its section integrals have
+uniform quadrature and tail data and the marginal
+$m(y)=\int f(x,y)\,dx$ has a certified lower bound there. Then
+$f(x,y)/m(y)$ is a normalized density in $x$. Finite Fubini, with the
+supplied uniform tails, proves the conditional integration identity
+\[
+ \int_B\left(\int_A\frac{f(x,y)}{m(y)}\,dx\right)m(y)\,dy
+   =\int_{A\times B}f(x,y)\,dx\,dy
+\]
+for the represented integrable tests or regular events at issue. The
+Gaussian example below supplies all these data explicitly. General
+conditional distributions are not automatically computable from a computable
+joint law; counterexamples in the computability literature confirm that
+these restrictions are substantive \cite{ackerman}.
+
+\subsection{A finite stopping theorem and a Borel--Cantelli fragment}
+
+Let $M_j$ be an integrable martingale for the first-$j$-bit filtration, with
+the conditional identities presented as above. Let $\tau\le N$ be a
+stopping rule whose decision $\{\tau>j\}$ is a certified event depending
+only on the first $j$ observations. In the simplest internal implementation
+these are finite cylinder decisions. On a common finite table,
+\[
+ M_\tau=M_0+\sum_{j<N}\mathbf1_{\{\tau>j\}}(M_{j+1}-M_j).
+\]
+Each summand has expectation zero by the conditional identity and past
+measurability. Hence $\mathbb E M_\tau=\mathbb E M_0$. Bounded-multiplier
+closure justifies the represented products. This is a bounded stopping
+theorem; an unbounded stopping time requires additional uniform-integrability
+and approximation data before a limit can be taken.
+
+For a jointly PR event family $A_j$, suppose the finite tail sums of its
+probabilities are at most $2^{-k}$ after a supplied index $C(k)$.
+The admitted tail union $B_k=\bigcup_{j\ge C(k)}A_j$ has mass at most
+$2^{-k}$, by finite union bounds and the explicit residual modulus. Every
+later $A_j$ is included in $B_k$ in the event-algebra order. These small
+tail events are an effective Borel--Cantelli certificate. Its familiar
+interpretation is that only finitely many $A_j$ occur almost surely. The
+arithmetic assertion is the positive inclusion and small-mass certificate,
+not a nonconstructive inference from a logical negation of convergence.
+
+\subsection{Continuous-state Markov chains with supplied transition data}
+
+A useful transition presentation supplies a function $\Psi(x,u)$ taking a
+state and an independent uniform input, a finite approximation scheme, and
+stability and tail bounds. For example, a coupling estimate
+\[
+ \mathbb E\min(1,|\Psi(x,U)-\Psi(y,U)|)
+ \le C\min(1,|x-y|)
+\]
+with rational $C\ge1$ propagates $L^0$ approximation errors.
+Using independent bit rows, set $X_{j+1}=\Psi(X_j,U_j)$. This constructs
+every finite trajectory jointly. If each numerical transition has error
+at most $\delta_j$, the finite recurrence
+\[
+ e_{j+1}\le Ce_j+\delta_j
+ \quad\Longrightarrow\quad
+ e_n\le C^ne_0+\sum_{j<n}C^{n-1-j}\delta_j
+\]
+is a quantifier-free induction. Choosing all input errors at most
+$2^{-k}/[(n+1)C^n]$ suffices at horizon $n$. This is a concrete PR
+construction of a continuous-state process at finite horizons. An arbitrary
+family of finite-dimensional laws, without coherent realizers and effective
+tightness, is not a substitute for these data.
+
+For an explicit example take $X_0=x_0$ and
+\[
+ X_{j+1}=aX_j+b+\sigma G_j,
+ \qquad |a|\le r<1,\quad\sigma\ge\sigma_0>0,
+\]
+where $G_j$ are independent standard normals and all parameters have
+represented bounds. Expansion and Gaussian convolution show, for $n\ge1$,
+that $X_n$ is normal with
+\[
+ m_n=a^nx_0+b\sum_{j<n}a^j,\qquad
+ v_n=\sigma^2\sum_{j<n}a^{2j}.
+\]
+These approach $m=b/(1-a)$ and $v=\sigma^2/(1-a^2)$ with bounds
+\[
+ |m_n-m|\le r^n|x_0-m|,\qquad
+ |v_n-v|\le\frac{\sigma^2r^{2n}}{1-r^2}.
+\]
+The identities $am+b=m$ and $a^2v+\sigma^2=v$, together with the
+Gaussian transition identity, show that $N(m,v)$ is invariant under one
+transition. This identity is valid also when $a=0$ and does not require
+deciding whether the represented parameter $a$ vanishes.
+Couple the two normal laws as $m_n+\sqrt{v_n}G$ and $m+\sqrt vG$.
+Since $v_n,v\ge\sigma_0^2$ and $\mathbb E|G|\le1$,
+\[
+ \mathbb E|X_n-X_\infty|
+ \le r^n|x_0-m|
+       +\frac{\sigma^2r^{2n}}{2\sigma_0(1-r^2)}.
+\]
+Here the displayed coupling compares laws and is not a claim that the
+original noisy trajectory converges to a single random variable.
+If $r\le1-q$ for rational $q>0$, the elementary bound
+$(1-q)^n\le1/(1+nq)$ yields a PR precision schedule. Thus stationary-law
+convergence is available without an abstract ergodic theorem. Continuous-time
+path constructions and stochastic integration require further modules and
+are not claimed in this package.

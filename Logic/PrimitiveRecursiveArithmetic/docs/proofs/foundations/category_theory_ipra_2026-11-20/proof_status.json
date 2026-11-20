@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "title": "Category Theory in intuitionistic Primitive Recursive Arithmetic: proof and implementation status",
+  "date": "2026-11-20",
+  "overall_claim": "Human-readable constructive proofs and a concrete Lean completion path; no completed local Lean mechanization of the whole report is claimed.",
+  "source_revision": {
+    "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+    "commit": "72d37f6d06fa7b5bd0a46732060446d1cffa3f2d",
+    "lean_toolchain": "leanprover/lean4:v4.32.0",
+    "mathlib_revision": "v4.32.0",
+    "upstream_files": 104,
+    "upstream_status": "Pinned source inspected and included; repository verification claims are not a fresh local build receipt."
+  },
+  "verification_layers": {
+    "human_proofs": {
+      "status": "written with explicit assumptions and constructive arguments",
+      "scope": "The theorem families below; numerical induction is restricted to Booleanized bounded arithmetic invariants."
+    },
+    "inspected_upstream": {
+      "status": "source_inspected_not_locally_rebuilt",
+      "source_root": "lean/Upstream",
+      "files": 104
+    },
+    "new_lean_adapters": {
+      "status": "uncompiled_integration_drafts",
+      "files": [
+        "lean/CategoryIPRA/LocalYoneda.lean",
+        "lean/CategoryIPRA/Representability.lean",
+        "lean/CategoryIPRA/Density.lean"
+      ],
+      "proof_placeholders_declared": false,
+      "new_axioms_declared": false,
+      "reason_not_compiled": "No Lean executable available in generation environment.",
+      "interface_refinement": "LocalYoneda.AtLaws fixes the family parameter p, representing object A, and context Gamma; upstream NatLaws is a stronger uniform-in-p,A interface."
+    },
+    "source_structure": {
+      "toml_parsed": true,
+      "upstream_lean_sources": 104,
+      "lean_sources": 110,
+      "imports_inspected": 192,
+      "missing_in_repository_imports": [],
+      "external_import_prefix": "Mathlib",
+      "external_module_files_verified": false,
+      "lean_compilation": "not run: no Lean executable available"
+    },
+    "executable_models": {
+      "status": "all_bounded_exact_checks_passed",
+      "result_file": "code/verification_results.json",
+      "script": "code/finite_models.py",
+      "formal_proof": false,
+      "proof_checker": false,
+      "arithmetic": "exact Python integers and tuples",
+      "product_encoding": "(x,y) in [n] x [m] is coded as m*x+y, matching report",
+      "colimit_algorithm": "Bounded Warshall closure; report independently proves sequential label merging."
+    }
+  },
+  "theorem_families": [
+    {
+      "id": "arithmetic_presentations",
+      "human_proof_source": "sections/foundations.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Fixed arithmetic predicates and fixed PR term operations; laws must have iPRA derivations or remain explicit hypotheses. Structural specialization is an external schema, not a universal internal soundness theorem.",
+      "lean_status": "Inspected syntax and presented-category derivations; no new general proof-export implementation claimed."
+    },
+    {
+      "id": "functors_and_natural_transformations",
+      "human_proof_source": "sections/yoneda.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Specified PR object, arrow, and component families; equality is pointwise arithmetic equality. No internal collection of all PR functors is assumed.",
+      "lean_status": "Functor records inspected upstream; general natural-transformation, whiskering, and interchange records remain roadmap work."
+    },
+    {
+      "id": "yoneda",
+      "human_proof_source": "sections/yoneda.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "A fixed presented category, a fixed setoid-valued presheaf, and one specified natural transformation at fixed p,A, with stated laws. The correspondence is schematic unless actual finite tables are enumerated.",
+      "lean_status": "Upstream uniform NatLaws inspected. New LocalYoneda.AtLaws localizes p,A and context Gamma; corresponding derivation source is uncompiled."
+    },
+    {
+      "id": "representability",
+      "human_proof_source": "sections/yoneda.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Specified natural transformations and inverse equations, or a chosen universal element with a PR factor operation. No representative choice is inferred from a bare existential.",
+      "lean_status": "Upstream represented specialization inspected; new faithfulness and inverse-equation adapters are uncompiled. Other representation constructions remain roadmap work."
+    },
+    {
+      "id": "density_and_coyoneda",
+      "human_proof_source": "sections/yoneda.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Generator equality is defined by equality of values; cocone components are supplied as one fixed uniform PR family with their laws. No arbitrary quotient or colimit existence is asserted.",
+      "lean_status": "Four new algebraic derivation constructors are uncompiled. Tuple coding, all setoid laws, and the universal cocone record are not implemented by these adapters."
+    },
+    {
+      "id": "selected_universal_constructions",
+      "human_proof_source": "sections/limits.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Terminal objects, products, equalizers, and mediators are supplied. Construction of all fixed finite limits is a shape-by-shape schema; varying unbounded arbitrary diagrams is not silently internalized.",
+      "lean_status": "Inspected upstream elementary category and terminal-uniqueness derivations. Full generic selected-cone development remains roadmap work."
+    },
+    {
+      "id": "uniform_finite_sets",
+      "human_proof_source": "sections/finite.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Valid finite table inputs; base m+1 encoding, bounded Boolean verification, explicit rank/select, and zero-cardinality branches. The resulting numeric algorithms are uniform in table sizes.",
+      "lean_status": "Upstream finite-limit and exponential derivations were inspected with their positive-size guards. Uniform construction of the retention tester and empty-size extensions are not claimed implemented in Lean."
+    },
+    {
+      "id": "finite_functor_categories",
+      "human_proof_source": "sections/finite.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Both categories are finite tables. FinSet-valued fibres are supplied finite ordinals. Enumeration is bounded and may be very large.",
+      "lean_status": "Human argument and finite Yoneda examples supplied; full uniform finite-functor-category Lean construction remains roadmap work."
+    },
+    {
+      "id": "adjunctions_and_preservation",
+      "human_proof_source": "sections/adjunctions.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Specified PR hom correspondences or specified unit and counit satisfying laws. Preservation applies to supplied limits/colimits with usable PR mediators.",
+      "lean_status": "Upstream hom-correspondence equivalence and triangle derivations inspected. Generic preservation and uniqueness developments remain roadmap work."
+    },
+    {
+      "id": "split_equivalence",
+      "human_proof_source": "sections/adjunctions.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Faithfulness, a PR hom-lifting operation with its equations, and a PR choice of object representatives and displayed isomorphisms. Bare essential surjectivity is insufficient for the construction.",
+      "lean_status": "Upstream SplitEquivalence derivations inspected; no local rebuild performed."
+    },
+    {
+      "id": "monads_kleisli_eilenberg_moore",
+      "human_proof_source": "sections/adjunctions.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Specified PR monad operations and laws. Algebra objects use arithmetic validity predicates. Algebra-limit creation concerns supplied finite underlying limits.",
+      "lean_status": "Full human equation proofs; new object-language monad and algebra records remain roadmap work. The option-Kleisli Python checks are finite examples only."
+    },
+    {
+      "id": "idempotent_completion",
+      "human_proof_source": "sections/limits.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Arithmetic object predicates for idempotents; canonical envelope construction. Extension into another category requires displayed PR splittings.",
+      "lean_status": "Full human proof; generic Karoubi envelope Lean construction remains roadmap work."
+    },
+    {
+      "id": "pointwise_kan_extensions",
+      "human_proof_source": "sections/kan.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Uniformly supplied comma limits/colimits and PR mediators for the fixed families used in the proof. Unconditional finite-set existence is restricted to finite table source and target categories.",
+      "lean_status": "Upstream representative-level Kan formulas inspected, with their own assumptions. Full presentation-wise universal-property records remain roadmap work."
+    },
+    {
+      "id": "lawvere_fixed_points",
+      "human_proof_source": "sections/lawvere.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "Chosen products, evaluation, and weak point-surjectivity. Existential implication uses one local existential elimination; a PR fixed-point term additionally needs a PR selector.",
+      "lean_status": "Human structural proof; no new checked object-language Lawvere module supplied."
+    },
+    {
+      "id": "universal_evaluator_and_function_space_obstruction",
+      "human_proof_source": "sections/lawvere.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "External category of finite powers of N with PR maps and extensional equality. For each fixed PR evaluation family the diagonal inequality is an iPRA instance; no uniform total PR evaluator is admitted.",
+      "lean_status": "Upstream external no-evaluator theorem and separate object-language diagonal sentence inspected; no local rebuild."
+    },
+    {
+      "id": "representative_selection_boundary",
+      "human_proof_source": "sections/boundaries.tex",
+      "human_proof_status": "argument_supplied_under_listed_conditions",
+      "conditions": "A bound on the number of classes is distinguished from bounded displayed representatives. Negative uniform computability results are metatheoretic statements about coded inputs.",
+      "lean_status": "Upstream finite-cover and two-class-obstruction modules inspected; this is not an internal proof of iPRA soundness or a universal representative-selection theorem."
+    }
+  ],
+  "completion_gates": [
+    "Compile the pinned upstream closure and all new adapters with Lean 4.32.0 and inspect axiom-audit output.",
+    "Encode remaining selected-operation records and numerical algorithms as PTm/PR syntax with actual object-language derivations.",
+    "Discharge all presentation-specific laws and retain every undischarged premise explicitly.",
+    "Do not treat bounded finite tests, syntactic absence of placeholders, or a dependency scan as kernel verification."
+  ]
+}

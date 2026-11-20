@@ -1,0 +1,59 @@
+\section{What happens to the continuum?}
+Every real algebraic point is a genuine Euclidean point. The embedding
+$K^2\hookrightarrow\mathbb R^2$ preserves and reflects \emph{every}
+first-order point formula on its parameters, by Theorem~\ref{thm:transfer}.
+This property is called an elementary embedding. In the standard model
+$K$ is itself Archimedean: read the coarse enclosure of $x$ and take an
+integer exceeding its endpoints in absolute value. For $x<y$ the exact
+sign algorithm provides a positive rational lower bound on the gap;
+sufficiently fine rational reads give disjoint intervals with a rational
+between them. This proves rational density constructively.
+
+Completion nevertheless changes the individual points. Externally, finite
+codes are countable, whereas the points of a real line are uncountable.
+For a concrete second-order distinction take a transcendental real $t$.
+The external subset $\{a\in K:a<t\}$ has no supremum in $K$. A proposed
+supremum $s<t$ is too small by rational density, and for $s>t$ there
+is a smaller rational upper bound. The remaining equality would make
+$t$ algebraic. This subset cannot be first-order definable over $K$ with
+algebraic parameters, since the one-variable cell argument gives a
+supremum for each inhabited bounded definable subset.
+
+\paragraph{A separate presentation for approximations.}
+One can work over a real coordinate specified by a particular PR family
+of nested rational intervals $[l_n,r_n]$ of width at most $2^{-n}$.
+Such specifications may carry free numerical parameters. Coordinate
+equality means agreement at every precision. A strict sign has a
+positive separation witness. In this setting affine combinations, dot
+products, projections with a supplied lower bound on $N(u)$, and
+well-separated line intersections retain effective meanings. For example,
+for $d=[u,v]$ with $|d|\ge\eta>0$, an enclosing interval for $d$
+of width $<\eta/2$ has distance at least $\eta/2$ from zero. Reciprocal
+then magnifies interval widths by at most $4/\eta^2$. Applying the
+sum and product width bounds of Section~\ref{sec:scalar} to
+$A+u[B-A,v]/d$ gives a PR request for input precisions at any desired
+output precision. Each fixed finite construction is handled by passing
+accuracy requests backwards along its operation list. At exact tangency
+the intersection point itself may still be given; a uniform test for the
+number of intersections has a different computational requirement.
+
+For a proof, fix an effective enumeration of machines on empty input.
+Bounded simulation for $n$ steps is primitive recursive in the machine
+index and $n$. If the first halt occurs at step $t\le n$, let
+$I_{e,n}=[2^{-t},2^{-t}]$. Otherwise let $I_{e,n}=[0,2^{-n}]$.
+These are nested, have the required width, and represent a scalar
+$x_e$ equal to zero exactly when machine $e$ never halts. A uniform
+effective test for equality of all such names would decide the halting
+problem. Briefly, a halting decider on machines and inputs would allow a
+machine on input $k$ to halt just when machine $k$ on input $k$ is
+predicted to run forever; applying this to its own index contradicts
+either prediction. Compiling any fixed input into an empty-input
+machine transfers that impossibility to the present enumeration.
+All the individual $x_e$ are even rational in the classical metatheory.
+What fails is uniform conversion of these names to exact algebraic comparison
+data. Geometrically, the unit circle and horizontal line $y=1+x_e$ are
+tangent exactly in the zero case and disjoint otherwise. This shows why
+the choice of input representation matters even to an elementary
+construction. See Beeson's analysis of uniform geometric constructions
+for the different role of continuity in synthetic constructive geometry
+\cite{beeson}.

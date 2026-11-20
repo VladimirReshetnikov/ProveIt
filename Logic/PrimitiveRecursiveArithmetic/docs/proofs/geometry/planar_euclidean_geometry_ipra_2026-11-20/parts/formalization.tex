@@ -1,0 +1,147 @@
+\section{Lean development and the remaining object proofs}
+\label{sec:lean}
+The repository uses \texttt{PR k} for $k$-ary primitive recursive function
+\emph{syntax}, \texttt{PTm n} for terms with $n$ free numerical variables,
+\texttt{Fm PTm n} for formulas, and \texttt{Prf PRAAx} for their
+derivations~\cite{proveit}. An assertion proved in Lean about a
+\texttt{Field} differs in type from a derivation in this embedded theory.
+The archive contains examples of both. The distinction determines which
+steps can already be imported.
+
+\subsection{What the included Lean modules prove}
+\begin{description}[leftmargin=0pt,labelsep=0pt,labelwidth=0pt,style=nextline]
+\item[\texttt{MetricIdentities.lean}.]
+\texttt{gramClosed} and \texttt{midpointClosed} are closed embedded
+iPRA derivations. Each of four integer coordinates is encoded by a
+difference of two natural variables. The first proves
+$N(u)N(v)=(u\cdot v)^2+[u,v]^2$. The second proves the parallelogram law
+$N(u+v)+N(u-v)=2N(u)+2N(v)$. The universal closures have eight
+natural binders. The open versions allow substitution of arbitrary
+integer terms in an arbitrary context. These endpoints use the repository's
+\texttt{ZT.derive}, \texttt{ipra\_ring} and \texttt{closeUniv}.
+This is precisely the polynomial part of the length and frame arguments.
+Transferring the identities to scalar records also needs their field laws.
+\item[\texttt{Translation.lean}, \texttt{Axioms.lean} and \texttt{Bridge.lean}.]
+The first module defines the two formula languages, term evaluation,
+environments, shadowing and the quantifier translation. Its
+\texttt{translate\_correct} proves preservation and reflection for every
+formula. The second module works over a linearly ordered field; it
+proves the equivalence of affine betweenness and the determinant/dot
+test, inner Pasch, the Euclidean axiom and five segments. The bridge
+composes these proofs using an independent affine interpretation.
+\texttt{translated\_innerPasch} checks the closed translated sentence
+including the existential point binder.
+\item[\texttt{FrameRelations.lean} and \texttt{CanonicalFrame.lean}.]
+The first defines all point-language construction graphs. Its
+\texttt{BiGraph} explicitly carries the four existence/uniqueness clauses
+for a relational bijection and gives both round trips and quantifier
+transport. The second proves the midpoint and collinearity criteria for
+a concrete Cartesian plane over a linearly ordered field, the equivalence
+of its betweenness test with affine interpolation, the standard-frame
+addition, multiplication and order formulas, and the coordinate bijection.
+The arbitrary-frame formulas in Section~\ref{sec:frame-inverse} are written
+as mathematical proofs.
+\item[\texttt{ObjectLanguage.lean}.]
+This compiler takes seven PR symbols (validity, the scalar zero, three
+ring operations, equality and order) and sends the translated language
+to actual \texttt{Fm PTm n}. Under binders it shifts older terms and
+guards the new variable; it interprets both scalar tests by the Boolean
+numeral one. \texttt{closeTranslation} yields an exact type of sentence
+for a closed point formula once the symbols are filled. The scalar symbols
+are an explicit input to this file.
+\end{description}
+The included Lean files were compiled using Lean and mathlib 4.32.0.
+The two closed object proofs print the standard Lean metatheoretic
+dependencies \texttt{propext}, \texttt{Classical.choice} and
+\texttt{Quot.sound}. Their values inhabit \texttt{Prf PRAAx};
+the constructors of that inductive calculus fix the available
+object axioms. The general scalar presentation and the elimination
+theorem here have human proofs; their complete object-calculus proof
+generators remain to be implemented.
+
+\subsection{A route to closing the general theorem}
+Here is an implementation order and the statement to verify at each step.
+All semantic equalities between two codes in these obligations abbreviate
+the numerical Boolean predicate for equality of their values.
+\begin{enumerate}
+\item \emph{Arithmetic and records.} Use the upstream
+\texttt{Core/Pairing}, \texttt{Core/Division}, \texttt{Core/Gcd},
+\texttt{Core/Order}, \texttt{Core/Search} and \texttt{Core/Definitions}
+for pairs, bounded loops and simultaneous recursion. Pick one list format,
+for example the one in Section~\ref{sec:scalar}; use pairs for signed
+numerators and positive denominators for rationals. Store a triple as
+a list of length three. A normalized polynomial list has its final
+coefficient nonzero unless it is empty. Define \texttt{valid}, interval
+reading and every guard by the exact rational tests in
+\eqref{eq:intervalcheck}. Encode the recipe to read a record as a
+single PR function of the record and the precision. Prove nesting,
+width and endpoint bounds by a Boolean invariant on the bisection counter.
+For a bounded universal check, take the conjunction of the Boolean
+values by recursion; prove its elimination and introduction lemmas once.
+\item \emph{Scalar certificates.} Implement the finite convolution,
+signed polynomial division, extended gcd and finite matrix determinant
+with their coefficient-vector invariants. For each provisional operation
+in the paper define its own fixed PR reader with parameters.
+Prove the positive slope estimate, the sign gap, and the \emph{conversion}
+lemma: the returned code is valid and agrees with the input recipe
+at every precision. Prove agreement by fixing the precision before
+induction and budgeting all intermediate reads. In the determinant
+construction verify the adjugate coefficient identity by pairing
+permutations; use it to certify the monic annihilator in the normalizer.
+Prove validity, extensionality, field laws and order laws for
+\texttt{add, sub, mul, eqTest, leTest}; add totalized inverse for use in
+algorithms, keeping the ring language of the output compiler unchanged.
+\item \emph{Root enumeration.} For a list $f$ of scalar coefficients
+compute the tag for an identically zero polynomial or a strictly
+increasing list $L_f$ of roots. The target on the finite-list branch is
+$\mathrm{Valid}(x)\to(f(x)=0\leftrightarrow
+     \bigvee_{i<|L_f|}x=L_f[i])$. Here the variable-size disjunction
+is a bounded Boolean fold. The finite algebra and rational grid in
+Section~\ref{sec:scalar} supply both inclusions. Polynomial IVT is a
+separate witness theorem with two input signs; no appeal to a general
+real-analysis library is needed.
+\item \emph{One elimination.} Define signed remainders by a
+degree-clocked loop. Define \texttt{query}, the sign counts
+in~\eqref{eq:counts}, and the two tail signs. Prove~\eqref{eq:query}
+by a finite sweep over the ordered roots from the preceding step.
+The invariant is the integer equality between variation loss and root
+contributions through the current cell. For a specialized polynomial
+list, prove equivalence between each attainable sign condition and its
+computed positive count or tail flag. Define \texttt{pick} from the actual
+ordered point/interval samples to return a concrete satisfying code.
+\item \emph{Reification and composition.} Generate the coefficient
+decision tree with formal numerator/denominator pairs. At each node the
+guard records every denominator needed to that point. For a fixed
+matrix construct a \texttt{Prf} equivalence between an eliminated binder
+and its disjunction of accepting branch guards, using \texttt{pick} on
+a positive existential branch. Use the same witnesses for counterexamples
+to universal claims. In the external proof generator recurse on a
+particular syntax tree. Discharge its connectives by the natural
+deduction constructors and the Boolean decision for its children.
+For a closed sentence the final goal is a value of \texttt{Prf PRAAx []}
+at the output of \texttt{closeTranslation}, or at its negation.
+For parameters, universally close the valid-code guards and the
+bi-implication with the decision bit. Only a completed object proof
+is eligible for transport using the repository's \texttt{pra\_iff\_native}.
+\end{enumerate}
+
+The ProveIt packet \texttt{eight\_geometry\_theorems\_ipra} treats exact
+rational/projective coordinate calculations with denominator guards.
+Its approach applies to pieces such as the line-intersection formula.
+The present development needs real algebraic coefficients for circle
+intersections and the full first-order transfer. We reuse the repository's
+checked arithmetic interface for the two embedded proofs.
+The executable companions cover scalar records, exact constructions, the
+one-variable signed-remainder computation, parameter-dependent elimination
+for prenex polynomial formulas, and exact witness selection. The
+optional symbolic routines use SymPy for rational polynomial arithmetic
+and isolation. Their tests exercise the algorithms independently of Lean.
+
+\paragraph{Further questions.}
+How small can the proof generator for a single quantified sign test be
+made using the repository's existing bounded-sum proofs? Can a
+specialized compiler for ruler-and-compass statements avoid general
+polynomial elimination while emitting comparable object-calculus
+certificates? For analytic names, which operations admit continuous
+computable selections through degeneracies after the input carries extra
+orientation or separation data?

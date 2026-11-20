@@ -1,0 +1,197 @@
+\section{Recovering coordinates using points alone}
+\label{sec:frame-inverse}
+
+Coordinates can be recovered from betweenness and segment congruence. This
+gives a converse to the interpretation of geometry by scalar pairs and
+specifies the exact sense of equivalence. Throughout this section
+$B(A,M,D)$ is inclusive betweenness and $AB\equiv CD$ means segment
+congruence. All formulas defining geometric constructions below use just
+these relations, equality, and three named points. A line or a scalar
+never has to be added as a primitive geometric object.
+
+\subsection{A unit frame and four construction formulas}
+
+Write $L(A,D,P)$ if one of $B(A,D,P),B(D,P,A),B(P,A,D)$ holds. Write
+$M(A,H,D)$ if $B(A,H,D)$ and $AH\equiv HD$. Define
+\[
+ V(A,D;C,E)\quad\Longleftrightarrow\quad
+ \exists H\,[M(A,H,E)\land M(D,H,C)].
+\]
+In a coordinate plane over a linearly ordered field $F$, $M(A,H,D)$
+means $2H=A+D$. Indeed, for unequal endpoints put
+$H=A+t(D-A)$ with $0\leq t\leq1$. Equality of squared lengths gives
+$t^2=(1-t)^2$ after cancellation of $\|D-A\|^2>0$, hence $2t=1$.
+For equal endpoints, betweenness forces $H=A=D$. The midpoint always
+exists since $2$ is invertible. Thus
+\[
+ V(A,D;C,E)\quad\Longleftrightarrow\quad D-A=E-C.
+\]
+This single predicate expresses translation even when all four points
+lie on one line or a displacement vanishes.
+
+For distinct $C,D$ define a direction test
+\[
+ T(P,Q;C,D)\quad\Longleftrightarrow\quad
+ C\ne D\ \land\ \exists E\,[V(C,D;P,E)\land L(P,E,Q)] .
+\]
+Here $E=P+(D-C)\ne P$, so the test means that $Q-P$ is some scalar
+multiple of $D-C$. It includes $Q=P$. For completeness, on an affine
+line any three points are ordered by their one-dimensional parameters.
+Their middle parameter gives one of the three displayed betweenness
+relations. For $E\ne P$ a parameter for $Q$ can be computed by dividing
+along a nonzero coordinate of $E-P$. This establishes both directions
+of the claim using decidable order.
+
+Choose points $O,I,J$ with $O\ne I$, $OI\equiv OJ$, and with a point
+$I'$ such that $M(I,O,I')$ and $JI\equiv JI'$. Call this formula
+$\mathrm{Frame}(O,I,J)$. Set $u=I-O$, $v=J-O$, $N=u\cdot u$.
+The midpoint equation gives $I'=O-u$. The last congruence gives
+$4u\cdot v=0$, so $u\cdot v=0$ and $v\cdot v=N>0$. The identity
+\[
+ \det(u,v)^2+(u\cdot v)^2=(u\cdot u)(v\cdot v)
+\]
+gives $\det(u,v)\ne0$. Thus $u,v$ form a basis. The frame
+$(0,0),(1,0),(0,1)$ witnesses existence in every such plane.
+Reflection of a frame is allowed.
+
+The scalar domain is the line $H=\{x:L(O,I,x)\}$, with vertical line
+$K=\{U:L(O,J,U)\}$. Lowercase variables $x,y,z$ below are restricted
+to $H$. The following formulas define transfer, addition, multiplication,
+and the coordinates of a point.
+\begin{align*}
+ S(x,U)&\ \Longleftrightarrow\ U\in K\land T(x,U;I,J),\\
+ A(x,y,z)&\ \Longleftrightarrow\ V(O,x;y,z),\\
+ P(x,y,z)&\ \Longleftrightarrow\
+   \exists U,W\,[S(y,U)\land S(z,W)\land T(x,W;I,U)],\\
+ G(Q;x,y)&\ \Longleftrightarrow\
+   \exists U\,[S(y,U)\land V(O,x;U,Q)].
+\end{align*}
+The additive identity is $O$ and the multiplicative identity is $I$. More explicitly, if $x=O+a u$, then
+$S(x,U)$ determines $U=O+a v$. Indeed, writing $U=O+bv$, the vector
+$-a u+bv$ is a multiple of $v-u$ precisely when $a=b$.
+If $y=O+b u$, then $A$ gives $z=O+(a+b)u$. For multiplication, put
+$W=O+c v$ and $U=O+bv$. The test
+$T(x,W;I,U)$ says that $-a u+c v$ is proportional to $-u+bv$.
+Equality of the first coefficients forces the proportionality factor
+to be $a$. The second coefficients give $c=ab$. The fixed horizontal
+component $-1$ in the reference vector ensures $I\ne U$ for
+every $b$. This proves the product formula also for zero and negative
+inputs. Finally $G(Q;x,y)$ says exactly $Q=O+a u+b v$.
+
+\input{parts/frame-figure}
+
+Define $R(z)$ by $B(O,z,I)\lor B(O,I,z)$, and define
+$x\preceq y$ by $\exists z\,[A(x,z,y)\land R(z)]$. For
+$z=O+c u$, the first disjunct gives $0\le c\le1$, the second gives
+$1\le c$, and their union gives $c\ge0$. This recovers the directed
+order on the whole baseline. Additive inverse and division by a nonzero
+scalar have unique graphs from addition and multiplication. When a total
+reciprocal is part of the scalar language, assign reciprocal zero at zero.
+
+\subsection{The two inverse maps}
+
+\paragraph{Framed interpretation theorem.}
+For every decidably linearly ordered field $F$, constructing its
+point plane and interpreting the baseline recovers an isomorphic ordered
+field. Constructing the point plane of that baseline recovers a point
+structure isomorphic to the original framed plane. Both isomorphisms
+have explicit graphs. For a primitive recursive presentation of $F$
+with decidable equality, order and primitive recursive totalized
+division, the two isomorphisms on codes are primitive recursive.
+
+\emph{Proof.}
+The scalar isomorphism is $a\mapsto O+a u$ by the four computations
+above. For the point isomorphism use $G$. Its inverse sends a point
+$Q$ to the two baseline points indexed by
+\[
+ a=\frac{(Q-O)\cdot u}{N},\qquad
+ b=\frac{(Q-O)\cdot v}{N}.
+\]
+Indeed, the difference $Q-O-au-bv$ is orthogonal to both basis vectors
+and hence zero by the nonzero determinant. For any two such points their
+squared distance in the original plane equals
+$N((a_1-a_2)^2+(b_1-b_2)^2)$. Since the factor $N>0$ is common to all
+segments, congruence is preserved and reflected. Affine interpolation
+commutes with the coordinate map and its inverse, preserving and
+reflecting inclusive betweenness. The maps carry the three named points
+to the canonical frame. The displayed expressions use a fixed finite
+number of field operations and one division by a proved positive
+element. On a coded field each step respects code equality. This also
+supplies the asserted primitive recursive implementations.\hfill$\square$
+
+For example, testing which side of a directed line a point lies on
+uses the sign of a determinant after a frame has been chosen. Reversing
+the orientation of the frame reverses this sign. Equidistance and
+betweenness survive every frame change, including a common change in the
+length unit. Naming the frame specifies the scalar identification used
+in the theorem.
+
+\subsection{An intrinsic point-only axiomatization}
+
+There is a direct way to state the scope of the inverse theorem for
+abstract structures. Let $\mathcal F$ be a first-order theory of
+decidably linearly ordered fields. For example it may require square
+roots of all positive elements, or in addition roots of every odd-degree
+polynomial. The latter choice gives real-closed ordered fields. Form a
+point theory with $B,\equiv,O,I,J$ by imposing the following explicit
+axioms. Every mention of $H,K,S,A,P,G$ abbreviates the point formulas
+above.
+\begin{enumerate}
+\item The named triple satisfies the frame formula. On $H$, the graphs
+$A,P$ are everywhere defined and single-valued. With constants
+$O,I$, operations so defined, and relation $\preceq$, the relativized
+axioms of $\mathcal F$ hold.
+\item For every $Q$ there is exactly one pair $(x,y)\in H^2$ with
+$G(Q;x,y)$, and for every such pair there is exactly one $Q$.
+Here quantification over a pair means two ordinary point quantifiers.
+\item For points with coordinates supplied by $G$, congruence is equality
+of the two squared distances in $H$. For coordinate pairs $a,b,c$,
+$B(a,b,c)$ is equivalent to
+\[
+ \det(b-a,c-a)=0\quad\land\quad(b-a)\cdot(b-c)\le0 .
+\]
+Both are fixed polynomial tests over the interpreted field, hence
+first-order point formulas using the graphs of arithmetic.
+\end{enumerate}
+To check the betweenness test, if $a=c$ the inequality forces $b=a$
+by nonnegativity of squares. Otherwise the determinant supplies
+$b=a+t(c-a)$ by division along a nonzero component. The inequality is
+$t(t-1)\|c-a\|^2\le0$, equivalently $0\le t\le1$. Thus all three
+axioms hold in the plane of every field satisfying $\mathcal F$.
+
+Conversely, in any point structure satisfying this list the interpreted
+baseline is a model of $\mathcal F$ by item 1. Item 2 supplies the graph
+of an isomorphism onto its coordinate plane, and item 3 verifies both
+directions on each primitive predicate. To see that the named frame is preserved,
+item 3 first makes the coordinate map an isomorphism of unframed point
+structures, and therefore carries the original defining formulas to the
+same formulas in an actual field plane. There the calculations above
+give $G(O;O,O)$, $G(I;I,O)$ and $G(J;O,I)$ (with the frame and scalar
+points carried along by that map). Pulling these formulas back gives
+the assertion in the original structure. This proves a two-sided
+first-order interpretation for the stated presentation. Uniquely
+defined operations may equivalently be retained as graphs throughout,
+so the proof requires no choice of representatives or choice principle.
+For the point language without named constants, the same formulas
+give an interpretation with a frame as parameter.
+
+The list is a coordinatization axiom presentation in point language.
+Its algebraic and geometric content is explicit. A representation theorem
+for a separately chosen synthetic axiom system with intuitionistic logic
+would require deriving the list from that system. The inverse theorem here
+applies directly to the stated presentation and to the exact plane used
+in this report.
+
+\paragraph{Checked Lean component.}
+\texttt{FrameRelations.lean} defines the point-language graphs.
+\texttt{CanonicalFrame.lean} proves the transfer, addition, multiplication,
+order and coordinate formulas in the standard frame over every linearly
+ordered field, and proves that the coordinate graph is a bijection.
+Its executable algebraic test for $B(A,M,D)$ uses collinearity together
+with $|AM|^2\le |AD|^2$ and $|MD|^2\le |AD|^2$.
+For unequal endpoints the parameter $t$ converts these inequalities to
+$t^2\le1$ and $(1-t)^2\le1$. Their conjunction is precisely
+$0\le t\le1$. Equal endpoints force $M=A$. The file verifies that
+equivalence, so its point predicates agree with those above. The Lean
+results concern the field semantics. The interpretation of the underlying
+arithmetic in iPRA is a separate part of the argument.

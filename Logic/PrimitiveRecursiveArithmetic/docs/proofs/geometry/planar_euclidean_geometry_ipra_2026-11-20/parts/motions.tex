@@ -1,0 +1,73 @@
+\section{Rigid motions and congruence of finite figures}
+\label{sec:motions}
+Let $J(x,y)=(-y,x)$ and write $[u,v]=u_1v_2-u_2v_1$.
+Every distance-preserving map of the plane has the form
+$X\mapsto t+UX$ for an orthogonal $2\times2$ matrix $U$. To prove this,
+subtract the image of the origin, and call the resulting map $f$. The
+vectors $u=f(1,0)$ and $v=f(0,1)$ have squared length one and squared
+distance two, hence $u\cdot v=0$. For $X=(a,b)$, subtraction of its
+squared distances to the origin and to $(1,0)$ gives
+$f(X)\cdot u=a$. Comparison with $(0,1)$ similarly gives
+$f(X)\cdot v=b$. Since $u,v$ form an orthonormal basis, $f(X)=au+bv$.
+Conversely every displayed map preserves squared distances, has inverse
+$Y\mapsto U^{\mathsf T}(Y-t)$, and preserves betweenness. Thus motions
+can be represented by six scalar entries subject to $U^{\mathsf T}U=I$.
+Assertions about such motions are first-order field assertions. The
+argument about an arbitrary map is a schematic statement about a map
+supplied in the metatheory; the finite code suffices inside arithmetic.
+
+\begin{proposition}
+Two labelled lists $P_1,\ldots,P_n$ and $Q_1,\ldots,Q_n$ are congruent by
+a rigid motion, allowing reflection, if and only if all corresponding
+pairwise squared distances agree. There is a PR procedure computing a
+motion or returning a mismatched pair.
+\end{proposition}
+\begin{proof}
+Compare all pairs. Necessity follows from the definition of motion.
+For the converse, return the identity for empty lists. If all $P_i$
+coincide, all $Q_i$ coincide, and translation by $Q_1-P_1$ works.
+Otherwise choose a distinct pair, renumbered as $1,2$. Put
+$u=P_2-P_1$, $v=Q_2-Q_1$, and $N=u\cdot u=v\cdot v>0$.
+Write
+\[
+   P_i=P_1+a_i u+b_i Ju,\qquad Q_i=Q_1+c_i v+d_i Jv .
+\]
+The coefficients are dot products with the basis vectors divided by
+$N$. Distances to points $1,2$ give $a_i=c_i$ by subtraction and then
+$b_i^2=d_i^2$ from the distance to point $1$. If every $b_i=0$, every
+$d_i=0$ and take $e=1$. Otherwise choose $k$ with $b_k\ne0$. Set
+$e=d_k/b_k$, so $e^2=1$. Expanding the distance between points $i,k$
+and using the known squares gives $b_i b_k=d_i d_k$. Dividing by $b_k$
+and multiplying by $e$ yields $d_i=e b_i$ for all $i$. In both cases a
+witness is the map
+\[
+ P_1+au+bJu\ \longmapsto\ Q_1+av+e bJv .
+\]
+The basis pairs are orthogonal and have common squared length $N$, so
+this map is a rigid motion. Its determinant is $e$. In the collinear
+case either sign works. In the noncollinear case the two basis
+coefficients at $k$ force the sign, so this also decides congruence by
+orientation-preserving motions. Every search ranges over a given finite
+list.
+\end{proof}
+
+The pure point language records equidistance and leaves the unit of
+length free. Its automorphisms on the real algebraic plane are exactly
+the similarities, including those reversing orientation. Indeed, an
+automorphism sends any frame to a frame, and the relational definitions
+of Section~\ref{sec:frame-inverse} make its induced map on numerical
+coordinates an ordered-field automorphism. Such an automorphism fixes
+each rational and thus fixes each real algebraic number. The unique
+zero of its record polynomial in its rational isolating interval
+must go to the same zero. Consequently the point map is exactly the
+frame change $O+au+bv\mapsto O'+au'+bv'$. Its linear part multiplies
+all squared distances by the common positive factor
+$(u'\cdot u')/(u\cdot u)$. Conversely these similarities preserve
+betweenness and congruence, as follows directly from those formulas.
+
+For unlabelled finite configurations of the same cardinality, enumerate the
+permutations of the second list and apply the labelled procedure in order.
+The first success gives both a matching and a witnessing motion. Conversely
+any congruence of the configurations induces a permutation on the listed
+points (with multiplicities matched if the lists describe multisets).
+Exhausting the $n!$ possibilities therefore certifies failure.

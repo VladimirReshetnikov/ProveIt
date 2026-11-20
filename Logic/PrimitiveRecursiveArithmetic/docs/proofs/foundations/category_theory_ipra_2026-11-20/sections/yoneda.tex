@@ -1,0 +1,587 @@
+\section{Functors, naturality, and the meaning of schematic categories}
+\label{sec:functors-yoneda-foundation}
+
+Throughout this section, $C$ and $D$ are fixed arithmetic presentations of
+categories.  Objects and arrows have natural-number codes.  Each presentation
+has arithmetic formulas for validity and arrow equality, and fixed primitive
+recursive operations for identities and composition.  We write $f:a\to b$
+for the full validity condition and $f\sim g$ for its hom-setoid equality.
+The category laws include preservation of typing and of $\sim$ by every
+operation.  In particular, $\sim$ need not be numerical equality or a decidable
+relation.  All equations below mean this specified equality, and all variables
+are accompanied by their displayed typing hypotheses.  Operations may take
+the displayed endpoint codes as additional arguments; those arguments are
+suppressed in categorical notation.
+
+\subsection{Functors and transformations}
+
+\begin{definition}[Presented functor]
+A functor $F:C\to D$ consists of fixed primitive recursive functions $F_0$
+and $F_1$ on object and arrow codes.  Its laws say that $F_0$ preserves object
+validity, that $f:a\to b$ implies $F_1(f):F_0(a)\to F_0(b)$, that $F_1$
+respects arrow equality, and that
+\[
+ F_1(\id_a)\sim\id_{F_0(a)},\qquad
+ F_1(g\circ f)\sim F_1(g)\circ F_1(f).
+\]
+We suppress the subscripts.  The laws are arithmetic formulas, proved in
+$\ipra$ for a concrete presentation, or explicit premises of a relative
+structural theorem.
+\end{definition}
+
+\begin{definition}[Presented natural transformation]
+For fixed functors $F,G:C\to D$, a natural transformation $\alpha:F\Rightarrow G$
+is a fixed primitive recursive component function $a\mapsto\alpha_a$ such that
+$\alpha_a:Fa\to Ga$ and, for every $f:a\to b$,
+\begin{equation}
+ G(f)\circ\alpha_a\sim\alpha_b\circ F(f).
+ \label{eq:ordinary-naturality}
+\end{equation}
+Two transformations are equal when their components are equal at every valid
+object.  Thus transformation equality is itself an arithmetic universal
+formula; it is not a decision procedure for functions.
+\end{definition}
+
+\begin{proposition}[The elementary naturality calculus]
+Identity functors, composites of functors, identity transformations, vertical
+composition, and whiskering are given by primitive recursive operations on
+their displayed data.  They satisfy the category and interchange laws
+schematically.
+\end{proposition}
+\begin{proof}
+The identity functor leaves each code unchanged.  A composite functor applies
+its two fixed object and arrow functions successively.  Preservation of
+identity and composition follows by applying the outer functor's congruence
+law to the inner functor's corresponding law, and then applying the outer
+law.  Associativity of these composites is equality of the displayed terms.
+
+The identity transformation on $F$ has component $\id_{Fa}$.  Its naturality
+square commutes by the two identity laws.  If $\alpha:F\Rightarrow G$ and
+$\beta:G\Rightarrow H$, define
+$(\beta\alpha)_a=\beta_a\circ\alpha_a$.  Its naturality is the calculation
+\[
+\begin{split}
+ H(f)\circ(\beta_a\circ\alpha_a)
+ &\sim (H(f)\circ\beta_a)\circ\alpha_a\\
+ &\sim (\beta_b\circ G(f))\circ\alpha_a\\
+ &\sim\beta_b\circ(G(f)\circ\alpha_a)\\
+ &\sim\beta_b\circ(\alpha_b\circ F(f))\\
+ &\sim(\beta_b\circ\alpha_b)\circ F(f).
+\end{split}
+\]
+The identity and associativity laws for vertical composition hold component
+by component.  Postwhiskering by $K:D\to E$ has components $K(\alpha_a)$;
+its laws follow from functoriality.  Prewhiskering by $L:B\to C$ has components
+$\alpha_{L b}$; its laws are instances of naturality for arrows $L(f)$.
+
+For clarity, horizontal composition is also explicit.  If
+$\alpha:F\Rightarrow G:C\to D$ and $\beta:H\Rightarrow K:D\to E$, put
+\[
+ (\beta*\alpha)_a=\beta_{Ga}\circ H(\alpha_a).
+\]
+Naturality of $\beta$ at $\alpha_a$ identifies this with
+$K(\alpha_a)\circ\beta_{Fa}$.  Suppose also
+$\alpha':G\Rightarrow J$ and $\beta':K\Rightarrow L$.  The component of the
+vertical composite of the two horizontal composites is
+\[
+ \beta'_{Ja}\circ K(\alpha'_a)\circ\beta_{Ga}\circ H(\alpha_a).
+\]
+Naturality of $\beta$ at $\alpha'_a$ changes the middle two factors to
+$\beta_{Ja}\circ H(\alpha'_a)$.  Functoriality of $H$ then gives
+\[
+ (\beta'_{Ja}\circ\beta_{Ja})\circ H(\alpha'_a\circ\alpha_a),
+\]
+which is the component of $(\beta'\beta)*(\alpha'\alpha)$.  Parentheses may
+be changed by associativity.  This proves interchange.  Every argument just
+given is a finite equational derivation, with no use of induction or excluded
+middle.
+\end{proof}
+
+This result does \emph{not} assert the existence inside arithmetic of a
+category whose arrows are all primitive recursive functors or all primitive
+recursive transformations.  It supplies a theorem for each fixed finite
+configuration of such data.  A separately specified, uniformly evaluable
+coded family can itself be made into a presented category if the required
+closure and evaluation operations are supplied.  The word ``schematic''
+will retain this meaning below.
+
+\subsection{Setoid-valued presheaves without a universe of sets}
+
+\begin{definition}[Presented presheaf]
+A presheaf $P$ on $C$ consists of the following data:
+\begin{enumerate}
+\item an arithmetic formula $P_0(a,x)$ specifying valid elements in its fibre
+      at $a$;
+\item an arithmetic equivalence relation $x\approx_a y$ on that fibre;
+\item a fixed primitive recursive action function, written $P(f)x$, which
+      takes $f:a\to b$ and $x\in P(b)$ to an element of $P(a)$.
+\end{enumerate}
+The action respects both arrow equality and fibre equality, and satisfies
+\begin{equation}
+ P(\id_a)x\approx_a x,\qquad
+ P(g\circ f)x\approx_a P(f)(P(g)x)
+ \quad(f:a\to b, g:b\to c, x\in P(c)).
+ \label{eq:presheaf-laws}
+\end{equation}
+A transformation $\alpha:P\Rightarrow Q$ is a fixed primitive recursive
+function $(a,x)\mapsto\alpha_a(x)$ which preserves membership and fibre
+equality and satisfies
+\begin{equation}
+ Q(f)(\alpha_b(x))\approx_a\alpha_a(P(f)x).
+ \label{eq:presheaf-naturality}
+\end{equation}
+Transformations are identified pointwise modulo the target fibre relation.
+\end{definition}
+
+There is no assumption that $P(a)$ is a separately existing set object.  The
+notation means a predicate on natural numbers with a specified equivalence
+relation.  Likewise, writing $P:C^{\mathrm{op}}\to\Set$ is at most a
+mnemonic for the data above.  The construction never invokes a universe
+containing all sets or all maps.
+
+For an object $A$, the representable presheaf $h_A$ is particularly simple:
+\[
+ h_A(a)=\Hom_C(a,A),\qquad h_A(f)(u)=u\circ f.
+\]
+Its membership and equality formulas are the hom formulas of $C$.  Its action
+is the fixed composition operation of $C$.  Associativity and identity in
+$C$ prove its presheaf laws.  The dependence on the parameter $A$ is uniform:
+$A$ is an ordinary numerical parameter, not a code for an arbitrary program.
+
+\section{Yoneda, universal elements, and uniqueness of representations}
+\label{sec:yoneda}
+
+\begin{theorem}[Primitive recursive schematic Yoneda lemma]
+\label{thm:yoneda-pr}
+For every presented presheaf $P$, object $A$, and presented transformation
+$\alpha:h_A\Rightarrow P$, define
+\[
+ \operatorname{ev}_A(\alpha)=\alpha_A(\id_A).
+\]
+Conversely, for $x\in P(A)$ define a transformation
+$\widehat{x}:h_A\Rightarrow P$ by
+\begin{equation}
+ \widehat{x}_a(f)=P(f)x,\qquad f:a\to A.
+ \label{eq:yoneda-construction}
+\end{equation}
+These constructions respect the relevant equivalence relations and satisfy
+\[
+ \operatorname{ev}_A(\widehat{x})\approx_A x,
+ \qquad
+ \widehat{\operatorname{ev}_A(\alpha)}_a(f)
+   \approx_a\alpha_a(f).
+\]
+For each fixed input presentation and transformation term, evaluation is a
+primitive recursive term, and reconstruction uses the fixed action term with
+the extra numerical parameter $x$.  Evaluation is not a universal evaluator
+whose input is the code of an arbitrary program.  Thus the customary notation
+$\operatorname{Nat}(h_A,P)\cong P(A)$ has an explicit, first-order schematic
+meaning in $\ipra$.
+\end{theorem}
+\begin{proof}
+The identity $\id_A$ is a valid element of $h_A(A)$, so preservation of
+membership by $\alpha$ makes its evaluation a valid member of $P(A)$.
+
+For the converse, if $f:a\to A$, action typing gives $P(f)x\in P(a)$.
+If $f\sim f'$, action congruence gives $P(f)x\approx_a P(f')x$.
+For $k:b\to a$, the required naturality equation is exactly
+\[
+ P(k)(\widehat{x}_a(f))
+ =P(k)(P(f)x)
+ \approx_b P(f\circ k)x
+ =\widehat{x}_b(h_A(k)(f)).
+\]
+This is the composition law of the presheaf, used in its symmetric direction.
+If $x\approx_A y$, action congruence makes $\widehat{x}$ and $\widehat{y}$
+pointwise equal.  If $\alpha$ and $\beta$ are pointwise equal, their values
+at $(A,\id_A)$ are equal, so evaluation also respects equality.
+
+The first inverse law is
+$\operatorname{ev}_A(\widehat{x})=P(\id_A)x\approx_A x$.
+For the second, use naturality of $\alpha$ at $f:a\to A$ and apply it to
+$\id_A\in h_A(A)$.  It says
+\[
+ P(f)(\alpha_A(\id_A))
+ \approx_a\alpha_a(h_A(f)(\id_A))
+ =\alpha_a(\id_A\circ f)
+ \approx_a\alpha_a(f).
+\]
+The final step is the identity law in $C$, followed by congruence of
+$\alpha_a$.  This is exactly the required pointwise equality.  No element
+has been chosen by search, and no equality was tested.  The witness term
+is the action function of $P$ applied to its two displayed arguments.
+\end{proof}
+
+\begin{proposition}[Naturality of Yoneda in both variables]
+For $\tau:P\Rightarrow Q$, the Yoneda correspondences commute with applying
+$\tau$.  For an arrow $u:A\to B$, they commute with precomposition by the
+transformation $h_u:h_A\Rightarrow h_B$, where
+$(h_u)_a(f)=u\circ f$, and with the action map $P(u):P(B)\to P(A)$.
+\end{proposition}
+\begin{proof}
+The first assertion at evaluation is literal:
+\[
+ \operatorname{ev}_A(\tau\alpha)
+ =\tau_A(\alpha_A(\id_A)).
+\]
+At reconstruction it is naturality of $\tau$:
+\[
+ \tau_a(P(f)x)\approx_a Q(f)(\tau_A(x)).
+\]
+For the second assertion, let $\alpha:h_B\Rightarrow P$.  Evaluation of
+$\alpha h_u$ gives
+\[
+ \alpha_A(u\circ\id_A)\approx_A\alpha_A(u)
+ \approx_A P(u)(\alpha_B(\id_B)),
+\]
+where the last equality is the second inverse identity already proved.
+Equivalently, starting with $x\in P(B)$, reconstruction after applying $P(u)$
+has component
+\[
+ P(f)(P(u)x)\approx_a P(u\circ f)x,
+\]
+which is reconstruction followed by precomposition with $h_u$.
+\end{proof}
+
+\begin{theorem}[The Yoneda embedding is schematically fully faithful]
+\label{thm:yoneda-fully-faithful}
+The association $A\mapsto h_A$, $u\mapsto h_u$ preserves identities and
+composition.  Every fixed presented transformation $\alpha:h_A\Rightarrow h_B$
+has the unique inducing arrow, modulo hom equality,
+\[
+ u=\alpha_A(\id_A):A\to B.
+\]
+In particular, if $h_u$ and $h_v$ are pointwise equal, then $u\sim v$.
+\end{theorem}
+\begin{proof}
+The component of $h_{\id_A}$ at $f$ is $\id_A\circ f\sim f$.
+The component of $h_v h_u$ is $v\circ(u\circ f)\sim(v\circ u)\circ f$,
+which is the component of $h_{v\circ u}$.  Thus the association is functorial
+in the schematic sense just explained.
+
+Apply Theorem~\ref{thm:yoneda-pr} with $P=h_B$.  The reconstruction of
+$u\in h_B(A)$ is
+$\widehat{u}_a(f)=h_B(f)(u)=u\circ f$, precisely $h_u$.  Its second inverse
+identity gives $\alpha_a(f)\sim u\circ f$.  If also
+$\alpha_a(f)\sim v\circ f$ for all $a,f$, put $a=A$ and $f=\id_A$.
+The identity laws give $u\sim v$.  This proves fullness and faithfulness
+without a general function space or any choice operation.
+\end{proof}
+
+\begin{corollary}[Isomorphism is detected by representables]
+If presented transformations $\alpha:h_A\Rightarrow h_B$ and
+$\beta:h_B\Rightarrow h_A$ are pointwise inverse, the arrows
+$u=\alpha_A(\id_A)$ and $v=\beta_B(\id_B)$ satisfy
+$v\circ u\sim\id_A$ and $u\circ v\sim\id_B$.
+\end{corollary}
+\begin{proof}
+By fullness, $\alpha=h_u$ and $\beta=h_v$ pointwise.  Functoriality turns
+$\beta\alpha=\id$ into $h_{v\circ u}=h_{\id_A}$.  Faithfulness gives
+$v\circ u\sim\id_A$.  The other identity is obtained from
+$\alpha\beta=\id$ in the same way.  Every arrow used in the conclusion has
+already been displayed.
+\end{proof}
+
+\subsection{Universal elements and the category of elements}
+
+The category of elements $\int P$ has object codes $(a,x)$ with
+$a\in C$ and $x\in P(a)$.  A morphism
+\[
+ (a,x)\longrightarrow(b,y)
+\]
+is a morphism $f:a\to b$ satisfying $P(f)y\approx_a x$.
+Its equality is the equality of the underlying arrows of $C$.  Pairing and
+projection of codes are primitive recursive.  Identity and composition are
+inherited from $C$.
+
+\begin{lemma}
+The displayed data define an arithmetic presentation of a category.
+\end{lemma}
+\begin{proof}
+For identity, $P(\id_a)x\approx_a x$ is a presheaf law.  For composition,
+let $f:(a,x)\to(b,y)$ and $g:(b,y)\to(c,z)$.  Then
+\[
+ P(g\circ f)z\approx_a P(f)(P(g)z)
+ \approx_a P(f)y\approx_a x.
+\]
+Thus $g\circ f$ has the required element condition.  Congruence of the action
+shows that changing an arrow to an equal arrow preserves this condition.
+The equivalence, congruence, associativity, and identity laws are inherited
+from $C$ with the indicated typing hypotheses.
+\end{proof}
+
+\begin{definition}[Chosen universal element]
+A chosen universal element of $P$ is a valid pair $(A,x)$ together with a
+fixed primitive recursive function $r(a,z)$ such that, whenever $z\in P(a)$,
+\[
+ r(a,z):a\to A,\qquad P(r(a,z))x\approx_a z,
+\]
+and every $f:a\to A$ satisfying $P(f)x\approx_a z$ satisfies
+$f\sim r(a,z)$.  This is a terminal object of $\int P$ equipped with a
+primitive recursive mediator function.
+\end{definition}
+
+\begin{theorem}[Representability by a chosen universal element]
+A chosen universal element $(A,x,r)$ determines an isomorphism of presented
+presheaves $h_A\cong P$.  Conversely, a presented isomorphism
+$\theta:h_A\cong P$ determines such a chosen universal element.  The
+constructions and their laws are schematic theorems of $\ipra$.
+\end{theorem}
+\begin{proof}
+For the forward direction, put $\theta=\widehat{x}$ and
+$\rho_a(z)=r(a,z)$.  The definition gives
+$\theta_a(\rho_a(z))\approx_a z$.  It also implies
+$\rho_a(\theta_a(f))\sim f$, since $f$ itself satisfies the relevant
+universal condition.
+
+We must check that $\rho$ is an extensional natural transformation, rather
+than merely a family of inverse values.  If $z\approx_a z'$, then
+$P(r(a,z))x\approx_a z'$; uniqueness for $z'$ gives
+$r(a,z)\sim r(a,z')$.  Thus $\rho_a$ is extensional.  For $k:b\to a$,
+\[
+ P(r(a,z)\circ k)x
+ \approx_b P(k)(P(r(a,z))x)
+ \approx_b P(k)z.
+\]
+The uniqueness condition at $(b,P(k)z)$ gives
+$r(a,z)\circ k\sim r(b,P(k)z)$.  This is naturality of $\rho:P\Rightarrow h_A$.
+Therefore $\theta$ and $\rho$ form the required presheaf isomorphism.
+
+Conversely, let $\theta:h_A\Rightarrow P$ and $\rho:P\Rightarrow h_A$ be
+presented inverse transformations.  Set $x=\theta_A(\id_A)$ and
+$r(a,z)=\rho_a(z)$.  Yoneda gives
+$\theta_a(f)\approx_a P(f)x$.  Hence
+\[
+ P(r(a,z))x\approx_a\theta_a(\rho_a(z))\approx_a z.
+\]
+If $P(f)x\approx_a z$, the same Yoneda identity gives
+$\theta_a(f)\approx_a z$.  Applying the extensional map $\rho_a$ and the
+inverse law yields $f\sim\rho_a(z)=r(a,z)$.  This proves uniqueness.
+\end{proof}
+
+The adjective ``chosen'' is substantive.  A bare assertion that every object
+of $\int P$ has some unique arrow to $(A,x)$ does not, by itself, supply a
+single primitive recursive mediator function.  Ordinary intuitionistic logic
+allows the corresponding local existential reasoning, but our claim that a
+\emph{presented} inverse transformation has been constructed requires the
+additional function $r$.  No choice or witness-extraction theorem is being
+silently invoked.
+
+\begin{theorem}[Uniqueness of representations, with the canonical arrow]
+Suppose $\theta:h_A\cong P$ and $\psi:h_B\cong P$ are presented
+isomorphisms.  There is a unique arrow $u:A\to B$, modulo hom equality,
+such that
+\[
+ \psi_a(u\circ f)\approx_a\theta_a(f)
+ \qquad(f:a\to A).
+\]
+It is an isomorphism, and its two directions are explicitly
+\[
+ u=\psi_A^{-1}(\theta_A(\id_A)),\qquad
+ v=\theta_B^{-1}(\psi_B(\id_B)).
+\]
+\end{theorem}
+\begin{proof}
+The composite transformation $\psi^{-1}\theta:h_A\Rightarrow h_B$ is
+induced by its evaluation at $\id_A$, which is the displayed $u$.
+Therefore $\psi^{-1}\theta=h_u$ pointwise.  Composing pointwise with $\psi$
+gives the required compatibility.  Any other compatible $u'$ satisfies
+$h_{u'}=\psi^{-1}\theta=h_u$, so Yoneda faithfulness gives $u'\sim u$.
+The analogous construction gives $h_v=\theta^{-1}\psi$.  These two
+transformations are inverse; the preceding corollary gives
+$v\circ u\sim\id_A$ and $u\circ v\sim\id_B$.
+\end{proof}
+
+\subsection{The covariant form}
+
+For completeness, suppose $Q$ is a presented \emph{covariant} setoid-valued
+functor: $f:a\to b$ gives $Q(f):Q(a)\to Q(b)$, with the covariant functor
+laws.  Put $k_A(a)=\Hom_C(A,a)$.  The same statement holds with
+$k_A$ in place of $h_A$:
+\[
+ \alpha\longmapsto\alpha_A(\id_A),\qquad
+ x\longmapsto\bigl(f\longmapsto Q(f)x\bigr).
+\]
+To verify the nontrivial inverse directly, naturality at $f:A\to a$ gives
+$Q(f)(\alpha_A(\id_A))\approx_a\alpha_a(f\circ\id_A)
+\approx_a\alpha_a(f)$.  Naturality of the reconstruction is the covariant
+composition law.  A universal element in this variance is a chosen
+\emph{initial} object in the covariant category of elements, whose arrow
+condition is $Q(f)x\approx_b y$.  Thus both variances are covered by explicit
+formulas rather than an appeal to an unconstructed opposite functor category.
+
+\section{Density and co-Yoneda by explicit normalization}
+\label{sec:density}
+
+There is a useful strengthening of the preceding analysis.  The density
+formula for a presheaf can be proved in a form that avoids assuming the
+existence of arbitrary colimits.  The key is that each apparent quotient
+class has a canonical representative computable by one presheaf action.
+
+Fix $b\in C$.  A generator over $b$ is a triple
+\[
+ (a,x,f),\qquad x\in P(a),\quad f:b\to a.
+\]
+Define its value by $\nu_b(a,x,f)=P(f)x\in P(b)$.  Put
+\begin{equation}
+ (a,x,f)\equiv_b(a',x',f')
+ \quad\Longleftrightarrow\quad
+ P(f)x\approx_b P(f')x'.
+ \label{eq:density-equality}
+\end{equation}
+This is an arithmetic equivalence relation; it is not implemented by a
+search for an equivalence class.  Let $D_P(b)$ denote this presented setoid.
+An arrow $k:c\to b$ acts by
+\[
+ D_P(k)(a,x,f)=(a,x,f\circ k).
+\]
+The presheaf action law shows that this action respects
+\eqref{eq:density-equality}, and the category laws prove its identity and
+composition laws.  Thus $D_P$ is a presented presheaf.
+
+\begin{theorem}[Explicit co-Yoneda normal form]
+\label{thm:co-yoneda-normal}
+There is a presented natural isomorphism $D_P\cong P$ with maps
+\[
+ \nu_b(a,x,f)=P(f)x,\qquad
+ \iota_b(z)=(b,z,\id_b).
+\]
+Moreover, the relation \eqref{eq:density-equality} is exactly the least
+setoid equivalence compatible with fibre and hom equalities and the elementary
+identifications
+\begin{equation}
+ (a,x,f)\equiv_b(a',x',u\circ f)
+ \quad\text{when }u:(a,x)\to(a',x')\text{ in }\int P.
+ \label{eq:density-elementary}
+\end{equation}
+Here ``least'' is a schematic implication about any fixed arithmetic
+relation satisfying these closure conditions; it does not quantify over a
+set of all relations.
+\end{theorem}
+\begin{proof}
+The maps have the required types.  The composite $\nu_b\iota_b$ sends $z$
+to $P(\id_b)z\approx_b z$.  The other composite sends $(a,x,f)$ to
+$(b,P(f)x,\id_b)$, whose value is
+$P(\id_b)(P(f)x)\approx_b P(f)x$.  The definition of $\equiv_b$ therefore
+makes this composite the identity modulo the setoid relation.
+
+Naturality of $\nu$ is the identity
+$P(f\circ k)x\approx_c P(k)(P(f)x)$.  For $\iota$, the images
+$D_P(k)(b,z,\id_b)=(b,z,\id_b\circ k)$ and
+$(c,P(k)z,\id_c)$ have equal values under $\nu_c$ by the identity and
+composition laws; hence they are $\equiv_c$-equal.  This proves naturality.
+
+We next identify the quotient relation intrinsically.  Fibre equality and
+arrow equality plainly preserve values.  If $u:(a,x)\to(a',x')$, its
+defining condition says $P(u)x'\approx_a x$.  Consequently
+\[
+ P(u\circ f)x'\approx_b P(f)(P(u)x')\approx_b P(f)x.
+\]
+Thus every elementary identification preserves $\equiv_b$.
+
+Conversely, let $R$ be any equivalence relation on generators that respects
+the stated fibre equalities and contains the elementary identifications.
+For each generator $t=(a,x,f)$, the arrow
+\[
+ f:(b,P(f)x)\longrightarrow(a,x)
+\]
+is an arrow of $\int P$ by reflexivity.  Applying the elementary relation
+to this arrow and $\id_b$ gives
+\[
+ (b,P(f)x,\id_b)\ R\ (a,x,f\circ\id_b)\ R\ (a,x,f),
+\]
+where the last step uses the specified compatibility with hom equality.
+If $t\equiv_b t'$, their two values are fibre-equal, so the corresponding
+canonical triples are $R$-equal.  Transitivity and symmetry now give $t R t'$.
+This uses only a fixed finite sequence of equalities, regardless of the
+numerical codes.  In particular, there is no appeal to induction on an
+arbitrarily long chain of quotient generators.
+\end{proof}
+
+The customary coend notation for this result is
+\[
+ P(b)\cong\int^{a\in C}P(a)\times\Hom_C(b,a).
+\]
+In the present foundation, this expression means precisely the coded
+setoid and normalization maps above.  It should not be read as a theorem
+asserting all coends exist in a global category of sets.
+
+\begin{theorem}[Schematic density as a universal cocone]
+\label{thm:density-cocone}
+For $(a,x)\in\int P$, let $j_{a,x}:h_a\Rightarrow P$ be the Yoneda
+transformation $j_{a,x,b}(f)=P(f)x$.  This family is a cocone over the diagram
+$(a,x)\mapsto h_a$, with an arrow $u$ acting by postcomposition $h_u$.
+It has the following universal property.  For every presented presheaf $Q$
+and every \emph{uniformly primitive recursive} family of transformations
+$\lambda_{a,x}:h_a\Rightarrow Q$ satisfying
+\begin{equation}
+ \lambda_{a,x,b}(f)\approx_b
+ \lambda_{a',x',b}(u\circ f)
+ \quad\bigl(u:(a,x)\to(a',x')\bigr),
+ \label{eq:density-cocone}
+\end{equation}
+there is a unique presented transformation $\delta:P\Rightarrow Q$ such
+that $\delta j_{a,x}=\lambda_{a,x}$ pointwise.  It is explicitly
+\begin{equation}
+ \delta_b(z)=\lambda_{b,z,b}(\id_b).
+ \label{eq:density-mediator}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The cocone law for $j$ says
+$P(f)x\approx_b P(u\circ f)x'$, and this was proved in the preceding theorem.
+The displayed formula for $\delta$ is primitive recursive because the family
+$\lambda$ is assumed uniform in all of its numerical arguments.  Its value
+belongs to $Q(b)$ by typing of $\lambda_{b,z}$.
+
+To check extensionality, suppose $z\approx_b z'$.  The identity arrow
+$\id_b$ is an arrow $(b,z)\to(b,z')$ in $\int P$, since
+$P(\id_b)z'\approx_b z$.  Applying the cocone equation at $\id_b$ gives
+\[
+ \lambda_{b,z,b}(\id_b)\approx_b
+ \lambda_{b,z',b}(\id_b\circ\id_b)
+ \approx_b\lambda_{b,z',b}(\id_b).
+\]
+The last equality uses the identity law and extensionality of
+$\lambda_{b,z',b}$.  This is $\delta_b(z)\approx_b\delta_b(z')$.
+
+For naturality, let $k:c\to b$.  The arrow
+$k:(c,P(k)z)\to(b,z)$ lies in $\int P$.  The cocone condition gives
+\[
+ \delta_c(P(k)z)=\lambda_{c,P(k)z,c}(\id_c)
+ \approx_c\lambda_{b,z,c}(k).
+\]
+Naturality of the fixed transformation $\lambda_{b,z}:h_b\Rightarrow Q$
+at $k$, evaluated at $\id_b$, gives
+\[
+ \lambda_{b,z,c}(k)\approx_c
+ Q(k)(\lambda_{b,z,b}(\id_b))=Q(k)(\delta_b(z)).
+\]
+These two equalities prove naturality of $\delta$.
+
+To prove factorization, take $f:b\to a$ and $x\in P(a)$.  The arrow
+$f:(b,P(f)x)\to(a,x)$ belongs to $\int P$, so the cocone condition gives
+\[
+ \delta_b(j_{a,x,b}(f))
+ =\lambda_{b,P(f)x,b}(\id_b)
+ \approx_b\lambda_{a,x,b}(f).
+\]
+Finally, let $\delta'$ be another factorization.  Applying its factorization
+equation to the canonical generator $(b,z,\id_b)$ yields
+\[
+ \delta'_b(P(\id_b)z)\approx_b\lambda_{b,z,b}(\id_b)=\delta_b(z).
+\]
+The presheaf identity law and extensionality of $\delta'_b$ replace the
+left side by $\delta'_b(z)$.  Thus $\delta'$ equals $\delta$ pointwise.
+\end{proof}
+
+\paragraph{Foundational content.}
+The density theorem has an unbounded object predicate, but its proof still
+requires no unbounded search, induction on that predicate, choice of
+representatives, or generic recursion over formulas.  It constructs the
+mediator by a single substitution into the \emph{supplied uniform} cocone
+program.  Removing that uniformity assumption would remove the reason that
+\eqref{eq:density-mediator} is primitive recursive.  This distinction is
+precisely what allows a substantial part of presheaf theory to survive in
+$\ipra$ while avoiding a claim that all classical presheaf categories have
+been internalized.

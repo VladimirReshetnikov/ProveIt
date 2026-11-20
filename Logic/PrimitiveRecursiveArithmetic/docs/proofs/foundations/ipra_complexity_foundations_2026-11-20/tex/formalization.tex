@@ -1,0 +1,315 @@
+\section{Lean formalization: checked core and complete roadmap}
+\label{sec:lean}
+
+\subsection{What has actually been checked}
+
+The standalone project in \code{lean/} was compiled with Lean 4.19.0 and
+uses only the bundled \code{Std} library. It contains 31 named theorems,
+six audited proof-bearing definitions, and 12 checked examples. There are
+no \code{sorry} placeholders or added axiom declarations. The recorded
+dependency audit contains no \code{sorryAx} or \code{Classical.choice};
+some proofs depend on Lean's standard \code{propext} and \code{Quot.sound}.
+These dependencies and the complete build output are supplied in
+\code{verification/lean-build-and-axioms.log}.
+
+Lean's axiom audit reports dependencies of the elaborated statement and
+proof \cite{LeanAxioms}. Even an axiom-free ambient theorem would not by
+itself prove that its statement has a derivation in first-order \ipra.
+Unrestricted Lean induction, arbitrary function parameters and richer types
+are part of the metatheory until translated. We explicitly retain that
+distinction.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.23\textwidth}X@{}}
+\toprule
+Module & Checked content and its boundary\\
+\midrule
+\code{Bounded} & Boolean finite existential/universal semantics, failed
+search semantics, witness soundness and completeness. The mathematical
+leastness argument is not a separate checked theorem.\\
+\code{Machine} & Iteration composition, fixed points, accepting-by-time
+monotonicity and trace uniqueness for an abstract fixed transition system.
+It is not yet an encoded Turing-machine interpreter.\\
+\code{Reductions} & Nonnegative polynomial syntax, evaluation, substitution,
+monotonicity, reduction composition, and size/call-cost certificate
+composition. Supplied costs still need a machine implementation proof.\\
+\code{Reachability} & An independent directed-walk relation, splitting and
+concatenation, stutter removal, and the exact midpoint-recurrence theorem
+for paths of length at most \(2^k\). No Savitch storage bound is inferred
+from this semantic result alone.\\
+\code{Circuits} & AND/NOT/constant Tseitin constraints, correctness for a
+whole gate system, width and linear clause-count bounds. The general
+machine-to-circuit compiler is not yet a checked Lean theorem.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The central checked reachability statement, in the supplied namespace, is
+\code{reach\_iff\_short\_walk}. It relates the executable Boolean recurrence
+to a separately defined inductive walk relation, including bounded
+endpoints. This avoids validating the recurrence merely by restating its
+definition. The Tseitin constraints similarly compare finite clause
+evaluation with gate equations, not with an assumed SAT specification.
+
+\subsection{Definitions needed for the complete numerical layer}
+
+The report fixes the mathematical meaning of each definition. The remaining
+coding work should produce primitive-recursive syntax, not simply more
+ambient functions. The following interface list is sufficient to organize
+the implementation; all arguments and results are natural-number codes,
+and predicates return bits.
+
+\begin{longtable}{@{}>{\RaggedRight\arraybackslash}p{0.29\textwidth}>{\RaggedRight\arraybackslash}p{0.63\textwidth}@{}}
+\toprule
+Numerical operation & Required definition and invariants\\
+\midrule
+\endhead
+Words and records & Validity, length, bit access, concatenation, slicing,
+mixed-radix arrays, update, and decode/encode equations. Word code 0 is
+reserved; language input theorems are guarded by \(x\ge1\).\\
+Machine coding & Fixed global alphabet; finite transition-table parsing;
+state labels; malformed-code defaults; signed head and finite tape codes;
+\(\operatorname{Init},\Step,\Run,\Acc,\Acc_{\#}\).\\
+Trace checker & Window conversion; explicit configuration bound;
+initial-row test; bounded conjunction of adjacent-step equations; final
+state and resource checks.\\
+Descriptors & Polynomial and exponential clock evaluation; normalization
+of invalid descriptors; witness length; \(P_d,N_v\); output extraction and
+clocked transducers.\\
+Circuit syntax & Gate-list encoding, predecessor validity, input and output
+counts, prefix evaluation, CNF list encoding, literal evaluation, and
+assignment validity.\\
+Compilers & Code-level machine composition; local unrolling;
+\(F_v(x),\operatorname{Ext}_v,\operatorname{Restr}_v\); source and output
+bit-length bounds and target clocks.\\
+Configuration graph & \(N_0(e,n,s)\), mixed-radix projections, cap and
+transition tests, initial and target codes, adjacency.\\
+Graph algorithms & Bounded path coding, split/join, cycle removal, linear
+marking, repeated-squaring table updates, clocked stack evaluator,
+exact-count transcript checking and canonical transcript generation.\\
+QBF syntax & Finite Boolean terms and quantifiers, capture-free variable
+renaming, guarded shared-occurrence constructor, bounded truth evaluation,
+and its polynomial-space evaluator.\\
+Diagonal syntax & \(W(e,c,k)\), exact parser, the clocked complemented
+simulation, unary clock construction, mismatch equation.\\
+Finite counting & Sum/product folds, weighted counts, image bitsets,
+bounded least missing element, seed-tuples and majority.\\
+\bottomrule
+\end{longtable}
+
+For an arbitrary graph use an adjacency bit table of length \(N^2\).
+For an implicit configuration graph use the particular primitive-recursive
+transition test with numerical machine parameters. The latter does not
+require evaluation of an arbitrary PR program supplied as input. Similarly,
+QBF truth has a fixed finite grammar with bounded Boolean values; it is not
+truth for arbitrary first-order arithmetic syntax.
+
+\subsection{The actual object-theory target in ProveIt}
+
+At the pinned revision, \code{LeanProofs.ConciseIPRA} supplies
+\code{PR}, \code{PTm}, \code{Fm}, \code{PRAAx}, and the intuitionistic
+proof judgment \code{Prf}. The PR constructors are zero, successor,
+projection, composition and primitive recursion. The desired endpoint for
+a closed sentence \(\varphi\) is the Lean type
+\[
+  []\ \vdash[\mathsf{PRAAx}]\ \varphi,
+\]
+written in the repository as
+\code{([] : List (Fm PTm 0))} followed by its
+\code{\(\vdash\)[PRAAx]} notation and the encoded formula.
+This is a type of actual derivations, not a theorem saying that the
+corresponding proposition happens to hold in Lean's natural numbers.
+
+The inspected interfaces include:
+\begin{itemize}
+\item \code{PRA.comp}, \code{PRA.precZero}, \code{PRA.precSucc} for
+primitive-recursive defining equations, and \code{PRA.qfInd} for the
+permitted induction rule.
+\item \code{BoundedFormulas.bf\_reflect}, \code{bf\_dec},
+\code{bf\_choice}, and \code{bf\_least}, for fixed bounded syntax and its
+numeric Boolean interpretation.
+\item \code{LeastBoundedWitness.found\_iff}, \code{sentinel\_iff},
+\code{decision}, and \code{skolem}, for bounded numerical witnesses.
+\item The \code{BoundedSyntaxInduction} namespace provides
+\code{induction}, \code{induction\_at},
+\code{induction\_rule}, and \code{bounded\_induction\_closed}. Their
+source applies \code{PRA.qfInd} to the compiled-bit equation and translates
+back by reflection of that fixed bounded syntax.
+\end{itemize}
+
+The exact namespaces and source paths are recorded in
+\code{lean/OBJECT\_IPRA\_ROADMAP.md} and \code{SOURCE\_AUDIT.md}.
+The pinned repository uses Lean 4.32.0 and its own Mathlib revision. This
+package's independent Lean 4.19.0 core is not claimed to have been tested
+as a drop-in module under that different toolchain. Integration should use
+the repository's pinned environment and port or restate the small semantic
+lemmas there; it should not overwrite the upstream toolchain.
+
+\subsection{A staged completion plan with concrete proof obligations}
+
+\paragraph{Stage 1: code the arithmetic primitives.}
+For each function in the interface table construct a term of the actual
+\code{PR k} syntax. Start with word and array operations, bounded folds,
+polynomials and finite transition tables. Derive their equations using the
+existing ordinary arithmetic library. Prove encode/decode and bound lemmas
+before invoking the semantic companion. In particular, conversion from
+sparse tapes to fixed windows is a proved map between two encodings.
+
+\paragraph{Stage 2: transport the bounded kernel.}
+Translate \code{bany\_correct}, \code{ball\_correct}, and witness
+soundness/completeness to numeric 0/1 bits. Reuse the existing bounded-syntax
+reflection endpoints instead of defining a second logical kernel. Translate
+iteration and trace uniqueness using the invariant
+\[
+ \forall i\le\min(j,T)\quad
+ \operatorname{row}(z,i)=\Run(e,x,i),
+\]
+with the explicit row and trace bounds. Apply the existing bounded-induction
+endpoint to its fixed bounded syntax. No arbitrary function-valued trace
+survives in the object language.
+
+\paragraph{Stage 3: implement and certify costs.}
+Choose the finite machine implementations for universal simulation, input
+copying, polynomial clock construction, sequential composition, and output
+printing. Give a transition counter and a storage-height counter. Prove
+that their numeric operational traces meet the cost polynomials. This
+connects a \code{PolyCost} certificate to actual machine transitions;
+the current algebraic certificate alone does not make that connection.
+
+\paragraph{Stage 4: complete Cook--Levin.}
+Prove the local update truth table implements one machine move. Then prove
+the row invariant, topological validity of emitted wires, output size and
+generator runtime. Add acyclic evaluation and unique extension to the
+already checked Tseitin-gadget core. The final endpoints are the two
+witness implications of Theorem~\ref{thm:cook}, followed by existential
+introduction/elimination and explicit target-clock normalization. A useful
+integration target is an object-theory theorem with \(v,x,y\) free, later
+universally closed, rather than a type quantifying over arbitrary Lean
+languages.
+
+\paragraph{Stage 5: complete finite-graph and space proofs.}
+Replace ambient inductive walks by bounded path checkers. For repeated
+squaring through a fixed outer level \(K\), bound every path code by
+\(\max(2,N)^{2^K+1}\) and every table by \(2^{N^2}\). Translate the
+checked walk splitting and midpoint theorem. Separately verify the
+iterative stack machine, with at most \(K+1\) frames and its explicit
+time clock. For complementing nondeterminism, implement both the transcript
+verifier and the streaming branch machine, and prove branch realization in
+both directions. The exact-count invariant uses the transcript bound in
+Section~\ref{sec:space}. For QBF, prove capture-free renaming and the
+shared-occurrence formula lemma, then the printer's size/time bounds.
+
+\paragraph{Stage 6: lower the diagonal and extensions.}
+The parser equations and Boolean mismatch need only a small object proof
+once word operations are available. The resource membership additionally
+needs Stage 3's real simulator and unary-clock bounds. Finite circuit
+counting uses bounded image cardinality; amplification uses finite product
+expansion. Each receives its own bounded induction invariant and output
+sentence. These are separate milestones, so the difficult implementation
+lemmas are neither assumed as axioms nor hidden behind a generic
+``formalizable'' label.
+
+At each stage the final object proof can be checked by the ordinary
+\code{Prf PRAAx} interface. If a native scalar-core export is desired,
+apply the repository's proved ordinary/native equivalence only after the
+ordinary derivation exists. There is no need to introduce a new foundation
+for each complexity result.
+
+\section{Induction and verification ledger}
+\label{sec:ledger}
+
+\subsection{The induction audit}
+
+The following table records the actual finite information used by the main
+proofs. Bounds may be intentionally much larger than the running program's
+storage, because proof coding and resource implementation are distinct.
+
+\begin{longtable}{@{}>{\RaggedRight\arraybackslash}p{0.23\textwidth}>{\RaggedRight\arraybackslash}p{0.35\textwidth}>{\RaggedRight\arraybackslash}p{0.34\textwidth}@{}}
+\toprule
+Result & Induction invariant & Numerical bounds / witnesses\\
+\midrule
+\endhead
+Bounded search & Found-bit and saved witness agree with the scanned prefix;
+all earlier candidates fail. & Scan length \(r\); index at most \(r\);
+Boolean prefix products.\\
+Bounded simulation & Tape cells, head and state match the machine; time
+counter advances once per move. & Window \(n+2T+3\), row bound
+\(qWg^W\), explicit trace bound.\\
+Cook--Levin & Every label in the processed row equals the corresponding
+run label; all wire predecessors are earlier. & \(t\le T\), \(j<W\),
+gate count \(a_v(T+1)W\); evaluation is the extension witness.\\
+Tseitin converse & All processed gate variables equal the evaluation
+from the input prefix. & Finite gate/assignment array; prefix projection
+is the witness map.\\
+Cycle removal & Endpoints and adjacency preserved; repeated-vertex
+deletion decreases length. & At most the original path length many
+deletions; least repeated pair.\\
+Savitch & The finite table or stack answer equals a path of length
+at most \(2^j\). & Path bound \(N^{2^K+1}\) at outer level \(K\);
+stack depth \(K+1\); explicit recursion-node clock.\\
+Space complement & All surviving transcripts have the true count; a
+specified canonical transcript survives. & Transcript code below
+\(2^{B(N)}\); paths chosen by bounded least search.\\
+QBF completeness & Guarded formula truth equals the bounded reachability
+bit for every endpoint pair. & Endpoints below \(2^d\); formula and
+assignment bounds; fresh variable indices.\\
+Diagonal separation & Parser returns the supplied fields; arithmetic
+clock inequalities; simulator-prefix agreement. & Unary \(c,k\le n\);
+witness \(W(e,c,k)\); clock \(2^{K(n+1)^2}\).\\
+Circuit lower bound & The image of \(i\) circuit descriptions has at most
+\(i\) marked truth tables. & Finite table universe \(2^{2^n}\); least
+missing table and least disagreeing input.\\
+Amplification & Weighted tuple count factors as a product; majority-bad
+tuples have minimum weight. & \(M^r\) seed tuples; integer powers;
+no infinite probability object.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Executable checks supplied with the archive}
+
+The graph implementation was compared against an independent
+Floyd--Warshall closure on all 530 directed graphs, including self-loops,
+with one, two or three vertices, covering 4,674 source--target pairs.
+Linear reachability, midpoint reachability, bounded path search, and
+canonical nonreachability certificates agreed. Separate tests check the
+equal-count argument and reject damaged paths, marks, counts and transcripts.
+The reference implementation materializes tables and certificates; it is
+not claimed to run in logarithmic space.
+
+The compiler implementation performs an actual finite single-tape
+simulation-to-circuit-to-3CNF construction. Its reference convention uses
+a fixed binary prefix followed by a fixed-width certificate; the general
+report permits a separator as well. Tests compare the independent simulator
+and circuit at every relevant row and tape cell, include leftward moves,
+writes, empty inputs, clock zero and terminal absorption, and validate
+explicit assignment extension and restriction. They include all 86 full
+assignments of seven tiny circuit examples, another 32 assignments covering
+unused inputs and both constant outputs, 32 aliased-AND assignments,
+42 parity-compiler instances, and 107 witness/clock cases. Independently
+flipping each of 2,419 auxiliary variables in one compiled example is
+rejected by its gate constraints.
+
+The graph suite has five tests and the circuit suite eleven, all passing in
+the captured run. These are finite validation evidence for the executable
+artifacts. They are not a substitute for the general mathematical proofs,
+nor a claim of completed object-theory formalization.
+
+\subsection{Boundary statements and next research directions}
+
+The foundation does not settle P versus NP, NP versus coNP, L versus NL,
+or PSPACE versus EXPTIME. It also does not turn arbitrary extensional
+correctness into a short proof, infer machine costs from PR definability,
+or reflect arbitrary \ipra{} proof codes into truth. Sharp hierarchy
+theorems need explicit constructibility and simulation hypotheses beyond
+the coarse separation proved here. Uniform randomized or quantum
+complexity needs its own representation and error conventions. Completeness
+or speedup results that quantify over arbitrary total algorithms need a
+separate analysis of which clocks and totality proofs can be represented.
+
+The next concrete integration milestone is to lower the bounded-machine
+and circuit-construction lemmas to the existing derivation library. That
+would deliver an actual object-theory Cook--Levin theorem without first
+formalizing every part of the subject. The graph kernel and the inspected
+bounded-induction endpoints then provide a second path to Savitch and
+space complementation. This modular order makes every claimed gain
+checkable and avoids adding unnecessary axioms to \ipra.

@@ -1,0 +1,273 @@
+% Continuous probability: mathematical section prepared for inclusion in the main report.
+% Requires amsmath, amssymb, amsthm. All analytic statements below are presented
+% with explicit approximation contracts, not as already compiled Lean theorems.
+
+\section{Continuous distributions with explicit approximation contracts}
+\label{sec:continuous-laws}
+
+A law and an integrable random variable are different objects.  A probability
+law may have finite total mass and no first moment.  Accordingly, the density
+construction below first produces probabilities of bounded regular events and
+expectations of bounded test functions.  An expectation of an unbounded
+observable is admitted only after a separate absolute-tail certificate is
+provided.  This distinction includes the Cauchy law without incorrectly
+assigning it an ordinary expectation.
+
+\subsection{From a nonnegative kernel to a probability law}
+
+A \emph{kernel presentation} consists of the following data.  The kernel
+$w\colon\mathbb R\to[0,\infty)$ is given locally by primitive recursive rational
+approximations, a modulus of continuity on each rational compact interval, and
+a rational bound there.  Finitely many explicitly listed discontinuities are
+also allowed, by splitting the interval at them.  There is a primitive
+recursive radius $R(k)\geq 1$ such that, for every rational $B\geq R(k)$,
+\begin{equation}
+ \int_{[-B,B]\setminus[-R(k),R(k)]}w(x)\,dx\leq 2^{-k}.
+ \tag{K1}\label{eq:kernel-tail}
+\end{equation}
+All integrals in this hypothesis are finite-interval integrals, computed by
+rational quadrature with the supplied modulus.  Finally there are explicit
+rationals $z_0>0$ and $R_0>0$ with
+\begin{equation}
+ z_0\leq\int_{-R_0}^{R_0}w(x)\,dx.
+ \tag{K2}\label{eq:kernel-positive}
+\end{equation}
+The inequalities are finite rational approximation contracts, including any
+rounding allowance; neither an unbounded search for a cutoff nor a decision
+about equality of real numbers is part of the data.
+
+\paragraph{Normalization theorem.}
+These data determine a fast Cauchy name for
+$Z=\int_{\mathbb R}w$, with $Z\geq z_0$, and a probability law with density
+$q=w/Z$.  If $g$ is bounded by a known rational $C$ and is locally effectively
+integrable against $w$, its expectation has a primitive recursive Cauchy name.
+For an unbounded $g$ the same conclusion follows from a supplied primitive
+recursive cutoff $R_g(k)$ for the tails of $|g|w$.
+
+\begin{proof}
+Choose a rational quadrature $a_k$ for the integral over
+$[-R(k+2),R(k+2)]$ with error at most $2^{-k-2}$.  Replace $R$ by its finite
+maximum up to its argument if necessary, so that it is nondecreasing.
+For $\ell\geq k$, compare the two finite integrals on the larger interval.
+Their difference is at most $2^{-k-2}$ by \eqref{eq:kernel-tail}.  Thus
+$|a_\ell-a_k|\leq 3\cdot2^{-k-2}$.  Reindexing gives the stipulated fast
+Cauchy form.  Positivity follows by retaining the fixed interval in
+\eqref{eq:kernel-positive}.  Division is effective because its denominator
+is separated from zero: for positive $u,v\geq z_0/2$,
+\[
+ |u^{-1}-v^{-1}|\leq 4z_0^{-2}|u-v|.
+\]
+The mass outside $[-R(k),R(k)]$ is at most $2^{-k}/z_0$.
+For bounded $g$, the discarded expectation is at most $C2^{-k}/z_0$;
+for unbounded $g$ use the specified $|g|w$ tail.  All remaining quantities
+are finite sums.  Normalization, additivity, and positivity follow by
+comparing those sums at a common requested precision.  No assertion that
+every measurable function is integrable has been made.
+\end{proof}
+
+A convenient additional certificate is a local bound $q\leq K_R$ on
+$[-R,R]$.  It controls threshold boundaries:
+\[
+ \mathbb P\{t-\eta<X\leq t+\eta\}\leq 2K_R\eta
+ \qquad (|t|+\eta\leq R).
+\]
+Therefore bounded intervals have effective event names, and the distribution
+function $F(t)=\mathbb P\{X\leq t\}$ is a represented continuous function.
+If $q\leq K$ globally, $|F(s)-F(t)|\leq K|s-t|$.  These are the certificates
+needed to turn continuous-test statements into assertions about exact
+threshold events.
+
+\subsection{An elementary primitive recursive exponential}
+
+For completeness, the exponential evaluations required below can be reduced
+to finite rational arithmetic.  On $0\leq t\leq T$, with $T\geq1$ an integer,
+use $E_N(t)=\sum_{j=0}^{N}t^j/j!$.  After index $2T$, successive terms have
+ratio at most $1/2$.  Also
+$T^{2T}\leq 2^{2T(T+1)}$.  Consequently the choice
+\[
+ N=2T+k+2T(T+1)+2
+\]
+makes the remaining series tail at most $2^{-k-2}$.  The case $T=0$ is exact.
+The reciprocal $1/E_N(t)$ approximates $e^{-t}$ with no greater absolute
+error, because $E_N(t)\geq1$.  Multiplication, addition, and the derivative
+identities for the resulting names follow from finite series identities and
+these tail estimates.  The local bounds used in quadrature can thus be
+proved inside the same finite arithmetic development.
+
+The familiar estimates $e^t\geq1+t$ for $t\geq0$, $2\leq e\leq3$, and
+$e^{1/2}\leq2$ have direct positive-series proofs.  They give explicit
+rational estimates below.  The functions need not be introduced as an
+uninterpreted analytic oracle.
+
+\subsection{Uniform and exponential laws}
+
+For rational $a<b$, the uniform density is
+\[
+ q(x)=\frac{\mathbf1_{[a,b]}(x)}{b-a}.
+\]
+Splitting at $a,b$ makes quadrature elementary.  Direct integration yields
+\[
+ \mathbb E X=\frac{a+b}{2},\qquad
+ \operatorname{Var}(X)=\frac{(b-a)^2}{12},\qquad
+ \mathbb E X^m=\frac{b^{m+1}-a^{m+1}}{(m+1)(b-a)}.
+\]
+These formulas are finite polynomial identities after denominators are
+cleared.  Endpoints are null, so the choice of endpoint convention does not
+affect the law.
+
+Let $\lambda>0$ be rational, or a represented parameter with a supplied
+rational lower bound $\lambda_0>0$.  The exponential density is
+\[
+ q_\lambda(x)=\lambda e^{-\lambda x}\mathbf1_{[0,\infty)}(x).
+\]
+The finite-interval fundamental theorem gives
+$\int_0^R q_\lambda=1-e^{-\lambda R}$.  Since $e^{-s}\leq2^{-s}$ for integer
+$s\geq0$, a cutoff $R\geq k/\lambda_0$ gives mass tail at most $2^{-k}$.
+The derivative on the positive half-line is locally bounded using any
+supplied upper bound on $\lambda$, and the jump at zero is a listed
+breakpoint.
+
+Integration by parts on $[0,R]$, followed by the explicit boundary and tail
+bounds, gives
+\begin{equation}
+ \mathbb E X^m=\frac{m!}{\lambda^m},\qquad
+ \mathbb E X=\lambda^{-1},\qquad
+ \operatorname{Var}(X)=\lambda^{-2}.
+ \label{eq:exponential-moments}
+\end{equation}
+Here is a uniform moment-tail certificate, so that this passage is justified
+for every fixed natural $m$:
+\begin{equation}
+ \int_R^\infty x^m q_\lambda(x)\,dx
+ \leq 2^{m+1}m!\lambda_0^{-m}e^{-\lambda_0R/2}.
+ \label{eq:exponential-tail}
+\end{equation}
+Indeed $t^m\leq2^m m!e^{t/2}$ follows by retaining the $m$th positive term of
+the exponential series.  Substitute $t=\lambda x$ and integrate the remaining
+exponential.  For example, if $C$ is any integer at least
+$\max(1,2^{m+1}m!\lambda_0^{-m})$, then
+$R=2(k+C+1)/\lambda_0$ makes the right side at most $2^{-k}$.
+This cutoff is deliberately conservative and is primitive recursive in all
+displayed integer and rational inputs.
+
+\subsection{The normal law without a hidden normalization theorem}
+
+Put $w(x)=e^{-x^2/2}$ and define $Z$ by the normalization theorem.  On
+$[-1,1]$, $w\geq1/2$, hence $Z\geq1$.  For $R\geq1$,
+\begin{equation}
+ \int_{|x|>R}w(x)\,dx
+ \leq \frac{2}{R}e^{-R^2/2}.
+ \label{eq:gaussian-tail}
+\end{equation}
+To prove this, first integrate only over $[R,B]$.  Since $x/R\geq1$ there,
+\[
+ \int_R^B e^{-x^2/2}\,dx
+ \leq R^{-1}\int_R^B x e^{-x^2/2}\,dx
+ \leq R^{-1}e^{-R^2/2}.
+\]
+Reflect and use the same finite inequality at every $B$.  In particular
+$Z\leq4$.  A simple radius $R=2(k+2)$ makes the mass tail at most $2^{-k}$;
+the sharper bound \eqref{eq:gaussian-tail} is usually much better.
+
+Define the standard normal density by $\varphi=w/Z$.  It is bounded by $1$
+and is globally $1$-Lipschitz.  In fact
+$|w'(x)|=|x|e^{-x^2/2}\leq1$, since
+$e^{x^2/2}\geq1+x^2/2\geq|x|$.
+On every $[-R,R]$ it also has an explicit positive lower bound,
+\begin{equation}
+ \varphi(x)\geq\frac{1}{4\cdot3^{\lceil R^2/2\rceil}}.
+ \label{eq:gaussian-slope}
+\end{equation}
+This is useful for bounded inverse-distribution calculations; it supplies
+the separation that a blind bisection search would otherwise lack.
+
+For all integers $m\geq0$ and $R\geq1$,
+\begin{equation}
+ \int_{|x|>R}|x|^m\varphi(x)\,dx
+ \leq C_m e^{-R/4},\qquad C_m=8\cdot4^m m!.
+ \label{eq:normal-moment-tail}
+\end{equation}
+Indeed $|x|^m\leq|x|^{2m}\leq4^m m!e^{x^2/4}$ on $|x|\geq1$;
+then $e^{-x^2/4}\leq e^{-|x|/4}$ and $Z\geq1$.  Thus
+$R_m(k)=4(k+C_m)$ is one primitive recursive moment cutoff, since
+$C_m\leq2^{C_m}$.
+
+Symmetry proves all odd moments zero.  Integration by parts on $[-R,R]$
+and \eqref{eq:normal-moment-tail} prove
+\begin{equation}
+ \mathbb E G^{2m}=(2m-1)!!,\quad
+ \mathbb E G=0,\quad \mathbb E G^2=1,\quad \mathbb E G^4=3.
+ \label{eq:normal-moments}
+\end{equation}
+The convention is $(-1)!!=1$.  Explicitly, $w'=-xw$ gives the recurrence
+$\int x^{j+2}w=(j+1)\int x^jw$ after the two boundary terms vanish with
+the stated rate.  In particular,
+\begin{equation}
+ \mathbb E|G|^3\leq\tfrac12(\mathbb E G^2+\mathbb E G^4)=2,
+ \label{eq:normal-third}
+\end{equation}
+because $2|x|^3\leq x^2+x^4$.
+
+The usual notation $Z=\sqrt{2\pi}$ can also be justified within this
+framework.  Define $\pi=4\int_0^1(1+t^2)^{-1}\,dt$.  Reciprocal substitution
+shows $\int_0^\infty(1+t^2)^{-1}\,dt=\pi/2$.  In the positive quadrant,
+substitute $y=tx$ in the product integral for $Z^2/4$ and then integrate in
+$x$:
+\[
+ \frac{Z^2}{4}
+ =\int_0^\infty\int_0^\infty
+      x e^{-(1+t^2)x^2/2}\,dx\,dt
+ =\int_0^\infty\frac{dt}{1+t^2}=\frac\pi2.
+\]
+This is not an invocation of an unrestricted improper change-of-variables
+theorem.  Perform the substitution first on $a\leq x\leq R$, $0\leq t\leq T$.
+In the original quadrant, the omitted strip $x<a$ has integral at most $2a$,
+the omitted tail $x>R$ is bounded by twice the one-sided Gaussian tail, and
+on $x\geq a$ the omitted region $y>Tx$ is contained in $y>Ta$.  Choose
+$a,R,Ta$ with the Gaussian bounds.  In the transformed integral, the omitted
+$t>T$ tail is at most $1/T$; on $t\leq T$ the omissions $x<a$ and $x>R$
+are bounded by $Ta^2/2$ and $T e^{-R^2/2}$ respectively.  One simultaneous primitive recursive choice is
+\[
+ s=k+4,\qquad a=2^{-2s},\qquad T=2^{3s},\qquad R=2(s+1).
+\]
+Then $Ta=2^s$, $Ta^2/2=2^{-s-1}$, $1/T=2^{-3s}$, and
+$T e^{-R^2/2}\leq2^{3s-2(s+1)^2}\leq2^{-s-2}$.
+Each of the other three error terms is at most $2^{-s}$.  The sum of all
+six is therefore less than $2^{-k}$.  This supplies a single explicit
+finite-stage comparison rather than an unrestricted passage to an improper
+integral.  Only finite Fubini and one-dimensional substitutions are used.  The normalization-free definition
+$\varphi=w/Z$ and every result above are independent of this identification.
+
+For represented $\mu$ and $\sigma\geq\sigma_0>0$, the affine image
+$X=\mu+\sigma G$ has density
+\[
+ \varphi_{\mu,\sigma}(x)=\frac1{\sigma Z}
+       \exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right),
+\]
+mean $\mu$ and variance $\sigma^2$.  The lower bound on $\sigma$ makes
+division and the parameter-dependent error estimates effective.
+
+\subsection{Cauchy: a continuous law with no expectation}
+
+For $w(x)=(1+x^2)^{-1}$ the normalization constant again satisfies
+$1\leq Z\leq4$, and reciprocal substitution gives $Z=\pi$ as defined above.
+For $R\geq1$,
+\[
+ \int_{|x|>R}w(x)\,dx\leq 2/R.
+\]
+Thus $R(k)=2^{k+1}$ is a mass cutoff for the normalized density
+$q(x)=1/[\pi(1+x^2)]$.  This density is bounded by $1$, is $1$-Lipschitz,
+and on $[-R,R]$ is at least $1/[4(1+R^2)]$.
+
+It has no absolute first moment.  On
+$[2^j,2^{j+1}]$, $x/(1+x^2)\geq2^{-j-2}$, so the unnormalized first-moment
+integral over this interval is at least $1/4$.  Reflect, sum $M$ such
+intervals, and divide by $Z\leq4$ to obtain
+\[
+ \int_{-2^M}^{2^M}|x|q(x)\,dx\geq M/8.
+\]
+This finite lower bound excludes any finite absolute-moment name.  The
+symmetric integrals of $xq(x)$ are zero, but that principal-value statement
+is not an expectation.  A realization of the Cauchy law belongs to the
+framework's convergence-in-probability class, not its $L^1$ class.
+

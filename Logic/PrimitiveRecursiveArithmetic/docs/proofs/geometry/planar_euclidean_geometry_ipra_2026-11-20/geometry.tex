@@ -1,0 +1,116 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[letterpaper,top=.82in,bottom=.87in,left=1.0in,right=1.0in,headheight=14pt,headsep=18pt]{geometry}
+\usepackage{booktabs,tabularx,xcolor,fancyhdr,microtype}
+\usepackage{graphicx,tikz}
+\definecolor{ink}{HTML}{202F39}
+\definecolor{accent}{HTML}{195A63}
+\usepackage[colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent,pdftitle={Planar Euclidean geometry in intuitionistic primitive recursive arithmetic}]{hyperref}
+\urlstyle{same}
+\usepackage{enumitem}
+\setlist{topsep=4pt,itemsep=2pt,parsep=1pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{accent}Euclidean geometry in iPRA}
+\fancyhead[R]{\small\sffamily\color{accent}\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\raggedbottom
+\begin{document}
+\thispagestyle{empty}
+\noindent{\small\sffamily\bfseries\color{accent} FOUNDATIONS OF GEOMETRY}\hfill
+{\small\sffamily 20 November 2026}\par
+\vspace{13pt}
+\noindent{\fontsize{27}{32}\selectfont\bfseries Planar Euclidean geometry}\par
+\vspace{2pt}\noindent{\fontsize{18}{22}\selectfont in intuitionistic primitive recursive arithmetic}\par
+\vspace{11pt}
+\noindent\textbf{Main result.} There is a plane of finitely coded points in which
+every first-order statement about betweenness and equidistance has exactly
+the truth value it has in the ordinary Euclidean plane. Each statement has
+a primitive recursive decision method on algebraic parameters. For a true
+existence statement the method also produces a point. The equivalence with
+the arithmetic translation is provable in iPRA separately for each formula.
+The plane supports exact straightedge-and-compass operations and an intrinsic
+reconstruction of scalar arithmetic once a unit frame is chosen.
+\par\vspace{8pt}\noindent\textcolor{accent}{\rule{\linewidth}{0.8pt}}
+\section{The plane and the equivalences}
+\label{sec:scope}
+Let $\mathcal L_{\rm pt}$ have point equality, inclusive betweenness
+$B(A,X,C)$, and segment congruence $AB\equiv CD$. Variables range over
+points; a line, a circle and its incidence predicates will be defined
+from points. The ordinary plane means $\mathbb R^2$ in this language.
+Define the arithmetic plane by $K^2$, where $K$ is the setoid of
+real algebraic numbers described in Section~\ref{sec:scalar}.
+A setoid consists of valid codes and an explicit equivalence relation
+on codes; all predicates and operations below respect that relation.
+For example, the roots isolated as $\sqrt{2}$ by two different
+polynomials are the same point coordinate.
+
+Three assertions specify the result:
+\begin{enumerate}
+\item \emph{Elementary equivalence.} For a closed point sentence
+$\sigma$, ordinary Euclidean truth is equivalent to provability of
+its arithmetic translation in iPRA. More generally, the embedding
+preserves every first-order formula with parameters in $K^2$.
+\item \emph{Framed coordinatization.} In the point plane itself,
+an origin and two perpendicular unit directions suffice to recover
+addition, multiplication, order, and both coordinates by point formulas.
+Building the plane from the recovered field returns the original framed
+plane up to a definable isomorphism. Without constants the frame is
+a triple of parameters.
+\item \emph{Construction.} Quadratic towers give exactly the coordinates
+drawn by finite straightedge-and-compass constructions. Polynomial root
+isolation supplies the additional points used by elementary continuity
+and general first-order existential formulas.
+\end{enumerate}
+\noindent iPRA here has one numerical sort, symbols and defining equations
+for primitive recursive functions, intuitionistic first-order logic with
+equality, and induction on quantifier-free formulas. The scalar symbols
+used below abbreviate total PR operations on numbers. Invalid inputs can
+be sent to fixed defaults. Every bounded search has an explicit range.
+The external assertion about the ordinary plane and the arithmetic proof
+for each translated formula have different logical roles.
+
+\par\vspace{7pt}
+\noindent{\small\sffamily\color{accent}\textbf{Proofs and constructions}\quad
+\hyperref[sec:scalar]{Scalar codes, p.~\pageref*{sec:scalar}}\quad
+\hyperref[sec:qe]{Decision theorem, p.~\pageref*{sec:qe}}\quad
+\hyperref[sec:synthetic]{Point axioms, p.~\pageref*{sec:synthetic}}\\
+\hyperref[sec:frame-inverse]{Recovering the field, p.~\pageref*{sec:frame-inverse}}\quad
+\hyperref[sec:constructions]{Constructions, p.~\pageref*{sec:constructions}}\quad
+\hyperref[sec:lean]{Lean development, p.~\pageref*{sec:lean}}}
+\clearpage
+\input{parts/algebra}
+\input{parts/elimination}
+\input{parts/synthetic}
+\input{parts/coordinates}
+\input{parts/constructions}
+\input{parts/motions}
+\input{parts/boundary}
+\input{parts/formalization}
+\begin{thebibliography}{9}
+\bibitem{proveit} V.~Reshetnikov, \emph{ProveIt}, Primitive Recursive
+Arithmetic, snapshot \texttt{83421593771f}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/83421593771f877bc1ae98f4229eb35507bff05b/Logic/PrimitiveRecursiveArithmetic}{Repository and subdirectories}.
+\bibitem{cm} C.~Cohen and A.~Mahboubi, \emph{Formal proofs in real algebraic
+geometry: from ordered fields to quantifier elimination}, Logical Methods
+in Computer Science 8 (2012).
+\url{https://arxiv.org/abs/1201.3731}.
+\bibitem{pr} D.~Perrucci and M.-F.~Roy, \emph{Elementary recursive
+quantifier elimination based on Thom encoding and sign determination},
+Annals of Pure and Applied Logic 168 (2017), 1588--1604.
+\url{https://arxiv.org/abs/1609.02879}.
+\bibitem{beeson} M.~Beeson, \emph{A constructive version of Tarski's
+geometry}, \url{https://arxiv.org/abs/1407.4399}.
+\end{thebibliography}
+\end{document}

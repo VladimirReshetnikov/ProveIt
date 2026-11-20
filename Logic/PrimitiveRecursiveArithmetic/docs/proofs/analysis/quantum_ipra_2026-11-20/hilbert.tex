@@ -1,0 +1,373 @@
+\section{A countably infinite Hilbert space with quantitative names}
+\label{sec:infinitehilbert}
+
+Fix the discrete basis $e_0,e_1,\ldots$. A finite vector is a finite list of
+Gaussian rationals, with trailing zeroes ignored. Write
+$\delta_k=2^{-k}$, $P_N$ for restriction to $0\le i<N$, and
+$\lambda(C)=\min\{h\le C:2^h\ge C\}$ for positive integral $C$.
+Ceil a positive rational before applying $\lambda$. Squared norms of finite
+vectors are rational. Thus even a test $\|u-v\|\le r$ for nonnegative
+rational $r$ is a rational test. Inner products are conjugate-linear in the
+first slot. All algorithms below apply to fixed PR presentations or uniformly
+to families carrying PR algorithms, in the schematic sense of iPRA.
+
+\subsection{Vectors, tails and completeness}
+
+A name consists of an integer $M\ge1$ and a PR function $s\mapsto x_s$ of
+finite vectors with
+\[
+ \|x_s\|\le M,\qquad \|x_s-x_t\|\le\delta_s\quad(t\ge s).
+\]
+Equality of two names means $\|x_s-y_s\|\le 2\delta_s$ for every $s$.
+This relation is transitive: compare both names at an arbitrarily late
+stage with an intermediate name, then return to stage $s$. The resulting
+bound is $2\delta_s+4\delta_t$ for every $t\ge s$; a strict rational
+violation of $2\delta_s$ supplies a finite $t$ excluding it. Denote the
+setoid by $\ell^2_{\rm PR}$. An estimate such as $\|x-x_s\|\le\delta_s$
+means the corresponding estimates at finite stages with their rounding
+allowances. In computations one can target error $\delta_{k+2}$ at stage $k$:
+two such approximations to the same vector differ by at most $\delta_k$
+at stages $k$ and $t\ge k$.
+
+The finite Cauchy--Schwarz inequality follows, including the zero-vector
+case, from the polynomial identity
+\[
+ \|a\|^2\|b\|^2-|\langle a,b\rangle|^2
+   =\sum_{i<j}|a_i b_j-a_j b_i|^2.
+\]
+It gives the triangle inequality by expanding a square. Addition,
+multiplication by a named scalar, the norm, and the inner product pass to
+names. For example, when inputs have bounds $M,N$, the inner-product
+error made by using both stage-$s$ vectors is at most $(M+N)\delta_s$;
+the norm error is at most $\delta_s$ before rational square-root rounding.
+For scalar products use
+$\|a x-b y\|\le |a|\|x-y\|+|a-b|\|y\|$. A stage
+$k+3+\lambda(1+M+N)$ therefore suffices for the inner product and
+for the analogous scalar-vector product with these envelopes. Finite norm
+rounding uses bisection of a nonnegative rational square root on $[0,M]$.
+The finite identities extend by these bounds, including positivity,
+conjugate symmetry and the parallelogram law. If $\|x\|=0$ then
+$\|x_s\|\le\delta_s$ and $x=0$.
+
+\begin{proposition}[Two presentations of the basis expansion]
+A vector name gives uniformly named coordinates and a PR cutoff $L(k)$
+such that every finite section of its tail beyond $L(k)$ has norm at
+most $\delta_k$. Conversely, uniformly named coordinates with this
+finite-tail certificate and a fixed bound $M$ on the norms of all finite
+initial sections give a vector name.
+\end{proposition}
+\begin{proof}
+Read a coordinate from $x_s$ with error at most $\delta_s$. Take $L(k)$
+equal to the length of $x_k$. Every finite selection of entries beyond it
+is a contraction of $x-x_k$. Conversely take $N=L(k+3)$ and approximate the
+first $N$ coordinates to complex absolute error
+$\delta_{k+3+\lambda(1+N)}$ each. The resulting vector $q_k$ has error at
+most $\delta_{k+3}$ in that section, since the norm is at most the sum
+of coordinate errors. For $s\ge k$, compare $q_k,q_s$ inside the longer
+of their two sections; each incurs its rounding error and at most its
+certified tail error. Their difference has norm at most $4\delta_{k+3}$.
+The integer $M+1$ bounds their norms. Coordinate recovery follows by
+comparing in a section containing the desired index, using the tail estimate
+even when that index lies beyond the chosen cutoff. Reconstruction of a
+given name is equal to the original by the same estimates. A monotone
+cutoff may always be obtained by taking finite running maxima.
+\end{proof}
+
+The same estimates give the relevant completeness principle. Suppose
+$y^{(j)}$ is a uniformly named family, and a PR function $m$ certifies
+$\|y^{(a)}-y^{(b)}\|\le\delta_r$ for $a,b\ge m(r)$.
+Replace $m$ by running maxima. For stage $k$ take stage $k+3$ of
+$y^{(m(k+3))}$. Two such samples differ by at most $3\delta_{k+3}$.
+Their norms are bounded, for example, by the bound of $y^{(m(0))}$
+plus $2$. Comparison against a later sample proves convergence with the
+given modulus. This diagonal construction uses a supplied joint PR sampler.
+A collection of individually PR names need not have one.
+
+The tail certificate carries mathematical information. Let $h(e,j)$ be the
+decidable predicate that machine $e$ first halts at step $j$. The sequence
+$a_j=h(e,j)$ has at most one nonzero coordinate, and every finite partial
+sum of squared moduli is at most one. A uniform computable cutoff $L_e(1)$
+would decide halting by simulating up to that cutoff: a later $1$ would give
+a finite tail of norm one. This external reduction also excludes a PR rule
+producing such cutoffs from the coordinate algorithm and norm upper bound.
+It explains precisely why those two pieces of data alone do not give the
+above Hilbert-space presentation.
+
+\subsection{Bounded maps and tensors}
+
+A bounded-map presentation for $A$ gives uniformly named columns
+$c_j=Ae_j$ and an integer $B\ge1$ with the certificate
+\[
+ \Big\|\sum_j q_jc_j\Big\|\le B\|q\|
+ \qquad\text{for every finite Gaussian-rational vector }q .
+ \tag{H1}\label{eq:H1}
+\]
+The inequality expands to universal precision tests. For an actual
+adjointable map one supplies a second bounded-map presentation with columns
+$d_i$, and the identities $(c_j)_i=\overline{(d_i)_j}$.
+When needed enlarge $B$ to cover both bounds. There is no operation
+of searching for a norm or an adjoint in these definitions.
+
+\begin{theorem}[Quantitative extension and adjoint]
+These data determine an extensional linear map on vector names, bounded by
+$B$. The second presentation acts as its Hilbert-space adjoint.
+\end{theorem}
+\begin{proof}
+For target stage $k$ take $s=k+3+\lambda(B)$, $q=x_s$, and
+$C=1+\lceil\sum_j(|\Re q_j|+|\Im q_j|)\rceil$. Return the finite sum
+of $q_j$ times the stage-$k+3+\lambda(C)$ columns. Rounding the columns
+costs at most $\delta_{k+3}$. Changing from $x_s$ to any subsequent
+input stage costs at most $B\delta_s\le\delta_{k+3}$ by
+\eqref{eq:H1}. Thus the stage vectors are regular, have bound $BM+1$,
+and represent the unique bounded extension, since finite input approximants
+are dense with a known rate. Addition and scalar multiplication follow by
+comparison on finite inputs and taking the prescribed error to zero.
+Pairing the columns on two finite inputs gives
+$\langle y,Ax\rangle=\langle A^*y,x\rangle$.
+The inner-product error bound extends this identity to names.
+In particular, if all columns vanish, the whole map vanishes.
+\end{proof}
+
+Columns of $AD$ are $A(De_j)$, the norm bound is the product of the bounds,
+and $(AD)^*=D^*A^*$. For a sum take a sum of bounds. An isometry can be
+specified by the finite-input identity $\|Aq\|^2=\|q\|^2$; a supplied
+unitary additionally has a two-sided inverse, for example by certifying
+$A^*A=AA^*=I$ on the columns. These presentations are closed under all
+three constructions just given, with nested samplers primitive recursive.
+
+Code a pair of indices using a fixed PR bijection with PR inverses, e.g.\
+diagonal enumeration of $\mathbb N^2$ with bounded inversion. The tensor
+space consists of regular names of finitely supported arrays in the pair
+index. Tensoring finite vectors gives the identities
+\[
+ \|x\otimes y\|=\|x\|\|y\|,\qquad
+ \langle x\otimes y,u\otimes v\rangle
+   =\langle x,u\rangle\langle y,v\rangle .
+\]
+They extend to names because approximating the two factors incurs error
+at most $(M+N)\delta_s$ for stage bounds $M,N$. If $A$ is bounded, then
+$A\otimes I$ acts on each second-index column of a finite array. Sum the
+squares of \eqref{eq:H1} over those columns to obtain bound $B$ on the
+array norm. Its columns are $Ae_i\otimes e_j$; the extension theorem
+therefore applies. The argument for $I\otimes D$ interchanges the indices.
+Composition gives $A\otimes D$ with the product bound; the adjoint and
+permutation identities hold on basis arrays and extend. This realizes the
+completed separable tensor product with the given bases.
+
+\subsection{Nuclear operators and an intrinsic trace}
+
+For vectors $u,v$ write $[u,v]x=u\langle v,x\rangle$. A nuclear
+presentation consists of uniformly named $u_j,v_j$, nonnegative PR
+rationals $m_j\ge\|u_j\|\|v_j\|$, an integer $C$ bounding all finite
+partial sums of the $m_j$, and a PR tail function $T$ with
+\[
+  \sum_{a\le j<b}m_j\le\delta_r\qquad(b\ge a\ge T(r)).
+ \tag{H2}\label{eq:H2}
+\]
+It presents $Sx=\sum_j[u_j,v_j]x$. Two presentations represent the same
+operator when all matrix entries agree. An upper bound for the classical
+trace norm is supplied by $C$; no minimization over decompositions is used.
+Finite-rank rational operators, and PR nuclear series equipped with the
+displayed certificates, are included.
+
+\begin{theorem}[Trace and bounded observables]
+$S$ and $S^*$ have bounded presentations with bounds $\max(1,C)$.
+For any bounded-map presentation $A$ with bound $B$, the scalar
+\[
+  \mathcal T_A(S)=\sum_j \langle v_j,A u_j\rangle
+\]
+is a regular complex name depending only on the operator represented by
+$S$. Thus $\operatorname{Tr}S=\mathcal T_I(S)$ is intrinsic, and
+$|\mathcal T_A(S)|\le BC$. If $A$ has a presented adjoint, then
+$\operatorname{Tr}(AS)=\mathcal T_A(S)=\operatorname{Tr}(SA)$.
+\end{theorem}
+\begin{proof}
+For $\|x\|\le X$, each term of $Sx$ has norm at most $Xm_j$.
+Equation \eqref{eq:H2} provides the Cauchy modulus $T(r+\lambda(X))$
+when $X\ge1$. Apply the diagonal construction to finite partial sums;
+swap $u_j,v_j$ for $S^*$. Bounds and the adjoint identity follow first
+for partial sums and then at every precision.
+
+The scalar tail is at most $B\delta_r$. For an explicit stage-$k$
+approximation choose $r=k+3+\lambda(B)$, $J=T(r)$.
+Let $U_j,V_j\ge1$ be integer envelopes for $u_j,v_j$.
+Take
+\[
+ h=k+3+\lambda\!\left(1+\sum_{j<J}(BU_j+V_j+1)\right).
+\]
+Pair finite stage-$h$ samples for $Au_j,v_j$. The first sample has
+distance at most $\delta_h$ from a vector of norm at most $BU_j$, hence
+the summed inner-product error is at most
+$\sum_{j<J}(BU_j+V_j+1)\delta_h$. Regularity follows.
+
+To see independence of the expansion, use a finite basis trace
+$D_N=\sum_{i<N}\langle e_i,A S e_i\rangle$. Distributing the finite sum
+over finite partial nuclear sums and using their tail bounds gives
+$D_N=\sum_j\langle P_Nv_j,A u_j\rangle$ for each fixed $N$.
+For $j\ge J$ the total absolute difference from $\mathcal T_A(S)$
+is bounded by $B\delta_r$. For $j<J$ take
+$h'=k+3+\lambda(1+B\sum_{j<J}U_j)$ and choose $N$ large enough
+to contain the supports of the first $J$ samples $(v_j)_{h'}$.
+Then $\|(I-P_N)v_j\|\le\delta_{h'}$, and the difference over the
+head is at most $B\sum_{j<J}U_j\delta_{h'}$. Both estimates persist
+for larger $N$. Two presentations with the same matrix entries have the
+same columns, since a named vector with every coordinate zero has norm
+zero by its effective tails. Thus they have identical $D_N$; take the
+larger of their two cutoffs to prove equality of their traces. Finally
+$AS$ has expansion $[Au_j,v_j]$ and $SA$ has expansion
+$[u_j,A^*v_j]$. Their majorants are $Bm_j$, with the tail request shifted
+by $\lambda(B)$, and the adjoint identity equates their traces.
+\end{proof}
+
+\subsection{Density states, discarding a system and observing an outcome}
+
+A convenient positive-state presentation is a unit vector $w$ on a
+system and a countable ancillary basis. Finite ancillary bases are included
+by padding with zeroes. Write $w_j$ for the system vector obtained by
+keeping ancilla index $j$. These slices have joint names by contraction.
+Define
+\[
+  \rho_w=\sum_j[w_j,w_j],\qquad
+  \omega_w(A)=\langle w,(A\otimes I)w\rangle .
+\]
+The presentation specifies the probabilities of experiments on the system.
+Distinct amplitudes represent the same mixed state if their density
+operators have identical matrix entries.
+
+\begin{proposition}[Density and reduction]
+$\rho_w$ has a nuclear presentation, is positive, and has trace one.
+For every presented bounded $A$, $\omega_w(A)=\mathcal T_A(\rho_w)$.
+Discarding a factor of a multipartite system amounts to moving its
+index into the ancilla. This gives a presentation-independent operation
+on these states.
+\end{proposition}
+\begin{proof}
+For every finite set of indices, the sum of slice norms squared is at
+most $\|w\|^2$ by orthogonal coordinate restriction. Choose a rational
+$m_j$ in $[\|w_j\|^2,\|w_j\|^2+\delta_{j+2}]$ by approximating
+the square with two extra bits and adding its error. The budget is at
+most $1+\sum_j\delta_{j+2}\le 2$. For target $r$ let $J$ exceed
+every ancilla index occurring in the finite sample $w_{r+2}$, and
+increase it to at least $r+2$. Every finite slice tail beyond $J$
+has total squared norm at most $\delta_{r+2}^2$, by contraction
+applied to $w-w_{r+2}$. The rounding slacks sum to at most
+$2^{-J-1}$. Their sum with $\delta_{r+2}^2$ is below $\delta_r$.
+Thus \eqref{eq:H2} holds. Also the finite ancilla projection up to $J$
+approximates $w$ in norm to within $\delta_{r+2}$, so summing all
+squared slice norms gives exactly one.
+For finite projections the pairing formula is just summing over
+orthogonal slices. The norm bound for $A\otimes I$ passes it to the
+limit. In particular the trace is one and
+$\langle x,\rho_w x\rangle=\sum_j|\langle w_j,x\rangle|^2\ge0$.
+If an additional system factor is discarded, rearrange the two ancillary
+indices with the pairing bijection. For every remaining bounded test $A$
+the new expectation equals the old expectation of $A\otimes I$ by
+the pairing formula. Testing matrix units recovers every density entry,
+which proves independence of the initial purification.
+\end{proof}
+
+\begin{theorem}[Every presented density has a purification]
+Suppose $S$ has a nuclear presentation, is self-adjoint and positive,
+and has trace one. One can construct a uniform unit-vector name $w$ on
+system $\otimes$ ancilla such that $\rho_w=S$.
+\end{theorem}
+\begin{proof}
+Take $L=1+C$, so $0\le S\le L^2I$.
+The bounded-map polynomial algorithm of Theorem~\ref{thm:q-sqrt}
+applied to columns constructs a positive self-adjoint $R$ with $R^2=S$.
+For a column target of $\delta_h$ one may take
+$m=L^22^{2h+4}$ terms and use the bounded-map extension for the
+finite polynomial to a further $\delta_{h+2}$ of error. In detail, $X=I-S/L^2$ is contractive. Successive applications to a
+finite vector can each be rounded to $\delta_{h+3}/[L(m+1)]$; the
+$j$th iterate then has error at most $j$ times this budget. The absolute
+nonconstant coefficients of the square-root polynomial sum to at most
+$L$. Thus the variable number of powers uses one PR iteration on finite
+vectors and its total error is at most $\delta_{h+3}$.
+Set the desired $j$th ancillary slice to $R e_j$. Then
+\[
+ \sum_{j<N}\|R e_j\|^2
+    =\sum_{j<N}\langle e_j,S e_j\rangle=D_N .
+\]
+The basis-trace proof with $A=I$ gives a PR cutoff $J(r)$ past which
+$|D_N-1|\le\delta_r$. The left side is nondecreasing, and its finite
+tails from any $N\ge J(r)$ are bounded by $\delta_r$, since each
+partial sum is at most its named limit one. At stage $k$ use
+$N=J(2k+6)$; assemble approximations to the first $N$ column vectors
+of $R$ to error $\delta_{k+3+\lambda(1+N)}$ each.
+The omitted slice vector has norm at most $\delta_{k+3}$ in every
+finite section, and the finite rounding error is at most $\delta_{k+3}$.
+These estimates prove regularity of the assembled name and its norm
+equals one by the displayed identity. For a matrix entry of $\rho_w$
+the finite slice sum is the corresponding entry of $R P_N R$ by
+self-adjointness. On the input $e_i$ its difference from $R^2$ has
+norm at most $L\|(I-P_N)R e_i\|$, with PR cutoff from the named
+column $R e_i$. Passing to the limit gives $\rho_w=R^2=S$.
+\end{proof}
+
+A mixed preparation with PR unit vectors $x_j$ and nonnegative named
+probabilities $p_j$ summing to one with PR tail modulus $T$ is included:
+use slices $w_j=\sqrt{p_j}\,x_j$. A square root of $p\in[0,1]$ is
+obtained by approximating $p$ within $\delta_{2k+6}$, clipping to
+$[0,1]$, and bisecting the rational approximation's square root to
+$\delta_{k+3}$; $|\sqrt a-\sqrt b|\le\sqrt{|a-b|}$ controls the
+first error. Choose $J=T(2k+6)$ and approximate the first $J$ slices
+to $\delta_{k+3+\lambda(1+J)}$ each. The assembled error is at most
+$\delta_{k+3}$ from the finite approximations and $\delta_{k+3}$ from
+the omitted slices. Values $p_j=0$ are allowed. This construction does
+not require an eigenbasis for a density operator.
+
+An operation is supplied by a presented isometry $V$ from the input to
+output $\otimes$ environment, together with its adjoint when a Heisenberg
+map is desired. On a purification apply $V\otimes I$ and move the new
+environment index into the ancilla. Its trace is one by isometry. The
+output expectation of $A$ is the input expectation of
+$V^*(A\otimes I)V$. Consequently the state operation is extensional
+and affine, since matrix entries are tested by matrix units. At every
+finite matrix level a positive presented test remains positive under
+this Heisenberg transformation: for an extra finite factor take the
+quadratic form on $(I\otimes V)z$, after permuting the environment
+factor. Positivity of a test tensored with the environment identity
+follows by summing the nonnegative quadratic forms on finite slices
+and applying the explicit tail estimate. The identity test is fixed by
+$V^*V=I$. This proves complete positivity and normalization for these
+dilations. With only a forward map the pure-vector sampling construction
+still works; the adjoint presentation supplies the stated observable
+transformation and the argument for extensionality on mixed preparations.
+
+For a countable measurement use a distinguished outcome index in $V$'s
+environment. Let $z=(V\otimes I)w$, permuting indices so that the
+outcome comes last, and $z_a$ its outcome-$a$ slice. The Born rule and
+conditional state become
+\[
+   p_a=\|z_a\|^2,\qquad
+   \rho_{z_a/\sqrt{p_a}}\quad\text{given a witness }p_a\ge\delta_b>0 .
+\]
+Here $z_a$ retains the output and any unobserved ancillary factors.
+The unnormalized slice always exists. For the quotient, $\sqrt{p_a}$
+has certified lower bound $\delta_b$, and reciprocation on this region
+has Lipschitz bound $2^{2b}$. Rational estimates may first be clipped
+to $[\delta_b,1]$. Every PR-decidable event has probability
+$\|(I\otimes P_E)z\|^2$, where the projection simply filters the
+finite sampled array by its outcome. Orthogonality gives finite
+additivity and conditioning on a disjoint union gives the sum of its
+unnormalized branch states, as is seen by the slice expansion. The
+cutoff determined from the largest outcome in $z_{r+2}$ bounds the
+remaining mass by $\delta_{r+2}^2$.
+This proves countable normalization and supplies its rate even for
+an infinite-outcome device. More generally a jointly PR disjoint family
+of events admits effective summation to its union when there is a PR
+bound locating the part containing each accepted outcome among the
+finitely many retained indices; such a bound is automatic for the
+singleton outcome decomposition used here.
+
+\paragraph{Arithmetic content of the estimates.}
+Support lengths, maxima of finite lists, bisection depths and all sampling
+indices above are PR in their numeric parameters. Finite Pythagorean
+identities, rearrangements and norm estimates can be verified as
+integer or rational finite-array statements after clearing positive
+denominators. Their loops use quantifier-free induction with the free
+precision, cutoff and input parameters fixed. Uses of equalities of
+completed objects compare arbitrary output precisions and then substitute
+the displayed finer precisions. In particular the completion argument
+and the trace proof do not perform induction over a quantified
+convergence predicate.

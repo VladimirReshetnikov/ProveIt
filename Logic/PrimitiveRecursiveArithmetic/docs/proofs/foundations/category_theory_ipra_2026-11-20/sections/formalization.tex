@@ -1,0 +1,257 @@
+\section{Lean architecture, repository reuse and completion path}\label{sec:lean}
+
+\subsection{The target is a derivation in iPRA}
+The relevant output type is
+\[
+            \Gamma\vdash[\mathsf{PRAAx}]\varphi,
+       \qquad \varphi:\mathsf{Fm}\;\mathsf{PTm}\;n,
+\]
+not merely a proposition proved in Lean's ambient logic. The supplied
+source files use the actual ProveIt notation for this judgment.
+Here \texttt{PTm} is scoped term syntax, \texttt{Fm} is scoped
+first-order formula syntax, and \texttt{Prf} is an inductive
+intuitionistic natural-deduction derivation. \texttt{PRAAx} contains
+exactly the arithmetic axioms of Section~\ref{sec:foundation}.
+
+The existing syntax is arity-indexed. In schematic Lean notation:
+\begin{verbatim}
+inductive PR : Nat -> Type
+  | zero : PR 0
+  | succ : PR 1
+  | proj {k} (i : Fin k) : PR k
+  | comp {m k} (f : PR m) (gs : Fin m -> PR k) : PR k
+  | prec {k} (f : PR k) (g : PR (k + 2)) : PR (k + 1)
+
+inductive PTm (n : Nat) : Type
+  | var (i : Fin n) : PTm n
+  | app {k} (f : PR k) (ts : Fin k -> PTm n) : PTm n
+\end{verbatim}
+The finite functions in these constructors are tuples of syntax in the
+metatheory. They are not arbitrary functions admitted into iPRA.
+Formula constructors are equality of two terms, false, conjunction,
+disjunction, implication, and the two quantifiers; the latter reduce
+the number of free variables by one. Substitution shifts indices under
+binders. \texttt{Fm.QF} recursively excludes both quantifier constructors.
+The induction constructor requires an explicit proof of this property.
+The appendix source closure includes these definitions and their
+substitution lemmas, rather than replacing them with unspecified axioms.
+
+\subsection{Essential data records}
+The definition \texttt{PresentedCategory.Pres} uses the following exact
+field types. Its associated \texttt{Laws} record contains derivation
+constructors, not assertions that hold only in a semantic interpretation.
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Field & Syntax type & Intended arguments\\
+\midrule
+\texttt{Obj} & \texttt{Fm PTm 1} & $a$\\
+\texttt{Hom} & \texttt{Fm PTm 3} & $a,b,f$\\
+\texttt{Eqv} & \texttt{Fm PTm 4} & $a,b,f,g$\\
+\texttt{idt} & \texttt{PTm 1} & $a$\\
+\texttt{cmp} & \texttt{PTm 5} & $a,b,c,g,f$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example, its associativity field maps derivations typing $f,g,h$
+to a derivation of the appropriate instantiated \texttt{Eqv} formula.
+The human proof's endpoint guards are retained explicitly when needed;
+the upstream minimal record does not supply every possible endpoint
+closure rule automatically.
+
+\texttt{Adjunction.Fun} supplies object and arrow terms of arities one
+and three. A general natural transformation has a component term of
+arity one and object-language typing and naturality laws. A family with
+additional numerical parameters adds those parameters to the term arity.
+\texttt{Yoneda.Fam} has the formulas \texttt{Par}, \texttt{Car},
+\texttt{Sim} of arities one, three and four, and \texttt{act : PTm 5}.
+Its law record supplies the presheaf action and congruence laws used in
+the Yoneda calculation. For subsequent constructions requiring all
+setoid equivalence or carrier-closure laws, those laws must also be
+supplied; a minimal upstream record is not silently strengthened.
+
+For a fixed diagram with objects $D_0,\ldots,D_{r-1}$ and arrows $D(u)$,
+the cone formula at vertex $x$ and a coded component tuple $c$ is the
+finite conjunction
+\[
+ \operatorname{Cone}_D(x,c)\equiv
+ \bigwedge_i H_C(x,D_i,c_i)\ \wedge\
+ \bigwedge_{u:i\to j}E_C(x,D_j,D(u)c_i,c_j).
+\]
+A selected limit record contains a term $L$, projection terms $p_i$,
+a mediator term $m(x,c)$, and derivations of: the cone laws; typing of
+$m$ under the cone premise; $p_i m=c_i$; and
+\[
+ H_C(x,L,v)\wedge\bigwedge_i E_C(x,D_i,p_i v,c_i)
+           \ \longrightarrow\ E_C(x,L,v,m(x,c)).
+\]
+Each fixed conjunction is ordinary formula syntax. Products, equalizers
+and colimits are specializations or duals. Varying diagram length is
+handled by the finite-table Boolean representation, not by this fixed
+conjunction as though it were a PR truth evaluator for arbitrary formulas.
+
+A monad record adds fixed terms for $T$, $\eta$ and $\mu$, typing and
+naturality derivations, and the three monad equations. The Kleisli
+presentation has hom formula $H_C(a,Tb,f)$ and composition term
+$\mu_cT(g)f$. The Eilenberg--Moore object formula on $(a,h)$ is
+\[
+ O_C(a)\wedge H_C(Ta,a,h)\wedge h\eta_a=\id_a
+                         \wedge h\mu_a=hT(h),
+\]
+with its displayed hom predicate from Section~\ref{sec:monads}.
+The Karoubi object formula uses $e^2=e$, and its identity term returns
+$e$. These arithmetical formulas may be undecidable, but their identity
+and composition constructors are PR. To complete their Lean proofs,
+one expands the finite calculations in the report into the already
+available equality and substitution derivation constructors.
+
+\subsection{What was actually inspected in ProveIt}
+All source reuse is pinned to commit
+\texttt{72d37f6d06fa7b5bd0a46732060446d1cffa3f2d}, retrieved on
+20 November 2026 through the GitHub connector. The repository specifies
+Lean \texttt{v4.32.0} and Mathlib \texttt{v4.32.0}.
+The package contains 104 upstream Lean files forming the complete
+in-repository import closure of the selected categorical modules, their
+license, and a source manifest. Mathlib and the Lean executable are
+external build dependencies.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}>{\raggedright\arraybackslash}p{0.63\linewidth}@{}}
+\toprule
+Module & Inspected object-language content and limitations\\
+\midrule
+\endhead
+\texttt{PresentedCategory} & Category formulas and PR terms; inverse
+uniqueness, sections and retractions, terminal uniqueness; a concrete
+additive-monoid instance.\\
+\texttt{Yoneda} & Presheaf and transformation law records;
+\texttt{yoneda}, \texttt{yoneda\_closed}, \texttt{repr\_natural},
+\texttt{repr\_eval}, \texttt{rep\_laws}, representable specialization.\\
+\texttt{Adjunction} & Functor and adjunction records; both hom-map
+round trips; construction of the unit and counit from a natural
+correspondence, with naturality and triangles.\\
+\texttt{SplitEquivalence} & Explicit hom lifting, object representatives,
+quasi-inverse, inverse equations and naturality.\\
+\texttt{FiniteLimits} & Rank/select construction at a fixed diagram
+shape; assumes a retention test with soundness and completeness and
+positive size conditions. The general table-built test is not supplied.\\
+\texttt{FiniteSetClosed} & Evaluation, currying and their round trips
+under positive-cardinality hypotheses. Empty cases need extension.\\
+\texttt{FiniteCoequalizer} & Sequential label merging and its
+factorization calculations in the source's stated finite-set encoding.\\
+\texttt{KanFormula} & Representative-level left and right Kan formulas,
+their compatibility and naturality; not an unrestricted existence
+theorem for arbitrary comma (co)limits.\\
+\texttt{SetoidInterpretation} & Domain- and equality-respecting
+translation of object-language derivations.\\
+\texttt{UniversalEvaluator}\linebreak\texttt{Obstruction} & An external no-universal-PR-
+evaluator theorem and, separately, an actual iPRA diagonal sentence.\\
+\texttt{FiniteCoverSkeleton}, \texttt{TwoClassObstruction} & Positive
+bounded representative selection and the precise obstruction to
+extracting it merely from a bound on equivalence classes.\\
+\bottomrule
+\end{longtable}
+
+The repository describes its \texttt{Derivations} library as kernel-checked.
+This packet has inspected those pinned sources but has \emph{not} rebuilt
+them locally. A proof-shaped source declaration is not by itself a fresh
+build receipt. Nor should an older research packet's description of
+``uncompiled sketches'' be applied to a newer \texttt{Derivations} module
+without reading the latter. These distinctions matter when reporting reuse
+\cite{repo-readme,repo-presented,repo-yoneda,repo-adjunction}.
+
+\subsection{New Lean adapters and a useful interface refinement}
+The source \texttt{Yoneda.NatLaws} asks one term
+$\alpha(p,A,x,f)$ to obey its laws uniformly for every family parameter
+$p$ and representing object $A$. This is a valid sufficient interface,
+but stronger than the data of one transformation $h_A\Rightarrow P_p$
+at fixed $p,A$. It should not be mistaken for that local interface.
+
+The new \texttt{CategoryIPRA/LocalYoneda.lean} defines
+\texttt{AtLaws} at fixed $p,A$ and object-language context $\Gamma$.
+It repeats the short Yoneda derivation with these local premises and
+provides conversion from the upstream uniform record.
+\texttt{Representability.lean} derives faithfulness and the two inverse
+equations from a specified natural isomorphism, using this localized
+record. \texttt{Density.lean} derives value typing, canonical-value
+evaluation, generator round trip and reindexing for the density
+construction. Their conclusions are actual iPRA derivation judgments;
+they introduce no universal evaluator and no new axiom declaration.
+
+\textbf{Verification status.} All three new Lean modules are uncompiled
+integration drafts. No Lean executable was available in the generation
+environment. They contain no \texttt{sorry} or \texttt{admit}, but their
+elaboration and kernel checking remain to be performed. The completed
+human proofs are separate evidence; no statement in this report treats
+the drafts as a completed mechanization. The source-structure audit
+parsed the Lake configuration and found no missing in-repository modules
+among 192 imports across 110 Lean source files. External import names lie
+under the specified Mathlib dependency; its installed module files were
+not checked because the build environment was unavailable.
+
+\subsection{A concrete path to completion}
+The archive's \texttt{lean/formalization\_roadmap.md} gives record fields,
+dependencies and coding obligations in more detail. The following order
+keeps each step mathematically reviewable.
+\begin{enumerate}
+\item Build the pinned source closure and the three new adapters; resolve
+elaboration issues and record the actual kernel and axiom-audit output.
+Close the desired local derivations by the existing universal-closure
+machinery, constructing law records under the required contexts.
+\item Add generic natural transformations, selected cones and universal
+operations as syntax records. Port their finite equational proofs using
+the supplied category and functor law constructors.
+\item Complete density's tuple coding and cocone record. The difficult
+logical point is already removed by direct equality of values; no
+unbounded generated-equivalence closure is needed.
+\item Port the base-$(m+1)$ finite tables, the Boolean diagram tester,
+rank/select, and all zero-cardinality cases. State every loop invariant
+as a concrete quantifier-free formula. The executable model provides
+reference outputs, not proofs of these invariants.
+\item Encode the monad, Kleisli, algebra and idempotent formulas and
+operations exactly as above. Each law is a finite equation chain;
+algebra limits use the selected limiting mediator and its uniqueness.
+\item Encode the parameterized comma diagrams and their selected
+(co)limits. Define the Kan functor and mediator by the formulas in
+Section~\ref{sec:kan}. Preserve the explicit existence assumptions.
+\item Audit every theorem as either a closed iPRA derivation, a derivation
+under named hypotheses, or an external schema. In particular, do not
+replace code-level PR certificates by unrestricted semantic Lean
+functions, and do not infer an internal soundness principle from a
+metatheoretic proof transformation.
+\end{enumerate}
+
+With the pinned toolchain and Mathlib available, the intended commands are
+\begin{verbatim}
+cd lean
+lake update
+lake exe cache get
+lake build CategoryIPRA
+lake env lean CategoryIPRA/Audit.lean
+\end{verbatim}
+These are reproduction instructions. They have not been presented as
+successful executions in this environment.
+
+\subsection{Executable validation and its limits}
+The exact-arithmetic model in \texttt{code/finite\_models.py} uses integer
+tables, including empty tables and base-$(m+1)$ encodings. An actual run
+passed 22,016 exponential beta cases and 22,016 eta cases; 1,544 product
+beta cases and 1,544 eta cases; 60 valid and 84 invalid table-code cases;
+and eight limit/colimit example diagrams, whose universal properties were
+exhaustively checked against test objects of cardinality at most three.
+The diagrams include the empty diagram, empty objects, an empty equalizer,
+a pullback and a quotient requiring transitive identifications.
+
+The powerset presheaf on the finite full subcategory with cardinalities
+$0,1,2$ gives a more discriminating Yoneda test: all 1,024 possible
+component families were checked, and precisely four were natural,
+corresponding to the four elements of the powerset of $[2]$.
+Two further examples use the group and zero monoid of order two.
+The option monad's Kleisli operations passed 23 unit cases and 2,457
+associativity cases.
+
+The executable colimit implementation uses bounded Warshall closure;
+the human proof gives sequential merging. Both realize the same
+finite-path quotient. This independence is useful for catching example
+errors, but tests of finitely many models do not prove an unrestricted
+theorem or verify an iPRA proof checker. The JSON receipt records the
+actual finite scope and all counts.

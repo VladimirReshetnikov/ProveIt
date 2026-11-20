@@ -1,0 +1,47 @@
+% Optional insertion into the formalization chapter; J is fixed externally.
+\paragraph{An exact object-language interface for a chosen limit.}
+For a fixed finite shape $J$, let $D_i(p)$ and $D_u(p)$ be the object and
+arrow terms of a parameterized diagram, and let $\operatorname{Diag}(p)$
+be its arithmetic validity formula.  Encode a cone's components by a
+single tuple code $c$, with PR projections $c_i$.  The formula
+\[
+\begin{split}
+ \operatorname{Cone}(p,x,c)\;\equiv\;& O_C(x)
+ \wedge\bigwedge_{i\in\operatorname{Ob}J}H_C(x,D_i(p),c_i)\\
+ &\wedge\bigwedge_{u:i\to j\in\operatorname{Arr}J}
+ E_C\bigl(x,D_j(p),D_u(p)c_i,c_j\bigr)
+\end{split}
+\]
+contains only number variables.  The conjunctions have fixed finite length;
+they are syntax, not an induction principle.  A chosen limit interface is
+three fixed PR terms: $L(p)$, a projection tuple $P(p)$ with components
+$\pi_i(p)$, and $m(p,x,c)$.  Its laws are iPRA derivations of the following
+formulas, universally closed over the displayed numerical variables:
+\[
+ \operatorname{Diag}(p)\longrightarrow
+ \operatorname{Cone}(p,L(p),P(p)),
+\]
+\[
+\begin{split}
+ \operatorname{Diag}(p)\wedge\operatorname{Cone}(p,x,c)
+ \longrightarrow\;&H_C(x,L(p),m(p,x,c))\\
+ &\wedge\bigwedge_i E_C\bigl(x,D_i(p),
+          \pi_i(p)m(p,x,c),c_i\bigr),
+\end{split}
+\]
+\[
+\begin{split}
+ &\operatorname{Diag}(p)\wedge\operatorname{Cone}(p,x,c)
+ \wedge H_C(x,L(p),v)\\
+ &\qquad\wedge\bigwedge_i E_C(x,D_i(p),\pi_i(p)v,c_i)
+ \longrightarrow E_C(x,L(p),v,m(p,x,c)).
+\end{split}
+\]
+For an empty shape, $c$ and $P(p)$ are empty tuple codes and the empty
+conjunction is true; these laws reduce to the chosen-terminal-object laws.
+No predicate is assumed decidable.  In Lean, $L,P,m$ are terms of type
+\texttt{PTm} of the appropriate arities, the formulas are built by
+\texttt{Fm} conjunction, implication, and universal closure, and each law
+is a field of type $\Gamma\vdash[\mathrm{PRAAx}]A$ or its closed equivalent.
+This representation permits a primitive recursive mediator without a
+function-valued input: a cone of a fixed finite diagram is a numerical tuple.

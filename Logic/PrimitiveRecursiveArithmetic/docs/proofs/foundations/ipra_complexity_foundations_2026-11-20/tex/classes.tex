@@ -1,0 +1,203 @@
+\section{Class presentations and reductions}
+\label{sec:classes}
+
+\subsection{First-order definitions of P, NP, and their relatives}
+
+In every language-equivalence and reduction statement, input variables range
+over valid word codes \(x\ge1\). We write this guard explicitly in the
+defining sentences below and leave it implicit in subsequent displays.
+Transducers output valid word codes, including code 1 for the empty word.
+The reserved code 0 is outside the language universe; in particular,
+complementation is relative to valid words.
+
+A deterministic polynomial descriptor is \(d=(e,c,k)\), with \(c\ge1\).
+Malformed descriptors are normalized to a fixed rejecting descriptor;
+the raw description component \(e=0\) is normalized as specified above.
+Define the Boolean function
+\[
+ P_d(x)=\Acc(e,x,p_{c,k}(\len x)).
+\]
+A verifier descriptor \(v=(e,c,k,a,l)\) has witness length
+\(p(n)=c(n+1)^k\) and time clock \(q(n)=a(n+1)^l\). Its input record is
+\(x\#y\), where \(y\) has exactly \(p(n)\) bits and the separator is part
+of the fixed finite machine alphabet. To keep binary word codes and this
+initialized tape distinct, define \(\Acc_{\#}(e,x,y,t)\) by the same step
+iteration as \(\Acc\), but starting with the tape record \(x\#y\).
+This is a fixed primitive-recursive function of two binary word codes and
+the clock. Its simulation cost uses tape-input length \(\len x+\len y+1\).
+Equivalently, an ordinary binary machine can read a self-delimiting binary
+pair and construct this record with polynomial overhead.
+Let \(\operatorname{bits}_p(j)\)
+denote the \(p\)-bit representation of \(j<2^p\), including leading zeros.
+Set
+\[
+ N_v(x)=\bigvee_{j<2^{p(n)}}
+ \Acc_{\#}(e,x,\operatorname{bits}_{p(n)}(j),q(n)),\qquad n=\len x.
+\]
+All operations in this definition are fixed primitive-recursive functions.
+An exact-length certificate entails no loss: a certificate of length at most
+\(p\) can be represented by a unary length delimiter, its contents, and
+padding in a fixed length \(2p+1\) record.
+
+\begin{definition}[Representing a language]
+For a fixed arithmetic formula \(A(x)\), write
+\[
+ \operatorname{PRep}(d,A):=\forall x\ge1\bigl(A(x)\leftrightarrow P_d(x)=1\bigr),
+\]
+and define \(\operatorname{NPRep}(v,A)\) by replacing \(P_d\) with \(N_v\).
+The abbreviations \(A\in\Pclass\), \(A\in\NP\) mean existence of the
+corresponding numerical descriptor. This use of \(A\) is schematic; there is
+no internal quantification over arbitrary predicates. Alternatively, work
+entirely with the Boolean functions \(P_d,N_v\), and compare them by
+\(\forall x\ P_d(x)=N_v(x)\).
+\end{definition}
+
+Exponential time uses \(\Acc(e,x,e_{c,k}(\len x))\). Space presentations
+use acceptance in the capped configuration graph for an explicit
+\(s(n)=c\lceil\log_2(n+2)\rceil\) or \(s(n)=p_{c,k}(n)\), as developed
+below. Integer logarithms mean bounded search for a power of two, not real
+analysis. Deterministic versus nondeterministic edges distinguish
+\(\Lclass,\NL\) and \(\PSPACE,\NPSPACE\).
+
+For coNP use \(1-N_v(x)\). Its direct logical form is a bounded universal
+statement that every certificate is rejected. Each such input statement is
+decidable in \ipra. This does not place its language in NP, because the
+exhaustive decision algorithm can take exponential time.
+
+\begin{theorem}[Verifier and branch presentations]
+Polynomial-time nondeterministic acceptance and the verifier presentation
+\(N_v\) agree, with primitive-recursive translations of descriptors and
+bounded witness/branch correctness proofs in \ipra.
+\end{theorem}
+
+\begin{proof}
+Normalize a fixed finitely branching transition table so that each choice
+is coded by a fixed number \(b\) of bits. A branch of length at most \(T\)
+is coded by \(bT\) choice bits, with padding after halting. A deterministic
+verifier replays those choices, rejecting an invalid transition code. Its
+simulation has polynomial overhead by the preceding sweep implementation.
+The witness constructor records the choices of a supplied branch, and the
+inverse replays them. The prefix invariant asserts equality of the recorded
+and replayed configurations at every earlier time, a bounded formula.
+
+Conversely, a nondeterministic machine guesses the prescribed polynomial
+number of certificate bits, then runs the fixed clocked verifier. Its clock
+includes guessing, input assembly and verification. The constructed branch
+exists exactly when the bounded witness disjunction is 1. All loops and
+record lengths are explicitly bounded. No infinite branch principle is used.
+\end{proof}
+
+\subsection{Elementary closure and exhaustive simulation}
+
+\begin{theorem}[Closure and basic containments]
+\label{thm:closure}
+\ipra{} proves the numerical compiler theorems corresponding to:
+\(\Pclass\subseteq\NP\); closure of P under complement, finite union and
+intersection; closure of NP under finite union and intersection; and
+\(\NP\subseteq\EXP\).
+\end{theorem}
+
+\begin{proof}
+For \(\Pclass\subseteq\NP\), ignore the witness and run the supplied
+deterministic descriptor. To complement P, evaluate the entire clocked
+Boolean computation and negate its answer, including the timeout answer.
+Merely interchanging the original machine's halting labels is insufficient
+when the original machine can time out. Sequentially evaluate two clocked
+descriptors and combine their bits by AND or OR to obtain intersection or
+union. The resulting sums and simulation overhead have polynomial majorants.
+
+For intersection of two NP presentations, concatenate their two
+certificates and verify both. The forward witness map concatenates; the
+reverse projects. For union use a selector bit and a certificate field
+padded to the larger of the two prescribed lengths; the selector determines
+which verifier is run. These are explicit witness maps, so the existential
+equivalences are intuitionistic.
+If a concatenated, padded, or selector-augmented certificate length is not
+already a monomial, choose the explicit monomial majorant from
+Section~\ref{sec:machines} and ignore the additional padding. This keeps the
+constructor inside the displayed descriptor family.
+
+Finally enumerate \(2^{p(n)}\) certificates, replaying the verifier for
+\(q(n)\) steps on each. A fixed implementation takes at most
+\[
+ A\,2^{p(n)}(n+p(n)+q(n)+1)^b
+\]
+steps for fixed integers \(A,b\). Replace the polynomial factor and \(A\)
+by powers of two using \(r\le2^r\), and absorb the resulting polynomial
+exponent into \(2^{r_0(n)}\). The scan's OR accumulator is exactly the
+defining bounded disjunction. Its induction invariant compares the
+accumulator with the finite prefix OR. Exhaustive search here proves an
+exponential upper bound, not a polynomial one.
+\end{proof}
+
+\subsection{Reductions carry algorithms and bounds}
+
+\begin{definition}[Polynomial many-one reduction]
+A reduction from Boolean presentations \(A\) to \(B\) is a clocked
+polynomial transducer \(f\), together with
+\[
+ \forall x\quad A(x)=B(f(x)).
+\]
+For formula presentations replace equality by equivalence. Its certificate
+records a polynomial time majorant and an output-length majorant. A
+\emph{witness-preserving} reduction additionally specifies primitive-recursive
+maps transporting source witnesses to target witnesses and target witnesses
+back to source witnesses, with their correctness and size bounds.
+\end{definition}
+
+\begin{theorem}[Composition and downward closure]
+\label{thm:reduction}
+Polynomial many-one reduction is reflexive and transitive. If \(A\le_m^pB\)
+and \(B\in\Pclass\), then \(A\in\Pclass\). If \(B\in\NP\), then
+\(A\in\NP\). These statements have explicit descriptor compilers and
+\ipra{} proofs.
+\end{theorem}
+
+\begin{proof}
+The identity transducer gives reflexivity. For composition, run \(f\), then
+\(g\) on its output. If the respective bounds are \(p(n)\) and \(q(m)\),
+then \(\len{f(x)}\le p(n)\), so the useful work is at most
+\(p(n)+q(p(n))\), with an explicit copying and simulation overhead.
+The polynomial-majorant calculation in Section~\ref{sec:machines} supplies
+a resulting clock. Correctness is ordinary equality transitivity:
+\(A(x)=B(f(x))=C(g(f(x)))\).
+
+For downward closure of P, compose with the target decider. For NP, compute
+\(f(x)\), take a certificate for the target verifier at that input, and
+verify it. If target witness length is \(r(m)\), use a fixed padded field
+of length \(r(p(n))\), discarding padding after the required length
+\(r(\len{f(x)})\). Its existence is equivalent by extension and projection.
+The combined verification time is polynomial. No unbounded choice of a
+machine or a witness occurs in these compiler proofs.
+\end{proof}
+
+A language is hard for a presentation class if every descriptor in the class
+has such a reduction to it; completeness adds membership. In arithmetic this
+can be written as a numerical quantification over descriptors, reduction
+codes, and their pointwise correctness. The standard completeness proofs
+below do more: they give a primitive-recursive constructor for the reduction
+code rather than only asserting its existence.
+
+\subsection{Search, functions, promises, and oracle queries}
+
+The class FP is presented by polynomially clocked transducers. A search
+problem has a Boolean polynomial-time relation \(R(x,y)\) and a polynomial
+balance bound \(\len y\le p(\len x)\). A solution procedure returns a witness
+when one exists, and a distinguished failure record otherwise. Total search
+adds a proved assertion that a witness always exists; this assertion must
+not be inferred just from the verifier's totality.
+
+A promise problem is specified by a promise formula \(H(x)\), a yes-condition
+and a no-condition, with the claimed algorithmic behavior required only under
+\(H(x)\). Completeness arguments must preserve the promise, not just map
+yes-instances correctly. A numerical certificate for a promise can be handled
+as ordinary input data; an arbitrary truth oracle is not silently inserted.
+
+A polynomial oracle reduction consists of a clocked query machine with
+polynomially many polynomial-length queries. For a fixed Boolean oracle
+presentation, its query answers can be substituted to obtain a primitive-
+recursive bounded computation. If no primitive-recursive oracle definition
+is supplied, use a finite transcript of queries and supplied answers and a
+relational correctness statement. This gives an appropriate base for later
+oracle complexity while respecting first-order arithmetic. No unrestricted
+oracle truth predicate is part of the present theory.

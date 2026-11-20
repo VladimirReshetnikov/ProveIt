@@ -1,0 +1,213 @@
+\section{Deciding a formula and extracting its witnesses}
+\label{sec:qe}
+Write $K$ for the coded field of the preceding construction. We give the
+elimination argument because a decision procedure proved terminating in a
+stronger theory would by itself give insufficient information about iPRA.
+The geometric atoms are point equality, equidistance and inclusive
+betweenness. Translate them respectively into component equality,
+equality of squared distances, and
+\[
+  [C-A,X-A]=0\ \land\ (X-A)\cdot(X-C)\le0.
+\]
+Section~\ref{sec:synthetic} proves the last equivalence. Relativize numerical
+quantifiers to valid codes, use field equality on representatives, replace
+each point binder by two scalar binders, and commute the translation with
+each intuitionistic connective. This is the interpretation $\varphi^\#$.
+Induction on each fixed formula shows that replacement of a parameter by an equal code preserves its interpretation: this holds for atoms, commutes with the connectives, and holds for each admissible assignment under a binder. We next give a quantifier-free ordered-ring formula for each such
+formula before interpreting its scalar variables by codes.
+
+\subsection{Counting a sign at real roots}
+For a nonconstant squarefree univariate $D$ and any $W$ in $K[T]$, define
+\[
+   Q_D(W)=\sum_{D(r)=0}\operatorname{sgn} W(r),
+\]
+with each distinct root counted once. We show how to compute it using
+only coefficient arithmetic and sign tests. Reduce $D'W$ modulo $D$;
+if the remainder is zero the answer is zero. Otherwise cancel the gcd
+of the remainder and $D$, dividing both by the same monic polynomial,
+to obtain coprime $B,A$ with $B/A$ the reduced proper fraction. Form
+\[
+ S_0=A,\quad S_1=B,\qquad S_{i+1}=-\operatorname{rem}(S_{i-1},S_i)
+\]
+until just before the zero remainder. The last entry is a nonzero
+constant. At $+\infty$ record the sign of each leading coefficient;
+at $-\infty$ multiply it by $(-1)^{\deg S_i}$. Let $V_+,V_-$ be the
+numbers of variations between consecutive signs. Then
+\begin{equation}
+                  Q_D(W)=V_- - V_+.                 \label{eq:query}
+\end{equation}
+Indeed, signs are constant between consecutive roots of the product
+of the $S_i$ by polynomial intermediate value. Neighboring entries
+have no common root, by the Euclidean identities and coprimality.
+At a zero of an interior entry the neighboring values are opposite
+by the signed remainder identity. Its two adjacent edges have one
+variation in total on either side. Several interior entries may vanish
+at the same point; their pairs of edges are disjoint. The final entry
+has no root. At a root $r$ of the first entry, its root is simple,
+and the first edge loses one variation if $B(r)/A'(r)>0$ and gains one
+if it is negative. To check this, write $A=(T-r)A_1$, where
+$A_1(r)=A'(r)$; sufficiently close to $r$, $A_1$ and $B$ have their
+signs at $r$. For a polynomial $g$ with $g(r)\ne0$ this last assertion
+has an explicit bound: write $g(r+h)-g(r)=\sum_{j\ge1}c_jh^j$ and take
+$|h|<\min(1,|g(r)|/(1+\sum|c_j|))$. Edge changes telescope.
+At an uncancelled root of $D$, the coefficient of $1/(T-r)$ in
+$D'W/D$ is $W(r)$, as follows from $D=(T-r)D_1$ and $D'(r)=D_1(r)$.
+Removing the polynomial part or a common factor preserves this coefficient.
+Cancelled roots have $W(r)=0$. This proves~\eqref{eq:query}, including
+the case that there are no roots. Signs on the tails have the claimed
+values by dominance of the leading term; one may use
+$|T|>1+\sum_{j<d}|a_j/a_d|$. For a constant $D\ne0$ set all queries to zero.
+
+For a list $f_1,\ldots,f_m$ and a prescribed sign vector
+$\sigma\in\{-1,0,1\}^m$, its count among the roots of $D$ is computed
+without comparing unknown roots. Use the three integer polynomials
+\[
+ I_0(z)=2(1-z^2),\qquad I_{+}(z)=z^2+z,\qquad I_{-}(z)=z^2-z .
+\]
+On a sign input, each is twice the indicator of its named sign. Expand
+$\prod_j I_{\sigma_j}(Z_j)=\sum_e c_e Z^e$. Then the desired count times
+$2^m$ is
+\begin{equation}
+             \sum_e c_e\, Q_D\Big(\prod_j f_j^{e_j}\Big).      \label{eq:counts}
+\end{equation}
+This follows by expansion at each distinct root and multiplicativity of
+sign, with $z^0=1$ also at zero. Positivity of this integer is the
+test for occurrence.
+
+\subsection{One scalar quantifier}
+Specialize all other variables to any fixed parameter tuple for the
+moment. Given the polynomials occurring in a quantifier-free formula
+$\theta(T)$, first drop the constants, retaining their signs. Let $P$ be
+the monic squarefree part of the product of the rest. If none remain,
+one sample $T=0$ suffices. For squarefree extraction over $K$, divide by the gcd with the derivative. At a proposed root $r$ divide repeatedly by $T-r$, with degree fuel, to write the original product as $(T-r)^e U$, $U(r)\ne0$. For $e>0$ its derivative has multiplicity $e-1$ there. The gcd has the smaller multiplicity, by common divisibility and the B\'ezout identity. Thus extraction preserves every root and makes it simple. When a nonconstant polynomial remains, the signs attained anywhere on
+the line are precisely those among the following finite tests:
+\begin{enumerate}
+\item the signs on the left and right unbounded tails;
+\item sign vectors occurring at a root of $P$;
+\item sign vectors occurring at a root of the squarefree part of $P'$
+(omit this test for a constant derivative).
+\end{enumerate}
+Indeed a sign cannot change inside a root-free interval. For consecutive
+roots $a<b$ of $P$, simplicity gives
+$\operatorname{sgn}P'(a)=-\operatorname{sgn}P'(b)$: factor $T-a$ at the
+left and $T-b$ at the right and use the common interior sign. The
+local bound in the preceding paragraph supplies actual one-sided test
+points, using also half the gap. Polynomial intermediate value applied
+to $P'$ gives a root strictly between $a,b$. Thus the list samples
+every bounded open cell as well as all singleton cells. If $P$ has at
+most one root, the same proof uses only the singleton and tail cases.
+Evaluate the propositional formula on these signs. Existential truth is
+equivalent to at least one true evaluation. For witnesses in $K$, use its
+sorted root lists directly, including midpoints for bounded intervals and
+the extreme roots shifted outwards by one for unbounded intervals
+(use zero if there are no roots). An inhabitant and, in the universal
+case, a counterexample when it fails, are both primitive recursively
+obtainable. This also justifies using Boolean implication for this
+specific decidable matrix in intuitionistic logic.
+
+To remove the specialization, run the same coefficient algorithm
+symbolically, splitting into three branches at each sign test on the
+parameters. In particular test leading terms before dividing, discard
+an identically zero specialized polynomial on the appropriate branch,
+and truncate to the actual degree. On any branch every scalar coefficient
+computed is a rational function $p/q$ in the parameters with $q\ne0$
+along that branch. Its sign is the sign of $pq$, since $q^2>0$.
+Thus every guard is a polynomial sign formula. The disjunction of the
+guards for the accepting leaves is a quantifier-free formula in the
+parameters. Keep coefficient pairs formal even on inconsistent branches. A division by $a/b$ is performed symbolically only on the branch guarded by $a\ne0$; inductively all denominators on a realized branch are nonzero. No branch-feasibility oracle is needed.
+Symbolic root extraction is unnecessary: counts and tails use only
+coefficient arithmetic. This is a specialization-safe elimination even
+where a discriminant or several leading coefficients vanish.
+
+Here are bounds on generating the tree. If the original list has $m$
+polynomials of degree at most $d$ in $T$, put $s=1+m(d+1)$.
+The product has degree below $s$, the squarefree parts and their
+derivatives have degree below $s$, and all test products in
+\eqref{eq:counts} have degree at most $2md$. A Euclidean gcd or signed
+remainder chain uses at most the initial maximum degree plus two
+divisions, each a loop of at most that degree plus two cancellations.
+Polynomial products use finite convolutions. There are $3^m$ target
+patterns and at most $3^m$ monomials per expanded indicator product.
+For precision, a finite program with just these bounded loops can be
+unrolled by primitive recursion on their displayed bounds. For every
+scalar operation the size of a pair of numerator/denominator expression
+trees of size at most $b$ is bounded, for instance, by $8(b+1)$ for
+each new tree if expressions remain unexpanded. Record a three-way
+branch by duplicating the remaining program at most three times per
+test. Iteration of these size bounds along the unrolled program, or
+construction of its whole ternary tree by recursion on its instruction
+budget, is primitive recursive. Expansion and collection of the resulting
+polynomials are finite folds on their syntax. Repeating one-variable
+elimination from the innermost binder out is iteration of a fixed PR
+transformation on coded syntax, hence PR even with formula length an
+input. Efficiency is immaterial to the proof.
+
+\begin{theorem}[Elementary equivalence and arithmetical derivability]
+\label{thm:transfer}
+For each fixed first-order point formula $\varphi(\bar P)$ there is
+a PR test $b_\varphi$ such that iPRA proves, on valid parameter codes,
+\[
+                  \varphi^\#(\bar P)\ \longleftrightarrow\
+                  b_\varphi(\bar P)=1 .
+\]
+The test takes only the values zero and one. For algebraic parameters
+the standard real plane agrees with this test. In particular, for a
+closed sentence $\sigma$ the following are equivalent: its truth in
+the ordinary Euclidean plane; its truth in the coded plane in the
+standard naturals; and $\mathrm{iPRA}\vdash\sigma^\#$.
+\end{theorem}
+\begin{proof}
+For the internal assertion use the root and order theorems of the scalar
+construction and the elimination calculation above. For each fixed formula,
+structural induction here is on the external formula. At an existential
+step the accepting branch has a sample witnessing the matrix, and the
+rejecting branch excludes every sample and hence every candidate. At a
+universal step reject with the constructed counterexample or prove the
+matrix for an arbitrary input by its realized sign cell. Equivalently,
+one may eliminate $\neg\exists T\,\neg\theta(T)$ after this argument
+establishes the equivalence; the witness step matters intuitionistically.
+Boolean cases for conjunction, disjunction and implication use the
+inductively obtained decisions. No global law of excluded middle enters.
+For the finite computations within a step, order and polynomial arithmetic
+are PR; variations, sign counts, neighboring-root facts and the telescoping
+sum are verified by induction on finite list indices with Boolean
+invariants (for the sign-constancy assertion apply IVT to an arbitrary
+candidate point with the opposite sign). Parameters, including any
+candidate point, stay free through these inductions.
+
+Externally, interpret the same tests over $\mathbb R$. Each algebraic
+code denotes its designated real root; the embedding preserves field
+operations and signs by the isolation construction. Over the reals the
+one-variable argument is identical, using the ordinary polynomial IVT
+and the finite sorted real roots of a nonzero polynomial. Thus symbolic
+elimination produces the same quantifier-free formula there. All its
+atomic signs agree on the given parameters. With no free parameters the
+Boolean calculation is a closed PR computation, and iPRA proves its
+numeral result by its defining equations. If it evaluates to zero,
+iPRA proves the negation of the translation. Conversely, the ordinary
+natural numbers satisfy the axioms and rules of iPRA, so a derived
+closed translation is true there. This last soundness assertion is made
+in the metatheory. The result is a schema of derivations, one per formula;
+it asserts no internal soundness or truth predicate for iPRA.
+\end{proof}
+\noindent
+This argument is a direct form of univariate sign determination. For other
+constructive implementations see Cohen and Mahboubi~\cite{cm} and for
+elementary-recursive complexity bounds see Perrucci and Roy~\cite{pr}.
+
+\paragraph{An elimination one can see in the plane.}
+In a unit frame the circles centered at $(0,0)$ and $(1,0)$ with common
+squared radius $s\ge0$ meet exactly when
+\[
+  \exists x\,\exists y\,
+  \bigl(x^2+y^2=s\ \land\ (x-1)^2+y^2=s\bigr).
+\]
+Subtracting the equalities forces $2x=1$. The remaining equation is
+$y^2=s-1/4$, so the eliminated condition is the single sign test
+$4s-1\ge0$. If it is positive, requiring $y>0$ singles out
+$(1/2,\sqrt{s-1/4})$; at zero the only witness is $(1/2,0)$.
+At $s=1$ this constructs the upper vertex of the equilateral triangle
+on the unit segment. The optional \texttt{witness.py} example computes
+both coordinates with exact records. It also finds, for the formula
+$\exists x\,\forall y\,(y^2\ne x)$, a negative $x$: witness selection
+still works when the matrix after the first binder is itself quantified.

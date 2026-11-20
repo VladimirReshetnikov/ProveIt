@@ -1,0 +1,93 @@
+\section{A constructive fixed-point theorem and an exponential obstruction}
+\label{sec:lawvere}
+
+Lawvere's diagonal theorem \cite{lawvere} provides both a further positive
+result and a precise limitation on function-space claims.  Its proof is a
+finite categorical calculation, so its structural content fits the present
+foundation particularly well.
+
+Suppose $C$ has a chosen terminal object and the displayed products used
+below.  Fix objects $A,Y,E$, an evaluation arrow
+$\operatorname{ev}:E\times A\to Y$, and $e:A\to E$.
+The intended example is $E=Y^A$, but the proof needs only the specified
+arrows.  For a global point $a:1\to A$, let
+\[
+ r_a=\operatorname{ev}\,\langle e a\,!_A,\id_A\rangle:A\to Y.
+\]
+Assume \emph{weak point-surjectivity}: every $f:A\to Y$ equals $r_a$ for
+some $a:1\to A$.  This is an ordinary guarded arithmetic formula about
+arrow codes.  In the exponential case it says that each arrow $A\to Y$
+is represented by a global point in the image of $e$.
+
+\begin{theorem}[Lawvere fixed-point theorem]\label{thm:lawvere}
+Under these hypotheses, every endomorphism $t:Y\to Y$ has a global fixed
+point: there exists $y:1\to Y$ with $ty=y$.  This implication is provable
+in \ipra.  If weak point-surjectivity is supplied with a primitive recursive
+selector $a=s(f)$, then the fixed point is given by a primitive recursive
+term in $t$ and the displayed structure.
+\end{theorem}
+\begin{proof}
+Form the diagonal arrow
+\[
+ h=t\,\operatorname{ev}\,\langle e,\id_A\rangle:A\to Y.
+\]
+Apply weak point-surjectivity once to obtain $a:1\to A$ with $h=r_a$.
+Set $y=\operatorname{ev}\langle ea,a\rangle:1\to Y$.
+Product uniqueness implies
+$\langle e,\id_A\rangle a=\langle ea,a\rangle$, so $ha=ty$.
+Terminal uniqueness gives $!_A a=\id_1$; hence
+\[
+ r_a a
+ =\operatorname{ev}\langle ea\,!_A a,a\rangle
+ =\operatorname{ev}\langle ea,a\rangle=y.
+\]
+The equation $h=r_a$ therefore yields $ty=y$.  Only one local existential
+elimination was used, so the existential implication needs no choice
+principle.  With a selector, substitute $a=s(h)$ into the displayed formula
+for $y$; all resulting code operations are primitive recursive.
+\end{proof}
+
+For example, an object with two distinguished points and a pointwise
+fixed-point-free negation cannot admit such a weakly point-surjective
+map into its self-function object.  The assumption that negation has no
+fixed \emph{global} point must be established in the particular category;
+it is not a consequence of merely naming two points.
+
+\begin{proposition}[No exponential $\N^{\N}$ among PR finite powers]
+Let $\mathcal P$ be the \emph{external} category whose objects are finite
+powers $\N^k$ and whose arrows are primitive recursive maps, compared by
+extensional equality.  This category has finite products, but $\N^{\N}$
+does not exist as an exponential object in it.  More precisely, for every
+fixed PR evaluation family $V:\N^k\times\N\to\N$, a fixed PR unary function
+can be constructed that differs from every member of that family.
+\end{proposition}
+\begin{proof}
+For the fixed finite $k$, choose PR tuple decoding
+$d:\N\to\N^k$ and coding $c:\N^k\to\N$ with $d(c(v))=v$.
+For $k=0$ use the unique empty tuple and $c=0$.
+Define
+\[
+ q(n)=V(d(n),n)+1.
+\]
+This is PR.  At $n=c(v)$ it satisfies
+\[
+ q(c(v))=V(v,c(v))+1\ne V(v,c(v)).
+\]
+Thus no tuple $v$ names $q$ in the family $V$.  The displayed inequality
+is an iPRA theorem for each fixed $V,k$: it uses the coding identity and
+the fact that successor has no fixed point, proved by quantifier-free
+induction.
+
+If an exponential existed, it would be one of the objects $\N^k$, and
+its evaluation map would be one such PR map $V$.  The exponential property
+applied to $q:\N\to\N$ would produce a global element of $\N^k$, that is,
+a constant tuple $v$, with $q(n)=V(v,n)$ for every $n$.  The preceding
+inequality contradicts this at the explicit index $c(v)$.
+\end{proof}
+
+The conclusion concerns this specific category and its requirement that
+evaluation be PR.  It does not exclude function-space constructions with
+relational evaluation, partial computation, restricted input domains,
+additional clocks, or higher-type primitives.  Nor does it prohibit the
+schematic Yoneda lemma: that lemma evaluates one fixed transformation term,
+not a proposed PR evaluator for every PR function simultaneously.
