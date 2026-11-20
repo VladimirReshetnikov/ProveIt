@@ -17,7 +17,7 @@ The flattening body `gS` is chosen so that its flattened form is literally the a
 `copB` (`row_pt`, `cop_pt`, and `bit_eq`: a product of bits is a bit).
 
 Combined with `KhinchinScale.scale_measure` and `KhinchinReduced.k3_bounds` this gives (K8) for
-`Q = 2^k` (`k8_bounds`): on the grid `T = Q! G` with `Q²w ≤ T`,
+`Q = 2^k` (`k8_bounds`): on the grid `T = R! G` (`Q ≤ R`) with `Q²w ≤ T`,
 
   `D Q² w ≤ 16β |E|` and `β |E| ≤ 2 D Q² w`,
 
@@ -150,23 +150,23 @@ theorem scale_count {M Q T α γ β : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pre
 
 /-- (K8) for `Q = 2^k ≤ M`: on the grid `T = Q! G` with `Q²w ≤ T`, the union `E` of the intervals of the
 reduced fractions `p/q ∈ J*`, `⌊Q/4⌋ < q ≤ Q`, satisfies `DQ²w ≤ 16β|E|` and `β|E| ≤ 2DQ²w`. -/
-theorem k8_bounds {α γ b0 M k G w : PTm n} (hαγ : Γ ⊢[PRAAx] le α γ) (hγ : Γ ⊢[PRAAx] le γ (succ b0))
+theorem k8_bounds {α γ b0 M k R G w : PTm n} (hαγ : Γ ⊢[PRAAx] le α γ) (hγ : Γ ⊢[PRAAx] le γ (succ b0))
     (hQM : Γ ⊢[PRAAx] le (pw two k) M) (hK : Γ ⊢[PRAAx] le (num 256 * succ b0) (monus γ α * k))
-    (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
-    (hw : Γ ⊢[PRAAx] le (pw two k * pw two k * w) (fact (pw two k) * G)) :
+    (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hQR : Γ ⊢[PRAAx] le (pw two k) R)
+    (hw : Γ ⊢[PRAAx] le (pw two k * pw two k * w) (fact R * G)) :
     Γ ⊢[PRAAx]
       le (monus γ α * (pw two k * pw two k) * w)
-          (num 16 * succ b0 * measure (loB AK) (hiB AK actK) (fact (pw two k) * G * M)
+          (num 16 * succ b0 * measure (loB AK) (hiB AK actK) (fact R * G * M)
             (monus (pw two k) (quo (pw two k) (num 4)) * M)
-            (pairT w (tup M (quo (pw two k) (num 4)) (fact (pw two k) * G) α γ (succ b0)))) ⋏
-        le (succ b0 * measure (loB AK) (hiB AK actK) (fact (pw two k) * G * M)
+            (pairT w (tup M (quo (pw two k) (num 4)) (fact R * G) α γ (succ b0)))) ⋏
+        le (succ b0 * measure (loB AK) (hiB AK actK) (fact R * G * M)
             (monus (pw two k) (quo (pw two k) (num 4)) * M)
-            (pairT w (tup M (quo (pw two k) (num 4)) (fact (pw two k) * G) α γ (succ b0))))
+            (pairT w (tup M (quo (pw two k) (num 4)) (fact R * G) α γ (succ b0))))
           (num 2 * monus γ α * (pw two k * pw two k) * w) := by
   have hQ' : Γ ⊢[PRAAx] le (quo (pw two k) (num 4)) (pw two k) :=
     LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola.quo_le_self _ _
-  have em := scale_measure (α := α) (γ := γ) (β := succ b0) hM hQ' (le_refl _) hw
-  have ec := scale_count (T := fact (pw two k) * G) (α := α) (γ := γ) (β := succ b0) (Q := pw two k) hM
+  have em := scale_measure (α := α) (γ := γ) (β := succ b0) hM hQ' hQR hw
+  have ec := scale_count (T := fact R * G) (α := α) (γ := γ) (β := succ b0) (Q := pw two k) hM
   have k3 := k3_bounds hαγ hγ hQM hK
   have eE := natEq (em.eqTrans (congrMul (.eqRefl _) ec))
   have l1 := Prf.andE₁ k3
