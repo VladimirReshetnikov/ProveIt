@@ -2002,6 +2002,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.SumFlatten.subst_flInv
 #print axioms LeanProofs.IPRA.Foundations.SumFlatten.block
 #print axioms LeanProofs.IPRA.Foundations.SumFlatten.flatten
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSeparated.act_facts
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSeparated.sep_core
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinSeparated.sep_pair
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul
