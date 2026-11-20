@@ -1029,6 +1029,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyGrowth.grow_pow
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyIndex.key
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyIndex.index
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize.norm_primitive
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize.norm_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize.norm_unique
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize.norm_class
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
