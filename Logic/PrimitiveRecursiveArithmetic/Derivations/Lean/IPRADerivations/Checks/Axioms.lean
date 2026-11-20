@@ -18905,6 +18905,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.EliminationRoot.sylvR
 #print axioms LeanProofs.IPRA.Foundations.EliminationRoot.vpow
 #print axioms LeanProofs.IPRA.Foundations.FilteredLiftingStep.cubic
+#print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.toZ_const
+#print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.toZ_zero
+#print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.toZ_zsum
+#print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.dv_eq
+#print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.taylor_exact
+#print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.diff_exact
+#print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.taylor_eq
+#print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.diff_eq
+#print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.taylor_power
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.cand
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.disjFin
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.height
