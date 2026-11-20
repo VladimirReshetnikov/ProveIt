@@ -2996,6 +2996,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound.y_le
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound.divisor_upper
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound.divisor_lower
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel.inst2_AB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel.A_succ
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel.quo_one'
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel.c_nonneg
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel.i_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel.isqrt_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel.i_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel.tau_abel
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
