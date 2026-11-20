@@ -1257,6 +1257,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.GeometricTail.bern_hom
 #print axioms LeanProofs.IPRA.Probability.GeometricTail.half_bound
 #print axioms LeanProofs.IPRA.Probability.GeometricTail.power_half
+#print axioms LeanProofs.IPRA.Probability.GeometricCutoff.pow_bound
+#print axioms LeanProofs.IPRA.Probability.GeometricCutoff.cutoff_bound
+#print axioms LeanProofs.IPRA.Probability.GeometricCutoff.geometric_cutoff
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
