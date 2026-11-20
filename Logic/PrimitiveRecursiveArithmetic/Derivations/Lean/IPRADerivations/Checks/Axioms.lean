@@ -1175,6 +1175,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousTransfer.transfer
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousTransfer.q_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousTransfer.zero_of_abs_lt_one
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerAlternative.alt_rho
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerAlternative.alt_D
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerAlternative.sqrt2_core
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerAlternative.sqrt2_gap
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
