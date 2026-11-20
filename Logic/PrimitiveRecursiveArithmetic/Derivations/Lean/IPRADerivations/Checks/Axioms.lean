@@ -3294,6 +3294,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum.i_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum.i_step
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum.log_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum.inst2_QB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum.Q_succ
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum.S_succ
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum.j_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum.j_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum.log_square_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicSignedMean.nq_le
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicSignedMean.signed_upper
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicSignedMean.signed_lower
