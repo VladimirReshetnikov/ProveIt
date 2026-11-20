@@ -467,6 +467,10 @@ import IPRADerivations.Probability.GeometricTail
 import IPRADerivations.Probability.GeometricCutoff
 import IPRADerivations.Geometry.PlatonicSections
 import IPRADerivations.Geometry.ParallelepipedQuartic
+import IPRADerivations.Geometry.PlatonicSurface.Intrinsic
+import IPRADerivations.Geometry.PlatonicSurface.Tetrahedron
+import IPRADerivations.Geometry.PlatonicSurface.Icosahedron
+import IPRADerivations.Geometry.PlatonicSurface.Dodecahedron
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
