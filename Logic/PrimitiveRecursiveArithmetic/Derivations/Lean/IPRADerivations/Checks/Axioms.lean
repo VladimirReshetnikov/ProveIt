@@ -2150,6 +2150,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales.scale_E
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales.scale_inter
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales.pw_mono2
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock.sum_le_lin
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock.sum_le_lin1
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock.k_bounds
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock.pw2_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock.q2_le_T
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock.pair_bound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock.low_pt
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock.low_bound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock.block_cover
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul

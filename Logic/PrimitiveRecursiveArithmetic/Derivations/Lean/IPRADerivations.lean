@@ -330,6 +330,7 @@ import IPRADerivations.Foundations.SecondMoment
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockArith
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockGeo
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockScales
+import IPRADerivations.DiophantineNumberTheory.KhinchinBlock
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
