@@ -2360,6 +2360,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz.cv_at
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz.leib_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz.dirichlet_leibniz
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz.inst2_lamF
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz.lam_conv_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz.selberg_leibniz
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz.tau_leibniz
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.lw_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.lam_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.lambda_mobius_neg'
