@@ -2968,6 +2968,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.dist_le_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.norm1_mul
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.norm1_compare
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.inst2_fitB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.subst_ltPowInv
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.le_pow_self
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.clog_spec
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.clog_least
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.pw_mul_base
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.bernoulli
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.decr

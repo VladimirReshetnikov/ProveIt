@@ -1,5 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockScales
 import IPRADerivations.Probability.FiniteCauchySchwarz
+import IPRADerivations.Foundations.BoundedReflection
+import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 
 /-!
 # The elementary estimates of the zeta finite contract (`zeta_functional_equation_ipra`)
@@ -162,5 +164,70 @@ theorem norm1_compare (x y : PTm n) :
     Γ ⊢[PRAAx] le (x * x + y * y) ((x + y) * (x + y)) ⋏ le ((x + y) * (x + y)) (two * (x * x + y * y)) := by
   have e := natEq (dist_sq (Γ := Γ) x y)
   exact .andI (by ipra_le 2 * 𝔞 x * 𝔞 y) (by ipra_le 𝔞 (dist x y) * 𝔞 (dist x y) with e)
+
+/-! ## The ceiling binary logarithm `λ`
+
+"For `n ≥ 1`, let `λ(n)` be the least `j ≤ n` such that `n ≤ 2^j` … This is a bounded search, hence primitive
+recursive. It satisfies `n ≤ 2^{λ(n)}` and is the ceiling binary logarithm." As a bounded witness
+(`Foundations/BoundedReflection.wit`) of the bit `[n ≤ 2^j]`: `clog_spec` (`n ≤ 2^{λ(n)}`, `λ(n) ≤ n`) and
+`clog_least` (`j < λ(n)` gives `2^j < n`). At `n = 0` it returns `0`, as the contract stipulates. -/
+
+/-- `[x ≤ 2^j]` over `0 = j`, `1 = x`. -/
+abbrev fitB : PTm 2 := monus one (monus (var 1) (pw two (var 0)))
+
+/-- `λ(x)`: the least `j ≤ x` with `x ≤ 2^j`. -/
+abbrev clog (x : PTm n) : PTm n := LeanProofs.IPRA.Foundations.BoundedReflection.wit fitB (succ x) x
+
+theorem inst2_fitB (j x : PTm n) : inst2 fitB j x = monus one (monus x (pw two j)) := by simp [inst2]
+
+def ltPowInv (x : PTm n) : Fm PTm n := le x (pw two x)
+
+@[simp] theorem subst_ltPowInv {k : ℕ} (σ : Fin n → PTm k) (x : PTm n) :
+    (ltPowInv x).subst σ = ltPowInv (Syn.subst σ x) := by simp [ltPowInv]
+
+/-- `x ≤ 2^x`. -/
+theorem le_pow_self (x : PTm n) : Γ ⊢[PRAAx] le x (pw two x) := by
+  have hall : Γ ⊢[PRAAx] Fm.all (ltPowInv (var 0)) := by
+    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
+    · rw [subst_ltPowInv]; simp only [Syn.subst_var, Syn.inst_zero]
+      exact zero_le _
+    · rw [subst_ltPowInv]; simp only [Syn.subst_var, Syn.repl_zero]
+      let Δ : List (Fm PTm (n + 1)) := ltPowInv (var 0) :: Γ.map Fm.shift
+      have ih : Δ ⊢[PRAAx] le (var 0) (pw two (var 0)) := Prf.hyp0
+      have hp := natEq (DiophantineNumberTheory.FLTMultiples.pw_pos (Γ := Δ) one (var 0))
+      have e := natEq (pw_succ (Γ := Δ) (two : PTm (n + 1)) (var 0))
+      show Δ ⊢[PRAAx] le (succ (var 0)) (pw two (succ (var 0)))
+      ipra_le sl ih + 𝔞 (pred (pw two (var 0))) with e + hp
+  have a := Prf.allE x hall
+  rw [subst_ltPowInv] at a
+  simp only [Syn.subst_var, Syn.inst_zero] at a
+  exact a
+
+/-- `x ≤ 2^{λ(x)}` and `λ(x) ≤ x`. -/
+theorem clog_spec (x : PTm n) : Γ ⊢[PRAAx] le x (pw two (clog x)) ⋏ le (clog x) x := by
+  have hfit : Γ ⊢[PRAAx] neg (inst2 fitB x x ≐ zero) := by
+    rw [inst2_fitB]
+    refine .impI ?_
+    have h0 : ((monus one (monus x (pw two x)) ≐ zero) :: Γ) ⊢[PRAAx] monus x (pw two x) ≐ zero := le_pow_self x
+    exact LeanProofs.IPRA.Foundations.BoundedReflection.one_ne_zero _
+      ((monus_zero one).eqSymm.eqTrans ((congrMonus (.eqRefl _) h0).eqSymm.eqTrans Prf.hyp0))
+  have ex := LeanProofs.IPRA.Foundations.BoundedReflection.ex_intro fitB hfit (le_refl (succ x))
+  have el := LeanProofs.IPRA.Foundations.BoundedReflection.ex_elim fitB ex
+  have hne := Prf.andE₂ el
+  rw [inst2_fitB] at hne
+  have hlt : Γ ⊢[PRAAx] lt (clog x) (succ x) := Prf.andE₁ el
+  refine .andI ?_ (by ipra_le sl hlt)
+  refine .orE (lt_or_le (pw two (clog x)) x) ?_ Prf.hyp0
+  let Θ : List (Fm PTm n) := lt (pw two (clog x)) x :: Γ
+  have h : Θ ⊢[PRAAx] lt (pw two (clog x)) x := Prf.hyp0
+  have e2 := natEq (eq_add_of_le (le_trans (le_succ_self (pw two (clog x))) h))
+  have hp : Θ ⊢[PRAAx] le one (monus x (pw two (clog x))) := by ipra_le sl h with e2
+  exact .botE _ (.impE hne.wk hp)
+
+/-- `j < λ(x)` gives `2^j < x`. -/
+theorem clog_least {j x : PTm n} (hj : Γ ⊢[PRAAx] lt j (clog x)) : Γ ⊢[PRAAx] lt (pw two j) x := by
+  have z := LeanProofs.IPRA.Foundations.BoundedReflection.ex_least fitB hj
+  rw [inst2_fitB] at z
+  exact LeanProofs.IPRA.Foundations.IntervalPacking.lt_of_monus_pos z
 
 end LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract
