@@ -3219,6 +3219,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogElementary.log_upper
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogPow2.S_double
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogPow2.S_pow2
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.S_mono
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.superadd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.inst2_wt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.wt_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.lw_prime
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.tr_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.tr_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.j_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.j_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.harmonic_lw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev.psi_le
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.decline_rat
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.tail_lower
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.decline_harmonic
