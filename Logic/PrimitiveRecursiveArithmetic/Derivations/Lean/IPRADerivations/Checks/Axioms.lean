@@ -996,6 +996,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyZetaTail.zeta_tail
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyFloor.floor_sum_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyFloor.floor_sum_lt
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.qinv_base
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.qinv_step
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.qinv
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.shifted_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.coprime_count
 #print axioms LeanProofs.IPRA.half_par
 #print axioms LeanProofs.IPRA.even_ne_odd
 #print axioms LeanProofs.IPRA.sum_zero_elim
