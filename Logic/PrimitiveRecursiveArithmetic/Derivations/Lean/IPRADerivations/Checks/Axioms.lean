@@ -2958,6 +2958,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.dyadic_rate
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.theta_rate
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DyadicModulus.geom_two
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.subst_sqInv
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.sq_le_pow
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.theta_term
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.square_gap
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.subst_geo8Inv
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.geo8
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.geo8_tail
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.dist_le_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.norm1_mul
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.norm1_compare
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.pw_mul_base
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.bernoulli
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.decr
