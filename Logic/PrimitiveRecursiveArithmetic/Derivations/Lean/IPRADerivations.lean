@@ -511,6 +511,17 @@ import IPRADerivations.Analysis.DecisionTreeReplay
 import IPRADerivations.Geometry.SpaceWormRefinement
 import IPRADerivations.Topology.EuclideanFacts
 import IPRADerivations.Foundations.EnergyWindow
+import IPRADerivations.Topology.MetricUrysohn
+import IPRADerivations.Topology.SkewField
+import IPRADerivations.Foundations.NeumannCorrection
+import IPRADerivations.Geometry.PlaneMetric
+import IPRADerivations.Analysis.Quantum.Identities
+import IPRADerivations.Analysis.Quantum.Names
+import IPRADerivations.Analysis.Quantum.ResolventTail
+import IPRADerivations.Analysis.Quantum.BornStability
+import IPRADerivations.Foundations.Category.LocalYoneda
+import IPRADerivations.Foundations.Category.Representability
+import IPRADerivations.Foundations.Category.Density
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
