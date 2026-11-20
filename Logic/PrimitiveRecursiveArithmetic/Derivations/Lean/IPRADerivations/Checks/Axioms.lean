@@ -3214,6 +3214,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogElementary.mul_quo_succ
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogElementary.log_lower
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogElementary.log_upper
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogPow2.S_double
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogPow2.S_pow2
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.decline_rat
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.tail_lower
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTDecline.decline_harmonic
