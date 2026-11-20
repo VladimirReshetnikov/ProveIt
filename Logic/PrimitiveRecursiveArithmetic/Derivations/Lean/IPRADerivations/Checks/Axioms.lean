@@ -1944,6 +1944,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.InjectionCount.col_step
 #print axioms LeanProofs.IPRA.Foundations.InjectionCount.col_le
 #print axioms LeanProofs.IPRA.Foundations.InjectionCount.injection_count
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FractionSeparation.cancel_eq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FractionSeparation.frac_unique
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FractionSeparation.floor_sep
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.FractionSeparation.floor_inj
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul

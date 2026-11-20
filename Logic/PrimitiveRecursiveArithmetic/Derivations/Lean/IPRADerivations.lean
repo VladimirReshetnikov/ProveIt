@@ -309,6 +309,7 @@ import IPRADerivations.Probability.FiniteCauchySchwarz
 import IPRADerivations.DiophantineNumberTheory.KhinchinAmplify
 import IPRADerivations.DiophantineNumberTheory.KhinchinMoment
 import IPRADerivations.Foundations.InjectionCount
+import IPRADerivations.DiophantineNumberTheory.FractionSeparation
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
