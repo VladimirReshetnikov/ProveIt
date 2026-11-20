@@ -3086,6 +3086,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobiusP.inner_sq_p
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobiusP.row_sq_mob_p
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobiusP.selberg_mobius_p
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.inst2_bS
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.inst2_RB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.RB_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.row_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.shift_succ_x
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.cs_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.conv_summatory
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
