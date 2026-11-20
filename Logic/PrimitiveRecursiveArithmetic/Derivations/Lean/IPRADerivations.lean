@@ -313,6 +313,7 @@ import IPRADerivations.DiophantineNumberTheory.FractionSeparation
 import IPRADerivations.DiophantineNumberTheory.FractionCount
 import IPRADerivations.Foundations.IntervalAdditive
 import IPRADerivations.Foundations.IntervalPacking
+import IPRADerivations.Foundations.SumFlatten
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences

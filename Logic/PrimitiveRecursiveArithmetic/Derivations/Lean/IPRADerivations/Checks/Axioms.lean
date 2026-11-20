@@ -1997,6 +1997,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.IntervalPacking.inst2_srB
 #print axioms LeanProofs.IPRA.Foundations.IntervalPacking.ovl_pt
 #print axioms LeanProofs.IPRA.Foundations.IntervalPacking.packing
+#print axioms LeanProofs.IPRA.Foundations.SumFlatten.decode
+#print axioms LeanProofs.IPRA.Foundations.SumFlatten.inst2_flB
+#print axioms LeanProofs.IPRA.Foundations.SumFlatten.subst_flInv
+#print axioms LeanProofs.IPRA.Foundations.SumFlatten.block
+#print axioms LeanProofs.IPRA.Foundations.SumFlatten.flatten
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul
