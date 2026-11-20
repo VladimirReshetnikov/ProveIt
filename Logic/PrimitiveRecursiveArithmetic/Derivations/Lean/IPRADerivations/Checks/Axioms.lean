@@ -10292,6 +10292,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.poly_lip
 #print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.poly_mono
 #print axioms LeanProofs.IPRA.Analysis.PolynomialLipschitz.poly_lip_signed
+#print axioms LeanProofs.IPRA.Analysis.PolynomialTaylor.inst2_d2B
+#print axioms LeanProofs.IPRA.Analysis.PolynomialTaylor.d2_at
+#print axioms LeanProofs.IPRA.Analysis.PolynomialTaylor.term_lower
+#print axioms LeanProofs.IPRA.Analysis.PolynomialTaylor.term_upper
+#print axioms LeanProofs.IPRA.Analysis.PolynomialTaylor.low_step
+#print axioms LeanProofs.IPRA.Analysis.PolynomialTaylor.up_step
+#print axioms LeanProofs.IPRA.Analysis.PolynomialTaylor.taylor_lower
+#print axioms LeanProofs.IPRA.Analysis.PolynomialTaylor.taylor_upper
 #print axioms LeanProofs.IPRA.Foundations.FiniteQueryTable.table_good
 #print axioms LeanProofs.IPRA.Foundations.FiniteQueryTable.table_entry
 #print axioms LeanProofs.IPRA.Foundations.FiniteQueryTable.fix_precision

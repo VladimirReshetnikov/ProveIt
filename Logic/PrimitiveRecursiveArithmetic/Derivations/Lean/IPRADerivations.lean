@@ -925,6 +925,7 @@ import IPRADerivations.Analysis.GridIntegral
 import IPRADerivations.Foundations.CubicInverse
 import IPRADerivations.Foundations.FilteredFixedPoint
 import IPRADerivations.Analysis.PolynomialLipschitz
+import IPRADerivations.Analysis.PolynomialTaylor
 import IPRADerivations.Foundations.FiniteQueryTable
 import IPRADerivations.Foundations.SetoidInterpretation
 import IPRADerivations.Foundations.ObservedRelation
