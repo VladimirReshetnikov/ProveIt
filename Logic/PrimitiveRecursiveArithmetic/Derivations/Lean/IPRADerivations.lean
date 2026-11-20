@@ -305,6 +305,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinBad
 import IPRADerivations.DiophantineNumberTheory.KhinchinBadSum
 import IPRADerivations.DiophantineNumberTheory.KhinchinBadBound
 import IPRADerivations.DiophantineNumberTheory.KhinchinReduced
+import IPRADerivations.Probability.FiniteCauchySchwarz
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences

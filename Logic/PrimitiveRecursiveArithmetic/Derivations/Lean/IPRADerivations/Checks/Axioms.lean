@@ -1896,6 +1896,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinReduced.two_pos
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinReduced.k3_bounds
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinReduced.k3_closed
+#print axioms LeanProofs.IPRA.Probability.FiniteCauchySchwarz.dist_sq
+#print axioms LeanProofs.IPRA.Probability.FiniteCauchySchwarz.inst2_wvB
+#print axioms LeanProofs.IPRA.Probability.FiniteCauchySchwarz.inst2_wv2B
+#print axioms LeanProofs.IPRA.Probability.FiniteCauchySchwarz.inner_le
+#print axioms LeanProofs.IPRA.Probability.FiniteCauchySchwarz.subst_csInv
+#print axioms LeanProofs.IPRA.Probability.FiniteCauchySchwarz.cs_base
+#print axioms LeanProofs.IPRA.Probability.FiniteCauchySchwarz.cs_step
+#print axioms LeanProofs.IPRA.Probability.FiniteCauchySchwarz.cauchy_schwarz
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul
