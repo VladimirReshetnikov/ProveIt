@@ -1200,6 +1200,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperySqueeze.squeeze
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyWronskian.wronskian_step
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyWronskian.wronskian_base
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCount.canonical_pairs
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCount.count_upper
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCount.count_lower
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
