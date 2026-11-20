@@ -236,4 +236,66 @@ theorem digit_stable {P Q P' Q' Y W Z V A Dn A' Dn' Ln Ld : PTm n}
     le_congr (.eqRefl _) (congrMul (.eqRefl _) (sep_numerator hA hD)).eqSymm sep1
   exact floor_stable hDn hDn' hLn close' s0 s1
 
+/-! ## The loop invariants
+
+One extraction step replaces `(P, Q, P', Q')` by `(aP + P', aQ + Q', P, Q)`. The determinant changes sign
+(`det_step`, `det_step'`), and with `a Dn ≤ A` (the digit `a = ⌊A/Dn⌋`) the approximation moves to the other
+sign region, with new numerator `Dn` and new denominator `A − a Dn`: the complete quotient becomes
+`t_{n+1} = Dn/(A − a Dn) = 1/(t_n − a_n)` (`region_flip`, `region_flip'`). In region 2 (`Qx < P`,
+`P' < Q'x`) the digit step is the region-1 step with `P ↔ Q`, `P' ↔ Q'`, `Y ↔ W`, `Z ↔ V`
+(`digit_stable₂`). -/
+
+/-- `P'Q = PQ' + 1` gives `(aP + P')Q = P(aQ + Q') + 1` for the next state. -/
+theorem det_step {P Q P' Q' a : PTm n} (h : Γ ⊢[PRAAx] P' * Q ≐ P * Q' + one) :
+    Γ ⊢[PRAAx] (a * P + P') * Q ≐ P * (a * Q + Q') + one := by
+  have e := natEq h; apply deriveNat; ipra_simps; linear_combination e
+
+/-- `PQ' = P'Q + 1` gives `P(aQ + Q') = (aP + P')Q + 1` for the next state. -/
+theorem det_step' {P Q P' Q' a : PTm n} (h : Γ ⊢[PRAAx] P * Q' ≐ P' * Q + one) :
+    Γ ⊢[PRAAx] P * (a * Q + Q') ≐ (a * P + P') * Q + one := by
+  have e := natEq h; apply deriveNat; ipra_simps; linear_combination e
+
+/-- From region 1 (`P'W = Q'Y + A`, `QY = PW + Dn`) with `a Dn ≤ A`, the next state is in region 2:
+`(aP + P')W = (aQ + Q')Y + (A − a Dn)` and `QY = PW + Dn`. -/
+theorem region_flip {P Q P' Q' Y W A Dn a : PTm n}
+    (hA : Γ ⊢[PRAAx] P' * W ≐ Q' * Y + A) (hD : Γ ⊢[PRAAx] Q * Y ≐ P * W + Dn)
+    (ha : Γ ⊢[PRAAx] le (a * Dn) A) :
+    Γ ⊢[PRAAx] (a * P + P') * W ≐ (a * Q + Q') * Y + monus A (a * Dn) := by
+  have eA := natEq hA
+  have eD := natEq hD
+  have em := natEq (eq_add_of_le ha)
+  apply deriveNat; ipra_simps
+  linear_combination eA - 𝔞 a * eD + em
+
+/-- From region 2 (`Q'Y = P'W + A`, `PW = QY + Dn`) with `a Dn ≤ A`, the next state is in region 1:
+`(aQ + Q')Y = (aP + P')W + (A − a Dn)` and `PW = QY + Dn`. -/
+theorem region_flip' {P Q P' Q' Y W A Dn a : PTm n}
+    (hA : Γ ⊢[PRAAx] Q' * Y ≐ P' * W + A) (hD : Γ ⊢[PRAAx] P * W ≐ Q * Y + Dn)
+    (ha : Γ ⊢[PRAAx] le (a * Dn) A) :
+    Γ ⊢[PRAAx] (a * Q + Q') * Y ≐ (a * P + P') * W + monus A (a * Dn) := by
+  have eA := natEq hA
+  have eD := natEq hD
+  have em := natEq (eq_add_of_le ha)
+  apply deriveNat; ipra_simps
+  linear_combination eA - 𝔞 a * eD + em
+
+/-- The digit step in region 2 (`Qx < P`, `P' < Q'x`): the region-1 step with `P ↔ Q`, `P' ↔ Q'`,
+`Y ↔ W`, `Z ↔ V`. -/
+theorem digit_stable₂ {P Q P' Q' Y W Z V A Dn A' Dn' Ln Ld : PTm n}
+    (hdet : Γ ⊢[PRAAx] (P' * Q ≐ P * Q' + one) ⋎ (P * Q' ≐ P' * Q + one))
+    (hA : Γ ⊢[PRAAx] Q' * Y ≐ P' * W + A) (hD : Γ ⊢[PRAAx] P * W ≐ Q * Y + Dn)
+    (hA' : Γ ⊢[PRAAx] Q' * Z ≐ P' * V + A') (hD' : Γ ⊢[PRAAx] P * V ≐ Q * Z + Dn')
+    (hDn : Γ ⊢[PRAAx] le one Dn) (hDn' : Γ ⊢[PRAAx] Dn' ≐ succ (pred Dn')) (hLn : Γ ⊢[PRAAx] le one Ln)
+    (close : Γ ⊢[PRAAx] le (num 6 * Ld * adist (Y * V) (Z * W)) (Ln * (Dn * Dn')))
+    (sep0 : Γ ⊢[PRAAx] le (Ln * Dn) (Ld * adist ((Q' + quo A' Dn' * Q) * Y) ((P' + quo A' Dn' * P) * W)))
+    (sep1 : Γ ⊢[PRAAx] le (Ln * Dn)
+      (Ld * adist ((Q' + succ (quo A' Dn') * Q) * Y) ((P' + succ (quo A' Dn') * P) * W))) :
+    Γ ⊢[PRAAx] le (quo A' Dn' * Dn) A ⋏ lt A (succ (quo A' Dn') * Dn) := by
+  have hdet' : Γ ⊢[PRAAx] (Q' * P ≐ Q * P' + one) ⋎ (Q * P' ≐ Q' * P + one) := by
+    refine .orE hdet ?_ ?_
+    · exact .orI₂ ((mul_comm _ _).eqTrans (Prf.hyp0.eqTrans (congrAdd (mul_comm _ _) (.eqRefl _))))
+    · exact .orI₁ ((mul_comm _ _).eqTrans (Prf.hyp0.eqTrans (congrAdd (mul_comm _ _) (.eqRefl _))))
+  exact digit_stable (P := Q) (Q := P) (P' := Q') (Q' := P') (Y := W) (W := Y) (Z := V) (V := Z)
+    hdet' hA hD hA' hD' hDn hDn' hLn close sep0 sep1
+
 end LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction

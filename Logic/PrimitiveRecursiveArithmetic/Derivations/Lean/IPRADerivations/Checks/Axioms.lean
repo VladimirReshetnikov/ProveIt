@@ -1828,6 +1828,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.mobius_cross
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.sep_numerator
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.digit_stable
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.det_step
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.det_step'
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.region_flip
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.region_flip'
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.digit_stable₂
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.absurd_one_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.cancel_eq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.pos_of_eq
