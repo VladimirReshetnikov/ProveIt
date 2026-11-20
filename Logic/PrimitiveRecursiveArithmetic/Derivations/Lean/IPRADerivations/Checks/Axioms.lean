@@ -2108,6 +2108,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith.first_sq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith.su_pos
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith.block_arith
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo.s_facts
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo.w_le_s
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo.pair_arith
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo.inst2_q2B
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo.congrPw2
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo.subst_g2Inv
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo.geo2
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul
