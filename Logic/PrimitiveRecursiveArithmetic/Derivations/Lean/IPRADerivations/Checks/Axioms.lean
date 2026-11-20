@@ -2975,6 +2975,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.sumC
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.floor_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic.divisor_harmonic
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound.eta_bounds
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound.lam_upper
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound.y_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound.divisor_upper
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound.divisor_lower
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
