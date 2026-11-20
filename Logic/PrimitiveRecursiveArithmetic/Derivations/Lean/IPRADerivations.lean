@@ -214,6 +214,9 @@ import IPRADerivations.AnalyticNumberTheory.ChebyshevAbel
 import IPRADerivations.AnalyticNumberTheory.ErrorEquation
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
 import IPRADerivations.AnalyticNumberTheory.SummatoryCompose
+import IPRADerivations.AnalyticNumberTheory.FactorialError
+import IPRADerivations.AnalyticNumberTheory.WeightedReorder
+import IPRADerivations.AnalyticNumberTheory.WeightedSplit
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.AnalyticNumberTheory.PNTOneStep
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
