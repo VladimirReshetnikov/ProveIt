@@ -210,6 +210,7 @@ import IPRADerivations.AnalyticNumberTheory.LogRefinement
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.AnalyticNumberTheory.DyadicModulus
 import IPRADerivations.AnalyticNumberTheory.ZetaFiniteContract
+import IPRADerivations.AnalyticNumberTheory.ZetaErrorBudget
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.SumReindex

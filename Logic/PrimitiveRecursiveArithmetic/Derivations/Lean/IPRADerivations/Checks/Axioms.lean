@@ -2973,6 +2973,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.le_pow_self
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.clog_spec
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract.clog_least
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget.pw2_mono
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget.pow_absorb
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget.err_tail
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget.err_series
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget.err_mesh
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget.err_point
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.pw_mul_base
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.bernoulli
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.decr
