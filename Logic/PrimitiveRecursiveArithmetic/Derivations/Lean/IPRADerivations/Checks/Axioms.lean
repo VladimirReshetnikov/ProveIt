@@ -1183,6 +1183,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerKernel.kernel_tail
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialTail.binom_term
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialTail.binom_tail
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialLower.bp_base
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialLower.bp_step
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialLower.binom_power_lower
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialLower.gb_power_lower
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialLower.kernel_binomial
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
