@@ -1806,6 +1806,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.cert_one
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.cert_core
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin.certificate
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.adist_of_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.floor_low
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.floor_high
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.floor_stable
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.absurd_one_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.cancel_eq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.pos_of_eq
