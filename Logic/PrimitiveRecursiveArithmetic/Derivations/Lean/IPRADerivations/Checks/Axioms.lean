@@ -1022,6 +1022,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperySparse.sparse_step
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperySparse.sparse_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperySparse.sparse
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyGrowth.gb_mono
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyGrowth.bb_mono
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyGrowth.apery_mono
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyGrowth.grow_step
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyGrowth.grow_pow
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyIndex.key
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyIndex.index
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
