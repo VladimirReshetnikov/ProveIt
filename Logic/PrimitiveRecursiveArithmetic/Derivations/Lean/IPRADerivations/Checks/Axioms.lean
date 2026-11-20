@@ -1002,6 +1002,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound.mul_pw
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound.power_identity
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound.multibound_of_term
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial.binom_term
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial.base_split
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial.exp_split
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial.multinomial_term
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial.multibound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
