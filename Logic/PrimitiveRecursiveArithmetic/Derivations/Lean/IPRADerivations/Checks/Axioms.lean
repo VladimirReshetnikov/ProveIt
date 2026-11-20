@@ -3654,6 +3654,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.PolynomialRemainder.remainder
 #print axioms LeanProofs.IPRA.Analysis.PolynomialRemainder.dv_smul
 #print axioms LeanProofs.IPRA.Analysis.PolynomialRemainder.conservation_step
+#print axioms LeanProofs.IPRA.Analysis.MultivariatePolyBounds.lip_bound
+#print axioms LeanProofs.IPRA.Analysis.MultivariatePolyBounds.poly_bounds
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricQForm.gauge
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricQForm.q_form
 #print axioms LeanProofs.IPRA.Analysis.PullbackCertificates.euler_R1
