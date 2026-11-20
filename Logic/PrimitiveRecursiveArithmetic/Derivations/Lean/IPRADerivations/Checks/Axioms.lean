@@ -3141,6 +3141,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory.inst2_gS
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory.pt_n
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory.mobius_summatory
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP.inst3_swB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP.inst2_SB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP.inst2_TB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP.row_sw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP.col_sw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP.div_swap_p
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP.inst3_fgB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP.conv_comm
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwapP.tau_lw
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
