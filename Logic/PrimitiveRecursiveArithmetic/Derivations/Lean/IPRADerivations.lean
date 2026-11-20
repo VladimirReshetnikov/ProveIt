@@ -661,6 +661,7 @@ import IPRADerivations.Foundations.FilteredLiftingStep
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.GuardedDescent
 import IPRADerivations.Foundations.ObserverGuards
+import IPRADerivations.Foundations.ContractionIterates
 import IPRADerivations.Foundations.BoundedFixpoint
 import IPRADerivations.Foundations.SquareRootNames
 import IPRADerivations.Foundations.SquareRootRelationalCandidates

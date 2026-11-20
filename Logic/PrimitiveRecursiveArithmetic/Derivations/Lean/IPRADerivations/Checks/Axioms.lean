@@ -14038,6 +14038,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ObserverGuards.win_at
 #print axioms LeanProofs.IPRA.Foundations.ObserverGuards.finite_consumer
 #print axioms LeanProofs.IPRA.Foundations.ObserverGuards.finite_consumer_at
+#print axioms LeanProofs.IPRA.Foundations.ContractionIterates.congrIter
+#print axioms LeanProofs.IPRA.Foundations.ContractionIterates.iter_add
+#print axioms LeanProofs.IPRA.Foundations.ContractionIterates.contract_step
+#print axioms LeanProofs.IPRA.Foundations.ContractionIterates.iter_contract
+#print axioms LeanProofs.IPRA.Foundations.ContractionIterates.cauchy_iterates
 #print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.app1_rk
 #print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.app1_fx
 #print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.descent
