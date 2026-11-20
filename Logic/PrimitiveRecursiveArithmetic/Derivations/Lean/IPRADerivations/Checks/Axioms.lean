@@ -10388,6 +10388,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.OdeConservation.drift_const
 #print axioms LeanProofs.IPRA.Foundations.OdeConservation.time_budget
 #print axioms LeanProofs.IPRA.Foundations.OdeConservation.step_budget
+#print axioms LeanProofs.IPRA.Foundations.BoundList.list_sound
+#print axioms LeanProofs.IPRA.Foundations.BoundList.list_complete
+#print axioms LeanProofs.IPRA.Foundations.BoundList.inst2_htLB
+#print axioms LeanProofs.IPRA.Foundations.BoundList.height_of_entry
+#print axioms LeanProofs.IPRA.Foundations.BoundList.height_of_list
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
