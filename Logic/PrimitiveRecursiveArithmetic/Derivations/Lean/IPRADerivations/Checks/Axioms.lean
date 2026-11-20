@@ -18945,6 +18945,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.taylor_eq
 #print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.diff_eq
 #print axioms LeanProofs.IPRA.Foundations.FilteredTaylor.taylor_power
+#print axioms LeanProofs.IPRA.Foundations.HenselIteration.step_eqs
+#print axioms LeanProofs.IPRA.Foundations.HenselIteration.invariant
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.cand
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.disjFin
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.height
