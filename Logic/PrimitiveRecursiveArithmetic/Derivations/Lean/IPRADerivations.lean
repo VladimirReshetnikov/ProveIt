@@ -234,6 +234,8 @@ import IPRADerivations.AnalyticNumberTheory.PointDeficit
 import IPRADerivations.AnalyticNumberTheory.BlockSums
 import IPRADerivations.AnalyticNumberTheory.BlockMass
 import IPRADerivations.AnalyticNumberTheory.BlockDeficit
+import IPRADerivations.AnalyticNumberTheory.BlockTests
+import IPRADerivations.AnalyticNumberTheory.BlockCases
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.AnalyticNumberTheory.PNTOneStep
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
