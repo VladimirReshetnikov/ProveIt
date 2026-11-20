@@ -298,4 +298,40 @@ theorem digit_stable₂ {P Q P' Q' Y W Z V A Dn A' Dn' Ln Ld : PTm n}
   exact digit_stable (P := Q) (Q := P) (P' := Q') (Q' := P') (Y := W) (W := Y) (Z := V) (V := Z)
     hdet' hA hD hA' hD' hDn hDn' hLn close sep0 sep1
 
+/-! ## From a separated Cauchy name to the step hypotheses
+
+The packet's input is a primitive recursive Cauchy name with an irrationality modulus: at the working precision
+the approximation `y = Y/W` satisfies `|p − q y| ≥ σ = σ_n/σ_d` for the finitely many fractions `p/q` that
+occur, and `|Qy − P| ≤ E`. Then `L = σ/E` is a valid gap (`sep_transfer`), and a Cauchy bound
+`|WZ − VY| ≤ C` for a second approximation with `6 L_d C ≤ L_n Dn Dn'` gives the closeness hypothesis
+(`close_from_cauchy`). `digit_from_name` is the digit step with these name-level hypotheses. -/
+
+/-- `|p − qy| ≥ σ` (`σ_n W ≤ σ_d |pW − qY|`) and `|Qy − P| ≤ E` (`Dn ≤ E W`) give the gap hypothesis
+`σ_n Dn ≤ (σ_d E) |pW − qY|` of `L = σ/E`. -/
+theorem sep_transfer {σn σd W X Dn E : PTm n} (hs : Γ ⊢[PRAAx] le (σn * W) (σd * X))
+    (hE : Γ ⊢[PRAAx] le Dn (E * W)) : Γ ⊢[PRAAx] le (σn * Dn) (σd * E * X) := by
+  ipra_le 𝔞 E * sl hs + 𝔞 σn * sl hE
+
+/-- A Cauchy bound `|WZ − VY| ≤ C` with `6 L_d C ≤ L_n Dn Dn'` gives the closeness hypothesis. -/
+theorem close_from_cauchy {W Z V Y C Ld Ln Dn Dn' : PTm n} (hc : Γ ⊢[PRAAx] le (adist (W * Z) (V * Y)) C)
+    (h6 : Γ ⊢[PRAAx] le (num 6 * Ld * C) (Ln * (Dn * Dn'))) :
+    Γ ⊢[PRAAx] le (num 6 * Ld * adist (W * Z) (V * Y)) (Ln * (Dn * Dn')) := by
+  ipra_le 6 * 𝔞 Ld * sl hc + sl h6
+
+/-- The digit step from name-level hypotheses (region 1): a separation `σ` of `Y/W` from the two neighbouring
+fractions, `|Qy − P| ≤ E`, and a Cauchy bound `C` with `6 σ_d E C ≤ σ_n Dn Dn'`. -/
+theorem digit_from_name {P Q P' Q' Y W Z V A Dn A' Dn' σn σd E C : PTm n}
+    (hdet : Γ ⊢[PRAAx] (P' * Q ≐ P * Q' + one) ⋎ (P * Q' ≐ P' * Q + one))
+    (hA : Γ ⊢[PRAAx] P' * W ≐ Q' * Y + A) (hD : Γ ⊢[PRAAx] Q * Y ≐ P * W + Dn)
+    (hA' : Γ ⊢[PRAAx] P' * V ≐ Q' * Z + A') (hD' : Γ ⊢[PRAAx] Q * Z ≐ P * V + Dn')
+    (hDn : Γ ⊢[PRAAx] le one Dn) (hDn' : Γ ⊢[PRAAx] Dn' ≐ succ (pred Dn')) (hσ : Γ ⊢[PRAAx] le one σn)
+    (hE : Γ ⊢[PRAAx] le Dn (E * W)) (hc : Γ ⊢[PRAAx] le (adist (W * Z) (V * Y)) C)
+    (h6 : Γ ⊢[PRAAx] le (num 6 * (σd * E) * C) (σn * (Dn * Dn')))
+    (hs0 : Γ ⊢[PRAAx] le (σn * W) (σd * adist ((P' + quo A' Dn' * P) * W) ((Q' + quo A' Dn' * Q) * Y)))
+    (hs1 : Γ ⊢[PRAAx] le (σn * W)
+      (σd * adist ((P' + succ (quo A' Dn') * P) * W) ((Q' + succ (quo A' Dn') * Q) * Y))) :
+    Γ ⊢[PRAAx] le (quo A' Dn' * Dn) A ⋏ lt A (succ (quo A' Dn') * Dn) :=
+  digit_stable (Ld := σd * E) hdet hA hD hA' hD' hDn hDn' hσ (close_from_cauchy hc h6)
+    (sep_transfer hs0 hE) (sep_transfer hs1 hE)
+
 end LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction

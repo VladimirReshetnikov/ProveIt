@@ -1833,6 +1833,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.region_flip
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.region_flip'
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.digit_stable₂
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.sep_transfer
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.close_from_cauchy
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction.digit_from_name
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.absurd_one_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.cancel_eq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.GoldenOptimal.pos_of_eq
