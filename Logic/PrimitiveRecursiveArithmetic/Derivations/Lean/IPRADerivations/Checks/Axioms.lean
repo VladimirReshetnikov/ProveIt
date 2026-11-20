@@ -1166,6 +1166,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.CircleParam.circle_mixed_parity
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.CircleParam.circle_le_D
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.CircleParam.circle_le_2st
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousWidths.widths_top
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousWidths.one_le_pw
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousWidths.widths_S
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
