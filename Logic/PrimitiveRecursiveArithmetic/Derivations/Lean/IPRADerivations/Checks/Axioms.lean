@@ -3616,6 +3616,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.contig_b_minus
 #print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.contig_c_plus
 #print axioms LeanProofs.IPRA.Analysis.ContiguousRelations.gauss_chain
+#print axioms LeanProofs.IPRA.Analysis.ContiguousTruncated.TA_at
+#print axioms LeanProofs.IPRA.Analysis.ContiguousTruncated.TB_at
+#print axioms LeanProofs.IPRA.Analysis.ContiguousTruncated.T0_at
+#print axioms LeanProofs.IPRA.Analysis.ContiguousTruncated.contig_step
+#print axioms LeanProofs.IPRA.Analysis.ContiguousTruncated.contig_truncated
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricQForm.gauge
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricQForm.q_form
 #print axioms LeanProofs.IPRA.Analysis.PullbackCertificates.euler_R1
