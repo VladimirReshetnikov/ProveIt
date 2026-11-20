@@ -1128,6 +1128,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities.Form.identity_t
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities.Form.param_on_conic
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities.Form.param_tangent
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight.abs_nat
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight.abs_neg
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight.R_bound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight.ell_bound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight.emm_bound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight.L_bound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight.height_upper
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
