@@ -437,6 +437,7 @@ import IPRADerivations.DiophantineNumberTheory.KroneckerCorollaries
 import IPRADerivations.DiophantineNumberTheory.ConicHeightLower
 import IPRADerivations.Algebra.BringMonotone
 import IPRADerivations.Algebra.QuinticPrincipal
+import IPRADerivations.Algebra.FourResolvent
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
