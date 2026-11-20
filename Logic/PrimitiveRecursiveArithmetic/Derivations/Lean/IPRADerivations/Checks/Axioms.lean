@@ -1090,6 +1090,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SignedNorthcott.signed_sound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SignedNorthcott.signed_inj
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.SignedNorthcott.signed_complete
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators.gcd_zero_right
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators.coprime_symm
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators.coprime_T
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators.coprime_cube
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators.coprime_sq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators.sq_cube
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators.denominators
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
