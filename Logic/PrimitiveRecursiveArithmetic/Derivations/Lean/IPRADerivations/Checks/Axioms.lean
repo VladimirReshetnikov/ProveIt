@@ -1196,6 +1196,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticSearch.es_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticSearch.es_sqrt_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticSearch.es_infinity
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperySqueeze.squeeze_absurd
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.AperySqueeze.squeeze
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
