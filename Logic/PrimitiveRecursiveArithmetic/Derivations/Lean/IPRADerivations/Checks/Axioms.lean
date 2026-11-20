@@ -10375,6 +10375,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ObservationComposition.shift_horizon
 #print axioms LeanProofs.IPRA.Foundations.ObservationComposition.guarantees
 #print axioms LeanProofs.IPRA.Foundations.ObservationComposition.compose_obs
+#print axioms LeanProofs.IPRA.Foundations.OdeConservation.inst2_driftB
+#print axioms LeanProofs.IPRA.Foundations.OdeConservation.inst2_stepB
+#print axioms LeanProofs.IPRA.Foundations.OdeConservation.drift_sum
+#print axioms LeanProofs.IPRA.Foundations.OdeConservation.drift_const
+#print axioms LeanProofs.IPRA.Foundations.OdeConservation.time_budget
+#print axioms LeanProofs.IPRA.Foundations.OdeConservation.step_budget
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
