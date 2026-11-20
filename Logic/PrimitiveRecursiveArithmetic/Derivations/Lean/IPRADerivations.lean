@@ -199,6 +199,7 @@ import IPRADerivations.AnalyticNumberTheory.PhiLimsup
 import IPRADerivations.AnalyticNumberTheory.PhiPowTwo
 import IPRADerivations.AnalyticNumberTheory.Harmonic
 import IPRADerivations.AnalyticNumberTheory.HarmonicUpper
+import IPRADerivations.AnalyticNumberTheory.LogRefinement
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.AnalyticNumberTheory.DyadicModulus
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
