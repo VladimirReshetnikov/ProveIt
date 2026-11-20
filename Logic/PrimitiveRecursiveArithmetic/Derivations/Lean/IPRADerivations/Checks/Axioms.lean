@@ -1206,6 +1206,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerCorollaries.rational_compat
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerCorollaries.positive_window
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerCorollaries.zero_passes
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeightLower.sq_sign
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeightLower.prod_sign
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeightLower.abs_exact
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeightLower.lower_cancel
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeightLower.adj_bound
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicHeightLower.height_lower
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
