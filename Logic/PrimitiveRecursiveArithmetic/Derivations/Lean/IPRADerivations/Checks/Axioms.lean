@@ -1103,6 +1103,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate.rem_mul_congr2
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate.sum_congr_mod
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate.prod_congr_mod
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.pw_congr_mod
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.monoB_at
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.termB_at
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.mono_congr
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.poly_congr
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.modular_cert
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
