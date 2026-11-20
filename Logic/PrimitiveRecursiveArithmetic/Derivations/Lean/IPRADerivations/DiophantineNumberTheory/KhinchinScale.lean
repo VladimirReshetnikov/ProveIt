@@ -76,48 +76,48 @@ theorem q_le {M Q Q' k : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hQ' : 
     have hz : Θ ⊢[PRAAx] le one zero := by ipra_le sl hk' + 𝔞 M * sl h + 𝔞 (rem k M) with e
     exact absurd_one_zero' ((monus_zero _).eqSymm.eqTrans hz)
 
-/-- The grid equation `qA_k = Tp` on `T = Q! G`. -/
-theorem grid_eq {M Q Q' G k : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hQ' : Γ ⊢[PRAAx] le Q' Q)
-    (hk : Γ ⊢[PRAAx] lt k (monus Q Q' * M)) :
-    Γ ⊢[PRAAx] qE Q' M k * AE Q' (fact Q * G) M k ≐ fact Q * G * rem k M := by
+/-- The grid equation `qA_k = Tp` on `T = R! G`, `Q ≤ R`. -/
+theorem grid_eq {M Q Q' R G k : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hQ' : Γ ⊢[PRAAx] le Q' Q)
+    (hQR : Γ ⊢[PRAAx] le Q R) (hk : Γ ⊢[PRAAx] lt k (monus Q Q' * M)) :
+    Γ ⊢[PRAAx] qE Q' M k * AE Q' (fact R * G) M k ≐ fact R * G * rem k M := by
   have hq := q_le hM hQ' hk
-  have dv : Γ ⊢[PRAAx] dvd (qE Q' M k) (fact Q * G * rem k M) := dvd_mul _ (dvd_mul _ (dvd_fact hq))
-  have dm := Prf.andE₁ (div_mod_at (Γ := Γ) (x := fact Q * G * rem k M) (y := qE Q' M k) (c := Q' + quo k M)
+  have dv : Γ ⊢[PRAAx] dvd (qE Q' M k) (fact R * G * rem k M) := dvd_mul _ (dvd_mul _ (dvd_fact (le_trans hq hQR)))
+  have dm := Prf.andE₁ (div_mod_at (Γ := Γ) (x := fact R * G * rem k M) (y := qE Q' M k) (c := Q' + quo k M)
     (.eqRefl _))
   exact (add_zero _).eqSymm.eqTrans ((congrAdd (.eqRefl _) dv).eqSymm.eqTrans dm.eqSymm)
 
 /-- Every member lies in the grid `[0, TM)`. -/
-theorem mem_pt {M Q Q' G w α γ β k : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hQ' : Γ ⊢[PRAAx] le Q' Q)
-    (hw : Γ ⊢[PRAAx] le (Q * Q * w) (fact Q * G)) (hk : Γ ⊢[PRAAx] lt k (monus Q Q' * M)) :
-    Γ ⊢[PRAAx] le (AE Q' (fact Q * G) M k + sg (actE Q' M α γ β k) * w) (fact Q * G * M) := by
+theorem mem_pt {M Q Q' R G w α γ β k : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hQ' : Γ ⊢[PRAAx] le Q' Q)
+    (hw : Γ ⊢[PRAAx] le (Q * Q * w) (fact R * G)) (hk : Γ ⊢[PRAAx] lt k (monus Q Q' * M)) :
+    Γ ⊢[PRAAx] le (AE Q' (fact R * G) M k + sg (actE Q' M α γ β k) * w) (fact R * G * M) := by
   have hq := q_le hM hQ' hk
   have hp : Γ ⊢[PRAAx] lt (rem k M) M := Prf.andE₂ (div_mod_at (x := k) hM)
-  have hA : Γ ⊢[PRAAx] le (AE Q' (fact Q * G) M k) (fact Q * G * rem k M) := quo_le_self _ _
+  have hA : Γ ⊢[PRAAx] le (AE Q' (fact R * G) M k) (fact R * G * rem k M) := quo_le_self _ _
   refine .orE (sg_bit (Γ := Γ) (actE Q' M α γ β k)) ?_ ?_
   · let Θ : List (Fm PTm n) := (sg (actE Q' M α γ β k) ≐ zero) :: Γ
     have e := natEq (Prf.hyp0 : Θ ⊢[PRAAx] sg (actE Q' M α γ β k) ≐ zero)
     have hq' : Θ ⊢[PRAAx] le (qE Q' M k) Q := hq.wk
     have hp' : Θ ⊢[PRAAx] lt (rem k M) M := hp.wk
-    have hA' : Θ ⊢[PRAAx] le (AE Q' (fact Q * G) M k) (fact Q * G * rem k M) := hA.wk
-    have hw' : Θ ⊢[PRAAx] le (Q * Q * w) (fact Q * G) := hw.wk
-    ipra_le sl hA' + 𝔞 (fact Q * G) * sl hp' + sl hw' + 𝔞 w * (𝔞 Q * (𝔞 Q' + 𝔞 (quo k M) + sl hq')) +
+    have hA' : Θ ⊢[PRAAx] le (AE Q' (fact R * G) M k) (fact R * G * rem k M) := hA.wk
+    have hw' : Θ ⊢[PRAAx] le (Q * Q * w) (fact R * G) := hw.wk
+    ipra_le sl hA' + 𝔞 (fact R * G) * sl hp' + sl hw' + 𝔞 w * (𝔞 Q * (𝔞 Q' + 𝔞 (quo k M) + sl hq')) +
       𝔞 w * (𝔞 Q' + 𝔞 (quo k M) + sl hq') + 𝔞 w with 𝔞 w * e
   · let Θ : List (Fm PTm n) := (sg (actE Q' M α γ β k) ≐ one) :: Γ
     have e := natEq (Prf.hyp0 : Θ ⊢[PRAAx] sg (actE Q' M α γ β k) ≐ one)
     have hq' : Θ ⊢[PRAAx] le (qE Q' M k) Q := hq.wk
     have hp' : Θ ⊢[PRAAx] lt (rem k M) M := hp.wk
-    have hA' : Θ ⊢[PRAAx] le (AE Q' (fact Q * G) M k) (fact Q * G * rem k M) := hA.wk
-    have hw' : Θ ⊢[PRAAx] le (Q * Q * w) (fact Q * G) := hw.wk
-    ipra_le sl hA' + 𝔞 (fact Q * G) * sl hp' + sl hw' + 𝔞 w * (𝔞 Q * (𝔞 Q' + 𝔞 (quo k M) + sl hq')) +
+    have hA' : Θ ⊢[PRAAx] le (AE Q' (fact R * G) M k) (fact R * G * rem k M) := hA.wk
+    have hw' : Θ ⊢[PRAAx] le (Q * Q * w) (fact R * G) := hw.wk
+    ipra_le sl hA' + 𝔞 (fact R * G) * sl hp' + sl hw' + 𝔞 w * (𝔞 Q * (𝔞 Q' + 𝔞 (quo k M) + sl hq')) +
       𝔞 w * (𝔞 Q' + 𝔞 (quo k M) + sl hq') with 𝔞 w * e
 
-/-- Two different active members `a < b` are `w`-separated: the separation term vanishes. -/
-theorem sep_pt {M Q Q' G w α γ β a b : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hQ' : Γ ⊢[PRAAx] le Q' Q)
-    (hw : Γ ⊢[PRAAx] le (Q * Q * w) (fact Q * G)) (hab : Γ ⊢[PRAAx] lt a b)
-    (hb : Γ ⊢[PRAAx] lt b (monus Q Q' * M)) :
-    Γ ⊢[PRAAx] sg (actE Q' M α γ β a) * sg (actE Q' M α γ β b) *
-      sg (monus (AE Q' (fact Q * G) M b + w) (AE Q' (fact Q * G) M a)) *
-      sg (monus (AE Q' (fact Q * G) M a + w) (AE Q' (fact Q * G) M b)) ≐ zero := by
+/-- Two different active members `a < b` are `w`-separated: `A_a + w ≤ A_b` or `A_b + w ≤ A_a`. -/
+theorem sep_or {M Q Q' R G w α γ β a b : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hQ' : Γ ⊢[PRAAx] le Q' Q)
+    (hQR : Γ ⊢[PRAAx] le Q R) (hw : Γ ⊢[PRAAx] le (Q * Q * w) (fact R * G)) (hab : Γ ⊢[PRAAx] lt a b)
+    (hb : Γ ⊢[PRAAx] lt b (monus Q Q' * M)) (a1 : Γ ⊢[PRAAx] sg (actE Q' M α γ β a) ≐ one)
+    (a2 : Γ ⊢[PRAAx] sg (actE Q' M α γ β b) ≐ one) :
+    Γ ⊢[PRAAx] le (AE Q' (fact R * G) M a + w) (AE Q' (fact R * G) M b) ⋎
+      le (AE Q' (fact R * G) M b + w) (AE Q' (fact R * G) M a) := by
   have ha : Γ ⊢[PRAAx] lt a (monus Q Q' * M) := le_trans hab (le_of_lt hb)
   -- the flattening is injective
   have hne : Γ ⊢[PRAAx] neg ((qE Q' M a ≐ qE Q' M b) ⋏ (rem a M ≐ rem b M)) := by
@@ -134,6 +134,18 @@ theorem sep_pt {M Q Q' G w α γ β a b : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ 
     have hab' : Θ ⊢[PRAAx] lt a b := hab.wk
     have hz : Θ ⊢[PRAAx] le one zero := by ipra_le sl hab' with e
     exact absurd_one_zero' ((monus_zero _).eqSymm.eqTrans hz)
+  have hqa : Γ ⊢[PRAAx] qE Q' M a ≐ succ (pred (qE Q' M a)) := congrSucc (pred_succ _).eqSymm
+  have hqb : Γ ⊢[PRAAx] qE Q' M b ≐ succ (pred (qE Q' M b)) := congrSucc (pred_succ _).eqSymm
+  exact sep_pair hqa hqb (q_le hM hQ' ha) (q_le hM hQ' hb) (grid_eq hM hQ' hQR ha) (grid_eq hM hQ' hQR hb) hw
+    a1 a2 hne
+
+/-- Two different active members `a < b` are `w`-separated: the separation term vanishes. -/
+theorem sep_pt {M Q Q' R G w α γ β a b : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hQ' : Γ ⊢[PRAAx] le Q' Q)
+    (hQR : Γ ⊢[PRAAx] le Q R) (hw : Γ ⊢[PRAAx] le (Q * Q * w) (fact R * G)) (hab : Γ ⊢[PRAAx] lt a b)
+    (hb : Γ ⊢[PRAAx] lt b (monus Q Q' * M)) :
+    Γ ⊢[PRAAx] sg (actE Q' M α γ β a) * sg (actE Q' M α γ β b) *
+      sg (monus (AE Q' (fact R * G) M b + w) (AE Q' (fact R * G) M a)) *
+      sg (monus (AE Q' (fact R * G) M a + w) (AE Q' (fact R * G) M b)) ≐ zero := by
   refine .orE (sg_bit (Γ := Γ) (actE Q' M α γ β a)) ?_ ?_
   · exact (congrMul (congrMul (congrMul Prf.hyp0 (.eqRefl _)) (.eqRefl _)) (.eqRefl _)).eqTrans
       ((congrMul (congrMul (zero_mul _) (.eqRefl _)) (.eqRefl _)).eqTrans
@@ -146,17 +158,7 @@ theorem sep_pt {M Q Q' G w α γ β a b : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ 
           ((congrMul (zero_mul _) (.eqRefl _)).eqTrans (zero_mul _)))
     · let Δ2 : List (Fm PTm n) := (sg (actE Q' M α γ β b) ≐ one) :: Δ1
       have a2 : Δ2 ⊢[PRAAx] sg (actE Q' M α γ β b) ≐ one := Prf.hyp0
-      have hqa : Δ2 ⊢[PRAAx] qE Q' M a ≐ succ (pred (qE Q' M a)) := congrSucc (pred_succ _).eqSymm
-      have hqb : Δ2 ⊢[PRAAx] qE Q' M b ≐ succ (pred (qE Q' M b)) := congrSucc (pred_succ _).eqSymm
-      have hQa : Δ2 ⊢[PRAAx] le (qE Q' M a) Q := (q_le hM hQ' ha).wk.wk
-      have hQb : Δ2 ⊢[PRAAx] le (qE Q' M b) Q := (q_le hM hQ' hb).wk.wk
-      have hAa : Δ2 ⊢[PRAAx] qE Q' M a * AE Q' (fact Q * G) M a ≐ fact Q * G * rem a M :=
-        (grid_eq hM hQ' ha).wk.wk
-      have hAb : Δ2 ⊢[PRAAx] qE Q' M b * AE Q' (fact Q * G) M b ≐ fact Q * G * rem b M :=
-        (grid_eq hM hQ' hb).wk.wk
-      have hw2 : Δ2 ⊢[PRAAx] le (Q * Q * w) (fact Q * G) := hw.wk.wk
-      have hne2 : Δ2 ⊢[PRAAx] neg ((qE Q' M a ≐ qE Q' M b) ⋏ (rem a M ≐ rem b M)) := hne.wk.wk
-      refine .orE (sep_pair hqa hqb hQa hQb hAa hAb hw2 a1.wk a2 hne2) ?_ ?_
+      refine .orE (sep_or hM.wk.wk hQ'.wk.wk hQR.wk.wk hw.wk.wk hab.wk.wk hb.wk.wk a1.wk a2) ?_ ?_
       · exact (congrMul (.eqRefl _) ((congrSg Prf.hyp0).eqTrans sg_zero)).eqTrans (mul_zero _)
       · exact (congrMul (congrMul (.eqRefl _) ((congrSg Prf.hyp0).eqTrans sg_zero)) (.eqRefl _)).eqTrans
           ((congrMul (mul_zero _) (.eqRefl _)).eqTrans (zero_mul _))
@@ -230,26 +232,28 @@ theorem act_at (a M Q' T α γ β : PTm n) :
 
 /-! ## The measure of the scale -/
 
-/-- (K8), the exact form: on the grid `T = Q! G` with `Q²w ≤ T`, the active members (the reduced
+/-- (K8), the exact form: on the grid `T = R! G` (`Q ≤ R`) with `Q²w ≤ T`, the active members (the reduced
 fractions of `J*` with denominators `Q' < q ≤ Q` and numerators `< M`) have union length
 `w Σ_{k<(Q−Q')M} [act_k]`. -/
-theorem scale_measure {M Q Q' G w α γ β : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
-    (hQ' : Γ ⊢[PRAAx] le Q' Q) (hw : Γ ⊢[PRAAx] le (Q * Q * w) (fact Q * G)) :
-    Γ ⊢[PRAAx] measure (loB AK) (hiB AK actK) (fact Q * G * M) (monus Q Q' * M)
-        (pairT w (tup M Q' (fact Q * G) α γ β)) ≐
-      w * ap2 (sumF (acB actK)) (monus Q Q' * M) (tup M Q' (fact Q * G) α γ β) := by
+theorem scale_measure {M Q Q' R G w α γ β : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
+    (hQ' : Γ ⊢[PRAAx] le Q' Q) (hQR : Γ ⊢[PRAAx] le Q R) (hw : Γ ⊢[PRAAx] le (Q * Q * w) (fact R * G)) :
+    Γ ⊢[PRAAx] measure (loB AK) (hiB AK actK) (fact R * G * M) (monus Q Q' * M)
+        (pairT w (tup M Q' (fact R * G) α γ β)) ≐
+      w * ap2 (sumF (acB actK)) (monus Q Q' * M) (tup M Q' (fact R * G) α γ β) := by
   have hM1 : Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by
     simpa [Fm.shift, Syn.shift] using hM.shift
   have hQ1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Q') (Syn.shift Q) := by
     simpa [Fm.shift, Syn.shift] using hQ'.shift
   have hw1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Q * Syn.shift Q * Syn.shift w)
-      (fact (Syn.shift Q) * Syn.shift G) := by
+      (fact (Syn.shift R) * Syn.shift G) := by
     simpa [Fm.shift, Syn.shift] using hw.shift
+  have hQR1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Q) (Syn.shift R) := by
+    simpa [Fm.shift, Syn.shift] using hQR.shift
   refine packing_pt AK actK ?_ ?_
   · intro Δ a hs ha
-    rw [show Syn.shift (tup M Q' (fact Q * G) α γ β) = tup (Syn.shift M) (Syn.shift Q')
-        (fact (Syn.shift Q) * Syn.shift G) (Syn.shift α) (Syn.shift γ) (Syn.shift β) by simp [Syn.shift],
-      show Syn.shift (fact Q * G * M) = fact (Syn.shift Q) * Syn.shift G * Syn.shift M by simp [Syn.shift]]
+    rw [show Syn.shift (tup M Q' (fact R * G) α γ β) = tup (Syn.shift M) (Syn.shift Q')
+        (fact (Syn.shift R) * Syn.shift G) (Syn.shift α) (Syn.shift γ) (Syn.shift β) by simp [Syn.shift],
+      show Syn.shift (fact R * G * M) = fact (Syn.shift R) * Syn.shift G * Syn.shift M by simp [Syn.shift]]
     rw [show Syn.shift (monus Q Q' * M) = monus (Syn.shift Q) (Syn.shift Q') * Syn.shift M by
       simp [Syn.shift]] at ha
     refine le_congr ?_ (.eqRefl _) (mem_pt (α := Syn.shift α) (γ := Syn.shift γ) (β := Syn.shift β)
@@ -262,20 +266,22 @@ theorem scale_measure {M Q Q' G w α γ β : PTm n} (hM : Γ ⊢[PRAAx] M ≐ su
     have hQ2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le (Syn.shift (Syn.shift Q')) (Syn.shift (Syn.shift Q)) := by
       simpa [Fm.shift, Syn.shift] using hQ1.shift
     have hw2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le (Syn.shift (Syn.shift Q) * Syn.shift (Syn.shift Q) *
-        Syn.shift (Syn.shift w)) (fact (Syn.shift (Syn.shift Q)) * Syn.shift (Syn.shift G)) := by
+        Syn.shift (Syn.shift w)) (fact (Syn.shift (Syn.shift R)) * Syn.shift (Syn.shift G)) := by
       simpa [Fm.shift, Syn.shift] using hw1.shift
-    rw [show Syn.shift (Syn.shift (tup M Q' (fact Q * G) α γ β)) = tup (Syn.shift (Syn.shift M))
-        (Syn.shift (Syn.shift Q')) (fact (Syn.shift (Syn.shift Q)) * Syn.shift (Syn.shift G))
+    have hQR2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le (Syn.shift (Syn.shift Q)) (Syn.shift (Syn.shift R)) := by
+      simpa [Fm.shift, Syn.shift] using hQR1.shift
+    rw [show Syn.shift (Syn.shift (tup M Q' (fact R * G) α γ β)) = tup (Syn.shift (Syn.shift M))
+        (Syn.shift (Syn.shift Q')) (fact (Syn.shift (Syn.shift R)) * Syn.shift (Syn.shift G))
         (Syn.shift (Syn.shift α)) (Syn.shift (Syn.shift γ)) (Syn.shift (Syn.shift β)) by simp [Syn.shift]]
     rw [show Syn.shift (Syn.shift (monus Q Q' * M)) = monus (Syn.shift (Syn.shift Q)) (Syn.shift (Syn.shift Q')) *
         Syn.shift (Syn.shift M) by simp [Syn.shift]] at hb
     refine .eqTrans ?_ (sep_pt (α := Syn.shift (Syn.shift α)) (γ := Syn.shift (Syn.shift γ))
-      (β := Syn.shift (Syn.shift β)) (hM2.weaken hs) (hQ2.weaken hs) (hw2.weaken hs) hab hb)
+      (β := Syn.shift (Syn.shift β)) (hM2.weaken hs) (hQ2.weaken hs) (hQR2.weaken hs) (hw2.weaken hs) hab hb)
     have Aa := A_at (Γ := Δ) a (Syn.shift (Syn.shift M)) (Syn.shift (Syn.shift Q'))
-      (fact (Syn.shift (Syn.shift Q)) * Syn.shift (Syn.shift G)) (Syn.shift (Syn.shift α)) (Syn.shift (Syn.shift γ))
+      (fact (Syn.shift (Syn.shift R)) * Syn.shift (Syn.shift G)) (Syn.shift (Syn.shift α)) (Syn.shift (Syn.shift γ))
       (Syn.shift (Syn.shift β))
     have Ab := A_at (Γ := Δ) b (Syn.shift (Syn.shift M)) (Syn.shift (Syn.shift Q'))
-      (fact (Syn.shift (Syn.shift Q)) * Syn.shift (Syn.shift G)) (Syn.shift (Syn.shift α)) (Syn.shift (Syn.shift γ))
+      (fact (Syn.shift (Syn.shift R)) * Syn.shift (Syn.shift G)) (Syn.shift (Syn.shift α)) (Syn.shift (Syn.shift γ))
       (Syn.shift (Syn.shift β))
     exact congrMul (congrMul (congrMul (congrSg (act_at _ _ _ _ _ _ _)) (congrSg (act_at _ _ _ _ _ _ _)))
         (congrSg (congrMonus (congrAdd Ab (.eqRefl _)) Aa)))

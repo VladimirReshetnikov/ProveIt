@@ -165,7 +165,7 @@ theorem k8_bounds {α γ b0 M k G w : PTm n} (hαγ : Γ ⊢[PRAAx] le α γ) (h
           (num 2 * monus γ α * (pw two k * pw two k) * w) := by
   have hQ' : Γ ⊢[PRAAx] le (quo (pw two k) (num 4)) (pw two k) :=
     LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola.quo_le_self _ _
-  have em := scale_measure (α := α) (γ := γ) (β := succ b0) hM hQ' hw
+  have em := scale_measure (α := α) (γ := γ) (β := succ b0) hM hQ' (le_refl _) hw
   have ec := scale_count (T := fact (pw two k) * G) (α := α) (γ := γ) (β := succ b0) (Q := pw two k) hM
   have k3 := k3_bounds hαγ hγ hQM hK
   have eE := natEq (em.eqTrans (congrMul (.eqRefl _) ec))
