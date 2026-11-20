@@ -1866,6 +1866,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.CoverLocal.cnt_above
 #print axioms LeanProofs.IPRA.Foundations.CoverLocal.cnt_out
 #print axioms LeanProofs.IPRA.Foundations.CoverLocal.cover_out
+#print axioms LeanProofs.IPRA.Foundations.SumLocal.sum_zero_of
+#print axioms LeanProofs.IPRA.Foundations.SumLocal.sum_local
 #print axioms LeanProofs.IPRA.Foundations.EmbeddingBasics.diag_at
 #print axioms LeanProofs.IPRA.Foundations.EmbeddingBasics.no_universal_evaluator
 #print axioms LeanProofs.IPRA.Foundations.EmbeddingBasics.least_witness

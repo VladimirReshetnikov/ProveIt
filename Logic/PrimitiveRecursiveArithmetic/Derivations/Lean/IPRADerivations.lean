@@ -416,6 +416,7 @@ import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.CrossingSearch
 import IPRADerivations.Foundations.BlockPartitionSum
 import IPRADerivations.Foundations.CoverLocal
+import IPRADerivations.Foundations.SumLocal
 import IPRADerivations.Foundations.EmbeddingBasics
 import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Foundations.BoundedSyntax
