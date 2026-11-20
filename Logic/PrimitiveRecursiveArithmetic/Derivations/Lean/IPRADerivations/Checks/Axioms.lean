@@ -3013,6 +3013,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergComparison.divisor_at
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergComparison.comparison_upper
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergComparison.comparison_lower
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope.inst2_cB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope.cube_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope.sq_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope.floor_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope.inst2_qB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FloorTelescope.floor_square_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
