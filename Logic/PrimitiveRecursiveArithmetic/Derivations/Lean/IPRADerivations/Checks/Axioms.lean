@@ -2385,6 +2385,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc.lamL_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc.lam_conv_L
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc.selberg_divisor
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobius.inst2_GB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobius.inst2_EB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobius.inst2_QSP
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobius.inst2_QSN
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobius.inner_sq
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobius.row_sq_mob
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobius.selberg_mobius
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.lw_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.lam_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.lambda_mobius_neg'
