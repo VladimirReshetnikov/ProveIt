@@ -3096,6 +3096,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.shift_succ_x
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.cs_step
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory.conv_summatory
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.inst2_aP
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.inst2_aN
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.inst2_bL
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.inst2_GxB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.congrGx1
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.row_alg
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.row_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.row_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.row_conv
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.pt_n
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.symmetry_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
