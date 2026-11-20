@@ -3439,6 +3439,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedAbel.split
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedAbel.parts_diff
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightedAbel.weighted_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.dl_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.u2_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.u_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.half_alg
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.hs_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.hs_step
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.half_square
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.dd_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare.dd_le
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
