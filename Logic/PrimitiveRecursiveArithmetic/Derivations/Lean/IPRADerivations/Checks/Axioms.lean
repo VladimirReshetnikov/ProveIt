@@ -1097,6 +1097,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators.coprime_sq
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators.sq_cube
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.EllipticDenominators.denominators
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate.unimodular
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate.rem_add_mul
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate.rem_add_congr
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate.rem_mul_congr2
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate.sum_congr_mod
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate.prod_congr_mod
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
