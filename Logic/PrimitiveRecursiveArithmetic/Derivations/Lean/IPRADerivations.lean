@@ -228,6 +228,9 @@ import IPRADerivations.AnalyticNumberTheory.HyperbolaSwap
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBlock
 import IPRADerivations.AnalyticNumberTheory.BlockFloor
 import IPRADerivations.AnalyticNumberTheory.BlockTrunc
+import IPRADerivations.AnalyticNumberTheory.BlockSigned
+import IPRADerivations.AnalyticNumberTheory.BlockMean
+import IPRADerivations.AnalyticNumberTheory.PointDeficit
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.AnalyticNumberTheory.PNTOneStep
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
