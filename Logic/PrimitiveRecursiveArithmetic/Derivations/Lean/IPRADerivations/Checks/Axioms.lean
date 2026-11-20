@@ -10309,6 +10309,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.OperationComposition.app1_cdem
 #print axioms LeanProofs.IPRA.Foundations.OperationComposition.inst2_cout
 #print axioms LeanProofs.IPRA.Foundations.OperationComposition.compose
+#print axioms LeanProofs.IPRA.Foundations.RawDemand.mn_le_right
+#print axioms LeanProofs.IPRA.Foundations.RawDemand.mn_le_left
+#print axioms LeanProofs.IPRA.Foundations.RawDemand.raw_adequate
+#print axioms LeanProofs.IPRA.Foundations.RawDemand.raw_prefixed
+#print axioms LeanProofs.IPRA.Foundations.RawDemand.raw_least
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing

@@ -930,6 +930,7 @@ import IPRADerivations.Foundations.ProofPlan
 import IPRADerivations.Foundations.PointList
 import IPRADerivations.Foundations.ForwardValidity
 import IPRADerivations.Foundations.OperationComposition
+import IPRADerivations.Foundations.RawDemand
 import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization
