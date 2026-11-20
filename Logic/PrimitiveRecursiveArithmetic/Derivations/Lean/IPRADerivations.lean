@@ -944,6 +944,7 @@ import IPRADerivations.Foundations.OdeConservation
 import IPRADerivations.Foundations.BoundList
 import IPRADerivations.Foundations.TraceComposition
 import IPRADerivations.Foundations.DualHorizon
+import IPRADerivations.Foundations.StriveCompilation
 import IPRADerivations.Foundations.OpenContracts
 import IPRADerivations.Foundations.ExtensionalComposition
 import IPRADerivations.Foundations.GuardedTotalization

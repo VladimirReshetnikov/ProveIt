@@ -10437,6 +10437,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.DualHorizon.query_le
 #print axioms LeanProofs.IPRA.Foundations.DualHorizon.proof_le
 #print axioms LeanProofs.IPRA.Foundations.DualHorizon.comp_le
+#print axioms LeanProofs.IPRA.Foundations.StriveCompilation.val_cases
+#print axioms LeanProofs.IPRA.Foundations.StriveCompilation.val_iff
+#print axioms LeanProofs.IPRA.Foundations.StriveCompilation.bits_one
+#print axioms LeanProofs.IPRA.Foundations.StriveCompilation.cplus_sound
+#print axioms LeanProofs.IPRA.Foundations.StriveCompilation.cminus_sound
+#print axioms LeanProofs.IPRA.Foundations.StriveCompilation.cplus_bound
+#print axioms LeanProofs.IPRA.Foundations.StriveCompilation.cminus_bound
+#print axioms LeanProofs.IPRA.Foundations.StriveCompilation.cplus_complete
+#print axioms LeanProofs.IPRA.Foundations.StriveCompilation.cminus_complete
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
