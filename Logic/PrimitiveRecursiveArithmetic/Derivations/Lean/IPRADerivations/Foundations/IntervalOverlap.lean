@@ -141,7 +141,8 @@ theorem mt_at (j lo hi x2 : PTm n) :
   have hx : Γ ⊢[PRAAx] sndT (sndT (pairT lo (pairT hi x2))) ≐ x2 := (congrSnd hW).eqTrans (snd_pair _ _)
   have el := congrInst2 lo2 (.eqRefl j) hx
   have eh := congrInst2 hi2 (.eqRefl j) hx
-  exact congrMul (congrMul (congrSg (congrMonus hhi el)) (congrSg (congrMonus eh hlo))) (congrMonus eh el)
+  exact congrMul (congrMul (congrMul (congrSg (congrMonus hhi hlo)) (congrSg (congrMonus hhi el)))
+    (congrSg (congrMonus eh hlo))) (congrMonus eh el)
 
 /-- The covering bit of `E₂` is at most the number of covering members, times `[c ∈ I]`. -/
 theorem pt1 (c lo hi K2 x2 : PTm n) :

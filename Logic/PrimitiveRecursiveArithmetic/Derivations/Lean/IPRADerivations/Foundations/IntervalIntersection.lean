@@ -8,7 +8,8 @@ Framework (packet `diophantine-number-theory/hurwitz_khinchin_ipra`, `khinchin.t
 interval meeting `I` …"; reusable for any overlap estimate between finite unions of grid intervals).
 
 For two half-open grid intervals `I = [lo, hi)` and `J = [lo', hi')`, write
-`meet(I, J) = [lo' < hi][lo < hi']` for "the intervals meet". Then:
+`meet(I, J) = [lo < hi][lo' < hi][lo < hi']` for "the intervals meet" (an empty `I` meets nothing, so
+inactive members of a family contribute nothing to overlap sums). Then:
 
 * `pt_meet`: `[c ∈ I][c ∈ J] ≤ meet(I, J) [c ∈ J]` for every cell `c`;
 * `meet_bit`: `meet(I, J)` is `0` or `1`;
@@ -39,8 +40,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-/-- `meet(I, J) = [lo' < hi][lo < hi']`. -/
-abbrev meet (lo hi lo' hi' : PTm n) : PTm n := sg (monus hi lo') * sg (monus hi' lo)
+/-- `meet(I, J) = [lo < hi][lo' < hi][lo < hi']`. -/
+abbrev meet (lo hi lo' hi' : PTm n) : PTm n := sg (monus hi lo) * sg (monus hi lo') * sg (monus hi' lo)
 
 theorem congrCnt {lo lo' hi hi' c c' : PTm n} (h1 : Γ ⊢[PRAAx] lo ≐ lo') (h2 : Γ ⊢[PRAAx] hi ≐ hi')
     (h3 : Γ ⊢[PRAAx] c ≐ c') : Γ ⊢[PRAAx] cnt lo hi c ≐ cnt lo' hi' c' :=
@@ -55,11 +56,16 @@ theorem one_one : Γ ⊢[PRAAx] (one : PTm n) * one ≐ one := by
 /-- `meet` is a bit. -/
 theorem meet_bit (lo hi lo' hi' : PTm n) :
     Γ ⊢[PRAAx] (meet lo hi lo' hi' ≐ zero) ⋎ (meet lo hi lo' hi' ≐ one) := by
-  refine .orE (sg_bit (Γ := Γ) (monus hi lo')) ?_ ?_
-  · exact .orI₁ ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _))
-  · refine .orE (sg_bit (Γ := (sg (monus hi lo') ≐ one) :: Γ) (monus hi' lo)) ?_ ?_
-    · exact .orI₁ ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))
-    · exact .orI₂ ((congrMul Prf.hyp1 Prf.hyp0).eqTrans one_one)
+  refine .orE (sg_bit (Γ := Γ) (monus hi lo)) ?_ ?_
+  · exact .orI₁ ((congrMul (congrMul Prf.hyp0 (.eqRefl _)) (.eqRefl _)).eqTrans
+      ((congrMul (zero_mul _) (.eqRefl _)).eqTrans (zero_mul _)))
+  · let Δ0 : List (Fm PTm n) := (sg (monus hi lo) ≐ one) :: Γ
+    refine .orE (sg_bit (Γ := Δ0) (monus hi lo')) ?_ ?_
+    · exact .orI₁ ((congrMul (congrMul (.eqRefl _) Prf.hyp0) (.eqRefl _)).eqTrans
+        ((congrMul (mul_zero _) (.eqRefl _)).eqTrans (zero_mul _)))
+    · refine .orE (sg_bit (Γ := (sg (monus hi lo') ≐ one) :: Δ0) (monus hi' lo)) ?_ ?_
+      · exact .orI₁ ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))
+      · exact .orI₂ ((congrMul ((congrMul hyp2 Prf.hyp1).eqTrans one_one) Prf.hyp0).eqTrans one_one)
 
 /-- `[c ∈ I][c ∈ J] ≤ meet(I, J) [c ∈ J]`. -/
 theorem pt_meet (lo hi lo' hi' c : PTm n) :
@@ -85,9 +91,11 @@ theorem pt_meet (lo hi lo' hi' c : PTm n) :
       have l4 : Δ' ⊢[PRAAx] lt c hi' := Prf.andE₂ f2
       have g1 : Δ' ⊢[PRAAx] lt lo' hi := by ipra_le sl l1 + sl l2
       have g2 : Δ' ⊢[PRAAx] lt lo hi' := by ipra_le sl l3 + sl l4
+      have g0 : Δ' ⊢[PRAAx] lt lo hi := by ipra_le sl l3 + sl l2
       have eL : Δ' ⊢[PRAAx] cnt lo hi c * cnt lo' hi' c ≐ one := (congrMul c1' c2).eqTrans one_one
       have eR : Δ' ⊢[PRAAx] meet lo hi lo' hi' * cnt lo' hi' c ≐ one :=
-        (congrMul ((congrMul (sg_one_of_lt g1) (sg_one_of_lt g2)).eqTrans one_one) c2).eqTrans one_one
+        (congrMul ((congrMul ((congrMul (sg_one_of_lt g0) (sg_one_of_lt g1)).eqTrans one_one)
+          (sg_one_of_lt g2)).eqTrans one_one) c2).eqTrans one_one
       exact le_congr eL.eqSymm eR.eqSymm (le_refl _)
 
 /-! ## Counting the cells -/

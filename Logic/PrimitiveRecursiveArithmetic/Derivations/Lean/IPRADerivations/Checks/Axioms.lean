@@ -2056,6 +2056,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.IntervalOverlap.q1
 #print axioms LeanProofs.IPRA.Foundations.IntervalOverlap.q3
 #print axioms LeanProofs.IPRA.Foundations.IntervalOverlap.overlap_split
+#print axioms LeanProofs.IPRA.Foundations.SeparatedCount.coll_pt
+#print axioms LeanProofs.IPRA.Foundations.SeparatedCount.viol_pt
+#print axioms LeanProofs.IPRA.Foundations.SeparatedCount.sub_ss
+#print axioms LeanProofs.IPRA.Foundations.SeparatedCount.inst2_cK
+#print axioms LeanProofs.IPRA.Foundations.SeparatedCount.inst2_gK
+#print axioms LeanProofs.IPRA.Foundations.SeparatedCount.projX
+#print axioms LeanProofs.IPRA.Foundations.SeparatedCount.sep_count
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul

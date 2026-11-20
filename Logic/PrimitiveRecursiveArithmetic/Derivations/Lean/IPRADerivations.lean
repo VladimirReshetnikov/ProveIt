@@ -323,6 +323,7 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinScale
 import IPRADerivations.DiophantineNumberTheory.KhinchinScaleCount
 import IPRADerivations.Foundations.IntervalIntersection
 import IPRADerivations.Foundations.IntervalOverlap
+import IPRADerivations.Foundations.SeparatedCount
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
