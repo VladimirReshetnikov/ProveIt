@@ -321,6 +321,8 @@ import IPRADerivations.DiophantineNumberTheory.KhinchinSeparated
 import IPRADerivations.Foundations.PackingPointwise
 import IPRADerivations.DiophantineNumberTheory.KhinchinScale
 import IPRADerivations.DiophantineNumberTheory.KhinchinScaleCount
+import IPRADerivations.Foundations.IntervalIntersection
+import IPRADerivations.Foundations.IntervalOverlap
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
