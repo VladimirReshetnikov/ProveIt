@@ -668,6 +668,7 @@ import IPRADerivations.Foundations.CofactorAnnihilator
 import IPRADerivations.Foundations.FilteredLiftingStep
 import IPRADerivations.Foundations.FilteredTaylor
 import IPRADerivations.Foundations.HenselIteration
+import IPRADerivations.Foundations.HenselUniqueness
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.GuardedDescent
 import IPRADerivations.Foundations.ObserverGuards
