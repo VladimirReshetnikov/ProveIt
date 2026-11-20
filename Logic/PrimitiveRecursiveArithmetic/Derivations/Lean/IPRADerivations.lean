@@ -198,6 +198,7 @@ import IPRADerivations.AnalyticNumberTheory.TauLogAbel
 import IPRADerivations.AnalyticNumberTheory.SelbergComparison
 import IPRADerivations.AnalyticNumberTheory.FloorTelescope
 import IPRADerivations.AnalyticNumberTheory.FourthRootSum
+import IPRADerivations.AnalyticNumberTheory.ComparisonEnvelope
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.AnalyticNumberTheory.PNTOneStep
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep

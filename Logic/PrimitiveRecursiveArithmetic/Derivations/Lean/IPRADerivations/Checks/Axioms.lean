@@ -3056,6 +3056,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum.inst2_TB
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum.shift_seven
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum.fourth_root_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope.le_mul2
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope.harm_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope.lam_succ
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope.y_le_Q4
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope.lam_fourth
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope.env_upper
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope.env_lower
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
