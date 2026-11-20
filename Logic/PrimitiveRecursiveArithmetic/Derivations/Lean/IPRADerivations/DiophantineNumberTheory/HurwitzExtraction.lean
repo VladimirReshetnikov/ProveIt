@@ -201,4 +201,39 @@ theorem mobius_cross {P Q P' Q' Y W Z V A Dn A' Dn' : PTm n}
     -- `|A Dn' − A' Dn| = |VY − WZ| = |WZ − VY|`
     exact h.eqTrans (add_comm _ _)
 
+/-! ## Separation from the integers and the assembled digit step -/
+
+/-- `t(y) − k = ((P' + kP) − (Q' + kQ) y)/(Qy − P)`, cleared: `|A − k Dn| = |(P' + kP)W − (Q' + kQ)Y|`. -/
+theorem sep_numerator {P Q P' Q' Y W A Dn k : PTm n}
+    (hA : Γ ⊢[PRAAx] P' * W ≐ Q' * Y + A) (hD : Γ ⊢[PRAAx] Q * Y ≐ P * W + Dn) :
+    Γ ⊢[PRAAx] adist A (k * Dn) ≐ adist ((P' + k * P) * W) ((Q' + k * Q) * Y) := by
+  refine adist_of_eq ?_
+  have eA := natEq hA
+  have eD := natEq hD
+  apply deriveNat; ipra_simps
+  linear_combination -eA + 𝔞 k * eD
+
+/-- The digit step: two approximations `Y/W`, `Z/V` of `x` (same region, determinant `±1`) whose difference is
+small (`6 L_d |WZ − VY| ≤ L_n Dn Dn'`), with `Y/W` separated from the two fractions
+`(P' + fP)/(Q' + fQ)`, `(P' + (f+1)P)/(Q' + (f+1)Q)` for `f = ⌊t(z)⌋`, give the same digit:
+`⌊t(z)⌋ ≤ t(y) < ⌊t(z)⌋ + 1`. -/
+theorem digit_stable {P Q P' Q' Y W Z V A Dn A' Dn' Ln Ld : PTm n}
+    (hdet : Γ ⊢[PRAAx] (P' * Q ≐ P * Q' + one) ⋎ (P * Q' ≐ P' * Q + one))
+    (hA : Γ ⊢[PRAAx] P' * W ≐ Q' * Y + A) (hD : Γ ⊢[PRAAx] Q * Y ≐ P * W + Dn)
+    (hA' : Γ ⊢[PRAAx] P' * V ≐ Q' * Z + A') (hD' : Γ ⊢[PRAAx] Q * Z ≐ P * V + Dn')
+    (hDn : Γ ⊢[PRAAx] le one Dn) (hDn' : Γ ⊢[PRAAx] Dn' ≐ succ (pred Dn')) (hLn : Γ ⊢[PRAAx] le one Ln)
+    (close : Γ ⊢[PRAAx] le (num 6 * Ld * adist (W * Z) (V * Y)) (Ln * (Dn * Dn')))
+    (sep0 : Γ ⊢[PRAAx] le (Ln * Dn) (Ld * adist ((P' + quo A' Dn' * P) * W) ((Q' + quo A' Dn' * Q) * Y)))
+    (sep1 : Γ ⊢[PRAAx] le (Ln * Dn)
+      (Ld * adist ((P' + succ (quo A' Dn') * P) * W) ((Q' + succ (quo A' Dn') * Q) * Y))) :
+    Γ ⊢[PRAAx] le (quo A' Dn' * Dn) A ⋏ lt A (succ (quo A' Dn') * Dn) := by
+  have mc := mobius_cross hdet hA hD hA' hD'
+  have close' : Γ ⊢[PRAAx] le (num 6 * Ld * adist (A * Dn') (A' * Dn)) (Ln * (Dn * Dn')) :=
+    le_congr (congrMul (.eqRefl _) mc).eqSymm (.eqRefl _) close
+  have s0 : Γ ⊢[PRAAx] le (Ln * Dn) (Ld * adist A (quo A' Dn' * Dn)) :=
+    le_congr (.eqRefl _) (congrMul (.eqRefl _) (sep_numerator hA hD)).eqSymm sep0
+  have s1 : Γ ⊢[PRAAx] le (Ln * Dn) (Ld * adist A (succ (quo A' Dn') * Dn)) :=
+    le_congr (.eqRefl _) (congrMul (.eqRefl _) (sep_numerator hA hD)).eqSymm sep1
+  exact floor_stable hDn hDn' hLn close' s0 s1
+
 end LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction
