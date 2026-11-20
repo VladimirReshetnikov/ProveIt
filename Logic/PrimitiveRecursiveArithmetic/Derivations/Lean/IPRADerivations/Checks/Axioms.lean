@@ -1234,6 +1234,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.CuboidAlgebra.two_face_dominance
 #print axioms LeanProofs.IPRA.Geometry.CuboidGeodesicAlgebra.boundary_d1
 #print axioms LeanProofs.IPRA.Geometry.CuboidGeodesicAlgebra.boundary_d3
+#print axioms LeanProofs.IPRA.Geometry.TetraShadow.sgn_sq
+#print axioms LeanProofs.IPRA.Geometry.TetraShadow.pair_pp
+#print axioms LeanProofs.IPRA.Geometry.TetraShadow.pair_pm
+#print axioms LeanProofs.IPRA.Geometry.TetraShadow.pair_mp
+#print axioms LeanProofs.IPRA.Geometry.TetraShadow.pair_mm
+#print axioms LeanProofs.IPRA.Geometry.TetraShadow.pair_bound
+#print axioms LeanProofs.IPRA.Geometry.TetraShadow.shadow_upper
+#print axioms LeanProofs.IPRA.Geometry.TetraShadow.shadow_lower
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
