@@ -2109,6 +2109,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockLocal.member_local
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockLocal.scale_out
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockLocal.block_out
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits.f_le_one
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits.f_le_w
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits.sg_le_cov
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits.sub2'
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits.inst2_fB
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits.fB_at
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits.inst2_cB
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits.cell_sum
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits.cell_res
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundBits.cell_cov
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_crB
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_t2B
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.subst_sqInv
