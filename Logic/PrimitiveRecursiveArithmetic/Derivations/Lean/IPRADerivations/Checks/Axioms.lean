@@ -1181,6 +1181,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerAlternative.sqrt2_gap
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerKernel.kernel_const
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerKernel.kernel_tail
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialTail.binom_term
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialTail.binom_tail
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
