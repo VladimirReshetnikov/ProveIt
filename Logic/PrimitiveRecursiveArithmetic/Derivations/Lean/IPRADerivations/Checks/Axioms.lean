@@ -2108,6 +2108,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin.member_in
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockLocal.member_local
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockLocal.scale_out
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockLocal.block_out
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_crB
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_t2B
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.subst_sqInv
