@@ -1144,6 +1144,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicGcd.coprime_squares
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ZTCancel.zt_cancel
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ZTCancel.zt_no_zero_div
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicNonzero.zt_dec
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicNonzero.zt_sq_zero
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicNonzero.no_common_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
