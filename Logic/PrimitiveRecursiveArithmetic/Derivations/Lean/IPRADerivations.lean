@@ -672,6 +672,7 @@ import IPRADerivations.Foundations.FilteredTaylor
 import IPRADerivations.Foundations.HenselIteration
 import IPRADerivations.Foundations.HenselUniqueness
 import IPRADerivations.Foundations.HenselSystem
+import IPRADerivations.Foundations.HenselSystemUniqueness
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.GuardedDescent
 import IPRADerivations.Foundations.ObserverGuards
