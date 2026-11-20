@@ -14029,6 +14029,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.GuardedDescent.guarded_descent
 #print axioms LeanProofs.IPRA.Foundations.GuardedDescent.explicit_range
 #print axioms LeanProofs.IPRA.Foundations.GuardedDescent.explicit_range_fix
+#print axioms LeanProofs.IPRA.Foundations.ObserverGuards.guard_pos
+#print axioms LeanProofs.IPRA.Foundations.ObserverGuards.guard_neg
+#print axioms LeanProofs.IPRA.Foundations.ObserverGuards.resolve_pos
+#print axioms LeanProofs.IPRA.Foundations.ObserverGuards.resolve_neg
+#print axioms LeanProofs.IPRA.Foundations.ObserverGuards.diameter_composition
+#print axioms LeanProofs.IPRA.Foundations.ObserverGuards.stable_of_independent
+#print axioms LeanProofs.IPRA.Foundations.ObserverGuards.win_at
+#print axioms LeanProofs.IPRA.Foundations.ObserverGuards.finite_consumer
+#print axioms LeanProofs.IPRA.Foundations.ObserverGuards.finite_consumer_at
 #print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.app1_rk
 #print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.app1_fx
 #print axioms LeanProofs.IPRA.Foundations.BoundedFixpoint.descent
