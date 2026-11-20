@@ -2093,6 +2093,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinGridRound.bit_cases
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinGridRound.block_pt
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinGridRound.round_grid
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin.quo_mul_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin.cancel
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin.scale_margin
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin.monus_le'
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin.sg_le_one
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin.member_in
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_crB
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_t2B
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.subst_sqInv
