@@ -393,6 +393,7 @@ import IPRADerivations.Foundations.AbelianCodes
 import IPRADerivations.Foundations.GenerationDescent
 import IPRADerivations.DiophantineNumberTheory.ConicIdentities
 import IPRADerivations.DiophantineNumberTheory.ConicHeight
+import IPRADerivations.DiophantineNumberTheory.ConicLower
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
