@@ -1242,6 +1242,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.TetraShadow.pair_bound
 #print axioms LeanProofs.IPRA.Geometry.TetraShadow.shadow_upper
 #print axioms LeanProofs.IPRA.Geometry.TetraShadow.shadow_lower
+#print axioms LeanProofs.IPRA.Geometry.CubeShadow.cube_lower
+#print axioms LeanProofs.IPRA.Geometry.CubeShadow.cube_upper
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
