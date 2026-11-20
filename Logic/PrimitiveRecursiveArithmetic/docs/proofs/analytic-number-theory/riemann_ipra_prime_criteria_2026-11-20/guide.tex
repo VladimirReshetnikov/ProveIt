@@ -1,0 +1,19 @@
+\section*{Reading guide}\pdfbookmark[1]{Reading guide}{guide}
+The first two input archives share the same polynomial prime-power test. The second also contains witness, determinant, energy, Farey and divisor-sum formulations. The present development retains those results and adds the following five groups. Section~\ref{sec:sentence} first fixes the common arithmetic notation.
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.25\linewidth}>{\raggedright\arraybackslash}p{.32\linewidth}>{\raggedright\arraybackslash}p{.35\linewidth}@{}}\toprule
+New material & Change in the mathematical data & Proof supplied\\\midrule
+Complete splitting, \S\ref{sec:split} & One residue class, or just the primes at which all roots are rational modulo $p$. & Literal formulas and Lean readings. Prime-ideal comparison and passage to arbitrary subfields on paper.\\[4pt]
+Taylor disks, \S\ref{sec:taylor} & Signed integer approximants at real centers, with a prescribed error for every coefficient. & Lean readings for all nine formulas. Analytic characterization, overlap identity and evaluation modulus on paper.\\[4pt]
+Perfect powers, \S\ref{sec:powerdivisor} & Changes the sequence being summed, including $\mu$ to $\lambda$ and all orders $h\ge2$ at once. & Lean proofs of inversion, witness bounds and the ordinary Liouville equivalence. Residue transport on paper.\\[4pt]
+A single search radius, \S\ref{sec:unary-cube} & One radius tests all inputs jointly. A bad radius produces an explicit field code and cutoff. & Empty-context object iPRA derivations in both directions, including the first dirty radius.\\[4pt]
+Symmetric prefix tests, \S\ref{sec:symmetric-prefixes} & High powers, exponential sums, signs of polynomial coefficients, and a multiplicative certificate. & Lean finite equivalences and standard readings. The multiplicative certificate has an internal iPRA biconditional.\\\bottomrule
+\end{tabular}
+\end{center}
+\paragraph{Earlier criteria retained.}
+Sections~\ref{sec:kernel}--\ref{sec:verified} develop the prime-power test, its correspondence to the complex zero sets and its internal hierarchy. Sections~\ref{sec:audits}--\ref{sec:lagarias} treat prefix counts, arithmetic slack, integer probes, sparse cutoffs, smoothing, determinants, gcd energy, Farey discrepancies, dyadic series and the Lagarias divisor-sum criterion. The appendices give the Mertens bridges for the three families.
+\paragraph{Which constructive reading to choose.}
+A universal prime test specifies its full error allowance and admits a finite failure certificate. The Mertens versions ask for a bound for every prescribed exponent, and their explicit witness conversions matter in iPRA. The Taylor versions provide local rational evaluations at any requested precision from the prescribed coefficient bounds. These descriptions support different uses of the conjectures. Their standard classical equivalence alone does not produce an internal transformation between every pair of witnesses.
+
+\paragraph{Application to the new number-theoretic tests.}
+The module \code{UniversalCriteria.lean} also applies the finite-cube construction of Section~\ref{sec:unary-cube} directly to the Taylor, splitting and symmetric-prefix syntax. For example, for each of the nine Taylor sentences iPRA proves equivalence to every scheduled finite-cube test of that section. From an explicitly failed Taylor tuple it derives the least dirty radius, and from that radius it recovers a failed tuple. These derivations inspect just the syntax of the arithmetic matrix; their interpretation as detecting poles uses Theorem~\ref{thm:taylor}.

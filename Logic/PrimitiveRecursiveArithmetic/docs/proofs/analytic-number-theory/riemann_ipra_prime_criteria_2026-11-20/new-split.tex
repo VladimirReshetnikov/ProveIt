@@ -1,0 +1,81 @@
+\section{One prime class and complete splitting}\label{sec:split}
+Here all three hypotheses admit the same numerical allowance and a single universal cutoff. Each eligible prime contributes once. An elementary congruence suffices on the Dirichlet side. On the number-field side the test asks whether a polynomial splits into linear factors modulo $p$.
+
+\paragraph{Three integer sentences.}
+For $m\ge2$ and a monic integral $F$ of degree $d\ge1$ put
+\[
+ B_m(y)=\left\lfloor\log_2\!\prod_{\substack{p\le y\\p\equiv1\ ({\rm mod}\ m)}}p\right\rfloor,
+ \qquad
+ B_F^{\rm sp}(y)=\left\lfloor\log_2\!\prod_{\substack{p\le y\\F\bmod p\ \text{splits completely}}}p\right\rfloor .
+\]
+Repeated linear factors count as split; the prime still occurs just once. Binary logarithm of the product $1$ is zero. Write $G_n(B)=|B(2n)-2B(n)|$ and $l=L(2n)=1+\lfloor\log_2(2n)\rfloor$. Use the degree offset $d_0=d-1$, coefficient height parameter $H$, and words $u,v$ from Section~\ref{sec:sentence}. Define
+\[
+ R=d(H+2)\bigl(1+d(d!)^2\bigr)^d,\qquad
+ A=1+2(d!)R+2d^2(H+2).
+\]
+For $n\ge100$ make the following choices of $M(n)$, taking an empty maximum as zero.
+\begin{center}\small
+\begin{tabular}{@{}lp{.76\linewidth}@{}}\toprule
+Hypothesis & $M(n)$\\\midrule
+RH & $G_n(B_2)$, using odd primes.\\[3pt]
+Dirichlet GRH & $\max_{2\le m\le2n}G_n(B_m)$.\\[3pt]
+Dedekind ERH & $\max G_n(B_F^{\rm sp})$ over $0\le d_0,H,u,v\le l$ satisfying $A\le l$.\\\bottomrule
+\end{tabular}
+\end{center}
+\begin{theorem}\label{thm:split}
+For each row, its usual complex zero hypothesis is classically equivalent to the following closed iPRA sentence with a decidable matrix:
+\[
+                \forall n\ge100\qquad M(n)^2\le n\,[64 L(2n)^2]^2.
+\]
+In the Dirichlet row it also suffices to test just the moduli $m=(t+2)!$, $t\ge0$, at every cutoff. An alternative ERH criterion tests every polynomial at every $n\ge100$ using the allowance $128 A L(2n)^2$ for its unsquared gap.
+\end{theorem}
+
+A formulation using $\forall m\ge2$ at every cutoff gives the same Dirichlet test: if $m>2n$, the only positive integer $\le2n$ in the specified class could be $1$, and it is not prime. Every polynomial enters the unary ERH test eventually and then stays eligible. The condition $A\le l$ can postpone a field for a very long time. Its role is to give one common constant for all fields. The alternative with $128A$ includes small cutoffs for each field and has a separate universal parameter block.
+
+\subsection*{The comparison with a single zeta function}
+Let $E/\Q$ be a finite Galois extension of degree $g$. Suppose an indicator $s(p)$ equals the indicator of complete splitting in $E$ outside the prime divisors of an integer $D\ge1$, and those primes include the ramified primes. Write $\Theta(y)=\sum_{p\le y}s(p)\log p$. Then
+\begin{equation}\label{eq:split-psi}
+  |\Theta(y)-\psi_E(y)/g|\le \sqrt y\log y+\log D\qquad(y\ge2).
+\end{equation}
+In a Galois extension all primes above an unramified $p$ have the same residue degree. Thus the coefficient of $\log p$ at the integer $p$, in $\psi_E/g$, is one precisely for a completely split prime, and zero otherwise. At exceptional $p$ both coefficients lie in $[0,1]$, costing at most $\sum_{p\mid D}\log p\le\log D$. Every coefficient at $p^k$, $k\ge2$, also lies in $[0,1]$ after normalization, because the sum of the residue degrees above a prime is at most $g$. Each $p\le\sqrt y$ contributes at most $\log y$ over these higher powers. This proves \eqref{eq:split-psi}.
+
+Conversely, let $B(y)=\lfloor\Theta(y)/\log 2\rfloor$. Suppose the dyadic gap satisfies $G_n(B)=O(\sqrt n\,L(2n)^2)$ for all sufficiently large $n$, with any fixed implied constant. Restoring the floors costs at most $3\log 2$. On passing from $n$ to a real $x\in[n,n+1)$ the term $\Theta(2x)$ has at most one extra integer, with jump at most $\log(2n+1)$. Thus $\Theta(2x)-2\Theta(x)=O(\sqrt x(1+\log x)^2)$. Its Mellin transform, including the factor $s$, is holomorphic on $\Re s>1/2$ and equals $(2^s-2)\sum_p s(p)(\log p)p^{-s}$ on $\Re s>1$. The proof is the change of variables in Section~\ref{sec:reverse}, with $\Theta=0$ below $2$. There
+\[
+ \sum_p s(p)(\log p)p^{-s}
+    =-\frac{1}{g}\frac{\zeta'_E}{\zeta_E}(s)+V(s).
+\]
+Here $V$ extends holomorphically to $\Re s>1/2$. The finitely many discrepancies at first powers are entire and on $\Re s\ge\sigma>1/2$ the higher powers converge absolutely, bounded by $\sum_{n\ge2}(\log n)n^{-2\sigma}/(1-2^{-\sigma})$. The factor $2^s-2$ is nonzero in the open right half of the critical strip. A zero of $\zeta_E$ there would leave a pole of nonzero residue. Its functional equation deals with the left half. This converse tolerates any finite set of omitted initial cutoffs.
+
+\subsection*{Cyclotomic fields and the constant 64}
+Take $E=\Q(\zeta_m)$, $g=\varphi(m)$ and $D=m$. For $p\nmid m$ the Frobenius acts on a primitive $m$th root by the $p$th-power map, so it fixes the field precisely for $p\equiv1\pmod m$. All ramified primes divide $m$. We will use $g^{-1}\log|\Delta_E|\le\log m$. Indeed, differentiating $X^m-1=\Phi_m(X)\prod_{e\mid m,e<m}\Phi_e(X)$ at $\zeta_m$ shows that the algebraic integer $\Phi'_m(\zeta_m)$ divides $m\zeta_m^{m-1}$. Its absolute norm is the polynomial discriminant in absolute value and divides $m^g$. The field discriminant divides that of this power basis.
+
+In general, suppose $g^{-1}\log|\Delta_E|\le l$ and $\log D\le l$. For $y=n,2n$ we have $\log y\le l$. Under the zero hypothesis for $E$, use \eqref{eq:gm} divided by $g$ and \eqref{eq:split-psi}. After division by $\sqrt y$ the resulting upper bound is at most
+\[
+  (l+2)l+(l^2+2)+l+l\ \le\ 8l^2.
+\]
+It follows that $|\Theta(y)-y/g|\le8\sqrt y\,l^2$. The linear term cancels in the dyadic gap. Converting the logarithm to bits and taking floors costs at most $3$ in addition to the factor $1/\log 2$. Therefore
+\[
+ G_n(B)\le3+8(\sqrt2+2)\sqrt n\,l^2/\log 2
+           \le64\sqrt n\,l^2.
+\]
+The cyclotomic root-discriminant estimate and $m\le2n$ give both required bounds. Taking $m=2$ gives $E=\Q$. For the converse to Dirichlet GRH, every primitive character of conductor $q$ occurs in $\zeta_{\Q(\zeta_m)}$ as soon as $q\mid m$, by the cyclotomic factorization of Section~\ref{sec:families}. All its factors are holomorphic in the open strip, so a zero of one would give a zero of the product. A factorial is divisible by any specified conductor once its index is large enough. This proves both versions for the Dirichlet family, including nonreal characters.
+
+\subsection*{Splitting fields and non-Galois input}
+Let $G=\operatorname{rad}F$ be the product of the distinct monic irreducible factors over $\Q$, let $D=|\disc G|$, and let $E$ be its splitting field. If $p\nmid D$ the roots remain pairwise distinct modulo any prime of $E$ above $p$. Inertia fixes their residues and therefore fixes every root, so $p$ is unramified. Frobenius now acts by the $p$th power on the reductions. All roots reduce to $\F_p$ exactly when Frobenius fixes every root, that is, when $p$ splits completely in $E$. Testing $F$ with multiplicities gives the same answer at these primes. This proves the required comparison for an arbitrary input polynomial without first testing whether a presentation defines a normal extension.
+
+Section~\ref{sec:local} bounds $\log D\le2d^2(H+2)$. To bound the root discriminant of the splitting field, list the distinct roots as $\alpha_1,\ldots,\alpha_a$, $a\le d$, with $|\alpha_i|\le H+2$. The Galois group acts faithfully on them, so $g\le d!$. For distinct embeddings $\sigma,\tau$, the polynomial
+\[
+   \sum_{i=1}^a (\sigma\alpha_i-\tau\alpha_i)T^{i-1}
+\]
+is nonzero and has at most $d-1$ integer roots. There are at most $\binom{g}{2}$ such unordered pairs. Some integer $1\le T\le1+d(d!)^2$ separates all the conjugates of $\theta=\sum_i\alpha_iT^{i-1}$. This integral element generates $E$ and all its conjugates have absolute value at most $R$. The power-basis discriminant now gives
+\[
+    g^{-1}\log|\Delta_E|\le (g-1)\log(2R)\le 2(d!)R .
+\]
+When $A\le l$ both hypotheses of the preceding numerical estimate hold. At unrestricted cutoffs the same computation bounds $|\Theta(y)-y/g|/\sqrt y$ by $(l+2)A+(l^2+2)+l+A\le8Al^2$; this also gives the advertised looser envelope $128Al^2$ in bits.
+
+For the converse take an arbitrary number field $K$ and an integral primitive element with monic minimal polynomial $F$. All four numerical codes of this particular presentation eventually lie below $l$, as does its fixed $A$. The dyadic estimate then holds at every sufficiently large cutoff. The split-prime comparison gives the zero hypothesis for the normal closure $E$ of $K$. The Aramata--Brauer theorem gives the last step: $E/K$ is Galois, so $\zeta_E/\zeta_K$ is entire \cite{aramata}. Every zero of $\zeta_K$ in the strip is therefore a zero of $\zeta_E$. For a single polynomial the split-prime test concerns its splitting field; taking all polynomials is what gives equivalence for the entire Dedekind family.
+
+\paragraph{Local computation and proof scope.}
+Over $\F_p$, complete splitting is equivalent to the absence of a monic irreducible divisor of degree $2,\ldots,d$, tested by the bounded searches of Section~\ref{sec:kernel}. Equivalently $F\mid(X^p-X)^d$: the latter polynomial contains each monic linear factor with multiplicity $d$, enough for every possible repetition. This supplies a second, faster finite-field algorithm. For $F=X^3-2$ the test accepts $p=2,3,31$ and rejects $p=5,7$. At $5$ it has one root and a quadratic factor. Counting primes with at least one root would change the input to the analytic argument. The literal sentences are in \code{SplitPrimes.lean}. The Lean theorem \code{split_iff_no_irred_divisor} identifies the compiled bit with bounded conditions on coefficient words and their convolution modulo $p$. The prime ideal comparison, explicit constants and Galois descent are proved here using the indicated classical theorems.
+
+At $n=100,200,500$, the unary Dirichlet maximum is respectively $33,18,28$; the least maximizing modulus is $2,13,20$. The script \code{check_new_criteria.py} reproduces these with integer products, checks both splitting algorithms on repeated and separable polynomials, and cross-checks the Taylor numerators against direct rational arithmetic.
