@@ -203,6 +203,7 @@ import IPRADerivations.AnalyticNumberTheory.MobiusInversionP
 import IPRADerivations.AnalyticNumberTheory.SelbergMobiusP
 import IPRADerivations.AnalyticNumberTheory.ConvSummatory
 import IPRADerivations.AnalyticNumberTheory.SymmetrySum
+import IPRADerivations.AnalyticNumberTheory.WeightBridge
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.AnalyticNumberTheory.PNTOneStep
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep

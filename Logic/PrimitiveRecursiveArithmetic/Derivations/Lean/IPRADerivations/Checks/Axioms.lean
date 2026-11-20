@@ -3110,6 +3110,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.row_conv
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.pt_n
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum.symmetry_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge.inst2_gcB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge.inst2_sndB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge.sum_le_add_const
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge.qb_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge.lw_le_u
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge.u_le_lw
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge.pt_lo
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge.pt_hi
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge.bridge_lo
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge.bridge_hi
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
