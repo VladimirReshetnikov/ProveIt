@@ -18981,6 +18981,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.HenselUniqueness.unique_step
 #print axioms LeanProofs.IPRA.Foundations.HenselUniqueness.unique_root
 #print axioms LeanProofs.IPRA.Foundations.HenselUniqueness.coherence
+#print axioms LeanProofs.IPRA.Foundations.HenselSystem.kron_toZ
+#print axioms LeanProofs.IPRA.Foundations.HenselSystem.corr_toZ
+#print axioms LeanProofs.IPRA.Foundations.HenselSystem.sum_corr
+#print axioms LeanProofs.IPRA.Foundations.HenselSystem.sum_inverse
+#print axioms LeanProofs.IPRA.Foundations.HenselSystem.sum_quad
+#print axioms LeanProofs.IPRA.Foundations.HenselSystem.step_system
+#print axioms LeanProofs.IPRA.Foundations.HenselSystem.invariant_system
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.cand
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.disjFin
 #print axioms LeanProofs.IPRA.Foundations.IntersectionEnumeration.height
