@@ -446,6 +446,7 @@ import IPRADerivations.Algebra.BringAsymptotic
 import IPRADerivations.Algebra.BringLipschitz
 import IPRADerivations.Algebra.BringDifferential
 import IPRADerivations.Geometry.CuboidAlgebra
+import IPRADerivations.Geometry.CuboidGeodesicAlgebra
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding

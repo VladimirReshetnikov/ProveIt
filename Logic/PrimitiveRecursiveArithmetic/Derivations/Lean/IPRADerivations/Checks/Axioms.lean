@@ -1232,6 +1232,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.CuboidAlgebra.two_face_factors
 #print axioms LeanProofs.IPRA.Geometry.CuboidAlgebra.zle_mul_nonneg
 #print axioms LeanProofs.IPRA.Geometry.CuboidAlgebra.two_face_dominance
+#print axioms LeanProofs.IPRA.Geometry.CuboidGeodesicAlgebra.boundary_d1
+#print axioms LeanProofs.IPRA.Geometry.CuboidGeodesicAlgebra.boundary_d3
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
