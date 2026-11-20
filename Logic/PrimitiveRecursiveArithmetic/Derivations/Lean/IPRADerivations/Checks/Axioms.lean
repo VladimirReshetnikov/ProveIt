@@ -1038,6 +1038,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique.scale_at
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique.one_of_mul
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique.vector_unique
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdList.rem_by_zero
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdList.gcd_dvd_all
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdList.dvd_trans_all
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdList.gv_succ
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdList.gv_dvd_prefix
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdList.gv_dvd
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdList.gv_greatest
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.GcdList.gv_eq_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.inst2_q
