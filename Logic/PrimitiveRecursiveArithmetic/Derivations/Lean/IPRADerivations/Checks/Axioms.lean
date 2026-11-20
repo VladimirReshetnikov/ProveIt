@@ -2210,6 +2210,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundWrapper.inst2_vB
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundWrapper.tmpl_at
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundWrapper.vB_at
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2Round.k2_round
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_crB
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.inst2_t2B
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMoment.subst_sqInv
