@@ -10455,6 +10455,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.StriveCompilation.cminus_bound
 #print axioms LeanProofs.IPRA.Foundations.StriveCompilation.cplus_complete
 #print axioms LeanProofs.IPRA.Foundations.StriveCompilation.cminus_complete
+#print axioms LeanProofs.IPRA.Foundations.TraceCertificate.inst2_chkB
+#print axioms LeanProofs.IPRA.Foundations.TraceCertificate.trace_run
+#print axioms LeanProofs.IPRA.Foundations.TraceCertificate.transitions_of_fold
+#print axioms LeanProofs.IPRA.Foundations.TraceCertificate.cert_accept
+#print axioms LeanProofs.IPRA.Foundations.TraceCertificate.cert_run
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.contract_iff_sequent
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.identity
 #print axioms LeanProofs.IPRA.Foundations.OpenContracts.pairing
