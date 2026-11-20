@@ -3033,6 +3033,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement.lo_all
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement.log_refine
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement.refine_closed
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogElementary.off_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogElementary.term_ge
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogElementary.term_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogElementary.mul_quo_succ
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogElementary.log_lower
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.LogElementary.log_upper
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal.inst2_sq
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal.cancel_le
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal.sq_quo_le
