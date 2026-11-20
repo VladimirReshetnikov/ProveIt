@@ -2104,6 +2104,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.SecondMoment.pt_ord
 #print axioms LeanProofs.IPRA.Foundations.SecondMoment.col_ord
 #print axioms LeanProofs.IPRA.Foundations.SecondMoment.ord_moment
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith.moment_le
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith.first_sq
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith.su_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith.block_arith
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.gauss_lemma
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_dvd_left
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.Coprime.coprime_mul

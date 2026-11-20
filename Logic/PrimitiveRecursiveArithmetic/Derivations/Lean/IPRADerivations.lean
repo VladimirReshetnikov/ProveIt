@@ -326,6 +326,7 @@ import IPRADerivations.Foundations.IntervalOverlap
 import IPRADerivations.Foundations.SeparatedCount
 import IPRADerivations.DiophantineNumberTheory.KhinchinOverlap
 import IPRADerivations.Foundations.SecondMoment
+import IPRADerivations.DiophantineNumberTheory.KhinchinBlockArith
 import IPRADerivations.DiophantineNumberTheory.Identities
 import IPRADerivations.DiophantineNumberTheory.Pell
 import IPRADerivations.DiophantineNumberTheory.Recurrences
