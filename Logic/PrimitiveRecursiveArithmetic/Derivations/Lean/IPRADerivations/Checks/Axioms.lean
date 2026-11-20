@@ -2814,6 +2814,10 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTOneStep.threshold_D
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTOneStep.block_count
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTOneStep.delta_identity
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep.pos_of_one_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep.cancel_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep.upper_preserve
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep.lower_preserve
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.lw_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.lam_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MuLambda.lambda_mobius_neg'
