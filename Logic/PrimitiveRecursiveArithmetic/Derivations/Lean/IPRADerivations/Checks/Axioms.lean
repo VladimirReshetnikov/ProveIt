@@ -1203,6 +1203,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCount.canonical_pairs
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCount.count_upper
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCount.count_lower
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerCorollaries.rational_compat
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerCorollaries.positive_window
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.KroneckerCorollaries.zero_passes
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
