@@ -3089,6 +3089,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaPrecision.four_sq
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaPrecision.xi_budget
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaPrecision.factor_budget
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaThetaSum.subst_Sk
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaThetaSum.S_zero
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaThetaSum.S_succ
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaThetaSum.subst_thInv
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaThetaSum.theta_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.ZetaThetaSum.theta_sum_le_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.pw_mul_base
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.bernoulli
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor.decr

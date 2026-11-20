@@ -215,6 +215,7 @@ import IPRADerivations.AnalyticNumberTheory.DyadicModulus
 import IPRADerivations.AnalyticNumberTheory.ZetaFiniteContract
 import IPRADerivations.AnalyticNumberTheory.ZetaErrorBudget
 import IPRADerivations.AnalyticNumberTheory.ZetaPrecision
+import IPRADerivations.AnalyticNumberTheory.ZetaThetaSum
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.SumReindex
