@@ -1122,6 +1122,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.GenerationDescent.inv_step
 #print axioms LeanProofs.IPRA.Foundations.GenerationDescent.hgt_step
 #print axioms LeanProofs.IPRA.Foundations.GenerationDescent.generation
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities.Form.conic_normal
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities.Form.adj_inverse
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities.Form.identity_s
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities.Form.identity_t
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities.Form.param_on_conic
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities.Form.param_tangent
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
