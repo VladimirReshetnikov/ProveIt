@@ -440,6 +440,7 @@ import IPRADerivations.Algebra.BringMonotone
 import IPRADerivations.Algebra.QuinticPrincipal
 import IPRADerivations.Algebra.FourResolvent
 import IPRADerivations.Algebra.BringAsymptotic
+import IPRADerivations.Algebra.BringLipschitz
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding

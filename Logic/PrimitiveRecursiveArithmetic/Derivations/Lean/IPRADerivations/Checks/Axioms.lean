@@ -1220,6 +1220,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.FourResolvent.four_resolvent_special
 #print axioms LeanProofs.IPRA.Algebra.BringAsymptotic.y_le_r
 #print axioms LeanProofs.IPRA.Algebra.BringAsymptotic.bring_asymptotic
+#print axioms LeanProofs.IPRA.Algebra.BringLipschitz.fifth_mono
+#print axioms LeanProofs.IPRA.Algebra.BringLipschitz.residual_above
+#print axioms LeanProofs.IPRA.Algebra.BringLipschitz.residual_below
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
