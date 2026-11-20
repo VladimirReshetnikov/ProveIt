@@ -497,6 +497,14 @@ import IPRADerivations.Foundations.ObjectContracts
 import IPRADerivations.Foundations.QuantifierTransport
 import IPRADerivations.Foundations.ScopedReplay
 import IPRADerivations.Geometry.SpaceWorm
+import IPRADerivations.Analysis.Observation.DyadicObject
+import IPRADerivations.Analysis.Observation.PrefixObject
+import IPRADerivations.Analysis.Observation.ReplayObject
+import IPRADerivations.Analysis.Observation.ZeroObject
+import IPRADerivations.Analysis.DecisionTreeReplay
+import IPRADerivations.Geometry.SpaceWormRefinement
+import IPRADerivations.Topology.EuclideanFacts
+import IPRADerivations.Foundations.EnergyWindow
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
