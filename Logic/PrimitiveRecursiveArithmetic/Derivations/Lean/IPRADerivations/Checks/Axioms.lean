@@ -1755,6 +1755,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.ClusterObservations.prod_ad
 #print axioms LeanProofs.IPRA.Analysis.ClusterObservations.power_sums
 #print axioms LeanProofs.IPRA.Analysis.ClusterObservations.esym_bound
+#print axioms LeanProofs.IPRA.Topology.FiniteSeparation.t1_collapse
+#print axioms LeanProofs.IPRA.Topology.FiniteSeparation.discrete_clopen
+#print axioms LeanProofs.IPRA.Topology.FiniteSeparation.hausdorff_collapse
+#print axioms LeanProofs.IPRA.Topology.FiniteSeparation.sing_separates
+#print axioms LeanProofs.IPRA.Topology.FiniteSeparation.ch_source_discrete
+#print axioms LeanProofs.IPRA.Topology.FiniteSeparation.mono_of_discrete
+#print axioms LeanProofs.IPRA.Topology.FiniteSeparation.extract_length
+#print axioms LeanProofs.IPRA.Topology.FiniteSeparation.extract_covers
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
