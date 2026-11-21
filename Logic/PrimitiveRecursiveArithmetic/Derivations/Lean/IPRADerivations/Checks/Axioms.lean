@@ -3982,6 +3982,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PiModulus.p2
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PiModulus.sgm_facts
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PiModulus.pi_modulus
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FinalPNT.final_alg
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FinalPNT.pi_param
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FinalPNT.mesh_u
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FinalPNT.den_change
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.FinalPNT.arith_pnt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
