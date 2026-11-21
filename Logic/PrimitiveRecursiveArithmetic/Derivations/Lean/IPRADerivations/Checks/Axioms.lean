@@ -1559,6 +1559,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.HalfContractionTail.antitone_le
 #print axioms LeanProofs.IPRA.Analysis.HalfContractionTail.inst2_uB
 #print axioms LeanProofs.IPRA.Analysis.HalfContractionTail.tail
+#print axioms LeanProofs.IPRA.Analysis.WeightedRowContraction.row_domination
+#print axioms LeanProofs.IPRA.Analysis.WeightedRowContraction.half_contract_row
+#print axioms LeanProofs.IPRA.Foundations.ErrorBudget.toG_nsum
+#print axioms LeanProofs.IPRA.Foundations.ErrorBudget.budget_identity
+#print axioms LeanProofs.IPRA.Foundations.ErrorBudget.budget
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound

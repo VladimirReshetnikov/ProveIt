@@ -570,6 +570,8 @@ import IPRADerivations.Probability.ClipLaws
 import IPRADerivations.Foundations.MassPerturbation
 import IPRADerivations.Foundations.CloseExtrema
 import IPRADerivations.Analysis.HalfContractionTail
+import IPRADerivations.Analysis.WeightedRowContraction
+import IPRADerivations.Foundations.ErrorBudget
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
