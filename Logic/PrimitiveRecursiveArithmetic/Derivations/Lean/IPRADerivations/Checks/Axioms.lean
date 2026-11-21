@@ -1504,6 +1504,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.EventAlgebraMetric.union_dist
 #print axioms LeanProofs.IPRA.Probability.EventAlgebraMetric.inter_dist
 #print axioms LeanProofs.IPRA.Probability.EventAlgebraMetric.compl_dist
+#print axioms LeanProofs.IPRA.Probability.CappedDistance.cap_lower
+#print axioms LeanProofs.IPRA.Probability.CappedDistance.cap_upper
+#print axioms LeanProofs.IPRA.Probability.CappedDistance.d0_lower
+#print axioms LeanProofs.IPRA.Probability.CappedDistance.d0_upper
+#print axioms LeanProofs.IPRA.Probability.BayesBudget.zle_of_toZ2
+#print axioms LeanProofs.IPRA.Probability.BayesBudget.bayes_budget
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
