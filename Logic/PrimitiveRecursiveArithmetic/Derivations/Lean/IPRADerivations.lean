@@ -577,6 +577,7 @@ import IPRADerivations.Foundations.ErrorBudget
 import IPRADerivations.Foundations.DyadicEnergy
 import IPRADerivations.Foundations.DyadicGain
 import IPRADerivations.Foundations.RichardsonLogic
+import IPRADerivations.Foundations.PartitionRefinement
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
