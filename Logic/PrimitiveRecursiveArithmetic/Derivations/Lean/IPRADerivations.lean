@@ -531,6 +531,8 @@ import IPRADerivations.Foundations.Category.Density
 import IPRADerivations.Probability.BilinearCauchySchwarz
 import IPRADerivations.Foundations.ErrorAmplification
 import IPRADerivations.Foundations.AmortizedPotential
+import IPRADerivations.Foundations.SquaringTreeCount
+import IPRADerivations.Foundations.AbstractAnalysisEngine
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
