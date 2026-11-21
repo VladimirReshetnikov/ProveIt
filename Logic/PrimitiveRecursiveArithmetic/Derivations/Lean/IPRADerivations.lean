@@ -263,6 +263,7 @@ import IPRADerivations.AnalyticNumberTheory.RobinLogic
 import IPRADerivations.AnalyticNumberTheory.CubeScan
 import IPRADerivations.AnalyticNumberTheory.SymmetricPrefix
 import IPRADerivations.AnalyticNumberTheory.SymmetricMoment
+import IPRADerivations.AnalyticNumberTheory.SymmetricProduct
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.AnalyticNumberTheory.PNTOneStep
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep

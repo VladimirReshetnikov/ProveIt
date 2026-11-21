@@ -4065,6 +4065,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricMoment.mom_forward
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricMoment.mom_backward
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricMoment.sym_mom
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct.inst2_shift
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct.prod_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct.prod_zero_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct.inst2_fB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct.fB_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct.oB_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct.below_shift
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct.inner_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct.prod_forward
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct.prod_backward
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct.sym_char
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
