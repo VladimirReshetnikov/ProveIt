@@ -1798,6 +1798,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.EulerCharacteristic.euler_poincare
 #print axioms LeanProofs.IPRA.Topology.EulerCharacteristic.euler_additivity
 #print axioms LeanProofs.IPRA.Topology.EulerCharacteristic.euler_collapse
+#print axioms LeanProofs.IPRA.Topology.ChainHomotopy.cycle_map
+#print axioms LeanProofs.IPRA.Topology.ChainHomotopy.boundary_map
+#print axioms LeanProofs.IPRA.Topology.ChainHomotopy.homotopy_cycle
+#print axioms LeanProofs.IPRA.Topology.ChainHomotopy.homotopy_identity
+#print axioms LeanProofs.IPRA.Topology.ChainHomotopy.vec_toZ_of_eqFm
+#print axioms LeanProofs.IPRA.Topology.ChainHomotopy.ipra_cycle_map
+#print axioms LeanProofs.IPRA.Topology.ChainHomotopy.ipra_boundary_map
+#print axioms LeanProofs.IPRA.Topology.ChainHomotopy.ipra_homotopy_cycle
+#print axioms LeanProofs.IPRA.Topology.ChainHomotopy.ipra_homotopy_identity
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
