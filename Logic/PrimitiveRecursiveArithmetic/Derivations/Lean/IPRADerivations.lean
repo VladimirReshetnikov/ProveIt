@@ -243,6 +243,9 @@ import IPRADerivations.AnalyticNumberTheory.BlockDeficitMain
 import IPRADerivations.AnalyticNumberTheory.HeadDeficit
 import IPRADerivations.AnalyticNumberTheory.Doubling
 import IPRADerivations.AnalyticNumberTheory.BlockFamily
+import IPRADerivations.AnalyticNumberTheory.BlockChain
+import IPRADerivations.AnalyticNumberTheory.BlockInstance
+import IPRADerivations.AnalyticNumberTheory.OneStepRaw
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.AnalyticNumberTheory.PNTOneStep
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
