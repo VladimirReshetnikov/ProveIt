@@ -1492,6 +1492,9 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.TruncatedSeries.iter_step
 #print axioms LeanProofs.IPRA.Algebra.TruncatedSeries.fixed
 #print axioms LeanProofs.IPRA.Algebra.TruncatedSeries.unique
+#print axioms LeanProofs.IPRA.Foundations.ClockMajorants.pw_mono_exp
+#print axioms LeanProofs.IPRA.Foundations.ClockMajorants.compose_majorant
+#print axioms LeanProofs.IPRA.Foundations.ClockMajorants.exp_majorant
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
