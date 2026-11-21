@@ -536,6 +536,8 @@ import IPRADerivations.Foundations.ErrorAmplification
 import IPRADerivations.Foundations.AmortizedPotential
 import IPRADerivations.Foundations.SquaringTreeCount
 import IPRADerivations.Foundations.AbstractAnalysisEngine
+import IPRADerivations.Topology.TentPartition
+import IPRADerivations.Algebra.TruncatedSeries
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
