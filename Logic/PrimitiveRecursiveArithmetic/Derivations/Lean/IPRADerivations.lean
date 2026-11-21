@@ -639,6 +639,9 @@ import IPRADerivations.Topology.FiniteInteriorClosure
 import IPRADerivations.Topology.FiniteBoundary
 import IPRADerivations.Analysis.Quantum.FormCauchySchwarz
 import IPRADerivations.Geometry.Hyperbox.ClosedFamilies
+import IPRADerivations.Topology.FiniteClosureMaps
+import IPRADerivations.Foundations.AdjunctionMonad
+import IPRADerivations.Foundations.KleisliIdentity
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
