@@ -1785,6 +1785,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.FiniteNormalityConverse.walk_iff
 #print axioms LeanProofs.IPRA.Topology.FiniteNormalityConverse.normal_least
 #print axioms LeanProofs.IPRA.Topology.FiniteNormalityConverse.tietze
+#print axioms LeanProofs.IPRA.Probability.RepresentedExpectation.exp_contract
+#print axioms LeanProofs.IPRA.Probability.RepresentedExpectation.exp_name
+#print axioms LeanProofs.IPRA.Probability.RepresentedExpectation.ad_le_add
+#print axioms LeanProofs.IPRA.Probability.RepresentedExpectation.lipschitz_pt
+#print axioms LeanProofs.IPRA.Probability.RepresentedExpectation.lipschitz_test
+#print axioms LeanProofs.IPRA.Probability.RepresentedExpectation.tail_pt
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
