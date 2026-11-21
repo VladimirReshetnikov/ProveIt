@@ -253,6 +253,8 @@ import IPRADerivations.AnalyticNumberTheory.StepAt
 import IPRADerivations.AnalyticNumberTheory.StageAdvance
 import IPRADerivations.AnalyticNumberTheory.StageInduction
 import IPRADerivations.AnalyticNumberTheory.PsiModulus
+import IPRADerivations.AnalyticNumberTheory.PiTheta
+import IPRADerivations.AnalyticNumberTheory.PsiTheta
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.AnalyticNumberTheory.PNTOneStep
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
