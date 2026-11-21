@@ -1453,6 +1453,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.Category.Density.canonical_value
 #print axioms LeanProofs.IPRA.Foundations.Category.Density.generator_roundtrip
 #print axioms LeanProofs.IPRA.Foundations.Category.Density.reindex_value
+#print axioms LeanProofs.IPRA.Probability.BilinearCauchySchwarz.cross
+#print axioms LeanProofs.IPRA.Probability.BilinearCauchySchwarz.cauchy_schwarz
+#print axioms LeanProofs.IPRA.Foundations.ErrorAmplification.pw_odd
+#print axioms LeanProofs.IPRA.Foundations.ErrorAmplification.nine_eight
+#print axioms LeanProofs.IPRA.Foundations.ErrorAmplification.window
+#print axioms LeanProofs.IPRA.Foundations.ErrorAmplification.amplification
+#print axioms LeanProofs.IPRA.Foundations.ErrorAmplification.amplification_window
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
