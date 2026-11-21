@@ -240,6 +240,9 @@ import IPRADerivations.AnalyticNumberTheory.CrossAlg
 import IPRADerivations.AnalyticNumberTheory.BlockCross
 import IPRADerivations.AnalyticNumberTheory.BlockDispatch
 import IPRADerivations.AnalyticNumberTheory.BlockDeficitMain
+import IPRADerivations.AnalyticNumberTheory.HeadDeficit
+import IPRADerivations.AnalyticNumberTheory.Doubling
+import IPRADerivations.AnalyticNumberTheory.BlockFamily
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
 import IPRADerivations.AnalyticNumberTheory.PNTOneStep
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
