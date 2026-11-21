@@ -555,6 +555,8 @@ import IPRADerivations.Foundations.DiagonalClock
 import IPRADerivations.Probability.EventAlgebraMetric
 import IPRADerivations.Probability.CappedDistance
 import IPRADerivations.Probability.BayesBudget
+import IPRADerivations.Probability.RampMarkov
+import IPRADerivations.Probability.BayesEvents
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding

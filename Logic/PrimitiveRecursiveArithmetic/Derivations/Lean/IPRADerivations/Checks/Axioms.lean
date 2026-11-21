@@ -1510,6 +1510,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.CappedDistance.d0_upper
 #print axioms LeanProofs.IPRA.Probability.BayesBudget.zle_of_toZ2
 #print axioms LeanProofs.IPRA.Probability.BayesBudget.bayes_budget
+#print axioms LeanProofs.IPRA.Probability.RampMarkov.int_lipschitz
+#print axioms LeanProofs.IPRA.Probability.RampMarkov.ramp_pt
+#print axioms LeanProofs.IPRA.Probability.RampMarkov.ramp_markov
+#print axioms LeanProofs.IPRA.Probability.BayesEvents.wsum_mul
+#print axioms LeanProofs.IPRA.Probability.BayesEvents.wsum_zero
+#print axioms LeanProofs.IPRA.Probability.BayesEvents.likelihood_pt
+#print axioms LeanProofs.IPRA.Probability.BayesEvents.bayes_event
+#print axioms LeanProofs.IPRA.Probability.BayesEvents.recip_lipschitz
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
