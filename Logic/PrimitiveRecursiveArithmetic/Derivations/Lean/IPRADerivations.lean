@@ -564,6 +564,8 @@ import IPRADerivations.Probability.BayesEvents
 import IPRADerivations.Probability.MarkovChainErrors
 import IPRADerivations.Probability.UnionBound
 import IPRADerivations.Topology.SubdivisionContraction
+import IPRADerivations.Probability.ClipLaws
+import IPRADerivations.Foundations.MassPerturbation
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
