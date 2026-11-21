@@ -660,6 +660,7 @@ import IPRADerivations.Algebra.LagrangeInversion
 import IPRADerivations.Probability.ConditionalAveraging
 import IPRADerivations.Analysis.WeightedFeedback
 import IPRADerivations.Analysis.WeightedComparison
+import IPRADerivations.Analysis.FeedbackInexact
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
