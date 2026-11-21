@@ -264,6 +264,8 @@ import IPRADerivations.AnalyticNumberTheory.RobinGamma
 import IPRADerivations.AnalyticNumberTheory.DivisorSplit
 import IPRADerivations.AnalyticNumberTheory.DivisorFactor
 import IPRADerivations.AnalyticNumberTheory.SigmaMult
+import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
+import IPRADerivations.AnalyticNumberTheory.RobinThree
 import IPRADerivations.AnalyticNumberTheory.CubeScan
 import IPRADerivations.AnalyticNumberTheory.SymmetricPrefix
 import IPRADerivations.AnalyticNumberTheory.SymmetricMoment
