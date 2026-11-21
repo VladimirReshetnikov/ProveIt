@@ -546,6 +546,8 @@ import IPRADerivations.Foundations.AbstractAnalysisEngine
 import IPRADerivations.Topology.TentPartition
 import IPRADerivations.Algebra.TruncatedSeries
 import IPRADerivations.Foundations.ClockMajorants
+import IPRADerivations.Foundations.DiagonalClock
+import IPRADerivations.Probability.EventAlgebraMetric
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding

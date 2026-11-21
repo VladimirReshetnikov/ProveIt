@@ -1495,6 +1495,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ClockMajorants.pw_mono_exp
 #print axioms LeanProofs.IPRA.Foundations.ClockMajorants.compose_majorant
 #print axioms LeanProofs.IPRA.Foundations.ClockMajorants.exp_majorant
+#print axioms LeanProofs.IPRA.Foundations.DiagonalClock.clock_exp
+#print axioms LeanProofs.IPRA.Foundations.DiagonalClock.cost_exp
+#print axioms LeanProofs.IPRA.Probability.EventAlgebraMetric.union_pt
+#print axioms LeanProofs.IPRA.Probability.EventAlgebraMetric.inter_pt
+#print axioms LeanProofs.IPRA.Probability.EventAlgebraMetric.compl_pt
+#print axioms LeanProofs.IPRA.Probability.EventAlgebraMetric.wsum_le
+#print axioms LeanProofs.IPRA.Probability.EventAlgebraMetric.union_dist
+#print axioms LeanProofs.IPRA.Probability.EventAlgebraMetric.inter_dist
+#print axioms LeanProofs.IPRA.Probability.EventAlgebraMetric.compl_dist
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
