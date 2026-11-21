@@ -1548,6 +1548,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.MassPerturbation.product_error
 #print axioms LeanProofs.IPRA.Foundations.MassPerturbation.expectation_error
 #print axioms LeanProofs.IPRA.Foundations.MassPerturbation.mass_perturbation
+#print axioms LeanProofs.IPRA.Foundations.CloseExtrema.close_refl
+#print axioms LeanProofs.IPRA.Foundations.CloseExtrema.close_symm
+#print axioms LeanProofs.IPRA.Foundations.CloseExtrema.close_mono
+#print axioms LeanProofs.IPRA.Foundations.CloseExtrema.close_trans
+#print axioms LeanProofs.IPRA.Foundations.CloseExtrema.close_max
+#print axioms LeanProofs.IPRA.Foundations.CloseExtrema.close_min
+#print axioms LeanProofs.IPRA.Foundations.CloseExtrema.close_complement
+#print axioms LeanProofs.IPRA.Analysis.HalfContractionTail.halving
+#print axioms LeanProofs.IPRA.Analysis.HalfContractionTail.antitone_le
+#print axioms LeanProofs.IPRA.Analysis.HalfContractionTail.inst2_uB
+#print axioms LeanProofs.IPRA.Analysis.HalfContractionTail.tail
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
