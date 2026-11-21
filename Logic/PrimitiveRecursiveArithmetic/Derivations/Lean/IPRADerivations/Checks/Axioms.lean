@@ -1791,6 +1791,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.RepresentedExpectation.lipschitz_pt
 #print axioms LeanProofs.IPRA.Probability.RepresentedExpectation.lipschitz_test
 #print axioms LeanProofs.IPRA.Probability.RepresentedExpectation.tail_pt
+#print axioms LeanProofs.IPRA.Topology.EulerCharacteristic.alt_telescope
+#print axioms LeanProofs.IPRA.Topology.EulerCharacteristic.euler_poincare_ring
+#print axioms LeanProofs.IPRA.Topology.EulerCharacteristic.sign_free
+#print axioms LeanProofs.IPRA.Topology.EulerCharacteristic.toG_ite'
+#print axioms LeanProofs.IPRA.Topology.EulerCharacteristic.euler_poincare
+#print axioms LeanProofs.IPRA.Topology.EulerCharacteristic.euler_additivity
+#print axioms LeanProofs.IPRA.Topology.EulerCharacteristic.euler_collapse
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
