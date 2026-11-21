@@ -1780,6 +1780,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.FiniteRecovery.up_meets_iff
 #print axioms LeanProofs.IPRA.Topology.FiniteRecovery.meet_two
 #print axioms LeanProofs.IPRA.Topology.FiniteRecovery.colour_proper
+#print axioms LeanProofs.IPRA.Topology.FiniteNormalityConverse.exists_minimal_below
+#print axioms LeanProofs.IPRA.Topology.FiniteNormalityConverse.minimal_unique
+#print axioms LeanProofs.IPRA.Topology.FiniteNormalityConverse.walk_iff
+#print axioms LeanProofs.IPRA.Topology.FiniteNormalityConverse.normal_least
+#print axioms LeanProofs.IPRA.Topology.FiniteNormalityConverse.tietze
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
