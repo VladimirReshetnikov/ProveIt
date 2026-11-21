@@ -271,6 +271,7 @@ import IPRADerivations.AnalyticNumberTheory.PowerDivisorRow
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorInversion
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorGrowth
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorUniform
+import IPRADerivations.AnalyticNumberTheory.RateAbel
 import IPRADerivations.AnalyticNumberTheory.Riemann.AbelIdentity
 import IPRADerivations.AnalyticNumberTheory.Riemann.PacketLanguage
 import IPRADerivations.AnalyticNumberTheory.Riemann.CompilerSemantics
