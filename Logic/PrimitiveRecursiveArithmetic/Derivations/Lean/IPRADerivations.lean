@@ -579,6 +579,10 @@ import IPRADerivations.Foundations.DyadicEnergy
 import IPRADerivations.Foundations.DyadicGain
 import IPRADerivations.Foundations.RichardsonLogic
 import IPRADerivations.Foundations.PartitionRefinement
+import IPRADerivations.Foundations.ObservationCut.Merge
+import IPRADerivations.Foundations.ObservationCut.PathDerivation
+import IPRADerivations.Foundations.ObservationCut.Closure
+import IPRADerivations.Foundations.ObservationCut.NervePolarity
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
