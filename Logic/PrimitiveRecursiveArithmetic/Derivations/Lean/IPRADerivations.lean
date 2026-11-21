@@ -653,6 +653,7 @@ import IPRADerivations.Topology.FiniteProductsQuotients
 import IPRADerivations.Topology.FiniteConnected
 import IPRADerivations.Topology.FiniteNormality
 import IPRADerivations.Topology.FiniteFunctionSpace
+import IPRADerivations.Algebra.LagrangeInversion
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
