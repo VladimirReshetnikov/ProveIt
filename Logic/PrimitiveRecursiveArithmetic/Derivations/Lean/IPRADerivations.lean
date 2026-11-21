@@ -264,6 +264,8 @@ import IPRADerivations.AnalyticNumberTheory.CubeScan
 import IPRADerivations.AnalyticNumberTheory.SymmetricPrefix
 import IPRADerivations.AnalyticNumberTheory.SymmetricMoment
 import IPRADerivations.AnalyticNumberTheory.SymmetricProduct
+import IPRADerivations.AnalyticNumberTheory.PowerBudget
+import IPRADerivations.AnalyticNumberTheory.PowerTransfer
 import IPRADerivations.AnalyticNumberTheory.Riemann.AbelIdentity
 import IPRADerivations.AnalyticNumberTheory.Riemann.PacketLanguage
 import IPRADerivations.AnalyticNumberTheory.Riemann.CompilerSemantics
