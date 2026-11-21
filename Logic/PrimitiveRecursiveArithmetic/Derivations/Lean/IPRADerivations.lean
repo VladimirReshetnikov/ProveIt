@@ -649,6 +649,8 @@ import IPRADerivations.Foundations.KleisliCategory
 import IPRADerivations.Foundations.EilenbergMoore
 import IPRADerivations.Topology.FiniteProductsQuotients
 import IPRADerivations.Topology.FiniteConnected
+import IPRADerivations.Topology.FiniteNormality
+import IPRADerivations.Topology.FiniteFunctionSpace
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
