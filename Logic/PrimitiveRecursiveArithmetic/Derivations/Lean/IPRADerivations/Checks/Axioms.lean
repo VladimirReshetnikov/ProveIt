@@ -4298,6 +4298,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth.backward_all
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth.growth_backward
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth.growth_iff
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.upf_three
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.forward_allU
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.growth_forwardU
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.spec_all
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.uniform_spec
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform.growth_uniform_iff
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Riemann.AbelIdentity.summation_by_parts
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Riemann.AbelIdentity.correction_bound
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.Riemann.AbelIdentity.recover
