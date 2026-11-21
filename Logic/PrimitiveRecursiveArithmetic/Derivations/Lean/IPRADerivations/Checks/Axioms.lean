@@ -1749,6 +1749,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.PolynomialCertificates.apost_closed
 #print axioms LeanProofs.IPRA.Analysis.PolynomialCertificates.param_stability
 #print axioms LeanProofs.IPRA.Analysis.OdeGrowth.growth_le
+#print axioms LeanProofs.IPRA.Analysis.ClusterObservations.ad_lsum_le
+#print axioms LeanProofs.IPRA.Analysis.ClusterObservations.lsum_le_const
+#print axioms LeanProofs.IPRA.Analysis.ClusterObservations.prodL_le
+#print axioms LeanProofs.IPRA.Analysis.ClusterObservations.prod_ad
+#print axioms LeanProofs.IPRA.Analysis.ClusterObservations.power_sums
+#print axioms LeanProofs.IPRA.Analysis.ClusterObservations.esym_bound
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
