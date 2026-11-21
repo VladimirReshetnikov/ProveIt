@@ -4050,6 +4050,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CubeScan.v_succ
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CubeScan.v_clean
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CubeScan.product_certificate
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix.term_le_sum
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix.inst2_eB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix.eB_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix.shift_par
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix.exp_forward
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix.exp_backward
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix.sym_exp
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
