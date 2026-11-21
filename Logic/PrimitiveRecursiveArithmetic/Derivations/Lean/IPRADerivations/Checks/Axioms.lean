@@ -1723,6 +1723,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.WeightedFeedback.name_bound
 #print axioms LeanProofs.IPRA.Analysis.WeightedFeedback.residual_bound
 #print axioms LeanProofs.IPRA.Analysis.WeightedFeedback.box_invariant
+#print axioms LeanProofs.IPRA.Analysis.WeightedComparison.lconj_intro
+#print axioms LeanProofs.IPRA.Analysis.WeightedComparison.lconj_elim
+#print axioms LeanProofs.IPRA.Analysis.WeightedComparison.ldisj_intro
+#print axioms LeanProofs.IPRA.Analysis.WeightedComparison.ldisj_elim
+#print axioms LeanProofs.IPRA.Analysis.WeightedComparison.cancel_w
+#print axioms LeanProofs.IPRA.Analysis.WeightedComparison.max_exists
+#print axioms LeanProofs.IPRA.Analysis.WeightedComparison.Cert.wk
+#print axioms LeanProofs.IPRA.Analysis.WeightedComparison.comparison_perturbed
+#print axioms LeanProofs.IPRA.Analysis.WeightedComparison.comparison
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound

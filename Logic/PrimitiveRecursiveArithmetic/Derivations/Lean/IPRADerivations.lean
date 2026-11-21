@@ -657,6 +657,7 @@ import IPRADerivations.Topology.FiniteFunctionSpace
 import IPRADerivations.Algebra.LagrangeInversion
 import IPRADerivations.Probability.ConditionalAveraging
 import IPRADerivations.Analysis.WeightedFeedback
+import IPRADerivations.Analysis.WeightedComparison
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
