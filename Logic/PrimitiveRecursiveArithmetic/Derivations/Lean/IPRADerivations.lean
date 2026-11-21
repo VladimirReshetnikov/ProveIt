@@ -675,6 +675,7 @@ import IPRADerivations.Analysis.PolynomialCertificates
 import IPRADerivations.Analysis.OdeGrowth
 import IPRADerivations.Analysis.ClusterObservations
 import IPRADerivations.Topology.FiniteSeparation
+import IPRADerivations.Topology.FiniteRecovery
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
