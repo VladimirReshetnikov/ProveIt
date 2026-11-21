@@ -645,6 +645,10 @@ import IPRADerivations.Geometry.Hyperbox.ClosedFamilies
 import IPRADerivations.Topology.FiniteClosureMaps
 import IPRADerivations.Foundations.AdjunctionMonad
 import IPRADerivations.Foundations.KleisliIdentity
+import IPRADerivations.Foundations.KleisliCategory
+import IPRADerivations.Foundations.EilenbergMoore
+import IPRADerivations.Topology.FiniteProductsQuotients
+import IPRADerivations.Topology.FiniteConnected
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
