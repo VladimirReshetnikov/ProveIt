@@ -1460,6 +1460,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.ErrorAmplification.window
 #print axioms LeanProofs.IPRA.Foundations.ErrorAmplification.amplification
 #print axioms LeanProofs.IPRA.Foundations.ErrorAmplification.amplification_window
+#print axioms LeanProofs.IPRA.Foundations.AmortizedPotential.amortized
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
