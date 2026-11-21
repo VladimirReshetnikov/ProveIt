@@ -634,6 +634,9 @@ import IPRADerivations.Foundations.ObservationCut.PathDerivation
 import IPRADerivations.Foundations.ObservationCut.Closure
 import IPRADerivations.Foundations.ObservationCut.NervePolarity
 import IPRADerivations.Topology.FiniteInteriorClosure
+import IPRADerivations.Topology.FiniteBoundary
+import IPRADerivations.Analysis.Quantum.FormCauchySchwarz
+import IPRADerivations.Geometry.Hyperbox.ClosedFamilies
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
