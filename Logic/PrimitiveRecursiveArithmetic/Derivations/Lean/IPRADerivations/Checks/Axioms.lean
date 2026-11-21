@@ -3788,6 +3788,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BlockDispatch.idx_lt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BlockDispatch.onblock_A
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.BlockDispatch.onblock_B
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficitMain.shift_du
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficitMain.shift_dv
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficitMain.shift_pp
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficitMain.interior
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficitMain.blk_A
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficitMain.blk_B
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficitMain.blk_C
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficitMain.block_deficit
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.subst_Tt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_zero
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds.T_succ
