@@ -274,6 +274,8 @@ import IPRADerivations.AnalyticNumberTheory.PowerDivisorUniform
 import IPRADerivations.AnalyticNumberTheory.RateAbel
 import IPRADerivations.AnalyticNumberTheory.RateShell
 import IPRADerivations.AnalyticNumberTheory.RateIff
+import IPRADerivations.AnalyticNumberTheory.RateCauchy
+import IPRADerivations.AnalyticNumberTheory.RateCauchyIff
 import IPRADerivations.AnalyticNumberTheory.Riemann.AbelIdentity
 import IPRADerivations.AnalyticNumberTheory.Riemann.PacketLanguage
 import IPRADerivations.AnalyticNumberTheory.Riemann.CompilerSemantics
