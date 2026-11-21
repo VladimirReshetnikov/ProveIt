@@ -1715,6 +1715,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.ConditionalAveraging.ad_nsum_le
 #print axioms LeanProofs.IPRA.Probability.ConditionalAveraging.blk_contract
 #print axioms LeanProofs.IPRA.Probability.ConditionalAveraging.cond_contract
+#print axioms LeanProofs.IPRA.Analysis.WeightedFeedback.contract_scaled
+#print axioms LeanProofs.IPRA.Analysis.WeightedFeedback.orbit_dom
+#print axioms LeanProofs.IPRA.Analysis.WeightedFeedback.orbit_inc
+#print axioms LeanProofs.IPRA.Analysis.WeightedFeedback.orbit_tail
+#print axioms LeanProofs.IPRA.Analysis.WeightedFeedback.cancel_pow
+#print axioms LeanProofs.IPRA.Analysis.WeightedFeedback.name_bound
+#print axioms LeanProofs.IPRA.Analysis.WeightedFeedback.residual_bound
+#print axioms LeanProofs.IPRA.Analysis.WeightedFeedback.box_invariant
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
