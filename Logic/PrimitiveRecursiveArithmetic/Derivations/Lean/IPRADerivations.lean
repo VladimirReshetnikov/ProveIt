@@ -583,6 +583,7 @@ import IPRADerivations.Foundations.ObservationCut.Merge
 import IPRADerivations.Foundations.ObservationCut.PathDerivation
 import IPRADerivations.Foundations.ObservationCut.Closure
 import IPRADerivations.Foundations.ObservationCut.NervePolarity
+import IPRADerivations.Topology.FiniteInteriorClosure
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
