@@ -1543,3 +1543,7 @@ import IPRADerivations.Analysis.GaussianSuperellipticTail
 import IPRADerivations.Analysis.GaussianRationalLinearCancellation
 import IPRADerivations.Analysis.GaussianRationalPowerNonzero
 import IPRADerivations.Analysis.GaussianRationalFixedWidthStrip
+
+import IPRADerivations.Analysis.GaussianRationalPaddedProductDegree
+import IPRADerivations.Analysis.GaussianNormGroupFactorProduct
+import IPRADerivations.Analysis.GaussianSuperellipticMatrixEntries

@@ -315,9 +315,21 @@ give the exact original curve equation, and the
 uses the original nonzero rows and computed degrees.
 The [cyclic word and wraps](Lean/IPRADerivations/Foundations/RuntimeCyclicPermutation.lean)
 and [digit sum](Lean/IPRADerivations/Foundations/RuntimePermutationDigitSum.lean)
-supply numerical permutation facts for the weighted proof. Accumulation
-of multiplicities, the actual specialized matrix entry law and weighted
-norm degree and nonvanishing remain open.
+supply numerical permutation facts for the weighted proof. The
+[original companion matrix entries](Lean/IPRADerivations/Analysis/GaussianSuperellipticMatrixEntries.lean)
+now have the evaluated rotation and wrap-power formula, with the inverse
+index tied to the original matrix slots. The coefficient comparison and
+exact weighted norm degree and nonvanishing remain open.
+
+The [grouped factor product](Lean/IPRADerivations/Analysis/GaussianNormGroupFactorProduct.lean)
+is monic of computed degree equal to the original prefix sum of fiber
+sizes. At completion the sum is the length of the original point list.
+Field-value distinction of the original abscissae proves that the prefix
+product does not vanish at the next abscissa. The
+[padded factorization degree law](Lean/IPRADerivations/Analysis/GaussianRationalPaddedProductDegree.lean)
+proves that a coefficient reconstruction of a nonzero padded norm yields
+nonzero factors and the exact degree sum. The proof that the accumulated
+quotient reconstructs the original norm is still open.
 
 ## Logical strength and program boundaries
 
