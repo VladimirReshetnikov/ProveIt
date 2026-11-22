@@ -10019,6 +10019,83 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RationalGaussianEmbedding.original_zero_reflection_closed
 #print axioms LeanProofs.IPRA.Analysis.RationalGaussianEmbedding.actual_program_closed
 
+/-! ### GaussianPolynomialNormBuffers -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.prefix_entries
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.norm_entries
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.zero_prefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.norm_zeros
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.norm_append
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.padding_prefix_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.padLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.subst_padLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.padding_prefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.norm_padding
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.norm_scaled
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.norm_added
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.actual_polynomial_padding_norm_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.actual_polynomial_append_norm_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialNormBuffers.actual_polynomial_scaled_norm_closed
+
+/-! ### GaussianRationalConvolutionNorm -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalConvolutionNorm.stage_entries_succ
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalConvolutionNorm.stage_norm_succ
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalConvolutionNorm.stage_norm_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalConvolutionNorm.normLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalConvolutionNorm.subst_normLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalConvolutionNorm.norm_base
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalConvolutionNorm.norm_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalConvolutionNorm.stage_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalConvolutionNorm.product_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalConvolutionNorm.actual_convolution_norm_closed
+
+/-! ### RationalPolynomialGaussianEmbedding -/
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficientBody
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficients
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.hornerStep
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.hornerF
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.horner
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.evaluate
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.subst_coefficients
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.subst_horner
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.subst_evaluate
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.embed_congr
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficients_length
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficient_lookup
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficient_canonical
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficient_axis
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficients_canonical
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.horner_zero
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.horner_succ
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.horner_canonical
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.prefixLaw
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.subst_prefixLaw
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.prefix_step
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.horner_conjugacy
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.evaluation_conjugacy
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.evaluation_axis
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.evaluation_zero_iff
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.axis_point_conjugacy
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.axis_evaluation_conjugacy
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.real_axis_evaluation
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficientsF
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.evaluateF
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficients_at
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.evaluate_at
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficient_program_lookup
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.program_evaluation_conjugacy
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_coefficients_length_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_coefficients_lookup_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_coefficients_canonical_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_rational_horner_step_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_horner_conjugacy_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_evaluation_conjugacy_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_evaluation_axis_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_raw_axis_evaluation_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_evaluation_zero_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_coefficient_program_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_evaluation_program_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.actual_program_conjugacy_closed
+
 /-! Actual collision-tolerant root-support names and finite adequacy components. -/
 
 -- Analysis/GaussianCoefficientNormEntries
