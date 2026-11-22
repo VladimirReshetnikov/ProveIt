@@ -120,6 +120,11 @@ power exponent.
 proves that the actual low coefficient of the original composition is
 already attained at the stage indexed by that coefficient. The remaining
 coefficient comparison is with the Bell recurrence.
+[GaussianRationalPolynomialExponentialCoefficients](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialExponentialCoefficients.lean)
+identifies the same coefficient with the exact inverse-factorial-weighted
+sum of stored power coefficients.
+[GaussianRationalWeightedCoefficientConvolution](Lean/IPRADerivations/Analysis/GaussianRationalWeightedCoefficientConvolution.lean)
+derives the exponent-weighted product rule on those same low coefficients.
 
 ## Every ledger family remains in scope
 
