@@ -7165,6 +7165,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GramBound.master_alg
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GramBound.gram_ring
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.GramBound.gram_bound
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdPhiSum.div_gcd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdPhiSum.inst2_gB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdPhiSum.gB_at
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdPhiSum.gB_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.GcdPhiSum.gcd_phi_sum
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius.split_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius.lambda_mobius_neg
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius.lambda_mobius_mid
