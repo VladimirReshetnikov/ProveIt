@@ -1571,3 +1571,5 @@ import IPRADerivations.Analysis.GaussianPolynomialDeterminantLeadingSelection
 
 import IPRADerivations.Analysis.GaussianRationalPowerProduct
 import IPRADerivations.Analysis.GaussianSuperellipticMatrixLeading
+
+import IPRADerivations.Analysis.GaussianPolynomialDeterminantTermDegree

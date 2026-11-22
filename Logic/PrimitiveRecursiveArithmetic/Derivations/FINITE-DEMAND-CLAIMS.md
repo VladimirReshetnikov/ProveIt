@@ -332,6 +332,10 @@ A zero row gives a zero cell independently of the flag of `f`. For nonzero
 gives an exact finite product for a common leading base and summed exponents.
 The [permutation sum law](Lean/IPRADerivations/Foundations/RuntimePermutationSums.lean)
 reindexes an arbitrary fixed numerical body along the actual retained word.
+[Actual determinant term degrees](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantTermDegree.lean)
+derive the zero and nonzero branches of every existing stage and signed
+term. The computed degree is the sum of the degrees of the actual factors,
+and the leading coefficient uses their actual leading product and sign.
 [Leading coefficient selection](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantLeadingSelection.lean)
 uses the original signed coefficient sum. Once its earlier terms vanish
 and the selected slot has a single nonzero contributor, the actual scan
