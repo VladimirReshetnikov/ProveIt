@@ -86,6 +86,14 @@ literal composition/chain-rule correctness, coefficient extraction and its
 Bell-history identification, complex evaluation, analytic tails and the
 actual C4 name identity remain open.
 
+[GaussianRationalPolynomialPowers](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialPowers.lean)
+provides the stored Gaussian-rational power buffers needed for the literal
+finite composition. With the original coefficient length, the computed
+buffer evaluates to the corresponding power of the original Horner value.
+Every in-range successor also has the actual convolution coefficient law.
+Connecting these power buffers to the factorial-weighted sum for the
+truncated logarithm remains open.
+
 ## Every ledger family remains in scope
 
 | Ledger IDs | Complete source deliverables still required |
