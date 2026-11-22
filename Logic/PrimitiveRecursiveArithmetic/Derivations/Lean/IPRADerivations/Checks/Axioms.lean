@@ -4449,6 +4449,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SigmaProduct.sp_found
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SigmaProduct.sp_step
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SigmaProduct.sigma_product
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower.inst2_vB
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower.inst2_one
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower.prim_pos
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower.val_small
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower.lcm_dvd
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower.factor_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower.small_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower.lcm_primorial
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower.two_pow_lcm
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower.primorial_lower
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CubeScan.inst2_subst
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CubeScan.clean_shift
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.CubeScan.exneg_shift
