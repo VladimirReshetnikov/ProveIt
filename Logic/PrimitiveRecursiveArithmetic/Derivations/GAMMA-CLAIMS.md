@@ -99,8 +99,10 @@ verifies the same programs at arbitrary numerical cutoffs satisfying
 `N≥1` and `2R≤N`, with literal specialization at `N=2R`.
 [GaussianGammaC9Bound](Lean/IPRADerivations/Analysis/GaussianGammaC9Bound.lean)
 proves the exact C9 bound `M_R` for every observation of the original
-reciprocal name. The bound for the finite `P_N` approximant and the
-remaining rates and identities are tracked below.
+reciprocal name. [GaussianGammaFoldedMajorantExponent](Lean/IPRADerivations/Analysis/GaussianGammaFoldedMajorantExponent.lean)
+constructs the same bound for a representative formed from the original
+head and the exponent at `2R` minus the tail at `N`. Its identification
+with the finite folded `P_N` approximant remains.
 [GaussianGammaFiniteApproximantName](Lean/IPRADerivations/Analysis/GaussianGammaFiniteApproximantName.lean)
 constructs the folded C5 names from the original polynomial head,
 Euler constant, harmonic value, and harmonic-mesh logarithm. It proves the
@@ -125,7 +127,14 @@ numerical cutoffs. [GaussianGammaEulerCorrectionDisk](Lean/IPRADerivations/Analy
 proves the exact `R/N` disk for the represented Euler correction.
 [GaussianGammaPerturbationExponent](Lean/IPRADerivations/Analysis/GaussianGammaPerturbationExponent.lean)
 proves the actual difference-of-exponents envelope at `(R²+R)/N`
-and its relation to the original correction. The assembled C10 rate remains.
+and its relation to the original correction.
+[GaussianGammaEulerConvergence](Lean/IPRADerivations/Analysis/GaussianGammaEulerConvergence.lean)
+combines the two C8 product identities by multiplication and proves the
+C10 bound `3M_R(R²+R)/N` with the two ordinary independent observation
+errors. [GaussianGammaEulerApproximationName](Lean/IPRADerivations/Analysis/GaussianGammaEulerApproximationName.lean)
+chooses a numerical cutoff and one additional observation bit to
+construct an actual regular cofinal Euler sampler equivalent to the
+original reciprocal name.
 
 [GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/GammaCanonicalRemainder.lean)
 proves the sharp finite C3 remainder between cutoffs `L` and `L+K` of the
@@ -291,6 +300,9 @@ numerical disk with `R≥1`.
 [GaussianExponentialRadiusIndependence](Lean/IPRADerivations/Analysis/GaussianExponentialRadiusIndependence.lean)
 proves exponential properness with independent input disks and agreement
 with the actual specialized unit-disk exponential.
+[GaussianExponentialInverse](Lean/IPRADerivations/Analysis/GaussianExponentialInverse.lean)
+proves that multiplying the exponential of the original name by the
+exponential of its actual negative gives the constant one.
 [GaussianExponentialDiskMajorant](Lean/IPRADerivations/Analysis/GaussianExponentialDiskMajorant.lean)
 transfers the actual finite series on the nonnegative real axis to a
 Euclidean bound throughout the disk.
