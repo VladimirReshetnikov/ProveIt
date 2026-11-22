@@ -37,8 +37,8 @@ quotient observations at scale `2^(p+4)` satisfy closed regularity and
 ordered-precision bounds, exact program equations, rounding correctness and
 the C6 disk bound with only the explicit `2/2^(p+4)` rounding slack.
 `primitive_recursive_joint_tail_name` is a name for this prescribed
-power-series tail. Analytic logarithm/exponential identification C4,
-Euler/Gamma approximants C5/C7–C15 remain.
+power-series tail. Equations C5 and C7–C15 for the Euler and Gamma
+approximants remain.
 
 [GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/GammaCanonicalRemainder.lean)
 proves the sharp finite C3 remainder between cutoffs `L` and `L+K` of the
@@ -53,8 +53,7 @@ It gives a PR4 signed dyadic observation at scale `2^(p+4)`, proves
 regularity at independent precisions, and gives the disk bound
 `R²/N² + 2/2^(p+4)`. The sharp finite C3 bound also compares an original
 fixed cutoff with a cofinal name observation, with explicit rounding
-slack. Identifying the name with the analytic expression in C4 remains
-separate.
+slack. The original logarithm and its exponential are identified below.
 
 The reusable [ReciprocalSquareTail](Lean/IPRADerivations/Analysis/ReciprocalSquareTail.lean)
 provides the underlying uniform rational inverse-square comparison.
@@ -80,10 +79,8 @@ the prescribed `1/k!` and alternating `1/j` coefficients. Internal-cutoff
 QF inductions derive their evaluation recurrences and exact differential
 residuals `D E'_N+x^N=E_N` and
 `(D+x)H'_N+g_N x^N=N!D^N`. Positive-denominator and actual PR3 output
-contracts are checked. These are finite scalar algebraic dependencies:
-literal composition/chain-rule correctness, coefficient extraction and its
-Bell-history identification, complex evaluation, analytic tails and the
-actual C4 name identity remain open.
+contracts are checked. The complex composition, coefficient bounds, tails,
+and original logarithm name identity follow in the modules below.
 
 [GaussianRationalPolynomialPowers](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialPowers.lean)
 provides the stored Gaussian-rational power buffers needed for the literal
@@ -107,8 +104,8 @@ cleared numerator and denominator.
 [GammaLogarithmFactorBridge](Lean/IPRADerivations/Analysis/GammaLogarithmFactorBridge.lean)
 identifies that sample with the sum of the original linear term and
 the original canonical factor and evaluates the actual finite exponential
-composition at that argument. The composite low-degree coefficient identity
-and the analytic C4 tail remain open.
+composition at that argument. The low-degree coefficients and analytic tail
+are checked below.
 [GaussianRationalLowCoefficientConvolution](Lean/IPRADerivations/Analysis/GaussianRationalLowCoefficientConvolution.lean)
 identifies low coefficients of the actual stored polynomial product with
 their finite ascending Cauchy sums.
@@ -186,7 +183,15 @@ scalar exponential on the unit disk.
 [GaussianUnitDiskExponentialName](Lean/IPRADerivations/Analysis/GaussianUnitDiskExponentialName.lean)
 uses the actual scalar sums to construct a regular exponential of an
 argument name with unit-disk samples and proves preservation of name
-equivalence. Transport from the original logarithm name remains.
+equivalence.
+[GaussianLocalLogarithmName](Lean/IPRADerivations/Analysis/GaussianLocalLogarithmName.lean)
+proves regularity and the unit-disk bound on every original unshifted
+logarithm observation.
+[GaussianLocalLogarithmExponentialIdentity](Lean/IPRADerivations/Analysis/GaussianLocalLogarithmExponentialIdentity.lean)
+then compares the actual exponential of that name with the constant name
+`1+z/N` in both the cross and diagonal relations on the original half-disk
+with `N≥1`. It also proves equivalence with the actual cofinal finite
+composition. These are object-theory derivations of the local C4 identity.
 
 ## Every ledger family remains in scope
 
