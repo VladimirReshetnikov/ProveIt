@@ -1,4 +1,4 @@
-import IPRADerivations.Core.Integers
+import IPRADerivations.Core.IntCertificates
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Parity
 import Mathlib.Algebra.BigOperators.Fin
@@ -22,8 +22,11 @@ read as differences, `Core/Integers`). The dimension `d` is a fixed metalevel nu
   `N = 1` this is the packet's `(ΔA)² = ‖(A − ⟨A⟩)ψ‖²`, and it is cleared of the normalization otherwise.
 
 Each identity is a commutative-ring identity over finite sums (`*_alg`), transported to an iPRA derivation by
-`ZT.derive`; realness divides by `2` through `two_cancel`. The sign `(ΔA)² ≥ 0` (left side a sum of squares) is a
-statement about integer order, not derived here.
+`ZT.derive`; realness divides by `2` through `two_cancel`. The sign follows from the identity with the integer-order
+certificates of `Core/IntCertificates` (`nn_sum`, `nn_zsq`, `zle_of_comb`):
+
+* `quantum_variance_nonneg`: `N (N ‖Aψ‖² − ⟨A⟩²) ≥ 0`, a sum of squares;
+* `quantum_uncertainty`: for a normalized state (`ψ*ψ = 1`), `⟨A⟩² ≤ ψ*A²ψ`, i.e. `(ΔA)² ≥ 0`.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -180,6 +183,45 @@ theorem quantum_variance :
   simp only [toZ_zsum, ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_sq]
   exact variance_alg _ _ _ _ _ _ _ (by simp only [nrm, toZ_zsum, ZT.toZ_add, ZT.toZ_mul])
     (by simp only [lam, toZ_zsum, ZT.toZ_add, ZT.toZ_mul]) (by simp only [nsq, toZ_zsum, ZT.toZ_add, ZT.toZ_mul])
+
+/-- The squared residuals `Σ_j (|N x_j − λ a_j|² + |N y_j − λ b_j|²)`. -/
+abbrev res (Γ : List (Fm PTm n)) (a b : Fin d → ZT n) (S T : Fin d → Fin d → ZT n) : Groth (Q Γ) :=
+  ∑ j, (ZT.toZ Γ (nrm a b * xv a b S T j - lam a b S T * a j) ^ 2 +
+    ZT.toZ Γ (nrm a b * yv a b S T j - lam a b S T * b j) ^ 2)
+
+theorem res_nn : Nonneg Γ (res Γ a b S T) :=
+  nn_sum _ _ fun j _ => nn_add (nn_zsq _) (nn_zsq _)
+
+/-- `N (N ‖Aψ‖² − ⟨A⟩²) ≥ 0`. -/
+theorem quantum_variance_nonneg :
+    Γ ⊢[PRAAx] zle zz (nrm a b * (nrm a b * nsq a b S T - lam a b S T * lam a b S T)) := by
+  have hv := ZT.toZ_eq (quantum_variance (Γ := Γ) (a := a) (b := b) (S := S) (T := T))
+  have h1 : ZT.toZ Γ (zsum fun j => ZT.sq (nrm a b * xv a b S T j - lam a b S T * a j) +
+      ZT.sq (nrm a b * yv a b S T j - lam a b S T * b j)) = res Γ a b S T := by
+    simp only [toZ_zsum, ZT.toZ_add, ZT.toZ_sq]
+  refine zle_of_comb (res Γ a b S T) ?_ res_nn
+  rw [toZ_zz, sub_zero, ← hv, h1]
+
+/-- `(ΔA)² ≥ 0`: for `ψ*ψ = 1` and Hermitian `A`, `⟨A⟩² ≤ ψ*A²ψ`. -/
+theorem quantum_uncertainty (hS : ∀ j k, Γ ⊢[PRAAx] ZT.eq (S j k) (S k j))
+    (hT : ∀ j k, Γ ⊢[PRAAx] ZT.eq (T j k) (-T k j)) (hN : Γ ⊢[PRAAx] ZT.eq (nrm a b) (ZT.natLit 1)) :
+    Γ ⊢[PRAAx] zle (lam a b S T * lam a b S T) (sq2 a b S T) := by
+  have hv := ZT.toZ_eq (quantum_variance (Γ := Γ) (a := a) (b := b) (S := S) (T := T))
+  have h1 : ZT.toZ Γ (zsum fun j => ZT.sq (nrm a b * xv a b S T j - lam a b S T * a j) +
+      ZT.sq (nrm a b * yv a b S T j - lam a b S T * b j)) = res Γ a b S T := by
+    simp only [toZ_zsum, ZT.toZ_add, ZT.toZ_sq]
+  have h2 : ZT.toZ Γ (nrm a b * (nrm a b * nsq a b S T - lam a b S T * lam a b S T)) =
+      ZT.toZ Γ (nrm a b) * (ZT.toZ Γ (nrm a b) * ZT.toZ Γ (nsq a b S T) -
+        ZT.toZ Γ (lam a b S T) * ZT.toZ Γ (lam a b S T)) := by
+    simp only [ZT.toZ_mul, ZT.toZ_sub]
+  have hq := ZT.toZ_eq (quantum_square (Γ := Γ) (a := a) (b := b) hS hT)
+  have hn := ZT.toZ_eq hN
+  rw [ZT.toZ_natLit, Nat.cast_one] at hn
+  have hr := h1.symm.trans (hv.trans h2)
+  refine zle_of_comb (res Γ a b S T) ?_ res_nn
+  rw [ZT.toZ_mul]
+  linear_combination hq - hr +
+    (-(ZT.toZ Γ (nrm a b) + 1) * ZT.toZ Γ (nsq a b S T) + ZT.toZ Γ (lam a b S T) * ZT.toZ Γ (lam a b S T)) * hn
 
 end Quantum
 
