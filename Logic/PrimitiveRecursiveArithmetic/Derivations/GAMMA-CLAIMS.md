@@ -156,6 +156,27 @@ with the actual `exp(−log N)` factor.
 proves the C17 sharp finite tail for the actual reciprocal-power sum.
 The bound retains the endpoint potential for every numerical length,
 with exponent `m≥2` and starting index `N≥1`.
+[RationalReciprocalPowerName](Lean/IPRADerivations/Analysis/RationalReciprocalPowerName.lean)
+gives the C17 cofinal zeta sampler and the shifted tail as regular names.
+Each raw tail observation satisfies the exact sharp bound and is nonnegative.
+The original finite reciprocal-power prefix plus this tail reconstructs the
+same zeta name at independent observation precisions.
+[GaussianGammaFiniteDegreeRearrangement](Lean/IPRADerivations/Analysis/GaussianGammaFiniteDegreeRearrangement.lean)
+proves the finite C16 degree rearrangement for the actual normalized tail.
+Its returned PR program computes both equal rectangle values, and the
+original `R²/N` bound applies to the value. The infinite rearrangement
+and the C18 degree error require further derivations.
+[GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
+and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
+identify the original finite Robin artanh component with the difference of
+the two original local logarithm polynomials evaluated at opposite rational
+inputs. The corresponding identity at name level and the exponential
+inverse for the entire mesh logarithm remain C20 dependencies.
+[GaussianRationalConjugation](Lean/IPRADerivations/Analysis/GaussianRationalConjugation.lean)
+proves exact conjugation for rational code, metric and scalar Taylor sums.
+[GaussianGammaFiniteConjugation](Lean/IPRADerivations/Analysis/GaussianGammaFiniteConjugation.lean)
+proves covariance of the original finite head, local factors and literal
+prefix for C26. Conjugation of the original cofinal Gamma names remains.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.
