@@ -1846,6 +1846,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.TwoColoring.odd_certificate
 #print axioms LeanProofs.IPRA.Topology.TwoColoring.greedy
 #print axioms LeanProofs.IPRA.Topology.TwoColoring.colorable_succ_maxDegree
+#print axioms LeanProofs.IPRA.Topology.SphereCycle.sgn_not
+#print axioms LeanProofs.IPRA.Topology.SphereCycle.flip_flip
+#print axioms LeanProofs.IPRA.Topology.SphereCycle.flip_ne
+#print axioms LeanProofs.IPRA.Topology.SphereCycle.face_flip
+#print axioms LeanProofs.IPRA.Topology.SphereCycle.coef_flip
+#print axioms LeanProofs.IPRA.Topology.SphereCycle.boundary_zero
+#print axioms LeanProofs.IPRA.Topology.SphereCycle.anti_facet
+#print axioms LeanProofs.IPRA.Topology.SphereCycle.coef_not
+#print axioms LeanProofs.IPRA.Topology.SphereCycle.antipodal
+#print axioms LeanProofs.IPRA.Topology.SphereCycle.top_coef
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound

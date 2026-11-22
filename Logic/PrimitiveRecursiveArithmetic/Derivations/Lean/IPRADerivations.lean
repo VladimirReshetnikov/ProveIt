@@ -706,6 +706,7 @@ import IPRADerivations.Topology.SimplicialCone
 import IPRADerivations.Topology.BooleanAtoms
 import IPRADerivations.Topology.FiniteSheaves
 import IPRADerivations.Topology.TwoColoring
+import IPRADerivations.Topology.SphereCycle
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
