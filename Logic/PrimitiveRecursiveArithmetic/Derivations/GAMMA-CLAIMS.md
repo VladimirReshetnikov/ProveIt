@@ -179,8 +179,14 @@ samples and proves its equivalence to the constant name `1+w`.
 [GaussianRationalExponentialTail](Lean/IPRADerivations/Analysis/GaussianRationalExponentialTail.lean)
 proves the original scalar-sum cutoff comparison on a bounded Gaussian
 rational input. [GaussianRationalExponentialName](Lean/IPRADerivations/Analysis/GaussianRationalExponentialName.lean)
-constructs the original cutoff name at such queries. Properness for
-general regular argument names remains.
+constructs the original cutoff name at such queries.
+[GaussianRationalExponentialLipschitz](Lean/IPRADerivations/Analysis/GaussianRationalExponentialLipschitz.lean)
+proves the uniform three-Lipschitz estimate for the original finite
+scalar exponential on the unit disk.
+[GaussianUnitDiskExponentialName](Lean/IPRADerivations/Analysis/GaussianUnitDiskExponentialName.lean)
+uses the actual scalar sums to construct a regular exponential of an
+argument name with unit-disk samples and proves preservation of name
+equivalence. Transport from the original logarithm name remains.
 
 ## Every ledger family remains in scope
 
