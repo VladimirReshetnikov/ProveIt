@@ -563,6 +563,14 @@ proves that any regular two-coordinate stream supported by these actual
 stages decodes to an original represented characteristic root. The
 decoded point samples use one extra coordinate precision, and stage
 `k+2` supplies the original Gaussian distance cut at precision `k`.
+[GaussianSpectralRootWitness](Lean/IPRADerivations/Analysis/GaussianSpectralRootWitness.lean)
+computes a Gaussian root name separately for each requested accuracy.
+The finite maximizer seeds the actual nearest-neighbor chain. The
+decoded name has an original characteristic root membership proof
+and the original disk bound. Its PR4 program returns the Gaussian
+sample and that sample's actual modulus approximation. At precisions
+`t` and `l` the radius sample exceeds this witness's modulus sample
+by at most `2^-k + 2^-t + 2^-l`.
 
 [RationalGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalGaussianEmbedding.lean)
 preserves field equality, zero, one, addition, multiplication and negation
@@ -597,8 +605,16 @@ shows that coefficient embedding preserves the actual nonzero flag and
 computed degree.
 [GaussianPolynomialDeterminantCongruence](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantCongruence.lean)
 compares the actual determinant whenever its two numerical coefficient
-tables agree at the protected indices. The original rational monic
-multiplication matrix and the resulting norm specialization remain open.
+tables agree at the protected indices.
+[RationalPolynomialDeterminantTransport](Lean/IPRADerivations/Analysis/RationalPolynomialDeterminantTransport.lean)
+uses this comparison to transfer the original rational polynomial,
+evaluation, nonzero flag, and degree to any Gaussian table whose bounded
+cells agree after embedding.
+[RationalPolynomialMonicCompanionGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialMonicCompanionGaussianEmbedding.lean)
+constructs an actual original rational companion step with the derived
+row widths and embedded coefficients. Iterating that step through all
+columns of the original rational multiplication matrix and the resulting
+norm specialization remain open.
 
 [GaussianRationalVariableHornerBudget](Lean/IPRADerivations/Analysis/GaussianRationalVariableHornerBudget.lean)
 computes a coefficient-dependent variation bound by following actual
