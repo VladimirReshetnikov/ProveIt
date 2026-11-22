@@ -63,8 +63,16 @@ C6 radius and the finite three-Lipschitz estimate.
 [GaussianGammaEulerHead](Lean/IPRADerivations/Analysis/GaussianGammaEulerHead.lean)
 builds the literal finite polynomial in C5 and C7, proves its finite
 split and binds each factor to the local C4 constant. At cutoff `2R` its
-Euclidean majorant is exactly the polynomial factor in C9. The assembled
-Euler and Gamma approximant equations C5 and C7–C15 remain.
+Euclidean majorant is exactly the polynomial factor in C9.
+[GaussianGammaCanonicalExponent](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalExponent.lean)
+constructs the actual regular C7 exponent from the Euler constant mesh
+name, the exact harmonic value and the original canonical tail at `2R`.
+The computed zeroth-observation radius gives a regular exponential.
+[GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
+multiplies it by the original polynomial head and gives a regular name
+for the displayed C7 expression on each fixed input disk. Agreement
+across cutoffs, the exact C9 majorant, the C5 approximants and the
+C8–C15 identities and rates remain.
 
 [GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/GammaCanonicalRemainder.lean)
 proves the sharp finite C3 remainder between cutoffs `L` and `L+K` of the
