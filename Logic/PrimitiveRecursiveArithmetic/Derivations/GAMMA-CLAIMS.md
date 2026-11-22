@@ -192,7 +192,13 @@ precisions, including the source cutoff `N=2R`.
 proves the finite weighted coefficient bound for the original polynomial
 exponential. [GaussianWeightedPolynomialTail](Lean/IPRADerivations/Analysis/GaussianWeightedPolynomialTail.lean)
 proves the finite C19 geometric tail on the rescaled half disk. The
-Gamma-specific coefficient sequence and cofinal analyticity remain.
+Gamma-specific full coefficient bound and cofinal analyticity remain.
+[GaussianGammaZetaCoefficientPolynomial](Lean/IPRADerivations/Analysis/GaussianGammaZetaCoefficientPolynomial.lean)
+constructs the actual degree buffer and binds its Horner value to the
+original C16 polynomial at its original clock.
+[GaussianGammaZetaCoefficientNorm](Lean/IPRADerivations/Analysis/GaussianGammaZetaCoefficientNorm.lean)
+derives the original sampled weighted coefficient bound
+`R^m/(m(m−1)N^(m−1))` for each `m≥2`.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
@@ -231,6 +237,17 @@ to prove `P(1)=1` and `Γ(1)=1` once the mesh identity is supplied.
 [GaussianGammaShift](Lean/IPRADerivations/Analysis/GaussianGammaShift.lean)
 uses the reciprocal shift and checked inverse product to prove
 `Γ(z+1)=zΓ(z)` on the recorded original two pole-free domains.
+[GaussianGammaShiftTrajectory](Lean/IPRADerivations/Analysis/GaussianGammaShiftTrajectory.lean)
+constructs the actual native successor trajectory, proves its disk at
+every numerical stage, and identifies its encoded coordinate values.
+[GaussianGammaFactorialValues](Lean/IPRADerivations/Analysis/GaussianGammaFactorialValues.lean)
+then proves the original C21 factorial identity for all internal indices.
+[GaussianGammaRepeatedShift](Lean/IPRADerivations/Analysis/GaussianGammaRepeatedShift.lean)
+proves C22 for the original reciprocal Gamma name and the actual rising
+product, including zero factors.
+[GaussianGammaLocalPoleGuards](Lean/IPRADerivations/Analysis/GaussianGammaLocalPoleGuards.lean)
+derives the original punctured-disk domain for C24 and the separated
+terminal argument `1+h/B`.
 [GaussianRationalConjugation](Lean/IPRADerivations/Analysis/GaussianRationalConjugation.lean)
 proves exact conjugation for rational code, metric and scalar Taylor sums.
 [GaussianGammaFiniteConjugation](Lean/IPRADerivations/Analysis/GaussianGammaFiniteConjugation.lean)
@@ -512,7 +529,7 @@ composition. These are object-theory derivations of the local C4 identity.
 | --- | --- |
 | 1 | Actual harmonic/logarithm Euler-constant evaluator, C1–C2 inequalities, a regular name, and its bounds. |
 | 2–3 | Actual cofinal samplers establish C11 for the literal Weierstrass product and C15 for the Euler reciprocals. The C7 and Gamma names agree on overlapping disks for the same encoded rational point. Agreement with the right half-plane integral construction remains. |
-| 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The Gamma-specific coefficient majorant, entire analyticity, zero classification for general named inputs, simplicity of the zeros, poles and residues, and factorial values remain. C20 and the C21 normalization at one are proved. C26 conjugation and the real value representation for encoded real rational inputs are proved for the original reciprocal and pole-free Gamma names. |
+| 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The Gamma-specific coefficient majorant, entire analyticity, zero classification for general named inputs, simplicity of the zeros, and poles and residues remain. C20, the original C21 shift and factorial values, and C22 are proved on their recorded domains. C26 conjugation and the real value representation for encoded real rational inputs are proved for the original reciprocal and pole-free Gamma names. |
 | 11–17 | Actual quadrature and both endpoint tails, Euler-integral identification, quantitative positive lower/upper bounds, vertical absolute-value comparison, fixed-order derivative integrals, substitution/scaling formulas, and incomplete-Gamma sum/recurrence/integer formulas. |
 | 18–24 | Reflection with an explicit sine margin, multiplication at arbitrary internal positive integer multiplier, duplication/triplication, beta–Gamma relation, beta symmetry/recurrence and all stated integral forms with their positive half-plane margins. |
 | 25–30 | Positive-root selection and half-integer values, the listed fractional-argument relations and fractional products, rising/binomial cancellation through apparent poles, and imaginary/half-shifted modulus formulas, including their zero-safe versions. |
