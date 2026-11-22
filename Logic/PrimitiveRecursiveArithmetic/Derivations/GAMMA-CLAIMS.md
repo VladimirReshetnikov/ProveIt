@@ -102,6 +102,9 @@ stored coefficient with the original factorial kernel. Its actual finite
 exponential composition has the literal finite complex Horner value.
 Identification of the composite low-degree coefficients, comparison with
 the older cleared-integer sampler, and the analytic C4 tail remain open.
+[GaussianIntegerFractionPowers](Lean/IPRADerivations/Analysis/GaussianIntegerFractionPowers.lean)
+proves the exact fraction powers and signed factorial numerator used in
+the cleared sampler comparison.
 
 ## Every ledger family remains in scope
 
