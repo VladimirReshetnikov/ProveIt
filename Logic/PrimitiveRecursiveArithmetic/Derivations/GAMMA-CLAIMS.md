@@ -100,11 +100,16 @@ value.
 constructs the original truncated logarithm polynomial and identifies each
 stored coefficient with the original factorial kernel. Its actual finite
 exponential composition has the literal finite complex Horner value.
-Identification of the composite low-degree coefficients, comparison with
-the older cleared-integer sampler, and the analytic C4 tail remain open.
 [GaussianIntegerFractionPowers](Lean/IPRADerivations/Analysis/GaussianIntegerFractionPowers.lean)
-proves the exact fraction powers and signed factorial numerator used in
-the cleared sampler comparison.
+proves the exact fraction powers and signed factorial numerator.
+[GaussianFiniteLogarithmSampler](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmSampler.lean)
+identifies the value of the same logarithm polynomial with the original
+cleared numerator and denominator.
+[GammaLogarithmFactorBridge](Lean/IPRADerivations/Analysis/GammaLogarithmFactorBridge.lean)
+identifies that sample with the sum of the original linear term and
+the original canonical factor and evaluates the actual finite exponential
+composition at that argument. The composite low-degree coefficient identity
+and the analytic C4 tail remain open.
 
 ## Every ledger family remains in scope
 

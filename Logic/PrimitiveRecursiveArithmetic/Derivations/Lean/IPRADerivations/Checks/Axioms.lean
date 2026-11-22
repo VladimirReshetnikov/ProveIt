@@ -9134,6 +9134,70 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianIntegerFractionPowers.actual_fraction_power_program_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianIntegerFractionPowers.actual_returned_power_representation_closed
 
+/-! ### GaussianFiniteLogarithmSampler -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.termNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.termDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.subst_termNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.subst_termDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.subst_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.kernel_native
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.signed_term_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.source_term_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.finite_denominator_succ
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.finite_numerator_succ
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.factorial_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.term_denominator_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.term_denominator_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.native_power_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.native_power_two
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.term_numerator_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.term_numerator_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.value_two
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.base_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.sampleLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.subst_sampleLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.sample_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.sample_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.finite_sample_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.value_eq_original_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.polynomial_eq_original_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.composition_eq_original_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.output
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.outputF
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.run
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.subst_output
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.subst_run
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.program_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.returned_polynomial
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.returned_composition
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.returned_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.returned_polynomial_evaluation
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.returned_composition_evaluation
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.actual_source_term_representation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.actual_original_sample_representation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.literal_sum_equals_original_sample_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.actual_logarithm_polynomial_old_sampler_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.literal_finite_composition_old_sampler_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.actual_original_sample_composition_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.returned_original_sample_evaluation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmSampler.returned_literal_old_sample_composition_closed
+
+/-! ### GammaLogarithmFactorBridge -/
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.localFactor
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.linearScale
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.sumArgument
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.subst_localFactor
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.subst_sumArgument
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.source_denominator
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.scaled_linear_denominator
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.source_numerator
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.sum_is_original_sample
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.logarithm_is_linear_plus_factor
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.composition_at_original_factor
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.actual_original_gamma_factor_logarithm_closed
+#print axioms LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge.actual_original_gamma_factor_composition_closed
+
 -- Original rational aggregate equality/selection and the signed Minkowski mesh kernels.
 #print axioms LeanProofs.IPRA.Analysis.AggregateEquality.unit_positive
 #print axioms LeanProofs.IPRA.Analysis.AggregateEquality.close_scale
@@ -14660,6 +14724,50 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverBound.actual_original_superelliptic_supplied_cover_bound_closed
 #print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverBound.actual_original_superelliptic_cover_bit_bound_closed
 #print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverBound.actual_original_superelliptic_cover_iff_closed
+
+/-! ### RationalPhiCoverPrefix -/
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.entryBody
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.pointPrefix
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.cutoff
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.extra
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.cutoffCover
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.subst_prefix
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.subst_cutoff
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.subst_extra
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.subst_cutoffCover
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.entry_body_at
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.prefix_length
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.prefix_lookup
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.prefix_powers
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.prefix_distinct
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.extra_at
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.prefix_extra
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.cutoff_cover_at
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.cutoff_bound
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.output
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.prefixF
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.outputF
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.run
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.subst_output
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.subst_run
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.prefix_program_at
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.program_at
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.returned_prefix
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.returned_cutoff
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.returned_original
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.returned_length
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.returned_lookup
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.returned_bound
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.actual_raw_prefix_length_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.actual_raw_prefix_lookup_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.actual_prefix_curve_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.actual_prefix_distinct_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.actual_prefix_extra_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.actual_original_phi_cutoff_bound_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.actual_prefix_program_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.actual_cutoff_program_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.actual_returned_prefix_length_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverPrefix.actual_returned_prefix_lookup_closed
 #print axioms LeanProofs.IPRA.Analysis.RationalPolynomialWeightedDegreeGaussianEmbedding.actual_returned_rational_weighted_degree_closed
 
 /-! ### RationalPolynomialMonicHornerReductionGaussianEmbedding -/
