@@ -1,0 +1,453 @@
+\section{Adjunctions, equivalences, and preservation}\label{sec:adjunctions}
+
+\subsection{Two equivalent descriptions of an adjunction}
+
+Let $F:C\to D$ and $G:D\to C$ be fixed presented functors.  A
+\emph{displayed hom-adjunction} consists of primitive recursive operations
+\[
+ \Phi_{a,b}:\Hom_D(Fa,b)\longrightarrow\Hom_C(a,Gb),\qquad
+ \Psi_{a,b}:\Hom_C(a,Gb)\longrightarrow\Hom_D(Fa,b),
+\]
+respecting equality, inverse modulo equality, and natural in the two
+variables.  For $u:a'\to a$, $v:b\to b'$, and $f:Fa\to b$, naturality means
+\[
+ \Phi_{a',b'}(v f F(u))=G(v)\Phi_{a,b}(f)u.
+\]
+The displayed hom-sets are notation for typed codes modulo the chosen
+arithmetic relation.  No set of all maps between them is postulated.
+
+\begin{theorem}[Hom-adjunction and triangle identities]\label{thm:adjunction}
+A displayed hom-adjunction is equivalently given by natural transformations
+\[
+ \eta:1_C\Longrightarrow GF,\qquad
+ \varepsilon:FG\Longrightarrow1_D
+\]
+with primitive recursive component operations, satisfying
+\[
+ \varepsilon_{Fa}F(\eta_a)=\id_{Fa},\qquad
+ G(\varepsilon_b)\eta_{Gb}=\id_{Gb}.
+\]
+The conversion in each direction is primitive recursive and its correctness
+uses only finite intuitionistic equational reasoning.
+\end{theorem}
+\begin{proof}
+Starting with the unit and counit, define
+\[
+ \Phi(f)=G(f)\eta_a,\qquad \Psi(g)=\varepsilon_bF(g).
+\]
+Both terms have the stated types and respect equality.  Naturality of the
+counit at $f:Fa\to b$, followed by the first triangle, gives
+\[
+ \Psi\Phi(f)
+ =\varepsilon_bFG(f)F(\eta_a)
+ =f\varepsilon_{Fa}F(\eta_a)=f.
+\]
+Naturality of the unit at $g:a\to Gb$, followed by the second triangle,
+gives
+\[
+ \Phi\Psi(g)
+ =G(\varepsilon_b)GF(g)\eta_a
+ =G(\varepsilon_b)\eta_{Gb}g=g.
+\]
+For naturality in the source, use $GF(u)\eta_{a'}=\eta_a u$:
+\[
+ \Phi(fF(u))=G(f)GF(u)\eta_{a'}=G(f)\eta_a u=\Phi(f)u.
+\]
+Naturality in the target is
+$\Phi(vf)=G(v)G(f)\eta_a=G(v)\Phi(f)$.  Combining these proves the stated
+bivariable law.
+
+Conversely, let $\Phi,\Psi$ be inverse natural correspondences and set
+\[
+ \eta_a=\Phi_{a,Fa}(\id_{Fa}),\qquad
+ \varepsilon_b=\Psi_{Gb,b}(\id_{Gb}).
+\]
+Target naturality immediately gives
+$\Phi(f)=G(f)\eta_a$.  The inverse correspondence is also natural: for
+example, applying $\Phi$ to $\Psi(g)F(u)$ gives $gu$, so injectivity of
+$\Phi$ gives $\Psi(gu)=\Psi(g)F(u)$.  The same argument in the target gives
+$\Psi(G(v)g)=v\Psi(g)$.  Taking $g=\id_{Gb}$ in the source formula proves
+$\Psi(g)=\varepsilon_bF(g)$ for arbitrary $g:a\to Gb$.
+
+The inverse equations at the relevant identities now read
+\[
+ \varepsilon_{Fa}F(\eta_a)
+ =\Psi(\eta_a)=\id_{Fa},\qquad
+ G(\varepsilon_b)\eta_{Gb}
+ =\Phi(\varepsilon_b)=\id_{Gb}.
+\]
+For $u:a\to a'$, source naturality and the formula for $\Phi$ yield
+$\eta_{a'}u=\Phi(F(u))=GF(u)\eta_a$.  For $v:b\to b'$, target naturality
+of $\Psi$ and its formula give
+$v\varepsilon_b=\Psi(G(v))=\varepsilon_{b'}FG(v)$.  These are precisely
+the naturality equations for the unit and counit.  The two conversion
+procedures recover the original data modulo their appropriate equalities.
+\end{proof}
+
+This proof explains why existence claims need care.  A family of statements
+$\forall a,b\ \exists$ a bijection between hom-collections does not itself
+supply the primitive recursive operations $\Phi,\Psi$.  Conversely, once
+those operations are supplied, no choice principle is needed in the theorem.
+
+\begin{proposition}[Uniqueness of a specified right adjoint]
+For fixed $F$, any two displayed right adjoints $G,G'$ are naturally
+isomorphic by explicit component operations.
+\end{proposition}
+\begin{proof}
+Use primes for the second correspondence and counit.  Define
+\[
+ u_b=\Phi'_{Gb,b}(\varepsilon_b):Gb\to G'b,
+ \qquad
+ v_b=\Phi_{G'b,b}(\varepsilon'_b):G'b\to Gb.
+\]
+Then $\Psi'(u_b)=\varepsilon_b$ and $\Psi(v_b)=\varepsilon'_b$.
+Naturality of $\Psi$ in its source gives
+\[
+ \Psi(v_bu_b)=\Psi(v_b)F(u_b)
+ =\varepsilon'_bF(u_b)=\Psi'(u_b)=\varepsilon_b
+ =\Psi(\id_{Gb}).
+\]
+Injectivity of $\Psi$ proves $v_bu_b=\id_{Gb}$; the other composite follows
+by interchanging primes.  For $h:b\to b'$, applying $\Psi'$ to
+$G'(h)u_b$ gives $h\varepsilon_b$.  Applying it to $u_{b'}G(h)$ gives
+$\varepsilon_{b'}FG(h)$, which is the same arrow by naturality of
+$\varepsilon$.  Thus $G'(h)u_b=u_{b'}G(h)$, proving naturality.
+\end{proof}
+
+\subsection{Adjoints preserve supplied universal constructions}
+
+\begin{theorem}[Preservation of limits and colimits]\label{thm:adjoint-preserve}
+A displayed right adjoint preserves every supplied fixed finite limit, with
+an explicitly constructed primitive recursive mediating operation.  A
+displayed left adjoint preserves every supplied fixed finite colimit.
+\end{theorem}
+\begin{proof}
+Suppose $(p_j:l\to H_j)$ is a chosen limit of a fixed finite diagram
+$H:J\to D$.  The arrows $G(p_j):Gl\to GH_j$ form a cone by functoriality.
+Given a cone $c_j:x\to GH_j$, transpose its components to
+$\Psi(c_j):Fx\to H_j$.  For $h:i\to j$ in $J$, naturality gives
+\[
+ H(h)\Psi(c_i)=\Psi(GH(h)c_i)=\Psi(c_j),
+\]
+so this is a cone to $H$.  Let $t:Fx\to l$ be its supplied limiting
+mediator and put $m=\Phi(t):x\to Gl$.  Then
+\[
+ G(p_j)m=\Phi(p_jt)=\Phi\Psi(c_j)=c_j.
+\]
+If $v:x\to Gl$ has the same projections, source and target naturality of
+the inverse correspondence give
+$p_j\Psi(v)=\Psi(G(p_j)v)=\Psi(c_j)$ for every $j$.
+Limit uniqueness gives $\Psi(v)=t$, hence $v=\Phi(t)=m$.
+
+This is an explicit formula for the new mediator: transpose the finite
+input tuple, apply the given mediator, and transpose back.  All three stages
+are primitive recursive.  Applying the proof in the opposite categories
+proves the colimit assertion.  The same algebra applies to an infinite
+indexed cone family only when the family and its universal operation have
+already been presented with the requisite uniform primitive recursive
+parameters; no general infinite-limit existence assertion is being made.
+\end{proof}
+
+\subsection{A constructive equivalence criterion}
+
+A functor $F:C\to D$ is \emph{faithful} if $F(f)=F(g)$ implies $f=g$ for
+parallel arrows.  Its \emph{split fullness data} are a fixed primitive
+recursive operation
+\[
+ L_{a,a'}:\Hom_D(Fa,Fa')\longrightarrow\Hom_C(a,a')
+ \quad\hbox{with}\quad F(L(h))=h.
+\]
+Together these say that every hom-map has a displayed inverse.  No test for
+arrow equality is required.  \emph{Split essential surjectivity} means
+specified primitive recursive data
+\[
+ s(b)\in C,\quad e_b:Fs(b)\to b,\quad d_b:b\to Fs(b),
+ \qquad e_bd_b=\id_b,\quad d_be_b=\id_{Fs(b)}.
+\]
+
+\begin{theorem}[Split equivalence criterion]\label{thm:split-equivalence}
+Faithfulness, split fullness, and split essential surjectivity construct a
+primitive recursively presented quasi-inverse $G:D\to C$ and natural
+isomorphisms $1_C\cong GF$, $FG\cong1_D$.  They may be chosen to satisfy
+the triangle identities, so the result is an adjoint equivalence.
+\end{theorem}
+\begin{proof}
+Put
+\[
+ G(b)=s(b),\qquad G(v:b\to b')=L_{s(b),s(b')}(d_{b'}ve_b).
+\]
+By split fullness,
+$FG(v)=d_{b'}ve_b$.  Applying this to an identity and using faithfulness
+shows $G(\id_b)=\id_{Gb}$.  For $v:b\to b'$ and $w:b'\to b''$,
+\[
+ F(G(w)G(v))
+ =d_{b''}we_{b'}d_{b'}ve_b
+ =d_{b''}wve_b=FG(wv).
+\]
+Faithfulness proves composition preservation.  Equality preservation of
+$G$ follows by the same use of faithfulness and congruence.
+
+The maps $e_b:FGb\to b$ are natural, since
+$e_{b'}FG(v)=e_{b'}d_{b'}ve_b=ve_b$.  Their displayed inverses are $d_b$.
+Define
+\[
+ \eta_a=L_{a,s(Fa)}(d_{Fa}),\qquad
+ \theta_a=L_{s(Fa),a}(e_{Fa}).
+\]
+Their images under $F$ are inverse, so faithfulness proves
+$\theta_a\eta_a=\id_a$ and $\eta_a\theta_a=\id_{GFa}$.  For
+$u:a\to a'$, the two sides of $GF(u)\eta_a=\eta_{a'}u$ have images
+\[
+ d_{Fa'}F(u)e_{Fa}d_{Fa}=d_{Fa'}F(u),
+\]
+and hence are equal.  The inverse component families are natural as well:
+multiplying the counit naturality equation by $d_{b'}$ and $d_b$ gives
+$FG(v)d_b=d_{b'}v$, and multiplying the unit equation by $\theta_{a'}$
+and $\theta_a$ gives $u\theta_a=\theta_{a'}GF(u)$.
+Thus $\eta$ and $e$ are natural isomorphisms with displayed natural inverses.
+
+The first triangle is
+$e_{Fa}F(\eta_a)=e_{Fa}d_{Fa}=\id_{Fa}$.
+For the second, apply $F$ to $G(e_b)\eta_{Gb}$ and calculate
+\[
+ F(G(e_b)\eta_{Gb})
+ =d_be_be_{FGb}d_{FGb}=d_be_b=\id_{FGb}.
+\]
+Faithfulness yields $G(e_b)\eta_{Gb}=\id_{Gb}$.  All constructed operations
+are finite compositions of the supplied primitive recursive operations.
+\end{proof}
+
+Conversely, for an adjoint equivalence with inverse components $\eta_a^{-1}$,
+the formula $L(h)=\eta_{a'}^{-1}G(h)\eta_a$ supplies split fullness.  Indeed,
+the first triangle says $F(\eta_a)=e_{Fa}^{-1}$; naturality of $e$ gives
+$F(L(h))=e_{Fa'}FG(h)e_{Fa}^{-1}=h$.  If $F(f)=F(g)$, then naturality of
+$\eta$ gives
+$f=\eta_{a'}^{-1}GF(f)\eta_a
+ =\eta_{a'}^{-1}GF(g)\eta_a=g$.
+The quasi-inverse and counit supply split essential surjectivity.
+
+The adjective ``split'' is substantive.  A mere existential preimage for
+each object or arrow is not automatically a primitive recursive selector.
+The usual informal phrase ``choose a preimage for every object'' is replaced
+here by the displayed data that make that step legitimate.
+
+\section{Monads and their canonical categories}\label{sec:monads}
+
+\subsection{The monad of an adjunction}
+
+A \emph{presented monad} consists of a fixed presented endofunctor $T:C\to C$
+and natural transformations $\eta:1_C\Rightarrow T$ and
+$\mu:T^2\Rightarrow T$ with primitive recursive components and laws
+\[
+ \mu_aT(\eta_a)=\id_{Ta}=\mu_a\eta_{Ta},\qquad
+ \mu_aT(\mu_a)=\mu_a\mu_{Ta}.
+\]
+All transformation equalities are componentwise hom-setoid equalities.
+
+\begin{theorem}[Every displayed adjunction induces a monad]
+For $F\dashv G$ with unit $\eta$ and counit $\varepsilon$, the operations
+\[
+ T=GF,\qquad \mu_a=G(\varepsilon_{Fa})
+\]
+together with $\eta$ form a presented monad.
+\end{theorem}
+\begin{proof}
+Functoriality of $T$ follows by composition.  Naturality of $\mu$ is the
+image under $G$ of naturality of $\varepsilon$ at arrows $F(f)$.
+The first unit equation is the image under $G$ of the first triangle:
+\[
+ \mu_aT(\eta_a)=G(\varepsilon_{Fa}F(\eta_a))=\id_{GFa}.
+\]
+The other is the second triangle at $Fa$:
+$\mu_a\eta_{Ta}=G(\varepsilon_{Fa})\eta_{GFa}=\id_{GFa}$.
+For associativity, naturality of $\varepsilon$ at
+$\varepsilon_{Fa}:FGFa\to Fa$ states
+\[
+ \varepsilon_{Fa}FG(\varepsilon_{Fa})
+ =\varepsilon_{Fa}\varepsilon_{FGFa}.
+\]
+Applying $G$ gives exactly $\mu_aT(\mu_a)=\mu_a\mu_{Ta}$.
+\end{proof}
+
+\subsection{Kleisli category and its adjunction}
+
+\begin{theorem}[Kleisli construction]\label{thm:kleisli}
+A presented monad $T$ determines a presented category $C_T$ with the same
+object codes as $C$, arrows $a\to b$ represented by arrows $a\to Tb$ in
+$C$, identity $\eta_a$, and composition
+\[
+ g\mathbin{\star} f=\mu_cT(g)f
+ \quad(f:a\to Tb,\ g:b\to Tc).
+\]
+There is a displayed adjunction $F_T\dashv U_T$ that induces the original
+monad.
+\end{theorem}
+\begin{proof}
+The arrow predicate is $\Hom_C(a,Tb,f)$ and equality is the corresponding
+arithmetic equality formula in $C$.  All operations have primitive recursive
+code definitions.  Typing and congruence follow from those in $C$ and $T$.
+The two identity equations are
+\[
+ \eta_b\star f=\mu_bT(\eta_b)f=f,
+ \qquad
+ f\star\eta_a=\mu_bT(f)\eta_a
+ =\mu_b\eta_{Tb}f=f.
+\]
+For $h:c\to Td$, naturality of $\mu$ at $h$ gives
+$T(h)\mu_c=\mu_{Td}T^2(h)$.  Thus
+\begin{align*}
+ h\star(g\star f)
+ &=\mu_dT(h)\mu_cT(g)f\\
+ &=\mu_d\mu_{Td}T^2(h)T(g)f\\
+ &=\mu_dT(\mu_d)T^2(h)T(g)f\\
+ &=\mu_dT(\mu_dT(h)g)f=(h\star g)\star f.
+\end{align*}
+
+Define $F_T(a)=a$, $F_T(f:a\to b)=\eta_bf$, and
+$U_T(a)=Ta$, $U_T(f:a\to Tb)=\mu_bT(f)$.  Their identity laws are the
+monad unit laws.  For $f:a\to b$, $g:b\to c$,
+\[
+ F_T(g)\star F_T(f)
+ =\mu_cT(\eta_c)T(g)\eta_bf
+ =T(g)\eta_bf=\eta_cgf=F_T(gf).
+\]
+For Kleisli arrows $f:a\to Tb$, $g:b\to Tc$, associativity and naturality
+of $\mu$ give
+\begin{align*}
+ U_T(g\star f)
+ &=\mu_cT(\mu_c)T^2(g)T(f)\\
+ &=\mu_c\mu_{Tc}T^2(g)T(f)\\
+ &=\mu_cT(g)\mu_bT(f)=U_T(g)U_T(f).
+\end{align*}
+
+The two sides of the hom correspondence
+\[
+ \Hom_{C_T}(F_Ta,b)\longleftrightarrow\Hom_C(a,U_Tb)
+\]
+are represented by the same codes and the same equality, so take both maps
+to be the identity.  They are natural: precomposition by $F_T(u)$ in the
+Kleisli category sends $f$ to
+$\mu_bT(f)\eta_a u=fu$, and postcomposition by a Kleisli arrow $v$ sends
+$f$ to $\mu_cT(v)f=U_T(v)f$.  The unit is the original $\eta$; the counit
+at $b$ is the Kleisli arrow $Tb\to b$ represented by $\id_{Tb}$.
+Its image under $U_T$ is $\mu_b$.  Moreover
+$U_TF_T(f)=\mu_bT(\eta_b)T(f)=T(f)$, so the induced monad is the
+original one modulo the displayed hom equalities.
+\end{proof}
+
+\subsection{Eilenberg--Moore category and its adjunction}
+
+A $T$-algebra is a pair $(a,h)$ with $h:Ta\to a$ satisfying
+\[
+ h\eta_a=\id_a,\qquad h\mu_a=hT(h).
+\]
+A morphism $(a,h)\to(b,k)$ is an arrow $f:a\to b$ satisfying
+$f h=kT(f)$.  These are arithmetical predicates on number codes, not
+new comprehension axioms.
+
+\begin{theorem}[Eilenberg--Moore construction]\label{thm:em}
+The displayed $T$-algebras and their morphisms form a presented category
+$C^T$.  There is a displayed adjunction $F^T\dashv U^T$, where $U^T$ forgets
+the algebra operation and
+\[
+ F^T(a)=(Ta,\mu_a),\qquad F^T(f)=T(f).
+\]
+This adjunction induces the original monad.
+\end{theorem}
+\begin{proof}
+The identity arrow is an algebra morphism because $\id_a h=hT(\id_a)$.
+For algebra morphisms $f:(a,h)\to(b,k)$ and $g:(b,k)\to(c,l)$,
+\[
+ (gf)h=g(kT(f))=lT(g)T(f)=lT(gf).
+\]
+Associativity and congruence are inherited from $C$.  Thus the predicates
+and operations define a presented category.
+
+The monad laws make $(Ta,\mu_a)$ an algebra.  Naturality of $\mu$ makes
+$T(f)$ an algebra morphism, so $F^T$ is a functor; its other laws and the
+functor laws for $U^T$ are immediate from the corresponding supplied laws of
+$T$ and $C$.
+
+For an algebra $(b,k)$ define the correspondence
+\[
+ \Hom_{C^T}((Ta,\mu_a),(b,k))\longleftrightarrow\Hom_C(a,b)
+\]
+by $f\mapsto f\eta_a$ and $g\mapsto kT(g)$.  The second expression is
+an algebra morphism because
+\[
+ kT(g)\mu_a=k\mu_bT^2(g)
+ =kT(k)T^2(g)=kT(kT(g)).
+\]
+Its composite with the first map sends $g$ to
+$kT(g)\eta_a=k\eta_bg=g$.
+Conversely, if $f$ is an algebra morphism, the other composite is
+\[
+ kT(f\eta_a)=kT(f)T(\eta_a)
+ =f\mu_aT(\eta_a)=f.
+\]
+For $u:a'\to a$, precomposition by $F^T(u)=T(u)$ changes
+$f\eta_a$ to $fT(u)\eta_{a'}=f\eta_a u$.
+For an algebra morphism $v:(b,k)\to(b',k')$, postcomposition changes it to
+$vf\eta_a$, exactly as required.  Hence the correspondence is natural.
+The unit is $\eta$ and the counit at $(b,k)$ is the algebra morphism
+$k:(Tb,\mu_b)\to(b,k)$.  Its underlying arrow at the free algebra is
+$\mu_a$, proving the final assertion.
+\end{proof}
+
+\subsection{Algebra limits without a preservation assumption}
+
+\begin{theorem}[The forgetful functor creates supplied finite limits]
+Let $H:J\to C^T$ be a fixed finite diagram.  If its underlying diagram in
+$C$ has a supplied limit, it has a canonically supplied algebra structure
+making it a limit in $C^T$.  The construction is primitive recursive and
+does not require $T$ to preserve that limit.
+\end{theorem}
+\begin{proof}
+Write $H_j=(a_j,h_j)$ and let $(p_j:l\to a_j)$ be the underlying limiting
+cone.  The arrows $h_jT(p_j):Tl\to a_j$ form a cone.  Indeed, for an
+algebra morphism $H(u):(a_i,h_i)\to(a_j,h_j)$,
+\[
+ H(u)h_iT(p_i)=h_jT(H(u))T(p_i)=h_jT(p_j).
+\]
+The supplied limiting operation therefore gives a unique $h:Tl\to l$
+with $p_jh=h_jT(p_j)$.
+
+To prove the unit law, compose with every projection:
+\[
+ p_jh\eta_l=h_jT(p_j)\eta_l
+ =h_j\eta_{a_j}p_j=p_j.
+\]
+Limit uniqueness gives $h\eta_l=\id_l$.  To prove associativity, the two
+candidate arrows $TTl\to l$ have the following projections:
+\begin{align*}
+ p_jh\mu_l
+ &=h_jT(p_j)\mu_l
+  =h_j\mu_{a_j}T^2(p_j)
+  =h_jT(h_j)T^2(p_j),\\
+ p_jhT(h)
+ &=h_jT(p_j)T(h)
+  =h_jT(p_jh)
+  =h_jT(h_j)T^2(p_j).
+\end{align*}
+Again uniqueness proves $h\mu_l=hT(h)$.  Thus $(l,h)$ is an algebra and
+its projections are algebra morphisms by their defining equations.
+
+Finally, a cone of algebra morphisms $c_j:(x,k)\to(a_j,h_j)$ has a unique
+underlying mediator $u:x\to l$.  For every $j$,
+\[
+ p_ju k=c_jk=h_jT(c_j)
+ =h_jT(p_j)T(u)=p_jhT(u).
+\]
+Consequently $uk=hT(u)$ by underlying limit uniqueness, so $u$ is an
+algebra morphism.  Its uniqueness in $C^T$ follows from uniqueness in $C$.
+Every construction used the given finite tuple of projections, $T$, the
+algebra operations, and the supplied underlying mediator; all are primitive
+recursive.
+\end{proof}
+
+These results supply a substantial structural foundation: adjunctions both
+produce monads and arise canonically from them, while algebraic structure
+can be transported across existing universal constructions.  They do not
+assert a general monadicity theorem, an adjoint functor theorem, or the
+existence of arbitrary infinite colimits.  Such statements have additional
+hypotheses whose arithmetic content must be separately exhibited.

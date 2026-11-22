@@ -1,0 +1,180 @@
+\section{Compact presentations of spaces of functions}\label{sec:functionspaces}
+
+The preceding completion construction describes a point from finite observations. We now make an entire space of continuous functions into a presented sort. This addresses a different difficulty from finding a net in a given finite-dimensional domain: every net center must itself be a valid function. A quantized sample table need not satisfy the original Lipschitz inequalities. Searching for a function extending it would reintroduce an existence problem. The clipped envelope below accepts every table and always produces a valid center.
+
+\subsection{The class and its numerical parameters}
+
+Fix \(d\geq1\), an integer \(M\geq1\), and a nonnegative rational \(L\). Put
+\[
+ K=[0,1]^d,\qquad d_K(x,y)=\max_{1\leq j\leq d}|x_j-y_j|,
+\]
+and consider
+\[
+ \mathcal F_{M,L}=\{f:K\to[-M,M]:
+       |f(x)-f(y)|\leq Ld_K(x,y)\}.
+\]
+Its semantic distance is \(D(f,g)=\sup_{x\in K}|f(x)-g(x)|\). The construction below also defines this supremum as a regular real name, so its use does not presuppose a supremum axiom in \ipra. A rational \(L\) is supplied with a natural number \(s\) satisfying \(L\leq2^s\); one may take a deliberately loose PR bound on \(s\). The case \(L=0\) is included.
+
+Let \(G_m\) be the grid whose coordinates are \(i/2^m\), \(0\leq i\leq2^m\). It has
+\[
+ s_m=(2^m+1)^d
+\]
+points and covering radius at most \(h=2^{-m}\). There is a constructive covering procedure: approximate each coordinate of \(x\) by a rational within \(h/4\), clip it into \([0,1]\), and round to the nearest grid coordinate. The total error is at most \(3h/4\). This avoids exact floor or exact comparison on real numbers.
+
+\subsection{A finite envelope is always a legal function}
+
+For any rational table \(q=(q_a)_{a\in G_m}\), define
+\begin{equation}
+ E_q(x)=\min_{a\in G_m}\bigl(q_a+Ld_K(x,a)\bigr),\qquad
+ P_q(x)=\clamp_{[-M,M]}E_q(x).
+ \label{eq:envelope}
+\end{equation}
+Clipping means \(\clamp_{[u,v]}t=\max(u,\min(v,t))\). On rational inputs all these operations are exact PR rational operations. On real inputs min and max are continuous lattice operations; no selector for the exact sign of a real difference is used.
+
+Formula \eqref{eq:envelope} is the finite form of the classical Lipschitz extension envelope \cite{mcshane}. We use it for approximate tables rather than requiring an exactly consistent extension problem.
+
+\begin{lemma}[Envelope bounds]\label{lem:envelope}
+For every table \(q\), \(P_q\in\mathcal F_{M,L}\). If \(f\in\mathcal F_{M,L}\), the grid has covering radius \(h\), and
+\(\abs{q_a-f(a)}\leq\delta\) for every grid point, then
+\[
+ f(x)-\delta\ \leq\ E_q(x)\ \leq\ f(x)+\delta+2Lh
+\]
+for all \(x\in K\), and therefore
+\begin{equation}
+ D(P_q,f)\leq\delta+2Lh.
+ \label{eq:envelope-error}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The triangle inequality gives
+\(|d_K(x,a)-d_K(y,a)|\leq d_K(x,y)\). Hence each cone \(q_a+Ld_K(-,a)\) is \(L\)-Lipschitz. If two finite families obey \(u_a\leq v_a+c\) for every \(a\), their minima obey \(\min u_a\leq\min v_a+c\). Apply this in both directions to the cones. Clipping is nonexpansive, so it preserves the Lipschitz bound and gives the prescribed range. In particular every table is legal, irrespective of consistency between its entries.
+
+For any \(a\), Lipschitz continuity of \(f\) implies
+\[
+ q_a+Ld_K(x,a)\geq f(a)-\delta+Ld_K(x,a)\geq f(x)-\delta.
+\]
+Take the finite minimum. Choose a grid point within \(h\) of \(x\), using the preceding covering procedure. Its cone is bounded above by
+\[
+ f(a)+\delta+Ld_K(x,a)\leq f(x)+\delta+2Lh.
+\]
+The minimum is no larger. Since clipping fixes \(f(x)\) and is nonexpansive, it cannot increase the absolute error. All inequalities for rational \(x\), rational samples, and a specified covering witness are finite ordered-rational inequalities. Their bounded conjunctions and minimum scans use the invariants in Theorem~\ref{thm:realization}.
+\end{proof}
+
+\subsection{The net and its explicit cardinality}
+
+For precision \(k\), set
+\[
+ \delta_k=2^{-(k+2)},\qquad m_k=k+3+s,
+ \qquad B_k=2M\,2^{k+2}+1.
+\]
+Allow every entry \(q_a\) to lie in the finite rational set
+\[
+ Q_k=\{-M,-M+\delta_k,\ldots,M\}.
+\]
+There are exactly \(B_k^{s_{m_k}}\) tables; repetitions among their envelope functions cause no problem.
+
+\begin{theorem}[A PR net of genuine functions]\label{thm:function-net}
+The family
+\[
+ \mathcal N_k=\{P_q:q\in Q_k^{G_{m_k}}\}
+\]
+is a \(2^{-k}\)-net in \(\mathcal F_{M,L}\), with the stronger error bound \(2^{-(k+1)}\). Its size is bounded by the explicit PR function
+\begin{equation}
+ N(k,d,M,s)=\bigl(2M\,2^{k+2}+1\bigr)^{(2^{k+3+s}+1)^d}.
+ \label{eq:net-size}
+\end{equation}
+Its centers have numerical codes and exact PR evaluation at rational points. Given a fixed PR evaluator for \(f\), a suitable center is selected by a PR finite computation. No evaluator for arbitrary PR function codes is required.
+\end{theorem}
+
+\begin{proof}
+At each grid point query a rational sample \(v_a\) of \(f(a)\) with error at most \(2^{-(k+3)}=\delta_k/2\). Round this rational to the nearest multiple of \(\delta_k\), and clip to \([-M,M]\). Since the interval endpoints are themselves multiples, the result belongs to \(Q_k\), with \(|q_a-f(a)|\leq\delta_k\). This is a rational rounding operation; it is not exact rounding of an unknown real number.
+
+The covering radius is \(2^{-m_k}\), and
+\[
+ 2L\,2^{-m_k}\leq2\,2^s\,2^{-k-3-s}=2^{-(k+2)}=\delta_k.
+\]
+Lemma~\ref{lem:envelope} gives error at most \(2\delta_k\). Enumerate the tables by their base-\(B_k\) digit words of length \(s_{m_k}\). Computing a digit, a grid point, a cone value, and a finite minimum are all bounded PR operations. Formula~\eqref{eq:net-size} bounds this enumeration; it is very large, but it is primitive recursive even with the displayed numerical parameters variable.
+
+The entire catalog of centers is independent of \(f\). If one wants to locate a center near a supplied \(f\), one asks only the finite list of samples just described. This computation is PR relative to that evaluator, and ordinary PR after fixing a PR evaluator. In contrast, evaluating a center needs only its finite table code. Quantifiers over this function space will use the latter, unconditional evaluation procedure.
+\end{proof}
+
+\begin{remark}[All semantic functions versus all function codes]
+The semantic covering statement ranges over every bounded \(L\)-Lipschitz function, including functions without a computable name in a classical ambient model. The numerical centers form an explicitly presented dense family. This does not enumerate all those functions or make their pointwise evaluation computable. An extremal value is computable from a supplied evaluator, a dense net, and a uniform continuity modulus; it does not need a listing of every semantic function. This is exactly why the construction supports function quantification without a universal evaluator.
+\end{remark}
+
+\subsection{Distance and evaluation are themselves presented maps}
+
+\begin{lemma}[Finite evaluation of the supremum distance]\label{lem:function-distance}
+Let \(G\) have covering radius \(h\). Suppose samples \(a_z,b_z\) approximate \(f(z),g(z)\) within \(\eta\), where \(f,g\in\mathcal F_{M,L}\), and put
+\[
+  Z=\max_{z\in G}|a_z-b_z|.
+\]
+Then
+\begin{equation}
+  |Z-D(f,g)|\leq2\eta+2Lh.
+ \label{eq:function-distance}
+\end{equation}
+Moreover evaluation satisfies
+\begin{equation}
+ |f(x)-g(y)|\leq D(f,g)+Ld_K(x,y).
+ \label{eq:evaluation-lip}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+At each grid point the sampled difference differs from the true absolute difference by at most \(2\eta\). The finite maximum preserves this error. The function \(x\mapsto|f(x)-g(x)|\) is \(2L\)-Lipschitz. Its maximum on a net is no greater than its supremum and is within \(2Lh\) of every value. These two one-sided bounds give \eqref{eq:function-distance}; they also construct the supremum as a Cauchy value when meshes tend to zero. Finally insert \(g(x)\) between \(f(x)\) and \(g(y)\) and use the triangle inequality.
+\end{proof}
+
+For two coded envelope centers, their grid values are exact rationals, so \(\eta=0\). Selecting \(h\) from \(k,L\) makes \(Z\) a PR distance evaluator at any desired precision. We therefore do not need an exact decision procedure for their real supremum distance. Triangle and symmetry laws for the distance names follow by the same finite error accounting and are of the form in Definition~\ref{def:presentation}.
+
+For the diameter-at-most-one convention of continuous logic, use the metric \(\overline D=D/(2M)\). The positive scaling factor is known. The same raw nets are still nets at the indicated normalized scale, and evaluation has the explicit bound \(2M\overline D(f,g)+Ld_K(x,y)\). Thus all rescaling and atomic-modulus obligations remain numerical.
+
+To evaluate at a point supplied by a Cauchy name, first request its coordinates at a precision making \(L\) times the input error less than half the requested output error, then evaluate the center on that rational point. For an arbitrary named function one additionally requests an appropriately accurate function value. Equation~\eqref{eq:evaluation-lip} proves both the demand bound and representation independence.
+
+\subsection{Completeness without extracting a subsequence}
+
+\begin{proposition}[Uniform completion]\label{prop:function-complete}
+Suppose a sequence \((f_n)\) in \(\mathcal F_{M,L}\) comes with a nondecreasing modulus \(b\) such that
+\[
+ n,m\geq b(k)\quad\Longrightarrow\quad D(f_n,f_m)\leq2^{-k}.
+\]
+Then it has a limit in \(\mathcal F_{M,L}\). If the sequence evaluator and \(b\) are fixed PR programs with the indicated finite proofs, the limit evaluator has a PR presentation. Together with Theorem~\ref{thm:function-net}, this supplies completeness and explicit total boundedness of the function-space presentation.
+\end{proposition}
+
+\begin{proof}
+At input \(x\) and output precision \(k\), evaluate \(f_{b(k+3)}(x)\) with error at most \(2^{-(k+3)}\). When \(k\leq l\), the two chosen function indices are at least \(b(k+3)\), so the two returned values differ by at most
+\[
+ 2^{-(k+3)}+2^{-(k+3)}+2^{-(l+3)}.
+\]
+This is a regular Cauchy bound with slack. It defines \(f(x)\) directly; there is no choice of a limit point independently for each \(x\). The same estimate, with \(l\) arbitrarily large, gives uniform convergence. The inequalities \(|f_n(x)|\leq M\) and \(|f_n(x)-f_n(y)|\leq Ld_K(x,y)\) pass through the explicit error estimates to give the corresponding inequalities for \(f\). At the arithmetic level the conclusion is the all-precision family of rational inequalities, not an induction on a statement quantified over all functions.
+
+If necessary, replace a supplied modulus by \(\max_{j\leq k}b(j)\). This is a PR normalization. The evaluator just described is a fixed composition of the sequence evaluator with \(b\) and the requested precision. If the sequence was oracle-relative, so is this construction until the input programs are fixed.
+\end{proof}
+
+``Compact'' here means this explicit complete, totally bounded presentation. We do not extract a convergent subsequence from an arbitrary sequence. A real-valued functional supplied with a PR evaluator and a PR uniform-continuity modulus has a supremum value and PR approximate maximizers on these nets, but an exact maximizing point needs additional information such as the residual-diameter condition. These distinctions agree with the constructive treatment of compactness \cite{bishop}.
+
+\subsection{A quantitative function-object correspondence}
+
+Let \(A\) be another presented metric space. There is a precise useful form of currying that does not pretend that all metric spaces form a cartesian closed category.
+
+\begin{proposition}[Evaluation and currying with fixed bounds]\label{prop:currying}
+Suppose \(H:A\times K\to[-M,M]\) satisfies
+\begin{equation}
+ |H(a,x)-H(b,y)|\leq C d_A(a,b)+L d_K(x,y).
+ \label{eq:joint-budget}
+\end{equation}
+Then \(\widehat H(a)(x)=H(a,x)\) defines a \(C\)-Lipschitz map \(A\to\mathcal F_{M,L}\). Conversely, a \(C\)-Lipschitz map into \(\mathcal F_{M,L}\) defines \(H\) satisfying \eqref{eq:joint-budget}. The two transformations are inverse on extensional maps and have the finite evaluation procedure given above.
+\end{proposition}
+
+\begin{proof}
+Set \(a=b\) to see that every section belongs to the function class. Set \(x=y\) and take the supremum over \(x\) to get
+\(D(\widehat H(a),\widehat H(b))\leq C d_A(a,b)\). Conversely use \eqref{eq:evaluation-lip} and the assumed function-space distance bound. Both composite transformations return the original value at every pair \((a,x)\), proving the inverse equations. The pointwise finite-grid estimates prove the same equations to every requested precision; closure follows from fixed PR composition and the supplied moduli.
+\end{proof}
+
+This is a bounded function object: the bounds \(M,L,C\) are part of the interface. The completion-extension theorem provides its categorical transport, while the continuous model semantics can treat it as a compact sort. Quantifiers over its elements are implemented by finite table codes for the envelopes, not by quantifying over programs for arbitrary functions.
+
+\subsection{Why the regularity bounds cannot simply be removed}
+
+The unit ball of all continuous functions on \([0,1]\) has no finite supremum-metric net at every precision. Indeed let
+\(f_n(x)=\min(1,2^n x)\). For \(m>n\), at \(x=2^{-m}\) the two values are \(1\) and at most \(1/2\). Thus \(D(f_n,f_m)\geq1/2\). A ball of radius less than \(1/4\) contains at most one such function, so no finite collection covers the family. Each example has an elementary PR evaluator. The failure is uniform regularity, not computability of the individual members. This simple obstruction explains why compact function sorts must carry shared range and continuity data.

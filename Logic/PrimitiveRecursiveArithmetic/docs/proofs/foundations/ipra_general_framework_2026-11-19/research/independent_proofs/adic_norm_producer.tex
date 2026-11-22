@@ -1,0 +1,212 @@
+\section{Nonzero norms by bounded polynomial-adic division}
+\label{sec:adic-norm-producer}
+
+There is a simpler route to the automatic norm certificate than selecting
+a rational root or adjoining a formal simple root.  It uses repeated
+Euclidean division by a supplied polynomial.  A reduced quotient algebra
+controls possible zero divisors in the leading residue.
+
+\begin{theorem}[A polynomial-adic nonvanishing criterion]
+\label{thm:adic-norm}
+Let \(K\) be a field, let \(m,e\geq1\) satisfy \(\gcd(m,e)=1\),
+and suppose
+\[
+ f=g^e h,\qquad \deg g\geq1,\qquad
+ \alpha g+\beta h=1.
+\]
+Assume \(K[X]/(g)\) is reduced.  For every nonzero polynomial
+\[
+ G(X,Y)=\sum_{j=0}^{m-1}A_j(X)Y^j,
+\]
+the multiplication norm in \(K[X,Y]/(Y^m-f)\) is nonzero.
+Its degree is at most
+\[
+               W=\max_{A_j\ne0}\{m\deg A_j+j\deg f\}.
+\]
+\end{theorem}
+
+The reduced-quotient hypothesis has the finite algebraic meaning
+\[
+ g\mid b^r\ \Longrightarrow\ g\mid b
+ \quad\text{for each integer }r\geq1.
+\]
+An effective sufficient condition, proved below without factorization, is
+a Bezout certificate \(Ug+Vg'=1\).  Over \(\mathbb Q\), this is
+exactly the usual squarefree test.  Over imperfect fields in positive
+characteristic, it is the stronger separability condition; no conflation
+of \texttt{Squarefree} and \texttt{Separable} is intended.
+
+\begin{proof}
+For each nonzero \(A_j\), repeatedly divide by \(g\) until the remainder
+is nonzero.  This gives
+\[
+ A_j=g^{a_j}B_j,\qquad b_j=B_j\bmod g\ne0.
+\]
+The loop is bounded by \(\deg A_j+1\), since each successful division
+decreases the degree by at least one.  Define \(w_j=ma_j+ej\).
+The residues \(ej\bmod m\) are distinct for \(0\leq j<m\), by
+\(\gcd(e,m)=1\).  Hence there is a unique index \(k\) with least
+weight; put \(a=a_k\), \(B=B_k\), and \(w=ma+ek\).
+
+Expand the determinant of multiplication by \(G\) in the basis
+\(1,Y,\ldots,Y^{m-1}\).  In column \(i\), choosing \(A_jY^j\)
+gives row \(r\equiv i+j\pmod m\) and a carry \(q\in\{0,1\}\)
+defined by
+\(i+j=r+mq\).  The matrix entry is \(A_jf^q\).
+For a determinant permutation \(r=\sigma(i)\), denote its selected
+indices and carries by \(j_i,q_i\).  Summing the defining equalities
+gives
+\[
+                    \sum_i j_i=m\sum_iq_i.
+\]
+After substituting \(A_j=g^{a_j}B_j\) and \(f=g^e h\), the term is
+divisible by
+\[
+ g^{\sum_i a_{j_i}+e\sum_iq_i}
+       =g^{\frac1m\sum_i(ma_{j_i}+ej_i)}.
+\]
+Every selected weight is at least \(w\).  If even one selected index is
+different from \(k\), the integral exponent is greater than \(w\),
+and therefore at least \(w+1\).  A term containing a zero row vanishes.
+
+The only determinant term with exponent \(w\) selects \(j_i=k\)
+in every column.  Its row permutation is \(i\mapsto i+k\bmod m\),
+whose sign is \((-1)^{k(m-1)}\); its total carry is \(k\).
+Consequently the determinant has the explicit form
+\begin{equation}
+ \label{eq:adic-norm-witness}
+ N(G)=g^w\left((-1)^{k(m-1)}B^m h^k+gQ\right)
+\end{equation}
+for a polynomial \(Q\) obtained by summing the other determinant terms
+after removing their displayed powers of \(g\).
+
+In the quotient ring \(R=K[X]/(g)\), the bracket has residue
+\[
+                   (-1)^{k(m-1)}b_k^m\bar h^{\,k}.
+\]
+This residue is nonzero: \(b_k\ne0\), reducedness gives
+\(b_k^m\ne0\), and \(\bar h\) is a unit with inverse \(\bar\beta\).
+Thus the bracket is a nonzero polynomial.  The polynomial \(g^w\) is
+also nonzero, and \(K[X]\) is a domain, proving \(N(G)\ne0\).
+
+For the degree bound, the same determinant term has degree at most
+\[
+ \sum_i\deg A_{j_i}+(\deg f)\sum_iq_i
+ =\frac1m\sum_i\bigl(m\deg A_{j_i}+j_i\deg f\bigr)\leq W.
+\]
+Summing determinant terms cannot increase this bound.
+All divisions by \(m\) in this proof are equalities of integer counts;
+no division by the image of \(m\) in the coefficient field occurs.
+\end{proof}
+
+\begin{corollary}[The automatic separable-input producer]
+\label{cor:automatic-squarefree}
+Let \(f\) be nonconstant and supplied with \(Uf+Vf'=1\).
+For every \(m\geq1\) and every nonzero reduced \(G\),
+\(N_{Y^m-f}(G)\ne0\), with the degree cap of
+Theorem~\ref{thm:adic-norm}.  This follows by taking
+\(g=f\), \(e=1\), and \(h=1\), once reducedness is proved below.
+\end{corollary}
+
+This conclusion requires neither \(\gcd(m,\deg f)=1\) nor a rational
+root of \(f\).  It also avoids constructing any extension field, finding
+any irreducible factor, or translating the polynomial about a formal root.
+
+\begin{lemma}[Reducedness from a derivative Bezout certificate]
+\label{lem:adic-reducedness}
+If \(Ug+Vg'=1\), then \(K[X]/(g)\) is reduced.  More precisely,
+from \(g\mid b^r\), \(r\geq1\), one can construct a polynomial
+\(q\) with \(b=gq\) using polynomial gcd, division, and a finite
+geometric sum.
+\end{lemma}
+
+\begin{proof}
+Compute \(s=\gcd(g,b)\), quotients \(g=st\), \(b=sv\), and
+\(Ag+Bb=s\).  Since \(s\ne0\), cancellation gives
+\(At+Bv=1\).  The derivative identity gives
+\[
+ 1=Ust+V(s't+st')=t(Us+Vs')+s(Vt').
+\]
+Put \(C=Us+Vs'\), \(D=Vt'\).  Multiplying
+\(Ct+Ds=1\) and \(At+Bv=1\) gives
+\[
+ 1=Et+Fb,
+ \qquad E=CAt+CBv+DAs,\quad F=DB.
+\]
+Because \(g\mid b^r\), also \(b^r=tR\) for an explicit quotient
+\(R\).  Therefore
+\[
+ 1=(Fb)^r+(1-Fb)\sum_{i<r}(Fb)^i
+   =t\left(F^rR+E\sum_{i<r}(Fb)^i\right)=tJ.
+\]
+It follows that \(b=sv=st(vJ)=g(vJ)\).
+No prime factor or irreducible factor is chosen.  The only induction with
+variable exponent is the quantifier-free proof of the finite geometric
+identity.
+\end{proof}
+
+\paragraph{Examples.}
+For \(m=2\), \(f=X^4+1\), and \(G=Y-X^2\) over
+\(\mathbb Q\), the two global degree weights tie at \(4\),
+\(\gcd(m,\deg f)=2\), and \(f\) has no rational root.  The
+polynomial-adic weights are \(0,1\), so the least index is \(k=0\),
+and
+\[
+ N(G)=X^4-(X^4+1)=-1,
+ \qquad B_0^2\bmod f=X^4\bmod f=-1.
+\]
+For \(f=X^2-1\) and \(G=(X-1)+Y\), the leading residue
+\(b=u-1\) is a nonzero zero divisor in
+\(\mathbb Q[u]/(u^2-1)\), but \(b^2=2-2u\ne0\), and
+\(N(G)=2-2X\).  The proof therefore must use reducedness, not invert
+an arbitrary nonzero residue.
+
+The general criterion also covers non-squarefree inputs such as
+\(f=X^3\), \(m=2\): take \(g=X\), \(e=3\), \(h=1\).
+In contrast, \(f=X^2\), \(m=2\), \(G=Y-X\) has zero norm;
+the relevant coprimality guard fails.  Nonconstancy of \(g\) is essential.
+
+\paragraph{Characteristic and terminology.}
+The general theorem applies whenever the quotient is supplied as reduced,
+including inseparable examples.  The automatic derivative-Bezout
+producer proves that hypothesis for separable polynomials.  Over an
+imperfect field, an irreducible polynomial such as \(X^p-t\) over
+\(\mathbb F_p(t)\) has zero derivative, so its reduced quotient must
+be justified differently.  The proof does not silently infer a derivative
+Bezout certificate from ring-theoretic squarefreeness there.
+
+\subsection{Primitive-recursive implementation and Lean obligations}
+
+The coefficient field must be supplied as a fixed arithmetic presentation
+with primitive-recursive code validity, equality, field operations, and
+inversion on nonzero codes.  Decidable equality alone is not a
+primitive-recursive complexity hypothesis.  The rational field is a
+standard instance.
+
+All polynomial arrays, matrix dimensions, exponents, and degree bounds can
+be numerical inputs.  The concrete operations are bounded coefficient
+scans; Euclidean division with decreasing degree; polynomial gcd with
+Bezout witnesses; at most \(\deg A_j+1\) divisions to compute each
+polynomial-adic order; finite powers; and a division-free determinant loop
+bounded by \(m!\).  Normalize divisors for implementation while retaining
+their leading-coefficient units in identities.  Arbitrary quotient-ring
+pivots must not be inverted.
+
+The Lean completion path is to prove the following object-arithmetic
+lemmas in order:
+\begin{enumerate}
+\item bounded division exports \(A=g^aB\), \(B\bmod g\ne0\),
+      and an explicit degree/iteration cap;
+\item the gcd certificate and finite geometric sum export
+      Lemma~\ref{lem:adic-reducedness};
+\item bounded permutation bookkeeping proves the carry identity and
+      \eqref{eq:adic-norm-witness};
+\item quotient non-nilpotence and the unit witness for \(h\) prove that
+      the bracket residue is nonzero;
+\item the explicit global degree cap permits a bounded scan that returns
+      an actual nonzero coefficient of \(N(G)\).
+\end{enumerate}
+The resulting iPRA endpoint is a finite certificate producer, together with
+an object-theory proof of the producer's correctness under its displayed
+input certificates.  A semantic theorem over an abstract Lean field is a
+useful separate specification but is not itself that object-iPRA export.

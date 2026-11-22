@@ -1,0 +1,197 @@
+\section{Two categorical constructions with finite witnesses}
+\label{sec:categorycases}
+
+The repository's categorical packet constructs finite limits and glues
+ordinary function tables on a finite cover. Its object-calculus development
+also derives coherent points for towers with bounded surjective lifting.
+We construct the sheaf associated to a supplied presheaf and extract the part of an inverse tower on which lifting works.
+Background on finite-space sheaves and stabilization appears in \href{https://arxiv.org/abs/math/0610685}{Ladkani, \S2.2}, and the
+\href{https://stacks.math.columbia.edu/tag/0594}{Stacks Project, Tag 0594}. See also the \repo{docs/proofs/foundations/ipra_categorical_methods/paper/sections/05_descent.tex}{ProveIt descent packet}.
+
+\subsection{Sheafification on an arbitrary finite topological space}
+
+Fix a topology on $X=[d]=\{0,\ldots,d-1\}$. Encode an open by its
+$d$-bit mask, and the topology by its table on $2^d$ masks.
+Require the empty and full masks to be open and check binary unions and
+intersections. These suffice because there are finitely many masks.
+A finite presheaf $F$ is a number $f_U$ for each open, with
+$F(U)=[f_U]$, and a restriction table $r^F_{UV}:F(U)\to F(V)$
+for each open $V\subseteq U$. Test identity and composition entrywise.
+A morphism of presheaves is a family of tables commuting with restrictions.
+A sheaf $G$ is required to pass a finite gluing test. For every cover of $U$
+and every family of sections agreeing on pairwise intersections, there is
+exactly one section in $G(U)$ restricting to that family. A cover is
+a subfamily of the topology whose union is $U$. Removing repeated masks
+causes no loss, since matching sections on repeated patches are equal.
+This includes the empty cover of the empty open.
+
+For $x\in X$, let $N_x$ be the intersection of all opens containing $x$.
+It is open, contains $x$, and is contained in any open containing $x$.
+In particular $y\in N_x$ implies $N_y\subseteq N_x$.
+For an open $U$, define $SF(U)$ to be the compatible tuples
+\[
+ (a_x)_{x\in U},\qquad a_x\in F(N_x),\qquad
+ r^F_{N_xN_y}(a_x)=a_y\quad(x\in U,\ y\in N_x).
+\]
+Order all tuples lexicographically and code a compatible tuple by its rank
+in the retained list. For the empty open there is one tuple.
+Restrict by deleting coordinates. On a morphism $h:F\to G$, apply
+$h_{N_x}$ coordinatewise. Naturality of $h$ proves compatibility.
+Identity and composition follow by evaluating at each coordinate. Define
+$\eta_{F,U}(t)_x=r^F_{UN_x}(t)$. The presheaf identities prove that these
+tuples are compatible, natural in $U$, and natural in $F$.
+
+\paragraph{Theorem.}
+$S$ is a uniform PR sheafification for finite-set-valued presheaves on
+finite spaces. Composition with $\eta_F$ gives a PR bijection
+\[
+ \operatorname{Hom}_{\rm Sh}(SF,G)\ \longrightarrow \operatorname{Hom}_{\rm PSh}(F,G)
+\]
+for every supplied finite sheaf $G$. Both inverse equations have
+finite arithmetic proofs.
+
+\paragraph{Proof.}
+Take matching tuples on a cover of $U$. For each $x\in U$ read its
+entry in the first patch containing $x$. Agreement on intersections
+makes this independent of the patch. If $y\in N_x$, the chosen patch
+containing $x$ also contains $y$, so compatibility of its tuple gives
+the required restriction equation. These forced entries prove
+existence and uniqueness of the glued tuple. It includes the empty cover.
+
+Over $N_x$, evaluation at $x$ identifies $SF(N_x)$ with $F(N_x)$.
+Indeed $b\in F(N_x)$ gives the tuple $y\mapsto r^F_{N_xN_y}(b)$
+and compatibility forces every tuple on $N_x$ to have this form.
+
+Given $h:F\to G$ and $a\in SF(U)$, form $g_x=h_{N_x}(a_x)$.
+To glue $g_x$ and $g_z$ on $W=N_x\cap N_z$, take any $y\in W$.
+Both restrict to $h_{N_y}(a_y)$ on $N_y$, by naturality and
+compatibility. The opens $N_y$ cover $W$. Uniqueness in the sheaf
+condition makes the two restrictions equal on $W$, including when
+$W$ is empty. Thus the $g_x$ match. Define $\bar h_U(a)$ by scanning
+$G(U)$ for their unique glue. Its restrictions to smaller opens
+give the same answer by uniqueness on their minimal-neighborhood covers.
+This proves naturality in $U$. For $t\in F(U)$ the required glue of the
+components of $\eta_F(t)$ is $h_U(t)$, proving $\bar h\eta_F=h$.
+Conversely, if $k\eta_F=h$, then on $N_x$ the bijection above forces
+$k_{N_x}(a|_{N_x})=h_{N_x}(a_x)$. Naturality and uniqueness on
+the cover of $U$ give $k_U(a)=\bar h_U(a)$. This proves the second
+inverse equation. Compatibility with pre- and postcomposition follows since
+the two candidate extensions have the same composite with the unit.
+Taking $F$ itself to be a sheaf, its neighborhood sections glue uniquely,
+so $\eta_F$ is an isomorphism. In particular $S(SF)\cong SF$.
+
+\paragraph{Arithmetic bounds and example.}
+With $q=2^d$ and $D=\max(1,\max_U f_U)$ (the maximum over opens),
+there are at most $D^d$ candidate tuples over each open, including the
+single empty tuple. If any required coordinate has an empty alphabet, reject the tuple before digit extraction. Mask scans have bound $q$, subfamily
+scans $2^q$. If validating a sheaf with fiber bound $H\ge1$, cover
+assignments number at most $H^q$, and the uniqueness scan has bound $H$.
+Keep the tuple, prefix agreement bits, number of matches truncated at two,
+and first matching index. Induct on their bounded prefix specifications.
+All induced names, restrictions, unit and extension tables thus use only
+PR loops, also when the input topology varies. For the discrete
+two-point space, take the constant presheaf $F(U)=[2]$ with identity
+restrictions, including at the empty open. Then $SF(X)$ has four sections,
+$SF(\varnothing)$ has one, and $\eta_{F,X}$ sends $b$ to $(b,b)$.
+This construction applies to spaces with smallest neighborhoods. An arbitrary infinite space may lack
+smallest open neighborhoods.
+
+\subsection{Stable images in an inverse tower}
+
+Fix PR bounds $b_n$, Boolean membership predicates for
+$A_n\subseteq[b_n]$, and PR bonding maps
+$p_n:A_{n+1}\to A_n$ with proofs of typing.
+For $m\ge n$ let $P_{n,m}:A_m\to A_n$ denote the composite, identity
+when $m=n$. Starting with $z$ at $m$, iterate $j\mapsto
+p_{m-1-j}$ on the register for $m-n$ steps.
+Splitting this finite loop at any intermediate $k$ gives
+$P_{n,k}P_{k,m}=P_{n,m}$. More explicitly, resume the run after
+$m-k$ steps. Induction on the number of resumed steps gives identical
+registers in both runs because both use the same next bond.
+Let $I_{n,m}=P_{n,m}(A_m)$. Membership is one bounded search below $b_m$.
+Images decrease as $m$ increases, by the composite law.
+
+A proposed rate is a fixed PR $s(n)\ge n$. Set $B_n=I_{n,s(n)}$,
+$K_n=\max(s(n),s(n+1))$. Consider the single comparison at each $n$
+\begin{equation}
+       I_{n,s(n)}\subseteq I_{n,K_n}.                   \tag{C}\label{eq:catcap}
+\end{equation}
+After fixing $n$ this is a bounded Boolean test, even though its validity
+for every $n$ is a global arithmetic hypothesis. No monotonicity of $s$
+is assumed.
+
+\paragraph{Theorem.}
+Condition \eqref{eq:catcap} at every $n$ is equivalent to
+$I_{n,t}=B_n$ for all $n$ and $t\ge s(n)$.
+From the former, a PR algorithm extends every given $a\in B_n$ to a
+coherent sequence on all levels $n,n+1,\ldots$. The original bonding
+maps may fail to be surjective.
+
+\paragraph{Proof.}
+If the images stabilize by $s(n)$, take $t=K_n$. Conversely, fix
+$a\in B_n$. Condition \eqref{eq:catcap} yields a successful search
+for $z\in A_{K_n}$ with $P_{n,K_n}(z)=a$. Put
+$c=P_{n+1,K_n}(z)$. Projecting $z$ first to $s(n+1)$ shows that
+$c\in B_{n+1}$, and $p_n(c)=a$ by the composite law.
+Thus bounded search constructs a PR successor $L(n,a)$ with a
+default value on invalid input. Define $w(0)=a$ and
+$w(j+1)=L(n+j,w(j))$. At every $j$,
+\[
+     w(j)\in B_{n+j}, \qquad P_{n,n+j}(w(j))=a .
+\]
+Induct on the conjunction, compiling the first membership into its bounded
+Boolean image test. The successor step is the lift just proved and one
+composition of projections. In particular $p_{n+j}(w(j+1))=w(j)$.
+For $t\ge s(n)$ choose $j=t-n$. Then $w(j)\in A_t$ supplies the missing
+witness that $a\in I_{n,t}$. The reverse inclusion follows from decreasing
+images. This proves the equivalence and exhibits the sequence as a
+specified PR function of $n,a,j$. To see that $p_n(B_{n+1})\subseteq B_n$, apply the now proved stabilization at level $n+1$ and time $K_n$,
+then project from $K_n$ to $s(n)$. The restricted tower is surjective.
+
+\paragraph{Application to exactness.}
+Let $q_n:G_n\to H_n$ be surjective homomorphisms of PR-presented
+finite abelian groups, compatible with the bonds, and assume
+\eqref{eq:catcap} with rate $s$ for the tower of kernels.
+Every specified PR coherent $h_n\in H_n$ then has a PR coherent lift
+$g_n\in G_n$. Indeed let $E_n=q_n^{-1}(h_n)$, a nonempty decidable fiber
+with the inherited bonds. For $a\in I^E_{n,s(n)}$ take a preimage
+$e\in E_{s(n)}$, and choose any $z\in E_{K_n}$ by bounded search.
+The difference $e-P_{s(n),K_n}(z)$ lies in $\ker q_{s(n)}$.
+Its image $a-P_{n,K_n}(z)$ at $n$ therefore lifts, by the kernel
+comparison, to $d\in\ker q_{K_n}$. Now $z+d\in E_{K_n}$ projects to
+$a$. This proves the comparison for $E$ with the very same rate.
+Project any member of $E_{s(0)}$ to level zero for a seed, and apply the
+walk just constructed. This gives an arithmetic, parameter-wise form of
+exactness of the inverse limit at the right-hand term. All choices in
+the argument are bounded scans.
+
+For example, let every $A_n=\{0,1,2\}$ and every bond fix $0,1$ and
+send $2$ to $1$. Then $s(n)=n+1$ works and $B_n=\{0,1\}$.
+Even two elements per level permit towers for which no rate can be computed uniformly from a tower index.
+For program $e$, let $A_0=\{0,1\}$. For $n>0$ use the same two elements
+until bounded simulation by time $n$ reports a halt, then use only $0$.
+The maps are inclusions. A uniform computable rate would decide halting since $1\in I_{0,s(0)}$ exactly when $e$ never halts, by stability and the
+definition of the tower. This is an external impossibility result.
+Every tower in this example already has the constant zero branch. The
+information a rate recovers is extendibility of \emph{all} persistent
+states, which is stronger than a single branch.
+
+\paragraph{Lean endpoints.}
+\path{lean/SheafCase.lean} proves the principal-cover gluing and both inverse equations in ordinary Lean, using the specialization preorder $x\preceq y$ iff $y\in N_x$. Its \texttt{SheafGluing} structure records the glue, its restrictions and uniqueness. The preceding proof constructs these operations from a finite sheaf table. \path{lean/CategoryCase.lean} proves the semantic certificate calculation
+for the image lift and coherent iteration. In the object calculus implement
+$P$ by the downward register loop and prove the split equation by the
+resumed-run invariant above. Compile image membership and
+\eqref{eq:catcap} with bounded reflection. The lift proof then supplies
+\texttt{Tower.Lifting} for the new membership test $B_n$, so the existing
+\texttt{CoherentTower.lean} route supplies \texttt{tower\_closed}.
+For sheafification, implement masks and mixed-radix filtered tuples, prove
+that decoding after projection deletes exactly the complementary coordinates,
+and prove minimal-neighborhood membership by intersection-prefix induction.
+The proof of the reflector then uses bounded operations for gluing tuple
+entries, checking matching on intersections, and selecting the unique glue
+in a supplied sheaf. Prove the two inverse equations pointwise and close
+them by bounded reflection and table extensionality.
+\texttt{FiniteLimits.lean} and \texttt{FiniteLimitTest.lean} already handle
+fixed diagram shapes. Varying the shape requires a numerical scan over
+its arrow table. For zero radices, separate an empty coordinate range
+before invoking positive-radix digit lemmas.

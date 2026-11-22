@@ -1,0 +1,336 @@
+\section{Multiplicity transport and stable labels}
+\label{sec:cluster-transport}
+
+The current FIBER audit identifies two specific unresolved issues: a short
+edge in an incidence graph does not give the same diameter bound for its
+whole component, and a metric gap between complex roots does not stabilize
+lexicographic ordering of rational boxes~\cite{repo-fiber}.  We resolve the
+finite mathematical issues here.  A polynomial application must still
+produce a sound complete multiplicity certificate.  No matching or
+certificate-independent observation is assumed in the theorems below.
+
+\subsection{The certificate interface}
+
+Let $\Omega=\{0,\ldots,N-1\}$ be a finite set of \emph{occurrences}; repeated
+roots have separate occurrences.  Let $x_t$, $t<N$, be points of a metric
+space.  A weighted enclosure consists of centers $a_0,\ldots,a_{m-1}$,
+positive natural weights $r_0,\ldots,r_{m-1}$, a radius $\epsilon_A\geq0$,
+and a coverage witness
+\[
+ \alpha:\Omega\longrightarrow\{0,\ldots,m-1\},\qquad
+ |\alpha^{-1}(i)|=r_i,\qquad d(x_t,a_{\alpha(t)})\leq\epsilon_A.
+ \tag{C-A}
+\]
+A second enclosure $(b_j,s_j,\epsilon_B,\beta)$ has the analogous properties
+for the \emph{same} occurrence multiset.  The occurrence data may be private:
+only the two lists of centers and weights need be public.  For boxes, choose
+a rational point in each box as center; a proved diameter bound gives a
+radius bound.  One may use sharper midpoint radii when available.
+
+These are explicit completeness and multiplicity assumptions, not consequences
+of the geometry of the boxes alone.  For polynomial roots they require a
+root-counting, factor, or common-refinement theorem.  In the arithmetic
+implementation, finite incidence tables, count equations and distance
+certificates replace the displayed metric notation.  If actual roots are
+represented by names, their analytic interpretation is a separate adapter;
+the finite matching program does not inspect those names.
+
+Expand the first family into the $N$ slots
+\[
+       A^*=\{(i,u):i<m,\ 0\leq u<r_i\},
+\]
+ordered by $i$ and then $u$, and expand the second family similarly.  A slot
+has its cluster's center.  Put $\delta=\epsilon_A+\epsilon_B$ and join
+$(i,u)$ to $(j,v)$ when $d(a_i,b_j)\leq\delta$.  Rational $\ell^1$ or
+$\ell^\infty$ distances make this a decidable finite graph, without a
+square-root operation.  For a general metric interpretation, a supplied
+finite adjacency relation suffices if every pair of clusters containing a
+common occurrence is an edge and every edge satisfies the displayed
+distance bound.
+
+\begin{lemma}[Coverage implies Hall's inequalities]
+\label{lem:coverage-hall}
+For every set $S$ of slots on the first side, its neighbor set satisfies
+$|S|\leq|\mathcal N(S)|$.
+\end{lemma}
+\begin{proof}
+Let $I$ consist of those cluster indices having a slot in $S$, and let $J$
+be the cluster indices adjacent to at least one index in $I$.  The triangle
+inequality shows that $\alpha(t)\in I$ implies $\beta(t)\in J$:
+\[
+ d(a_{\alpha(t)},b_{\beta(t)})
+ \leq d(a_{\alpha(t)},x_t)+d(x_t,b_{\beta(t)})\leq\delta.
+\]
+Counting the indicated finite sets gives
+\[
+ |S|\leq\sum_{i\in I}r_i
+   =|\alpha^{-1}(I)|
+   \leq|\beta^{-1}(J)|
+   =\sum_{j\in J}s_j=|\mathcal N(S)|.
+\]
+The last equality holds because adjacency depends on cluster indices, not on
+which copy of a center is used.  These are bounded finite sums.  In
+particular, the argument does not choose a matching between occurrences.
+\end{proof}
+
+\begin{theorem}[Bounded constructive matching]
+\label{thm:bounded-matching}
+There is a primitive recursive algorithm which, on an $N$ by $N$ Boolean
+bipartite graph, returns either a perfect matching or a set $S$ with
+$|\mathcal N(S)|<|S|$.  Its correctness has a proof by quantifier-free
+induction after bounded-formula reflection.  Hence the two enclosures above
+have an explicitly computed permutation matching with distance at most
+$\epsilon_A+\epsilon_B$ at every matched pair.
+\end{theorem}
+\begin{proof}
+Maintain a matching covering the first $k$ left vertices, initially $k=0$.
+To add left vertex $k$, search for an augmenting path.  Mark $k$ on the left.
+From a marked left vertex mark all its adjacent right vertices; from a marked
+right vertex already in the matching mark its matched left partner.  Record
+a parent and a discovery level each time a previously unmarked vertex is
+marked.  There are at most $2N$ vertices, so $2N$ rounds suffice to reach
+closure; a queue implementation examines at most $N$ left vertices.
+
+If a free right vertex is found, follow the parent records back to $k$.
+Discovery levels strictly decrease, so this is a path of fewer than $2N$
+edges.  Flip matched and unmatched edges along it.  Every interior vertex
+keeps one matched incident edge, and the endpoints acquire one, giving a
+matching of size $k+1$ using only graph edges.
+
+If no free right vertex is reached, let $S$ and $T$ be the reached left and
+right sets at closure.  Every neighbor of $S$ is in $T$, and each member of
+$T$ was reached along an edge from $S$, so $T=\mathcal N(S)$.  Every vertex
+of $T$ is matched.  Its partner belongs to $S\setminus\{k\}$.  Conversely,
+every reached left vertex other than $k$ was reached through its matched
+right partner.  Thus the old matching restricts to a bijection
+$T\leftrightarrow S\setminus\{k\}$, and
+\[
+              |\mathcal N(S)|=|T|=|S|-1.
+\]
+This is a displayed Hall counterexample.  Therefore Hall's inequalities rule
+out failure at each of the $N$ stages.  The final size-$N$ matching is a
+permutation because both sides have exactly $N$ vertices.  When $N=0$, the
+empty matching is returned immediately.
+
+All scans have the indicated bounds.  Partial matchings, marks, parents,
+levels and the stage counter are finite arrays.  Their invariants assert
+only bounded index conditions, partial-inverse equations and Boolean edge
+tests; each is reflected to one quantifier-free formula.  The outer stage
+induction and the bounded search inductions therefore stay within iPRA.
+Applying Lemma~\ref{lem:coverage-hall} eliminates the failure branch and gives
+the claimed distance bound.
+\end{proof}
+
+The algorithm can always inspect vertices in numerical order, so its output
+is determined by the \emph{public} adjacency table.  It does not expose a
+particular coverage witness $\alpha$ or $\beta$.  This does not assert that
+the same permutation is selected when a different adjacency table is used:
+what is invariant is the proved matching bound and every justified symmetric
+observation.  Private coverage witnesses may be sealed by existential
+elimination after the matching theorem is established.
+
+\subsection{A precise observation modulus}
+
+For two length-$N$ lists of points define the matching distance by the finite
+minimum
+\[
+ d_{\mathrm{match}}(a,b)
+   =\min_{\sigma\in\mathfrak S_N}\max_{i<N}d(a_i,b_{\sigma(i)}).
+\]
+The empty-list distance is zero.  This is a finite rational computation when
+the underlying distances are rational.  Theorem~\ref{thm:bounded-matching}
+proves $d_{\mathrm{match}}(A^*,B^*)\leq\delta$.
+
+Suppose $F$ is invariant under permutations, and that two ordered lists whose
+coordinatewise distances are at most $\eta$ have outputs at distance at most
+$\omega(\eta)$.  Reorder the second list by the constructed matching and
+apply that inequality.  Permutation invariance then gives
+\[
+                      d(F(A^*),F(B^*))\leq\omega(\delta).
+\]
+Both invariance and the displayed modulus must be proved for the actual
+observation program.  A phrase such as ``stable observation'' does not
+replace either obligation.
+
+\begin{proposition}[Polynomial observations]
+\label{prop:cluster-polynomial-observations}
+Use the submultiplicative norm $\|z\|_1=|\Re z|+|\Im z|$ on Gaussian
+rationals, and suppose all centers have norm at most $R$.  If a matching has
+error at most $\delta$, then, for $k\geq1$,
+\[
+ \left\|\sum_{i<N}a_i^k-\sum_{i<N}b_i^k\right\|_1
+      \leq NkR^{k-1}\delta.
+\]
+For $1\leq k\leq N$, the elementary symmetric polynomials satisfy
+\[
+          \|e_k(a)-e_k(b)\|_1
+             \leq \binom{N}{k}kR^{k-1}\delta.
+\]
+Thus every coefficient of the associated monic product polynomial has an
+explicit finite modulus, including at collisions.
+\end{proposition}
+\begin{proof}
+Reorder $b$ by the matching.  The identity
+\[
+       u^k-v^k=(u-v)\sum_{j=0}^{k-1}u^jv^{k-1-j}
+\]
+and submultiplicativity give $\|u^k-v^k\|_1\leq kR^{k-1}\delta$.
+Summing proves the first assertion.  For each $k$-element subset, subtract
+the two corresponding products by changing one factor at a time.  The
+telescoping sum has $k$ terms, each bounded by $R^{k-1}\delta$.
+There are $\binom{N}{k}$ such subsets, giving the second assertion.
+The cases $k=0$ and $k>N$ are constant observations.  No enumeration of
+continuous branches is used; every product and sum is finite.
+\end{proof}
+
+\subsection{What component balancing alone proves}
+
+Sometimes a verifier supplies only a bipartite graph on the weighted
+clusters, an upper bound $\delta$ on each edge length, and equal total red
+and blue multiplicity in every connected component.  This weaker
+information also gives a matching, with a different quantitative bound.
+
+\begin{proposition}[Component transport]
+\label{prop:component-transport}
+In a component having $v$ vertices, there is an explicit multiplicity
+matching whose every paired distance is at most $(v-1)\delta$.  For $N>0$
+and positive weights, the uniform bound $(2N-1)\delta$ is valid.
+\end{proposition}
+\begin{proof}
+List the expanded red and blue slots of the component in numerical order.
+Equal total weights give equally long lists; pair equal ranks.  A shortest
+edge path between the centers of any paired slots has no repeated vertex,
+since deleting the part between two equal vertices shortens it.  It has at
+most $v-1$ edges.  The triangle inequality gives $(v-1)\delta$.
+Breadth-first search constructs such paths with at most the total number of
+vertices as fuel.  Positive weights imply at most $N$ red and at most $N$
+blue vertices, giving the uniform bound.  All components and rank selections
+are bounded finite computations.
+\end{proof}
+
+The factor cannot simply be dropped.  On the real line take red centers
+\[
+                   0,\quad 1/10,\quad 2
+\]
+and blue centers
+\[
+                   1,\quad 29/10,\quad 3,
+\]
+all of weight one, with edges at distance at most $1$.  The graph is
+connected and balanced.  The first two red centers have just the blue center
+$1$ as a neighbor, so they violate Hall's inequality.  In any matching one
+of these red centers must be paired with $29/10$ or $3$, at distance at
+least $14/5$.  Pairing in increasing order attains $14/5$, so the exact
+matching distance is $14/5>1$.  This is a counterexample to inferring a
+one-edge matching bound from component balance, not to
+Theorem~\ref{thm:bounded-matching}, whose complete-coverage assumptions imply
+Hall's inequalities and exclude this graph.
+
+For genuine complete covers, component balance itself also follows from the
+occurrence witnesses: an occurrence's two assigned cluster vertices are
+adjacent, hence in the same component.  The set of occurrences assigned to
+red vertices of a component is exactly the set assigned to its blue
+vertices.  Counting proves balance.  This supplies the common-coarsening
+argument with its precise finite content.
+
+\subsection{Correcting complex labels}
+
+The audit's counterexample is decisive~\cite{repo-fiber}.  For $z^2+1$, take
+arbitrarily small rational $h>0$.  Boxes centered at $(h,1)$ and $(-h,-1)$,
+each of coordinate half-width $2h$, enclose $i$ and $-i$.  Boxes centered at
+$(-h,1)$ and $(h,-1)$ enclose the same roots at the same accuracy.  They
+remain separated by a positive metric gap as $h\to0$, but lexicographic
+ordering of centers or lower corners reverses.  Thus no reduction in mesh
+relative to the metric gap repairs that ordering rule.
+
+There is a simple positive replacement which names exactly the extra data
+needed.
+
+\begin{theorem}[Labels relative to stable locators]
+\label{thm:stable-locators}
+Let $c_0,\ldots,c_{N-1}$ be fixed rational anchors.  Suppose each anchor
+has exactly one occurrence within distance $r$, these assignments form a
+complete cover, and
+\[
+                 d(c_i,c_j)\geq2r+\gamma
+                 \quad(i\ne j),\qquad \gamma>0.
+\]
+Let a singleton enclosure of the same occurrences have error
+$\epsilon\leq\gamma/4$.  Assign each approximate center to its nearest
+anchor, using a bounded minimum scan.  This gives a bijection with the
+anchor indices, independent of the singleton-enclosure certificate.
+Samples carrying the same label at errors $\epsilon$ and $\epsilon'$ are
+within $\epsilon+\epsilon'$ of one another.
+\end{theorem}
+\begin{proof}
+If $x$ is the occurrence assigned to $c_j$ and $a$ approximates $x$, then
+\[
+                     d(a,c_j)\leq r+\epsilon.
+\]
+For $i\ne j$, two triangle inequalities give
+\[
+ d(a,c_i)\geq d(c_i,c_j)-d(c_j,x)-d(x,a)
+             \geq r+\gamma-\epsilon.
+\]
+The second lower bound exceeds the first upper bound by at least
+$\gamma-2\epsilon\geq\gamma/2>0$.  Therefore $c_j$ is the unique nearest
+anchor; the numerical tie-breaking rule is never used.  The two complete
+singleton covers contain exactly one occurrence for each anchor, so every
+label is used once.  Two samples with label $j$ approximate that same
+occurrence, giving the final inequality by the triangle inequality.
+\end{proof}
+
+The labels are relative to the fixed locator certificate.  Approximate
+coordinates need not be identical across certificates; the theorem proves
+that their labels refer to the same occurrence and that their difference has
+the displayed bound.  Taking a dyadic error schedule yields regular names
+without any global complex-root ordering.  For real roots, an ordered
+interval certificate with positive order gaps gives the familiar simpler
+variant.  A certified gap between real parts gives another valid ordering
+guard for complex roots.
+
+\subsection{Concrete Lean and iPRA targets}
+
+The target has numerical dimension and graph entries inside the object
+language.  Encode an $N$ by $N$ graph by bits of $e<2^{N^2}$; a subset is a
+mask $s<2^N$.  Its neighbor mask has bit $j$ equal to the bounded disjunction
+of $\operatorname{bit}(s,i)\wedge\operatorname{edge}(e,i,j)$ over $i<N$.
+Population count is a bounded sum.  Encode a permutation by $N$ base-$(N+1)$
+digits and define
+\[
+\begin{split}
+\operatorname{Match}(N,e,p)\;:\!\!\iff\;&
+  (\forall i<N\; p_i<N\ \wedge\ \operatorname{edge}(e,i,p_i)=1)\\
+ &{}\wedge(\forall i,j<N\;p_i=p_j\longrightarrow i=j),\\
+\operatorname{Defect}(N,e,s)\;:\!\!\iff\;&
+ s<2^N\ \wedge\operatorname{count}(\operatorname{neigh}(e,s))
+                  <\operatorname{count}(s).
+\end{split}
+\]
+Every displayed quantifier is bounded.  Implement the algorithm by fixed
+primitive recursion over its stage, marking and path-flipping bounds.  Its
+two output projections $p(N,e)$ and $s(N,e)$ should satisfy the ordinary
+closed object theorem
+\[
+ \forall N,e\;\bigl(e<2^{N^2}\longrightarrow
+    (\operatorname{Match}(N,e,p(N,e))
+       \vee\operatorname{Defect}(N,e,s(N,e)))\bigr).
+\]
+The decoder totalizes malformed graphs; the shape guard is retained in the
+correctness theorem.  A separate object theorem converts the reflected
+coverage/count formulas to the negation of every defect.  Its composition
+with the algorithm gives the cluster matching endpoint, with no global
+choice principle.
+
+The Lean implementation order is: (1) actual graph/array programs and
+their shape equations; (2) matching and alternating-search invariants;
+(3) bounded matching-or-defect; (4) finite count monotonicity for the
+coverage-to-Hall adapter; (5) actual rational distance and observation
+programs; (6) the locator scan and its strict comparison proof.  Reuse
+\nolinkurl{Foundations/BoundedSyntax}, \nolinkurl{Foundations/GuardedTrace},
+\nolinkurl{Core/SearchParameters}, bounded sums and the rational arithmetic
+modules.  The final declarations must return
+\texttt{Prf PRAAx []} of these explicit formulas.  A host Lean proof of
+Hall's theorem by itself would not establish that endpoint.  The supplied
+reference program and finite exhaustive checks are executable evidence for
+the algorithm, not a completed kernel proof.

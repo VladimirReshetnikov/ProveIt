@@ -1,0 +1,212 @@
+\section{The one-variable expression and its witness maps}
+\label{sec:reduction}
+
+We combine the lattice gap with the rational density construction. Define
+\begin{equation}
+ \begin{gathered}
+ h_j(t)=t\sin(t^{2j-1}),\qquad v_j(t)=h_j(t)^2,\\
+ A_P(t)=F_P(v_1(t),\ldots,v_n(t)),\\
+ E_P(t)=\abs{A_P(t)}-A_P(t).
+ \end{gathered}\label{eq:compiled-expression}
+\end{equation}
+The map sending a polynomial code to this expression code is primitive
+recursive: compute $C,D,n$, form the finite syntax trees in
+\eqref{eq:majorant}--\eqref{eq:gap-function}, and substitute the indicated
+one-variable expressions. Subtraction is multiplication by $-1$ followed by
+addition. Thus $E_P$ uses only rational constants, $\pi$, the variable,
+addition, multiplication, sine, and one outer occurrence of absolute value.
+The inner expression $A_P$ is analytic. Exponential and $\log2$, although
+allowed in the requested class, are not required by this reduction.
+
+\subsection{A polynomial root produces a rational nonzero value}
+
+Suppose $m\in\N^n$ satisfies $P(m)=0$. Compute $M,L_0,\rho$ as in
+\eqref{eq:root-radius}, and put
+\begin{equation}
+ \eta=\frac{\rho}{8(M+1)}.\label{eq:square-tolerance}
+\end{equation}
+We first construct rational targets for the dense curve. For each coordinate
+find $a_i\in[0,M+1]\cap\Q$ such that
+\begin{equation}
+ \abs{a_i^2-m_i}\le\rho/4.\label{eq:square-target}
+\end{equation}
+Here is an explicit construction that does not require a real square-root
+operation. Bisect the rational interval $[0,M+1]$, maintaining endpoints
+$l,u$ with $l^2\le m_i\le u^2$. The branch at each midpoint is determined
+by an exact rational comparison. Stop after a prescribed number $N$ of
+steps satisfying
+\[
+ 2^N\ge\frac{8(M+1)^2}{\rho}.
+\]
+The resulting width is at most $\rho/[8(M+1)]$. Taking $a_i=l$ gives
+\[
+ 0\le m_i-a_i^2\le u^2-l^2
+ \le2(M+1)(u-l)\le\rho/4,
+\]
+as required. An integer ceiling of the binary logarithm of the displayed
+bound supplies $N$ by a primitive recursive calculation; a larger elementary
+bound is equally acceptable.
+
+Apply Theorem~\ref{thm:density} to these rational targets, the integer bound
+$A=M+1$, and tolerance $\eta$. It produces a rational $q$ with
+$\abs{h_i(q)-a_i}<\eta$. Since $\eta\le1$ and $a_i\le M+1$,
+\[
+ \abs{h_i(q)^2-a_i^2}
+ \le\eta(2\abs{a_i}+\eta)
+ \le3(M+1)\eta=3\rho/8.
+\]
+Combining this with \eqref{eq:square-target} proves
+\[
+ \abs{v_i(q)-m_i}<5\rho/8<\rho.
+\]
+Each $v_i(q)$ is nonnegative, so Lemma~\ref{lem:root-neighborhood} applies:
+\begin{equation}
+ A_P(q)\le-3/4,
+ \qquad
+ E_P(q)\ge3/2.\label{eq:robust-nonzero}
+\end{equation}
+
+Recall that $\App(e,q,k)$ is rational and approximates the value of the
+expression coded by $e$ at $q$ with error at most $2^{-k}$, and
+\[
+ \NZ(e,q,k)\;:\!\!\iff\;
+ \abs{\App(e,q,k)}>2^{-k}.
+\]
+With $e$ the code of $E_P$, equation~\eqref{eq:robust-nonzero} gives
+\[
+ \App(e,q,3)\ge3/2-1/8=11/8>1/8.
+\]
+Thus $(q,3)$ is a strict nonzero-evaluation certificate. The margin is
+deliberately generous. The witness construction never searches until an
+unknown sign happens to become visible.
+
+\subsection{A nonzero certificate produces a polynomial root}
+
+Conversely, suppose $\NZ(e,q,k)$ holds for $e=E_P$. Put $d=2^{-k}$ and
+$b=\App(e,q,k)$. The defining expression satisfies $E_P(q)\ge0$, so its
+approximation satisfies $b\ge-d$. The rational comparison
+$\abs b>d$ therefore implies $b>d$. Hence
+\[
+ \gamma=b-d>0,
+ \qquad E_P(q)\ge\gamma.
+\]
+
+To obtain a negative value of $A_P(q)$ constructively, approximate it by a
+rational $c$ to error at most $\tau=\gamma/8$. The required dyadic
+precision is computed from the positive rational $\gamma$. For example,
+the deliberately coarse integer choice
+$r=\lceil8/\gamma\rceil+1$ ensures $2^{-r}\le\gamma/8$, since
+$2^r\ge r+1$. Thus one may simply use $c=\App(A_P,q,r)$. If
+$c\ge-\tau$, then $A_P(q)\ge-2\tau=-\gamma/4$. For any real $a\ge-r$
+with $r\ge0$, the absolute-value triangle inequality gives
+\[
+ \abs a\le\abs{a+r}+r=a+2r,
+ \quad\hbox{and therefore}\quad \abs a-a\le2r.
+\]
+Applying this with $r=\gamma/4$ would yield
+$E_P(q)\le\gamma/2$, contradicting $E_P(q)\ge\gamma>0$.
+Consequently the decidable rational comparison must give $c<-\tau$, and
+then
+\[
+ A_P(q)\le c+\tau<0.
+\]
+This reasoning does not split on an undecidable sign of a real quantity; the
+only branch is a rational comparison.
+
+Now evaluate each $v_i(q)=h_i(q)^2$ to error at most $1/8$, and round the
+result as in Lemma~\ref{lem:rounding}. The tuple $z$ obtained belongs to
+$\N^n$. Since
+$F_P(v_1(q),\ldots,v_n(q))=A_P(q)<0<1$, Theorem~\ref{thm:lattice-gap}
+gives $P(z)=0$. This is a bounded computation from the certificate.
+Indeed, the candidate tuple $z$ can be computed from $P$ and $q$ alone;
+the supplied nonzero certificate is what proves that the candidate is a
+root. No unbounded Diophantine search occurs.
+
+For clarity, even the approximation of a squared coordinate has a direct
+precision bound. Let $Q=1+\lceil\abs q\rceil$, so
+$\abs{h_i(q)}\le Q$. Compute a rational $s_i$ approximating $h_i(q)$
+to $\delta=1/[32(Q+1)]$. Then
+\[
+ \abs{s_i^2-h_i(q)^2}
+ \le\delta(2Q+\delta)
+ \le\frac{2Q+1}{32(Q+1)}<\frac18.
+\]
+Thus $s_i^2$ is an admissible rational input to the rounding rule. The
+needed approximation to $h_i(q)=q\sin(q^{2i-1})$ is obtained by computing
+the rational power exactly and approximating its sine to
+$\delta/(Q+1)$. This spells out the reverse computation using only the
+basic sine approximation primitive and rational arithmetic.
+
+\subsection{The exact arithmetical reduction}
+
+\begin{theorem}[Two finite witness transformations]\label{thm:witness-maps}
+There are primitive recursive maps $\operatorname{forth}$ and
+$\operatorname{back}$ with the following properties. For a well-formed
+polynomial code $P$:
+\begin{enumerate}
+\item if $m\in\N^n$ and $P(m)=0$, then
+      $\operatorname{forth}(P,m)=(q,3)$ satisfies $\NZ(E_P,q,3)$;
+\item if $\NZ(E_P,q,k)$, then
+      $z=\operatorname{back}(P,q,k)$ lies in $\N^n$ and satisfies
+      $P(z)=0$.
+\end{enumerate}
+Their correctness is expressible, and provable, in $\ipra$ using coded
+integer and rational operations and the finite approximation bounds above.
+\end{theorem}
+
+\begin{proof}
+The preceding two constructions define the maps. On malformed codes one
+may assign a fixed default output, making them total primitive recursive
+functions. The first uses the explicit radius, bounded rational bisection,
+and the density algorithm. The second uses fixed-precision approximations
+and rational floor. All precision requirements and loop bounds are computed
+before their associated finite loops.
+
+For the arithmetical correctness assertions, the predicates $P(m)=0$ and
+$\NZ(E_P,q,k)$ are primitive recursive relations on codes. Each displayed
+analytic inequality is justified at the required precision by a finite
+rational error bound. The sine and $\pi$ approximation identities can be
+unfolded into those finite bounds, as described in the arithmetic semantics
+and the appendix. All uses of induction concern bounded calculation records
+or explicit primitive recursive recurrences. The integer conclusion in the
+reverse map has a gap: $A_P(q)<0$ gives $H_P(v(q))<1/4$, and hence
+$P(z)^2<1/2$. Thus the final integer comparison is separated from one by
+a fixed rational margin. The real notation introduces no separate axiom
+of real completeness, choice, or sign decidability.
+\end{proof}
+
+In the notation for solvability and identity used earlier, the two maps give
+\begin{equation}
+ \ipra\ \vdash\quad
+ \Sol(P)\ \longleftrightarrow\ 
+ \exists q\,\exists k\;\NZ(E_P,q,k).\label{eq:positive-reduction}
+\end{equation}
+Rational values $q$ here mean their natural-number codes. Since
+$\Id(e)$ is defined as $\forall q\,\forall k\,\neg\NZ(e,q,k)$, pure
+intuitionistic logic yields
+\begin{equation}
+ \boxed{\ \ipra\ \vdash\quad
+          \Id(E_P)\ \longleftrightarrow\ \neg\Sol(P).\ }
+ \label{eq:negative-reduction}
+\end{equation}
+For completeness, the two directions are immediate without a quantifier
+negation principle. If $\Id(E_P)$ and a root $m$ are given, the forward
+map produces a forbidden nonzero certificate. If $\neg\Sol(P)$ and a
+nonzero certificate are given, the reverse map produces a forbidden root.
+These are precisely the two implications in
+\eqref{eq:negative-reduction}.
+
+We have not inferred a positive nonzero certificate from the mere negation
+of $\Id(E_P)$. In intuitionistic logic, that inference would require an
+additional principle. The positive equivalence
+\eqref{eq:positive-reduction} concerns \emph{witnesses}; the negative
+equivalence \eqref{eq:negative-reduction} concerns their absence. Keeping
+these assertions separate is essential to the final diagonal argument.
+
+Externally, the connection with the usual real-valued identity is equally
+direct. If $P$ has no natural-number root, every tuple $v(t)$ is
+nonnegative, so the lattice gap gives $A_P(t)\ge1$ and $E_P(t)=0$ for
+every real $t$. If $P$ has a root, the construction supplies a rational
+$q$ with $E_P(q)\ge3/2$. Thus the conventional semantic identity and the
+arithmetical predicate have the intended meaning on every expression used
+by the reduction.

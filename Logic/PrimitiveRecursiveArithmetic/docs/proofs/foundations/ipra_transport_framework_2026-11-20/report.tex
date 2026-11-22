@@ -1,0 +1,100 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[letterpaper,left=1.07in,right=1.06in,top=.91in,bottom=.85in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array,booktabs,tabularx,graphicx}
+\usepackage[table]{xcolor}
+\usepackage{fancyhdr,enumitem}
+\usepackage[colorlinks=true,urlcolor=teal!63!black,linkcolor=teal!63!black,citecolor=teal!63!black]{hyperref}
+\hypersetup{pdftitle={Transport and finite observations in intuitionistic primitive recursive arithmetic},pdfauthor={Research report for Vladimir Reshetnikov},bookmarksnumbered=true}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\definecolor{ink}{HTML}{233747}
+\definecolor{accent}{HTML}{205C60}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{Finite observations in iPRA}}
+\fancyhead[R]{\small\textcolor{ink}{Local data and global conclusions}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{1.5pt plus 1pt minus .5pt}
+\setlist{nosep,topsep=4pt}
+\setcounter{tocdepth}{1}
+\setlength{\emergencystretch}{2em}
+\newcommand{\gitfile}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3ee850b4c2d650cf01263823fd5415963747c5d0/Logic/PrimitiveRecursiveArithmetic/#1}{#2}}
+\newcommand{\gitdir}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/3ee850b4c2d650cf01263823fd5415963747c5d0/Logic/PrimitiveRecursiveArithmetic/#1}{#2}}
+\begin{document}
+\thispagestyle{plain}
+\noindent{\sffamily\small\color{accent} MATHEMATICAL LOGIC \quad / \quad CONSTRUCTIVE ANALYSIS}\par
+\vspace{8pt}
+{\noindent\LARGE\bfseries\color{ink} Transport and finite observations\\[3pt] in intuitionistic primitive recursive arithmetic\par}
+\vspace{7pt}
+{\noindent\large Local systems, inverse moduli and resonant analytic continuation\par}
+\vspace{8pt}
+\noindent{\small Research report for Vladimir Reshetnikov \hfill 19 November 2026}\par
+\vspace{7pt}\noindent{\color{accent}\rule{\linewidth}{1.1pt}}
+\paragraph{Abstract.}
+A proof using charts or finite approximations must account for what happens when two routes to the same observation disagree at finite precision. For a category given by generators and relations, we compute the error of a supplied proof between paths. The bound depends on where in a path each relation is used. A second form uses arbitrary primitive recursive moduli. We apply the construction to finite local systems on groupoids with possibly infinitely many arrows, compute sharp inverse moduli or collisions for rational piecewise-linear maps, and construct paths with explicit clearance around families of parameter poles. At an integer resonance of Gauss's equation we construct a fundamental pair, identify its logarithmic coefficient and compute its monodromy on an explicit polygon. Each assertion about an infinite object is given a first-order reading. The archive includes Lean-checked object derivations for selected core lemmas and explicit remaining obligations for the general theorems.
+
+\paragraph{Two results at a glance.}
+Given a rational polygonal parametrization $P$ of a circle, the program returns rational witnesses attaining both endpoints of the range of
+\[
+      \frac{\|P(s)-P(t)\|_\infty}{d_{\mathbb T}(s,t)},\qquad d_{\mathbb T}(s,t)>0 .
+\]
+A zero minimum gives an actual collision. A positive minimum gives the inverse modulus assumed in the repository's Jordan theorem. For ${}_2F_1(a,b;c;z)$, put $m=c-a-b\in\mathbb Z$, $k=|m|$, $s=\min(0,m)$. One positive circuit about $z=1$ fixes one local basis solution and adds to the other the first solution times
+\[
+             2\pi i\,(-1)^k\frac{(a+s)_k(b+s)_k}{(k!)^2}.
+\]
+The normalization, the vanishing cases and the finite precision proof are in Sections~\ref{sec:resonance} and~\ref{sec:circuit}.
+\newpage
+\tableofcontents
+
+\section{Which repository difficulties are addressed?}\label{sec:sources}
+ProveIt distinguishes human research packets from Lean derivations in its ordinary iPRA syntax. We use the source tree at \texttt{3ee850b4c2d6}. Its category packet already treats Yoneda and finite Kan extensions, and its FINER framework already composes finite evidence and controls errors along a spanning tree. Its topology framework treats carriers and the invariance of induced maps under choices. Here the input to a transport calculation can instead be a presentation of paths \emph{and a proof between two paths}. An explicit local relation can be placed, at a computable cost, in any context. This gives access to cyclic phenomena such as nontrivial monodromy. The further gains come from constructing particular inputs the earlier packets requested. \cite{target,category,finer,tower}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.20\linewidth}XX@{}}
+\toprule
+\textbf{Source question} & \textbf{Result here} & \textbf{Scope} \\
+\midrule
+Category and descent \cite{category} & A forest reduces morphisms to intertwining equations and global sections to fixed points. A test recognizes a proposed horizon for stable images. & Finite fibres, finite graph presentations. A horizon is supplied to the stable-image test.\\[3pt]
+Jordan and dimension \cite{jordan,dimension} & Vertex enumeration on a finite decomposition of point pairs yields sharp distortion and attaining pairs. & Valid finite PL data, with a separate perturbation theorem. General embeddings may lack a uniformly extractable PR inverse modulus.\\[3pt]
+Gauss connection at one \cite{hyper} & A polygon with positive clearance from all forbidden integer translates is produced from its endpoints. & The geometric hypothesis of the nonresonant formula. Analytic propagation in parameter space remains a separate step.\\[3pt]
+Gauss integer resonance \cite{hyper,dlmf} & A uniform local logarithmic basis, constants by ordinary-point matching, and the exact shear for a circuit. & Gaussian rational parameters, integer exponent difference. The regular-at-zero solution requires $c\notin\mathbb Z_{\le0}$.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\input{framework}
+\input{category}
+\input{topology}
+\input{detours}
+\input{analytic}
+\input{circuit}
+\input{formalization}
+\begin{thebibliography}{9}\small
+\bibitem{target} V.\ Reshetnikov, \emph{ProveIt}, pinned source tree.
+\gitfile{README.md}{Directory guide};
+\gitfile{ConciseIPRA/Lean/ConciseIPRA/PR.lean}{PR syntax and QF induction};
+\gitfile{ConciseIPRA/Lean/ConciseIPRA/Deduction.lean}{ordinary derivation rules};
+\gitdir{Derivations/Lean/IPRADerivations}{active derivations}.
+\bibitem{finer} ProveIt, \gitfile{docs/proofs/foundations/FINER-iPRA-framework-2026-11-16/README.md}{Finite-Interaction Normal Form with Explicit Residuals}. The stated descent result on a checked spanning tree and the object-level proof status are recorded in its introduction.
+\bibitem{category} ProveIt, \emph{Finite presentations and categorical methods}.
+\gitfile{docs/proofs/foundations/ipra_categorical_methods/paper/sections/04_categories.tex}{Category theory for specified presentations};
+\gitfile{docs/proofs/foundations/ipra_categorical_methods/paper/sections/05_descent.tex}{descent and inverse towers}.
+\bibitem{tower} ProveIt, \gitfile{docs/proofs/topology/ipra_topology_framework_2026-11-15/THEOREM_LEDGER.md}{Certified observation towers, theorem ledger}.
+\bibitem{jordan} ProveIt, \emph{Quantitative Jordan curve theorem},
+\gitfile{docs/proofs/topology/jordan_ipra_constructive_2026-11-15/sections/01_statement.tex}{quantitative presentation and arithmetic formulas for the two moduli}.
+\bibitem{dimension} ProveIt, \gitfile{docs/proofs/topology/dimension_invariance_ipra/dimension_invariance.tex}{Quantitative dimension invariance}. See its inverse-separation condition (I).
+\bibitem{hyper} ProveIt, \emph{The Gauss hypergeometric function in iPRA}.
+\gitfile{docs/proofs/analysis/hypergeometric_ipra_2026-11-16/sections/05_ode.tex}{Local solutions};
+\gitfile{docs/proofs/analysis/hypergeometric_ipra_2026-11-16/sections/10_continuation.tex}{continuation and resonance};
+\gitfile{docs/proofs/analysis/hypergeometric_ipra_2026-11-16/theorem_inventory.csv}{claim inventory}, entries W29, W38, W50 and M26.
+\bibitem{dlmf} A.\ B.\ Olde Daalhuis, \emph{Hypergeometric Function}, NIST Digital Library of Mathematical Functions. \href{https://dlmf.nist.gov/15.10}{\S15.10, differential equation and fundamental solutions};
+\href{https://dlmf.nist.gov/15.8}{\S15.8, transformations and limiting cases}. The present coefficient uses the fundamental-pair normalization specified in Section~\ref{sec:resonance}.
+\end{thebibliography}
+\end{document}

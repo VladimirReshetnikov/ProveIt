@@ -1,0 +1,15 @@
+\subsection{A one-member cover separating the two tests}
+One can see the precise difference between geometric collapse and linear filling on 13 vertices. Take $a_i$ for $i$ modulo $9$, $b_j$ for $j$ modulo $3$, and a vertex $p$. For each $i$, put $j=i\bmod3$ and include the three triangles
+\[
+ (p,a_i,a_{i+1}),\qquad (a_i,a_{i+1},b_{j+1}),\qquad
+ (a_i,b_j,b_{j+1}),
+\]
+with all their faces. Cover the resulting complex $K$ by $K$ alone. Its nerve is a single vertex. There are 13 vertices, 39 edges and 27 triangles. We compute
+\[
+ (\dim H_0,\dim H_1,\dim H_2)(K;\mathbb F_2)=(1,0,0),
+ \qquad
+ (\dim H_0,\dim H_1,\dim H_2)(K;\mathbb F_3)=(1,1,1).
+\]
+To see this, temporarily replace each $b_{i\bmod3}$ at the outer rim by a separate vertex $b'_i$. The fan from $p$ fills the inner nine-gon, and the other 18 triangles triangulate its annular collar. Orient the resulting disk consistently. Along any internal edge the two triangle coefficients of a cycle must agree, as the induced edge signs are opposite. The triangles are connected by internal edge adjacencies, so all coefficients are a common scalar $c$. Upon restoring the identifications of rim vertices, only rim edges are identified: each edge $b_jb_{j+1}$ receives the same oriented rim contribution three times. Thus $\partial_2$ kills the constant coefficient vector exactly when $3c=0$, and these exhaust its kernel. The connected edge graph gives $\operatorname{rank}\partial_1=12$ (a spanning tree gives 12 independent differences, and every edge difference has coordinate sum zero). Hence $\dim\ker\partial_1=27$; subtracting the rank of $\partial_2$ proves the formulas.
+
+The one-member cover passes the local $\mathbb F_2$ contraction test. It has no elementary collapse to a point: every edge has at least two incident triangles, and every vertex lies in several triangles. Its $\mathbb F_3$ homology also separates it from a point. In particular the $\mathbb F_2$ test alone cannot establish the conclusion of the geometric nerve theorem; even its predicted agreement of homology with other coefficients can fail. All displayed ranks are computations on finite signed boundary matrices. The companion \texttt{threefold.py} computes them independently by modular elimination.

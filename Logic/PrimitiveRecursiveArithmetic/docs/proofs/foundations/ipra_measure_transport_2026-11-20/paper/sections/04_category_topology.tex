@@ -1,0 +1,602 @@
+\section{A category of analytic operators with explicit bounds}
+\label{ct:operators}
+
+The earlier completion and category packets already supply a general
+extension principle and elementary category laws. The useful addition here
+is a small operator calculus that records which analytic operations descend
+to a completion, how their error bounds compose, and which apparently
+similar operations do not descend. This section is a specialization and
+quantitative synthesis of familiar mathematics, rather than a claim that
+bounded-operator extension is a new classical theorem.
+
+\subsection{Objects, arrows, and rapid names}
+
+A \emph{rational seminormed presentation} consists of a decidable set of
+codes, primitive recursive codes for zero, addition, negation and rational
+scalar multiplication, and a rational-valued seminorm satisfying the vector
+space and seminorm laws. The equality of codes may be finer than equality
+of represented vectors; zero seminorm identifies the redundant vectors.
+All stated laws must have object-theory proofs or occur as explicit
+hypotheses. Dyadic step functions with their $L^1$ seminorm are the principal
+example. Their refinement relations ensure that equivalent finite
+presentations have zero distance.
+
+Write $e_n=2^{-n}$. A rapid name $a$ satisfies
+\[
+   \|a_q-a_p\|\leq e_p\qquad(q\geq p).
+\]
+The represented equality of two names is the cross estimate
+\[
+ a\simeq b\quad\Longleftrightarrow\quad
+ \forall p,q\;\|a_p-b_q\|\leq e_p+e_q.
+\]
+A rapid name satisfies this estimate with itself. For transitivity, insert
+$b_j$ into the triangle inequality and obtain the desired bound plus
+$2e_j$. A strictly positive rational violation would exceed $2e_j$ for an
+explicit sufficiently large $j$, found from its numerator and denominator.
+This proves transitivity intuitionistically using rational order. No test
+for equality of completed objects has been introduced.
+
+An arrow $T:V\to W$ is a specified primitive recursive linear map, together
+with an integer $M\geq0$ and a proof of
+\[
+                    \|Tv\|\leq M\|v\|.
+\]
+Equality of arrows means equality of their values in the target
+seminormed quotient. The same underlying arrow can have many valid bounds.
+Thus the bound is operational data, not part of extensional arrow equality.
+Define
+\[
+ h(M)=\min\{j\leq M+1:M\leq2^j\}.
+\]
+The set is nonempty, and this is bounded search. In particular $h(0)=h(1)=0$.
+
+\begin{theorem}[Quantitative bounded-operator extension]
+\label{ct:extension}
+The formula
+\[
+                   (\widehat T a)_n=T(a_{n+h(M)})
+\]
+constructs a rapid name. It preserves represented equality, agrees with $T$
+on constant names, and defines a linear map on the completion. Identity and
+composition are preserved up to represented equality. If $\|Sv\|\leq N\|v\|$,
+the bound attached to $S\circ T$ is $NM$.
+\end{theorem}
+\begin{proof}
+For $q\geq p$, linearity and the norm bound give
+\[
+ \|T(a_{q+h(M)})-T(a_{p+h(M)})\|
+ \leq M e_{p+h(M)}\leq e_p.
+\]
+For equivalent inputs the corresponding cross estimate is at most
+$M(e_{p+h(M)}+e_{q+h(M)})\leq e_p+e_q$.
+Addition of names is represented by $a_{n+1}+b_{n+1}$; its rapidness follows
+by adding the two input estimates. Scalar multiplication uses the same
+construction with an integer upper bound for the absolute scalar.
+Linearity of the extended map follows by applying the finite linearity
+identity to sufficiently accurate approximations and then removing their
+rational error bounds. The resulting finite argument uses no induction on
+a formula quantifying over names.
+
+The two constructors for a composite evaluate $ST$ at indices
+$n+h(NM)$ and $n+h(N)+h(M)$. Rapidness bounds the distance between these
+input values by the larger of their two errors, hence also by their sum.
+After multiplication by $NM$, each sum term is at most $e_n$.
+Using arbitrary output indices $p,q$ therefore gives the equality bound
+$e_p+e_q$. Identity has shift zero. This proves the category laws on
+represented arrows directly. An extension is unique among bounded linear
+extensions: approximate the input by $a_n$, use the common core value, and
+bound the two remaining differences by the respective operator bounds
+times $e_n$.\end{proof}
+
+This proof explains an efficiency gain. An integration, averaging, or
+conditional-expectation operator with norm at most one needs no extra
+precision shift. A pipeline $T_r\cdots T_1$ can use a single shift for the
+product of the bounds instead of repeatedly rebuilding names. If separately
+implemented stages introduce errors $\delta_i$, the output error is at most
+\[
+ \sum_{i=1}^r\delta_i\prod_{j=i+1}^rM_j.
+\]
+The proof is finite induction on the stages using
+$E_{i+1}\leq M_{i+1}E_i+\delta_{i+1}$. The invariant is a rational
+inequality after denominators are cleared. This is an object-iPRA induction
+candidate with a quantifier-free invariant, rather than an assertion about
+an unbounded family of analytic operators.
+
+\subsection{Bilinear operations and the correct tensor product}
+
+\begin{theorem}[Bilinear extension on certified bounded inputs]
+\label{ct:bilinear}
+Let a specified rational bilinear map satisfy
+$\|B(u,v)\|\leq M\|u\|\|v\|$.
+Suppose rapid names $a,b$ have uniform integer bounds
+$\|a_n\|\leq R$, $\|b_n\|\leq S$.
+For $H=h(M(R+S))$, the sequence
+\[
+                       B(a_{n+H},b_{n+H})
+\]
+is rapid. It depends only on the represented inputs, and it is bilinear on
+completion classes.
+\end{theorem}
+\begin{proof}
+The finite identity
+\[
+ B(u,v)-B(u',v')=B(u-u',v)+B(u',v-v')
+\]
+gives
+\[
+ \|B(u,v)-B(u',v')\|
+ \leq M\bigl(\|u-u'\|\|v\|+\|u'\|\|v-v'\|\bigr).
+\]
+For two indices $q\geq p$ the right side is at most
+$M(R+S)e_{p+H}\leq e_p$. To compare two constructions with different certified bounds, first enlarge
+both pairs of bounds to their coordinatewise maxima, and use the resulting
+common shift. For a fixed input pair, comparing its old and enlarged shifts
+uses its old bound $M(R+S)$; both shifts dominate that bound, so the cross
+error is at most $e_p+e_q$. With the common bounds and common shift in place,
+the cross-name inequalities prove equality for equivalent input pairs.
+Transitivity therefore proves independence of both names and bound choices.
+The finite bilinear identities pass through these same estimates.
+Every rapid name admits such an integer bound: use
+$R=\lceil\|a_0\|\rceil+2$, since
+$\|a_n\|\leq\|a_0\|+1$.\end{proof}
+
+For step functions on separate probability coordinates, define
+$(f\otimes g)(x,y)=f(x)g(y)$. Finite rectangular summation gives exactly
+\[
+               \|f\otimes g\|_1=\|f\|_1\|g\|_1.
+\]
+The theorem therefore supplies a well-defined tensor operation
+$L^1(X)\times L^1(Y)\to L^1(X\times Y)$ on the represented completions.
+The same finite factorization gives
+$I(f\otimes g)=I(f)I(g)$; finite sums of tensors and the Fubini contraction
+from the measure section extend this identity to the corresponding named
+objects. Associativity, symmetry, and the unit are witnessed by reindexing
+finite rectangular arrays, then by the extension estimates.
+
+This claim concerns this concrete tensor operation. It does not silently
+construct the projective norm on an arbitrary algebraic tensor product:
+that norm is an infimum over decompositions, and an effective approximation
+to that infimum would require further data.
+
+Multiplication \emph{on the same coordinate} is different. If
+$f_m=2^{m/2}\mathbf1_{[0,2^{-m})}$ for even $m$, then
+$\|f_m\|_1=2^{-m/2}$ but $\|f_m^2\|_1=1$. Thus multiplication cannot be a
+continuous bilinear map $L^1\times L^1\to L^1$. It becomes bounded on
+$L^\infty\times L^1$ when an explicit uniform bound is supplied, or on
+$L^2\times L^2\to L^1$ with a Cauchy--Schwarz certificate. The typing of an
+analytic expression must distinguish these cases.
+
+\subsection{Probability kernels as contraction arrows}
+
+Let $p_i,q_j$ be rational probability vectors and let $K_{ij}\geq0$ satisfy
+\[
+       \sum_jK_{ij}=1,\qquad q_j=\sum_i p_iK_{ij}.
+\]
+For a target vector $f$ define $(K^*f)_i=\sum_jK_{ij}f_j$.
+Then
+\[
+ \sum_i p_i|(K^*f)_i|
+ \leq\sum_{i,j}p_iK_{ij}|f_j|
+ =\sum_jq_j|f_j|.
+\]
+This is a contraction in the weighted $L^1$ seminorms. If $L$ is a second
+kernel, ordinary finite multiplication gives
+$(KL)^*=K^*L^*$ and the required marginal identity. Positivity and the
+constant-one vector are preserved. These identities give a category of
+rational probability presentations and law-compatible kernels, acting
+contravariantly by contractions on observables.
+
+To pass a family of finite kernels to completed probability presentations,
+provide compatibility with refinement, or an explicit summable operator
+error bound for that compatibility. Existence of an arbitrary measurable
+conditional probability is not inferred from this construction. The
+specific dyadic averaging kernels used for Fubini and conditional
+expectation have exact refinement compatibility, so the construction is
+unconditional for those kernels.
+
+\section{Integral-quantifier semantics and its substitution discipline}
+\label{ct:logic}
+
+Integration can act as a real-valued logical quantifier; this is an
+established model-theoretic direction, represented for example by Bagheri
+and Pourmahdian's continuous integration logic
+\cite{ct-integration-logic}. Here the goal is a much smaller numerical
+semantics whose every demanded value has an explicit finite approximation.
+The construction makes no appeal to compactness, ultraproducts, or the
+existence of models of arbitrary consistent theories.
+
+\subsection{Syntax with measured contexts}
+
+For $d$ free variables use the dyadic probability cube
+$\Omega_d=[0,1)^d$, with $\Omega_0$ a one-point probability space. Rational
+step functions are stored on finite product partitions. A formula in
+context $d$ is generated by:
+\begin{enumerate}
+\item an atomic predicate occurrence with a supplied rapid $L^1(\Omega_d)$
+name whose finite values lie in $[0,1]$;
+\item a specified rational connective $c:[0,1]^r\to[0,1]$, with rational
+coefficients $\lambda_i\geq0$ satisfying
+$|c(u)-c(v)|\leq\sum_i\lambda_i|u_i-v_i|$;
+\item a quantifier $Q\psi$ in context $d$ when $\psi$ has context $d+1$,
+interpreted by integration in the last variable;
+\item a pullback along a supplied map of measured contexts with the
+bounded-compression certificate described below.
+\end{enumerate}
+One can replace rational sensitivity coefficients by integer upper bounds
+when a simple shift is desired. Product, complement, minimum, maximum,
+truncated subtraction, and rational convex combinations all admit such
+bounds. All constituent approximations are refined to a common finite
+partition before a connective is evaluated.
+
+The qualification ``atomic predicate occurrence'' is deliberate: an
+$L^1$ name for a two-variable predicate cannot automatically be reused as
+a name for its diagonal occurrence $P(x,x)$. That restriction is proved,
+and a useful sufficient repair is given, below.
+
+\begin{theorem}[Compositional $L^1$ sensitivity]
+\label{ct:formula}
+Give each atomic occurrence $\alpha$ an error $\epsilon_\alpha$ between
+two interpretations in its actual measured context. Define the error
+expression recursively by
+\[
+ E_\alpha=\epsilon_\alpha,\quad
+ E_{c(\psi_1,\ldots,\psi_r)}=\sum_i\lambda_iE_{\psi_i},\quad
+ E_{Q\psi}=E_\psi,\quad E_{\tau^*\psi}=D_\tau E_\psi.
+\]
+Then the $L^1$ distance between the two formula interpretations is at most
+$E_\varphi$. In particular, a sentence has absolute value error at most
+$E_\varphi$. If all atomic names are rapid, all operations are exact on
+finite step functions, and $W_\varphi$ is obtained by first replacing each rational sensitivity
+and compression coefficient by its nonnegative integer ceiling and then
+setting every atomic error to one, evaluating all atoms at
+$n+h(W_\varphi)$ gives a rapid name for the value of $\varphi$.
+\end{theorem}
+\begin{proof}
+At a connective, integrate its pointwise sensitivity inequality and use
+finite linearity of the integral. At $Q$, the finite inequality
+\[
+ \left|\sum_j w_j(f_{ij}-g_{ij})\right|
+ \leq\sum_jw_j|f_{ij}-g_{ij}|
+\]
+is summed over the remaining coordinates. This is precisely the Fubini
+contraction, and it survives passage to the rapid completions. The pullback
+case is the contraction estimate with coefficient $D_\tau$ below. These
+arguments prove the error recurrence by induction on a finite formula.
+For two precision indices $q\geq p$, the atomic error is at most $e_p$;
+therefore the whole error is at most $W_\varphi e_p$. The specified shift
+makes it at most $e_n$. A sentence is an element of the completion of
+$\mathbb Q$ since its measured context has one point.\end{proof}
+
+This is a form of approximate elementary preservation for the chosen
+fragment: if two presented structures have small atomic discrepancies in
+all the contexts actually used, the displayed error expression bounds the
+change in every fixed formula. It is not a completeness theorem for a
+logical proof system. For a proof-producing interpretation, the finite
+sensitivity lemmas are first derived in the arithmetic calculus, and every
+rule of the selected integral logic must then be checked against them.
+
+There is a practical gain over uniform-net evaluation: integration does not
+increase the sensitivity coefficient. Nested expectation quantifiers can
+be evaluated by successive exact averaging. Fubini allows their order to
+be chosen to minimize intermediate table size. The formula proof justifies
+this change of order. The representation may still have exponentially
+many cells; no polynomial complexity bound is asserted.
+
+\subsection{Which substitutions are legal in \texorpdfstring{$L^1$}{L1}?}
+
+A step-compatible map $\tau:X\to Y$ has \emph{compression bound} $D$ if,
+for each target partition used and every target cell $A_j$,
+\[
+                \mu_X(\tau^{-1}(A_j))\leq D\mu_Y(A_j).
+\]
+The preimages must have specified finite descriptions or certified named
+approximations, with their own error budget. In the exact finite case,
+collecting the source cell weights proves
+\[
+ \|g\circ\tau\|_{L^1(X)}
+ =\sum_j|g_j|\mu_X(\tau^{-1}(A_j))
+ \leq D\|g\|_{L^1(Y)}.
+\]
+Thus pullback extends by Theorem~\ref{ct:extension}. Compression bounds
+multiply under composition. Coordinate permutations and projections with
+independent unused coordinates have $D=1$. They justify variable renaming
+and the appropriate weakening operations.
+
+\begin{proposition}[Diagonal substitution and supremum are not $L^1$ rules]
+\label{ct:diagonal}
+There is no continuous operator on arbitrary $L^1([0,1)^2)$ classes that
+agrees with $f\mapsto(x\mapsto f(x,x))$ on all dyadic step functions.
+There is also no continuous $L^1$ operation agreeing with supremum on all
+bounded dyadic step functions.
+\end{proposition}
+\begin{proof}
+Let $A_{m,i}=[i2^{-m},(i+1)2^{-m})$ and set
+\[
+ u_m(x,y)=\sum_{i<2^m}\mathbf1_{A_{m,i}}(x)
+                              \mathbf1_{A_{m,i}}(y).
+\]
+The $2^m$ occupied squares each have area $2^{-2m}$, so
+$\|u_m\|_1=2^{-m}$. Yet $u_m(x,x)=1$ for every $x$.
+The input sequence converges to zero in $L^1$, while the proposed output
+sequence stays distance one from zero. In fact the diagonal map has no
+finite compression bound: the union of the occupied squares has area
+$2^{-m}$ and its diagonal preimage has measure one.
+For supremum use $v_m=\mathbf1_{[0,2^{-m})}$, which has $L^1$ norm
+$2^{-m}$ and supremum one.\end{proof}
+
+Consequently one must not treat arbitrary almost-everywhere predicate
+classes as a full first-order structure with unrestricted substitutions.
+A safe implementation either supplies a separate atomic name in each
+required context, limits substitutions to certified compression maps, or
+upgrades the predicates to uniformly controlled pointwise representatives.
+Exact zero tests and sharp truth thresholds likewise require separation;
+compositional approximation alone cannot decide them.
+
+\subsection{Recovering pointwise predicates from quantitative regularity}
+
+There is a useful repair that is stronger than merely forbidding the
+problematic substitutions. Work on the closed cube $[0,1]^d$; the boundary
+has no effect on the integral. Suppose $f,g$ have specified pointwise
+representations and are both $L$-Lipschitz for the maximum metric.
+All integrals in the following proof can be constructed by finite rational
+Riemann sums with the supplied Lipschitz modulus.
+
+\begin{theorem}[$L^1$-to-uniform upgrade]
+\label{ct:upgrade}
+For $d\geq1$ and $0<\delta\leq1$,
+\[
+ \sup_x|f(x)-g(x)|
+ \leq \delta^{-d}\|f-g\|_1+2L\delta.
+ \tag{\ref{ct:upgrade}a}
+\]
+Let $(f_n)$ be a family with this common Lipschitz bound and a supplied
+$L^1$ Cauchy modulus $N$, so that
+$\|f_n-f_m\|_1\leq2^{-r}$ for $n,m\geq N(r)$.
+Put
+\[
+ a=k+h(8L+1),\qquad r=k+da+1.
+\]
+Then $N(r)$ is a uniform Cauchy index for error $2^{-k}$.
+Here an integer upper bound for $L$ is used in $h$.
+\end{theorem}
+\begin{proof}
+Fix $x$. In each coordinate choose an interval of length $\delta$ contained
+in $[0,1]$ and containing $x_i$; for example its left endpoint can be
+$\min(x_i,1-\delta)$. Their product $C_x$ has volume $\delta^d$, and
+$\|x-y\|_\infty\leq\delta$ for every $y\in C_x$. Hence
+\[
+ |f(x)-g(x)|\leq|f(y)-g(y)|+2L\delta.
+\]
+Integrating this inequality on $C_x$, bounding its integral by the
+whole-cube integral, and dividing by the positive rational $\delta^d$
+gives the displayed estimate. When $x$ is rational this is a direct limit
+of finite rational inequalities. For a represented $x$, approximate it by
+rational points and use the common Lipschitz bound; its value estimate
+passes to the limit with an explicitly chosen input precision.
+
+Take $\delta=2^{-a}$. Since $2^{h(8L+1)}\geq8L+1$, the second term is at
+most $2^{-k}/4$. With $r=k+da+1$, the first term is at most
+$2^{da}2^{-r}=2^{-k}/2$. Their sum is strictly below $2^{-k}$.
+Thus the reindexed family is uniformly Cauchy. A diagonal of its specified
+value approximations constructs the pointwise limit, and passing the
+finite Lipschitz inequalities to that limit proves the same bound $L$.
+\end{proof}
+
+This theorem supplies a primitive recursive modulus upgrade in every fixed
+dimension. It requires the common regularity bound and an $L^1$ convergence
+modulus; it does not extract either from their mere classical existence.
+Once the upgrade has been made, diagonal substitution is continuous for
+the supremum norm, so the desired pointwise formula can be evaluated. The
+result is also a concrete interface between the present integral semantics
+and the earlier uniform finite-net semantics.
+
+\section{Stable topological observations without exact distance tests}
+\label{ct:topology}
+
+Finite complexes here are certificates for statements about metric spaces
+and their approximations. The target is multiscale topological information,
+not the replacement of topology by an unrelated finite problem.
+Rips interleavings from metric correspondences are standard in persistence
+theory; see Chazal, de Silva, and Oudot \cite{ct-rips}. The contribution here
+is the explicit arithmetic certificate, the treatment of uncertain
+distances, and the separation of the finite homotopy proof from geometric
+reconstruction claims.
+
+\subsection{Rational complexes and the finite homotopy witness}
+
+For a finite rational metric table $(A,d_A)$ and rational scale $r\geq0$,
+let $\operatorname{VR}_r(A)$ contain the nonempty finite subsets whose
+pairwise distances are at most $r$. A $q$-chain over $\mathbb F_2$ is a
+finite parity sum of $(q+1)$-element simplices. Its boundary is the parity
+sum of the $q$-element faces. Each twice-deleted face appears exactly twice,
+so $\partial^2=0$. In degree zero use the unaugmented boundary zero.
+
+For an ordered vertex list, write $[v_0,\ldots,v_q]$ for the sorted simplex
+when the vertices are distinct and for zero otherwise. This normalization
+commutes with the boundary over $\mathbb F_2$: in a repeated-vertex list,
+faces deleting the two repeated occurrences cancel, while the other faces
+remain degenerate. A simplicial vertex map thus induces a chain map even
+when it identifies vertices.
+
+Two vertex maps $f,g:K\to L$ are contiguous if
+$f(\sigma)\cup g(\sigma)$ is a simplex of $L$ for every simplex $\sigma$
+of $K$. Define
+\[
+ P_q[v_0,\ldots,v_q]
+   =\sum_{i=0}^{q}[f(v_0),\ldots,f(v_i),g(v_i),\ldots,g(v_q)].
+\]
+All its summands are legal by contiguity.
+
+\begin{lemma}[Explicit homotopy for contiguous maps]
+\label{ct:prism}
+The finite operator above satisfies
+$\partial P+P\partial=f_\#+g_\#$.
+In particular, for every cycle $z$, the chain $Pz$ witnesses that
+$f_\#z$ and $g_\#z$ differ by a boundary.
+\end{lemma}
+\begin{proof}
+Expand the boundary of the $i$th summand. Deleting $f(v_j)$ for $j<i$
+cancels the summand of $P\partial$ on the source face omitting $v_j$.
+Deleting $g(v_j)$ for $j>i$ cancels its corresponding source-face summand.
+The two remaining faces are
+\[
+ A_i=[f(v_0),\ldots,f(v_{i-1}),g(v_i),\ldots,g(v_q)],
+ \qquad A_{i+1}.
+\]
+As $i$ runs from zero to $q$, $A_1,\ldots,A_q$ occur twice and cancel.
+Only $A_0=g_\#[v_0,\ldots,v_q]$ and
+$A_{q+1}=f_\#[v_0,\ldots,v_q]$ survive. The normalization observation
+above covers degeneracies. For a cycle $\partial z=0$, the identity reduces
+to $\partial(Pz)=f_\#z+g_\#z$.\end{proof}
+
+This lemma already appears in the repository's topological work. It is
+included to make the new interleaving certificate self-contained; it is
+not counted as a new mathematical result of this package.
+
+\subsection{A correspondence produces a certified interleaving}
+
+Let $R\subseteq A\times B$ project onto both finite vertex sets and satisfy
+\[
+ |d_A(a,a')-d_B(b,b')|\leq\eta
+       \quad((a,b),(a',b')\in R).
+ \label{ct:distortion}
+\]
+Choose $f(a)$ and $g(b)$ by least-index search in the nonempty finite rows
+and columns of $R$. This is bounded search, not an infinite choice rule.
+
+\begin{theorem}[Finite distortion certificate]
+\label{ct:rips}
+The maps $f,g$ induce chain maps at shifted scales
+\[
+ F_r:C_*(\operatorname{VR}_r(A))\longrightarrow
+           C_*(\operatorname{VR}_{r+\eta}(B)),\qquad
+ G_r:C_*(\operatorname{VR}_r(B))\longrightarrow
+           C_*(\operatorname{VR}_{r+\eta}(A)).
+\]
+Their composites are explicitly chain homotopic to the inclusion maps at
+shift $2\eta$. Different selections subordinate to $R$ yield chain-homotopic
+maps already at shift $\eta$. The induced homology interleaving is therefore
+independent of the finite tie-breaking convention.
+\end{theorem}
+\begin{proof}
+If $a,a'$ lie in a scale-$r$ simplex, the distortion bound gives
+$d_B(f(a),f(a'))\leq r+\eta$, proving simpliciality.
+For $h=gf$, the relations $(a,f(a)),(h(a),f(a))\in R$ give
+$d_A(a,h(a))\leq\eta$. More sharply, for vertices $a,a'$ in that simplex,
+\[
+ d_A(a,h(a'))\leq d_B(f(a),f(a'))+\eta\leq r+2\eta,
+\]
+and the same bound holds for $d_A(h(a),h(a'))$ by applying the distortion
+estimate to $(h(a),f(a))$ and $(h(a'),f(a'))$.
+Thus the original simplex and its $h$-image together have diameter at most
+$r+2\eta$. Lemma~\ref{ct:prism} supplies the required chain homotopy.
+The calculation for $fg$ is identical with $A,B$ exchanged.
+
+If $f,f'$ are two selections, every mixed pair in
+$f(\sigma)\cup f'(\sigma)$ is a pair of $R$-images of source vertices.
+Its distance is at most $r+\eta$. Hence the maps are contiguous at that
+scale. Finally the vertex maps do not change when the scale increases,
+so all maps commute with the scale-inclusion maps. This is exactly the
+interleaving naturality equation.\end{proof}
+
+A chain with $s$ supported $q$-simplices produces at most $s(q+1)$ prism
+summands before parity cancellation. A relation on $n$ and $m$ vertices
+requires at most $n^2m^2$ rational distortion comparisons in a naive
+checker. These are explicit primitive recursive bounds. The homology
+statement can remain the equation
+$\partial(Pz)=GFz+z$ for each finite cycle; construction of an internal
+quotient object is unnecessary for this endpoint.
+
+\subsection{Uncertain real distances need scale slack, not sign decisions}
+
+Suppose $x_1,\ldots,x_n$ are represented points and a rational symmetric
+table $\widetilde d_{ij}$ satisfies
+$|\widetilde d_{ij}-d(x_i,x_j)|\leq\eta$.
+The vertices are the labelled indices $1,\ldots,n$, and the true distances
+form a pseudometric on those indices. Coincident represented points are
+not identified by an equality test. Write $\underline x$ for this labelled
+presentation. The approximate table need not itself satisfy the triangle
+inequality. Define the finite clique complex $K_r$ by the decidable tests
+$\widetilde d_{ij}\leq r$. Directly from the certificate,
+\[
+ \operatorname{VR}_{r-\eta}(\underline x)
+       \subseteq K_r
+       \subseteq\operatorname{VR}_{r+\eta}(\underline x),
+ \qquad r\geq\eta.
+ \label{ct:sandwich}
+\]
+If a second approximation has error $\eta'$, then
+$|\widetilde d_{ij}-\widetilde d'_{ij}|\leq\eta+\eta'$, so the identity on
+vertices induces
+\[
+             K_r\subseteq K'_{r+\eta+\eta'},\qquad
+             K'_r\subseteq K_{r+\eta+\eta'}.
+\]
+The composites are literally the inclusion maps. This gives a stable
+multiscale answer even when an exact edge distance equals the threshold.
+It does not decide the homology of the exact complex at that threshold.
+Requiring a gap for every distance comparison would unnecessarily exclude
+this useful stable observation.
+
+\subsection{From a compact metric presentation to finite topology}
+
+Fix a rational $\epsilon>0$. Let $X$ be a rational metric core with a finite $\epsilon$-net $A\subseteq X$
+and a supplied primitive recursive selector $s:X\to A$ satisfying
+$d(x,s(x))\leq\epsilon$. Inclusion $j:A\to X$ and the selector induce
+\[
+ s_r:\operatorname{VR}_r(X)\to\operatorname{VR}_{r+2\epsilon}(A),
+ \qquad j_r:\operatorname{VR}_r(A)\to\operatorname{VR}_r(X).
+\]
+For a source simplex, all distances between its vertices and the selected
+vertices are at most $r+2\epsilon$. Thus $js$ is contiguous to inclusion
+at shift $2\epsilon$; the same argument proves that $sj$ is contiguous to
+inclusion on $A$. One obtains an asymmetric interleaving with forward
+shift $2\epsilon$ and backward shift zero.
+
+In particular the scale-inclusion homology map
+\[
+ H_q(\operatorname{VR}_r(X))\longrightarrow
+ H_q(\operatorname{VR}_{r+2\epsilon}(X))
+\]
+factors through the homology of a finite complex on $|A|$ vertices. Its
+rank is therefore at most
+$\binom{|A|}{q+1}$, or the simpler primitive recursive bound
+$|A|^{q+1}$. Internally the factorization is again the explicit finite-chain
+identity provided by the prism, with the net selector applied only to the
+vertices in the input chain. It does not require quantification over a
+completed infinite homology vector space.
+
+For completion points, take a sufficiently accurate core approximation,
+then apply a finer core net selector. For example a core net of radius
+$\epsilon/2$ and a core approximation of error at most $\epsilon/2$ give
+an $\epsilon$-net selection on the represented points. A finite chain needs
+only finitely many such value calls. A fixed primitive recursive family
+supplies them directly; arbitrary program-code names require an explicit
+clocked batch or an existing proof of batch totality.
+
+What this proves is persistent topological control of a supplied metric
+presentation. It does not identify a small-scale Rips complex with the
+singular homology of an arbitrary space. Such identification requires
+additional geometric hypotheses and a reconstruction argument. No
+manifold, reach, local-contractibility, or good-cover bound is manufactured
+by the finite checker.
+
+\subsection{Exact arithmetic endpoints}
+
+The main topology endpoint is the finite implication
+\[
+ \mathrm{Metric}(A)\wedge\mathrm{Metric}(B)\wedge
+ \mathrm{CorrDist}(R,\eta)\wedge\mathrm{Cycle}_q(z,r)
+ \;\Longrightarrow\;
+ \partial\,\mathrm{Prism}(g f,\mathrm{id},z)=GFz+z.
+\]
+All finite-table conditions can be Booleanized; the polynomial/rational
+comparisons use positive denominator clearing. The loop invariant records
+the processed coefficient parity at each output simplex. Formula
+sensitivity has the analogous endpoint consisting of a finite-step
+$L^1$ error inequality. The bounded-operator extension uses two selected
+name indices and their supplied inequalities. These are precise targets
+for object-iPRA derivations. The human proofs above establish the
+mathematics and the finite induction structure; no new kernel-checked
+\texttt{Prf PRAAx} proof is claimed by this section alone.

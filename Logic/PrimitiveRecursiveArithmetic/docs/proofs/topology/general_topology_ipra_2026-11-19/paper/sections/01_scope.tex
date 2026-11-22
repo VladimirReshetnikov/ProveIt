@@ -1,0 +1,98 @@
+\section{What is proved, and what the source actually asks}
+\label{sec:scope}
+
+The source is the \emph{direct list of 33 entries} on MathWorld's General Topology topic page \cite{MWIndex}. It is not a finite syllabus of 33 theorems. Several entries define terminology; others describe whole subjects, and Kirby's List is a collection of problems. We therefore fix the direct-link scope. Following every link recursively would include much of mathematics and many open problems.
+
+The report gives precise replacements, not a claim that all of classical topology is a theorem of first-order arithmetic. Finite spaces and finite complexes are genuine mathematical spaces, not approximations to every space. Equipped metric presentations give a second, substantially broader class. Quantitative Euclidean dimension and approximate sphere results supply infinite-space applications whose proofs only inspect finite data.
+
+\subsection{The principal results}
+
+The finite chapter proves the topology--preorder correspondence, exact formulas for interior and closure, continuity as monotonicity, subspaces and quotient constructions, connected components, separation criteria, finite Urysohn and Tietze extension theorems, metrization and quasi-metrization, finite products, and the compact-open exponential law.
+
+The metric chapter proves explicit product-net estimates, distance-function Urysohn separation, quantitative coordinate metrization and Hilbert-cube embedding, and finite-mesh control of function-space distance, approximate extrema, evaluation and currying. Hypotheses include the relevant moduli, locators, base points, or separation information; they are not silently extracted from arbitrary classical topologies.
+
+Finite linear algebra yields Betti numbers, Euler--Poincare, chain-homotopy invariance, collapses, and the usual genus formulas for explicitly presented polygonal cell complexes. Finite sheaf gluing and stalks, finite Boolean algebras, and graph coloring provide further direct connections to the index.
+
+Two longer arguments deserve emphasis:
+\begin{itemize}
+\item A rational table on a $d$-cube whose opposite faces remain $h$ apart cannot land in fewer than $d$ coordinates while every Kuhn simplex has image diameter less than $h/d$. A bounded procedure returns an explicit violation. This proves dimension invariance for locally uniformly equipped homeomorphisms.
+\item A finite chain calculation separates the identity from the antipodal map on an even-dimensional sphere. With explicit Lipschitz data, it produces approximate zeros of tangent fields by a bounded rational search. On odd-dimensional spheres a nonvanishing tangent field is given explicitly.
+\end{itemize}
+
+\subsection{Three distinctions that prevent false conclusions}
+
+\paragraph{Constructive mathematics versus the strength of \ipra.}
+A proof may avoid classical logic and still use induction or recursion beyond primitive recursive arithmetic. We give bounds and quantifier-free loop invariants. Conversely, enormous finite searches are permitted: computational practicality is not the criterion.
+
+\paragraph{Semantic Lean theorems versus embedded arithmetic derivations.}
+A Lean theorem about natural numbers, preorders, or metric structures is not by itself a proof that an object-language sentence is derivable in \ipra. The latter requires a term of the form
+\[
+([]:\operatorname{List}(\operatorname{Fm}\ \operatorname{PTm}\ 0))
+ \ \vdash[\operatorname{PRAAx}]\ \varphi.
+\]
+The archive's checked foundation lemmas and its planned object-language endpoints are identified separately. No placeholder is presented as a completed topology theorem.
+
+\paragraph{Verification of a certificate versus production of a certificate.}
+Checking an embedded disk, a finite cover, or a chain contraction does not establish that every classical instance admits such a certificate within a primitive recursive bound. Where production is proved, an algorithm and bound are provided. Where only verification is available, the conclusion is conditional and is labeled accordingly.
+
+\subsection{Two corrections to the source scope}
+
+The entry named \emph{Compactness Theorem} concerns bounded rectifiable currents and the flat norm \cite{MWCurrents}; it is neither logical compactness nor merely the compactness of closed intervals. Section~\ref{sec:limits} proves a fixed-mesh chain replacement and identifies the missing uniform deformation and closure arguments.
+
+The wording on the \emph{Dehn's Lemma} page omits a necessary restriction \cite{MWDehn}. A null-homotopic simple closed curve in the \emph{boundary} of a 3-manifold bounds an embedded disk under the standard hypotheses. Another usual formulation requires a singular disk with no singularities along its boundary. A merely embedded loop in the interior that extends continuously to a disk is insufficient: every knot in $\R^3$ is null-homotopic, but a nontrivial knot does not bound an embedded disk there. We use the correctly restricted target, and prove only an explicit bounded certificate version in this packet. The boundary formulation is also stated in the topology literature \cite{DehnPrimary}.
+
+\subsection{Coverage of the direct index}
+
+The following table states mathematical scope, not formal completion. The machine-readable source map retains all 33 individual page URLs.
+\begin{longtable}{P{.28\textwidth}P{.64\textwidth}}
+\toprule
+Index entries & Treatment in this report\\
+\midrule
+\endhead
+Topology; Exterior; Local &
+Finite topologies, interior/closure/exterior, least neighborhoods and local tests; finite family tests.\\
+Homeomorphic; Homeomorphism &
+Finite preorder isomorphisms, explicit inverses and invariants; equipped Euclidean dimension obstruction.\\
+Homeomorphic Type &
+Invariants of supplied standard surface presentations; the full surface-classification theorem is not proved.\\
+Euclidean Topology; Dimension; Dimension Invariance Theorem &
+Rational grids, explicit norm comparison, finite obstruction and modulated homeomorphisms.\\
+Urysohn's Lemma &
+Finite normal spaces; distance functions with positive denominators and explicit moduli.\\
+Urysohn's Metrization Theorem &
+Finite metrization and quasi-metrization; equipped separating coordinates and a metric Hilbert-cube embedding.\\
+Tychonoff Theorem &
+Finite-space compact products and equipped finite/countable metric product nets; no arbitrary-cover theorem.\\
+Compact-Open Topology &
+Finite exact exponential law and quantitative compact-domain function-space constructions.\\
+Betti Number; Euler Characteristic; Genus &
+Rational finite chain complexes, invariance under supplied chain homotopies, certified surface cell presentations.\\
+Hairy Ball Theorem &
+Explicit odd-sphere field, linear-field obstruction, finite antipodal obstruction, bounded approximate zeros on even spheres.\\
+Coloring &
+Finite graph coloring, bipartite criterion and the graph Betti-number formula.\\
+Presheaf of Categories &
+Finite category/functor diagram interface; no higher-category descent theorem.\\
+Restriction Map; Restriction of a Sheaf; Sheaf; Sheaf of Rings; Sheaf Section; Stalk; Subsheaf &
+Finite presheaves, unique gluing, restrictions, minimal-neighborhood stalks and pointwise ring operations.\\
+Sigma-Algebra &
+Finite Boolean algebras and atoms; bounded or stabilization-certified unions; an unbounded-union obstruction.\\
+Sigma-Discrete Family; Sigma-Locally Finite Family &
+Finite-prefix tests and supplied local-support bounds. No arbitrary infinite support extractor.\\
+Compactness Theorem &
+Fixed-mesh bounded integral chains and a conditional finite-scale deformation consequence.\\
+Dehn's Lemma &
+Bounded PL disk certificates and their exact verification, not general disk-existence production.\\
+Differential Topology &
+The tangent-field results above; no claim to cover the entire subject.\\
+Kirby's List &
+Classified as a problem collection, not asserted or solved.\\
+\bottomrule
+\end{longtable}
+
+\subsection{How ProveIt is reused}
+
+The source snapshot is commit \code{eb8eb6653c85aa44f1e18dd4efa243f41b5a9e98}. Its main README explicitly distinguishes the checked \code{ConciseIPRA}, \code{Derivations}, and \code{Bridge} libraries from delivered research packets that have not been rerun or verified \cite{RepoReadme}. We follow that distinction.
+
+The fixed-symbol/finite-table discipline and observation-carrier viewpoint agree with the existing topology framework \cite{RepoTopology}. The dimension chapter reconstructs the argument in the existing dimension-invariance packet, including its essential staggered-grid idea \cite{RepoDimension}. It is reuse with a fresh explanation and additional integration, not a novelty claim. The native transfer interface is the inspected \code{pra\_iff\_native} theorem \cite{RepoNative}. It transfers an already constructed arithmetic proof; it does not manufacture one from an external mathematical assertion.
+

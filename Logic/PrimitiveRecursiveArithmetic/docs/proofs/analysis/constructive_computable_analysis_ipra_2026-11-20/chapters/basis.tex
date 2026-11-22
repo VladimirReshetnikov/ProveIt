@@ -1,0 +1,111 @@
+\section{The arithmetic interpretation}
+\label{sec:basis}
+
+\subsection{What a presentation means}
+
+Use the repository's ordinary intuitionistic primitive recursive arithmetic.
+The only object sort is the natural numbers. Each fixed primitive recursive
+(PR) definition has its own symbol. The proof calculus admits first-order
+intuitionistic deductions and induction on quantifier-free formulas. In the Lean
+implementation the symbols are \texttt{PR k}, terms are \texttt{PTm n}, and the
+judgment with assumptions $\Gamma$ and conclusion $A$ is \texttt{Prf PRAAx}
+$\Gamma\ A$. Here $n$ counts free numerical variables. We give schemata in fixed
+PR algorithms, allowing their numerical parameters, including finite tables, to
+vary. A schema can be instantiated by substituting terms and the corresponding
+correctness derivations. Its quantification over algorithms belongs to the
+metatheory.
+
+A rational can be a signed numerator and a positive denominator. For a total
+natural coding, represent the integer numerator by a difference of naturals and
+the denominator by one plus a natural. Equality and order are cross-products;
+an unreduced fraction is a valid result. Encode finite lists by length and
+contents, or use the explicit coding in Section~\ref{sec:oracle}. Each
+operation used below has a PR loop bound. One may use the same finite integer
+kernel for real, vector, and table observations. Fixed finite product distances
+can use the maximum of coordinate distances.
+
+In a rational pseudometric basis $(D,d)$ let $e_p=2^{-p}$. A name is a family
+$x_p$ satisfying $d(x_p,x_q)\le e_p+e_q$. Equality of two names means
+$d(x_p,y_q)\le e_p+e_q$ at all $p,q$. This definition only needs basis distances,
+not a prior construction of an infinite sequence as a set inside arithmetic.
+For fixed PR families these are first-order formulas. Externally the same
+conditions describe arbitrary Cauchy names in the completion. A bound
+$|x-r|\le b$ for a named scalar and a rational means
+$|x_p-r|\le b+e_p$ for every $p$. Sums, rational multiples and order inequalities
+of named scalars are read with the sum of the individual absolute error bounds.
+This convention also applies to the $F(q)$ and $L(f)$ notation below.
+
+An elementary rule removes auxiliary precision parameters. Suppose rational
+$A,B$ satisfy $A\le B+c2^{-r}$ for every $r$, where $c\ge0$ is a supplied
+rational. If $A>B$, the positive difference has an explicitly positive
+numerator. With $A-B=a/d$ and $c=b/s$, choose, for instance, $r=bd+1$;
+then $2^r>bd$ and $c2^{-r}<a/d$. Decidable rational order gives $A\le B$.
+All products and powers are PR. This allows calculations with named scalars to
+be expanded into rational inequalities one observed precision at a time.
+
+\subsection{A rule for transferring estimates}
+
+\begin{theorem}[Two-run error rule]\label{thm:tworuns}
+Suppose the stage-$p$ algorithm returns a basis element $v$ and a finite
+transcript. There is a PR producer on the admitted numerical inputs. Assume
+that from any two valid transcripts at stages $p,q$ on compatible inputs one
+can derive
+\[
+                          d(v,w)\le e_p+e_q.
+\]
+Then the stage algorithm names an output point, and equivalent inputs have
+equivalent outputs. If two proposed regular names $y,z$ satisfy
+$d(y_i,v_k)\le e_i+\rho(k)$ and $d(z_j,v_k)\le e_j+\sigma(k)$ for all
+$i,j,k$, with a supplied schedule $k(t)$ such that
+$\rho(k(t))+\sigma(k(t))\le e_t$, then $y$ and $z$ are equal as names.
+\end{theorem}
+\begin{proof}
+Use the two-run inequality on the same input, at two precisions, to get
+regularity. Apply it to two names of the same input to get extensionality.
+For uniqueness fix one precision of each of the two proposed outputs. Compare
+both to an arbitrarily fine observation of the produced point. Add the
+two bounds by the triangle inequality, then eliminate the surplus term with
+the preceding rational rule. Each use instantiates a universal numerical
+hypothesis. There is no selection of infinitely many witnesses.
+\end{proof}
+
+One common way of proving the two-run hypothesis is to compare each run to
+the same rational test functional with error $e_p$. In the law construction
+the distinguishing test is itself produced from the two finite outputs.
+In the root construction one compares rational brackets before estimating
+a residual. A checker which accepts candidate observations supplies a soundness
+implication. To obtain the theorem's producer one must also give the candidate,
+an explicit bounded search with a proved success premise, or a PR iteration
+with a proved terminal condition.
+
+A finite proof that uses a loop should state its invariant at a fixed final
+precision. For a comparison needed at every $i<N$, a bounded conjunction is
+compiled as the product of Boolean comparisons, or as the test that the sum of
+failure bits is zero. The induction formula is an equation of terms. A universal
+contract may be held as a hypothesis and instantiated at a computed index
+inside a step. Inducting directly on a universal statement about all functions,
+all levels, or all future inputs would require a different rule.
+
+\subsection{Relation to the ProveIt packets}
+
+The development uses revision \texttt{b2341af5370c} of ProveIt. Its
+finite-query normal form already codes a bounded finite path, and its continuous
+frameworks already give completion, effective compactness and residual-to-name
+rules. Our use of finite observations builds on those results. Three more
+specific comparisons determine the applications.
+
+\begin{itemize}
+\item The analysis library has polynomial bisection, root names and uniqueness
+results. Section~\ref{sec:conditioned-zero} asks what comparison at a midpoint can
+be replaced by when only a noisy observation of a general function is available.
+\item The calculus packet proves FTC II assuming derivative information.
+\texttt{TaggedFTC} proves the summation of upper and lower cell estimates.
+Section~\ref{sec:dyadicapplication} constructs derivative information from a
+condition on the value tables, including behavior at old grid knots.
+\item The expected-value packet defines a simple-law name using finite
+couplings as data. Section~\ref{sec:laws} produces such couplings from
+marginal tables on the line and, one step earlier, produces the marginal
+tables from an oracle for expectations of continuous polygonal probes.
+\end{itemize}
+Revision-specific links and reproduction instructions appear in the final
+section and in the source inventory in the archive.

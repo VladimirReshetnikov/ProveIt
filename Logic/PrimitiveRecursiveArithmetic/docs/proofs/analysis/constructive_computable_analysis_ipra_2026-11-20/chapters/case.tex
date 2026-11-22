@@ -1,0 +1,86 @@
+\section{Recovering a derivative from dyadic values}
+\label{sec:dyadicapplication}
+
+The ProveIt calculus packet takes a derivative name and a uniform derivative modulus as inputs to its second fundamental theorem of calculus. Its tagged version takes a partition realizer. The object derivations \texttt{TaggedFTC.tagged\_upper} and \texttt{tagged\_lower} telescope two cell inequalities. Their source explicitly leaves the derivation of the cell estimate and the passage to names outstanding. Can a program obtain all three ingredients from observations of the original function alone? The following sufficient condition uses second differences of those observations. It applies in particular when the slopes have a certified Lipschitz bound. Sources are the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/calculus_ipra/README.md}{calculus packet} and the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Analysis/TaggedFTC.lean}{tagged-sum derivations}.
+
+\subsection{A checkable smoothness hypothesis}
+
+Put $h_n=2^{-n}$ and $e_p=2^{-p}$. The input $A(t,p)$ is a fixed PR rational evaluator on dyadic points $t\in[0,1]$, represented in canonical form. It obeys
+$|A(t,p)-A(t,q)|\le e_p+e_q$. Let $b(n),T(n)$ be nonnegative PR rationals with $T$ nonincreasing. Supply proofs of the following numerical contracts:
+\begin{align}
+ |A((j+1)h_n,p)-2A(jh_n,p)+A((j-1)h_n,p)|
+       &\le h_n b(n)+4e_p,
+       \quad 0<j<2^n, \label{eq:dd-grid}\\
+ \tfrac12\sum_{r=n+1}^m b(r)&\le T(n)
+       \qquad (m\ge n). \label{eq:dd-tail}
+\end{align}
+Supply a PR schedule $N(k)\ge1$ satisfying $b(N(k))+2T(N(k))\le e_k$.
+The tail contract is a finite-sum version of the Dini summability condition on the oscillations of adjacent slopes. Levels outside the schedule need only obey the two displayed inequalities. The hypothesis at \emph{every} interior grid point includes old dyadic knots. The error allowance $4e_p$ accounts for the three coefficients $1,-2,1$.
+
+\begin{theorem}[Two-query differentiation]\label{thm:dd}
+These data define a unique continuous extension $F$ of the given dyadic values and a continuous function $G$ on $[0,1]$. The derivative of $F$ is $G$, one-sided at the endpoints. Write $W(n)=b(n)+2T(n)$. For every $n\ge1$,
+\begin{align}
+ |x-y|\le h_n &\ \Longrightarrow\ |G(x)-G(y)|\le W(n), \label{eq:dd-mod}\\
+ u\le t\le v,\quad v-u\le h_n
+ &\ \Longrightarrow\ |F(v)-F(u)-(v-u)G(t)|\le(v-u)W(n).
+ \label{eq:dd-cell}
+\end{align}
+At requested precision $k$, the derivative evaluator queries $A$ at the two ends of one level-$N(k+2)$ cell. A named input coordinate requires one additional coordinate reading.
+\end{theorem}
+
+\begin{proof}
+At a fixed dyadic point, denote the regular value of $A(t,\cdot)$ by $f(t)$. Then $|A(t,p)-f(t)|\le e_p$. Use $s_{n,j}$ for the true slope between consecutive level-$n$ dyadic values, i.e.,
+\[
+ s_{n,j}=2^n\bigl(f((j+1)h_n)-f(jh_n)\bigr),\qquad 0\le j<2^n .
+\]
+Reading \eqref{eq:dd-grid} at all precisions gives $|s_{n,j}-s_{n,j-1}|\le b(n)$. Each parent slope is the arithmetic mean of its two child slopes since the middle terms cancel. Hence either child differs from its parent by at most $b(n+1)/2$. Iteration and \eqref{eq:dd-tail} give
+\[
+ |s_{m,i}-s_{n,\lfloor i/2^{m-n}\rfloor}|\le T(n)
+ \qquad (m\ge n).
+\]
+In particular all slopes have magnitude at most
+$|A(1,0)-A(0,0)|+2+T(0)$. A dyadic interval with dyadic endpoints subdivides into finitely many cells at a common level. Its value difference is the sum of their slopes times their widths. This proves the same Lipschitz bound for $f$ on the dyadics. Evaluating on successively finer dyadic approximants therefore gives the unique continuous $F$.
+
+For rational $x\in[0,1]$ set $J_n(x)=\min(2^n-1,\lfloor 2^nx\rfloor)$ and $d_n(x)=s_{n,J_n(x)}$. The tie convention is compatible with taking parents, including at $1$. The last inequality gives $|d_m(x)-d_n(x)|\le T(n)$. The scheduled readings $d_{N(k)}(x)$ are Cauchy: compare any two levels at their maximum, using $T(N(k))\le e_k/2$. Their limit $G(x)$ satisfies $|G(x)-d_n(x)|\le T(n)$ at \emph{every} $n$. Indeed compare $d_n$ and $d_{N(k)}$ at $\max(n,N(k))$ and let $k$ increase. If $|x-y|\le h_n$, the two indices differ by at most one, so the two coarse slopes differ by at most $b(n)$. This proves \eqref{eq:dd-mod} on rationals, and the PR schedule now extends $G$ uniquely and continuously to named points.
+
+For dyadic $u\le t\le v$ in \eqref{eq:dd-cell}, subdivide $[u,v]$ at a common level $m\ge n$ containing all endpoints. For each fine cell with left endpoint $z$, its ancestor at level $n$ lies in the cell of $z$, which is at most one cell from that of $t$. Its slope differs from $G(t)$ by at most $T(n)+b(n)+T(n)$. Multiplying by the fine width and adding yields \eqref{eq:dd-cell}. The same inequalities pass to named points. Explicitly, approximate the three coordinates by dyadics in $[0,1]$, leave the approximation $u'$ to $u$ fixed, clip the approximation to $v$ into $[u',\min(1,u'+h_n)]$, then clip the approximation to $t$ into $[u',v']$. These finite minima and maxima are continuous and fix every triple obeying the hypotheses. This also justifies the boundary case $v-u=h_n$. The two-coordinate case establishes \eqref{eq:dd-mod} at named points. Taking $t=u$ or $t=v$ in the cell inequality gives the signed linear approximation with remainder at most $e_k|v-u|$ whenever $|v-u|\le h_{N(k)}$. This is uniform differentiability.
+
+For the actual query, put $n=N(k+2)$ and $p=n+k+3$. Use $J_n(x)$ when $x$ is rational. For a named argument read a rational within $e_{n+1}$ of $x$, and clip it into $[0,1]$ to obtain $y$; in the rational case take $y=x$. Read $A$ at precision $p$ at the two endpoints of cell $J_n(y)$ and divide the difference by $h_n$. The three errors from argument, slope truncation and observation are respectively at most $W(n)$, $T(n)$ and $2^{n+1}e_p$. Their sum is at most $e_k/4+e_k/8+e_k/4<e_k$. This construction never takes the floor of a named real.
+\end{proof}
+
+\paragraph{Stability under a change of input name.}
+Let $F,H$ satisfy the hypotheses with tail bounds $T_F,T_H$. If their dyadic values differ everywhere by at most a supplied $\delta$, then their two slopes on the same level-$n$ cell differ by at most $2^{n+1}\delta$. Taking a rational argument in that cell and applying its two tail bounds gives
+\[
+ |G_F(x)-G_H(x)|\le T_F(n)+T_H(n)+2^{n+1}\delta .
+\]
+By continuity the bound holds on the full interval. For equivalent value names take $\delta=0$ and $n=\max(N_F(k),N_H(k))$; monotonicity of the tails gives an upper bound $e_k$ even when the inputs use different certificates. For a common Lipschitz derivative bound $L$, the estimate becomes $Lh_n+2\delta/h_n$. It quantifies the loss of precision in differentiating noisy data.
+
+\paragraph{Recovering the integral identity.}
+For any tagged subdivision of $[u,v]$ with mesh at most $h_n$, \eqref{eq:dd-cell} yields an error at most $(v-u)W(n)$ after telescoping. Replacing the tag derivatives by readings accurate to $e_k$ adds at most $(v-u)e_k$. Errors at the two final readings of $F$ add their own two observation budgets. Thus the tagged sums form the integral name of $G$ and represent $F(v)-F(u)$. A uniform subdivision with $2^{N(k)}$ cells suffices on every subinterval of $[0,1]$. For a single output radius $e_k$, use $2^{N(k+3)}$ subintervals and tag and endpoint readings at $k+3$; the four contributions sum to at most $4e_{k+3}$ on $[0,1]$. This supplies both a derivative modulus and a tagged-partition realizer from the displayed hypotheses.
+
+\subsection{Eliminating the analytic abbreviations in arithmetic}
+
+The limit notation in the proof admits a finite implementation. Define $S_{n,p}(j)$ by the same slope formula with $A(\cdot,p)$ in place of $f$. For a fine cell $i$ and its level-$n$ ancestor $a$, the cross-level statement to derive is
+\begin{equation}
+ |S_{m,q}(i)-S_{n,p}(a)|\le T(n)+2^{m+1}e_q+2^{n+1}e_p
+ \qquad(m\ge n). \label{eq:dd-finite}
+\end{equation}
+First use a single auxiliary precision $P$ at all nodes. The parent is then the exact mean of the two children, by canonical dyadic indexing. A level-$r$ child differs from its parent by at most $b(r)/2+2^{r+1}e_P$ using \eqref{eq:dd-grid}. Fix the final fine cell and follow its computable path of ancestors. Induct on the depth along this path with the sum of these bounds as a quantifier-free rational invariant. Changing the observations at the two ends of the chain to precisions $p,q$ costs at most $2^{n+1}(e_p+e_P)+2^{m+1}(e_q+e_P)$. The coefficient of the remaining $e_P$ is bounded above by $2^{m+3}$. All other terms are those of \eqref{eq:dd-finite}.
+
+Here the exact deletion of the auxiliary slack is an arithmetic step. If the proposed rational inequality failed, its positive excess would be at least $1/D$ for a common positive denominator $D$ of its sides. Take $P=2^{m+3}D+1$. Then $2^{m+3}e_P<1/D$, a contradiction to the finite bound. Rational order is decidable, so the desired inequality follows intuitionistically. The same elimination with the three nodes of \eqref{eq:dd-grid} gives the horizontal comparison at independent reading precisions. In an object-theory proof of the cell estimate, sum the horizontal and cross-level bounds on a common mesh; copy the tag reading once as a fixed parameter of the sum. Use the two signs of the signed numerator as the two induction inequalities. Multiplication by common positive denominators leaves quantifier-free order formulas. Universally quantified input laws stay in the sequent context and are instantiated at each induction step.
+
+\paragraph{A Lipschitz derivative with its sharp constant.}
+Suppose $b(n)=Lh_n$ for rational $L\ge0$. A finite geometric sum proves \eqref{eq:dd-tail} with $T(n)=Lh_n/2$. On any level, telescope the adjacent slopes between $J_n(x)$ and $J_n(y)$. For rational $x,y$, their index difference is at most $2^n|x-y|+1$, which yields
+$|d_n(x)-d_n(y)|\le L(|x-y|+h_n)$. Adding the two tails and taking arbitrary precision gives $|G(x)-G(y)|\le L|x-y|$ also for named points. The integral identity now yields the quadratic endpoint remainder
+\[
+ |F(v)-F(u)-(v-u)G(u)|\le \tfrac{L}{2}(v-u)^2 .
+\]
+Indeed $|G(t)-G(u)|\le L(t-u)$, and averaging the affine upper bound on uniform meshes gives its elementary triangle area. For $F(x)=x^2$ the second difference at every interior grid point equals $2h_n^2$, so $L=2$. Equality in the quadratic bound holds on every nontrivial interval. The implementation in \texttt{examples/dyadic\_derivative.py} queries dyadically rounded samples of this example. It also checks endpoint clipping and a dyadic corner.
+
+\paragraph{Two obstructions.}
+For $F(x)=|x-1/2|$, sibling slopes agree within every parent after level one. At the inherited knot the two adjacent slopes differ by $2$ at every level. Omitting those comparisons would certify two incompatible derivative values. There is also a uniform impossibility even on polynomial inputs if the input representation only describes uniform function values. Let $P_m(x)=x(1-x)^m$. The $m+1$ terms of $\sum_{j=0}^m x(1-x)^j$ are each at least $P_m(x)$, and their sum is $1-(1-x)^{m+1}\le1$. Thus $\|P_m\|_\infty\le1/(m+1)$, while $P_m'(0)=1$ for every $m$ and the zero function has derivative zero. A finite observation computation on a zero name asking for derivative error $1/4$ uses only finitely many input precisions. Choose $m$ so that the zero replies at all those precisions are also valid for $P_m$ and extend them to a value name for $P_m$. The computation returns the same answer, which cannot satisfy both output requirements. This argument concerns value names; polynomial coefficient input exposes different information.
+
+\paragraph{Lean targets.}
+\texttt{lean/DyadicDetail.lean} proves the signed-integer child/parent identity as an interval bound, the four-unit second-difference noise estimate, budget addition and the square-grid identity. The companion \texttt{DyadicObject.lean} also proves the universal closure of the child/parent step as a literal \texttt{[] $\vdash$[PRAAx] sentence}. Its seven number variables represent the three signed values by pairs and the common error radius by a natural. Both the left and right intervals follow by adding the same term to an input inequality, then normalizing a polynomial identity. To continue the object-language lift, instantiate the PR symbols for canonical dyadic evaluation, powers of two, finite sums and the ancestor index. Prove \eqref{eq:dd-finite} by the signed interval induction above; prove the horizontal analogue with a single common precision. Instantiate these two lemmas for each fine-cell index at a common precision, then apply \texttt{TaggedFTC.tagged\_upper} and \texttt{tagged\_lower} to the cleared, signed terms. Dyadic subdivision and clipping give the explicit witnesses for completion. The full cross-scale and tagged derivations in \texttt{Prf PRAAx} are open implementation targets.

@@ -1,0 +1,272 @@
+\section{Continuous model theory on spaces with finite nets}
+\label{sec:continuous-models}
+
+What numerical value should an alternating string of continuous quantifiers
+have in first-order arithmetic? A single quantifier can be evaluated on finer
+finite nets. Replacing quantifiers one at a time suggests an error proportional
+to their number. Comparing the two whole evaluations by a relation gives a
+sharper answer. The same atomic error controls every quantifier in the
+formula. We first work entirely with finite rational data.
+
+\paragraph{Language and interpretation.}
+A formula has a specified number of free variables. An atom is a predicate
+symbol applied to a tuple of these variables, with repetitions and permutations
+allowed. A term operation can be included by giving the resulting atomic
+predicate its own approximation contract. Use truth values in $[0,1]$,
+rational constants, $1-u$, $\min$, $\max$, and the binders
+$\inf_y,\sup_y$. More generally admit each fixed, rational-preserving PR
+connective $C$ that maps $[0,1]^j$ into $[0,1]$ and is provably
+$1$-Lipschitz for the maximum coordinate distance. These conditions include
+averaging. The sup binder is also definable by $1-\inf_y(1-\varphi)$.
+These are the continuous-logic quantifiers of Ben Yaacov, Berenstein, Henson
+and Usvyatsov, \emph{Model theory for metric structures}, \S3
+(\href{https://doi.org/10.1017/CBO9780511735219.011}{2008}).
+The nonexpansive fragment gives the estimate below with coefficient one.
+A connective of Lipschitz constant $K>1$ contributes a factor $K$ on
+each path through its node.
+
+\paragraph{Finite back-and-forth estimate.}
+Let $U,V$ be two nonempty finite lists of possible quantified inputs,
+each with its own rational atomic tables. The tables may also read free
+parameters outside the lists.
+Let $R$ be a relation between the two carriers such that each element of
+$U$ has a relative in $V$ and each element of $V$ has a relative in $U$.
+Suppose corresponding atomic values differ by at most $\delta$ whenever
+all argument coordinates are $R$-related. Write $E_U\varphi$ for the
+rational result of substituting minimum and maximum over $U$ for the
+binders, with the indicated atomic tables. For coordinatewise related
+assignments $a,b$,
+\begin{equation}
+  |E_U\varphi(a)-E_V\varphi(b)|\leq \delta .
+  \label{eq:model-transfer}
+\end{equation}
+
+\begin{proof}
+Induct externally on the formula. An atom has the assumed bound. For a
+connective the maximum of the argument discrepancies is at most $\delta$,
+and its nonexpansiveness gives the conclusion. For an infimum write
+$f(u)=E_U\psi(a,u)$ and $g(v)=E_V\psi(b,v)$. Select the first
+minimum $v_*$ of $g$ by rational comparisons and take any $u'$ related
+to $v_*$. Extending the related assignments preserves their relation.
+The induction hypothesis gives
+\[
+  \min_U f\ \leq f(u')\ \leq g(v_*)+\delta=\min_V g+\delta.
+\]
+Select the first minimum $u_*$ of $f$ and use the other direction of
+coverage to get the reverse inequality. Each local choice disappears from
+the conclusion. The supremum case follows by the complement formula.
+In particular, no compatible matching of selected optimizers is needed.
+\end{proof}
+
+\paragraph{The metric presentation.}
+Take a nonempty decidable set of number codes $D$ with a fixed PR rational
+pseudometric $d$. For $h\geq0$ put $r_h=2^{-h}$. Supply a PR nonempty list
+$U_h\subseteq D$ and prove coverage on $D$ within $r_h$. A computable
+rounding map suffices. An existential proof of coverage in iPRA also suffices
+in \eqref{eq:model-transfer}. For each atomic predicate in the fixed formula
+supply rational samples $A_h(a)\in[0,1]$ and proofs that
+\begin{equation}
+ |A_h(a)-A_j(b)|\le Ld_\infty(a,b)+e_h+e_j,\qquad e_h=2^{-h}.
+ \label{eq:model-atom}
+\end{equation}
+Here $d_\infty$ is the maximum coordinate distance, zero on empty tuples.
+One natural $L$ can be chosen as the maximum of the finitely many atom
+constants. Error-free atoms may use $e_h=0$ instead. All structure data are
+fixed programs with numeric parameters, and each law above is a premise
+with an iPRA proof in a concrete instance.
+
+Write $E_h=E_{U_h}$, using the level-$h$ atomic tables. For any two
+tuples of dense codes $a,b$ put $t=\max(d_\infty(a,b),r_h,r_j)$.
+Relate two dense codes at distance at most $t$. Each element of $U_h$
+can be rounded into $U_j$ within $r_j$, and conversely within $r_h$.
+Every coordinate in a related tuple is at distance at most $t$, so
+\eqref{eq:model-atom} bounds all atomic discrepancies. Thus
+\begin{equation}
+ |E_h\varphi(a)-E_j\varphi(b)|\leq Lt+e_h+e_j.
+ \label{eq:model-name}
+\end{equation}
+Both levels simulate all quantifier moves with the same radius. This
+explains why the bound is independent of quantifier rank.
+
+A represented parameter tuple is a fixed PR family $a_h$ of dense codes
+with $d_\infty(a_h,a_j)\le r_h+r_j$. Equation \eqref{eq:model-name}
+bounds the value discrepancy by $(L+1)(r_h+r_j)$. Shifting the index by
+$s$ with $2^s\ge L+1$ gives a regular real name
+$k\mapsto E_{k+s}\varphi(a_{k+s})$. The same inequality with two
+equivalent tuples shows equality of the resulting names: a requested
+positive error is met by taking both radii and the cross-distance small.
+The argument also compares distinct presentations. A two-sided relation
+between their nets with atomic discrepancy $\delta_h\to0$ at a supplied
+PR rate gives identical values for closed formulas of the fragment.
+This supplies an approximate test for elementary agreement whenever
+the required relations have been exhibited.
+
+The Lipschitz hypothesis can be weakened to a common nondecreasing PR
+modulus $\mu$: at input distance at most $2^{-\mu(v)}$ require atomic
+discrepancy at most $2^{-v}+e_h+e_j$. Take
+$H(n)=\max(n+3,1+\mu(n+3))$. For $m\ge n$, both net radii and the
+distance between the tuple samples at levels $H(n),H(m)$ are at most
+$2r_{H(n)}\le 2^{-\mu(n+3)}$. Use the same relation as before.
+The resulting difference of formula values is at most
+$3\cdot2^{-(n+3)}$. This gives a regular name even when no Lipschitz
+constant exists. As before the index shift is independent of the number
+of binders.
+
+\paragraph{Why the represented binder has infimum semantics.}
+Write $v_\varphi(a)$ for the name just constructed. Fix dense parameters
+$a$ for clarity. Letting $j$ refine in \eqref{eq:model-name} shows
+\[
+    |v_\varphi(a)-E_h\varphi(a)|\le\eta_h,
+    \qquad \eta_h=Lr_h+e_h .
+\]
+The passage to an inequality of names means that any additional dyadic
+slack can be met by a sufficiently fine explicit index $j$.
+For a fixed represented $a$ the same estimate holds for $E_h\varphi(a_h)$
+because $d_\infty(a_h,a_j)\le r_h+r_j$.
+Let $m=v_{\inf_y\psi}(a)$. Given any represented $x$, at level $h$
+choose $u\in U_h$ within $r_h$ of $x_h$. The finite infimum is at most
+$E_h\psi(a_h,u)$. Applying \eqref{eq:model-name} at the same level to
+$u,x_h$ bounds this by $E_h\psi(a_h,x_h)+Lr_h+2e_h$.
+Allowing $h$ to increase gives $m\le v_\psi(a,x)$ for every supplied
+name $x$. For the converse approximation, the least minimizing sample
+$w_h$ is a dense code with a constant name and
+\[
+ v_\psi(a,w_h)\le E_h\psi(a_h,w_h)+\eta_h
+  = E_h(\inf_y\psi)(a_h)+\eta_h\le m+2\eta_h .
+\]
+Consequently every lower bound for all the $v_\psi(a,x)$ is at most $m$.
+The witness function $h\mapsto w_h$ answers each requested optimization
+accuracy. It gives a regular point name only if additional coherence is
+proved. These two inequalities also establish agreement with the usual
+infimum on the metric completion in any ambient semantics supporting that
+completion: dense samples approximate every point and the atoms extend
+uniformly. Internally each use substitutes particular arithmetic names and
+compares rational observations.
+
+\paragraph{A sentence with alternating quantifiers.}
+On $[0,1]$, take rational dense points, the absolute-distance atom, and
+the grid $U_h=\{i/N:0\le i\le N\}$ with $N=2^h$. The atomic constant
+is $L=2$ under the tuple sup metric, by two triangle inequalities.
+Consider the sentence
+\[
+ \inf_{a,b,c}\sup_x \min\{|x-a|,|x-b|,|x-c|\}.
+\]
+With $m\ge1$ centers the value on a grid of $N+1$ points is exactly $q/N$,
+where $q$ is the least nonnegative integer satisfying
+$m(2q+1)\ge N+1$. Indeed a single integer center covers at most $2q+1$
+grid points at radius $q$. Conversely, partition the consecutive points
+into blocks of length at most $2q+1$ and use the middle index of each
+block, repeating centers if necessary. This proves the grid formula by a
+finite count and a constructive cover. As $N$ grows, the inequalities
+$N+1\le m(2q+1)$ and, for $q>0$, $m(2q-1)<N+1$ give
+$q/N\to 1/(2m)$ with explicit error at most $1/N$.
+The formula with three centers therefore has value $1/6$. The centers
+$1/6,1/2,5/6$ realize it by their three closed intervals of radius
+$1/6$. At $N=8,16,32$ the computed values are $1/8,3/16,5/32$
+respectively. The program \texttt{model\_three\_centres.py} checks the
+grid formula by independently enumerating all triples.
+
+\paragraph{An infimum of zero without any computable minimizer.}
+The repository's \href{https://github.com/VladimirReshetnikov/ProveIt/blob/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Foundations/CoherenceObstruction.lean}{coherence obstruction} gives a PR tree
+whose finite levels have PR selectors. It isolates a limitation of exact
+witnesses even for a single Lipschitz atom on Cantor space. Number the
+partial computable programs. At level $n$, admit a bit word $w$ of length
+$n$ if for every $i<n$ the following implication holds. If program $i$
+on input $i$ returns a bit $b$ within $n$ steps, $w(i)=1-b$.
+Bounded simulation and the bounded scan are PR. Earlier outputs persist,
+so prefixes of admitted words are admitted. At each level one can
+explicitly fill every forced bit and set all remaining bits to zero.
+A computable infinite path $p$ would have some program index $i$. After the computation of $p(i)$ finishes, a sufficiently long admitted
+prefix would require $p(i)=1-p(i)$. This last statement is an external
+computability argument about program indices.
+
+Let $D$ consist of eventually-zero bit strings given by finite words with
+zero padding. If two strings first differ at index $i$ their distance
+is $2^{-i}$, and equal strings have distance zero. Length-$h$ words padded
+by zeros form a PR $2^{-h}$-net. Define
+\[
+ A_h(x)=\sum_{n=1}^h 2^{-n}
+       [\,x{\upharpoonright}n\text{ is not admitted}\,] .
+\]
+All summands are PR and lie in $[0,2^{-n}]$. The tail after $h$ is at
+most $2^{-h}$. Inputs agreeing on the first $i$ bits have equal
+summands through $i$, so the difference between the two limiting values
+is at most $2^{-i}$. This proves \eqref{eq:model-atom} with $L=1$
+by finite sums and their tails. An admitted word of length $h$ padded
+by zeros has $A_h=0$ and limiting value at most $2^{-h}$. Hence the
+represented infimum is identically zero as a real, with a PR approximate
+minimizer at every precision. If a point had value zero, each prefix
+would be admitted: the first failure at length $n$ would already give
+a positive contribution $2^{-n}$. A computable regular name computes
+each bit $i$ by taking a dense approximant at level $i+2$, since the
+distance to the point is then strictly below $2^{-i}$. Thus no computable
+regular name can realize the infimum. This converts the repository's
+coherence difficulty into an exact boundary for a compact metric
+structure with effective nets, uniformly small tails and an explicit
+Lipschitz bound.
+
+\paragraph{Arithmetic realization and Lean.}
+For every fixed formula, compilation builds one numerical program
+recursively on its finite syntax at the metalevel. Encode an assignment
+as a finite coded tuple, extend by pairing, evaluate atoms by the supplied
+PR symbols, and implement every infimum by a least-index argmin over
+$0,\ldots,|U_h|-1$. A supremum uses the complemented cost.
+At a fixed binder depth bounding every level by $M=|U_h|\ge1$, at most
+$|\varphi|M^{\operatorname{depth}(\varphi)}$ tree nodes are evaluated
+when the depth counts nested binders. This operation count is for a scan which stores its current best
+cost and index, so that each child is evaluated once. The Lean
+selector proves its functional specification and can recompute costs. The induction invariant asserts
+that the chosen index is within the processed prefix and its cost is
+at most each earlier cost. The latter is a bounded Boolean conjunction
+of rational comparisons, hence admits quantifier-free induction. Clearing
+positive denominators implements every comparison. The two local coverage
+witnesses in \eqref{eq:model-transfer} are used by ordinary existential
+elimination after the scan lemma. Neither an induction over a satisfaction
+predicate inside iPRA nor a PR evaluator for all programs is needed.
+
+\texttt{lean/ModelCase.lean} checks the selector and the complete formula
+induction for tables in common integer units. Its definitions
+\texttt{Corresponds}, \texttt{Related}, \texttt{value} and
+\texttt{transfer} implement the two-sided relation, coordinatewise
+assignments, evaluation and \eqref{eq:model-transfer}. For rational
+tables with the displayed $\min,\max,1-u$ operations, multiply by
+the product of the finitely many denominators (including the error
+denominator) to obtain one integer unit. The generic Lean connective carries a proof of
+integer nonexpansiveness. To interpret it on $[0,1]$ one must also ensure
+that its outputs remain in the chosen scale $[0,S]$, as they do for the
+included minimum and maximum. The rational-connective extension in the
+manuscript uses exact rational codes and their proved nonexpansiveness.
+For example, exact averaging may require a finer denominator at its
+output. There is also a checked object proof for externally fixed finite nets in
+\texttt{lean/ModelObject.lean}. For a rational threshold $q$, the upper
+cut is the assertion that the computed value is at most $q$. At a
+minimum or infimum this is the finite disjunction of child upper cuts,
+and at a maximum or supremum it is their finite conjunction. These
+equivalences follow by rational comparability and finite attainment.
+Push $1-u$ to the atoms using the duality between min and max.
+For a pair of related leaves use the source cut at $q$ and target
+cut at $q+\delta$. The theorem \texttt{cutTransfer} derives the
+corresponding implication for the whole fixed pair of tables in
+\texttt{Prf PRAAx}. The rule \texttt{infCut} transports each disjunct forwards,
+and \texttt{supCut} supplies a conjunct for each target input by
+backward coverage. The reversed relation gives the other direction.
+The code takes the atomic cut implications as derivations. Identifying
+each composite cut with the numeric evaluation uses the rational-order
+argument above. The constructor leaves
+arithmetic parameters free, while it unrolls the finite net lists at the
+Lean level. To uniformly internalize their numerical lengths, compile
+each child to a \texttt{PR 2} symbol on a candidate index and a packed
+environment. For the numerical inequality in common units, use the variable-horizon object theorem \texttt{UniformMinimum.transfer\_closed} from Section~\ref{sec:verification} in each direction. For an actual selected witness with independent rational denominators, use
+\texttt{RationalArgmin.selectedF}, \texttt{selected\_spec} and
+\texttt{selected\_minimal} from
+the upstream \href{https://github.com/VladimirReshetnikov/ProveIt/blob/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Analysis/RationalArgmin.lean}{rational argmin module}.
+Instantiate the cross-table child theorem twice with the two minimizer
+indices and locally opened covering indices. Additivity of rational order
+and transitivity prove the two directed inequalities. Abstract over the
+free numerical parameters. The metric and Cantor examples require their
+specific PR net and table proofs in this translation. Equations
+\eqref{eq:model-atom} and \eqref{eq:model-name} state the laws these
+programs must export. The repository's report on
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_embedding_framework_2026-11-15/paper/sections/08_existence_compactness.tex}{\emph{Finite nets, search, and exact objects from nested certificates}} treats a
+single sampled residual. Here the relation estimate controls arbitrary
+fixed nesting and explains exactly what the resulting quantifiers certify.

@@ -1,0 +1,115 @@
+\section{Lean formalization: definitions, dependencies, and proof obligations}
+\label{sec:lean}
+The archive includes two Lean source outlines. They have not been
+compiled in this environment. Their purpose is to make the formal
+endpoint and the path to it concrete, while keeping unfinished
+geometry separate from existing checked arithmetic infrastructure.
+
+\subsection{Mathematical finite-data layer}
+\texttt{lean/FiniteGeometry.lean} defines the coefficient pair for
+$\QQ(\varphi)$, its arithmetic and exact sign algorithm, three-vectors,
+dot and cross products, plane membership, the edge-intersection
+formula, vector shoelace squared area, and sparse three-variable
+polynomial evaluation. It also writes the cubical and octahedral
+slack identities and the tetrahedral four-weight identity as generic
+commutative-ring lemmas with \texttt{ring} proofs.
+
+The field representation in that file uses pairs of Lean rationals
+for readability. The object-language implementation instead uses the
+natural-number triple codes of the preceding section. One proves
+the correspondence component by component; it is not assumed as an
+axiom. The real Euclidean model can be added as a semantic
+interpretation after the arithmetic theorem is proved.
+
+\subsection{Object-language target}
+\texttt{lean/IPRAEndpoints.lean} uses the inspected ProveIt interfaces
+\texttt{ZExp.derive\_imp}, \texttt{ipra\_poly}, and
+\texttt{Prf PRAAx}. It contains object-language versions of the two
+short polynomial identities and defines the exact intended endpoint
+type. The five free numerical inputs are the solid index, three
+normal-coordinate codes, and the offset code. After the primitive
+recursive functions have been compiled to terms, the target is
+\begin{lstlisting}
+([] : List (Fm PTm 0)) |- [PRAAx]
+  univ 5 (validInput = 1 -> comparisonBit = 1)
+\end{lstlisting}
+Here the ASCII display abbreviates ProveIt's actual formula notation
+used in the source file. The comparison bit is exactly
+\texttt{leK (SecSq solid normal offset) (bound solid)}.
+Attainment adds five closed field-code equalities and therefore
+requires no witness search.
+
+\subsection{Reusable repository material, with its actual scope}
+The inspected repository separates kernel-checked derivations from
+unverified proof packets. We preserve that distinction. The following
+existing modules are relevant starting points:
+\begin{itemize}
+\item \texttt{Core/PolynomialImplications.lean}: translates integer
+polynomial identities and implications into \texttt{Prf PRAAx}.
+Its certificate is valid in every commutative ring; cancellation of
+a nonzero factor cannot be assumed in that ring.
+\item \texttt{Core/OrderCertificates.lean}: derives inequalities
+from explicit nonnegative slack expressions by \texttt{ipra\_le}.
+This matches the coefficientwise positivity proofs after field
+denominators and signs have been handled correctly.
+\item \texttt{Geometry/PlatonicAlgebra.lean}: derives quadratic-stage
+norm and multiplication identities and the golden-ratio algebra.
+It does not already prove the full ordered-field representation.
+\item \texttt{Geometry/Dodecahedron.lean}: contains exact dodecahedral
+vertex, distance, and supporting-face arithmetic certificates over
+coefficient pairs. Its own documentation does not claim the entire
+convex-hull boundary theorem.
+\item \texttt{Geometry/PathShoelace.lean}: supplies object-language
+translation and reversal identities for the open-path shoelace
+functional, represented as a difference of natural sums for
+first-quadrant coordinate terms. Extending those identities to signed
+quadratic-field coordinate codes and supplying their geometric
+interpretation are part of the present formalization obligations.
+\end{itemize}
+We also inspected \texttt{Geometry/RationalBrunnMinkowski.lean}.
+It proves arithmetic steps of a recursion and explicitly leaves its
+geometry and the recursion itself unproved. It is not used as a
+completed central-section theorem. Our exact reflected-fiber proof
+removes that dependency entirely.
+
+The recorded repository snapshot is
+\texttt{5580ef143d9151c1f315d9e96d0819da5b030812}; its
+\texttt{lean-toolchain} specifies Lean \texttt{v4.32.0}.
+Individual inspected Git blob identifiers are in the provenance file,
+so the audit can be reproduced even if the repository moves on.
+
+\subsection{A concrete completion order}
+\begin{enumerate}
+\item \textbf{Code arithmetic.} Implement signed integer and positive
+denominator codes, pairing, the quadratic-field operations, exact
+order, and their primitive recursive definitions. Prove the inverse
+norm lemma and order laws by integer identities and finite sign cases.
+\item \textbf{Polygon geometry.} Implement bounded clipping and the
+monotone-chain hull. Prove completeness of edge intersections,
+shoelace invariance under translation and vertex deletion, finite
+vertical subdivision, and monotonicity of convex polygon area.
+\item \textbf{Centralization.} Implement the reflection-closed
+breakpoint list and upper/lower fiber interpolation. Prove (CS1)--(CS5),
+using prefix-sum induction with the plane data as parameters.
+\item \textbf{Small solids.} Translate the tetrahedral weight and
+norm identities, the cubical two-case argument, and the octahedral
+positive polynomial. Use squared areas throughout.
+\item \textbf{Symmetry and cases.} Verify the displayed reflection
+permutations, derive finite orbit maximization, and prove the explicit
+nonnegative ray decompositions. Check all boundary cases and the
+single excluded dodecahedral formula ray.
+\item \textbf{Certificate soundness.} Formalize sparse polynomial
+addition, multiplication, linear substitution, and positive
+evaluation. Prove correctness from quantifier-free loop invariants.
+Then instantiate the supplied constant tables with kernel-checked
+arithmetic. The large tables are data, not extra axioms.
+\item \textbf{Compose and interpret.} Close the universal arithmetic
+sentence, prove the five closed witness equalities, and add the
+homothety lemma. Finally formalize the finite precision contracts of
+the general-real interpretation for specified input names.
+\end{enumerate}
+Each step has concrete input/output definitions in this report and
+the executable reference programs. The main unfinished work is proof
+engineering for the finite geometry and its object-language
+translation; there is no remaining continuous optimization problem
+or numerical conjecture to resolve.

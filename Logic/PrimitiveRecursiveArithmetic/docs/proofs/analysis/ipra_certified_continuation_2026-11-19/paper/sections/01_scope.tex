@@ -1,0 +1,43 @@
+\section{What this report adds to the current repository}\label{sec:scope}
+
+\subsection{A source-specific starting point}
+
+The baseline is a single pinned repository commit, not an impression formed from older packets. The main README distinguishes three checked libraries---\texttt{ConciseIPRA}, \texttt{Derivations}, and \texttt{Bridge}---from research packets whose intake did not itself verify them \cite{repo-readme}. We inspected the directory inventory, the dependency and endpoint documents, the large Derivations index, the FIBER and other claim audits, and the relevant source modules. We did not rebuild the whole repository. Statements below about existing verification report the repository's status and source signatures; the new results have the status declared on the title page.
+
+The current collection already has forty-five foundation packets. It also has concrete internal bounded reflection, certificate tables, realizer composition, demand closure, dyadic coherence, finite nets, and numerical precision scheduling. For example, \nolinkurl{PrecisionCostDAG} actually computes rational error budgets on a numerically encoded graph, and \nolinkurl{PrecisionCostDAGSchedule} derives its uniform dyadic schedule by quantifier-free induction \cite{repo-dag}. Thus neither a new name for contract composition nor a statement that graph scheduling is wholly missing would be a useful or accurate contribution.
+
+The following are the boundaries addressed here.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.23\textwidth}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.37\textwidth}}
+\toprule
+Current boundary & What is already present & Contribution of this report\\
+\midrule\endhead
+Coupled approximation & Numeric acyclic budgets and bounded discrete demand fixed points & A numerical positive-gain certificate for cyclic error propagation, with a geometric clock and perturbation estimates. This is a different hypothesis from monotone capped demand closure.\\
+Polynomial lifting & Ring identities for one Hensel step; various specialized lifting implications & A complete rational preconditioned iteration, invariant ball, convergence modulus, uniqueness, and coefficient stability for a supplied approximate coprime factorization.\\
+FIBER G1 & No identified common-coarsening/multiplicity transport endpoint; ambiguous metric bound & Two precise finite interfaces: Hall matching from sound occurrence covers, and component transport with the necessary diameter factor.\\
+FIBER G2 & Explicit audit finding that complex separation does not stabilize lexicographic labels & A counterexample and stable reference-locator theorem; factor labels provide a second, algebraic alternative.\\
+Euler refinement & Checked Gronwall arithmetic and Cauchy summation; local geometric recurrence assumed & Direct derivation of that recurrence for rational nonautonomous linear systems, including interpolation and input perturbation.\\
+\bottomrule
+\end{longtable}
+
+The sources for these statements are the FIBER claim audit, \texttt{HenselStep}, \nolinkurl{OdeRefinement}, and \nolinkurl{DiscreteGronwall} \cite{repo-fiber,repo-hensel,repo-ode,repo-gronwall}. An open source audit is not a theorem of impossibility. Conversely, correcting an interface does not automatically complete every downstream application.
+
+\subsection{The common mathematical idea}
+
+A difficult object is represented by finite observations: rational vectors, coefficient lists, finite covers, or polygons. An algorithm computes such an observation at a requested precision. A finite certificate verifies the domain, controls how input errors affect output errors, and supplies an explicit bound on the iteration count. The central extension here is to allow the observations to depend on one another cyclically, provided that a positive weighted gain estimate proves contraction.
+
+This has three complementary benefits. First, the certificate can be checked by finite rational arithmetic even when the output is a non-rational object. Second, it supplies the actual producer of observations, rather than only a rule for composing producers assumed elsewhere. Third, it identifies stable outputs: an entire polynomial factor can be stable through a multiple root, while an ordered list of its individual roots need not be.
+
+There is no claim that arbitrary mathematics is captured uniformly by this method. The input language is deliberately restricted. Polynomial codes have a uniform primitive recursive evaluator; arbitrary primitive recursive program codes do not have a total primitive recursive universal evaluator. Arbitrary analytic functions require their own fixed evaluation symbols and proved finite contracts.
+
+\subsection{Reading the strength of a result}
+
+We use four status distinctions throughout.
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \textbf{Finite mathematical theorem:} proved here using finite rational identities, explicit loops, bounded search, and quantifier-free induction after Booleanization.
+\item \textbf{Represented consequence:} an explanation of what those finite inequalities mean for Cauchy names, factors, or ODE solutions. No sort of all real numbers is added to iPRA.
+\item \textbf{Lean reference or candidate:} a supplied definition or proof script in the ambient Lean language. It has not been compiled here.
+\item \textbf{Object-theory target:} a concrete target of the form \(\Gamma\vdash[\mathrm{PRAAx}]\varphi\), with the program, invariant, and source modules identified. These new endpoints remain to be implemented and checked.
+\end{enumerate}
+
+The full mathematical proofs are the principal deliverable. The Lean plan is sufficiently explicit to make the remaining formal work local and reviewable, but it is not a substitute for running Lean's kernel. Exact-rational computation below checks examples, constants, and counterexamples; it does not establish universal theorems by testing.

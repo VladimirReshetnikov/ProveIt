@@ -1,0 +1,169 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,booktabs,graphicx,xcolor}
+\usepackage[top=.81in,bottom=.84in,left=.89in,right=.89in,headheight=14pt,headsep=14pt,footskip=26pt]{geometry}
+\usepackage{fancyhdr,titlesec}
+\usepackage[colorlinks=true,allcolors=teal!55!black]{hyperref}
+\definecolor{ink}{HTML}{1D3842}
+\definecolor{tealink}{HTML}{11696D}
+\definecolor{paleteal}{HTML}{E8F3F0}
+\titleformat{\section}{\Large\sffamily\bfseries\color{ink}}{\thesection}{.6em}{}
+\titlespacing*{\section}{0pt}{14pt}{7pt}
+\titleformat{\paragraph}[runin]{\bfseries\color{ink}}{}{0pt}{}
+\titlespacing*{\paragraph}{0pt}{7pt}{.65em}
+\setlength{\parindent}{0pt}\setlength{\parskip}{3.6pt plus 1pt minus .7pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\abovedisplayskip}{7pt plus 2pt}\setlength{\belowdisplayskip}{7pt plus 2pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\small\color{ink} Convex covers of unit space curves}
+\fancyhead[R]{\sffamily\small\color{ink} 20 November 2026}
+\fancyfoot[R]{\sffamily\small\color{ink}\thepage}
+\renewcommand{\headrulewidth}{.25pt}\raggedbottom
+\hypersetup{pdftitle={Sharper volume bounds for a convex cover of every unit space curve},pdfauthor={OpenAI}}
+\begin{document}
+\thispagestyle{plain}
+{\small\sffamily\color{tealink} CONVEX GEOMETRY\hfill 20 NOVEMBER 2026\par}
+\vspace{6pt}
+{\fontsize{26}{29}\selectfont\sffamily\bfseries\color{ink}
+Sharper bounds for convex covers\\of unit space curves\par}
+\medskip
+Let $V_3$ be the smallest volume of a convex body that can contain a rigid
+copy of each smooth space curve of length one. Endpoints are free.
+We prove that the minimum exists and satisfies
+\begin{center}
+\setlength{\fboxsep}{8pt}\colorbox{paleteal}{\makebox[.77\linewidth]{\large
+$\displaystyle 0.01942 < V_3 < 0.052942305538.$}}
+\end{center}
+The lower bound uses three test paths. Project a candidate body along
+its unit segment. Its shadow must fit a long chord forced by a planar
+arc, together with some projection of a particular spatial arc. Even
+after both can move, the shadow needs area greater than $0.05826$.
+
+For the upper bound we give a rational polytope. Every unit curve fits a right
+prism whose height controls the length of its planar projection. Allowing
+the position and orientation of the prism to vary with height gives the
+cover pictured below. Its exact volume is
+\[
+ \frac{13235576384310899273916967194112370723463873}
+      {250000000000000000000000000000000000000000000}.
+\]
+This is the volume of the exhibited cover. The minimizing shape and exact
+minimum remain undetermined.
+\begin{center}
+\includegraphics[width=.98\linewidth]{upper/adaptive_cover.pdf}
+\end{center}
+{\small Two complete prisms inside the same polytope, viewed from the
+same direction. The original support planes are $h$ apart. The planar
+projection fits a quadrilateral scaled by $p=\sqrt{1-9h^2}$.\par}
+\medskip
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+& Lower endpoint & Upper endpoint\\\midrule
+First linked report \cite{original} & $0.0187328127$ & $0.0542671$\\
+Linked refinement \cite{refinement} & $0.018975$ & $0.052956040$\\
+This work & $0.019420$ & $0.052942305538$\\\bottomrule
+\end{tabular}
+\end{center}
+{\small The table uses outward bounds. All new numerical comparisons
+are certified with integer or rational arithmetic.\par}
+\clearpage
+\section{Curves, rigid motions and attainment}\label{sec:setting}
+A placement is $x\mapsto Rx+t$, where $R\in SO(3)$. The containing body
+is compact and convex and may touch the curve. Length counts retracing.
+A closed curve is allowed, and a segment with distinct endpoints is also
+a test. Scaling space shows that the answer for length $L>0$ is $L^3V_3$.
+
+\paragraph{Why a smooth-curve problem permits polygons.}
+In fact the same bodies cover every rectifiable arc of length one.
+Parametrize such an arc by arclength. Inscribed polygons can be chosen
+with vanishing mesh and lengths tending to one: take partitions nearly
+attaining total variation and refine them by a uniform mesh. Their images
+converge in Hausdorff distance by uniform continuity. Perturb each finite
+list of vertices by sufficiently small amounts to make links nonzero
+and adjacent unit tangents nonopposite, with vanishing changes of length
+and position along the sequence. Parametrize each polygon by its own
+arclength and extend the end segments linearly. Convolve with a
+nonnegative smooth kernel of integral one and support radius smaller than
+half the shortest edge. Near a corner the new derivative is a convex
+combination of the two adjacent unit tangents and is nonzero. Off the
+corner neighborhoods it is the original unit tangent. For each polygon,
+shrinking the kernel gives uniform convergence and convergence of length,
+since the speed is at most one and the exceptional intervals have
+vanishing total length. A final dilation about the first point gives
+smooth regular arcs of length exactly one converging to the required
+image. The kernel radius and the perturbations may be chosen separately
+for each polygon. If simple smooth arcs are required, a general-position
+perturbation in three dimensions makes nonadjacent edges disjoint.
+Small corner neighborhoods can be chosen disjoint from other edges;
+local injectivity during smoothing follows by strict monotonicity in
+the direction of the sum of the two unit tangents.
+
+Anchor the initial points at the origin. For any fixed candidate body
+the translations in a fitting sequence then belong to that body, and
+the rotations belong to compact $SO(3)$. A subsequence of motions
+converges, placing the limiting curve inside the closed body. Every
+shorter path may first be extended to length one. This argument also
+explains why rounding the paths themselves need not preserve their
+widths exactly.
+
+\paragraph{Existence of a smallest body.}
+The arclength midpoint lies within $1/2$ of every point, so the
+radius-$1/2$ ball is universal. Three edges in succession visiting
+all vertices of a regular tetrahedron of side $1/3$ form a unit path.
+Every universal body contains a copy of the solid tetrahedron and
+hence some fixed-radius ball of radius $r>0$. In a minimizing sequence,
+translate each such ball to be centered at zero. For any point $x$ of
+one of the bodies $K$, the cone on the radius-$r$ disk through zero
+normal to $x$ has apex $x$ and lies in $K$. Hence
+$\|x\|\le3|K|/(\pi r^2)$. All the bodies in the sequence lie in a
+single ball.
+
+For completeness, a Hausdorff-convergent subsequence can be selected
+by recording which cubes of a finite mesh meet each body, stabilizing
+this finite list on a subsequence, and diagonalizing over dyadic meshes.
+Agreement on a mesh puts either set within its cube diameter of the
+other. The limit consists of the subsequential limits of points from the
+sets; compactness of the common bounding ball gives existence of these
+limits and Hausdorff convergence. Convexity passes to the limit $K_*$,
+as does inclusion of the fixed ball. At Hausdorff distance at most
+$\delta$, either body lies in the other's concentric dilation by
+$1+\delta/r$, since $K+\delta B_3\subset (1+\delta/r)K$ for
+$rB_3\subset K$. Volumes therefore converge. For each fixed curve
+extract a convergent subsequence of its placements as above. Its limit
+lies in the already fixed $K_*$. Thus $K_*$ is universal and has the
+infimal volume.
+\input{shadow}
+\input{prism}
+\input{cover}
+\section{What the bounds leave open}
+The lower certificate uses a single spatial test path and discards the
+part of its orientation that is invisible in a planar shadow. It also
+uses only a chord from the planar test path. A stronger lower estimate
+could require several projected hulls to fit the same shadow or retain
+information about the lengths of the original body's fibers. On the
+upper side, the polytope accommodates eight corners of every prism.
+A space curve need only visit a subset of a prism, so optimality among
+covers for curves does not follow from optimizing these prism placements.
+The convergent finite-catalogue series in the linked refinement
+\cite{refinement} is compatible with the present interval. It gives no
+identification of an extremizing shape.
+\begin{thebibliography}{9}\small\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}
+\bibitem{original} \emph{ProveIt} repository of V. Reshetnikov,
+\emph{A convex cover for every unit space curve}, 19 November 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/geometry/space_worm_2026-11-19}{Report, source, and calculations}.
+\bibitem{refinement} \emph{ProveIt} repository of V. Reshetnikov,
+\emph{How small a convex body covers every unit space curve?}, 19 November 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Logic/PrimitiveRecursiveArithmetic/docs/proofs/geometry/space_worm_refinement_2026-11-19}{Report, proof sections, and certificates}.
+\bibitem{caliper} A. Adhikari and J. Pitman, The shortest planar arc of
+width 1, \emph{Amer. Math. Monthly} 96 (1989), 309--327.
+\href{https://doi.org/10.1080/00029890.1989.11972188}{DOI}.
+\bibitem{ghomi} M. Ghomi, The length, width, and inradius of space curves,
+\emph{Geom. Dedicata} 196 (2018), 123--143, Corollary 3.2.
+\href{https://ghomi.math.gatech.edu/Papers/inradius.pdf}{Author's paper}.
+\bibitem{keller} E. Keller, Improved bounds for universal convex covers of
+unit arcs, Theorem 4.1 (2026). \href{https://arxiv.org/abs/2609.21968}{arXiv:2609.21968}.
+\bibitem{kformal} E. Keller, Lean proof of the planar covering theorem
+and certificates, revision \texttt{9a339413}. \href{https://github.com/ethan-keller/moser-worm-improved-bounds/blob/9a3394130fe4f7b1df6ffdeffda16601795d9ce4/MoserWorm/UpperBound/Main.lean}{Formal theorem and proof dependencies}.
+\end{thebibliography}
+\end{document}

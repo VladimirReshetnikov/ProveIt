@@ -1,0 +1,231 @@
+\section{Where the analytic proof must be completed}
+\label{sec:analytic}
+
+This section records the genuine proof obligations behind the classical
+criterion. It does not declare them axioms of $\ipra$ or count their
+restatement as a proof. Robin's original argument is in
+\cite[\S\S3--4]{Robin}; the Nicolas oscillation input is developed in
+\cite{Nicolas1983,Nicolas2012}. A modern classical Lean reconstruction
+provides a substantially more explicit dependency map \cite{Whidden}.
+
+\subsection{An elementary extremal interpolation lemma}
+
+Let $N,N'$ be integers with $3\le N<N'$. Suppose a real parameter
+$\varepsilon>0$ and a constant $C$ give
+\[
+ \log A(j)\le C+\varepsilon\log j
+       \quad(N\le j\le N'),
+\]
+with equality at both endpoints. Then the Robin logarithmic margin
+\[
+ M(j)=\log A(j)-\gamma-\log\log\log j
+\]
+satisfies
+\begin{equation}\label{eq:interpolation}
+ M(j)\le \max(M(N),M(N'))\qquad(N\le j\le N').
+\end{equation}
+Indeed, put $x=\log j$ and $f(x)=\varepsilon x-\log\log x$.
+On $x>1$,
+\[
+ f''(x)=\frac{\log x+1}{x^2(\log x)^2}>0.
+\]
+Thus $f$ is convex and bounded above by the larger of its two endpoint
+values on the interval. Adding $C-\gamma$ proves
+\eqref{eq:interpolation}. One can replace the maximum statement by a
+rational convex-combination upper bound when carrying explicit
+certificates.
+
+For colossally abundant endpoints the affine bound comes from maximizing
+$A(j)j^{-\varepsilon}$. The displayed lemma itself only needs a
+certified bound on the finite interval. Its proof does not require
+deciding equality between unrelated transcendental threshold values.
+A constructive implementation should allow ties or use overlapping
+rational upper bounds, instead of assuming that every threshold
+comparison is strictly decidable.
+
+\subsection{The RH-dependent weighted explicit formula}
+
+Put $H=\log n$,
+\[
+ S(H)=\frac1{\sqrt H\log H},
+ \qquad c_0=\gamma+2-\log(4\pi).
+\]
+The sharp forward proof uses weighted Chebyshev errors
+\[
+ I_j(x)=\int_x^\infty(\psi(t)-t)t^{-j-1}
+                      \frac{j\log t+1}{(\log t)^2}\,dt.
+\]
+Under RH a multiplicity-counted zero sum yields the estimates
+\begin{align*}
+ -B_j(x)-\frac{\log(2\pi)x^{-j}}{\log x}
+ &\le I_j(x)\le B_j(x),\\
+ B_j(x)&=c_0\frac{x^{1/2-j}}{\log x}
+       \left(j+\frac1{\log x}
+                  +\frac4{(2j-1)(\log x)^2}\right).
+\end{align*}
+The zero contribution is controlled by
+$\sum_\rho|\rho|^{-2}=c_0$ under RH. These statements involve
+infinite zero sums and integrals, not only evaluations of elementary
+constants. The required arithmetic version must state finite contour
+identities, prove their error estimates, control the zero multiplicities,
+and provide bounds for discarded tails.
+
+For example, a formal statement that a sequence of approximants converges
+does not provide the modulus needed to replace this integral by a fixed
+primitive-recursive observation. Likewise a type enumerating zeros is
+not a proved bound on the tail of their reciprocal squares. The
+quantitative packets already present in ProveIt are relevant candidate
+arguments, but their stated proof status must be respected.
+
+\subsection{A concrete sharp margin available after that work}
+
+The classical reconstruction \cite{Whidden} organizes the forward estimate
+as
+\begin{equation}\label{eq:budget}
+ M(n)\le E(H)-C(H)\qquad(H\ge20000,\ \RH),
+\end{equation}
+where
+\begin{align*}
+ C(H)&=\sum_{p\le H/2}
+       \min\left(\frac{\log p}{H\log H},\frac1{p^2}\right),\\
+ E(H)&=(2+c_0)\frac{H^{-1/2}}{\log H}
+       +(c_0-2)\frac{H^{-1/2}}{(\log H)^2}\\
+ &\quad +(8+4c_0)\frac{H^{-1/2}}{(\log H)^3}
+       +2\frac{H^{-2/3}}{\log H}
+       +\log(2\pi)\frac{H^{-1}}{\log H}.
+\end{align*}
+The first term is an explicit sum of losses forced by prime powers;
+the second is an upper error estimate obtained from the weighted
+explicit formula. The published reconstruction gives, for $H\ge74500$,
+\begin{equation}\label{eq:rational-budgets}
+ \frac{E(H)}{S(H)}
+ \le\frac{3010451}{1332800}
+ =\frac{113}{50}-\frac{1677}{1332800},
+ \qquad
+ \frac{C(H)}{S(H)}\ge\frac{113}{50}.
+\end{equation}
+These are recorded as concrete porting targets. This report has not
+reproved their analytic premises in $\ipra$, nor independently rebuilt
+the external Lean development.
+
+Their implication for constructive strictness can, however, be derived
+explicitly.
+
+\begin{proposition}[Conditional positive separation]\label{prop:separation}
+Assume the actual estimates \eqref{eq:budget} and
+\eqref{eq:rational-budgets} for an integer $n$ with $\log n\ge74500$.
+Let $a=1677/1332800$. Then
+\[
+ B(n)-A(n)\ge\frac{a}{2n^2}
+             =\frac{1677}{2665600\,n^2}.
+\]
+Consequently the canonical interval test $\Pos(n,k)$ succeeds at
+$k=2\ell(n)+12$.
+\end{proposition}
+\begin{proof}
+The estimates imply $M(n)\le-aS(H)$.
+For $n$ in this range, $\sqrt H\le n$ and $\log H\le n$, so
+$S(H)\ge n^{-2}$ and $M(n)\le-a/n^2$.
+Since $M(n)=\log(A(n)/B(n))$ and $B(n)\ge1$,
+\[
+ B(n)-A(n)\ge B(n)(1-e^{-a/n^2}).
+\]
+For $0\le u\le1$, $e^u\ge1+u$, and therefore
+$1-e^{-u}\ge u/(1+u)\ge u/2$. Use $u=a/n^2$.
+
+Finally $2^{-2\ell(n)-12}\le1/(4096n^2)<a/(2n^2)$.
+An interval for $B(n)$ with width at most this quantity has lower
+endpoint strictly above $A(n)$. The test \eqref{eq:pos} therefore
+accepts at the stated primitive-recursive precision.
+\end{proof}
+
+This proposition shows why the strict inequality should not be treated
+as a permanent obstruction. The forward argument already contains
+room for a useful explicit positive witness. The unresolved question
+is the justification of its analytic input in the chosen arithmetic
+theory.
+
+\subsection{The finite startup range is another real obligation}
+
+The same external project reports three stages: exact factorizations
+for $5041\le n<7560$, a common tangent up to $720720$, and $36$
+rational logarithmic-height rows reaching the analytic range.
+Its README reports ordinary kernel checks of the finite data and an
+axiom audit using only \code{propext}, \code{Classical.choice}, and
+\code{Quot.sound}. Those are reports of the external project, not
+checks rerun in this task.
+
+The finite verifier and its soundness proof are plausible objects to
+port because the accepted rows are rational finite data. But a
+single finite bound can be enormous, and a classical real-valued
+soundness theorem still needs translation. The present archive's
+verification through $100000$ does not cover this logarithmic-height
+range and is not offered as a replacement for it.
+
+A completed constructive argument should make the handoff using a
+decidable integer cutoff, or overlapping rational height ranges.
+It should not invoke the general real trichotomy
+$\log n<74500$ or $\log n\ge74500$ without explaining its arithmetic
+realization. The existing rational rows provide a useful approach to
+that engineering problem, but no such port is claimed here.
+
+\subsection{What the converse still needs}
+
+The classical Nicolas--Landau mechanism supplies negative excursions
+of $\log F(x)$ when an off-critical zero exists. In a convenient form,
+there are $c>0$ and $0<b<1/2$ such that arbitrarily far out one has
+\[
+ -\log F(Q)\ge cQ^{-b}.
+\]
+Because $\vartheta(x)$ and the prime product are constant between
+successive integers, replacing a real frontier by its integer part
+only weakens the constant by a fixed factor. Thus an integer-frontier
+form can be used.
+
+The preceding LCM section proves the remaining finite implication
+in full detail. Once an excursion beyond its explicit rational
+cutoff is supplied, its output is an actual strict counterexample.
+There is no additional number-theoretic asymptotic argument hidden
+in that transfer.
+
+The missing analytic proof is substantial. Its familiar ingredients
+include analytic continuation of a weighted prime-function transform,
+Landau's positive-transform principle, and the detection of a
+singularity associated with an off-line zero. A claim of arbitrary
+large excursions in classical analysis is not yet a
+primitive-recursive witness bound in $\ipra$.
+
+There are two defensible completion routes:
+\begin{enumerate}[leftmargin=*]
+\item Starting with a specified accepted zero certificate, prove a
+quantitative transform theorem producing a frontier, a rational
+excursion gap, and a primitive-recursive bound for their search.
+The LCM transfer then gives \eqref{eq:R}.
+\item Under $\Rstr$ and an accepted zero certificate, derive an
+analytic contradiction inside a proved conservative arithmetic
+framework. For the negative RH conclusion, a direct contradiction
+can suffice; no positive counterexample selector need be asserted
+unless it is actually obtained.
+\end{enumerate}
+
+The second route may be shorter. Neither is completed by citing
+ordinary Lean's classical choice or by declaring the needed
+oscillation theorem as a structure field.
+
+\subsection{How conservation results could help, and their limit}
+
+Sudac's work \cite{Sudac} develops real and complex analysis in
+extensions conservative over PRA and obtains a PRA proof of the
+prime number theorem. It is evidence that substantial analytic
+number theory can admit such treatment. It is not a published
+PRA proof of Robin's equivalence, and no implication from PNT
+alone gives the sharp RH-sensitive estimates here.
+
+A serious alternative to direct object-proof construction is to
+check every needed analytic principle in an appropriate conservative
+theory and formalize the finite witness statements there.
+The hypothesis restrictions and the exact conservation class must
+be verified. The transfer theorem in Section~\ref{sec:logic}
+explains why a genuine classical PRA endpoint would suffice
+afterward. This is a research route with a concrete endpoint,
+not a substitute for the missing derivation.

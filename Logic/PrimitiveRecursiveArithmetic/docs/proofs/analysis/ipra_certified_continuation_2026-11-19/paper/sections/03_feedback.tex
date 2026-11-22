@@ -1,0 +1,280 @@
+\section{Cyclic quantitative contracts from finite weighted certificates}
+\label{sec:feedback}
+
+The existing numerical precision-cost construction already handles a finite
+acyclic dependency graph: it constructs the rational error budgets and a safe
+dyadic schedule internally, with the numerical node count as a variable
+\cite{repo-dag}. Replacing its graph by a cycle is not justified by the
+contract-cut rule. A cycle must instead be discharged by a finite numerical
+invariant. We give such a discharge, useful for coupled implicit equations,
+preconditioned polynomial systems, and mutually dependent approximation
+blocks. No fixed point, completed real space, or limit is assumed in the finite
+theorems below.
+
+\subsection{Data and the certificate}
+
+Fix a numerical dimension $m$. A vector is a finite rational list of length
+$m$; a matrix is a finite rational list of $m$ rows of that length. All rational
+numbers have positive denominators. Let $A=(a_{ij})$ have nonnegative entries
+and let $w=(w_i)$ have positive rational entries. The certificate is the finite
+set of inequalities
+\begin{equation}\label{eq:half-certificate}
+ a_{ij}\geq0,\qquad w_i>0,\qquad
+ 2\sum_{j<m} a_{ij}w_j\leq w_i\quad(i<m).
+\end{equation}
+Rational weights can be multiplied by a common positive denominator, so
+positive integer weights lose no generality. The checker therefore needs only
+integer comparisons, rational arithmetic, and bounded sums. Neither
+eigenvalues nor an extremum over a real sphere is involved.
+
+For rational vectors define
+\[
+ d_w(x,y)=\max_{i<m}\frac{|x_i-y_i|}{w_i},
+\]
+with value $0$ when $m=0$. This maximum is a bounded rational scan. In the
+object theory it is usually more convenient to replace $d_w(x,y)\leq r$ by
+the Boolean fold of the inequalities $|x_i-y_i|\leq rw_i$ for $i<m$.
+
+Let $D$ be a rational domain given by a quantifier-free decidable predicate,
+and let $T$ be one fixed primitive-recursive rational-vector program, possibly
+with numerical data parameters and variable dimension. Its required local
+contracts are domain preservation and the componentwise gain estimate
+\begin{align}
+ x\in D&\Longrightarrow T(x)\in D,\label{eq:T-domain}\\
+ |T_i(x)-T_i(y)|&\leq\sum_{j<m}a_{ij}|x_j-y_j|
+ \quad(x,y\in D, i<m).\label{eq:T-gain}
+\end{align}
+The contracts are assumptions to be discharged for the chosen program.
+For the polynomial applications later in the report they are finite
+coefficient and box estimates; the present theorem does not infer them from
+the mere presence of a matrix in a file.
+
+\begin{lemma}[Weighted finite contraction]\label{lem:weighted-contraction}
+Under \eqref{eq:half-certificate} and \eqref{eq:T-gain},
+\[
+ d_w(Tx,Ty)\leq\tfrac12 d_w(x,y)\qquad(x,y\in D).
+\]
+More directly, if $|x_j-y_j|\leq r w_j$ for every $j<m$ and $r\geq0$,
+then $|T_i(x)-T_i(y)|\leq(r/2)w_i$ for every $i<m$.
+\end{lemma}
+\begin{proof}
+Multiplication by $a_{ij}\geq0$ preserves the input inequalities. Their finite
+sum gives
+\[
+ |T_i(x)-T_i(y)|\leq r\sum_{j<m}a_{ij}w_j\leq\tfrac r2 w_i.
+\]
+This is already the desired componentwise conclusion. For the norm notation,
+take $r$ to be the explicitly computed finite maximum. The empty-dimensional
+case has no component assertions and is immediate.
+\end{proof}
+
+Weights matter even when all entries are nonnegative. For example,
+\[
+ A=\begin{pmatrix}0&3\\1/16&0\end{pmatrix},\qquad
+ w=\begin{pmatrix}8\\1\end{pmatrix}
+\]
+satisfy the certificate although the first ordinary row sum is $3$.
+The feedback is cyclic; an ordinary unweighted contraction estimate would
+miss this certificate.
+
+\subsection{Finite iteration constructs a name}
+
+Define the orbit by the primitive recursion
+\[
+ x_0=c,\qquad x_{n+1}=T(x_n).
+\]
+Suppose $c\in D$ and a nonnegative rational $B$ satisfies
+$|T_i(c)-c_i|\leq Bw_i$ for all $i<m$.
+
+\begin{theorem}[Finite tail estimate and a primitive-recursive name]
+\label{thm:feedback-name}
+Every orbit element lies in $D$. For all natural $n,j$ and every $i<m$,
+\begin{align}
+ |x_{n+1,i}-x_{n,i}|&\leq B2^{-n}w_i,\label{eq:feedback-inc}\\
+ |x_{n+j,i}-x_{n,i}|&\leq
+ 2B2^{-n}(1-2^{-j})w_i\leq 2B2^{-n}w_i.
+ \label{eq:feedback-tail}
+\end{align}
+Let $W\geq1$ be an integer upper bound for every $w_i$, and choose a natural
+$c_0$ with $2^{c_0}\geq2BW$. Then
+$X(k)=x_{k+c_0}$ is a primitive-recursive rational name satisfying
+\[
+ |X_i(\ell)-X_i(k)|\leq2^{-k}\quad(k\leq\ell, i<m).
+\]
+Moreover $T(X(k))-X(k)$ tends to zero with the explicit bound
+$B2^{-(k+c_0)}w_i$.
+\end{theorem}
+\begin{proof}
+Domain preservation proves the first assertion by induction. The first
+increment is bounded by $B$; the contraction lemma halves each succeeding
+increment, proving \eqref{eq:feedback-inc} by induction on $n$.
+For fixed $n$, telescope the $j$ increments and use their bounds. The finite
+geometric identity
+\[
+ \sum_{h<j}2^{-h}=2(1-2^{-j})
+\]
+is proved by induction on $j$ and gives \eqref{eq:feedback-tail}. Finally put
+$n=k+c_0$ and $j=\ell-k$. Since $w_i\leq W$ and $2BW\leq2^{c_0}$, the
+right side is at most $2^{-k}$. The residual is the next increment. Every
+statement used here is about finitely many rational values; a real completion
+may subsequently interpret the constructed name, but does not produce it.
+\end{proof}
+
+There is no unbounded logarithm search in the clock. If $J$ is the least
+integer at least $\max(1,2BW)$, a scan through $0,\ldots,J$ finds $c_0$
+with $2^{c_0}\geq J$, because $2^J\geq J$ for $J\geq1$.
+The resulting least such exponent is primitive recursive. One may instead
+reuse the repository's binary-length routine. The uniformity is in the
+numerical coefficients, dimension, weights, and requested precision, for one
+fixed evaluator template. It is not uniform evaluation of arbitrary
+primitive-recursive source codes.
+
+An invariant box can itself be supplied by a finite certificate. If
+$D=\{x:|x_i-c_i|\leq Rw_i\ (i<m)\}$, the gain estimate holds on this box,
+and $|T_i(c)-c_i|\leq(R/2)w_i$, then
+\[
+ |T_i(x)-c_i|\leq |T_i(x)-T_i(c)|+|T_i(c)-c_i|
+ \leq (R/2)w_i+(R/2)w_i=Rw_i.
+\]
+Thus domain preservation follows from the center residual and the gain
+certificate. A strict spare margin allows subsequent rounding errors.
+
+For a general rational domain $D$, the name need not represent a point of $D$ itself: $D=(0,1)$ and $T(x)=x/2$ give a counterexample. Identifying its completion as a fixed point in the declared domain requires a completion-closed domain and a continuous extension of $T$. The closed boxes and polynomial maps used below have these properties. The finite inequalities above need neither condition.
+
+\subsection{Residual comparison and data perturbations}
+
+The next result is useful even when the orbit is not explicitly used.
+
+\begin{theorem}[A posteriori finite comparison]\label{thm:feedback-residual}
+Let $x,y\in D$ and suppose
+$d_w(Tx,x)\leq r$ and $d_w(Ty,y)\leq s$, with $r,s\geq0$.
+Then
+\[
+ d_w(x,y)\leq2(r+s).
+\]
+More generally, let $S$ be a second map, $y\in D$, and suppose
+$d_w(Sy,y)\leq s$ and $d_w(Ty,Sy)\leq\delta$.
+The conclusion becomes
+\begin{equation}\label{eq:perturbed-residual}
+ d_w(x,y)\leq2(r+s+\delta).
+\end{equation}
+Only $T$ needs the contraction certificate for this comparison.
+\end{theorem}
+\begin{proof}
+For $m=0$ all discrepancies vanish. Otherwise the bounded rational maximum
+$E=d_w(x,y)$ is attained at a computed index $i_0$. Three triangle
+inequalities, with one extra term in the perturbed case, give
+\[
+ E\leq r+\tfrac12 E+s+\delta.
+\]
+Here division by $w_{i_0}$ is permitted because it is a positive rational
+from the certificate. Subtracting $E/2$ proves
+$E\leq2(r+s+\delta)$. No maximum of a represented real function and no
+excluded-middle decision about real equality occurs.
+\end{proof}
+
+Applied to the names of Theorem~\ref{thm:feedback-name}, this finite estimate
+gives uniqueness at the represented level. To spell out the passage, let
+two rational names have residual bounds converging to zero with supplied
+primitive-recursive moduli. At any requested precision, choose the two
+indices where $2(r+s)$ is below that precision; the displayed finite theorem
+bounds their distance. Their names are therefore equivalent. With parameter
+perturbations the same argument gives a computable continuity modulus for
+the solution, provided the same domain and weight certificate remain valid.
+This assertion is local to the certified branch. It neither selects a branch
+across a singularity nor claims global uniqueness of a polynomial system.
+
+\subsection{Inexact iteration and genuinely simultaneous error budgets}
+
+Suppose two finite trajectories $u_0,\ldots,u_n$ and
+$v_0,\ldots,v_n$ lie in $D$ and have local defects
+\[
+ d_w(u_{j+1},T(u_j))\leq\varepsilon_j,
+ \qquad d_w(v_{j+1},T(v_j))\leq\eta_j.
+\]
+Contraction and the triangle inequality yield
+\[
+ E_{j+1}\leq\tfrac12E_j+\varepsilon_j+\eta_j,
+ \qquad E_j=d_w(u_j,v_j).
+\]
+Induction gives the finite convolution bound
+\begin{equation}\label{eq:feedback-inexact}
+ E_n\leq 2^{-n}E_0+
+ \sum_{j<n}2^{-(n-1-j)}(\varepsilon_j+\eta_j).
+\end{equation}
+The base case is equality. For the step, multiply the preceding bound by
+$1/2$ and add the new defect; this shifts every exponent and appends precisely
+the last summand. This proof handles all coupled coordinates at once.
+
+For an exact trajectory $v$ and a rounded trajectory $u$ with the same initial
+point, take $\varepsilon_j\leq\varepsilon4^{-j}$ and $\eta_j=0$.
+For $n\geq1$,
+\[
+ \sum_{j<n}2^{-(n-1-j)}\varepsilon4^{-j}
+ =\varepsilon2^{-(n-1)}\sum_{j<n}2^{-j}
+ \leq4\varepsilon2^{-n}.
+\]
+The same upper bound holds at $n=0$. Combining this with
+\eqref{eq:feedback-tail} proves
+\[
+ d_w(u_{n+j},u_n)\leq(2B+8\varepsilon)2^{-n}.
+\]
+Consequently a precision schedule $p_j=2j+c_1$ for a rounded fixed rational
+kernel supplies a name with an explicit clock. More precisely, for $m>0$ and $\varepsilon>0$, if each coordinate rounding error is at most $2^{-p_j}$, choose $c_1$ by bounded search so that $2^{-c_1}\le\varepsilon\min_i w_i$. Then the weighted defect is at most $\varepsilon4^{-j}$. If $\varepsilon=0$, use exact iteration; if $m=0$, the trajectory is empty. The proof requires the rounded
+iterates to stay in the domain; this must be checked from a spare invariant-box
+margin or enforced by a certified projection. The tail estimate alone does
+not imply domain preservation.
+
+\subsection{A finite Neumann producer}
+
+For the nonnegative matrix $A$ in the certificate and any rational right side
+$b$, define
+\[
+ z_0=0,\qquad z_{n+1}=Az_n+b.
+\]
+These are the actual finite sums
+$z_n=\sum_{j<n}A^j b$, as induction verifies. The exact residual identity is
+\[
+ (I-A)z_n=b-A^n b.
+\]
+If $|b_i|\leq Bw_i$, the contraction lemma for the linear map gives
+$|(A^n b)_i|\leq B2^{-n}w_i$. Hence the recurrence produces a solution name
+to $(I-A)z=b$ with an explicit residual modulus and the same finite tail
+bound as above. This is an effective producer for a cyclic linear block.
+It uses neither a pre-existing inverse nor a convergence theorem from
+classical analysis. Arbitrary finite matrix dimensions are handled by the
+same bounded rational sum program.
+
+\subsection{Object-theory induction and the Lean boundary}
+
+All row estimates, domain tests, and coordinate comparisons have a decidable
+rational meaning. Clear their positive denominators and encode a bounded
+universal assertion by a primitive-recursive violation sum. For example the
+increment invariant is the equation
+\[
+ \sum_{i<m}\bigl[\,2^n|x_{n+1,i}-x_{n,i}|>Bw_i\,\bigr]=0,
+\]
+where the bracket denotes the rational comparison bit after denominator
+clearing. This is one quantifier-free equation, even though $m,n$ are numerical
+variables. The tail proof uses the corresponding bounded fold over the
+coordinate inequalities; the finite geometric identity and convolution
+recurrence use ordinary quantifier-free induction. If domain preservation
+is needed simultaneously, pair its Boolean invariant with the increment
+invariant in the coded state.
+
+The accompanying \nolinkurl{FeedbackReference.lean} gives definitions and
+fully written candidate proofs for weighted domination, contraction, finite
+increments, finite tails, bounded-maximum witnesses, and residual comparison
+over Lean's rational numbers. It has not been compiled in this environment.
+It is not an object-theory proof. The separate port plan specifies the
+rational/vector codes and the required endpoints of the form
+$\Gamma\vdash[\mathrm{PRAAx}]\varphi$. A successful compilation of the
+reference file would still leave that object-theory port to be completed.
+The exact-rational Python examples check cyclic linear and nonlinear
+instances, including a matrix whose unweighted row sum exceeds one; those
+checks support the implementation but are not proofs in iPRA.
+
+The advance over acyclic budgets is thus specific: a finite positive-weight
+certificate converts a cyclic numerical dependency into a terminating
+precision-controlled producer. A cycle of unproved logical contracts remains
+unproved; no global reflection or self-supporting proof rule is introduced.

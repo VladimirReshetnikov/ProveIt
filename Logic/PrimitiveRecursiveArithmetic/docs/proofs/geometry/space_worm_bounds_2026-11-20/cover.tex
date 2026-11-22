@@ -1,0 +1,88 @@
+\section{A smaller cover from continuously varying placements}
+\label{sec:adaptive}
+
+The prism for each height may have its own orientation and translation.
+This freedom gives the stronger endpoint
+\[
+                         V_3<0.052942305538 .
+\]
+The certificate below specifies a convex polytope and a rigid placement
+for every height. Its volume check uses integers and fractions.
+
+Write $(p,3h)=((1-t^2)/(1+t^2),2t/(1+t^2))$, with $0\le t\le1$,
+and let $C$ be the quadrilateral from Section~\ref{sec:prism}.
+The spatial prism at parameter $t$ has the eight corners
+$(pa,pb,h\epsilon)$ for $(a,b)$ a vertex of $C$ and
+$\epsilon\in\{0,1\}$. The alternating-plane argument already proves
+that these prisms suffice for every unit curve.
+
+The numerical data consist of 32 ordered rows in
+\texttt{upper/poses.json}. Divide every entry by $D=10^8$.
+A row lists $t$, four quaternion coordinates $(x,y,z,w)$ with scalar
+part $w$ last, and a translation $g\in\mathbb R^3$. The parameters
+increase from zero to one with one repeated value. The two rows at
+that value give alternative placements at the change of orientation.
+For each pair of rows with distinct consecutive parameters,
+interpolate $t$, the quaternion $q$, and $g$ affinely in a common
+variable $s\in[0,1]$. The adjacent quaternion dot products are
+positive, so $q(s)$ never vanishes. For each corner use the map
+\[
+ (pa,pb,h\epsilon)\longmapsto
+ R_q(pa,pb,h\epsilon)+g,\qquad
+ R_q(v)=qv\overline q/\|q\|^2 .
+\]
+Quaternion conjugation here acts on vectors identified with pure
+quaternions. The same proper rigid motion applies to all eight corners.
+
+To enclose the moving corners, divide each interpolation interval into
+three equal subintervals. In each one, parameterized by $u\in[0,1]$,
+a moving corner has the form $N(u)/W(u)$, with
+\[
+ W=(1+t^2)\|q\|^2,\qquad
+ N=q\big((1-t^2)a,(1-t^2)b,2t\epsilon/3\big)\overline q+Wg .
+\]
+All four homogeneous coordinates $(N,W)$ have degree at most five.
+Expand them in the Bernstein basis
+$B_j(u)=\binom5j u^j(1-u)^{5-j}$ with coefficients $(N_j,W_j)$,
+$0\le j\le5$. The verifier evaluates at $u=0,1/5,\ldots,1$
+and solves the interpolation equations in rational arithmetic.
+It checks $W_j>0$ in every case. The identity
+\[
+ \frac{N(u)}{W(u)}
+   =\sum_{j=0}^5\frac{B_j(u)W_j}{W(u)}\frac{N_j}{W_j}
+\]
+has nonnegative coefficients summing to one. The six Euclidean control
+points therefore enclose the entire corner trajectory in their convex
+hull, including every height between samples.
+
+Let $P$ be the hull of the control points rounded coordinatewise to the
+nearest multiple of $1/D$. It has 3,606 distinct generators. Set
+$c=(0.17,0.13,0.07)$ and $r=1/40$. The facet check verifies
+$c+[-r,r]^3\subseteq P$. With $e=1/(2D)$, convexity gives
+\[
+ P+[-e,e]^3\ \subseteq\ c+(1+e/r)(P-c).
+\]
+Indeed $[-e,e]^3\subseteq(e/r)(P-c)$, and the Minkowski sum of
+positive homothetic copies of $P-c$ adds their scale factors. The
+enlarged polytope on the right thus contains every original control
+point, hence a rigid copy of every prism.
+
+The program \texttt{upper/check\_adaptive.py} reconstructs and checks
+all 2,955 facets from triples listed in
+\texttt{upper/adaptive\_facets.json}. For each triple it checks the
+integer supporting inequality against every generator, recovers the
+entire polygon on the plane, and checks the eight cube corners by
+evaluating the supporting normal on the cube. It verifies that every
+boundary edge in the resulting list has two incident facets.
+These are whole supporting facets, since each contains a noncollinear defining triple. The point set is full dimensional: a supporting triple has a point strictly on its inner side. In a three-polytope each edge belongs to exactly two facets. The graph joining facets across edges is connected, as one sees by projecting the boundary radially onto a sphere and joining facet interiors by a path avoiding vertices and crossing edges transversely. The verified nonempty family is closed under crossing edges and therefore contains all facets. Triangulating the facets
+and summing the absolute tetrahedral determinants about $c$ gives
+$|P|$. The final exact comparisons are
+\[
+ 0.052942305537<(1+e/r)^3|P|<0.052942305538 .
+\]
+
+The file \texttt{upper/cover.obj} gives the vertices and outward faces of the
+enlarged polytope. Its coordinates are terminating decimals: for a grid point
+$p$ and cube center $c$ written in integer grid units, the dilated physical
+coordinate is $(5{,}000{,}001p-c)/(5{,}000{,}000\cdot10^8)$.
+Thus the mesh describes the certified body exactly.

@@ -1,0 +1,101 @@
+\section{Reproduction, numerical evidence, and remaining work}
+\label{sec:validation}
+
+\subsection{What was actually run}
+
+The arithmetic module was compiled with Lean 4.32.0, and
+\texttt{\#print axioms} was run for all eighteen theorem declarations.
+The recorded dependencies are subsets of \texttt{propext} and
+\texttt{Quot.sound}. There is no \texttt{sorryAx} in those reports.
+The rational blueprint definitions were also typechecked; their
+named theorem targets are definitions of propositions, not proved
+theorems. The repository adapter was source-inspected against the
+pinned APIs and is explicitly marked uncompiled.
+
+The main Python reference suite ran twenty-four unittest methods
+using only integers and \texttt{fractions.Fraction}. It covers
+valid and invalid gain certificates, positive-weight construction,
+finite Neumann supersolutions, the affine example, floor rounding,
+the nonlinear tower through dimension sixteen, multilevel
+restriction, same-precision equation residuals, and the alternating
+fixed-point counterexample. Boundary tests include zero dimension,
+the contraction endpoint \(s=1\), empty Neumann prefixes,
+malformed arrays and rejection of floating-point certificate data.
+
+A second reference script checks the approximate-action and
+delayed-execution examples, including 3,564 exact action-contract
+instances. A third script verifies 1,200 regular-name comparisons
+and 120 equation-residual instances for the upper branch, using
+only rational bisection and backward substitution. All these finite
+computations are independent checks on
+constants, indexing, rounding and the implementation. They are
+not substituted for the universal human proofs or for object-level
+iPRA derivations.
+
+\subsection{Sample coordinates with certified enclosure radii}
+
+The following entries are exact outputs of (L8) at \(k=10\).
+The universal proof of (L9), interpreted as a name, places the
+represented coordinate within \(2^{-12}=1/4096\) of each sample.
+The computations verify the finite samples and their residuals;
+the enclosure interpretation uses the theorem.
+
+\begin{center}
+\begin{tabular}{crr}
+\toprule
+Coordinate & Exact rational sample & Decimal sample\\
+\midrule
+0 & \(580853/2097152\) & \(0.276972293853759765625\)\\
+1 & \(145821/1048576\) & \(0.13906574249267578125\)\\
+2 & \(48857/524288\) & \(0.0931873321533203125\)\\
+3 & \(1176899/16777216\) & \(0.070148646831512451171875\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The CSV and JSON files also give exact interval endpoints, model
+dimensions, iteration counts, working precisions and checked
+finite residuals. No decimal rounding participates in the
+inequality checks.
+
+\subsection{Rebuild instructions}
+
+From the packet root, run
+\begin{lstlisting}
+python3 code/run_checks.py
+python3 code/approximate_actions.py
+python3 code/upper_branch_reference.py \
+  --output validation/upper_branch_checks.json
+bash lean/build.sh /absolute/path/to/lean
+bash build_pdf.sh
+\end{lstlisting}
+Python needs only its standard library. The Lean checks require
+the supplied version in \texttt{lean-toolchain}; the large
+toolchain distribution is not included. The PDF uses standard
+LaTeX packages and is built from the supplied complete source.
+The root README describes the separate ProveIt integration
+requirements for the uncompiled object adapter.
+
+\subsection{Priority order for repository integration}
+
+The next substantive integration is the rational and finite-vector
+frontend for the existing ordinary arithmetic library, followed
+by the weighted residual theorem and one complete lattice
+endpoint. That sequence yields a concrete theorem of the target
+object theory before adding additional applications. The delayed
+solver and matrix inverse can then share the same rational
+representation and matrix proofs.
+
+The chart producer supplies a useful subsequent application in
+multivariate local algebra. Extending the tower theorem to a
+particular spatial, spectral or quadrature method requires an
+actual commutation estimate and a summable defect-to-gap budget
+for that method. The framework identifies those obligations
+precisely; it does not turn their absence into a proof.
+
+The outstanding effective height, analytic-number-theory and
+singular-geometry obligations discussed in the source audit remain
+outstanding. The completed contribution is a reusable mathematical
+producer for a substantial numerical feedback and refinement
+subclass, with explicit algorithms, complete finite proofs, and a
+verified arithmetic foundation for the requested Lean development.

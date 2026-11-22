@@ -1,0 +1,394 @@
+\section{Space, reachability, and finite counting}
+\label{sec:space}
+
+Space complexity makes the distinction between an arithmetical definition and
+an efficient implementation particularly clear. A large finite table gives a
+convenient primitive-recursive definition of reachability. A different,
+depth-first implementation establishes a small space bound. The arithmetic
+proof must connect the two. We give these connections explicitly, and then
+reconstruct nondeterministic complementation and quantified Boolean
+completeness in the same finite setting.
+
+\subsection{Configurations and their bounds}
+
+Fix a machine with $q$ states, $k$ work tapes, and a work alphabet of cardinality
+$g\geq 2$. The binary input tape is read-only and has endmarkers. For an input
+of length $n$, restrict each work tape to cells $0,\ldots,s-1$, with $s\geq 1$.
+A configuration consists of the state, the input-head position, all work-head
+positions, and all work-tape contents. Consequently
+\[
+ N_0=q(n+2)s^k g^{ks}
+\]
+is an exact bound on syntactic configurations. Mixed-radix encoding gives
+primitive-recursive encoding and projection functions. In particular, tape
+contents alone would give an incorrect configuration count: head positions
+and the state matter.
+
+The configuration graph contains an edge precisely when a legal machine
+transition connects the two configurations without exceeding the cap. Delete
+moves outside the cap. Add one new target vertex, numbered $N_0$, replace
+the outgoing edges of every accepting configuration by its sole edge to
+that target, and give the target no outgoing edges. This preserves
+acceptance and keeps deterministic configuration graphs deterministic.
+Put $N=N_0+1$. Initial and
+target vertices are explicit functions of the machine and input. In a padded
+binary encoding, unused codes simply have no useful outgoing edges.
+
+Let $\ell$ be the least integer with $2^\ell\geq N+1$. For a fixed machine,
+\[
+ \ell\leq C_M\bigl(s+\lceil\log_2(n+2)\rceil+1\bigr).
+\]
+Here and below logarithm notation abbreviates integer binary length, defined
+by bounded search among powers of two. The bound follows from the product
+formula and $\log_2 s\leq s$ for $s\geq1$; it involves no analysis of real
+logarithms.
+
+Acceptance in the capped graph means existence of an accepting branch that
+stays inside the cap. This agrees with ordinary acceptance when all branches
+of the original machine obey the stated space bound. Branches may loop. If a
+physical simulation must compute a function $s(n)$, that computation must
+also obey the claimed space bound. The logarithmic and polynomial caps used
+below have explicit suitable constructors. We make no unrestricted claim
+that computing an arbitrary primitive-recursive cap is inexpensive.
+
+\subsection{Paths, cycle removal, and the deterministic cutoff}
+
+A path of length $m$ is a coded sequence $v_0,\ldots,v_m$ of vertices below
+$N$, with the required adjacent edges. Its code is bounded by $N^{m+1}$,
+with the length supplied separately. The predicate
+$\mathrm{PathLe}(a,b,m)$ is a bounded disjunction over lengths $r\leq m$ and
+codes below $N^{r+1}$. This deliberately expensive definition immediately
+establishes primitive recursiveness.
+
+\begin{lemma}[Constructive cycle removal]
+Given a path from $a$ to $b$ in an $N$-vertex graph, a primitive-recursive
+operation produces a path with the same endpoints and length at most $N-1$.
+\end{lemma}
+\begin{proof}
+If positions $i<j$ contain the same vertex, delete positions
+$i+1,\ldots,j$. The edge after position $i$ remains legal because the old
+vertices at $i$ and $j$ coincide. Endpoints are unchanged, and the length
+drops by at least one. Find the least repeated pair by bounded search, and
+perform this deletion at most $m$ times, doing nothing once there is no
+repeat. This is a fixed bounded iteration. Its invariant says that endpoints
+and adjacency are preserved and that either no repeat remains or the length
+has decreased. After $m$ rounds no repeat can remain. A duplicate-free list
+of vertices below $N$ has at most $N$ entries, by finite counting.
+\end{proof}
+
+All assertions in this proof are bounded properties of the original path and
+its successive codes. Their characteristic functions turn the invariant into
+a quantifier-free formula. The finite counting assertion can itself be proved
+using indicator sums over the $N$ possible vertex labels.
+
+For a deterministic capped machine, an accepting trace can therefore be
+shortened to one with fewer than $N$ edges. Determinism ensures that this
+short trace agrees with the initial segment of the unique run. Thus the
+following bounded implication holds for every supplied $t$: acceptance by
+$t$ implies acceptance before $N$. A capped recognizer can be made a decider
+for its acceptance language by rejecting at this cutoff. There is no need to
+prove an unbounded statement about every future configuration as an
+induction invariant.
+
+\subsection{A polynomial graph algorithm}
+
+For source $a$, let $S_0(v)=[v=a]$ and define
+\[
+ S_{i+1}(v)=S_i(v)\mathbin\lor
+       \bigvee_{u<N}\bigl(S_i(u)\mathbin\land E(u,v)\bigr).
+\]
+Encode $S_i$ as an $N$-bit integer. Updating the vector is a fixed
+primitive-recursive operation, so recursion on $i$ defines every vector.
+An induction shows that $S_i(v)=1$ precisely when there is a path of length
+at most $i$ from $a$ to $v$: a newly marked vertex is reached by extending
+an old path, and the penultimate vertex of any nonempty path supplies the
+converse. Witness paths can be stored in the mathematical construction,
+using bounded least search, even when the implementation needs only bits.
+
+The conjunction of this invariant over $v<N$ is bounded and can be
+Boolean-compiled before induction. Cycle removal shows that $S_{N-1}$ is
+the full reachable set. Computing $N$ rounds by scanning all ordered pairs
+uses $O(N^3)$ adjacency queries and polynomial time on an ordinary explicit
+graph representation. For a logarithmic-space machine the configuration
+count is polynomial in input length, and adjacency is polynomial-time
+decidable. This gives an explicit proof of $\mathrm{NL}\subseteq\mathrm{P}$.
+
+\subsection{Savitch's theorem with a primitive-recursive audit}
+
+The classical square-space simulation is due to Savitch
+\cite{Savitch1970}. Define Boolean tables
+\begin{align*}
+ H_0(a,b)&=[a=b]\lor E(a,b),\\
+ H_{j+1}(a,b)&=\bigvee_{z<N}
+               \bigl(H_j(a,z)\land H_j(z,b)\bigr).
+\end{align*}
+For a direct primitive-recursive definition, compute the entire $N$ by $N$
+table and update it by this formula. Table codes are below $2^{N^2}$.
+Recursion on a single table code is ordinary primitive recursion; an
+unanalysed recursive subroutine is not being treated as a totality axiom.
+
+\begin{theorem}[Finite repeated squaring]
+For every $j$, $H_j(a,b)=1$ if and only if there is a path from $a$ to $b$
+of length at most $2^j$.
+\end{theorem}
+\begin{proof}
+The base case permits lengths zero and one. Concatenating two paths of
+length at most $2^j$ gives a path of length at most $2^{j+1}$. Conversely,
+in a path of length $m\leq2^{j+1}$, take the vertex at position
+$\min(m,2^j)$. The two resulting segments both have length at most $2^j$.
+This midpoint witnesses the displayed disjunction. Split and join operations
+on the coded paths are primitive recursive.
+\end{proof}
+
+For the iPRA induction, bound path codes by $N^{2^j+1}$ and conjoin over
+$a,b<N$. The resulting assertion is bounded, even though its bound is large.
+Its characteristic function supplies the quantifier-free invariant.
+If $j$ is the least integer with $2^j\geq N$, repeated squaring decides
+reachability.
+
+The small-space implementation evaluates this recurrence depth first. Each
+frame stores $a,b$, the midpoint loop index, the current level, a phase flag,
+and one child answer. Evaluate one child, retain only its Boolean result,
+then evaluate the other. At most $j+1$ frames are active. Each frame uses
+$O(\ell+\log(j+2))$ bits, and $j\leq\ell$, giving $O(\ell^2)$ bits in all,
+plus reusable adjacency scratch space. The recursion tree has at most
+\[
+ 1+(2N)+\cdots+(2N)^j\leq(2N+1)^{j+1}
+\]
+nodes. Multiplication by the explicit per-node bookkeeping and adjacency
+cost gives a primitive-recursive clock for an iterative stack machine.
+
+Quantifier-free induction on the level, bounded over endpoints and the
+relevant stack codes, proves that this clocked evaluator returns the table
+value and obeys its frame bound. This is the essential bridge between the
+large table definition and the small-space implementation. The table alone
+would not prove a space bound.
+
+\begin{theorem}[Square-space simulation for explicit caps]
+For the explicit machine and cap data above, nondeterministic acceptance is
+decidable in deterministic space
+$O((s+\log(n+2))^2)$. If $s\geq\lceil\log_2(n+2)\rceil$, the bound is
+$O(s^2)$. In particular, $\mathrm{NPSPACE}=\mathrm{PSPACE}$.
+\end{theorem}
+\begin{proof}
+Use the configuration graph and the depth-first evaluator. The vertex code
+length is $O(s+\log(n+2))$. Testing one transition needs only comparable
+scratch space. For a polynomial cap its square is polynomial; the reverse
+containment uses a deterministic machine as a nondeterministic machine with
+one possible transition.
+\end{proof}
+
+\subsection{Nondeterministic complementation by exact counting}
+
+The counting method behind nondeterministic complementation is due
+independently to Immerman and Szelepcs\'enyi; we cite Immerman's account
+\cite{Immerman1988}. Here we give the finite certificate construction and
+its restricted-induction audit.
+
+Fix source $a<N$ and put
+\[
+ R_i(v)=[\mathrm{PathLe}(a,v,i)],\qquad
+ c_i=\sum_{v<N}R_i(v).
+\]
+In particular $c_0=1$. We will compute $c_{N-1}$ nondeterministically so
+that every surviving branch returns the correct count and at least one
+branch survives.
+
+\begin{lemma}[Exact enumeration]
+Suppose the correct value $c_i$ is supplied. A nondeterministic scan using
+$O(\log N)$ work bits, plus adjacency scratch space, can enumerate precisely
+the vertices reachable within $i$ steps. Every successful scan is exact,
+and some scan succeeds.
+\end{lemma}
+\begin{proof}
+Visit vertices $u=0,\ldots,N-1$ in order and guess a mark $b_u$. If $b_u=1$,
+guess a path from $a$ to $u$ of length at most $i$, checking one edge at a
+time with a bounded step counter. Reject this branch if the path is invalid.
+Count all marks and require that their total equal $c_i$.
+
+On a successful branch, $b_u\leq R_i(u)$ for every $u$. Equality of their
+finite sums forces equality at every vertex: omitting one reachable vertex
+would reduce the sum by at least one. Conversely mark exactly the reachable
+vertices and use, for each, the least valid bounded path code. These choices
+give a successful branch. Their mathematical constructor is bounded search,
+so it is primitive recursive; it need not be a logarithmic-space algorithm.
+The verifier stores only a constant number of vertices and counters, never
+all marks or paths.
+\end{proof}
+
+Given $c_i$, compute $c_{i+1}$ as follows. For each target $v<N$, run a fresh
+exact enumeration and accumulate the bit
+\[
+ h_v=[v=a]\lor\bigvee_{u<N}\bigl(b_u\land E(u,v)\bigr).
+\]
+After the count check succeeds, this is exactly $R_{i+1}(v)$. Increment a
+next-count register when it is one. The outer scan keeps only the old count,
+the partial new count, and a constant number of indices. Every successful
+branch produces $c_{i+1}$, and the canonical path choices show that a
+successful branch exists. Iterate from $i=0$ through $N-2$.
+
+Finally perform exact enumeration for depth $N-1$. Accept precisely when
+the enumeration succeeds and the target $b$ was not marked. Cycle removal
+then gives
+\[
+ \text{an accepting branch exists}
+ \quad\Longleftrightarrow\quad
+ b\text{ is not reachable from }a.
+\]
+This construction does not reverse nondeterministic accept and reject
+states. Its complement certificate establishes an exact count and uses
+that count to exclude the target.
+
+There are $O(N^4)$ adjacency queries: at most $N$ levels, $N$ targets per
+level, $N$ enumerated vertices per target, and at most $N$ edges per guessed
+path. Bookkeeping has polynomial cost. Space is $O(\log N)$ plus one
+adjacency check. Thus the explicit logarithmic cap construction yields
+$\mathrm{NL}=\mathrm{coNL}$. Applied to polynomial-space configuration
+graphs, it also gives nondeterministic polynomial-space complementation.
+
+\paragraph{Why the induction is permitted.}
+A transcript has a primitive-recursive bit-length bound because all four
+loops and every path are bounded. For example, a padded format has at most
+$N(N-1)+1$ enumerations; each contains $N$ mark entries, each with a length
+field and at most $N$ vertex fields. With
+$w=\lceil\log_2(N+2)\rceil$, its bit length is bounded by
+\[
+ B(N)=\bigl(N(N-1)+1\bigr)N(1+w+Nw).
+\]
+Use the corresponding code bound $2^{B(N)}$ for quantified transcript
+variables. The stage invariant says that every surviving bounded transcript
+has the correct count, and that a specified primitive-recursive canonical
+transcript survives. The first assertion is bounded universal; the second
+is a Boolean equality after the canonical constructor has been defined.
+Both therefore compile to quantifier-free induction. The canonical
+constructor uses the finite reachability table and bounded least path
+search. No unbounded choice or collection is needed. A formal proof must
+also show that the transcript verifier and the low-space machine describe
+exactly the same bounded branches; this is a local finite realization lemma.
+
+\subsection{True quantified Boolean formulas are PSPACE-complete}
+\label{sec:tqbf}
+
+A quantified Boolean formula has constants, Boolean connectives, and
+quantifiers over the two-element domain. Its truth is a primitive-recursive
+Boolean function of its finite syntax code: bounded syntax traversal and
+finite assignment tables provide a direct definition. A depth-first
+evaluator instead stores the current assignment and a stack of subformula
+positions. For an input of length $L$ there are at most $L$ active frames,
+with polynomially many bits in total. Its finite recursion tree has an
+explicit exponential bound, so it can be implemented with a clock. Thus
+truth of closed quantified Boolean formulas lies in PSPACE.
+
+For hardness, consider a fixed polynomial-space machine on input $x$.
+Choose fixed-width binary configuration fields. Let $d$ bits suffice for a
+configuration, including a unique accepting target. Validity and adjacency
+are computable by Boolean circuits of size polynomial in $|x|+s(|x|)$:
+compare states and heads, check unchanged tape cells, inspect the selected
+work symbols, and select the input bit by its head index. Each comparison,
+selector, and local transition has an explicit finite gate construction.
+There are at most $2^d$ possible codes. Invalid codes have no useful edges.
+
+The equality-or-adjacency predicate has a polynomial-size Boolean formula
+with existentially quantified auxiliary gate variables. Introduce one
+variable per circuit gate, constrain it to equal that gate's Boolean
+operation, and require the output bit to be one. This representation is
+linear in circuit size; expanding a circuit into a formula tree would not
+justify a polynomial bound. Gate values supply canonical witnesses, and
+induction in gate order proves the converse.
+
+Call this base formula $\Phi_0(a,b)$, with $a,b$ tuples of $d$ free Boolean
+variables, and require endpoint validity. Recursively define
+\[
+\begin{split}
+ \Phi_{j+1}(a,b)=\exists z\bigl(&\mathrm{Valid}(z)\land
+    \forall u\,\forall v\,\bigl(
+       G(a,b,z,u,v)\to\Phi_j(u,v)\bigr)\bigr),\\
+ G(a,b,z,u,v)={}&(u=a\land v=z)\lor(u=z\land v=b).
+\end{split}
+\]
+Each displayed quantifier ranges over a $d$-bit tuple, and every level uses
+fresh variable names. There is only one recursive occurrence of $\Phi_j$.
+Validity can be included with a polynomial-size circuit and fresh
+existential gate variables at each level; its contribution remains
+polynomial. If all $d$-bit codes are permitted vertices and invalid codes
+are isolated, midpoint validity may instead be omitted: a path between
+valid endpoints cannot benefit from an isolated invalid midpoint.
+
+\begin{lemma}[Shared occurrence of reachability]
+For valid endpoints, $\Phi_j(a,b)$ is true exactly when there is a path of
+length at most $2^j$ from $a$ to $b$.
+\end{lemma}
+\begin{proof}
+The base formula has the equality-or-adjacency meaning. If the two half-paths
+exist for midpoint $z$, the induction hypothesis proves the consequent for
+each of the two guarded endpoint pairs. For any other $u,v$ the Boolean
+guard is false, and its implication is true. This proves the universal
+formula. Conversely instantiate its universal tuples first by $(a,z)$ and
+then by $(z,b)$. Both guards are true, so the two instances of the induction
+hypothesis give the half-paths. Concatenate them. Every case distinction
+is on a decidable finite Boolean equality.
+\end{proof}
+
+Take $j=d$. Cycle removal makes this depth sufficient, and substitute the
+initial and accepting configurations. The resulting closed formula is true
+exactly when the original machine accepts. The guard and quantified tuples
+add $O(d)$ variable occurrences per level. The base circuit and any repeated
+validity circuits have polynomial size; with $d$ levels the full formula
+has polynomial size in $|x|+s(|x|)$. Binary variable identifiers add only a
+logarithmic factor. A printer performs explicitly bounded nested loops over
+the fields, gates, levels, and variable indices, giving a polynomial-time
+many-one reduction for each fixed polynomial-space machine and its cap.
+
+Quantifiers need not initially be in prenex form. If that convention is
+required, rename bound variables, put the Boolean matrix in negation normal
+form, and move each quantifier across a connective where its variable is
+not free in the other operand. These finite Boolean equivalences preserve
+truth and require no duplication of subformulas, giving polynomial output
+size. The domain is nonempty, and all Boolean subformulas are decidable.
+
+The iPRA invariant quantifies only over endpoint tuples below $2^d$, finite
+syntax codes under the explicit size bound, and assignment codes. Truth
+and repeated-squaring values are primitive-recursive Booleans. Their
+equality, conjoined over bounded endpoints, is therefore an admissible
+quantifier-free induction invariant after compilation. This proves the
+arithmetical content of TQBF PSPACE-completeness as a family of explicit
+reduction and correctness statements, without quantifying over arbitrary
+sets of inputs.
+
+\subsection{Containments and implementation obligations}
+
+The constructions give
+\[
+ \mathrm{L}\subseteq\mathrm{NL}=\mathrm{coNL}
+ \subseteq\mathrm{P}\subseteq\mathrm{NP}
+ \subseteq\mathrm{PSPACE}=\mathrm{NPSPACE}
+ \subseteq\mathrm{EXPTIME}.
+\]
+Deterministic computations supply single-branch nondeterministic ones.
+For $\mathrm{NP}\subseteq\mathrm{PSPACE}$, enumerate all polynomial-length
+witnesses with a binary counter, rerun the polynomial-time verifier, and
+reuse its storage. The counter and verifier need polynomial space although
+the total time is exponential. For
+$\mathrm{PSPACE}\subseteq\mathrm{EXPTIME}$, the deterministic configuration
+cutoff is $2^{p(n)}$ for an explicit polynomial $p$ depending on the fixed
+machine. Simulating that many transitions with polynomial overhead preserves
+an exponential-time bound. None of these arguments decides any of the
+standard unresolved equalities between neighboring classes.
+
+For Lean, the semantic layer may start with finite vertices and a Boolean
+adjacency function. The arithmetic layer must replace this function by a
+finite table or a particular coded transition computation. Required bridge
+lemmas include the configuration encoding bound, transition--edge
+correspondence, cycle-removal correctness, repeated-squaring correctness,
+stack-evaluator equivalence and frame bound, the equal-count finite subset
+lemma, counting-transcript soundness and completeness, branch realization,
+and the shared-occurrence formula lemma. Finally the bounded invariants
+must be translated into the chosen object-language proof calculus.
+
+The executable reference implementation supplied with this report checks
+these finite constructions on small graphs. Its transcript objects and
+independent closure oracle are intentionally materialized; the Python code
+is not claimed to be a logarithmic-space Turing-machine implementation.
+Finite tests validate examples and detect implementation errors. They do
+not replace the mathematical arguments or an eventual checked iPRA
+derivation.

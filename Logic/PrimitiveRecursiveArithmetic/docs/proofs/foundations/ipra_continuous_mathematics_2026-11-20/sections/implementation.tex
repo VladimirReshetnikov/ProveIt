@@ -1,0 +1,48 @@
+\section{Verification, remaining derivations and research questions}
+\label{sec:audit}
+\subsection{Claims and their dependencies}
+
+All references to the iPRA directory use ProveIt revision \href{https://github.com/VladimirReshetnikov/ProveIt/commit/5f3be02388442f16487d2dc5c2529961dd783d2b}{\texttt{5f3be0238844}}. The \repo{docs/proofs/foundations/FINER-iPRA-framework-2026-11-16/paper/sections/13_difficulties.tex}{FINER difficulty report} calls for object sequents, bounded reflection and an account of all-precision reasoning. Some issues it listed already have reusable modules in the pinned \repo{Derivations/README.md}{Derivations inventory}. We use existing results at their documented level. In particular, the rational Cauchy and Laurent estimates used in Section~\ref{sec:movingres} come from the human proof in the \repo{docs/proofs/analysis/cauchy_residue_ipra/report.tex}{analysis packet}. The supplied files do not derive those estimates in the object calculus.
+
+\smallskip
+\noindent\begin{tabularx}{\linewidth}{@{}p{.215\linewidth}X@{}}
+\toprule
+Repository question & Result and boundary in this report\\
+\midrule
+\repo{docs/proofs/foundations/ipra_finite_use_framework_2026-11-15/sections/09_compactness.tex}{Nets as input} &
+A net of the base space produces an inner net of the bounded Lipschitz ball, with exact code distance and an evaluation modulus. The construction iterates over fixed types.\\[3pt]
+\repo{docs/proofs/foundations/ipra_categorical_methods/paper/sections/05_descent.tex}{Approximate overlaps} &
+Two-sided relations transfer quantified observables. First-patch gluing has the sharp oscillation bound $2e+w$ under a common-patch hypothesis. Coherence across levels requires the indicated comparison bounds.\\[3pt]
+\repo{docs/proofs/topology/ipra_topology_framework_2026-11-15/paper/sections/12_limits.tex}{Effective nerve data} &
+For finite closed rational boxes the intersections, contractions, maps and homotopies are produced. Assumptions on a general cover or a general convex-set oracle are stronger.\\[3pt]
+\repo{docs/proofs/analysis/cauchy_residue_ipra/README.md}{Rational centres} &
+PR-named centres work with isolation, a common rational collar, holomorphy data and a filling. A germ interpretation also requires compatible data through the punctured neighbourhood.\\
+\bottomrule
+\end{tabularx}
+
+\subsection{From Lean lemmas to iPRA sequents}
+
+All six supplied Lean modules were checked with Lean 4.32.0. No file declares a new axiom or uses a proof placeholder. \texttt{ObjectTransport.lean} imports \repo{ConciseIPRA/Lean/ConciseIPRA/PR.lean}{ConciseIPRA.PR} and its theorem \texttt{Plan.derive} produces $\Gamma\vdash_{\mathsf{PRAAx}}P\to Q$ from an explicitly typed finite plan and a derivation at each leaf. This checks the quantifier adapter in the object calculus, including its handling of variables. The other modules use Lean's own numbers, lists, functions and propositions. Their proofs can use classical infrastructure in Lean's libraries or proof tactics. Their mathematical arguments above record the constructive replay. The verification log records the checks performed.
+
+\paragraph{Function and variational endpoints.}
+Use terms for length, access, height, rational order, sign, addition, multiplication, maximum and minimum. A rational is a signed numerator and a positive denominator; a comparison of codes $(a,b),(c,d)$ is the reflected inequality $ad\le cb$. For fixed base-carrier symbols define $\mathsf{eval}(A,x)$ by \eqref{eq:cone}, $\mathsf{dist}(A,B)$ by \eqref{eq:metric}, and $\mathsf{ok}(A)$ as the validity bit of every list entry. For any fixed $D,L$ the first target sequent, with validity and $e\ge0$ in the context, is
+\[
+ \mathsf{dist}(A,B)\le e\quad\longleftrightarrow\quad
+ \forall x\,(\mathsf{ok}_D(x)\to
+     |\mathsf{eval}(A,x)-\mathsf{eval}(B,x)|\le e).
+\]
+For the backward direction instantiate the universal premise once per anchor and fold a maximum. For the forward direction fix the arbitrary $x$, prove the bound on each cone, fold a minimum, then generalize $x$. \texttt{FunctionSpace.lean} proves these two directions as \texttt{dist\_spec}, constructs the restricted rational pseudometric \texttt{unitCodeSpace}, and proves the noisy-sample bounds as \texttt{cover}.
+
+For the net endpoint define $\mathsf{row}(p,k)$ by the rounding rule and $\mathsf{cone}(k,j)$ by decoding the radix digits of $j$. The first sequent bounds the row code by the cardinal in Theorem~\ref{thm:inner}. The second compares $\mathsf{eval}(\mathsf{cone}(k,\mathsf{row}(p,k)),x)$ to the rational read $F(p,x,n)$ by $2^{-k-1}+2^{-n}$ for all valid $x$ and all $n$. The proof first fixes $x,n$ and uses the cover witness, the sample Lipschitz contract, then comparisons through finer reads to discharge the dyadic slack. This supplies the coverage needed for Lemma~\ref{lem:sup}. For the square minimum, specialize to the rational interval, add the named formula for $g$, and replay the two polynomial inequalities at $1,t$. Polynomial normalization requires just signed-ring identities; nonnegativity uses products of nonnegative rational differences. Order splits are splits on rational codes. Finish by the finite-net upper/lower-bound lemmas. Source modules for numerical reification include \repo{Derivations/Lean/IPRADerivations/Analysis/RationalSupMetric.lean}{RationalSupMetric} and the bounded-reflection modules in Section~\ref{sec:base}.
+
+\paragraph{Remaining application modules.}
+In \texttt{Abstract.lean}, extract relation selectors by bounded first-success search, then use the extremum index and prefix witnesses for every postorder formula row. Section~\ref{sec:metric-logic} gives the invariant for variable formula codes. For topology, the undecided implementation work is the rational grid/subdivision representation and its geometric correctness; the overlap denominator and support arithmetic already have Lean proofs. For residues, an object port first needs the rational triangle integral and annular coefficient estimates, then the finite chain and diagonal lemmas, then equality at each requested precision. The working order in Sections~\ref{sec:boxnerve} and \ref{sec:movingres} supplies the definitions, margins and induction parameters. The bridge \repo{Bridge/README.md}{to the Foundation presentation} can transport completed object derivations. It cannot promote a theorem of host arithmetic to such a derivation automatically.
+
+\subsection{Further research questions}
+
+\begin{enumerate}
+\item The function constructor exploits a special property of the interval: an arbitrary table of heights produces an admissible function, and both directed uniform-distance bounds reduce to tests at the anchors. Which other effective metric targets admit these two operations? Sup-norm boxes with a fixed number of coordinates inherit them component by component. Hilbert-space targets would require a different certificate for vector-valued extension.
+\item For box covers the coordinatewise intersection point and the common grid are both PR. Can one construct equally explicit homotopies for finite rational convex polytopes directly from feasible-face lists? In particular, bound the normalization denominator and produce a common subdivision with a PR size estimate uniform in dimension.
+\item In the residue construction the rational global filling is supplied. Under what quantitative assumptions on a PR-presented domain and a cycle can this filling and all required collars be produced from local distance-to-boundary data? A bounded triangulation and a proof of its incidence and winding conditions would remove a substantive input.
+\item Can the arithmetic proofs for valid function codes be packaged as a constructor on the repository's \repo{Derivations/Lean/IPRADerivations/Foundations/RealizerMasterInterface.lean}{realizer interfaces}? The first milestone is the explicit bidirectional \texttt{dist\_spec} sequent above, followed by the radix-code coverage sequent. This would allow the compact-quantifier construction to be iterated with checked object proofs throughout.
+\end{enumerate}

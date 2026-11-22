@@ -1,0 +1,236 @@
+\section{A dense elementary curve with rational witnesses}
+\label{sec:density}
+
+Define, for $1\le j\le n$,
+\[
+ h_j(t)=t\sin(t^{2j-1}).
+\]
+We prove quantitative density by maintaining rational intervals. The argument
+uses only rational tests, finite grids, and explicit error bounds. In
+particular, it never selects an exact zero of a real function.
+
+The spacing of the exponents explains why one parameter can control all
+coordinates. Around a large positive $T$, coordinate $j$ has amplitude
+roughly $T$ and phase speed roughly $T^{2j-2}$. After coordinate $j-1$
+has been controlled, the surviving interval has length comparable to
+$\epsilon/T^{2j-3}$. Across that interval the next phase therefore changes
+by an amount comparable to $\epsilon T$. Taking $T$ large creates room for
+another positive and negative oscillation without destroying the earlier
+coordinates. The bounds below turn this scale comparison into an explicit
+rational construction; no equidistribution theorem is used.
+
+\begin{theorem}[Primitive recursive rational density]\label{thm:density}
+Let $a_1,\ldots,a_n\in\Q$, let $A\in\N$ satisfy
+$\abs{a_i}\le A$, and let $0<\epsilon\le1$ be rational. There is a
+primitive recursive construction of $q\in\Q$ such that
+\[
+ \abs{h_j(q)-a_j}<\epsilon/2\quad(1\le j\le n).
+\]
+One may choose an integer
+\begin{equation}
+ T=\left\lceil
+       \max\{4(A+1),\,256(n+1),\,1024/\epsilon\}
+    \right\rceil,
+ \qquad B=T+64,\label{eq:density-size}
+\end{equation}
+and require $q\in[T,B]$.
+\end{theorem}
+
+\begin{proof}
+We give the whole construction, including the finite searches.
+
+\paragraph{A uniform Lipschitz bound.}
+For $m=2j-1$ put
+\[
+ D_j=1+mB^m.
+\]
+The factorization of a difference of powers gives
+$\abs{t^m-s^m}\le mB^{m-1}\abs{t-s}$ on $[T,B]$. Combining this with
+$\abs{\sin v}\le1$ and
+$\abs{\sin v-\sin w}\le\abs{v-w}$ yields
+\begin{align}
+ \abs{h_j(t)-h_j(s)}
+ &\le\abs{t-s}+B\abs{t^m-s^m}\notag\\
+ &\le D_j\abs{t-s}.\label{eq:density-lipschitz}
+\end{align}
+Thus no differentiation is needed to obtain the modulus used by the
+construction.
+
+Start with $I_0=[T,B]$. At stage $j$, we will construct a closed rational
+interval $I_j\subseteq I_{j-1}$ with
+\begin{equation}
+ \abs{I_j}=\frac\epsilon{2D_j},
+ \qquad
+ \abs{h_i(t)-a_i}<\epsilon/2
+ \quad(t\in I_j,\ i\le j).\label{eq:interval-invariant}
+\end{equation}
+Earlier coordinate estimates survive automatically when the interval is
+shrunk. The main issue is to fit the next oscillation inside it.
+
+\paragraph{Phase variation in the central half.}
+Let $J=[u,v]$ be the central half of $I_{j-1}$. For $j=1$, this interval
+has length 32, and the phase is $t$, so its phase variation is 32.
+For $j\ge2$, again write $m=2j-1$. The previous exponent is $m-2$,
+and factorization gives
+\[
+ v^m-u^m\ge mT^{m-1}(v-u)
+ =\frac{mT^{m-1}\epsilon}{4D_{j-1}}.
+\]
+Since
+$D_{j-1}=1+(m-2)B^{m-2}\le(m-1)B^{m-2}$, we obtain
+\[
+ v^m-u^m
+ \ge\frac{\epsilon T}{4}
+       \left(\frac TB\right)^{m-2}.
+\]
+For $0\le k\le2n-3$, Bernoulli's inequality and
+$T\ge256(n+1)$ give
+\[
+ \left(\frac TB\right)^k
+ =\left(1-\frac{64}{B}\right)^k
+ \ge1-\frac{64k}{B}\ge\frac12.
+\]
+Consequently
+\begin{equation}
+ v^m-u^m\ge\epsilon T/8\ge128
+ \quad(j\ge2).\label{eq:phase-room}
+\end{equation}
+The phase interval has width at least 32 in every stage.
+
+\paragraph{Two rational points with opposite sine signs.}
+Set $K=B^m+1$. Compute a rational $p$ satisfying
+\[
+ 3<p<4,
+ \qquad \abs{p-\pi}\le\frac1{64(K+1)}.
+\]
+The certified approximation primitive for $\pi$ supplies such a rational
+with a precision bound computed from $K$. Find the least integer
+$0\le k\le K$ for which
+\[
+ r_+=(2k+1/2)p\ge u^m+4.
+\]
+This is a bounded search with exact rational comparisons. Its last candidate
+exceeds $u^m+4$, so it succeeds. The least candidate has $k\ge1$ because
+$u\ge T$, and adjacent candidates differ by $2p<8$. Hence
+\[
+ u^m+4\le r_+<u^m+12.
+\]
+Put $r_-=(2k+3/2)p=r_++p$. Then $r_-<u^m+16$, so both rational
+targets lie inside $[u^m,v^m]$, with substantial room to spare. Their
+distances from the exact phases $(2k+1/2)\pi$ and $(2k+3/2)\pi$ are
+less than $1/32$.
+
+Subdivide $[u,v]$ into
+\[
+ N_0=1+\left\lceil16mB^{m-1}(v-u)\right\rceil
+\]
+equal subintervals. Consecutive rational phase values $t^m$ differ by at
+most $1/16$. For each of $r_+$ and $r_-$, choose the first grid point
+whose phase is at least that target. Both choices exist, since the final
+phase is $v^m$. The chosen phase lies between its target and its target
+plus $1/16$.
+
+Call these points $q_+$ and $q_-$. Their order is $q_+<q_-$, since the
+targets differ by $p>3$, much more than the possible overshoot. Their
+phases differ from the corresponding exact sine maxima and minima by less
+than $1/32+1/16<1/8$. Sine's Lipschitz bound now proves
+\begin{equation}
+ \sin(q_+^m)>7/8,
+ \qquad
+ \sin(q_-^m)<-7/8.\label{eq:opposite-sines}
+\end{equation}
+These inequalities were established from rational phase comparisons. They
+were not obtained by invoking a procedure that decides an arbitrary real
+sign.
+
+\paragraph{Finding an approximately correct value.}
+The size condition $T\ge4(A+1)$ makes
+$h_j(q_+)-a_j$ positive by more than one and
+$h_j(q_-)-a_j$ negative by more than one. Subdivide $[q_+,q_-]$ into
+\[
+ N_1=1+\left\lceil
+          \frac{16D_j(q_--q_+)}\epsilon
+       \right\rceil
+\]
+equal intervals. Write its grid points as $t_0,\ldots,t_{N_1}$.
+At each one compute a rational $b_\ell$ with
+\[
+ \abs{b_\ell-(h_j(t_\ell)-a_j)}\le\epsilon/32.
+\]
+For example, approximate $\sin(t_\ell^m)$ to error
+$\epsilon/(32B)$, multiply by the rational $t_\ell$, and subtract
+$a_j$. This specifies a finite precision requirement.
+
+The first $b_\ell$ is positive and the last is negative. Equation
+\eqref{eq:density-lipschitz} and the grid spacing imply
+\[
+ \abs{b_\ell-b_{\ell-1}}
+ \le\epsilon/16+2\epsilon/32=\epsilon/8.
+\]
+Choose the first index with $b_\ell\le0$. It has a predecessor with
+positive value, so
+\[
+ -\epsilon/8<b_\ell\le0,
+ \qquad
+ \abs{h_j(t_\ell)-a_j}<5\epsilon/32<\epsilon/4.
+\]
+This is a finite discrete crossing argument. It constructs an approximate
+solution at a rational point; an exact real solution is neither asserted
+nor needed.
+
+\paragraph{Restoring an interval.}
+Set $c=t_\ell$ and define
+\[
+ I_j=\left[c-\frac\epsilon{4D_j},
+           c+\frac\epsilon{4D_j}\right].
+\]
+Its length is the prescribed $\epsilon/(2D_j)$. For every $t\in I_j$,
+the Lipschitz bound gives
+\[
+ \abs{h_j(t)-a_j}
+ <5\epsilon/32+\epsilon/4
+ =13\epsilon/32<\epsilon/2.
+\]
+The center $c$ lies in the central half of $I_{j-1}$. For $j\ge2$,
+the elementary inequality $D_j\ge2D_{j-1}$ makes the new radius at most
+one quarter of the length of $I_{j-1}$, so $I_j\subseteq I_{j-1}$.
+For $j=1$, the radius is less than one and the available distance to the
+endpoints is at least 16. This proves the same containment. The earlier
+coordinates retain their estimates by nesting, establishing
+\eqref{eq:interval-invariant}.
+
+After $n$ stages, take the rational midpoint of $I_n$. It satisfies all the
+claimed estimates and lies in $[T,B]$.
+\end{proof}
+
+\subsection{Why this is a primitive recursive construction}
+
+All divisions, powers, floors, ceilings, and comparisons above are operations
+on coded integers or rationals. Every search has a prescribed bound. For
+example, $v-u\le64$ and $q_--q_+\le64$ give
+\[
+ N_0\le1024mB^{m-1}+2,
+ \qquad
+ N_1\le\frac{1024D_j}{\epsilon}+2.
+\]
+The second displayed upper bound may be replaced by its integer ceiling.
+The approximations to $\pi$ and sine have primitive recursive truncation
+bounds in their rational inputs and requested precision. A bounded loop over
+$j=1,\ldots,n$, carrying the rational endpoints and its finite calculation
+record, is therefore primitive recursive.
+
+For an implementation, both grid traversals can be accelerated by binary
+search on the grid indices. The phase values are monotone. In the second
+search, monotonicity of $h_j$ is unnecessary: maintain endpoints whose
+rational approximations have opposite signs, and keep the half with opposite
+endpoint signs until the indices are adjacent. The same Lipschitz estimate
+then certifies the desired approximation. The slower bounded traversal is
+already sufficient for the proof.
+
+Inside $\ipra$, the induction invariant is expressed by the finite record of
+rational endpoint comparisons, approximation precisions, and rational error
+bounds. One does not use induction on a formula quantifying over all real
+points of the displayed intervals. The real notation in
+\eqref{eq:interval-invariant} summarizes the consequence of these finite
+certificates; the modulus \eqref{eq:density-lipschitz} is what permits this
+summary to be unfolded at any requested rational precision.

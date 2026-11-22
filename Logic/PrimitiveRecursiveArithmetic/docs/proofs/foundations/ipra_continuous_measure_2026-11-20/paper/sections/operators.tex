@@ -1,0 +1,258 @@
+\section{Presented probability-preserving operators}\label{sec:operators}
+
+\subsection{Finite kernels and their exact identities}
+
+Let $(X,\mu)$ and $(Y,\nu)$ be finite probability spaces. A
+probability-preserving transition is a rational matrix $P=(P_{ij})$ with
+\begin{equation}\label{eq:stationarity}
+ P_{ij}\ge0,\quad \sum_jP_{ij}=1,\quad
+ \sum_i\mu_iP_{ij}=\nu_j.
+\end{equation}
+Its action on observables is contravariant:
+\[
+ T_P:L^1(Y,\nu)\longrightarrow L^1(X,\mu),\qquad
+ (T_Pf)_i=\sum_jP_{ij}f_j.
+\]
+Zero-mass source rows may be chosen arbitrarily subject to row
+normalization; they have no effect on the $L^1$ map. They must nevertheless
+remain well-formed rows in the numerical code.
+
+\begin{theorem}[Finite Markov-operator calculus]\label{thm:finite-markov}
+The map $T_P$ is positive, linear, preserves $1$ and the integral, and
+\begin{equation}\label{eq:markov-contraction}
+ \norm{T_Pf-T_Pg}_{1,\mu}\le\norm{f-g}_{1,\nu}.
+\end{equation}
+If $Q:(Y,\nu)\to(Z,\xi)$ is another transition, its matrix composite $PQ$
+satisfies \eqref{eq:stationarity}, and $T_{PQ}=T_PT_Q$.
+Finite independent products are preserved by the tensor matrix
+$(P\otimes Q)_{(i,k),(j,\ell)}=P_{ij}Q_{k\ell}$.
+\end{theorem}
+\begin{proof}
+Positivity and linearity follow termwise; the row-sum law gives $T_P1=1$.
+Finite Fubini and the last equation in \eqref{eq:stationarity} give
+\[
+ \sum_i\mu_i(T_Pf)_i
+ =\sum_j\left(\sum_i\mu_iP_{ij}\right)f_j
+ =\sum_j\nu_jf_j.
+\]
+For contraction, apply the triangle inequality before exchanging the sums:
+\[
+ \sum_i\mu_i\left|\sum_jP_{ij}(f_j-g_j)\right|
+ \le\sum_{i,j}\mu_iP_{ij}|f_j-g_j|
+ =\sum_j\nu_j|f_j-g_j|.
+\]
+For composition, positivity is termwise, the row sum is
+$\sum_jP_{ij}\sum_kQ_{jk}=1$, and the new marginal is
+$\sum_j\nu_jQ_{jk}=\xi_k$. Expanding a triple sum proves the action law
+and associativity. The tensor equations factor into one equation for each
+factor by finite Fubini. These proofs use only bounded sums and
+nonnegative rational arithmetic.
+\end{proof}
+
+The existing \texttt{FiniteKernel} module concerns finite expectation
+evaluation and natural-weight presentations; the matrix and completion
+arguments here build on those results rather than changing their meaning
+\cite{repo-finite-kernel,repo-fubini}. The general categorical setting is
+related to Markov categories \cite{fritz}, with one structural restriction
+explained below.
+
+\subsection{Strong action data instead of uniform matrix approximation}
+
+We now allow the finite probability algebras to refine indefinitely, as in
+the measure presentation of the preceding section. Let $D_X,D_Y$ denote
+their rational simple-function codes. Their $L^1$ completions are described
+by regular names.
+
+\begin{definition}[A presented bounded action]\label{def:action}
+A bounded action $A:X\to Y$ on observables consists of a rational bound
+$C\ge0$ and a PR routine $A(s,p)\in D_Y$ for $s\in D_X$. After common
+refinement its finite contracts are
+\begin{align}
+ \norm{A(s,p)-A(t,q)}_1
+ &\le C\norm{s-t}_1+2^{-p}+2^{-q},\label{eq:action-stability}\\
+ \norm{A(as+bt,p)-aA(s,q)-bA(t,r)}_1
+ &\le2^{-p}+|a|2^{-q}+|b|2^{-r},\label{eq:action-linearity}\\
+ \norm{A(s,p)}_1&\le C\norm s_1+2^{-p}.\label{eq:action-bound}
+\end{align}
+They hold for all rational $a,b$, simple $s,t$, and natural precisions.
+For a probability-preserving action require additionally $C=1$ and
+\begin{align}
+ \norm{(A(s,p))_-}_1&\le2^{-p}\quad(s\ge0),\label{eq:action-positive}\\
+ \norm{A(1,p)-1}_1&\le2^{-p},\qquad
+ |I_Y(A(s,p))-I_X(s)|\le2^{-p}.\label{eq:action-preserve}
+\end{align}
+Here $u_-=(|u|-u)/2$ is defined on simple functions and extends
+nonexpansively to $L^1$. Each displayed inequality is a numerical
+all-precision contract for a fixed routine.
+\end{definition}
+
+The definition does not assume a map on an already constructed uncountable
+space. It gives its finite action and the precise relations needed to
+construct one. For actual implementations the contracts must be proved;
+placing them in a Lean structure is not a proof that an implementation
+inhabits that structure.
+
+\begin{theorem}[Extension and composition of strong actions]\label{thm:action-extension}
+A presented bounded action extends uniquely to a bounded linear map on
+regular $L^1$ names. Its bound is $C$. Probability-preserving actions extend
+to positive unital integral-preserving contractions. Identity and
+composition have PR action routines, and equality on dense simple
+functions implies equality on all names.
+\end{theorem}
+\begin{proof}
+Choose a natural $\ell$ with $C\le2^\ell$; one can take the bit length of
+$\lceil\max(1,C)\rceil$. If $f$ has simple approximants $s_n$ with
+$\norm{s_n-f}_1\le2^{-n}$, define
+\[
+ b_p=A(s_{p+\ell+2},p+2).
+\]
+For $p,q$ the stability contract gives
+\[
+ \norm{b_p-b_q}_1
+ \le C(2^{-p-\ell-2}+2^{-q-\ell-2})
+      +2^{-p-2}+2^{-q-2}
+ \le2^{-p-1}+2^{-q-1}.
+\]
+Thus $b$ is a regular name. Comparing two equivalent input names with
+\eqref{eq:action-stability} shows the output is independent of the name.
+Taking arbitrarily precise finite comparisons gives
+$\norm{Af-Ag}_1\le C\norm{f-g}_1$. The linearity contract gives exact
+linearity by the same process. The negative-part, unit, and integral
+contracts pass to the limit because these operations are nonexpansive in
+$L^1$.
+
+For actions $A:X\to Y$ and $B:Y\to Z$, an evaluator for $BA$ is
+\[
+ (B\circ A)(s,p)=B(A(s,p+\ell_B+2),p+2),
+ \qquad C_B\le2^{\ell_B}.
+\]
+Its distance from the intended composite is at most
+$C_B2^{-p-\ell_B-2}+2^{-p-2}\le2^{-p-1}$.
+Triangle inequalities with the separate action contracts prove all the
+required finite laws, with one extra guard bit if one insists on an exact
+$2^{-p}$ convention. The bound is $C_BC_A$. The identity routine returns
+its input exactly. The two associations of three actions agree on every
+simple function, hence on every name by continuity. Finally, if two maps
+agree on simple functions, comparison through a simple approximant $s_n$
+gives output distance at most $(C_A+C_B)2^{-n}$; this proves uniqueness.
+\end{proof}
+
+\begin{example}[Why strong action is needed]\label{ex:no-operator-norm}
+On the dyadic presentation of $[0,1]$, let $E_n$ average over the cells of
+the $n$th partition. For every supplied $L^1$ name $f$, the previous
+section constructs a PR rate for $E_nf\to f$. But for every $n$ there is
+a simple function $h_n$ equal to $+1$ and $-1$ on the two halves of every
+$n$th-level cell. Then $\norm{h_n}_1=1$ and $E_nh_n=0$, so
+\[
+ \norm{I-E_n}_{L^1\to L^1}\ge1.
+\]
+No sequence of these finite conditional averages approximates the identity
+in operator norm. A definition that required this convergence would
+exclude the identity from the intended completion. Strong action on each
+named input avoids that error and provides precisely the data needed for
+composition.
+\end{example}
+
+\subsection{Categorical structure and its probability constraint}
+
+Take presented probability algebras as objects, and a transition $X\to Y$
+to mean a probability-preserving action $L^1(Y)\to L^1(X)$ modulo equality
+on names. Theorem~\ref{thm:action-extension} gives a category. The word
+``category'' can be eliminated from any fixed argument: objects and arrows
+are presentation codes, and the associativity and identity statements are
+all-precision arithmetic equalities. There is no need for a universe of
+all spaces inside iPRA.
+
+For products use the rectangular finite algebra with masses $\mu_i\nu_j$.
+The finite tensor matrices in Theorem~\ref{thm:finite-markov} are
+contractions on this algebra. More generally, to tensor two presented
+actions, write a rectangular simple function as a finite sum
+$\sum_{i,j}c_{ij}\mathbf1_{A_i}\mathbf1_{B_j}$ and apply the actions
+separately to the two indicators. For a product of named functions,
+\[
+ \norm{fg-\widetilde f\widetilde g}_{L^1(X\times Y)}
+ \le\norm{f-\widetilde f}_{L^1(X)}\norm g_{L^1(Y)}
+    +\norm{\widetilde f}_{L^1(X)}\norm{g-\widetilde g}_{L^1(Y)}.
+\]
+Finite Fubini proves this directly. It provides the PR precision schedule
+for the finite tensor sum. Positivity, mass preservation, and the pointwise
+inequality $|Tu|\le T|u|$ give contraction on rectangular simple
+functions explicitly: put $a_i=T\mathbf1_{A_i}$ and
+$b_j=S\mathbf1_{B_j}$. These functions are nonnegative, so
+$|\sum c_{ij}a_ib_j|\le\sum|c_{ij}|a_ib_j$; integrating gives
+$\sum|c_{ij}|\mu(A_i)\nu(B_j)$, the norm of the original atom table.
+For a finite evaluator, clip indicator-image approximants to $[0,1]$.
+If each has $L^1$ error at most $\delta$, each product has error at most
+$2\delta$. The choice
+$\delta\le2^{-p}/(2\max(1,\sum_{ij}|c_{ij}|))$ suffices for the whole
+table, and only one image per source atom needs to be cached.
+The tensor therefore extends to the product $L^1$ completion. Common
+refinement and linearity prove independence of the chosen rectangular
+decomposition. The tensor unit is the one-point probability space;
+symmetry and associativity are the explicit index permutations.
+
+This category has designated marginal measures. Copying $x\mapsto(x,x)$
+generally sends $\mu$ to a diagonal law, not to $\mu\otimes\mu$.
+For a fair two-point space the diagonal has mass $1$ under the copied law
+and mass $1/2$ under the product law. Thus copying is not in general an
+arrow to this tensor product. The full category of Markov kernels studied
+in \cite{fritz} does carry copy maps; the probability-preserving category
+here has the stated restricted structure. Confusing these two categories
+would give incorrect independence arguments. We assert only the structure
+just proved.
+
+\subsection{Kernel perturbations and conditioning}
+
+\begin{proposition}[A tail-sensitive kernel bound]\label{prop:kernel-tail}
+Suppose $P,Q$ have the same marginals $\mu,\nu$, and set
+\[
+ d_\mu(P,Q)=\sum_i\mu_i\sum_j|P_{ij}-Q_{ij}|.
+\]
+For bounded $f$, $|f|\le K$, one has
+$\norm{T_Pf-T_Qf}_{1,\mu}\le Kd_\mu(P,Q)$.
+For arbitrary integrable $f$ and any $K>0$,
+\begin{equation}\label{eq:kernel-tail}
+ \norm{T_Pf-T_Qf}_{1,\mu}
+ \le2t_K(f)+Kd_\mu(P,Q).
+\end{equation}
+\end{proposition}
+\begin{proof}
+For bounded $f$, expand the difference of the two rows and bound
+$|f_j|$ by $K$ before summing. For general $f$, insert $c_K(f)$ and use
+the two $L^1$ contraction bounds on $f-c_K(f)$. Each of these costs
+$t_K(f)$; the remaining bounded difference costs $Kd_\mu(P,Q)$.
+Completion is valid because clipping and all the operators are continuous
+in $L^1$. Hence a supplied tail modulus and a kernel-approximation rate
+give a strong-action rate even when no useful uniform bound on $f$ exists.
+\end{proof}
+
+\begin{proposition}[Conditioning with a stated mass margin]\label{prop:bayes}
+Let $a_j,b_j\ge0$ have masses $A=\sum_ja_j$, $B=\sum_jb_j$ with
+$A,B\ge\tau>0$. Put $\delta=\sum_j|a_j-b_j|$. Then
+\begin{equation}\label{eq:bayes}
+ \sum_j\left|\frac{a_j}{A}-\frac{b_j}{B}\right|
+ \le\frac{2\delta}{\tau}.
+\end{equation}
+Thus bounded posterior expectations have a PR modulus once the positive
+mass margin is part of the input.
+\end{proposition}
+\begin{proof}
+Add and subtract $b_j/A$, sum, and use $\sum_jb_j=B$:
+\[
+ \sum_j\left|\frac{a_j}{A}-\frac{b_j}{B}\right|
+ \le\frac{\delta}{A}+B\left|\frac1A-\frac1B\right|
+ =\frac{\delta+|A-B|}{A}\le\frac{2\delta}{\tau}.
+\]
+The inequality $|A-B|\le\delta$ is finite weighted error. Clearing the
+positive denominators gives a quantifier-free arithmetic proof.
+\end{proof}
+
+The margin is necessary for a uniform pointwise posterior. The unnormalized
+rows $(\eps,0)$ and $(0,\eps)$ are distance $2\eps$ apart, while their
+normalized laws are distance $2$ apart. Conditional expectations as $L^1$
+classes instead weight each posterior by its cell mass; the cancellation
+of that denominator is exactly what makes the tower construction stable.
+For named real masses we do not decide whether an arbitrary mass is zero.
+Finite rational masses can be tested, and continuous posterior queries
+must carry a positive margin. General disintegration is an additional
+construction, not a consequence of the finite tower identity alone.

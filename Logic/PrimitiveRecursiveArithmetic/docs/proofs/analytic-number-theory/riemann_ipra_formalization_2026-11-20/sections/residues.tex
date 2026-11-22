@@ -1,0 +1,132 @@
+\section{Ordinary RH as a finite least-squares certificate}\label{sec:residue-space}
+
+Let $R_k(n)=n\bmod k$ for $k\ge2$, $n\ge1$. Our test asks how well a
+finite rational linear combination of these periodic sequences approximates
+the constant sequence $1$. For example, $R_2$ agrees with $1$ on odd
+integers and vanishes on even integers. The weight of an error at $n$ is
+$w_n=1/[n(n+1)]$. Its exact tail $\sum_{n>J}w_n=1/(J+1)$ makes
+a finite certificate possible.
+
+\paragraph{The analytic input.}
+Bagchi's Theorem~1 states that ordinary RH is equivalent to $1$ belonging
+to the closed span of $\{n/k\}$ in the complex sequence space
+$\ell^2(w)$, where the braces mean fractional part. Multiplying each
+generator by its index gives $R_k$ and leaves its span unchanged. Real
+parts of coefficients suffice since the target is real and this operation
+reduces every residual magnitude. Rational coefficients suffice because changing a finite list of coefficients by $\eta_k$ changes the norm by at
+most $\sum_k(k-1)|\eta_k|$, since the weights sum to one. The source is
+B.~Bagchi, \emph{On Nyman, Beurling and B\'aez-Duarte's Hilbert space
+reformulation of the Riemann hypothesis}, Proc. Indian Acad. Sci.
+(Math. Sci.) 116 (2006), 137--146,
+\href{https://arxiv.org/abs/math/0607733}{arXiv:math/0607733}, Theorem~1.
+This use of Bagchi is a classical standard-model identification.
+
+\paragraph{Three finite-arithmetic readings of approximation.}
+Choose a denominator $D\ge1$ and nonnegative integers $u_k,v_k$ on
+$2\le k\le K+1$, where $K$ may be zero. The approximant has coefficients
+$(u_k-v_k)/D$. For any of the zero-one targets $f$ below, put
+\[
+ g(n)=\left|Df(n)-\sum_{k=2}^{K+1}(u_k-v_k)R_k(n)\right|,\qquad
+ B=D+\sum_{k=2}^{K+1}(u_k+v_k)(k-1),\qquad
+ E_N=\sum_{n=1}^N\frac{g(n)^2}{n(n+1)}.
+\]
+Every residual is bounded by $B$, irrespective of its sign.
+For each integer precision $t\ge1$, ask for one approximant satisfying
+one of the following tests.
+\begin{enumerate}
+\item Every prefix satisfies $tE_N\le D^2$, including $N=0$.
+\item Some $J\ge0$ satisfies $t(E_J+B^2/(J+1))\le D^2$.
+\item The same finite inequality holds at $J=2tB^2$.
+\end{enumerate}
+Tests 2 and 3 are $\Pi^0_2$ presentations with a primitive-recursive
+matrix. Test 1 has an additional universal block. Quantifying over
+arbitrary precisions allows the approximant to improve with $t$. A
+computable selector for those approximants is a separate assertion.
+
+The finite inequality in tests 2 and 3 controls every prefix. Indeed,
+$E_N$ increases, whereas $E_N+B^2/(N+1)$ decreases, because the change in
+the latter after adding index $N+1$ is
+\[
+       \frac{g(N+1)^2-B^2}{(N+1)(N+2)}\le0.
+\]
+For $N\le J$ use the first monotonicity, and for $N\ge J$ use the
+second. Conversely, use the witness for test 1 at precision $2t$.
+At $J=2tB^2$ the prefix contributes at most $D^2/(2t)$ and the
+allowance contributes at most $1/(2t)\le D^2/(2t)$. This gives
+test 3; supplying this $J$ also gives test 2. Classically, bounding all
+prefixes is exactly bounding the squared norm of the residual. Approximants
+of arbitrarily small norm and witnesses for every integer $t$ therefore
+express the same closure assertion for $f=1$.
+
+\paragraph{Equivalence of the constant, step and coordinate targets.}
+The same three tests may instead require approximation to every
+$h_m(n)=[n\ge m]$, or to every $e_m(n)=[n=m]$, with $m\ge1$ quantified
+before the approximant. All nine resulting sentences are constructively
+equivalent by finite witness transformations. Here are details that avoid
+selecting a growing list of existential witnesses.
+
+Extend any sequence by zero at index zero, and put
+$(T_m a)(n)=a(\lfloor n/m\rfloor)$. For $j\ge1$ the weight of the complete
+block $mj\le n<m(j+1)$ is $w_j/m$, by telescoping. A partial last block
+has at most that weight. Thus the squared error of a dilation through any
+cutoff $N$ is at most $1/m$ times the original squared error through
+$\lfloor N/m\rfloor$. Dilation sends a residue vector to a rational linear
+combination of residue vectors by the identity
+\[
+   T_mR_k=(R_{mk}-R_m)/m,\qquad R_1=0.
+\]
+This follows by writing $n=mq+b$, $0\le b<m$, and then
+$q=ka+c$, $0\le c<k$. The remainder of $n$ modulo $mk$ is $mc+b$.
+A denominator for the new vector is $mD$.
+
+Since $T_m1=h_m$, one witness for $1$ gives one for any $h_m$ at the
+same precision. Conversely $h_1=1$. For $e_m=h_m-h_{m+1}$, take the
+difference of two dilations of the \emph{same} approximation to $1$ at
+precision $4t$. Using $(x-y)^2\le2x^2+2y^2$ gives squared error at most
+$1/t$ on each prefix. Conversely, take a witness approximating $e_1$.
+For $L=4t$,
+\[
+   \sum_{i=0}^{L-1} T_{2^i}e_1=[1\le n<2^L].
+\]
+This union comprises successive disjoint intervals; its squared
+distance from $1$ on every prefix is at most $2^{-L}$. Use one witness
+for $e_1$ at precision $4tL^2$ and sum those $L$ dilations. By the finite
+Cauchy inequality $(\sum_i x_i)^2\le L\sum_i x_i^2$, the resulting
+squared error from the displayed indicator is at most $1/(4t)$.
+Since $2^L\ge4t$, the squared error from $1$ is at most
+$2/(4t)+2/2^L\le1/t$. This also proves that the single target $e_1$
+suffices. Multiplying denominators clears every coefficient in these
+constructions. Every loop length, new modulus, denominator and coefficient
+word is a primitive-recursive function of the given witnesses and
+precision. The finite Cauchy inequality follows by summing
+$(x_i-x_j)^2\ge0$ over $i,j$. Thus the needed inductions are inductions
+on finite sums after denominator clearing, with quantifier-free
+invariants. The argument supplies an iPRA proof on paper of the links
+among the residue tests; the link to the prime-product sentences through
+ordinary RH uses the external analytic theorem.
+
+\paragraph{Encoding and verification.}
+In \texttt{ResidueSpace.lean}, the two words encode the $K$ nonnegative
+digits in a common base $H+2$. Every finite signed list admits this coding
+by taking a base larger than its greatest absolute numerator. The file
+constructs nine closed \texttt{Fm PTm 0} sentences. Let
+$P_N=\prod_{j=1}^N j(j+1)$. The encoded numerator $S_N$ is a sum over
+$n\le N$ of $g(n)^2$ times the product of all factors in $P_N$ except
+the $n$th. This includes $P_0=1$, $S_0=0$.
+The certificate is exactly
+\[
+ t\big((J+1)S_J+B^2P_J\big)\le D^2(J+1)P_J.
+\]
+The Lean arithmetic lemmas formalize the residual bound, denominator
+clearing, monotone prefix and tail estimates, the two precision
+conversions and the mixed-radix identity for dilation. The theorems
+\texttt{closed\_fixed\_iff\_prefix} and
+\texttt{closed\_cert\_iff\_prefix} apply directly to the standard
+interpretations of the compiled sentences for each of the three targets. The preceding
+finite block and target-conversion proofs supply the rest of the argument.
+For a small example, $D=1$, $u_2=1$, $v_2=0$ and $f=1$ give $B=2$.
+At $J=24$ the upper estimate equals $11973461273/26771144400<1/2$, so this
+single row certifies precision $t=2$. The script
+\texttt{check\_residue\_space.py} independently checks this example, the
+denominator clearing, the one-step inequalities and the dilation identities
+using exact rational arithmetic.

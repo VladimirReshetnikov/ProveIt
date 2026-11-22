@@ -1,0 +1,114 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{ragged2e}
+\usepackage{enumitem,xcolor,microtype,fancyhdr}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[unicode,breaklinks,colorlinks,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Computational Complexity in Intuitionistic Primitive Recursive Arithmetic},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\emergencystretch=2em
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Computational complexity in iPRA}
+\fancyhead[R]{\small 20 November 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\ensuremath{\mathbb N}}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\PR}{\ensuremath{\mathsf{PR}}}
+\newcommand{\Pclass}{\ensuremath{\mathsf P}}
+\newcommand{\NP}{\ensuremath{\mathsf{NP}}}
+\newcommand{\EXP}{\ensuremath{\mathsf{EXPTIME}}}
+\newcommand{\PSPACE}{\ensuremath{\mathsf{PSPACE}}}
+\newcommand{\NPSPACE}{\ensuremath{\mathsf{NPSPACE}}}
+\newcommand{\NL}{\ensuremath{\mathsf{NL}}}
+\newcommand{\Lclass}{\ensuremath{\mathsf L}}
+\newcommand{\coNP}{\ensuremath{\mathsf{coNP}}}
+\newcommand{\SAT}{\ensuremath{\mathsf{SAT}}}
+\newcommand{\QBF}{\ensuremath{\mathsf{TQBF}}}
+\newcommand{\Acc}{\operatorname{Acc}}
+\newcommand{\Run}{\operatorname{Run}}
+\newcommand{\Step}{\operatorname{Step}}
+\newcommand{\len}[1]{\lvert #1\rvert}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bit}{\operatorname{bit}}
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+\newcommand{\All}{\operatorname{All}}
+\newcommand{\Any}{\operatorname{Any}}
+\renewcommand{\Check}{\operatorname{Check}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,breaklines=true,frame=single,framerule=0.2pt,rulecolor=black!20,backgroundcolor=black!2,showstringspaces=false}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.45in}
+{\small\sffamily FOUNDATIONS / CONSTRUCTIVE MATHEMATICS}\par
+\vspace{0.35in}
+{\Huge\bfseries Computational complexity\par in intuitionistic primitive\par recursive arithmetic\par}
+\vspace{0.3in}
+{\Large Bounded machines, explicit reductions, finite certificates,\par and a path to object-theory Lean proofs}\par
+\vspace{0.45in}
+{\large Research prepared for Vladimir Reshetnikov}\par
+{\large 20 November 2026}\par
+\vspace{0.45in}
+\begin{abstract}
+We develop a first-order, constructive foundation for complexity theory over
+intuitionistic primitive recursive arithmetic. Binary words, machines, clocks,
+finite computation histories, witnesses, circuits, and graphs are natural-number
+codes. All inductions are reduced to quantifier-free induction by explicit
+Boolean compilation of bounded invariants. Separate bit-machine cost proofs
+prevent primitive-recursive definability from being mistaken for feasibility.
+
+The development includes clocked presentations of the basic time and space
+classes, polynomial reductions, witness-preserving Cook--Levin completeness,
+constructive finite graph algorithms, Savitch simulation, nondeterministic
+space complementation, quantified Boolean formula completeness, and a direct
+diagonal language in exponential time with an explicit counterexample to every
+polynomial descriptor. Further finite developments cover circuit counting,
+randomized computation and amplification, counting witnesses, and the
+polynomial hierarchy. The archive contains a kernel-checked Lean semantic
+core, executable reference algorithms, and a detailed plan for lowering the
+main results to the repository's actual \code{Prf PRAAx} judgment.
+
+\textbf{Verification boundary.} The mathematical arguments are developed here;
+the complete object-language \ipra{} derivations of Cook--Levin, Savitch,
+space complementation, and the separation theorem have not been mechanically
+constructed in this package. Checked Lean lemmas and remaining obligations
+are identified separately.
+\end{abstract}
+\vfill
+\noindent\small Repository basis: ProveIt commit
+\texttt{83421593771f877bc1ae98f4229eb35507bff05b}.\par
+\noindent\small This is a self-contained reconstruction and formalization foundation;
+the classical complexity results are attributed, not claimed as new discoveries.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{foundation}
+\input{machines}
+\input{classes}
+\input{cook}
+\input{space}
+\input{diagonal}
+\input{extensions}
+\input{formalization}
+\input{bibliography}
+\end{document}

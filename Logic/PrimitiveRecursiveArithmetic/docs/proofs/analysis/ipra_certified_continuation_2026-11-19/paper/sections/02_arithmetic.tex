@@ -1,0 +1,89 @@
+\section{Arithmetic language, representations, and proof discipline}\label{sec:arithmetic}
+
+\subsection{The object theory}
+
+We use first-order intuitionistic arithmetic with equality and a function symbol for each primitive recursive definition. Initial symbols are zero, successor, and projections. Composition has its defining equations. A primitive recursion symbol has equations
+\[
+ f(0,\mathbf x)=g(\mathbf x),\qquad
+ f(n+1,\mathbf x)=h(n,f(n,\mathbf x),\mathbf x).
+\]
+The successor axioms are \(Sx\ne0\) and \(Sx=Sy\to x=y\). Equality has reflexivity and substitution in terms and formulas. The logical rules are the usual intuitionistic introduction and elimination rules for \(\wedge,\vee,\to,\bot,\forall,\exists\), with the eigenvariable conditions on universal introduction and existential elimination. Negation abbreviates implication into falsity. There is no unrestricted excluded-middle rule.
+
+For each quantifier-free formula \(A(n,\mathbf x)\), induction gives
+\begin{equation}\label{eq:qfind}
+ A(0,\mathbf x)\wedge
+ \forall n\bigl(A(n,\mathbf x)\to A(n+1,\mathbf x)\bigr)
+ \ \longrightarrow\ \forall n\,A(n,\mathbf x).
+\end{equation}
+Parameters are permitted. The formulas used below are equations or inequalities between primitive recursive terms, or finite Boolean encodings of bounded formulas. This is the ordinary iPRA presentation described by the repository; \texttt{ConciseIPRA}'s \texttt{Prf PRAAx} is its concrete formal target \cite{repo-readme,repo-concise}.
+
+\subsection{One explicit numerical coding}
+
+For clarity, the mathematics can use the following elementary coding. The implementation should reuse the checked repository encodings instead of proving a second library.
+
+Pair two naturals by the Cantor polynomial
+\[
+ \langle a,b\rangle=\frac{(a+b)(a+b+1)}2+b.
+\]
+Its coordinates are recovered by bounded searches through the code inclusively, with a default zero on malformed inputs. Consecutive triangular-number intervals prove uniqueness. The division is exact in this formula. A list is either zero or
+\(\mathrm{cons}(a,t)=1+\langle a,t\rangle\). A nonempty list's tail is smaller than its code. Iterating the tail function at most the original code computes length and all entries; this is bounded recursion, not an unproved general recursive traversal. Out-of-range entries are defined to be zero. Length checks occur in every certificate.
+
+A signed integer is represented by two naturals with value \(u-v\). A rational is a triple \((u,v,d)\) with value \((u-v)/(d+1)\). Denominators are positive by construction. Equality and order are decided by cross multiplication; for instance
+\[
+ \frac{u-v}{d+1}\le\frac{u'-v'}{d'+1}
+ \iff (u-v)(d'+1)\le(u'-v')(d+1).
+\]
+After expanding the signed expressions this is an inequality of natural terms. All displayed absolute values and divisions in the paper have this interpretation. Gaussian rationals are pairs of rationals. We use their rational norm
+\(\abs{x+iy}_1=\abs x+\abs y\), not an implicitly computed square root.
+
+Vectors and matrices are length-checked lists of these codes. Matrix multiplication is a bounded double sum. A polynomial is a finite list of pairs \((c,\alpha)\), where \(c\) is rational and \(\alpha\) is a length-\(d\) list of natural exponents. Its evaluation is
+\[
+ \mathrm{eval}(P,x)=\sum_{(c,\alpha)\in P}c\prod_{j<d}x_j^{\alpha_j}.
+\]
+Repeated monomials may be combined or simply retained. Degrees, lengths, dimension, coefficients, and precision are numerical inputs. This evaluator is primitive recursive because every product and sum has a numerical bound and exponentiation is primitive recursive.
+
+\subsection{Bounded formulas and the actual induction invariant}
+
+\begin{lemma}[Finite Booleanization]\label{lem:boolean}
+For each fixed bounded formula made from rational comparisons and bounded quantifiers, there is a primitive recursive bit with value one exactly when the formula holds. Its elementary reflection laws are provable in iPRA.
+\end{lemma}
+\begin{proof}
+An equality or cross-multiplied inequality is decidable by bounded arithmetic. Conjunction is multiplication of bits, disjunction is the complement of the product of their complements, and negation is complement. A bounded universal quantifier is a product of its bits. A bounded existential quantifier is the complement of the product of the complements. First prove product equations and bounded first-failure search invariants by QF induction. With a fixed horizon and the hypothesis that every indexed bit is one retained in the context, the induction formula is just the guarded equation saying the current prefix product equals one; the universal hypothesis is instantiated at the step index. Conversely, a product equal to one forces each indexed bit to be one, and a failed product has a computed failing index. The dual least-success scan returns an accepted bit for an existential fold. These numerical lemmas, combined with intuitionistic quantifier rules, prove literal bounded-quantifier reflection. The quantified reflection equivalence itself is never the induction formula. Parameters and numerical bounds remain variables. Formula syntax is fixed externally for this schema; no internal truth predicate for arbitrary arithmetic is used.
+\end{proof}
+
+The repository already implements this idea much more carefully, including substitution, witnesses, and the distinction between a bit and an arbitrary nonzero numerical value \cite{repo-fiber}. We reuse it.
+
+When a proof says ``induct on the number of computed coordinates'', its formal invariant is, for example,
+\[
+ \prod_{i<d}\bigl[\abs{x_i^{(n)}}\le r v_i\bigr]=1,
+ \qquad
+ \prod_{i<d}\bigl[2^n\abs{x_i^{(n+1)}-x_i^{(n)}}\le C v_i\bigr]=1.
+\]
+These are quantifier-free equations between PR terms. An unbounded assertion such as ``all later approximations are close'' is never the induction formula. We first prove the estimate for arbitrary finite indices \(n,m\), then universally close those indices. Universal hypotheses are instantiated at the current indices, rather than inserted as extra quantifiers into the induction invariant.
+
+For a rational recurrence with changing denominators, the state stores numerator and positive denominator. One may clear all denominators in each finite comparison, or store their product as another PR state. There is no need for a priori elementary bounds on bit length: iteration of a fixed rational update is already primitive recursive. A much smaller complexity class would require a separate analysis.
+
+\subsection{What a represented value means}
+
+\begin{definition}[A PR name, externally indexed]\label{def:name}
+A rational-vector name is a fixed PR program \(a(p,x)\), an admissibility formula \(\mathrm{Adm}(x)\), and an iPRA derivation of a specified finite Cauchy law, for example
+\[
+ \forall p,q,x\quad \mathrm{Adm}(x)\wedge p\le q\ \longrightarrow\
+ \norm{a(p,x)-a(q,x)}\le 2^{-p}.
+\]
+The code \(x\) is ordinary finite data; \(\mathrm{Adm}\) includes the required shape and certificate guards. The choice of program is made in the metatheory. Equality of two such names on admissible data means agreement to every requested tolerance with an explicitly given reindexing, proved through finite inequalities. Total behavior on malformed data does not assert a Cauchy contract there.
+\end{definition}
+
+For geometric convergence we use the PR rounding function
+\[
+ \ell(c)=\min\{j\le \max(1,\lceil c\rceil):c\le2^j\},\qquad c\in\Q_{\ge0}.
+\]
+The set is nonempty because \(2^j\ge j+1\), proved by quantifier-free induction. Thus \(c2^{-(p+\ell(c))}\le2^{-p}\). When \(c=0\), take \(\ell(c)=0\). This deliberately crude finite bound avoids assuming a real logarithm algorithm.
+
+The notation ``the limit'' is only an economical interpretation of a constructed name and its finite laws. To prove a named polynomial identity, we give an arbitrarily small residual bound. To prove uniqueness, we compare two finite approximate solutions and let the requested precision be an arbitrary natural parameter. No completeness axiom for an internal sort of reals is invoked.
+
+\subsection{Uniformity and the limits of the interface}
+
+It is legitimate to quantify internally over polynomial codes because the evaluator just defined is PR. It is also legitimate to quantify over the entries of a fixed finite instruction set, provided its evaluation is PR. It is not legitimate to assume a total PR map \(U(e,n)\) evaluating every PR program: if it existed, \(n\mapsto U(n,n)+1\) would be a PR function whose own index yields a contradiction. This is a finite diagonal argument, not a claim that program execution cannot be represented with an explicit fuel bound. The repository has a corresponding obstruction module \cite{repo-evaluator}.
+
+Likewise, a proof compiler must return an actual derivation from the hypotheses used by its source theorem. A theorem about the standard natural numbers, even if checked by Lean, does not alone give \(\Gamma\vdash[\mathrm{PRAAx}]\varphi\). Our formalization plan therefore separates a rational mathematical reference layer from the numerical programs, their QF invariants, and the ultimate object-language endpoints.

@@ -1,0 +1,116 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{xcolor,graphicx,fancyhdr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xurl}
+\definecolor{ink}{HTML}{14354A}
+\definecolor{linkblue}{HTML}{145B87}
+\hypersetup{colorlinks=true,linkcolor=linkblue,urlcolor=linkblue,citecolor=linkblue,
+ pdftitle={Continuous Mathematics in iPRA},
+ pdfauthor={Research prepared for Vladimir Reshetnikov},
+ pdfsubject={Represented spaces, relational names, continuous logic, ODEs and complex analysis}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\setlist{itemsep=4pt,topsep=6pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{Continuous mathematics in \ipra}}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\begin{document}
+\begin{titlepage}
+\color{ink}
+\vspace*{12mm}
+{\large FOUNDATIONS \; / \; CONSTRUCTIVE ANALYSIS}\par
+\vspace{16mm}
+{\fontsize{32}{37}\selectfont\bfseries Continuous Mathematics\par in \ipra}\par
+\vspace{10mm}
+{\Large Represented spaces, relational names,\par and quantitative semantics}\par
+\vspace{14mm}
+\rule{\linewidth}{1.2pt}\par
+\vspace{7mm}
+{\large A framework for category theory, continuous model theory,\par
+local topology, real analysis, and complex analysis}\par
+\vfill
+\begin{minipage}{.94\linewidth}
+\color{black}
+\textbf{Main contribution.} Three compatible interpretation levels support
+internal program-coded continuous objects, executable approximation theorems,
+and semantic adequacy. Worked constructions provide completion and extension,
+continuous formula evaluation, guarded gluing, ODE solutions, and holomorphic
+Cauchy transforms with explicit rational error bounds.
+
+\medskip
+\textbf{Verification status.} Full human arguments and exact rational reference
+programs are supplied. New Lean sources are clearly marked formalization
+outlines and uncompiled candidates. They are not a completed kernel-checked
+proof of the analytic theorems.
+\end{minipage}
+\vfill
+{\large Prepared for Vladimir Reshetnikov}\par
+20 November 2026\par
+\vspace{5mm}
+{\small ProveIt source snapshot:\par
+\texttt{5f3be02388442f16487d2dc5c2529961dd783d2b}}\par
+\end{titlepage}
+
+\begin{abstract}
+Intuitionistic primitive recursive arithmetic can support more continuous
+mathematics than a collection of disconnected finite certificates suggests,
+provided that representation, totality, coherence and semantic interpretation
+are specified separately. We develop a framework with three levels: fixed
+primitive recursive approximation families, internally quantified relational
+program-code sorts, and an external interpretation in complete metric spaces.
+The relational level uses a bounded trace relation and conditional totality;
+it does not require a primitive recursive universal evaluator. We distinguish
+single-call totality from the batch or iteration obligations needed by finite
+net and numerical algorithms.
+
+Complete arguments establish completion and its extension universal property,
+quantitative function objects, finite-net semantics for continuous formulas,
+approximate preservation between metric structures, and continuous gluing
+from positive-margin chart certificates. Two detailed analytic constructions
+turn numerical bounds into named mathematical objects: a guarded Euler program
+with an explicit convergence rate, integral equation and uniqueness; and a
+polygonal Cauchy transform with certified quadrature, Taylor coefficients and
+all derivative observations. Each construction is connected to precise
+arithmetic proof obligations and the existing ProveIt derivation library.
+The result advances the continuous interpretation interfaces while retaining
+the exact limits of the base theory and the unfinished formalization work.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{sections/foundations}
+\input{sections/relational_codes}
+\input{sections/category_model}
+\input{sections/local_geometry}
+\input{sections/analysis_topology}
+\input{sections/formalization}
+\clearpage
+\input{sources/references}
+\end{document}

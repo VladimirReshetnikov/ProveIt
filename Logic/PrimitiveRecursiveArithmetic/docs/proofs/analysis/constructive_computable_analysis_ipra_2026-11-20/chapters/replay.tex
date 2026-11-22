@@ -1,0 +1,115 @@
+\section{Proof status, reproduction, and further questions}
+\label{sec:replay}
+
+\subsection{What Lean checks}
+
+\noindent\begin{tabularx}{\linewidth}{@{}p{.23\linewidth}YY@{}}
+\toprule
+Component & Kernel-checked result & Remaining object derivation\\
+\midrule
+Finite observations & Object iPRA sparse replay at variable time. Lean window certification, composition of prefix dependence and no-window example. & Reify the field operations for each reader and prove its finite use and extensionality contracts.\\[3pt]
+Zero selection & Lean brackets, dyadic widths, cross-stage midpoint bound and residual schedule. Closed iPRA theorem for the three sign branches. & Compile the dyadic transition and run the stage induction at fixed test precision.\\[3pt]
+Differentiation & Lean local signed bounds. Closed iPRA theorem deriving both child/parent comparisons from the adjacent-child comparison. & Sum the errors over a level path, derive the cell estimates, apply the tagged FTC and pass to the names.\\[3pt]
+Interval laws & Lean finite Abel formula and optimal dual potential. Object iPRA variable-length prefix maximum and its common upper bound. & Code the sparse coupling and verify the two marginal scans and reconstruction contracts.\\[3pt]
+Metric partitions and quantiles & Human proofs and explicit programs or finite bounds. Exact-arithmetic regression for the density $1/2+x$. & Reify rounding of finite potentials and compose the ramp accuracy proof with the midpoint invariant.\\
+\bottomrule
+\end{tabularx}
+
+The archive contains four standalone Lean modules using the Lean 4.32 standard
+distribution, and four modules importing ProveIt. In the latter, the exported
+types mention \texttt{Prf PRAAx} literally. The zero and slope lemmas close
+their seven numerical variables in the object language. The prefix scan is
+a derivation constructor at arbitrary terms and hypotheses with the raw sample
+body fixed syntactically. Sparse replay has the same schema form for fixed reader instructions. All four use intuitionistic object rules. The
+ordinary Lean metatheory used by the upstream proof infrastructure reports
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound} for the
+audited object results. These constants occur in the host implementation of
+proof constructions. The object judgments use the repository's intuitionistic axiom family.
+
+\subsection{Dependency order for completing the formalization}
+
+\begin{enumerate}[leftmargin=*]
+\item Define a total encoding of lists, reduced dyadic sites and signed
+rationals on top of \texttt{PTm.toPR}, \texttt{recDef} and the pairing and
+order modules. Prove normalization preserves equality and cross-multiplication
+comparison, addition, multiplication, absolute value and clipping. A unit
+interval site may be coded by numerator and power-of-two denominator with a
+clipping operation. Record validity checks for arbitrary input codes. Fix input
+evaluator symbols and numerical parameters when forming a sequent.
+\item Formalize regularity, point equality, forward and inverse moduli, and
+value-table inequalities as universally closed formulas with the rational
+operations expanded. For instance, the slope contract for $A,b$ quantifies
+over the natural triple $(n,j,p)$ and, under $0<j<2^n$, tests the two signed
+cross-multiplied versions of \eqref{eq:dd-grid}. Trace verification and legality
+of queries use bounded scans. For a fixed reader, substitute a PR symbol for
+each transition and apply the checked sparse replay theorem to its two state codes at the requested terminal slot.
+\item For the roots, prove the two defining equations of the integer endpoint
+recurrence, instantiate the checked three-way sequent and use the width and
+sign invariants at fixed outer precision. At a single final precision choose
+the starting stage from $\mu$ and finish with \eqref{eq:zero-forward}.
+For differentiation use the ancestor-induction and slack bounds beside
+\eqref{eq:dd-finite}. Prove the signed cell estimate before using the
+repository's tagged-sum derivations. Its two bounds have hypotheses for every
+cell, so the passage must include the denominator scale for each finite
+tagged term and both endpoints. A product of the finite denominators is a
+sufficient common positive scale.
+\item For laws, code mergers and residual atom weights by the integer
+numerators at a common positive denominator. At each transfer maintain the
+two prescribed masses less the emitted row and column sums. Transfer their
+minimum and advance at least one cursor. The sum of the remaining numbers of
+sites decreases; iteration for $s+t$ steps with an absorbing final state
+is PR. At a fixed cut maintain the cumulative crossing flow and use the common
+mass-coordinate formula of Lemma~\ref{lem:dual}. Use the repository's
+\texttt{Sums.abel\_summation} for the signed equality after denominator
+clearing, splitting signed terms into their natural components. The finite
+host specification checks the index and boundary conventions.
+\item Apply \texttt{prefix\_upper} at length $i+1$ to the repaired ramp readings.
+Derive the lower bound using \texttt{covers\_latest}. Prove the prefix
+expansion of the interpolant at fixed auxiliary precision as in
+Section~\ref{sec:laws}, then instantiate the maximizing polygon constructed
+from the two outputs. For a new partition language reify its constructor
+identities (in particular the sum of the weights), the support comparison and
+finite minimum extension. A dyadic cube uses bounded products of $d$ hats.
+For finite dual search enumerate the bounded ordinate array, sort its
+fractional jumps, and telescope the positive rational layer lengths. This
+supplies the selection proof for the finite maximum. For the quantile
+specialize the law evaluator to the right ramp with the displayed level
+$2p+d+4$, weaken the input and output estimates to the root contracts,
+and apply the signed stage induction from step 3.
+\end{enumerate}
+These steps specify the inputs to each open lemma, the bounded witness, the
+induction matrix or its rational inequality, and the existing module it uses.
+The full operators currently have human arithmetic proofs and partially
+mechanized components.
+
+\subsection{Sources and further research}
+
+The source inventory accompanying the paper records the pinned repository
+paths. The main external references are
+A. Pauly, \emph{On the topological aspects of the theory of represented
+spaces} (2016), \href{https://arxiv.org/abs/1204.3763}{author preprint};
+A. Kawamura and S. Cook, \emph{Complexity theory for operators in analysis},
+\href{https://arxiv.org/abs/1305.0453}{author preprint};
+M. Hoyrup and C. Rojas, \emph{Computability of probability measures and
+Martin-L\"of randomness over metric spaces} (2009),
+\href{https://doi.org/10.1016/j.ic.2008.12.009}{published paper}; and
+S. S. Vallander, \emph{Calculation of the Wasserstein distance between
+probability distributions on the line} (1973, English translation 1974),
+\href{https://doi.org/10.1137/1118101}{published paper}.
+The one-dimensional transport formula is classical in this literature. Its
+use here supplies finite certificates and precision schedules for an
+iPRA representation change.
+
+\begin{itemize}
+\item On a metric tree, deleting an edge separates the sites into two
+components. Can subtree probes replace the line's cumulative ramps and allow
+precision to depend on weighted branch length in place of the total number
+of cells?
+\item Can the dyadic second-difference test use locally varying tail certificates
+to construct derivatives on certified subintervals? At a shared endpoint the
+two one-sided slope bounds must still give a compatible value.
+\item For structured finite laws, which mesh and mass queries can be shared
+between successive quantile bits? The worked example uses prefix moments.
+A general adaptive version needs a verifiable bound on the cost of each
+compressed query and a proof that it realizes the declared finite law.
+\end{itemize}

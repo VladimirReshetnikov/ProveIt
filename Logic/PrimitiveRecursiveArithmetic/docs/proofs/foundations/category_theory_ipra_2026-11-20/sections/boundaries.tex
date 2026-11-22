@@ -1,0 +1,117 @@
+\section{What the foundation does and does not internalize}\label{sec:boundaries}
+
+\subsection{Why selecting structure is a mathematical hypothesis}
+An existential universal property and a selected universal operation are
+different interfaces. Ordinary intuitionistic logic permits the use of
+one witness to prove an existential conclusion. Thus, for example, the
+existence of two terminal objects implies their isomorphism without a
+global choice principle. But an object-code assignment or functor requires
+a function on codes. The implication
+\[
+  \forall x\,\exists!y\ R(x,y)
+       \quad\Longrightarrow\quad
+  \text{a supplied PR term }s\text{ with }R(x,s(x))
+\]
+is not an inference rule of iPRA. Its conclusion is also metasyntactic,
+not an ordinary formula of the displayed arithmetic language. A separate
+construction or a relevant extraction theorem with its precise hypotheses
+would be required. Bounded search works when $R$ is PR-decidable and a PR
+bound on the witness is given; our finite-table constructions provide both.
+
+The same distinction explains the split equivalence criterion, chosen
+universal elements, and the comma-colimit hypotheses for Kan extensions.
+These conditions are not weakened mathematical conclusions smuggled in
+as hypotheses: their exact role is to specify the computational data on
+which the constructive structural theorem operates. Concrete existence
+theorems must then build those data, as Section~\ref{sec:finite} does.
+
+\subsection{A bound on isomorphism classes does not produce a skeleton}
+Here is a concrete obstruction, already identified in the previous
+categorical packet and developed in object-language source modules
+\cite{repo-categorical,repo-two-class}. Let $H_e(t)$ be the PR bit which
+reports whether machine $e$ halts in the first $t$ steps; arrange
+$H_e(0)=0$. This bit is persistent: after it becomes $1$, it remains $1$.
+Define the decidable relation
+\[
+                        s\equiv_e t\iff H_e(s)=H_e(t).
+\]
+Make a thin groupoid with objects $\N$, one arrow between equivalent
+objects and no arrow otherwise. This is a uniform PR presentation with
+at most two isomorphism classes; the assertion that three objects cannot
+be pairwise inequivalent is just the two-valued pigeonhole argument.
+
+\begin{proposition}[No uniform effective finite covering list]
+There is no total computable procedure which, for every $e$, returns a
+finite list meeting every isomorphism class of this groupoid.
+\end{proposition}
+\begin{proof}
+Suppose the list is returned and let $B$ be the maximum of its entries
+and $0$. If $H_e(B)=1$, the machine has halted. If $H_e(B)=0$, all listed
+entries have bit $0$ by persistence. A later stage $t$ with $H_e(t)=1$
+would then have no representative in the covering list, contradicting
+its specification. Hence the machine never halts. The proposed procedure
+would decide halting by computing the list and testing $H_e(B)$.
+Such a decider is impossible: given a supposed total halting decider,
+the program that halts on its own code exactly when the decider says it
+does not halt yields a contradiction in either answer. This is the
+ordinary external diagonal argument. No internal uniform reflection
+principle is invoked.
+\end{proof}
+
+This is a computational nonexistence theorem, not a claim that no
+particular groupoid has a skeleton. A supplied finite covering list
+changes the situation. With decidable equivalence, choose the first
+cover entry equivalent to the input and remove later equivalent entries
+by a bounded scan. The representative is found because of the covering
+hypothesis, and is constant on equivalence classes by transitivity and
+the least-index definition. For these thin groupoids, the unique arrows
+give the comparison isomorphisms. In a general category, one must also
+supply or compute the isomorphism arrows, as a finite table category
+allows. ProveIt's \texttt{FiniteCoverSkeleton} records this positive
+construction \cite{repo-skeleton}.
+
+\subsection{Large collections, function spaces and infinitary theorems}
+The phrase ``category of all sets'' cannot be read literally as a category
+of natural-number codes containing every ordinary set. This report
+internalizes specified arithmetic presentations, with semantic
+interpretations external when needed. It does not claim that arbitrary
+sets, arbitrary real numbers, or every classical space has a code.
+It nevertheless allows infinite categories and undecidable hom equality.
+
+Likewise, the schematic Yoneda embedding does not by itself construct a
+single internal object containing every presheaf or every natural
+transformation. A particular uniformly evaluable coded family can be
+used, and a finite functor category can be constructed completely.
+General relational representations remain possible, but require their
+own totality and application interface. The distinction is supported
+by the explicit diagonal obstruction of Section~\ref{sec:lawvere} and
+the existing evaluator module \cite{repo-evaluator}.
+
+The main results proved here cover the usual structural core of a first
+course, extended by explicit density, monads, Kan extensions, idempotents
+and diagonal arguments. They do not assert all theorems in every branch
+of category theory. In particular:
+\begin{itemize}
+\item General adjoint functor theorems need their solution-set and
+      (co)completeness assumptions, together with constructive witness
+      information; the initial-comma-object criterion proved here
+      isolates the exact positive interface.
+\item Arbitrary small limits and colimits do not follow from the finite
+      constructions. Even the category of finite sets cannot contain
+      all infinite products of nontrivial finite sets.
+\item Beck's general monadicity theorem, general monoidal coherence,
+      topos representation theorems, arbitrary localizations and
+      higher-category theorems are not claimed proved by this packet.
+      The relevant notions need additional definitions and hypotheses,
+      not an invocation of the word ``constructive''.
+\item No universal iPRA theorem saying that every accepted iPRA proof
+      is true has been added. Proof transformation operates on concrete
+      derivations; it is distinct from internal soundness or consistency
+      reflection.
+\end{itemize}
+
+The obstruction is therefore not categorical abstraction itself. The
+finite structural proofs work with arithmetic equality of any complexity.
+The additional strength enters when a proof collects unrestricted objects,
+chooses witnesses without a displayed operation, evaluates all PR programs
+uniformly, or inducts on a predicate outside the allowed scheme.

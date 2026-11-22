@@ -1,0 +1,249 @@
+\section{A uniform finite universe, including all empty cases}\label{sec:finite}
+
+The preceding structural theory applies to infinite presentations. A second
+useful result is more algorithmic: the entire finite theory can be made
+uniform in numerical table codes. Here every verification quantifier is
+bounded, and every loop invariant has a PR Boolean characteristic function.
+This section supplies the constructions and their correctness proofs, rather
+than assuming that an unspecified universal object can be found.
+
+\subsection{The category of all coded finite sets}
+Write $[n]=\{0,\ldots,n-1\}$, allowing $n=0$. Define
+\[
+ b=m+1,\qquad d_b(c,i)=\bigl\lfloor c/b^i\bigr\rfloor\bmod b.
+\]
+The divisor is positive, including when $m=0$. A table code for $[n]\to[m]$
+is a number $c$ satisfying
+\[
+ c<(m+1)^n,\qquad\forall i<n\; d_{m+1}(c,i)<m.                 \tag{FT}
+\]
+The bounded formula (FT) is a PR predicate. Its interpretation is
+$i\mapsto d_{m+1}(c,i)$. Conversely a bounded list $v_i<m$ is encoded by
+$\sum_{i<n}v_i(m+1)^i$. The digit and reconstruction equations follow by
+quantifier-free induction on the coded length, using division with remainder.
+For $m=0$, a valid table exists exactly when $n=0$, and then its only code
+is $0$. This convention eliminates a common hidden positivity assumption.
+
+Identity is the code of $i\mapsto i$. For $f:[n]\to[m]$ and $g:[m]\to[k]$,
+composition is the code of
+\[
+ i\longmapsto d_{k+1}\bigl(g,d_{m+1}(f,i)\bigr).
+\]
+The displayed bound on the inner digit gives the typing needed for the
+outer table. Associativity follows at each input by associativity of
+substitution of three table lookups, and table reconstruction then gives
+literal equality of the codes. The same pointwise proof gives both unit
+laws. The object predicate is true of every natural number; equality of
+arrows is numerical equality. Hence this is a uniform iPRA presentation
+$\mathsf{Fin}$, not a separate category chosen for each size bound.
+
+The elementary rank/select tool will recur. Given a bit test $K(i)$ and
+bound $B$, let
+\[
+ r(t)=\sum_{i<t}K(i),\quad \ell=r(B),\quad
+ s(j)=\min\{i<B:K(i)=1\text{ and }r(i)=j\},                  \tag{RS}
+\]
+where the minimum returns $B$ if no witness exists. Then
+\[
+ \begin{split}
+ j<\ell&\Rightarrow s(j)<B,\ K(s(j))=1,\ r(s(j))=j,\\
+ i<B\wedge K(i)=1&\Rightarrow r(i)<\ell,\ s(r(i))=i.
+ \end{split}                                               \tag{RS'}
+\]
+To prove these facts, scan $i=0,\ldots,B-1$: the counter increases by one
+exactly at a successful entry. Its successive successful values are
+$0,\ldots,\ell-1$, each attained once. The assertion for any current
+prefix is a conjunction of bounded bit tests, so this is a legitimate
+quantifier-free induction. There is no unbounded minimization.
+
+\subsection{Initial objects, products, equalizers and all finite limits}
+The object $[0]$ is initial: a table with empty domain has its unique code
+$0$. The object $[1]$ is terminal: every entry must be $0$, so again there
+is one table. The product of $[n]$ and $[m]$ is $[nm]$, with coordinates
+\[
+ \pi_1(t)=\lfloor t/m\rfloor,\qquad \pi_2(t)=t\bmod m.
+\]
+Division by zero is totalized by zero. If $nm=0$, the domain is empty, so
+these defaults never enter a typing assertion. If $t<nm$, then $m>0$,
+and the quotient and remainder equations give the required ranges.
+Given $f:[z]\to[n]$, $g:[z]\to[m]$, the mediator is
+$u(x)=m f(x)+g(x)$. Its projections are $f,g$, and any other mediator
+must have the same quotient and remainder, hence the same entries.
+
+For $f,g:[n]\to[m]$, filter $i<n$ by $f(i)=g(i)$. If $\ell$ entries
+remain, the equalizer is $s:[\ell]\to[n]$ from (RS). A table
+$h:[z]\to[n]$ with $fh=gh$ factors by $u(x)=r(h(x))$.
+Equations (RS') prove $su=h$; applying $r$ to this equation proves
+uniqueness. When no entry remains, $\ell=0$. A valid cone then has empty
+domain, as follows from the same factorization proof.
+
+\begin{theorem}[Uniform finite limits in $\mathsf{Fin}$]\label{thm:finite-limit}
+There is a PR procedure which, from a finite table category $J$ and a
+table functor $D:J\to\mathsf{Fin}$, constructs a limit, its projections,
+and the unique mediating table of any supplied cone. The construction
+and its universal property are provable in iPRA. Empty diagrams and
+zero-valued objects are included.
+\end{theorem}
+\begin{proof}
+Let the objects of $J$ be $0,\ldots,r-1$, and let $D(i)=[n_i]$. Enumerate
+all tuples $x=(x_0,\ldots,x_{r-1})$ with $x_i<n_i$. A convenient
+implementation enumerates words in radices $n_i+1$ and filters out the
+spare digit in each coordinate. For $r=0$ there is one empty tuple; if
+some $n_i=0$ and $r>0$, there are no tuples.
+Retain exactly the tuples for which, for every arrow $a:i\to j$ of $J$,
+\[
+                         D(a)(x_i)=x_j.                     \tag{LC}
+\]
+This is a finite product of equality bits over the supplied arrow table,
+not a parameter whose correctness is assumed. Let $L$ be the increasing
+list of retained tuple codes and $\ell$ its length. Projection $p_i$ takes
+an index in $L$ to coordinate $i$. Condition (LC) proves the cone laws.
+
+Given a cone $q_i:[z]\to[n_i]$, at each $t<z$ form the tuple
+$(q_i(t))_{i<r}$. It satisfies (LC), so (RS') assigns it a unique rank
+$u(t)<\ell$. These ranks form the mediating table. Its projections are
+$q_i$ by construction. If $v$ also has these projections, the tuple at
+$v(t)$ equals the tuple at $u(t)$ coordinatewise; reconstruction and
+injectivity of selection yield $v(t)=u(t)$.
+
+Every loop ranges over a displayed finite code bound: objects, arrows,
+tuple codes or cone inputs. The invariants say that a retained tuple
+satisfies each earlier equation, or that the constructed output entries
+have the required ranks and coordinates. All are bounded arithmetic
+formulas and are Booleanized as in Lemma~\ref{lem:bounded}. This yields
+uniform numerical iPRA proofs, including the input sizes as variables.
+For the empty diagram, the sole empty tuple is retained and the limit
+is $[1]$. If a diagram object is empty, its full product is empty and
+the limit is $[0]$; a cone into it must itself have empty domain.
+\end{proof}
+
+\subsection{Finite quotients and all finite colimits}
+For two tables $f,g:[p]\to[q]$, start with a label table
+$\lambda_0(v)=v$ for $v<q$. At stage $i<p$ let
+$a=\lambda_i(f(i))$ and $b=\lambda_i(g(i))$. Replace every label equal
+to $b$ by $a$, leaving all other labels unchanged. If $a=b$ this does
+nothing. Every label remains below $q$, and the label table remains
+idempotent: its labels are precisely fixed points of the table.
+
+The following stronger invariants explain why this merging does not
+identify anything unjustified. After stage $i$:
+\begin{enumerate}
+\item the endpoints of every processed pair have equal labels;
+\item if $h:[q]\to[z]$ equalizes all processed pairs, then
+      $h(v)=h(\lambda_i(v))$ for every $v<q$;
+\item each $v$ is connected to $\lambda_i(v)$ by a chain of processed
+      pair identifications, used in either direction.
+\end{enumerate}
+For (2), suppose the next pair is equalized. The old invariant gives
+$h(a)=h(f(i))=h(g(i))=h(b)$; replacing label $b$ by $a$ therefore
+preserves $h(v)=h(\lambda(v))$. For (3), concatenate the two old paths
+from $f(i),g(i)$ to $a,b$ with the new pair, and attach this path when
+a label changes. If the old paths have length at most $B_i$, the path from $b$ to $a$
+has length at most $2B_i+1$, and an updated path has length at most
+$3B_i+1$. Thus $B_0=0$, $B_{i+1}=3B_i+1$ is an explicit PR bound.
+A coded path table can be updated by the same primitive recursion.
+For factorization only (2) is needed. Invariant (3), together with
+(1) applied along a coded path, additionally proves that equality of
+final labels is exactly the finite-path relation generated by the
+pairs. This is a claim about a coded PR graph and its paths, not a
+minimality assertion quantified over arbitrary arithmetic relations.
+
+For invariant (2), fix the target size $z$ and candidate table $h$ as
+numerical parameters during induction. The processed-pair condition and
+the invariant both quantify only over bounded indices in coded tables.
+Their Booleanized implication is therefore quantifier-free; only after
+the induction do we generalize over $h,z$.
+
+After all pairs, enumerate the fixed-point labels in increasing order,
+say $e_0,\ldots,e_{k-1}$. Define
+\[
+ Q(v)=\text{the rank of }\lambda_p(v)\text{ among these labels}.
+\]
+For an equalizing table $h$ set $\bar h(j)=h(e_j)$. Invariant (2)
+proves $\bar h Q=h$. Also $Q(e_j)=j$, so any factor has value $h(e_j)$
+at $j$; this proves uniqueness. Thus $Q:[q]\to[k]$ is a coequalizer.
+If $q=0$, validity of $f,g$ forces $p=0$; the empty label list gives
+$k=0$, with exactly the same universal property. All invariants used
+to obtain the finite-set universal property concern bounded tables
+and their entries, so the induction remains quantifier-free after
+Booleanization. It is not induction over arbitrary target categories.
+
+\begin{theorem}[Uniform finite colimits]\label{thm:finite-colimit}
+Every finite table diagram in $\mathsf{Fin}$ has a colimit constructed
+by a PR algorithm, with a PR operation on cocones returning the unique
+mediator. Its iPRA correctness includes empty diagrams and empty sets.
+\end{theorem}
+\begin{proof}
+For $D:J\to\mathsf{Fin}$ form the tagged disjoint union
+$U=\coprod_{i\in J}[n_i]$, a finite ordinal obtained by cumulative sums.
+For each arrow $a:i\to j$ and $x<n_i$, create the pair
+$(i,x),(j,D(a)x)$. The total number of pairs is
+$\sum_{a\in\operatorname{Arr}J}n_{\operatorname{src}a}$.
+Apply the preceding merging algorithm. Its quotient maps composed with
+the tag injections form a cocone. A cocone $q_i:[n_i]\to[z]$
+defines $h(i,x)=q_i(x)$ on $U$ and equalizes each generating pair.
+The coequalizer factorization therefore gives its unique mediator.
+For the empty diagram, $U$ is empty and the colimit is $[0]$.
+\end{proof}
+
+\subsection{Exponentials with \texorpdfstring{$0^0=1$}{0 to power 0 equals 1}}
+Let $V_{n,m}$ be the increasing list of all codes satisfying (FT), and
+write $q=|V_{n,m}|$. There is one choice for an empty list of entries;
+appending one entry gives exactly $m$ choices. Therefore the counting
+recurrence is $q(0,m)=1$, $q(n+1,m)=m q(n,m)$, whence
+$q(n,m)=m^n$ by quantifier-free induction. In particular $0^0=1$,
+while $0^n=0$ for $n>0$.
+
+\begin{theorem}[Cartesian closure of coded finite sets]\label{thm:finite-ccc}
+In $\mathsf{Fin}$ the object $[q]$, $q=m^n$, is an exponential
+$[m]^{[n]}$. Evaluation and currying are uniformly PR, and their
+universal equations have iPRA proofs for all $n,m,z$, including zero.
+\end{theorem}
+\begin{proof}
+Let $s$ select a raw code from $V_{n,m}$ and $r$ rank a valid code.
+Define $\operatorname{ev}(j,x)=d_{m+1}(s(j),x)$ for $j<q,x<n$.
+This is a table on $[q]\times[n]$; a pair never exists if one factor
+is empty. For $h:[z]\times[n]\to[m]$, form the row code
+\[
+ c_t=\sum_{x<n}h(t,x)(m+1)^x,
+ \qquad\operatorname{curry}(h)(t)=r(c_t).
+\]
+Every row is valid, so the rank is below $q$. Digit reconstruction gives
+$\operatorname{ev}(\operatorname{curry}(h)(t),x)=h(t,x)$.
+Conversely, if $u:[z]\to[q]$, the row obtained by evaluating $u(t)$
+is the raw table $s(u(t))$, whose rank is $u(t)$. Thus
+\[
+ \operatorname{ev}(\operatorname{curry}h\times\id)=h,
+ \qquad\operatorname{curry}(\operatorname{ev}(u\times\id))=u.
+\]
+The first is the factorization law and the second proves uniqueness.
+If $n=0$, every row is empty and $q=1$. If $m=0<n$, then $q=0$;
+a table $h:[z]\times[n]\to[0]$ forces $z=0$, so its transpose
+has the required empty domain. No positivity premise has been omitted.
+\end{proof}
+
+\subsection{Finite functor categories and genuine finite Yoneda bijections}
+A finite table category consists of finite object and arrow tables,
+source, target, identity and composition entries, with a bounded checker
+for all typing, unit and associativity equations. Given such $C,D$,
+enumerate all assignments on their finite object and arrow domains and
+retain precisely those satisfying the functor laws. Likewise enumerate
+all object-indexed arrow tuples and retain the natural transformations.
+Pointwise identities and vertical composition make a finite table category
+$[C,D]$. The verification is the same finite naturality calculation as
+in Section~\ref{sec:yoneda}, now with bounded quantifiers on actual tables.
+
+For a finite $\mathsf{Fin}$-valued presheaf $P$, whose fibres are
+finite ordinals with numerical equality, all transformations
+$h_A\Rightarrow P$ can be enumerated in this manner. The Yoneda
+constructions become reciprocal numerical maps between two finite lists.
+Consequently $|\operatorname{Nat}(h_A,P)|=|P(A)|$, with an explicit
+bijection, rather than merely a schematic correspondence.
+
+Finite adjunction existence is also decidable by bounded enumeration:
+enumerate candidate right-adjoint functor tables, then unit and counit
+tables, and check naturality and the two triangles. This does not assert
+that a right adjoint always exists. It returns either displayed adjunction
+data or a finite certificate that no candidate table satisfies the laws.
+The bounds may be enormous; primitive recursive arithmetic imposes no
+polynomial-time requirement.

@@ -1,0 +1,67 @@
+\section{Cyclic rules, exact assumptions, and induction}
+\label{sec:rules}
+A query may have two producers, one geometric and one algebraic. Either producer may request other observations. Requiring every incoming assumption can lose a theorem. Accepting a loop because each member has a supporting rule can prove an arbitrary assertion from itself. The following finite procedure determines precisely which assumptions suffice \emph{using the specified rules}.
+
+\subsection{Arithmetic evaluation of a finite rule table}
+A table has $N$ observation labels and $b$ external ports, all numbered from zero. Each row $e=(h,P,G)$ has a head $h<N$, a set $P$ of prerequisite labels and a set $G$ of required ports. The intended inference derives $h$ from all of $P$ and all of $G$. Multiple rows can have the same head. Supply a set $S$ of ports. Masks code all these sets. Define, by numerical recursion,
+\[
+ X_0=0,\qquad
+ X_{k+1}=X_k\cup
+ \{h:\text{some row }(h,P,G)\text{ has }P\subseteq X_k,\ G\subseteq S\}.
+\]
+In this display $0$ is the empty mask and all searches run through the table. Write $C(S)=X_N$. A rule with empty prerequisite set can enter in round one. A head without rules never enters.
+
+\begin{thm}[Finite replay and its converse certificate]\label{th:closure}
+$C(S)$ is the least set closed under the enabled rules. A label belongs to it exactly when it has a finite tree of applications with supplied ports. On success the algorithm returns the first-entry rank and a justifying row at every marked label. On failure it returns a closed subset omitting the requested label. Both types of evidence are checkable primitive recursively.
+\end{thm}
+\begin{proof}
+An increase marks at least one previously unmarked label. The count of marked bits is bounded by $N$. Equality of two consecutive masks implies equality of the successors because the update is deterministic. Induction gives the alternative $|X_k|\ge k$ or $X_k=X_{k+1}$. At $k=N$ another increase is impossible. In fact the number of distinct heads suffices. If $T$ is any closed mask, induction on the bit $[X_k\subseteq T]$ puts every stage inside $T$. These arguments allow the entire table to be an internal variable.
+
+For a newly marked head store the first eligible row in the table. Every child has smaller first-entry rank. Following those choices produces a finite proof tree with branch length at most $N$ (the shared table of choices usually uses less space). Conversely, leaves with empty prerequisite sets enter immediately, and if all child trees have height at most $j$ their parent enters by stage $j+1$. A coded tree can be verified instead as a list in children-first order. Induct on the Boolean claim that every checked entry in the prefix has its label in the closed mask $C(S)$. Thus no uniform recursion on arbitrary tree objects is needed. A positive certificate only needs a marked fragment containing the root, enabled justifications, and strictly descending natural ranks. A closed mask $T$ with $v\notin T$ certifies failure by leastness. For a certificate of the complete output, check both conditions on the same mask. The empty graph, empty supply and a self-supporting isolated cycle all obey these tests.
+\end{proof}
+
+The operation is monotone in $S$, by induction on the inclusion of the two masks obtained with smaller and larger supplies. Define
+\[
+ {\cal M}_v=\{S<2^b:v\in C(S),\
+       \forall p\in S,\ v\notin C(S\setminus\{p\})\}.
+\]
+For finite sets of bits we identify a set with its code. A supply $T$ works if and only if it contains some $S\in{\cal M}_v$. Starting from successful $T$, scan its ports, removing one whenever the smaller set still succeeds. A removal that fails cannot become successful after further deletions, by monotonicity. The scan produces the required $S$. This proves the equivalence by bounded tests and yields all minimal alternatives by enumeration. An empty family expresses impossibility by these rules. A family containing $\varnothing$ expresses an unconditional route. Distinct sets can transmit logically equivalent assumptions in a mathematical interpretation, so minimality here is a property of the table.
+
+For example take two labels $u,v$, the rules $u\leftarrow v$, $v\leftarrow u$, and two entry rules $u\leftarrow p,q$, $v\leftarrow r$, where $p,q,r$ are ports. The minimal supplies for $u$ are $\{p,q\}$ and $\{r\}$. When only $p$ is available the empty closed mask witnesses failure. When $r$ is available the certificate enters $v$ in round one and $u$ in round two. Treating the strongly connected pair as already proved would erase both genuine conditions.
+
+\subsection{Composition across a finite interface}
+Partition the labels into $U,V$. Write $F(X,Y)$ and $G(X,Y)$ for the monotone one-round consequence operators on the respective coordinates, including retention of their own bits, with $S$ fixed. Let $y(X)$ be the least closed $Y$ for $Y\mapsto G(X,Y)$, found in at most $|V|$ rounds starting empty. Compute $x_*$ by iterating $X\mapsto F(X,y(X))$ from empty for $|U|$ rounds. Then the joint result is $(x_*,y(x_*))$.
+
+Indeed $X\subseteq X'$ implies $y(X)\subseteq y(X')$ by iteration, so the outer loop is monotone and inflationary. Both equations hold at the proposed result. For any jointly closed $(A,B)$ one has $y(A)\subseteq B$, then $F(A,y(A))\subseteq A$. Outer leastness gives $x_*\subseteq A$ and inner monotonicity gives $y(x_*)\subseteq B$. All comparisons are mask inclusions. Equivalently precompute each inner output's minimal supports among the outer input labels and original ports, then substitute these disjunctive summaries into the outer rules. For fixed supplies they compute exactly $y(X)$ by the preceding result. This finite version of Beki\'c elimination permits replacing a module even when its outputs feed back into its inputs. Only positive use of these labels is allowed. Positive-rule saturation and alternative explanations also have a long history in deductive databases \cite{green}. Here the two replay judgements identify the induction needed for the iPRA interpretation.
+
+\subsection{From labels to arithmetic derivations}
+Fix externally a finite table. Assign an arbitrary object formula $A_v(\vec x)$ to each label and $R_p(\vec x)$ to each port. Supply, for every row, an actual local derivation
+\[
+ (A_i)_{i\in P},\ (R_j)_{j\in G},\ \Gamma\ \vdash A_h .
+\]
+The variables $\vec x$ stay free. From derivations of the supplied $R_j$ in $\Gamma$, replay in increasing rank. At a marked row, simultaneous cut substitutes the already constructed proofs of its prerequisites and the designated port proofs. This gives $\Gamma\vdash A_v$. A minimal supply $S$ therefore gives a derivation from $\Gamma,(R_j)_{j\in S}$. Intuitionistic disjunction elimination yields
+\[
+ \Gamma\vdash
+ \left(\bigvee_{S\in{\cal M}_v}\ \bigwedge_{p\in S}R_p\right)
+       \longrightarrow A_v ,
+\]
+with the usual empty disjunction $\bot$ and empty conjunction $0=0$. No decision procedure for $R_p$ was used. The operations on masks concerned the availability of proofs. In a context with a local existential witness the row is replayed under that fresh variable. Existential elimination then applies if the public conclusion and the outside context do not depend on it. Supplying a port globally from different local choices requires its own derivation.
+
+\paragraph{An internal number of stages.}
+For a numerical input table and a fixed formula family $A(x,v)$, assume it has a reflected bounded matrix for the observations being propagated, and that the local rule and port implications have uniform object proofs. In the theory fix $x,S$ and retain the port and row hypotheses in context. Use the single bit
+\[
+ I(k)=\Big[\forall v<N\ (v\in X_k\ \longrightarrow A(x,v))\Big].
+\]
+The zero case is the empty mask. For a newly marked label select a row by bounded search, apply $I(k)$ to its finite prerequisites, then use its rule. This gives the next reflected bit. QF induction gives $I(N)$ at the input size. A more general public conclusion $B(x,v)$ is available if there is a proved exit implication from the bounded invariant to $B$. For example, an algorithm may store its chosen witnesses in a table. Its invariant asserts by bounded tests that each stored witness verifies its label. At entry, run a specified PR constructor on the previous table and append the result. A bound on the \emph{output} witness can be derived if needed by maximizing each fixed constructor over inputs bounded by the current code bound, then iterating the maximum for $N$ rounds. Existential introduction at exit exports the stored witness. An unspecified witness source remains a premise. For bounded labels the internal arithmetic proofs here are on paper. The supplied Lean module already implements the external derivation family for arbitrary labels.
+
+\begin{prop}[Strength of uniform path replay]\label{p:path}
+For any class of formulas closed under substitution of numerical terms and addition of parameters, uniform replay along the paths $0,1,\ldots,n$ for that class is equivalent over iPRA to its induction schema. With a global step hypothesis the equivalence also holds for each single formula.
+\end{prop}
+\begin{proof}
+Use the exact path principle
+\[
+ \forall n\ \bigl(A(0)\land \forall i<n\,[A(i)\to A(i+1)]
+                  \ \longrightarrow A(n)\bigr).
+\]
+Assume it, a base, and unrestricted local progress. Restrict progress to $i<n$ for arbitrary $n$ and apply the displayed principle. Conversely assume the induction schema for the class. Derive the bounded path assertion using induction on the \emph{clamped instance} $A(\min(i,n),\vec x)$. At $i<n$ apply the given step and otherwise use equality of consecutive clamped indices. Instantiate at $n$. The clamped formula belongs to the class by its substitution hypothesis. Replacing the bounded step by a global premise removes the closure requirement. The resulting principle with premise $\forall i\,[A(i)\to A(i+1)]$ is intuitionistically equivalent, by quantifier rules alone, to the single induction axiom for $A$. Thus allowing arbitrary formulas in the input-length replay rule recovers full first-order induction. The checked replay theorem for fixed finite tables avoids this increase in strength.
+\end{proof}

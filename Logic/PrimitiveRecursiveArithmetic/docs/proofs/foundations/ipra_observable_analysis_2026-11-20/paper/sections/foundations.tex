@@ -1,0 +1,133 @@
+\section{Scope, prior work, and the arithmetic interface}\label{sec:foundations}
+
+\subsection{The problem this report addresses}
+
+The useful question is not whether an arbitrary sentence of classical analysis can be relabeled as arithmetic. It is which finite observations of a continuous construction can be produced by fixed primitive-recursive programs, proved correct in intuitionistic primitive recursive arithmetic, and identified with the intended mathematics. Three separate achievements are needed: an algorithm, an arithmetic proof of its finite contracts, and a semantic adequacy argument. A fourth issue, coherence across precisions, appears whenever observations are assembled into an exact object.
+
+Our examples are genuinely continuous: $L^1$ spaces, measure algebras, infinite-dimensional normed algebras, bounded complexes of normed spaces, and continuous truth values. Finite arithmetic is their proof interface. It is not a replacement of the mathematical question by an unrelated finite analogue. For instance, the contracting-homotopy construction produces a completed bounded operator, and its identity holds at every precision; it is not merely a check of one finite matrix.
+
+The repository audit is pinned to commit
+\begin{center}\small\texttt{b2341af5370cd8a43f72ebb2341c0d7d7395b634}.\end{center}
+Only the sources identified in the evidence manifest were inspected. The repository was not rebuilt or modified. Its current overview distinguishes the checked \code{ConciseIPRA}, \code{Derivations}, and \code{Bridge} libraries from research packets filed as delivered~\cite{repo}. We preserve that distinction.
+
+\subsection{What is already present, and what changes here}
+
+Several substantial frameworks had already reached the repository by the inspected commit. The November 20 packets treat quantitative completion, continuous formula semantics, Lipschitz function spaces, coherent minimizers, gluing, differential equations, and complex approximation~\cite{repo-recent}. Earlier work treats backward precision demands, contract graphs, and matrix small-gain certificates~\cite{repo-dag,repo-coupled}. The current object-language library contains bounded-syntax reflection and typed acyclic realizer composition~\cite{repo-interfaces}. Thus neither finite approximations nor explicit moduli are new proposals here.
+
+\begin{longtable}{@{}P{.26\textwidth}P{.31\textwidth}P{.36\textwidth}@{}}
+\toprule Existing ingredient & Retained role & Added development\\\midrule\endhead
+Backward demands and shared contract graphs & Compile finite observations and reuse local laws & Exact reverse sensitivity weights, minimal DAG certificates, and dual certificates for a requested observable.\\
+Completion and coherent names & Turn compatible finite approximants into objects & One completion interface used consistently by integration, inverse operators, and homotopies.\\
+Finite-law expectation and quadrature & Arithmetic integration kernels & A single coherent partition algebra; measure algebra and $L^1$ completion; a majorant-derived tail rate; finite Vitali estimates and Fubini.\\
+Matrix small gain and implicit solutions & Control numerical feedback & Noncommutative finite defect identities, fast geometric sums, and repair of a contracting homotopy or mapping-cone contraction.\\
+Continuous formula approximation & Quantified observations of supplied structures & Explicit reuse as a client; no new claim of model existence or unrestricted compactness.\\
+Power-series evaluation & Supply analytic finite approximants & Banach-algebra power series, a noncommutative derivative, and explicit quadratic remainder, with shared evaluation budgets.\\
+\bottomrule
+\end{longtable}
+
+The underlying mathematical facts about completions, integration, and perturbation are established subjects~\cite{oconnor2007,spitters2006,crainic2004}. The contribution is their precise combination and finite extraction in the stated weak arithmetic, together with a verified reusable algebraic kernel. No priority claim is made for those classical or constructive theorems.
+
+\subsection{The target logic, definitions, and rules}
+
+Our target theory has one sort, natural numbers. Its terms use a symbol for every fixed primitive-recursive definition. A precise generating grammar consists of zero functions, successor, projections, composition, and primitive recursion:
+\[
+ R(g,h)(\vec x,0)=g(\vec x),\qquad
+ R(g,h)(\vec x,n+1)=h(\vec x,n,R(g,h)(\vec x,n)).
+\]
+Here $g$ has arity $r$, $h$ has arity $r+2$, and $R(g,h)$ has arity $r+1$. Their defining equations are nonlogical axioms, as are $Sx\ne0$ and $Sx=Sy\to x=y$. For every quantifier-free formula $A(n,\vec x)$ there is the induction axiom
+\[
+ \bigl(A(0,\vec x)\wedge\forall n(A(n,\vec x)\to A(n+1,\vec x))\bigr)
+ \to\forall n\,A(n,\vec x).
+\]
+Formulas themselves may contain unbounded quantifiers. It is the induction matrix that is restricted.
+
+The logical rules are intuitionistic natural deduction for $\bot,\wedge,\vee,\to,\forall,\exists$, together with equality reflexivity and substitution. Universal introduction observes the usual free-variable condition; existential elimination uses a fresh variable. There is no unrestricted excluded middle, choice rule, or induction on formulas expressing an all-precision property. Decidable rational comparisons and finite searches do allow proved Boolean case splits. This is the ordinary iPRA target of the repository, not a new theory.
+
+\begin{definition}[Three levels of a statement]\label{def:three-levels}
+An \emph{internal arithmetic theorem} is a concrete first-order formula with an iPRA derivation. A \emph{presentation schema} is an external construction that accepts fixed PR programs and actual derivations of their contracts, then produces such a formula and derivation. A \emph{semantic theorem} identifies the result in completed metric spaces, measure spaces, or normed algebras. A Lean theorem about ordinary functions or rational numbers is at the semantic/metatheoretic level unless it explicitly constructs the internal derivation.
+\end{definition}
+
+Fixed PR input programs may depend on arbitrarily many numerical parameters. The word ``fixed'' concerns their syntax, not a restriction to one numerical instance. All requests, lengths, tolerances, matrices, and finite partitions remain quantified numerical data in the appropriate compiled theorem.
+
+\subsection{Coding and finite proof obligations}
+
+Use a pairing function $\langle a,b\rangle=2^a(2b+1)-1$; bounded factor extraction gives its PR projections. Lists are length-tagged nested pairs, with default lookup outside their recorded length. A signed integer is a pair of naturals $(p,q)$ denoting $p-q$. A rational is a signed numerator together with a strictly positive denominator. Rational equality and order use cross multiplication. Reducing fractions is optional. Division with a zero denominator returns a flagged default, and every theorem retains the positive-denominator guard.
+
+Finite sums, maxima, matrix products, polynomial coefficients, finite partition refinements, table lookup, and bounded candidate selection are PR. A bounded predicate is compiled to a characteristic bit. For example, a finite conjunction is the recursively defined bit $\operatorname{all}_P(n)$, with value one exactly when $P(i)$ holds for every $i<n$. The reflection lemma relating that bit to its displayed bounded formula is proved with a quantifier-free induction. It cannot simply be assumed for an arbitrary formula. The repository's \code{BoundedSyntax.lean} supplies this translation for its explicitly defined bounded syntax~\cite{repo-interfaces}.
+
+The numerical inequalities in this report therefore have literal quantifier-free versions: multiply by positive denominators and replace each finite universal assertion by its proved Boolean fold. A typical loop invariant records the finite state, guard bits, partial sums, and a rational error bound. It never asserts inside the induction matrix that an arbitrary function is continuous or that an infinite sequence is Cauchy.
+
+\begin{proposition}[What finite compilation actually asserts]\label{prop:compiler}
+Fix a finite library of PR state transitions, Boolean tests, and object-iPRA derivations of their local laws. Suppose a proposed client supplies PR loop bounds and a Boolean invariant $I$ with actual iPRA proofs of its initialization, preservation, and extraction of the output assertion. Then the client has a PR evaluator and an iPRA proof of its guarded output contract.
+\end{proposition}
+\begin{proof}
+Encode the whole evolving state as one number, and iterate the fixed transition by primitive recursion. After the requested bound, keep the state unchanged. Apply quantifier-free induction to $I$ of this numerical state, with the request and all input data as free parameters. Instantiate at the requested bound and use the extraction derivation. If there are several loops, compose the resulting derivations by substitution, implication elimination, and the ordinary derived cut rule. The final universal quantifiers over requests and data are introduced after these inductions.
+\end{proof}
+
+This proposition is a proof-construction schema. It is not an internal assertion that every accepted proof code is true, and it supplies no reflection principle for iPRA itself. Nor does it infer that an unspecified invariant is provable merely because the intended algorithm is PR.
+
+\begin{lemma}[No universal PR interpreter]\label{lem:no-eval}
+There is no total PR function $U(e,n)$ that evaluates every unary PR program from its code.
+\end{lemma}
+\begin{proof}
+If such $U$ existed, the function $g(n)=U(n,n)+1$ would be PR. Let $a$ be its code. Then $U(a,a)=g(a)=U(a,a)+1$, a contradiction.
+\end{proof}
+Variable-size straight-line graphs over one fixed finite primitive library are different: table evaluation is a primitive recursion on the graph length, with a fixed PR step. Adding arbitrary recursive subprogram syntax to those graphs would require a separate clocked interpreter and proof that its clock suffices. The present framework does not do that.
+
+\subsection{Completion, once, with explicit loss constants}\label{sec:completion}
+
+We recall the common completion interface in enough detail to fix its arithmetic meaning. Initially let $D$ be a PR-decidable collection of finite codes with a rational pseudometric $d$ and proved finite metric laws. A \emph{regular name} is a fixed PR family $x_k\in D$ with
+\begin{equation}\label{eq:regular}
+ d(x_k,x_l)\le\e_k+\e_l,\qquad \e_k=2^{-k}.
+\end{equation}
+Two names represent the same object when
+\begin{equation}\label{eq:name-eq}
+ d(x_k,y_l)\le\e_k+\e_l\quad\hbox{for every }k,l.
+\end{equation}
+This is an arithmetical relation between fixed families; it is not a decidable equality test.
+
+\begin{lemma}[Removal of rational slack]\label{lem:slack}
+If rational numbers $a,b$ satisfy $a\le b+2^{-m}$ for every $m$, then $a\le b$. The implication has an intuitionistic arithmetic proof using a bounded numerical choice of $m$ from the denominators of $a,b$.
+\end{lemma}
+\begin{proof}
+Decide $a\le b$ by cross multiplication. In the other case, if the positive difference has denominator $D$, then $a-b\ge1/D$. Choose $m=D+1$; the elementary induction $2^{D+1}>D$ gives $2^{-m}<1/D$. This contradicts the assumed inequality. A smaller bounded power-of-two search may replace this deliberately crude clock.
+\end{proof}
+For transitivity of \eqref{eq:name-eq}, insert the middle name at precision $m$ and use the triangle inequality. The surplus is $2\e_m$, removable by the lemma after shifting $m$. Reflexivity follows from regularity and symmetry from the metric law. Thus these names form a setoid without needing a quotient type inside iPRA.
+
+The completed distance is itself the nonnegative real name
+\[
+ \widehat d(x,y)_k=d(x_{k+1},y_{k+1}).
+\]
+The two triangle inequalities bound the difference between its $k$th and $l$th entries by $\e_k+\e_l$. Replacing either input by an equivalent name leaves the represented scalar unchanged, by the same inequality and slack removal. Its zero relation is exactly \eqref{eq:name-eq}. In particular, $\widehat d(x,\operatorname{const}(x_n))\le\e_n$, again by applying regularity and removing the other precision's slack. These facts define the completed metric and the dense embedding used below.
+
+The fixed-PR names form the \emph{represented part} of the ordinary external metric completion. They are not asserted to exhaust that completion or to be complete for arbitrary semantic Cauchy sequences. The following diagonal construction establishes precisely the closure needed for supplied jointly PR families with the displayed rate. Statements about a full Banach or measure space below are external semantic interpretations; the effective conclusion concerns the represented part.
+
+If a family of names $x^j$ has the finite cross-bound
+\[
+ d(x^j_k,x^m_l)\le\e_j+\e_m+\e_k+\e_l,
+\]
+then $y_n=x^{n+2}_{n+2}$ is regular, since the right-hand side on two diagonal entries is $(\e_n+\e_t)/2$. The diagonal is a fixed PR program when the two-argument family is fixed PR. This gives effective completeness for an already supplied modulated family; it does not select a Cauchy subsequence of an arbitrary sequence.
+
+\begin{theorem}[Extension of a finite approximate evaluator]\label{thm:extension}
+Suppose fixed PR maps $F_p:D\to E$ satisfy
+\[
+ d_E(F_p(a),F_q(b))\le Ld_D(a,b)+\e_p+\e_q
+\]
+for a supplied rational $L\ge0$. Choose a natural $h$ with $L\le2^h$. For every regular input name $x$, the family
+\[
+ y_k=F_{k+2}(x_{k+h+2})
+\]
+is regular and depends only on the represented input. It gives the unique $L$-Lipschitz extension on the represented completion, and agrees with the usual extension in the external completion.
+\end{theorem}
+\begin{proof}
+The distance between $y_k$ and $y_l$ is bounded by
+\[
+ L(\e_{k+h+2}+\e_{l+h+2})+\e_{k+2}+\e_{l+2}
+ \le (\e_k+\e_l)/2.
+\]
+The same calculation with two equivalent names proves independence. On constant dense names, the finite evaluator has the intended limit because its work-precision errors tend to zero. For uniqueness, approximate an arbitrary name by one of its dense entries, apply the two Lipschitz estimates, and remove the resulting arbitrary rational slack. The completed Lipschitz inequality follows in exactly the same way from the finite cross-bound.
+\end{proof}
+
+Rational-valued pseudometrics are a convenient implementation core, not a claim that all dense norms are rational. For Euclidean or complex norms, use a supplied PR rational enclosure $[d^-_p,d^+_p]$ of width at most $\e_p$, together with its finite correctness laws. Every use of distance in a verifier uses the upper enclosure and includes its width in the local error budget. For finite Gaussian-rational vectors these enclosures are produced by bounded bisection for square roots. The interval starts at zero and an integer upper bound for the norm; each bisection halves its width, and comparison with the rational square is decidable. This gives the needed PR clock and finite invariant. No exact real comparison is introduced.
+
+The completion viewpoint is familiar in constructive computation~\cite{oconnor2007}. Its role here is economical: once a map has a finite stability inequality, its extension, representation independence, and all-precision meaning are proved by the same lemma. The remaining sections concentrate on producing the inequalities and their efficient numerical witnesses.

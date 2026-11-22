@@ -1,0 +1,32 @@
+Ethan Keller, Improved bounds for universal convex covers of unit arcs,
+arXiv:2609.21968, September 2026.
+https://arxiv.org/abs/2609.21968
+https://github.com/ethan-keller/moser-worm-improved-bounds/tree/9a3394130fe4f7b1df6ffdeffda16601795d9ce4
+
+This directory contains the upstream common Lean sources, upper-bound Lean
+sources, all upper certificate files, the upper proof exporter and verifier,
+project settings, and upstream attribution and license. Upstream files are
+byte-for-byte copies of their pinned Git blobs. The source tree is shared
+under the included Apache License 2.0. SHA256SUMS records the checksums of
+the 97 upstream files bundled here.
+
+The upper theorem MoserWorm.upper_bound in MoserWorm/UpperBound/Main.lean
+states the universality and exact area of Kquad. This input allows planar
+reflections. Its complete 50-shard compressed multiplier certificate is in
+certificates/upper. The checker generates the certificate's Lean modules
+during replay. MoserWorm.lean is present because the upstream verifier
+includes it in its source fingerprint. The upper-only replay uses the
+MoserWorm.UpperBound.Main target.
+
+On Linux, with Python 3.9 or later, elan/Lake and network access to retrieve
+the pinned Lean and mathlib toolchains, run here:
+
+    sha256sum --check SHA256SUMS
+    lake exe cache get
+    python3 scripts/upper/verify.py --jobs 1
+
+Adjust the worker count to available memory. The original README describes
+the author's hardware and recorded verification time. The report's checks
+compared every upstream file with its Git blob digest, then executed the
+upstream certificate input integrity checks, including the full manifest.
+The Lean kernel replay is a separately reproducible verification step.

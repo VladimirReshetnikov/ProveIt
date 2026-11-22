@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "python_version": "3.12.14",
+  "scope": "Sequential finite regression checks; not universal, Lean, or object-iPRA proofs.",
+  "checks": [
+    {
+      "checker": "finite",
+      "script": "code/finite_topology.py",
+      "arguments": [
+        "--max-n",
+        "4"
+      ],
+      "status": "passed",
+      "return_code": 0,
+      "native_status": "all assertions passed",
+      "report": "validation/finite_checks.json",
+      "elapsed_seconds": 1.46
+    },
+    {
+      "checker": "algebraic",
+      "script": "code/algebraic_checks.py",
+      "arguments": [],
+      "status": "passed",
+      "return_code": 0,
+      "native_status": "passed",
+      "report": "validation/algebraic_checks.json",
+      "elapsed_seconds": 0.6
+    },
+    {
+      "checker": "dimension",
+      "script": "code/dimension/validate.py",
+      "arguments": [],
+      "status": "passed",
+      "return_code": 0,
+      "native_status": "passed",
+      "report": "validation/dimension_checks.json",
+      "elapsed_seconds": 3.094
+    },
+    {
+      "checker": "sphere",
+      "script": "code/sphere_checks.py",
+      "arguments": [],
+      "status": "passed",
+      "return_code": 0,
+      "native_status": "passed",
+      "report": "validation/sphere_checks.json",
+      "elapsed_seconds": 0.214
+    }
+  ]
+}

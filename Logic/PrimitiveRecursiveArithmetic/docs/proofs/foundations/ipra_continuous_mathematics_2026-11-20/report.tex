@@ -1,0 +1,40 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,top=.93in,bottom=.92in,left=1.03in,right=1.03in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array,tabularx,graphicx,xcolor,microtype,fancyhdr,hyperref,titlesec}
+\definecolor{inkblue}{HTML}{214D62}
+\hypersetup{colorlinks=true,linkcolor=inkblue,urlcolor=inkblue,citecolor=inkblue,pdftitle={Finite observations in constructive arithmetic},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\titleformat{\section}{\normalfont\Large\bfseries\color{inkblue}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{.55em}{}
+\titlespacing*{\section}{0pt}{2.0ex plus .6ex minus .2ex}{1.1ex plus .3ex}
+\titlespacing*{\subsection}{0pt}{1.8ex plus .5ex minus .2ex}{.7ex plus .2ex}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Finite observations in constructive arithmetic}
+\fancyhead[R]{\small\thepage}\renewcommand{\headrulewidth}{.3pt}
+\setlength{\headheight}{14pt}\setlength{\emergencystretch}{1.6em}\raggedbottom
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N}\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}
+\newcommand{\Lip}{\operatorname{Lip}}\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\repourl}{https://github.com/VladimirReshetnikov/ProveIt/blob/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic}
+\newcommand{\repo}[2]{\href{\repourl/#1}{#2}}
+\begin{document}
+\thispagestyle{empty}
+\noindent{\sffamily\small\color{inkblue} MATHEMATICAL LOGIC\quad /\quad CONSTRUCTIVE ANALYSIS}\par
+\vspace{.8em}\noindent{\LARGE\bfseries Finite observations in constructive arithmetic}\par
+\vspace{.4em}\noindent{\large Function spaces, metric structures, nerves and residues in iPRA}\par
+\vspace{.6em}\noindent{\small Research report prepared for Vladimir Reshetnikov\hfill 20 November 2026}\par
+\vspace{.8em}\hrule\vspace{.8em}
+\noindent How can a first-order arithmetic proof make a statement about \emph{all functions} on a continuum? For bounded scalar functions with a prescribed Lipschitz constant, one can construct a finite net whose members are themselves functions of that class. Their uniform distances are computable exactly from their defining lists of points. The construction can be iterated, so a variable ranging over Lipschitz functionals can also be eliminated to any requested accuracy. We give the coverage proof, the arithmetic interpretation of these quantifiers, and an exact minimax calculation.
+\par\smallskip
+Three applications show how the interpretation changes with the mathematics. Two-sided correspondences transport a fragment of continuous logic with no growth of error through quantifiers. Finite unions of rational boxes admit explicit nerve equivalences with computable homotopies, including at tangencies. A rational-collar argument transfers a residue theorem to positively isolated singularities whose centres are given by primitive recursive names.
+\par\smallskip
+The Lean files include a checked derivation constructor in ProveIt's embedded calculus and checked mathematical kernels for the examples. The full arithmetic reification of the applications is specified in the paper and remains to be mechanized.
+\vspace{.6em}
+\setcounter{tocdepth}{1}\tableofcontents
+\clearpage
+\input{sections/presentations}
+\input{sections/function_spaces}
+\input{sections/variational}
+\input{sections/abstract}
+\input{sections/topology}
+\input{sections/complex}
+\input{sections/implementation}
+\end{document}

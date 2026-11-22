@@ -1,0 +1,269 @@
+\section{A factorization-free squarefree producer for nonzero norms}
+\label{sec:squarefree-norm-audit}
+
+The following audit establishes a useful automatic nonvanishing producer.
+Its coefficient algebra has zero divisors in general; reducedness, rather
+than an unjustified field assumption, is the property needed by the proof.
+
+\begin{theorem}[Squarefree input supplies the norm witness]
+\label{thm:squarefree-norm-producer}
+Let \(K\) be a field, let \(f\in K[X]\) be nonconstant with
+\(\gcd(f,f')=1\),
+and let \(m\geq1\).  For every nonzero reduced polynomial
+\[
+ G(X,Y)=\sum_{j=0}^{m-1}A_j(X)Y^j,
+\]
+the multiplication norm in \(K[X,Y]/(Y^m-f(X))\) is nonzero.  Moreover,
+writing \(d=\deg f\),
+\[
+ \deg N(G)\leq
+ W:=\max_{A_j\ne0}\{m\deg A_j+jd\}.
+\]
+No hypothesis \(\gcd(m,d)=1\), no factorization of \(f\), and no
+\(K\)-rational root of \(f\) is required.  The result holds in every
+characteristic, including characteristics dividing \(m\).
+\end{theorem}
+
+\subsection{Reducedness with explicit divisibility witnesses}
+
+Here the effective squarefree condition means the separability certificate
+\begin{equation}
+ \label{eq:squarefree-bezout}
+       U f+V f'=1.
+\end{equation}
+For polynomial coefficients in an exact field, the ordinary degree-bounded
+Euclidean algorithm computes this certificate when \(\gcd(f,f')=1\).
+Over \(\mathbb Q\), or any perfect field, this is equivalent to the usual
+absence of repeated irreducible factors.  Over an imperfect field of
+positive characteristic those formulations differ: \(X^p-t\) over
+\(\mathbb F_p(t)\) is irreducible but has zero derivative.  The present
+simple-root argument uses the displayed Bezout certificate, not an
+unqualified ring-theoretic \texttt{Squarefree} assumption.
+
+\begin{lemma}[A factorization-free reducedness proof]
+\label{lem:quotient-reduced-explicit}
+For \(n\geq1\), if \(f\mid b^n\), then \(f\mid b\).
+Consequently \(K[X]/(f)\) is reduced.
+\end{lemma}
+
+\begin{proof}
+Compute the monic gcd \(g=\gcd(f,b)\), the quotients
+\(f=gh\) and \(b=gq\), and a Bezout certificate
+\(Af+Bb=g\).  Since \(g\ne0\), cancellation in the polynomial domain
+gives
+\begin{equation}
+ \label{eq:hq-bezout}
+                   Ah+Bq=1.
+\end{equation}
+Differentiate \(f=gh\) and substitute in
+\eqref{eq:squarefree-bezout}.  This gives the explicit identity
+\[
+ 1=h(Ug+Vg')+g(Vh').
+\]
+Put \(C=Ug+Vg'\) and \(D=Vh'\); hence \(Ch+Dg=1\).
+Multiplying this identity by \eqref{eq:hq-bezout} yields
+\begin{equation}
+ \label{eq:hb-bezout}
+  1=Eh+Fb,
+  \quad E=CAh+CBq+DAg,
+  \quad F=DB.
+\end{equation}
+Indeed the remaining product term is \(DBgq=Fb\).
+
+The hypothesis implies \(b^n=hr\) for an explicit quotient \(r\).
+Using \(1-Fb=Eh\), the finite geometric identity gives
+\[
+ \begin{split}
+ 1&=(Fb)^n+(1-Fb)\sum_{i=0}^{n-1}(Fb)^i\\
+  &=h\left(F^n r+E\sum_{i=0}^{n-1}(Fb)^i\right).
+ \end{split}
+Write the displayed parenthesis as \(J\).  Then \(hJ=1\), and
+\[
+                  b=gq=(gh)(qJ)=f(qJ).
+\]
+This is a concrete divisibility witness, not merely an appeal to prime
+factorization or unique factorization.  The only variable-length identity
+is a finite geometric sum, proved by quantifier-free induction on \(n\).
+No division by the numeral \(n\) is used, so the argument is valid in
+positive characteristic.
+\end{proof}
+
+\subsection{A formal simple root in a computable coefficient ring}
+
+Let
+\[
+ R=K[U]/(f(U)),\qquad u=U\bmod f.
+\]
+For implementation, reduce residues modulo the monic polynomial
+\(\widehat f=f/\operatorname{lc}(f)\).  This changes the division
+algorithm only: the original \(f\), rather than \(\widehat f\), remains
+the polynomial in the norm equation \(Y^m=f(X)\).
+
+The algebra \(R\) is nonzero because \(\deg f\geq1\), and the natural
+map \(K\to R\) is injective.  In particular a nonzero scalar coefficient
+remains nonzero.  By Lemma~\ref{lem:quotient-reduced-explicit}, \(R\) is
+reduced.  It need not be a field; no factor of \(f\) is selected.
+
+Expand in the polynomial ring \(R[T]\):
+\[
+             f(u+T)=cT+T^2D(T),\qquad c=f'(u).
+\]
+The constant term is zero because \(f(u)=0\).  Evaluating
+\eqref{eq:squarefree-bezout} at \(u\) gives
+\(V(u)c=1\).  Thus \(c\) is a unit with a supplied inverse.
+This is the precise substitute for choosing a simple rational root.
+
+For each nonzero row \(A_j\), the polynomial \(A_j(u+T)\) is nonzero:
+its highest coefficient in \(T\) is the original nonzero leading scalar
+of \(A_j\).  Let
+\[
+ A_j(u+T)=b_jT^{a_j}+\text{terms of larger \(T\)-degree},
+ \qquad b_j\ne0.
+\]
+The least nonzero coefficient is found by a finite scan.  Define
+\(w_j=ma_j+j\).  Distinct indices \(j\in\{0,\ldots,m-1\}\) have
+distinct residues modulo \(m\), so the minimum \(w_j\) is attained at
+exactly one index \(k\).  Write \(a=a_k\), \(b=b_k\).
+
+\begin{lemma}[The initial coefficient of the local norm]
+\label{lem:local-norm-initial}
+The coefficient of \(T^{ma+k}\) in the norm after substituting
+\(X=u+T\) is
+\begin{equation}
+ \label{eq:initial-local-norm}
+             b^m\bigl((-1)^{m-1}c\bigr)^k,
+\end{equation}
+and every coefficient of smaller degree is zero.
+\end{lemma}
+
+\begin{proof}
+Use the basis \(1,Y,\ldots,Y^{m-1}\), and index a matrix column by
+\(i\in\{0,\ldots,m-1\}\).  A contribution from \(A_jY^j\) sends
+that column to row \(r\equiv i+j\pmod m\), with factor
+\(f(u+T)^q\), where \(i+j=r+mq\) and \(q\in\{0,1\}\).
+
+For a determinant permutation \(r=\sigma(i)\), write the selected row
+index of \(G\) as \(j_i\), with corresponding carry \(q_i\).
+Summing the equalities \(i+j_i=\sigma(i)+mq_i\) gives
+\[
+                  \sum_i j_i=m\sum_i q_i.
+\]
+Its determinant term has \(T\)-order at least
+\[
+ \sum_i a_{j_i}+\sum_iq_i
+       =\frac1m\sum_i(ma_{j_i}+j_i)
+       =\frac1m\sum_iw_{j_i}.
+\]
+Here \(1/m\) is a statement about natural integer counts, not division by
+an element of \(K\).  Terms containing a zero row coefficient vanish.
+
+Every retained weight is at least \(w_k=ma+k\).  If any selected index
+differs from \(k\), the average is strictly larger than \(w_k\), and
+its integral value is at least \(w_k+1\).  Therefore only the choice
+\(j_i=k\) in every column contributes to degree \(w_k\).
+It is the unique permutation \(\sigma(i)=i+k\pmod m\).
+The norm of multiplication by \(Y\) is
+\((-1)^{m-1}f(u+T)\); equivalently this cyclic permutation has sign
+\((-1)^{k(m-1)}\), with total carry \(\sum_iq_i=k\).
+Its leading coefficient is exactly \eqref{eq:initial-local-norm}.
+The argument is a finite determinant expansion over the commutative ring
+\(R\); it does not presume that \(R\) has no zero divisors.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:squarefree-norm-producer}]
+Since \(b\ne0\) and \(R\) is reduced, \(b^m\ne0\).
+Since \(c\) and \(-1\) are units, the initial coefficient
+\eqref{eq:initial-local-norm} is nonzero.  Thus the substituted norm is
+nonzero.  Determinants commute with coefficient homomorphisms, so this
+substituted polynomial is the image of the original norm under
+\(X\mapsto u+T\).  A zero original norm would have zero image, a
+contradiction.  This proves nonvanishing.
+
+For the degree estimate use the same determinant-permutation expansion
+over \(K[X]\), now with \(e_j=\deg A_j\).  Each nonzero determinant
+term has degree at most
+\[
+ \sum_i e_{j_i}+d\sum_iq_i
+       =\frac1m\sum_i(me_{j_i}+dj_i)\leq W.
+\]
+Cancellation can only decrease degree.  This proves the bound without
+requiring uniqueness of the largest global weight.
+\end{proof}
+
+\paragraph{Example beyond coprime degree weights and rational local roots.}
+Over \(\mathbb Q\), take \(m=2\), \(f=X^4+1\), and
+\(G=Y-X^2\).  The two global weights are both \(4\), and
+\(\gcd(2,4)=2\).  The polynomial \(f\) has no rational root.
+Nevertheless it is squarefree and
+\[
+ N(G)=\det\begin{pmatrix}-X^2&X^4+1\\1&-X^2\end{pmatrix}=-1.
+\]
+In the quotient algebra, \(u^4=-1\), so the least local row is the
+constant \(-u^2\), whose square is \(-1\).  This example shows why the
+quotient-root construction is a real enlargement of the earlier guards.
+
+The zero-divisor qualification is not cosmetic.  For
+\(f=X^2-1\), \(m=2\), and \(G=(X-1)+Y\), the least local coefficient
+is \(b=u-1\).  It is a nonzero zero divisor in
+\(\mathbb Q[u]/(u^2-1)\), but \(b^2=2-2u\ne0\).  Indeed
+\(N(G)=2-2X\).  A proof that silently inverted \(b\), or treated
+this coefficient algebra as a field, would miss precisely this case.
+
+\paragraph{Necessary qualifications.}
+Nonconstancy is essential: the constant squarefree polynomial \(f=1\)
+would give a zero quotient algebra and reducible \(Y^2-1\).
+Squarefreeness is a sufficient condition, not a necessary one; without
+it the present automatic rule is unavailable.  For example,
+\(f=X^2\), \(m=2\), and \(G=Y-X\) have zero norm.
+The nonvanishing statement concerns nonzero polynomials reduced to
+\(Y\)-degree below \(m\); the defining equation itself has zero class.
+
+\subsection{Finite and object-arithmetic obligations}
+
+For a uniform primitive-recursive claim, ``exact field'' must mean a
+specified coefficient presentation with primitive-recursive validity,
+equality, addition, multiplication, additive inverse, and inversion on
+nonzero valid codes, together with their arithmetic proofs.  Decidable
+equality alone would not establish these complexity bounds.  Over
+\(\mathbb Q\), signed numerators and positive denominators provide the
+standard presentation.  A schema over arbitrary fields remains a
+metatheorem until such a presentation is supplied.
+
+The finite implementation and its proof have the following obligations.
+\begin{enumerate}
+\item Compute degrees and leading coefficients by bounded scans of the
+      input arrays.  Normalize the divisor for remainder computations,
+      retaining the original leading coefficient for \(f(u+T)\).
+\item Compute polynomial gcd and Bezout certificates by Euclidean
+      division.  Degree decreases bound the number of nonzero remainders;
+      all coefficients and intermediate arrays arise from explicitly
+      bounded field-operation loops.  Verify the displayed Bezout
+      identities rather than invoking a factorization oracle.
+\item Represent \(R\) by residue arrays of length \(d\).  Equality is
+      equality of canonical remainder arrays.  Addition and multiplication
+      reduce modulo the normalized \(f\).  The inverse of \(c\) is the
+      specific residue \(V(u)\); inversion of arbitrary nonunits of
+      \(R\) is neither available nor needed.
+\item Expand \(A_j(u+T)\) and \(f(u+T)\) by finite binomial or Horner
+      operations; find the least nonzero coefficient by a bounded scan.
+      The weight bound is \(m\max_j\deg A_j+(m-1)\).
+\item Compute determinants by the Leibniz formula, or another
+      division-free determinant algorithm.  Gaussian elimination with
+      inverses of arbitrary quotient-algebra pivots would be invalid.
+      The permutation loop has the explicit finite bound \(m!\).
+\item Prove the carry-sum identity and the initial-coefficient identity
+      by finite sums and bounded permutation bookkeeping.  Reducedness
+      uses the explicit certificate of Lemma~\ref{lem:quotient-reduced-explicit};
+      its geometric sum has length \(m\) when applied to \(b^m\).
+\item Export the nonzero coefficient as a finite witness, then compose
+      with the existing coefficient-homomorphism theorem for determinants
+      and the degree-bound theorem.  The endpoint is an object-iPRA
+      implication from the exact-field and squarefree certificates to
+      a nonzero norm coefficient and the claimed degree cap.
+\end{enumerate}
+All dimensions, exponents, and polynomial lengths may be numerical inputs
+to fixed primitive-recursive array programs.  No unbounded factor search,
+choice of an irreducible factor, extension-field existence theorem,
+analytic limit, or division by \(m\) in the coefficient field occurs.
+This audit supplies the full human proof and a direct finite formalization
+route; it does not itself claim a compiled Lean object-theory theorem.

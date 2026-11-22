@@ -1,0 +1,633 @@
+\section{A produced analytic contract: rational linear ODE transport}
+\label{sec:ode-producer}
+
+\subsection{The precise repository boundary}
+
+The pinned source
+\nolinkurl{Derivations/Lean/IPRADerivations/Foundations/OdeRefinement.lean}
+proves two arithmetic consequences of an error recurrence: a finite
+Gronwall bound and geometric telescoping. Its header explicitly states that
+the recurrence describing the Euler polygons is a hypothesis. The corresponding
+row of \nolinkurl{Derivations/README.md} also leaves the polygons, their bounds,
+interpolation, and the resulting name unconstructed. Thus another abstract
+Gronwall interface would not advance this boundary. We supply the missing
+producer for nonautonomous linear systems, including rational coefficient
+functions and a concrete special-function application.
+
+The result is deliberately quantitative. Every estimate below is an inequality
+between finite rational arrays. Its intended object-iPRA formalization uses
+signed integer numerators and positive natural denominators, clears the
+positive denominators, and applies quantifier-free induction to the resulting
+primitive-recursive terms. The source boundary is documented in \cite{repo-ode,repo-gronwall}. The new object derivations are a formalization
+milestone; the human proofs below do not assert that those derivations have
+already been checked by Lean.
+
+\subsection{Data, norms, and the exact finite program}
+
+Fix a finite dimension $d$. A rational coefficient kernel is a particular
+primitive-recursive program evaluating a matrix $B(t)$ at a rational
+$t\in[0,1]$. The word ``particular'' matters: we do not assume a total
+primitive-recursive evaluator for arbitrary primitive-recursive program codes.
+A finite family of such kernels, with a bounded instruction interpreter, is
+another admissible implementation.
+
+For real rational vectors use the maximum norm and for matrices the maximum
+absolute row-sum norm. For complex rational vectors one may instead take
+$\lVert v\rVert=\max_i(|\Re v_i|+|\Im v_i|)$ and the associated row-sum
+upper bound. These norms are rational-valued and obey
+\[
+ \lVert v+w\rVert\le\lVert v\rVert+\lVert w\rVert,\qquad
+ \lVert Av\rVert\le\lVert A\rVert\lVert v\rVert,\qquad
+ \lVert AB\rVert\le\lVert A\rVert\lVert B\rVert.
+\]
+For example, expand $(Av)_i=\sum_jA_{ij}v_j$, apply the scalar triangle
+inequality, bound each $\lVert v_j\rVert$ by the finite maximum, and take
+another finite maximum. The matrix-product inequality follows by applying
+the same calculation twice. These proofs are finite sum inequalities.
+
+Assume that natural numbers $K,L$ certify, at all rational arguments in the
+interval,
+\begin{equation}\label{eq:ode-KL}
+ \lVert B(t)\rVert\le K,\qquad
+ \lVert B(t)-B(s)\rVert\le L|t-s|.
+\end{equation}
+Let $v$ be the initial rational vector, and let $U\ge1$ be a natural number
+with $\lVert v\rVert\le U$. Put
+\begin{equation}\label{eq:ode-constants}
+ G=3^K,\qquad Y=GU,\qquad
+ H=(L+K^2)Y,\qquad C=GH=(L+K^2)G^2U.
+\end{equation}
+These constants are intentionally conservative. Their explicit form is more
+useful here than a sharper bound involving an unconstructed exponential.
+
+For a positive natural $n$, define the exact Euler array by
+\begin{equation}\label{eq:exact-euler}
+ X_{n,0}=v,\qquad
+ X_{n,j+1}=X_{n,j}+\frac1n B(j/n)X_{n,j}
+ \quad(0\le j<n).
+\end{equation}
+For rational $t<1$, put $j=\lfloor nt\rfloor$ and
+\[
+ X_n(t)=X_{n,j}+(t-j/n)B(j/n)X_{n,j};
+ \qquad X_n(1)=X_{n,n}.
+\]
+This definition uses rational arithmetic, division with remainder, and a
+bounded recurrence. It is a primitive-recursive program uniformly in all
+its coded finite data. The integer growth of its intermediate numerators
+and denominators does not change this conclusion.
+
+\begin{lemma}[An integer geometric bound]\label{lem:ode-growth}
+For positive $n$, natural $K$, and $0\le j\le n$,
+\[
+ (1+K/n)^j\le3^K.
+\]
+\end{lemma}
+\begin{proof}
+First prove, by induction on $j\le n$,
+\[
+ (1+1/n)^j\le 1+j/n+j^2/n^2.
+\]
+Multiplying the right side by $1+1/n$ gives
+$1+(j+1)/n+(j^2+j)/n^2+j^2/n^3$.
+This is at most $1+(j+1)/n+(j+1)^2/n^2$, because
+$j^2/n\le j\le j+1$. At $j=n$ the displayed upper bound is $3$.
+A separate induction on $K$ proves Bernoulli's inequality
+$1+K/n\le(1+1/n)^K$. Raising it to the $n$th power gives
+$(1+K/n)^n\le3^K$. Finally $1+K/n\ge1$ and $j\le n$.
+Every line can be multiplied by a power of the positive $n$ to become
+an integer polynomial inequality. These are the same arithmetic bounds
+already available in \nolinkurl{Foundations/DiscreteGronwall.lean}.
+\end{proof}
+
+\begin{lemma}[Bounds produced by the Euler program]\label{lem:ode-polybound}
+At every rational $s,t\in[0,1]$,
+\[
+ \lVert X_n(t)\rVert\le Y,\qquad
+ \lVert X_n(t)-X_n(s)\rVert\le KY|t-s|.
+\]
+\end{lemma}
+\begin{proof}
+Induction in \eqref{eq:exact-euler} gives
+$\lVert X_{n,j}\rVert\le(1+K/n)^jU\le GU$.
+An interpolated value is a convex combination of its two endpoint values,
+so it has the same bound. On the $j$th mesh interval the slope is
+$B(j/n)X_{n,j}$ and has norm at most $KY$. Split the rational interval
+between $s$ and $t$ at the finitely many mesh points it contains. Apply
+this bound to every piece and add their lengths. This proves the second
+inequality, including intervals crossing many mesh cells.
+\end{proof}
+
+\subsection{Deriving the formerly assumed refinement recurrence}
+
+\begin{theorem}[Complete finite refinement estimate]\label{thm:ode-produced-refinement}
+The polygons computed by \eqref{eq:exact-euler} satisfy
+\begin{equation}\label{eq:ode-produced-refine}
+ \lVert X_n(t)-X_{2n}(t)\rVert\le\frac{C}{2n}
+ \quad\text{for every rational }t\in[0,1].
+\end{equation}
+Consequently, for $s\ge r$,
+\begin{equation}\label{eq:ode-produced-cauchy}
+ \lVert X_{2^r}(t)-X_{2^s}(t)\rVert
+ \le C(2^{-r}-2^{-s})\le C2^{-r}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $\delta=1/(2n)$, $t_j=j\delta$,
+$V_j=X_n(t_j)$ and $W_j=X_{2n,j}$. Define the exact coarse residual
+\[
+ r_j=V_{j+1}-V_j-\delta B(t_j)V_j.
+\]
+If $j=2i$, then $V_j=X_{n,i}$ and the definition of interpolation gives
+$r_j=0$. If $j=2i+1$, put $x=X_{n,i}$. The two coarse half-steps both have
+increment $\delta B(t_{j-1})x$, while
+$V_j=x+\delta B(t_{j-1})x$. Substitution, with no approximation, gives
+\begin{equation}\label{eq:ode-residual-identity}
+ r_j=\delta\bigl((B(t_{j-1})-B(t_j))x
+       -\delta B(t_j)B(t_{j-1})x\bigr).
+\end{equation}
+By \eqref{eq:ode-KL} and Lemma~\ref{lem:ode-polybound},
+\[
+ \lVert r_j\rVert\le\delta^2(L+K^2)Y=\delta^2H.
+\]
+Thus $e_j=\lVert V_j-W_j\rVert$ satisfies the produced recurrence
+\begin{equation}\label{eq:ode-produced-recurrence}
+ e_0=0,\qquad
+ e_{j+1}\le(1+K\delta)e_j+\delta^2H.
+\end{equation}
+Iterating this inequality and using Lemma~\ref{lem:ode-growth} with $2n$
+in place of $n$ yields, for every $j\le2n$,
+\[
+ e_j\le G\sum_{i<j}\delta^2H
+ \le G(2n)\delta^2H=\frac{C}{2n}.
+\]
+This is exactly the point at which the repository's
+\texttt{OdeRefinement.node\_bound} can be instantiated after rational
+encoding and clearing denominators. We have now supplied its recurrence
+premise, rather than repackaging it.
+
+Both polygons are affine on each interval $[t_j,t_{j+1}]$ of the fine
+mesh. Their difference at an intermediate point is a convex combination
+of the differences at the two endpoints. The triangle inequality therefore
+extends the node estimate to every rational point, proving
+\eqref{eq:ode-produced-refine}. Finally add this bound for
+$n=2^r,2^{r+1},\ldots,2^{s-1}$. The finite geometric sum is
+$\sum_{i=r}^{s-1}2^{-i-1}=2^{-r}-2^{-s}$, proving
+\eqref{eq:ode-produced-cauchy}. Its denominator-cleared proof is the
+geometric telescoping already available in the repository.
+\end{proof}
+
+\subsection{A primitive-recursive name and its exact demands}
+
+For a natural $M\ge1$, let $\ell(M)$ be the least $j\le M$ such that
+$M\le2^j$, and put $\ell(0)=0$. This is bounded search. Its search interval
+is sufficient because $2^M\ge M$, proved by elementary induction. In
+particular, $\ell$ is primitive recursive; it is not an unbounded
+``search until the requested error is small.''
+
+\begin{corollary}[A produced regular name]\label{cor:ode-regular-name}
+For rational initial data, put $c=\ell(\max(1,C))$ and
+\[
+ q_p(t)=X_{2^{p+c}}(t).
+\]
+Then $q$ is primitive recursive, and
+$\lVert q_p(t)-q_q(t)\rVert\le2^{-p}$ whenever $q\ge p$.
+\end{corollary}
+\begin{proof}
+Apply \eqref{eq:ode-produced-cauchy} and $C\le2^c$.
+\end{proof}
+
+One can also accept a fixed primitive-recursive initial name $(v_r)$ with
+\[
+ \lVert v_r\rVert\le U,\qquad
+ \lVert v_r-v_s\rVert\le2^{-r}+2^{-s}.
+\]
+We write $X_n(v;t)$ when the initial vector must be displayed.
+
+\begin{lemma}[Initial-data and coefficient stability]\label{lem:ode-stability}
+For the same coefficient kernel,
+\[
+ \lVert X_n(v;t)-X_n(w;t)\rVert\le G\lVert v-w\rVert.
+\]
+If $B,\widetilde B$ both have norm at most $K$, and
+$\lVert B(t)-\widetilde B(t)\rVert\le\eta$ on the interval, then
+\[
+ \lVert X_n^B(v;t)-X_n^{\widetilde B}(v;t)\rVert
+ \le G^2U\eta.
+\]
+\end{lemma}
+\begin{proof}
+The initial-data difference obeys the homogeneous Euler recurrence, so the
+product bound in Lemma~\ref{lem:ode-growth} applies directly. For the second
+claim subtract the recurrences. The two terms are a previous error multiplied
+by $I+B(j/n)/n$, and the new term
+$(B(j/n)-\widetilde B(j/n))X_n^{\widetilde B}(v;j/n)/n$.
+Hence the norm error satisfies
+\[
+ e_{j+1}\le(1+K/n)e_j+\eta GU/n,\qquad e_0=0.
+\]
+Iteration gives $e_j\le G(\eta GU)=G^2U\eta$. The common-mesh affine
+interpolation argument extends both estimates off the nodes.
+\end{proof}
+
+For named initial data and an exact rational coefficient kernel choose
+\begin{equation}\label{eq:ode-demands}
+ c_v=\ell(4G),\qquad c_m=\ell(4\max(1,C)),\qquad
+ q_p(t)=X_{2^{p+c_m}}(v_{p+c_v};t).
+\end{equation}
+For $q\ge p$, compare first across meshes at the same initial vector and
+then across initial vectors at the finer mesh. The estimates give
+\[
+ \lVert q_p(t)-q_q(t)\rVert
+ \le\tfrac14 2^{-p}
+      +\tfrac14(2^{-p}+2^{-q})
+ \le\tfrac34 2^{-p}.
+\]
+The backward precision demand on the initial name is therefore the affine
+map $p\mapsto p+c_v$. The mesh resource is the explicit number
+$2^{p+c_m}$. This fits the existing numerical precision/cost machinery.
+
+If coefficients themselves arrive through names, use fixed rational
+approximating kernels $B_r$, with the same certified $K,L$ and a proved
+uniform bound
+$\lVert B_r-B_s\rVert\le2^{-r}+2^{-s}$. Allocate all three sources of
+error by replacing the $4$ in the mesh and initial shifts with $8$, and
+use the coefficient shift $c_B=\ell(8G^2U)$. Mesh error then contributes
+at most $2^{-p}/8$, and each of the two input-name comparisons at most
+$2^{-p}/4$. Their sum is below $2^{-p}$. The existence of such $B_r$,
+including uniform denominator guards, must be proved from the particular
+coefficient representation; the stability lemma does not invent it.
+
+\subsection{A path-clearance producer for the Gauss equation}
+
+We now construct the bounds \eqref{eq:ode-KL} from concrete data. This is
+useful for the path-continuation theorem in
+\texttt{analysis/hypergeometric\_ipra\_2026-11-16/sections/10\_continuation.tex}.
+That packet supplies the intended special-function interface; our producer
+provides a fully explicit finite arithmetic alternative to its local
+Taylor-majorant step.
+
+Let $z(t)=u+th$ be one complex-rational line segment, and consider a singular
+point $s\in\{0,1\}$. Put $a=u-s$, $E=|h|_2^2$, and
+$D=\Re(\overline a h)$, where $|x+iy|_2^2=x^2+y^2$ involves no square
+root. If $E=0$, set $\mu_s=|a|_2^2$. Otherwise set
+\[
+ \tau=\min(1,\max(0,-D/E)),\qquad
+ \mu_s=|a+\tau h|_2^2.
+\]
+
+\begin{lemma}[Exact segment clearance]\label{lem:ode-clearance}
+The rational number $\mu_s$ is the minimum squared distance from the
+segment to $s$. The test $\mu_s>0$ succeeds exactly when the segment misses
+$s$, and supplies a lower bound valid at every rational parameter $t$.
+\end{lemma}
+\begin{proof}
+The distance polynomial is $f(t)=|a|_2^2+2Dt+Et^2$. If $E=0$ it is constant.
+If $-D/E\in[0,1]$, completing the square gives
+$f(t)-f(-D/E)=E(t+D/E)^2\ge0$. If $-D/E<0$, then $D>0$ and
+$f(t)-f(0)=t(2D+Et)\ge0$. If $-D/E>1$, then $D<-E$, and for $t\le1$,
+$f(t)-f(1)=(t-1)(2D+E(t+1))\ge0$. The boundary cases satisfy either
+adjacent formula. Thus the minimum is achieved at the displayed rational
+$\tau$. It is zero precisely when $a+\tau h=0$.
+\end{proof}
+
+Assume both clearance tests pass. Write $|z|_1=|\Re z|+|\Im z|$ and set
+\[
+ R=\max(|u|_1,|u+h|_1),\qquad T=|h|_1,\qquad
+ D_*=\frac{R(1+R)}{\mu_0\mu_1}.
+\]
+Convexity gives $|z(t)|_1\le R$. Since
+$|1/z|_1=|z|_1/|z|_2^2$, the clearances imply
+\begin{equation}\label{eq:ode-inverse-bound}
+ \left|\frac1{z(1-z)}\right|_1\le D_*.
+\end{equation}
+For two points $z,w$ on the segment, putting $d(z)=z(1-z)$ gives
+\[
+ d(z)-d(w)=(z-w)(1-z-w),\qquad
+ |d(z)-d(w)|_1\le(1+2R)|z-w|_1.
+\]
+The reciprocal difference identity therefore gives
+\begin{equation}\label{eq:ode-inverse-lip}
+ \left|\frac1{d(z)}-\frac1{d(w)}\right|_1
+ \le D_*^2(1+2R)|z-w|_1.
+\end{equation}
+All tests, constants, and proofs so far are rational arithmetic.
+
+For complex-rational hypergeometric parameters $a,b,c$, put
+\[
+ S=|a|_1+|b|_1+1,\quad Q=|a|_1|b|_1,\quad
+ P=SR+|c|_1,\quad N=Q+P.
+\]
+The Gauss equation \cite{dlmf-gauss} becomes a first-order system in $Y=(y,y')$:
+\[
+ \frac{dY}{dz}=A(z)Y,\qquad
+ A(z)=\begin{pmatrix}
+ 0&1\\[1mm]
+ \displaystyle\frac{ab}{d(z)}&
+ \displaystyle\frac{(a+b+1)z-c}{d(z)}
+ \end{pmatrix}.
+\]
+On the segment the coefficient matrix is $B(t)=hA(z(t))$. Define natural
+numbers by exact rational ceilings:
+\begin{align}
+ K&=\left\lceil T(1+ND_*)\right\rceil,\label{eq:gauss-K}\\
+ L&=\left\lceil T^2\bigl(SD_*+ND_*^2(1+2R)\bigr)\right\rceil.
+ \label{eq:gauss-L}
+\end{align}
+
+\begin{proposition}[Produced Gauss transport data]\label{prop:gauss-transport-data}
+The matrices $B(t)$ satisfy \eqref{eq:ode-KL} with
+\eqref{eq:gauss-K}--\eqref{eq:gauss-L}. Consequently a certified rational
+segment avoiding $0,1$, together with initial values, produces the regular
+name and explicit precision schedule of \eqref{eq:ode-demands}.
+\end{proposition}
+\begin{proof}
+The first row of $B$ has row norm $T$. The second has row norm at most
+$TND_*$ by \eqref{eq:ode-inverse-bound}; their maximum is bounded by
+$T(1+ND_*)$. For differences, the first row is constant. For the second
+row use \eqref{eq:ode-inverse-lip}; the two constant numerator bounds sum
+to $N$, and the varying numerator has Lipschitz bound $S$ in $z$.
+Thus the row difference is at most
+$T\bigl(SD_*+ND_*^2(1+2R)\bigr)|z-w|_1$.
+Since $|z(t)-z(s)|_1=T|t-s|$, \eqref{eq:gauss-L} follows.
+\end{proof}
+
+\begin{proposition}[Producing coefficient-name stability from parameter names]
+\label{prop:gauss-parameter-stability}
+Suppose two parameter triples $(a,b,c)$ and $(\widetilde a,\widetilde b,
+\widetilde c)$ have all six $|\cdot|_1$ norms at most a natural $A$, and
+corresponding entries differ by at most $\varepsilon$. For the same segment,
+\[
+ \lVert B(t)-\widetilde B(t)\rVert\le J\varepsilon,
+ \qquad
+ J=\left\lceil TD_*(2A+2R+1)\right\rceil.
+\]
+The bounds \eqref{eq:gauss-K}--\eqref{eq:gauss-L} hold uniformly for every
+such triple after using
+$S=2A+1$, $Q=A^2$, $P=(2A+1)R+A$, and $N=Q+P$.
+\end{proposition}
+\begin{proof}
+The denominator depends only on the fixed path. The identity
+$ab-\widetilde a\widetilde b=a(b-\widetilde b)+
+\widetilde b(a-\widetilde a)$ bounds the first numerator difference by
+$2A\varepsilon$. The second numerator difference is
+$((a-\widetilde a)+(b-\widetilde b))z-(c-\widetilde c)$ and has norm at most
+$(2R+1)\varepsilon$. Add the two row contributions and multiply by $TD_*$.
+The uniform majorants follow directly from the common parameter bound.
+\end{proof}
+
+This proposition supplies an actual coefficient-name producer. If $a_r,b_r,c_r$
+are three particular PR regular names with all approximants bounded by $A$,
+substitution in the rational Gauss matrix gives PR kernels with the proved
+common $K,L$ and the proved comparison bound $J(2^{-r}+2^{-s})$.
+For a single segment, a safe joint schedule for the parameter names, the
+initial name, and the Euler mesh uses
+\[
+ c_{\mathrm{par}}=\ell(8G^2U\max(1,J)),\qquad
+ c_v=\ell(8G),\qquad c_m=\ell(8\max(1,C)).
+\]
+At output precision $p$, query all three parameters at $p+c_{\mathrm{par}}$,
+the initial value at $p+c_v$, and use $2^{p+c_m}$ cells.
+Comparing two outputs uses, in order, the mesh error, the initial-data error,
+and the parameter error. Their upper bounds for $q\ge p$ are respectively
+$2^{-p}/8$, $(2^{-p}+2^{-q})/8$, and
+$(2^{-p}+2^{-q})/8$, whose sum is at most $5\cdot2^{-p}/8$.
+Thus parameter stability is not left as an uninhabited analytic premise.
+
+This ordinary-point transport works for resonant parameters too. Producing
+the particular initial values of ${}_2F_1(a,b;c;z)$ from its regular series
+still requires the series packet's parameter and denominator conditions.
+The transport does not establish gamma connection coefficients, contour
+bounds, or modular inversion. Those are different producer obligations.
+
+\subsection{A whole finite path with one closed bound}
+
+Let a finite rational polygonal path have $m$ certified edges, with data
+$K_j,L_j$ and $G_j=3^{K_j}$. For $m=0$ the output is the input. For $m>0$
+put
+\begin{equation}\label{eq:ode-path-constants}
+ G_{\mathrm{tot}}=\prod_{j<m}G_j,\qquad
+ C_{\mathrm{path}}=
+ U G_{\mathrm{tot}}\sum_{j<m}G_j(L_j+K_j^2).
+\end{equation}
+Apply the Euler program with the same $n=2^r$ subdivisions on each edge,
+feeding the resulting rational endpoint into the next edge.
+
+\begin{theorem}[Finite-path endpoint name]\label{thm:ode-path-name}
+For rational initial data, consecutive global refinements have discrepancy
+at most $C_{\mathrm{path}}/(2\cdot2^r)$, and the tail from level $r$ to any
+finer level is at most $C_{\mathrm{path}}2^{-r}$. Thus a finite path has a
+primitive-recursive endpoint name. For named initial data, valid shifts are
+$\ell(4G_{\mathrm{tot}})$ for the input and
+$\ell(4\max(1,C_{\mathrm{path}}))$ for the mesh exponent.
+\end{theorem}
+\begin{proof}
+Let $E_{j,n}$ be the linear endpoint map of the $j$th Euler program.
+Its operator norm is at most $G_j$. The proof of
+Theorem~\ref{thm:ode-produced-refinement}, applied to the matrix initial value $I$ with row-sum norm at most one, gives
+\[
+ \lVert E_{j,n}-E_{j,2n}\rVert
+ \le\frac{G_j^2(L_j+K_j^2)}{2n}.
+\]
+The difference of two finite products is the sum obtained by changing one
+factor at a time. The $j$th term, acting on $v$, has norm at most
+\[
+ U\left(\prod_{\ell>j}G_\ell\right)
+ \frac{G_j^2(L_j+K_j^2)}{2n}
+ \left(\prod_{\ell<j}G_\ell\right)
+ =\frac{UG_{\mathrm{tot}}G_j(L_j+K_j^2)}{2n}.
+\]
+Add these finitely many bounds and then telescope dyadic levels. The product
+also has initial-data sensitivity $G_{\mathrm{tot}}$, giving the two named
+input shifts by the proof of \eqref{eq:ode-demands}.
+\end{proof}
+
+For named Gauss parameters shared along the entire path, let $J_j$ be the
+produced parameter Lipschitz constant on edge $j$, and put
+\[
+ S_{\mathrm{path}}=UG_{\mathrm{tot}}\sum_{j<m}G_jJ_j.
+\]
+The same one-factor-at-a-time product comparison, now using
+Lemma~\ref{lem:ode-stability} rather than the mesh estimate, bounds the
+endpoint change by $S_{\mathrm{path}}\varepsilon$ when the three parameter
+changes are at most $\varepsilon$. A complete joint path schedule therefore
+uses shifts $\ell(8\max(1,S_{\mathrm{path}}))$ for the parameter names,
+$\ell(8G_{\mathrm{tot}})$ for the initial name, and
+$\ell(8\max(1,C_{\mathrm{path}}))$ for the common mesh exponent. All constants
+are finite products and sums over the supplied path.
+
+\subsection{The same producer for higher-order equations and Meijer \texorpdfstring{$G$}{G}}
+
+The construction is not restricted to two-dimensional systems. A scalar equation
+\[
+ a_q(z)y^{(q)}+\sum_{j<q}a_j(z)y^{(j)}=0,\qquad q\ge1,
+\]
+with polynomial coefficients becomes a rational companion system for
+$(y,y',\ldots,y^{(q-1)})$ whenever a finite certificate bounds the reciprocal
+of $a_q$ on the path. The superdiagonal entries are one and the last row is
+$-a_j/a_q$. Polynomial coefficient sums and the finite power-difference
+identity compute bounds for each numerator and its Lipschitz constant.
+The reciprocal-difference identity supplies the remaining denominator
+estimate. Thus this is one fixed PR kernel with numerical order and
+coefficient lists, not a separate implementation for every equation.
+
+For a concrete class, let $\theta=z\,d/dz$ and
+$\kappa=(-1)^{p-m-n}\in\{-1,1\}$. The Meijer $G$ equation \cite{dlmf-meijer} is
+\[
+ \left(\kappa z\prod_{i=1}^{p}(\theta-a_i+1)
+       -\prod_{j=1}^{q}(\theta-b_j)\right)y=0
+.
+\]
+Here $p,q,m,n$ are natural numbers with $0\le m\le q$, $0\le n\le p$; take $p\le q$ and $q\ge1$. Expand the two finite products as
+polynomials in $\theta$. The identity
+\[
+ \theta^k=\sum_{j=0}^k S(k,j)z^j\frac{d^j}{dz^j},\qquad
+ S(k+1,j)=jS(k,j)+S(k,j-1),
+\]
+with $S(0,0)=1$ and out-of-range entries zero, converts them to ordinary
+derivatives. To prove it, apply $z\,d/dz$ to each summand and collect the
+two resulting coefficients. This finite recurrence is PR and its coefficient
+identity has a QF-induction proof. The highest coefficient is
+\[
+ a_q(z)=
+ \begin{cases}-z^q,&p<q,\\z^q(\kappa z-1),&p=q.\end{cases}
+\]
+For a rational segment the exact clearance procedure above therefore needs
+only the point $0$, and additionally $\kappa$ when $p=q$.
+
+Here are explicit companion bounds. Let $R$ bound $|z|_1$ on the segment,
+$T=|h|_1$, and $\mu_s>0$ be its minimum squared distance to each needed
+singularity. A reciprocal bound is
+\[
+ D_q=(R/\mu_0)^q\quad(p<q),\qquad
+ D_q=(R/\mu_0)^q(R+1)/\mu_\kappa\quad(p=q).
+\]
+Write $a_j(z)=\sum_k c_{jk}z^k$, and compute
+$P_j=\sum_k|c_{jk}|_1R^k$ and
+$L_j=\sum_{k\ge1}k|c_{jk}|_1R^{k-1}$, including $j=q$.
+Then $|a_j(z)|_1\le P_j$, its difference is bounded by
+$L_j|z-w|_1$, and the reciprocal difference is bounded by
+$D_q^2 L_q|z-w|_1$. Consequently valid natural constants are
+\[
+ K=\left\lceil T\left(1+D_q\sum_{j<q}P_j\right)\right\rceil,
+\]
+\[
+ L=\left\lceil T^2\left(D_q\sum_{j<q}L_j+
+                 D_q^2 L_q\sum_{j<q}P_j\right)\right\rceil.
+\]
+These formulas, the finite expansion, and the clearance tests produce all
+the rational transport data from finite rational parameters. Repeated
+parameters do not invalidate an ordinary-point companion equation.
+They can, however, change the difficulty of constructing the initial jet
+of the particular Meijer $G$ branch. This section supplies continuation
+\emph{from a supplied certified jet}; it does not identify that jet with a
+Mellin--Barnes contour integral or prove a connection formula.
+
+\subsection{Integral observations, uniqueness, and the semantic boundary}
+
+A Cauchy estimate alone should not be advertised as an ODE theorem. Here the
+finite output also satisfies the required integral observations. Let
+$F_n(t)=B(t)X_n(t)$. From \eqref{eq:ode-KL} and
+Lemma~\ref{lem:ode-polybound},
+\[
+ \lVert F_n(t)-F_n(s)\rVert\le H|t-s|.
+\]
+On the $j$th Euler cell the polygon slope is the constant
+$Q_n(t)=B(j/n)X_{n,j}$, and
+\begin{equation}\label{eq:ode-local-residual}
+ \lVert F_n(t)-Q_n(t)\rVert\le H/n.
+\end{equation}
+The finite integral of $Q_n$ is exactly $X_n(t)-v$, by the defining recurrence
+and the last partial cell. For an independent positive mesh number $M$, define
+\[
+ R_M(F_n;t)=\frac{t}{M}\sum_{i<M}F_n(it/M).
+\]
+A common rational refinement of the Euler cells and the $M$ quadrature cells
+proves
+\begin{equation}\label{eq:ode-integral-observation}
+ \left\lVert X_n(t)-v-R_M(F_n;t)\right\rVert
+ \le H/n+H/M.
+\end{equation}
+Indeed, replace $F_n$ on each quadrature cell by its left value. Its variation
+is at most $H/M$, and the sum of all cell lengths is at most one. Next use
+\eqref{eq:ode-local-residual} on the common refinement to replace $F_n$ by
+$Q_n$; that contributes at most $H/n$. This is a proof about two finite sums,
+not an invocation of integration or completeness inside iPRA. Choosing
+$n,M$ to make the two rational upper bounds at most a prescribed dyadic
+error produces the integral-equation observation contract.
+
+The uniform $KY$-Lipschitz bound on all Euler polygons passes to their finite observation laws. Thus the pointwise names are spatially coherent and represent one uniformly continuous function. In a semantic interpretation of regular names, the same estimates identify
+the output with the solution of
+\[
+ X(t)=v+\int_0^tB(s)X(s)\,ds.
+\]
+For completeness, uniqueness has a constructive quantitative proof. Suppose
+a second solution $Z$ has the same initial value and a bound
+$\lVert Z(t)\rVert\le V$. Its integral equation implies that it is
+$KV$-Lipschitz. Hence $B(t)Z(t)$ is $(L+K^2)V$-Lipschitz. On a mesh cell,
+subtract its left rectangular contribution from its integral; the remaining
+norm is at most $(L+K^2)V/(2n^2)$. Comparison with Euler and finite Gronwall
+therefore gives
+\[
+ \lVert Z(j/n)-X_{n,j}\rVert
+ \le\frac{G(L+K^2)V}{2n}.
+\]
+The interpolation estimate gives convergence off the nodes as well. For
+every requested precision choose the displayed finite $n$ and the necessary
+finite integral observations; the two solution names must agree at that
+precision. No zero decision or infinite subsequence is selected.
+
+Splitting an edge at a rational fraction $\theta$ replaces $B(t)$ on the
+first subinterval by $\theta B(\theta t)$ and on the second by
+$(1-\theta)B(\theta+(1-\theta)t)$. The corresponding bounds scale as
+$K\mapsto\theta K$, $L\mapsto\theta^2L$ before rounding up. Adding the two
+finite integral observations recovers the original one. The uniqueness
+estimate proves equality of the endpoint names under rational subdivision.
+This does not imply equality for different paths around singularities;
+monodromy is compatible with every theorem above.
+
+The formal object statement quantifies natural codes and precision variables
+for particular compiled kernels. It does not quantify all real functions.
+The semantic statement that such names denote classical or constructive
+solutions is a separate interpretation theorem. Keeping this boundary visible
+both respects iPRA's language and preserves the substantive analytic content.
+
+\subsection{Lean implementation plan at the actual source boundary}
+
+The following dependency order produces concrete endpoints instead of a
+new layer of uninhabited contracts.
+
+\begin{enumerate}
+\item Encode signed rational arrays, positive denominators, finite maximum
+and row-sum norms, and guarded inverse. Establish the displayed finite norm
+inequalities as object-theory lemmas.
+\item Define the primitive-recursive Euler node and interpolation programs.
+Derive their equations, totality of the codes, and denominator positivity.
+\item Prove the node growth and polygon Lipschitz bounds. Reuse the existing
+\nolinkurl{DiscreteGronwall.growth}; induction invariants are denominator-cleared
+quantifier-free inequalities.
+\item Prove \eqref{eq:ode-residual-identity} by splitting the fine-node index
+into its parity cases. Bound its two terms to obtain
+\eqref{eq:ode-produced-recurrence}. This is the central new producer lemma.
+\item Instantiate \texttt{OdeRefinement.node\_bound} and
+\texttt{geometric\_cauchy}, then prove the affine interpolation estimate and
+the explicit $\ell$-based name schedule.
+\item Prove initial-data and coefficient stability. Expose the exact affine
+precision demands to the already existing precision/cost graph interface.
+\item Implement segment clearance by the three rational clamping cases and
+bind the Gauss matrix to \eqref{eq:gauss-K}--\eqref{eq:gauss-L}.
+\item Prove finite product telescoping and obtain
+\eqref{eq:ode-path-constants} uniformly in coded path length. Connect the
+initial-value producer supplied by the particular special-function packet.
+\item Formalize the common-refinement sum proof of
+\eqref{eq:ode-integral-observation}. Treat the semantic solution
+interpretation and the object-level finite observation theorem as separately
+named declarations.
+\end{enumerate}
+
+For a fixed PR coefficient kernel, the decisive eventual theorem has literal
+judgment \texttt{Prf PRAAx}: from denominator guards and the rational
+coefficient bounds it derives the coded Euler refinement inequality. A
+second literal \texttt{Prf PRAAx} theorem assembles the named outputs. A
+host Lean theorem about \texttt{Real}, a numerical run, or successful
+elaboration of an interface structure does not substitute for either
+endpoint.

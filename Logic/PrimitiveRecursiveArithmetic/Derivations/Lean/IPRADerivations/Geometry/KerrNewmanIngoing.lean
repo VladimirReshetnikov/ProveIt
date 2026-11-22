@@ -25,8 +25,10 @@ components of `eq:staticRic` for this `f`: `r⁴ (f″/2 + f′/r) = q²` (`rn_t
 `r² (1 − f − r f′) = q²` (`rn_theta`).
 
 Each statement is a closed sentence of iPRA over integer variables
-(`Core/PolynomialImplications`). The differentiations themselves, `det g₊ = −Σ²` and
-`prop:regular` are not formalized.
+(`Core/PolynomialImplications`). The differentiations and `prop:regular` (the field equations
+in the ingoing chart, valid at `Δ = 0`) are `Geometry/KerrNewmanIngoingConnection`,
+`Geometry/KerrNewmanIngoingRicci` and `Geometry/KerrNewmanIngoingMaxwell`; the static entries
+from `lem:offshell` are `Geometry/KerrNewmanStatic`; `det g₊ = −Σ²` is not stated.
 -/
 
 namespace LeanProofs.IPRA.Geometry.KerrNewmanIngoing

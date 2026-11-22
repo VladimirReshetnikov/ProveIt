@@ -1,0 +1,50 @@
+\section{Counting down a failed packet inside the proof calculus}
+The prime-product sentences test whether a nonnegative integer excess
+$z$ vanishes. One may instead test for the last positive value of a
+countdown. Define $p(0)=0$, $p(s+1)=s$ and
+\[
+ D(0,z)=z,\qquad D(k+1,z)=p(D(k,z)).
+\]
+The three following conditions are equivalent by derivations in
+first-order iPRA, uniformly in the term $z$:
+\[
+ z=0,\qquad D(p(z),z)=0,\qquad
+             \forall k\;\neg(D(k,z)=1).
+\]
+In the third condition, a failing packet has an explicit witnessing time.
+For example, at excess $4$ the observations are $4,3,2,1,0,0,\ldots$,
+and $p(4)=3$ selects the unique occurrence of $1$. A zero excess gives
+the constant zero sequence.
+
+Here is a proof using only the permitted induction scheme. Quantifier-free
+induction on $k$ first gives $D(k,0)=0$. With a free parameter $z$, another
+such induction gives
+$D(k+1,z+1)=D(k,z)$. At $k=0$ the identity says $p(z+1)=z$.
+For the successor step apply $p$ to both sides of the induction
+hypothesis. Consequently $D(k,k+1)=1$ by induction on $k$, since its
+initial value is $D(0,1)=1$ and the preceding cancellation identity
+reduces each successor to its predecessor. Finally iPRA proves the
+quantifier-free disjunction
+\[
+          z=0\quad\lor\quad D(p(z),z)=1 .
+\]
+At zero take the left branch. At a successor $z=s+1$, rewrite
+$p(s+1)=s$ and take the right branch using $D(s,s+1)=1$.
+From this disjunction either alternative test implies $z=0$: the other
+branch would give $1=0$ for the computed test, or produce the prohibited
+event at $k=p(z)$ for the universal test. In the opposite direction
+substitute $z=0$ and use $D(k,0)=0$.
+
+The file \texttt{CountdownTests.lean} uses the repository's
+\texttt{predR} and \texttt{reversedSub} for these two primitive-recursive
+operations. The theorem \texttt{equivalence} in that module lifts the pointwise
+biconditional through any initial universal prefix ending in an equality
+to zero. At each binder, specialize the assumed universal formula at a
+fresh variable, apply the pointwise implication, then universally
+introduce the variable again. Its specializations
+\texttt{CountdownTests.rh}, \texttt{.grh} and \texttt{.erh} therefore
+give six closed derivations of type \texttt{Prf PRAAx []}. The same
+argument puts the computed test at the original quantifier complexity.
+The universal test adds one universal variable and retains a
+quantifier-free matrix. Each statement concerns the arithmetic packet
+itself and uses no analytic bridge.

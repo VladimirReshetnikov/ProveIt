@@ -1,0 +1,80 @@
+\section{Unbounded observables and the Stone correspondence}\label{sec:stone}
+An energy bound for a Hamiltonian usually fails, even on unit vectors. A useful input is the ability to solve $(H\pm iR)y=x$ at controlled error. The inverses are everywhere bounded, while their ranges remember the domain. Constructive Stone theorems have precedents in Bishop-style analysis \cite{ye}. Here both directions are equipped with first-order PR sampling and error bounds.
+
+\subsection{Input and bounded exponential}
+A presented graph is a linear relation on named pairs $(x,y)$ specified by arithmetical tests on their samples, functional up to Hilbert equality; write $y=Hx$. A graph member supplies both names and witnesses of the graph laws. We require symmetry $\langle Hx,z\rangle=\langle x,Hz\rangle$ on its domain. For each integer $R\ge1$ require jointly PR bounded maps $R_+(R),R_-(R)$ with
+\[
+ (H\pm iR)R_\pm(R)x=x,\qquad R_\pm(R)(H\pm iR)y=y\quad(y\in D(H)).
+\]
+For each output, its graph value is $x\mp iR R_\pm(R)x$. Finally require a joint PR approximation of each finite rational vector by graph members to any prescribed Hilbert error. Applying this to a finite sample supplies the same service for all names. These are first-order contracts on fixed presentations as in Section~\ref{sec:arithmetic}. One may equivalently describe a domain member by a range witness for $R_+(1)$. The equations imply $\|R_\pm(R)\|\le1/R$, by expanding $\|(H\pm iR)y\|^2=\|Hy\|^2+R^2\|y\|^2$. Symmetry gives $R_+^*=R_-$ by testing on their ranges. The graph is closed since $(x_n,Hx_n)\to(x,y)$ implies $x=R_+(1)(y+ix)$, which gives the requisite witness. Each use of convergence here means convergence with given PR moduli.
+
+For clarity this is self-adjointness in the graph sense. If $w,z$ satisfy $\langle Hx,w\rangle=\langle x,z\rangle$ on the domain, then $\langle (H+i)x,w\rangle=\langle x,z-iw\rangle$. Substituting $x=R_+(1)v$ gives $w=R_-(1)(z-iw)$, hence $Hw=z$. Symmetry supplies the reverse inclusion. No Riesz representation principle producing an arbitrary functional's vector is required.
+
+For a bounded self-adjoint $C$, define $e^{-itC}$ by its power series. With $|t|\|C\|\le M$ an integer, the norm tail after degree $n\ge 2M$ is at most $2^{1+4M-n}$: beyond $2M$ the ratio is at most $1/2$, and the starting term is at most $e^M\le 4^M$. For this scalar bound, $\sum 1/j!\le3$ by a geometric tail, and the finite multinomial expansion dominates any finite partial sum at integer $M$ by the $M$th power of that series. For $M=0$ all positive-degree terms vanish. Multiplication of absolutely convergent series is justified by taking rectangular truncations with the displayed tails; the binomial formula identifies the product at $t,s$ with the value at $t+s$. Taking adjoints gives unitarity. The same calculation applies to commuting bounded generators. Taylor expansion at zero and the group law give the derivative $-iCe^{-itC}$. Two useful inequalities are
+\begin{equation}
+ \|(e^{-itC}-I)v\|\le |t|\|Cv\|,\qquad
+ \|(e^{-itC}-I+itC)v\|\le t^2\|C^2v\|/2.\label{eq:tay}
+\end{equation}
+One proof integrates the derivative, then integrates again; the derivatives are uniformly continuous on a compact interval with a PR modulus from the series. For an explicit justification of integration, approximate a Lipschitz vector function on an interval of length $T$ by a left sum of mesh $h$; comparison on a common refinement costs at most $T\,\mathrm{Lip}\, h$. A uniform modulus gives $T\omega(h)$ in the same way. For the fundamental theorem, telescope the local differences under a uniform derivative remainder $\|f(s+h)-f(s)-hf'(s)\|\le |h|\omega(|h|)$; its accumulated norm is at most $T\omega(h)$. Polynomial Taylor remainders on the group have such a uniform bound from unitarity and the series. Integrating the norm bounds $\|Cv\|$ and $s\|C^2v\|$ gives \eqref{eq:tay}. This argument also supplies the scalar exponential and its Lipschitz estimates used below.
+
+\begin{theorem}[Resolvent data give unitary dynamics]\label{thm:stone-forward}
+From the graph data above one constructs a strongly continuous unitary group $U(t)$ with joint PR evaluation on the presented inputs. On bounded time intervals each orbit has a PR modulus. Its strong generator has graph exactly $-iH$, with derivative witnesses on graph members. Conversely a named vector with a certified strong derivative is recovered as a graph member.
+\end{theorem}
+\begin{proof}
+All resolvents commute. Indeed if $R_a=(H+a)^{-1}$ and $a,b$ are permitted imaginary shifts, then evaluating on $R_bx$ gives $R_a-R_b=(b-a)R_aR_b$; exchanging $a,b$ gives the second ordering, with identical shifts trivial. They commute with $H$ on its domain since $HR_a x=x-aR_a x$. Define the bounded self-adjoint operators
+\[
+ D_R=\frac R{2i}(R_-(R)-R_+(R)),\qquad H_R=\frac{R^2}{2}(R_+(R)+R_-(R)).
+\]
+The difference identity gives $D_R=R^2 R_+(R)R_-(R)$, whose range lies in $D(H^2)$: if $x$ is in the domain then $HR_a x=R_a Hx$ lies in the domain as well. Consequently $HD_R=H_R$, $H^2D_R=R^2(I-D_R)$, by applying the resolvent equations. We have $\|D_R\|\le1$, $\|H_R\|\le R$. On the domain,
+\begin{equation}
+ \|(I-D_R)y\|\le\|Hy\|/R,\qquad
+ \|(H-H_R)v\|\le\|H^2v\|/R\quad(v\in D(H^2)).\label{eq:yosi}
+\end{equation}
+Indeed $I-D_R=R^{-2}H_R H$ there, by the preceding identity and commutation. For arbitrary $x$, approximate by a graph member $y$ at error $\epsilon$, obtaining $\|(I-D_R)x\|\le 2\epsilon+\|Hy\|/R$. A bound for $Hy$ is part of its name. This proves $D_Rx\to x$ strongly with an explicit schedule. Thus $D_Sx$ gives a $D(H^2)$ approximant to $x$, with $\|H^2D_Sx\|\le2S^2\|x\|$. For a graph input it also converges in graph norm since $HD_S x=D_S Hx$.
+
+Put $U_R(t)=e^{-itH_R}$. The generators commute, so \eqref{eq:tay} applied to $H_R-H_S$ gives
+\[
+ \|(U_R(t)-U_S(t))v\|\le |t|(R^{-1}+S^{-1})\|H^2v\|\qquad(v\in D(H^2)).
+\]
+Given $x$, $|t|\le T$, and $\epsilon=2^{-k-5}$, obtain $v=D_bx$ within $\epsilon$ by the preceding rule. Let $K\ge 2b^2\|x\|$ be an integer. For $R,S\ge1+\lceil 2TK/\epsilon\rceil$, the full-vector difference is at most $3\epsilon$. This constructs $U(t)x$ from a finite polynomial computation and a diagonal precision request. The group law survives since all approximate maps are isometries: to pass two factors to the limit compare first on $x$, then on the fixed named vector $U(s)x$. The inverse is $U(-t)$ and the adjoint is its inverse. For strong continuity, take a graph approximant $y$ to $x$ within $\epsilon$ and use \eqref{eq:tay} and $H_R y=D_R Hy$ to get $\|(U(h)-I)x\|\le2\epsilon+|h|\|Hy\|$. The group law makes this modulus uniform in the base time.
+
+All $U(t)$ commute with $R_+(1)$ by their construction; hence they preserve the graph and commute with $H$ there. On $D(H^2)$, \eqref{eq:tay} and $H_R^2v=D_R^2H^2v$ give
+\[
+ \|U(h)v-v+ihHv\|\le h^2\|H^2v\|/2 .
+\]
+For general $x\in D(H)$, approximate $x$ in graph norm by $v=D_bx$ with $\|Hx-Hv\|\le\epsilon$. The first bound in \eqref{eq:tay} passes to the limit on graph inputs. The difference quotient error for $x$ is therefore at most $2\epsilon+|h|\|H^2v\|/2$ for $h\ne0$. This is a PR derivative modulus. Conversely, suppose the difference quotient on $x$ tends in norm to a named $z$ with a given modulus. Applying $R_+(1)$ to it and using the already proved derivative on $R_+(1)x$ gives $R_+(1)z=-iH R_+(1)x$. Rearrangement gives $x=R_+(1)(iz+ix)$, so $Hx=iz$. All quotients suffice at rational $h\ne0$; the same estimates extend to named $h$ with an apartness witness.
+\end{proof}
+
+\begin{theorem}[A named unitary group supplies resolvents]\label{thm:stone-back}
+Suppose that a unitary group is presented by jointly PR approximations on rational times and finite rational inputs, with the group laws and a single joint PR strong continuity modulus $m(q,k)$ at zero for the finite input $q$ and precision $k$. It extends to named vectors and times. Its certified strong generator determines self-adjoint graph data as above. The two constructions return the original group and graph extensionally.
+\end{theorem}
+\begin{proof}
+Approximate an arbitrary vector $x$ by a finite sample $q$ within $\epsilon$. For $h$ within the supplied neighborhood for $q$, the displacement of $x$ is at most $2\epsilon+\|(U(h)-I)q\|$. Unitarity transports this estimate to every time. Approximating the time by a rational now extends the orbit. Initially use a witnessed relation: for each supplied PR modulus define $Hx=iz$ when $z$ is a named norm derivative at zero with a PR modulus; the first-order law tests rational nonzero increments. The difference quotient is linear and the derivative is unique by removing arbitrary slack. Differentiating $\langle U(h)x,U(h)y\rangle=\langle x,y\rangle$ on derivative inputs gives symmetry, since the first factor is conjugate-linear. Expansion at finite $h$ bounds the product remainder by the two supplied remainder bounds and a term proportional to $|h|$.
+
+For $R\ge1$ set
+\[
+ R_-(R)x=i\int_0^\infty e^{-Rs}U(s)x\,ds,\qquad
+ R_+(R)x=-i\int_0^\infty e^{-Rs}U(-s)x\,ds .
+\]
+For $\|x\|\le M$ the tail beyond integer $b$ is at most $Me^{-Rb}/R\le M2^{-b}$ (use $e\ge2$). On $[0,b]$ the integrand has modulus from that of the orbit plus $RM|s-s'|$ since the scalar damping has derivative of magnitude at most $R$. The elementary Riemann-sum rule above gives joint PR samplers. If $r$ denotes the first integral without $i$, changing variables gives, for signed rational $h$,
+\[
+ U(h)r=e^{Rh}\left(r-\int_0^h e^{-Rs}U(s)x\,ds\right).
+\]
+Translations of Riemann grids prove the formula first on finite intervals, then the exponential tail proves it at infinity. On $|h|\le1/R$, the average integrand over the oriented short interval differs from $x$ by at most $3\sup_{|s|\le|h|}\|(U(s)-I)x\|+3RM|h|$. Also $|(e^{Rh}-1)/h-R|\le2R^2|h|$ by Taylor's formula. Thus $r$ has derivative $Rr-x$ with a PR modulus, and $(H-iR)i r=x$. Apply the same argument to $U(-t)$ for the other sign. Symmetry gives the displayed norm identity at the beginning of this section, proving injectivity and the left inverse on the domain. Adjointness follows as before. The resulting graph has the single test $R_+(1)(y+ix)=x$. The integral calculation supplies a derivative modulus for every pair passing this test, and the inverse identity proves that every witnessed derivative pair passes it. This presentation removes the apparent quantifier over moduli.
+
+To approximate $x$ in the graph domain, use $Rr$, since $\int_0^\infty Re^{-Rs}\,ds=1$. Choose rational $a>0$ so the orbit displacement on $[0,a]$ is at most $\epsilon$. Splitting the integral there bounds $\|Rr-x\|$ by $\epsilon+2M e^{-Ra}\le\epsilon+2M/(1+Ra)$. Take $R\ge1+\lceil2M/(a\epsilon)\rceil$. This supplies the required graph approximant with its derivative data.
+
+Finally the resolvents integrate the group itself, so commute with that group. The reconstructed group $W(t)$ therefore also commutes with $U(s)$. On a graph vector $x$ both have derivative $-iHx$ at zero. For a fixed rational $t$ the commuting-power telescope bounds $\|(U(t)-W(t))x\|$ by $n\|(U(t/n)-W(t/n))x\|$. For any target error, choose $n$ by the two derivative moduli, making the latter product arbitrarily small. Density extends the identity to all vectors, then continuity extends it to every named time. The converse graph identification is already part of Theorem~\ref{thm:stone-forward}.
+\end{proof}
+
+\subsection{Driven systems and the two pictures of dynamics}
+For a time-dependent bounded self-adjoint $K(t)$ on a compact time window, assume a joint PR column sampler, an integer bound $B$ and a PR \emph{operator-norm} continuity modulus. Define a propagator by freezing $K$ at the left endpoint of each interval and multiplying the unitary exponentials, with later factors on the left. This prescription describes a spin in a changing magnetic field, including noncommuting field directions.
+
+For bounded self-adjoint $A,B'$ the path $e^{-i(h-u)A}e^{-iuB'}$ has derivative $ie^{-i(h-u)A}(A-B')e^{-iuB'}$. Integration as in \eqref{eq:tay} gives $\|e^{-ihA}-e^{-ihB'}\|\le |h|\|A-B'\|$, without a commutation assumption. Let the total time length be at most $T$. Refining any partition of mesh $d$ changes the product by at most $T\omega(d)$, where $\omega(d)$ bounds the variation in $K$ over any time span $d$. Indeed split each frozen exponential exactly on the refined partition, then telescope the local changes; the other factors all have norm one. Two partitions have a common refinement, so the products converge in the sense of a uniform operator-error bound. For a tolerance $\delta_k$, choose a dyadic mesh on which $\omega(d)\le\delta_{k+3}/(1+T)$. Variable products of exponentials on finite-vector samplers use the accumulation rule of Section~\ref{sec:arithmetic}. Reversing each product gives the limiting inverse and adjoint. Concatenation, via partitions containing the intermediate time, proves $U(t,r)U(r,s)=U(t,s)$; the time endpoints extend to names since the displacement over an interval of length $h$ is at most $B|h|$ on unit vectors.
+
+On a short interval starting at $t$, the freezing estimate and \eqref{eq:tay} bound the error relative to $I-ihK(t)$ by $|h|\omega(|h|)+h^2B^2/2$, for either sign (for a backwards interval use the reversed product). Thus $\partial_t U(t,s)x=-iK(t)U(t,s)x$ with a computable modulus. In finite dimension set $\rho(t)=U(t,s)\rho(s)U(t,s)^*$ and $A_H(t)=U(t,s)^*A(t)U(t,s)$. The finite trace identity gives $\operatorname{tr}(\rho(t)A(t))=\operatorname{tr}(\rho(s)A_H(t))$. The product difference formula and the derivative estimates yield
+\[
+ i\,\dot\rho=[K,\rho],\qquad
+ \dot A_H=U^*\bigl(\dot A+i[K,A]\bigr)U .
+\]
+For a time-dependent observable assume a PR derivative modulus; for a constant $A$ commuting with $K(t)$ its expectation is conserved. For bounded tests in a purified state the identical calculation pairs vectors instead of tracing matrices. If energy is unbounded the product rule on a vector requires the relevant graph inputs; Section~\ref{sec:dynamics} provides a common invariant domain for the oscillator identities.

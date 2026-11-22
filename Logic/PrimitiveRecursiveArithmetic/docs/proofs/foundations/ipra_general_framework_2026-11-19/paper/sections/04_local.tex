@@ -1,0 +1,210 @@
+\section{Separating a degree bound from a nonvanishing proof}
+\label{sec:local}
+
+\subsection{A finite rescaling identity}
+
+Let $F$ be monic in $Y$ of degree $m$, and let $G$ be reduced. Over any extension ring in which a scalar $\lambda$ is invertible, substitute $Y=\lambda Z$. If
+\[
+ F'(Z)=\lambda^{-m}F(\lambda Z),\qquad
+ G'(Z)=\mu G(\lambda Z),
+\]
+then $F'$ is monic and
+\begin{equation}\label{eq:rescale-norm}
+ \Norm_{F'}(G')=\mu^m\Norm_F(G).
+\end{equation}
+Indeed, substitution gives an isomorphism of the two free presentations. The bases $1,Y,\ldots,Y^{m-1}$ and $1,Z,\ldots,Z^{m-1}$ differ by the invertible diagonal matrix with entries $1,\lambda,\ldots,\lambda^{m-1}$. The multiplication matrices are conjugate after the scalar factor $\mu$, so determinants give \eqref{eq:rescale-norm}. This also follows by multiplying the finite diagonal matrices and using determinant multiplicativity.
+
+We apply the identity in the ring of Laurent polynomials $K[t,t^{-1}]$. There is no infinitary series here. Every expression has finite support in signed exponents; multiplying by a known power of $t$ converts any asserted identity into an ordinary polynomial identity. Consequently this device is compatible with finite coefficient arithmetic.
+
+\subsection{The bound at infinity does not require coprimality}
+
+Give $X$ weight $m$ and $Y$ weight $d$, where $m,d\ge1$. Suppose every nonzero monomial of
+\[
+ F=Y^m+\sum_{j<m}f_j(X)Y^j
+\]
+has weight at most $md$. Explicitly,
+\begin{equation}\label{eq:global-guard}
+ m\deg f_j+dj\le md\qquad(f_j\ne0).
+\end{equation}
+For nonzero reduced $G=\sum_{j<m}A_jY^j$, define
+\[
+ W=\max_{A_j\ne0}(m\deg A_j+dj).
+\]
+
+\begin{lemma}[Global support bound]\label{lem:global-weight}
+Under \eqref{eq:global-guard}, every coefficient of $\Norm_F(G)$ in a degree greater than $W$ is zero. If the norm is nonzero, its degree is at most $W$.
+\end{lemma}
+\begin{proof}
+Set
+\[
+ F_\infty(t,Z)=t^{md}F(t^{-m},t^{-d}Z),\qquad
+ G_\infty(t,Z)=t^WG(t^{-m},t^{-d}Z).
+\]
+The weight bounds make both expressions ordinary polynomials in $t,Z$, and $F_\infty$ is monic of $Z$ degree $m$. Formula~\eqref{eq:rescale-norm} gives
+\begin{equation}\label{eq:infty-identity}
+ \Norm_{F_\infty}(G_\infty)(t)
+       =t^{mW}\Norm_F(G)(t^{-m}).
+\end{equation}
+The left side is an ordinary polynomial. A coefficient of $X^q$ on the right has exponent $m(W-q)$ in $t$. Distinct $q$ give distinct exponents. Hence a nonzero coefficient with $q>W$ would produce a negative exponent on the left, which is impossible. This proves the coefficient statement even when the norm itself is zero.
+\end{proof}
+
+This is the degree component of the earlier coherent-methods argument \cite{repo-coherent}. The next criterion supplies nonvanishing from an independent finite place.
+
+There is a direct coefficient implementation of this proof. If a reduced polynomial $H=\sum_r h_rY^r$ has every nonzero coefficient satisfying $m\deg h_r+dr\le B$, multiplication by $Y$ and reduction modulo $F$ preserves the same statement with budget $B+d$. The ordinary shifted rows gain exactly $d$. The wrap row uses $Y^m=-\sum f_rY^r$, and \eqref{eq:global-guard} supplies the same bound for each resulting product. Starting with $G$ and iterating $j$ times therefore proves
+\[
+ [X^i](M_G)_{rj}\ne0\quad\Longrightarrow\quad mi+dr\le W+dj.
+\]
+For a determinant permutation, sum these inequalities over all columns. The row and column weight corrections cancel, leaving total $X$ degree at most $W$. This version uses only nonnegative exponent tables and is the preferred arithmetic implementation of Lemma~\ref{lem:global-weight}.
+
+\subsection{An explicitly checkable local Newton certificate}
+
+For a nonzero polynomial $P$ and a supplied $a\in K$, define
+\[
+ \ord_aP=\min\{r:[T^r]P(a+T)\ne0\}.
+\]
+The translated coefficients are finite sums
+\[
+ [T^r]P(a+T)=\sum_{i=r}^{\deg P}\binom{i}{r}p_i a^{i-r}.
+\]
+These use integer binomial coefficients, not derivatives divided by factorials, and are valid in every characteristic. The order is a bounded scan through $0,\ldots,\deg P$. For a zero polynomial use a separate zero tag; never assign it an ordinary order and then take an unguarded minimum.
+
+\begin{definition}[Local certificate]\label{def:local-certificate}
+A local Newton certificate for $F$ consists of $a\in K$ and integers $e\ge1$, $m\ge1$, with $\gcd(m,e)=1$, such that
+\begin{align}
+ f_0(a+T)&=-cT^e+\text{higher powers of }T,
+       &&c\ne0,\label{eq:local-constant}\\
+ m\ord_a f_j+e j&>me
+       &&(0<j<m,\ f_j\ne0).\label{eq:local-upper}
+\end{align}
+The coefficients below $e$ in the first line are zero. All conditions are finite coefficient tests. A nonzero witness for $c$ and a gcd calculation complete the certificate.
+\end{definition}
+
+For $F=Y^m-f(X)$ the intermediate coefficients vanish, so the certificate is simply $\ord_a f=e$ and $\gcd(m,e)=1$. A supplied simple root has $e=1$ and always passes. Finding such a root from arbitrary coefficients is not assumed; the certificate is an explicit input unless a special family supplies it by formula.
+
+\begin{lemma}[Unique least local weight]\label{lem:local-unique}
+For nonzero reduced $G$, put
+\[
+ s=\min_{A_j\ne0}\bigl(m\ord_aA_j+ej\bigr).
+\]
+Under $\gcd(m,e)=1$, the minimizing index $k$ is unique. If $\nu=\ord_aA_k$ and $b=[T^\nu]A_k(a+T)$, then
+\[
+ t^{-s}G(a+t^m,t^eZ)\big|_{t=0}=bZ^k,\qquad b\ne0.
+\]
+\end{lemma}
+\begin{proof}
+Equal weights at $i,j$ imply $m\mid e(i-j)$. A Bezout identity for $m,e$ gives $m\mid i-j$. Since $i,j$ lie in $\{0,\ldots,m-1\}$, they are equal. Every monomial after translation has weight at least $s$, so the displayed scaled polynomial has no negative exponents. Only the first nonzero translated coefficient in row $k$ has exponent zero. This proves the specialization.
+\end{proof}
+
+\begin{theorem}[Exact local order of the norm]\label{thm:local-norm}
+Suppose $F$ has the local certificate of Definition~\ref{def:local-certificate}, and $G\ne0$ is reduced. With $s,k,b,c$ as above,
+\[
+ \Norm_F(G)\ne0,\qquad \ord_a\Norm_F(G)=s,
+\]
+and its first nonzero translated coefficient is
+\begin{equation}\label{eq:local-coeff}
+ [T^s]\Norm_F(G)(a+T)
+       =b^m\bigl((-1)^{m-1}c\bigr)^k.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Define
+\[
+ F_a(t,Z)=t^{-me}F(a+t^m,t^eZ),\qquad
+ G_a(t,Z)=t^{-s}G(a+t^m,t^eZ).
+\]
+The certificate and Lemma~\ref{lem:local-unique} say that these are ordinary polynomials, that $F_a$ is monic, and that
+\[
+ F_a(0,Z)=Z^m-c,\qquad G_a(0,Z)=bZ^k.
+\]
+The finite rescaling identity gives
+\begin{equation}\label{eq:local-norm-identity}
+ \Norm_F(G)(a+t^m)
+     =t^{ms}\Norm_{F_a}(G_a)(t).
+\end{equation}
+At $t=0$, multiplication by $Z$ in $K[Z]/(Z^m-c)$ is the cyclic shift matrix whose wrap entry is $c$. Its determinant is $(-1)^{m-1}c$. Multiplication by $bZ^k$ has determinant
+\[
+ b^m\bigl((-1)^{m-1}c\bigr)^k\ne0.
+\]
+Thus the right side of \eqref{eq:local-norm-identity} has order exactly $ms$ in $t$ and this coefficient at $t^{ms}$. On the left, the substitution $T=t^m$ multiplies every exponent in $\Norm_F(G)(a+T)$ by $m$. Equality of coefficients proves order $s$ and formula~\eqref{eq:local-coeff}. In particular the norm is not zero.
+
+The sign formula for the cyclic shift uses the $m$-cycle $0\mapsto1\mapsto\cdots\mapsto m-1\mapsto0$, whose sign is $(-1)^{m-1}$. Raising its determinant to the $k$th power gives the shift by $k$; a cycle-length analysis is unnecessary. All uses of inverses were formal powers of the indeterminate in a Laurent identity that can be cleared. No extension of a valuation or factorization theorem is used.
+\end{proof}
+
+For a direct implementation, let $L_{rj}(t)$ be the multiplication matrix of $G_a$ modulo $F_a$. Uniqueness of monic remainder proves the ordinary polynomial identity
+\[
+ t^{s+ej}L_{rj}(t)=t^{er}(M_G)_{rj}(a+t^m).
+\]
+Every exponent here is nonnegative. Multiply these identities along a permutation and sum with signs. Both sides have the same factor $t^{e\sum_{j<m}j}$; deleting that common coefficient shift yields \eqref{eq:local-norm-identity}. Thus no Laurent-polynomial data structure is required in Lean, and this identity does not itself require the full matrix-multiplicativity theorem.
+
+\begin{corollary}[Two independent certificates give a zero bound]\label{cor:two-certificates}
+Assume the global weight guard \eqref{eq:global-guard} and a local Newton certificate. Then every nonzero reduced $G$ satisfies
+\[
+ s=\ord_a\Norm_F(G)\le\deg\Norm_F(G)\le W(G),
+\]
+and every finite list of distinct common zeros of $F,G$ has length at most $W(G)$.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:local-norm} supplies nonvanishing, Lemma~\ref{lem:global-weight} the upper bound, and Theorem~\ref{thm:finite-zero} the common-zero bound. The lower bound follows from a nonzero polynomial having a nonzero translated coefficient at its order. Translation preserves degree by the invertible substitution $X\mapsto X+a$.
+\end{proof}
+
+This separates global size control from local noncancellation. Neither certificate depends on the particular list of zeros. A single local certificate for the curve proves nonvanishing for every nonzero reduced $G$, including all the linear forms generated later by an annihilator algorithm.
+
+\subsection{A direct determinant proof for the superelliptic case}
+
+For $F=Y^m-f(X)$, there is a useful alternate proof with no rescaling notation. Entry $(r,j)$ of $M_G$ is
+\[
+ A_i(X)f(X)^q,
+ \quad i+j=r+mq,\quad 0\le i<m,\quad q\in\{0,1\}.
+\]
+At the supplied place, write $\nu_i=\ord_a A_i$ and $e=\ord_a f$. For a nonzero permutation product,
+\[
+ m\,\ord_a\!\left(\prod_{j<m}(M_G)_{\sigma(j),j}\right)
+ =\sum_{j<m}(m\nu_{i_j}+ei_j).
+\]
+The correction $e(j-\sigma(j))$ cancels in the sum. Every summand is at least $s$, and equality for the whole sum requires every $i_j$ to be the unique minimizer $k$. Exactly one permutation does this: $\sigma(j)=(j+k)\bmod m$. It has exactly $k$ wraps, so its product is $A_k^mf^k$, with first coefficient \eqref{eq:local-coeff}. Every other nonzero permutation product has strictly larger order. Hence the first coefficient cannot cancel.
+
+This proof shows particularly clearly what a numerical-dimension induction must establish: a finite minimum and its uniqueness, cancellation of row/column weight sums, the actual cyclic permutation, its wrap count and sign, and strict support exclusion for all other words. It is a natural first implementation before the mixed-curve rescaling adapter.
+
+\subsection{A smaller test for highest-degree noncancellation}
+\label{sec:compressed-leading}
+
+The earlier coherent-methods packet already computes the leading-form norm for general weighted equations \cite{repo-coherent}. For a superelliptic equation the test can be compressed.
+
+Let $f$ have degree $d$ and leading coefficient $c\ne0$, and retain $W=W(G)$. Define
+\[
+ H(Z)=\sum_{\substack{j<m\\m\deg A_j+dj=W}}
+          \lc(A_j)Z^j.
+\]
+By \eqref{eq:infty-identity}, the coefficient of $X^W$ in the norm is
+\[
+ \kappa=\det(\text{multiplication by }H
+                   \text{ on }K[Z]/(Z^m-c)).
+\]
+Let $g=\gcd(m,d)$ and $r=m/g$. Equality of maximal weights implies that all active exponents $j$ are congruent modulo $r$. There is therefore a unique residue $j_0\in\{0,\ldots,r-1\}$ and a nonzero polynomial $P$ of degree less than $g$ such that
+\[
+ H(Z)=Z^{j_0}P(Z^r).
+\]
+
+\begin{theorem}[Compressed leading certificate]\label{thm:compressed}
+Let
+\[
+ \kappa_g=\det(\text{multiplication by }P(U)
+                     \text{ on }K[U]/(U^g-c)).
+\]
+Then
+\begin{equation}\label{eq:compressed}
+ \kappa=\bigl((-1)^{m-1}c\bigr)^{j_0}\kappa_g^{\,r}.
+\end{equation}
+Consequently $\kappa_g\ne0$ implies $\deg\Norm_F(G)=W$. The test requires a $g$ by $g$ determinant rather than an $m$ by $m$ one.
+\end{theorem}
+\begin{proof}
+Multiplication by $Z^{j_0}$ has determinant $((-1)^{m-1}c)^{j_0}$. To handle $P(Z^r)$, reorder the basis by the residue of its exponent modulo $r$:
+\[
+ (1,Z^r,\ldots,Z^{(g-1)r}),\quad
+ (Z,Z^{r+1},\ldots),\quad\ldots,\quad
+ (Z^{r-1},Z^{2r-1},\ldots).
+\]
+Multiplication by $P(Z^r)$ preserves each of these $r$ groups. On each group its matrix is precisely multiplication by $P(U)$ modulo $U^g-c$. Thus it is block diagonal with $r$ identical blocks. Simultaneously reordering rows and columns leaves the determinant unchanged; determinant multiplicativity now gives \eqref{eq:compressed}. Specialization of \eqref{eq:infty-identity} identifies $\kappa$ with the $X^W$ coefficient. Lemma~\ref{lem:global-weight} rules out higher coefficients.
+\end{proof}
+
+For $g=1$, $P$ is a nonzero constant and the test always succeeds, recovering the inherited coprime theorem. For $g>1$, failure is inconclusive: it can mean a lower-degree nonzero norm or a zero norm. The local certificate distinguishes many of those cases without computing the whole norm.

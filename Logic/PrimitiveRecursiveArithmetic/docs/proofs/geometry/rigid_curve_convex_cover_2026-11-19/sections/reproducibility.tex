@@ -1,0 +1,50 @@
+\section{Artifacts and verification}\label{sec:reproduce}
+
+The archive is self-contained as a report project. It contains the
+LaTeX source and its component sections, the compiled PDF, a bibliography,
+reproducible figures, exact geometric data, and the following programs.
+
+\begin{description}[style=nextline,leftmargin=1.5em]
+\item[\texttt{code/verify\_lower\_bound.py}]
+A Python standard-library checker for the lower bound $3/220$. It
+enumerates all supporting vertex triples of the five-point hull, computes
+every pair of facet-normal directions, checks the complete rational
+projection-area table, and verifies the final scaling. All arithmetic
+relevant to the proof uses integers or exact fractions.
+
+\item[\texttt{code/reproduce.py}]
+Recomputes numerical constants, checks the 2026 quadrilateral's area
+exactly, and generates the figures. It writes
+\texttt{data/bounds.json} and \texttt{data/keller\_quadrilateral.json}.
+Its numerical geometry and rendered surfaces are illustrations.
+
+\item[\texttt{Makefile} and \texttt{requirements.txt}]
+\texttt{make reproduce} runs the certificate and regenerates data and
+figures. \texttt{make} rebuilds the PDF with \texttt{latexmk} and pdfLaTeX.
+The archive already contains the generated PDF and figures, so reading
+it does not require these tools.
+\end{description}
+
+\paragraph{What was verified.}
+The finite lower-bound certificate was executed successfully and checked
+independently. The proof of the dimension-lifting construction was
+independently reviewed, including the need for a single rigid placement,
+the proper-rotation convention, degeneracies, and convexity.
+The report was compiled and its rendered pages were visually inspected.
+The included validation log records the actual executable checks.
+
+\paragraph{External mathematical dependencies.}
+The principal upper bound uses two published results: the alternating
+support-plane theorem in Ghomi~\cite{Ghomi2018}, and the sector theorem
+of Panraksa and Wichiramala~\cite{PW2021}. Their proofs are not replaced
+by numerical examples. The stronger preprint-dependent upper bound has
+the additional external dependency identified in
+Section~\ref{sec:literature}. The existence proof uses standard compactness
+for convex bodies and explicitly checks preservation of universality
+and continuity of volume. No claim of a complete Lean formalization
+of this report is made.
+
+\paragraph{Source handling.}
+The bibliography supplies stable references and links to the papers.
+The archive contains our report and generated artifacts, not copies of
+third-party articles. The exact optimum is left open throughout.

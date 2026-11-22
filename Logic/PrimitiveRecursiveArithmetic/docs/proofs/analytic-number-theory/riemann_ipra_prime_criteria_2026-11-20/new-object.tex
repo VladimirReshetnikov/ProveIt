@@ -1,0 +1,144 @@
+\section{One finite cube for all parameters}\label{sec:unary-cube}
+
+How many inputs does a counterexample require? A Dedekind packet uses
+five naturals, of which four specify a polynomial. One natural already
+suffices to exhibit a failure, even if its only interpretation is a
+common search radius. The conversion in both directions has explicit
+primitive recursive witnesses. The same construction applies to the
+Dirichlet and ordinary packets.
+
+Write \(e(\mathbf x)\) for the truncated excess in the relevant
+packet. For RH the free coordinate is \(t\), for GRH the coordinates
+are \((d_0,t)\), and for ERH they are \((d_0,H,u,v,t)\).
+Define \(B_e(N)\) by scanning every tuple in
+\(\{0,\ldots,N-1\}^r\), starting with zero and setting the flag to
+one on a nonzero sample. If \(N=0\), the flag is zero for all three
+families. For instance, \(B_e(2)\) checks the 32 combinations of
+coordinates zero and one for ERH, including both polynomial words
+in each combination. For GRH it checks four combinations. The cost
+can be enormous because the underlying excess itself performs large
+integer computations. The interest here lies in the arity and
+logical strength of the test.
+
+\begin{theorem}\label{thm:cubef}
+Let \(A=\forall x_1\cdots\forall x_r\,[e(\mathbf x)=0]\), allowing
+an arbitrary iPRA term and additional free parameters in \(e\).
+The following are equivalent by derivations of object iPRA:
+\[
+ A,\qquad \forall N\ B_e(N)=0,\qquad
+ \forall N\ B_e\bigl(N+g(N)\bigr)=0
+\]
+for each given unary primitive recursive program \(g\). In addition,
+object iPRA proves the witness-preserving equivalence
+\[
+ \bigl(\exists\mathbf x\ e(\mathbf x)\ne0\bigr)
+ \quad\longleftrightarrow\quad
+ \bigl(\exists N\ B_e(N)\ne0\bigr).
+\]
+For a block of length zero the construction uses the term itself in
+place of a flag.
+\end{theorem}
+
+\begin{proof}
+The proof concerns formal derivations, so the induction formulas matter.
+For a row of samples \(f(j,\mathbf p)\), define its scan by
+\[
+ S(0,\mathbf p)=0,\qquad
+ S(j+1,\mathbf p)=
+ \begin{cases}
+    S(j,\mathbf p),&f(j,\mathbf p)=0,\\
+    1,&f(j,\mathbf p)\ne0 .
+ \end{cases}
+\]
+The conditional is a PR symbol with its two branches proved from the
+recursion equations. The object theory proves
+\(S(j+1)=0\leftrightarrow(f(j)=0\land S(j)=0)\):
+induct on the sampled value in the quantifier-free formula for the
+conditional. If all samples vanish, induct on the atomic formula
+\(S(j)=0\) to obtain every clean prefix. Conversely, fix arbitrary
+\(x\) and induct on the slack \(d\) in the quantifier-free implication
+\[
+ S\bigl(d+(x+1)\bigr)=0\ \longrightarrow\ f(x)=0 .
+\]
+At zero use the current-sample conjunct of the successor law.
+At the successor use the previous-prefix conjunct and the induction
+hypothesis. These are first-order derivations with all remaining
+parameters free.
+
+Compile a scoped term to a PR symbol by mapping each variable to a
+projection and each application to composition. Structural recursion on
+the finite term gives a formal proof of the compiler's defining
+equality. At a leaf the cube code evaluates this term. At a universal
+binder, apply the row scan to the child's cube code, keeping the same
+horizon \(N\) inside each child and scanning the new coordinate only
+up to \(N\). A permutation and a duplication of arguments implement
+this convention with PR composition. This recursion runs over fixed
+syntax while constructing the derivation. The only arithmetic
+inductions within iPRA are quantifier-free.
+
+For the forward direction, open the universal binder, prove the child
+cube clean and use the row-scan result. For the converse take an
+arbitrary tuple \(\mathbf x\). Choose
+\[
+                   N_{\mathbf x}=\sum_{i=1}^r(x_i+1).
+\]
+For each coordinate the sum of the other summands is an explicit
+slack \(d_i\) satisfying \(N_{\mathbf x}=d_i+(x_i+1)\).
+The same equations hold at horizon \(N_{\mathbf x}+g(N_{\mathbf x})\)
+after increasing each slack by \(g(N_{\mathbf x})\).
+The needed laws of addition have quantifier-free induction proofs.
+Apply the single-row reading implication once per binder and conclude
+\(e(\mathbf x)=0\). This covers every finite tuple with one and the
+same horizon. Choosing the horizon after introducing the tuple
+preserves the order of the object quantifiers. In particular, a known
+bad tuple gives a bad cube of radius \(N_{\mathbf x}\).
+
+For the converse on positive failures, one additional primitive
+recursion keeps an index \(I\), initially zero. At stage \(j+1\),
+retain \(I(j)\) if \(f(j)=0\), and set it to \(j\) otherwise.
+The correctness invariant is the quantifier-free formula
+\[
+                 S(j)\ne0\ \longrightarrow\ f(I(j))\ne0 .
+\]
+At a zero sample any dirty flag comes from the preceding step.
+At a nonzero sample the stored index points to the present failure.
+Zero tests are decidable in iPRA, so the two branches suffice.
+Starting with a bad cube, read this index in its outer scan. The child
+cube at that index is bad. Repeat through the finite syntax down
+to the nonzero excess. In each nonempty scan the hit is its last
+failing index. This constructs the existential tuple directly.
+\end{proof}
+
+For example \(g(N)=N^2\) tests only sizes \(N^2+N\) and
+\(g(N)=2^N\) tests only \(N+2^N\). Neither schedule has to enumerate
+all sizes. Its explicit slack makes it cofinal in a way that iPRA can
+use. The uniform Lean results are \texttt{CubeTests.diagonal\_iff},
+\texttt{CubeTests.schedule\_iff}, and \texttt{CubeTests.failure\_iff}.
+The specializations \texttt{rh\_cube}, \texttt{grh\_cube} and
+\texttt{erh\_cube} have the original closed packet statements on their
+left sides.
+
+\paragraph{The first radius of failure.}
+One may also count the number \(C(m)\) of dirty cubes with radius
+strictly below \(m\). A counterexample to an entire family is
+equivalent, with witnesses in both directions, to
+\[
+              \exists m\,[C(m)=0\ \land\ B_e(m)\ne0].
+\]
+Indeed a bad tuple supplies a dirty radius, and bounded search up to
+that radius finds its first dirty cube. Its hit selectors then recover
+a bad tuple in that cube. Here the minimum is taken across all field
+codes and cutoffs at once. At the first dirty radius \(m\), every
+bad tuple in that cube has some coordinate equal to \(m-1\), since its
+predecessor cube is clean. In particular this witness minimizes
+\(1+\max_i x_i\) across counterexamples. For the three nonempty blocks
+the zero-radius cube is empty.
+
+The Lean proof \texttt{failure\_iff\_first\_radius} composes
+the positive equivalence above with the supplied one-dimensional
+first-failure extractor. The companion \texttt{census\_iff}
+transports that archive's full catalogue of tests to \(C\). For
+example, each of \(\forall m\, C(m+1)=C(m)\) and
+\(\forall m\,\exists d\, C(m+1+d)=0\) is an object-theoretically
+equivalent formulation for each family.
+

@@ -1,0 +1,234 @@
+\section{A uniform local solution at an integer resonance}
+\label{sec:resonance}
+
+At a regular singular point the two usual power-series solutions can collapse
+into one. The Gauss hypergeometric report gives a finite recurrence in this
+case and leaves a joint coefficient bound and convergence modulus for variable
+resonance order to be supplied. We construct both, and determine exactly when
+a logarithm is forced. The same construction applies to other scalar
+second-order equations once one regular solution and a Wronskian density are
+given. The source discussions occur in the resonance paragraphs of sections 5
+and 10 of the repository's \texttt{hypergeometric\_ipra\_2026-11-16} report.
+
+\subsection{Local integration with a variable pole order}
+Use Gaussian rationals with $|x+iy|_1=|x|+|y|$. This norm is
+submultiplicative. For a conditional object theorem the stated bounds on the input coefficient programs are supplied as iPRA derivations or retained as hypotheses. The coefficient of $z^n$ in a product is a sum over
+$i+j=n$. A Laurent series here has an explicitly bounded finite principal
+part. The arithmetic conclusions below are identities and error inequalities
+for finite coefficient and value observations. The language of solution
+germs describes the analytic interpretation of those conclusions.
+
+Let $m$ be any natural number. Suppose two fixed PR procedures
+(with numerical parameters) present $u=\sum u_nz^n$ and $g=\sum g_nz^n$,
+with $u_0=g_0=1$ and a supplied integer $D\ge1$. Assume the arithmetical
+hypotheses $|u_n|_1,|g_n|_1\le D^n$ for every $n$. In the Gauss
+application below these inequalities follow from the recurrence. Define
+\[
+ w_0=1,\qquad w_n=-\sum_{i=1}^n u_iw_{n-i}\quad(n>0),\qquad
+ h_n=\sum_{i+j+k=n}g_iw_jw_k,\qquad K=6D .
+\]
+Then $uw=1$ and $u^2h=g$ coefficient by coefficient. Inductively
+$|w_n|_1\le(2D)^n$ follows by dividing the recurrence bound by $(2D)^n$ and using $\sum_{i=1}^n 2^{-i}\le1$. Each triple contributes at most
+$(2D)^n$, and there are at most $3^n$ triples. Each triple is encoded
+injectively by a word of $i$ zeros, $j$ ones and $k$ twos, including
+the empty word. Thus $|h_n|_1\le K^n$.
+
+Fix a nonzero Gaussian rational centre $z_*$ with $K|z_*|_1<1/4$.
+Use rational samples $z$ with $K|z|_1\le1/4$ and
+$|t|_1\le1/2$, where $t=(z-z_*)/z_*$. Set
+\[
+ L(z)=\sum_{j\ge1}(-1)^{j+1}t^j/j .
+\]
+Here $L(z_*)=0$ and $L'(z)=1/z$ because the derivative sums to
+$1/[z_*(1+t)]$ by the finite geometric identity. The chart guard
+guarantees $z\ne0$ since $t=-1$ fails it. Define
+\begin{align}
+ F(z)&=\sum_{n<m}\frac{h_n}{n-m}z^{n-m}+h_m L(z)+T(z), &
+ T(z)&=\sum_{j\ge1}\frac{h_{m+j}}{j}z^j, \nonumber\\
+ v(z)&=u(z)F(z), & F'(z)&=z^{-m-1}h(z). \label{eq:frob-pri}
+\end{align}
+The three terms of $F$ integrate the powers below $-1$, the power $-1$,
+and the nonnegative powers. The finite sum is empty when $m=0$.
+
+For $0\le d\le2$, omitting terms $j\ge J\ge 2$ in $T^{(d)}$
+has error at most
+\begin{equation}
+                   4^{d+1}K^{m+d}2^{-J}.                   \label{eq:frob-tail}
+\end{equation}
+Indeed the coefficient magnitudes of $T$ are bounded by $K^{m+j}$.
+The $j$th differentiated term on the chart is bounded by
+$4^d K^{m+d}j^d4^{-j}$. For $j\ge2$, $j^d\le2^{j+1}$, by checking
+$j=2,3$ and using $(j+1)^2\le2j^2$ for $j\ge3$. Sum the geometric
+majorant to obtain \eqref{eq:frob-tail}. The same estimate with $m=0$
+applies to $u,w,g,h$. For error $2^{-p}$ take
+$J=2+p+4^{d+1}K^{m+d}$ since $C\le2^C$ for integral $C\ge1$.
+The log tail is at most $2^{1-J}$ and its first two derivatives are the
+rational functions $1/z,-1/z^2$.
+
+Derivative assertions can themselves be read as finite remainder inequalities.
+For a polynomial partial sum of a series with $|a_j|_1\le AK^j$, subtract
+its value and linear term at $z$. By the binomial theorem the remainder at
+$z+s$ has norm at most
+\[
+ |s|_1^2 AK^2\sum_{j\ge2}\binom j2 2^{-(j-2)}
+ =8AK^2 |s|_1^2\qquad (K(|z|_1+|s|_1)\le1/2).
+\]
+For finite sums the bound $8$ follows by multiplying three finite geometric
+sums of ratio $1/2$. Their triple coefficients are $\binom j2$ at
+degree $j-2$ up to the truncation. For the derivative polynomial the
+remainder is at most $48AK^3|s|_1^2$ by
+$j\binom{j-1}{2}=3\binom j3$ and four geometric sums. Applying
+\eqref{eq:frob-tail} at the two observed points proves the derivative
+identities to arbitrary precision. One may enlarge a boundary chart
+slightly within the open disk of convergence, replacing $1/4$ by any
+rational ratio strictly below one and using its geometric tail. For $L$
+apply the same polynomial proof with $|t|_1+|s/z_*|_1\le3/4$.
+In particular no theorem on differentiating a general infinite limit
+is needed.
+
+Individual cutoffs give a cutoff for $v$ and each derivative. Evaluate
+negative powers at rational $z$ exactly. A magnitude bound for each series
+is one plus the norm of its precision-zero approximation. Propagate bounds
+for sums and products by the triangle and product inequalities. To request
+precision $p$ at a sum request $p+1$ at both children. At a product with
+operand bounds $A,B$ request $p+\lceil A+B+2\rceil$ at both children,
+since the product error is at most $(A+B+1)\epsilon$ for input
+errors at most $\epsilon\le1$. Apply this rule also to the product
+formulas for $v'$ and $v''$. It accounts for small denominators from the
+principal part.
+
+\paragraph{Local reduction of order.}
+Suppose $u$ satisfies $y''+P y'+Qy=0$ on the chart, and
+$W=z^{-m-1}g$ satisfies $W'=-PW$. Then $v$ in
+\eqref{eq:frob-pri} satisfies the same equation and
+$uv'-u'v=u^2F'=W$. Indeed $(u^2F')'=-Pu^2F'$ gives
+$u^2F''+(2uu'+Pu^2)F'=0$. Expand the equation for $uF$, use the
+equation for $u$, and cancel the unit $u$. The inverse exists since $uw=1$.
+Also $|u-1|_1,|g-1|_1\le1/23$ by $D|z|_1\le1/24$.
+In particular the inverse Wronskian is $z^{m+1}/g$, where $1/g$ is
+computed by the same inverse-prefix rule. At an ordinary centre where
+$P,Q$ have convergent Taylor data, the two solutions span the Taylor-solution
+germs. Solve the two initial-value equations using this inverse Wronskian.
+The difference has zero constant and linear coefficients. At order $j$ the
+equation determines its next coefficient by a convolution of earlier ones
+divided by $(j+2)(j+1)$, so every coefficient vanishes. Recentring a convergent
+series on a smaller disk uses the binomial expansion. At parent degree $j$
+the sum of norms of all translated terms is at most
+$|a_j|_1(|z_*|_1+|s|_1)^j$, giving a geometric bound for the reordered
+tails. Rational negative powers are handled by the local geometric inverse.
+
+A Laurent derivative has zero coefficient at $z^{-1}$ because only the
+derivative of a constant could contribute. If a Laurent solution with
+a finite pole had normalized Wronskian $W$ with $u$, its quotient by $u$
+would have derivative $z^{-m-1}h$, whose residue is $h_m$. Conversely,
+if $h_m=0$ the displayed formula gives such a Laurent solution. This
+obstruction is an identity of formal Laurent coefficients at zero.
+The chart gives the local analytic realization.
+
+\subsection{The Gauss equation and its exact logarithmic coefficient}
+Take $a,b\in\mathbb Q(i)$, $c=m+1$, and put
+\[
+ \mathcal L y=z(1-z)y''+[c-(a+b+1)z]y'-aby.
+\]
+Starting at $u_0=g_0=1$, compute
+\[
+ u_{n+1}=\frac{(n+a)(n+b)}{(n+1)(n+m+1)}u_n,\qquad
+ g_{n+1}=\frac{n-q}{n+1}g_n,\qquad q=m-a-b .
+\]
+Comparison of coefficients gives $\mathcal L u=0$ and
+$(1-z)g'=-qg$. Write $P=[c-(a+b+1)z]/[z(1-z)]$.
+The logarithmic derivative of $z^{-m-1}g$ is
+$-(m+1)/z-q/(1-z)=-P$. The integer
+\[
+ D=\left\lceil\max\{1,\max(1,|a|_1)\max(1,|b|_1),|q|_1\}\right\rceil
+\]
+works for both series since $n+|a|_1\le(n+1)\max(1,|a|_1)$,
+and the same inequality holds for $b$ and $q$. Thus the two local
+solutions have a single PR precision schedule uniform in $m,a,b$.
+
+Write $(x)_m=\prod_{j<m}(x+j)$. The logarithm in $v$ has multiplier $h_m u$,
+where
+\begin{equation}
+             h_m=\frac{(-1)^m(a-m)_m(b-m)_m}{(m!)^2}.        \label{eq:frob-res}
+\end{equation}
+For $m=0$ this gives $h_0=1$. For $m>0$ separate the logarithmic term and
+write the Laurent part of $v$ as $z^{-m}\sum_{j\ge0}d_jz^j$. Its leading
+coefficient is $d_0=-1/m$. The logarithmic source has no powers below
+$z^{-1}$ since
+\[
+ \mathcal L(u L)=2(1-z)u'+[m/z-(a+b)]u .
+\]
+For $0\le j<m-1$ the coefficient of $z^{j-m}$ therefore gives
+\[
+ (j+1-m)(j+1)d_{j+1}=(j+a-m)(j+b-m)d_j.
+\]
+At $z^{-1}$ the multiplier of $d_m$ is zero and the remaining equality is
+$m h_m=(a-1)(b-1)d_{m-1}$. Multiplying through the previous $m-1$ steps
+gives \eqref{eq:frob-res} because the denominator product is
+$(-1)^{m-1}((m-1)!)^2$, with the other two factors of $m$ from $d_0$ and
+the last equation. This includes $m=1$ via the empty product.
+Hence for $m>0$ a second Laurent solution exists exactly when
+$a$ or $b$ belongs to $\{1,\dots,m\}$, a decidable condition over Gaussian
+rationals. In the reverse implication for an arbitrary independent
+meromorphic solution, its Wronskian divided by $W$ has derivative zero.
+Coefficientwise only the constant survives, and independence makes the
+constant nonzero (apartness in the analytic reading). Rescaling would
+therefore give a normalized solution.
+
+For $c=1-m$ the substitution $y=z^mY$ gives the Gauss equation for $Y$
+with parameters $a+m,b+m,1+m$. The extra coefficient of $z^{-1}Y$
+is $m(m-1+c)=0$, the derivative coefficient becomes
+$c+2m-(a+b+2m+1)z$, and the constant is $-(a+m)(b+m)$.
+Consequently the construction covers every integer $c$ at zero.
+Replacing $z$ by $1-z$ changes $c$ to $a+b+1-c$ and gives the analogous
+local basis at one whenever $c-a-b$ is integral. The constants matching a
+solution from a distant base point and the global Schwarz mapping problem
+remain separate questions.
+
+\paragraph{A resonant example.}
+For $a=b=1/2$, $m=2$ one has $u_1=1/12$, $g=1-z$, $h_0=1$,
+$h_1=-7/6$, and $h_2=9/64$. Hence the normalized second solution is
+\[
+ v=u\left(-\frac1{2z^2}+\frac7{6z}
+             +\frac9{64}L(z)+\sum_{j\ge1}h_{2+j}z^j/j\right).
+\]
+Here $D=1$, $K=6$ and $z_*=1/48$ satisfies the chart guard. For
+$a=1,b=5/3,m=3$, the coefficient $h_3$ vanishes and the second solution
+is meromorphic at the singular point.
+
+\paragraph{Object derivation and Lean completion.}
+Code the Gaussian-rational pairs with positive denominators and clear them at
+comparisons. Compute $(u_i,g_i,w_i,h_i)_{i\le N}$ by appending to bounded
+tables. A QF induction assertion is the Boolean fold checking the defining
+identities and the bounds for every index in the current prefix. Apply
+the same finite convolution calculation to these prefixes to obtain $uw=1$,
+$u^2h=g$ and the differential identities, retaining the needed coefficients
+(e.g.\ through $m+j+2$ for Laurent powers through $z^j$ and two derivatives).
+For \eqref{eq:frob-res} maintain the cross-multiplied recurrence product
+through a prefix of length at most $m-1$. For \eqref{eq:frob-tail} take
+arbitrary finite endpoints $J\le M$, bound the finite sum through $M$ by
+the displayed geometric quantity, then universally close in $M,J,p$.
+Use the same finite-endpoint convention for products by bounding the partial
+convolution tail at a strict radius by grouping triples by total degree,
+using the bound $(6D)^j$ above. These inductions use integer equalities,
+cross-multiplied inequalities or bounded Boolean checks. The universal input
+bounds on the two coefficient families stay in the context of induction.
+
+The accompanying \texttt{lean/Resonance.lean} implements the real-rational
+coefficient tables and product formula, proves the size of the inverse table,
+the order-zero coefficient, the bounded zero test for the product formula,
+and a precision inequality, and kernel-checks the
+two examples. For the object theorem first lift these definitions to pairs of
+rational codes including the signed coefficients of the finite principal part.
+Next derive the prefix estimates and identities just listed. Lastly use the
+error circuits to construct the chart's first two derivative names. The
+repository's \texttt{HypergeometricOdeFormal} contains the formal Wronskian
+derivative identity, and \texttt{ComplexLogarithmName} constructs a local
+logarithm name. The latter leaves the derivative law open. The finite
+geometric identity and difference estimate above supply its mathematical
+proof after identifying the two local power-series observations. A direct
+implementation can use the displayed chart throughout. The supplied Lean
+file covers finite lemmas and examples. The full object-language derivation
+remains to be built. The independent exact tests in
+\texttt{code/resonance.py} compare the convolution and product answers and
+check the coefficients of the inhomogeneous Laurent recurrence.

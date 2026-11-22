@@ -20,7 +20,8 @@ the following are polynomial identities over the integers:
 * `radial_unique` (`cor:unique`, the coefficient step): a monic quadratic `d = r² + c₁ r + c₀`
   that satisfies the radial equation has `c₀ = a² + q²`.
 
-The curvature computations of the packet are not formalized.
+The curvature computations of the packet are in `Geometry/KerrNewmanConnection` and
+`Geometry/KerrNewmanRicci`.
 -/
 
 namespace LeanProofs.IPRA.Geometry.KerrNewmanAlgebra

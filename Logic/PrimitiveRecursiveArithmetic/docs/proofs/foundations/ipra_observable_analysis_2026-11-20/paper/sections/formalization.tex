@@ -1,0 +1,108 @@
+\section{Lean formalization: checked kernels and the completion path}\label{sec:formalization}
+
+\subsection{What was actually compiled}
+
+The archive contains a standalone project pinned to Lean 4.32.0. It uses only the distribution's standard library, with no Mathlib or ProveIt package dependency. Its five source files and all project source dependencies are enclosed. The captured build completed successfully. There are no \code{sorry}, \code{admit}, or new axiom declarations. This is useful evidence about the finite kernels; it is not evidence that the new analytic theorems have reached the embedded iPRA judgment.
+
+\begin{longtable}{@{}P{.26\textwidth}P{.39\textwidth}P{.28\textwidth}@{}}
+\toprule File & Checked result & Exact boundary\\\midrule\endhead
+\path{ObservableAnalysis/Neumann.lean} & Left and right finite geometric identities; commutation with powers and sums; corrected-contraction residual. & An arbitrary supplied, possibly noncommutative ring. No normed-space convergence theorem is assumed or proved in this file.\\
+\path{ObservableAnalysis/Budget.lean} & Finite sum laws and exchange; exact-balance and supersolution weighted-error implications for arbitrary finite size. & Ordinary Lean rational arithmetic and numerical hypotheses.\\
+\path{ObservableAnalysis/FiniteMinimum.lean} & An explicit argmin on indices $0,\ldots,n$, its index bound and optimality, and uniform minimum stability. & A supplied finite rational table; no infinite infimum or compactness theorem.\\
+\path{ObservableAnalysis/Blueprint.lean} & Typed PR syntax and metatheoretic evaluation; definitions of coding/presentation obligations; a proved bridge from budget records to the finite verifier. & Definitions with law fields are obligations, not implemented presentations or asserted correctness axioms.\\
+\path{ObservableAnalysis.lean} & Imports the complete standalone project. & No additional mathematical claims.\\
+\bottomrule
+\end{longtable}
+
+The algebraic residual theorem checks the actual expression
+\[
+ D\bigl(hS_N(1-Dh-hD)\bigr)
+ +\bigl(hS_N(1-Dh-hD)\bigr)D
+ =1-(1-Dh-hD)^N
+\]
+from $D^2=0$. It is not a restatement of the desired conclusion as a hypothesis. The budget verifier similarly proves the cancellation argument from the local inequalities and the independently supplied balance inequalities. These are substantial reusable kernels underlying the two main new constructions.
+
+\subsection{The axiom audit is part of the result}
+
+The Neumann identities and corrected-contraction theorem report dependencies on \code{propext} and \code{Quot.sound}; some elementary commutation lemmas use only \code{propext}. They do not depend on \code{Classical.choice}. The rational-budget, finite-sum, and minimum-optimality theorems additionally inherit \code{Classical.choice} through the standard \code{Rat} library. The exact reports are in \path{lean/build.log} and \path{lean/verification.json}.
+
+Consequently, the host project is not advertised as an axiom-free or entirely constructive Lean development. This does not make its elementary inequalities false, but it does matter to the requested proof-theoretic endpoint. An eventual proof in object iPRA must be a proof value built from \code{PRAAx}; the host rational theorem is a guide and a checked mathematical kernel, not a substitute. Conversely, the use of classical tools in Lean's metatheory need not add axioms to an object derivation when the final proof value actually contains only the stated object rules. The distinction has to be established by the final type and dependency audit, not by descriptive terminology.
+
+\subsection{Typed definitions supplied by the blueprint}
+
+The main constructors and their meanings are as follows.
+
+\begin{longtable}{@{}P{.28\textwidth}P{.65\textwidth}@{}}
+\toprule Definition & Data and obligation\\\midrule\endhead
+\code{PRCode n} & Arity-indexed syntax for zero, successor, projections, composition, and primitive recursion.\\
+\code{PRCode.eval} & Its total host-Lean interpretation. This evaluator is explicitly not claimed to be PR uniformly in the syntax code and is never introduced as one iPRA symbol.\\
+\code{RationalCodes} & Decoding and PR codes for arithmetic and comparison, together with required correctness propositions. No concrete instance is asserted in the blueprint.\\
+\code{MetricData}, \code{MetricLaws} & Admissibility and rational distance recipes with nonnegativity, reflexivity, symmetry, and triangle obligations.\\
+\code{Name}, \code{RegularName} & A fixed unary PR approximation recipe and the two-index regularity law of Section~\ref{sec:completion}. Parameter families use arity $r+1$ with $r$ numerical parameters held fixed.\\
+\code{EqualitySchedule} & A fixed PR schedule after which same-index observations are within a requested error. For regular names this is equivalent to the paper's cross-index relation.\\
+\code{ModulatedMap} & A fixed map and modulus recipe with an admissibility and continuity obligation.\\
+\code{FiniteNetData} & Nonempty finite-net size and point recipes, admissibility, and a bounded covering specification.\\
+\code{SimpleData} & Finite cell count, rational weight and value recipes, finite integral and $L^1$ norm, and a nonnegative-weight predicate. Common-refinement laws are supplied by the measured presentation in Section~\ref{sec:measure}.\\
+\code{MajorantTail} & Nonnegative terms and a PR schedule that bounds every finite tail of arbitrary length. No infinite summation is an internal primitive.\\
+\code{ContinuousFormula} & Finite syntax for atoms, rational constants, basic continuous connectives, and infimum/supremum binders. A well-scoped interpretation and each atom's evaluator/modulus remain client obligations.\\
+\code{BudgetCertificate} & Finite errors, coefficients, reverse weights and balance laws, with the already proved \code{BudgetCertificate.sound}.\\
+\bottomrule
+\end{longtable}
+
+The paper places the recursion counter last in its mathematical PR notation; the Lean evaluator places it first. These are projection/permutation conventions, not different recursion principles. Similarly, the measure section's one-sided regularity convention is related to the symmetric convention by the explicit shift $s_k\mapsto s_{k+1}$.
+
+For equality schedules, cross-index equality implies
+$d(x_n,y_n)\le2\e_n\le\e_k$ whenever $n\ge k+1$. Conversely, given a correct schedule, compare any two fixed observations through a common index beyond the schedule at precision $j$. Regularity bounds the extra distances; as $j$ increases their rational slack vanishes. Lemma~\ref{lem:slack} yields the cross-index relation. This proves the compatibility of the two definitions without a real-equality decision procedure.
+
+\subsection{Exact finite targets for the main mathematical lemmas}
+
+The following is a dependency-ordered implementation plan. Each target has all its numerical hypotheses specified earlier; the point here is to identify its actual induction matrix and the existing kernel it can reuse.
+
+\paragraph{1. Rational coding and bounded reflection.}
+Implement signed numerator pairs and positive denominators using ProveIt's existing PR language. Prove cross-multiplication correctness for addition, multiplication, comparison, absolute value, min/max, and bounded sums. Reuse \code{BoundedSyntax.program_correct} and its reflection theorem for fixed bounded formula syntax~\cite{repo-interfaces}. Define graph validity, partition validity, and finite matrix inequalities as those Boolean formulas. The induction matrices are equations between accumulator terms, or their decidable guarded inequalities.
+
+\paragraph{2. The reverse-weight producer and dual verifier.}
+Code $L,b,W$ as lists of rationals. The reverse producer uses a frozen table and a decreasing index encoded as $n\dotminus(t+1)$. Its invariant says that all processed rows satisfy \eqref{eq:reverse-weight}; this is a bounded Boolean conjunction. The verifier's finite-sum target is exactly Theorem~\ref{thm:dual}, with all denominators cleared. The host proofs \code{weighted_budget} and \code{weighted_budget_supersolution} already identify the required finite sum lemmas and the final cancellation. Guard correctness remains a separate input derivation.
+
+\paragraph{3. The completion and extension interface.}
+Prove rational slack removal and the two-index triangle estimates. Define the completed distance as in Section~\ref{sec:completion}. Construct the explicit shifted output code for Theorem~\ref{thm:extension}; prove its regularity with two precision parameters free, and generalize afterward. The diagonal-completion case uses one fixed two-argument PR family. The output-code constructor is external syntax recursion on the fixed recipe; the arithmetic theorem quantifies over numerical inputs, never over an internal universal evaluator.
+
+\paragraph{4. Measured partitions and the Vitali bound.}
+Give event codes, Boolean operations, finite measure, partition codes, and common-refinement code, with the precise laws in Section~\ref{sec:measure}. For each refinement, the invariant accumulates the original cell mass and the sum of its refined masses. The core analytic finite target is
+\[
+ \sum_iw_i|u_i-v_i|
+ \le\sum_iw_iR_K(u_i)+\sum_iw_iR_K(v_i)
+       +\delta\sum_iw_i+2K\sum_iw_i\mathbf1_{|u_i-v_i|>\delta}.
+\]
+All variables here are rational finite data; the only branching is a rational comparison. Add the two input-approximation estimates and the two tail-approximation estimates to obtain the $4\sigma$ term. Then use the completion interface. Domination by an $L^1$ majorant supplies the clipping tail but does not supply a rate of convergence in measure; keep that cutoff as an explicit additional theorem input.
+
+\paragraph{5. Fubini and probability sorts.}
+Prove the finite partial-integration contraction and instantiate \code{sumQ_exchange}. The contraction gives the output Cauchy bound without a new loss of precision. For the probability sort, implement forest enumeration, leaf elimination, rational coupling validation, and bounded minimization; its correctness proofs use only finite graph and sum invariants. The finite mass-rounding estimate then constructs actual net elements. Extend Lipschitz expectations to the represented transport completion before interpreting formulas. At a quantifier node, use the fixed formula's modulus and the checked finite-minimum stability theorem; apply external induction on the fixed formula syntax. No model-existence axiom is used.
+
+\paragraph{6. Neumann, power series, and derivative evaluation.}
+For a fixed coded algebra, prove the ring and norm laws on valid codes. Reify the exact identities in \code{Neumann.lean} into those operations. With $R^j$ and $S_j$ stored as one recursive state, the invariant records
+$(1-R)S_j=1-R^j$ and the geometric norm bound. The finite tail assertion has three free numerical parameters: starting index $N$, tail length $m$, and requested accuracy $k$; its matrix bounds the corresponding finite sum. The block clock is proved by quantifier-free induction on the two geometric exponents. Horner and doubling use polynomial identities as loop invariants. For the derivative, use ordered words or the insertion-sum recurrence; the quadratic bound is a finite weighted sum of nonnegative terms. Only after these proofs are completed does the common completion interface introduce the semantic function and derivative.
+
+\paragraph{7. Contracting homotopies and cone blocks.}
+The exact finite algebra is already checked in \code{correctedContraction_residual}. Reify it for the fixed core recipes $D,h$ with $D^2=0$. The vector-state invariant given at the end of Section~\ref{sec:chain-repair} keeps the quantified core vector free during induction. Add the finite tail clock and the explicit input diagonal to obtain the map name. Tagged finite direct sums code the mapping cone; elementary block multiplication proves its square-zero law and extracts the three homotopy equations. No homology quotient construction or representative-selection procedure is required.
+
+\subsection{How this joins the actual ProveIt proof calculus}
+
+The intended endpoint is an actual derivation of a fully expanded formula, schematically
+\[
+ []\vdash[\mathrm{PRAAx}]\ 
+ \forall\vec a\,\forall k\bigl(
+   \operatorname{InputContract}(\vec a)\to
+   \operatorname{OutputContract}(\vec a,k)\bigr).
+\]
+For a conditional presentation, unproved presentation laws remain explicit assumptions in the sequent; they must not be hidden in a claim of an unconditional theorem. For a concrete instance, substitute the already proved object derivations for those laws and discharge them by the existing composition rules. The final contract may include universally quantified precision comparisons, but no induction is applied to that whole formula.
+
+The audited repository already supplies a typed realizer-graph frontend, bounded master verification, and object derivations for bounded-syntax compilation~\cite{repo-interfaces}. The new work should be added as providers and clients of those interfaces. It should not replace them with a second generic checker, nor label a host proposition \code{Prf} without constructing the required proof value. The proposed integration order is finite rational laws, weighted-budget verification, represented completion, measure and analytic providers, then the probability/model and homotopy clients.
+
+\subsection{Reproduction and the role of executable examples}
+
+From the package root, \code{python3 verify.py} runs the standard-library exact-arithmetic examples and writes a consolidated receipt. The examples cover the error-budget producer and verifier, moving spikes and Fubini, finite probability laws and moment optimization, convolution and noncommutative analytic evaluation, and the four-dimensional chain complex. Each report uses exact fractions for acceptance tests. Decimal summaries, when present, are display only.
+
+For the Lean project, run \code{lake build} in \path{lean/} with the pinned toolchain. The project contains its own definitions and all local source dependencies. The future object-language integration uses the independently pinned ProveIt sources, which were inspected but are not necessary for the standalone build. The PDF is rebuilt with \code{python3 build_pdf.py} from the package root, or with \code{latexmk -pdf report.tex} from a correctly configured TeX environment using \path{paper/} as the working directory.
+
+The example receipts are regression evidence. They do not certify universal mathematical statements, and the absence of a failed finite example would not close an unproved analytic or object-language obligation. The proof-status ledger records those distinctions claim by claim.

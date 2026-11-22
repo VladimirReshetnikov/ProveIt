@@ -1,0 +1,81 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1.02in,headheight=14pt,footskip=26pt]{geometry}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array,booktabs,xcolor,fancyhdr}
+\usepackage[expansion=false]{microtype}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=teal!50!black,urlcolor=teal!60!black,citecolor=teal!50!black,pdfauthor={OpenAI},pdftitle={Finite presentations and cyclic proof replay in iPRA}]{hyperref}
+\usepackage{titlesec,tikz}
+\definecolor{ink}{HTML}{19374A}\definecolor{accent}{HTML}{237062}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{.65em}{}
+\setlength{\emergencystretch}{2.2em}
+\setcounter{tocdepth}{1}
+\renewcommand{\labelitemi}{\(\bullet\)}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\bit}{\operatorname{bit}}
+\newcommand{\repo}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3ee850b4c2d650cf01263823fd5415963747c5d0/Logic/PrimitiveRecursiveArithmetic/#1}{#2}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\itshape Finite presentations and cyclic proof replay}
+\fancyhead[R]{\small iPRA}\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\raggedbottom
+\begin{document}
+\thispagestyle{plain}
+\noindent{\color{accent}\sffamily\small PRIMITIVE RECURSIVE ARITHMETIC\hfill NOVEMBER 2026}\par
+\vspace{1em}
+\noindent{\huge\bfseries\color{ink} Finite presentations and cyclic\\[2pt] proof replay in iPRA\par}
+\vspace{.55em}
+\noindent{\large Category theory, topology, and local complex analysis\par}
+\vspace{1em}
+\noindent A finite observation of a mathematical object often has several proofs, each requiring different data. We give an arithmetic procedure which, for a finite table of positive rules, finds \emph{every inclusion-minimal set of external assumptions} sufficient for the observation. The rules can refer to each other cyclically. The procedure supplies ranks that turn successful searches into ordinary intuitionistic derivations. A converse on a simple path identifies exactly where a proposed uniform version would require stronger induction.
+
+\medskip
+\noindent The applications include sheafification on finite spaces, coherent lifts in inverse towers, and a decision procedure for rational polyhedral covers. For unions of closed rational boxes we give maps and homotopies to and from the intersection nerve. For the resonant Gauss equation we compute the coefficient that decides whether an independent local solution needs a logarithm, with explicit tail bounds through the second derivative.
+
+\medskip
+\noindent\textbf{Verification.} The archive contains six Lean modules and six exact-arithmetic programs. The replay module constructs ordinary iPRA proof objects. The application chapters pair human-readable arithmetic proofs with checked Lean lemmas and a path to complete object-language derivations.
+
+\tableofcontents
+\newpage
+\section{What an embedding asserts}
+\label{sec:scope}
+We use the repository's ordinary first-order intuitionistic calculus with equality, numerical variables, one symbol for each primitive recursive (PR) definition, the successor axioms, and induction for quantifier-free formulas. A target written $\Gamma\vdash A$ means a derivation in that calculus. The repository implements it by \texttt{Prf PRAAx}. We used revision \texttt{3ee850b4c2d650cf01263823fd5415963747c5d0}. The distinction between archived proposals and integrated object derivations matters here. In particular, bounded-formula reflection, bounded rank induction, proof schedules and finite demand closure already have implementations. The FIBER audit still lists cyclic graph unrolling and application-specific producers as further work. Our cyclic result applies to finite positive rules, and the application sections identify specific producers. See the \repo{README.md}{repository overview}, \repo{Derivations/FIBER-CLAIMS.md}{FIBER audit} and \repo{Derivations/FINITE-DEMAND-CLAIMS.md}{finite-demand audit}.
+
+\subsection{Objects, observations, and logic}
+A presentation specifies numerical parameters $x$, a query $q$, a validity test or hypothesis $D(x)$, and the meaning $A(x,q)$ of a successful observation. For example $q$ may contain two morphism indices, a homological degree, a truncation order, or a precision. A finite proof of $A(x,q)$ may use auxiliary data $w$. One may publish $\exists w\,V(x,q,w)$, a specific PR witness $W(x,q)$ with $V(x,q,W)$, or a guarded implication. These are distinct claims. A proof using several approximations of a single object must establish that their restrictions or estimates agree.
+
+A category with finitely many objects and arrows can be one numerical input with table laws. A tower with infinitely many levels instead has fixed PR symbols for enumeration and projection, with numerical parameters left free. A real number in the analytic interpretation is a specified PR sequence of rational approximations, with a proved error law. One may quantify over a finite table of rational samples, a clocked computation, or parameters to a fixed generator. A diagonal argument rules out a PR evaluator for all PR expressions. Given such an $E(e,n)$, $n\mapsto 1+E(n,n)$ would have an index $d$ with $E(d,d)=1+E(d,d)$. Thus a proof for each specified generator and a single arithmetical assertion about all its numerical inputs are entirely compatible. An unrestricted quantified assertion about all real functions or small categories needs a further interpretation.
+
+We encode finite lists, products, signed integers and positive-denominator rational numbers by naturals. One concrete pairing is $2^a(2b+1)$, with $0$ reserved for the empty list. Decode its exponent-of-two valuation by search bounded by the code, then recover $b$ by division. Cons, length, lookup with defaults and all finite folds follow by PR operations (a decoder may run for the code as a clock). Numerals may grow very rapidly. We require a PR definition and a proof of its stated laws, with no polynomial running-time condition. Malformed inputs can return zero outside a displayed validity guard. A signed rational can use the parts $u-v$ and positive denominator $s+1$. Cross multiplication compares two such codes. An $\mathbb F_2$ vector uses a bit mask.
+
+\paragraph{Induction convention.}
+Fix the syntax of a bounded arithmetic formula $C$ whose bounds are PR terms, possibly depending on earlier variables. Equalities and orders have PR characteristic bits. Compute conjunction by multiplication, disjunction by maximum and negation by bit complementation. For decidable bits implication is tested by $\neg a\lor b$. A bounded universal is the product of its instances, a bounded existential their maximum, with empty values $1$ and $0$. For example, the product over $i<t$ is $1$ precisely if all $t$ factors are $1$. One direction follows by deriving the endpoint and prefix facts from the successor equation by induction on a bit statement, and instantiating at an arbitrary in-range index. Conversely from a supplied universal premise each next factor is $1$, so a QF induction gives product $1$. Bounded search gives the analogous witness for the maximum. Structural recursion in the metatheory establishes $C\leftrightarrow(\bit_C=1)$, including dependent bounds. We use this reflected equation whenever we induct on a finite array property. Quantified hypotheses can be held fixed in the context during QF induction. The repository's \repo{Derivations/Lean/IPRADerivations/Foundations/BoundedSyntaxInduction.lean}{bounded induction module} implements this convention.
+
+\paragraph{Meaning of a finite-precision theorem.}
+The internal content of an error bound for a series is a bound on \emph{every finite tail} beyond a given numerical cutoff. This yields compatible rational outputs with a PR modulus. Convergence or equality of functions in an ambient analytic model is the mathematical reading of these outputs. Likewise our nerve theorem gives matrices and identities, and sheafification gives compatible tuple codes and mutual inverses. Ordinary Lean proofs about mathematical structures help verify the interpretation. A Lean theorem whose conclusion is $\Gamma\vdash A$ supplies different evidence. Section~\ref{sec:replay-guide} records which kind is present for each result.
+
+
+\paragraph{Equality and maps of names.}
+For a rational metric presentation $(D,d)$ with PR distance, call $a$ regular when
+$d(a_i,a_j)\le 2^{-i}+2^{-j}$ for all $i,j$, with all samples in $D$.
+Use fixed PR sample programs with numerical parameters. Define $a\sim b$ by
+$d(a_i,b_j)\le 2^{-i}+2^{-j}$ for every $i,j$. Regularity gives reflexivity, and symmetry follows from that of $d$. For transitivity insert the middle sample $b_t$ between $a_i$ and $c_j$. The bound becomes $2^{-i}+2^{-j}+2^{1-t}$. If the rational distance exceeded $2^{-i}+2^{-j}$ by $r/s>0$ with positive integers $r,s$, taking $t=s+2$ makes $2^{1-t}<1/s\le r/s$, a contradiction. Thus $\sim$ is an equivalence relation, proved at arbitrary fixed outer indices.
+
+For an exactly evaluated rational Lipschitz map $f$ of bound $L$, take the least $h\le 1+\lceil L\rceil$ with $2^h\ge\max(1,L)$ and set $F(a)_p=f(a_{p+h})$. The input estimate multiplied by $L$ gives the output estimate at $p,q$, both for regularity and preservation of $\sim$. If the evaluator contributes error at most $2^{-(p+1)}$, use $p+h+1$ for the input and split the budget in half. Identity respects $\sim$, and composition adds the input shifts. Different safe shifts give equivalent outputs by the cross-index inequality above. In this way a quotient by equality of names can be used externally while each equality proof consists of rational inequalities inside arithmetic. This construction supplies the meaning of the maps on regular names in the box example.
+
+\input{replay}
+\input{atlas}
+\input{category}
+\input{topology}
+\input{complex}
+\input{guide}
+\end{document}

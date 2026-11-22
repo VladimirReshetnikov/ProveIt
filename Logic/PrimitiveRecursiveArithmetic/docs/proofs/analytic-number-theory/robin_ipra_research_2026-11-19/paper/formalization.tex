@@ -1,0 +1,276 @@
+\section{Lean formalization and reuse of ProveIt}
+\label{sec:lean}
+
+\subsection{The locally checked Lean component}
+
+The file \code{lean/RobinCertificateLogic.lean} imports only
+\code{Std}. Its definitions have the following structure:
+\begin{lstlisting}
+structure Checkers where
+  positive : Nat -> Nat -> Bool
+  negative : Nat -> Nat -> Bool
+  badZero : Nat -> Bool
+
+def RobinStrict (c : Checkers) : Prop :=
+  forall n, 5040 < n ->
+    Exists (fun k => c.positive n k = true)
+
+def RHNegative (c : Checkers) : Prop :=
+  forall z, Not (c.badZero z = true)
+\end{lstlisting}
+The shell defines the weak and double-negated forms as well.
+Its assembly theorem,
+\begin{center}
+\code{criterion\_of\_certificate\_transforms},
+\end{center}
+takes four
+selector functions, interval sign incompatibility, and the two
+transformations \eqref{eq:F}--\eqref{eq:R} as explicit parameters.
+Its constructive proof is exactly Theorem~\ref{thm:assembly}.
+
+The file also implements bounded search:
+\begin{align*}
+ \operatorname{any}(p,0)&=p(0),\\
+ \operatorname{any}(p,b+1)&=\operatorname{any}(p,b)\vee p(b+1),\\
+ \operatorname{pick}(p,0)&=0,\\
+ \operatorname{pick}(p,b+1)&=
+ \begin{cases}
+ b+1,&p(b+1)=\mathsf{true},\\
+ \operatorname{pick}(p,b),&p(b+1)=\mathsf{false}.
+ \end{cases}
+\end{align*}
+It proves the two invariants
+\[
+ \operatorname{pick}(p,b)\le b,\qquad
+ \operatorname{any}(p,b)=\mathsf{true}
+ \ \to\ p(\operatorname{pick}(p,b))=\mathsf{true}.
+\]
+After instantiating $p$ with one fixed PR predicate, these are
+quantifier-free induction invariants. In the successor step, the
+decidable Boolean value $p(b+1)$ either gives the new witness or
+reduces the assertion to the previous invariant.
+
+The locally used compiler was Lean 4.32.0. The following eight
+declarations were audited with \code{\#print axioms}:
+\begin{center}
+\begin{tabular}{@{}l@{}}
+\toprule
+\code{strict\_implies\_doubleNeg}\\
+\code{doubleNeg\_implies\_weak}\\
+\code{rhNegative\_stable}\\
+\code{converse\_of\_contrapositive}\\
+\code{criterion\_of\_certificate\_transforms}\\
+\code{zeroGap\_is\_not\_strict}\\
+\code{pickUpTo\_le}\\
+\code{pickUpTo\_correct}\\
+\bottomrule
+\end{tabular}
+\end{center}
+All eight reported no axioms. The file contains no admitted proof,
+custom axiom declaration, classical choice, or native evaluation
+proof shortcut. This is a check of the logical shell, not an
+analytic Robin proof. Even an axiom-free ambient Lean theorem
+need not, merely by that fact, be an iPRA theorem; the specific
+logical and bounded-induction arguments here are what make the
+translation straightforward.
+
+\subsection{What the repository actually provides}
+
+The ProveIt inspection was pinned at commit
+\[
+ \texttt{\small eb8eb6653c85aa44f1e18dd4efa243f41b5a9e98}.
+\]
+The root iPRA README separates the checked proof infrastructure
+from delivered research packets which have not been verified as
+packets \cite{ProveIt}. The relevant full source files and their
+immutable URLs are included under \code{sources/proveit/}.
+These files were read; the complete repository was not rebuilt
+in this task.
+
+\begin{longtable}{@{}p{.33\textwidth}p{.59\textwidth}@{}}
+\toprule
+Source & Reusable content and boundary\\
+\midrule
+\endhead
+\code{PR.lean} &
+The actual PR constructors, term syntax, nonlogical axioms and
+quantifier-free induction of the object theory.\\
+\code{NativeBiInterpretation.lean} &
+A proved equivalence between an existing PRA derivation and its
+native presentation. It transports a proof; it does not supply the
+analytic theorem.\\
+\code{ExponentialTail.lean} &
+Finite, denominator-cleared exponential-tail derivations, with
+an explicit index $2B^2+2B+p+4$. Analytic identification of the
+infinite function is outside that module's stated boundary.\\
+\code{FiniteLogarithm.lean} &
+Finite alternating logarithm polynomials, exact coefficient
+relations, and a derivative residual. The general analytic
+identification remains separate.\\
+\code{Harmonic.lean} &
+A finite arithmetic derivation of $H_{2^{2t}}\ge1+t$.
+It does not itself provide the Euler-constant enclosure proved here.\\
+Zeta functional-equation and general zeta packets &
+Quantitative human arguments and Lean outlines. Their READMEs
+explicitly do not claim completed analytic object derivations.\\
+Zeta-zero \code{ObjectTargets.lean} &
+A \code{Completed} structure requesting contour, nonvanishing,
+symmetry, and tail proofs. No inhabitant supplying those proofs
+is constructed in the inspected file.\\
+RH \code{PAStatement} research note &
+An arithmetic statement project using a Mertens/Littlewood
+criterion. The semantics and equivalence with analytic RH
+are explicitly future work.\\
+\bottomrule
+\end{longtable}
+
+The exact existing transfer endpoint is
+\begin{lstlisting}
+(Gamma |- [PRAAx] phi) <->
+  NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+\end{lstlisting}
+where the display uses ASCII for readability. The actual theorem
+is \code{pra\_iff\_native}. It requires an actual proof on one
+side. Supplying an uninhabited completion record cannot invoke
+it to establish a new theorem.
+
+\subsection{An explicit implementation plan}
+
+The following is a dependency plan for completion. The module names
+are proposed names, not claims of files already built.
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Arithmetic encoding.}
+Instantiate the fixed PR functions for rational arithmetic,
+factorization, $\sigma$, $L_P$, bounded products, interval comparison,
+and bit length in the object syntax. Reuse factor-trace and
+bounded-syntax modules where their exact statements fit.
+Prove each loop invariant by a quantifier-free induction instance.
+
+\item \textbf{Canonical elementary names.}
+Formalize \eqref{eq:logtail}, \eqref{eq:gamma-bound},
+\eqref{eq:exptail}, and the composition bounds.
+For log addition and exponential multiplication, use the finite
+binomial/convolution identities and the explicit tail bounds:
+compare both sides at arbitrary supplied precision, bound the
+finite truncation differences, and clear denominators.
+Do not infer an object identity just from an ambient real identity.
+This creates fixed terms representing $\Pos$ and $\Neg$ and proves
+their incompatibility.
+
+\item \textbf{Finite Robin certificates.}
+Compile the dyadic verification recurrence and its endpoint
+soundness. Replay the included finite range as a closed arithmetic
+calculation, then port the external tangent-row method and its
+large finite startup range. The present CSV alone is insufficient
+for the analytic handoff.
+
+\item \textbf{LCM transfer.}
+Represent $\vartheta$ and $\psi$ as finite sums of log names.
+Prove the finite product identity, the binomial divisibility
+lemma, and the $8/m$ and $4/m$ estimates with supplied precision.
+An input rational excursion gap determines the accuracy needed
+at every use of the identity. This yields a proved transformer
+from a certified excursion to $\Neg(N,k)$.
+
+\item \textbf{Eta and zero certificates.}
+Implement the exact evaluator and the rational polygon checker
+specified in Section~\ref{sec:etacert}. Internalize their soundness,
+argument-principle meaning, completeness under appropriate zero
+data, and reflection. Identify the precise ordinary RH statement
+to which this coding is adequate.
+
+\item \textbf{Weighted explicit formula.}
+Prove finite-height contour identities with rational error budgets;
+separate poles, trivial zeros and counted nontrivial zeros; prove
+the reciprocal-zero tails and the weighted Chebyshev estimates.
+This is a central analytic task, not a routine wrapper lemma.
+Audit whether the negative RH formulation supplies each needed
+positive lower bound or whether the proof must be reorganized.
+
+\item \textbf{Forward estimate and strict margin.}
+Internalize the exponent budget \eqref{eq:budget} and the rational
+coefficient inequalities \eqref{eq:rational-budgets}. Apply
+Proposition~\ref{prop:separation} to get an explicit precision
+for every large integer. Combine with the finite startup proof
+using an arithmetic cutoff.
+
+\item \textbf{Converse analytic input.}
+Internalize the Nicolas--Landau argument through a quantitative
+certificate transformer or a direct stable contradiction,
+as distinguished in Section~\ref{sec:analytic}. The already proved
+finite LCM reduction handles the final arithmetic step.
+
+\item \textbf{Object theorem and presentation transfer.}
+Construct an actual value of
+\[
+ \operatorname{Prf}\ \operatorname{PRAAx}\ []
+              \ \operatorname{RobinEquivalenceSentence}.
+\]
+Only then apply \code{pra\_iff\_native}. If a conservative classical
+route is used instead, first obtain the actual classical PRA
+derivation and then implement the proof transformation of
+Theorem~\ref{thm:transfer}.
+\end{enumerate}
+
+For the intended object sentence, $\RHc$ is a universal closure
+of the negation of the Boolean zero-check term, while $\Rstr$ is
+the universal $n$-closure of a decidable cutoff implication and
+the existential $k$-closure of the positive-check term.
+The equivalence is their conjunction of two implications in the
+existing intuitionistic formula syntax. Thus the endpoint is
+specified without quantifying over a Lean $\RR$ or $\CC$.
+
+No object implementation of steps 5--8 is supplied here. They are
+the substantive outstanding work, and the roadmap does not assert
+that their feasibility has already been proved.
+
+\section{Reproduction and evidence}
+
+From the extracted archive root, the exact finite replay is
+\begin{lstlisting}
+python3 code/robin_certificates.py \
+  --verify certificates/finite_robin_certificates.csv
+\end{lstlisting}
+\Needspace{6\baselineskip}
+To regenerate the certificate table:
+\begin{lstlisting}
+python3 code/robin_certificates.py \
+  --limit 100000 --output certificates
+\end{lstlisting}
+The independent arithmetic audit is
+\begin{lstlisting}
+python3 verification/independent_arithmetic_audit.py
+\end{lstlisting}
+It uses exact \code{Fraction} references rather than the production
+dyadic recurrences. It checked $141$ logarithm cases, an independent
+$m=8192$ Euler-constant enclosure, seven exponential cases, $49$
+signed products and $19$ composed Robin bounds. It also recomputed
+all $99999$ divisor sums by prime-factor geometric products and
+rechecked their signs. The stored JSON records all checks passing.
+
+With Lean 4.32.0 installed, compile from the \code{lean/} directory:
+\begin{lstlisting}
+lean RobinCertificateLogic.lean
+\end{lstlisting}
+The companion \code{lean-toolchain} pins that compiler. The archive
+does not require Mathlib for this checked component.
+The full external classical project requires a different pinned
+toolchain and dependencies; it was inspected as source, not rebuilt.
+
+Rebuild the report from \code{paper/}:
+\begin{lstlisting}
+pdflatex -halt-on-error report.tex
+pdflatex -halt-on-error report.tex
+\end{lstlisting}
+No external bibliography processor is needed. The delivered PDF
+was compiled and visually inspected. A file inventory with
+SHA-256 digests is included for the substantive archive contents.
+
+\paragraph{Final status.}
+The archive provides reusable constructive mathematics, exact
+finite evidence and a checked logical core. It does not contain
+a completed $\ipra$ proof of Robin's equivalence. In particular
+the absent analytic derivations have not been replaced by axioms,
+unverified completeness fields, or an assertion that computability
+alone establishes primitive-recursive provability.

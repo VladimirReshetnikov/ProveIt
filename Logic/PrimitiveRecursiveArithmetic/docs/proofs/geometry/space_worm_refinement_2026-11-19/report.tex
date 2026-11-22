@@ -1,0 +1,64 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,graphicx,xcolor,booktabs,microtype}
+\usepackage[margin=.9in,top=.83in,bottom=.88in,headheight=14pt]{geometry}
+\usepackage{fancyhdr,enumitem,titlesec}
+\usepackage[colorlinks=true,allcolors=teal!63!black]{hyperref}
+\definecolor{ink}{HTML}{183747}
+\definecolor{tealink}{HTML}{126F70}
+\definecolor{paperblue}{HTML}{EAF3F1}
+\titleformat{\section}{\sffamily\Large\bfseries\color{ink}}{\thesection}{.65em}{}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4.5pt plus 1pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\setlength{\emergencystretch}{1.5em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\small\color{ink}Universal convex covers of space curves}
+\fancyfoot[R]{\sffamily\small\color{ink}\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\hypersetup{pdftitle={How small a convex body covers every unit space curve?},pdfauthor={Research note for Vladimir Reshetnikov}}
+\newcommand{\RR}{\mathbb R}\DeclareMathOperator{\vol}{vol}
+\newcommand{\lowerresult}{0.018975}
+\begin{document}
+\thispagestyle{plain}
+{\sffamily\color{tealink}\small CONVEX GEOMETRY\hfill 19 NOVEMBER 2026\par}
+\vspace{9pt}
+{\sffamily\bfseries\color{ink}\fontsize{26}{30}\selectfont How small a convex body covers\\ every unit space curve?\par}
+\vspace{5pt}
+Let $V_3$ be the least volume of a compact convex body in $\RR^3$ that can contain every smooth unit-length curve after a rotation and a translation chosen for that curve. Endpoints are free. The following bounds improve both estimates in the supplied reports.
+\begin{center}
+\setlength{\fboxsep}{9pt}\colorbox{paperblue}{\makebox[.80\linewidth]{\large $\displaystyle \lowerresult < V_3 < 0.052956040$}}
+\end{center}
+The upper bound is the volume bound for an explicit convex body. The lower bound uses four compulsory objects, including a space curve whose convex hull contains a ball. A minimizing body exists. The shape of a minimizer and a closed-form evaluation of $V_3$ remain open here. Section~4 gives $V_3$ as a convergent series of finite rational calculations, with an explicit remainder bound.
+\begin{center}
+\includegraphics[width=.96\linewidth]{figures/construction.pdf}
+\end{center}
+{\small\sffamily\color{ink}The extra point $E$ allows the tall enclosing prisms to lie on their sides. Only one of the original four curved side faces contributes extra volume.}
+\medskip
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+&Lower bound&Upper bound\\\midrule
+First report, \texttt{space\_worm} & $0.0187328127\ldots$ & $0.0542670928\ldots$\\
+Second report, published inputs & $3/220$ & $\pi/54$\\
+Second report, with Keller's quadrilateral & $3/220$ & $0.0547404972\ldots$\\
+This paper, certified decimals & $\lowerresult$ & $0.052956040$\\\bottomrule
+\end{tabular}
+\end{center}
+\clearpage
+\section{Curves, compactness, and the two earlier bounds}
+A curve is an ordered path, with retracing counted in its length. Containment concerns its image, including its endpoints. A rigid motion here has the form $x\mapsto Rx+t$ with $R\in SO(3)$. All upper-bound placements use proper rotations. Length $L>0$ multiplies the answer by $L^3$, by dilating the curves and the container.
+\paragraph{Why smooth curves force the polygonal tests.}
+Every rectifiable unit path can be approximated uniformly, up to reparametrization, by regular smooth paths of length exactly one. Here are details relevant to the lower bounds. Take inscribed polygonal paths whose meshes tend to zero and whose lengths tend to one. Perturb their vertices by amounts small enough to preserve both limits and to make all chords nonzero and consecutive chords nonopposite. Parametrize each polygon by arclength and continue its first and last edges linearly just beyond the endpoints. Convolve with a nonnegative smooth kernel of integral one supported on an interval shorter than half the smallest edge length. Near a corner the derivative is a convex combination of its two adjacent unit tangents, hence never zero. Elsewhere the derivative is the original tangent. As the kernel support tends to zero, both the positions and the lengths converge to those of the polygon. Dilating each smoothed arc about its start to give it length exactly one preserves convergence. If one also requires simple curves, choose the perturbed polygon in general position in three dimensions so that nonadjacent edges are disjoint, and round the corners inside disjoint balls.
+For each approximant anchored at the origin, a fitting motion has its translation in the compact container and its rotation in the compact group $SO(3)$. A convergent subsequence of motions therefore places the original path in the closed container. A shorter path can first be extended to length one. This also explains why closing the two endpoints is an additional restriction on the problem.
+\paragraph{Attainment.}
+Let $T$ be the tetrahedron with successive vertices $0$, $e_1/3$, $(e_1+e_2)/3$, and $(e_1+e_2+e_3)/3$, where the $e_i$ are the coordinate unit vectors. Its three-edge path has length one. A universal body contains a copy of $T$, hence a fixed positive-radius ball after a rigid motion. Write its radius as $r$ and fix its center $o$. For any $x$ in the body, the cone from $x$ to the radius-$r$ disk through $o$ perpendicular to $x-o$ has volume $\pi r^2\|x-o\|/3$. Thus any minimizing sequence of bounded volumes, normalized around this ball, lies in a common bounded region. The radius-$1/2$ ball is already universal, since the arclength midpoint is within distance $1/2$ of the entire path.
+By Blaschke selection a subsequence has a Hausdorff limit $K_*$. Volume converges, for a Hausdorff error $\delta$ puts either body inside the other's dilation about $o$ by $1+\delta/r$. For each fixed curve a further subsequence of its rigid placements converges and places it in $K_*$. Thus $K_*$ is universal and attains the infimum.
+\paragraph{What changes from the supplied reports.}
+H\aa stad, Linusson and W\"astlund studied this spatial covering problem in \cite{hlw}. Both reports reduce a spatial curve to a right prism using alternating support planes. The second keeps the entire family of heights, giving a volume factor $2/9$ times the area of a planar cover. With the published sector of \cite{sector}, the upper bound is $\pi/54$. Its four-link lower witness has minimum projected area $9/220$, which gives its lower bound $3/220$ by the fiber inequality below. The first cuts the family at height $4/13$ and uses a segment and two width tests to obtain its stronger interval. Here the quadrilateral's actual side directions allow a lower cut, and a fourth test constrains the surface area of every admissible body.
+\clearpage
+\input{sections/upper}
+\clearpage
+\input{sections/lower}
+\input{sections/series}
+\input{sections/references}
+\end{document}

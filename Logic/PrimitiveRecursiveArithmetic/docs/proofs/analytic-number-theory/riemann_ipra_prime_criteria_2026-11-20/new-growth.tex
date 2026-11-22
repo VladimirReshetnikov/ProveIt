@@ -1,0 +1,80 @@
+\section{Liouville sums and convolution along perfect powers}\label{sec:powerdivisor}
+The Möbius function vanishes at every multiple of a prime square. The Liouville function
+$\lambda(n)=(-1)^{\Omega(n)}$ takes a nonzero sign at every positive integer, where
+$\Omega(n)$ counts prime factors with multiplicity. Despite this difference, either sequence gives the same constructive square-root cancellation criterion, including uniform cancellation in reduced residue classes. An entire family of such replacements works with one growth witness.
+
+\paragraph{The four input families.}
+For RH use $a(n)=\mu(n)$. For progression GRH use the same coefficients and restrict sums to $n\equiv b\pmod q$, with $q\ge1$, $0\le b<q$, $(q,b)=1$. For cyclotomic GRH and Dedekind ERH use the signed reciprocal coefficients $a_F(n)$ described in Section~\ref{sec:matrices}, with $F=X^m-1$ and arbitrary monic $F$ of positive degree, respectively. We write $A(N)$ for the corresponding prefix and $A(0)=0$. Its growth statement requests, for every $r\ge1$, an integer $c$ with
+\[
+             |A(N)|^{2r}\le c N^{r+1}\quad(N\ge0).
+\]
+The progression constant precedes $q,b$. For the polynomial families the polynomial precedes the constant.
+
+\begin{theorem}\label{thm:powerdivisor}
+Fix any $h\ge2$. Replace $a$ everywhere by the integers
+\[
+   b_h(n)=\sum_{d^h\mid n}a(n/d^h)\qquad(n\ge1),
+\]
+and denote their corresponding prefixes by $B_h$. For each of the four families the growth statement is equivalent to the statement for $B_h$. It is also equivalent to the single sentence in which the same output constant works for every $h\ge2$. Both witness transformations take the input witness $c$ at $2r$ to
+\[
+                       C_r(c)=(c+1)(8r)^{2r}
+\]
+at $r$. This includes uniformity over all reduced progressions when that row is used.
+\end{theorem}
+
+\begin{proof}
+First ignore residue conditions. At a finite cutoff, collecting the pairs $(d,m)$ with $d^h m\le N$ gives
+\[
+ B_h(N)=\sum_{d=1}^N A(\lfloor N/d^h\rfloor),\qquad
+ A(N)=\sum_{d=1}^N \mu(d)B_h(\lfloor N/d^h\rfloor).
+\]
+For the second identity, substitute the first into the right side, use
+$\lfloor\lfloor N/d^h\rfloor/e^h\rfloor=\lfloor N/(de)^h\rfloor$, and group pairs by $s=de$.
+The coefficient of $A(\lfloor N/s^h\rfloor)$ is
+$\sum_{d\mid s}\mu(d)=[s=1]$. Indeed the squarefree divisors are the subsets of the distinct prime factors, and for $s>1$ toggling its least prime factor pairs opposite signs. Terms with $s^h>N$ vanish. This proves finite inversion.
+
+For residues, a summand $d^h m\equiv b\pmod q$ with reduced $b$ forces $(d,q)=1$.
+For such $d$, find the unique representative $b_d$ with
+$d^h b_d\equiv b\pmod q$ by testing the residues $0,\ldots,q-1$. Multiplication by $d^h$ is a permutation, and $b_d$ is again reduced. For $q=1$ the representative is always zero.
+The forward formula now uses $A_{q,b_d}$ at its $d$th term and skips the nonunits. The reverse formula uses $\mu(d)B_{h,q,b_d}$. To verify inversion, a product $s=de$ is a unit exactly when both factors are units, and the residue selected in two steps is $b_s$. Thus every surviving coefficient reduces to the same divisor sum as before. In both directions the input bound applies to the index chosen at each term because its constant precedes all residue choices.
+
+It remains to bound either signed sum. Write its $d$th term as $t_d$, set
+$m_d=\lfloor N/d^h\rfloor$ and use $t_d=0$ at an excluded residue.
+Since the kernel has absolute value at most one, the bound at $2r$ gives
+$|t_d|^{4r}\le c m_d^{2r+1}$. For $N\ge1$ put $X=\max_{1\le d\le N} d|t_d|$.
+As $d^2m_d\le N$,
+\[
+   (d|t_d|)^{4r}
+   \le c d^{4r}m_d^{2r+1}
+   \le c(d^2m_d)^{2r+1}
+   \le c N^{2r+1}.
+\]
+It follows that $X^{4r}\le cN^{2r+1}$. The sum of the absolute values up to $2^j$ is at most $(j+1)X$, extending the sequence by zeros past $N$. Indeed the first term is bounded by $X$. In each subsequent block $2^j<d\le2^{j+1}$, every term satisfies $2^j|t_d|\le X$ and there are $2^j$ terms. Add those inequalities and cancel the positive factor $2^j$. If $\ell=\lfloor\log_2 N\rfloor$, this gives $|\sum t_d|\le (\ell+2)X$.
+
+For every $k\ge1$, write $\ell=kz+s$ with $s<k$. Since $z+1\le2^z$, we have $\ell+2\le2k(z+1)\le2k\,2^z$. Raising to the $k$th power and using $kz\le\ell$ yields
+\[
+                       (\ell+2)^k\le (2k)^k N.
+\]
+Taking $k=4r$ therefore bounds $|\sum t_d|^{4r}$ by $c(8r)^{4r}N^{2r+2}$. Comparison with the square of $C_r(c)N^{r+1}$ proves the assertion. The empty cutoff is immediate. The same $C_r(c)$ works for every $h$. Conversely a uniform-power hypothesis can be specialized to $h=2$ before applying inversion.
+
+All sums, maxima, quotient tests, parity calculations and powers in these arguments are primitive recursive. An invariant asserting a bound for every index below a finite cutoff can be expressed as the equality of a bounded-product test to one. Reindexing the double sums uses finite pairs and a bounded sum over each product fiber. The prime-factor toggling proof uses the least prime divisor found by bounded search. These arguments give quantifier-free induction proofs with the displayed parameters, followed by intuitionistic introduction and elimination of the outer quantifiers.
+\end{proof}
+
+\paragraph{What is being counted.}
+For the rational coefficient, factor the divisor sum at a prime $p^e$. The only surviving quotients have $p$-adic exponent 0 or 1. Consequently
+\[
+ b_h(p^e)=
+ \begin{cases}
+  +1 & e\equiv0\pmod h,\\
+  -1 & e\equiv1\pmod h,\\
+  0 & \text{otherwise}.
+ \end{cases}
+\]
+Distinct prime powers contribute independently. For $h=2$ these factors multiply to $(-1)^{\Omega(n)}$. For $h=3$ the coefficient at $4$ vanishes, at $8$ it is $+1$, and at $16$ it is $-1$. At cutoff $10$, $M(10)=-1$ whereas $\sum_{n\le 10}\lambda(n)=0$; the square-divisor identity reads $M(10)+M(2)+M(1)=0$. The reduced classes $1,2$ modulo $3$ give Liouville prefixes $2,-3$ respectively at the same cutoff.
+For a polynomial $F$, the local coefficient sequence arises from
+$U_{F,p}(T)/(1-T^h)$, with $U_{F,p}$ as in Appendix~\ref{sec:dedekind}. This formula retains every exceptional local factor used by the arithmetic input. It follows by multiplying a polynomial by the formal series $1+T^h+T^{2h}+\cdots$ and needs only the terms through the tested exponent.
+
+\paragraph{Lean coverage.}
+\code{PowerDivisorSyntax.statement} constructs the closed ProveIt formulas. The option \code{some j} fixes $h=j+2$ and \code{none} places $h$ after the constant. The optional direct implementation uses the prime-exponent rule for the rational and progression rows.
+The lemma \code{power_divisor_transfer} proves the numerical estimate with arbitrary signed terms and cutoffs. The lemma \code{act_mul} checks the finite divisor regrouping for arbitrary integer arithmetic functions.
+\code{growth_iff} and \code{uniform_growth_iff} prove both directions for every integer sequence $A$ with $A(0)=0$ on the unmasked prefixes, using Mathlib's Möbius function and its convolution identity. The theorem \code{mertens_iff_liouville} checks the equivalence for Mathlib's actual Möbius and Liouville sums. Its proof groups the lattice pairs $d^2m=n$ and shows by uniqueness of prime valuations modulo two that exactly one quotient is squarefree. The computation \code{check_power_divisors.py} independently compares the direct local factors and both progression transforms at $0\le N\le64$, $1\le q\le9$ and $2\le h\le6$. The residue transport and the identification of the compiled coefficient programs with these sums are proved above on paper. These analytic interpretations inherit the classical bridges for the respective Mertens families.

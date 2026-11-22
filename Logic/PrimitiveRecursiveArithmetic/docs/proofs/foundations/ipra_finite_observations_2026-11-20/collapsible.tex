@@ -1,0 +1,201 @@
+\subsection{Producing a homotopy inverse from collapsible intersections}
+\label{sec:collapse-nerve}
+
+The linear contraction in Lemma~\ref{lem:contraction-producer} fills
+chains. A geometric contraction allows one to fill maps, which gives a
+stronger conclusion for a decidable class of covers. Use the subcomplex
+cover $K=\bigcup_i K_i$, intersections $K_I$, and nerve $N$ of
+Section~\ref{sec:nerve}. A legal elementary collapse removes a pair
+$(\sigma,\tau)$, where $\sigma$ is nonempty, $\tau=\sigma\cup\{v\}$
+for one new vertex $v$, and $\tau$ is the only face strictly containing
+$\sigma$ in the current complex. Call a complex collapsible if a finite
+sequence of such removals leaves a single vertex.
+
+\begin{theorem}\label{thm:collapse-nerve}
+There is a primitive-recursive test whether every nonempty $K_I$ is
+collapsible. On success it produces rational evaluators with PR moduli
+for maps $|K|\rightleftarrows |N|$ and homotopies from both composites to
+their respective identities. On failure it identifies an intersection
+without a collapse sequence of the indicated type.
+\end{theorem}
+\begin{proof}
+\emph{Local production.}
+If an intersection has $S$ nonempty faces, each move removes two.
+Enumerate words of length at most $S$ over at most $S^2$ possible
+pairs, check each move in its current face table, and test the final
+vertex condition. The number of words is at most $(1+S^2)^{S+1}$.
+This search includes every successful collapse sequence. Perform it on
+each of the at most $2^r-1$ nonempty index sets, omitting empty
+intersections. An unsuccessful search excludes collapsibility for this
+triangulation; a different triangulation or a different contraction
+can have different certificates.
+
+One elementary move supplies an actual deformation to the remaining
+subcomplex. For barycentric coordinates $x$ in the current complex put
+$m(x)=\min_{j\in\sigma}x_j$. At time $t$, subtract $t m(x)$ from each
+coordinate in $\sigma$ and add $|\sigma|t m(x)$ to the coordinate $v$.
+If $m(x)>0$, the support contains $\sigma$, so it lies in $\tau$.
+The altered point stays in that simplex, with nonnegative coordinates
+of sum one. At $t=1$ at least one coordinate in $\sigma$ vanishes. If
+the input lies in the remaining subcomplex its support misses a vertex
+of $\sigma$, so the entire motion fixes it. These assertions also cover
+the case where $\sigma$ is a vertex. In the sup norm on both coordinates
+and time, the move has Lipschitz bound $2|\sigma|+1$: the minimum changes
+by at most the coordinate error, and multiplication by $t\in[0,1]$
+adds at most the time error.
+
+If a sequence has length $s$, apply its moves in order at respective
+times $t_j=\min(1,\max(0,st-j))$, for $0\le j<s$.
+All preceding moves are complete whenever a move is active. Inactive
+moves have coefficient zero in the same coordinate formula. This
+constructs a rational contraction $H_I(x,t)$ from identity to its
+terminal vertex. For input on at most $v_0$ vertices, a common
+Lipschitz bound in the product sup norm is obtained by $B_0=1$,
+$B_{j+1}=(2v_0+1)(B_j+s+1)$, taking $B_s$ at the end. A zero-length
+sequence occurs on a single vertex and uses the identity there.
+
+\emph{Extension of maps in nested carriers.}
+Here a carrier for a simplex $e$ of a finite complex $L$ is a
+subcomplex $C(e)$ of the target with $C(e')\subseteq C(e)$ for every
+nonempty face $e'$ of $e$. Suppose each $C(e)$ comes with a rational
+contraction $H_e$ from identity to a specified point and with a Lipschitz
+bound. A map already defined on a subcomplex, with restrictions Lipschitz
+and carried simplexwise, extends constructively over $L$. We describe
+the construction because it supplies the uniformity needed in iPRA.
+
+Initialize missing vertices at the contraction endpoints. For a missing
+simplex with $n\ge2$ vertices the entire boundary has already been mapped
+into $C(e)$. Write its map as $b$ and suppose its restrictions to facets
+have Lipschitz bound $L_0\ge1$. The whole boundary has bound $2nL_0$
+in barycentric sup norm. Indeed, if rational points $x,y$ have distance
+$\delta$ with $n\delta\ge1$, all target coordinates lie in $[0,1]$.
+Otherwise their supports meet: the mass outside the common support is at
+most $n\delta$. Form $z$ by taking coordinatewise minima and moving
+the remaining mass, at most $n\delta$, to any common vertex.
+Both $x,z$ lie in one source facet and $y,z$ in another;
+$\|x-z\|_\infty,\|y-z\|_\infty\le n\delta$.
+Agreement of the facet maps on their common face yields the bound.
+The same argument glues simplexwise Lipschitz bounds over any finite
+source complex, using its total number of vertices.
+
+Write $c=(1/n,\ldots,1/n)$ and
+$u(x)=\max_i(1-n x_i)$. It ranges from $0$ at $c$ to $1$ on the
+boundary. For $u>1/2$ put $y=c+(x-c)/u$; the choice of $u$ ensures
+that the coordinates of $y$ are nonnegative, sum to one, and include
+a zero. Extend by
+\[
+  E(x)=
+  \begin{cases}
+    H_e(b(y),2(1-u)),&u>1/2,\\
+    H_e(\text{endpoint},1),&u\le1/2.
+  \end{cases}
+\]
+This agrees with $b$ at $u=1$ and is constant on the inner half-sized
+simplex. For two outer inputs of distance $\delta$, their radial
+parameters differ by at most $n\delta$, their inverses by at most
+$4n\delta$, and the boundary arguments differ by at most
+$(2+4n)\delta$. At an inner/outer pair, compare the outer expression
+with $H_e(b(y),1)$ using the same outer boundary argument; the time
+difference is at most $2n\delta$. Thus, if $B$ bounds the contraction,
+\[
+ B\bigl[2nL_0(2+4n)+2n+1\bigr]
+\]
+bounds the extension in all cases. At a rational boundary argument one
+may evaluate any least indexed facet containing it, since the facet
+maps agree there. The threshold comparison takes place on rational
+samples. The displayed modulus extends the result to names. Visiting
+simplices in increasing dimension proves the extension assertion.
+
+The same construction gives a carried homotopy between two carried maps,
+with known Lipschitz bounds, by extending their prescribed values at
+the two ends of a cylinder. To make the cylinder data explicit, order
+the vertices of $L$ once. For a simplex on $x_0<\cdots<x_d$ triangulate
+its cylinder with the simplices
+\[
+ (x_0,0),\ldots,(x_j,0),(x_j,1),\ldots,(x_d,1)
+ \qquad(0\le j\le d)
+\]
+and their faces. The assignment restricts compatibly on faces. The
+carrier of a cylinder simplex is $C(e)$ for its projected source face
+$e$. The identification of the product with this triangulation splits
+the ordered barycentric masses at total mass $1-t$: assign the initial
+mass to time-zero vertices and the remainder to time-one vertices,
+using the $b_i$ formula in Theorem~\ref{thm:nerve-pl}. Its support
+is contained in one displayed simplex. The inverse adds the two
+coordinates at each source vertex and takes the total top mass as time.
+Both operations have explicit Lipschitz bounds by finite summation and
+minimum. Thus the extension produces a homotopy with the stated
+endpoints also across every shared face.
+
+\emph{The two comparison maps.}
+For a face $\sigma$ of $K$, put $F(\sigma)=\{i:\sigma\in K_i\}$.
+This is a nerve face and $F$ reverses inclusion, giving a simplicial
+map $F:|\operatorname{sd}K|\to|\operatorname{sd}N|$ by accumulating
+weights. Identify subdivisions with their originals by the rational
+coordinate formulas of Theorem~\ref{thm:nerve-pl}. To construct
+$G:|\operatorname{sd}N|\to |K|$, give a chain
+$e=(I_0\subsetneq\cdots\subsetneq I_d)$ the carrier $K_{I_0}$.
+Removing its initial vertex can only shrink the carrier. Apply the
+extension just proved, starting with its chosen vertices. In particular
+$G(e)\subseteq |K_{I_0}|$, with $G(e)$ here denoting the image of
+the whole geometric simplex.
+
+For the composite $GF$, a source chain
+$\sigma_0\subsetneq\cdots\subsetneq\sigma_d$ has carrier
+$K_{F(\sigma_d)}$. Both its identity image inside $\sigma_d$ and the
+image under $GF$ lie there: all $F(\sigma_j)$ contain $F(\sigma_d)$,
+and the image of the entire chain is a face of the reverse chain with
+least element $F(\sigma_d)$. These carriers are nested on faces and
+have the produced contractions. The cylinder construction gives the
+first homotopy.
+
+For $FG$ use the order complex of the poset of all nerve faces
+containing $I_0$ as carrier for $e$. It contracts to the vertex $I_0$
+by $(1-t)x+t\mathbf e_{I_0}$: adjoining the least element to any chain
+still gives a chain. Its Lipschitz bound is at most three. The identity
+is carried there. Every point of $|K_{I_0}|$, when expressed in
+subdivision coordinates, has its positively weighted faces $\sigma$
+in $K_{I_0}$. For rational points this follows from the explicit
+coordinate formula: each such $\sigma$ is a subset of the point's
+support. Thus $F(\sigma)\supseteq I_0$, and $FG$ is carried there too.
+Apply the cylinder construction again. All verifications on rational
+points pass to names with the prescribed moduli and the resulting
+uniform equality estimates.
+
+Finally, one may bound the number of subdivision vertices by
+$D=\max(1,2^{v_0},2^r)$ and the number of simplices needed in any
+one cylinder by $2^{2D}$. At each inductive stage take the maximum
+of the preceding bound and the displayed extension bound over the
+finite list, then proceed to the next dimension. A rational point
+evaluation follows at most one descending face chain per extension;
+each step uses a bounded facet scan, rational arithmetic and a
+contraction with a previously bounded number of moves. The successive
+constructions of $G$, the endpoint composites and the two homotopies
+have fixed nesting depth as constructions. Table enumeration, the
+dimension recurrence for the Lipschitz constants and these evaluation
+clocks are PR. An output tolerance $2^{-k}$ is obtained by evaluating
+a rational input sample to tolerance $2^{-k}/(2L)$ for the resulting
+bound $L\ge1$. Empty realizations use the empty maps. This proves
+the claim for the represented spaces.
+\end{proof}
+
+In the hexagon example each two-edge arc collapses by removing its
+two outer vertices with their incident edges, leaving its middle vertex.
+Each nonempty pairwise intersection already consists of one vertex.
+The theorem therefore upgrades the computed homology transfer for that
+cover to a homotopy equivalence with the triangular nerve.
+
+For Lean, add to the chain-comparison targets three independent
+finite kernels: the free-face test and min-coordinate collapse, the
+collar extension with its two cases, and the cylinder incidence list.
+Record the extension invariant as agreement on previously processed
+faces, membership in the assigned carrier, and the displayed Lipschitz
+estimate. For an object proof, keep the two input sample points and the
+requested accuracy as parameters. For each fixed construction, carry the
+invariant through the descending evaluator path and its bounded table
+lookups; a finite trace records all rationals and comparisons used in
+both evaluations. Equivalently, bound their codes in advance by iterating
+a majorant for one rational operation through the PR operation clock,
+then Booleanize the invariant for all such subcalls at each depth.
+The geometric maps and homotopies in this section are proved on paper;
+the supplied \texttt{ElementaryCollapse.lean} checks mass preservation, nonnegativity, the free-face endpoint, and the fixed-wall property of the local deformation. The carrier extensions and their assembly remain deep formalization targets.

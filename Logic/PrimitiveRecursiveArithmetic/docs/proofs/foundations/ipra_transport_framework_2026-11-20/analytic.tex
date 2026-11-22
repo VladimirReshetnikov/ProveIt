@@ -1,0 +1,326 @@
+\section{Resonance at a regular singular point}
+\label{sec:resonance}
+
+The hypergeometric packet constructs a nonresonant connection formula. Its
+remark on resonant connection formulas leaves a uniform treatment of integral
+exponent differences open. Two gamma terms can each diverge in a parameter
+limit, even when their sum has a well-behaved logarithmic expansion. We
+construct the two local solutions directly. The classical comparison is
+NIST DLMF, \S15.10(i), equations (15.10.8)--(15.10.10) and part (d);
+the construction below supplies uniform numerical bounds for the
+iPRA interpretation.\footnote{\url{https://dlmf.nist.gov/15.10.i}}
+The same finite operation works
+whenever a known solution is a monomial times a power-series unit and the
+Wronskian has that form as well.
+
+Write $K=\mathbb Q(i)$ and $|x+iy|_1=|x|+|y|$. We use $|\cdot|_1$ for
+all the estimates below. A coefficient array is computed only through its
+requested degree. Products of arrays use truncated convolution. For
+$J\ge0$ and $R>0$ put
+\[
+  \|v\|_{J,R}=\sum_{j=0}^J |v_j|_1R^j .
+\]
+Truncated convolution has norm at most the product of the two norms: expand
+the two nonnegative sums and retain the pairs with index sum at most $J$.
+
+\begin{lemma}[Primitive of a Laurent series with one finite principal part]
+\label{lem:res-primitive}
+Suppose every prefix of $g$ has $\|g\|_{J,R}\le M$. For $k\in\mathbb N$,
+the expression
+\[
+ H(t)=g_k\log t+
+ \sum_{\substack{j\ge0\\j\ne k}}
+       \frac{g_j}{j-k}t^{j-k}
+\]
+gives a primitive of $t^{-k-1}g(t)$ on a named logarithm chart with
+$0<|t|_1\le R/2$. Keeping $j\le k+N$ gives error at most
+$MR^{-k}2^{-N-1}$. The logarithm is part of the exact expression even at
+cutoff $N=0$.
+\end{lemma}
+\begin{proof}
+Every omitted exponent is positive. For every subsequent finite tail,
+multiply and divide its terms by $R^j$, use $1/(j-k)\le1$, and bound
+$(|t|_1/R)^{j-k}$ by $2^{-N-1}$. The resulting bound is independent of
+the second cutoff. Formal differentiation sends the exceptional summand to
+$g_k/t$, and sends every other summand to $g_jt^{j-k-1}$. At a requested
+point the negative powers are finite and require a supplied apartness
+bound. Derivatives of the positive tail converge with explicit clocks too:
+the $d$th derivative, $d=1,2$, costs a factor at most
+$R^{-d}2^d(j-k)^d$ against the bound $R^{-k}2^{-(j-k)}$ for
+$j-k\ge d$. The elementary bound $n^2\le 64\,2^{\lfloor n/2\rfloor}$
+for $n\ge1$ follows by checking $1\le n\le8$ and stepping by two.
+Thus twice the requested bit precision plus an integer offset for the
+displayed constants suffices. Termwise differentiation here can equivalently
+be read as a finite Taylor estimate: for polynomials expand
+$(t+h)^n-t^n-n t^{n-1}h$ by the binomial identity and bound the remainder
+by $n(n-1)|h|_1^2(|t|_1+|h|_1)^{n-2}/2$. On a slightly larger disk
+(e.g. $3R/4$) the weighted derivative tails still decay geometrically
+(group four powers to use $(3/4)^4<1/2$). The rational inequalities pass
+to names at any prescribed precision.
+\end{proof}
+
+\subsection{A basis uniform in the signed exponent difference}
+
+Fix Gaussian rationals $a,b,c$ and a signed integer $m=c-a-b$. Use
+$t=1-z$, $k=|m|$, $s=\min(0,m)$ and $r=\max(0,m)$. The following formulas
+also work when upper parameters terminate. Let $h_0=B_0=u_0=1$, and set
+\[
+\begin{aligned}
+ h_{j+1}&=h_j\frac{(a+r+j)(b+r+j)}{(j+1)(j+1+k)},&
+ B_{j+1}&=B_j\frac{c+j}{j+1},\\
+ u_n&=-\sum_{j=1}^n h_j u_{n-j}\quad(n>0),&
+ g&=B*u*u .
+\end{aligned}
+\]
+Here $B$ is the series for $(1-t)^{-c}$ at zero. This notation can be
+defined by its displayed recurrence, equivalently by $(1-t)B'=cB$ and
+$B(0)=1$. Use the rational radius
+\[
+ R=\big[4\max\{1,(1+|a+r|_1)(1+|b+r|_1),1+|c|_1\}\big]^{-1}.
+\]
+
+\begin{theorem}[Local resonant solutions and logarithmic coefficient]
+\label{thm:res-gauss}
+On $0<|t|_1\le R/2$ with a specified logarithm branch, a fundamental pair
+for Gauss's equation in the coordinate $t$ is
+\[
+ U=t^r h(t),\qquad V=U H(t),
+ \qquad U V'-U' V=t^{m-1} B(t),
+\]
+where $H$ is given by Lemma~\ref{lem:res-primitive}. All coefficient and
+tail algorithms are uniform primitive recursive functions of the rational
+parameters, the signed resonance and the requested precision, with the
+point and branch guards described below. With $(x)_k=\prod_{j<k}(x+j)$
+and $(x)_0=1$, the logarithmic coefficient in $H$ is
+\[
+ \boxed{\displaystyle
+ g_k=\frac{(-1)^k(a+s)_k(b+s)_k}{(k!)^2}.}
+\]
+Consequently a change of logarithm by $2\pi i$ sends $V$ to
+$V+2\pi i g_k U$. For rational parameters this also decides exactly when
+the logarithmic term disappears.
+\end{theorem}
+
+\begin{proof}
+A substitution in the equation gives
+\[
+ L y=t(1-t)y''+[1-m-(a+b+1)t]y'-aby=0 .
+\]
+Inserting $t^e v(t)$ and dividing by $t^e$ contributes a term
+$e(e-m)v/t$. For $e=r$ or $s$ this vanishes. The resulting Gauss operator
+has upper parameters $a+e,b+e$ and derivative constant $1-m+2e$.
+For $e=r$ this constant is $1+k$. Coefficient comparison gives exactly
+the recurrence for $h$ above, hence $LU=0$.
+
+For every prefix the coefficient ratios bound
+$|h_j|_1 R^j, |B_j|_1 R^j\le 4^{-j}$. For example
+$|a+r+j|_1\le(1+|a+r|_1)(j+1)$, and the denominator in the recurrence
+for $h$ is at least $(j+1)^2$. Therefore $\|h-1\|_{J,R}\le1/3$.
+In the algebra of polynomials modulo $t^{J+1}$,
+$u=\sum_{d=0}^{J}(1-h)^d$, since the error term has degree at least
+$J+1$. This proves the displayed inverse recurrence,
+$\|u\|_{J,R}\le3/2$ and $\|g\|_{J,R}\le(4/3)(3/2)^2=3$.
+Replacing $c$ by $-c$ gives an array $B_{-c}$ with the same bound
+$4/3$. The formal derivative of $B B_{-c}$ is zero and its constant is
+one, by the first-order equations and cancellation of $1-t$ in truncated
+coefficient calculations. Thus $B^{-1}=B_{-c}$.
+
+In the normalized ODE the coefficient of $y'$ is
+$p=(1-m)/t-c/(1-t)$. Consequently $W=t^{m-1}B$ satisfies $W'=-pW$.
+From $r-s=k$ and $r+s=m$ we get $W/U^2=t^{-k-1}g$. Defining
+$V=UH$ gives $UV'-U'V=U^2 H'=W$. Differentiating this equation gives
+$U(V''+pV'+qV)=0$ because $U''+pU'+qU=0$, where
+$q=-ab/[t(1-t)]$. Multiplication by $t^{-r}u$ cancels $U$.
+The inverse determinant has the explicit name $t^{1-m}B_{-c}$. This
+constructs a fundamental matrix with an inverse, even if $g_k=0$.
+For any solution germ presented by a convergent Taylor expansion at an
+ordinary point, multiplying its initial jet by this inverse gives its
+unique two coordinates. The jet uniqueness and transport estimates below
+prove equality of the resulting solutions throughout any specified chain
+of overlapping charts.
+
+It remains to identify the logarithm. If $k=0$, $g_0=1$. For $k>0$, write
+$t^{-s}V=Q+g_k t^k h\log t$. Here $Q$ is an ordinary power series, since
+$t^k$ cancels the finite principal part, and $Q_0=-1/k$.
+Put $A=a+s$, $D=b+s$. The transformed equation has derivative constant
+$1-k$. Applying its operator to $t^k h\log t$, the logarithmic part
+vanishes. The remainder is
+$2(1-t)(t^k h)' +[-k/t-(A+D)]t^k h$, whose first term of degree $k-1$
+has coefficient $k$. For $1\le j<k$ coefficient comparison at $j-1$ now
+gives
+\[
+ j(j-k)Q_j=(A+j-1)(D+j-1)Q_{j-1}.
+\]
+At $j=k$ the coefficient of $Q_k$ is zero and
+$kg_k=(A+k-1)(D+k-1)Q_{k-1}$. Multiply the first $k-1$ recurrences,
+using $\prod_{j=1}^{k-1}j(j-k)=(-1)^{k-1}((k-1)!)^2$.
+Iteration uses division only by the nonzero integers $j(j-k)$, including
+when an upper rising factorial vanishes. This proves the boxed identity.
+Changing only the logarithm in $H$ gives the asserted shear.
+\end{proof}
+
+\paragraph{Precision data.}
+The finite negative-power sum uses rational arithmetic at Gaussian-rational
+points. At named points, a lower bound $|t|_1\ge\delta>0$ gives
+$|1/t|_1\le 2/\delta$, since $(|x|+|y|)^2\le 2(x^2+y^2)$.
+For a branch supply an evaluation procedure for $\log t$ with its error
+clock and a bound on its norm. A chart based at $x$ translates by
+$\log(x+u)=\log x+\sum_{j\ge1}(-1)^{j+1}(u/x)^j/j$ for $|u/x|_1<1$,
+with the geometric tail from the supplied radius margin. This fixes the
+derivative and the overlap convention. Positive rational $t$ has a canonical real logarithm from
+$\log t=2\sum_{j\ge0} v^{2j+1}/(2j+1)$, $v=(t-1)/(t+1)$, with tail
+bounded by $2|v|^{2J+1}/(1-|v|^2)$ after $j<J$.
+For the power-series tails take $M=3$ in Lemma~\ref{lem:res-primitive}.
+A cutoff for accuracy $2^{-p}$ is, for example,
+$N=p+\lceil 3 R^{-k}\rceil+2$ for $H$ before multiplication by $U$.
+All intermediate size bounds can be propagated through finite sums and
+products: if $|x|_1\le A, |y|_1\le D$ and approximants have errors
+at most $\epsilon\le1$, their product error is at most
+$(A+D+1)\epsilon$. This gives rational instruction-by-instruction budgets
+for $U,V,U',V'$ and for the inversions above. Every induction may fix the
+requested precision and a final degree $J$ first. The needed prefix
+recurrences, truncated product identities, and prefix norm inequalities
+are then Boolean folds on rational arrays.
+
+\subsection{Matching the solution at zero without gamma limits}
+Assume $c\notin\{0,-1,-2,\ldots\}$, a decidable condition on $K$. The
+ordinary series $F(z)={}_2F_1(a,b;c;z)$ then has coefficients
+$f_0=1$ and $f_{n+1}(n+c)(n+1)=f_n(n+a)(n+b)$.
+Set $t_0=R/4$, $z_0=1-t_0$. Use the real logarithm at $t_0$.
+With $Y=F(z_0)$, $D_0=-F'(z_0)$ and $W=UV'-U'V$, define
+\[
+ \alpha=(YV'-D_0 V)/W,\qquad \beta=(U D_0-U'Y)/W ,
+\]
+where the right sides are evaluated at $t_0$.
+
+\begin{proposition}[Connection coefficients as rapid names]
+On the overlap containing the positive interval $0<t\le R/2$,
+the continuation of $F(1-t)$ from $t_0$ is $\alpha U+\beta V$, using
+the logarithm continued from its real value at $t_0$ along the same
+charts. The constants are uniformly PR-computable names from
+$a,b,c,m$ alone.
+\end{proposition}
+\begin{proof}
+Here is a clock even when $z_0$ is near one. Put
+$E=\max(1,|a|_1,|b|_1,|c|_1)$,
+$n_0=\lceil32 E/t_0\rceil$, and $q=1-t_0/2$. For $n\ge n_0$ put
+$x=E/n\le 1/2$. The ratio multipliers of $f_n z_0^n$ and
+$n f_n z_0^{n-1}$ both have norm at most
+$z_0(1+x)^2/(1-x)$. For the derivative the factor $(n+1)/n$ cancels the
+coefficient denominator $(n+1)/n$; the series itself has the smaller
+bound. The reciprocal estimate follows by multiplying
+$(1+c/n)^{-1}=1-(c/n)(1+c/n)^{-1}$ and taking norms. For $x\le1/2$,
+$(1+x)^2/(1-x)\le1+7x$. Thus both norms are $\le q$. This argument uses
+multipliers, so a vanishing term creates no division by zero. Let $M_0$ be
+one plus the sum of the two term norms at $n_0$. All subsequent tails
+after $N$ further terms are bounded by $M_0q^N/(1-q)$. For an explicit
+loose cutoff, $q^N\le [1+N(1-q)]^{-1}$ by the finite binomial inequality.
+Hence $N=\lceil 2^p M_0/(1-q)^2\rceil+1$ suffices at precision $p$.
+The same inequality supplies a clock for the logarithm at $t_0$.
+The previous theorem supplies the other four entries and $W^{-1}$.
+Matrix multiplication gives equality of values and first derivatives
+at $t_0$ exactly as names.
+
+For completeness, agreement of jets at an ordinary point $x$ determines
+the expansion there. After translation, the coefficient of the still
+unknown Taylor coefficient of degree $j+2$ in the differential equation
+is $(j+1)(j+2)x(1-x)$; all other terms involve earlier coefficients.
+Hence the two coefficient arrays agree to every prescribed degree by
+finite recurrence. Reexpansions used here exist by the binomial formula:
+for a series having bounded weighted prefixes at radius $S$, expanding
+$(x+u)^n$ is absolutely majorized by $(|x|_1+|u|_1)^n$. A strict gap
+to $S$ gives the geometric truncation clock; locally the logarithm
+translates by the Taylor series for $\log(1+u/x)$ for $|u/x|_1<1$
+with its geometric tail. For the original Gauss series at a positive
+point use the ratio bound above at any larger radius below one.
+The Laurent powers translate by the binomial series or finite
+multiplication of the local inverse. Thus on the real segment between
+$t_0$ and a specified $t\in(0,R/2]$, both expansions are valid on disks
+of radius $\min(t,t_0,R/4)/8$ about every segment point (for a named
+$t$ use its supplied lower bound). Here are finite
+bounds for the dependence on these jets. Put $d=\min(t,t_0,R/4)$
+(or a positive rational lower bound), $S=d/4$, and write the differential
+equation as the first-order system for $(y,y')$ with matrix
+\[
+ P(t)=
+ \begin{pmatrix}
+ 0&1\\
+ ab[1/t+1/(1-t)]&(m-1)/t+c/(1-t)
+ \end{pmatrix}.
+\]
+At a segment center $x$, summing the geometric expansions of $1/t$ and
+$1/(1-t)$ out to radius $S$ bounds their prefix norms by
+$1/(x-S)\le 2/d$ and $1/(1-x-S)\le2$, respectively. Thus
+$A=1+|ab|_1(2/d+2)+2|m-1|/d+2|c|_1$ bounds the sum of all entry norms.
+Set $\rho=\min(S,1/(2A),d/8)$. For initial vector $b_0$, the recurrence
+$(j+1)b_{j+1}=\sum_{i=0}^j P_i b_{j-i}$ gives
+\[
+ \|b\|_{J,\rho}\le |b_0|_1+\rho A\|b\|_{J-1,\rho}\le 2|b_0|_1 ,
+\]
+by finite induction (using the sum of coordinate norms). A transfer of
+length $\le\rho/2$ has operator norm at most two, and truncating at $J$
+costs at most $2|b_0|_1 2^{-J-1}$. Divide the segment into
+$L=1+\lceil2|t-t_0|/\rho\rceil$ such steps. Initial errors grow by
+at most $2^L$. If each transfer adds error $\epsilon$, the aggregate
+added error is at most $(2^L-1)\epsilon$. Thus set
+$\epsilon=2^{-p-L-2}$, and bound intermediate exact jets by
+$2^L|b_0|_1$ when choosing cutoffs. These rational bounds give an
+induction on errors at fixed precision in place of induction on equality
+of entire analytic functions. The same jet argument extends
+to specified overlap charts by finite chains with positive margins.
+\end{proof}
+
+\paragraph{Worked case.}
+For $(a,b,c)=(1,1,3)$ the resonance is $m=1$,
+$h=(1-t)^{-2}$ and $g=1-t$. Our basis is
+$U=t/(1-t)^2$ and $V=U(-1/t-\log t)$.
+The coefficients of the series at zero are $2/((n+1)(n+2))$,
+so summing the partial fractions using the logarithm series gives
+\[
+ F(1-t)=\frac{2[(1-t)+t\log t]}{(1-t)^2}=-2U-2V .
+\]
+The sign of the shear and the normalization of the principal part can
+both be checked on this example. For a resonance with trivial logarithm,
+$(a,b,c)=(0,1,3)$ gives $k=2$ and $(a)_2=0$.
+
+\paragraph{Formalization targets and scope.}
+The repository's \texttt{HypergeometricRatio} proves cross-multiplied
+identities with natural parameters. \texttt{HypergeometricOdeFormal}
+already derives the Wronskian derivative in its formal differential
+algebra. A Lean implementation can encode each of $h,B,u,g$ as a
+degree-$J$ array of pairs of signed rationals and use the recurrences
+above as bounded loops. First derive multiplication and inversion modulo
+$t^{J+1}$, prefix norm submultiplicativity, and the $4^{-j}$ bounds in
+the object calculus. Next encode a finite Laurent jet by a signed lower
+exponent, a degree bound, and its regular and logarithmic arrays, with
+$D(t^n\log t)=nt^{n-1}\log t+t^{n-1}$. To verify a coefficient of
+$Ly$ through exponent $n$ request the coefficients of $y$ through $n+2$,
+also allowing for the displayed monomial shifts. The boxed formula is
+a rational-array recurrence with finite product invariants; the Wronskian
+and basis identities reduce coefficientwise to convolution. The final
+stage uses the clocks above to translate each requested identity into
+rational inequalities. The included \texttt{Resonance.lean} checks six host-field
+lemmas in Lean 4.32.0, including the coefficient recurrence telescope,
+the exceptional-index identity and Wronskian matching. Its field
+identities are reusable algebraic inputs. Encoding arrays and deriving
+their norm and analytic bounds in object iPRA remain formalization work.
+The exact check in \texttt{checks/resonance.py} tests 33 parameter triples
+with $-5\le m\le5$ through degree 13, including terminating and
+nonreal parameters. The companion coefficients and monodromy shear
+are local. The matching formula gives numerical names for the two
+connection constants. An expression for these constants in gamma and
+digamma values or a classification of global monodromy requires additional
+theorems.
+
+The accompanying \texttt{ResonanceObject.lean} carries the multiplicative
+telescope into ordinary iPRA. For fixed PR term bodies $a_j(x),b_j(x),v_j(x)$,
+its hypotheses are the object formulas $b_jv_{j+1}=a_jv_j$ for all $j<N$
+and $\ell g=a_Nv_N$. Its closed conclusion gives
+\[
+ \left(\prod_{j<N}b_j\right)\ell g=\left(\prod_{j\le N}a_j\right)v_0 .
+\]
+The horizon $N$ is an object variable. This lemma uses natural-number
+products. Using it for general Gaussian coefficients requires signed
+arithmetic and denominator bookkeeping. A second closed derivation handles
+the first positive resonance: from the cleared recurrence for $g_1=p-q$
+with natural $a,b$, it proves $p+ab=q$.

@@ -1,0 +1,221 @@
+% Original finite bridge prepared for the Robin/iPRA report.
+% This is a fragment intended for inclusion in the parent's document.
+\section{An explicit finite least-common-multiple bridge}
+
+This section proves an elementary reduction which does not use the Riemann
+hypothesis or an oscillation theorem. Its input is one strict inequality at
+a specified finite frontier. Its output is one explicitly constructed integer
+violating Robin's inequality. All arithmetic sums and products are bounded.
+
+For an integer $P\ge2$, define
+\[
+ \vartheta(P)=\sum_{\substack{p\le P\\p\text{ prime}}}\log p,
+ \qquad
+ a_p(P)=\max\{a\le P:p^a\le P\},
+ \qquad
+ \psi(P)=\sum_{\substack{p\le P\\p\text{ prime}}}a_p(P)\log p.
+\]
+The maximum defining $a_p(P)$ is a bounded search. Put
+\[
+ L_P=\operatorname{lcm}(1,\ldots,P),\qquad
+ A(n)=\frac{\sigma(n)}n,
+ \qquad
+ M(n)=\log A(n)-\gamma-\log\log\log n.
+\]
+The last expression is used only for $n>e$. Since the logarithm is strictly
+increasing, $M(n)>0$ is equivalent to
+$\sigma(n)>e^\gamma n\log\log n$.
+
+For $\vartheta(P)>1$, define
+\[
+ F(P)=e^\gamma\log\vartheta(P)
+       \prod_{\substack{p\le P\\p\text{ prime}}}\left(1-\frac1p\right),
+\]
+and the two nonnegative losses
+\[
+ D(P)=\log\log\psi(P)-\log\log\vartheta(P),
+ \qquad
+ T(P)=\sum_{\substack{p\le P\\p\text{ prime}}}
+       -\log\left(1-p^{-a_p(P)-1}\right).
+\]
+
+\begin{lemma}[Exact finite identity]
+If $\vartheta(P)>1$, then
+\[
+ M(L_P)=-\log F(P)-D(P)-T(P).
+\]
+\end{lemma}
+\begin{proof}
+Unique prime factorization gives
+$L_P=\prod_{p\le P}p^{a_p(P)}$, and hence $\log L_P=\psi(P)$.
+The finite geometric-series formula and multiplicativity of $\sigma$ give
+\[
+ A(L_P)=\prod_{p\le P}
+        \frac{1-p^{-a_p(P)-1}}{1-p^{-1}}.
+\]
+Taking logarithms yields
+$\log A(L_P)=-T(P)-\sum_{p\le P}\log(1-p^{-1})$.
+On the other hand,
+\[
+ \log F(P)=\gamma+\log\log\vartheta(P)
+              +\sum_{p\le P}\log(1-p^{-1}).
+\]
+Substituting these equalities into the definition of $M(L_P)$ proves the
+claim. Every logarithm is in its positive domain: $\psi(P)\ge\vartheta(P)>1$.
+\end{proof}
+
+\begin{lemma}[Losses at a square frontier]
+Let $m\ge4$ be an integer, put $P=m^2$, and suppose
+$\vartheta(P)\ge P/4$. Then
+\[
+ 0\le D(P)\le\frac8m,\qquad
+ 0\le T(P)\le\frac4m,
+ \qquad
+ D(P)+T(P)\le\frac{12}m.
+\]
+\end{lemma}
+\begin{proof}
+Only primes $p\le m$ contribute to $\psi(P)-\vartheta(P)$.
+For each such prime, $(a_p(P)-1)\log p\le\log P$; there are at most
+$m$ such primes. Therefore
+\[
+ 0\le\psi(P)-\vartheta(P)\le m\log P.
+\]
+For $v\ge u>1$, two applications of $\log(1+t)\le t$ give
+\[
+ \log\log v-\log\log u
+ \le\frac{\log v-\log u}{\log u}
+ \le\frac{v-u}{u\log u}.
+\]
+Since $P\ge16$,
+$\log(P/4)\ge\tfrac12\log P$. Consequently
+\[
+ D(P)\le\frac{m\log P}{(P/4)\log(P/4)}\le\frac8m.
+\]
+
+For $0\le u\le1/2$, the geometric-series estimate gives
+$-\log(1-u)\le u/(1-u)\le2u$.
+If $p\le m$, maximality of $a_p(P)$ implies $p^{a_p(P)+1}>P$, so
+$p^{-a_p(P)-1}<1/P$. These at most $m$ summands contribute at most $2/m$.
+If $m<p\le P$, then $a_p(P)=1$, so the remaining summands contribute at most
+\[
+ 2\sum_{j=m+1}^{P}\frac1{j^2}
+ \le2\sum_{j=m+1}^{P}\frac1{j(j-1)}
+ =2\left(\frac1m-\frac1P\right)\le\frac2m.
+\]
+Here the inequality is termwise and the equality is a finite telescoping
+sum. This proves $T(P)\le4/m$, and addition proves the last claim.
+\end{proof}
+
+\begin{lemma}[A rough elementary Chebyshev lower bound]
+For every integer $m\ge16$,
+\[
+ \vartheta(m^2)\ge\frac{m^2}4.
+\]
+\end{lemma}
+\begin{proof}
+Put $P=m^2$ and $h=\lfloor P/2\rfloor$.
+Legendre's formula shows that the exponent of a prime $p$ in
+$\binom{2h}{h}$ is
+\[
+ \sum_{j\ge1}\left(\left\lfloor\frac{2h}{p^j}\right\rfloor
+       -2\left\lfloor\frac h{p^j}\right\rfloor\right).
+\]
+The sum is bounded by $j\le2h$. Every summand is either zero or one,
+and it vanishes for $p^j>2h$. Thus the exponent is at most
+$a_p(2h)$, proving $\binom{2h}{h}\mid L_{2h}$.
+The central coefficient is the largest of the $2h+1$ coefficients in
+$(1+1)^{2h}$; hence
+\[
+ \psi(P)\ge\log\binom{2h}{h}
+ \ge2h\log2-\log(2h+1)
+ \ge(P-1)\log2-\log(P+1).
+\]
+
+The logarithm series at $1/3$ gives $2/3\le\log2\le3/4$.
+Also, since $m/16\ge1$ and $\log t\le t-1$,
+\[
+ \log m=4\log2+\log(m/16)
+ \le3+(m/16-1)=2+m/16\le3m/16.
+\]
+Therefore $\log P=2\log m\le3m/8$, while
+\[
+ \log(P+1)\le\log(2P)\le\frac34+\frac{3m}8.
+\]
+The previous prime-power count gives
+$\psi(P)-\vartheta(P)\le m\log P\le3m^2/8$. Combining the estimates,
+\[
+ \vartheta(m^2)
+ \ge\frac{7m^2}{24}-\frac{3m}8-\frac{17}{12}
+ =\frac{m^2}4+\frac{m^2-9m-34}{24}.
+\]
+Finally $m^2-9m-34=(m-16)(m+7)+78\ge0$ for $m\ge16$.
+\end{proof}
+
+\begin{theorem}[Explicit finite counterexample transfer]
+Let $m\ge16$ be an integer. If
+\[
+ -\log F(m^2)>\frac{12}m,
+\]
+then the explicitly computed integer $N=L_{m^2}$ satisfies $N>5040$ and
+\[
+ \sigma(N)>e^\gamma N\log\log N.
+\]
+\end{theorem}
+\begin{proof}
+The previous two lemmas and the exact identity give
+\[
+ M(N)=-\log F(m^2)-D(m^2)-T(m^2)>0.
+\]
+Moreover $m^2\ge16$ and $L_{16}=720720$ divides $L_{m^2}$, so $N>5040$.
+The equivalence between $M(N)>0$ and the displayed strict inequality was
+already established.
+\end{proof}
+
+\begin{lemma}[Passing to a square frontier]
+Let $Q\ge256$ be an integer, $m=\lfloor\sqrt Q\rfloor$, and $P=m^2$.
+Then
+\[
+ \log F(P)\le\log F(Q)+\frac4m.
+\]
+Consequently $-\log F(Q)>16/m$ yields a Robin counterexample at $L_P$.
+\end{lemma}
+\begin{proof}
+We have $m\ge16$ and $0\le Q-P\le2m$.
+The term $\log\log\vartheta$ is nondecreasing, so
+\[
+ \log F(P)-\log F(Q)
+ \le\sum_{P<p\le Q}-\log(1-p^{-1})
+ \le\frac{2(Q-P)}{P+1}\le\frac4m.
+\]
+The previous theorem now applies.
+\end{proof}
+
+This lemma makes the connection with the conventional nonsquare oscillation
+statement explicit. Suppose $c>0$, $0<b<1/2$, and an integer $Q\ge256$
+satisfies $-\log F(Q)\ge cQ^{-b}$. Set $\delta=1/2-b$.
+Since $m\ge\sqrt Q/2$, the additional condition $cQ^\delta>32$ implies
+$-\log F(Q)>16/m$ and hence a counterexample. For rational $c,b$, choose
+integers $B\ge\max(2,64/c)$ and $k\ge1/\delta$. Then the sufficient
+cutoff $Q\ge\max(256,B^k)$ is primitive recursive in their rational codes.
+Classically, Nicolas's excursions occur beyond every cutoff, so this
+finishes the transfer from that analytic input. It does not itself prove
+the analytic input or its iPRA interpretation.
+
+The result also holds for $m\ge4$ when $\vartheta(m^2)\ge m^2/4$ is supplied
+as an explicit hypothesis. The choice $m\ge16$ removes that hypothesis by
+the completely elementary proof above. A supplied rational positive
+gap determines a primitive-recursive precision for the log enclosure
+and therefore a finite certificate. Strictness by itself is not being
+used as an unbounded-search termination bound. The proof contains no
+search for the input frontier.
+
+\paragraph{What this does and does not finish.}
+An analytic oscillation theorem would still have to supply an appropriate
+finite frontier. Classical Nicolas--Landau oscillation gives such excursions
+arbitrarily far out, of size $cP^{-b}$ for some $0<b<1/2$. The finite loss
+is only of order $P^{-1/2}$, so that implication follows classically. To
+obtain an iPRA theorem, the analytic result needs an explicitly justified
+interpretation using bounded arithmetic computations and the permitted
+induction. Replacing that obligation by the assertion that a classical Lean
+proof exists would not prove it.

@@ -1,0 +1,229 @@
+\section{A zero from one inexact observation per bit}
+\label{sec:conditioned-zero}
+
+ProveIt's \texttt{PolynomialBisection} tests the sign of an exact
+homogeneous integer numerator. Its companion \texttt{PolynomialRootName}
+derives a regular name and a residual schedule for a fixed-degree rational
+polynomial. \texttt{PolynomialRootUniqueness} uses a positive lower bound on
+a divided difference. For an analytic function a rational argument can have
+an irrational value. Waiting for a sign at the midpoint can then fail even at
+the first step. Here a lower modulus for increments permits one halving step
+with a predetermined precision, including when the midpoint is exactly a zero.
+
+\paragraph{Finite hypotheses.}
+Write $e_j=2^{-j}$. At rational $x\in[0,1]$ we have rational observations
+$F(x,p)$ with consistency
+$F(x,p)-e_p\le F(x,q)+e_q$ for all $p,q$. Define the lower and upper
+endpoints $L(x,p)=F(x,p)-e_p$, $U(x,p)=F(x,p)+e_p$.
+The statements $f(x)\le0$ and $f(x)\ge0$ abbreviate
+$\forall p\,L(x,p)\le0$ and $\forall p\,0\le U(x,p)$, respectively.
+Assume $f(0)\le0\le f(1)$. Two numerical witnesses control different parts
+of the construction. For all rational sites in the unit interval and all
+observation indices the following implications hold:
+\begin{align}
+ |x-y|\le e_{\mu(k)}
+ &\quad\Longrightarrow\quad |F(x,p)-F(y,q)|\le e_k+e_p+e_q,
+ \label{eq:zero-forward}\\
+ y-x\ge e_k
+ &\quad\Longrightarrow\quad
+ L(x,p)+e_{g(k)}\le U(y,q).
+ \label{eq:zero-inverse}
+\end{align}
+The second condition is a lower bound on the increase over a specified
+distance. A slope bound $f(y)-f(x)\ge2^{-d}(y-x)$ supplies $g(k)=k+d$.
+Much flatter functions also qualify. For $f(x)=(x-r)^3$, the identity
+\[
+ v^3-u^3=(v-u)\left(3((v+u)/2)^2+(v-u)^2/4\right)
+\]
+supplies $g(k)=3k+2$ for $u=x-r, v=y-r$. This includes a zero with
+vanishing derivative. Fixed PR presentations of $F,g,\mu$, possibly with
+number parameters, give the first-order reading. The same algorithm runs
+relative to observation oracles when those presentations are external.
+
+\begin{theorem}[Conditioned intermediate value]
+Under these hypotheses there is a regular dyadic name for the unique
+represented zero in $[0,1]$. Starting with $[0,1]$, the first $n$ halvings
+make exactly $n$ calls to $F$. The call numbered $j$, beginning at $j=0$,
+requests precision $g(j+2)+1$. The forward modulus is used only to certify
+the residual. All recursions producing the name are primitive recursive in
+the supplied numerical data.
+\end{theorem}
+
+\begin{proof}
+At stage $j$ write $I=[a,b]$, $w=b-a=e_j$, and
+$m=(a+b)/2$, $u=m-w/4$, $v=m+w/4$. Set $p=g(j+2)+1$, $h=e_p$ and obtain
+$z=F(m,p)$. Form the next bracket by the rational tests
+\[
+ [a,m]\quad(z\ge h),\qquad [m,b]\quad(z\le-h),\qquad
+ [u,v]\quad(-h<z<h).
+\]
+In the first case consistency gives $0\le z-h\le U(m,t)$ at every
+test precision $t$. In the second case $L(m,t)\le z+h\le0$.
+In the remaining case both gaps $m-u=v-m=e_{j+2}$ qualify for
+\eqref{eq:zero-inverse}. Since $e_{g(j+2)}=2h$,
+\[
+ L(u,t)+2h\le z+h,\qquad z-h+2h\le U(v,t).
+\]
+These two inequalities certify the signs of the new endpoints. Every
+branch gives a nested bracket of width $w/2$. For the induction in iPRA,
+fix an arbitrary $t$ first. At this $t$, the two sign inequalities for the
+current endpoints are a quantifier-free invariant; the transition uses the
+gap contract instantiated at $(p,t)$ or $(t,p)$. Generalize $t$ only after
+induction. The separate nesting and width invariants are rational
+inequalities or identities.
+
+Let $m_j$ be the midpoint of the $j$th bracket. For $d\ge0$,
+$m_{j+d}$ belongs to that bracket, so $|m_{j+d}-m_j|\le e_j/2$.
+This gives a regular name. Fix $k$, take $t=k+3$, and take any
+$j\ge\mu(k+1)$. Applying \eqref{eq:zero-forward} between the midpoint and
+each endpoint yields
+\[
+ |F(m_j,t)|\le e_{k+1}+3e_t=7e_k/8.
+\]
+Indeed the left endpoint has $F(a,t)\le e_t$ and the right endpoint has
+$F(b,t)\ge-e_t$. The former bounds the midpoint observation from above,
+the latter from below. These tests at arbitrarily prescribed precision say
+that the completed evaluation is zero. Explicitly, if an evaluation
+convention uses $m_i$ and an observation at $q$, choose a later $j\ge i$.
+Whenever $e_i/2\le e_{\mu(s)}$, forward continuity bounds
+$|F(m_i,q)-F(m_j,t)|\le e_s+e_q+e_t$. Together with the displayed
+residual, this supplies the comparison to zero with any desired slack.
+All stage choices are available from the numerical moduli.
+
+For uniqueness, suppose two represented zeros have points at positive
+distance. In the finite-test formulation it suffices to rule out a rational
+apartness witness in either order. Such a witness supplies $k$ and a
+precision beyond which the two streams of rational sites, in the indicated
+order, are at least $e_k$ apart (shrink the original gap by a factor two).
+Evaluate both streams sufficiently far out that their absolute observations
+are at most $e_{g(k)}/8$, with observation radii at most that same amount.
+Their upper-to-lower difference is at most $e_{g(k)}/2$, contradicting
+\eqref{eq:zero-inverse}. For the equality convention based on closed
+rational inequalities, a failed finite equality test itself gives the
+rational apartness witness, by consistency. Decidability of that one test
+therefore gives equality at every precision.
+
+Extensionality also has a direct finite proof. Brackets from two valid
+observations of the same $f$ must intersect. If a positive endpoint of one
+were strictly to the left of a negative endpoint of the other, choose $k$
+with $e_k$ below their positive rational distance and then $p$ with
+$4e_p<e_{g(k)}$. Transfer the endpoint signs to one presentation using
+consistency across the two names. Specifically, a common represented value
+with a nonnegative sign satisfies $F'(x,p)\ge-e_p$ in either presentation:
+the cross bound $F(x,t)\le F'(x,p)+e_t+e_p$ and $F(x,t)\ge-e_t$
+give $F'(x,p)\ge-e_p-2e_t$ for every $t$; any failure at $p$ is
+refuted by choosing $2e_t$ below the rational gap. The nonpositive sign transfers
+by the reversed calculation. Now \eqref{eq:zero-inverse} gives
+$e_{g(k)}\le4e_p$, a contradiction. Rational endpoints are decidably
+ordered, so intersection follows. Midpoints of intersecting intervals
+differ by at most the sum of their half-widths. Thus alternate rounding or
+choices of valid witnesses give equivalent names even when their branch
+sequences differ.
+\end{proof}
+
+\paragraph{An example with genuinely inexact midpoint values.}
+Take $f(x)=\exp(x)-3/2$ on the unit interval and define its reading at
+$(x,p)$ by $\sum_{i=0}^{p+2}x^i/i!-3/2$. For $i\ge1$ one has
+$i!\ge2^{i-1}$; hence the tail after $M=p+2$ is at most
+$\sum_{i>M}2^{1-i}=2^{1-M}<e_p$. For $y\ge x$ all positive-index
+monomial increments are nonnegative and the linear term contributes
+$y-x$, giving $g(k)=k$. The finite identity for $y^i-x^i$ bounds each
+increment by $i(y-x)$. The resulting total Lipschitz bound is at most
+$\sum_{i\ge1}i/i!=\sum_{i\ge0}1/i!\le3$, so $\mu(k)=k+2$ suffices.
+The first two terms at $1$ and the exact value at $0$ give the required
+signs. The algorithm names $\log(3/2)$ by evaluating rational Taylor
+polynomials with stage-$j$ observation index $j+3$. It needs neither a
+logarithm routine nor an exact sign test for an exponential.
+
+\paragraph{Storage and verification.}
+Write the left endpoint in stage $j$ as $A/2^{j+1}$, so the right numerator
+at that scale is $A+2$. The next left numerator, at denominator $2^{j+2}$,
+is $2A$, $2A+2$, or $2A+1$ for the left, right, or central branch.
+One integer of $O(j+1)$ bits and the stage number suffice between calls.
+The total running time also includes the cost and output lengths of the
+evaluations; a count of calls alone gives no general polynomial-time claim.
+\texttt{Zeros.lean} implements the three branches on \texttt{Rat}.
+\texttt{goodAt\_unit} derives the fixed-precision bracket invariant from
+the global separation hypothesis. \texttt{width\_run} and
+\texttt{later\_midpoints} prove the width and Cauchy estimates;
+\texttt{residual\_unit} derives the full scheduled $7e_k/8$ residual bound
+for every later stage from the forward and inverse moduli.
+\texttt{no\_cross} checks the scalar separation contradiction.
+
+\texttt{ZeroObject.lean} also proves a closed theorem in the repository's
+ordinary object calculus for the three-way guard. Multiply the finitely
+many rational observations and their radii by a common positive denominator.
+Translate the scaled signed observations by a common integer offset $K$
+large enough to make them nonnegative. Write $C$ for the translated midpoint
+observation, $h$ for its scaled radius, $L_m,U_m$ for the translated bounds
+at midpoint test precision $t$, and $L_u,U_v$ for the translated quarter-point
+bounds. The instantiated consistency and gap premises become
+\[
+ L_m\le C+h,\quad C\le U_m+h,\quad L_u+h\le C,\quad C+h\le U_v.
+\]
+The object theorem tests $K+h\le C$ first and $C+h\le K$ second.
+It pairs each of the three disjoint guards with the required signs
+$K\le U_m$, $L_m\le K$, or $L_u\le K\le U_v$, respectively.
+For example the third case cancels $h$ from
+$L_u+h\le C<K+h$. The seven variables in this sequent are universally
+closed in \texttt{branches\_closed}. To extend this local object theorem
+to the full stage recursion, use the integer
+state $A$ above, encode pairs of signed observations by positive
+denominators, and clear those denominators in each occurrence of $L,U$.
+Implement both rational comparisons by reflected weak integer order.
+Instantiate \eqref{eq:zero-forward} and \eqref{eq:zero-inverse} at the
+indicated rational sites and precisions. Apply the repository's
+quantifier-free trace induction to the conjunction of the two sign tests
+for fixed $t$, the numerator range, and the denominator identity.
+For the width over a window fix the starting stage as another free
+parameter. The remaining equality tests for completed names follow by the
+displayed rational-gap arguments. The included Lean module checks the
+rational model; this last translation of the full case study into
+\texttt{PTm} derivations is a formalization plan.
+
+\paragraph{A residual witness without the inverse modulus.}
+The same branches yield an approximate intermediate value theorem for any
+function satisfying \eqref{eq:zero-forward} and the endpoint signs.
+Given $k$, hold $p=k+3$ fixed and perform at most $\mu(k+1)$ midpoint queries.
+For a decisive sign take the corresponding half. At the first ambiguous
+sample return that midpoint $x$. Consistency gives
+$|F(x,t)|\le 2e_p+e_t$ at every $t$. If all tests are decisive, return
+the midpoint of the final bracket of width $e_{\mu(k+1)}$.
+Using its endpoint signs at precision $p$ in \eqref{eq:zero-forward}
+gives $|F(x,t)|\le e_{k+1}+2e_p+e_t<e_k+e_t$ for every $t$.
+The bound covers $\mu(k+1)=0$, when the initial midpoint is returned.
+This yields a PR rational witness with certified residual at each
+prescribed accuracy. Independent calls need not produce a Cauchy name.
+It also replaces an exhaustive grid of up to $2^{\mu(k+1)}+1$ points
+by at most $\mu(k+1)$ scalar queries.
+
+\paragraph{Two obstructions at the boundary.}
+There is no uniform query-precision ceiling, even for an error target of
+$1/8$, for all strictly increasing functions given only by observations,
+the forward Lipschitz bound $1$, and the weak endpoint signs. For any
+proposed ceiling $P$, take $f_r(x)=e_{P+1}(x-r)$ for
+$r=1/4$ or $3/4$. The reply $0$ is valid for both at every site and every
+precision up to $P$. An algorithm receiving these common replies must
+produce the same rational approximation, yet the permitted approximations
+for the two roots are disjoint. Both functions even have strict endpoint signs.
+This argument rules out a uniform ceiling on this representation; on strictly
+increasing inputs an adaptive search can request further precision.
+
+Allowing a zero interval creates a stronger obstruction. Put
+\[
+ f_0(x)=\min(x-1/4,0)+\max(x-3/4,0).
+\]
+It is nondecreasing and $1$-Lipschitz. For rational $0<h<1/8$,
+$f_0+h$ has the unique root $1/4-h$ and $f_0-h$ has the unique root
+$3/4+h$. The endpoint signs for both have margin at least $1/8$.
+Run any proposed total exact zero-name realizer on the exact rational
+evaluator for $f_0$ until it produces an answer of radius $1/8$.
+This finite transcript uses some greatest precision $P$ (use $P=0$ for
+an empty transcript). Choose $h<\min(1/8,e_P)$.
+The same answers at those queries occur in valid names for both perturbed
+functions: use the original answers for those finitely many pairs and
+exact answers elsewhere. Continuity and endpoint promises still hold.
+The two roots differ by more than $1/2$, so one answer of radius $1/8$
+cannot serve both. This is a finite-observation impossibility proof for a
+total extensional root selector on this representation. It leaves the
+usual approximate intermediate value theorem intact.

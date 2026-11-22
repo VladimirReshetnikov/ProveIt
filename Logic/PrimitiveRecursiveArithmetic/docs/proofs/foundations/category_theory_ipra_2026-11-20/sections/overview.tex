@@ -1,0 +1,107 @@
+\section{Main results and how to read them}\label{sec:overview}
+
+The answer is positive for a broad, precisely specified core of category
+theory. Its structural arguments use very little arithmetic: the real work
+is to give their data a legitimate arithmetic interface. One can permit
+arithmetic, potentially undecidable equality of arrows without allowing
+arbitrary function spaces or induction on all arithmetic formulas.
+
+This report uses the user's overview \cite{wiki} to delimit the basic
+subject, and standard author-hosted references for terminology
+\cite{riehl,awodey}. Its mathematical arguments are written out in full.
+The classical theorems themselves are not claimed to be new. The purpose
+is a coherent iPRA realization with every computational and logical
+boundary visible, building on the pinned ProveIt development.
+
+\subsection{The principal theorem families}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.60\linewidth}p{0.06\linewidth}@{}}
+\toprule
+Result & Exact form established here & Sec.\\
+\midrule
+\endhead
+Arithmetic foundations & Fixed formulas for objects, arrows and equality;
+PR code operations; specialization of finite structural proofs. &
+\ref{sec:foundation}\\
+Functorial calculus & Functors, natural transformations, whiskering,
+horizontal and vertical composition, interchange, duality. &
+\ref{sec:functors-yoneda-foundation}\\
+Yoneda & Explicit mutually inverse constructions
+$\alpha\mapsto\alpha_A(\id_A)$ and $x\mapsto(f\mapsto P(f)x)$,
+with all typing and naturality laws. & \ref{sec:yoneda}\\
+Representability & Full faithfulness, canonical uniqueness of representing
+objects, and representation by a chosen universal element. &
+\ref{sec:yoneda}\\
+Density / co-Yoneda & Canonical generator normal form and a universal
+cocone, with arithmetic equality defined by equality of values. &
+\ref{sec:density}\\
+Universal constructions & Unique isomorphisms; pullbacks; all fixed finite
+limits from selected terminal objects, products and equalizers, plus duals. &
+\ref{sec:limits}\\
+Finite-set existence & Uniform PR algorithms for finite limits, colimits
+and exponentials, including $[0]$ and $0^0=1$. & \ref{sec:finite}\\
+Adjunctions & Hom correspondences iff unit/counit triangles; uniqueness;
+preservation of supplied limits and colimits. & \ref{sec:adjunctions}\\
+Equivalence & A quasi-inverse constructed from faithful, split full and
+split essentially surjective data. & \ref{sec:adjunctions}\\
+Monads & Monad of an adjunction; Kleisli and Eilenberg--Moore categories
+and adjunctions; creation of supplied algebra limits. & \ref{sec:monads}\\
+Idempotents & Canonical splitting in the Karoubi envelope and extension
+along displayed splittings. & \ref{sec:limits}\\
+Kan extensions & Pointwise formula with supplied uniform comma
+(co)limits; unconditional existence for finite tables in finite sets. &
+\ref{sec:kan}\\
+Diagonal theorem & Lawvere fixed points and the obstruction to an
+unrestricted PR evaluation family. & \ref{sec:lawvere}\\
+\bottomrule
+\end{longtable}
+
+\subsection{Three levels of assertion}
+A result about a fixed presentation is an ordinary arithmetic theorem.
+A result quantified over a numerical family of finite tables is also an
+ordinary arithmetic theorem, now with table codes as variables.
+A result ranging over arbitrary presentation syntax is an external
+schema producing such theorems. These levels are distinguished throughout.
+
+The structural theorems are relative to the explicitly stated category
+laws and selected universal operations. When those laws have iPRA proofs,
+the theorem's proof specializes to an iPRA proof. This is mathematically
+substantial: the Yoneda and adjunction calculations apply also to infinite
+presented categories with undecidable arrow equality. They are not
+restricted to testing finite tables.
+
+Conversely, an existence claim that a category has all limits
+requires more than a formal calculation. The finite-set section supplies
+actual constructors and a quantifier-free induction analysis. For
+arbitrary presentations, the report states the exact universal operations
+needed and does not invent them.
+
+\subsection{What the deliverable's verification labels mean}
+\begin{description}[style=nextline]
+\item[Human proof]
+The displayed assumptions and conclusions are connected by complete
+mathematical arguments in this report. Numerical algorithms include
+their invariants and primitive-recursive bounds; structural proofs use
+only finite intuitionistic inferences.
+\item[Reused object-language source]
+The pinned ProveIt modules actually construct judgments of the form
+$\Gamma\vdash[\mathsf{PRAAx}]\varphi$. They were read and their import
+closure included. The repository reports its derivation library as
+kernel-checked; it was not rebuilt in this environment.
+\item[New Lean integration draft]
+The three new modules target that same derivation syntax and contain
+no proof placeholders, but were not compiled because the Lean executable
+was unavailable. Their elaboration and kernel checking remain to be checked.
+\item[Exact finite-model check]
+A reproducible Python run checks the stated finite cases with exact
+integer arithmetic. It supports implementation validation but is not
+an iPRA formalization.
+\end{description}
+
+Useful refinements relative to the inspected upstream sources include
+an interface for Yoneda at one fixed parameter and representing object;
+a direct density presentation that avoids arbitrary quotient existence;
+a complete empty-set treatment and explicit uniform finite-diagram
+tester; and one coherent proof and formalization plan for the monad,
+algebra, Kan-extension and idempotent constructions.
+No claim of a completed Lean mechanization of all these refinements is made.
+

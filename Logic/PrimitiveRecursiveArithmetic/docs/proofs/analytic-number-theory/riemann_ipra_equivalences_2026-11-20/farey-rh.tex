@@ -1,0 +1,53 @@
+\subsection{Farey rank discrepancies for RH and Dirichlet GRH}\label{sec:fareyrank}
+Fix \(m\ge1\) and a reduced residue \(b\bmod m\), allowing \((m,b)=(1,0)\). List in increasing order all fractions
+\[
+ 0<\gamma_1<\cdots<\gamma_N\le1,\qquad
+ \gamma_j=a/q,\quad 1\le a\le q\le n,\quad (a,q)=1,\quad q\equiv b\pmod m.
+\]
+Write \(S_t=\sum_{j=1}^N |\gamma_j-j/N|^t\), with the empty sum zero. For \((1,0)\), the classical Franel and Landau criteria for RH are respectively
+\[
+ S_2\ll_{\epsilon} n^{-1+\epsilon},\qquad
+ S_1\ll_{\epsilon} n^{1/2+\epsilon}\qquad(\epsilon>0).
+\]
+Each criterion, imposed on every reduced denominator progression with a constant allowed to depend on \(m,b,\epsilon\), is equivalent in the standard numbers to Dirichlet GRH. We give a proof for this unweighted progression version. Franel's and Landau's original papers appeared together in the \emph{G\"ottinger Nachrichten}, 1924, pp.~198--201 and 202--206; their translations are in \href{https://webhomes.maths.ed.ac.uk/~v1ranick/papers/farey.pdf}{S.~B.~Guthery, \emph{A Motif of Mathematics}, ch.~5}. For the related version restricted to \(k\)-free denominators see \href{https://arxiv.org/abs/2507.00228}{B.~Chahal, T.~Chatterjee and S.~Chaubey, Theorems 1.3--1.4}.
+
+\paragraph{From cancellation to the square discrepancy.}
+Let \(A(u)=\#\{j:\gamma_j\le u\}\), \(D(u)=Nu-A(u)\), and let \(\delta\) be one or zero according as denominator \(1\) is admitted or excluded. Reflection pairs every fraction with denominator greater than one with its complement (the fraction \(1/2\) contributes its own half). Thus \(\sum_j\gamma_j=(N+\delta)/2\). With \(B(x)=\{x\}-1/2\), off the finitely many endpoints,
+\[
+ G(u)=\sum_j B(u-\gamma_j)=D(u)-\delta/2 .
+\]
+Assume \(N>0\). Integrate \(D^2\) between consecutive jumps, including the intervals to \(0\) and \(1\). At \(\gamma_j\), the jump in the antiderivative numerator contributes
+\((z_j+1)^3-z_j^3\), where \(z_j=N\gamma_j-j\). The denominator is \(3N\) and the endpoint contributions vanish if the jump at \(1\), when present, is included. Using \(\sum_j z_j/N=(\delta-1)/2\) and \(\int_0^1D=\delta/2\) gives
+\[
+ \int_0^1G^2=N S_2 + \tfrac13+(\delta-1)/2-\delta^2/4 .
+\]
+Keeping \(\delta\) accommodates progressions excluding \(1/1\).
+
+M\"obius inversion of coprimality, followed by the finite grid identity \(\sum_{a=1}^r B(u-a/r)=B(ru)\) almost everywhere, yields
+\[
+ G(u)=\sum_{r\le n} M_r(n/r) B(ru),\qquad
+ M_r(y)=\sum_{d\le y,\;rd\equiv b\bmod m}\mu(d).
+\]
+The grid identity follows by summing the fractional parts on each of the \(r\) equal subintervals. For \((r,m)>1\), \(M_r=0\). Otherwise its congruence prescribes the single reduced class \(br^{-1}\). The usual progression Mertens bound under GRH gives \(M_r(y)\ll_{m,\eta}y^{1/2+\eta}\), uniformly in \(r\) for a fixed modulus because there are finitely many classes. For \(m=1\) the ordinary RH bound suffices. The covariance identity
+\[
+ \int_0^1 B(ru)B(su)\,du=\frac{\gcd(r,s)^2}{12rs}
+\]
+follows by multiplying the \(L^2\) Fourier expansions with coefficients \(-1/(2\pi i h)\) at nonzero frequencies \(h\): the matching frequencies are integer multiples of \(\operatorname{lcm}(r,s)\). Consequently \(\int G^2\ll_{m,\eta} n^{1+2\eta}\). Indeed, writing \(r=gv,s=gw\) for their gcd \(g\), the remaining positive sum is bounded by
+\(\sum_g g^{-1-2\eta}(\sum_v v^{-3/2-\eta})^2\).
+For every \(\eta>0\), Euler's product gives \(\varphi(q)\gg_\eta q^{1-\eta}\): for sufficiently large primes, \(1-1/p\ge p^{-\eta}\), and the finitely many other primes cost a constant. The \(\gg_m n\) admissible denominators in \([n/2,n]\) for large \(n\) therefore give \(N\gg_{m,\eta} n^{2-\eta}\). Choosing \(3\eta\le\epsilon\) proves the bound for \(S_2\); the finitely many small orders are absorbed in the constant.
+
+\paragraph{Recovering Mertens cancellation.}
+Cauchy--Schwarz gives \(S_1\le\sqrt{NS_2}\) and \(N\le n^2\). To recover cancellation from \(S_1\), let \(e(x)=\exp(2\pi i x)\). Summing \(e(a/q)\) over the primitive residues modulo \(q\) gives \(\mu(q)\), since summing the result over all divisors gives the sum of all \(q\)th roots, equal to \(\mathbf1_{q=1}\). Hence, for \(N\ge2\),
+\[
+ \left|\sum_{q\le n,\;q\equiv b\bmod m}\mu(q)\right|
+ =\left|\sum_{j=1}^N(e(\gamma_j)-e(j/N))\right|\le2\pi S_1.
+\]
+The uniformly spaced sum is zero, and the last inequality uses the derivative bound \(2\pi\). Orders with \(N<2\) are finite for fixed \(m,b\). The standard Mertens criterion now yields RH for the full sequence, and Dirichlet GRH when all reduced progressions are included.
+
+\paragraph{Clearing the denominators.}
+Set \(W=\max(1,N)n!\). The compiled PR rank counts all admitted \(a'/q'\) with \(a'q\le aq'\) by bounded loops. The index of \(a/q\) is exactly this count. Its scaled discrepancy is \(\left|a(n!/q)\max(1,N)-j n!\right|\). Summing its first and second powers gives the natural integers \(T_1=W S_1\), \(T_2=W^2S_2\), including for \(N=0\). For each \(r=k+1\ge1\), the corresponding two sentences require a natural \(c\) such that, for all \(n\ge1\), respectively,
+\[
+ T_1^{2r}\le c W^{2r} n^{r+1},
+ \qquad n^{r-1}T_2^r\le c W^{2r}.
+\]
+The excess exponents are \(1/(2r)\) and \(1/r\) and exhaust the positive epsilon conditions by cofinality. \code{FareyRH.RH} and \code{FareyRH.GRH} each take a Boolean selecting the moment. They are closed iPRA formulas. The correspondence proved in this subsection uses classical analysis in the metatheory.

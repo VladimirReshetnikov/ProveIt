@@ -1,0 +1,119 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=28mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Abstract and continuous mathematics through explicit presentations in iPRA},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\D}{\mathcal D}
+\newcommand{\Reg}{\operatorname{Reg}}
+\newcommand{\Eq}{\operatorname{Eq}}
+\newcommand{\Net}{\operatorname{Net}}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\sourcepath}[1]{\texttt{\small\path{#1}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Boundary}
+\setlist{itemsep=3pt,topsep=6pt}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Explicit presentations in \(\ipra\)}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{black!20},backgroundcolor=\color{black!2},
+ showstringspaces=false}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{13mm}
+{\color{MidnightBlue}\large FOUNDATIONS AND CONSTRUCTIVE ANALYSIS\par}
+\vspace{10mm}
+{\raggedright\huge\bfseries Abstract and continuous mathematics through explicit presentations in \(\ipra\)\par}
+\vspace{8mm}
+{\Large Completion, function spaces, continuous logic, coercive equations, and analytic approximation\par}
+\vspace{13mm}
+{\large Prepared for Vladimir Reshetnikov\\20 November 2026\par}
+\vspace{10mm}
+\noindent\textbf{Main contribution.}
+A common interpretation discipline is developed into concrete continuous mathematics:
+completion of presented metric spaces; quantitative function-space approximation and
+gluing; finite-net evaluation of continuous formulas; a constructive coercive-operator
+solver with an explicit clock; a variable-coefficient weak Dirichlet problem; and
+simultaneous approximation of complex derivatives. The report also proves precise
+limits on what the available data can determine.
+
+\vspace{7mm}
+\noindent\textbf{Verification boundary.}
+The mathematical arguments are human proofs with explicit arithmetic reductions.
+The accompanying small Lean development checks selected structural and quantitative
+lemmas. The new main analytic theorems have \emph{not} yet been compiled into
+\(\texttt{Prf PRAAx}\). Complete theorem targets, required definitions, and an ordered
+formalization plan are provided.
+
+\vfill
+\noindent Repository review pinned to\\
+\texttt{5f3be02388442f16487d2dc5c2529961dd783d2b}.\\[2mm]
+The repository was read, not modified.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+First-order intuitionistic primitive recursive arithmetic cannot simply be given
+variables ranging over arbitrary real functions, all metric spaces, or all models.
+Nevertheless, a substantial part of continuous mathematics admits a precise
+arithmetical treatment once a presentation specifies finite approximants, uniform
+moduli, and quantitative stability. We organize this treatment into three levels:
+finite arithmetic, coherent represented objects, and semantic interpretation.
+The arithmetic level is the target of actual \(\ipra\) derivations; the other two
+levels explain which classical or constructive theorem those derivations express.
+We apply the discipline to categories of completions, function spaces, metric model
+theory, an infinite-dimensional coercive equation and a one-dimensional elliptic
+boundary-value problem, and families of holomorphic functions with derivative
+control. We separate effective total boundedness from subsequence selection,
+strong Hilbert names from weak functional data, and analytic bounds from a merely
+qualitative analyticity assertion. Every positive result has an explicit algorithm
+and a finite error estimate. Every negative conclusion is stated at its actual
+metatheoretic strength.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{sections/foundations}
+\input{sections/category_model}
+\input{sections/topology}
+\input{sections/hilbert}
+\input{sections/complex}
+\input{sections/formalization}
+\input{sections/synthesis}
+\input{references}
+\end{document}

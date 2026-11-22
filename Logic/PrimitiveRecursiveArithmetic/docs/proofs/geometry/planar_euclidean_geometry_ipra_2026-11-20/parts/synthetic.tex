@@ -1,0 +1,210 @@
+\section{A point-only synthetic geometry}
+\label{sec:synthetic}
+Let $K$ denote the effective ordered real-closed field of real algebraic
+numbers. In this section $A,B,C,\ldots$ are elements of $K^2$. Write
+$u\cdot v=u_1v_1+u_2v_2$, $N(u)=u\cdot u$,
+$[u,v]=u_1v_2-u_2v_1$, and $Ju=(-u_2,u_1)$. Then
+$N(u)=0$ precisely when $u=0$, since squares are nonnegative and a
+nonzero coordinate has strictly positive square. Put
+$|u|=\sqrt{N(u)}$, using the nonnegative root.
+We verify the usual plane axioms in the point language of Tarski.
+The forms of the ten individual axioms below agree with the GeoCoq
+presentation of the Schwabh\"auser--Szmielew--Tarski system.%
+\footnote{GeoCoq, \emph{Tarski axioms},
+\url{https://geocoq.github.io/GeoCoq/html/GeoCoq.Axioms.tarski_axioms.html}.}
+
+\paragraph{Two geometric relations.}
+Write $AB\equiv CD$ when $N(B-A)=N(D-C)$. Write $B(A,X,C)$ when
+$X=(1-t)A+tC$ for some $0\leq t\leq1$. There is a quantifier-free test
+and there is a computable choice of $t$. With $u=C-A$ and $v=X-A$,
+the test is
+\[
+ [u,v]=0,\qquad v\cdot(v-u)\leq0 .
+\]
+When $u=0$ the inequality forces $v=0$ and we take $t=0$.
+Otherwise choose the first nonzero coordinate $u_i$ and put $t=v_i/u_i$.
+The determinant equation gives $v=tu$, and the inequality becomes
+$t(t-1)N(u)\leq0$, precisely $0\leq t\leq1$. The converse follows
+by substitution, including when endpoints coincide. Equality and both
+relations are decidable on point codes. Primitive recursive realizer
+formulas below branch only on decidable comparisons.
+
+\begin{theorem}[The ten point axioms]
+The exact plane satisfies segment-congruence reversal, common-segment
+transitivity, identity of congruence, segment construction,
+the five-segment axiom, identity of betweenness, inner Pasch,
+both plane-dimension axioms, and Tarski's Euclidean axiom.
+\end{theorem}
+
+\begin{proof}
+\emph{Congruence and betweenness identities.}
+The equality $N(-u)=N(u)$ gives $AB\equiv BA$.
+From $AB\equiv CD$ and $AB\equiv EF$ ordinary transitivity gives
+$CD\equiv EF$. From $AB\equiv CC$ one gets $N(B-A)=0$, hence $A=B$.
+Any affine combination of $A$ with itself is $A$, so $B(A,X,A)$ gives $X=A$.
+
+\emph{Segment construction.}
+Given $A,B,C,D$, put $d=|D-C|$. The goal is $B(A,B,E)$ and $BE\equiv CD$.
+If $A=B$, take $E=B+(d,0)$ and use parameter zero for betweenness.
+Otherwise $l=|B-A|>0$. Set $E=B+(d/l)(B-A)$. Now
+$N(E-B)=d^2$ and $B=A+\tfrac{l}{l+d}(E-A)$ with
+$0<l/(l+d)\leq1$. In particular, a requested segment of length zero
+is allowed.
+
+\emph{Five segments.}
+Suppose $B(A,B,C)$, $B(A',B',C')$, $A\ne B$, and the four pairs of
+corresponding segments $AB$, $BC$, $AD$, $BD$ are congruent.
+Let $u=B-A$, $w=D-B$. Writing $B=A+t(C-A)$ gives $t>0$, so
+$C=B+ku$ where $k=(1-t)/t\geq0$. Define primed quantities likewise,
+using $N(u')=N(u)>0$. Since $k^2N(u)=N(C-B)=k'^2N(u')$,
+nonnegativity gives $k=k'$. Moreover,
+\[
+  2u\cdot w=N(D-A)-N(u)-N(w).
+\]
+All entries on the right agree with their primed counterparts. Thus
+$N(D-C)=N(w)-2k(u\cdot w)+k^2N(u)$ agrees with $N(D'-C')$, as required.
+This proof permits $B=C$.
+
+\emph{Inner Pasch.}
+Given $B(A,P,C)$ and $B(B,Q,C)$, write
+$P=(1-p)A+pC$, $Q=(1-q)B+qC$, with $p,q\in[0,1]$.
+Set $h=p+q-pq=p+(1-p)q=q+(1-q)p$. If $h=0$,
+then $p=q=0$, so $P=A$, $Q=B$ and $X=A$ works. If $h>0$,
+put $r=p(1-q)/h$ and $s=q(1-p)/h$. The identities
+$1-r=q/h$ and $1-s=p/h$ show $r,s\in[0,1]$. Expansion gives
+\[
+  (1-r)P+rB
+  =\frac{q(1-p)A+p(1-q)B+pqC}{h}
+  =(1-s)Q+sA .
+\]
+Use this point for $X$. Thus $B(P,X,B)$ and $B(Q,X,A)$ hold even
+when the given triangle is collinear.
+
+\emph{Dimension.}
+The points $(0,0),(1,0),(0,1)$ have determinant $1$, so none of the
+three cyclic betweennesses holds. Conversely let $P\ne Q$ and suppose
+each of $A,B,C$ is equidistant from $P$ and $Q$. The locus satisfies
+\[
+                2X\cdot(Q-P)=N(Q)-N(P).
+\]
+Writing $u=Q-P$, the differences $B-A,C-A$ lie in the span of $Ju$.
+Indeed $u,Ju$ form an orthogonal basis of determinant $N(u)>0$.
+Thus $A,B,C$ have respective line parameters $0,b,c$.
+Decidably sort these three values. The point with median parameter
+lies between the other two: for $a\leq m\leq z$ use $(m-a)/(z-a)$
+when $a<z$, and use zero when all three agree. Reversing endpoints
+preserves betweenness by replacing $t$ by $1-t$. Consequently
+$B(A,B,C)\lor B(B,C,A)\lor B(C,A,B)$.
+
+\emph{Euclidean axiom.}
+Assume $B(A,D,T)$, $B(B,D,C)$ and $A\ne D$. Write
+$D=A+s(T-A)=(1-t)B+tC$ with $s,t\in[0,1]$. Since $D\ne A$,
+$s>0$. Set
+\[
+ X=A+(B-A)/s,\qquad Y=A+(C-A)/s .
+\]
+Then $B=A+s(X-A)$, $C=A+s(Y-A)$ and
+$T=A+(D-A)/s=(1-t)X+tY$. These are precisely
+$B(A,B,X)$, $B(A,C,Y)$ and $B(X,T,Y)$.
+\end{proof}
+
+\begin{theorem}[Elementary continuity, with point parameters]
+Let $L(x)$ and $U(y)$ be any fixed first-order point formulas, allowing
+parameters. If there is an $A$ such that $B(A,x,y)$ for every
+$x\in L,y\in U$, then there is an $S$ such that $B(x,S,y)$ for every
+$x\in L,y\in U$. For each instance $S$ is obtainable by primitive
+recursive operations on the parameter codes and the given $A$.
+\end{theorem}
+\begin{proof}
+Translate point variables into pairs of field variables, using the
+polynomial tests above. The effective real-closed-field decision and
+sampling procedure decides emptiness of each definable set and produces
+a member in the inhabited case. If either $L$ or $U$ is empty, take $S=A$.
+Decide whether some $P\in L$ differs from $A$. In the negative case
+every $x\in L$ equals $A$; again $S=A$ works. In the positive case
+choose such a $P$ and some $Q\in U$. Put $u=P-A$. From $B(A,P,y)$
+each $y\in U$ has the form $A+bu$ with $b\geq1$. From $B(A,x,Q)$
+each $x\in L$ has the form $A+au$ with $a\geq0$. The hypothesis
+$B(A,x,y)$ gives $a\leq b$ for every such pair. Thus
+\[
+             I=\{a\in K:L(A+au)\}
+\]
+is inhabited and has an upper bound. After quantifier elimination
+the signs of finitely many univariate polynomials decide membership.
+Discard identically zero and constant polynomials after recording
+their signs. The ordered list of all distinct real roots partitions
+the line into singleton and open-interval cells, with constant truth
+on each cell. Choose the last occupied cell. It cannot be right-unbounded.
+Its unique point or its right endpoint is $c\in K$.
+Every member of $I$ is $\leq c$, and $c$ is at most every upper bound:
+in the open-cell case, if an upper bound were $b<c$, the interval
+contains a point larger than $b$ (take the midpoint of $c$ and the
+larger of $b$ and any sample in that interval). Hence $a\leq c\leq b$
+for every original pair. The one-dimensional parameter calculation in
+the dimension proof gives $B(x,A+cu,y)$. This constructs $S=A+cu$.
+The emptiness, sampling, sign tests, root operations and final
+finite scans are those of the effective field presentation. The
+schema ranges over the point language; arbitrary arithmetic predicates
+on coordinate codes need not be invariant under this translation.
+\end{proof}
+
+\subsection{Lengths, angle comparison and rigid congruence}
+For nonzero vectors $u,v$ the pair
+\[
+ (c,s)=\left(\frac{u\cdot v}{|u|\,|v|},
+                  \frac{[u,v]}{|u|\,|v|}\right)
+\]
+encodes the directed angle from $u$ to $v$. Indeed the polynomial identity
+$(u\cdot v)^2+[u,v]^2=N(u)N(v)$ gives $c^2+s^2=1$, and
+$R(c,s)(u/|u|)=v/|v|$, where
+$R(c,s)(x,y)=(cx-sy,sx+cy)$. These equations follow by expanding
+the two coordinates and determine $c,s$ uniquely. Multiplication of
+the two-by-two rotation matrices gives the angle addition law.
+For ordinary unsigned angles, take $(c,|s|)$ and order from zero to
+a straight angle by decreasing $c$. On the upper semicircle $c$
+uniquely determines $|s|=\sqrt{1-c^2}$, so equality and order of
+angles reduce to scalar comparisons. No transcendental angle unit is needed.
+For example, for a noncollinear triangle let $u=B-A$, $v=C-A$.
+The square of the length opposite the angle at $A$ is
+\[
+         N(C-B)=N(u)+N(v)-2|u|\,|v|c .
+\]
+Thus the Pythagorean relation is equivalent to perpendicularity
+$u\cdot v=0$. The formula also gives side-angle-side from the
+three-side congruence theorem below.
+
+The same polynomial identity yields $u\cdot v\leq |u|\,|v|$.
+Expansion of $N(u+v)$ and comparison of nonnegative square roots now
+give $|u+v|\leq |u|+|v|$. Equality requires
+$u\cdot v=|u|\,|v|$, equivalently $[u,v]=0$ and $u\cdot v\geq0$.
+If $u,v$ are both nonzero, these conditions say $v=tu$ for $t\geq0$:
+choose a nonzero coordinate of $u$ and use the determinant equation.
+Applied to $u=B-A$, $v=C-B$, the equality case is precisely $B(A,B,C)$.
+When either vector is zero the endpoint cases give the same conclusion.
+
+\begin{proposition}[From three congruent sides to a motion]
+Suppose the three corresponding sides of the ordered triples $A,B,C$ and
+$A',B',C'$ are congruent. A translation followed or preceded by an
+orthogonal linear map carries the first triple to the second. A code
+for such a map and translation can be computed from the six points.
+\end{proposition}
+\begin{proof}
+If $A\ne B$, let $l=|B-A|$, $e=(B-A)/l$ and $f=Je$;
+define $e',f'$ using the equal primed length. These are orthonormal
+frames, and $C-A=xe+yf$, where $x=(C-A)\cdot e$, $y=(C-A)\cdot f$.
+Expansion gives
+\[
+              2lx=l^2+N(C-A)-N(C-B).
+\]
+Thus $x'=x$, and $y'^2=N(C'-A')-x'^2=N(C-A)-x^2=y^2$.
+If $y'=y$ put $\epsilon=1$; otherwise $y'=-y$ by
+$(y'-y)(y'+y)=0$, and put $\epsilon=-1$. The map
+$A+he+kf\mapsto A'+he'+\epsilon kf'$ has the claimed properties;
+its inverse has the same formula with frames interchanged.
+If $A=B$ but $C\ne A$, permute the triples and use $AC$ as base.
+If all three points coincide, the primed triple also coincides, and
+translation by $A'-A$ suffices. Orthogonality preserves squared norm
+and an affine map preserves affine combinations, so these motions
+preserve both geometric predicates. Conversely a motion preserves all
+three sides.
+\end{proof}

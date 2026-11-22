@@ -1,0 +1,101 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{graphicx,xcolor,booktabs,tabularx,array}
+\usepackage{placeins}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{18374D}
+\definecolor{teal}{HTML}{207D87}
+\definecolor{pale}{HTML}{EDF5F6}
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{.7em}{}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.5em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\Area}{\operatorname{Area}}
+\newcommand{\conv}{\operatorname{conv}}
+\graphicspath{{figures/}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Convex covers of unit space curves}
+\fancyhead[R]{\small 19 November 2026}
+\fancyfoot[C]{\small\thepage}
+\hypersetup{pdftitle={Convex containers for every unit-length space curve},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Three-dimensional Moser worm problem; rigorous upper and lower bounds}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{7mm}
+{\small\sffamily\color{teal}GEOMETRIC RESEARCH REPORT\par}
+\vspace{5mm}
+{\huge\bfseries\color{ink}Convex containers for every\\[2mm]unit-length space curve\par}
+\vspace{5mm}
+{\large The three-dimensional sleeping-bag problem\par}
+\vspace{7mm}
+Prepared for Vladimir Reshetnikov\hfill 19 November 2026
+\vspace{9mm}
+
+\colorbox{pale}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+\vspace{2mm}
+\textbf{Answer.} The exact optimum is not known. For the minimum volume
+$V_3$ of a compact convex body containing a translated and properly rotated
+copy of every rectifiable curve of length one, this report establishes
+\[
+\boxed{\frac{3}{220}\le V_3\le\frac{\pi}{54}}
+\qquad
+\boxed{0.0136363636\ldots\le V_3\le0.0581776417\ldots.}
+\]
+The lower bound has an elementary proof and an exact finite certificate.
+The upper bound is an explicit ellipsoidal sector, deduced from two
+published geometric theorems. The minimum is attained, although its value
+and an optimal body remain unidentified.
+\vspace{2mm}
+}}
+
+\vspace{6mm}
+\includegraphics[width=\textwidth]{cover.pdf}
+
+\vspace{3mm}
+\textbf{Recent preprint.} A September 2026 planar-cover theorem would,
+through the same lifting argument, improve the upper bound to
+$0.0547404971558\ldots$. Its dependency and verification status are
+stated separately in Section~\ref{sec:literature}.
+
+\end{titlepage}
+
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/problem.tex}
+\input{sections/lifting.tex}
+\input{sections/lower_elementary.tex}
+\input{sections/lower_rational.tex}
+\FloatBarrier
+\input{sections/existence.tex}
+\input{sections/literature.tex}
+\input{sections/reproducibility.tex}
+\appendix
+\input{sections/helix.tex}
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

@@ -1,0 +1,59 @@
+\section{What the present work adds}
+\label{sec:scope}
+
+The requested task is not merely to encode the vocabulary of analysis or algebra in arithmetic. A useful embedding must preserve the requested mathematical conclusion, give the actual finite constructions used to obtain it, and expose the induction needed to justify them. An algorithm that checks a proposed solution is not yet an algorithm that produces one. A Lean theorem about the standard natural numbers is not yet an object-theory derivation in $\ipra$.
+
+Those distinctions are already central to the ProveIt project. The current repository has also progressed considerably beyond its archived research packets. Its source-level audit records complete implementations of fixed-syntax bounded Booleanization, backward demand transfer, parameter-changing recursion, finite-query induction, finite Hausdorff operations, actual approximate-root programs, and concrete monic root-support constructions \cite{repo-audit,repo-derivations}. Reproposing those as missing infrastructure would misidentify the present problem.
+
+Our contribution has three parts. First, we organize the shared embedding discipline around an explicit boundary between a fixed program schema and its internal numerical inputs. Second, we develop new certificate producers and strengthened algebraic hypotheses that address an actually open norm endpoint. Third, we give a canonical selection construction that works on nonunique convex solution sets while retaining an explicit finite approximation requirement.
+
+\subsection{A source-sensitive status table}
+
+\begin{longtable}{@{}P{0.23\textwidth}P{0.34\textwidth}P{0.37\textwidth}@{}}
+\toprule
+Topic & Pinned source status & Treatment here\\
+\midrule
+\endhead
+Bounded formulas & The fixed grammar has actual object-theory compilation and reflection. & Reuse it; do not introduce a universal evaluator for arbitrary program codes.\\[5pt]
+Demand and changing precision & Predetermined backward-demand and two-pass recursion are already derived. & Use their local-contract discipline. No new general compiler is claimed.\\[5pt]
+Rational norms & The runtime multiplication matrix, determinant, fields, and evaluation action have been constructed. & Supply mathematical degree, nonvanishing, fiber-multiplicity and annihilator arguments, plus exact links to remaining object endpoints.\\[5pt]
+Coprime weighted zero counts & Human arguments exist; the source audit still leaves the full runtime norm endpoint open. & Reprove the common-zero mechanism for completeness, credit the existing result, and extend it using finite-place certificates.\\[5pt]
+Initial-form norm test & Already present in the coherent-methods packet, including some noncoprime cases. & Credit this general test. The smaller $\gcd(m,d)$ determinant is an additional simplification.\\[5pt]
+Strong minimizers & Existing derivations use finite minimization and strong convexity with explicit adapters. & Remove the need for a supplied exact baseline value in the key comparison, then construct a canonical convex-set selector from actual finite lists.\\[5pt]
+Siegel/Faltings & General effective covers and/or height producers are not supplied by the inspected packets. & Retain these as explicit boundaries; a better zero count does not produce a global cover or a height bound.\\
+\bottomrule
+\end{longtable}
+
+Here and below, ``new'' means a development relative to the sources audited in this task. We make no claim that these elementary valuation and projection ideas are new to mathematics. The point is a precise, reusable route into the project's restricted arithmetic, with the necessary data made explicit.
+
+\subsection{The strongest algebraic conclusion}
+
+Consider the reduced polynomial
+\[
+ G(X,Y)=\sum_{j<m}A_j(X)Y^j\ne0
+\]
+on $Y^m=f(X)$. Set
+\[
+ W(G)=\max_{A_j\ne0}\{m\deg A_j+d j\},\qquad d=\deg f.
+\]
+The earlier automatic argument uses $\gcd(m,d)=1$ to show that the determinant norm is nonzero and has degree exactly $W(G)$. We separate these conclusions. A global weight calculation gives the upper bound $\deg\Norm(G)\le W(G)$ without coprimality, whenever the norm is nonzero. A supplied finite point $a$ at which $f$ has positive order $e$ coprime to $m$ proves that nonvanishing independently.
+
+In particular, $f=X^d+X$ has order one at zero when $d\ge2$. Thus every finite list of distinct common zeros of
+\[
+ y^m=x^d+x,\qquad G(x,y)=0
+\]
+has length at most $W(G)$, for \emph{every} $m,d\ge2$. No factorization or irreducibility decision is needed. An analogous local Newton certificate works for mixed monic equations, proved in Section~\ref{sec:local}.
+
+This conclusion is deliberately a bound on a supplied finite list. A complete list of all rational or integral points requires additional information. The distinction is essential for a correct statement in first-order arithmetic.
+
+A stronger automatic version applies to every nonconstant squarefree $f\in\Q[X]$. Repeatedly divide each nonzero $A_j$ by $f$ to write $A_j=f^{a_j}B_j$, with $B_j\bmod f\ne0$. The weights $ma_j+j$ have a unique minimum $s$, at an index $k$. The determinant has the exact form
+\[
+ \Norm_{Y^m-f}(G)=f^s\left((-1)^{k(m-1)}B_k^m+fQ\right).
+\]
+A polynomial Bezout certificate for $f,f'$ proves that $\Q[X]/(f)$ has no nonzero nilpotents. Hence the bracket residue is nonzero, proving norm nonvanishing without finding or choosing a root. Section~\ref{sec:squarefree} proves this and a more general divisor criterion in full. The final bounds apply to the original rational input data.
+
+\subsection{The analytic conclusion and its input strength}
+
+Suppose a fixed primitive recursive program supplies nonempty finite rational lists $S_n$ approximating a compact convex set at a certified dyadic Hausdorff rate. Choose from $S_n$ a point whose squared distance to a supplied rational anchor is least. These independently computed choices have an explicit cross-stage distance bound. Reindexing at roughly twice the requested precision gives a fast Cauchy name for the nearest point.
+
+The finite formulation only requires finite cross-list cover and approximate-midpoint certificates. The compact set enters when interpreting those certificates in ordinary analysis. A negatively described closed convex set, without such finite Hausdorff information, is a weaker input and is not covered. Theorems about convex choice depend strongly on the representation \cite{leroux-pauly}; the present construction keeps that dependence visible.

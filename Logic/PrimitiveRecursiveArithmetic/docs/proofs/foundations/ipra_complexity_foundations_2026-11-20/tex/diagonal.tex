@@ -1,0 +1,266 @@
+\section{An explicit constructive separation of polynomial and exponential time}
+\label{sec:diagonal}
+
+The foundation should support lower bounds as well as the verification of
+upper bounds.  We now give a direct separation
+\[
+  \mathrm{P}\subsetneq\mathrm{EXPTIME}
+\]
+whose diagonal counterexample is a primitive-recursive function of the
+proposed polynomial algorithm.  The argument deliberately uses a generous
+exponential upper bound.  It does not require the sharp time hierarchy theorem,
+an asymptotic domination principle, or any claim about
+\(\mathrm{P}\) versus \(\mathrm{NP}\).
+
+\subsection{The exact bounded simulation convention}
+
+Here the source model is a deterministic one-tape machine with a fixed finite
+tape alphabet containing the two input symbols and a blank.  The input word
+occupies consecutive cells beginning at position zero; the head starts at
+zero.  Accepting and rejecting states are absorbing.  Every binary word is
+allowed as a program description: a word that does not describe a legal
+transition table denotes a fixed machine that rejects immediately.  In
+particular the bounded acceptance function is total for every description.
+Here \(e\) ranges over binary-word codes \(e\ge1\), including malformed
+machine payloads. A numerical descriptor containing 0 is normalized to
+the empty description before this construction, as in the machine convention.
+
+Write
+\[
+  B(e,w,t)\in\{0,1\}
+\]
+for acceptance of program \(e\) on input \(w\) after \(t\) iterations of its
+transition function.  Absorption makes this equivalent to acceptance by time
+\(t\).  It is a primitive-recursive function of all three natural-number
+codes.  No assertion that the original program eventually halts is involved.
+The code of a polynomial presentation is a triple \((e,c,k)\), where
+\(c\geq 1\) and \(k\geq0\), with Boolean interpretation
+\begin{equation}
+  L_{e,c,k}(w)=B\bigl(e,w,c(|w|+1)^k\bigr).
+  \label{eq:diag-presentation}
+\end{equation}
+Every such presentation defines a polynomial-time language, since a bounded
+universal simulation incurs only a polynomial overhead.  Conversely, every
+ordinary polynomial-time decision algorithm has a presentation of this form,
+after enlarging its constant and degree.  A presentation that times out still
+has a defined answer: its value in \eqref{eq:diag-presentation} is zero.
+
+\begin{lemma}[A coarse physical simulation bound]
+\label{lem:coarse-universal}
+There is a fixed one-tape simulator and a fixed positive integer \(C\) that
+compute \(B(e,w,t)\), supplied with a unary countdown \(t\), in at most
+\[
+  C\bigl(|e|+|w|+t+1\bigr)^4
+\]
+actual tape transitions.  The simulator, its correctness proof, and this
+bound admit primitive-recursive descriptions and quantifier-free induction
+proofs in iPRA.
+\end{lemma}
+
+\begin{proof}
+First describe a simulator on a fixed finite number of virtual tapes.  One
+tape holds the simulated tape; another holds the source transition table;
+others hold the binary source-state code, scan markers, and the countdown.
+If \(m=|e|\), a deliberately inefficient full scan of the transition table,
+using repeated scans to compare state codes, costs at most a fixed multiple
+of \((m+1)^2\) virtual transitions per simulated move.  The source-state code
+has at most a fixed multiple of \(m+1\) bits under a conventional transition
+table encoding.  A malformed table is detected by a finite parsing scan and
+replaced by the rejecting program.
+
+During \(t\) simulated moves, the simulated head can visit only the interval
+\([-t,|w|+t]\).  The virtual tapes therefore occupy at most a fixed multiple
+of
+\(N=m+|w|+t+1\) cells, including the unary countdown.  Encode their cells on
+one physical tape by a fixed number of tracks, with a marked virtual head on
+each track.  A bounded number of complete sweeps reads the marked symbols,
+updates them, and moves their markers.  Each virtual move costs at most a
+fixed multiple of \(N\) physical moves.  Thus the main simulation costs at
+most a fixed multiple of
+\[
+  t(m+1)^2N\leq N^4.
+\]
+Initialization, parsing, copying, and clearing markers fit the same bound
+after increasing the fixed constant.
+
+For formal verification, the invariant says that every encoded virtual cell
+and every head marker agrees with the corresponding simulated configuration,
+that the countdown equals the remaining fuel, and that the occupied interval
+has the displayed bound.  All cell comparisons and scan-prefix conditions
+are bounded by explicit numerical terms.  Their Boolean conjunction is a
+quantifier-free induction invariant.  The running-time argument uses the
+same invariant together with a transition counter.  The constant \(C\) is
+fixed by the chosen finite scan implementation; this proof does not pretend
+to supply an optimized numerical transition count.
+\end{proof}
+
+\subsection{A description that carries its own clock}
+
+Let \(1^r\) denote a unary block of \(r\) ones, and let juxtaposition denote
+word concatenation.  Define
+\begin{equation}
+  W(e,c,k)=1^{|e|}\,0\,e\,1^c\,0\,1^k\,0,
+  \qquad e\ge1,\ c\geq1.
+  \label{eq:self-description}
+\end{equation}
+The first zero terminates the unary length of \(e\).  The parser then reads
+exactly that many bits as the program payload, so zeros inside \(e\) cause no
+ambiguity.  The remaining two unary fields end at the next two zeros; the
+word must end there.  The field for \(k=0\) consists just of its terminating
+zero.  A payload need not be a legal machine description, because the default
+rejecting interpretation has already made the semantics total.
+
+The constructor \(W\) and this parser are primitive recursive.  Direct
+concatenation identities prove that parsing \(W(e,c,k)\) returns exactly
+\((e,c,k)\).  Its length is
+\begin{equation}
+  n=|W(e,c,k)|=2|e|+c+k+3.
+  \label{eq:diag-length}
+\end{equation}
+Consequently \(|e|\leq n\), \(c\leq n\), and \(k\leq n\).
+
+Define the Boolean language \(D\) by the following finite algorithm.  On
+input \(w\), parse the displayed grammar.  If parsing fails, or if the middle
+unary field has length zero, return zero.  Otherwise recover \(e,c,k\), put
+\(n=|w|\), and return
+\begin{equation}
+  D(w)=1-B\bigl(e,w,c(n+1)^k\bigr).
+  \label{eq:diag-definition}
+\end{equation}
+The input \(w\) itself is passed to the simulated program.  All operations
+in \eqref{eq:diag-definition} are primitive recursive: parsing, length, exponentiation, bounded
+iteration, and Boolean complementation.  This establishes definability in
+iPRA.  A separate machine-cost proof is needed to establish the asserted
+exponential upper bound.
+
+\begin{lemma}[An exponential bound for the diagonal language]
+\label{lem:diagonal-exp}
+For a fixed positive integer \(K\), a fixed deterministic machine computes
+\(D(w)\) in at most
+\[
+  2^{K(|w|+1)^2}
+\]
+transitions on every input \(w\).  The bound and correctness have iPRA proofs.
+\end{lemma}
+
+\begin{proof}
+Consider a well-formed input of length \(n\).  By \eqref{eq:diag-length}, its recovered constants
+satisfy \(1\leq c\leq n\), \(0\leq k\leq n\), and \(n\geq1\).  Set
+\(T=c(n+1)^k\).  Quantifier-free induction proves \(n+1\leq2^n\) for
+\(n\geq1\), whence
+\begin{equation}
+  T\leq n(n+1)^n
+    \leq 2^n 2^{n^2}
+    =2^{n^2+n}
+    \leq 2^{(n+1)^2}.
+  \label{eq:diag-clock-bound}
+\end{equation}
+
+An especially simple implementation produces a unary countdown of length
+\(T\).  Start with the unary \(c\) block and multiply its length by \(n+1\),
+\(k\) times, by repeated copying.  Every intermediate length is at most
+\(T\).  In a naive tape implementation, a transferred unary mark requires
+only a fixed number of scans of the input, old block, new block, and loop
+markers, occupying \(O(n+T+1)\) cells.  There are at most \(n\) multiplication
+stages and at most \(T\) transferred marks per stage, with polynomially
+bounded loop overhead.  Thus the generous bound
+\(A_0(n+T+1)^4\) covers countdown production.  The simulation lemma, with
+\(|e|\leq n\), covers evaluation of \(B\) by another fixed multiple of the
+same fourth power.  Parsing malformed inputs and returning zero costs only
+a polynomial, also covered after increasing the constant.  For some fixed
+positive integer \(A\), the complete algorithm therefore has cost
+\[
+  A(n+T+1)^4
+\]
+on well-formed inputs, with the polynomial parsing bound on the others.
+
+Put \(q=(n+1)^2\).  Both \(T\) and \(n+1\) are at most \(2^q\), so
+\[
+  A(n+T+1)^4\leq 16A\,2^{4q}\leq2^{Kq}
+\]
+for any fixed \(K\geq4+\lceil\log_2(16A)\rceil\).  If one wishes to avoid
+logarithms even in the specification of the constant, \(K=4+16A\) works.
+Increase \(A\), and hence \(K\), to cover invalid inputs and the finitely many
+small input lengths.  These are explicit polynomial and exponential bounds,
+not an appeal to an eventual asymptotic comparison.
+
+The iPRA audit uses Boolean prefix invariants for parsing and copying, the
+simulator invariant of Lemma~\ref{lem:coarse-universal}, and the elementary
+quantifier-free inductions for multiplication, exponentiation, and \eqref{eq:diag-clock-bound}.
+All storage and all loop lengths are bounded by the displayed
+primitive-recursive terms.  Unary countdown production is intentionally
+inefficient, but its cost remains within the claimed exponential bound.
+\end{proof}
+
+\begin{theorem}[A uniform primitive-recursive mismatch witness]
+\label{thm:explicit-diagonal}
+iPRA proves that, for every program description \(e\), every \(c\geq1\), and
+every \(k\geq0\), with description code \(e\ge1\),
+\begin{equation}
+  D\bigl(W(e,c,k)\bigr)
+  \ne
+  B\!\left(e,W(e,c,k),
+       c\bigl(|W(e,c,k)|+1\bigr)^k\right).
+  \label{eq:diag-mismatch}
+\end{equation}
+Consequently the displayed \(D\) belongs to \(\mathrm{EXPTIME}\) and has no
+polynomial-time presentation.  In the intended extensional interpretation
+of the coded classes, \(\mathrm{P}\subsetneq\mathrm{EXPTIME}\).
+\end{theorem}
+
+\begin{proof}
+The parser equations give the exact triple \((e,c,k)\) on input
+\(W(e,c,k)\).  Substituting it in \eqref{eq:diag-definition}, the left side of \eqref{eq:diag-mismatch} is the Boolean
+complement of the right side.  The two possible Boolean values show that
+they are unequal.  This uses no totality promise for the original program:
+both rejecting and nonhalting computations have bounded-acceptance value
+zero, whose complement is one.
+
+Lemma~\ref{lem:diagonal-exp} supplies the exponential-time upper bound.
+Equation \eqref{eq:diag-mismatch} rules out each polynomial presentation, with the actual
+counterexample word given by the same primitive-recursive constructor
+\(W\).  If an ordinary polynomial-time decider computed \(D\), choose a
+clock \(c(n+1)^k\) dominating its running time.  Its bounded-acceptance
+value would equal \(D\) on every word, contradicting \eqref{eq:diag-mismatch} on
+\(W(e,c,k)\). For the non-strict inclusion, replace each polynomial
+descriptor by the total clocked evaluator that returns its Boolean answer,
+including its timeout answer. That evaluator has a genuine polynomial
+runtime bound by the simulator lemma. An exponential clock dominates this
+bound and therefore preserves its answer. Merely increasing the clock of
+the original possibly partial program would not justify the inclusion.
+\end{proof}
+
+\subsection{What the separation does, and what its formalization must retain}
+
+Equation \eqref{eq:diag-mismatch} is stronger, constructively, than merely negating the existence
+of a polynomial decider.  Intuitionistic logic does not in general turn
+\(\neg\forall w\,R(w)\) into \(\exists w\,\neg R(w)\).  Here there is no such
+conversion: \(W(e,c,k)\) explicitly gives a differing input for each proposed
+presentation.  The statement can be expressed as the universal closure of
+a quantifier-free Boolean inequality with named primitive-recursive
+functions.  The required constructor/parser identities are themselves
+proved by quantifier-free induction on finite word operations.
+
+The unary clock fields are essential to the resource estimate.  If the
+exponent \(k\) were given in unrestricted binary and then used without a
+length-dependent cap, it could be exponential in \(|w|\), and the same
+algorithm could require more than exponential time.  Unary encoding still
+represents every fixed polynomial clock, while guaranteeing \(k,c\leq|w|\)
+on the specially constructed inputs and every successfully parsed input.
+
+The argument also keeps program evaluation and logical reflection separate.
+It evaluates a specified machine for a specified finite number of steps;
+it does not evaluate arbitrary primitive-recursive definitions uniformly,
+decide whether an arbitrary theorem is true, or infer soundness from an
+arbitrary iPRA proof code.  The familiar diagonal phenomenon therefore poses
+no conflict with the totality of the bounded evaluator.
+
+For a Lean formalization, the key interfaces are the word constructor,
+its exact parsing theorem, the bounded evaluator, its Boolean-valuedness,
+the simulator's physical transition bound, and the elementary exponential
+inequalities.  The final mismatch proof is short once those interfaces have
+been established.  A checked Lean proof of the mismatch algebra alone does
+not establish the machine-time bound or automatically produce an iPRA
+derivation.  The completed development must retain the finite invariants and
+the code-generating bridge described above for those separate obligations.
+

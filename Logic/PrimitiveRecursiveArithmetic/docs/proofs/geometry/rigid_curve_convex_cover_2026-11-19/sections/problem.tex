@@ -1,0 +1,64 @@
+\section{The precise optimization problem}\label{sec:problem}
+
+A curve is a continuous rectifiable map $\gamma:[0,1]\to\R^3$.
+Its length is
+\[
+ L(\gamma)=\sup_{0=t_0<\cdots<t_m=1}
+ \sum_{i=1}^m\|\gamma(t_i)-\gamma(t_{i-1})\|.
+\]
+Corners, self-intersections, and retracing are allowed; retraced travel
+contributes to the length. The trace is $\Gamma=\gamma([0,1])$.
+All test curves used for the lower bounds are simple polygonal arcs or a
+smooth simple helix, so those lower bounds also apply if one restricts
+the question to simple curves.
+
+Here a \emph{convex body} is a compact convex subset of $\R^3$ with nonempty
+interior. A body $K$ is a universal cover for unit space curves if
+\[
+ \text{for every $\gamma$ with $L(\gamma)=1$, there exist}
+ \quad Q\in SO(3),\ b\in\R^3
+ \quad\text{such that}\quad Q\Gamma+b\subseteq K.
+\]
+The rotation and translation may depend on the curve. The curve is rigid:
+its shape is unchanged by its placement. We seek
+\[
+ V_3=\inf\{\Vol(K):K\text{ is such a convex universal cover}\}.
+\]
+Section~\ref{sec:existence} proves that this infimum is a minimum.
+This is the spatial counterpart of Moser's worm problem, studied under
+the name ``sleeping bag for a baby snake'' in~\cite{HLW2001}.
+
+\paragraph{Exactly one and at most one.}
+The same bodies cover every curve of length at most one. Indeed, append
+a straight segment of the missing length to an endpoint of a shorter
+path. A placement of this extended unit path also places its original
+subpath. This argument is about paths and does not require the extension
+to be injective. The reverse implication is immediate.
+
+\paragraph{Boundary and scale conventions.}
+Containment includes the boundary of $K$, as is customary. If containment
+strictly inside the body is demanded, arbitrarily small dilations about
+an interior point preserve universality and make every contained trace
+interior. Thus the infimum is unchanged, although attainment under that
+stronger convention need not follow. For a different length $L>0$,
+dilation gives
+\[
+ V_3(L)=L^3 V_3(1).
+\]
+
+\paragraph{Related questions that have different answers.}
+The curve is not required to be closed. Closed unit loops have diameter at
+most $1/2$, whereas this problem includes a straight unit segment.
+Nor is this the problem of containing every set of diameter one:
+the restriction to a trace of total length one is substantial.
+Finally, maximizing $\Vol(\conv\Gamma)$ over individual curves gives a
+lower bound for $V_3$, but does not produce a common container. A universal
+body must fit many geometrically incompatible shapes.
+
+\paragraph{How the report answers the question.}
+The main result is a rigorous interval and a concrete feasible body,
+not an asserted optimum. The upper bound combines published results;
+the lower bound and its finite certificate are proved in full below.
+The final literature section distinguishes a historical spatial bound,
+our deductions from published theorems, and a newer preprint-dependent
+improvement. The literature check was made on 19 November 2026.

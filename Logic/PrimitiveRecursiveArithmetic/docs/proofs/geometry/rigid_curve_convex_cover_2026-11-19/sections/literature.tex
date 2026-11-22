@@ -1,0 +1,101 @@
+\section{Literature status and a recent preprint}\label{sec:literature}
+
+\subsection{What is established here}
+H\aa stad, Linusson, and W\"astlund constructed a spatial universal cover
+with volume less than $0.075803$ in~\cite{HLW2001}. The 2007 erratum
+corrects omitted author names in the online metadata, not a mathematical
+argument~\cite{HLW2007}. This report's ellipsoidal sector has a smaller
+volume, $\pi/54$, by combining the alternating-support theorem with the
+later planar sector theorem. This is a deduction from those results;
+it is not a claim that the deduction has never appeared elsewhere.
+
+The word ``minimum'' must not be attached to $\pi/54$: we prove that
+one body of that volume works. On the other side, $3/220$ is forced by
+two carefully chosen test curves. Neither argument identifies the
+optimal shape. The cited literature does not provide an exact optimal
+spatial volume, and no such determination was found in the present search.
+
+\subsection{A sharper bound depending on Keller's 2026 preprint}
+Keller's September 2026 preprint~\cite{Keller2026} reports a convex planar
+universal quadrilateral, allowing planar reflections, of exact area
+\[
+ A_{\mathrm K}=
+ \frac{7170601298323360123534337}{29109471743520000000000000}
+ =0.24633223720109565\ldots.
+\]
+Its reported universality theorem, combined with our general lift, yields
+\[
+ \boxed{V_3\le\frac29 A_{\mathrm K}
+ =\frac{7170601298323360123534337}{130992622845840000000000000}
+ =0.05474049715579903\ldots.}
+\]
+The manuscript reports a Lean 4 verification. We inspected the statement
+and recomputed the quadrilateral's area exactly, but did not independently
+replay its universal-cover certificates. This stronger number is therefore
+explicitly presented as depending on that preprint. The proof of
+$V_3\le\pi/54$ is independent of it.
+
+The planar reflection convention poses no obstacle to this spatial
+application. For $A\in O(2)$, the matrix
+$\operatorname{diag}(A,\det A)$ lies in $SO(3)$, and the constructed
+body is symmetric in its height coordinate. Thus a reflected planar
+placement lifts to a proper spatial rotation. This detail matters:
+an asymmetric planar cover cannot automatically be used for a
+\emph{planar} problem that forbids reflections.
+
+\paragraph{Reproducible geometric data.}
+The cited quadrilateral is the intersection of the four half-planes
+$n_i\cdot p\le h_i$, with
+\[
+\begin{array}{c|cc|c}
+i&n_{i,x}&n_{i,y}&h_i\\\hline
+0&-394797/401525&-73196/401525&0\\
+1&0&-1&0\\
+2&207/305&224/305&130783/250000\\
+3&1767/4505&4144/4505&446199/1000000
+\end{array}
+\]
+Our script intersects adjacent boundary lines, checks every resulting
+vertex against all four inequalities, and evaluates the shoelace area
+with rational arithmetic. These checks verify the displayed area and
+the resulting lifted volume. They do not reprove the planar covering
+theorem. The full rational vertices are recorded in
+\texttt{data/keller\_quadrilateral.json}.
+
+\subsection{Bounds and their roles}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l r X@{}}
+\toprule
+Statement & Value & Role\\
+\midrule
+Helix hull lower bound & $0.0102097944\ldots$ & Independent geometric illustration; Appendix~A.\\[2pt]
+Tetrahedron and segment & $0.0130945700\ldots$ & Short elementary lower bound.\\[2pt]
+Four-edge arc and segment & $3/220$ & Stronger lower bound; complete exact certificate.\\[2pt]
+Ellipsoidal sector & $\pi/54$ & Explicit upper bound from published theorems.\\[2pt]
+Lifted Keller quadrilateral & $0.0547404972\ldots$ & Sharper upper bound dependent on a 2026 preprint.\\[2pt]
+Historical spatial prism & $<0.075803$ & Direct published spatial construction in~\cite{HLW2001}.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The main interval $[3/220,\pi/54]$ has an upper-to-lower ratio
+$110\pi/81\approx4.26636$. This quantifies how far these particular
+arguments are from determining an exact value. The table is an audit
+of results used in this report, not an exhaustive world-record list.
+
+\subsection{What would improve the answer}
+The lifting theorem reduces one avenue of progress to improving a planar
+convex cover: any established planar area $A$ produces the spatial
+volume $2A/9$. A better spatial construction might use more than the
+two coarse statistics, slab separation and projected length, and need
+not arise from this lift at all.
+
+For lower bounds, one can add further unit test curves and minimize the
+volume of the joint convex hull of independently placed copies. The
+present certificate avoids that larger placement problem by using the
+unit segment to select one direction and a second curve whose hull has
+large projection area in \emph{every} direction. Enlarging this finite
+test family may strengthen the obstruction. A finite numerical search
+alone would need a rigorous reduction or error bound before it could
+prove a universal assertion.

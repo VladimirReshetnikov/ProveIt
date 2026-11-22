@@ -1,0 +1,91 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,listings}
+\usepackage{xurl,hyperref,fancyhdr}
+\definecolor{ink}{HTML}{15354B}
+\definecolor{accent}{HTML}{126E82}
+\definecolor{papergray}{HTML}{F1F5F7}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Continuous Probability in Intuitionistic Primitive Recursive Arithmetic},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Continuous probability in iPRA}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{.35em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\setlist{itemsep=2pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
+ breaklines=true,frame=single,rulecolor=\color{ink!25},
+ backgroundcolor=\color{papergray},showstringspaces=false}
+
+\begin{document}
+\begin{titlepage}
+\color{ink}
+{\large\sffamily FOUNDATIONS AND FORMALIZATION}\par
+\vspace{1.0cm}
+{\Huge\bfseries Continuous Probability\par}
+\vspace{.25cm}
+{\LARGE in Intuitionistic Primitive\par Recursive Arithmetic\par}
+\vspace{.65cm}
+{\large Finite rational observations, coherent random variables,\par
+ certified integration, and quantitative limit theorems\par}
+\vspace{.8cm}
+\color{black}
+\begin{abstract}
+We construct a foundation for continuous probability whose finite content
+uses only primitive recursive programs and quantifier-free induction.
+One coherent algebra of fair-bit cylinder tables supports represented
+events, arbitrary random variables in the bounded convergence-in-probability
+metric, and stronger $L^1$ and $L^2$ representations. Error bounds are part
+of the data of each limiting construction.
+
+The development includes countable additivity with explicit tails,
+integration and quantitative Vitali convergence, independent copies,
+conditional averaging and Bayes updating, and continuous-state transitions.
+Uniform, exponential, normal, Cauchy, and singular Cantor laws are treated.
+A dyadic histogram construction realizes effective densities coherently on
+the common bit space while preserving certified moment tails. The Gaussian
+normalization and moments are proved by finite quadrature estimates.
+Explicit weak- and strong-law bounds and an elementary quantitative central
+limit theorem are derived, with careful treatment of discontinuous threshold
+events and almost-sure exceptional sets.
+
+The archive supplies the complete human argument, the arithmetic coding and
+Lean completion plan, an independently compiled finite Lean kernel with
+30 named theorems, and exact-rational reference computations. The continuous
+theorems are not claimed to be completed embedded iPRA proof objects; the
+remaining derivations and the existing repository providers are identified.
+\end{abstract}
+\vfill
+{\large Prepared for Vladimir Reshetnikov\par}
+{20 November 2026\par}
+\vspace{.3cm}
+{\small Source snapshots and verification receipts are recorded in the archive.}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+\input{sections/scope_arithmetic}
+\input{sections/foundation}
+\input{sections/distributions}
+\input{sections/realization}
+\input{sections/conditioning}
+\input{sections/limits}
+\input{sections/formalization}
+\input{references}
+\end{document}

@@ -1,0 +1,60 @@
+% Independent mathematical notes for integration into the main report.
+\section{An independent lower bound from a helix}
+Let
+\[
+ r=\frac1{\pi\sqrt6},\qquad h=\frac1{\sqrt3},\qquad
+ \gamma(t)=\left(r\cos t,r\sin t,\frac{ht}{2\pi}\right),
+ \quad 0\le t\le2\pi.
+\]
+This is a smooth, simple, one-turn circular helix. Its length is
+\[
+ 2\pi\sqrt{r^2+\left(\frac h{2\pi}\right)^2}
+ =\sqrt{4\pi^2r^2+h^2}=1.
+\]
+We prove directly that any convex body containing this curve has volume at
+least $\pi r^2h/3$, without relying on a formula for the entire convex hull.
+
+Write $A=\gamma(0)$ and $B=\gamma(2\pi)$, and let $p=(r,0)$ be their common
+orthogonal projection onto the $xy$-plane. For $N\ge3$, set
+$q_i=\gamma(2\pi i/N)$, $0\le i\le N$. Every tetrahedron
+\[
+ T_i=\operatorname{conv}\{A,B,q_i,q_{i+1}\},\qquad 1\le i\le N-2,
+\]
+lies in the convex container. Its orthogonal projection is the triangle
+with vertices $p$, $\pi_{xy}(q_i)$, $\pi_{xy}(q_{i+1})$. These triangles form
+the usual fan triangulation of the regular inscribed $N$-gon. In particular,
+their interiors are pairwise disjoint; the tetrahedra therefore also have
+pairwise disjoint interiors. Since $B-A=(0,0,h)$, the determinant formula for
+tetrahedron volume gives
+\[
+ |T_i|=\frac h3\operatorname{area}
+ \operatorname{conv}\{p,\pi_{xy}(q_i),\pi_{xy}(q_{i+1})\}.
+\]
+Adding yields
+\[
+ |K|\ge\frac h3\frac{Nr^2}{2}\sin\frac{2\pi}{N}.
+\]
+Letting $N\to\infty$ proves
+\[
+ \boxed{|K|\ge\frac{\pi r^2h}{3}
+ =\frac1{18\pi\sqrt3}=0.01020979435966\ldots.}
+\]
+Every universal convex container must contain a rigid copy of this helix,
+so the estimate applies to the universal-cover problem. The construction is classical in the study of convex hulls of space
+curves; see Egerv\'ary~\cite{Egervary1950}.
+No assertion that this helix maximizes convex-hull volume among all curves
+is required or made here.
+
+The chosen parameters are optimal for this lower-bound construction.
+Putting $x=2\pi r$ gives $x^2+h^2=1$ and
+$\pi r^2h/3=h(1-h^2)/(12\pi)$, whose maximum on $[0,1]$ is achieved at
+$h=1/\sqrt3$.
+
+
+This bound is weaker than the two-test-curve bounds in the main text. It is included to illustrate why a nonplanar curve alone forces positive volume and why convex-hull volume does not answer the universal-cover question.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.85\textwidth]{helix.pdf}
+\caption{The helix lower bound uses tetrahedra with the two endpoints as a common vertical edge. Their projections are disjoint fan triangles in an inscribed polygon.}
+\end{figure}

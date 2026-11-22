@@ -1,0 +1,304 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx,xcolor,pdflscape}
+\usepackage{enumitem,listings}
+\usepackage[unicode,colorlinks=true,linkcolor=teal!55!black,urlcolor=teal!55!black,citecolor=teal!55!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Largest sections of the Platonic solids}
+\fancyhead[R]{\small Constructive arithmetic proof}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist{topsep=4pt,itemsep=3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\Area}{\operatorname{Area}}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\llbracket}{[\![}
+\newcommand{\rrbracket}{]\!]}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single,
+  backgroundcolor=\color{gray!4},rulecolor=\color{gray!25},showstringspaces=false}
+\hypersetup{pdftitle={Largest planar sections of the five Platonic solids},
+ pdfauthor={Constructive geometry research report}}
+\title{\textbf{Largest planar sections\\of the five Platonic solids}\\[5pt]
+ \large Explicit optimizers, exact certificates, and an iPRA formalization plan}
+\author{}
+\date{19 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We find a largest planar section of each Platonic solid, give its equation,
+vertices, shape, and exact area, and prove a global upper bound. The
+tetrahedral, cubical, and octahedral bounds have short elementary algebraic
+proofs. The icosahedral and dodecahedral bounds reduce to two and three
+explicit cones of normals and finite positive-coefficient polynomial
+certificates. All 283 nonzero certificate coefficients are printed in the
+appendices and supplied in machine-readable form. An exact finite
+trapezoid construction reduces affine sections of centrally symmetric
+solids to central sections. The resulting proof uses only finite geometry,
+ordered quadratic-field arithmetic, and primitive recursive operations.
+We state its first-order arithmetical interpretation precisely and give a
+Lean outline directed at ProveIt's actual \texttt{Prf PRAAx} interface.
+The Python certificates have been executed; the Lean outline is not a
+completed or kernel-checked formalization of the main theorem.
+\end{abstract}
+
+\section{Answer, normalization, and conventions}
+Let $a>0$ be the edge length of the solid, and put
+$\varphi=(1+\sqrt5)/2$. The answer is as follows.
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Solid & Shape of an attaining section & Maximum area\\
+\midrule
+Tetrahedron & Equilateral face & $\displaystyle\frac{\sqrt3}{4}a^2$\\
+Cube & Rectangle, sides $a,\sqrt2a$ & $\sqrt2a^2$\\
+Octahedron & Square, side $a$ & $a^2$\\
+Icosahedron & Centrally symmetric hexagon & $\displaystyle\frac{2+\sqrt5}{2}a^2$\\
+Dodecahedron & Regular decagon, side $\varphi a/2$ &
+ $\displaystyle\frac5{16}\sqrt{130+58\sqrt5}\,a^2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The corresponding numerical coefficients of $a^2$ are, respectively,
+$0.4330127019$, $1.4142135624$, $1$, $2.1180339887$, and
+$5.0359250668$. The hexagon is not regular: its two opposite long sides
+have length $a$, and its other four sides have length $\sqrt3a/2$.
+
+\paragraph{Meaning of section.}
+A section is the intersection of the closed solid with an affine plane;
+supporting planes are allowed. This convention is essential for the
+tetrahedron, whose largest section is one of its faces. If the plane must
+meet the interior of the tetrahedron, the displayed value is the supremum
+and is not attained. The other four displayed planes meet the interior.
+We seek one maximizing plane for each solid, not a classification of all
+possible translated equality cases.
+
+\subsection{Coordinate models and equations}
+The following unscaled models keep every coordinate in
+$\QQ(\varphi)$. Each independent $\pm$ sign ranges over both choices.
+\begin{align*}
+T={}&\conv\{(1,1,1),(1,-1,-1),(-1,1,-1),(-1,-1,1)\},\\
+C={}&[-1,1]^3,\\
+O={}&\conv\{\pm e_1,\pm e_2,\pm e_3\},\\
+I={}&\conv\{(0,\pm1,\pm\varphi),(\pm1,\pm\varphi,0),
+                       (\pm\varphi,0,\pm1)\},\\
+D={}&\conv\{(\pm1,\pm1,\pm1),(0,\pm\varphi^{-1},\pm\varphi),\\
+ &\hspace{53mm}(\pm\varphi^{-1},\pm\varphi,0),
+                       (\pm\varphi,0,\pm\varphi^{-1})\}.
+\end{align*}
+Here $e_j$ are the coordinate unit vectors and
+$\varphi^{-1}=\varphi-1$. The scale factors taking these models to edge
+length $a$, and the desired planes in the unscaled models, are
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Model & Raw edge length & Scale factor & Maximizing plane\\
+\midrule
+$T$ & $2\sqrt2$ & $a/(2\sqrt2)$ & $x+y+z=-1$\\
+$C$ & $2$ & $a/2$ & $x+y=0$\\
+$O$ & $\sqrt2$ & $a/\sqrt2$ & $z=0$\\
+$I$ & $2$ & $a/2$ & $z=0$\\
+$D$ & $2/\varphi$ & $a\varphi/2$ & $\varphi y+z=0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus, in the scaled physical coordinates, the tetrahedral equation is
+$x+y+z=-a/(2\sqrt2)$; the four homogeneous plane equations stay the same.
+Multiplying every listed section vertex below by its scale factor gives
+the coordinates for any requested edge length.
+
+\paragraph{Relation to existing results.}
+The maximizing values and orientations agree with the computations of
+Brandenburg, De Loera, and Meroni, Example 5.2 and Table 3 of
+\cite{BDM}. Their paper provides a general framework for slicing
+polytopes. Here the global bounds are supplied by explicit finite
+identities, coefficient lists, and independently executable checks. No
+call to a numerical optimizer is used as a premise of the proof.
+
+\begin{landscape}
+\begin{figure}[p]
+\centering\includegraphics[width=\linewidth]{figures/maximal_sections.pdf}
+\caption{The five attaining sections. The drawings use the exact vertices
+given in the text. Floating point is used only to render the illustration;
+all geometric and certificate checks use exact arithmetic.}
+\end{figure}
+\end{landscape}
+
+\tableofcontents
+\clearpage
+
+\section{Finite geometric definitions and elementary tools}
+\label{sec:finitegeometry}
+\subsection{Solids, planes, and polygons}
+For a finite list of points $v_0,\ldots,v_{r-1}$, their convex hull is
+the set of sums $\sum_i\lambda_i v_i$ with $\lambda_i\ge0$ and
+$\sum_i\lambda_i=1$. A plane is
+\[
+ H(n,t)=\{x:n\cdot x=t\},\qquad n\ne0.
+\]
+The input $(n,t)$ is unchanged geometrically by multiplying it by a
+nonzero scalar. A convex polygon is specified by its boundary vertices
+$q_0,\ldots,q_{m-1}$ in cyclic order. Repeated boundary vertices are
+permitted and contribute zero edges. Empty polygons, points, and
+segments have area zero.
+
+The section vertices are the original vertices lying on the plane,
+together with the intersections of the plane and the crossed polytope
+edges. For an edge $[v_i,v_j]$, put $h_i=n\cdot v_i-t$. If $h_i,h_j$
+have opposite signs, its intersection is
+\begin{equation}
+ q_{ij}=\frac{h_i v_j-h_j v_i}{h_i-h_j}.             \label{eq:edge}
+\end{equation}
+If the whole edge lies in the plane, insert its endpoints instead.
+All these decisions are finite sign tests for arithmetic input data.
+
+To justify completeness, let a section vertex lie in the relative
+interior of a face of the original polytope of dimension at least two.
+Intersecting that face's affine span with the plane leaves a line
+through the point, unless the plane contains the face, in which case
+there is again such a line. A sufficiently small segment of this line
+lies in the face, contradicting extremality in the section. Thus a
+section vertex lies on an original edge or is an original vertex.
+This reasoning can be expressed by the finitely many supporting
+inequalities and linear nullspaces; it needs no infinite separation
+theorem. The convex hull of the resulting finite point list is the
+whole section.
+
+\subsection{Squared area without square roots}
+The vector shoelace formula gives
+\begin{equation}
+ W(Q)=\frac12\sum_{i=0}^{m-1}q_i\times q_{i+1},
+ \qquad \Area(Q)^2=W(Q)\cdot W(Q),                 \label{eq:area}
+\end{equation}
+with indices taken modulo $m$. To prove it, triangulate from a point
+of the polygon. The oriented triangle vectors add, and the terms
+involving that point telescope. All vectors are parallel and have
+the same orientation, so the norm of their sum is the sum of their
+areas. This also proves finite additivity. Alternatively, dropping
+any coordinate $j$ with $n_j\ne0$ gives a planar shoelace formula;
+the conversion factor is $\|n\|/|n_j|$.
+
+For arithmetic purposes, (\ref{eq:area}) is the definition of the
+squared-area output. It lies in the original coordinate field even
+when the positive area itself requires a further square root.
+All sharp comparisons can therefore be checked by ordered-field
+arithmetic in $\QQ(\varphi)$.
+
+\subsection{Weighted vector bounds}
+The norm inequalities used below have polynomial certificates. If
+$\lambda_i\ge0$ and $s=\sum_i\lambda_i$, then
+\begin{equation}
+ s\sum_i\lambda_i\|v_i\|^2-
+   \left\|\sum_i\lambda_i v_i\right\|^2
+ =\sum_{i<j}\lambda_i\lambda_j\|v_i-v_j\|^2\ge0.
+                                                               \label{eq:variance}
+\end{equation}
+Consequently, if $s\le1$ and every $\|v_i\|^2\le M^2$, then
+$\|\sum_i\lambda_i v_i\|^2\le M^2$.
+Thus any application below of the triangle inequality to a weighted
+sum of face vectors can be replaced by a finite polynomial identity.
+This avoids an implicit appeal to a complete normed space.
+
+\subsection{Checking the coordinate models}
+The programs enumerate supporting facets and edge incidences exactly.
+The counts are $(V,E,F)=(4,6,4),(8,12,6),(6,12,8),(12,30,20),
+(20,30,12)$ in the order $T,C,O,I,D$. All triangular facets are
+equilateral, all cubical facets are squares, and the dodecahedral
+facets are regular pentagons. In the latter model, the outward
+normals are $(0,\pm\varphi,\pm1),(\pm1,0,\pm\varphi),
+(\pm\varphi,\pm1,0)$, with common support constant $\varphi^2$;
+their edge squares are $8-4\varphi$ and diagonal squares are $4$.
+These finite supporting-plane checks identify the standard regular
+solids and verify that no unlisted facet is used in a section formula.
+
+\input{central_section}
+\input{small_solids}
+\input{icosahedron}
+\input{dodecahedron}
+\input{arithmetic}
+\input{real_inputs}
+\input{formalization}
+
+\section{Reproduction, evidence, and completion status}
+The supplied archive is self-contained for the mathematical argument.
+The coefficient appendices print the complete global inequalities for
+the two larger solids. Machine-readable lists accompany them.
+The following commands run the exact checks from the archive root:
+\begin{lstlisting}
+python3 code/exact_sections.py
+python3 code/verify_central_reduction.py
+python3 certificates/icosahedron/verify_icosahedron.py
+python3 certificates/dodecahedron/verify_dodecahedron.py
+python3 code/verify_small_solids.py
+\end{lstlisting}
+The first four commands use only the Python standard library. The
+last optional symbolic audit uses SymPy; the identities it checks are
+already displayed in the proof. The first program independently clips
+each attaining plane, computes the vector shoelace area, checks all
+five witness values, and verifies the uniform inner and outer ball
+bounds used in the real-input interpretation. The second tests the
+reflected-fiber construction, including degenerate cases. The two
+large-solid certificate programs check
+the symmetry reductions, supporting facets, crossed-edge cycles,
+rational area identities, denominator conditions, and every
+coefficient of the sharp upper bounds.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Component & Status\\\midrule
+Human-readable geometric proof & Complete for all five solids, including affine sections.\\
+Exact finite certificates & Executed successfully; no floating-point optimization is trusted.\\
+Arithmetic interpretation & Explicit natural-number encoding, bounded algorithms, and
+quantifier-free induction proof plan supplied.\\
+Lean files & Definitions, selected algebraic lemmas, and formal proof obligations;
+not compiled in this environment.\\
+Full \texttt{Prf PRAAx} term & Not produced. The report does not label the main theorem
+as already Lean-checked.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The calculations establish the mathematical certificates; their
+correctness is explained by finite identities in the text. Python
+execution is not substituted for a Lean soundness theorem. The
+remaining formalization work is specified module by module, with an
+actual object-language iPRA endpoint rather than only a theorem about
+\texttt{Real} in Lean's metatheory.
+
+\begin{thebibliography}{9}
+\bibitem{BDM} M.-C. Brandenburg, J. A. De Loera, and C. Meroni,
+\emph{The best ways to slice a polytope}, Mathematics of Computation
+94 (2025), 1003--1042. DOI: \href{https://doi.org/10.1090/mcom/4006}{10.1090/mcom/4006}.
+Preprint: \url{https://arxiv.org/abs/2304.14239}. Auxiliary implementation:
+\url{https://mathrepo.mis.mpg.de/BestSlicePolytopes/}.
+\bibitem{Klamkin} M. S. Klamkin, \emph{Largest Cross-Section of a Tetrahedron},
+American Mathematical Monthly 82 (1975), 661, solution to Problem E 1298.
+Collected reprint: \url{https://carmamaths.org/resources/jon/Preprints/Books/Klamkin/komplete.pdf}.
+\bibitem{ProveIt} V. Reshetnikov and contributors, \emph{ProveIt},
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Relevant source files and exact inspected Git blob identifiers are recorded
+in \texttt{repo\_provenance.json}. No unverified research packet is used as
+an axiom of the present proof.
+\end{thebibliography}
+
+\appendix
+\clearpage
+\begingroup\small
+\input{icosahedron_coefficients}
+\input{dodecahedron_coefficients}
+\endgroup
+\end{document}

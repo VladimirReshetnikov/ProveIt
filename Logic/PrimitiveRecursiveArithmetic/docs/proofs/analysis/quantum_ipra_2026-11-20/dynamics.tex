@@ -1,0 +1,575 @@
+\section{Hamiltonians with quantitative unitary dynamics}
+\label{sec:dynamics}
+
+We use units in which $\hbar=1$. An unbounded observable is specified by its
+\emph{graph}: a state vector $x$ in its domain comes with a second Hilbert
+name $y$ and witnesses of the equations that say $y=Hx$. The name of $y$
+supplies information that can be stronger than a bound on $\|y\|$.
+For example, differentiating a trajectory in Hilbert norm requires the
+tail of its derivative to be small at a known cutoff.
+
+A strong derivative certificate for a curve $X$ at $t$ consists of a
+Hilbert name $z$ and a PR function $d(k)$ such that
+\[
+ \|X(t+h)-X(t)-hz\|\le 2^{-k}|h|
+ \quad\text{whenever } |h|\le 2^{-d(k)} .
+\]
+One may test rational increments and extend to named increments by
+the continuity estimates, using rational approximants inside the closed
+interval. To compare two proposed derivatives, substitute the positive
+rational $h=2^{-\max(d_1(k),d_2(k))}$; rational cancellation gives
+$\|z_1-z_2\|\le2^{1-k}$ for arbitrary $k$.
+
+\subsection{Energy coordinates}
+
+Let $e_j$ be the canonical basis of $\ell^2(\mathbb N)$. Supply real
+energy names $\lambda_j$ uniformly in $j$, with a PR upper bound
+$\Lambda(N)\ge 1+\max_{j<N}|\lambda_j|$; an integer bound of this kind
+can always be computed from the stage-zero approximations. Define
+\[
+ (x,y)\in D \ \Longleftrightarrow\ (\forall j)\ y_j=\lambda_jx_j,
+ \qquad (U(t)x)_j=e^{-it\lambda_j}x_j .
+\]
+Here and below a universal statement about the coordinates abbreviates
+tests at arbitrary finite index and precision. Write $P_N$ for the first
+$N$ coordinate projection and $Q_N=I-P_N$. A finite approximation $v$
+to $x$ within $\epsilon$, supported below $N$, proves
+$\|Q_Nx\|\le\epsilon$ by contraction.
+
+\begin{theorem}[Diagonal graph and generator]\label{thm:diag-energy}
+$D$ is a densely defined, closed, self-adjoint graph. The maps $U(t)$
+form a strongly continuous unitary group whose strong derivative at zero
+has graph $-iD$. For every graph pair $(x,y)$, $U(t)x$ has derivative
+$-iU(t)y$ at $t$. All constructions have PR realizers.
+\end{theorem}
+\begin{proof}
+Uniqueness and closedness follow by applying a coordinate functional to
+the approximants: equal coordinates give equal vectors by truncating both
+tails. Every basis vector is in the domain, and the graph truncations
+$(P_Nx,P_Ny)$ converge in both components with an explicit joint cutoff.
+The adjoint graph consists of pairs $(x,z)$ with
+$\langle Dv,x\rangle=\langle v,z\rangle$ on graph inputs $v$
+(inner products are linear in the second slot).
+Testing $v=e_j$ forces $z_j=\lambda_jx_j$.
+Conversely the equalities on finite sums pass to graph inputs by the joint
+cutoff and Cauchy--Schwarz. The resolvents $(D\pm i)^{-1}$ are diagonal
+multipliers by $(\lambda_j\pm i)^{-1}$. Both these coefficients and
+$\lambda_j/(\lambda_j\pm i)$ have modulus at most one. This supplies
+names for the solution and its graph partner for every right-hand side.
+
+For computation of a phase or a finite matrix exponential, the elementary
+bound
+\begin{equation}\label{eq:exp-pr}
+ \sum_{r=m}^\infty {a^r\over r!}
+ \le 2^{-m}\sum_{r=0}^\infty{(2a)^r\over r!}
+ \le 2^{4L-m}\qquad(0\le a\le L,\ L\in\mathbb N)
+\end{equation}
+follows by multiplying the series with positive coefficients and using
+$\sum 1/r!\le3$, hence $\exp(2L)\le3^{2L}$. These series identities can
+equally be verified by the binomial convolution of finite coefficients
+and the geometric tail once successive terms have ratio at most $1/2$.
+Absolute product and adjoint identities give
+$e^{is}e^{it}=e^{i(s+t)}$ and $|e^{it}|=1$ for real $s,t$.
+Integrating the convergent series on a bounded interval gives
+\[
+ |e^{is}-1|\le |s|,\qquad |e^{is}-1-is|\le s^2/2 .
+\]
+For error $\epsilon=2^{-k}$, take a finite $v$ within $\epsilon/4$ of
+$x$. On its support use uniform phase errors at most
+$\epsilon/(4(1+\|v\|))$ and form a finite output to accuracy
+$\epsilon/4$. The parameter $L$ in \eqref{eq:exp-pr} is bounded from
+$|t|$ and $\Lambda(N)$. For
+$|t|\le T$ and $|\lambda|\le M$, rational approximations to $t,\lambda$
+within $\rho\le1$ give a product error at most $(T+M+1)\rho$;
+the unit-phase map is $1$-Lipschitz. All norms appearing in precision choices may be
+rounded upwards using rational upper estimates. Coordinate multiplication
+proves the group and adjoint laws. On a head and tail one obtains
+\[
+ \|(U(h)-I)x\|\le |h|\Lambda(N)\|x\|+2\|Q_Nx\|.
+\]
+This is a strong continuity modulus at every $t$. For a graph pair the
+first-order remainder satisfies
+\[
+ \|U(h)x-x+ihy\|
+ \le |h|\bigl(2\|Q_Ny\|+|h|\Lambda(N)^2\|x\|/2\bigr).
+\]
+Indeed, on each tail coordinate the first-order difference is bounded
+by $2|h||y_j|$, and on the head the second scalar bound applies.
+Choose $N$ from the name of $y$ and then a sufficiently small dyadic
+bound on $|h|$. Conversely, a named derivative $z$ implies, by the same
+scalar expansion at each fixed $j$, that $z_j=-i\lambda_jx_j$.
+Thus $(x,iz)$ is a graph pair. Translating time gives the remaining
+claim.
+\end{proof}
+
+\subsection{A number-basis oscillator}
+
+On finite sequences put $ae_0=0$,
+$ae_n=\sqrt n\,e_{n-1}$ for $n>0$, and
+$a^\dagger e_n=\sqrt{n+1}\,e_{n+1}$. The square roots are obtained
+by bounded bisection. Set
+\[
+ Q=(a+a^\dagger)/\sqrt2,\qquad
+ P=(a-a^\dagger)/(i\sqrt2),\qquad
+ H=(P^2+Q^2)/2 .
+\]
+The core of finite sequences is invariant under every displayed
+operator. Inner products of basis vectors give the stated adjunction.
+Acting on $e_n$ gives $aa^\dagger e_n=(n+1)e_n$ and
+$a^\dagger a e_n=ne_n$, including $n=0$. Expanding products therefore
+proves on the core
+\[
+ [Q,P]=iI,\qquad H=a^\dagger a+\tfrac12 I,\qquad
+ U(t)e_n=e^{-it(n+1/2)}e_n .
+\]
+The graph closure of this core Hamiltonian is exactly the graph of
+Theorem~\ref{thm:diag-energy} with $\lambda_n=n+1/2$, by joint
+truncation. Energy measurement in the number basis gives outcome $n+1/2$
+with probability $|x_n|^2$; omitted mass equals $\|Q_Nx\|^2$.
+On the core $U(t)^*aU(t)=e^{-it}a$ and
+$U(t)^*a^\dagger U(t)=e^{it}a^\dagger$. Recombining,
+$Q(t)=Q\cos t+P\sin t$ and $P(t)=P\cos t-Q\sin t$.
+For unit core input $x$, take the centered vectors
+$u=(Q-\langle x,Qx\rangle)x$, $v=(P-\langle x,Px\rangle)x$.
+The inner-product difference
+$\langle u,v\rangle-\langle v,u\rangle=i$ follows from the commutator.
+Cauchy--Schwarz gives $\Delta Q\,\Delta P=\|u\|\|v\|\ge1/2$.
+At $x=e_0$ the centered vectors are $e_1/\sqrt2$ and $ie_1/\sqrt2$.
+Hence equality holds. The commutator identity has been asserted on
+a specified common domain throughout.
+
+\subsection{Perturbing an unbounded Hamiltonian}
+
+The next construction gives a state-dependent spatial cutoff for a
+Hamiltonian that need not be diagonal in the given basis. It can be used
+when the resolvent of the interacting operator has not been computed.
+
+\begin{theorem}[Finite-band perturbation]\label{thm:band-dynamics}
+Let $V$ have uniformly named entries, $V_{jk}=\overline{V_{kj}}$,
+$V_{jk}=0$ for $|j-k|>w$, and a supplied integer bound $B\ge\|V\|$
+on finite vectors. On the graph domain of $D$, set $H=D+V$.
+This graph is self-adjoint and generates a PR-presented unitary group
+$W(t)$. If $v$ is supported below $J$, $|t|\le T$ for an integer $T$,
+and $K\ge J+mw$ with $m\ge1$, then
+\begin{equation}\label{eq:galerkin}
+ \|W(t)v-e^{-itP_KHP_K}v\|
+ \le 2\|v\|\,(BT)^m/m!\le2\|v\|\,2^{4BT-m}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+A finite input produces finite output under $V$; its norm bound extends
+$V$ and its adjoint to all names. The adjoint relation for $H$ is the
+one for $D$ after moving the bounded $V$ to the other side. Closedness
+follows by subtracting $Vx$ from the second graph component. Joint
+truncations for $D$ approximate $H$ in graph norm as well.
+
+Write $D_K=P_KDP_K$, $V_K=P_KVP_K$, $H_K=D_K+V_K$.
+The finite matrix exponential, extended by the identity on the
+complement, is evaluated by \eqref{eq:exp-pr} using
+$L\ge T(\Lambda(K)+B)$. Conjugate transpose and the group law follow by
+absolutely convergent binomial convolution for commuting powers.
+
+Here is a finite-product proof of the cutoff estimate. For $n\ge1$
+put $h=t/n$, $A_K=e^{-ihD_K}$, $C_K=-ihA_KV_K$, and $F_K=A_K+C_K$.
+For any finite self-adjoint $L$,
+$\|e^{-ihL}-I\|\le |h|\|L\|$ and
+$\|e^{-ihL}-I+ihL\|\le h^2\|L\|^2/2$ by integrating its unitary
+series once and twice. Expansion to first order consequently gives
+\[
+ \|e^{-ihH_K}-F_K\|\le h^2(\Lambda(K)+B)^2,\qquad
+ \|F_K\|^2\le1+h^2 B^2 .
+\]
+For the second bound expand $\|v-ihV_Kv\|^2$; the mixed term vanishes.
+Telescoping $n$ factors yields
+\[
+ \|e^{-itH_K}-F_K^n\|
+ \le T^2(\Lambda(K)+B)^2 e^{T^2 B^2/(2n)}/n.
+\]
+Every limit in $n$ at a \emph{fixed} cutoff therefore has a PR rate.
+
+Expand $F_K^n$ from the left, choosing $A_K$ or $C_K$ at each
+factor, stopping a branch immediately on choosing its $m$th $C_K$.
+The complete branches with $r<m$ kicks apply $V_K$ at most $r$ times
+to $v$. Between kicks there are diagonal phases. These branches agree
+for all $K\ge J+mw$, since each kick increases the support by at
+most $w$. Each stopped branch has $m$ kicks, diagonal phases, and a
+rightmost block of unexpanded $F_K$'s. Its norm on $v$ is at most
+$(|h|B)^m e^{T^2B^2/(2n)}\|v\|$. There are $\binom nm$ such branches
+(with zero branches for $m>n$). Since
+$\binom nm/n^m\le1/m!$, subtracting the two cutoff expressions
+costs at most $2\|v\|(BT)^m e^{T^2B^2/(2n)}/m!$.
+For any \emph{two} specified cutoffs send $n$ to infinity using the preceding
+telescoping estimate with the larger of the two energy bounds. This proves the
+pairwise version of \eqref{eq:galerkin}. The expansion is a finite
+subset enumeration with at most $2^n$ full words. One may replace
+the finite matrices by their rational approximants throughout, budgeting
+a local error $\eta$ per factor by $n\eta(M+1)^n$ for input norm one
+and factor bounds $M$ when $\eta\le1$. These estimates give the
+finite-precision induction directly.
+
+Given arbitrary $x$ and error $\epsilon$, approximate by finite $v$
+within $\epsilon/8$, take
+$m\ge k+4BT+4+C$ with an integer $C\ge\|v\|$ for $\epsilon=2^{-k}$, and evaluate
+the chosen matrix exponential at $v$ within $\epsilon/8$.
+The Cauchy estimate constructs the strong limit, uniformly in bounded
+time, and proves \eqref{eq:galerkin}. It preserves norms. Products pass
+to the strong limit: insert the fixed vector $W(s)x$ between the
+two approximants and use their contraction bounds. The finite
+composition law gives $W(t)W(s)=W(t+s)$, and $W(-t)$ is its inverse.
+Strong continuity follows from approximation by one finite evolution
+uniformly on a time interval.
+
+For a finite $v$, all sufficiently large cutoffs agree on $H v$ and
+$H^2v$. Twice integrating the finite unitary evolution gives
+\[
+ \|(W(h)-I)v\|\le |h|\|Hv\|,\qquad
+ \|W(h)v-v+ihHv\|\le |h|^2\|H^2v\|/2.
+\]
+The first inequality extends to every graph input by joint truncation.
+For such an $x$ the derivative remainder is bounded by $|h|$ times $2\|H(x-P_Nx)\|+|h|\|H^2P_Nx\|/2$. Its first term is
+bounded by $2(\|Q_NDx\|+B\|Q_Nx\|)$.
+Conversely, if the trajectory at $x$ has derivative $z$, differentiate
+$\langle e_j,W(h)x\rangle=\langle W(-h)e_j,x\rangle$ at zero.
+This gives $(iz)_j=\lambda_j x_j+(Vx)_j$. Hence $iz-Vx$ is the
+required name of $Dx$, identifying the entire generator graph.
+The group law now gives the differential equation on this domain
+at every time, including invariance of the domain.
+\end{proof}
+
+For instance $V=g(S+S^*)$ for the unilateral shift $Se_j=e_{j+1}$
+and real coupling $g$ has $w=1$, $B\ge2|g|$. Taking
+$\lambda_j=(j+1/2)^2$ gives an unbounded anharmonic level sequence
+with adjacent-level mixing. The cutoff estimate is independent of the
+magnitude of the largest retained energy; that magnitude affects the
+cost of the finite exponential.
+
+\section{A particle on the line}
+\label{sec:particle}
+
+Continuous spectrum can be treated using the same arithmetic of finite
+approximants. Take Gaussian-rational step functions of compact support on
+the real line; a basic interval is $[u,v)$ with rational endpoints.
+Refining to a common finite partition makes
+\[
+ \langle f,g\rangle=\sum_I |I|\,\overline{f_I}g_I
+\]
+a rational complex computation. The Hilbert space used here, denoted
+$L^2(\mathbb R)$, is the regular metric completion of these step functions.
+Values of a general vector at a point have no role in the definition.
+One can identify this presentation with the coordinate Hilbert space
+explicitly. Replacing endpoints by dyadics within $\delta$ costs at most
+$\sqrt{2\delta}\sum_I|f_I|$ by the triangle inequality. On each integer
+unit interval take its normalized indicator and the Haar differences
+$|J|^{-1/2}(1_{J_{\rm left}}-1_{J_{\rm right}})$ for dyadic subintervals
+$J$ of that unit interval. Orthogonality follows by cancellation on the
+smaller interval. On each finite dyadic partition the indicator of either
+half is a linear combination of the parent indicator and its difference.
+Successive subdivision therefore transforms every compact dyadic step
+into a finite Haar expansion preserving its squared norm, with finite
+inverse. Integer intervals and their dyadic nodes admit a PR enumeration
+with PR inverse (encode the signed integer and the depth/offset by pairing).
+The finite transforms and density estimates extend both isometries to
+the regular completions.
+
+\subsection{Momentum, translations and the free Hamiltonian}
+
+Let $R$ be a positive integer and write $E_R$ for multiplication by
+$1_{[-R,R)}$. It is an orthogonal projection of norm at most one.
+Every named vector has a PR cutoff for $\|(I-E_R)x\|$ by taking the
+radius of a sufficiently accurate step approximation.
+For a real multiplier $b(p)$ with supplied PR bounds $M_R$ and
+continuity moduli on $[-R,R]$, bounded multiplication by $E_Rb$
+is computed on steps by subdivision. Local oscillation $\eta$ costs
+at most $\eta\|f\|$ on a step input $f$; the bounded extension
+costs at most $M_R$ times its input error. Define the graph
+\[
+ (x,y)\in H_b \quad\Longleftrightarrow\quad
+ E_Ry=(E_Rb)x\ \text{ for every positive integer }R.
+\]
+Suppose also that $b$ has uniformly PR point approximants on each such
+interval. This graph is closed by boundedness of the local multipliers.
+Compact steps lie in the domain. The graph pairs
+$(E_Rx,E_Ry)$ approximate any graph pair, with both tails supplied
+by the names. To identify the adjoint, test its identity against
+arbitrary compact steps supported on $[-R,R)$. The bounded real
+multiplier there is self-adjoint by the finite integral and passage to
+the limit. Density of those steps gives exactly $E_Ry=(E_Rb)x$.
+Conversely the identity on bounded support extends by truncating both
+graph components. Thus $H_b$ is self-adjoint.
+
+Multiplication by $e^{-itb(p)}$ yields a strongly continuous unitary
+group. On a fixed compact interval the modulus of this multiplier follows
+from $|e^{is}-e^{it}|\le |s-t|$; the input support controls the tail.
+The two head--tail estimates of Theorem~\ref{thm:diag-energy} hold
+with $P_N$ replaced by $E_R$, $\Lambda$ by $M_R$, and $Q_N$ by $I-E_R$.
+Conversely, projecting a putative derivative onto $[-R,R)$ identifies
+it with $-i(E_Rb)x$ using the bounded multiplier Taylor estimate.
+This proves the strong Schr\"odinger equation with precisely the graph
+domain displayed above.
+
+For the momentum observable choose $b(p)=p$, and for the free
+Hamiltonian of mass one choose $b(p)=p^2/2$. The latter group is
+\[
+  (U_0(t)f)(p)=e^{-itp^2/2}f(p).
+\]
+Momentum in a rational interval $I$ is measured by $f\mapsto1_I f$.
+In a unit state the probability is $\|1_I f\|^2$. The energy interval
+$[a,b]$, for rational $0\le a\le b$, is obtained by retaining the
+two intervals with positive absolute momentum between $\sqrt{2a}$
+and $\sqrt{2b}$. Endpoint inclusions represent the same vector.
+These projections are effective: approximate both endpoints by rational
+numbers within $\delta$, then use the step-height bound times the square
+root of the total displaced length. For general input first approximate
+by a step and use contraction. This supplies the sharp Born probabilities
+even at an energy threshold.
+
+\begin{proposition}[Continuous energy spectrum, with witnesses]
+For each named $E\ge0$ and positive dyadic $\epsilon$ there is a
+PR-prepared unit vector $v$ with $\|(H_{p^2/2}-E)v\|\le\epsilon$.
+Every named solution of $H_{p^2/2}x=Ex$ equals zero, and
+$H_{p^2/2}-E$ has dense proper range with explicit witnesses.
+For $E\le-\eta$ with a supplied rational $\eta>0$ the bounded inverse
+of $H_{p^2/2}-E$ exists and has bound $1/\eta$.
+\end{proposition}
+\begin{proof}
+Put $s=\sqrt{2E}$ and take an integer $A\ge 2+s$.
+Choose positive dyadic $\delta\le\min(1/4,\epsilon/(4A))$ and rational
+$q$ with $|q-s|\le\delta$. Use the normalized indicator of
+$[q-\delta,q+\delta)$. On its support $|p-s|\le2\delta$ and
+$|p+s|\le2s+2\delta$, so its residual norm is at most
+$2\delta(s+\delta)\le\epsilon$.
+
+For a supposed eigenvector, approximate $x$ by a step $f$ within
+$\gamma>0$ with height bound $C$. Use the union $J$ of the two intervals
+of radius $2\delta$ about $q$ and $-q$, with $|q-s|\le\delta$.
+Off $J$, both $|p-s|$ and $|p+s|$ are at least $\delta$.
+On every compact truncation outside $J$, multiplication by
+$|p^2/2-E|$ bounds the norm below by $\delta^2/2$, hence
+the eigenvector equation forces that truncation to vanish. Passing
+to the known spatial tail gives $x=1_Jx$. Its norm is bounded
+by $\gamma+C\sqrt{8\delta}$. Taking
+$\delta\le\gamma^2/(8(C+1)^2)$ proves $x=0$.
+
+For density of the range, apply the same cut to a compact step $f$.
+The vector $f1_{J^c}$ differs from $f$ by at most $C\sqrt{8\delta}$,
+and dividing it by $p^2/2-E$ on its support gives a named graph
+preimage. Indeed the reciprocal there is bounded by $2/\delta^2$;
+on the finitely many retained compact intervals its Lipschitz bound
+is at most $4D/\delta^4$ for support in $[-D,D]$, so it can be
+sampled directly. Define its value as zero on the discarded intervals.
+For properness let $g=1_{[s,s+1)}$, a named vector by endpoint
+approximation. If $(H_{p^2/2}-E)x=g$, projection onto $[s,s+d)$
+for rational $0<d\le1$ gives
+$\sqrt d\le d(s+1)\|x\|$. This contradicts the choice of
+$d$ with $\sqrt d(s+1)\|x\|\le1/2$, available from rational
+upper bounds. Thus the asserted continuous-spectrum behavior has
+finite-observation witnesses for density and for the obstruction to inversion.
+For negative separated $E$, multiplication by $1/(p^2/2-E)$
+has the stated bound and locally computable moduli; the graph partner
+is the input plus $E$ times the output. The approximate eigenvectors
+also rule out a supplied bounded inverse at any $E\ge0$.
+\end{proof}
+
+\subsection{Fourier transport with an explicit norm estimate}
+
+Use $p$ for momentum and $x$ for position. For a finite momentum step on a disjoint partition
+$f=\sum_j c_j1_{[a_j,b_j)}$ put
+\[
+ ({\cal F}f)(x)=(2\pi)^{-1/2}\int e^{ixp}f(p)\,dp,\quad
+ S=\sum_j|c_j|,\quad A=\int |f|,\quad D_f=\int |p f(p)|\,dp .
+\]
+All displayed constants can be replaced by rational upper bounds.
+The scalar constant $\pi$ is computable, for example from
+$4\sum_{j=0}^{n-1}(-1)^j/(2j+1)$ with error at most $4/(2n+1)$.
+The integral defining $\mathcal F f$ uses finite intervals. For $|x|\le R$
+one may integrate the exponential Taylor polynomial term by term, with
+\eqref{eq:exp-pr} and $L$ bounding $R\max_j(|a_j|,|b_j|)$.
+The transform has height at most $A/\sqrt{2\pi}$ and Lipschitz
+bound $D_f/\sqrt{2\pi}$. For rational $x$ with $|x|>0$, integration on each interval gives
+$|{\cal F}f(x)|\le2S/(\sqrt{2\pi}|x|)$. Consequently
+\begin{equation}\label{eq:fouriertail}
+ \int_{|x|>R}|{\cal F}f(x)|^2\,dx\le {4S^2\over \pi R}.
+\end{equation}
+For example take integer $R\ge1+16S^2/\epsilon^2$; truncation then
+costs at most $\epsilon/2$ in norm. On $[-R,R)$ use mesh and sample
+errors making the local uniform error at most
+$\epsilon/(4(R+1))$. Thus $\mathcal F f$ is a named vector, including
+when the support contains $x=0$. The conjugate-sign transform
+$\mathcal G$ has the same estimates.
+
+\begin{theorem}[Plancherel for the step completion]\label{thm:pr-fourier}
+$\mathcal F$ and $\mathcal G$ extend to mutually inverse PR isometries of
+the represented Hilbert space. The conjugated Hamiltonian
+$\mathcal F H_{p^2/2}\mathcal G$ acts as $-\frac12 d^2/dx^2$ on compact
+piecewise-polynomial functions with continuous function and first
+derivative, using their piecewise second derivative as the graph value
+with the indicated factor.
+\end{theorem}
+\begin{proof}
+We give a norm proof to establish the stability needed when passing
+from finite input to an arbitrary Hilbert name. For a rational
+$\alpha>0$, direct integration of the two half-lines gives
+\[
+ {1\over 2\pi}\int_{\mathbb R}e^{-\alpha|x|} e^{ixu}\,dx
+       =K_\alpha(u):={1\over\pi}{\alpha\over \alpha^2+u^2}.
+\]
+The discarded tails on the left have absolute integral at most
+$2e^{-\alpha R}/\alpha$ before the prefactor, and
+$e^{-\alpha R}\le1/(1+\alpha R)$ suffices for a PR cutoff.
+Multiplying the two copies of the finite-interval Fourier integral,
+inserting this formula, and substituting $u=p-q$ gives
+\begin{equation}\label{eq:abel-fourier}
+ \int e^{-\alpha|x|}|{\cal F}f(x)|^2\,dx
+     =\int K_\alpha(u)\langle f,T_u f\rangle\,du,\qquad
+ (T_u f)(p)=f(p-u).
+\end{equation}
+Here are finite-sum details for these changes of variables. On
+$|x|\le R$ and $|p|,|q|\le D$ containing the momentum support, split
+the rectangle in $p,q$ at all step endpoints. The Lipschitz bounds of
+$e^{-\alpha|x|}e^{ix(p-q)}$ in the three coordinates are
+$\alpha+2D,R,R$. With maximal mesh $\eta$, the integrated error of
+one rectangular sum is bounded by
+$2R A^2(\alpha+2D+2R)\eta/(2\pi)$. Exchanging finite sums is exact.
+Removing the $x$ cutoff costs at most $A^2 e^{-\alpha R}/(\pi\alpha)$.
+
+For each pair of step intervals $I,J$, the substitution reduces to
+\[
+ \int_I\int_J K_\alpha(p-q)\,dq\,dp
+ =\int K_\alpha(u)\,|I\cap(J+u)|\,du.
+\]
+Replace the kernel on $[-2D,2D]$ by rational mesh samples, to uniform
+error $\eta/(\pi\alpha^2)$ plus sampling error, since
+$|K_\alpha'|\le1/(\pi\alpha^2)$.
+For one mesh interval $L$, the equality is equality of areas of rational
+polygons. The linear map $(p,q)\mapsto(p,p-q)$ has determinant $-1$
+and preserves triangle areas by the rational determinant formula. The
+vertical slice length after the change is
+$1_L(u)|I\cap(J+u)|$, a piecewise linear function whose integral is the
+polygon area by summing trapezoids. The kernel-approximation error on
+either side after summation is bounded by $A^2$ times its uniform error.
+This proves \eqref{eq:abel-fourier} at arbitrary precision.
+
+The kernel has integral one. Substitute $v=\alpha/u$ on $u\ge\alpha$.
+Evenness gives the total integral as
+$4\pi^{-1}\int_0^1(1+s^2)^{-1}\,ds=1$: integration of the finite
+geometric identity leaves error at most $1/(2n+1)$ and yields the
+alternating series defining $\pi/4$. Its mass on $|u|>\delta$
+is at most $2\alpha/(\pi\delta)$.
+Translations preserve the norm by translating the interval partition.
+On each interval, its symmetric difference from its translate has length
+at most $2|u|$, hence
+$\|T_u f-f\|\le S\sqrt{2|u|}$. This estimate also constructs $T_u$
+for real named $u$ by rational translations. It follows directly that
+the right side of \eqref{eq:abel-fourier} differs from $\|f\|^2$ by
+at most
+\[
+ \|f\|S\sqrt{2\delta}+{4\|f\|^2\alpha\over\pi\delta}.
+\]
+The left side differs from $\|{\cal F}f\|^2$ by at most
+$\alpha R\,\|{\cal F}f\|^2+4S^2/(\pi R)$, using
+$1-e^{-v}\le v$ for $v\ge0$. A bound for $\|{\cal F}f\|^2$ before
+isometry is known is $(A^2+4S^2)/\pi$, by splitting at $R=1$.
+For a requested error $0<\epsilon\le1$, take rational
+$C\ge1+A+S+\|f\|$. One valid schedule is
+\[
+ R=\lceil32 C^2/\epsilon\rceil+1,\qquad
+ \delta=\epsilon^2/(128 C^4),\qquad
+ \alpha={\epsilon\delta\over64(R+1)C^2}.
+\]
+Indeed $\|{\cal F}f\|^2\le 5C^2$, and the four error terms above
+sum to less than $\epsilon$. Each choice needs only rational
+arithmetic, with optional bounded dyadic rounding
+(for a rational $a/b>0$ with $a,b$ positive integers, $2^{-b}\le a/b$).
+This proves $\|{\cal F}f\|=\|f\|$. The identical proof gives isometry
+of $\mathcal G$.
+
+An isometry sends a regular step name to a regular Hilbert name by
+evaluating a more accurate input step and rounding the output within
+the remaining budget. For compact steps $f,g$, integration over the
+finite product of their supports gives
+$\langle{\cal F}f,g\rangle=\langle f,{\cal G}g\rangle$ with our
+inner-product convention. Extension by continuity gives the adjoint
+identity everywhere. Preservation of inner products follows by
+polarization from the norm identity. It implies
+$\mathcal G\mathcal F=I$ and $\mathcal F\mathcal G=I$ by testing against all
+step vectors. Finally two integrations by parts give
+$\mathcal G(f'')(p)=-p^2\mathcal G f(p)$ for the stated compact
+piecewise-polynomial $f$ (with named coefficients and certified
+breakpoints). Interior boundary terms cancel by continuity of $f,f'$.
+On each bounded momentum interval the transforms of $f,f''$ agree
+with their integral formulas, by compact step approximation in both
+$L^2$ and $L^1$ on the original bounded support. This proves the graph
+equation, including the second component as a named Hilbert vector.
+\end{proof}
+
+Position in an interval $I$ now has momentum-space projection
+$\mathcal G1_I\mathcal F$ and probability $\|1_I{\cal F}v\|^2$ in unit
+input $v$. For $M_b f(p)=e^{ibp}f(p)$, direct substitution on steps
+and contraction on all names give
+\[
+ T_aM_b=e^{-iab}M_bT_a,\qquad
+ {\cal F}T_af(x)=e^{iax}{\cal F}f(x),\qquad
+ {\cal F}M_bf(x)=({\cal F}f)(x+b).
+\]
+All identities are equalities of Hilbert names. The translation and
+multiplication groups are strongly continuous by the preceding step
+estimates. They therefore give the exponentiated canonical commutation
+relations and both sharp position and momentum interval experiments
+on a genuine continuous-spectrum system. In physical units the energy
+phase is $e^{-itp^2/(2m\hbar)}$, the Fourier kernel is
+$(2\pi\hbar)^{-1/2}e^{ixp/\hbar}$, and one supplies positive lower
+bounds for $m,\hbar$.
+
+\subsection{A particle in a bounded potential}
+
+Let $H_0=\mathcal F H_{p^2/2}\mathcal G$ on position space. Supply a
+bounded self-adjoint operator $V$ by its action on steps and an integer
+bound $B\ge\|V\|$. A real bounded position potential with local PR
+continuity moduli and rational sampling is such an input, as is a
+bounded square well with rational endpoints by cutting intervals
+exactly. Put $H=H_0+V$ on the graph domain of $H_0$.
+Subtracting $Vx$ from the second component proves closedness, and the
+adjoint identity reduces to that of $H_0$ by bounded self-adjointness
+of $V$. Graph approximants to a finite step $f$ are explicit:
+take $\mathcal F E_R\mathcal G f$, choosing $R$ from
+\eqref{eq:fouriertail} for $\mathcal G f$. Its graph partner is
+$\mathcal F((p^2/2) E_R\mathcal G f)+V\mathcal F E_R\mathcal G f$.
+This gives exactly the density service in Section~\ref{sec:stone}.
+We now construct the remaining resolvent data for unitary propagation.
+
+Fix a rational $\rho>0$, either sign $\sigma\in\{-1,1\}$, and an
+integer $L\ge\max(1,\rho,2B)$. In momentum coordinates
+$R_0=(H_0+\sigma iL)^{-1}$ is the multiplier $(p^2/2+\sigma iL)^{-1}$,
+transported by $\mathcal F$. It has bound $1/L$, and its graph
+partner at input $f$ is $f-\sigma iL R_0 f$. The identity
+\[
+ H+\sigma iL=(I+V R_0)(H_0+\sigma iL)
+\]
+on graph inputs gives a two-sided inverse
+$R=R_0\sum_{j\ge0}(-V R_0)^j$. The norm of $V R_0$ is at most $1/2$,
+so the tail from $j=m$ is at most $2^{1-m}$ before the leading $R_0$.
+The geometric identity for finite sums and this bound verify both inverse
+equations. Every output is in the graph since $R_0$ is applied last.
+Symmetry gives the sharper estimate $\|R\|\le1/L$ by
+$\|(H+\sigma iL)v\|^2=\|Hv\|^2+L^2\|v\|^2$. Thus, with
+$C=\sigma i(\rho-L)R$,
+\[
+ (H+\sigma i\rho)^{-1}
+     = R\sum_{j\ge0}(-C)^j,\qquad \|C\|\le 1-\rho/L.
+\]
+With $b=\lceil L/\rho\rceil$, $(1-\rho/L)^b\le1/2$
+since $(1-a)^b(1+ba)\le1$ for $0\le a\le1$, by finite induction.
+The companion \texttt{ResolventTail.lean} proves its cleared-denominator
+form $u^k(u+v+kv)\le(u+v)^{k+1}$ in the object calculus.
+The tail from $j=bm$ is at most $(L/\rho)2^{-m}$, again before the
+leading factor. The graph partner and both inverse identities follow
+as above, and the inverse has bound $1/\rho$ by symmetry.
+Products of a variable number of approximate operators here use fixed
+per-factor precision, chosen by the finite telescoping estimate
+following \eqref{eq:galerkin}; iteration on finite step codes is
+ordinary primitive recursion. This supplies all imaginary-axis
+resolvents, in particular at every positive integer scale, for the
+resolvent construction of the unitary group. The Hamiltonian acts on the
+compact polynomial test functions above by
+$-\tfrac12 f''+Vf$, with the full Sobolev-type domain specified by
+the transported multiplier graph.

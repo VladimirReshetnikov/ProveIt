@@ -1,0 +1,131 @@
+\section{Lean implementation, object-language endpoints, and verification}
+\label{sec:formalization}
+
+\subsection{What is actually checked}
+
+The five standalone Lean source files compile under Lean 4.32.0. They depend only on that distribution's \code{Init}/\code{Std} libraries, not on Mathlib or a ProveIt checkout. Definitions named \code{Target} are \emph{statements of obligations}; they do not assert their own proofs. There are no admitted proofs or user-declared axioms in the supplied sources.
+
+\begin{longtable}{P{.31\textwidth}P{.32\textwidth}P{.28\textwidth}}
+\toprule
+File & Checked mathematical core & Main remaining work\\
+\midrule
+\endhead
+\code{FiniteTopology.lean} &
+Preorder opens, interior/closure laws, continuity iff monotonicity, products and map-space evaluation/currying. &
+Finite Boolean arithmetic implementation, separation classifications, quotient algorithms and object derivations.\\
+\code{MetricBlueprint.lean} &
+Precision-space interfaces, uniform composition, image-net cover, product proximity structure, limit uniqueness. &
+Weighted rational sums and full quantitative constants, plus compilation of fixed presentations.\\
+\code{AlgebraicBlueprint.lean} &
+Homotopy on cycles, integer Euler telescoping from rank data, compatible function gluing and uniqueness. &
+Gaussian elimination and rank-nullity, full complexes/sheaf checkers, general chain constructions.\\
+\code{DimensionBlueprint.lean} &
+Compiling definitions of grids, rational tables, Kuhn simplices, opposite faces, witnesses, labels and equipped data. &
+Cubical incidence/parity and staggered-threshold proofs; D01--D06 are explicit targets.\\
+\code{SphereBlueprint.lean} &
+Sign products, antipodal facet coefficient, parity, and the terminal nonzero-chain contradiction. &
+Subdivision/mesh and prism constructions, no-homotopy and approximate-zero proofs.\\
+\bottomrule
+\end{longtable}
+
+The finite-topology file proves 24 theorem declarations, with no axioms in its printed audits. Some other semantic proofs use Lean's ordinary propositional extensionality or quotient infrastructure; the actual audit logs record them. No printed theorem audit contains \code{Classical.choice} or \code{sorryAx}. This is useful evidence about the standalone semantic layer. It is not a proof that the unimplemented arithmetic endpoints have been checked.
+
+\subsection{Definitions available in the sources}
+
+The order layer defines \code{CPreorder}, upper and lower predicates, \code{Interior}, \code{Closure}, \code{Exterior}, monotone maps, preimage continuity, products, and the pointwise map preorder. Its finite adapter takes
+\[
+ \operatorname{Fin}\,n\to\operatorname{Fin}\,n\to\operatorname{Bool}.
+\]
+The number-code translation replaces that finite function with its matrix mask.
+
+The metric layer provides signed rational codes, positive denominators, arithmetic operations, dyadic scales, real names, a proximity relation at each precision, uniform moduli, finite nets with selectors, Cauchy data and convergence data. The real-name structure is a presentation interface; it does not quantify over a completed real field inside first-order arithmetic.
+
+The algebraic layer defines rational vectors and matrices, finite sums, matrix multiplication, explicit invertible row/column reduction certificates, bounded chain complexes, chain maps, degreewise chain homotopy equations, Euler sums, finite cover selectors, local and global sections, and finite presheaf tables. Domain membership is explicit in section types, so empty opens and empty coefficient sets are treated correctly.
+
+The dimension layer defines $\operatorname{Grid}(d,N)=
+\operatorname{Fin}(d)\to\operatorname{Fin}(N+1)$, rational target points, sup distance including the $m=0$ case, coordinate permutations, Kuhn vertex lists, face separation, simplex variation, admissible coloring, fully colored simplices, rational floors and staggered cells. A tagged \code{ObstructionWitness} contains either a close opposite-face pair or a large-variation simplex pair.
+
+The sphere layer defines rational $\ell^1$-sphere membership, the sup norm, dot products, signed vertices and ordered cross-polytope faces, finite chain coefficient types, tangent-field contracts, explicit subdivision counts, net certificates, and normalized auxiliary vectors. Its approximate-zero target contains the field assumptions, even dimension, positive tolerance and a rational output with the stated norm bound. The general real-valued extension is intentionally a separate obligation.
+
+\subsection{Target numerical sentences}
+
+Choose concrete encoders and total primitive recursive implementations for the predicates and algorithms below. The finite statements then have the following forms, with all capitalized predicates Boolean:
+\begin{align*}
+ &\forall n,R,A\quad
+  \operatorname{Preorder}(n,R)=1
+  \ \to\
+  \operatorname{Cl}(n,R,\operatorname{Cl}(n,R,A))
+     =\operatorname{Cl}(n,R,A),\\
+ &\forall n,R,A,B\quad
+  \operatorname{Normal}(n,R)=1\wedge
+  \operatorname{ClosedDisjoint}(n,R,A,B)=1\\
+ &\hspace{30mm}\to
+  \operatorname{SeparatorCheck}(n,R,A,B,
+        \operatorname{Separator}(n,R,A,B))=1,\\
+ &\forall d,m,N,h,T\quad
+  \operatorname{ValidTable}(d,m,N,h,T)=1\wedge d>m\\
+ &\hspace{30mm}\to
+  \operatorname{DimWitnessCheck}(d,m,N,h,T,
+        \operatorname{DimWitness}(d,m,N,h,T))=1 .
+\end{align*}
+The first two quantify over arbitrary finite topology codes. The third does not assume smallness or separation; it returns which condition fails. This positive disjunction is especially convenient for program extraction.
+
+For homology, a numerical certificate records the dimensions and boundary matrices, reductions of each boundary map, and the changes of basis. The target says that the reduction algorithm produces a certificate and that its resulting integers satisfy
+\[
+ b_k=c_k-r_k-r_{k+1},\qquad
+ \sum_k(-1)^kc_k=\sum_k(-1)^kb_k.
+\]
+The distinction between producing the reductions and checking their identities is explicit.
+
+For S06, fix the PR syntax tree of the field evaluator. The formulas expressing tangency, boundedness and Lipschitzness have numerical universal quantifiers over rational points. Treat them as fixed hypotheses; at a particular demanded tolerance instantiate them only at the finite points and pairs computed by the proof. The approximate-zero sentence concludes
+\[
+ \operatorname{OnSphere}(n,W(\varepsilon))=1,\qquad
+ \operatorname{NormLe}(F(W(\varepsilon)),\varepsilon)=1.
+\]
+The scan and the auxiliary contradiction use finite tables. One must not induct on the entire universally quantified field contract.
+
+\subsection{A concrete completion order}
+
+\paragraph{Stage 1: Boolean arithmetic and codes.}
+Use ProveIt's existing arithmetic library for order, finite sums, pairing, parity, bounded search and simultaneous recursion \cite{RepoDerivations}. The packet's pairing convention is replaceable by the repository's established pairing; prove the decoder invariants once. Every decoder is total on malformed codes, and every target has a validity guard. Represent rational comparisons by signed integer cross-products with positive-denominator hypotheses.
+
+\paragraph{Stage 2: finite topology.}
+Define the relation mask, reflexive/transitive tests, upward-closed mask test, interior and closure folds. Prove their bit-level equations with free point indices. Instantiate the semantic arguments of \code{FiniteTopology.lean} at these equations. Compute reachability by the bounded path-length iteration, use least representatives for the $T_0$ quotient, and prove the normality characterization. The Boolean separator is then a component-saturation mask. Its correctness, unlike a general real-valued Urysohn construction, involves no limiting process.
+
+\paragraph{Stage 3: finite linear and sheaf algebra.}
+Implement fraction arithmetic and row/column operations, with a state invariant storing the elementary invertible matrices. The pivot loop has bound $\min(r,c)$. Prove the rank decomposition and then instantiate the already checked telescoping proof. Implement oriented boundary coefficients with the two-deletion cancellation involution. Implement the sheaf checker on the canonical finite neighborhood covers; gluing is bounded search plus uniqueness, or a direct selector for a function sheaf. No generic sheafification algorithm is needed for the stated theorems.
+
+\paragraph{Stage 4: dimension.}
+Enumerate Kuhn simplices and their facets. Formalize each of the three facet-mate rules, prove that they are inverse and exhaustive, and express door counts as parity of bounded sums. Fix the original labeling when inducting on face dimension. Then formalize rational floors, shifted-cell membership, the first-zero coloring and the threshold injection. The witness algorithm follows the proof: try face pairs first; if none works, construct the full simplex and the repeated coordinate. Finally instantiate the dyadic constants of D04. This ordering isolates the genuinely topological combinatorics from routine rational estimates.
+
+\paragraph{Stage 5: spheres.}
+Prove the cone identity for augmented finite chains. Build subdivision by the recursive cone formula, prove the mesh bound by nested averages, and implement rational barycentric sorting. Use the carrier and prism identities to derive the finite obstruction. Implement the finite Lipschitz labeling table and its no-opposite-label test. The field proof then reduces to finite dot-product expansion, rational normalization estimates, and success of the bounded net scan. The files already check the terminal sign and coefficient contradiction, but not these preceding constructions.
+
+\paragraph{Stage 6: equipped metric schemas.}
+Implement weighted partial sums and their geometric tails. For each fixed presentation compute the finite demand graph: coordinate cutoffs, distance precisions, net indices and inverse-neighborhood precision. Prove the rational inequalities in that finite graph, with no induction over arbitrary functions or all future precisions. In Urysohn separation, normalization is guarded by a supplied positive lower bound; in function spaces, the overlapping-box selector is part of the proof.
+
+\paragraph{Stage 7: arithmetic proof terms and native export.}
+Replace the external semantic conclusions by derivation terms in the inspected \code{Prf PRAAx} calculus. The repository exposes quantifier-free induction and primitive-recursion definition interfaces; the human invariants above identify the necessary formulas. Construct the derivations by natural deduction, defining equations, and the bounded-loop rule. Only after the term has type
+\[
+ []\vdash[\operatorname{PRAAx}]\varphi
+\]
+apply \code{pra\_iff\_native} to export it to the concise native calculus. Audit the endpoint's imported dependency closure and printed axioms. This final stage remains future work for the collection; it is not replaced by ordinary Lean elaboration or by Python tests.
+
+\subsection{Executable evidence and its limits}
+
+The archive includes exact-arithmetic reference implementations. Their successful recorded runs cover:
+\begin{itemize}
+\item all 390 labeled preorder spaces of sizes $0$ through $4$, with closure/interior, map, quotient, normality and function-space checks;
+\item 167 simplicial complexes, 340 elementary collapses, 5,103 prism identities, 1,100 graphs, 689 finite Boolean-generator families and 2,744 function-gluing instances;
+\item 5,223 exhaustive admissible cubical colorings, 625 exhaustive rational tables, additional deterministic random dimension tables, boundary cases and invalid-certificate rejection;
+\item cross-polytope signs in ambient dimensions $1$ through $5$, 358 subdivision/last-vertex identities, 4,282 subdivided top simplices and 308 rational field sample checks.
+\end{itemize}
+The reports record the exact bounds and deterministic parameters. These tests catch implementation and sign errors; they do not prove the universally quantified theorems or compile an \ipra\ derivation. The human proofs establish the general claims; the Lean files check the explicitly identified foundation subset.
+
+\subsection{Reproduction and delivery}
+
+Run \code{python3 code/run\_checks.py} for the four exact test suites. Run
+\code{bash lean/check.sh} with Lean 4.32.0 available, or set \code{LEAN\_BIN} to the executable. Run \code{bash build.sh} to compile the report with a normal full LaTeX installation. The figure can be regenerated with \code{python3 code/make\_figures.py}, which additionally requires Matplotlib.
+
+The source map covers every direct index entry. The theorem ledger lists the numbered human results and their representation class. The validation summaries and checksums make the scope of the delivered evidence reviewable. The package contains no claim of a complete formalization of unrestricted classical general topology.
+

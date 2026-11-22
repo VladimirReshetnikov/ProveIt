@@ -1,0 +1,76 @@
+\section{Lean artifacts and the exact proof boundary}\label{sec:verification}
+
+\subsection{What was compiled}
+
+The package contains a standalone Lean project under \path{lean/}. It was built in this session with Lean 4.32.0, compiler commit
+\path{8c9756b28d64dab099da31a4c09229a9e6a2ef35}. It uses only Lean's bundled standard library; it does not require Mathlib or a ProveIt checkout. Its five modules contain 41 named proved theorems. The default Lake build has seven jobs, all successful.
+
+\begin{longtable}{@{}P{.27\textwidth}P{.65\textwidth}@{}}
+\toprule File & Checked content\\\midrule\endhead
+\path{FiniteExtrema.lean} & Actual nonempty min/max folds; attained argmin/argmax; least-minimizer property; two-sided error estimates; total-correspondence transport.\\
+\path{CompactQuantifier.lean} & Finite-net lower/upper bounds, selected approximate witnesses, and comparison between two nets with different mesh and sample errors.\\
+\path{ContinuousSyntax.lean} & Single-sort, arity-indexed formula syntax, finite model semantics, binder environments, total correspondence, and formula transfer for the complete stated connective/quantifier basis.\\
+\path{Examples.lean} & An endpoint/midpoint tent-function model comparison that attains the transfer error bound.\\
+\path{Audit.lean} & Axiom reports for the main exported theorems.\\
+\bottomrule
+\end{longtable}
+
+The principal declaration is
+\begin{center}
+\path{QuantitativeIPRA.Continuous.formula_transfer}.
+\end{center}
+The checked theorem is the single-sort finite semantic core; its two model carrier sizes may differ. It assumes a two-sided total relation and atomic closeness for all related tuples. Its conclusion is closeness by the same natural score error for the evaluation of every arity-correct formula. The binders genuinely extend the variable environment. This is not a placeholder that assumes formula-level correctness in a record field. The many-sorted version proved in the model-theory chapter remains a Lean generalization: replace the one carrier by a family indexed by sorts, index variable environments and atomic argument lists by their sort lists, and give each binder its sort. The same induction then uses totality for the sort bound by that binder. Formulas mixing function and point sorts require this generalization.
+
+The arithmetic error predicate is
+\[
+ \mathsf{Close}(e,a,b)\quad\equiv\quad a\leq b+e\ \wedge\ b\leq a+e.
+\]
+For a known positive common denominator \(D\), it states an absolute rational error of at most \(e/D\). Natural truncated complement is nonexpansive on all natural scores, and agrees with the intended real complement after scaling on the prescribed interval \(0\leq a\leq D\). Every finite carrier is indexed by \(0,\ldots,n\), avoiding an undefined empty extremum.
+
+The reported dependencies of the main finite transfer theorem are \code{propext} and \code{Quot.sound}. The audit has no \code{Classical.choice}, \code{sorryAx}, or custom correctness axiom. These facts concern the exported Lean theorem dependencies. They do not convert the semantic Lean theorem into an object-language \ipra\ proof.
+
+\subsection{What remains an outline}
+
+There are no new completed \code{Prf PRAAx} proof values for the continuous framework in this package. The complete human proofs specify the numerical inequalities and primitive-recursive schedules, but their deep reification is still to be implemented. This boundary is made explicit in the source layout:
+
+\begin{itemize}
+\item \path{lean/} contains the compiled standalone semantic kernel and its logs.
+\item \path{lean/ObjectTheoryPlan.lean.txt} is a detailed plan for the ordinary ProveIt calculus, with inspected import paths, exact existing API names, intended object terms, formulas, and proof construction.
+\item \path{blueprints/AnalyticTopologyBlueprint.lean} defines semantic records and propositions named \code{...Goal}; it is an uncompiled blueprint, and those propositions are not asserted theorems.
+\item \path{blueprints/FunctionSpaceAnalyticPlan.lean.txt} supplies the remaining function-space and complex-analysis definitions, exact targets, and dependency order. It is also uncompiled.
+\end{itemize}
+
+\subsection{The shortest route to actual ordinary-iPRA endpoints}
+
+The initial object-theory implementation should add two finite correspondence lemmas, rather than start by formalizing all of real analysis. Fix PR score programs \(f,g\), a relation bit \(R\), and numerical parameters \(x\). Let \(N,M\) be the last carrier indices and \(e\) a natural error. The input formulas are
+\begin{align*}
+ &\forall i\leq N\;\exists j\leq M\quad R(i,j,x)=1,\\
+ &\forall j\leq M\;\exists i\leq N\quad R(i,j,x)=1,\\
+ &\forall i\leq N\;\forall j\leq M\quad
+ R(i,j,x)=1\ \longrightarrow\ \mathsf{Close}(e,f(i,x),g(j,x)).
+\end{align*}
+The intended conclusion is \(\mathsf{Close}(e,\min_i f(i,x),\min_jg(j,x))\), and similarly for maxima. These are fully first-order formulas. The inputs can be compiled through the existing \path{BoundedSyntax.BFm} interface.
+
+The proof uses the actual least argmin. Instantiate one totality premise at the other carrier's minimizing index, eliminate its bounded witness, then combine the pointwise error and minimum specification. Repeat in the other direction. The \path{ApproximateWitness}, \path{RationalArgmin}, \path{FiniteQueryDemand}, and \path{BoundedSyntaxInduction} APIs already provide the needed scan and bounded-induction infrastructure. The supplied plan names their actual declarations at the pinned revision.
+
+Next, perform external structural recursion on one fixed formula. Generate both a PR evaluator term and an ordinary proof tree. Min, max, and complement use arithmetic lemmas; the quantifier steps use the new correspondence lemmas; substitution inserts the coded extended environment. Since this is recursion in the metatheory over fixed syntax, it does not invoke a universal numerical evaluator or induction on a truth predicate.
+
+Only then add the presentation adapters: actual net codes and coverage proofs, atomic evaluator and modulus proofs, a decidable relation with the named-distance slack, and the cross-mesh calculation. Their result is a literal all-precision Cauchy sentence about a fixed PR function. The semantic real-valued interpretation is proved in a separate namespace.
+
+For the other chapters the dependency order is equally concrete:
+\begin{enumerate}
+\item Derive the rational small-error, finite reindexing, and completion-equivalence lemmas for fixed name programs. Instantiate all-precision hypotheses at explicit indices; do not use them as induction predicates.
+\item Derive one weighted-summand inequality, then its finite-sum invariant and positive-denominator cancellation. Add safe inner weights for approximate metrics.
+\item Connect the existing coherence endpoint to the residual's canonical evaluation. The proof must output equality of represented residual names, not only a bound on distances between approximate solutions.
+\item Implement the rational envelope table evaluator, its Lipschitz inequality, the finite grid cover, and the table quantizer. Each selected center is proved legal directly. Then derive the supremum-distance-name bound.
+\item Implement finite polynomial value/derivative sums and their geometric majorants. Derive the Taylor remainder before claiming complex differentiability or holomorphic descent.
+\item Specialize these interfaces to the cubic inverse and the tent variational problem. Retain all domain, denominator, modulus, and approximate-solvability hypotheses until a specific provider discharges them.
+\end{enumerate}
+
+The formalization is complete only when these endpoints have actual \code{Prf PRAAx} values, compile in the pinned project or an explicitly migrated revision, and pass an axiom audit. A theorem about \code{PR.ev} in Lean's ambient mathematics is useful for adequacy but does not satisfy that gate.
+
+\subsection{Executable evidence and reproducibility}
+
+The exact-rational Python code covers envelope selection, supremum-distance observations, finite continuous formulas, the tent finite-sum certificate, power-series cutoff bounds, cube-root grid search, and weighted gluing. The continuous validation script performed 13,710 finite checks. The second example runner records known exact values, sharp examples, and computed error allowances. All use exact fractions rather than floating-point comparisons. These runs validate implementations and constants on the recorded examples; they are not universal proofs or formal proof certificates.
+
+To reproduce the standalone kernel, enter \path{lean/} and run \code{lake build}; then run \code{lake env lean Audit.lean}. To reproduce the arithmetic examples, run \code{python3 code/run\_examples.py} and \code{python3 code/validate\_continuous.py} from the package root. To rebuild the PDF, run \code{./build\_pdf.sh}. The source manifest records the inspected repository files and content hashes. No GitHub branch or repository contents were modified during this research.

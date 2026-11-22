@@ -1,0 +1,53 @@
+\subsection{An independent dodecahedral lower bound from a scalar function}
+
+Here is a direct witness that every surface path from the chosen vertex
+to its antipode has length at least $\sqrt{5+7\phi}$, where
+$\phi=(1+\sqrt5)/2$. Use the faces and the two vertex labels $0,7$ of
+the dodecahedral certificate. For each terminal face $F$, take all
+strips of one through four distinct faces starting on any face incident
+to $0$ and ending on $F$. Each strip places the source at a planar
+point $s$ relative to a common chart for $F$. Put
+\[
+ H_F(x)=\min_s |x-s|.
+\]
+Every term is $1$-Lipschitz. We only need the strips to give positions
+of the sites. A segment from $x$ to a site need not lift through its
+strip for the Lipschitz assertion to hold.
+
+Here are the arithmetic details for gluing these functions.
+Along an oriented unit edge $ab$, write
+$x=(1-t)a+tb$. A site with squared distances $r,s$ to the two ends
+contributes
+\[
+ |x-\text{site}|^2=(1-t)r+ts-t(1-t).
+\]
+Discard duplicate rows $(r,s)$ and every row dominated at both ends by
+another row. The two incident faces give identical surviving rows on
+each of the thirty edges. The full table follows, up to reversing
+the orientation. In this table $[m,n]=m+n\phi$.
+\[
+\begin{array}{r|l}
+\text{edges}&\text{surviving rows}\\ \hline
+3&(0,1)\\
+6&(1,[1,1])\\
+3&([1,1],[1,1])\\
+6&([1,1],[3,2])\\
+3&([2,3],[3,2]),\quad([3,2],[2,3])\\
+6&([2,3],[3,4]),\quad([3,2],[4,4])\\
+3&([3,4],[5,7])
+\end{array}
+\]
+For a precise way to reproduce the table, start with each of the three
+source faces and develop each allowed strip by the unit-edge rotation
+in the face table algorithm. Record the five squared distances from
+the source image to the corners of the terminal face. Remove duplicate
+five-tuples. In face-label order the twelve list lengths are
+$7,7,7,15,12,12,15,20,15,12,20,20$. For each edge, project each
+incident list to its two endpoint columns and discard dominated rows.
+The accompanying \texttt{dodeca\_calibration.py} performs precisely
+these bounded ring operations and comparisons.
+
+The identical edge formulas glue the $H_F$ to a surface function $H$
+whose change along a path is bounded by its length. The squared
+values at $0$ and $7$ are $0$ and $5+7\phi$. This proves the lower
+bound without needing to classify shortest paths.

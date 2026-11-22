@@ -1,0 +1,11 @@
+\section{Verification and further research questions}\label{sec:buildnew}
+The default Lake target imports the arithmetic syntax, the deep derivations and the finite number-theoretic proofs. The audit file \code{verification/Audit.lean} imports that target, displays representative theorem types, and prints their dependencies on Lean kernel axioms. The results are recorded in \code{verification/lean-audit.txt}. In particular:
+\begin{itemize}\setlength\itemsep{2pt}
+\item \code{CubeTests.failure_iff_first_radius} and the three cube biconditionals give actual derivations in the scoped object theory. A nonzero cube supplies a tuple without an appeal to Markov's principle or unbounded minimization.
+\item \code{SplitPrimes.unary_grh_iff} proves the standard-natural equivalence of the bounded maximum and the unrestricted family. The cutoff beyond which an individual fixed field is eligible in the unary ERH test, and the analytic implications of complete splitting, are justified in Section~\ref{sec:split}.
+\item \code{Taylor.statement_reading} interprets each compiled Taylor formula as the integer comparison of Section~\ref{sec:taylor}. The Cauchy bound and the converse through pole detection are mathematical proofs in that section.
+\item \code{LiouvilleCriterion.mertens_iff_liouville} refers to the actual Mathlib functions. The theorem gives both directions of a growth-witness transformation; it does not assume any growth estimate.
+\end{itemize}
+When a theorem about \code{Prf PRAAx} uses function extensionality in Lean to identify substitutions, its object proof still uses only the rules of iPRA. Some ordinary Mathlib results depend on classical choice in their metatheory. Their types and the audit distinguish these from the construction of an internal derivation. The four Python checkers exercise finite computations independently.
+\paragraph{Further research questions.}
+Can the local modular splitting criterion $F\mid(X^p-X)^d$ be linked to the compiled irreducible-divisor search entirely within \code{Prf PRAAx}? Can one give a direct internal conversion between the prescribed prime envelope and a Mertens growth witness for the same field? Can the quantitative Taylor evaluation and center-translation identity be formalized over a first-order coding of local Cauchy names, using the explicit margins in Section~\ref{sec:taylor}?

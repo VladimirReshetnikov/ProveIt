@@ -1,0 +1,377 @@
+\section{States, operations and experiments in finite dimension}
+\label{sec:finite-quantum}
+
+Take a positive integer \(d\) and the standard basis \(e_1,\ldots,e_d\).
+A vector consists of \(d\) named complex numbers. We use
+\(\langle x,y\rangle=x^*y\), linear in the second variable. A rectangular
+matrix acts by finite sums. We write \(\|T\|\le b\) for the estimate
+\(\|Tx\|_2\le b\|x\|_2\) for all test vectors; no operation taking a
+supremum is needed. Rational complex test vectors suffice, by approximation.
+The order \(H\ge0\) means \(H=H^*\) and \(x^*Hx\ge0\) on these tests.
+An effect is \(0\le E\le I\). A pure vector has \(x^*x=1\). Its state is
+the matrix \(xx^*\), which is invariant under multiplication of \(x\) by a
+scalar of modulus one.
+
+\paragraph{A precision convention.}
+If each entry of an \(m\)-by-\(d\) matrix has complex error at most
+\(\eta\), its error on a unit vector is at most \(\sqrt{md}\,\eta\)
+by rowwise Cauchy--Schwarz. The integer \(md\) also suffices for positive
+dimensions. If \(S,T\) have respective integer norm bounds \(a,b\) and
+both approximations have norm error at most \(\eta\le1\), the product
+error is at most \((a+b+1)\eta\), by inserting the intermediate product
+\(S\widetilde T\). For a sum of \(r\) terms the error is at most
+\(r\eta\). A square trace has error at most \(d\eta\) for norm error
+\(\eta\), by testing the standard basis. Each guard precision in these
+rules can be taken as the requested precision plus the integer loss factor,
+since \(2^k\ge k\) for positive integers. In products a bound for the
+next exact value is \(ab\), and in sums it is the sum of the bounds.
+On a finite arithmetic expression first propagate these bounds forward,
+then propagate requested precisions backward. Integer recursion over the
+expression implements both passes. All claims below about polynomial
+evaluation can use this deliberately coarse rule; it permits coefficients
+and matrix sizes to vary with the input. An exact equality of named
+quantities always means equality at arbitrarily small rational tolerance.
+For example, a telescoping argument invoking a law at each of \(r\) steps
+uses that law at rational discrepancy \(2^{-p}/(r+1)\) per step.
+With the output precision and \(r\) fixed, the partial-sum error bound
+is a rational comparison on finite codes. Quantifier-free induction acts
+on that comparison. The universal precision quantifier is introduced after
+the induction. This applies also to repeated effect additivity below.
+
+\subsection{Positivity without diagonalization}
+
+\begin{lemma}\label{lem:q-forms}
+A positive Hermitian form \(h\) satisfies
+\( |h(x,y)|^2\le h(x,x)h(y,y)\).
+In particular \(0\le X\le I\) implies \(\|X\|\le1\).
+\end{lemma}
+\begin{proof}
+For positive rational \(\epsilon\), substitute
+\(y-xh(x,y)/s\), with \(s=h(x,x)+\epsilon\), in the positivity
+inequality. Expansion gives
+\((2s-h(x,x))|h(x,y)|^2\le s^2 h(y,y)\).
+As \(2s-h(x,x)\ge s>0\), we get \(|h(x,y)|^2\le s h(y,y)\).
+Let \(\epsilon=2^{-k}\); the excess on the right is bounded by
+\(2^{-k}\) times any integer bound for \(h(y,y)\). For the second
+assertion put \(h(x,y)=x^*Xy\). Its absolute value is at most
+\(\|x\|_2\|y\|_2\). Taking the first argument to be \(Xy\) yields
+\(\|Xy\|_2^2\le\|Xy\|_2\|y\|_2\). If the claimed bound were violated
+by a positive rational margin then \(\|Xy\|_2\) would have a positive
+lower bound and could be cancelled. This excludes every such margin,
+which is precisely the closed order on named reals.
+\end{proof}
+
+\begin{theorem}[Positive square root]\label{thm:q-sqrt}
+Given \(H\ge0\) with an integer \(L\ge1\) satisfying
+\(H\le L^2 I\), one can construct the unique \(S\ge0\) with \(S^2=H\).
+The approximation with \(m\ge1\) terms has operator error at most
+\(L/\sqrt{m+1}\). Every operator commuting with \(H\) commutes with \(S\).
+\end{theorem}
+\begin{proof}
+Set \(X=I-H/L^2\), a positive contraction. Define rational numbers
+\[
+ c_0=1,\qquad c_j=4^{-j}{2j\choose j},\qquad
+ b_j=c_{j-1}-c_j=c_{j-1}/(2j)\quad(j\ge1),
+ \qquad F_m(z)=1-\sum_{j=1}^m b_jz^j.
+\]
+From \(c_{j+1}/c_j=(2j+1)/(2j+2)\), induction gives
+\(c_j^2\le 1/(j+1)\): after squaring the step, the required integer
+inequality is \((2j+1)^2(j+2)\le4(j+1)^3\).
+All powers of \(X\) are contractions. Even powers are positive by a
+square, and \(x^*X^{2s+1}x=(X^s x)^*X(X^s x)\ge0\). Thus
+\(c_m I\le F_m(X)\le I\). For \(l\ge m\) the norm of
+\(F_l(X)-F_m(X)\) is at most \(c_m-c_l\).
+
+Here is a finite verification of the squared polynomial identity used
+in the limit. The coefficient recurrence gives
+\((1-z)F_m'=-F_m/2\) through degree \(m-1\).
+Therefore \(G=F_m^2\) satisfies \((1-z)G'=-G\) to that order.
+With \(G(0)=1\), comparison of consecutive coefficients gives
+\(G_1=-1\) and \(G_2=\cdots=G_m=0\).
+Every coefficient of \(G\) above degree \(m\) is nonnegative since it
+comes from the product of two negative coefficients. Their sum is
+\(G(1)=c_m^2\). Hence \(\|F_m(X)^2-(I-X)\|\le c_m^2\).
+The limit \(S\) of \(L F_m(X)\) has all the claimed properties except,
+as yet, uniqueness. For operator truncation error \(2^{-p-1}\) take
+\(m=L^2 2^{2p+2}\); the other half of the budget covers finite arithmetic.
+
+For uniqueness we first record a consequence of the construction.
+If positive \(C,D\) commute, the constructed square root \(R\) of \(C\)
+commutes with \(D\) by its polynomial formula, so \(CD=RDR\ge0\).
+A second positive root \(T\) commutes with \(H=T^2\), hence with \(S\).
+Write \(U=S-T\), \(W=S+T\). Then \(UW=WU=0\), and
+\(W^2-U^2=4ST\ge0\). Conjugation by \(U\) gives \(-U^4\ge0\);
+also \(U^4\ge0\). Evaluating on \(x\) gives \(\|U^2x\|_2^2=0\);
+then \(\|Ux\|_2^2=x^*U^2x=0\). This proves uniqueness.
+\end{proof}
+
+An integer \(L\) can be obtained from the dimension and coarse entry
+bounds. The proof works verbatim for a bounded self-adjoint operator on
+a named Hilbert space when those polynomial actions and their norm bound
+are supplied. In the square-root theorem the finite identities use
+induction on integer coefficients or exact rational matrices. Preservation
+of a closed estimate follows by allocating the precision losses above
+at each finite test.
+
+\subsection{Why density matrices and the trace pairing suffice}
+
+A density matrix is \(\rho\ge0\) with \(\operatorname{tr}\rho=1\).
+If \(S=\sqrt\rho\), then \(\rho=SS^*\). Consequently
+\[
+ \operatorname{tr}(\rho E)=\sum_{j=1}^d (Se_j)^* E(Se_j),\qquad
+ \sum_{j=1}^d\|Se_j\|_2^2=1 .
+\]
+Thus the Born expectation is real and in \([0,1]\) for an effect, and
+is additive on sums of effects which are again effects. These identities
+follow by interchanging finite sums, which also proves the cyclic trace
+identity for compatible rectangular products.
+
+\begin{theorem}[Representation from experimental additivity]\label{thm:q-effect}
+Suppose \(f\) assigns a named number in \([0,1]\) to each effect, respects
+equality, has \(f(I)=1\), and satisfies
+\(f(E+F)=f(E)+f(F)\) whenever \(E+F\le I\). Then a unique density matrix
+\(\rho\) represents it by \(f(E)=\operatorname{tr}(\rho E)\), in every
+dimension including two. The result applies schematically to a supplied
+evaluator with these laws.
+\end{theorem}
+\begin{proof}
+First \(f(0)=0\). For \(A\ge0\) choose an integer \(n\ge1\) with
+\(A\le nI\), and put \(g(A)=n f(A/n)\). Two choices \(n,m\) give the
+same answer by adding \(A/(nm)\) successively \(m\) or \(n\) times.
+Using one common bound for \(A,B,A+B\) now proves additivity of
+\(g\) on the positive cone. Extend it to Hermitian \(H\) by
+\(\ell(H)=g(H+kI)-k\), where \(k\) is an integer norm bound.
+Independence of \(k\) follows from additivity and \(g(I)=1\).
+One can also use \(k=0\) for positive \(H\). Taking separate
+shifts for \(H,K\) and their sum as a shift for \(H+K\) gives
+additivity of \(\ell\); it is positive and order preserving.
+It follows that \(\ell(qI)=q\) for rational \(q\), including negative
+rationals. If \(-qI\le H\le qI\) for positive rational \(q\), then
+\(|\ell(H)|\le q\). Thus \(\ell\) is continuous and additive,
+hence real-linear by rational approximation of the scalar. Quantitatively,
+replacing a scalar by a rational within \(\eta\) changes the value on
+a matrix of norm at most \(b\) by at most \(b\eta\).
+
+Extend complex-linearly by
+\(L(Z)=\ell((Z+Z^*)/2)+i\ell((Z-Z^*)/(2i))\).
+This gives \(L(Z^*)=\overline{L(Z)}\). For matrix units \(E_{ij}\), set
+\(\rho_{ji}=L(E_{ij})\). Expansion in these units gives
+\(L(Z)=\operatorname{tr}(\rho Z)\), and determines every entry uniquely.
+The adjoint identity makes \(\rho\) Hermitian,
+\(x^*\rho x=L(xx^*)\ge0\), and \(\operatorname{tr}\rho=L(I)=1\).
+All the applications of the original evaluator needed to construct
+these entries are on explicit shifts and rescalings of the Hermitian
+parts of finitely many matrix units. The additivity assumption concerns
+all effects. Restricting it to orthogonal sharp projections would change
+the theorem.
+\end{proof}
+
+For systems \(A,B\) of dimensions \(m,n\), use the lexicographic product
+basis indexed by \((i,a)\) and define
+\((S\otimes T)_{ia,jb}=S_{ij}T_{ab}\).
+The partial trace has entries
+\((\operatorname{tr}_B R)_{ij}=\sum_a R_{ia,ja}\).
+It preserves trace and positivity: the quadratic form on \(x\) is the
+sum of the quadratic forms of \(R\) on \(x\otimes e_a\).
+It is characterized by
+\(\operatorname{tr}(R(T\otimes I))=
+\operatorname{tr}((\operatorname{tr}_B R)T)\), by testing matrix units.
+Every density matrix has a purification on \(A\otimes A\):
+the vector with entries \(v_{ia}=(\sqrt\rho)_{ia}\) has norm one and
+\(\operatorname{tr}_2(vv^*)=\rho\).
+Both statements follow by summing columns of \(\sqrt\rho\).
+In particular, neither the extraction of eigenvectors nor the
+normalization of possibly zero columns occurs in this construction.
+
+\subsection{Channels, measurements and composite systems}
+
+For a linear matrix map \(\Phi:M_d\to M_m\), the entries
+\(\Phi(E_{ij})_{ab}\) specify its entire action. On block matrices
+\(\operatorname{id}_k\otimes\Phi\) acts by applying \(\Phi\) to each
+block. Complete positivity means positivity on every such positive
+block matrix. A channel is a completely positive, trace-preserving map.
+
+\begin{theorem}[Finite Choi and Kraus representations]\label{thm:q-choi}
+The following descriptions of \(\Phi\) agree constructively:
+complete positivity; positivity of the single \(dm\)-square matrix
+\(J_{ia,jb}=\Phi(E_{ij})_{ab}\); and a representation
+\[
+ \Phi(X)=\sum_{s=1}^{dm}K_s X K_s^*,\qquad K_s:\mathbb C^d\to\mathbb C^m.
+\]
+Trace preservation is equivalent to \(\sum_s K_s^*K_s=I_d\).
+\end{theorem}
+\begin{proof}
+Let \(w=\sum_i e_i\otimes e_i\). The positive matrix \(ww^*\)
+has blocks \(E_{ij}\), so \((\operatorname{id}_d\otimes\Phi)(ww^*)=J\).
+If \(J\ge0\), form \(R=\sqrt J\) by Theorem~\ref{thm:q-sqrt}, and set
+\((K_s)_{ai}=R_{ia,s}\). Then
+\[
+ \bigg(\sum_s K_s E_{ij}K_s^*\bigg)_{ab}
+ =\sum_s R_{ia,s}\overline{R_{jb,s}}=J_{ia,jb}.
+\]
+Linearity gives the formula on all matrices. Conversely on a positive
+block matrix \(Y\), each conjugation
+\((I_k\otimes K_s)Y(I_k\otimes K_s)^*\) is positive by a
+quadratic-form test. Their sum is positive. Cyclicity gives
+\(\operatorname{tr}\Phi(X)=\operatorname{tr}(X\sum_s K_s^*K_s)\).
+Equality with \(\operatorname{tr}X\) for every matrix unit is exactly
+the displayed condition. The construction uses all \(dm\) columns,
+including zero columns, so its size is independent of any rank decision.
+\end{proof}
+
+A channel admits an isometric dilation: set
+\(Vx=\sum_s K_sx\otimes e_s\). The normalization condition gives
+\(V^*V=I\), and \(\operatorname{tr}_2(VXV^*)=\Phi(X)\) by the partial
+trace formula. Successive channels with lists \(K_s,L_t\) have list
+\(L_tK_s\), and independent channels have the list \(K_s\otimes L_t\).
+These identities follow by distributing the sums. Their normalizations
+also follow directly, e.g.\ \(\sum_{s,t}K_s^*L_t^*L_tK_s=I\).
+Adding a prepared environment and subsequently discarding it therefore
+has the same probability rule as the corresponding channel.
+
+An instrument consists of lists \(K_{a,s}\) with
+\(\sum_{a,s}K_{a,s}^*K_{a,s}=I\), grouped by a recorded outcome \(a\).
+Its unnormalized output
+\(\sigma_a=\sum_s K_{a,s}\rho K_{a,s}^*\) carries weight
+\(p_a=\operatorname{tr}\sigma_a
+=\operatorname{tr}(\rho E_a)\),
+where \(E_a=\sum_s K_{a,s}^*K_{a,s}\). This is a finite probability
+distribution since \(E_a\ge0\) and \(\sum_a E_a=I\).
+Conversely, any such POVM (positive operator-valued measure) is realized
+by \(K_a=\sqrt{E_a}\). Its dilation displays the POVM as a sharp
+measurement on a larger system: \(E_a=V^*(I\otimes e_a e_a^*)V\).
+For a projective measurement \(E_a=P_a\), \(P_a=P_a^*=P_a^2\),
+with \(P_bP_a=0\) for distinct outcomes, this instrument repeats its
+answer with certainty because the second branch is
+\(P_bP_a\rho P_aP_b\). General instruments for a given POVM can have
+different disturbances.
+
+If a lower witness \(p_a\ge 2^{-h}\) is supplied, the state after
+observing \(a\) is \(\sigma_a/p_a\). At denominator error
+\(\eta\le2^{-h-1}\), a reciprocal computed from the approximate
+denominator has error at most \(2^{2h+1}\eta\); this follows by taking
+the difference of fractions. Even when no such witness is available,
+the joint probability of seeing \(a\) and subsequently measuring an
+effect \(F\) is unconditionally defined as
+\(\operatorname{tr}(F\sigma_a)\).
+For disjoint subsystems, an unrecorded operation on \(B\) leaves the
+marginal on \(A\) invariant. Indeed cyclicity in the expectation of
+\(T\otimes I\) replaces it by
+\(\sum_s (I\otimes K_s)^*(T\otimes I)(I\otimes K_s)
+=T\otimes I\). The matrix-unit characterization of partial trace gives
+equality of the marginals.
+
+\subsection{Discrimination, uncertainty and entanglement}
+
+\begin{theorem}[Optimal binary discrimination with an effective tolerance]
+\label{thm:q-helstrom}
+Suppose the preparation is \(\rho\) with probability \(u\in[0,1]\)
+and \(\tau\) with probability \(1-u\). Put
+\(D=u\rho-(1-u)\tau\) and \(|D|=\sqrt{D^2}\).
+The least upper bound on the success probabilities of binary measurements is
+\[
+             P_* = \tfrac12(1+\operatorname{tr}|D|).
+\]
+For positive rational \(\epsilon\), an explicit effect obtains at least
+\(P_*-d\epsilon/2\).
+\end{theorem}
+\begin{proof}
+Write \(B=|D|\), \(R=B+\epsilon I\). To invert a positive matrix with
+\(bI\le R\le MI\), \(0<b\le M\) rational, form
+\(M^{-1}\sum_{j=0}^{n}(I-R/M)^j\).
+The factor is a positive contraction with bound \(q=1-b/M\);
+apply Lemma~\ref{lem:q-forms} after scaling if \(q>0\), with the case
+\(q=0\) immediate. The geometric tail is at most \(q^{n+1}/b\).
+For \(0\le a\le1\), the inequality
+\((1-a)^j\le1/(1+ja)\) follows by induction after multiplying the
+denominators. Thus the tail is at most \(M/(b^2(n+1))\).
+Multiplication of the partial sums by \(R\) telescopes to
+\(I-(I-R/M)^{n+1}\), so the limit is a positive inverse. Here take
+\(b=\epsilon\) and an integer upper bound for \(M\).
+
+The commuting matrices \(D,B,R^{-1}\) give a self-adjoint contraction
+\(T=D R^{-1}\): indeed \(R^2-D^2=2\epsilon B+\epsilon^2 I\ge0\),
+so conjugation by \(R^{-1}\) gives \(T^2\le I\).
+Hence \(I\pm T\ge0\) by Cauchy--Schwarz, and the commuting product
+\(R(I\pm T)=B+\epsilon I\pm D\) is positive. Letting \(\epsilon\)
+decrease to zero shows \(D_\pm=(B\pm D)/2\ge0\). Given any
+effect \(E\), guess \(\rho\) on this effect and \(\tau\) otherwise.
+The success probability is \(1-u+\operatorname{tr}(ED)\).
+For positive \(X,Y\), \(\operatorname{tr}(XY)\) is nonnegative
+because it equals \(\operatorname{tr}(\sqrt X\,Y\sqrt X)\).
+Applying this to \((I-E)D_+\) and \(ED_-\) shows
+\(\operatorname{tr}(ED)\le\operatorname{tr}D_+\). As
+\(\operatorname{tr}D=2u-1\), this yields \(P_*\).
+
+Use \(E_\epsilon=(I+T)/2\) for the reverse estimate. Its deficit is
+\(\tfrac12\operatorname{tr}(B-B^2R^{-1})
+=\tfrac{\epsilon}{2}\operatorname{tr}(B R^{-1})\).
+The product \(BR^{-1}\) is positive, and
+\(I-BR^{-1}=\epsilon R^{-1}\ge0\), so its trace is at most \(d\).
+For target deficit \(2^{-p}\) one may take \(\epsilon=2^{-p}/d\).
+This realizes the stated least-upper-bound property with a uniform
+primitive-recursive approximation to the measurement.
+\end{proof}
+
+For equal priors the distinguishability
+\(\tfrac12\operatorname{tr}|\rho-\tau|\) cannot increase under a channel.
+Every output effect \(E\) pulls back to the input effect
+\(\sum_s K_s^*E K_s\) with the same success probability, by cyclicity
+and the channel normalization. Taking the explicit near-optimal output
+tests of the theorem proves the inequality to arbitrary precision.
+
+For a self-adjoint observable \(A\), put
+\(\langle A\rangle=\operatorname{tr}(\rho A)\),
+\(A_0=A-\langle A\rangle I\), and
+\(\operatorname{Var}_\rho A=\langle A_0^2\rangle\).
+The Hermitian form \(h(S,T)=\operatorname{tr}(\rho S^*T)\) is positive
+because \(h(S,S)=\sum_j\|S\sqrt\rho\,e_j\|_2^2\).
+Lemma~\ref{lem:q-forms} applied to \(A_0,B_0\) gives the full
+Schr\"odinger--Robertson inequality
+\[
+ \operatorname{Var}_\rho A\,\operatorname{Var}_\rho B\ \ge \left(\tfrac12\langle A_0B_0+B_0A_0\rangle\right)^2+
+ \left(\tfrac1{2i}\langle AB-BA\rangle\right)^2 .
+\]
+Indeed the displayed terms are the squares of the real and imaginary
+parts of \(h(A_0,B_0)\). There is no division by a variance.
+
+\begin{example}[A Bell experiment with an exact separation]\label{ex:q-bell}
+For the two real Pauli matrices
+\[
+ Z=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\qquad
+ X=\begin{pmatrix}0&1\\1&0\end{pmatrix},
+ \qquad v=(e_1\otimes e_1+e_2\otimes e_2)/\sqrt2 ,
+\]
+choose \(A_0=Z,A_1=X\), \(B_0=(Z+X)/\sqrt2\),
+\(B_1=(Z-X)/\sqrt2\). Each observable is a self-adjoint involution
+since \(ZX+XZ=0\); its two effects are \((I\pm A)/2\).
+The CHSH observable is
+\[
+ C=A_0\otimes(B_0+B_1)+A_1\otimes(B_0-B_1)
+   =\sqrt2(Z\otimes Z+X\otimes X).
+\]
+Both summands inside the parentheses fix \(v\), so \(v^*Cv=2\sqrt2\).
+In a product state the value is
+\(a_0(b_0+b_1)+a_1(b_0-b_1)\), where each expectation lies in
+\([-1,1]\). Its absolute value is at most
+\(|b_0+b_1|+|b_0-b_1|=2\max(|b_0|,|b_1|)\le2\);
+the middle real identity follows by rational approximation from the
+four rational sign cases. The bound \(2\) passes to all finite
+convex mixtures and their effective limits. Thus the Bell state is
+entangled, with a positive margin. For arbitrary self-adjoint
+involutions on the two sides, expansion gives
+\(C^2=4I-[A_0,A_1]\otimes[B_0,B_1]\), with
+\([S,T]=ST-TS\). Each commutator is a difference of two unitaries.
+Its tensor product here expands as four signed unitaries; hence
+\(\|C^2\|\le8\), giving \(\|Cx\|_2^2=x^*C^2x\le8\|x\|_2^2\).
+Thus the stated experiment attains the quantum bound for these
+measurements. Its coefficients require only rational arithmetic and
+a square root of the fixed positive rational \(2\).
+\end{example}
+
+\paragraph{Finite adaptive protocols.}
+Suppose each internal node $v$ of a finite tree specifies an instrument with matrices $K_{a,s}^{(v)}$ and successor $va$. The choice of subsequent instrument may depend on all previous recorded outcomes. Give each leaf its final acceptance effect $F_v$, with $0$ and $I$ corresponding to rejection and acceptance. Working back toward the root, compute
+\[
+ F_v=\sum_{a,s}(K_{a,s}^{(v)})^* F_{va} K_{a,s}^{(v)}.
+\]
+Quadratic-form testing and normalization give $0\le F_v\le I$. Repeated finite cyclic traces show that $\operatorname{tr}(\rho F_{\rm root})$ equals the sum of the joint Born weights of all accepted histories (or the final weighted acceptances). This evaluates an adaptive experiment even if some histories have zero probability. If all child effects are determined within operator error $\eta$, the parent incurs at most $\eta$ in inherited error: compress the diagonal operator with blocks $F_{va}$ along the isometry with components $K_{a,s}^{(v)}$. For tree depth $D$, choose local matrix arithmetic error at most $\delta_{k+3}/(1+D)$ at every node. The backward evaluation then contributes at most $\delta_{k+3}$, independently of how many histories have small weight. Finite sums at a node use the earlier dimension- and fan-out-dependent guard digits. Reserve a separate precision request for the initial trace. For variable tree size the evaluation is PR on a finite tree code with postorder numbering and a joint sampler for its node data.

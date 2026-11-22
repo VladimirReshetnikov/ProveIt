@@ -1,0 +1,156 @@
+\section{Changing the domain and composing the constructions}
+\label{sec:transfer}
+
+\subsection{A finite partition theorem on metric spaces}
+
+The cumulative probes exploit order on the line. A simpler reconstruction
+works on any bounded rational presentation with an explicitly supplied
+partition of unity. This gives a comparison for the precision saved by the
+one-dimensional construction and identifies the data needed on a new domain.
+
+Let $D$ be a rational metric basis of diameter at most $H>0$, and let an
+extensional test language contain constants, rational linear combinations and
+the following supplied test functions. At level $n$ produce a nonempty list of
+sites $x_1,\ldots,x_m$ and nonnegative tests $\psi_i$ with
+$\sum_i\psi_i=1$ and $\psi_i(x)>0\Rightarrow d(x,x_i)\le h_n$.
+Both the producer and the support and partition proofs are input contracts.
+Assume also that the language contains the functions
+$\min_i(v_i+d(x,x_i))$ for finite rational lists of sites and ordinates.
+Distance evaluations and the displayed test constructors must be PR on basis
+codes. Order claims about tests are proved pointwise on the dense basis.
+In particular the positivity rule for $L$ applies to such proved comparisons.
+Use a supplied schedule making $h_n$ small. If $L$ is presented on a smaller
+test language, the additional constructors and their properties are obligations.
+
+\begin{theorem}[Reconstruction from a partition]
+Given a positive normalized rational-linear evaluator $L$, read each
+$L(\psi_i)$ with error $\delta=2^{-r}$, where $m\delta\le1/2$.
+In $O(m)$ rational operations after the oracle calls one can produce a
+finite probability law $P$ on the sites satisfying
+\[
+             |P(f)-L(f)|\le K(h_n+Hm\delta)
+\]
+for every admitted $K$-Lipschitz test $f$. There is a PR procedure to compute
+the maximum discrepancy of two finite laws against all 1-Lipschitz tests
+in this language.
+\end{theorem}
+\begin{proof}
+Write $c_i=L(\psi_i)$. Truncate negative readings to zero to obtain rational
+$a_i$ with $|a_i-c_i|\le\delta$, and set $s=\sum_i a_i$.
+Normalization and linearity give $|s-1|\le m\delta$. In particular
+$s\ge1/2$. Set $P_i=a_i/s$. The sum of the normalization corrections
+$\sum_i|P_i-a_i|$ is $|1-s|$. Thus $\sum_i|P_i-c_i|\le2m\delta$.
+Here absolute values on named scalars can equally be evaluated by the regular
+absolute-value operation. For an argument using only rational sign tests,
+compare to arbitrary rational approximants to the $c_i$ and remove the
+accumulated slack as in Section~\ref{sec:laws}.
+
+The positive interpolant $Tf=\sum_i f(x_i)\psi_i$ approximates $f$ within
+$Kh_n$ on the basis. Indeed its terms have nonnegative weights summing to
+one and the support condition bounds every nonzero discrepancy. This can also
+be proved without deciding equality of a named weight: check strict failure
+of the rational distance test; in that case nonnegative $\psi_i$ with no
+positive evidence is zero by the rational gap rule. Subtract the midpoint of
+the greatest and least of the rational nodal ordinates when $f$ is a rational
+test on the given sites. The deviations at the sites are at most $KH/2$,
+and subtracting a constant leaves the mass discrepancy unchanged. This
+proves the bound on replacing $c_i$ by $P_i$. For named nodal values choose rational $u_i$ within $e$ and use the admitted test $T_u=\sum_i u_i\psi_i$. Its uniform discrepancy from $f$ is at most $Kh_n+e$. Centering the rational ordinates bounds their magnitude by $KH/2+e$, and replacing the target ordinates in $P(f)$ adds at most $e$. Remove the resulting slack by the rational gap rule. Only the rational masses enter the producer.
+
+Here is an explicit procedure for the second assertion. On the union of the
+two supports fix a base vertex and normalize a potential to zero there.
+Let $B$ be a common positive denominator for all pairwise distances. Enumerate
+integer ordinates $v_i$ bounded in magnitude by $\lceil BH\rceil$, with
+$v_0=0$ and $|v_i-v_j|\le B d(x_i,x_j)$. Return the largest signed score
+of the ordinates $v_i/B$ against the difference of the masses. Each array
+extends with these same nodal values by the finite minimum stipulated above.
+This test is 1-Lipschitz by the triangle inequality.
+
+For completeness of the search, start with any normalized \emph{rational}
+feasible array $y$. For $0\le t<1$ set $v_i(t)=\lfloor B y_i+t\rfloor$.
+Because $Bd(x_i,x_j)$ is an integer, these rounded arrays are still feasible,
+and $v_0(t)=0$. The average of $v_i(t)$ over $t$ is $B y_i$, as one sees
+by splitting at the single jump of that coordinate. Refinement by all jump
+locations expresses the original score as a finite rational convex combination
+of enumerated scores. The largest score dominates this combination. For a
+test with named nodal values, the inequality follows by approximation: choose
+rational approximations $u_i$ within $e$ and use the rational potential
+$y_j=\min_i(u_i+d(x_i,x_j))$. It is feasible and within $e$ of the original
+at each site. Normalize at the base vertex; the constant cancels, and the
+score error is at most $2e$. Remove this slack. Reversing the test's sign
+also bounds the absolute discrepancy.
+\end{proof}
+
+After merging zero-distance sites it is a metric: to detect a mass discrepancy at a single site, give that site the positive value of its least distance to the other sites and give all other sites value zero. The extension above is feasible. A support with one site has only one unit law. This test distance yields a regular law name by the same maximizing-test
+two-run argument as on the line. Refine until $h_n\le2^{-p-1}$ and
+$Hm\delta\le2^{-p-1}$, keeping $m\delta\le1/2$. The finite dual
+enumeration is a decidability proof and a general algorithm; its worst-case
+search size is exponential in the support size even for a fixed ordinate
+range greater than one. The ordered scan in Lemma~\ref{lem:dual} removes
+this search on the line and supplies a sparse primal coupling there.
+The theorem above establishes a metric of continuous tests directly.
+
+For example, on $[0,1]^d$ in the maximum distance use tensor products of
+ordinary linear hats on the dyadic grid. Their products are nonnegative,
+sum to one by multiplying the $d$ one-dimensional identities, and are
+supported within one mesh step. With fixed precision $n$, $m=(2^n+1)^d$,
+$H=1$ and $h_n=2^{-n}$. Rational piecewise polynomial tests with min and
+max constructors suffice for these expressions; witnesses of positivity
+can be hypotheses or explicit algebraic proofs. This instance needs no
+general positivity decider for all expressions. For this simple normalization
+method the required raw query precision grows as $\lceil\log_2 m\rceil$.
+On $[0,1]$, Section~\ref{sec:laws} eliminates that term by probing the
+cumulative sums directly.
+
+\subsection{A quantile from a transport name}
+
+The operator for roots accepts a general function evaluator. The law
+construction can provide it, even though a distribution function at an
+atom was a counterexample. Suppose now the inputs have the following density bounds on rational test functions
+\[
+ 2^{-b}\int_0^1 h\ \le L(h)\le 2^d\int_0^1 h
+ \qquad(0\le h\in\PL)
+\]
+with supplied integers $b,d$. Every displayed polygonal integral is a finite
+rational trapezoid sum. For a rational $x\in[0,1]$ let $R_{x,\eta}$ be the
+right ramp of width $\eta$, equal to one through $x$ and zero past $x+\eta$,
+restricted to $[0,1]$. Its area lies between $x$ and $x+\eta$. At fixed
+$x$ the ramps are ordered by width. The upper density bound shows that the
+two expectations at widths $\eta,\eta'$ differ by at most
+$2^d\max(\eta,\eta')$. Thus they define a scalar $C(x)$ and the error at
+one width is at most $2^d\eta$. For $y\ge x$ the difference of the two
+equal-width ramps is nonnegative and its integral tends to $y-x$ with
+error at most $\eta$. Applying both density comparisons to that difference
+and removing the auxiliary width proves
+\[
+ 2^{-b}(y-x)\le C(y)-C(x)\le2^d(y-x).
+\]
+The resulting function has endpoint values $C(0)=0,C(1)=1$. With
+a semantic probability measure, $C$ is its distribution function.
+
+Given a law name $M$, to evaluate $C(x)$ at precision $p$ use
+$\eta=2^{-(p+d+2)}$ and the single finite law at level $\ell=2p+d+4$.
+The ramp has Lipschitz constant at most $1/\eta$. Its value under $M_\ell$
+has discrepancy at most $2^{-\ell}/\eta=e_p/4$ from $L(R_{x,\eta})$.
+The width error is also at most $e_p/4$. Both estimates include $x=0,1$.
+Subtract a rational target mass $\alpha\in[0,1]$ to obtain observations
+for Section~\ref{sec:conditioned-zero} with $g(k)=k+b$ and $\mu(k)=k+d$.
+Consequently one finite-law observation per halving produces a coherent name
+for the unique $\alpha$-quantile. At halving $j$ its level is
+$2(j+b+3)+d+4$. This counts law observations. The number of atoms encoded
+by one observed law still affects the work to integrate the ramp. The upper
+density promise supplies a CDF evaluator; the lower promise supplies the
+inverse modulus. Their roles are distinct. The construction feeds its
+explicit moduli through the general composition rule instead of taking an
+inverse of a black-box distribution function.
+
+
+For an exact instance, take density $1/2+x$ on $[0,1]$. Here $b=d=1$
+suffice, and the distribution function for independent checking is
+$(x+x^2)/2$. The program \texttt{examples/quantiles.py} represents the
+level-$\ell$ law by moving each dyadic cell's mass to its left endpoint.
+This costs at most $2^{-\ell}$. It sums a ramp on this law from the first
+two prefix moments, so it can use very fine levels without materializing the
+grid. At $\alpha=7/15$, 32 calls give the bracket
+$[5049260259,5049260261]/8589934592$. Substitution in the quadratic verifies
+the inequalities at both endpoints. The program also exercises $\alpha=0$
+and $\alpha=1$, and checks the compressed evaluation against direct finite sums.

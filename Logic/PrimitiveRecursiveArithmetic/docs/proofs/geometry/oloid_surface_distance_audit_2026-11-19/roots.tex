@@ -1,0 +1,107 @@
+\section{Isolated equations for the twenty curved routes}\label{sec:roots}
+Write $p,q$ for the two developed points in $(U,V)$ order, $T=2\pi/3$
+and $G(f)$ for a gate with $0\le f\le1$. A curved gate uses its own
+normalized arclength, so $G_A(f)=a[Tf]$ and
+$G_B(f)=(W,H)-a[Tf]$. For a straight gate $L$ or $R$ let $J$
+be reflection in its entire supporting line. The following equations
+specify exact values independently of a choice of optimizer.
+
+For each winning word containing just one curved gate, take $P=p$ and $Q=q$.
+If the word starts with a straight gate, replace $P$ by $Jp$.
+If it ends with a straight gate, replace $Q$ by $Jq$. Write $C$ for the
+curved gate in the word. There is precisely one $f$ in its interval in
+Table~\ref{tab:rootboxes} satisfying
+\begin{equation}
+ C'(f)\cdot\left(\frac{C(f)-P}{|C(f)-P|}
+             +\frac{C(f)-Q}{|C(f)-Q|}\right)=0 .
+ \label{eq:scalarcurve}
+\end{equation}
+The distance equals $|P-C(f)|+|C(f)-Q|$.
+Indeed, when a straight gate occurs, its certified minimizing contact is
+interior. For the curved contact held fixed, differentiating in the
+straight contact shows that its two unit directions have equal tangential
+components. Equivalently, reflection puts the two legs on one straight
+line. One can also see this by minimizing the sum with the contact on
+the entire supporting line. The curved contact and the other endpoint
+are strictly on the same side, so the segment to the reflected endpoint
+meets the line in the unique unconstrained minimizer. Its distance sum
+is strictly convex as a function of the line contact, so the interior
+constrained minimizer is that intersection.
+
+For $P_4,P_{10}$ put $x=G_A(f),y=G_B(g)$. The two equations are
+\begin{align}
+ G_A'(f)\cdot\left(\frac{x-p}{|x-p|}+\frac{x-y}{|x-y|}\right)&=0,\nonumber\\
+ G_B'(g)\cdot\left(\frac{y-x}{|y-x|}+\frac{y-q}{|y-q|}\right)&=0.
+ \label{eq:doublecurve}
+\end{align}
+There is precisely one solution in the listed box and the distance is
+$|p-x|+|x-y|+|y-q|$.
+
+\begin{table}[!ht]\centering\small
+\caption{Isolating intervals in gate order. An integer $k$ denotes the
+closed interval $[k,k+3]/4096$. For the scalar equation use the integer
+in the curved gate's position.}\label{tab:rootboxes}
+\begin{tabular}{@{}ccl@{\qquad}ccl@{}}\toprule
+Pair & Word & Interval indices & Pair & Word & Interval indices\\\midrule
+$1,4$ & A & 1317 & $3,10$ & RB & 1233, 3409\\
+$1,7$ & AL & 834, 2515 & $4,5$ & LA & 2119, 3575\\
+$1,8$ & AL & 688, 1536 & $4,6$ & AL & 2600, 3814\\
+$2,4$ & A & 3123 & $4,9$ & A & 3259\\
+$2,6$ & B & 4052 & $4,10$ & AB & 3015, 3521\\
+$2,7$ & BR & 3871, 1561 & $5,7$ & A & 4060\\
+$2,10$ & B & 3498 & $5,8$ & A & 3625\\
+$3,5$ & LA & 3853, 3766 & $6,8$ & A & 4070\\
+$3,6$ & RB & 1075, 4020 & $7,9$ & BR & 2839, 1172\\
+$3,7$ & B & 2981 & $9,10$ & B & 3488\\\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Why the equations isolate the global shortest paths.}
+Every minimizing tuple of the winning word lies in its box. To prove this
+finite assertion, \texttt{verify\_roots.py} replays the dyadic covers in
+\texttt{root\_trees.json} using the same chord-tube support bounds as the
+distance certificate. Each leaf is contained in the displayed box or has
+a lower bound at least one unit of $10^{-14}$ above the feasible path
+upper bound. There are $1{,}457$ such leaves across the twenty covers.
+All boxes are interior to the admissible cubes, so a minimizing tuple
+satisfies the ordinary stationarity equations. The following positive
+Hessian certificate proves uniqueness on the stated box.
+
+For a leg displacement $r=z_{j+1}-z_j$ let $r_i$ be its derivative with
+respect to contact coordinate $i$, and $r_{ih}$ its mixed derivative.
+The contribution to the Hessian is
+\[
+ \partial_{ih}|r|=
+ \frac{(r\times r_i)(r\times r_h)}{|r|^3}
+       +\frac{r\cdot r_{ih}}{|r|},
+ \qquad (a,b)\times(c,d)=ad-bc .
+\]
+All mixed $r_{ih}$ with $i\ne h$ vanish. The nonzero $r_i$ and $r_{ii}$
+are the signed first and second derivatives of the incident gate.
+For $A$ put $v=\tan(Tf/2)/\sqrt3$, $w=\sqrt{1-v^2}$,
+$d=1+3v^2$, $\tau=(w^3,v(3+v^2))/d$. With $J_0(a,b)=(-b,a)$ one has
+\[
+ G_A'=T\tau,\qquad G_A''=T^2(\sqrt3 w/2)J_0\tau .
+\]
+The derivatives of $B$ are their negatives, both straight gates have
+derivative $(0,\sqrt3)$ and their second derivatives vanish.
+To bound positions on an interval it suffices to enclose their two
+endpoints coordinatewise because each coordinate is monotone. The
+identity $v^2=(1-\cos(Tf))/(3(1+\cos(Tf)))$ encloses all derivative
+terms by interval operations. On every stated box each original and
+unfolded leg has length greater than $0.064$. Summing the formula
+above with outward rounding gives $D^2 L\succ I/32$. In dimension two
+the checker proves positivity of the first principal minor and determinant
+of $D^2L-I/32$. It separately applies the same check to the one-variable
+reflected expression in each mixed case on its entire curved interval.
+Integrating the Hessian on the segment joining any two distinct stationary
+points would give
+$(\nabla L(b)-\nabla L(a))\cdot(b-a)\ge |b-a|^2/32>0$.
+Thus two such points cannot exist. This argument also supplies the
+quantitative estimate
+\[
+       0\le L(u)-L(u_*)\le 16\,|\nabla L(u)|^2
+\]
+for every $u$ in the original box and its minimizing contact $u_*$. It
+follows by integrating the Hessian lower bound from $u$ to $u_*$ and
+completing the square.

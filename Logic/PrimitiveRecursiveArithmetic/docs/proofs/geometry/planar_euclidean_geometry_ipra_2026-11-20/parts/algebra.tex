@@ -1,0 +1,244 @@
+\section{A decidable presentation of the real algebraic field}
+\label{sec:scalar}
+A scalar is a finite record. We construct the records, their primitive
+recursive (PR) operations and exact comparisons. In the formulas below
+rationals are pairs of a signed numerator and a positive denominator.
+A polynomial is a coefficient list in ascending degree with trailing
+zeros removed. Polynomial coefficients in a scalar record are rational.
+
+\subsection{Reading a scalar}
+For $p=\sum_i p_iX^i$ put
+\[
+ M(p,R)=\sum_i |p_i|R^i,\qquad D(p,R)=M(p'',R),\qquad R\ge1.
+\]
+A record $(p,l,r)$ has rational $l<r$. Set
+$c=(l+r)/2$, $w=(r-l)/2$, $R=1+\max(|l|,|r|)$. Its validity test is
+\begin{equation}
+ p(l)p(r)<0,\qquad |p'(c)|>D(p,R)w. \label{eq:intervalcheck}
+\end{equation}
+In particular $(X-a,a-1,a+1)$ codes a rational $a$. Invalid input
+can default to the record for zero. Define $p[u,v]$ by replacing
+$X^i$ by $\sum_{j<i}u^{i-1-j}v^j$ for $i>0$, and replacing $1$ by zero.
+Then $p(v)-p(u)=(v-u)p[u,v]$. For $|c|,|u|,|v|\le R$,
+\begin{equation}
+ |p[u,v]-p'(c)|\le D(p,R)\max(|u-c|,|v-c|).
+ \label{eq:divdiff}
+\end{equation}
+Indeed, replacing the factors of a product one at a time costs at most
+$(i-1)R^{i-2}$ times the maximum displacement, and the $i$th monomial
+has $i$ such products. The constant and linear cases contribute zero.
+Thus \eqref{eq:intervalcheck} gives a constant sign and a positive
+rational lower bound for the absolute slope on the record interval.
+
+Bisect, retaining the half with opposite endpoint signs, or freezing
+at a midpoint with $p=0$. Start with $\lceil r-l\rceil+1$ steps and
+use $n$ more for precision $n$. The nested closed intervals have width
+at most $2^{-n}$. Write $x$ for their value. The assertion $p(x)=0$
+has a finite justification at each precision. On an interval of width
+$e$ with opposite endpoint signs, the absolute value at each endpoint is
+at most $M(p',R)e$ by the divided-difference identity. Frozen intervals
+give exact zero. Two roots in the same record interval agree by its
+positive lower slope bound.
+
+A \emph{provisional value} is a specified PR recipe for nested rational
+intervals $I_n$ of width at most $2^{-n}$, possibly with numerical
+parameters. Two such recipes agree if their intervals intersect at
+every equal precision. This is transitive: disjoint outer intervals have
+a positive rational gap, and the intermediate interval at finer precision
+cannot meet both once its width is below that gap. Strict order has a pair of separated intervals
+as witness. These are schematic predicates about numbers. For example,
+for inputs bounded in absolute value by $R\ge1$, multiplying two
+intervals of width $e$ gives width at most $2Re$. Shifting precision
+by $\lceil 2R\rceil+1$ suffices for multiplication and by one for
+addition. If an interval has rational distance $b>0$ from zero, intersect
+later intervals with it and invert their endpoints. Widths increase by
+at most $b^{-2}$. Rational interval formulas are inclusion-preserving,
+so the shifted output intervals are nested. Polynomial identities hold
+for the recipes: at any requested precision use rational midpoints and
+propagate errors through the expressions with these bounds. If outputs
+were disjoint, they would have a rational gap, contradicted by refinement
+below that gap and the rational identity. For finite expressions of
+variable size fold magnitude bounds forward and required precisions
+backward through the operation list. There is no quantification over
+programs or sequences in this use of recipes.
+
+\subsection{Sign and conversion to a finite record}
+Suppose a provisional $x$ has a known nonzero rational annihilator $P$.
+Write $P=X^k G$ with $g=G(0)\ne0$, and put
+\[
+ a=\min\left(\tfrac14,\frac{|g|}{8(1+\sum_{i>0}|G_i|)}\right).
+\]
+When $|x|\le2a$, one has $|G(x)-g|\le2a\sum_{i>0}|G_i|\le|g|/4$.
+Consequently $x^k=0$ there. If $k>0$ this implies $x=0$: an enclosure
+excluding zero at distance $b>0$ would give $|x^k|\ge b^k>0$.
+For $k=0$ the case is impossible. Read an enclosure of width $<a$.
+If it strictly excludes zero its sign is the answer with a rational
+separation witness. Otherwise $|x|\le a$ and the answer is zero.
+Here and throughout $n=2+\lceil1/\epsilon\rceil$ suffices for
+$2^{-n}<\epsilon$.
+
+For conversion compute the monic squarefree part $h$ of $P$ and
+polynomials $U,V$ with $Uh+Vh'=1$. We have $P\mid h^{\deg P}$ over
+$\mathbb Q$, so $h(x)=0$ by the power argument. Here is one bounded
+way to establish these polynomial facts. Factor the primitive integer
+associate of $P$ by interpolation. For degree $d>0$ select $d+1$
+nonzeros of $P(j)$ among $j=0,\ldots,2d$. There are enough by
+successive exact division by linear factors. An integral divisor
+has a signed integer divisor of $P(j)$ at each such point. Interpolate
+each tuple of possible values and test integral coefficients and exact
+divisibility. Rational factorizations are covered by Gauss's lemma:
+if a prime divided all coefficients of a product of two primitive
+integer polynomials, reduction modulo that prime would give a zero
+product of nonzero polynomials over a field, contrary to their leading
+terms. At most $d-1$ successful splits are required. Take the product
+of the distinct monic factors. Each is coprime to its derivative by
+the degree drop in characteristic zero. Extended Euclidean division
+with at most $\deg h+1$ nonzero divisions gives the displayed
+B\'ezout identity. One may instead compute $h$ by dividing $P$ by
+$\gcd(P,P')$ and making the quotient monic. Nonzero constant $P$
+cannot annihilate a value.
+
+Choose an integer $R>3+\max_{u\in I_0}|u|$ and put
+\[
+ B=\max(1,M(V,R)),\qquad L=1+D(h,R).
+\]
+B\'ezout gives $|h'(x)|\ge1/B$. Take $\delta=2^{-s}<1/(32BL)$
+and let $c$ be the midpoint of $I_s$. Then $|x-c|\le\delta$ and
+$|h'(c)|\ge1/B-L\delta$. By \eqref{eq:divdiff} every divided
+difference on $[c-2\delta,c+2\delta]$, including those with $x$,
+has the same sign and absolute value $>1/(2B)$. The endpoints are on
+opposite sides of $x$ at distance at least $\delta$. Their $h$ values
+are strictly opposite in sign. The returned record
+$(h,c-2\delta,c+2\delta)$ passes \eqref{eq:intervalcheck} because its
+test radius is at most $R$. Uniqueness in its interval identifies its
+reader with $x$. All requested precision was computed in advance from
+the given polynomial and coarse enclosure. Different records can
+represent one scalar.
+
+\subsection{Operations and equality}
+For records $x_1,\ldots,x_m$ with monic annihilators $p_i$ of positive
+degrees $d_i$ form the finite rational algebra
+\[
+ E=\mathbb Q[T_1,\ldots,T_m]/(p_1(T_1),\ldots,p_m(T_m)).
+\]
+Its vectors use the basis $\prod_iT_i^{e_i}$, $0\le e_i<d_i$.
+Independent monic divisions in the separate variables yield the unique
+representatives. Multiplication by $v$ is a rational matrix of dimension
+$\prod_i d_i$. Its monic characteristic polynomial annihilates $v$,
+by applying Cayley--Hamilton to the vector of $1$. Here Cayley--Hamilton
+is a coefficient identity from
+$(YI-A)\operatorname{adj}(YI-A)=\det(YI-A)I$. Multiply the coefficient
+identities on the left by the corresponding powers of $A$ and sum to
+obtain cancellation. Determinants can use their finite permutation
+sums. Substitution $T_i\mapsto x_i$ preserves reductions because each
+$p_i(x_i)=0$, irrespective of relations among the different $x_i$.
+
+Use $v=T_1+T_2,T_1-T_2,T_1T_2,-T_1$, respectively, for an annihilator
+for each ring operation. Compute the provisional value with interval
+arithmetic and convert as above. For a nonzero input use its separated
+enclosure to invert, and the reversed polynomial $X^{\deg p}p(1/X)$
+as annihilator. Inversion at zero is totalized by zero. Compare two
+records by determining the sign of their difference. It is zero exactly
+when the two readers agree: nested input pairs that intersect at every
+precision have all interval differences containing zero, while a pair
+separated at some precision remains separated under refinement. Thus
+record equality is a PR setoid relation. The ordered-field laws hold
+modulo this equality by the rational identities of the interval recipes.
+In detail, trichotomy comes from the sign test, translation preserves
+signed separation after a sufficiently accurate read of the common
+summand, and positive lower bounds $b,c$ give the product lower bound
+$bc$. Denote the resulting field by $F$.
+
+\subsection{Polynomial IVT and exhaustive root lists}
+For a nonconstant monic $f(Z)=Z^n+\sum_{i<n}x_i Z^i$ over $F$, take
+the algebra $E$ just described and set
+$\widetilde f(Z)=Z^n+\sum_{i<n}T_iZ^i$ (index the generators from zero).
+Form the rational matrix of multiplication by $Z$ on
+$E[Z]/(\widetilde f)$. Its monic characteristic polynomial $H(Y)$,
+of degree $n\prod_i d_i$, satisfies
+\begin{equation}
+ f(y)=0\quad\Longrightarrow\quad H(y)=0
+ \label{eq:elimroots}
+\end{equation}
+even for a provisional value $y$. Indeed $H(Z)=0$ in the finite
+algebra, and evaluation preserves every defining relation when
+$T_i\mapsto x_i$ and $Z\mapsto y$. Extra roots of coefficient
+annihilators do not affect this implication.
+
+For $s<t$ and $f(s)f(t)<0$, substitute $s+(t-s)X$, trim leading
+zeros by the field comparison and make the result monic. Its degree
+is positive. Bisect $[0,1]$. Each midpoint is rational and its polynomial
+sign is computable in $F$. Freeze at an exact root. After $k$ steps the
+width is at most $2^{-k}$. The provisional $y$ is a zero: the endpoint
+sign argument for reading a record still applies, using a rational
+upper bound on $M(f',1)$ for the transformed polynomial, obtained from
+its coefficient enclosures. By \eqref{eq:elimroots} conversion returns
+a record of $y$. Undo the substitution. The result is strictly interior
+by endpoint nonvanishing and trichotomy. Positive scalars therefore
+have positive square roots (apply this result to $X^2-b$ on $[0,b+1]$).
+Odd-degree polynomials have zeros by leading-term dominance at
+$\pm R$ for $R>1+\sum_{i<n}|f_i|$ after monic normalization. This
+establishes the positive-square and odd-degree-root axioms of a real
+closed field and the polynomial intermediate value property.
+
+There is also a uniform PR list of all distinct roots in increasing order.
+Return the empty list for a nonzero constant and flag the zero polynomial
+as everywhere zero. Otherwise form $H$ by \eqref{eq:elimroots} after
+monic normalization and take its monic squarefree part $h$. Choose
+an integer $R>2+\sum_{i<\deg h}|h_i|$. All roots of $h$ are strictly
+inside $[-R,R]$ by leading-term dominance. Compute $B,L$ as in the
+conversion proof with radius $R+1$, and partition $[-R,R]$ by a dyadic
+mesh $\delta<1/(32BL)$. Record every grid zero and every open cell
+with opposite endpoint signs. Recover a provisional root in a crossing
+cell by rational bisection and convert it. For any $F$ root $z$ of $h$,
+locate it among the grid points by field comparisons. If it is in an
+open cell, the B\'ezout bound at $z$ and \eqref{eq:divdiff} give constant
+slope sign and absolute slope $>1/(2B)$ throughout that cell. Its endpoint
+signs must be opposite, and the recovered root equals $z$. The same
+estimate at a grid zero excludes another zero in either neighboring open
+cell. This gives the complete ordered list for $h$. Keep only those
+entries satisfying $f(z)=0$ in $F$. Every $F$ zero survives by
+\eqref{eq:elimroots} and divisibility $H\mid h^{\deg H}$. Externally
+the same grid argument over the ordinary reals identifies $F$ with all
+real algebraic numbers. Every record has its real zero by bisection
+and every real zero of a rational polynomial is found by the grid.
+
+\subsection{Induction and uniformity}
+Integers, rationals, coefficient lists, interval endpoints, permutations
+and matrix tables are number codes. For example use $0$ for the empty
+list and $\operatorname{cons}(a,b)=2^a(2b+1)$. Decoding, length and
+indexed access are bounded by the list code. Builders enlarge codes by
+primitive recursion. Euclidean division has degree fuel, determinants
+and interpolation tuples range over the finite sets described above,
+and the grid has $2R/\delta$ cells. A bisection calling a previously
+defined PR field-sign operation is primitive recursion. Computing a field
+sign uses rational interval reading and the scalar arithmetic, with no
+calls to the algebraic-coefficient root finder. A failed bounded search
+on malformed data returns a fixed default record or list. The proofs
+above exclude that branch on valid arguments.
+
+For the induction restriction, the signs in an initial portion of
+a grid are a bounded Boolean fold. Polynomial division retains the
+quotients, so its invariant is an identity of concrete coefficient
+vectors. Cofactor identities are equalities of finite rational sums,
+with cancellation paired by interchanging two indices. Width bounds
+and endpoint signs in a bisection are rational inequalities or Boolean
+field tests at the current stage. The product expansion in
+\eqref{eq:divdiff} uses a finite telescoping sum. Factorization and
+B\'ezout witnesses are coefficient vectors, and candidate divisors are
+tested in bounded lists. For identities of provisional values, fix an
+output precision before the calculation, propagate the rational bounds
+through the finite operation list and apply induction to rational
+data. For instance, in the power argument an enclosure allegedly
+separated from zero supplies its own rational gap and hence a
+precision that distinguishes its power from zero. Generalizing over
+the requested precision is a logical inference after the finite
+calculation. Induction over a property universally quantified over
+precisions, and a universal evaluator for PR programs, are both
+unnecessary.
+
+For other constructions of PR field presentations see V.~Selivanov and
+S.~Selivanova, \emph{Primitive recursive ordered fields and some
+applications} (\url{https://arxiv.org/abs/2010.10189}). For a constructive
+formalization see C.~Cohen, \emph{Construction of real algebraic numbers
+in Coq} (\url{https://perso.crans.org/cohen/papers/realalg.pdf}).

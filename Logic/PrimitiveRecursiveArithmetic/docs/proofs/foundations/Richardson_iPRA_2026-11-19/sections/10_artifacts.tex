@@ -1,0 +1,113 @@
+\section{Reference implementation, examples, and reproduction}
+\label{app:artifacts}
+
+\subsection{What is implemented}
+
+The standard-library-only Python file \code{code/richardson.py} constructs
+the expression AST from a supplied integer polynomial. It implements
+exact rational interval arithmetic, bounded arctangent and sine series,
+outward dyadic rounding, and an a priori precision calculation. It does
+not implement MRDP or provide a universal halting polynomial.
+
+The representation shares repeated subexpressions in a directed acyclic
+graph. Expanding that graph produces an expression in the grammar of
+Section~\ref{sec:statement}. The coefficients $C,D$ and the formulas for
+$R,L,F,h_j$ and $E_P$ agree with the mathematical construction.
+
+To certify one strict nonzero value, the program evaluates a rational
+interval enclosing $A_P(q)$. The identity detector has the exact monotone
+image
+\[
+ a\longmapsto |a|-a=\max(0,-2a).
+\]
+Applying that image to the enclosing interval preserves the dependence
+between the two occurrences of $A_P$ and gives a tighter enclosure than
+independent interval subtraction. Both forms of enclosure are recorded
+in the demonstration JSON. A strictly positive lower endpoint certifies
+nonidentity. A zero interval at a single point does not certify a global
+identity.
+
+\subsection{An explicit nonzero certificate}
+
+For $P(z)=z-1$, the coefficient bounds are $C=2,D=1$. Writing
+$u=(t\sin t)^2$, the inner function is
+\[
+ A_P(t)=4\left((u-1)^2+
+     16(1+u^2)^2\sin^2(\pi u)\right)-1.
+\]
+At the exact rational input
+\[
+ q=\frac{111415714087193}{100000000000000},
+\]
+the implementation produces the rigorous rational enclosure
+\begin{equation}\label{eq:example-certificate}
+ 2-\frac{65}{2^{83}}\ \le E_P(q)\le2.
+\end{equation}
+No floating-point value is used in this certificate. The decimal-looking
+input is parsed as an exact rational number; its proximity to a solution
+of $t\sin t=1$ is a motivation for the example, not the justification
+of the enclosure.
+
+For $P(z)=z+1$, the only integer root is negative, so it has no natural
+root. Because the construction uses $u=(t\sin t)^2\ge0$, it correctly
+produces an identity. Indeed $P(u)\ge1$ immediately gives $A_P(t)\ge3$
+and hence $E_P(t)=0$. This example checks why the witness domain must not
+be silently changed from $\N$ to $\Z$.
+
+For $P(z)=z^2+1$, the equation has no natural root and the same theorem
+gives an identity. For the zero polynomial, the equation has natural
+solutions, and the constructed expression is nonzero: at $t=0$ its value
+is exactly $2$. These examples also make the direction of the reduction
+clear: \emph{solvability corresponds to nonidentity}.
+
+\subsection{Verification performed}
+
+The implementation checks were run successfully: \textbf{14 checks passed}.
+They cover rational interval operations, approximation widths, expression
+construction, the example certificates, and a regression for evaluator
+reuse with temporary expression nodes. An independent review found a
+cache-identity lifetime bug in an earlier implementation; it was corrected
+by retaining the expression object in every cached entry. The regression
+reuses a single evaluator for 100 temporary rational-expression roots.
+The corrected implementation was rerun independently.
+
+These checks establish behavior of the supplied code and the indicated
+individual certificates. They are not proofs of the global density
+theorem, MRDP, or undecidability. The mathematical proof of those claims
+is the argument in the report, with the explicitly named established
+MRDP dependency. The new Lean source was not compiled. The LaTeX report
+was compiled and its rendered pages inspected before delivery; the
+build and verification records are included with the archive.
+
+\subsection{Archive contents and commands}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}p{0.34\linewidth}X@{}}
+\toprule
+Path & Contents\\
+\midrule
+\code{report.tex}, \code{sections/} & Complete LaTeX source.\\
+\code{report.pdf} & Compiled report.\\
+\code{lean/} & Syntax, constructive logical core, and explicit object-formalization plan.\\
+\code{code/} & Exact-rational compiler/evaluator, four examples, certificates, and implementation checks.\\
+\code{evidence/} & Repository audit, source provenance, code review, and verification/build receipts.\\
+\code{README.txt}, \code{build.sh} & Scope and reproduction instructions.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+From the archive root, the numerical artifacts can be reproduced by
+\begin{lstlisting}
+python3 code/test_certificates.py
+python3 code/richardson.py demo --output code/demo_results.json
+python3 code/richardson.py evaluate \
+  code/examples/linear_root.json --x 1.11415714087193 --bits 48
+\end{lstlisting}
+The PDF can be rebuilt with a working TeX Live installation using
+\code{bash build.sh}. The Lean files are intended to be checked individually
+with Lean 4 before beginning the larger ProveIt integration; their included
+\code{\#print axioms} commands make their dependency inspection explicit.
+
+No repository was modified or published as part of this work. The source
+snapshot is used for analysis and an integration plan; the archive is a
+standalone research deliverable.

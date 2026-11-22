@@ -1,0 +1,229 @@
+\section{Lean definitions, checked results, and the iPRA export}\label{sec:formalization}
+
+\subsection{The checked standalone kernel}
+
+The accompanying project was compiled with Lean 4.32.0. It imports only
+the distribution's \texttt{Init} and \texttt{Std} libraries; no Mathlib
+download or repository checkout is required to replay it. There are
+58 named proved theorems and two additional constructors whose numerical
+contract fields are proved. The axiom audit prints 60 reports. Its actual
+axiom union is \texttt{propext}, \texttt{Classical.choice}, and
+\texttt{Quot.sound}. There are no admitted proofs or added correctness
+axioms in the checked project. These facts are recorded in
+\texttt{validation/lean\_status.json} and the full replay log.
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.08\textwidth}p{0.60\textwidth}@{}}
+\toprule
+Module & Proofs & Exact checked scope\\
+\midrule
+\endhead
+\texttt{FiniteMeasure} & 24 & Rational sums with internally variable finite lengths; finite Fubini; positivity; weighted errors; simultaneous perturbation of sample values and probability masses.\\
+\texttt{Truncation} & 16 & Clipping bounds and nonexpansiveness, excess-tail formula and stability, scalar and finite weighted Vitali inequalities, and a three-term precision budget.\\
+\texttt{Presentations} & 10 & Array-based finite probability data, refinement pullbacks, finite $L^1$ laws, and invariance of integrals, $L^1$ distance, capped distance, and tail integrals.\\
+\texttt{ActionCompletion} & 8 & A concrete gain-dependent sampling schedule, regularity of mapped names, preservation of the same-name condition, and the proved fields of action composition.\\
+\texttt{VitaliBlueprint} & 0 & Typechecked numerical definitions and target propositions for the stronger limit-producing theorem; the target propositions are not asserted as theorems.\\
+\bottomrule
+\end{longtable}
+
+The checked namespace is \texttt{IPRAContinuousMeasure}. Representative
+entry points are:
+\begin{itemize}
+\item expectation errors: \path{expectation_error}, \path{mass_perturbation};
+\item clipping estimates: \path{finite_vitali_unit}, \path{vitali_budget};
+\item refinement: \path{refinement_integral}, \path{refinement_l1},\\
+      \path{refinement_rho}, \path{refinement_tail};
+\item name completion: \path{action_regular}, \path{mapName_respects}.
+\end{itemize}
+The definitions \texttt{mapName} and
+\texttt{composeDenseAction} contain checked proofs of their required
+stability fields. The latter result is composition of metric actions;
+linearity, positivity, the full stochastic tensor construction, and the
+analytic theorems remain the report's mathematical results and development
+targets rather than checked claims of this standalone core.
+
+The project also kernel-checks four exact examples, including the
+counterexample to \eqref{eq:false-old-vitali}. The separate Python programs
+exercise larger finite cases. Their assertions are implementation checks;
+the Lean universal statements and the mathematical proofs have separate
+roles.
+
+\subsection{All presentation data are explicit}
+
+The interfaces are actual numerical structures rather than opaque
+parameters named ``correctness.'' The following summary identifies their
+fields and mathematical definitions; the full Lean definitions are included.
+
+\begin{description}[style=nextline,leftmargin=0pt,labelwidth=0pt,labelsep=0pt]
+\item[\texttt{FiniteProbability}]
+An \texttt{Array Rat} of weights, a proof of nonnegativity of its in-range
+entries, and a proof that its explicit rational fold sums to one. Array
+access uses a total default outside the stored length. The functions
+\texttt{integral}, \texttt{l1}, and \texttt{rho} are the finite sums in
+\eqref{eq:m-simple} and \eqref{eq:m-stable-observers}.
+
+\item[\texttt{Refinement}]
+An \texttt{Array Nat} giving a parent for every fine atom, its range
+proof, and the equation that the sum of each parent's descendant masses
+equals the coarse mass. \texttt{Refinement.pull} is literal composition
+of a value table with that parent array. Zero masses are allowed.
+
+\item[\texttt{ProbabilityTower} and \texttt{SimpleTable}]
+A numerical family of finite probabilities with coherent refinements;
+a simple table is an array whose length matches the probability at its
+stored stage. \texttt{SimpleTable.distance} lifts two arrays to the
+maximum of their levels and evaluates the weighted absolute difference.
+\texttt{measureDistance} and \texttt{tailIntegral} are similarly explicit.
+
+\item[\texttt{RegularL1Name} and \texttt{SameL1Name}]
+A sampler into simple tables and the bound
+$d_1(s_k,s_\ell)\le2^{-k}+2^{-\ell}$.
+The same-name predicate uses the corresponding cross-comparison at
+arbitrary precisions. A full quotient/setoid API can be developed from
+these data; it has not been silently imported as a new arithmetic sort.
+
+\item[\texttt{DenseAction}]
+A routine returning a simple output for a simple input and a precision,
+a nonnegative rational gain, and the finite stability inequality.
+An integer majorant for the gain is supplied separately to the name
+construction and composition routines. \texttt{actionSample} uses a
+precision offset based on that majorant.
+The supplied implementation chooses a coarse integer offset; a proved
+binary-length offset can improve its cost without changing the interface.
+
+\item[\texttt{VitaliData}]
+The uniformly named family, \texttt{UniformTailControl}, and
+\texttt{InMeasureCauchyRate}, including the monotonicity and numerical
+error contracts. \texttt{ceilingLog2} is a bounded search, not a real
+logarithm. \texttt{vitaliPrecision}, \texttt{vitaliIndex}, and
+\texttt{vitaliSample} are the actual programs in
+\eqref{eq:m-vitali-rate}--\eqref{eq:m-output-name}.
+\end{description}
+
+\texttt{VitaliNameRegularityGoal}, \texttt{VitaliLiftingGoal}, and
+\texttt{VitaliInheritedTailGoal} state the remaining propositions for the
+constructed samples. A definition of type \texttt{Prop} records a target;
+it supplies no proof of it. The analytic theorem does not assume an
+integrable limit, and neither does \texttt{VitaliLiftingGoal}.
+
+The host Lean structures permit arbitrary Lean functions as fields.
+An iPRA instance fixes PR implementations for those fields and supplies
+their object-theory contracts. Keeping this step explicit prevents a
+higher-type semantic interface from being misreported as a uniform
+first-order theorem about all arbitrary functions.
+
+\subsection{An explicit object-language Vitali endpoint}
+
+Here is a direct denominator-cleared target, sufficient to remove any
+ambiguity about the proposed arithmetic translation. Let $w_i$ be natural
+weights. Represent real samples $x_i,y_i$ with one positive denominator
+$D$ and signed integer numerators $X_i,Y_i$. Let the integer cutoff
+$\kappa\ge D$ represent $K=\kappa/D\ge1$. Define natural quantities
+\[
+ d_i=|X_i-Y_i|,\quad
+ u_i=(|X_i|-\kappa)^+,\quad v_i=(|Y_i|-\kappa)^+,\quad
+ c_i=\min(D,d_i).
+\]
+All can be written using natural truncated subtraction. If
+$X_i=X_i^+-X_i^-$ and $Y_i=Y_i^+-Y_i^-$, for example,
+\[
+ d_i=((X_i^++Y_i^-)\mathbin{\dot-}(X_i^-+Y_i^+))
+      +((X_i^-+Y_i^+)\mathbin{\dot-}(X_i^++Y_i^-)),
+\]
+where $a\mathbin{\dot-}b=\max(a-b,0)$; the parentheses indicate the two
+complete minuends. Define the other absolute values in the same way.
+The finite theorem to export is
+\begin{equation}\label{eq:object-vitali}
+ D\sum_{i<n}w_id_i
+ \le D\sum_{i<n}w_i(u_i+v_i)
+       +2\kappa\sum_{i<n}w_ic_i.
+\end{equation}
+Dividing by $D^2\sum_iw_i$ when that total is positive is precisely the
+normalized clipping inequality. The unnormalized integer inequality
+itself also holds when every weight is zero.
+
+\paragraph{Definitions and proof program.}
+Encode the four signed-numerator arrays, the weights, $n,D,\kappa$ in a
+finite tuple. Define each lookup with a length guard and a zero default.
+Define the three sums by primitive recursion on their prefix length $j$.
+The invariant is the displayed inequality with $n$ replaced by $j$.
+It is quantifier-free. At $j=0$ it is $0\le0$. At $j+1$ add the scalar
+inequality
+\[
+ Dw_jd_j\le Dw_j(u_j+v_j)+2\kappa w_jc_j,
+\]
+which follows from the same finite clipping cases as
+Lemma~\ref{lem:m-clipping}. Every branch compares natural integers.
+The code-validity and cutoff guards remain explicit assumptions.
+The theorem is then universally closed over these numerical parameters.
+
+\paragraph{Reuse in the existing backend.}
+The repository supplies the needed target syntax and rule
+\texttt{PRA.qfInd} in \texttt{ConciseIPRA.PR}; natural sum/order and
+signed-integer arithmetic in \texttt{IPRADerivations.Core}; rational
+normalization, finite-sum semantics and monotonicity in
+\texttt{Analysis.RationalFiniteSum}; and a closely related prefix
+truncation proof in \texttt{Probability.TruncationEstimate}
+\cite{repo-pr,repo-rational-sum,repo-truncation}.
+The new file should construct a proof value of the form
+\[
+ [\,]\ \vdash_{\mathtt{PRAAx}}\
+ \forall\vec a\,\bigl(\operatorname{Valid}(\vec a)=1
+       \longrightarrow\operatorname{VitaliClear}(\vec a)=1\bigr),
+\]
+where \texttt{VitaliClear} is the characteristic function of
+\eqref{eq:object-vitali}. This is a real proof-construction task. The
+standalone theorem over \texttt{Rat} is a checked mathematical guide to it,
+not an automatic quotation into \texttt{Prf PRAAx}.
+
+\paragraph{From the finite endpoint to the named theorem.}
+For fixed PR routines $S,U,R$, the desired object sentence universally
+quantifies numerical indices and precisions. Its premises are the actual
+regularity, tail, and capped-distance contracts of those routines. Apply
+\eqref{eq:object-vitali} to finite common-refinement samples; use
+\eqref{eq:m-observer-lipschitz} to account for their errors; substitute the
+bounded logarithm program; and prove regularity of
+$b_k=S(N(k+2),k+2)$ by the explicit three-error calculation.
+The final convergence statement is expressed using cross-distances of
+the two samplers with arbitrary observation errors. It need not quantify
+over an uncountable space of limits. The inherited-tail property follows
+by an arbitrary-precision comparison, not by a full induction schema for
+analytic formulas.
+
+\subsection{Development order for the remaining mathematics}
+
+\begin{longtable}{@{}p{0.22\textwidth}p{0.39\textwidth}p{0.32\textwidth}@{}}
+\toprule
+Target & Necessary definitions and induction data & Route to completion\\
+\midrule
+\endhead
+Full Vitali lifting & Common-refinement pseudometric laws; regular names; tail and capped-distance stability; bounded ceiling logarithm & Prove the typed goals in \texttt{VitaliBlueprint}; then implement \eqref{eq:object-vitali} and its clock substitutions in the object backend.\\
+Conditional expectation & Cell numerators, exact zero-weight branch, parent-map composition, integral-characterization equation & Reuse \texttt{TowerCommonDen.regroup}; prove contraction after canceling cell mass, then lift and prove \eqref{eq:m-upward-rate}.\\
+Stochastic operator category & Linear/positive/unital/integral action fields; strong-action sampler; atom-product tables & Extend the checked metric-action constructors with the stated algebraic fields. Prove equality on dense inputs first; tensor by the indicator estimate.\\
+Integrated formulas & Many-sorted finite syntax with bound-variable indices; interval and Lipschitz annotations; net and quadrature codes & Structural recursion for the evaluator and budgets; induction on the fixed syntax; array induction for each numerical binder. Clip intermediate values to their annotated ranges.\\
+Holomorphic integrals & Complex rational pairs; coefficient-name family; radius/majorant data; finite derivative sums & Prove finite geometric and polynomial remainder identities, then use their explicit tail clocks and the integral contraction.\\
+Homological transfer & Graded matrix records, normalized contraction equations, perturbation equation, row-sum norm, finite Neumann sums & Follow the exact identity and residual route in Section~\ref{sec:homological}; use its matrix blueprint and denominator-cleared bounded folds.\\
+\bottomrule
+\end{longtable}
+
+For an internally variable syntax size or matrix dimension, the compiler
+must use numerical arrays and bounded characteristic folds, rather than
+generate one externally unrolled theorem per size. The repository's current
+bounded-syntax and rational-array providers are suitable starting points.
+For a fixed mathematical formula, a schema indexed externally by that
+formula is already meaningful; it should simply be labeled as such.
+
+\subsection{Reproduction and verification limits}
+
+Run \texttt{python3 verify.py} for the exact finite demonstrations. With
+the pinned Lean toolchain installed, run \texttt{bash lean/replay.sh} from
+the appropriate working directory, or use the supplied Makefile target.
+\texttt{python3 build\_pdf.py} rebuilds this document. The TeX helper
+can create local formats and font maps from installed TeX Live resources
+on a minimally configured system; it does not download missing packages.
+
+The manifest records the source commit and Git blob identifiers of the
+upstream files actually used. Those files were inspected, not rebuilt in
+this session. The standalone Lean replay, exact Python checks, and document
+build were performed here. External toolchain binaries and build caches
+are excluded from the archive. No claim of a complete iPRA formalization
+of the whole analytic framework follows from the 58 host theorems.

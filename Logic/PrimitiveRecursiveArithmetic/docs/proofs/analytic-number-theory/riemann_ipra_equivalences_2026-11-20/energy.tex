@@ -1,0 +1,54 @@
+\section{Square mean of a finite sawtooth sum}\label{sec:energy}
+The determinant forms have another equivalent with an explicit translation of witnesses. This one uses a nonnegative sum of squares indexed by common divisors. For ordinary RH it also describes the fluctuation of the Farey counting function. The construction works without change for a progression or for the Euler coefficients of a number field.
+
+\paragraph{The rational statistic.}
+Let $M(n)$ be any of the signed partial sums from Section~\ref{sec:matrices}, and fix $N\ge1$. Write $m_k=M(\lfloor N/k\rfloor)$ for $1\le k\le N$ and define
+\begin{align*}
+ T_d&=\sum_{\substack{k\le N\\d\mid k}}m_k/k, &
+ J_2(d)&=\#\{0\le u,v<d:\gcd(u,v,d)=1\},\\
+ E_N&=\sum_{d\le N} J_2(d)T_d^2
+     =\sum_{k,l\le N}m_k m_l\frac{\gcd(k,l)^2}{kl}.
+\end{align*}
+Positive indices are intended in all divisor sums. For any $g\ge1$, grouping the $g^2$ residue pairs by $\gcd(u,v,g)$ gives $\sum_{d\mid g}J_2(d)=g^2$ (divide both coordinates and the modulus by the common gcd). Expand the squares and use this identity with $g=\gcd(k,l)$ to obtain the second expression. In code $Q_N=(N!)^2 E_N$ is integral. The two signs of the determinant are accumulated separately in each $N!T_d$. All four object formulas in \code{FareyEnergy.lean} use the same quantifier order as the determinant in their row.
+
+\begin{theorem}\label{thm:energy}
+For each of the four rows, replace $G_r(c,N,M(N))$ by
+\[
+             Q_N^r\le c\,(N!)^{2r}N^{r+1}.
+\]
+The two witness statements imply each other by finite arithmetic. A bound $c$ for $M$ at $r$ gives $(512r)^r(c+1)$ for the energy at the \emph{same} $r$. An energy bound $c$ gives $8^r c$ for $M$. These conversions are independent of all modulus and polynomial parameters.
+\end{theorem}
+\begin{proof}
+For recovery, divisor inversion gives
+$\sum_{d\le N}\mu(d)T_d=\sum_{k\le N}(m_k/k)\sum_{d\mid k}\mu(d)=M(N)$.
+We need a uniform bound on the squared norm of this linear functional. A bad residue pair modulo $d$ has both coordinates divisible by some divisor $t\ge2$ of $d$. The union bound gives at most $d^2\sum_{t=2}^d 1/t^2$ bad pairs. The term at $2$ is $1/4$ and the remaining terms sum to at most $1/2$, by $1/t^2\le1/(t-1)-1/t$. Hence $J_2(d)\ge d^2/4$, also for $d=1$. By the same telescoping estimate $\sum_{d=1}^N d^{-2}\le2$. Weighted Cauchy--Schwarz now gives
+\[
+       M(N)^2\le E_N\sum_{d\le N}\mu(d)^2/J_2(d)\le 8E_N .
+\]
+It is an inequality between rationals, obtainable by sums of squares and clearing denominators. Taking the $r$th power gives the second witness.
+
+For the forward estimate fix $N,r$, put $A=(c+1)N^{r+1}$ and let $S$ be the least positive integer with $S^{2r}\ge A$. Search up to $A$. If $S>1$ then $S\le2(S-1)$ and $(S-1)^{2r}<A$; for $S=1$ we also have $S^{2r}\le 2^{2r}A$.
+
+In the double sum put $k=ga,l=gb$ with $g=\gcd(k,l)$. Its rational kernel becomes $1/(ab)$. Bound each summand in absolute value and drop the coprimality restriction. Group $g,a,b$ in the intervals $[2^u,2^{u+1}),[2^v,2^{v+1}),[2^w,2^{w+1})$, retaining $ga,gb\le N$. There are at most $2^{u+v+w}$ choices in a block, while $ab\ge2^{v+w}$. The supplied growth bound implies
+\[
+ |m_{ga}|\,2^{\lfloor(u+v)(r+1)/(2r)\rfloor}\le S.
+\]
+Indeed, raising to $2r$, the multiplier is at most $(ga)^{r+1}$ and $\lfloor N/(ga)\rfloor\,ga\le N$. Monotonicity and order reflection of positive integer powers finish the comparison. The floor in the exponent is at least
+$\lfloor u/2\rfloor+\lfloor u/(2r)\rfloor+\lfloor v/2\rfloor$. Use the analogous bound with $w$ for $m_{gb}$. After counting choices, the block contributes at most
+\[
+ 2 S^2\,4^{-\lfloor u/(2r)\rfloor}
+            2^{-\lfloor v/2\rfloor}2^{-\lfloor w/2\rfloor}.
+\]
+All three sums have finite upper cutoffs. The $u$ sum is at most $4r$, by grouping $2r$ equal terms and bounding the geometric sum by $2$. Each other sum is at most $4$. Therefore $E_N\le128rS^2$. Raise to the $r$th power and apply the bound on $S^{2r}$ to obtain $(512r)^r(c+1)N^{r+1}$.
+
+All groupings can be implemented by bounded sums and integer divisions. The finite geometric estimates follow by multiplying by the common denominator and summing a telescoping difference. The gcd partitions, power comparisons and accumulator identities use quantifier-free induction once finite ranges have been compiled to PR loops. The proof thus gives an arithmetic witness conversion for each fixed PR sequence, including sequences indexed by additional parameters. The full dyadic-block estimate above is a human proof.
+\end{proof}
+
+\paragraph{Why this is a square mean.}
+For $s(x)=\{x\}-1/2$ one has exactly
+\[
+ E_N=12\int_0^1\left(\sum_{k\le N}m_k s(kx)\right)^2\,dx .
+\]
+To check the identity, cancel $g=\gcd(k,l)$ by periodicity in the integral of $s(kx)s(lx)$, and write the remaining multipliers as coprime $a,b$. Divide $[0,1]$ into $ab$ equal intervals, writing $x=(h+t)/(ab)$ with $0\le t<1$. As $h$ runs through the cells, its residues modulo $a,b$ run independently. At fixed $t$, the average of $s(ax)$ is $(t-1/2)/b$ and that of $s(bx)$ is $(t-1/2)/a$; the average product is their product. Integrating gives $1/(12ab)$. Every integral here is of a polynomial on explicitly known rational intervals.
+
+For $M(n)=\sum_{d\le n}\mu(d)$ let $A_N(x)$ count reduced fractions in $(0,x]$ of denominator at most $N$ for $0\le x\le1$. Divisor inversion gives $A_N(x)=\sum_{k\le N} m_k\lfloor kx\rfloor$. Hence $A_N(1)x-A_N(x)=\sum m_k\{kx\}$, and $\sum m_k=\sum_{j\le N}\sum_{d\mid j}\mu(d)=1$. Our sum of sawtooths is exactly the unnormalized counting discrepancy shifted by $1/2$. At other Euler products the same rational statistic tests their signed coefficient sequences.

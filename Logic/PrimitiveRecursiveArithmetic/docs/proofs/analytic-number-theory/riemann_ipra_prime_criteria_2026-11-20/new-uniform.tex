@@ -1,0 +1,61 @@
+\section{Symmetric tests on a whole prefix}\label{sec:symmetric-prefixes}
+Fix the polynomial parameters and abbreviate the archive's squared dyadic discrepancy and its allowance by
+\[
+ a_i=\bigl(B_F(2(i+100))-2B_F(i+100)\bigr)^2,\qquad
+ b_i=(i+100)W_i^2,\qquad e_i=a_i\mathbin{\dot-}b_i .
+\]
+Here $B_F(y)=\lfloor\log_2 A_F(y)\rfloor$ and $W_i$ is the allowance at $i+100$. Thus the local hypothesis is $\forall i\;a_i\le b_i$. The following finite theorem applies to arbitrary natural data. Its tests are invariant under simultaneous permutation of the pairs $(a_i,b_i)$ in the prefix.
+
+\begin{theorem}\label{thm:symmetric-prefix}
+Fix a horizon $m\ge0$. Define
+\[
+ h=1+\sum_{i<m} b_i,\qquad z_i=a_i+(h-b_i)\quad(i<m),
+ \qquad r=mh+1,\qquad U=\sum_{i<m}a_i.
+\]
+Each of the following tests is equivalent to $a_i\le b_i$ for every $i<m$:
+\begin{align}
+ \sum_{i<m} z_i^{\,r}&\le m h^r, \label{eq:sym-mom}\\
+ \sum_{i<m}(m+1)^{z_i}&\le m(m+1)^h, \label{eq:sym-exp}\\
+ \prod_{s=1}^{U}\,\prod_{i<m}\left|s+b_i-a_i\right|&>0 .
+ \label{eq:sym-char}
+\end{align}
+In particular each test detects every failure by the first horizon containing it.
+\end{theorem}
+\begin{proof}
+Since $b_i\le h$, the subtraction in $z_i$ is exact. Thus $z_i\le h$ is equivalent to $a_i\le b_i$. This proves the forward directions of \eqref{eq:sym-mom} and \eqref{eq:sym-exp} by addition of $m$ bounds. The challenge with the converse is that many small terms can mask a single violation.
+
+For positive $h$ and every $j\ge0$,
+\[
+ (h+1+j)h^j\le(h+1)^{j+1}.
+\]
+At $j=0$ this is equality. Multiplying the lower bound at $j$ by $h+1$ produces the desired lower bound at $j+1$ plus $(j+1)h^j$. Take $j=mh$. Because $h^j>0$ and $mh<h+1+mh$, we obtain
+\[
+ m h^{mh+1}=(mh)h^{mh}<(h+1+mh)h^{mh}\le(h+1)^{mh+1}.
+\]
+If $a_i>b_i$, its single term $z_i^r$ already exceeds the entire allowance $mh^r$. The exponential test has the same implication with a shorter calculation: $(m+1)^{h+1}>m(m+1)^h$. Both directions use comparisons of natural numbers only.
+
+For the product test, $a_i\le b_i$ makes every factor at least $s\ge1$. If $a_i>b_i$, its positive difference $s=a_i-b_i$ satisfies $1\le s\le a_i\le U$ and gives a zero factor. This also explains the upper end of the product. At $m=0$ both sums vanish and the product is $1$. If $U=0$, every $a_i$ vanishes.
+\end{proof}
+
+\paragraph{Polynomial interpretation.}
+The inner product in \eqref{eq:sym-char} equals $|P_m(s)|$ for the split monic integer polynomial
+\[
+ P_m(X)=\prod_{i<m}(X+b_i-a_i).
+\]
+The test excludes every positive integer root. Two other finite descriptions are $P_m(s)>0$ for every $1\le s\le U$ and nonnegativity of every coefficient of $P_m$. When all $b_i-a_i$ are nonnegative each factor has nonnegative coefficients and positive value on those integers. Conversely, a violation gives a positive root in the tested interval, and a monic polynomial with nonnegative coefficients has strictly positive value there, since its leading term is already positive. The coefficient test is PR: starting with $1$, multiply the current coefficient vector by $X+b_i-a_i$, using signed pairs of naturals. The absolute-value product has a checked PR matrix. In \texttt{CoefficientTest.lean} the leading coefficient $1$ is implicit and the lower coefficients form a finite list in ascending order. Horner evaluation and multiplication by $X+b_i-a_i$ obey the polynomial identities by list induction. The theorems \texttt{grid\_iff} and \texttt{coefficients\_iff} check the signed-grid and coefficient equivalences for every finite horizon in ordinary Lean arithmetic. Both readings inherit the same three family closures.
+
+\paragraph{Example of the amplification.}
+For $(a_0,a_1)=(4,0)$ and $(b_0,b_1)=(3,5)$ the sum of the two $a_i$ falls below the sum of the two $b_i$, despite the first violation. At $m=2$ the translated levels are $10$ and $4$, against $h=9$. The integer exponent $19$ makes $10^{19}>2\cdot9^{19}$. The exponential test already fails from $3^{10}>2\cdot3^9$, and the polynomial $(X-1)(X+5)$ vanishes at $s=1$.
+
+\paragraph{A multiplicative certificate with an object derivation.}
+Use the actual nonnegative excess $e_i$ to form $V(0)=1$ and
+$V(m+1)=V(m)(1+e_m)$. Then the hypothesis has the equivalent form
+\[
+                    \forall m\quad V(m)=1.
+\]
+This is also the determinant of the diagonal matrix with entries $1+e_i$ being $1$ at every horizon. If all $e_i$ vanish, quantifier-free induction on the equality $V(m)=1$ gives the assertion. In the converse, instantiate it at $m$ and $m+1$. The recursion yields $1+e_m=1$ and successor injectivity gives $e_m=0$. This reasoning avoids factoring an integer product in the object theory. The compiled code builds the multiplication step from the same PR symbols as the original packet. The Lean theorems \texttt{rh\_iff}, \texttt{grh\_iff} and \texttt{erh\_iff} in \texttt{RiemannIPRA.ProductCertificate} are empty-context derivations of the corresponding biconditionals in \texttt{Prf PRAAx}.
+
+\paragraph{Quantifiers and proof strength.}
+In Theorem~\ref{thm:symmetric-prefix}, take all $m$. For the converse choose $m=i+1$ at a desired index $i$. Ordinary RH fixes $(d_0,H,u,v)=(0,0,0,1)$, Dirichlet GRH varies $d_0$ in $(d_0,0,0,1)$, and Dedekind ERH varies all four parameters. The three tests therefore give nine closed $\Pi^0_1$ sentences. The exponents, sums, products and both bounds on the polynomial grid are all primitive recursive. In iPRA, bounded universal predicates here can be written as a product of their $0$--$1$ truth values. A single summand is at most the partial sum containing it, by induction on the prefix length with its index free. A sum over an initial interval with all summands $\le c$ is $\le mc$ by accumulating this bound, and a product is positive precisely when each factor is positive by the product recursion. For guard-dependent applications, replace the finite conjunction by its recursively updated truth bit and induct on the implication from that bit to the accumulator bound. These are quantifier-free inductions. The power comparisons use the same induction on integers displayed above. The algorithm for recovering an offending index, when one of the three finite tests fails, is the bounded scan for the first $a_i>b_i$. This never uses an unbounded search.
+
+\texttt{SymmetricPrefixes.lean} proves the finite equivalences, the reading of each compiled PR matrix, and \texttt{statement\_iff} for the standard-natural denotations of the closed sentences. The argument above gives the iPRA arithmetic proof; its translation to a \texttt{Prf} term is provided for the multiplicative certificate. The passage from these arithmetic criteria to the respective statements about analytic zeros uses the same external correspondence as the original prime-product sentence.

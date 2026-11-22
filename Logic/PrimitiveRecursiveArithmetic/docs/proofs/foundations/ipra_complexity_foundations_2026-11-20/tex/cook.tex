@@ -1,0 +1,252 @@
+\section{Witness-preserving NP completeness}
+\label{sec:cook}
+
+The classical starting point is Cook's theorem on polynomially bounded
+nondeterministic computations and propositional problems \cite{Cook1971}.
+Cook's original paper uses polynomial oracle reducibility and tautologies.
+Here we prove a modern many-one, witness-preserving circuit and CNF version,
+and make its arithmetic compilation explicit.
+
+\subsection{Circuits and normalized SAT instances}
+
+A Boolean circuit is a finite list of gates in topological order. Input
+variables precede internal gates; every wire of a gate refers to an input or
+an earlier gate. The allowed internal operations are constants, NOT, AND,
+and OR; OR may instead be expanded using NOT and AND. A designated wire is
+the output. The circuit code includes its number of inputs and its gate
+list. The validity test checks all index bounds. Evaluation fills a Boolean
+array from left to right, so it is primitive recursive. Ordinary sequential
+bit operations evaluate it in polynomial time in its serialization length;
+a simple implementation can scan the previous wire table for every lookup.
+
+A CNF is a finite list of clauses, and a clause a finite list of signed
+variable indices. For \(3\SAT\), clauses have at most three literals.
+We use normalized instances: the number \(m\) of variables is at most the
+encoding length, all indices lie in \(0,\ldots,m-1\), and the input is a
+well-formed binary record. A malformed instance is unsatisfiable by
+definition. General binary variable names can be renamed to the distinct
+names appearing in the formula, in polynomial time by pairwise comparison
+and scanning. This matters because the largest numerical identifier could
+be exponentially larger than the formula length. The witness is one bit per
+occurring variable, not one bit per number below that largest identifier.
+
+Write \(\Check(F,a)=1\) for a well-formed assignment satisfying all clauses.
+This is a bounded conjunction of bounded disjunctions of literal bits. It has
+a polynomial bit-machine implementation. Thus normalized CNF-SAT and 3SAT
+have NP presentations, with unused certificate bits ignored after the
+assignment's required length.
+
+\subsection{Unrolling a verifier locally}
+
+Fix a verifier descriptor \(v\), input \(x\) of length \(n\), witness length
+\(p=p(n)\), and clock \(T=q(n)\). Convert its fixed machine to the
+single-tape model if necessary, enlarging its polynomial clock. Put
+\(x\#y\) on the initial tape and use a window of
+\[
+ W=n+p+2T+4
+\]
+cells. The window contains the whole input and at least \(T+1\) blank cells
+of margin on either side, with harmless surplus cells. No head can reach
+the external boundary during the relevant updates.
+
+A cell label is either an ordinary tape symbol or a pair consisting of a
+state and a symbol, meaning that the head is at that cell. Thus the finite
+label set is
+\[
+ \Delta=\Gamma\ \sqcup\ (Q\times\Gamma).
+\]
+For valid configurations, the label of cell \(j\) after one move depends
+only on the previous labels at \(j-1,j,j+1\). To see this, if the head is
+at \(j\) it determines the new written symbol and whether it remains; if
+it is at a neighbor it may move into \(j\); if neither occurs the symbol is
+unchanged and the cell has no head. There is a fixed finite function
+\(F_v:\Delta^3\to\Delta\) implementing these cases. Its values on
+impossible triples, such as several conflicting heads, can be chosen
+arbitrarily. The induction below only reaches valid rows.
+
+Encode labels by a fixed number of bits, or by one-hot bits. Each output
+bit of \(F_v\) is a fixed finite Boolean function. Its truth-table DNF is
+an explicit circuit: OR together the ANDs specifying exactly the input
+tuples on which that bit is 1. The number of gates is a computable constant
+depending on the finite machine \(v\).
+
+Construct \(C_{v,x}\) in row order. At row 0 hardwire the input, separator,
+blank cells and initial head; use the \(p\) certificate bits as input wires.
+For every time \(t<T\) and every cell, insert a fresh copy of the local
+update circuit wired to the previous three cell labels. In the final row,
+OR the tests for an accepting head. Absorbing terminal states mean the final
+row reports acceptance by \(T\), including earlier halting.
+
+\begin{lemma}[Uniform circuit construction]
+\label{lem:unroll}
+There is a primitive-recursive circuit constructor satisfying
+\[
+ \operatorname{Eval}(C_{v,x},y)
+   =\Acc_{\#}(e,x,y,T).
+\]
+For each fixed verifier descriptor its gate count is bounded by
+\[
+ G\le a_v(T+1)W,
+\]
+where \(a_v\) is an explicitly computable constant. Its serialization and
+its generation take polynomial time in \(n\).
+\end{lemma}
+
+\begin{proof}
+The constructor is a collection of bounded loops over rows, cells, label
+bits and the fixed local truth table. Its intermediate gates are finite
+arrays, and every predecessor index is calculated from earlier row and gate
+indices. This supplies a primitive-recursive syntax constructor, including
+its validity proof.
+
+Induct on \(t\). The invariant says that, for all \(j<W\), the Boolean
+label in row \(t\) equals the corresponding machine cell label. It also
+records that the head is unique and stays inside the allocated window.
+The initial row is the definition of the machine input. At the successor
+step the three previous labels are correct, and the fixed truth table is
+precisely the local transition. Each claim is a bounded finite conjunction;
+Theorem~\ref{thm:compile} replaces it by a Boolean equation. The final
+acceptance OR proves the displayed identity.
+
+There are \(TW\) local blocks, plus \(O(W)\) initialization and output
+gates, giving the count. Each wire index needs
+\(O(\log(G+p+2))\) bits. A generator which repeatedly scans its counters
+and previous output takes, for example, a fixed multiple of
+\((G+p+n+1)^3\) bit operations. This intentionally loose bound follows
+by counting the bounded output and index-manipulation loops. Since \(p,T\)
+are fixed polynomials in \(n\), both output length and runtime are
+polynomial. The polynomial constants may depend on the verifier, as
+many-one hardness allows. A primitive-recursive algorithm for building the
+local truth tables is uniform in the verifier code, without asserting that
+this preprocessing is polynomial in that variable code.
+\end{proof}
+
+\subsection{Tseitin constraints and both witness directions}
+
+For each internal gate introduce a fresh variable \(z\). Retain the input
+variables. Use the following clauses:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Gate equation & Clauses\\
+\midrule
+\(z=\neg a\) & \((z\lor a),\ (\neg z\lor\neg a)\)\\
+\(z=a\land b\) & \((\neg z\lor a),\ (\neg z\lor b),\
+ (z\lor\neg a\lor\neg b)\)\\
+\(z=a\lor b\) & \((z\lor\neg a),\ (z\lor\neg b),\
+ (\neg z\lor a\lor b)\)\\
+\(z=1\), \(z=0\) & \((z)\), respectively \((\neg z)\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+Append a unit clause asserting the output variable. Also append the
+tautology \((y_i\lor\neg y_i)\) for each of the \(p\) original input
+variables. These tautologies retain even unused witness bits under
+occurrence-based variable normalization, without constraining their values.
+There are at most \(3G+p+1\) clauses. All have width at most three. If exactly three literals
+are required, repeat a literal in shorter clauses. Output length is
+\(O((G+p+1)\log(G+p+2))\), and the gate-to-clause conversion is polynomial
+time. A direct Boolean case analysis, at most eight cases, proves that each
+gadget is equivalent to its gate equation, even if incoming wires coincide.
+
+Let \(F_v(x)\) be the resulting CNF. Define
+\(\operatorname{Ext}_v(x,y)\) to be the input bits followed by all evaluated
+gate bits. Define \(\operatorname{Restr}_v(x,a)\) to be the assignment's
+input-bit prefix. Both are primitive-recursive functions with polynomial
+length and polynomial-time implementations for fixed \(v\).
+
+\begin{theorem}[Witness-preserving Cook--Levin]
+\label{thm:cook}
+For each verifier descriptor \(v\), \ipra{} proves
+\begin{align*}
+ \Acc_{\#}(e,x,y,T)=1
+ &\ \longrightarrow\
+ \Check(F_v(x),\operatorname{Ext}_v(x,y))=1,\\
+ \Check(F_v(x),a)=1
+ &\ \longrightarrow\
+ \Acc_{\#}(e,x,\operatorname{Restr}_v(x,a),T)=1.
+\end{align*}
+The construction is a polynomial many-one reduction from \(N_v\) to 3SAT.
+The code constructor, clocks, witness maps, and the correctness derivations
+are effective finite constructions, using only the arithmetic kernel above.
+\end{theorem}
+
+\begin{proof}
+Forward, evaluated gate bits satisfy every defining gate equation and hence
+every gadget. Lemma~\ref{lem:unroll} gives the output bit 1, satisfying the
+final unit clause.
+
+Backward, fix a satisfying assignment. In topological order, each gate's
+clauses force its assigned value to equal the Boolean operation on its
+assigned predecessors. By induction, these predecessor values already equal
+the actual evaluation from the restricted input. Therefore the gate value
+does too. Use as invariant the bounded conjunction over all gates already
+processed. The output clause now forces the actual output to be 1, and
+Lemma~\ref{lem:unroll} translates it to verifier acceptance. These arguments
+do not infer a witness from a double negation; they construct and project
+witnesses explicitly. The size and runtime bounds follow from the two
+constructors and reduction composition.
+\end{proof}
+
+\subsection{The meaning of P versus NP inside the theory}
+
+Choose a fixed normalized 3SAT verifier and let \(\operatorname{sat}(x)\)
+be its exhaustive Boolean satisfiability function. The following are
+legitimate first-order sentences:
+\begin{align*}
+ \mathsf{SatP}&:\ \exists d\ \forall x\ge1\ P_d(x)=\operatorname{sat}(x),\\
+ \mathsf{PNP}&:\ \forall v\ \exists d\ \forall x\ge1\ P_d(x)=N_v(x).
+\end{align*}
+Theorem~\ref{thm:cook} and the reduction compiler prove
+\(\mathsf{SatP}\leftrightarrow\mathsf{PNP}\). One direction instantiates
+\(v\) with SAT. For the other, given a SAT descriptor \(d\), construct
+for each \(v\) the decider obtained by compiling \(F_v\) and then running
+\(d\). In fact this construction gives a primitive-recursive function
+\(\operatorname{Solve}(d,v)\), so the implication includes explicit
+uniform machine selection. Nothing here supplies the premise
+\(\mathsf{SatP}\). P versus NP remains unresolved \cite{ClayPNP}.
+
+There are several distinct constructive lower-bound formulations. The
+negation of \(\mathsf{SatP}\) is
+\(\forall d\,\neg\forall x(P_d(x)=\operatorname{sat}(x))\). The stronger
+statement
+\[
+ \forall d\ \exists x\ P_d(x)\ne\operatorname{sat}(x)
+\]
+actually supplies a mismatch for each descriptor. Even though equality at
+each fixed \(x\) is decidable, intuitionistic logic does not generally
+convert a negated unbounded universal into an existential counterexample.
+The diagonal theorem below deliberately proves the stronger form for its
+exponential-time language, with a named primitive-recursive witness.
+
+\subsection{Search and decision, conditionally}
+
+Assume a fixed polynomial SAT decider. For a satisfiable formula with
+\(m\) variables, query whether its restriction with variable 0 set to 0 is
+satisfiable. Keep 0 if yes, otherwise keep 1. Continue through all variables.
+At each stage the formula with the chosen prefix remains satisfiable:
+the disjoint cases for the next Boolean variable exhaust its assignments,
+and a negative answer to one leaves a witness in the other. After \(m\)
+stages the accumulated assignment itself satisfies the original formula.
+An initial satisfiability test returns failure for unsatisfiable formulas.
+Use ordinary CNF-SAT here; it is also reducible to 3SAT by the already
+proved verifier construction, with polynomial overhead.
+
+The stage invariant is bounded satisfiability of a finite restriction, so
+it compiles to quantifier-free induction. The procedure makes at most
+\(m+1\) polynomial-length SAT queries and polynomial bookkeeping steps.
+For an arbitrary polynomially balanced NP search relation, first use
+Theorem~\ref{thm:cook}, find a satisfying assignment, and project it back.
+Thus a SAT decider yields polynomial search algorithms with explicit
+witness recovery. A converse follows by applying a total search-with-failure
+solver to SAT and checking its output. These are conditional compiler
+theorems, not an unproved equivalence between an arbitrary relation and an
+arbitrarily supplied total function.
+
+Complementing the pointwise reduction also proves UNSAT coNP-complete in
+the corresponding presentation. To reduce formula tautology to CNF-UNSAT,
+negate the formula and apply the Tseitin encoding to its evaluation circuit.
+The resulting CNF is unsatisfiable exactly when the original formula is a
+tautology. The reverse reduction to general formula tautology simply negates
+the CNF. These finite Boolean operations
+do not establish \(\NP=\coNP\).

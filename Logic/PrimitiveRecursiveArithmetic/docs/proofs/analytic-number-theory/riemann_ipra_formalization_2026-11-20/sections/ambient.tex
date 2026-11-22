@@ -1,0 +1,26 @@
+\subsection*{The ambient analytic statements}
+This source-level Lean listing uses Mathlib's continued Dirichlet $L$-function and its Dedekind zeta series. The listing was reviewed against the pinned \href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/NumberTheory/LSeries/DirichletContinuation.lean}{Dirichlet} and \href{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/NumberTheory/NumberField/DedekindZeta.lean}{Dedekind} sources. Its analytic imports were unavailable as compiled dependencies for this build.
+{\footnotesize\begin{verbatim}
+def StripLine (f : Complex -> Complex) : Prop :=
+  forall s : Complex, 0 < s.re -> s.re < 1 ->
+    f s = 0 -> s.re = 1 / 2
+
+def AmbientRH : Prop := RiemannHypothesis
+
+def AmbientGRH : Prop :=
+  forall (q : Nat) [NeZero q] (chi : DirichletCharacter Complex q),
+    chi.IsPrimitive -> StripLine (DirichletCharacter.LFunction chi)
+
+def Continuation (K : Type) [Field K] [NumberField K]
+    (f : Complex -> Complex) : Prop :=
+  And (Differentiable Complex f)
+    (forall s : Complex, 1 < s.re ->
+      f s = (s - 1) * NumberField.dedekindZeta K s)
+
+def AmbientERH : Prop :=
+  forall (K : Type) [Field K] [NumberField K],
+    Exists (fun f => And (Continuation K f) (StripLine f))
+\end{verbatim}}
+Mathlib's \code{RiemannHypothesis} excludes negative even zeros and the designated value at $1$. The Dirichlet function in the display is already continued. The Dedekind series is used only on $\Re s>1$. Classical continuation provides the entire $f$, and uniqueness follows from the identity theorem on this half-plane. Multiplication by $s-1$ preserves strip zeros. Every number field has a small isomorphic copy, as required by the type universe above.
+
+The compiled module \code{StripReflection.lean} proves the half-strip reduction. A functional equation propagates a zero to the reflected point, possibly in the dual character. The identity $\Re(1-s)=1-\Re s$ then yields \code{line_iff_right} and \code{line_iff_left}. These proofs apply to any family equipped with the stated reflection.

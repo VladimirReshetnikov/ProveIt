@@ -1,0 +1,255 @@
+\section{Two further producers: inverse matrices and multivariate charts}
+\label{sec:applications}
+
+The matrix machinery has uses beyond iterating a single update.
+This section gives two explicit producers. The first constructs an
+inverse name from a finite contraction certificate. The second
+constructs a passing multivariate chart certificate from a regular
+rational base point. Both use finite identities, with all precision
+choices determined before execution.
+
+\subsection{A finite Neumann inverse}
+
+For positive weights \(w\), define the induced matrix bound
+\[
+ \norm{M}_w=\max_{i<d}\frac{\sum_{j<d}|M_{ij}|w_j}{w_i}.
+\]
+The triangle inequality is immediate from finite sums. Expanding a
+matrix product gives
+\begin{align*}
+ \sum_j|(MN)_{ij}|w_j
+ &\le\sum_t|M_{it}|\sum_j|N_{tj}|w_j\\
+ &\le\norm{N}_w\sum_t|M_{it}|w_t,
+\end{align*}
+so \(\norm{MN}_w\le\norm M_w\norm N_w\). All sums are finite,
+and reordering them is a finite distributive identity. Also
+\(\norm I_w=1\).
+
+Let \(K\) be a rational matrix with \(|K|\le A\), where
+\(A,w,s\) pass the small-gain test and \(q=1-1/s\). Then
+\(\norm K_w\le q\). Define
+\[
+ S_N=\sum_{j=0}^{N-1}K^j,\qquad S_0=0.
+\]
+
+\begin{theorem}[Constructed inverse near the identity]
+\label{thm:inverse}
+The finite matrices \(S_N\) satisfy
+\begin{align}
+ (I-K)S_N=S_N(I-K)&=I-K^N,                     \tag{M1}\\
+ \norm{S_M-S_N}_w&\le s q^N\quad(M\ge N),    \tag{M2}\\
+ \norm{S_N}_w&\le s.                          \tag{M3}
+\end{align}
+Choose \(H\) with \(s\le2^H\), and set
+\[
+ C(k)=S_{s(k+H+2)}.
+\]
+This is a PR regular matrix sampler. It represents a two-sided inverse
+of \(I-K\), with an explicit residual rate.
+\end{theorem}
+\begin{proof}
+Expand the products in (M1). Every intermediate power cancels in
+the finite telescoping sum. Since \(K\) commutes with its own
+powers, the same identity holds on both sides.
+For (M2), submultiplicativity gives
+\[
+ \norm{S_M-S_N}_w\le\sum_{j=N}^{M-1}q^j
+ =q^N\sum_{j=0}^{M-N-1}q^j\le s q^N.
+\]
+The last inequality follows without an infinite series: multiply
+the finite sum by \(1-q=1/s\) to get \(1-q^{M-N}\le1\).
+This also handles \(q=0\), with \(q^0=1\). Taking \(N=0\)
+gives (M3). The block bound \(q^s\le1/2\) gives
+\(s q^{s(k+H+2)}\le2^{-k-2}\), so (M2) proves regularity.
+Finally (M1) bounds both inverse residuals by \(q^{s(k+H+2)}\).
+The all-precision equations for a two-sided inverse therefore follow
+from explicit finite inequalities.
+\end{proof}
+
+This matrix norm controls every entry:
+\(\abs{M_{ij}}\le(w_i/w_j)\norm M_w\). To return entry
+\((i,j)\) with the conventional dyadic error, shift the matrix
+precision by a boundedly computed binary magnitude of \(w_i/w_j\).
+Thus the matrix-valued notation entails an ordinary family of
+rational coordinate names.
+
+For a general rational matrix \(D\), a rational preconditioner
+\(B\) can be used by setting \(K=I-BD\). If a rational
+two-sided inverse \(B^{-1}\) is also supplied and checked, then
+\(D=B^{-1}(I-K)\), and the constructed inverse is \(C B\).
+At a finite cutoff, the two residuals are explicitly
+\[
+ (S_NB)D-I=-K^N,\qquad D(S_NB)-I=-B^{-1}K^NB.
+\]
+Their norm bounds are respectively \(q^N\) and
+\(\norm{B^{-1}}_w\norm B_w q^N\). A binary magnitude of
+\(\max(1,\norm{B^{-1}}_w\norm B_w)\) supplies the additional
+precision shift for the right residual. Multiplication by \(B\)
+in the regular sampler similarly uses a shift for \(\norm B_w\).
+This formulation deliberately makes the preconditioner's invertibility
+evidence visible. One may replace it with a finite determinant or
+elimination proof, but should then include that proof rather than
+silently cancel a possibly singular matrix.
+
+\begin{proposition}[Stability of the inverse construction]
+Suppose \(K,L\) both have weighted norm at most the same \(q<1\).
+Their inverse names differ, in represented matrix norm, by at most
+\(s^2\norm{K-L}_w\), where \(s=(1-q)^{-1}\) is an integer
+as in the preceding construction.
+\end{proposition}
+\begin{proof}
+For every positive integer \(j\), finite telescoping gives
+\[
+ K^j-L^j=\sum_{t=0}^{j-1}K^t(K-L)L^{j-1-t}.
+\]
+Summing through \(N-1\), the norm of the difference of the two
+partial Neumann sums is at most
+\[
+ \norm{K-L}_w\sum_{a+b\le N-2}q^{a+b}
+ \le\norm{K-L}_w
+       \left(\sum_{a<N}q^a\right)
+       \left(\sum_{b<N}q^b\right)
+ \le s^2\norm{K-L}_w.
+\]
+The cases \(N=0,1\) are empty sums. Comparing different cutoffs
+adds only the explicit tails (M2). At any requested precision,
+choose the two cutoffs to make those tails smaller than the assigned
+slack. This is the represented inequality asserted.
+\end{proof}
+
+\subsection{Automatic multivariate local charts at rational base points}
+
+Let \(u\in\Q^d\) be unknown coordinates and \(v\in\Q^e\)
+parameters, with \(d\ge1\). Let \(P(v,x)\in\Q[v,x]^d\) be
+a finite polynomial system, and let \(c\in\Q^d\) satisfy the
+coefficient-checkable equality \(P(0,c)=0\). Write
+\(J=\partial_xP(0,c)\), computed by formal differentiation of
+the polynomial table. Suppose rational matrices \(B,C\) pass
+\[
+ BJ=I,\qquad CB=I.                             \tag{M4}
+\]
+For example, when a nonzero rational determinant of \(J\) has
+been checked, one can use its finite adjugate formula for \(B\)
+and set \(C=J\). The identities are finite rational tests.
+
+Expand the explicit polynomial
+\[
+ T(v,u)=u-BP(v,c+u)=
+       \sum_{\alpha,\beta}t_{i,\alpha,\beta}u^\alpha v^\beta
+       \quad\text{in coordinate }i.           \tag{M5}
+\]
+Equation (M4) and the base-point equality imply
+\[
+ t_{i,0,0}=0,\qquad t_{i,e_j,0}=0
+ \quad(i,j<d).
+\]
+These are proved coefficient identities, not zero tests on
+arbitrary represented values.
+
+Compute nonnegative rational constants
+\begin{align*}
+ C_0&=\max_i\sum_{\alpha=0,\,|\beta|\ge1}
+                       |t_{i,\alpha,\beta}|,\\
+ C_1&=\max_i\sum_{|\alpha|=1,\,|\beta|\ge1}
+                       |t_{i,\alpha,\beta}|,\\
+ C_2&=\max_i\sum_{|\alpha|\ge2}
+                       |\alpha|\,|t_{i,\alpha,\beta}|.
+\end{align*}
+All omitted sums are zero. Now set
+\[
+ r=\min\left(1,\frac1{4\max(1,C_2)}\right),
+ \qquad
+ h=\min\left(1,\frac{r}{2\max(1,C_0)},
+                   \frac1{4\max(1,C_1)}\right).
+ \label{eq:chart-radii}\tag{M6}
+\]
+Both radii are explicitly positive rationals.
+
+\begin{theorem}[Produced multivariate chart certificate]
+\label{thm:chart}
+For every \(v\) with \(\norm v_\infty\le h\), the map
+\(u\mapsto T(v,u)\) preserves \(\norm u_\infty\le r\) and
+contracts by \(1/2\). Consequently it has a uniformly PR regular
+solution sampler \(u(v,k)\) in that box, and
+\(x(v,k)=c+u(v,k)\) represents a root of \(P(v,x)=0\).
+This root is unique in \(\norm{x-c}_\infty\le r\).
+The construction is uniform in the finite polynomial code, dimensions,
+base point, and inverse certificate.
+\end{theorem}
+\begin{proof}
+On the parameter box, the constant-in-\(u\) part of (M5) has
+norm at most \(hC_0\le r/2\). For the difference between two
+\(u\) inputs, factor each monomial difference coordinate by
+coordinate. The sum of the absolute coefficients of the resulting
+Lipschitz bound is at most
+\[
+ \sum_{\alpha,\beta}|\alpha|\,
+ |t_{i,\alpha,\beta}|r^{|\alpha|-1}h^{|\beta|}.
+\]
+Terms with \(|\alpha|=0\) do not occur in this sum. The pure
+linear terms vanish. The remaining linear terms are at most
+\(hC_1\le1/4\); all terms with \(|\alpha|\ge2\) are at
+most \(rC_2\le1/4\), because \(r,h\le1\).
+More explicitly, take the componentwise gain entries
+\[
+ A_{ij}=\sum_{\alpha,\beta:\,|\alpha|\ge1}
+ \alpha_j |t_{i,\alpha,\beta}|
+ r^{|\alpha|-1}h^{|\beta|}.
+\]
+Monomial factorization gives the componentwise action inequality for
+this matrix, and the row sums just proved are at most \(1/2\).
+Thus \(A\one\le\one/2\), the literal small-gain certificate.
+Comparing an input with zero proves
+\(\norm{T(v,u)}_\infty\le r/2+\norm u_\infty/2\le r\).
+
+The exact polynomial action, regarded as an approximate action
+independent of its precision argument, satisfies the coupled
+producer hypotheses with \(w=\one\), \(s=2\), and diameter
+\(2r\). Apply \cref{thm:small-gain-producer}. Its finite
+fixed-point residual is an error bound on \(BP(v,c+u)\).
+Multiplication by the supplied \(C\) in (M4) gives an explicit
+error bound on \(P(v,c+u)\) itself. For example, if
+\(M=\max_i\sum_j|C_{ij}|\), a shift by a binary magnitude
+of \(2M\) makes every coordinate residual at most the requested
+dyadic error. All these operations are bounded rational operations.
+
+For uniqueness, any represented root in the box is a represented
+fixed point of (M5). Comparing its finite observations with the
+constructed sampler uses the residual separation inequality (SG6).
+The residuals can be made as small as desired by their explicit
+moduli, yielding equality. No new existence assertion about
+completed reals is needed.
+\end{proof}
+
+\subsection{Parameter dependence and named inputs}
+
+Finite factorization in the parameter coordinates gives the computable
+bound
+\[
+ K_v=\max_i\sum_{\alpha,\beta:,|\beta|\ge1}
+   |\beta|\,|t_{i,\alpha,\beta}|
+              r^{|\alpha|}h^{|\beta|-1}
+\]
+for the sup-norm Lipschitz constant in \(v\), on the certified
+boxes. The perturbation theorem (SG16) therefore gives a solution
+modulus with constant \(2K_v\). In elementary notation,
+\[
+ \norm{u(v)-u(v')}_\infty\le2K_v\norm{v-v'}_\infty.
+\]
+Its precise meaning is the corresponding inequality between
+finite samples with their known dyadic slack.
+
+If a parameter is supplied by a registered regular name, clip its
+rational samples coordinatewise to the parameter box. Clipping
+does not increase coordinate distance. Choose the working
+parameter precision large enough that \(K_v\) times the input
+error is at most the desired action error. Then the polynomial
+coefficient construction in \cref{sec:small-gain} proves (SG3)
+for the resulting rational evaluator. The same producer thus
+handles those named parameters as well.
+
+The theorem constructs local multivariate solution charts; a finite
+collection of such charts can be compared using their explicit
+uniqueness and parameter bounds. It does not infer that such charts
+cover an arbitrary algebraic set, and it does not handle a singular
+Jacobian without additional mathematical structure.

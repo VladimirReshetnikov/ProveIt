@@ -1,0 +1,146 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings,fancyhdr}
+\usepackage{xurl}
+\usepackage[hypertexnames=false,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{18364C}
+\definecolor{pale}{HTML}{F3F6F8}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\dw}{d_w}
+\newcommand{\gap}{\gamma}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Boundary}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Coupled computation and refinement in iPRA}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+  keepspaces=true,backgroundcolor=\color{pale},frame=single,
+  rulecolor=\color{lightgray},xleftmargin=5pt,xrightmargin=5pt}
+\hypersetup{pdftitle={Coupled Computation and Refinement in iPRA},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Constructive fixed points, residual certificates, and finite approximation towers}}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{14mm}
+{\large\color{ink}MATHEMATICAL RESEARCH REPORT\par}
+\vspace{11mm}
+{\huge\bfseries\color{ink}Coupled Computation\\[5pt]and Refinement in iPRA\par}
+\vspace{9mm}
+{\Large Constructive fixed points, residual certificates,\\
+and growing finite models\par}
+\vspace{13mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{3mm}
+19 November 2026\par
+\vfill
+\begin{minipage}{0.94\textwidth}
+\textbf{Main result.} Finite rational contraction data produce a primitive
+recursive regular sampler for a coupled system, even when the update is
+available only through approximate implementations. An approximate
+commutation estimate then makes finite models of different dimensions
+cohere, with the contraction gap explicitly controlling the error.
+\medskip
+
+\textbf{Worked construction.} The report constructs and proves uniqueness
+of a solution, in the specified box, to a countably infinite nonlinear
+system using only bounded-dimensional dyadic computations at each query.
+\medskip
+
+\textbf{Verification status.} Complete human proofs are provided for the
+main finite arithmetic and represented-object results. Eighteen supporting
+arithmetic lemmas are compiled in Lean 4.32.0. The full
+\texttt{Prf PRAAx} export is an explicitly identified integration outline,
+not a completed machine-checked iPRA formalization.
+\end{minipage}
+\vspace{9mm}
+{\small Repository baseline: ProveIt commit\par
+\texttt{3ee850b4c2d650cf01263823fd5415963747c5d0}\par}
+\end{titlepage}
+
+\begin{abstract}
+The existing ProveIt programme already contains extensive theories of
+finite certificates, names, demand propagation, and proof composition.
+This report extends the mathematical producers used by those theories.
+A nonnegative rational matrix and positive weights certify contraction
+of mutually dependent computations. A finite affine recurrence produces
+the number of iterations and working precision needed for a regular
+name, without first assuming an ideal real-valued map or a fixed point.
+Finite Neumann sums produce componentwise residual enclosures. A second
+theorem converts commutation defects between finite models into
+coherence bounds; it also identifies why a shrinking contraction gap
+cannot be ignored. Polynomial boxes provide a concrete certificate
+frontend, and an infinite nonlinear lattice supplies a fully worked
+example in which the dimension grows with the observation request.
+Every infinite-object assertion is paired with its first-order
+arithmetic reading, its primitive recursive producers, and the
+quantifier-free invariants used in its proof. The report distinguishes
+these results from arbitrary cyclic proof justification, singular
+branch selection, and the unresolved effective bounds in the
+Diophantine and prime-distribution packets.
+\end{abstract}
+
+\tableofcontents
+\newpage
+\input{paper/sections/00_overview.tex}
+\input{paper/sections/01_prior_work.tex}
+\input{paper/sections/02_arithmetic.tex}
+\input{paper/sections/03_coupled.tex}
+\input{paper/sections/04_certificates.tex}
+\input{paper/sections/05_refinement.tex}
+\input{paper/sections/06_infinite_system.tex}
+\input{paper/sections/07_limits.tex}
+\input{paper/sections/09_checked_arithmetic.tex}
+\clearpage
+\input{paper/sections/10_formalization.tex}
+\input{paper/sections/11_validation.tex}
+
+\clearpage
+\begin{thebibliography}{99}
+\raggedright
+\input{paper/audit_bibliography.tex}
+\bibitem{rump1994} S. M. Rump, \emph{Verification methods for dense and
+sparse systems of equations}, in J. Herzberger (ed.), Topics in Validated
+Computations, Elsevier, 1994, pp. 63--136.
+\url{https://www.tuhh.de/ti3/paper/rump/Ru94.pdf}.
+\bibitem{radii} O. H\'enot and contributors, \emph{The radii polynomial
+approach}, RadiiPolynomial.jl documentation, accessed 19 November 2026.
+\url{https://olivierhnt.github.io/RadiiPolynomial.jl/stable/radii_polynomial_approach/}.
+\bibitem{fefermanstrahm} S. Feferman and T. Strahm,
+\emph{Unfolding finitist arithmetic}, manuscript dated 1 January 2010.
+\url{https://math.stanford.edu/~feferman/papers/UnfoldFA.pdf}.
+\bibitem{kohlenbachsafarik} U. Kohlenbach and P. Safarik,
+\emph{Fluctuations, effective learnability and metastability in analysis}.
+\url{https://www2.mathematik.tu-darmstadt.de/~kohlenbach/mind_ps_revised.pdf}.
+\bibitem{leanrelease} Lean project, \emph{Lean 4.32.0 release notes}.
+\url{https://lean-lang.org/doc/reference/latest/releases/v4.32.0/}.
+\end{thebibliography}
+\end{document}

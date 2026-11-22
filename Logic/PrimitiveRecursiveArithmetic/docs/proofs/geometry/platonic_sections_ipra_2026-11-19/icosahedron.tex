@@ -1,0 +1,166 @@
+\section{The icosahedron: an exact global certificate}
+Put $\varphi=(1+\sqrt5)/2$ and let $I$ be the convex hull of
+\[
+ (0,\pm1,\pm\varphi),\qquad(\pm1,\pm\varphi,0),\qquad
+ (\pm\varphi,0,\pm1).
+\]
+Its edge length is $2$. A largest section is $I\cap\{z=0\}$. In cyclic
+order its vertices are
+\[
+ (\varphi,0,0),\ (1,\varphi,0),\ (-1,\varphi,0),\
+ (-\varphi,0,0),\ (-1,-\varphi,0),\ (1,-\varphi,0).
+\]
+Thus it is a centrally symmetric, nonregular hexagon. Two opposite sides
+have length $2$, and the other four sides have length $\sqrt3$. Its area is
+\[
+ M=2\varphi(\varphi+1)=2\varphi^3=4+2\sqrt5.
+\]
+For edge length $s$, the answer is therefore
+$\frac{2+\sqrt5}{2}s^2$.
+
+\subsection{A fundamental cone without an assumption about symmetric optima}
+The reflections in $x=0$, $y=0$, and
+$z=\varphi^2x+\varphi y$ all permute the twelve vertices. For the last one,
+use the normal $m=(-\varphi^2,-\varphi,1)$, with
+$m\cdot m=4\varphi^2$, and the formula
+$R_m(v)=v-2(v\cdot m)m/(m\cdot m)$.
+The group they generate is finite: its action on the twelve vertices is
+faithful, since those vertices span space. For any nonzero normal $n$,
+choose from its finite orbit a vector maximizing its scalar product with
+$h=(1,1,10)$. Since $h$ has positive scalar product with each inward
+wall normal, reflection in a violated wall would increase that scalar
+product. Consequently the chosen vector lies in
+\[
+ C=\{(x,y,z):x\ge0,\ y\ge0,\ z\ge\varphi^2x+\varphi y\}.
+\]
+This is a finite comparison argument. It does not assert that a maximum
+must itself have a symmetry.
+
+The signs of scalar products with the twelve vertices are constant in
+$C_0=C\cap\{x\le\varphi y\}$ and
+$C_1=C\cap\{x\ge\varphi y\}$, apart from boundary zeros. Explicit
+nonnegative ray coordinates are
+\[
+\begin{array}{c|ccc}
+ &x&y&z\\\hline
+C_0&\varphi c&b+c&a+\varphi b+(3\varphi+1)c\\
+C_1&b+\varphi c&c&a+\varphi^2b+(3\varphi+1)c
+\end{array}
+\qquad a,b,c\ge0.
+\]
+Indeed $a=z-\varphi^2x-\varphi y$ in both cases; in $C_0$ take
+$c=x/\varphi$, $b=y-x/\varphi$, and in $C_1$ take $c=y$,
+$b=x-\varphi y$. Every nonzero vector in either cone has $z>0$.
+
+\subsection{Area formulas}
+For a plane $xx_1+yx_2+zx_3=0$, write
+$Q=x^2+y^2+z^2$. Orthogonal projection of its section onto $x_3=0$
+multiplies area by $z/\sqrt Q$. On $C_j$ its projected area is $N_j/D_j$,
+where
+\begin{align*}
+N_0={}&2\varphi^4(\varphi z^2+2\varphi yz-x^2)
+ \bigl(\varphi^2z^2+(4\varphi-2)yz+(2-\varphi)y^2-x^2\bigr),\\
+D_0={}&\bigl((\varphi z+\varphi^2y)^2-x^2\bigr)
+        \bigl((\varphi z+(\varphi-1)y)^2-x^2\bigr),\\
+N_1={}&2\varphi^4\bigl[x^5+(5-3\varphi)x^4z
+ +(\varphi-2)x^3y^2-(2\varphi+1)x^3z^2\\
+&\quad +(3\varphi-9)x^2y^2z+(\varphi-2)x^2z^3
+ -(3\varphi+9)xy^2z^2\\
+&\quad +(2\varphi+1)xz^4+(\varphi+1)y^4z-y^2z^3\bigr],\\
+D_1={}&x\bigl((\varphi z-x)^2-\varphi^4y^2\bigr)
+        \bigl((\varphi z+x)^2-(\varphi-1)^2y^2\bigr).
+\end{align*}
+Thus the actual area is $A=\sqrt Q\,N_j/(zD_j)$.
+
+Here is a reproducible derivation, rather than an invocation of an
+optimizer. Enumerate pairs of original vertices at squared distance $4$.
+For each crossing edge $[u,v]$, its section point is
+\[
+ q_{uv}=\frac{(n\cdot u)v-(n\cdot v)u}{n\cdot(u-v)}.
+\]
+Order these points by the adjacency of the original triangular faces,
+and apply the planar shoelace formula to their first two coordinates.
+The interiors of $C_0$ and $C_1$ have respectively ten and twelve
+section vertices. Canceling the shoelace rational functions gives the
+four displayed polynomials. The accompanying standard-library verifier
+checks these identities by polynomial cross multiplication. It also
+checks them directly on all seven relatively open faces of each ray
+cone: original vertices on the plane are inserted directly and edges
+with endpoints of opposite sign are intersected by the formula above.
+Thus boundary cases do not rely on a floating-point perturbation or on
+a continuity claim.
+
+For nonzero $n\in C$, $D_0>0$. To see this, factor each quadratic in
+$D_0$ into its two linear factors and use $\varphi z>x$.
+For $n\in C_1$ with $x>0$, $D_1>0$: its smallest potentially problematic
+factor satisfies
+\[
+ \varphi z-x-\varphi^2y=\varphi a+2\varphi x>0,
+\]
+and
+\[
+ \varphi z+x-(\varphi-1)y
+ =\varphi a+2\varphi^2x+2y>0.
+\]
+If $x=0$ in $C_1$, then $y=0$, and the section is the displayed maximizing
+hexagon.
+
+\subsection{The global inequality and equality}
+Substitute the ray coordinates into
+\[
+ P_j=M^2 z^2D_j^2-QN_j^2.
+\]
+These are homogeneous polynomials in $a,b,c$. Their exact expansions
+have the following properties:
+\[
+\begin{array}{c|c|c|c|c}
+ j&\deg P_j&\text{nonzero monomials}
+ &\min A_\alpha&\min B_\alpha\\\hline
+0&10&65&984&440\\
+1&12&85&304&136
+\end{array}
+\]
+Every coefficient is $A_\alpha+B_\alpha\sqrt5$, with integer
+$A_\alpha,B_\alpha$ at least the corresponding positive minima.
+The complete exact coefficient lists accompany this proof as JSON and
+CSV; the verifier expands the displayed $N_j,D_j$ and checks equality
+with those lists, using only rational arithmetic and $\sqrt5^2=5$.
+In particular this is a finite polynomial identity plus coefficientwise
+positivity, not a numerical bound. For easy independent strictness
+checks, the coefficients of $b^d,c^d$ are
+\[
+\begin{array}{c|r|r}
+j&[b^d]P_j&[c^d]P_j\\\hline
+0&1357024+606880\sqrt5&12430643200+5559152640\sqrt5\\
+1&307968+137728\sqrt5&7254425600+3244277760\sqrt5.
+\end{array}
+\]
+It follows term by term that $P_j\ge0$ for $a,b,c\ge0$, and that
+$P_j>0$ whenever $b+c>0$. Dividing by the positive quantity $z^2D_j^2$
+gives $A^2\le M^2$, hence $A\le M$. Equality in this fundamental cone
+requires $b=c=0$, so the normal is the $z$-axis. Every central maximizing
+section is therefore congruent to the displayed hexagon. Together with
+the central-section reduction for centrally symmetric polytopes, this
+establishes the bound for every affine section.
+
+\subsection{Arithmetic strength}
+All inputs, matrices, vertices, and certificates lie in
+$\mathbb Q(\sqrt5)$. Represent an element by two rational numbers; represent
+a rational by a signed numerator and a positive denominator. Comparison
+is decidable by rational comparisons and, when signs conflict, comparison
+of two integer squares. Polynomial evaluation and expansion are bounded
+loops over fixed finite lists. The reflection group can be represented
+by permutations of twelve vertices; closure and finite maximization
+are bounded by $12!$. The section graph is constructed by bounded
+search through $30$ edges and $20$ faces. Every loop bound and every
+arithmetic operation is primitive recursive, and its correctness uses
+quantifier-free induction. Positive coefficient evaluation is a fixed
+finite sum of nonnegative products. Thus the displayed global inequality
+has a direct iPRA derivation for coded algebraic planes; the common
+geometric interpretation and approximation lemmas handle the chosen
+constructive interpretation of arbitrary real planes. Lean should first
+formalize the finite $\mathbb Q(\sqrt5)$ certificate checker, prove its
+soundness in the arithmetized iPRA syntax, and then instantiate it with
+the included coefficient data. Running Python verifies the mathematical
+certificate; it is not itself a completed Lean kernel check or an
+object-language iPRA proof term.

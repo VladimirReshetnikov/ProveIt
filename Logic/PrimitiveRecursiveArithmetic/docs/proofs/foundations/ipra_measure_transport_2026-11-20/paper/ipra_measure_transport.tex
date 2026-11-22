@@ -1,0 +1,90 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\definecolor{inkblue}{RGB}{27,59,86}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={Quantitative integration and transport in iPRA},
+ pdfauthor={OpenAI research assistance for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.25em}
+\setlist{itemsep=0.3em,topsep=0.4em}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\Prf}{\operatorname{Prf}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Quantitative integration and transport in \ipra}
+\fancyhead[R]{\small 20 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{1.0cm}
+{\color{inkblue}\Large Constructive continuous mathematics\par}
+\vspace{1.1cm}
+{\huge\bfseries Quantitative integration\par and transport in \ipra\par}
+\vspace{0.7cm}
+{\Large Measure, analytic operators, integral semantics,\par
+and stable topological observations\par}
+\vspace{1.2cm}
+{\large Research report prepared for Vladimir Reshetnikov\par}
+\vspace{0.35cm}
+20 November 2026
+\vspace{1.2cm}
+\begin{abstract}
+We develop a finite arithmetic interface for continuous and abstract
+mathematics in intuitionistic primitive recursive arithmetic. The main
+constructions use rational dyadic data, regular names, explicitly bounded
+operators, and verified error propagation. A stable clipping inequality
+repairs a source-level Vitali argument and constructs an integrable limit
+from a bounded-metric Cauchy rate and uniform tail data. Coherent dyadic
+masses yield a density from energy certificates, and a local sibling bound
+produces those certificates. An energy cap alone yields a finite
+metastability theorem, with an explicit obstruction to extracting a
+uniform convergence rate. Bounded operators, integral-quantifier semantics,
+Rips interleavings, contractive integral equations, and holomorphic
+transforms are developed with their exact hypotheses. Counterexamples
+identify invalid diagonal substitution and unsuitable operator norms.
+The package contains complete human proofs, a standalone compiled Lean
+kernel of finite rational lemmas, and detailed definitions and proof plans
+for the remaining object-\ipra\ derivations. The new analytic endpoints
+are not claimed to be fully reified as \(\Prf\,\mathrm{PRAAx}\) proofs.
+\end{abstract}
+\vfill
+\noindent\textbf{Source baseline:}\quad
+\texttt{b2341af5370cd8a43f72ebb2341c0d7d7395b634}\par
+\smallskip
+\noindent\textbf{Verification:}\quad Human proofs; compiled finite Lean
+lemmas; exact-rational experiments; explicit object-theory obligations.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\input{sections/01_scope}
+\input{sections/02_core}
+\input{sections/03_measure}
+\input{sections/04_category_topology}
+\input{sections/05_analysis}
+\input{sections/06_efficiency}
+\input{sections/07_formalization}
+\input{sections/08_limits}
+\clearpage
+\input{references}
+\end{document}

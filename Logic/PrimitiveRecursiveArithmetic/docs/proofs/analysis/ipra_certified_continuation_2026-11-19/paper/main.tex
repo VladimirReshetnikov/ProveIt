@@ -1,0 +1,86 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{153047}
+\definecolor{soft}{HTML}{F2F5F7}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Certified perturbation and continuation in iPRA}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\NN}{\mathbb N}\newcommand{\QQ}{\mathbb Q}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\sgn}{sgn}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{gray!30},backgroundcolor=\color{soft},showstringspaces=false}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{12mm}
+{\color{ink}\Huge\bfseries Certified perturbation\par and continuation in iPRA\par}
+\vspace{8mm}
+{\Large A constructive framework for coupled computations,\par stable polynomial factors, root clusters, and linear ODEs}
+\vspace{12mm}
+{\large Research report prepared for Vladimir Reshetnikov\par 19 November 2026}
+\vspace{12mm}
+\hrule\vspace{5mm}
+\textbf{Repository baseline.} ProveIt, commit\par
+\nolinkurl{3ee850b4c2d650cf01263823fd5415963747c5d0}.
+
+\textbf{Delivered status.} Full mathematical arguments for the stated finite theorems; exact-rational executable examples; Lean reference definitions, proof candidates, and an object-theory implementation plan. The new Lean files have \emph{not} been compiled in this environment. No new kernel-checked \texttt{Prf PRAAx} endpoint is claimed.
+
+\textbf{Main advance.} Replace several remaining analytic producer assumptions by explicit rational algorithms with finite error proofs. A weighted contraction certificate handles cyclic dependencies. A polynomial compiler yields local implicit solutions and stable factor branches. A separate finite matching theorem corrects cluster transport, and a direct Euler comparison derives the local recurrence assumed by the existing ODE arithmetic backend.
+\vfill
+{\small This report distinguishes a theorem in first-order iPRA, a finite mathematical proof designed for that theory, and an ambient Lean statement. The distinction is part of every claim's status, rather than an implicit qualification.}
+\end{titlepage}
+\pagenumbering{roman}\hypersetup{pageanchor=true}
+\begin{abstract}
+ProveIt's current iPRA development already contains many finite-observation frameworks and a large library of actual derivations. The useful next step is therefore to supply quantitative producers and precise interfaces at identified boundaries. We develop a finite rational method for mutually dependent approximation problems. A nonnegative gain matrix and a positive weight vector certify contraction without requiring that every unweighted row sum be small. All convergence statements are replaced by inequalities between explicitly computed finite iterates.
+
+We instantiate the method with a uniform evaluator for coded polynomials, a certified implicit-equation construction, and a convergent preconditioned factor-lifting algorithm. The latter labels whole polynomial factors through internal root collisions. We also prove a multiplicity-sensitive finite matching theorem, explain why component balance alone gives a weaker bound, and replace unstable complex lexicographic labeling by reference locators. Finally, exact Euler polygons for rational nonautonomous linear systems give the missing local recurrence, interpolation estimate, coherent-name modulus, and parameter stability needed for certified continuation. Every infinite-looking conclusion is accompanied by its finite numerical reading and its remaining Lean obligations.
+\end{abstract}
+\tableofcontents
+\clearpage\pagenumbering{arabic}
+\input{sections/01_scope}
+\input{sections/02_arithmetic}
+\input{sections/03_feedback}
+\input{sections/04_polynomial}
+\input{sections/05_factors}
+\input{sections/06_clusters}
+\input{sections/07_ode}
+\input{sections/08_formalization}
+\input{sections/09_boundaries}
+\appendix
+\input{sections/10_artifacts}
+\input{references}
+\end{document}

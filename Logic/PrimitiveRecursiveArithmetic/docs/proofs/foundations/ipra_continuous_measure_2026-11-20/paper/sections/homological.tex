@@ -1,0 +1,517 @@
+\section{Quantitative homological perturbation}
+\label{sec:homological}
+
+The effective nerve arguments in the existing packets obtain a small global
+model when all relevant intersections are acyclic or carry supplied
+contractions.  A useful extension retains a small model of each intersection
+even when its homology is nontrivial.  It must transport the differential,
+cycles, boundaries and filling operators together.  Merely approximating
+boundary matrices does not suffice: an approximately square-zero matrix is
+not a chain complex.
+
+The algebraic tool is the classical homological perturbation lemma
+\cite{crainic2004}.  ProveIt's unknot-recognition report~13 already implements
+a finite version over $\mathbb F_2$, with a nilpotence bound coming from a
+positive grading~\cite{repo_hpl}.  The contribution here is its integration
+with quantitative presentations: signed rational formulas, an entirely
+finite residual theorem, explicit precision schedules, and a bounded-operator
+interpretation.  The underlying perturbation lemma is established
+mathematics.  The new interface avoids repeatedly rebuilding a homological
+model when its differential changes.
+
+\subsection{Data, signs and an exact algebraic theorem}
+
+A bounded chain complex is a finite family of vector spaces $C_j$ with maps
+$d_j:C_j\to C_{j-1}$ satisfying $d_{j-1}d_j=0$.  Write $C$ for their direct
+sum and $d$ for the resulting degree $-1$ map.  Initially the spaces can be
+finite-dimensional rational coordinate spaces; later they may be Banach
+spaces with bounded structural maps.  A smaller complex $(B,b)$ comes with
+degree-zero maps $i:B\to C$, $p:C\to B$ and a degree-one map $h:C\to C$.
+Our input is the complete list of identities
+\begin{align}
+ d^2=b^2&=0,& di&=ib,& pd&=bp,& pi&=1_B,\\
+ dh+hd&=1_C-ip,& hi&=0,& ph&=0,& h^2&=0.
+ \label{eq:hpl-input}
+\end{align}
+These data are a normalized strong deformation retraction.  Multiplication
+of operators means composition, with the rightmost operator acting first.
+The sign in $dh+hd=1-ip$ fixes every sign below.  In the convention
+$ip=1+dh+hd$ of~\cite{crainic2004}, replace $h$ by $-h$ to obtain ours.
+
+A perturbation is a degree $-1$ map $\delta:C\to C$ for which
+\begin{equation}
+ (d+\delta)^2=0,
+ \quad\text{equivalently}\quad d\delta+\delta d+\delta^2=0.
+ \label{eq:hpl-square-zero}
+\end{equation}
+It is important that this is an exact hypothesis.  Put $d'=d+\delta$.
+
+\begin{theorem}[Signed perturbation with explicit witnesses]
+\label{thm:hpl-exact}
+Assume \eqref{eq:hpl-input}--\eqref{eq:hpl-square-zero}.  Suppose that
+$1+h\delta$ and $1+\delta h$ have two-sided inverses $F,G$, respectively.
+Define
+\begin{align}
+ A&=G\delta=\delta F,&
+ b'&=b+pAi,\\
+ i'&=i-hAi=Fi,&
+ p'&=p-pAh=pG,&
+ h'&=h-hAh=Fh=hG.
+ \label{eq:hpl-transferred}
+\end{align}
+Then $(B,b')$ is a complex and
+\begin{align}
+ (b')^2&=0,& d'i'&=i'b',&p'd'&=b'p',&p'i'&=1_B,\\
+ d'h'+h'd'&=1_C-i'p',&h'i'&=0,&p'h'&=0,&(h')^2&=0.
+ \label{eq:hpl-output}
+\end{align}
+If $(h\delta)^L=(\delta h)^L=0$ for a supplied positive integer $L$, the
+inverses and all witnesses are finite rational expressions:
+\[
+ F=\sum_{j=0}^{L-1}(-h\delta)^j,
+ \qquad G=\sum_{j=0}^{L-1}(-\delta h)^j.
+\]
+\end{theorem}
+
+\begin{proof}
+The identity $(1+\delta h)\delta=\delta(1+h\delta)$ gives $G\delta=\delta F$.
+From the two inverse equations,
+\begin{equation}
+ A=\delta-\delta hA=\delta-Ah\delta,
+ \qquad F=1-hA,\qquad G=1-Ah.
+ \label{eq:hpl-resolvent}
+\end{equation}
+Put $e=ip$, $L_0=1+\delta h$ and $R_0=1+h\delta$.  A key cancellation is
+\begin{align*}
+ L_0(dA+Ad)R_0
+ &=d\delta+\delta d+\delta(hd+dh)\delta\\
+ &=-\delta^2+\delta(1-e)\delta=-\delta e\delta.
+\end{align*}
+Multiplication by the two inverses therefore yields
+\begin{equation}
+ dA+Ad+AeA=0.
+ \label{eq:hpl-maurer}
+\end{equation}
+This is an algebraic identity, not a convergence argument.  It proves
+square-zero of the new differential directly:
+\[
+ (b+pAi)^2
+ =b^2+p(dA+Ad+AeA)i=0.
+\]
+The two original chain-map identities were used to move $b$ across $p$ and
+$i$ in this expansion.
+
+For the inclusion, use $dh=1-e-hd$ and \eqref{eq:hpl-resolvent} to compute
+\[
+ d'(i-hAi)=ib+eAi+hdAi.
+\]
+Equation~\eqref{eq:hpl-maurer} changes the last term into
+$-hAdi-hAeAi$, which gives $(i-hAi)(b+pAi)$.  Similarly
+\[
+ (p-pAh)d'=bp+pAe+pAdh
+              =(b+pAi)(p-pAh).
+\]
+Expanding $(p-pAh)(i-hAi)$ leaves $pi=1_B$: every other term contains
+$ph$, $hi$ or $h^2$.
+
+For the homotopy identity, first absorb the terms containing a single
+$\delta$ using \eqref{eq:hpl-resolvent}.  The full calculation is
+\begin{align*}
+ d'h'+h'd'
+ &=1-e+Ah+hA-dhAh-hAhd\\
+ &=1-e+eAh+hAe+h(dA+Ad)h\\
+ &=1-e+eAh+hAe-hAeAh\\
+ &=1-(i-hAi)(p-pAh).
+\end{align*}
+The three remaining side conditions follow by expansion; each summand
+contains one of $h^2$, $hi$, $ph$.  Finally,
+$(1+T)\sum_{j<L}(-T)^j=1-(-T)^L$, on either side.  A supplied
+nilpotence exponent therefore supplies the two inverses by finite sums.
+\end{proof}
+
+The theorem gives a quotient-free formulation of homology preservation.
+If $d'z=0$, then $b'p'z=0$ and
+\begin{equation}
+ z-i'p'z=d'h'z.
+ \label{eq:hpl-cycle-transfer}
+\end{equation}
+If $b'w=0$, then $d'i'w=0$ and $p'i'w=w$.  If $i'w=d'v$, then
+$w=b'p'v$.  These are equations on vectors and explicit witnesses; the
+object language need not construct the quotient $\ker d'/\operatorname{im}d'$.
+
+\subsection{Finite residuals without an infinite inverse}
+
+Equip finite rational coordinate spaces with the maximum norm and matrices
+with the maximum absolute row-sum norm.  This norm is rational, is computed
+by bounded folds, and is submultiplicative.  The same argument applies to
+any submultiplicative operator norm.  Let the supplied nonnegative rational
+bounds be
+\[
+ \|d\|\le D,\quad \|h\|\le H,\quad \|\delta\|\le U,
+ \quad\|i\|\le I,\quad\|p\|\le P,
+ \quad\|h\delta\|,\|\delta h\|\le q<1.
+\]
+One can use $q=HU$ when that is smaller than one; computing the two products
+can give a much sharper certificate.  No inverse, spectrum, or rank is
+part of this input.
+
+For $N\ge0$ put
+\begin{align}
+ A_N&=\delta\sum_{j=0}^{N-1}(-h\delta)^j,
+ &R_N&=\delta(-h\delta)^N=(-\delta h)^N\delta,\\
+ M_N&=dA_N+A_Nd+A_NipA_N.
+ \label{eq:hpl-finite-data}
+\end{align}
+The empty sum is zero.  Define $b_N,i_N,p_N,h_N$ by the formulas
+\eqref{eq:hpl-transferred}, using $A_N$ instead of $A$.
+
+\begin{theorem}[A finite homological residual certificate]
+\label{thm:hpl-finite}
+Let
+\begin{equation}
+ K_M=\frac{U\bigl(2(1+q)D+3UIP\bigr)}{(1-q)^2}.
+ \label{eq:hpl-K}
+\end{equation}
+For every $N\ge0$, the following identities hold exactly:
+\begin{align}
+ p_Ni_N&=1_B,&h_Ni_N&=0,&p_Nh_N&=0,&h_N^2&=0,\label{eq:hpl-finite-normalizations}\\
+ b_N^2&=pM_Ni,\label{eq:hpl-residual-first}\\
+ d'i_N-i_Nb_N&=R_Ni+hM_Ni,\\
+ p_Nd'-b_Np_N&=pR_N+pM_Nh,\\
+ d'h_N+h_Nd'-(1-i_Np_N)&=R_Nh+hR_N+hM_Nh.
+ \label{eq:hpl-residual-identities}
+\end{align}
+Moreover $\|M_N\|\le K_Mq^N$, and consequently the four potentially nonzero residuals
+in \eqref{eq:hpl-residual-first}--\eqref{eq:hpl-residual-identities} are bounded, in their displayed order,
+by
+\begin{equation}
+ PI K_M q^N,\quad
+ I(U+HK_M)q^N,\quad
+ P(U+HK_M)q^N,\quad
+ (2HU+H^2K_M)q^N.
+ \label{eq:hpl-residual-bounds}
+\end{equation}
+All assertions concern finite arithmetic data.
+\end{theorem}
+
+\begin{proof}
+The finite geometric identity gives
+\[
+ \delta-A_N-\delta hA_N
+ =\delta-A_N-A_Nh\delta=R_N,
+ \qquad \|R_N\|\le Uq^N.
+\]
+Repeating the expansions in Theorem~\ref{thm:hpl-exact}, retaining these
+two remainder terms, gives every identity in
+\eqref{eq:hpl-finite-normalizations}--\eqref{eq:hpl-residual-identities}.  In particular the new differential's
+square is a computed defect; it is not silently assumed to vanish.
+
+Here is a direct finite bound on that defect's common source.  With
+$e=ip$, $L_0=1+\delta h$, $R_0=1+h\delta$, multiplication gives
+\begin{align*}
+ L_0M_NR_0={}&-L_0dR_N-R_NdR_0
+              -\delta eR_N-R_Ne\delta+R_NeR_N.
+\end{align*}
+For any matrix $X$, the triangle inequality gives
+\[
+ (1-q)\|X\|\le\|L_0X\|,
+ \qquad (1-q)\|X\|\le\|XR_0\|.
+\]
+Thus $(1-q)^2\|M_N\|\le\|L_0M_NR_0\|$, without constructing an
+inverse.  Use $\|e\|\le IP$, $\|L_0\|,\|R_0\|\le1+q$ and
+$q^N\le1$ to obtain
+\[
+ (1-q)^2\|M_N\|
+ \le \bigl(2(1+q)D+3UIP\bigr)Uq^N.
+\]
+Dividing by the explicitly positive rational $(1-q)^2$ proves the claim.
+Submultiplicativity applied to the exact residual identities gives the four
+remaining bounds.
+\end{proof}
+
+The constants in this finite theorem are deliberately conservative.  Its
+advantage is that the arithmetic proof never quantifies over an infinite
+operator or uses completeness.  A finite truncation generally has
+$b_N^2\ne0$; until the residual is exactly zero it is an approximation to a
+complex, not a new exact complex.
+
+\subsection{Primitive-recursive clocks and the continuous interpretation}
+
+\begin{lemma}[A rational geometric clock]
+\label{lem:hpl-clock}
+For $0\le q<1$ and rational $K\ge1$, let
+$s=\lceil(1-q)^{-1}\rceil$.  Choose an integer $c$ with $K\le2^c$,
+for example the bit length of the numerator in a positive rational code
+for $K$.  Then
+\[
+ N=s(k+c)\quad\Longrightarrow\quad Kq^N\le2^{-k}.
+\]
+Every operation in this schedule is primitive recursive on rational codes.
+\end{lemma}
+
+\begin{proof}
+We have $q\le1-1/s$.  The polynomial inequality
+$(1-t)^n(1+nt)\le1$ for $0\le t\le1$ follows by induction: multiplying
+the next factor uses
+$(1-t)(1+(n+1)t)=1+nt-(n+1)t^2\le1+nt$.
+At $t=1/s$ and $n=s$ this gives $q^s\le1/2$, including $s=1$.
+Taking $k+c$ blocks and multiplying by $K\le2^c$ gives the result.
+After denominator clearing these are quantifier-free rational inequalities
+and induction on natural-number counters.
+\end{proof}
+
+Take $K$ to be at least one and at least the four constants in
+\eqref{eq:hpl-residual-bounds}.  This supplies a single explicit clock for
+all homological equations.  The original coordinate dimensions, the
+iteration bound $N$, and the rational operations determine every loop.
+There is no search for a stage at which an unquantified limit is sufficiently
+close.
+
+\begin{theorem}[Bounded-operator completion and stability]
+\label{thm:hpl-banach}
+Suppose the spaces in \eqref{eq:hpl-input} are Banach spaces, all displayed
+maps are bounded, and the same rational norm bounds and $q<1$ are supplied.
+Then the series defining $F,G$ converge, Theorem~\ref{thm:hpl-exact} applies,
+and
+\begin{align}
+ \|A-A_N\|&\le\frac{Uq^N}{1-q},\\
+ \|i'-i_N\|&\le\frac{Iq^{N+1}}{1-q},&
+ \|p'-p_N\|&\le\frac{Pq^{N+1}}{1-q},\\
+ \|h'-h_N\|&\le\frac{Hq^{N+1}}{1-q},&
+ \|b'-b_N\|&\le\frac{PIUq^N}{1-q}.
+ \label{eq:hpl-tail}
+\end{align}
+Also $\|i'\|\le I/(1-q)$, $\|p'\|\le P/(1-q)$ and
+$\|h'\|\le H/(1-q)$.
+
+For two perturbations $\delta_1,\delta_2$ of the same original contraction,
+suppose both have the product bound $q$ and
+$\|\delta_1-\delta_2\|\le\eta$.  Then
+\begin{equation}
+ \|A_1-A_2\|\le\frac{\eta}{(1-q)^2}.
+ \label{eq:hpl-stability}
+\end{equation}
+The corresponding differences of $b',i',p',h'$ are bounded by this
+quantity multiplied by $PI,HI,PH,H^2$, respectively.
+\end{theorem}
+
+\begin{proof}
+For any finite $M$ the tails of the geometric sums have norm at most
+$q^N\sum_{j<M}q^j\le q^N/(1-q)$.  Thus the explicit clock above makes
+the sums Cauchy.  Completeness supplies their limits in the bounded-operator
+space.  The finite inverse defects are $(-h\delta)^N$ and
+$(-\delta h)^N$, tending to zero; continuity of multiplication gives the
+two-sided inverse equations.  This proves existence with a rate, rather
+than appealing to a qualitative inverse theorem.
+
+The first tail bound follows on multiplying by $\delta$.  The identity
+$1-hA_N=\sum_{j=0}^{N}(-h\delta)^j$ shows why the inclusion and homotopy
+bounds have exponent $N+1$; the projection has the analogous identity.
+Multiplying by $p,i,h$ gives \eqref{eq:hpl-tail}.  Summing the geometric
+majorant gives the norm bounds.
+
+Write $G_j=(1+\delta_jh)^{-1}$ and $F_j=(1+h\delta_j)^{-1}$.
+The resolvent identity is
+\[
+ A_1-A_2=G_1(\delta_1-\delta_2)F_2.
+\]
+Indeed $G_1-G_2=-G_1(\delta_1-\delta_2)hG_2$; substitute this in
+$G_1\delta_1-G_2\delta_2$ and use $1-hA_2=F_2$.
+The two inverse norm bounds are $1/(1-q)$, proving
+\eqref{eq:hpl-stability}.  The remaining assertions follow from
+\eqref{eq:hpl-transferred}.
+\end{proof}
+
+This Banach statement is the semantic interpretation.  Its iPRA content is
+the family of finite tail and residual inequalities, represented by rational
+codes and proved with the stated clocks.  To use infinite-dimensional
+operators computationally, one additionally supplies a rational operator
+presentation with primitive-recursive composition, evaluation and certified
+norm bounds, or a fixed algorithm with proofs of these properties.
+An arbitrary bounded operator is not automatically such an input.
+Unbounded differentials require separate invariant-domain and graph-norm
+arguments and are outside this theorem.
+
+\subsection{Non-acyclic overlaps and quantitative fillings}
+
+\begin{corollary}[A global model from supplied local models]
+\label{cor:hpl-bicomplex}
+Let $C_{a,j}$, $0\le a\le r$, be a finite-column double complex.  Its
+vertical differential $d$ lowers $j$, its horizontal differential $\delta$
+lowers $a$, and
+$d^2=\delta^2=d\delta+\delta d=0$.  Suppose each column carries data
+\eqref{eq:hpl-input} onto a supplied smaller complex, with $i,p,h$
+preserving the column number.  Then their direct sum retracts the total
+complex onto the smaller total space with differential
+\begin{equation}
+ b'=b+\sum_{j=0}^{r}(-1)^j p\delta(h\delta)^ji.
+ \label{eq:hpl-global}
+\end{equation}
+The retraction maps and all cycle and boundary witnesses are finite
+primitive-recursive expressions.  No local acyclicity assumption is needed.
+\end{corollary}
+
+\begin{proof}
+Both $h\delta$ and $\delta h$ lower the column number.  Their $(r+1)$st
+powers therefore vanish: on every basis block, no nonzero target column
+remains.  Apply the nilpotent case of Theorem~\ref{thm:hpl-exact} with
+$L=r+1$.  The displayed formula is $b+pAi$ with that finite inverse.
+All chain identities and the explicit equations
+\eqref{eq:hpl-cycle-transfer} follow from the same theorem.  A signed
+totalization of a geometric double complex must supply the stated
+anticommutation identity; it is not inferred from approximate matrices.
+\end{proof}
+
+For a finite cover this allows each intersection to retain its own explicit
+homological model.  The terms with $j>0$ account for successive excursions
+through eliminated pieces.  When intersections have nontrivial homology,
+the result is generally larger than the ordinary nerve.  Thus the earlier
+acyclic-overlap restriction is replaced by computable local models, with
+the corrected global differential recorded explicitly.  Constructing those
+local models is a remaining geometric task for each application.
+
+Here is a precise finite-cover instance, including its comparison with the
+original space.  Let a finite ordered simplicial complex $K$ be the union
+of subcomplexes $K_1,\ldots,K_m$.  In bidegree $(a,j)$ take the direct sum
+of rational simplicial $j$-chains on $K_{i_0}\cap\cdots\cap K_{i_a}$,
+over strictly increasing index tuples.  The horizontal map deletes a cover
+index with the alternating sign.  The vertical map is $(-1)^a$ times the
+simplicial boundary.  The two maps anticommute because deleting a cover
+index changes the parity of $a$, while restriction commutes with the
+ordinary simplicial boundary.
+
+For each simplex $\sigma$ of $K$, the nonempty set of cover indices
+containing it has a least member $u(\sigma)$.  Its horizontal row is the
+chain complex of a full simplex on those indices.  Coning an index tuple
+to $u(\sigma)$ contracts this row onto one copy of $\sigma$: insert
+$u(\sigma)$ into the ordered tuple with the insertion sign, and return
+zero if it was already present.  In the boundary of this cone, the term
+deleting the inserted vertex is the original tuple; every other deletion
+cancels its counterpart obtained by coning after deletion.  In degree zero
+the remaining term is the chosen vertex.  This proves
+$\delta h_0+h_0\delta=1-i_0p_0$.  Also $h_0^2=h_0i_0=p_0h_0=0$,
+since insertion is performed at most once and raises the horizontal degree.
+Here $p_0$ forgets the singleton cover index and is zero in higher
+horizontal degree, and $i_0$ chooses $u(\sigma)$.
+
+Apply Theorem~\ref{thm:hpl-exact} to this horizontal contraction, with the
+vertical boundary as perturbation.  Each product of that boundary with
+$h_0$ lowers the simplicial degree, so its $(\dim K+1)$st power is zero
+for a nonempty complex.  Every positive correction term in the transferred
+small differential raises the horizontal degree before applying $p_0$,
+and is therefore killed.  The surviving term $p_0di_0$ is exactly the
+simplicial boundary of $K$.  Thus the total double complex contracts onto
+$C_*(K;\Q)$ by explicit finite formulas.  Applying
+Corollary~\ref{cor:hpl-bicomplex} in the other direction, using the supplied
+intersection models, gives an explicit homology comparison between those
+updated small models and $K$.  The empty complex is handled by the zero
+complex.  No appeal to a spectral sequence or an unconstructed comparison
+map is needed.  This also clarifies the limitation: the model may be large
+when the intersections have large homology, and no uniform speed advantage
+over direct elimination is asserted.
+
+The continuous version also gives useful estimates on actual fillings.
+If $d'z=0$ and a vector $s$ in the small model satisfies $b's=p'z$, then
+\[
+ v=h'z+i's,\qquad d'v=z,
+ \qquad
+ \|v\|\le\frac{H\|z\|+I\|s\|}{1-q}.
+\]
+The equation follows by adding the two chain identities.  In particular,
+when $B=0$, every cycle has the canonical filling $h'z$ with norm at most
+$H\|z\|/(1-q)$.  Conversely, a supplied linear functional $\lambda$ on
+$B$ with $\lambda b'=0$ and $\lambda p'z\ne0$ proves that $z$ cannot be a
+boundary.  A positive rational lower bound for $|\lambda p'z|$ makes this
+obstruction robust under certified approximation.  These are explicit
+filling or obstruction certificates, without an undecidable test of equality
+of arbitrary real coefficients.
+
+\subsection{A continuous Schur-complement example and a necessary boundary}
+
+Take a two-term complex $C_1=C_0=\Q^2$ and
+\[
+ d=\begin{pmatrix}1&0\\0&0\end{pmatrix},\qquad
+ B_1=B_0=\Q,\quad b=0.
+\]
+Let $i$ include the second coordinate, $p$ project to it, and let
+$h:C_0\to C_1$ be the matrix $\operatorname{diag}(1,0)$, with $h=0$ on
+$C_1$.  These satisfy all the normalized contraction identities on the
+graded direct sum.  Perturb the only differential by
+\[
+ \delta=\begin{pmatrix}a&\beta\\\gamma&\tau\end{pmatrix}.
+\]
+There is no next differential, so square-zero of $d+\delta$ is automatic.
+Whenever the supplied margin makes $1+a$ invertible, the transferred
+differential is
+\begin{equation}
+ b'=\tau-\frac{\gamma\beta}{1+a}.
+ \label{eq:hpl-schur}
+\end{equation}
+Indeed $i'$ on degree one is the column
+$(-\beta/(1+a),1)^{\mathsf T}$, $p'$ on degree zero is the row
+$(-\gamma/(1+a),1)$, and the surviving entry of $h'$ is $1/(1+a)$.
+Multiplication by $d+\delta$ gives \eqref{eq:hpl-schur} directly.
+
+For $(a,\beta,\gamma,\tau)=(1/4,1/8,1/5,1/50)$, the small differential
+is zero and the product norms are bounded by $q=3/8$.  Changing only
+$\tau$ to $1/25$ changes $b'$ to $1/50$.  Thus a small differential
+perturbation can destroy homology on the retained model, even though all
+perturbation formulas remain well-conditioned.  The theorem preserves
+equivalence to the \emph{updated} small complex, not the original Betti
+numbers.  Stable Betti numbers require extra information, such as an
+appropriate rank margin or vanishing of the transferred perturbation.
+
+The exact-rational executable \texttt{code/homological\_examples.py}
+checks this example against an independently computed rational inverse,
+verifies all contraction identities, and checks the finite residual bounds.
+It also treats $a=0$, where both product squares vanish and the two-term
+finite series is exact even without a norm-smallness premise.
+
+\subsection{A precise Lean and object-language development path}
+
+The smallest semantic interface is a structure of rational matrices with
+fields $d,b,i,p,h$, shape and degree data, and proofs of
+\eqref{eq:hpl-input}.  A second structure adds $\delta$ and the proof of
+\eqref{eq:hpl-square-zero}.  Define \texttt{neumann} by primitive recursion
+on $N$, and define $A_N,R_N,M_N$ by \eqref{eq:hpl-finite-data}.
+The main theorem dependencies are:
+\begin{enumerate}
+\item \texttt{geometric\_defect}: both finite inverse defects equal the
+appropriate $N$th power; prove by induction on $N$.
+\item \texttt{residual\_identities}: the seven groups of identities in
+\eqref{eq:hpl-finite-normalizations}--\eqref{eq:hpl-residual-identities}; prove by distributivity and the supplied
+chain and normalization equations.  This is noncommutative algebra, so a
+commutative \texttt{ring} call on whole matrices is inappropriate.
+\item \texttt{rowNorm\_mul\_le}: the rational maximum-row-sum norm is
+submultiplicative; prove finite triangle bounds, then the bounded maximum
+property.  Use it to prove \texttt{finite\_residual\_bound} exactly as in
+Theorem~\ref{thm:hpl-finite}.
+\item \texttt{block\_clock}: prove Lemma~\ref{lem:hpl-clock} over rational
+codes after denominator clearing.  The invariant is the displayed
+polynomial inequality, not a real logarithm.
+\item \texttt{filtered\_nilpotent}: a product that lowers a bounded column
+index more than $r$ times is zero.  Instantiate \texttt{exact\_hpl} and
+\texttt{cycle\_transfer} for the double complex.
+\end{enumerate}
+
+For the first-order endpoint, encode an $m$ by $n$ matrix as its dimensions
+and a finite list of signed numerator/positive-denominator pairs.  Define
+dimension checks, entries, products, row sums, maximums and equality tests
+as fixed primitive-recursive functions, with total default values on
+malformed codes.  Guard every theorem by a Boolean validity test.  The
+universally closed assertion is
+\[
+ \operatorname{ValidContraction}(w)=1\ \wedge\
+ \operatorname{NormGuards}(w,q)=1
+ \ \Longrightarrow\
+ \operatorname{ResidualBounds}(w,N,q)=1.
+\]
+Bounded array assertions are represented by Boolean folds.  Their prefix
+identities and norm inequalities use quantifier-free induction; the
+denominator margin is explicit.  A proof of this sentence in
+\texttt{Prf PRAAx}, followed by the repository's established bridge, is the
+formal iPRA endpoint.  Ordinary Lean proofs of matrix identities, the
+Banach-space interpretation, and exact-rational executions support distinct
+claims.  This chapter supplies the complete mathematical argument and
+construction; it does not claim that this full object derivation has already
+been implemented.

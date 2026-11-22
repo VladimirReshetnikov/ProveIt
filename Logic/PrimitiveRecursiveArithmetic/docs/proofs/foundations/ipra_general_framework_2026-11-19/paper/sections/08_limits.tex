@@ -1,0 +1,62 @@
+\section{What the framework resolves, and where the boundary moves}
+\label{sec:limits}
+
+\subsection{A broader view of finite algebraic intermediates}
+
+The squarefree norm proof illustrates a reusable replacement for field extensions chosen by existence arguments. Construct a finite algebra whose entries are explicit coefficient vectors. Prove the operations and the exact property used by the argument: an element may have a supplied inverse; a quotient may be reduced; a matrix may have a supplied right inverse. Carry that property as a proved invariant. A field structure is unnecessary when the calculation only uses ring identities and a few certified units.
+
+This distinction matters because a nonzero element in a finite algebra need not be invertible. In $\Q[u]/(u^2-1)$, the element $u-1$ is a nonzero zero divisor. Its square is still nonzero, which is the property the norm argument needs. Replacing this algebra by an unspecified field would hide a branch choice; treating every nonzero element as invertible would make the proof false. The certificate discipline identifies a weaker sufficient algebraic structure and verifies it directly.
+
+The same strategy can be used for symmetric polynomial observations, quotient-ring identities, finite multiplication matrices and algebraic function calculations that do not require naming an individual branch. Whenever division occurs, replace it by an explicit unit witness and an equation $uv=1$. The output may then be a polynomial identity or a scalar nonvanishing statement over the original field. One must still prove any final descent step; a statement about a chosen quotient value is not automatically a statement about every possible root.
+
+\subsection{Canonical observations of nonunique solution sets}
+
+The convex selector is a second broadly reusable operation. Original witnesses need not be unique. What must be unique, quantitatively, is the answer to the specified query: nearest to a fixed anchor. Squared-distance minimization supplies this property from midpoint convexity. The finite comparison theorem then transforms geometric structure into a cross-query modulus.
+
+Thus two common obstacles have different remedies. Algebraic branch selection can sometimes be removed by keeping an entire finite algebra or root aggregate. Nonunique geometric witnesses can sometimes be made canonical by a strictly convex query. Neither remedy applies universally. A disconnected two-point set defeats the projection coherence argument; discontinuous solution-set formation defeats the Hausdorff input requirement.
+
+\subsection{A finite cover search is not its existence theorem}
+
+There is a useful exact reduction for the Diophantine program. Suppose $N$ supplied vectors in $K^n$ admit a cover by $C$ proper linear subspaces. For each subspace, replace it by the span of the listed vectors assigned to it. Bounded Gaussian elimination chooses a basis of at most $n-1$ of those vectors. Consequently one may search for the cover among spans of at most $n-1$ input vectors.
+
+Allowing a zero-vector sentinel, at most $(N+1)^{n-1}$ ordered candidate generator lists are needed for one subspace, and at most
+\[
+ (N+1)^{C(n-1)}
+\]
+for $C$ subspaces. Exact row elimination checks properness and membership. Thus the existence of a cover of this supplied list implies success of a bounded primitive recursive search. If $n=1$, every proper linear subspace is zero, and the same formula has exponent zero; the degenerate case is explicit.
+
+The missing input is the mathematical proof that every relevant point list has such a cover with the stated numerical $C$. The search does not prove that fact. In the Siegel setting, producing or proving the required covers can encode the difficult approximation theorem. The norm result now discharges the zero-count consequence for a larger curve class, but does not discharge the cover theorem itself \cite{repo-siegel}.
+
+\subsection{Cardinality, height, and complete enumeration}
+
+A bound of $M$ on the number of solutions says that every list of $M+1$ distinct candidates contains a failure. It does not say where the solutions lie. Even a uniform cardinality bound of one cannot generally supply a height bound or a decision that the unique possible solution exists.
+
+Here is an exact obstruction. Let $H(e,t)$ be the primitive recursive predicate that the machine coded by $e$ halts for the first time at step $t$. For each $e$, at most one $t$ satisfies $H(e,t)$. If an algorithm could uniformly produce a complete finite list of all such $t$, it could decide whether the machine halts by testing whether that list is empty. If a total computable cutoff $B(e)$ satisfied $H(e,t)\Rightarrow t\le B(e)$, bounded simulation would likewise decide halting. Thus finite-list completeness and cutoffs require information stronger than a cardinality estimate. This is a statement about general predicates, not a claim that a particular Diophantine curve has an uncomputable height bound.
+
+For a concrete polynomial problem, a height-to-code adapter also needs proof. If rational coordinates have reduced numerators of absolute value at most $H$ and denominators between one and $H$, there is an explicit finite grid of candidate codes. But the theorem supplying such an $H$ is a separate input. The current improvement gives finite common-zero and subspace-fiber bounds; it is not a general effective Faltings theorem \cite{repo-faltings}.
+
+\subsection{A regular approximation does not decide equality}
+
+A fast Cauchy name supplies approximations with explicit error. It cannot in general decide whether its limit is zero. Indeed, any fixed finite set of observations consistent with zero is also consistent with a sufficiently small nonzero rational. An algorithm deciding zero would have to distinguish these from that same finite information. Inverse operations therefore need positive apartness data, such as a rational lower bound on absolute value. Matrix rank or the degree of a polynomial with arbitrary Cauchy coefficients likewise needs a suitable separation witness or a weaker output representation.
+
+Our exact algebra uses rational or other exactly coded coefficients. Our convex-hull producer, by contrast, tolerates coincident and affinely dependent named vertices because it performs no real-equality or rank test. The representation choice is part of the theorem, not an implementation footnote.
+
+\subsection{How to reuse the discipline across the portfolio}
+
+\begin{longtable}{@{}P{0.22\textwidth}P{0.33\textwidth}P{0.39\textwidth}@{}}
+\toprule
+Mathematical topic & Appropriate finite interface & Substantive producer to prove\\
+\midrule
+\endhead
+Algebraic equations & Exact coefficient buffers; multiplication matrices; root-support observations & Monic reduction, guarded nonvanishing, or a certified finite root approximation. Selecting a branch is a separate demand.\\[4pt]
+Analytic functions & Rational evaluations with domains, bounds and moduli & Tail estimates and evaluators with actual precision schedules. A formal power series alone is not a convergence proof.\\[4pt]
+Convex geometry & Finite Hausdorff clouds, midpoint defect and coordinate box & Cloud generation from the original description. Named vertices are handled here; arbitrary constraints need their own stability data.\\[4pt]
+Linear algebra & Exact runtime matrices or approximation matrices with gaps & Pivot witnesses for exact fields; quantitative separation for spectral subspaces when required.\\[4pt]
+Diophantine geometry & Finite point lists, weighted evaluations, annihilator certificates & Cover existence and height bounds. This report broadens the zero-count component.\\[4pt]
+Topology & Finite triangulations, covers and compatible local data & Explicit mesh or subdivision bounds and the finite combinatorial theorem. An arbitrary infinite branch is not automatically available.\\[4pt]
+Probability & Finite outcome tables, rational weights and event bits & Quantitative tails or exceptional-set bounds for any limiting assertion; finite inequalities alone do not choose an almost-sure witness.\\[4pt]
+Category-theoretic structure & Finite tables or fixed schematic operations with congruence laws & Actual universal-object constructions and bounded equality laws in the chosen presentation.\\
+\bottomrule
+\end{longtable}
+
+The framework helps by making these producers composable and by showing where stronger-looking mathematical objects can be replaced by finite ones. It does not erase a missing analytic estimate, an unbounded compactness principle, or an unproved Diophantine bound. The practical next step is to implement the new producer lemmas against the existing numerical arithmetic, so their actual closed sentences become reusable dependencies in the same way as the already checked finite-demand machinery.

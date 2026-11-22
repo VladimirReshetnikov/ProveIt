@@ -1,0 +1,225 @@
+% Self-contained mathematical subsection; include after theorem/macros setup.
+\section{The dodecahedron: a finite exact certificate}
+Write $p=(1+\sqrt5)/2$, so $p^2=p+1$.  The coordinate model is the convex
+hull of
+\[
+ (\pm1,\pm1,\pm1),\qquad
+ (0,\pm(p-1),\pm p),\qquad
+ (\pm(p-1),\pm p,0),\qquad
+ (\pm p,0,\pm(p-1)).
+\]
+Its edge length is $2/p$.  Its facets have outward normals
+$(0,\pm p,\pm1),(\pm1,0,\pm p),(\pm p,\pm1,0)$ and support constant $p^2$.
+Every facet is a regular pentagon.  These assertions are elementary finite
+coordinate checks; the supplied verifier checks all facet incidences and all
+30 edges exactly.
+
+\subsection{The attaining section}
+The plane $p y+z=0$ cuts out a regular decagon of side length $1$ and
+circumradius $p$.  Five consecutive vertices are
+\[
+ (p,0,0),\quad
+ \left(\frac{p^2}{2},\frac12,-\frac p2\right),\quad
+ \left(\frac12,\frac p2,-\frac{p^2}{2}\right),\quad
+ \left(-\frac12,\frac p2,-\frac{p^2}{2}\right),\quad
+ \left(-\frac{p^2}{2},\frac12,-\frac p2\right),
+\]
+followed by their negatives in the same order.  Each lies on a dodecahedral
+edge midpoint.  Consecutive vertices have squared distance $1$ and all
+vertices have squared distance $p^2$ from the origin.  The listed cyclic
+order and convexity therefore give a regular decagon without requiring
+trigonometric functions.  Its apothem is
+$\sqrt{p^2-1/4}=\frac12\sqrt{4p+3}$, so triangulation from the centre gives
+\[
+ M=\frac52\sqrt{4p+3}=\frac52\sqrt{5+2\sqrt5},
+ \qquad M^2=\frac{25}{4}(4p+3).
+\]
+For a dodecahedron of edge length $a$, scaling by $ap/2$ gives
+\[
+ \boxed{\ A_{\max}=\frac{5}{16}\sqrt{130+58\sqrt5}\,a^2\ }.
+\]
+
+\subsection{Reduction to three cones of normals}
+By the central-section lemma, it suffices to consider planes through the
+origin.  The remaining reduction uses only a finite reflection group.
+Set
+\[
+ F=(0,p,1),\qquad E=(1,p,p+1),\qquad V=(1,1,1).
+\]
+These rays span a reflection chamber.  Inward normals to its three walls are
+\[
+ \alpha_0=(-1,p,1-p),\quad
+ \alpha_1=(1-p,-1,p),\quad
+ \alpha_2=(p+1,1,-p).
+\]
+Here $\alpha_i$ is orthogonal to the two other rays and has positive dot
+product with ray $i$.  Reflection in each wall permutes the twenty vertices.
+Closing these three reflections under composition produces precisely
+120 orthogonal maps, as checked by exact arithmetic.
+
+Here is a constructive proof that their chambers cover all normals.  Put
+$c=F+E+V$.  From the finite list choose $g$ maximizing $n\cdot(gc)$, and put
+$n'=g^{-1}n$.  For every wall reflection $s_i$, maximality implies
+$n'\cdot c\ge n'\cdot(s_i c)$.  Since
+\[
+ c-s_i c=\frac{2(c\cdot\alpha_i)}{\alpha_i\cdot\alpha_i}\alpha_i
+ \quad\hbox{and}\quad c\cdot\alpha_i>0,
+\]
+we obtain $n'\cdot\alpha_i\ge0$.  Thus $n'$ is in the positive cone generated
+by $F,E,V$.  This argument is a bounded maximum over a finite, explicitly
+verified list; it does not use a continuous optimization theorem.
+
+Write $n'=aF+bE+cV$ with $a,b,c\ge0$.  Only two vertex-sign planes cross
+this cone.  They are
+\[
+ n'\cdot(-1,1,-1)=(p-1)a-2b-c=0,
+ \qquad
+ n'\cdot(-p,0,p-1)=(p-1)a-c=0.
+\]
+Put
+\[
+ T=2F+(p-1)E=(p-1,2p+1,p+2),\qquad
+ S=F+(p-1)V=(p-1,2p-1,p).
+\]
+The chamber splits into the three simplicial cones
+\[
+ C_0=\operatorname{cone}(F,T,S),\quad
+ C_1=\operatorname{cone}(T,E,S),\quad
+ C_2=\operatorname{cone}(E,V,S).
+\]
+For completeness, put $d=(p-1)a$.  If $2b+c\le d$, the coordinates in
+$C_0$ are $(a-p(2b+c),pb,pc)$.  If $c\le d\le2b+c$, the coordinates in
+$C_1$ are $((a-pc)/2,(2b+c-d)/2,pc)$.  If $d\le c$, the coordinates in
+$C_2$ are $(b,c-d,a)$.  Every displayed coordinate is nonnegative in its
+stated case, and direct substitution reconstructs $n'$.  For arithmetic
+inputs these case distinctions are decidable; the extension to represented
+real planes is by the common quantitative approximation lemma.
+
+\subsection{Rational area formulas}
+Let $(x,y,z)$ denote the normal $n'$; throughout these cones $z>0$.
+Define
+\[
+ q_1=(2-p)y+(p-1)z,\qquad q_2=py-(p-1)z,
+\]
+\[
+ A=(p-1)(2yz-z^2)-x^2,
+\]
+\[
+ B=(5-3p)y^2+(12p-18)yz+(14-9p)z^2-x^2,
+\]
+\begin{align*}
+ Q={}&x^3+(2-p)x^2y+5(p-1)x^2z+(2p-6)xyz\\
+    &+(7-3p)xz^2+2(1-p)y^2z-3yz^2+pz^3.
+\end{align*}
+For $n'\in C_i$, the section area satisfies
+\[
+ \operatorname{area}(P\cap n'^\perp)^2
+       =(x^2+y^2+z^2)\frac{N_i(x,y,z)^2}{D_i(x,y,z)^2},
+\]
+where
+\begin{align*}
+ N_0&=2p^3AB,&
+ D_0&=z(q_1^2-x^2)(q_2^2-x^2),\\
+ N_1&=-2p^3Q,&
+ D_1&=z\bigl(x+py+(p+1)z\bigr)(x+q_1)(q_2-x),\\
+ N_2&=4p^2\bigl(x^2+y^2+z^2+2p(xy+xz+yz)\bigr),&
+ D_2&=\bigl(x+py+(p-1)z\bigr)\bigl(x+py+(p+1)z\bigr)(x+q_1).
+\end{align*}
+The middle formula is used away from ray $E$; the last formula applies on
+that ray.  No other denominator singularities occur on the stated domains.
+
+Here is a derivation that also specifies a transparent independent way of
+checking the formulas.  Number vertices in lexicographic sign order, first
+the eight cube vertices, then the four vertices of each of the other three
+families in the order displayed above.  If an edge has endpoints $v_i,v_j$,
+its intersection with the plane is
+\[
+ w_{ij}=\frac{(n'\cdot v_i)v_j-(n'\cdot v_j)v_i}
+                   {n'\cdot(v_i-v_j)}.
+\]
+The cyclic edge lists for the three cones are respectively
+\begin{align*}
+ C_0:;&(5,9),(5,19),(18,19),(6,18),(6,10),\\
+      &(2,10),(2,16),(16,17),(1,17),(1,9);\\
+ C_1:;&(5,14),(18,19),(6,18),(6,10),\\
+      &(2,13),(16,17),(1,17),(1,9);\\
+ C_2:;&(5,14),(4,18),(6,10),(2,13),(3,17),(1,9).
+\end{align*}
+The vertex signs at the cone rays verify that these are exactly the cut
+edges.  Consecutive cut edges belong to a common pentagonal facet, giving
+the indicated cyclic order.  The projected shoelace formula gives
+\[
+ \frac{\operatorname{area}}{\sqrt{x^2+y^2+z^2}}
+ =\left|\frac1{2z}\sum_k
+   \bigl((w_k)_x(w_{k+1})_y-(w_k)_y(w_{k+1})_x\bigr)\right|.
+\]
+Substitute the edge-intersection formula, clear its linear denominators,
+and use $p^2=p+1$.  This yields exactly $|N_i/D_i|$ above.  The supplied
+verifier checks the complete cleared polynomial identity, rather than
+sampling orientations or trusting a symbolic simplification.  Boundary
+vertex intersections merely duplicate listed polygon vertices and give
+zero-length sides.  The only case in which a listed edge is entirely in
+the section plane is the explicitly excluded ray $E$ in $C_1$, already
+handled by $C_2$.
+
+\subsection{The global upper bound by positive coefficients}
+For each $i$, substitute
+\[
+ (x,y,z)=uR_{i0}+vR_{i1}+wR_{i2},\qquad u,v,w\ge0,
+\]
+using the ordered rays of $C_i$.  Form the homogeneous polynomial
+\[
+ H_i(u,v,w)=25(4p+3)D_i^2
+       -4(x^2+y^2+z^2)N_i^2.
+\]
+Every nonzero coefficient of $H_i$ is strictly positive in $\mathbb Q(p)$.
+Here is an exact small certificate summary:
+\[
+\begin{array}{c|c|c|c}
+ i&\deg H_i&\text{nonzero coefficients}&\text{smallest certified lower bound}\\\hline
+ 0&10&63&28848/25\\
+ 1&8&42&50163872/625\\
+ 2&6&28&37139298/625
+\end{array}
+\]
+The coefficient test requires only the rational enclosure
+\[
+ L=\frac{161803}{100000}<p<\frac{161804}{100000}=U,
+\]
+proved by $L^2-L-1<0<U^2-U-1$ and $L>1$.  For a coefficient $a+bp$, use
+$a+bL$ when $b\ge0$, and $a+bU$ when $b<0$.  The last table gives the
+minimum of these rational lower bounds, so it certifies all signs without
+numerical approximations.  Every coefficient pair $(a,b)$ is included in
+\texttt{dodecahedron\_certificate.json}; the optional coefficient appendix
+prints the same complete finite data.  The verifier recomputes the
+polynomials from $N_i,D_i$ and checks them coefficient by coefficient.
+For example the first terms of $H_0$ are
+\[
+ (-38400+25600p)u^8v^2+
+ (-38400+25600p)u^8vw+
+ (-102400+64000p)u^8w^2.
+\]
+All omitted terms in this illustration, but none in the supplied certificate,
+have the same verified positivity property.
+
+Since $u,v,w\ge0$, we have $H_i\ge0$.  Each $D_i$, after the same substitution,
+has nonnegative coefficients and strictly positive pure-power coefficients;
+for $D_1$ the pure $v^d$ coefficient vanishes, exactly at its excluded ray.
+Thus $D_i>0$ on its domain.  Dividing the certified inequality by $4D_i^2$
+yields area squared at most $25(4p+3)/4=M^2$.  Nonnegativity of area now gives
+area at most $M$, and the exhibited decagon attains it.  This is a global
+bound, not an inference from the highly symmetric candidate alone.
+
+\subsection{What is primitive recursive here}
+The verification is a fixed finite calculation over pairs of rational
+numbers.  Rational arithmetic, polynomial coefficient arrays, convolution,
+finite permutations, squared-distance comparisons, and finite maxima have
+primitive recursive implementations.  A proof of the coefficient checker
+uses only quantifier-free induction on bounded lists and arithmetic
+identities.  Each accepted positivity certificate is a displayed sum of
+products of nonnegative quantities; its soundness needs no compactness,
+excluded middle for real numbers, or unbounded search.  Interpreting the
+geometry with arithmetic coordinates gives a direct iPRA proof of the
+sharp squared-area inequality.  General represented inputs are handled by
+the quantitative approximation interpretation specified in the main report,
+not by quantification over arbitrary sets of real numbers inside iPRA.

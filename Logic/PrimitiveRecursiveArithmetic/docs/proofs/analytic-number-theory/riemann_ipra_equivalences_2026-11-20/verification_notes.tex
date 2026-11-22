@@ -1,0 +1,20 @@
+\section{Checking the formalization and open proof obligations}\label{sec:buildnew}
+The default Lake target checks the new and inherited modules. The file \code{verification/Audit.lean} prints representative types and the Lean kernel axioms on which those declarations depend. A proof of a statement about \code{Prf PRAAx} may use extensionality of functions when identifying finite variable assignments in Lean; the rules admitted inside \code{Prf} remain the rules of iPRA. Mathlib proofs about ordinary matrices or rational inequalities are separate Lean theorems.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.34\linewidth}p{.59\linewidth}@{}}\toprule
+Entry point & What to look for\\\midrule
+\code{ObjectForms.lean} & Internal proof families for cumulative tests and extraction of the first failing index.\\
+\code{SlackForms.lean} & Positive, unique and computed arithmetic certificates for the exact inequality, all in \code{Prf PRAAx}.\\
+\code{DiscreteSyntax.lean} & Interpretation of the literal formulas and equivalence for the full three-by-six family of finite tests.\\
+\code{PrimeForms.lean} & Closed formulas at fixed or quantified summation order, and finite arithmetic lemmas for changing error budgets.\\
+\code{MatrixIdentity.lean} & Identity for a first-column replacement and the recursively determined inverse row.\\
+\code{EnergyInequality.lean} & Weighted Cauchy--Schwarz, $J_2(d)\ge d^2/4$, and the inverse-weight sum bounded by eight.\\
+\code{AbelIdentity.lean} & Finite Abel identity and the bound recovering $M(N)$ from a bounded weighted prefix.\\
+\code{check_equivalences.py} & Independent exact determinant, rational integral, Farey, Abel, Lagarias and cyclotomic computations.\\\bottomrule
+\end{tabular}
+\end{center}
+The energy example $E_6=17/5$ for the ordinary Mertens function is reproduced three ways: by the sum over $d$, the double gcd sum, and rational integration over the affine pieces of the sawtooth. The scripts also exercise empty Farey progressions, the endpoint $1/1$ and Lagarias's equality at one.
+
+\paragraph{Further research questions.}
+Can the finite Euler-factor and permutation-enumeration bridges be derived inside \code{Prf PRAAx}, connecting the compiler's particular integer codes directly to the polynomial and determinant identities? Can one convert a supplied universal prime bound into Mertens witnesses using iPRA, with an explicit dependence on the requested exponent and field? Finally, for rational rectangles away from the critical line, can a single PR construction provide certified boundary clearances and reciprocals for all the coded fields? These are concrete additions to the current proof scope. The external analytic arguments establish standard-model correspondences without assuming answers to these questions.

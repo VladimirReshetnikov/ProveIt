@@ -1,0 +1,140 @@
+\section{An automatic producer from squarefree data}
+\label{sec:squarefree}
+
+The finite-place argument initially asks for a point $a$ and its local certificate. For an important class of equations that extra point can be removed entirely. Repeated division by a supplied polynomial gives a replacement for local order; arithmetic modulo that polynomial supplies the noncancellation test. The finite quotient algebra may have zero divisors, so the argument must prove exactly the replacement property it needs.
+
+\subsection{An elementary reducedness certificate}
+
+Let $f\in K[X]$ be nonconstant, with
+\begin{equation}\label{eq:squarefree-bezout}
+ A(X)f(X)+B(X)f'(X)=1.
+\end{equation}
+Here $f'$ is the formal derivative. Such $A,B$ are produced by bounded polynomial Euclidean arithmetic exactly when $\gcd(f,f')=1$. Normalize $f$ to be monic for reduction; multiplying by its nonzero leading coefficient does not change the quotient algebra or the gcd condition.
+
+Define
+\[
+ R=K[U]/(f(U)),\qquad u=[U].
+\]
+An element of $R$ is a polynomial of degree less than $d=\deg f$, with addition and multiplication followed by monic remainder. Equality is equality of its finite coefficient vectors. The scalar map $K\to R$ is injective: a nonzero polynomial of degree $d\ge1$ cannot divide a nonzero constant. Formula~\eqref{eq:squarefree-bezout} gives
+\[
+ B(u)f'(u)=1,
+\]
+so $c=f'(u)$ is a unit with an explicitly computed inverse.
+
+\begin{lemma}[Reducedness without factorization]\label{lem:reduced-algebra}
+If \eqref{eq:squarefree-bezout} holds and $n\ge1$, then
+\[
+ b^n=0\text{ in }R\quad\Longrightarrow\quad b=0\text{ in }R.
+\]
+Thus $R$ has no nonzero nilpotent elements. No factorization of $f$ is needed.
+\end{lemma}
+\begin{proof}
+Choose a polynomial representative $b(X)$. The hypothesis means $f\mid b^n$. Compute $g=\gcd(f,b)$ and its Bezout certificate. Write $f=gh$ and $b=gq$. Dividing the certificate for $g$ by $g$ gives polynomials $s,t$ with
+\[
+ sh+tq=1.
+\]
+Thus $h$ and $q$ are coprime. Substitute $f=gh$ and $f'=g'h+gh'$ into \eqref{eq:squarefree-bezout}:
+\[
+ 1=h(Ag+Bg')+g(Bh').
+\]
+This is an explicit Bezout identity for $h$ and $g$. Multiplying it by $sh+tq=1$ and collecting terms divisible by $h$ gives an identity
+\[
+ \alpha h+\beta(gq)=\alpha h+\beta b=1.
+\]
+Since $h\mid f\mid b^n$, raising this identity to the positive integer power $n$ shows $h\mid1$. One need not expand a binomial coefficient formula: modulo $h$, the identity is $\beta b=1$; bounded induction on the exponent gives $(\beta b)^n=1$, whereas $b^n=0$ modulo $h$. Consequently $h$ is a nonzero constant, $g$ is a nonzero scalar multiple of $f$, and $f\mid b$. Therefore $b=0$ in $R$.
+
+All steps are finite Euclidean divisions, recorded Bezout identities, and a bounded power computation. The proof is valid in positive characteristic; it never divides by $n$ or by a factorial.
+\end{proof}
+
+The statement does not say that $R$ is a field. For example $f=X(X-1)$ gives a reduced algebra with zero divisors. Only the absence of nilpotents, together with the invertibility of $c$, will be used.
+
+\begin{remark}[Terminology in positive characteristic]
+Over $\Q$, the derivative-coprime condition is the usual squarefree condition. Over an arbitrary imperfect field, having no repeated irreducible factor in $K[X]$ need not imply $\gcd(f,f')=1$. The exact hypothesis throughout this section is the Bezout certificate \eqref{eq:squarefree-bezout}, equivalently separability of the nonconstant polynomial. The theorem does not replace that hypothesis by a weaker ring-theoretic use of the word ``squarefree.'' It still allows the characteristic to divide $m$.
+\end{remark}
+
+\subsection{Polynomial division orders and a general divisor certificate}
+
+For a nonconstant polynomial $g$ and a nonzero polynomial $A$, repeatedly divide by $g$ while the remainder is zero. Each successful division decreases the degree by $\deg g\ge1$, so at most $\deg A+1$ tests are needed. The result is an actual factorization
+\[
+ A=g^aB,\qquad B\bmod g\ne0.
+\]
+Call $a$ the $g$-division order. It is a finite primitive recursive computation; it does not involve prime ideals or irreducible factors.
+
+\begin{theorem}[Nonvanishing from a polynomial divisor]\label{thm:divisor-norm}
+Suppose $f=g^eh$, where $\deg g\ge1$, $e\ge1$, $\gcd(m,e)=1$, and an explicit Bezout certificate gives
+\[
+ \alpha g+\beta h=1.
+\]
+Suppose also that $K[X]/(g)$ is reduced; the finite certificate of Lemma~\ref{lem:reduced-algebra}, with $g$ in place of $f$, is sufficient. For every nonzero reduced $G=\sum_{j<m}A_jY^j$, compute
+\[
+ A_j=g^{a_j}B_j,\quad b_j=B_j\bmod g\ne0
+ \quad(A_j\ne0),
+ \qquad s=\min_{A_j\ne0}(ma_j+ej).
+\]
+The minimizing index $k$ is unique, and an actual polynomial $Q$ satisfies
+\begin{equation}\label{eq:adic-norm}
+ \Norm_{Y^m-f}(G)=g^s\left((-1)^{k(m-1)}B_k^mh^k+gQ\right).
+\end{equation}
+The bracket has nonzero residue modulo $g$. Consequently the norm is nonzero and its $g$-division order is exactly $s$.
+\end{theorem}
+\begin{proof}
+Equal weights at indices $i,j$ imply $m\mid e(i-j)$; coprimality and the index bounds imply $i=j$. In a determinant term, write the chosen row as $r_i=(i+j_i)\bmod m$ in column $i$, and write $i+j_i=r_i+mq_i$. The entry is $A_{j_i}f^{q_i}$, with $q_i$ either zero or one. For a permutation, $\sum_i r_i=\sum_i i$, hence $\sum_i j_i=m\sum_iq_i$.
+
+Substituting the displayed factorizations, the term is divisible by
+\[
+ g^{\sum_i a_{j_i}+e\sum_iq_i}
+       =g^{\frac1m\sum_i(ma_{j_i}+ej_i)}.
+\]
+Every selected weight is at least $s$. If any index differs from $k$, the exponent is an integer strictly greater than $s$, hence at least $s+1$. Terms selecting a zero $A_j$ are zero and can be discarded.
+
+Exactly one permutation uses $k$ in every column: the shift $i\mapsto(i+k)\bmod m$. Its total carry is $k$, its sign is $(-1)^{k(m-1)}$, and its product is $A_k^mf^k$. Removing $g^s$ from every term therefore gives \eqref{eq:adic-norm}; $Q$ is obtained by summing the other terms with their displayed powers removed.
+
+In $K[X]/(g)$ the bracket has residue
+\[
+ (-1)^{k(m-1)}b_k^m\bar h^{\,k}.
+\]
+It is nonzero. Reducedness implies $b_k^m\ne0$, while $\bar h$ is a unit with inverse $\bar\beta$. Thus the bracket is not divisible by $g$. It is a nonzero polynomial, as is $g^s$, and the polynomial ring over $K$ is a domain. This proves nonvanishing. If $g^{s+1}$ divided the norm, cancelling the nonzero polynomial $g^s$ would make the bracket divisible by $g$, a contradiction. All divisions by $m$ above are statements about integer index sums, not division by the image of $m$ in $K$.
+\end{proof}
+
+The global bound $\deg\Norm(G)\le W(G)$ still comes from Lemma~\ref{lem:global-weight}. The two bounds together give $s\deg g\le\deg\Norm(G)\le W(G)$. The special case $g=X-a$ recovers the superelliptic finite-place method. The special case $g=f$, $e=1$, $h=1$ gives the automatic producer below.
+
+\begin{theorem}[Squarefree nonvanishing producer]\label{thm:squarefree-norm}
+Let $f\in K[X]$ be nonconstant and have the supplied or computed Bezout certificate \eqref{eq:squarefree-bezout}. For every $m\ge1$ and every nonzero reduced $G=\sum_{j<m}A_jY^j$,
+\[
+ \Norm_{Y^m-f}(G)\ne0.
+\]
+If $d=\deg f$ and $W=\max_{A_j\ne0}(m\deg A_j+dj)$, then
+\[
+ \deg\Norm_{Y^m-f}(G)\le W,
+\]
+and every supplied list of distinct common zeros of $Y^m-f$ and $G$ has length at most $W$.
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{lem:reduced-algebra}, then Theorem~\ref{thm:divisor-norm} with $g=f$, $e=1$ and $h=1$. The degree bound is Lemma~\ref{lem:global-weight}, and the point count is Theorem~\ref{thm:finite-zero}.
+\end{proof}
+
+The method computes all its data: a polynomial gcd, Bezout polynomials, repeated-division tables, a least weight and a finite determinant. It asks for no algebraic root, irreducible factor, or extension field selected by an existence theorem. It does not even need the derivative inverse after reducedness has been proved. This is a useful pattern for embedding algebraic arguments: a finite algebra carrying the required identities and nonvanishing test can replace a chosen algebraic point.
+
+\begin{example}[No rational root is needed]
+For $f=X^4+1$, $m=2$, and $G=Y-X^2$,
+\[
+ \Norm(G)=X^4-(X^4+1)=-1.
+\]
+The highest weighted terms cancel, and $f$ has no rational root. Nevertheless
+\[
+ f-\frac X4 f'=1
+\]
+is an explicit squarefree certificate. The finite algebra proof applies immediately. The common-zero list must be empty, and the full norm computation sharpens the general weight cap $W=4$ to zero.
+\end{example}
+
+\begin{remark}[Two sufficient producers, not a decision procedure for everything]
+The squarefree producer and the single-place producer are complementary. A polynomial may have repeated factors but still have one supplied simple root; the local theorem then applies even though the squarefree test fails. Conversely, the squarefree producer needs no $K$-rational root. Failure of both tests does not imply a zero norm or a reducible curve. The unconditional computation of the norm remains available, with a finite nonzero-coefficient test for the particular $G$.
+\end{remark}
+
+\subsection{Why this is primitive recursive uniformly in the degree}
+
+Polynomial long division reduces the current degree at each nonzero step. Euclidean gcd therefore takes at most the sum of the input degrees plus two iterations; use this bound as fuel, retaining the terminal state afterwards. Extended gcd keeps the two Bezout rows alongside the remainders. Their coefficients are produced by the same exact-field operations, so the algorithm is primitive recursive. The invariant is the pair of polynomial Bezout identities and the strict decrease on active steps.
+
+Elements of $R$ are vectors of exactly $d$ coefficients. A multiplication consists of at most $d^2$ scalar products, followed by at most $d$ monic-reduction steps. The repeated-division scan for row $A_j$ has at most $\deg A_j+1$ steps, and the minimum has $m$ entries. If all row degrees are at most $D$, its selected exponent is bounded by $mD+e(m-1)$. Zero testing in $R$ is a bounded conjunction of exact scalar zero tests. The proof of reducedness uses an exponent $n$ as a numerical input and induction on the actual modular power buffer. These are precisely bounded predicates that the existing Booleanization machinery handles.
+
+What remains to formalize is substantial but explicit: polynomial extended-gcd correctness in the chosen runtime codec, repeated-division correctness, the reducedness implication, and the determinant-word carry identity producing \eqref{eq:adic-norm}. The archive gives these as additional named obligations; it does not label them kernel-checked.

@@ -1,0 +1,118 @@
+\section{Efficient composition and certificate reuse}
+\label{sec:efficiency}
+
+The framework's efficiency claim is structural. We count evaluations
+of a presented input, rational arithmetic operations, and distinct
+certified observations. We do not equate primitive recursiveness with
+practical polynomial time, nor claim a measured speedup for an
+unimplemented proof compiler.
+
+\subsection{Reverse sensitivity on a finite dependency graph}
+
+Consider a finite directed acyclic graph, numbered so that every edge
+\(u\to v\) has \(u<v\). Suppose a local estimate has been proved
+for each node:
+\[
+ e_v\leq\eta_v+\sum_{u\to v}L_{vu}e_u,
+ \qquad L_{vu}\in\mathbb Q_{\geq0}.
+ \tag{L}\label{eq:localbudget}
+\]
+Here \(e_v\) is the error in the observation norm assigned to node
+\(v\), and \(\eta_v\) is its local approximation error. A change of
+norm is itself a node with a proved estimate. In particular, a
+diagonal pullback cannot appear as an \(L^1\) edge with a fictitious
+finite constant.
+
+Let \(o\) be the output. Initialize \(w_o=1\) and all other weights
+to zero. Visit nodes in reverse order and, for every edge \(u\to v\),
+add \(w_vL_{vu}\) to \(w_u\).
+
+\begin{theorem}[Shared error budget]\label{thm:dagbudget}
+The reverse pass computes nonnegative rational weights satisfying
+\[
+ e_o\leq\sum_v w_v\eta_v.
+ \tag{B}\label{eq:globalbudget}
+\]
+It uses one multiplication and one addition per edge. Every weight is
+the sum of products of local sensitivities along all paths from that
+node to the output; paths are not explicitly enumerated.
+\end{theorem}
+\begin{proof}
+Start with \(e_o\). When the largest remaining error term \(w_ve_v\)
+is processed, substitute \eqref{eq:localbudget} and distribute
+\(w_v\). Its residual contribution is \(w_v\eta_v\), and each
+predecessor contribution is \(w_vL_{vu}e_u\). No predecessor has yet
+been processed, so contributions to an already shared node are added
+before its one substitution. The invariant is an upper bound consisting
+of processed residual terms plus unprocessed weighted error terms.
+All coefficients are nonnegative, so substitution preserves the
+inequality. At the end only residual terms remain. The path
+description follows by the same recursion: prepend one edge to each
+path already represented by \(w_v\).
+\end{proof}
+
+For a requested rational tolerance \(\varepsilon>0\), let
+\(W=\sum_v w_v\) and choose every local error at most
+\(\varepsilon/(1+W)\). Then the final error is strictly below
+\(\varepsilon\). This uniform allocation is robust and needs no
+optimization. More efficient allocations may use separate positive
+budgets \(\beta_v\) with \(\sum_v\beta_v\leq\varepsilon\) and
+require \(w_v\eta_v\leq\beta_v\). Zero weights need no demand.
+All choices here use rational arithmetic and bounded dyadic searches.
+
+\paragraph{Example with a shared input.}
+If a node \(x\) is used in \(a=2x\) and \(b=3x\), followed by
+\(o=a+b\), the reverse pass assigns weight \(5\) to the single
+approximation of \(x\). It does not ask an expensive producer for two
+independent values. With clipping, conditional expectation, or
+integration, many corresponding constants are one. A finite moment
+table similarly shares one step-function approximation across every
+coefficient, as in \eqref{eq:moments}.
+
+\subsection{The data that a certificate must retain}
+
+A reusable finite certificate records the input identity, observation
+norm, precision, common refinement, rational bounds, and actual trace
+or fixed-program identifier used. Its proof obligations include
+well-formed denominators and arrays, the local numerical inequality,
+and any modulus instance that justified the demanded input precision.
+A cache hit is valid only if it supplies at least that precision in the
+same observation. Refinement certificates permit reuse across
+different grid levels; they are not replaceable by matching filenames.
+
+In a proof implementation, the fixed graph is compiled by substitution
+and cut in the ordinary \(\Prf\,\mathrm{PRAAx}\) calculus. A
+variable-sized graph requires a separately proved bounded checker or
+replay invariant. The present reverse-pass theorem is not a universal
+soundness theorem for arbitrary Lean proof objects, and it does not
+reflect arbitrary checked formulas into \ipra.
+
+\subsection{Concrete improvements over independent approximations}
+
+\begin{itemize}
+\item Dyadic refinement is delayed until the common level needed by
+the current finite sum. Integral-preserving refinement identities are
+proved once and reused across all moments, kernels, and formula nodes.
+\item To obtain \(N\) moments of a step function with \(J\) cells,
+update endpoint powers recursively. This needs \(O(JN)\) rational
+operations after one input evaluation, rather than \(N\) calls to a
+general integration procedure.
+\item A density is first reconstructed from its energy certificates.
+Every later integral uses its \(L^1\) name. Reconstructing a density
+separately for each observable would repeat the hardest producer.
+\item Stable topological output is requested with a scale interval.
+Interval distance certificates are reused across all simplices.
+The algorithm spends no work deciding a threshold equality whose
+answer would not survive the input uncertainty.
+\item A contraction gap gives an explicit finite iteration count.
+No semidecision loop runs until an estimated residual appears small.
+The residual is checked at a count already justified by the gap.
+\end{itemize}
+
+These improvements reduce duplicated demand and proof material. A
+complete complexity theorem must additionally track rational bit sizes,
+the representation of refinements, and the cost of the input producers.
+All of those costs are bounded by fixed primitive-recursive programs
+in the present setting. They may nevertheless grow rapidly; for
+example a dyadic partition of dimension \(d\) and level \(m\) has
+\(2^{dm}\) cells. No dimension-free computational claim is intended.

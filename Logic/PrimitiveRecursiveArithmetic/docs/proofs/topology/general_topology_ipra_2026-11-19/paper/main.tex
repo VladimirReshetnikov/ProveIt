@@ -1,0 +1,72 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,graphicx,fancyhdr,needspace}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{27,46,65}
+\definecolor{accent}{RGB}{0,105,115}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Constructive general topology}
+\fancyhead[R]{\small iPRA}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\Ftwo}{\mathbb F_2}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\hypersetup{pdftitle={General topology in intuitionistic primitive recursive arithmetic},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{15mm}
+{\color{accent}\large CONSTRUCTIVE MATHEMATICS / EXPLICIT FINITE PROOFS\par}
+\vspace{12mm}
+{\color{ink}\Huge\bfseries General topology in intuitionistic primitive recursive arithmetic\par}
+\vspace{8mm}
+{\Large Finite spaces, quantitative metric constructions, homology, dimension, and approximate hairy-ball theorems\par}
+\vspace{13mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 19 November 2026\par}
+\vfill
+\begin{abstract}
+We develop constructive arithmetic versions of theorems and structures linked directly from MathWorld's General Topology index. The treatment includes finite topology and separation, an exact finite compact-open exponential law, quantitative Urysohn separation and Hilbert-cube embeddings, equipped products and compact function spaces, finite homology and sheaves, a rational-grid proof of dimension invariance, and a finite-chain proof of approximate hairy-ball theorems. Every infinite construction is supplied with explicit computational data and is interpreted as a first-order schema or a theorem about finite tables. A separate analysis explains why arbitrary-cover compactness, exact point selection, and unrestricted countable unions cannot simply be imported.
+The human-readable proofs and their primitive recursive bounds are the main result. The archive also includes compiled Lean foundations, explicitly labeled formalization blueprints, executable exact-arithmetic checks, and a source-by-source scope ledger. It does not claim a completed object-language \code{Prf PRAAx} formalization of the entire collection.
+\end{abstract}
+\vspace{8mm}
+{\small Source baseline: \code{VladimirReshetnikov/ProveIt}, commit\\
+\code{eb8eb6653c85aa44f1e18dd4efa243f41b5a9e98}.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\newpage
+\input{sections/01_scope}
+\input{sections/02_arithmetic}
+\input{sections/03_finite}
+\input{sections/04_metric}
+\input{sections/05_algebraic}
+\input{sections/06_dimension}
+\input{sections/07_spheres}
+\input{sections/08_limits}
+\input{sections/09_formalization}
+\input{references}
+\end{document}
+

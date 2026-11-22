@@ -1,0 +1,26 @@
+\thispagestyle{plain}
+\noindent{\sffamily\small\textcolor{accent}{MATHEMATICAL LOGIC \quad / \quad ANALYTIC NUMBER THEORY}}\par
+\vspace{9pt}
+\noindent{\LARGE\bfseries\color{ink} Three Riemann hypotheses in intuitionistic primitive recursive arithmetic\par}
+\vspace{7pt}
+\noindent{\large Complete splitting, Taylor coefficients and finite witnesses}\par
+\vspace{5pt}\noindent{\small November 20, 2026}\par
+\bigskip
+A prime congruence test can express Dirichlet GRH with just one unbounded variable. For integers $m\ge2$, let $B_m(y)$ be the highest set-bit index of the product of all primes $p\le y$ congruent to $1$ modulo $m$, taking $B_m(y)=0$ for an empty product. Put $l=1+\lfloor\log_2(2n)\rfloor$. Then Dirichlet GRH is equivalent in the classical standard model to
+\[
+ \boxed{\quad \forall n\ge100\quad
+   \max_{2\le m\le2n}|B_m(2n)-2B_m(n)|^2\le n(64l^2)^2.\quad}
+\]
+The formula quantifies over natural numbers, and its matrix is primitive recursive. For ordinary RH it suffices to use $m=2$, which selects the odd primes. For Dedekind ERH, select primes at which an input polynomial splits completely, and let the binary length $l$ control which polynomials enter the finite maximum. The same right side works in all three cases (Theorem~\ref{thm:split}).
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}\toprule
+Name in this report & Zeros in the open strip $0<\Re s<1$ lie on $\Re s=1/2$ for\\\midrule
+RH & the Riemann zeta function $\zeta(s)$\\
+Dirichlet GRH & every primitive Dirichlet $L(s,\chi)$, including complex characters\\
+Dedekind ERH & $\zeta_K(s)$ for every number field $K$, including non-Galois fields\\\bottomrule
+\end{tabular}
+\end{center}
+A second characterization reconstructs Taylor coefficients of a Dirichlet series from finite integer sums. Disks centered at $4+2^i$ already detect every possible off-line zero. A third replaces Mertens sums with Liouville sums or, more generally, sums along perfect powers, with an explicit conversion of the required growth constants. The object-theoretic proofs also convert a failing five-parameter Dedekind test into the least failing search radius and recover a failed tuple from that radius.
+\paragraph{Proof strength.}
+A closed term of type \code{Fm PTm 0} specifies an arithmetic conjecture. A Lean term of type \code{Prf PRAAx [] (Fm.iff A B)} proves a biconditional \emph{in} iPRA. A theorem about \code{naturalTerms.Holds} verifies an interpretation in the ordinary natural numbers. The identification of these arithmetic statements with complex zero statements uses the analytic theorems and proofs given in the text. The construction proves equivalences and supplies conditional algorithms; the three zero hypotheses remain open.
+\newpage

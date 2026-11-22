@@ -1,0 +1,262 @@
+\section{Finite oracle observations and the computability boundary}
+\label{sec:oracle}
+
+A realizer in Type-2 computable analysis receives a \emph{name} of an input.
+The name can be an arbitrary infinite sequence, even when the realizer is a
+computable machine. Two names of the same point can give different finite
+answers. These two facts determine what a translation into first-order arithmetic
+must preserve. We use the represented-space interpretation of Pauly and distinguish
+the number of queries from the cost of reading and processing answers as in
+Kawamura and Cook.\footnote{A. Pauly, \emph{On the topological aspects of the
+theory of represented spaces}, \url{https://arxiv.org/abs/1204.3763}.
+A. Kawamura and S. Cook, \emph{Complexity theory for operators in analysis},
+\url{https://arxiv.org/abs/1305.0453}.}
+
+\subsection{Compiling finite use into first-order arithmetic}
+
+Fix five primitive recursive (PR) maps $I(n),q(s),D(s,v),E(s),R(n)$.
+They initialize a state, give its next query index, update it on an answer,
+extract the final output, and count answer slots. Precision, presentation
+parameters and read-only rational bounds can be paired into the input.
+The external semantics on an oracle $a:\mathbb N\to\mathbb N$ is
+\[
+  s_0=I(n),\qquad j_i=q(s_i),\qquad s_{i+1}=D(s_i,a(j_i)),\qquad
+  F(a)(n)=E(s_{R(n)}).
+\]
+An early return can store its output in an absorbing state which requests
+index zero in any remaining slots. Allow a window of at least one when using
+this convention. For a finite word $w$, let $\widehat w$ give its entries at
+indices below $|w|$ and zero elsewhere. Write $s_i(w)$ for the run on
+$\widehat w$. The function $(n,i,w)\mapsto s_i(w)$ is PR by ordinary
+primitive recursion. One can use any PR sequence coding with empty word,
+append, length and lookup. For example encode a cons cell $(h,t)$ by
+$2^h(2t+1)$ and the empty list by zero; extracting an entry uses the
+bounded $2$-adic valuation and iteration of the tail map. Length is obtained
+by bounded iteration since the tail of a positive code is smaller.
+
+Let $U(n)$ be a PR number of entries. The following obligation contains only
+natural-number quantifiers, and its matrix with the $i$-quantifier bounded
+can be evaluated by primitive recursion:
+\begin{equation}
+ |w|=U(n)\quad\Longrightarrow\quad
+ \forall i<R(n)\quad q(s_i(w))<U(n).
+ \label{eq:tableguard}
+\end{equation}
+The obligation is universally closed over $n,w$. It may also be used with
+fixed size parameters and with explicitly specified admissible windows. All
+unqualified statements below use the displayed all-word version.
+
+\begin{theorem}[Finite replay and window certification]
+If two oracles agree on the queries made by the first run through $t$ slots,
+the two states at time $t$ agree. Condition~\eqref{eq:tableguard} is equivalent,
+in the external semantics, to the same query bound for every infinite oracle.
+Consequently a word of length $U(n)$ taken from any name suffices to compute
+$F(a)(n)$. For two finite words these replay implications are iPRA theorems.
+\end{theorem}
+\begin{proof}
+Initially the states agree. Equality of the states at slot $i$ makes the
+query indices equal. The assumed agreement on that query then makes the
+updates equal. In the arithmetic instance, fix the two words and $t$ as
+parameters; induction on the forward state equality under the hypothesis
+of agreement on the first $t$ queries uses a quantifier-free invariant
+(equivalently use $i\le t\Rightarrow s_i=s_i'$). The agreement test is a
+bounded Boolean fold.
+
+Given $a$, form its initial word $w$ of length $U(n)$ externally. Apply
+the first assertion with $\widehat w$ as the \emph{first} run. By
+\eqref{eq:tableguard}, each of its requests lands in $w$ and receives
+the same answer from $a$. The states coincide through every slot and all
+query indices of $a$ are therefore bounded. In the converse direction use
+the oracle $\widehat w$ in the all-oracle assertion. In iPRA a fixed PR
+input name $a(p,j)$ supplies the word by a bounded tabulation in the
+parameters $p,n$; arbitrary external names never have to be coded by single
+natural numbers.
+\end{proof}
+
+The same proof validates a sparse transcript. To check an alleged list of
+pairs $(j_i,v_i)$, recompute each state, check $j_i=q(s_i)$, and check
+$v_i=v_k$ for every earlier $k$ whose query equals $j_i$. On a supplied
+word also check each value against its lookup. All these tests are bounded.
+A consistent transcript by itself has an extension as a Baire name: use its
+recorded values on queried indices and zero elsewhere. Additional
+representation laws can prevent this particular extension from naming an
+analytic object. A transcript establishes an observation conditional on
+compatibility with a valid input. It need not establish that compatibility.
+
+\subsection{Composing algorithms and paying only for demanded observations}
+
+Let $F$ supply a name to an outer reader $G$. Write $U_F,U_G$ for
+nondecreasing window lengths, replacing a bound by its prefix maximum if
+necessary, and $R_F,R_G$ for answer-slot budgets. For each request $k$ of
+$G$, compute the $k$th output of $F$ on the original input. Since
+$k<U_G(n)$, all base requests have index
+$<U_F(k)\le U_F(U_G(n))$. Determinism and replay identify the resulting
+outer state with that on the conceptual name $F(a)$. Thus one sufficient
+composite window has length $U_F(U_G(n))$; the sharper length is
+$\max_{k<U_G(n)}U_F(k)$, with empty maximum zero. The exact number of
+base answer slots before reuse, and a uniform bound on it, are
+\[
+ \sum_{i<R_G(n)} R_F(k_i)
+ \ \le\ R_G(n)\max_{k<U_G(n)} R_F(k).
+\]
+Caching $F$'s answer at the first occurrence of each $k$ changes the sum
+to one over the distinct requested $k$. No precomputation of the entire
+outer window is required. For example, an outer reader requesting the
+same index $10^6$ a hundred times triggers one evaluation of the inner
+reader there. If this evaluation makes two base requests, the cached
+implementation uses two base slots. A dense implementation could tabulate
+$10^6+1$ inner answers. These counts exclude storage, index comparisons,
+and the bit cost of the five PR maps. A large query index or a long oracle
+answer may dominate elapsed time.
+
+For a first-order implementation use the original finite input word as a
+parameter to a primitive recursion over the $R_G(n)$ outer slots. Within
+one update, the $k$th answer is computed by the already defined PR evaluation
+of $F$ on that word; a cache is a finite list of pairs with bounded lookup.
+Correctness follows by forward induction on outer-state equality, with the
+inner replay lemma instantiated at the current $k$. In the cached version
+the extra invariant says that every stored pair
+$(k,v)$ obeys $v=F(\widehat w)(k)$. Its bounded list scan yields a
+quantifier-free invariant. This specializes a construction to given PR
+maps and proof certificates. Treating arbitrary PR syntax as an additional
+input to an unclocked PR evaluator would invalidate the construction.
+
+\subsection{Equality of observations and equality of points}
+
+Prefix agreement gives literally equal outputs for a single observation.
+Extensionality is a separate mathematical obligation. For example let
+$D_X,D_Y$ be rational metric bases with PR distance comparisons and
+$e_i=2^{-i}$. A regular name obeys
+$d_X(a_i,a_j)\le e_i+e_j$ for each pair. Two names denote the same point
+when $d_X(a_i,b_j)\le e_i+e_j$ for all $i,j$. This is transitive on
+regular names. For an intermediary $b$, the triangle inequality gives
+$d_X(a_i,c_j)\le e_i+2e_k+e_j$ for every $k$. If the target rational
+bound fails, choose $k$ explicitly from the positive rational gap so that
+$2e_k$ is smaller. This proves the target by decidability of the single
+rational comparison.
+
+A sufficient first-order extensionality certificate is the following pair
+of finite tests. For $|w|=U(n)$ and $|v|=U(m)$, require each word to
+obey the regularity inequalities on all its entries, and require
+$d_X(w_i,v_j)\le e_i+e_j$ on every cross pair. Under these assumptions prove
+\[
+ d_Y\big(F(\widehat w)(n),F(\widehat v)(m)\big)\le e_n+e_m .
+\]
+Outputs are understood as valid basis indices, a separate PR output-type
+check if necessary. The assumptions form a finite product of rational
+decisions. Applying the certificate to prefixes of the same name gives
+regularity of the output. Applying it to prefixes of equivalent names gives
+extensionality. Both uses follow from replay. A representation admitting
+fewer finite patterns may instead employ a sound, explicitly specified
+admissibility guard and prove that its genuine prefixes pass. This is a
+sufficient certificate discipline; it makes no completeness assertion for
+all machines on represented spaces.
+
+\subsection{Partial computations and supplied domains}
+
+The use-bound interface has a relational companion for ordinary computable
+algorithms. Fix a deterministic oracle machine $M$. A trace code lists its
+initial configuration, each successive configuration, query positions and
+answers, and the final output for request $n$. Checking the shape of this
+list, the transition equations and the terminal instruction is PR. Mixtures
+of configurations and answers can be encoded by tags. For a fixed PR input
+name $a(x,j)$ the predicate
+$V_M(x,n,t,z)$ further checks that each answer in trace $t$ agrees with
+$a(x,j)$, and its final output is $z$. A successful observation is expressed as
+$\exists t\,V_M(x,n,t,z)$. Two such observations on the same input have the
+same output by finite determinism: compare the configurations up to the shorter
+terminal length, with a terminal absorbing instruction. The comparison is
+an induction on finite codes with a quantifier-free state invariant.
+
+For this representation a domain condition may be the first-order formula
+$\forall n\,\exists t,z\ V_M(x,n,t,z)$. Regularity and independence of names
+are separate implications for any two successful traces. Externally a total
+Type-2 realizer gives successful traces on its admitted names. The displayed
+totality formula needs a proof or a hypothesis inside iPRA; writing the
+formula supplies no such proof. Pointwise existence also need not provide a
+single coded list of successful traces for an input-dependent set of requests
+in this weak theory. For a composite with a variable number of calls one can
+verify a single compound trace containing all subtraces. For a PR producer
+one instead supplies a clock or tabulator and proves it succeeds. Thus a
+computable name can have an arithmetical graph without having a PR evaluator.
+
+For a concrete example take the scalar reciprocal. On the patch
+$|x|\ge 2^{-a}$, a request of radius $e_k$ reads $u=x_p$ at
+$p=\max(a+1,k+2a+1)$. Then $|u|\ge 2^{-a-1}$, and
+\[
+       |1/u-1/x|=|u-x|/(|u|\,|x|)\le 2^{2a+1}e_p\le e_k .
+\]
+The division in the implementation is rational division by the observed
+nonzero $u$. Equivalently compare two legal outputs by multiplying their
+positive absolute denominators, using the same lower bounds and removing
+auxiliary observation slack. Under a positive apartness promise an external
+machine can first seek $|x_j|>2e_j$; that success certifies
+$|x|>e_j$, hence provides $a=j$. Given an existing witness $a$, the search
+succeeds by $j=a+2$, because $|x_j|\ge2^{-a}-e_j>2e_j$ there.
+A negative assertion of the form $\neg(x=0)$ alone contains no such explicit
+precision witness. This example locates exactly where the search enters and
+where a patch parameter recovers a PR clock.
+
+\subsection{Two independent obstructions}
+
+\begin{proposition}[Local use can have two queries and no global window]
+The Baire-space operation $J(a)=a(a(0)+1)$ has a two-query realizer. No
+fixed prefix length determines its value on all inputs.
+\end{proposition}
+\begin{proof}
+Given a candidate length $m$, take $a$ constantly $m$, and let $b$ differ
+from $a$ only at $m+1$, where $b(m+1)=m+1$. They agree below $m$ and at
+zero. The outputs are $m$ and $m+1$. On the patch $a(0)\le B$, use
+$U=B+2$. Equivalently, record the two requests in a local transcript.
+\end{proof}
+This example also explains positive-domain computations. A machine that
+halts after receiving finite evidence has a bounded trace verifier. Over
+a fixed PR name, existence of a successful run is an arithmetical
+$\Sigma^0_1$ assertion. The trace verifier alone gives neither a uniform
+clock nor a PR witness for that assertion.
+
+\begin{proposition}[Even an isometry with identity prefix modulus can escape]
+With the ordinary bit-name representation, Cantor space has a Type-2
+computable isometry onto itself for which no PR reader with PR slot budget
+computes all output bits.
+\end{proposition}
+\begin{proof}
+Effectively enumerate the finite definitions of unary PR functions
+$f_0,f_1,\ldots$, repeating the zero function on ill-formed codes. A
+Turing interpreter evaluates each well-formed definition by recursion on
+its construction and the numerical recursion argument. It terminates for
+each given input. Define the recursive bit $b(n)$ to be $1$ if $f_n(n)=0$
+and $0$ otherwise. Were $b=f_d$, its Boolean value at $d$ would differ
+from itself. Thus $b$ has no unary PR definition. Now set
+$H(a)(n)=a(n)\mathbin{\mathrm{xor}}b(n)$. This is a computable involution.
+It preserves the first position of disagreement, hence the usual Cantor
+ultrametric, and the first $k$ input bits determine the first $k$ output
+bits. Evaluation of a fixed PR reader on the constant zero oracle is a
+unary PR function by its defining primitive recursion. Such a reader for
+$H$ would compute $b$. This contradiction takes place in the metatheory
+and rules out the proposed uniform algorithm for the indicated representation.
+\end{proof}
+The first obstruction concerns where to ask. The second concerns the
+computation between observations. A conventional machine with a supplied
+PR time bound can be simulated for that many steps: configuration coding,
+one transition, and bounded iteration are PR for a fixed machine model.
+Discharging the time bound and proving extensionality remain mathematical
+obligations. The existence of an arbitrary total computable realizer alone
+does not discharge them.
+
+\paragraph{Lean correspondence.}
+In \texttt{lean/Oracle.lean}, \texttt{Reader.replay},
+\texttt{Reader.tableGuard\_iff\_uses}, and \texttt{Reader.read\_sample}
+formalize the replay proof and its passage from an all-word certificate
+to arbitrary external names. \texttt{WindowMap.thenMap} proves preservation
+of prefix dependence under composition; \texttt{respects\_comp} proves the
+corresponding relation-preservation rule. \texttt{jump\_no\_window} supplies
+explicit counterexample oracles. Lean function spaces express external
+semantics. The companion \texttt{lean/ReplayObject.lean} proves
+\texttt{sparse\_replay} as an object-iPRA derivation. Its arguments include
+the starting term, the PR symbols for querying, reading and updating, two
+arbitrary object input terms, and the terminal slot $N$. Its premise compares
+answers only at queries made by the first run. The induction matrix is
+$i\le N\Rightarrow s_i(x)=s_i(y)$. At an actual application it remains to
+prove agreement on those queries from the supplied window or certificate.
+The diagonal separation above is a metatheorem.

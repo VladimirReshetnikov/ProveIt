@@ -1,0 +1,30 @@
+$ python3 check_packets.py
+Passed 108 comparisons with factor enumeration, LCM tests through 120, and Gaussian splitting tests.
+X       n=100: Packet(b_n=135, b_twice_n=297, difference=27, left=729, right=1677721600000000)
+X^2+1   n=100: Packet(b_n=135, b_twice_n=299, difference=29, left=841, right=42998169600000000)
+X^3-2   n=100: Packet(b_n=111, b_twice_n=267, difference=45, left=2025, right=2174327193600000000)
+Phi_5   n=256: Packet(b_n=377, b_twice_n=701, difference=-53, left=2809, right=16000000000000000000)
+
+$ python3 check_packets.py 5 0 0 1 256
+Packet(b_n=732, b_twice_n=1436, difference=-28, left=784, right=68797071360000000000)
+accepted
+
+$ python3 check_equivalences.py
+84 signed determinant checks, dimensions 1 through 7.
+32 exact gcd/Gram/integral identities, 63 Abel identities, 48 Farey inputs.
+For Mertens and N=6, gcd energy = 17/5
+36 exact Lagarias enclosure and denominator checks.
+168 cyclotomic exponent checks and all 6 smoothing examples.
+
+$ python3 check_power_divisors.py
+Liouville prefixes through 10 (all, 1 mod 3, 2 mod 3): [0, 2, -3]
+9100 exact forward and inverse prefix comparisons, including the empty cutoff.
+
+$ python3 check_new_criteria.py
+Complete splitting: 130 cross-checks including repeated roots.
+n=100: max gap 33, least maximizing modulus 2
+n=200: max gap 18, least maximizing modulus 13
+n=500: max gap 28, least maximizing modulus 20
+Taylor coefficients: 160 exact signed-sum and denominator comparisons.
+3/4+5i inside the disk at 36: False
+3/4+5i inside the disk at 68: True

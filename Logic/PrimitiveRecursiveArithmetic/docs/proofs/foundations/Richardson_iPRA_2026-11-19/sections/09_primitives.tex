@@ -1,0 +1,188 @@
+\section{Elementary analytic primitives with finite bounds}
+\label{app:primitives}
+
+This appendix supplies explicit definitions and sufficient bounds for the
+analytic notation in the report. They are deliberately generous. Their
+role is to make primitive recursiveness and the finite-error proof
+translation transparent, rather than to optimize numerical evaluation.
+
+\subsection{Sine, cosine, exponential, and the constants}
+
+Use the usual power-series definitions, understood as rational
+approximation procedures with the following remainders. For rational $z$,
+let $M=\max(1,\lceil|z|\rceil)$ and
+\[
+ S_N(z)=\sum_{j=0}^{N-1}\frac{(-1)^jz^{2j+1}}{(2j+1)!}.
+\]
+Set $N=2M^2+k+2$. The omitted alternating tail starts in a decreasing
+region, and its absolute value is at most
+\[
+ \frac{M^{2N+1}}{(2N+1)!}
+ \le\left(\frac{M^2}{N+1}\right)^{N+1}
+ \le2^{-(N+1)}\le2^{-k}.
+\]
+For the middle inequality, the final $N+1$ factors of $(2N+1)!$ are
+at least $N+1$, and $M^{2N+1}\le M^{2N+2}$. Consecutive omitted terms
+decrease since their ratio is at most
+$M^2/((2N+2)(2N+3))<1$. Negative arguments follow by oddness.
+Thus this is a single explicitly bounded rational computation.
+
+For $\exp z$ with $|z|\le M$, put $m=2M^2+k+3$ and sum its series
+through degree $2m-1$. The first omitted absolute term satisfies
+\[
+ \frac{M^{2m}}{(2m)!}
+ \le\left(\frac{M^2}{m}\right)^m\le2^{-m}.
+\]
+Subsequent ratios are at most $1/2$, so the whole omitted absolute tail
+is at most $2^{1-m}\le2^{-k}$. The same absolute-series method gives
+cosine approximations. Factorials, finite powers, and rational sums are
+primitive recursive; no analytic convergence test is executed.
+
+For $\log2$, use
+\[
+ \log2=\sum_{j=1}^{\infty}\frac1{j2^j}.
+\]
+The tail after $N$ terms is at most $2^{-N}$. This suffices for every
+precision required by the full language, although the reduction itself
+does not use this constant.
+
+For $\pi$, use Machin's formula
+\begin{equation}\label{eq:machin}
+ \pi=16\arctan(1/5)-4\arctan(1/239),
+ \qquad
+ \arctan r=\sum_{j=0}^{\infty}\frac{(-1)^jr^{2j+1}}{2j+1}.
+\end{equation}
+Truncating both arctangent series after $N=k+2$ terms has combined error
+at most
+\[
+ 20\,5^{-2N-1}\le2^{-k}.
+\]
+The alternating lower and upper bounds already give
+\[
+ 16\left(\frac15-\frac1{3\cdot5^3}\right)-\frac4{239}
+ <\pi<\frac{16}{5},
+\]
+and the rational number on the left is greater than $3$.
+These are finite rational certificates of the numerical bounds used in
+the rounding argument.
+
+\subsection{The elementary identities needed by the construction}
+
+The sine/cosine addition formulas and
+$\sin^2x+\cos^2x=1$ follow from multiplication of their power series.
+For an arithmetical proof, multiply finite sums, prove the finite
+coefficient identities, and bound all omitted terms by the absolute
+series estimates above. An arbitrary requested final precision determines
+the truncation indices. Thus the usual series proof has a direct finite
+implementation; rearrangement of an unbounded sum is unnecessary.
+
+One can verify the relevant consequences of Machin's formula without an
+unbounded search for a trigonometric zero. Put
+$a=\arctan(1/5)$ and $b=\arctan(1/239)$. The addition identities give
+\[
+ \tan(2a)=\frac5{12},\qquad
+ \tan(4a)=\frac{120}{119},\qquad
+ \tan(4a-b)=1.
+\]
+The last identity is the exact rational calculation
+\[
+ \frac{120/119-1/239}{1+(120/119)(1/239)}=1.
+\]
+For $\theta=4a-b$, the series bounds give $0<\theta<1$;
+the sine and cosine of $\theta$ are positive. Thus
+$\sin\theta=\cos\theta$. The circle and addition identities yield
+$\sin(2\theta)=1$, $\cos(2\theta)=0$,
+$\sin(4\theta)=0$, and $\cos(4\theta)=-1$.
+Since \eqref{eq:machin} is $\pi=4\theta$, we obtain exactly
+\[
+ \sin\pi=0,\quad\cos\pi=-1,\quad
+ \sin(\pi/2)=1,\quad\sin(3\pi/2)=-1.
+\]
+Integer-shift periodicity follows by finite induction using addition.
+
+The relation $\tan(\arctan r)=r$ on the small rational interval in use
+also has a finite-series proof. Formally differentiating the series for
+$A(r)=\arctan r$ gives $A'(r)=1/(1+r^2)$. If
+$B(r)=\sin A(r)-r\cos A(r)$, the addition/composition series imply
+$B'(r)=rB(r)/(1+r^2)$ and $B(0)=0$. Coefficient induction gives zero
+for every coefficient of $B$. On $|r|\le1/5$, geometric bounds for
+the tails justify the resulting finite-precision identity. All
+coefficient manipulations concern rational polynomials and bounded sums;
+no general differential-equation existence or uniqueness theorem is used.
+
+We also use
+\begin{equation}\label{eq:sine-basic-bounds}
+ |\sin x|\le1,\qquad
+ |\sin x-\sin y|\le|x-y|,\qquad
+ \sin s\ge s-s^3/6\quad(0\le s\le2).
+\end{equation}
+The first follows from the circle identity. The last follows from the
+alternating series, whose terms decrease on $[0,2]$. For the Lipschitz
+bound, the addition formulas give the finite-increment estimate
+\[
+ |\sin(x+h)-\sin x|\le |h|+h^2
+ \qquad(|h|\le1),
+\]
+using $|\sin h|\le|h|$ and $|1-\cos h|\le h^2/2$ on that interval,
+both immediate from their alternating series. Subdivide $[x,y]$ into
+$r$ equal steps, with $r\ge|x-y|$. Telescoping gives
+\[
+ |\sin x-\sin y|\le |x-y|+\frac{|x-y|^2}{r}.
+\]
+Given a rational error budget $2^{-k}$, obtain an integer magnitude bound
+$M\ge\max(1,|x-y|)$ from the available rational enclosures and choose
+$r\ge\max(M,2^kM^2)$. This proves the Lipschitz inequality in
+finite-precision form. The proof uses only explicitly bounded finite
+telescoping, not a mean-value theorem with an unspecified real witness.
+
+\subsection{A global bound for evaluating arbitrary expression syntax}
+
+After composition has been expanded, let $N$ be the number of expression
+nodes. Choose an integer $B_0\ge8$ dominating the absolute rational input
+and all rational constants in the syntax. Define
+\[
+ B_{j+1}=2^{4B_j},\qquad B=B_N.
+\]
+Every exact subexpression value has magnitude at most $B$. Addition and
+multiplication are covered by the recurrence, sine by $1$, absolute value
+by its argument bound, and exponentiation by
+$\exp(B_j)\le 2^{2B_j}<B_{j+1}$. The constants $\pi$ and $\log2$ are
+covered by $B_0$. The elementary bound for the exponential follows from
+$e<4$ and monotonicity, or directly from its series.
+
+For child errors at most $1$, the local operations have a common error
+amplification bound
+\[
+ L=2^{4(B+1)}.
+\]
+For addition and multiplication this follows from their elementary error
+identities; for sine and absolute value it follows from their Lipschitz
+bounds. For exponential on $[-B-1,B+1]$, its series or a finite-increment
+estimate gives amplification at most $\exp(B+1)<L$.
+
+Evaluate nodes from children to parents, using local approximations of
+error at most $2^{-K}$, where
+\begin{equation}\label{eq:global-precision}
+ K=k+(N+1)\bigl(4(B+1)+2\bigr)+4.
+\end{equation}
+At depth $j$, the accumulated error is bounded by
+\[
+ 2^{-K}(1+L+\cdots+L^j)\le2^{1-K}L^N\le2^{-k}.
+\]
+The same bound is below $1$, so the hypothesis used for each local
+amplification estimate is maintained. A final outward rounding, if
+desired, fits within the generous extra factors in
+\eqref{eq:global-precision}. Alternatively leave the finite rational
+value unrounded.
+
+This constructs the function $\App$ of Lemma~\ref{lem:approx}. The
+variable-height tower $B_N$ is primitive recursive because its height is
+a finite recursion parameter for one fixed exponential operation. The
+recursion does not evaluate arbitrary primitive recursive programs and
+does not contradict the absence of a primitive recursive universal
+interpreter for that larger class.
+
+The much smaller reference implementation in the archive handles only the
+language actually used by the reduction. It uses interval bounds adapted
+to each expression node, instead of the very large uniform tower. Both
+approaches have explicitly predetermined finite precision bounds.

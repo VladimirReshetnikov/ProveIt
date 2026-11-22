@@ -1,0 +1,33 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.15cm,y=.84cm,font=\small,
+  axis/.style={->,gray!70}, drawline/.style={line width=.85pt,color=accent},
+  pt/.style={circle,fill=ink,inner sep=1.55pt}]
+\begin{scope}
+  \draw[axis] (-.2,0)--(2.75,0);\draw[axis] (0,-.22)--(0,2.30);
+  \draw[drawline,dashed] (0,1)--(1,0);
+  \draw[drawline] (0,1.65)--(1.65,0);
+  \node[pt,label=below left:$O$] at (0,0) {};
+  \node[pt,label=below:$I$] at (1,0) {};
+  \node[pt,label=left:$J$] at (0,1) {};
+  \node[pt,label=below:{$(b,0)$}] at (1.65,0) {};
+  \node[pt,label=left:{$(0,b)$}] at (0,1.65) {};
+  \node[anchor=north,font=\sffamily\small] at (1.02,-.62) {Transfer to the second axis};
+\end{scope}
+\begin{scope}[xshift=6.35cm]
+  \draw[axis] (-.2,0)--(2.50,0);\draw[axis] (0,-.22)--(0,3.05);
+  \draw[drawline,dashed] (0,1.65)--(1,0);
+  \draw[drawline] (0,2.64)--(1.6,0);
+  \node[pt,label=below left:$O$] at (0,0) {};
+  \node[pt,label=below:$I$] at (1,0) {};
+  \node[pt,label=below:{$(a,0)$}] at (1.6,0) {};
+  \node[pt,label=left:{$(0,b)$}] at (0,1.65) {};
+  \node[pt,label=left:{$(0,ab)$}] at (0,2.64) {};
+  \node[anchor=north,font=\sffamily\small] at (1.00,-.62) {Read the product};
+\end{scope}
+\end{tikzpicture}
+\caption{Multiplication in the recovered field. In each diagram the solid line
+is parallel to the dashed line. The transfer construction moves the final
+ordinate back to the baseline. The formulas also cover zero and negative
+inputs.}\label{fig:intercept}
+\end{figure}

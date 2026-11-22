@@ -1,0 +1,614 @@
+\section{Coercive equations in presented Hilbert spaces}
+\label{sec:hilbert}
+
+This section supplies an infinite-dimensional application of the framework.
+Its constructive content is stronger than verifying a proposed solution:
+the input data produce a regular solution name with a prescribed
+primitive-recursive clock. It also identifies why the corresponding statement
+for an arbitrary bounded bilinear form and a weakly presented functional
+cannot be asserted without additional information. Computable versions of
+Riesz representation and Lax--Milgram have been studied previously
+\cite{BrattkaYoshikawa2006}; the argument here is a self-contained quantitative
+specialization designed for the arithmetic target.
+
+\subsection{The presentation and its actual inputs}
+
+\begin{definition}[Rational pre-Hilbert presentation]
+A rational pre-Hilbert presentation is a coded rational vector space \(H_0\)
+with primitive-recursive zero, addition and rational scalar multiplication,
+and a rational-valued symmetric positive-definite inner product
+\(\langle\ ,\ \rangle\). All vector-space and inner-product laws have their
+ordinary finite arithmetic proofs. Its named completion \(H\) consists of
+regular names, identified by distance zero. We write
+\(\|v\|^2=\langle v,v\rangle\).
+\end{definition}
+
+Examples are finite rational sequences with their Euclidean inner product,
+or rational polynomials vanishing at \(0,1\), with inner product
+\(\int_0^1p'q'\). The dimension of a finite code may grow during an
+algorithm. There is no hypothesis that \(H\) is finite-dimensional or totally
+bounded.
+
+Norms need not be computed by a real square root. For \(v\in H_0\) and
+rational \(r\geq0\), the test \(\|v\|\leq r\) means
+\(\langle v,v\rangle\leq r^2\). Rational upper approximations to a norm can
+be obtained by a bounded integer square-root calculation. For example,
+search integers \(j\) up to
+\(\lceil2^t(2+\langle v,v\rangle)\rceil\) for the first
+\((j2^{-t})^2\geq\langle v,v\rangle\).
+The returned upper radius differs from the norm by at most \(2^{-t}\).
+
+\begin{definition}[Strong operator and vector data]
+\label{def:strong-operator}
+Fix primitive-recursive maps
+\[
+ a:H_0\times\N\longrightarrow H_0,\qquad b:\N\longrightarrow H_0.
+\]
+They name a real-linear operator \(A:H\to H\) and a vector \(b_\infty\in H\)
+with errors
+\[
+ \|a(v,k)-Av\|\leq2^{-k},\qquad
+ \|b(k)-b_\infty\|\leq2^{-k}.
+ \tag{H1}
+\]
+Positive rational inputs \(m,M\), with \(m\leq M\), and a rational \(B\geq0\)
+certify
+\[
+ \langle Av,v\rangle\geq m\|v\|^2,\qquad
+ \|Av\|\leq M\|v\|,\qquad \|b_\infty\|\leq B.
+ \tag{H2}
+\]
+The maps and their proved certificates, not an unnamed abstract operator, are
+the inputs to the arithmetic construction.
+\end{definition}
+
+The notation in (H1)--(H2) has a finite reading. One supplies the pairwise
+Cauchy estimates for \(a(v,k)\) and \(b(k)\); approximate linearity, for example
+\[
+\|a(sv+tw,k)-s\,a(v,k)-t\,a(w,k)\|
+       \leq(1+|s|+|t|)2^{-k};
+\]
+and boundedness and coercivity estimates with approximation errors.
+For coercivity an adequate entirely rational contract is
+\[
+\langle a(v,k),v\rangle
+ \geq m\langle v,v\rangle-2^{-k}(1+\langle v,v\rangle).
+\]
+For boundedness one may use every rational upper radius \(r\) of \(v\):
+\[
+\langle v,v\rangle\leq r^2
+ \ \Longrightarrow\ \|a(v,k)\|\leq Mr+2^{-k}.
+\]
+Here \(r\) is a free numerical parameter. These contracts define the named
+operator by extension from the dense space and prove (H2); rational
+separation removes auxiliary errors. Conversely, (H1)--(H2) immediately
+give these finite contracts. For the exact \(2^{-k}\) approximation in (H1),
+one can normalize the supplied Cauchy family by a fixed precision shift.
+One must prove the contracts for a concrete presentation; merely storing an
+assertion alongside the code is insufficient.
+
+\subsection{The elementary quantitative engine}
+
+\begin{lemma}[Perturbed contraction]
+\label{lem:perturb}
+Let \(0\leq q<1\), \(\delta=1-q\), and suppose nonnegative quantities satisfy
+\[
+             e_{j+1}\leq q e_j+\eta,\qquad e_0\leq R .
+\]
+Then
+\[
+ e_j\leq q^jR+\eta\sum_{i<j}q^i
+       =q^jR+\frac{\eta(1-q^j)}{\delta}
+       \leq q^jR+\frac{\eta}{\delta}.
+ \tag{H3}
+\]
+All claims about rational inputs are quantifier-free induction consequences.
+\end{lemma}
+\begin{proof}
+At \(j=0\) the finite sum is zero. Multiplying the inductive estimate by
+\(q\geq0\), adding \(\eta\), and reindexing gives the next
+estimate. The geometric identity follows by subtracting \(q\) times the
+sum from the sum. The denominator is positive. These are finite addition,
+multiplication, comparison and induction steps.
+\end{proof}
+
+\begin{lemma}[A clock without logarithms]
+\label{lem:clock}
+If \(0<\delta\leq1\), \(q=1-\delta\), and \(h\in\N\) satisfies \(h\delta\geq1\),
+then \(q^h\leq\tfrac12\). Consequently, for integers \(R\geq1\),
+\[
+       N_n=h(n+R+3)\quad\Longrightarrow\quad
+       Rq^{N_n}\leq2^{-n-3}.
+ \tag{H4}
+\]
+\end{lemma}
+\begin{proof}
+Induction gives
+\((1+j\delta)(1-\delta)^j\leq1\).
+For the step use
+\[
+(1+(j+1)\delta)(1-\delta)
+=1+j\delta-(j+1)\delta^2\leq1+j\delta.
+\]
+At \(j=h\), \(1+h\delta\geq2\).
+Now \(q^{h(n+R+3)}\leq2^{-(n+R+3)}\).
+The elementary inequality \(R\leq2^R\) proves (H4).
+\end{proof}
+
+\begin{lemma}[Coercivity supplies the contraction gap]
+\label{lem:coercive-contraction}
+For the data in Definition~\ref{def:strong-operator}, put
+\[
+ \lambda=\frac{m}{M^2},\quad
+ \delta=\frac{m^2}{2M^2},\quad q=1-\delta,\quad
+ T(v)=v-\lambda Av+\lambda b_\infty .
+ \tag{H5}
+\]
+Then \(1/2\leq q<1\) and
+\[
+                     \|T(v)-T(w)\|\leq q\|v-w\|.
+ \tag{H6}
+\]
+\end{lemma}
+\begin{proof}
+Write \(z=v-w\). Real linearity and (H2) give
+\[
+\begin{split}
+\|z-\lambda Az\|^2
+ &=\|z\|^2-2\lambda\langle Az,z\rangle+\lambda^2\|Az\|^2\\
+ &\leq(1-2\lambda m+\lambda^2M^2)\|z\|^2\\
+ &=(1-2\delta)\|z\|^2
+ \leq(1-\delta)^2\|z\|^2 .
+\end{split}
+\]
+Both comparison radii are nonnegative, so this proves (H6).
+The finite rational proof expands the same squared inner product. Auxiliary
+precision parameters account for evaluations of \(A\), and their errors are
+removed by Lemma~\ref{lem:separation}. No spectral theorem, eigenvector
+selection, orthonormal basis, or minimization principle is required.
+\end{proof}
+
+\subsection{A solution producer with all resource bounds}
+
+Choose the explicit natural numbers
+\[
+\begin{split}
+h&=\ceil{1/\delta},\qquad
+R=\max(1,\ceil{\lambda B/\delta}),\qquad
+C=\max(1,\ceil{2\lambda/\delta}),\\
+k_n&=n+3+C,\qquad N_n=h(n+R+3),\qquad
+\eta_n=\delta\,2^{-n-3}.
+\end{split}
+\tag{H7}
+\]
+For requested output precision \(n\), run the finite recurrence
+\[
+\begin{split}
+ z^{\,n}_0&=0,\\
+ z^{\,n}_{j+1}
+   &=z^{\,n}_j-\lambda a(z^{\,n}_j,k_n)+\lambda b(k_n)
+       \quad(j<N_n),\\
+ c_n&=z^{\,n}_{N_n}.
+\end{split}
+\tag{H8}
+\]
+Every operation in (H7)--(H8) is primitive recursive on finite codes.
+On malformed inputs or invalid positive constants the producer can
+return \(0\); correctness is asserted on the valid domain.
+
+\begin{theorem}[Quantitative operator Lax--Milgram]
+\label{thm:hilbert-solver}
+The sequence \(c_n\) produced by (H8) is regular and defines a unique
+solution \(u\) of \(Au=b_\infty\). More precisely,
+\[
+\begin{gathered}
+       \|c_n-c_\ell\|\leq2^{-n-1}\quad(\ell\geq n),\\
+       \|c_n-u\|\leq2^{-n-2},\qquad
+       \|u\|\leq B/m.
+\end{gathered}
+\tag{H9}
+\]
+The construction is uniform in the numerical inputs and schematic in the
+fixed primitive-recursive operator and vector producers.
+\end{theorem}
+\begin{proof}
+Let \(F_n(v)\) denote the finite update in (H8). Since \(2^C\geq C\),
+\[
+ \|F_n(v)-T(v)\|\leq2\lambda\,2^{-k_n}
+                  \leq\delta2^{-n-3}=\eta_n.
+ \tag{H10}
+\]
+Thus for any precision levels and inputs,
+\[
+\|F_n(v)-F_\ell(w)\|
+ \leq q\|v-w\|+\eta_n+\eta_\ell .
+\tag{H11}
+\]
+This is the central finite comparison contract.
+
+First bound every intermediate state. Since
+\(\|T(0)\|\leq\lambda B\leq\delta R\), induction gives
+\[
+\|z^{\,\ell}_j\|\leq R+\eta_\ell/\delta.
+\tag{H12}
+\]
+Multiplication by \(q\), followed by addition of
+\(\delta R+\eta_\ell\), preserves this bound.
+
+Now fix \(\ell\geq n\), so \(N_\ell\geq N_n\).
+Compare the \(n\)-run with the \emph{last \(N_n\) steps} of the \(\ell\)-run:
+\[
+             z^{\,n}_i
+       \quad\hbox{and}\quad z^{\,\ell}_{N_\ell-N_n+i},
+                    \qquad 0\leq i\leq N_n.
+\]
+Their initial distance is at most \(R+\eta_\ell/\delta\) by (H12).
+Lemma~\ref{lem:perturb} and (H11) bound the final distance by
+\[
+\begin{split}
+q^{N_n}(R+\eta_\ell/\delta)+(\eta_n+\eta_\ell)/\delta
+ &\leq Rq^{N_n}+\eta_n/\delta+2\eta_\ell/\delta\\
+ &\leq2^{-n-3}+2^{-n-3}+2\cdot2^{-\ell-3}\\
+ &\leq2^{-n-1}.
+\end{split}
+\tag{H13}
+\]
+This proves regularity directly from two finite executions. The existence of
+\(u\) was not assumed to prove convergence. The completion interpretation
+of this regular name gives \(u\).
+Taking arbitrarily fine comparison indices \(\ell\) in (H13) gives the sharper
+\(\|c_n-u\|\leq Rq^{N_n}+\eta_n/\delta\leq2^{-n-2}\).
+In the arithmetic reading this is a family of rational inequalities and
+rational separation, not an added real limit rule.
+
+To prove the equation using only comparisons of finite states, extend a run
+by one more step and set \(w_j=\|z^{\,n}_{j+1}-z^{\,n}_j\|\).
+By (H11),
+\[
+w_0\leq\lambda B+\eta_n,\qquad
+w_{j+1}\leq q w_j+2\eta_n.
+\]
+Consequently
+\[
+\begin{split}
+\|T(c_n)-c_n\|
+ &\leq w_{N_n}+\eta_n\\
+ &\leq q^{N_n}(\lambda B+\eta_n)+2\eta_n/\delta+\eta_n\\
+ &\leq(2+3\delta)\,2^{-n-3}.
+\end{split}
+\tag{H14}
+\]
+The last bound is deliberately loose and tends to zero with an explicit
+dyadic rate. Continuity of \(T\), the approximation estimate, and (H14)
+show \(T(u)=u\). Since \(\lambda>0\), this is \(Au=b_\infty\).
+
+If \(Au=Av\), coercivity applied to \(u-v\) gives
+\(m\|u-v\|^2\leq0\), hence equality of the represented points.
+Finally
+\[
+m\|u\|^2\leq\langle Au,u\rangle
+ =\langle b_\infty,u\rangle\leq B\|u\|
+\]
+implies \(\|u\|\leq B/m\). This implication can be checked by rational upper
+and lower tests; it does not require deciding whether the real norm is zero.
+\end{proof}
+
+\paragraph{Why this is an arithmetic proof plan.}
+The state bound (H12), shifted two-run bound (H13), and adjacent-state bound
+in (H14) are finite loop invariants. After replacing norms by rational upper
+radii they are quantifier-free inequalities in state codes, loop counters,
+constants, and chosen precision indices. A final observation point or test
+vector is fixed before induction. The exact \(T\) in the notation is
+eliminated using finite evaluators at an auxiliary precision; all additional
+errors have explicit finite geometric-sum bounds. Separation yields (H11).
+There is no induction on the formula ``\(z_j\) denotes a solution'' or on a
+formula quantifying over the Hilbert space.
+Section~\ref{sec:formalization} specifies the object-code obligations.
+
+\begin{corollary}[Residual certification and stability]
+\label{cor:residual}
+For every represented \(v\),
+\[
+                   \|v-u\|\leq \frac{\|Av-b_\infty\|}{m}.
+\tag{H15}
+\]
+Suppose a second operator \(\widetilde A\) has the same coercivity lower
+bound \(m\), solution \(\widetilde u\), and data bound
+\(\|\widetilde b\|\leq\widetilde B\). If
+\[
+\|b_\infty-\widetilde b\|\leq\beta,\qquad
+\|(A-\widetilde A)x\|\leq\xi\|x\|,
+\]
+then
+\[
+       \|u-\widetilde u\|
+       \leq \frac{\beta}{m}+\frac{\xi\widetilde B}{m^2}.
+\tag{H16}
+\]
+\end{corollary}
+\begin{proof}
+For \(w=v-u\), coercivity and Cauchy--Schwarz give
+\(m\|w\|^2\leq\langle Av-b_\infty,w\rangle
+\leq\|Av-b_\infty\|\|w\|\).
+The same nonnegative inequality argument as above proves (H15).
+Apply it to \(\widetilde u\), whose residual under \(A\) is
+\((A-\widetilde A)\widetilde u+\widetilde b-b_\infty\), and use
+\(\|\widetilde u\|\leq\widetilde B/m\).
+\end{proof}
+
+Solving is therefore uniformly continuous on a stratum with a supplied
+positive coercivity bound. The constants explain precisely why no uniform
+extension to \(m=0\) is asserted.
+
+\subsection{A real boundary-value problem, including variable coefficients}
+\label{subsec:pde}
+
+The following application constructs the strong operator instead of
+postulating it. Let \(P=\Q[x]\) and
+\(P_0=\{p\in\Q[x]:p(0)=p(1)=0\}\).
+Equip \(P\) with inner product \(\int_0^1pq\), and \(P_0\) with
+\[
+                 \langle p,q\rangle_E=\int_0^1p'(x)q'(x)\,dx .
+\]
+All integrals are rational, since
+\(\int_0^1x^j\,dx=1/(j+1)\).
+These forms are positive definite. For a nonzero rational polynomial of degree
+\(d\), one of \(d+1\) distinct rational interior points has nonzero value:
+otherwise its coefficient vector is annihilated by an invertible Vandermonde
+matrix. A coefficient bound gives an explicit Lipschitz constant, and hence
+a rational interval on which its square has a positive rational lower bound.
+Its squared integral is therefore positive. For the energy form, a polynomial
+with zero derivative is constant, and the endpoint condition forces that
+constant to be zero. This also gives finite arithmetic proofs of the
+pre-Hilbert premises.
+Let \(L^2_P\) and \(H_E\) denote the named completions.
+These are the chosen presentations of the \(L^2\) and zero-boundary energy
+spaces; no general measurable-set universe is needed.
+
+\begin{lemma}[Polynomial inequalities and Green operator]
+\label{lem:green}
+For \(v\in P_0\),
+\[
+          \sup_{0\leq x\leq1}|v(x)|\leq\|v\|_E,\qquad
+          \|v\|_{L^2}\leq\|v\|_E .
+\tag{H17}
+\]
+For \(p\in P\) define
+\[
+(Gp)(x)=x\int_0^1(1-t)p(t)\,dt-\int_0^x(x-t)p(t)\,dt .
+\tag{H18}
+\]
+Then \(Gp\in P_0\), \(-(Gp)''=p\), and
+\[
+  \langle Gp,v\rangle_E=\int_0^1p v,\qquad
+  \|Gp\|_E\leq\|p\|_{L^2}.
+\tag{H19}
+\]
+\end{lemma}
+\begin{proof}
+The finite polynomial identity \(v(x)=\int_0^x v'(t)\,dt\) and
+Cauchy--Schwarz give
+\(|v(x)|^2\leq x\int_0^x(v')^2\leq\|v\|_E^2\).
+Integrating yields (H17). The integrals in (H18) are explicit polynomial
+antiderivatives, so the endpoint and second-derivative assertions follow
+by coefficient calculation. Polynomial integration by parts, with the
+zero boundary values, proves the first equation in (H19). Taking \(v=Gp\),
+\[
+\|Gp\|_E^2=\int p\,Gp
+ \leq\|p\|_{L^2}\|Gp\|_{L^2}
+ \leq\|p\|_{L^2}\|Gp\|_E,
+\]
+which proves the norm estimate.
+
+Cauchy--Schwarz for polynomial integrals follows by integrating the square
+of \(sp+tq\) and using nonnegativity for every rational \(s,t\); the resulting
+quadratic has the required discriminant inequality. Nonnegativity of the
+integral of a polynomial known nonnegative on an interval follows from
+finite Riemann sums and its explicit polynomial Lipschitz bound. Thus every
+analytic-looking step has a finite rational-sum proof with a modulus, as in
+the existing integration packet \cite{repoFramework}. The integration and
+derivative identities themselves are exact finite coefficient identities.
+\end{proof}
+
+An energy name therefore defines a uniform continuous-function name:
+(H17) bounds its uniform error by its energy error. The derivative need only
+be an \(L^2\) name; a pointwise derivative is not inferred.
+
+\begin{theorem}[A weak elliptic Dirichlet equation]
+\label{thm:pde}
+Suppose \(a\) is given by primitive-recursive rational polynomials \(a_k\)
+with uniform error at most \(2^{-k}\) on \([0,1]\), and rational bounds
+\[
+                     0<m\leq a(x)\leq M .
+\]
+Suppose \(f\in L^2_P\) is given by a primitive-recursive polynomial name
+\(f_k\), with \(\|f_k-f\|_{L^2}\leq2^{-k}\) and \(\|f\|_{L^2}\leq B\).
+Then a primitive-recursive regular sequence of rational zero-boundary
+polynomials names a unique \(u\in H_E\) such that
+\[
+                \int_0^1 a\,u'v'=\int_0^1f v
+                         \qquad(v\in H_E).
+\tag{H20}
+\]
+Its energy error at index \(n\) is at most \(2^{-n-2}\); the same bound
+holds in uniform norm. Equation (H20) is the weak meaning of
+\(-\left(a u'\right)'=f\), \(u(0)=u(1)=0\).
+\end{theorem}
+\begin{proof}
+For \(v\in P_0\), define \(Av\) by its derivative
+\[
+ (Av)'=a v'-\int_0^1a(t)v'(t)\,dt,\qquad (Av)(0)=0.
+\tag{H21}
+\]
+The derivative has mean zero, so also \((Av)(1)=0\).
+Its energy interpretation is obtained by replacing \(a\) with a rational
+polynomial approximation, integrating, and subtracting the mean.
+The map \(g\mapsto g-\int_0^1g\) is contractive in \(L^2\), because
+\[
+       \int_0^1(g-\overline g)^2
+                      =\int_0^1g^2-\overline g^{\,2}\leq\int_0^1g^2 .
+\tag{H22}
+\]
+An approximation \(a_k\) consequently changes (H21) by at most
+\(2^{-k}\|v\|_E\).
+The rational \(U(v)=1+\|v\|_E^2\) bounds \(\|v\|_E\).
+For accuracy \(2^{-r}\), take
+\(k=r+\max(1,\lceil U(v)\rceil)\).
+Then \(2^{-k}U(v)\leq2^{-r}\).
+This constructs a primitive-recursive strong evaluator of \(A\).
+
+For \(v,w\in P_0\), the mean in (H21) contributes nothing to
+\(\int(Av)'w'\), because \(\int_0^1w'=0\). Hence
+\[
+ \langle Av,w\rangle_E=\int_0^1a v'w',\qquad
+ \langle Av,v\rangle_E\geq m\|v\|_E^2,\qquad
+ \|Av\|_E\leq M\|v\|_E.
+\tag{H23}
+\]
+The last inequality follows from (H22) and
+\(\|a v'\|_{L^2}\leq M\|v'\|_{L^2}\).
+The explicit polynomial errors prove the same inequalities in the
+completion. All strong-operator data have now been constructed.
+
+Set \(b_\infty=Gf\) using (H18)'s extension. Equation (H19) gives the
+strong evaluator \(Gf_k\), the required error, and \(\|b_\infty\|_E\leq B\).
+Theorem~\ref{thm:hilbert-solver} produces \(Au=Gf\).
+Pairing with \(v\) and using (H19), (H23) proves (H20), first for polynomials
+and then for regular energy names by the displayed boundedness inequalities.
+The same approximation argument defines the products and integrals in
+(H20), with errors controlled by Cauchy--Schwarz.
+Uniqueness and the uniform error follow from coercivity and (H17).
+\end{proof}
+
+\begin{example}[An exactly checkable continuous example]
+\label{ex:pde}
+Take \(a(x)=1+x\), \(f(x)=1\), \(m=1\), \(M=2\), \(B=1\).
+Then \(\lambda=1/4\), \(\delta=1/8\), \(h=8\), \(R=2\), \(C=4\), and
+\(N_n=8(n+5)\). Both \(A\) and \(Gf=x(1-x)/2\) have exact rational-polynomial
+evaluators. Starting at \(0\), (H8) computes a polynomial of degree at most
+\(N_n+1\). The classical expression for the same solution is
+\[
+                       u(x)=\frac{\log(1+x)}{\log 2}-x .
+\]
+Indeed \((1+x)u'(x)=1/\log2-(1+x)\), its derivative is \(-1\), and both
+endpoints vanish. This expression is explanatory only: the polynomial
+producer and its error proof do not depend on evaluating a logarithm.
+The companion program checks rational energy residuals of the produced
+polynomials and uses (H15) to certify them.
+\end{example}
+
+\subsection{Why weak functional data are insufficient}
+\label{subsec:riesz}
+
+The word \emph{strong} in Definition~\ref{def:strong-operator} matters.
+A bilinear form given only by values on finite rational vectors need not
+give a strong operator evaluator; similarly a bounded functional need not
+give a norm-convergent name for its representing vector.
+
+\begin{theorem}[Exact missing datum for a rational \(\ell^2\) vector]
+\label{thm:tail-equivalence}
+Let \(a_i\in\Q\) be a fixed primitive-recursive sequence whose finite squared
+sums have a supplied common upper bound. The following data are equivalent:
+\begin{enumerate}
+\item a primitive-recursive strong \(\ell^2\) name with coordinates \(a_i\);
+\item a primitive-recursive tail modulus \(\tau\) such that, for all \(k\)
+and finite \(L\geq\tau(k)\),
+\[
+                    \sum_{\tau(k)\leq i<L}a_i^2\leq4^{-k}.
+\tag{H24}
+\]
+\end{enumerate}
+Both directions are explicit transformations without unbounded search.
+\end{theorem}
+\begin{proof}
+Replace \(\tau(k)\) by \(\max_{j\leq k}\tau(j)\) if necessary.
+The vector of the first \(\tau(k)\) coordinates is a regular name:
+the squared distance between its \(k\)-th and \(\ell\)-th truncations,
+\(\ell\geq k\), is bounded by (H24).
+There is no need to assume \(\tau(k)\to\infty\). If a fixed coordinate is
+still omitted, (H24), applied to the finite tail ending at that coordinate,
+bounds its absolute value by \(2^{-k}\). Thus the represented coordinate
+is \(a_i\) in either case.
+
+Conversely, let \(p_k\) be a finite-support rational vector at distance
+at most \(2^{-k}\) from the named vector. Choose \(\tau(k)\) larger than
+every index in its support. On every finite coordinate interval starting at
+\(\tau(k)\), \(p_k\) vanishes. Orthogonal projection onto that interval is
+contractive, so the squared sum of the corresponding \(a_i\)'s is bounded
+by \(4^{-k}\). The projection inequality says merely that a partial sum of
+nonnegative rational squares is at most the full sum. For named coordinates
+use finer approximants and rational separation. The support bound is
+computed from the code \(p_k\), and hence is primitive recursive.
+\end{proof}
+
+\begin{proposition}[A bounded functional without a computable strong representative]
+\label{prop:riesz-obstruction}
+There is a rational primitive-recursive functional on finite rational
+sequences, with norm bound \(1\), whose continuous extension to
+\(\ell^2\) has no computable strong Riesz representative. In particular,
+the missing tail modulus cannot be uniformly manufactured in \(\ipra\).
+\end{proposition}
+\begin{proof}
+Fix a standard effective enumeration of machines and a primitive-recursive
+pairing \(\langle e,t\rangle\). Whether machine \(e\) first halts at step
+\(t\) is decided by a bounded simulation. Define
+\[
+ a_{\langle e,t\rangle}=
+ \begin{cases}
+ 2^{-e-1},&\text{if \(e\) first halts at step \(t\)},\\
+ 0,&\text{otherwise.}
+ \end{cases}
+\tag{H25}
+\]
+This is a primitive-recursive rational sequence. Each \(e\) contributes
+at most one nonzero square, so every finite squared sum is at most
+\(\sum_{e\geq0}4^{-e-1}=1/3<1\). Only the finite geometric-sum inequality
+is needed to prove this bound.
+
+For finite rational \(v\), put \(L(v)=\sum_i a_i v_i\).
+This is a primitive-recursive exact finite sum, and Cauchy--Schwarz gives
+\(|L(v)|\leq\|v\|\). It extends to a computable functional on strong
+\(\ell^2\) names: apply it to an input approximant and retain the same error.
+A Riesz representative must have coordinate \(L(e_i)=a_i\).
+
+A computable strong name for that representative would, by the proof of
+Theorem~\ref{thm:tail-equivalence}, give a computable tail modulus.
+For a machine \(e\), put \(N=\tau(e+2)\). A nonzero coordinate
+\(\langle e,t\rangle\geq N\) would contribute
+\(4^{-e-1}>4^{-e-2}\) to a finite tail, contradicting (H24).
+Thus \(e\) halts exactly when one of the finitely many coordinates \(i<N\)
+encoding \(e\) is nonzero. This decides the halting problem, a contradiction
+by its elementary diagonal undecidability proof.
+\end{proof}
+
+This is a metatheoretic noncomputability result, not a formal independence
+proof of a particular sentence of \(\ipra\).
+It already blocks an unrestricted computable solution operator: take the
+bilinear form \(\langle u,v\rangle\) and the functional \(L\). The weak
+Lax--Milgram conclusion would require exactly the missing strong
+representative. The positive PDE theorem avoids this problem by constructing
+its Green representative and strong operator.
+
+\begin{corollary}[Coercive bilinear values need not supply a strong operator]
+\label{cor:bilinear-obstruction}
+Even an exactly primitive-recursive bilinear form on finite rational vectors,
+with coercivity bound \(1\) and boundedness constant \(2\), need not have
+a computable strong representing operator.
+\end{corollary}
+\begin{proof}
+Use the functional \(L\) just constructed and set
+\(\mathfrak a(v,w)=\langle v,w\rangle+L(v)L(w)\).
+This form is computed by rational finite sums. Its diagonal is at least
+\(\|v\|^2\), and Cauchy--Schwarz and \(\|L\|\leq1\) give
+\(|\mathfrak a(v,w)|\leq2\|v\|\|w\|\).
+In the ordinary completion its representing operator is \(A=I+a\otimes a\),
+where \(a\) is the vector of coordinates (H25).
+Choose the index \(j\) of a known immediately halting machine and its known
+halting time. Then \(a_j>0\) is a specified rational. A strong evaluator of
+\(A\), applied to the finite basis vector \(e_j\), would give the computable
+strong name
+\[
+                              a=(Ae_j-e_j)/a_j.
+\]
+This contradicts Proposition~\ref{prop:riesz-obstruction}.
+\end{proof}

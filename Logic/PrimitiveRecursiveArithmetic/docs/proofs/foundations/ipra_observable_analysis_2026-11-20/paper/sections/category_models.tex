@@ -1,0 +1,472 @@
+\section{Normed chain complexes: repairing homotopies from a finite defect}
+\label{sec:chain-repair}
+
+The useful categorical output in this section is an explicitly represented
+inverse \emph{up to chain homotopy}.  It is obtained from a quantitative
+certificate, without first constructing homology groups, selecting quotient
+representatives, or deciding membership in an image.  The underlying
+perturbation idea is classical; see Crainic~\cite{crainic2004}, especially
+Sections~2.2--2.3 and~3.4.  What matters here is its organization into exact
+finite identities, rational bounds, a primitive recursive precision schedule,
+and a precisely delimited iPRA application.
+
+The existing categorical material already distinguishes fixed presentations,
+finite tables, and an external category of specified programs
+\cite{repo-categories}.  We retain that distinction.  Its obstruction to
+selecting representatives merely from a bound on the number of components
+\cite{repo-obstacles} is not removed by the construction below.  Instead,
+an explicit contracting operator supplies the missing witness in a stable
+analytic situation.
+
+\subsection{Data and meaning of the norm bounds}
+
+Fix a finite band of degrees and a graded rational normed vector space
+$C_0=\bigoplus_i(C_0)_i$.  Each summand may be infinite dimensional.
+Valid core vectors, addition, rational scalar multiplication, and a rational
+norm are given by fixed PR recipes.  Their algebraic and norm laws are
+supplied with the arithmetic proofs required by the framework.  Write
+$\widehat C$ for the space of represented Cauchy names over this core.
+This notation is external shorthand for the represented objects; it does
+not quantify in iPRA over all sequences or over all real vectors.
+
+A differential is a fixed linear recipe $D$ of degree $-1$, satisfying
+$D^2x=0$ and $\|Dx\|\le B_D\|x\|$ on valid core vectors.  A candidate
+contracting homotopy is a fixed linear recipe $h$ of degree $+1$, with
+$\|hx\|\le H\|x\|$.  At the ends of the degree band the unavailable
+components are zero.  The bounds extend these maps to represented
+completions.  Throughout this section, notation such as $\|T\|\le b$
+means the supplied assertion
+\[
+                         \|Tx\|\le b\|x\|
+                         \quad\hbox{for every valid }x.
+\]
+It does not require computing an operator norm as an unbounded supremum.
+Only the fixed recipes that occur in the proof are used.
+
+The core-preserving case gives a direct PR construction.  The same finite
+proof applies to represented operators that take core points to Cauchy
+names when their finite compositions are supplied with evaluation and error
+contracts.  In that version the error ledger must pay for those evaluations;
+the algebraic identities alone do not supply them.  In particular, arbitrary
+bounded operators are not silently included in a uniform evaluation domain.
+
+Define the degree-zero defect and its finite correction by
+\begin{equation}
+ R=I-Dh-hD,\qquad
+ S_N=\sum_{j=0}^{N-1}R^j,\qquad h_N=hS_N,\qquad S_0=0.
+ \label{eq:chain-defect}
+\end{equation}
+All products mean composition, with the rightmost operator applied first.
+The candidate need not satisfy $h^2=0$, and $h$ need not commute with $R$.
+
+\begin{lemma}[Exact finite correction]
+\label{lem:finite-chain-correction}
+For every natural number $N$,
+\begin{equation}
+ DR=RD,\qquad DS_N=S_ND,\qquad
+                Dh_N+h_ND=I-R^N.
+ \label{eq:chain-finite-identity}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Expanding the first equation and using $D^2=0$ gives
+\[
+ DR=D-D^2h-DhD=D-DhD
+    =D-DhD-hD^2=RD.
+\]
+Induction on $j$ gives $DR^j=R^jD$: the successor calculation is
+$DR^{j+1}=(DR^j)R=R^jDR=R^{j+1}D$.
+Adding these equations proves $DS_N=S_ND$.  The two finite telescoping
+identities are
+\[
+ (I-R)S_N=I-R^N=S_N(I-R).
+\]
+They hold for $N=0$ because both sides are zero.  Adding $R^N$ to $S_N$
+adds $R^N-R^{N+1}$ to either product, which proves the successor step.
+Finally,
+\[
+ Dh_N+h_ND
+   =DhS_N+hS_ND
+   =(Dh+hD)S_N
+   =(I-R)S_N=I-R^N.
+\]
+Every step is an equation of finite terms.  In particular, this proof does
+not use convergence, commutativity of the operator algebra, or a side
+condition on $h^2$.
+\end{proof}
+
+\subsection{A fully explicit correction schedule}
+
+Assume a rational defect certificate
+\begin{equation}
+      0\le\rho\le 1-2^{-s},\qquad
+      \|R\|\le\rho,\qquad H\le 2^c,
+      \qquad s,c\in\mathbb N.
+ \label{eq:chain-margin}
+\end{equation}
+The non-strict rational inequality contains a positive margin even when the
+actual operator norm is unknown.  A bare assertion $\|R\|<1$ must first
+provide such a usable margin before it can serve as a numerical contract.
+
+For $M\ge N$, finite expansion gives
+\begin{align}
+ \|h_N\|&\le H\sum_{j<N}\rho^j
+                  \le\frac{H}{1-\rho},\label{eq:chain-bound}\\
+ \|h_M-h_N\|&\le H\sum_{j=N}^{M-1}\rho^j
+                  \le\frac{H\rho^N}{1-\rho}.
+                  \label{eq:chain-tail}
+\end{align}
+These are finite geometric-sum estimates.  For example,
+$(1-\rho)\sum_{j<N}\rho^j=1-\rho^N\le1$; multiplication by the
+positive denominator justifies the displayed rational bound.  Bounds for
+products follow from applying the two operator inequalities successively
+to an arbitrary vector.  Thus no supremum principle is hidden here.
+
+Here is a schedule that uses no logarithm, exponential approximation,
+or unbounded least search.  For $0\le a\le1$, induction on $m$ proves
+\begin{equation}
+                   (1-a)^m(1+ma)\le1.
+ \label{eq:rational-geometric-block}
+\end{equation}
+Indeed,
+$(1-a)(1+(m+1)a)=1+ma-(m+1)a^2\le1+ma$.
+Taking $a=2^{-s}$ and $m=2^s$ gives
+$\rho^{2^s}\le1/2$, hence
+\[
+                         \rho^{2^s t}\le2^{-t}.
+\]
+Consequently
+\begin{equation}
+                  N(n)=2^s(n+s+c+2)
+                  \label{eq:chain-schedule}
+\end{equation}
+makes the right side of \eqref{eq:chain-tail} at most $2^{-n-2}$.
+After denominators are cleared, the induction invariant in
+\eqref{eq:rational-geometric-block} is a quantifier-free inequality of
+PR integer terms.  This is an explicit use of quantifier-free induction,
+rather than induction over a proposition about all completed vectors.
+
+\begin{theorem}[Repair of a represented contracting homotopy]
+\label{thm:chain-repair}
+Under the stated presentation laws and \eqref{eq:chain-margin}, the recipes
+$h_N$ define a represented bounded linear map $\mathcal H$ on
+$\widehat C$ satisfying
+\begin{equation}
+ \|\mathcal H\|\le\frac{H}{1-\rho}\le2^{s+c},\qquad
+ D\mathcal H+\mathcal H D=I,
+ \label{eq:chain-repaired}
+\end{equation}
+and
+\begin{equation}
+          \|\mathcal H-h_N\|
+                   \le\frac{H\rho^N}{1-\rho}.
+          \label{eq:chain-limit-tail}
+\end{equation}
+The map and all its requested observations have fixed PR recipes.
+\end{theorem}
+\begin{proof}
+For a fixed core vector $x$, the estimate \eqref{eq:chain-tail}, multiplied
+by a supplied bound on $\|x\|$, gives a PR Cauchy modulus for $h_Nx$.
+The completion construction therefore represents its limit.
+There is also an explicit diagonal formula for a non-core input.
+Suppose $x_m$ is the fixed PR name of $x$, with
+$\|x-x_m\|\le2^{-m}$ and $\|x\|\le2^b$.  Set
+\[
+ m=n+s+c+3,\qquad
+ N=2^s(n+b+s+c+3),\qquad y_n=h_Nx_m.
+\]
+The error from the input name is at most
+$2^{s+c}2^{-m}=2^{-n-3}$.  The truncation error on $x$ is at most
+$2^{s+c+b}\rho^N\le2^{-n-3}$.  Thus $y_n$ is a rational-core
+observation of the desired output with error at most $2^{-n-2}$.
+The use of $x_m$ is schematic over this fixed name program, not an
+evaluation operation for arbitrary PR program codes.
+
+Each $h_N$ is linear.  To prove linearity of the limit, put the finitely
+many inputs in one ball, use the same sufficiently large cutoff for all
+of them, and apply the linearity equation for that finite cutoff.  The
+sum of the explicitly bounded tail errors tends to zero with the displayed
+schedule.  Equality in the separated completion gives the desired
+linearity equation.  The finite bound \eqref{eq:chain-bound} similarly
+passes to the limit, and \eqref{eq:chain-tail} gives
+\eqref{eq:chain-limit-tail}.
+
+For clarity, the limiting identity can be checked without invoking an
+abstract theorem about an operator space.  For every fixed $x$,
+\begin{align*}
+ \|(D\mathcal H+\mathcal H D-I)x\|
+ &\le \|D(\mathcal H-h_N)x\|
+       +\|(\mathcal H-h_N)Dx\|+\|R^Nx\|\\
+ &\le \left(1+\frac{2B_DH}{1-\rho}\right)\rho^N\|x\|.
+\end{align*}
+The last expression is below any prescribed dyadic error by a PR
+schedule obtained from \eqref{eq:rational-geometric-block} and a rational
+upper bound for its constant factor.  Therefore its represented value is
+zero.  This proves \eqref{eq:chain-repaired}.
+\end{proof}
+
+The proof produces a single output name by diagonalization.  It does not
+assume that every pointwise Cauchy family of operators has a uniform
+computable limit.  The uniform majorant \eqref{eq:chain-tail} is the
+specific extra information that permits this construction.
+
+\subsection{Only compute the boundary observation that is needed}
+
+A cycle is a vector $x$ satisfying $Dx=0$; a boundary is a vector of
+the form $Dy$.  Equation \eqref{eq:chain-repaired} supplies the boundary
+witness $y=\mathcal Hx$ for every represented cycle.  No test for the
+equality $Dx=0$ is required: the conclusion is conditional on that
+equation, while the output recipe is defined for every input.
+
+Often one needs only a boundary approximation.  The exact finite identity
+already gives
+\begin{equation}
+ x-Dh_Nx=h_NDx+R^Nx,
+ \qquad
+ \|x-Dh_Nx\|
+ \le\frac{H}{1-\rho}\|Dx\|+\rho^N\|x\|.
+ \label{eq:approximate-cycle}
+\end{equation}
+This also controls an approximate cycle.  In particular, for $Dx=0$ and
+$\|x\|\le2^b$, the shorter cutoff
+\begin{equation}
+                 N_{\rm boundary}(n,b)=2^s(n+b)
+                 \label{eq:boundary-cutoff}
+\end{equation}
+guarantees $\|x-Dh_Nx\|\le2^{-n}$.  The convention $R^0=I$ makes
+the case $n=b=0$ valid as well.  This contract concerns the exact finite
+value $h_Nx$; any numerical approximation to it must pay its own input
+and evaluation errors through the ledger.
+
+The smaller cutoff does not claim that $h_Nx$ itself is already close to
+the full homotopy value.  It is sufficient for the requested boundary
+observation, whose error is the residual $R^Nx$.  This is a useful example
+of why the observation to be exported should determine the computation.
+
+\subsection{Stable neighborhoods of a certified differential}
+
+Let $D'=D+\Delta$ have the same degree, and suppose the exact structural
+equation $(D')^2=0$ is supplied.  Suppose also that
+\[
+           \|I-Dh-hD\|\le\rho_0,\qquad
+           \|h\|\le H,\qquad \|\Delta\|\le\delta.
+\]
+The new defect is
+\begin{equation}
+ R'=I-D'h-hD'=R-\Delta h-h\Delta,
+ \qquad \|R'\|\le\rho_0+2H\delta.
+ \label{eq:chain-perturbation}
+\end{equation}
+Thus any supplied inequality
+$\rho_0+2H\delta\le1-2^{-s}$ allows
+Theorem~\ref{thm:chain-repair} to construct a corrected contraction
+for $D'$.  The old candidate may itself be only approximate.  If it is
+an exact contraction, take $\rho_0=0$.
+
+For a family with a certified bound
+$\|D_t-D_u\|\le L|t-u|$, this gives an explicit neighborhood of each
+certified parameter: any radius $r$ satisfying
+$\rho_0+2HLr\le1-2^{-s}$ works.  It does not provide a contraction
+on an entire parameter path unless that path is covered by appropriate
+certificates.  Also, a small value of $(D')^2$ cannot replace the equation
+$(D')^2=0$: the commutation identity in
+Lemma~\ref{lem:finite-chain-correction} uses that equation exactly.
+
+\subsection{A categorical application through a mapping cone}
+
+Let $(C,d_C)$ and $(E,d_E)$ be presented normed chain complexes, and let
+$F:C\longrightarrow E$ be a represented bounded chain map, meaning
+$d_EF=Fd_C$.  Its mapping cone is the graded direct sum
+\[
+ \operatorname{Cone}(F)_i=E_i\oplus C_{i-1},\qquad
+ D_F=\begin{pmatrix}d_E&F\\0&-d_C\end{pmatrix}.
+\]
+Use the maximum norm on each direct sum.  The square of this block
+operator is zero: its diagonal blocks are $d_E^2,d_C^2$, and its upper
+right block is $d_EF-Fd_C$.  Hence this is again a valid differential.
+Canonical inclusions and projections have norm at most one.
+
+\begin{theorem}[A defect certificate gives a chain-homotopy inverse]
+\label{thm:cone-homotopy-inverse}
+Suppose a degree-$+1$ candidate $h$ on $\operatorname{Cone}(F)$ has
+certified bounds $\|h\|\le2^c$ and
+$\|I-D_Fh-hD_F\|\le1-2^{-s}$.
+There is an explicitly represented bounded chain map
+$G:E\longrightarrow C$ and explicit bounded homotopies witnessing
+$FG\simeq I_E$ and $GF\simeq I_C$.
+Their recipes and PR observation schedules are obtained from the one
+correction construction above.
+\end{theorem}
+\begin{proof}
+Repair $h$ and write the resulting degree-$+1$ contraction in blocks as
+\[
+                    \mathcal H=
+                    \begin{pmatrix}A&B\\G&J\end{pmatrix}.
+\]
+Here $A$ and $J$ have degree $+1$, $G$ has degree zero, and $B$ has
+degree $+2$, with the shifts determined by the cone.  The lower-left,
+upper-left, and lower-right blocks of
+$D_F\mathcal H+\mathcal H D_F=I$ are respectively
+\begin{align*}
+             -d_CG+Gd_E&=0,\\
+               d_EA+Ad_E+FG&=I_E,\\
+               GF-d_CJ-Jd_C&=I_C.
+\end{align*}
+The first equation says that $G$ is a chain map.  The second supplies
+a homotopy from $I_E$ to $FG$; the third supplies a homotopy from $GF$
+to $I_C$.  All three block maps have bounds at most
+$2^{s+c}$, since the inclusions and projections have bound one.
+Composing their fixed recipes with the output name of $\mathcal H$
+gives the stated observation schedules.
+
+At a finite cutoff the same block calculation has an error block of
+$R^N$ on the right.  Each block has norm at most $\rho^N$.  Thus the
+construction can also export finite approximate inverse and homotopy
+equations without first materializing their limiting maps.
+\end{proof}
+
+For completeness, the categorical relation used here has an entirely
+explicit presentation.  A prescribed homotopy from chain maps $f$ to $g$
+is a degree-$+1$ map $K$ with $f-g=dK+Kd$.  The zero map witnesses
+reflexivity, $-K$ reverses a homotopy, and addition composes two
+homotopies.  If $u$ and $v$ are chain maps, then
+\[
+ u(f-g)=d(uK)+(uK)d,\qquad
+ (f-g)v=d(Kv)+(Kv)d.
+\]
+Thus homotopy is a congruence for composition, and the theorem produces
+an inverse arrow in the corresponding homotopy category.  This is a
+scheme for fixed presented complexes and maps, not an internally coded
+category containing every Banach space or every bounded operator.
+
+The certificate is stable under simultaneous perturbations of both
+complexes and of the map.  Write their changes as
+$\Delta_C,\Delta_E,\Delta_F$, with bounds
+$\delta_C,\delta_E,\delta_F$.  Assume the new differentials square to
+zero and the new map is a chain map.  The cone differential changes by
+\[
+ \Delta_{\rm cone}=
+   \begin{pmatrix}\Delta_E&\Delta_F\\0&-\Delta_C\end{pmatrix},
+ \qquad
+ \|\Delta_{\rm cone}\|
+       \le\max(\delta_E+\delta_F,\delta_C).
+\]
+Substitution in \eqref{eq:chain-perturbation} gives a single rational
+margin test for the perturbed chain-homotopy equivalence.  This preserves
+the actual witness and its computational bound, rather than appealing to
+an unspecified invariance theorem for homology groups.
+
+\subsection{Continuous logic and the indispensable margin}
+
+There is a direct connection to the continuous-predicate viewpoint
+\cite{bbhu2008}.  For fixed $D,h$, the bounded predicate
+\[
+ x\longmapsto\min\{1,\|x-Dhx-hDx\|\}
+                     \quad (\|x\|\le1)
+\]
+has a continuity modulus obtained from the bounds on $D$ and $h$.
+A certified upper bound $\rho<1$ for this predicate on the whole unit
+ball is exactly the sort of positive margin used by the correction
+theorem.  On a represented finite dimensional compact ball, finite nets
+and an explicit modulus can supply such a universal bound from finitely
+many observations, including their discretization error.  For rational
+matrices with the $\ell^1$ norm, one can instead compute the bound
+exactly as the maximum absolute column sum.
+
+An infinite dimensional Banach unit ball is not assumed to have finite
+nets.  In that setting the universal bound must come from an operator
+estimate or another supplied proof.  Neither this application nor the
+existing fixed-formula continuous semantics supplies general compactness,
+arbitrary model existence, or a finite net for every bounded metric sort.
+
+The need for a margin is already visible in the two-term complex
+\[
+             0\longrightarrow\mathbb R
+                   \xrightarrow{\;t\;}\mathbb R
+                       \longrightarrow0.
+\]
+For a positive rational $t$, division by $t$ gives a contraction; a
+certificate $t\ge2^{-a}$ bounds it by $2^a$.  At $t=0$, the
+differential is zero and the contraction equation would say $0=I$.
+Moreover, a contraction of norm at most $M$ for positive $t$ must satisfy
+$1\le tM$.  Thus no uniformly bounded family of contractions can
+extend through $t=0$.  The framework resolves the stable case and
+exposes this genuine boundary; a different encoding does not eliminate it.
+
+\subsection{Exact arithmetic and Lean obligations}
+
+For rational finite matrices, all core calculations above are bounded
+loops over rational entries, with norm bounds from finite sums and maxima.
+For a fixed infinite core presentation, the required linearity, norm, and
+differential laws remain explicit hypotheses until their iPRA proofs are
+provided.  The finite induction lemmas concern equality or rational
+inequality of encoded terms.  The completed-space theorem is assembled
+from those finite contracts at each requested observation.  It is not
+obtained by applying iPRA induction to a statement quantifying over all
+Cauchy names.
+
+One can make the finite invariant especially concrete.  Fix a core vector
+$x$ and carry the four states
+\[
+ u_j=R^jx,\quad v_j=R^jDx,\quad
+ \sigma_j=\sum_{i<j}R^ix,\quad
+ \tau_j=\sum_{i<j}R^iDx.
+\]
+They are updated by $u_{j+1}=Ru_j$, $v_{j+1}=Rv_j$ and by adding
+$u_j,v_j$ to the two sums.  The invariant includes
+$Du_j=v_j$, $D\sigma_j=\tau_j$,
+$(I-R)\sigma_j=x-u_j$, and the rational norm bounds on these finite
+states.  Its step uses the supplied laws at the current core vectors.
+This is a quantifier-free invariant with $x$ as a free parameter;
+universal generalization over $x$ occurs after its induction proof.
+
+An exact example uses degrees $0,1,1,2$ on four coordinates and
+\[
+ D=\begin{pmatrix}
+ 0&1&0&0\\0&0&0&0\\0&0&0&1\\0&0&0&0
+ \end{pmatrix},\qquad
+ h=\begin{pmatrix}
+ 0&0&0&0\\3/4&0&0&0\\1/16&0&0&0\\0&1/8&3/4&0
+ \end{pmatrix}.
+\]
+In the $\ell^1$ norm, $\|h\|=13/16$ and
+$R=\tfrac14 I-\tfrac{3}{16}\mathsf E_{32}$ has norm $7/16$,
+where $\mathsf E_{32}$ is the matrix with its only nonzero entry in
+row~3, column~2.  Here $h^2\ne0$ and $hR\ne Rh$.  Nevertheless the
+correction gives the exact contraction
+\[
+ \mathcal H=\begin{pmatrix}
+ 0&0&0&0\\1&0&0&0\\1/12&0&0&0\\0&-1/12&1&0
+ \end{pmatrix}.
+\]
+The margin parameters $s=1,c=0$ are valid without computing this
+closed form.
+
+The file \texttt{ObservableAnalysis/Neumann.lean} checks the exact
+identities of Lemma~\ref{lem:finite-chain-correction} over a possibly
+noncommutative ring.  Its definitions mirror the defect, geometric sum,
+and corrected homotopy in \eqref{eq:chain-defect}.
+The residual theorem is named
+\texttt{correctedContraction\_residual}.
+The remaining formalization steps are specific:
+\begin{enumerate}
+\item Realize core vectors and operators by the selected arithmetic
+  presentation, and prove the degree, linearity, and norm contracts.
+\item Prove the finite geometric inequality and the dyadic block estimate
+  \eqref{eq:rational-geometric-block} with encoded rational arithmetic.
+\item Apply the represented completion construction to the displayed
+  diagonal name $y_n$, proving its error bound and extensionality.
+\item Define the graded cone by finite tagged products, prove its
+  square-zero identity, and extract the three block equations above.
+\item Supply object-language iPRA proofs for the chosen presentation
+  laws and finite induction instances.  The compiled Lean ring theorem
+  is a verified algebraic metatheorem, not by itself an iPRA derivation.
+\end{enumerate}
+
+The exact-rational example in \texttt{code/check\_chain\_contraction.py}
+uses a four-dimensional graded complex with $h^2\ne0$ and $hR\ne Rh$.
+It checks the finite residual identities and compares the scheduled
+approximants with an independently computed rational inverse.  The
+recorded result in \texttt{evidence/chain\_contraction\_check.json}
+is an example verification; the general finite identity is proved in the
+Lean file and in Lemma~\ref{lem:finite-chain-correction}.

@@ -1,0 +1,123 @@
+\section{Output-specific error budgets and shared computation}\label{sec:budgets}
+
+\subsection{From local estimates to one global certificate}
+
+The existing backward-demand calculus asks each operation which precision it needs from its inputs~\cite{repo-dag}. That is a useful general interface. When local continuity estimates are affine in the errors, retaining their actual rational coefficients permits a sharper calculation and a much smaller certificate. This section proves that calculation.
+
+Consider $n$ nodes in a topologically ordered computation graph. At node $v$, let $e_v\ge0$ denote the discrepancy between its intended and computed value, and let $\delta_v\ge0$ be the local evaluator error. Suppose the local mathematical proof gives
+\begin{equation}\label{eq:local-error}
+ e_v\le\delta_v+\sum_{u<n}L_{vu}e_u,
+ \qquad L_{vu}\ge0,
+ \qquad L_{vu}=0\ \hbox{when }u\ge v.
+\end{equation}
+The numbers $L_{vu}$ include repeated uses of the same input. A bound for multiplication, for example, follows from
+\[
+ ab-a'b'=a(b-b')+(a-a')b',
+\]
+so that $L$ uses an upper bound for $\norm a$ on one edge and for $\norm{b'}$ on the other. The guards establishing those upper bounds are part of the node contract.
+
+Choose nonnegative sink weights $b_v$. A single requested output uses $b_v=1$ at that node and zero elsewhere. Several outputs may be budgeted jointly, or each may have its own weight vector. Define the reverse weights by
+\begin{equation}\label{eq:reverse-weight}
+ W_u=b_u+\sum_{v>u}W_vL_{vu},
+ \qquad u=n-1,n-2,\ldots,0.
+\end{equation}
+This is a finite reverse loop. It adds contributions from all uses of a shared value, without recomputing the value or unrolling the graph into a tree.
+
+\begin{theorem}[Reverse sensitivity certificate]\label{thm:reverse}
+The reverse weights are nonnegative and satisfy
+\begin{equation}\label{eq:weighted-budget}
+ \sum_{v<n}b_ve_v\le\sum_{v<n}W_v\delta_v.
+\end{equation}
+They are componentwise minimal among nonnegative vectors $W'$ satisfying
+$W'\ge b+L^{\mathsf T}W'$. Thus this producer computes the least such linear error certificate for the supplied local coefficients.
+\end{theorem}
+\begin{proof}
+Nonnegativity follows by reverse induction. Multiply \eqref{eq:local-error} by $W_v$ and sum. Finite distributivity and exchange of the two sums give
+\[
+ \sum_vW_ve_v
+ \le\sum_vW_v\delta_v+
+     \sum_u\left(\sum_vW_vL_{vu}\right)e_u
+ =\sum_vW_v\delta_v+\sum_u(W_u-b_u)e_u.
+\]
+Cancel $\sum_uW_ue_u$ to obtain \eqref{eq:weighted-budget}. For minimality, proceed backwards. The last coordinate of any supersolution is at least $b_{n-1}=W_{n-1}$. If $W_v\le W'_v$ has been shown for every $v>u$, nonnegativity of $L_{vu}$ gives
+$W_u=b_u+\sum_{v>u}W_vL_{vu}\le b_u+\sum_{v>u}W'_vL_{vu}\le W'_u$.
+\end{proof}
+
+The certificate is exact for the stated linear inequalities: if one sets $e=\delta+Le$ by forward recursion, equality holds in \eqref{eq:weighted-budget}. This does not say that the local Lipschitz bounds are sharp for every analytic expression. Cancellation or additional mathematical structure can improve those bounds before the certificate is formed.
+
+\subsection{A verifier that also works for cyclic error inequalities}
+
+The graph condition is needed by the reverse producer, but not by the following verifier.
+
+\begin{theorem}[Dual certificate for an observable]\label{thm:dual}
+Let $e,\delta,b,W$ and $L$ be finite rational data, with $e\ge0$ and $W\ge0$. If
+\[
+ e\le\delta+Le,\qquad b+L^{\mathsf T}W\le W,
+\]
+then $b\cdot e\le W\cdot\delta$. The same implication holds for real errors with rational coefficient data, by the identical finite ordered-ring argument.
+\end{theorem}
+\begin{proof}
+Multiply the local error inequalities by $W$ to get
+$W\cdot e\le W\cdot\delta+(L^{\mathsf T}W)\cdot e$.
+Since $e\ge0$, the second hypothesis gives
+$(L^{\mathsf T}W)\cdot e\le(W-b)\cdot e$.
+Cancel $W\cdot e$ as before.
+\end{proof}
+
+The theorem concerns a proved numerical inequality. It licenses no circular proof rule and constructs no solution of a cyclic system. An existing fixed-point or approximate-action argument must first establish $e\le\delta+Le$. Once it does, a finite rational supersolution $W$ can certify only the particular observable of interest. No successful search for $W$ is promised. A proposed $W$ is accepted or rejected by finite arithmetic.
+
+This is complementary to the primal, componentwise error supersolutions in the repository's coupled-refinement packet~\cite{repo-coupled}. For example, use
+\[
+ L=\begin{pmatrix}0&2\\1/8&0\end{pmatrix},\quad
+ \delta=\begin{pmatrix}3/250\\9/4000\end{pmatrix}.
+\]
+For the second coordinate, $b=(0,1)^{\mathsf T}$, the dual equality has solution
+$W=(1/6,4/3)^{\mathsf T}$. Hence
+\[
+ e_2\le\tfrac16\tfrac3{250}+\tfrac43\tfrac9{4000}
+       =\tfrac1{200}.
+\]
+One verifies $b+L^{\mathsf T}W=W$ directly. This reuses the upstream numerical example while changing the certificate to answer a specific output question.
+
+\subsection{A concrete tolerance producer}
+
+Given target error $\eps>0$, choose rational allocation weights $\alpha_v\ge0$ with $\sum_v\alpha_v\le1$ and positive allocations on every node that requires a strictly positive tolerance. Set
+\begin{equation}\label{eq:tolerance}
+ \delta_v=\frac{\eps\alpha_v}{\max(1,W_v)}.
+\end{equation}
+Then $\sum W_v\delta_v\le\eps$. The default for a nonempty graph is $\alpha_v=1/n$; if $n=0$ there is no requested node. Dyadic evaluators use any $p_v$ with $2^{-p_v}\le\delta_v$. If $\delta_v=a/d>0$, a bounded search through $p\le d+1$ succeeds, since $a\ge1$. Better logarithmic bounds are readily computed by the same finite power-of-two scan.
+
+Allocations need not be uniform. A costly subroutine may be given a larger fraction of the error budget, while inexpensive algebraic nodes use smaller fractions. A finite candidate search can select an allocation with the smallest declared cost. The certificate proves correctness of the selected allocation independently of whether that cost model accurately predicts runtime. We do not infer an asymptotically optimal implementation from a heuristic cost estimate.
+
+For several output coordinates, compute a row of $W$ for each requested coordinate and retain all the resulting linear budget inequalities. A shared source is then observed at the finest of the demands actually assigned to it, stored once, and reused. There is no need to reconstruct its entire mathematical object.
+
+\begin{proposition}[Guarded graph evaluation]\label{prop:guarded-graph}
+Suppose every local evaluator has its stated finite error contract on a supplied guarded region, and the execution certificate verifies that its inputs and perturbation envelopes lie in that region. Evaluating the graph with tolerances \eqref{eq:tolerance} gives total requested error at most $\eps$. Its finite verification consists of the guard tests, local error certificates, reverse-weight equalities, and the final rational budget inequality.
+\end{proposition}
+\begin{proof}
+The local contracts give \eqref{eq:local-error} at every node. Their hypotheses hold by the separate guard portion of the certificate. The reverse-weight verifier proves \eqref{eq:weighted-budget}, and the chosen tolerances bound its right side by $\eps$.
+\end{proof}
+
+A reciprocal illustrates why the guard is separate. From $|x|\ge\gamma>0$ and $|x-a|\le\gamma/2$, we get $|a|\ge\gamma/2$ and
+\[
+ |a^{-1}-x^{-1}|\le 2\gamma^{-2}|a-x|.
+\]
+The linear coefficient $2\gamma^{-2}$ is valid only after the input error has also been bounded by $\gamma/2$. A small final error alone does not establish this domain fact. Interval propagation, clipping to a proved invariant region, or a separately verified margin certificate supplies it. A failed guard makes the proposed evaluation uncertified; it proves neither nonexistence of the value nor impossibility of another method.
+
+\subsection{Why this is efficient, and the exact scope of that claim}
+
+On a graph with $V$ nodes and $E$ recorded edges, the reverse pass and the forward pass each require $O(V+E)$ rational arithmetic operations per sink-weight vector, in addition to the primitive evaluators. Sharing prevents an exponential blowup caused by tree expansion. Rational numerators and denominators can still grow, so this is an operation count, not a polynomial bit-complexity theorem.
+
+Three further savings are mathematical rather than cosmetic. First, the weights use the actual local sensitivity instead of a single worst-case constant. Second, an observable can be certified before the full intermediate object is constructed. The homotopy application below needs fewer Neumann terms to certify $DHx\approx x$ than to certify $H$ in operator norm. Third, a geometric tail or integral remainder can be inserted as one extra error source, rather than re-proved at each consumer. The same graph verifier then combines arithmetic error, truncation error, input approximation error, and transport error.
+
+All certificates are independently checkable finite objects. The producer can use a fast heuristic to propose intervals, tolerances, or preconditioners, while the proof uses only the verified inequalities. A total PR producer is claimed only for the explicit bounded constructions described here; general discovery of a successful preconditioner, margin, or chart remains outside the theorem.
+
+\subsection{The arithmetic invariant and the checked Lean boundary}
+
+For graph production, store the table of $W$ and use a reverse-loop invariant asserting that every already processed row satisfies \eqref{eq:reverse-weight}. Finite row sums and bounded universal assertions are Booleanized. A forward-loop invariant stores the rational error envelope
+\[
+ E_v=\delta_v+\sum_{u<v}L_{vu}E_u
+\]
+and the local validity/guard bits for processed nodes. These are quantifier-free matrices after denominator clearing. The proof of double-sum exchange is a finite-sum induction, and the final cancellation is ordered-ring arithmetic.
+
+The standalone Lean file \code{ObservableAnalysis/Budget.lean} proves both the exact-balance and supersolution implications for arbitrary finite size. It also proves the finite-sum facts used by their proofs. This is a checked host-Lean theorem, not a new embedded-iPRA derivation. Its proof dependence on the standard rational-number library is recorded explicitly in the axiom audit. The object-language route uses signed numerator pairs, positive denominators, and the invariant just displayed; the existing realizer and bounded-syntax providers are the intended integration points.

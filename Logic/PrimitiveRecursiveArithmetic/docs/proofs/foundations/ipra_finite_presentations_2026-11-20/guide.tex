@@ -1,0 +1,70 @@
+\section{Formalization and reproducibility}
+\label{sec:replay-guide}
+\subsection{How the applications use the same interface}
+For each port one must give a formula, the scope of its parameters and the proof or program that supplies it. The following three examples show where this changes a mathematical conclusion.
+\begin{itemize}
+\item In the nerve argument each nonempty overlap $I$ has a label $H_I$ asserting that its displayed augmented chain contraction satisfies $\partial h+h\partial=1$. A checked table of fillings supplies $H_I$, and the box formula supplies it directly on rectangular instances. With $s$ and $m$ as in Section~\ref{sec:nerve-case}, all equalities of columns admit bounded tests. The general contraction algorithm uses $\bigwedge_I H_I$ once for the vertical elimination. The horizontal elimination has an independent producer using the least containing chart. Together they produce the two inverse chain maps. Since the output includes the homotopy matrices, a downstream user can check their identities directly without retaining all the original local witnesses.
+\item In a tower the target at a chosen depth $j$ is the pair of finite checks that the constructed element has the correct image and that it projects to the initial one. A row extends a prefix by one level. The port at that level compares just two images, computable by search in finite fibers. Induction is on the reflected prefix check while the premise that the image comparison holds at every level remains in the context. The obstruction based on delayed halting explains why a variable tower cannot silently acquire this premise. For a single requested finite horizon it suffices to supply the comparisons reached by that horizon.
+\item In the Gauss calculation a query $(m,a,b,J)$ requests a finite coefficient list. Product, inverse and integration each consume finite prefixes with explicit lengths. For $m>0$ the label asserting the existence of a second meromorphic solution has two sufficient input tests, $a\in\{1,\ldots,m\}$ and $b\in\{1,\ldots,m\}$. The exact residue computation proves that these are also semantically exhaustive for the presented coefficients. This extra necessity is a mathematical theorem. Saturating a rule table alone proves completeness only for proofs assembled from its rows.
+\end{itemize}
+
+\subsection{What Lean checked}
+\small
+\begin{tabular}{@{}p{.245\linewidth}p{.695\linewidth}@{}}
+\toprule
+File & Endpoint and scope\\
+\midrule
+\path{CyclicReplay.lean} & \texttt{stabilized} and \texttt{all\_heights} prove the finite saturation bound and completeness for the executable table. The support theorem also characterizes every successful supply by containment of an inclusion-minimal one. \texttt{replay} returns $\Gamma\vdash A_v$ for each marked label given local derivations and port proofs. \texttt{two\_supports} produces the object-language disjunctive condition for the displayed cyclic example.\\[4pt]
+\path{AtlasCase.lean} & \texttt{envelope\_transfer} and \texttt{transfer\_guard} verify the max--min estimate and the chart selected from an approximation. The vertex algorithm is proved in Section~\ref{sec:atlas}.\\[4pt]
+\path{SheafCase.lean} & Principal-neighborhood gluing, \texttt{along\_extend} and \texttt{extend\_along} prove the reflector's inverse laws for presheaves in Lean. The finite mask and mixed-radix implementations are described in Section~\ref{sec:categorycases}.\\[4pt]
+\path{CategoryCase.lean} & \texttt{local\_iff\_stable}, the bounded lift and the coherent walk for an inverse tower with specified projection laws. The universal image-stability result is a semantic Lean theorem.\\[4pt]
+\path{TopologyCase.lean} & The nilpotent correction producing a contraction, a degree-lowering lemma and the positive denominator estimate for the box homotopy. Matrices, subdivisions and maps on regular names are developed in Section~\ref{sec:nerve-case}.\\[4pt]
+\path{Resonance.lean} & Finite rational coefficient computation, the zero criterion for the closed rational product, a cutoff inequality, and two evaluated examples. Section~\ref{sec:resonance} proves the coefficient formula and Gaussian-rational analytic estimates.\\
+\bottomrule
+\end{tabular}
+\normalsize
+
+\medskip
+The Lean run used version 4.32.0. We freshly compiled \texttt{Syntax}, \texttt{Deduction} and \texttt{PR} from the pinned revision. Their Git blob identifiers are recorded with the replay instructions. Mathlib was at the repository's pinned revision. The reported Lean dependencies of \texttt{replay} and \texttt{two\_supports} are \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. These concern Lean's construction of a proof whose type is \texttt{Prf PRAAx}. Its object-level axioms are the constructors of \texttt{PRAAx}. The semantic tower equivalence prints no axiom dependencies. The individual application theorems do not yet have end-to-end \texttt{Prf PRAAx} files.
+
+\subsection{Completing the object-language derivations}
+Use \texttt{PR k} for the programs, \texttt{PTm n} for terms with $n$ free variables, and \texttt{Fm PTm n} for formulas. Construct a program with zero, successor, projections, composition and primitive recursion, bundling simultaneous state in a pair or a list. After replacing displays involving rational numbers by integer-part pairs and positive denominators, the governing target for a total algorithm $t$ with precondition $D$ is
+\[
+ []\vdash \forall\vec x\,\big(D(\vec x)\longrightarrow
+                   V(\vec x,t(\vec x))\big).
+\]
+Open versions in a context can then be specialized by substitution. A valid unsupplied assumption is retained in $D$. A computed output carries its defining recurrence and correctness theorem. Source links below use repository paths at the pinned revision.
+
+\begin{enumerate}
+\item \emph{Reflection.} Build each bounded input and invariant as a \texttt{BFm n} and apply its reflection and induction lemmas. Use \texttt{mu} only with a proved existence below its cap, or treat the sentinel as failure. This handles zero-size fibers, missing parents and singular determinant candidates. \repo{Derivations/Lean/IPRADerivations/Foundations/BoundedSyntax.lean}{Bounded syntax} and \repo{Derivations/Lean/IPRADerivations/Foundations/BoundedSelection.lean}{bounded selection}.
+\item \emph{Numerical cyclic tables.} Pack $N,b$ and the rows into the parameter $x$. Define the new bit for $v$ as its old bit or a bounded OR over matching heads whose two mask tests hold. Bounds $2^N$ and $2^b$ suffice for valid masks. Derive coordinate monotonicity from conjunction monotonicity and supply all-one caps to \texttt{closure\_prefixed}. Alternatively use the rank-or-flat proof of Theorem~\ref{th:closure} on the count of marked bits. Define first-entry rank as the least $j\le N$ with membership, storing a separate membership flag for failure. A second bounded scan returns the first row justified at stage $j-1$. Prove its two conditions from the recursion, then invoke the reflected invariant of Section~\ref{sec:rules}. Run the same operator with ports removed singly to compute the minimality test. This implements the internal input-uniform form corresponding to the external Lean replay. \repo{Derivations/Lean/IPRADerivations/Foundations/DemandClosure.lean}{Demand closure} and \repo{Derivations/Lean/IPRADerivations/Foundations/FrontierSoundness.lean}{rank induction}.
+\item \emph{Polyhedral charts.} Encode a hyperplane as its packed row of integer coefficients, a candidate as a tuple of $d$ indices, and a rational point as $d$ numerator/denominator pairs. Use signed permutation enumeration for the determinant. Prove its alternating and column expansion laws by pairing permutation terms, then the rational linear-solve lemma by multiplication with the adjugate. Enumerate all minors to obtain rank and null vectors, run the $d$-step algorithm with invariant in Section~\ref{sec:atlas}, and use its output to prove the returned minimum against an arbitrary rational point. Finish with the displayed Lipschitz estimate at the clipped rational approximant.
+\item \emph{Category and topology.} The finite sheaf inverse equations reduce to comparisons over the coordinates of minimal opens. Lift the coherent-tower algorithm by distinguishing the code for a level from the external PR symbol for projection. For the maps of boxes first prove exact rational simplex interpolation and face agreement, then derive pointwise estimates for regular names from the computed bounds. A name of a point of a polyhedron may use rational approximants in that polyhedron as its presentation. Equivalently one can select nearby grid-simplex points by rational finite approximations with a supplied proximity bound. The first presentation suffices here. For the chain part all matrix columns are bounded masks, including the block identities extracting the homotopies. See the \repo{Derivations/Lean/IPRADerivations/Foundations/CoherentTower.lean}{tower backend} and the \repo{docs/proofs/topology/ipra_topology_framework_2026-11-15/paper/sections/12_limits.tex}{topological limitations report}.
+\item \emph{Analysis.} First prove the finite polynomial and Laurent identities on exact Gaussian rationals. Next prove the inequalities for arbitrary finite tails, with both endpoints free. Finally construct the three observation programs for value, first derivative and second derivative. Their precision budgets in Section~\ref{sec:resonance} can be composed by PR recursion. A global coefficient bound in the generic lemma is a hypothesis on its two fixed programs. The Gauss instance proves it by the two first-order recurrences. The disc-center and branch datum are explicit inputs. \repo{docs/proofs/analysis/hypergeometric_ipra_2026-11-16/sections/05_ode.tex}{Gauss ODE packet}, \repo{docs/proofs/analysis/hypergeometric_ipra_2026-11-16/sections/10_continuation.tex}{continuation scope} and \repo{Derivations/Lean/IPRADerivations/Analysis/HypergeometricOdeFormal.lean}{formal ODE derivations}.
+\end{enumerate}
+
+\paragraph{Further research questions.}
+Can the finite acyclic-overlap construction be lifted to integral chain equivalences using a similar size bound on the coefficients of the produced contractions? For the resonant Gauss equation, can a finite chain of certified charts yield connection matrices with uniform precision bounds as a path passes between a resonant chart and an ordinary one? Can the object-language graph compiler accept and check one ranked table of outputs with quantified certificate fields, while identifying exactly the fields that need bounded witnesses? Proposition~\ref{p:path} imposes a concrete test on any such extension. A successful answer must specify which invariant supports input-length induction.
+
+
+\subsection{Replaying the examples}
+From the extracted archive run \texttt{python3 verify.py}. It executes six programs with exact integer and rational operations. With the specified ProveIt checkout and its prebuilt providers, \texttt{python3 verify.py {-}{-}proveit /path/to/ProveIt} also elaborates all six Lean modules. The archive README records the inputs and the build commands. The transcript in \path{verification/results.txt} includes the axiom reports.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.24\linewidth}p{.69\linewidth}@{}}
+\toprule
+Computation & Independent check or observed value\\
+\midrule
+Rule tables & For 21,956 table/supply pairs, intersecting all closed masks and eliminating one feedback variable both reproduce the iterated mask. All minimal supplies were checked at both output labels.\\[3pt]
+Presheaves and towers & 94 morphism pairs passed both inverse checks. Of 7,680 proposed rates on 64 finite towers, 3,792 passed the comparison. Their constructed walks passed 153,744 edge tests.\\[3pt]
+Covers & The square chart margin is $1/6$. The test segment clears the two punctures by exactly $1/3$. The rectangle frame and cube boundary give Betti vectors $(1,1,0)$ and $(1,0,1)$ through degree two.\\[3pt]
+Homotopies & The rational homotopies were evaluated at five times on 96 points of the frame and 189 points in two nerves. A disconnected intersection was rejected by the chain test.\\[3pt]
+Resonance & The inverse-series expression and the finite product agree on 392 Gaussian-rational parameter triples. The Laurent recurrence gives the log multiplier $9/64$ when $a=b=1/2$ and $c=3$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{thebibliography}{9}
+\bibitem{proveit} V. Reshetnikov et al. \emph{ProveIt, Primitive Recursive Arithmetic}. Source snapshot and attached status reports. \repo{README.md}{Repository index}.
+\bibitem{green} T. J. Green, G. Karvounarakis and V. Tannen. \emph{Provenance semirings}. PODS 2007, 31--40. \href{https://doi.org/10.1145/1265530.1265535}{doi:10.1145/1265530.1265535}.
+\bibitem{dlmf} A. B. Olde Daalhuis. Hypergeometric Function, \S15.10, in \emph{NIST Digital Library of Mathematical Functions}. Classical resonant solution formulas for comparison. \url{https://dlmf.nist.gov/15.10}.
+\end{thebibliography}

@@ -1,0 +1,36 @@
+\section{Energy distributions for general presented Hamiltonians}\label{sec:unbounded-calculus}
+The resolvent data of Section~\ref{sec:stone} also suffice to model a detector whose bounded continuous response to energy is known only on compact intervals. This matters when the energy distribution has no global support bound and no finite second moment in the prepared state.
+
+\begin{lemma}[Bounded transform with a dense range witness]
+Put $D=D_1$, $C=H_1=HD$ and $S=\sqrt D$. There is a presented self-adjoint contraction $F$ with $FS=SF=C$ and $I-F^2=D$. For every named $x$ one can approximate $x$ to any requested precision by $Dy$ with an explicit name and bound for $y$.
+\end{lemma}
+\begin{proof}
+$D=R_+(1)R_-(1)$ is positive and $D\le I$. The resolvent identities give $C^2=D(I-D)$, first on the range construction, or directly by multiplying $H^2D=I-D$ by $D$. Thus $\|Cz\|^2\le\|Sz\|^2$ for every $z$. Given an approximant $v=D_bx$ from Theorem~\ref{thm:stone-forward}, set $y=v+H^2v$. Then $Dy=v$, by the inverse equations for $H+i$ and $H-i$ on $D(H^2)$, and $\|y\|\le(1+2b^2)\|x\|$. This supplies the claimed witness. Since $Dy=S(Sy)$ it also supplies dense range approximants for $S$.
+
+On that range define $F(Sz)=Cz$. The estimate just proved makes this assignment well-defined and contractive. At precision $k$, choose $v=Dy$ within $\delta_{k+3}$ of the input, and compute $C S y$ within $\delta_{k+3}$; comparing approximants in the range by contraction gives a regular output. This bounded extension is self-adjoint because $C$ and $S$ commute and $\langle Cz,Sw\rangle=\langle Sz,Cw\rangle$. Taking adjoints of $FS=C$ gives $SF=C$. Thus $(F^2-I+D)D=0$ by $C^2=D(I-D)$, and the range approximation just proved yields $F^2=I-D$ on the entire space. Classically $F$ represents $H/\sqrt{1+H^2}$. The algorithm never applies an inverse square root at zero.
+\end{proof}
+
+\begin{theorem}[Bounded continuous energy responses]\label{thm:unbounded-calculus}
+Let $f:\mathbb R\to\mathbb C$ be presented by a global integer bound $M\ge1$ and joint PR sampling and continuity moduli on rational compact intervals. For the resolvent data there is an extensional positive, unital, complex-linear, multiplicative, adjoint-preserving assignment $f\mapsto f(H)$ with $\|f(H)\|\le M$. It gives the supplied resolvents at $\pm i$ and the unitary evolution for the phase response $f(\lambda)=e^{-it\lambda}$. A normalized state's expectations have effectively tight energy tails in the continuous-detector sense below.
+\end{theorem}
+\begin{proof}
+For $-1\le s\le1$, put $d(s)=1-s^2$. For dyadic $0<a\le1/2$ define
+\[
+ h_a(s)=\max(0,\min(1,(d(s)-a)/a)),\qquad
+ g_a(f)(s)=h_a(s) f\!\left(\frac{s}{\sqrt{\max(a,d(s))}}\right).
+\]
+These are presented continuous functions on a fixed compact interval. For instance the argument of $f$ has range in $[-1/a,1/a]$ and Lipschitz bound $1/\sqrt a+1/a^{3/2}$, by the difference of inverse square roots above $a$ and the bound $|d(s)-d(s')|\le2|s-s'|$. The sampler on rationals extends to such named arguments by the given local modulus. Section~\ref{sec:spectrum} evaluates $g_a(f)(F)$ by rescaling the interval.
+For $0<b\le a$ both cutoffs agree with the uncropped value where $d(s)\ge2a$, and everywhere $|g_a(f)-g_b(f)|\le2M$. It follows from the polynomial/continuous norm inequality that
+\[
+ \|(g_a(f)(F)-g_b(f)(F))D\|\le4Ma.
+\]
+For an arbitrary $x$ choose $Dy$ within $\epsilon/(4M)$ by the lemma and then $a\le \epsilon/(8M(1+\|y\|_{\rm bound}))$. The two actions on $x$ differ by at most $\epsilon$. Their strong limit defines $f(H)$ with the claimed bound. This proof supplies a joint PR algorithm even when the cutoffs fail to converge in operator norm. Conjugating the scalar function gives an adjoint on the dense tests. Linearity is immediate. For two functions $f_1,f_2$, the discrepancy of $g_a(f_1)g_a(f_2)$ from $g_a(f_1 f_2)$ vanishes where $d\ge2a$ and is bounded by $2M_1M_2$. The same dense-range estimate sends the product discrepancy strongly to zero, and uniformly bounded strong limits pass through products by insertion of a fixed vector. Applying this argument to $h_a-1$ gives unitality. Nonnegative $f$ gives positive approximants and positive limit.
+
+For $f(\lambda)=(\lambda\pm i)^{-1}$, the uncropped function extends continuously to $s=\pm1$ by $r_\pm(s)=s\sqrt{d(s)}\mp i d(s)$. The difference from the cutoffs vanishes where $d\ge2a$ and has a fixed bound, hence $f(H)=FS\mp iD=C\mp iD=R_\pm(1)$. The same argument identifies any compactified function with a continuous extension in $s$. For the phase response write $V(t)=f_t(H)$. Multiplicativity and conjugation make $V$ a unitary group. For $x=Dy$ the scalar Taylor inequality on the range $d>0$ gives
+\[
+ \|V(t)Dy-Dy+itCy\|\le \tfrac12 t^2\|y\|.
+\]
+Indeed multiply the scalar remainder by $d$: its quadratic bound is $t^2s^2/2$. The functions $d(s)e^{-its/\sqrt d}$ and $s\sqrt d$ extend continuously by zero at the endpoints, with effective moduli by cutting off where $d\le2a$ (respective errors at most $2a$ and $\sqrt{2a}$). In particular $d\,g_a(f_t)$ approximates the first extended function uniformly within $4a$; thus its compact calculus is exactly $V(t)D$. The scalar Taylor bound now proves the estimate including the endpoints. The group $U$ of Theorem~\ref{thm:stone-forward} commutes with $D,C,S$ and with $F$, the last by $FS=C$ and the effective dense range of $S$. It therefore commutes with $V$. Their individual quadratic remainder estimates on $Dy$ give $\|(V(h)-U(h))Dy\|\le h^2(\|y\|+\|(I-D)y\|)/2\le h^2\|y\|$. By commuting and telescoping $n$ factors with $h=t/n$, the difference at $t$ is at most $t^2\|y\|/n$. Density extends equality to all $x$.
+
+For a unit vector $x$, compute $Dy$ close to $x$. The effect $I-h_a(F)$ has expectation at most $\|x-Dy\|+2a\|y\|$, since $0\le1-h_a\le1$ and $(1-h_a)d\le2a$. Under the energy parametrization $d=1/(1+\lambda^2)$, the detector $h_a$ vanishes for $|\lambda|\ge1/a$ and equals one when $d\ge2a$. Thus one can place all but any prescribed weight in a bounded energy region measured with a continuous cutoff. For a purified mixed state apply the same proof on the system tensored with the identity on the ancilla. The range of $D\otimes I$ has joint PR dense approximants by resolving the finitely many slices of a finite array and assigning the requested error divided by one plus the number of slices. This establishes tightness without an energy-expectation input. Ramps and boundary-mass witnesses give individual threshold probabilities as in Section~\ref{sec:spectrum}.
+\end{proof}

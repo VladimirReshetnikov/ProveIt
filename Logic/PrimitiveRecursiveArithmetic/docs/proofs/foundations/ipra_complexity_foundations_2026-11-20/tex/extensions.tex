@@ -1,0 +1,257 @@
+\section{Circuits, counting, alternation, and finite probability}
+\label{sec:extensions}
+
+These extensions illustrate that the foundation is reusable. They involve
+finite sums, products and syntax, with resource bounds proved separately.
+They require neither infinite probability spaces nor quantification over an
+actual infinite family as a new sort.
+
+\subsection{Uniform and nonuniform circuits}
+
+For a Boolean presentation \(A(x)\), a polynomial-size circuit presentation
+means that for each length \(n\) there exists a circuit \(C_n\) of at most
+\(p(n)\) gates agreeing with \(A\) on all \(2^n\) words of that length.
+This is the ordinary nonuniform class P/poly, read schematically over \(A\)
+or arithmetically when \(A\) is a supplied Boolean numerical function.
+There is no automatic efficient operation that selects \(C_n\) from an
+existence statement.
+
+If a fixed polynomial-time machine computes \(A\), unroll its computation
+with all \(n\) input bits left as circuit inputs, instead of hardwiring
+\(x\) as in Cook--Levin. The same cell induction proves correctness, and
+the number of gates is polynomial in \(n\). Moreover a generator constructs
+\(C_n\) in polynomial time from \(1^n\). Conversely, if a polynomial-time
+generator on \(1^n\) produces correct polynomial-size circuits, generating
+and evaluating the circuit is a polynomial-time decision procedure. Thus
+\ipra{} supports both the nonuniform upper-bound construction and the
+equivalence with this particular polynomial-time uniformity convention.
+The unary presentation of \(n\) is part of that convention.
+
+\begin{theorem}[Constructively selected hard truth tables]
+\label{thm:circuitcount}
+There is a primitive-recursive function \(H\) such that, for every \(n\ge4\),
+\(H(n)<2^{2^n}\) is the truth table of a Boolean function not computed by
+any \(n\)-input circuit of at most
+\[
+ s(n)=\left\lfloor\frac{2^n}{16n}\right\rfloor
+\]
+internal AND, OR, or NOT gates. Constants and inputs are available as wires.
+For each such circuit a primitive-recursive bounded search returns an input
+on which it disagrees with this truth table. These are \ipra{} theorems.
+\end{theorem}
+
+\begin{proof}
+Put \(s=s(n)\) and \(R=n+s+2\), counting two constant wires. Pad a circuit
+with unused gates to exactly \(s\) gates; this preserves its function.
+An overcount of the exactly-\(s\) descriptions is
+\[
+ K=R(3R^2)^s:
+\]
+choose an output wire, and for each gate one of three operations and two
+predecessor indices. Ignore invalid forward references; doing so only
+increases the count. NOT gates simply ignore their second index. Thus
+\(K\) bounds the number of \emph{functions} represented using at most
+\(s\) gates. We do not claim that padding is injective on all shorter
+syntactic descriptions.
+
+For \(n\ge4\), \(n+2\le2^{n-1}\) and \(s\le2^{n-1}\), hence
+\(R\le2^n\). Also \(3R^2\le2^{4n}\), so
+\[
+ K\le2^{n+4ns},\qquad
+ n+4ns\le n+2^{n-2}\le2^{n-1}<2^n.
+\]
+The inequality \(n\le2^{n-2}\) starts at \(n=4\) and is preserved by
+successor; the other inequalities follow by multiplication and integer
+division. Hence \(K<2^{2^n}\), the number of possible truth tables.
+
+Enumerate the \(K\) candidate descriptions, mapping invalid ones to a
+fixed table, and compute each valid circuit's \(2^n\) output bits. Maintain
+an image bitset indexed by the \(2^{2^n}\) possible truth tables. After
+processing \(i\) descriptions, its number of set bits is at most \(i\):
+inserting one value adds at most one new mark. This invariant uses bounded
+sums and Boolean comparisons, so quantifier-free induction proves it.
+Since the image cannot cover the table universe, bounded least search
+returns a missing table. Define this table to be \(H(n)\), taking a fixed
+default value for \(n<4\). Every loop and the image code itself have an
+explicit primitive-recursive bound, even though they are enormous.
+
+For a candidate circuit, equality with \(H(n)\) at all inputs would make
+its truth-table integer equal to \(H(n)\), contrary to missingness.
+More constructively, scan the \(2^n\) positions for the first differing
+bit. If the scan had no success, its finite all-equal bit would be 1 and
+the two table integers would be equal. Thus the scan supplies a mismatch
+without turning an unbounded negation into an existence claim.
+\end{proof}
+
+This produces a primitive-recursive hard family, and therefore a
+primitive-recursive language obtained by consulting the appropriate table
+bit. Its construction can take far more than exponential time. It is not
+an exponential circuit lower bound for NP, P, or another small uniform
+complexity class. The example separates constructive existence from
+efficient uniform construction with no ambiguity.
+
+\subsection{Counting witnesses}
+
+For a fixed polynomially bounded verifier, define
+\[
+ \#V(x)=\sum_{j<2^{p(n)}}
+       \Acc_{\#}(e,x,\operatorname{bits}_{p(n)}(j),q(n)).
+\]
+This is a primitive-recursive natural-valued function and
+\(0\le\#V(x)\le2^{p(n)}\). Its output has at most \(p(n)+1\) bits.
+These presentations give the function class \(\#\mathsf P\).
+Fixing exact certificate lengths makes the counted objects unambiguous;
+padding conventions must be specified because they can change the count.
+
+The support identity
+\(\#V(x)>0\leftrightarrow N_v(x)=1\) follows from bounded witness search.
+Disjoint tagged certificates add counts; pairs of certificates multiply
+counts, by finite distributivity. Thus addition and multiplication of two
+such functions have explicit verifier constructions after padding without
+duplicating accepted certificates. For addition, use a tag and require all
+padding bits to be zero; for multiplication, concatenate the two certificate
+fields. This extra padding check is essential for exact counting.
+
+When the circuit extension in Cook--Levin is unique for each input
+assignment, counting satisfying gate assignments with the asserted output
+counts exactly the accepting witnesses. This is a parsimonious statement
+for that specified fixed-width witness representation. It does not assume
+that an arbitrary many-one reduction preserves numbers of solutions.
+
+\subsection{A fixed polynomial hierarchy}
+
+For each fixed \(i\), consider presentations
+\[
+ \exists y_1<2^{p_1(n)}\ \forall y_2<2^{p_2(n)}\ \cdots\ Q_i y_i<2^{p_i(n)}
+ \quad V(x,y_1,\ldots,y_i)=1,
+\]
+where the number of blocks \(i\) is fixed, each \(p_j\) is an explicit
+polynomial, and \(V\) is a polynomially clocked Boolean verifier. These
+are the bounded-quantifier presentations of \(\Sigma_i^P\); starting with
+a universal block gives \(\Pi_i^P\). Every individual input formula is
+bounded and therefore has a primitive-recursive characteristic bit.
+Complement swaps the finite quantifiers and negates the matrix; this is
+valid constructively because all the underlying finite tests are decidable.
+
+A depth-first evaluation keeps one polynomial-length assignment for each
+of the fixed number of blocks, the verifier workspace, and loop counters.
+It therefore uses polynomial space. Its total number of branches is at
+most \(2^{p_1(n)+\cdots+p_i(n)}\), with a polynomial factor for verification.
+The resulting compiler proves that every fixed level lies in PSPACE.
+Varying \(i\) as a metatheoretic family describes PH. This does not assert
+that all levels collapse, nor that a single polynomial bound works for
+arbitrary variable-level formulas. Section~\ref{sec:tqbf} handles a
+variable-length quantified formula as its own finite input.
+
+\subsection{Randomness is finite integer counting}
+
+A randomized descriptor supplies a deterministic clocked machine, a
+polynomial number \(p(n)\) of random bits, and a polynomial runtime.
+Random bits are simply an additional exactly sized input field; early
+termination ignores unused bits. For each input let
+\[
+ M=2^{p(n)},\qquad
+ C(x)=\sum_{j<M}\operatorname{out}(x,\operatorname{bits}_{p(n)}(j)).
+\]
+The acceptance probability notation \(C(x)/M\) abbreviates a finite
+rational number. Inequalities are represented by cross multiplication of
+integers, so no measure theory or real numbers are needed.
+
+There is a constructive subtlety when the intended language is an arbitrary
+formula \(A(x)\). The two implications
+\[
+ A(x)\to 3C(x)\ge2M,\qquad
+ \neg A(x)\to 3C(x)\le M
+\]
+alone need not identify \(A\) constructively: a high count gives only
+\(\neg\neg A\). We therefore specify a BPP presentation by a proved gap
+\[
+ \forall x\ge1\quad
+       (3C(x)\le M)\ \lor\ (3C(x)\ge2M)
+\]
+and pointwise equivalence of \(A(x)\) with the finite majority bit
+\([2C(x)\ge M]\). Equivalently one can supply a Boolean characteristic
+\(\chi_A\) and prove that the number of wrong-output seeds is at most
+\(M/3\). The characteristic is not assumed to be computable in polynomial
+time. In the standard extensional reading this is the usual BPP notion,
+with its constructive identification made explicit.
+
+\begin{theorem}[Integer error amplification]
+\label{thm:amplification}
+Suppose a randomized Boolean algorithm has at most \(F\) failing seeds out
+of \(M\), where \(3F\le M\). The majority of
+\(r=16(k+1)+1\) independent runs has at most a \(2^{-k}\) fraction of
+failing combined seeds. The construction and the integer inequality are
+provable in \ipra. For a polynomial-time randomized descriptor its runtime
+and random-bit usage are polynomial in the input length and \(k\).
+\end{theorem}
+
+\begin{proof}
+Write \(r=2m+1\) and consider all \(M^r\) tuples of seeds. Let \(S(\rho)\)
+be the number of failing runs on tuple \(\rho\), and let \(F_0\le F\)
+be the actual number of failing single-run seeds. Each successful seed
+contributes weight 1 and each failing seed weight 2. Finite product
+expansion gives
+\[
+ \sum_{\rho}2^{S(\rho)}=(M+F_0)^r\le(M+F)^r.
+\]
+If \(B\) tuples have a failing majority, each has weight at least
+\(2^{m+1}\). Since \(3(M+F)\le4M\),
+\[
+ 2^{m+1}B\le(M+F)^{2m+1},\qquad
+ 3\cdot9^m B\le2\cdot8^m M^{2m+1}.
+\]
+The second inequality follows by multiplying the first by
+\(3^{2m+1}\), using the preceding bound, and canceling a positive common
+power of two. All these are integer operations.
+
+The concrete inequality \(2\cdot8^8=33554432<43046721=9^8\) gives, for
+\(m=8(k+1)\),
+\(2^{k+1}8^m<9^m\). Combining the inequalities yields
+\(2^kB\le M^r\), the asserted bound. The proof of the product expansion
+is induction over the number of independent seed fields; its invariant is
+an equality of finite sums. Inequality preservation and counting bad
+tuples are equally bounded. Thus only quantifier-free induction is used
+after compilation.
+
+Implement the independent runs sequentially, retaining a count of output
+bits. The combined random input has \(r p(n)\) bits, and the runtime is
+a fixed polynomial majorant of \(r\) times the one-run time plus input
+and counter bookkeeping. This is polynomial in \(n,k\). No extraction of
+a single good seed for all inputs, and no derandomization theorem, is
+claimed.
+\end{proof}
+
+Deterministic machines ignore their random bits, giving
+\(\Pclass\subseteq\mathsf{BPP}\). Exhaustive seed counting uses polynomial
+space: retain one \(p(n)\)-bit seed, a \(p(n)+1\)-bit acceptance counter,
+and the polynomial verifier workspace. Therefore
+\(\mathsf{BPP}\subseteq\PSPACE\). A one-sided RP presentation has no
+accepting seeds on no-instances and at least half its seeds accepting on
+yes-instances, together with the same explicit language identification.
+A successful seed is an NP witness, giving \(\mathsf{RP}\subseteq\NP\).
+Complement gives \(\mathsf{coRP}\subseteq\coNP\). These arguments do not
+assume that BPP equals P or that randomized expected-time bounds can always
+be replaced by deterministic clocks with identical behavior.
+
+\subsection{Worst case, finite averages, and amortized costs}
+
+For a supplied total clocked algorithm, its actual stopping time below the
+clock is a bounded least search. Maximum and minimum over the \(2^n\)
+inputs are primitive recursive. For an explicitly given finite rational
+distribution, multiply costs by its integer weights and divide by their
+positive total weight. The average lies between the minimum and maximum
+by summing the corresponding pointwise inequalities.
+
+Amortized analysis concerns a different finite quantity. If states
+\(s_0,\ldots,s_m\), nonnegative costs \(c_i\), and a numerical potential
+\(\Phi\) obey
+\(c_i+\Phi(s_{i+1})\le a_i+\Phi(s_i)\), summing and canceling gives
+\[
+ \sum_{i<m}c_i+\Phi(s_m)
+       \le\sum_{i<m}a_i+\Phi(s_0).
+\]
+The induction is an inequality between finite sums. This provides the
+usual amortized upper bound when \(\Phi\ge0\), and does not posit an
+ordering of amortized and average-case complexity without additional
+assumptions about workloads and distributions.

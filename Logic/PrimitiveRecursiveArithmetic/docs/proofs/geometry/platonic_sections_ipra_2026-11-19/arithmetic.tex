@@ -1,0 +1,165 @@
+\section{The precise interpretation in intuitionistic primitive recursive arithmetic}
+\label{sec:arithmetic}
+The geometric argument has been arranged so that its exact part is an
+arithmetical proof, not an appeal to the totality of an unrestricted real
+optimization procedure. This section specifies that statement and the
+operations needed to express it.
+
+\subsection{The underlying theory}
+We use first-order intuitionistic logic with equality, natural numbers,
+zero and successor, a function symbol for each primitive recursive
+definition with its defining equations, the successor axioms, and
+induction for quantifier-free formulas. This is iPRA in the convention
+used by ProveIt. Integers, rationals, finite lists, and matrices below
+are natural-number codes; they are not additional logical sorts.
+Induction formulas may have parameters. Bounded conjunctions and
+disjunctions of decidable numerical conditions are represented by
+primitive recursive Boolean functions, so their use does not require
+induction for arbitrary quantified formulas.
+
+\subsection{An honest code for the ordered quadratic field}
+Encode an integer by a sign and a magnitude, a finite tuple by a fixed
+primitive recursive pairing function, and an element of $K=\QQ(\varphi)$
+by a triple
+\[
+ (A,B,D),\qquad A,B\in\mathbb Z,\quad D\in\mathbb N_{>0},
+ \qquad \llbracket A,B,D\rrbracket=(A+B\varphi)/D.
+\]
+Reduced fractions are optional. Equality is checked by cross
+multiplication of both coefficients. Addition uses common denominators.
+Multiplication before denominator clearing is
+\[
+ (a+b\varphi)(c+d\varphi)=(ac+bd)+(ad+bc+bd)\varphi.
+\]
+The conjugate of $a+b\varphi$ is $(a+b)-b\varphi$, so its norm is
+$a^2+ab-b^2$. For a nonzero triple, inversion is
+\[
+ (A,B,D)^{-1}
+ =\left(D(A+B),-DB,A^2+AB-B^2\right),
+\]
+followed by flipping all three signs if the denominator is negative.
+These are formulas on integer codes. In particular, we do not assert
+that there is an integer satisfying $\varphi^2=\varphi+1$; that would
+make an intended encoding vacuous.
+
+For comparison, observe that
+\[
+ 2D\llbracket A,B,D\rrbracket=(2A+B)+B\sqrt5.
+\]
+Let $c=2A+B$ and $d=B$. If one is zero or both have the same sign,
+the sign is immediate. If their signs differ, compare $c^2$ with
+$5d^2$: the sign of the field element is
+$\operatorname{sign}(c)\operatorname{sign}(c^2-5d^2)$.
+This is an exact, decidable test on integers, not a floating-point
+test on a radical.
+
+For completeness, $c^2=5d^2$ with integer $c,d$ forces $c=d=0$.
+Reduction modulo $5$ first gives $5\mid c$, then $5\mid d$; dividing
+by $25$ repeats the equation with smaller absolute values. A finite
+descent proof is obtained by bounded search for a least nonzero pair
+below a supplied counterexample, or by quantifier-free induction on
+the Boolean assertion that no such pair occurs below a given bound.
+This proves nonvanishing of the norm and validates the field inverse.
+The same elementary sign cases prove compatibility of the order with
+addition and multiplication. None requires excluded middle for
+uncoded real numbers.
+
+\subsection{The section algorithm and the internal theorem}
+Fix the five vertex and edge lists in the order $T,C,O,I,D$. A plane
+input consists of four field codes $(n_1,n_2,n_3,t)$, with $n\ne0$.
+The algorithm \texttt{SecSq} is defined as follows.
+\begin{enumerate}
+\item Evaluate the at most twenty heights $h_i=n\cdot v_i-t$.
+\item Insert every zero-height original vertex and every intersection
+from (\ref{eq:edge}) for a strictly crossed edge. Deduplicate by exact
+field equality. The input solids have at most thirty edges.
+\item Choose the first nonzero component of $n$ and drop that coordinate.
+Sort the projected point list lexicographically by the exact field order.
+Use the monotone-chain convex hull scan: delete the last point while the
+last turn is nonpositive. This gives the cyclic boundary, with collinear
+intermediate points removed. Lift the stored original points back to
+three coordinates.
+\item Return $\tfrac14\|\sum_iq_i\times q_{i+1}\|^2$ as a field code;
+return zero for lists of length at most two.
+\end{enumerate}
+All invalid codes and the zero-normal case may be totalized to zero;
+the theorem uses an explicit validity antecedent. Each loop is bounded
+by a fixed number of vertices or edges, and each integer operation has
+a standard primitive recursive definition. The convex hull scan's
+invariants are orientation signs, orderedness, and containment relative
+to finitely many supporting lines. They are Boolean arithmetical
+conditions on the code, so their inductive proofs are quantifier free.
+
+The exact upper-bound constants in the unscaled models are
+\begin{equation}
+ B_T=12,\quad B_C=32,\quad B_O=4,\quad
+ B_I=20+32\varphi,\quad B_D=\frac{75}{4}+25\varphi.
+                                                               \label{eq:B}
+\end{equation}
+Let \texttt{leK} be the Boolean comparison of field codes. The
+first-order statement proved by the construction is
+\begin{equation}
+ \forall s,n,t\quad
+ \bigl(s<5\ \wedge\ \mathrm{ValidPlane}(n,t)\bigr)
+ \ \longrightarrow\
+ \mathrm{leK}(\mathrm{SecSq}(s,n,t),B_s)=1.          \label{eq:ipraendpoint}
+\end{equation}
+All displayed objects here are abbreviations for natural-number
+terms and formulas. The body is a decidable arithmetical implication.
+The five attaining inputs are the closed codes of the plane equations
+in the first table; for each, the stronger equality
+$\mathrm{SecSq}(s,n_s,t_s)=B_s$ holds in field-code equality.
+Thus attainment is supplied by explicit witnesses, not an existence
+principle for a maximum.
+
+\subsection{Why the proof stays within iPRA}
+The relevant proof operations can be traced explicitly.
+\begin{itemize}
+\item \emph{Finite geometry.} Edge clipping, supporting-plane
+incidences, orientation tests, affine interpolation, and the shoelace
+formula are finite identities and finite lists of inequalities.
+Polygon area monotonicity follows from a common finite vertical
+subdivision and comparison of endpoint heights. The number of
+trapezoids is bounded by the number of polygon vertices.
+\item \emph{Centralization.} The reflected-fiber polygon has at most
+$4m$ listed vertices for an $m$-vertex slice. Its equal-area statement
+is precisely the finite-sum identity (CS5). There is no use of
+integration, real completeness, or a general Brunn--Minkowski theorem.
+\item \emph{Tetrahedral norm bounds.} Use (\ref{eq:variance}) rather
+than introducing a normed-space completion or a square-root function.
+All face-vector weights and their slack identities lie in $K$.
+\item \emph{Symmetry.} A symmetry is coded by its matrix or its
+permutation of the fixed vertex list. The symmetry group is finite,
+since three linearly independent vertices determine a linear map.
+One may enumerate the images of these three vertices, with at most
+$20^3$ candidate triples, retaining the orthogonal maps preserving the
+whole vertex list. The finite maximum of a list of field elements is
+obtained by an ordinary comparison fold. This supplies the chamber
+covering arguments without a maximum theorem for a sphere.
+\item \emph{Polynomial positivity.} A polynomial is a finite array
+of coefficient/exponent pairs. Addition, convolution, substitution of
+linear forms, and evaluation are bounded sums. If every coefficient
+is nonnegative and every input variable is nonnegative, evaluation is
+nonnegative by induction on a finite prefix sum. Every algebraic
+identity used in the certificate is verified by coefficient equality.
+\end{itemize}
+
+For the icosahedron, each certificate coefficient is an explicitly
+positive integer combination of $1$ and $\sqrt5$. For the dodecahedron,
+the single fixed rational enclosure of $\varphi$ in its proof certifies
+all coefficient signs. After denominators have been given their
+positive signs, every sharp inequality is a finite sum of products
+of nonnegative terms. The coefficient tables are therefore concrete
+arithmetic proof data, rather than an oracle asserting the output of
+a global optimizer.
+
+\paragraph{Strength of the conclusion.}
+The preceding text is a human-readable iPRA proof construction: every
+induction and every computation has been specified in finitary form.
+It does not claim that merely being a terminating Python program
+automatically makes a theorem provable in iPRA. The geometric and
+arithmetic invariants are the proof of correctness; translating them
+into the syntax of \texttt{Prf PRAAx} is the remaining formalization
+project described below. In particular, no uniform reflection
+principle for iPRA and no universal evaluator for all primitive
+recursive programs is assumed.

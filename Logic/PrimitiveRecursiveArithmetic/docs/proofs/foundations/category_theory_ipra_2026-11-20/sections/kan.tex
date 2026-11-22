@@ -1,0 +1,130 @@
+\section{Pointwise Kan extensions with displayed comma colimits}\label{sec:kan}
+
+Kan extensions organize many of the preceding universal properties. Their
+existence needs care: a formula involving a colimit is not an existence
+proof for that colimit. We state the exact constructive hypothesis.
+
+Fix presented functors $K:C\to D$ and $F:C\to E$. For every object $d$
+of $D$, an object of $(K\downarrow d)$ is a pair $(c,u:Kc\to d)$.
+An arrow from $(c,u)$ to $(c',u')$ is $a:c\to c'$ with $u'Ka=u$.
+There is a projection to $C$ and hence a diagram with value $Fc$.
+Assume a colimit $L_d$ of this diagram is supplied with injections
+\[
+ \iota^d_{c,u}:Fc\longrightarrow L_d
+\]
+and its factorization and uniqueness laws. These data, and the mediator
+operation on the cocones used below, must be uniform fixed PR expressions
+in their numerical parameters. In particular, they respect equality of
+arrow labels $u$. The cocone law is
+\[
+       \iota^d_{c',u'}\,Fa=\iota^d_{c,u}
+                    \quad\hbox{if }u'Ka=u.                 \tag{K1}
+\]
+For an infinite indexing presentation, this is a schematic colimit
+interface on supplied PR families; no set of all cocones is asserted.
+Precisely, each fixed PR family of cocone components used in the proof,
+with its displayed numerical parameters, is accompanied by a fixed PR
+mediator term uniform in those parameters and by the factorization and
+uniqueness proofs. The interface does not evaluate arbitrary cocone
+program codes. In the finite-table case, cocones really can be supplied
+as tables, and the mediator is one uniform operation on those tables.
+
+The required equality in labels also follows from (K1): if $u\sim u'$
+with the same endpoints, $\id_c$ is an arrow $(c,u)\to(c,u')$ in
+the comma category, since $u'K(\id_c)\sim u$. Equation (K1),
+functoriality of $F$, and the unit law therefore give
+$\iota^d_{c,u}\sim\iota^d_{c,u'}$.
+
+\begin{theorem}[Pointwise left Kan extension]\label{thm:kan}
+Under these hypotheses, the assignments $d\mapsto L_d$ form a
+presented functor $L:D\to E$, and there is a transformation
+$\eta:F\Rightarrow LK$ such that, for every supplied presented
+$G:D\to E$, composition with $\eta$ gives reciprocal constructions
+\[
+ \operatorname{Nat}(L,G)\ \longleftrightarrow\
+ \operatorname{Nat}(F,GK).
+\]
+Thus $(L,\eta)$ is a left Kan extension in the presentation-wise sense.
+\end{theorem}
+\begin{proof}
+For $v:d\to d'$, the arrows $\iota^{d'}_{c,vu}$ are a cocone over
+$(K\downarrow d)$: (K1) applies because $(vu')Ka=vu$.
+Let $L(v):L_d\to L_{d'}$ be its unique mediator, so
+\[
+                    L(v)\iota^d_{c,u}=\iota^{d'}_{c,vu}.
+                                                               \tag{K2}
+\]
+For $v=\id$, the identity of $L_d$ has these same composites, so
+uniqueness proves $L(\id)=\id$. For composable $v,w$, both $L(wv)$
+and $L(w)L(v)$ have composite $\iota^{d''}_{c,wvu}$ with every
+injection. Hence they are equal. The same argument shows that equal
+$v$ give equal $L(v)$, so this is a functor respecting hom equality.
+
+Define $\eta_c=\iota^{Kc}_{c,\id_{Kc}}$. If $a:c\to c'$, then
+\[
+ L(Ka)\eta_c=\iota^{Kc'}_{c,Ka}
+            =\iota^{Kc'}_{c',\id}\,Fa=\eta_{c'}Fa,
+\]
+where the middle equality is (K1) for the arrow $a$ in the comma
+category. Thus $\eta$ is natural.
+
+Given $\alpha:F\Rightarrow GK$, define a cocone to $Gd$ by
+\[
+                   \lambda^d_{c,u}=G(u)\alpha_c.
+\]
+If $u'Ka=u$, its compatibility is
+$G(u')\alpha_{c'}Fa=G(u')G(Ka)\alpha_c=G(u)\alpha_c$.
+Let $\bar\alpha_d:L_d\to Gd$ be its mediator. To prove naturality,
+compare the composites of $G(v)\bar\alpha_d$ and
+$\bar\alpha_{d'}L(v)$ with $\iota^d_{c,u}$; both are
+$G(vu)\alpha_c$. Uniqueness gives the naturality equation.
+At the injection labelled by the identity,
+\[
+                  \bar\alpha_{Kc}\eta_c=\alpha_c.           \tag{K3}
+\]
+
+Conversely, suppose $\beta:L\Rightarrow G$ and
+$\beta_{Kc}\eta_c=\alpha_c$. Formula (K2) gives
+$\iota^d_{c,u}=L(u)\eta_c$. Therefore
+\[
+ \beta_d\iota^d_{c,u}
+   =\beta_dL(u)\eta_c
+   =G(u)\beta_{Kc}\eta_c
+   =G(u)\alpha_c.
+\]
+Colimit uniqueness forces $\beta_d=\bar\alpha_d$ for every $d$.
+This proves both inverse laws. The constructions respect transformation
+equality by congruence and the same uniqueness argument.
+All formulas have used fixed PR operations and finitely many logical
+steps; specialization therefore yields iPRA derivations.
+\end{proof}
+
+The right Kan theorem is obtained by reversing arrows and using displayed
+comma limits over $(d\downarrow K)$. If $C,D$ are finite table categories
+and $F$ has finite-set values, their comma categories are finite tables.
+The algorithms of Section~\ref{sec:finite} supply all required data,
+so both Kan extensions exist uniformly in iPRA. For $C$ empty, the
+left Kan extension has value $[0]$ and the right has value $[1]$.
+The same recipes work for infinite presentations when the specific
+comma (co)limits and PR mediators are supplied; their existence has not
+been inferred from smallness alone.
+
+\subsection{Universal arrows construct adjoints}
+For completeness, a useful existence criterion needs much less than an
+unrestricted adjoint functor theorem. Given $R:D\to C$, suppose for
+each $c$ there is a supplied initial object $(Lc,\eta_c:c\to R(Lc))$
+of $(c\downarrow R)$, with a uniform PR factor operation. For
+$f:c\to c'$, define $Lf$ as the unique arrow satisfying
+\[
+                       R(Lf)\eta_c=\eta_{c'}f.
+\]
+The identity and composition laws follow by comparing these composites
+and using initiality. The formula is also naturality of $\eta$.
+For $g:c\to Rd$ the factor operation gives the unique
+$\Psi(g):Lc\to d$ with $R(\Psi(g))\eta_c=g$. Its inverse is
+$h\mapsto Rh\,\eta_c$. Substitution and uniqueness show naturality
+in both variables, hence $L\dashv R$ by the adjunction theorem.
+This is a fully constructive initial-object criterion. Merely saying
+that each comma category has some initial object supplies no uniform
+PR choice of the object codes or their factors; that distinction is
+precisely what the hypothesis records.

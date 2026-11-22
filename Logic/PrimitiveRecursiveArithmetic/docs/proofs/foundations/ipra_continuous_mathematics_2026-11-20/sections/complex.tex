@@ -1,0 +1,100 @@
+\section{Residues at constructively named complex points}
+\label{sec:movingres}
+
+The repository's \href{https://github.com/VladimirReshetnikov/ProveIt/blob/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/cauchy_residue_ipra/report.tex}{Cauchy and residue report}
+builds Laurent coefficients at rational singularity centres. Its final section on curves retains this restriction. We remove it for a finite list of positively isolated centres given by regular PR names. The issue is that substituting a nonrational centre changes the domain on which the function can be sampled. Using one fixed rational collar for all sufficiently accurate approximations gives an explicit solution.
+
+Write $|u|_1=|\Re u|+|\Im u|$, $|u|_\infty=\max(|\Re u|,|\Im u|)$, and $Q_t(b)=\{z:|z-b|_\infty\le t\}$ for a closed square oriented counterclockwise on its boundary. A centre name $A(n)\in\mathbb Q(i)$ satisfies
+$|A(n)-A(m)|_1\le 2^{-n}+2^{-m}$. The letter $a$ denotes this name in completed-space notation. For $u\ge0$ write $s(u)$ for the least $t\le 1+\lceil u\rceil$ with $2^t\ge\max(1,u)$. This is a bounded PR search.
+
+\subsection{Two finite tools and the rational input theorem}
+
+Suppose two edge sums use identical increments $h_i$ and respective integrand samples $v_i,v_i'$, with $|v_i-v_i'|_1\le d$. Their difference has norm at most
+\begin{equation}
+ \left|\sum_{i<N}(v_i-v'_i)h_i\right|_1
+ \le d\sum_{i<N}|h_i|_1. \label{eq:ccquad}
+\end{equation}
+Indeed $|uv|_1\le |u|_1|v|_1$ on expanding the two real coordinates. Apply the triangle inequality to each additional term. This proves the estimate at every finite refinement, at the cost of the contour length alone. For trapezoidal quadrature, use the average of the two endpoint samples on each panel. The same proof applies.
+
+For two corresponding sides $[u,v]$, $[U,V]$ of squares with the same half-side, take the triangles $(u,v,V)$ and $(u,V,U)$. Their boundaries sum to
+$[u,v]-[U,V]+[v,V]-[u,U]$. Over the four sides the connecting edges cancel. The signed identity holds also when two of the vertices coincide or a strip has zero area. Thus eight triangles join the two boundaries. Integrals are additive under splitting an edge, as follows by comparing both quadratures on a common refinement.
+
+We use two quantitative lemmas from the linked report, its sections on uniform triangle subdivision and on annular Laurent expansion. Their input is a rational carrier with fixed PR evaluators for $f,f'$ at rational arguments, sample errors $2^{-n}$, bounds and uniform moduli. In name notation their operative conditions are
+\[
+ \begin{aligned}
+ |u-v|_1\le2^{-\nu(k)}&\quad\Longrightarrow\quad |f(u)-f(v)|_1\le2^{-k},\\
+ |u-v|_1\le2^{-\mu(k)}&\quad\Longrightarrow\quad
+ |f(v)-f(u)-f'(u)(v-u)|_1\le2^{-k}|v-u|_1.
+ \end{aligned}
+\]
+In finite form the first conclusion has the two sample errors added. The second, with all three evaluations at precision $n$, has the additional error $(2+|v-u|_1)2^{-n}$. We take the moduli nondecreasing using bounded maxima.
+
+The first lemma gives zero integral on the boundary of a rational triangle contained in the carrier. At subdivision depth $m$, an affine first-order approximant integrates to zero around each child. Its error on that child is bounded by its diameter times $2^{-k}$ times its perimeter. There are $4^m$ children, each diameter and perimeter scaling by $2^{-m}$. The exact shared-edge cancellations leave a bound $DP2^{-k}+P2^{-n}(2^{m+1}+D)$ at sample precision $n$, for parent diameter $D$, perimeter $P$, and $D2^{-m}\le2^{-\mu(k)}$. All three indices can therefore be chosen by bounded arithmetic at the requested precision.
+
+The second lemma treats a rational origin and the radii $s_0=r/8$, $R=8r$. A function $g$ on $Q_R(0)\setminus\operatorname{int}Q_{s_0}(0)$ bounded by $M$ has coefficients
+\[
+ c_\ell(g)=\frac{1}{2\pi i}\int_{\partial Q_t(0)}g(u)u^{-\ell-1}\,du,
+ \qquad t=R\ (\ell\ge0),\quad t=s_0\ (\ell<0).
+\]
+On $\partial Q_r(0)$ the truncation from $-N$ through $N-1$ has error at most
+$C2^{-N}$, with $C=16RM/(R-r)+16s_0M/(r-s_0)$. In particular $\int_{\partial Q_r(0)} g=2\pi i c_{-1}(g)$. To recall the origin of the margin, removing a small square about the evaluated point from the annulus and applying triangle cancellation gives the annular Cauchy formula. On the outer contour $|z/u|_1\le1/2$, and on the inner $|u/z|_1\le1/2$. Expanding each kernel by the exact finite geometric identity leaves the displayed uniform tail. Integrating monomials around a square extracts the $-1$ term. The report proves the kernel moment and quadrature bounds. We invoke these human-level arithmetic proofs as prior lemmas. Their deep Lean derivations are additional dependencies.
+
+\subsection{Transport theorem}
+
+For each centre choose a positive rational $r$ and $n_0$ such that $2^{1-n_0}\le r/32$, and take $b=A(n_0)$. One may take $n_0=1+s(32/r)$. Require effective holomorphy data as above on the rational closed collar
+\[
+ K(b,r)=\{v:r/16\le |v-b|_\infty\le 9r\}.
+\]
+Such collars are finite rational polygonal carriers. For a finite rational polygonal cycle $\Gamma$ assume there is a rational triangle chain $T$ and integer weights $w_j$ with
+\[
+ \partial T=\Gamma-\sum_j w_j\partial Q_{r_j}(b_j).
+\]
+Use one compatible $f$ on all these carriers, with effective holomorphy data on the triangles of $T$. For the winding interpretation assume disjoint proxy squares and that $T$ and $\Gamma$ avoid the open cores $|z-b_j|_\infty<r_j/16$. Equality after splitting rational edges, disjointness and clearance are finite geometric conditions. A common PR evaluator in the centre index and precision is required if the length of the family varies in the object formula.
+
+\paragraph{Theorem.} On each translated annulus the Laurent coefficients about the named centre have PR names. On its middle square the same $C2^{-N}$ truncation bound holds. If $c_{j,-1}$ denotes the coefficient so obtained, then
+\[
+             \int_\Gamma f(z)\,dz=2\pi i\sum_j w_j c_{j,-1}.
+\]
+The weights agree with the winding numbers at the named centres under the clearance conditions above. If the presentation extends compatibly throughout a positively isolated punctured neighbourhood of each centre, $c_{j,-1}$ is its residue. The statement includes essential isolated singularities whenever these data are supplied.
+
+\paragraph{Proof.} Fix one centre. For $n\ge n_0$ put $g_n(u)=f(A(n)+u)$ on the fixed annulus about zero. Its rational sample positions all lie in $K(b,r)$ because the displacement from $b$ has norm at most $r/32$ and
+$r/8-r/32\ge r/16$, $8r+r/32\le9r$. The same translation in both arguments preserves their difference exactly. The bounds, function modulus and derivative remainder modulus of every $g_n$ are therefore identical. Apply the rational annular lemma at every stage, obtaining $c_{n,\ell}$ and one common $C$. Each $c_{n,\ell}$ here is already a name produced by a fixed quadrature algorithm with numeric parameters $n,\ell$.
+
+For $n,m\ge\max(n_0,\nu(k)+1)$ and any rational $u$ on the annulus,
+$|g_n(u)-g_m(u)|_1\le2^{-k}$. Both arguments lie in the collar and their distance is at most $2^{1-\min(n,m)}$. To name the translated value at precision $p$, take this index bound with $k=p+2$ and evaluate $F(A(n)+u,p+2)$. The translation and evaluation errors are each at most $2^{-p-2}$. Coherence at any two requests follows by comparison at a common finer stage.
+
+Now compare the two coefficient quadratures on the same square about zero. Its kernel $u^{-\ell-1}$ has the same value at both sampling points in the reference coordinates. Put
+\[
+ H_\ell=
+ \begin{cases}
+  8R\max(1,2/R)^{\ell+1}, & \ell\ge0,\\
+  8s_0\max(1,2s_0)^{-\ell-1},&\ell<0.
+ \end{cases}
+\]
+Indeed $|u^{-1}|_1\le 2/|u|_\infty$ and $|u|_1\le2|u|_\infty$. The reciprocal of $2\pi i$ has norm less than one. Estimate~\eqref{eq:ccquad}, followed by arbitrary common-refinement accuracy, yields
+$|c_{n,\ell}-c_{m,\ell}|_1\le H_\ell 2^{-k}$.
+For a rational name of $c_\ell$ at precision $p$, take
+$k=p+2+s(H_\ell)$,
+$n=\max(n_0,\nu(k)+1)$, and evaluate $c_{n,\ell}$ to $2^{-p-2}$. This diagonal is PR jointly in the signed index and precision. It depends extensionally on the centre since two equal regular names become arbitrarily close with the same dyadic shifts (compare via a common finer stage). No modulus for the variation of $f'$ as the centre moves has been used.
+
+To transfer the Laurent estimate, first fix $N$ and a rational $u$ on $\partial Q_r(0)$. A perturbation bounded by $\eta$ in each of the $2N$ coefficients changes the polynomial by at most $2N\max(1,2r,2/r)^N\eta$. Thus for an auxiliary tolerance $2^{-p}$ one can take the maximum of the explicit $n$ schedules for the finitely many coefficients with precision $p+2+s(2N\max(1,2r,2/r)^N)$ and the value schedule for $g(u)$. The rational inequality then holds with error $C2^{-N}$ plus arbitrarily small dyadic slack. Positive rational gaps are decidable and are separated from zero by an explicit reciprocal-denominator bound. This removes the slack in the name inequality. The same argument on smaller bands gives the Laurent germ wherever the rational annular estimate gives one. For compatible punctured-neighbourhood data, compare any two such radii on an intervening closed annulus. Translation to a sufficiently accurate common rational centre puts both radii in its supplied collar data (use a finite chain of overlapping closed bands with slack if needed). Triangle cancellation for the weighted integrand makes the coefficients equal there, and the preceding estimate passes that equality to the names. Here the punctured-neighbourhood input includes such working data for every pair of dyadic scales, uniformly in the scales. A single annular presentation by itself determines only its annular coefficient.
+
+Finally join $\partial Q_r(b)$ to $\partial Q_r(A(n))$ by the eight rational triangles above. Every point in these triangles is a side point of the reference square plus a displacement of norm at most $r/32$ from $b$. Each pair of sides spans a parallelogram, including degenerate ones. Its infinity-distance from $b$ lies between $r-r/32$ and $r+r/32$. Cauchy's triangle lemma gives equal integrals. At the other end, the rational annular lemma gives $2\pi i c_{n,-1}$. Applying triangle cancellation on $T$ and taking the directed accuracy just proved gives the asserted formula. Explicitly, errors $\eta$ in the coefficients cost at most $8\eta\sum_j|w_j|$ since $2\pi<8$. The integral, product and constants receive their own dyadic sample margins. The straight segment from $b_j$ to any sufficiently accurate $A_j(n)$ lies in its empty core. At these rational points the oriented boundary of each triangle in $T$ has winding zero, the $j$th proxy square has winding one and the other squares have winding zero. Equivalently one may use the report's rational crossing algorithm. This stable value defines the winding at the named point. No comparison of a named coordinate for equality with a ray or vertex is required.\hfill$\square$
+
+\paragraph{A nonrational two-coordinate pole.}
+Let $a=(\sqrt 2+i\sqrt 3)/8$ and
+$f(z)=(1+i)/(z-a)+1/(z-a)^2$. The centre approximation divides
+$\lfloor\sqrt{2\,4^n}\rfloor+i\lfloor\sqrt{3\,4^n}\rfloor$ by $8\cdot2^n$. Integer square root is bounded search, and its two coordinate errors sum to less than $2^{-n}/4$. Use $r=1$, $n_0=6$, $b=(90+110i)/512$, and $\Gamma=\partial Q_2(b)$. Eight triangles fill the gap between $\Gamma$ and $\partial Q_1(b)$, using the four corresponding outer and inner sides. On $K(b,1)$ we have $|z-a|_\infty\ge1/32$, hence $|(z-a)^{-1}|_1\le64$. For a bound $U$ on the endpoint inverses, their difference is at most $U^2|h|_1$ and the inverse's linearization error at increment $h$ is at most $U^3|h|_1^2$, by the exact reciprocal difference identity. Squaring the inverse gives a remainder bounded by $3U^4|h|_1^2$ (expand $(v+\Delta)^2$ and use $|\Delta|_1\le U^2|h|_1$). Thus $M=2U+U^2$, a Lipschitz bound $L=2U^2+2U^3$ and a quadratic remainder constant $2U^3+3U^4$ provide the required inputs. A rational integrand sample is obtained using $A(n)$ at a precision shifted by $s(L)+2$ and enough initial bits to keep the inverse bound. For $n\ge6$ the same bound $64$ holds relative to $b$ for those proxies. Its polynomial derivative uses the same bounded inverse and finite products and therefore also has a PR name. Direct expansion about $a$ gives the residue $1+i$ and the integral $2\pi i(1+i)$.
+
+The supplied \texttt{examples/moving\_pole.py} checks this example by independent midpoint quadrature along $\Gamma$. Here $|z-A(n)|_\infty\ge63/32$ for $n\ge6$, so $U=2$ and $L=24$ suffice on the contour. With $2^{14}$ panels per side, centre precision $20$, and $24$ bits after the binary point in each integrand coordinate, a taxicab error bound is
+\[
+ 16\left(24\cdot2/2^{14}+24/(4\cdot2^{20})+2/2^{24}\right)
+ =24625/524288<0.047 .
+\]
+The program compares with independent rational upper and lower sums for $2\pi=8\int_0^1(1+x^2)^{-1}dx$. All its comparisons use integers and fractions.
+
+\paragraph{An essential singularity at the same point.}
+Take $f(z)=\exp(1/(z-a))$ with the same squares. Here are explicit contracts to instantiate the result. For an integer inverse bound $U\ge1$ set $J=2U$, $t_j=U^j/j!$ and $B=\sum_{j<J}t_j+2t_J$. Beyond $J$ the ratio of consecutive terms is at most $1/2$, so every partial tail starting at $N\ge J$ is at most $2t_J2^{-(N-J)}$. The polynomial approximants to the exponential and its derivative therefore have PR rates and norm bound $B$ on $|v|_1\le U$. For $|v|_1,|w|_1\le U$, telescoping the powers twice bounds the $j$th monomial's first-order remainder by $\binom j2 U^{j-2}|w-v|_1^2$ for $j\ge2$. After division by $j!$ and summation the bound is $(B/2)|w-v|_1^2$. Composing with the reciprocal gives Lipschitz constant $BU^2$ and quadratic remainder constant $B(U^3+U^4/2)$ on the collar. Take $U=64$ here and enlarge it by the explicit reciprocal clearance on any smaller admissible annulus. The same series is already a uniformly convergent Laurent expansion in $z-a$, with every coefficient of $(z-a)^{-n}$ equal to $1/n!$ for $n\ge1$. Square moments give uniqueness coefficient by coefficient. This verifies both a residue of $1$ and an unbounded principal part, using the explicit tail bound at each requested precision.
+
+\paragraph{Formalization boundary.}
+The file \texttt{Complex.lean} proves both finite tools in Lean's ordinary arithmetic. The theorem \texttt{same\_increments} controls quadrature error for Gaussian rationals, and \texttt{four\_strips} gives the boundary identity. The theorem \texttt{diagonal\_regular} also verifies the two-level name construction, taking the sample at stage $\operatorname{cut}(p+2)$ and inner precision $p+2$ once the outer coefficient error has been normalized to $2^{-p}$. To construct the object proof, encode the signed fractions, point samples and edges as natural numbers, clear positive denominators and use the fixed-precision prefix inequality in~\eqref{eq:ccquad} as the QF induction invariant. Include a Boolean fold of the finite sample hypotheses. Instantiate the rational Cauchy and Laurent object lemmas with the PR substitution $(n,u)\mapsto A(n)+u$. The remaining closure steps are QF comparisons of $H_\ell 2^{-k}$ and finite weighted sums, with universal precision introduced at the end. The upstream object-level analytic lemmas and this assembly remain formalization obligations. The isolation and carrier data enter as hypotheses. Locating singularities of an arbitrary analytic presentation is a separate problem.

@@ -1,0 +1,71 @@
+\section{Equivalent finite tests on dyadic prime products}\label{sec:discrete}
+Fix one admissible polynomial code. Write $B(n)$ for its integer binary logarithm of the prime product. Index the cutoffs by $i\ge0$, with $n_i=i+100$. Write
+\[
+ g_i=|B(2n_i)-2B(n_i)|,\qquad
+ e_i=g_i^2,\qquad c_i=n_i W(n_i)^2,
+\]
+where $W(n)=1000(d+1)^4(H+2)^2(1+\lfloor\log_2(2n)\rfloor)^2$.
+The local estimate is $e_i\le c_i$ for every $i$. All tests below use exactly these constants and cutoffs. Universal closure over the appropriate polynomial parameters gives the RH, Dirichlet GRH and Dedekind ERH versions of every equivalence.
+
+\paragraph{A linear test on two prime products.}
+For every $i,q\in\mathbb N$, demand that
+\[
+ \big|2qB(2n_i)-4qB(n_i)\big|\le q^2+c_i.
+\]
+The absolute value abbreviates two natural-number inequalities. The implication from the local estimate follows from $2qg_i\le q^2+g_i^2$, obtained by expanding $(q-g_i)^2$ after comparison of the two naturals. Conversely, take $q=g_i$ and cancel $g_i^2$. Thus each failure has an explicit separating slope. Searching over a dense set of real slopes, or approximating a square root, is unnecessary.
+
+\paragraph{Endpoint tests along a dyadic chain.}
+Write $C(x)=x W(x)^2$. For $n\ge100$ and $q\ge0$, set $R_0=0$ and
+\[
+ R_{j+1}=2R_j+q^2+C(2^j n).
+\]
+Demand, simultaneously for every $n,k,q$, that
+\[
+ \left|2q B(2^k n)-2^{k+1}q B(n)\right|\le R_k.
+\]
+For fixed $n,q$, the signed endpoint discrepancy at step $j+1$ is twice the discrepancy at step $j$ plus the local discrepancy at $2^j n$. The latter cutoff is at least 100. The two inequalities for that cutoff give the displayed estimate by induction, starting from equality at $k=0$. Conversely $k=1$ gives the preceding linear test exactly. For example, the allowance at $4n$ is $3q^2+2C(n)+C(2n)$. This form compares binary lengths of prime products at widely separated arguments without testing the intermediate values of $B$.
+
+\paragraph{Energy in windows and monotonicity of cumulative slack.}
+For every $s,k$ and every finite family of natural weights $w_0,\ldots,w_{k-1}$, demand
+\[
+ \sum_{j<k} w_j e_{s+j}\le \sum_{j<k} w_j c_{s+j}.
+\]
+The weights are first-order data. Use two naturals $b,w$ and read
+$w_j=\lfloor w/b^j\rfloor\bmod b$. Any finite list can be represented by choosing $b\ge2$ larger than its entries; the additional codes, including the totalized operations at $b=0$, still give nonnegative weights. Multiplication by $w_j$ and quantifier-free induction on the length prove the inequality. The reverse uses $k=1,b=2,w=1$.
+
+Let $E(k)=\sum_{j<k}e_j$ and $C_0(k)=\sum_{j<k}c_j$. Another equivalent test is
+\[
+ E(s+k)+C_0(s)\le C_0(s+k)+E(s)\qquad(s,k\ge0).
+\]
+Its meaning is that the signed cumulative slack $C_0-E$ is nondecreasing. The forward proof adds each local inequality in turn. In the reverse direction take $k=1$ and cancel the common prefixes. Simply requiring $E(k)\le C_0(k)$ loses information: for $e=(0,2,0,\ldots)$ and $c=(1,1,0,\ldots)$ all prefixes pass although the second term fails.
+
+\paragraph{Prefix tests that retain every individual bound.}
+Define the place values $r_0=1$ and $r_{i+1}=r_i(c_i+1)$. A single comparison for each prefix length suffices:
+\[
+ \sum_{i<k}r_i e_i\le\sum_{i<k}r_i c_i\qquad(k\ge0).
+\]
+The forward direction is summation of positive multiples of the individual bounds. For the converse the exact identity
+$\sum_{j<i}r_j c_j+1=r_i$ follows by quantifier-free induction, since $r_{j+1}=r_j c_j+r_j$. If $e_i\ge c_i+1$, its contribution alone is at least $r_i c_i+r_i$, exceeding the entire budget up to and including that index by one. Thus the prefix of length $i+1$ exposes the failure even if all earlier observed energies vanish. The proof works for zero budgets and uses no bound on the energies. These rapidly growing positive integers provide a compact presentation of the statement; direct local testing is cheaper.
+
+\paragraph{Induction strength and formal status.}
+Each proof uses induction with polynomial codes and numerical endpoints as parameters. For the chain, the induction predicate is the conjunction of its two inequalities at the current index. For the sum, radix identity and monotonicity arguments, it is one equality or inequality between primitive-recursive terms. The universal local assertion is an open assumption during these inductions. One can conjoin the invariants asserting $2^jn\ge100$ and the two chain bounds if desired. All comparisons are decidable natural-number comparisons, and the witness in each reverse direction is given by a term. These are therefore iPRA arguments. The Lean theorem \texttt{Discrete.hypothesis\_iff} proves the arithmetic equivalences in the standard interpretation of each of the three supplied object sentences. Its proof unfolds the original compiled excess to $e_i\mathbin{\dot-}c_i$. The additional theorem \texttt{Discrete.packed\_sentence\_iff} also checks the denotation of a new five-input primitive-recursive matrix for the mixed-radix test. These two Lean theorems are semantic statements, whereas an internal proof object in this project has type \texttt{Prf PRAAx}.
+
+The module \texttt{DiscreteSyntax.lean} constructs \texttt{Discrete.statement} for all eighteen choices of family and test. Its matrix has eight natural inputs: four polynomial parameters, a cutoff, a window or chain length, a slope or digit base, and a digit word. Unused auxiliary inputs are universally quantified. The theorem \texttt{Discrete.statement\_reading} verifies the denotation of every matrix, including the recursion for $R_k$ and the digit-weighted sums. The theorem \texttt{Discrete.statement\_equivalent} connects each literal closed formula to the corresponding original formula in the standard interpretation.
+
+\subsection{Testing only breakpoints of the prime products}
+A sharper reduction in the data to inspect works uniformly for every polynomial. Write
+\[
+ \mathcal S=\{100\}\ \cup \{n\ge101:\ n,\ 2n-1,\text{ or }2n\text{ is a positive power of a prime}\}.
+\]
+Then the local dyadic estimate for every $n\ge100$ is equivalent, with precisely the original allowance, to checking it for $n\in\mathcal S$. The set of cutoffs does not depend on the polynomial. In increasing order it consists of the initial cutoff and the admitted members of $\{p^a,\lceil p^a/2\rceil:p\text{ prime}, a\ge1\}$.
+
+For example, 103 is an event because it is prime, and 106 is an event because $2\cdot106-1=211$ is prime. The cutoffs 104 and 105 can be skipped for every field: neither is a prime power, and the four integers from 207 through 210 all have at least two distinct prime divisors.
+
+For $X\ge100$, the number of retained tests through $X$ is at most
+$1+\pi(X)+\pi(2X)+2\lfloor\sqrt{2X}\rfloor\lfloor\log_2(2X)\rfloor$.
+The prime terms count the first powers in the two lists, and an exponent at least two has a base at most $\sqrt{2X}$ and at most $\lfloor\log_2(2X)\rfloor$ exponent choices. For a numerical illustration, sieving the primes up to $2X$, inserting their successive powers and taking the union gives 394 retained cutoffs in $[100,1000]$ and 3301 in $[100,10000]$.
+
+Indeed, fix $n>100$ outside $\mathcal S$. The change from $n-1$ to $n$ crosses no prime power, so the indexing set of the prime product is constant. The change from $2n-2$ to $2n$ also crosses no prime power. Both binary logarithms keep their previous values. The squared discrepancy therefore stays constant while $nW(n)^2$ can only increase. Induct on $n-100$ with the single local inequality as the quantifier-free induction predicate. At an event apply the assumed test, and away from events propagate the previous inequality. Direct specialization proves the converse.
+
+One can check the plateau argument even for the precise compiled loops. On increasing a positive argument $x$ by one, a new outer-loop candidate $p=x+1$ can contribute only if it is prime. For a previously admitted prime, the comparison $p^{j+1}\le x$ can switch only at $p^{j+1}=x+1$. Finally the exponent-loop bound $\lfloor\log_2x\rfloor$ can increase only when $x+1$ is a power of two: if $h=\lfloor\log_2(x+1)\rfloor$ exceeds the old logarithm then $x<2^h\le x+1$. Hence at a nonevent the newly added row has value one and all older rows are unchanged. This argument works for any values of the local root counts and includes repeated factors. The event mask has bounded searches $p\le z$, $0\le j<z$, testing primality and $p^{j+1}=z$ for the three integer candidates $z$. These ranges contain every representation since $p\ge2$ and $j+1\le 2^{j+1}$. The module \texttt{SparseEvents.lean} implements this mask and the filtered closed formulas.
+Its theorem \texttt{Sparse.sparse\_sentence\_iff} checks the equivalence of their standard interpretations end to end. The supporting lemmas interpret the exact compiled prime product, identify the event counter with the bounded prime-power search and prove monotonicity of the compiled numerical budget.

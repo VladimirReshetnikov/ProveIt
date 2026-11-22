@@ -1,0 +1,408 @@
+{
+  "schema_version": 1,
+  "title": "Selected ProveIt providers for the continuous probability in iPRA report",
+  "prepared_date": "2026-11-20",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "local_snapshot_commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+  "current_fetched_commit": "83421593771f877bc1ae98f4229eb35507bff05b",
+  "hash_convention": {
+    "git_blob_sha1": "SHA-1 of b\"blob \" + decimal byte length + NUL + exact repository bytes",
+    "sha256": "SHA-256 of exact repository bytes",
+    "materialized_copy_sha256": "Hash of bytes actually held in the working source copy, when different by the documented trailing LF"
+  },
+  "scope": "Selected inspected providers, not the full transitive build dependency closure. No upstream source files are copied into this deliverable. Actual upstream Lean source endpoints are distinguished from manuscript/blueprint providers. Upstream builds were not rerun; the deliverable standalone Lean kernel was built separately.",
+  "sources": [
+    {
+      "id": "core_pr",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "3251631592070d9ed3687cc0bf7dbd5eb452e46f",
+      "sha256": "7acfe97459dc2b18e50a89bde8c8c4f98cb6a48a252b4a2ddb08f7f1e6d7a070",
+      "size_bytes": 5985,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean",
+      "kind": "object_logic_definition",
+      "inspection_scope": "PR symbols, PTm syntax, defining equations, PRAAx and quantifier-free induction rule inspected.",
+      "selected_endpoints": [
+        "PR",
+        "PTm",
+        "PRAAx",
+        "PRA.qfInd"
+      ],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "core_deduction",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Deduction.lean",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "0969040f77fdd3ed9526e360e7a998584b4d9d8c",
+      "sha256": "650e9cd942ba7984d47e34b71bb737c233f47e46f500e7453b01682bb5e578ed",
+      "size_bytes": 10283,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Deduction.lean",
+      "kind": "object_logic_definition",
+      "inspection_scope": "Intuitionistic deduction constructors, equality, substitution and structural rules inspected.",
+      "selected_endpoints": [
+        "Theory",
+        "Prf",
+        "Prf.substWeaken",
+        "Prf.subst"
+      ],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "finite_kernel",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/FiniteKernel.lean",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "2ba9eaa117219ab315ad6b732b217a1966534584",
+      "sha256": "89fb207a0962469803bae4ace6f91ea880f9334d62ecf3acf4c9902444856e26",
+      "size_bytes": 3736,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/FiniteKernel.lean",
+      "kind": "object_language_derivation_source",
+      "inspection_scope": "Fixed finite expectation comparisons are quantifier-free after positive denominators are cleared; natural-weight representation of rational probabilities. pr_evaluator is not a universal PR-program evaluator.",
+      "selected_endpoints": [
+        "pr_evaluator",
+        "weighted_average"
+      ],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "expectation",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/Expectation.lean",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "504849b8d03bf56c7e6deba34b922c00626d5b4a",
+      "sha256": "eb02fdfb9ba2839af26a49436773671fddeafbc711512188ea1c1d5eb5cba73e",
+      "size_bytes": 13010,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/Expectation.lean",
+      "kind": "object_language_derivation_source",
+      "inspection_scope": "Finite expectation algebra and inequalities with actual PRAAx proof types; normalization denominators are cleared.",
+      "selected_endpoints": [
+        "exp_add",
+        "exp_mono",
+        "markov",
+        "chebyshev",
+        "cauchy_schwarz",
+        "second_moment"
+      ],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "weak_law",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/WeakLaw.lean",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "213f7d00a2661bf71736edfabde42e87af7717d5",
+      "sha256": "a54b4c1475ebbd33771d24b62f0bd85806bc26feb4dc4233ec188d8cb1a046b7",
+      "size_bytes": 11439,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/WeakLaw.lean",
+      "kind": "object_language_derivation_source",
+      "inspection_scope": "Finite product-sample moment arithmetic and denominator-cleared weak law. Continuous-law transport is additional work.",
+      "selected_endpoints": [
+        "monte_carlo",
+        "dev_identity",
+        "weak_law"
+      ],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "first_crossing",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/FirstCrossing.lean",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "209874f865c54f558891a279c310a2d5eca8bb78",
+      "sha256": "5bf44cb04f582a00763dc4b43bf3059d9e475da4fad3d1269fe9c166f97fbf7c",
+      "size_bytes": 6347,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/FirstCrossing.lean",
+      "kind": "object_language_derivation_source",
+      "inspection_scope": "Finite Boolean first-crossing indicators, coverage, disjointness and crossing-condition inequality.",
+      "selected_endpoints": [
+        "cover",
+        "disjoint",
+        "crossing_bound"
+      ],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "kolmogorov_assembly",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/KolmogorovAssembly.lean",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "fea4bfc4237a531c9e7953ec8b979ed264088e3c",
+      "sha256": "4dd7cd0e961dfc27077c52140701d181ecb42d382b65f11eaff1b2fdab837c7e",
+      "size_bytes": 5235,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/KolmogorovAssembly.lean",
+      "kind": "object_language_derivation_source",
+      "inspection_scope": "Sums supplied crossing-step inequalities using finite Fubini and disjointness. Does not itself derive product splitting or the terminal variance identity.",
+      "selected_endpoints": [
+        "col_scale",
+        "assembly"
+      ],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "kolmogorov_iid",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/KolmogorovIid.lean",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "15bc5653fe7e7ca1e424d4043e5111cfe8efcaf8",
+      "sha256": "b53005750df02defc22fef1cd1a9f7cc27136ae543db9be6be8d4907e14a6045",
+      "size_bytes": 13003,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/KolmogorovIid.lean",
+      "kind": "object_language_derivation_source",
+      "inspection_scope": "Constructs the past crossing inequality and zero-mean future-increment hypotheses for one iid crossing step. This file alone is not the completed maximal inequality.",
+      "selected_endpoints": [
+        "past_hyp",
+        "future_mean"
+      ],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "normal_moments",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/NormalMoments.lean",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "6e201be039f7fa132936e9b87d4f09f4e7d47efc",
+      "sha256": "f0c41b2ace9b812e9ed9518d9b6a2f47e3d7aa09f3c1597c8776b7da7b95c176",
+      "size_bytes": 7574,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/NormalMoments.lean",
+      "kind": "object_language_derivation_source",
+      "inspection_scope": "Arithmetic of double factorials and moment coefficients. Header explicitly excludes integrals identifying them with Gaussian moments.",
+      "selected_endpoints": [
+        "df_succ",
+        "edf_succ",
+        "df_fact",
+        "edf_eq",
+        "moment_quotient"
+      ],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "complete_square",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/CompleteSquare.lean",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "4099d3c718e627dc394c2768306050f523f0e921",
+      "sha256": "3220ff371325f60cf17b9569bcde7d1add4935dc1ea9d75971dc882a8a6d54fe",
+      "size_bytes": 2953,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/CompleteSquare.lean",
+      "kind": "object_language_derivation_source",
+      "inspection_scope": "Denominator-cleared polynomial completion-of-squares identities. Header explicitly excludes normalization integrals.",
+      "selected_endpoints": [
+        "hellinger_square",
+        "product_square"
+      ],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "product_replacement",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/ProductReplacement.lean",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "5e78a280ea14cddfcd7ac264fa38a33483cea547",
+      "sha256": "07ef6c21a4a3ce46d508558f17566e6d37a81d4e34762ac345387d060a22c319",
+      "size_bytes": 10239,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Probability/ProductReplacement.lean",
+      "kind": "object_language_derivation_source",
+      "inspection_scope": "Finite product telescoping identity and one-sided bound. Header excludes characteristic functions, damping estimates and smoothing; it is not a CLT proof.",
+      "selected_endpoints": [
+        "replacement_identity",
+        "replacement_bound"
+      ],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "expected_value_report",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/expected_value_ipra_2026-11-16/paper/expected_value_ipra.tex",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "04c849d03139ed421e3641acc6358acf006a275c",
+      "sha256": "b4dec97772ae61f61ee2fa101cc4a990e44f6ee95c165f6d96ccbac2fe958c26",
+      "size_bytes": 3593,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/expected_value_ipra_2026-11-16/paper/expected_value_ipra.tex",
+      "kind": "research_report",
+      "inspection_scope": "Main manuscript structure, abstract/scope and input-section map inspected; human argument and formalization plan.",
+      "selected_endpoints": [],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "expected_value_integration",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/expected_value_ipra_2026-11-16/paper/sections/10_effective_integration.tex",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "465752843def5108f008a5ed414db890cd2905cd",
+      "sha256": "46faeffdf6fb6bd20c628c1c1fbeeab0308fe8331c8a751d0ebe79ed728fb1be",
+      "size_bytes": 14594,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/expected_value_ipra_2026-11-16/paper/sections/10_effective_integration.tex",
+      "kind": "research_report_section",
+      "inspection_scope": "Regular L1 simple-law names, finite expectation stability, compact quadrature and absolute-tail integration inspected.",
+      "selected_endpoints": [],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "expected_value_status",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/expected_value_ipra_2026-11-16/README.md",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "5df12839a01e72c074411ec08015c2ce2d08ecc9",
+      "sha256": "4abc05b9e66b908c687773a5abe9f0017c7ff66afad3ac27917bb680a2fc3276",
+      "size_bytes": 2582,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/expected_value_ipra_2026-11-16/README.md",
+      "kind": "formalization_status_document",
+      "inspection_scope": "Packet explicitly identifies its Lean artifacts as uncompiled blueprints; later Derivations modules must be assessed separately.",
+      "selected_endpoints": [],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "normal_report",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/normal_distribution_ipra_2026-11-16/paper/normal_distribution_ipra.tex",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "b997892099d1e8b436cf1c98e9d842e826d88e8e",
+      "sha256": "7862f4ed1b91c38fff2b7af10a0a105e1e0bdc15f7863a6dd66f2a9948ef494f",
+      "size_bytes": 7099,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/normal_distribution_ipra_2026-11-16/paper/normal_distribution_ipra.tex",
+      "kind": "research_report",
+      "inspection_scope": "Main abstract, scope and input-section map inspected; not treated as a compiled analytic proof.",
+      "selected_endpoints": [],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "normal_gaussian_core",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/normal_distribution_ipra_2026-11-16/paper/sections/03_gaussian_core.tex",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "d6b172dfab863461be77af6102999ab17eef7317",
+      "sha256": "deba22e53a8aef8926b5e4fc82c9f4885539ff1ef01f71d1ff20789a3919ae7c",
+      "size_bytes": 7557,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/normal_distribution_ipra_2026-11-16/paper/sections/03_gaussian_core.tex",
+      "kind": "research_report_section",
+      "inspection_scope": "Normal density/CDF, affine standardization, symmetry and moment/differentiation arguments inspected.",
+      "selected_endpoints": [],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "normal_status",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/normal_distribution_ipra_2026-11-16/STATUS.md",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "bb13697b9d4e822ed7db0f73dd3b50175f076f69",
+      "sha256": "48b646996f23564aa10f2584482e9ff11f637a9eed89e76e082d48edec9c7f03",
+      "size_bytes": 1853,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/normal_distribution_ipra_2026-11-16/STATUS.md",
+      "kind": "formalization_status_document",
+      "inspection_scope": "Explicit separation of human manuscript, finite computational certificates, uncompiled Lean blueprints and unconstructed analytic object proofs.",
+      "selected_endpoints": [],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "clt_report",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/central_limit_ipra_2026-11-15/paper/central_limit_ipra.tex",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "3683d1667886eb755316bc7ec9e0006ba5935c24",
+      "sha256": "a16bcd5d87c5660a7c99881e8069922c7f92de94c532c7cc644ca679c8ad116a",
+      "size_bytes": 88297,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/central_limit_ipra_2026-11-15/paper/central_limit_ipra.tex",
+      "kind": "research_report",
+      "inspection_scope": "Abstract, constructive presentation scope and stated quantitative targets inspected. Stronger earlier Berry--Esseen claims are not imported as already checked analytic theorems.",
+      "selected_endpoints": [],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "clt_status",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/central_limit_ipra_2026-11-15/README.md",
+      "commit": "b2341af5370cd8a43f72ebb2341c0d7d7395b634",
+      "git_blob_sha1": "a9562b94ce8df9d6aabe4a848cdff90da05b6224",
+      "sha256": "c9a2896d6fc235ae276a90337c775a4baf1f3eaec6e5ea1fa2e1ef01b5f723ad",
+      "size_bytes": 3689,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/b2341af5370cd8a43f72ebb2341c0d7d7395b634/Logic/PrimitiveRecursiveArithmetic/docs/proofs/probability/central_limit_ipra_2026-11-15/README.md",
+      "kind": "formalization_status_document",
+      "inspection_scope": "Explicit uncompiled-blueprint status and object-language completion requirements inspected.",
+      "selected_endpoints": [],
+      "build_status_this_task": "source inspected; upstream package not rebuilt",
+      "source_bytes_in_archive": false
+    },
+    {
+      "id": "observable_measure",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_observable_analysis_2026-11-20/paper/sections/measure.tex",
+      "commit": "83421593771f877bc1ae98f4229eb35507bff05b",
+      "git_blob_sha1": "d57b1a3df269d273bcdf899720410fe9b5cc2dd0",
+      "sha256": "a25bb3ab6f42e3b821e9530964c5e307c795aefd3912037146a6812dec064c04",
+      "size_bytes": 24112,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/83421593771f877bc1ae98f4229eb35507bff05b/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_observable_analysis_2026-11-20/paper/sections/measure.tex",
+      "kind": "research_report_section",
+      "inspection_scope": "Coherent measured Boolean presentations, L1 completion, quantitative convergence and represented Fubini; a research-report provider, not a complete object-proof library.",
+      "selected_endpoints": [],
+      "build_status_this_task": "fetched source inspected; upstream packet not rebuilt",
+      "source_bytes_in_archive": false,
+      "materialized_copy": {
+        "local_basename": "observable_measure.tex",
+        "sha256": "5346965eb1d9badca5d6256f19ab066e651ff16231525fe6d732fd143f4da35d",
+        "size_bytes": 24113,
+        "difference_from_repository": "One additional trailing LF byte. Removing exactly that last byte reproduces the supplied Git blob SHA-1; no other normalization was performed."
+      }
+    },
+    {
+      "id": "observable_foundations",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_observable_analysis_2026-11-20/paper/sections/foundations.tex",
+      "commit": "83421593771f877bc1ae98f4229eb35507bff05b",
+      "git_blob_sha1": "b3dcf77dd0892e3ff2e2df0cbe862b95c5832f84",
+      "sha256": "9a0ff2d5ca731a1ab215fd8607122074dceecf41256036b18438367799e49740",
+      "size_bytes": 15481,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/83421593771f877bc1ae98f4229eb35507bff05b/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_observable_analysis_2026-11-20/paper/sections/foundations.tex",
+      "kind": "research_report_section",
+      "inspection_scope": "Separates internal theorem, presentation schema and semantic theorem; finite compilation obligations and explicit-loss completion interfaces.",
+      "selected_endpoints": [],
+      "build_status_this_task": "fetched source inspected; upstream packet not rebuilt",
+      "source_bytes_in_archive": false,
+      "materialized_copy": {
+        "local_basename": "observable_foundations.tex",
+        "sha256": "316ade4641274b469f8747083fba51403a32332f19dce493b20f8e8f726e94e4",
+        "size_bytes": 15482,
+        "difference_from_repository": "One additional trailing LF byte. Removing exactly that last byte reproduces the supplied Git blob SHA-1; no other normalization was performed."
+      }
+    },
+    {
+      "id": "observable_model_probability",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_observable_analysis_2026-11-20/paper/sections/model_probability.tex",
+      "commit": "83421593771f877bc1ae98f4229eb35507bff05b",
+      "git_blob_sha1": "8b768a41cc166174cb5c2d7fd98049f6828dfb5f",
+      "sha256": "388687416e02083d59ae85c2e22f5c1cf7e10736cfe33b98ae777f97a7eb179e",
+      "size_bytes": 16977,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/83421593771f877bc1ae98f4229eb35507bff05b/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_observable_analysis_2026-11-20/paper/sections/model_probability.tex",
+      "kind": "research_report_section",
+      "inspection_scope": "Finite transport, probability-law nets and quantitative semantic probability sort. Its own formalization boundary says these constructions are human proofs plus outlines, not completed Lean theorems.",
+      "selected_endpoints": [],
+      "build_status_this_task": "fetched source inspected; upstream packet not rebuilt",
+      "source_bytes_in_archive": false,
+      "materialized_copy": {
+        "local_basename": "observable_model_probability.tex",
+        "sha256": "75f0c7c1a0c9617c33f502f56061b878e2998f3f4bba32f1128d93b8b9d39c7c",
+        "size_bytes": 16978,
+        "difference_from_repository": "One additional trailing LF byte. Removing exactly that last byte reproduces the supplied Git blob SHA-1; no other normalization was performed."
+      }
+    },
+    {
+      "id": "transport_measure",
+      "repository_path": "Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_measure_transport_2026-11-20/paper/sections/03_measure.tex",
+      "commit": "83421593771f877bc1ae98f4229eb35507bff05b",
+      "git_blob_sha1": "568a9d20e152ebe9836582633395f2876c32b56a",
+      "sha256": "970030275f77045125b26c989e8e5ef7f2bdc6013099ef297455505c3d69acb1",
+      "size_bytes": 27424,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/83421593771f877bc1ae98f4229eb35507bff05b/Logic/PrimitiveRecursiveArithmetic/docs/proofs/foundations/ipra_measure_transport_2026-11-20/paper/sections/03_measure.tex",
+      "kind": "research_report_section",
+      "inspection_scope": "Dyadic step completion, effective unions, conditional averages, quantitative Vitali, density-from-mass and energy/modulus distinctions. Object-iPRA continuous bridges remain targets.",
+      "selected_endpoints": [],
+      "build_status_this_task": "fetched source inspected; upstream packet not rebuilt",
+      "source_bytes_in_archive": false,
+      "materialized_copy": {
+        "local_basename": "transport_measure.tex",
+        "sha256": "d004f6ffb18df88e2a06750b85f1c3b8d140b153f1e19955f98628b92b953abf",
+        "size_bytes": 27425,
+        "difference_from_repository": "One additional trailing LF byte. Removing exactly that last byte reproduces the supplied Git blob SHA-1; no other normalization was performed."
+      }
+    }
+  ]
+}

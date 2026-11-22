@@ -1,0 +1,180 @@
+\section{Internalization audit and the Lean formalization path}
+\label{sec:formalization}
+
+\subsection{Why the proof fits quantifier-free induction}
+
+It is insufficient to say that an algorithm is computable and therefore
+available in iPRA. The algorithms used here have specified primitive
+recursive bounds, and their correctness proofs can be organized as
+quantifier-free finite invariants. The following table records what is
+actually needed.
+
+\begin{longtable}{@{}p{0.25\linewidth}p{0.32\linewidth}p{0.34\linewidth}@{}}
+\toprule
+Construction & Numerical data and bound & Induction invariant\\
+\midrule
+\endhead
+Expression syntax & Tagged node array, child indices below the current index & Every processed node has the required tag and well-formed children.\\
+Taylor approximations & Explicit finite cutoff in input magnitude and precision & Partial-sum recurrence and factorial/geometric tail inequalities.\\
+Expression evaluation & Global magnitude and precision bounds from Appendix~\ref{app:primitives} & Bounded node table of rational values and error budgets.\\
+Coarse rounding & One rational approximation with error $1/8$; rational floor & Quotient/remainder inequalities and $5/8$ distance bound.\\
+Polynomial majorant & Finite coefficient and exponent lists & Telescoping product identity and accumulated rational error bound.\\
+Density, phase search & Indices at most $K,N_0,N_1$ in Section~\ref{sec:density} & Finite grid comparisons, signed rational endpoint values, and adjacent-sample bound.\\
+Density, dimension loop & Exactly $n$ nested rational intervals & Certificate table of centers, radii, Lipschitz bounds, and interval inclusions.\\
+Square targets & Fixed number of bisections determined by $\rho$ and $M$ & Rational endpoints satisfy $l^2\le m_i\le u^2$ and the interval-length recurrence.\\
+Source-proof translation & One fixed finite EFA proof & Each translated line is derived from translated axioms or earlier lines.\\
+Machine simulation & Length of a supplied finite run certificate & Local configurations agree under the wrapper simulation.\\
+\bottomrule
+\end{longtable}
+
+For example, the density construction need not induct on a statement
+quantifying over all real $t$ in an interval. At stage $i$ store a rational
+center $c_i$, a rational radius $r_i$, the integer Lipschitz bound $D_i$,
+and a rational approximation to $h_i(c_i)-a_i$. A finite inequality
+certifies that its absolute value, its evaluation error, and $D_ir_i$
+sum to less than the tolerance. Subsequent intervals satisfy rational
+containment tests. A primitive recursive Boolean verifier checks the
+whole finite table. Induction is applied to that verifier's equation,
+with the input tuple and requested precision as parameters.
+
+The real notation in the analytic sections is a readable organization of
+these rational error arguments. To translate an exact equality of
+continuous operations, introduce an arbitrary final precision, choose the
+explicitly sufficient auxiliary precisions, and prove the corresponding
+rational inequality. The quantifier over the final precision is introduced
+after the finite argument. This does not induct on an unbounded formula
+asserting truth of a real identity.
+
+The statements used by the final reduction can be kept especially simple.
+Let $\operatorname{Root}(p,w)$ be the primitive recursive check that $w$
+is a natural root tuple of polynomial code $p$. Let
+$\operatorname{Obs}(a,z)$ decode a rational input and precision and perform
+the strict test \eqref{eq:nz}. For primitive recursive witness maps
+$\operatorname{forth}$ and $\operatorname{back}$, prove the universal
+closures of
+\begin{align*}
+ \operatorname{Root}(p,w)&\to
+   \operatorname{Obs}(E(p),\operatorname{forth}(p,w)),\\
+ \operatorname{Obs}(E(p),z)&\to
+   \operatorname{Root}(p,\operatorname{back}(p,z)).
+\end{align*}
+The matrices contain only decidable numerical relations. Existential
+introduction/elimination and intuitionistic propositional logic then
+produce the equivalence of witness existence and its negative version.
+
+\subsection{What ProveIt supplies}
+\label{sec:repo}
+
+The repository was inspected through the GitHub connector at the pinned
+commit
+\begin{center}\small\code{eb8eb6653c85aa44f1e18dd4efa243f41b5a9e98}.\end{center}
+The principal relevant interfaces are these \cite{proveit}.
+
+\begin{enumerate}
+\item \path{ConciseIPRA/Lean/ConciseIPRA/PR.lean}\par
+This file, under \path{Logic/PrimitiveRecursiveArithmetic/}, defines the actual object
+language: \code{PR k}, \code{PTm n}, \code{PRAAx}, and the quantifier-free
+induction helper \code{PRA.qfInd}. The namespace is
+\code{LeanProofs.ConciseIPRA}.
+\item \code{Derivations/Lean/IPRADerivations/Core/Search.lean} supplies
+object-level bounded search, including \code{search\_spec},
+\code{search\_minimal}, and \code{search\_found}. It returns the bound on
+failure. This is directly suitable for the finite grids in the density
+proof, once their success bounds have been established.
+\item The derivations library supplies arithmetic, order, pairing, finite
+sums, and rational arithmetic. These are useful bases for the certificate
+calculations, rather than reasons to introduce new axioms.
+\item \path{Computability/HilbertTenthProblem/Lean/MRDP.md} and
+\path{Diophantine/Common/MRDPCore.lean} under that directory supply an
+ordinary Lean/Mathlib MRDP theorem. Its proof uses Diophantine
+exponentiation, CRT encoding, and a bounded computation evaluator.
+These are mathematical proof templates, not a preexisting object-level
+iPRA representation theorem.
+\end{enumerate}
+
+The repository's own \code{UNIFICATION-PLAN.md} explicitly records that
+boundary and treats general internal MRDP as separate work. Its README
+also distinguishes checked \code{Prf PRAAx} derivations from delivered
+research packets that have not been verified. Accordingly, this report
+does not use one of those packets as a checked foundational theorem.
+The full audit, precise source paths, and provenance are in
+\code{evidence/repository-audit.txt}.
+
+\subsection{Supplied Lean source and its exact status}
+
+The archive's \code{lean/Syntax.lean} defines the elementary-expression
+AST, substitution for composition, subtraction by multiplication by
+$-1$, natural powers, and the operation $A\mapsto |A|-A$.
+The file \code{lean/LogicalCore.lean} contains fully written constructive
+proof terms for:
+\begin{itemize}
+\item negative calibration from a double-negated equivalence;
+\item existence and absence transport from finite witness maps;
+\item the two branches of the diagonal contradiction;
+\item nonexistence of a total correct decider on the compiled domain.
+\end{itemize}
+Both files import only \code{Init}. They contain no axiom declarations
+or proof holes. They were inspected but not compiled: no Lean executable
+was available in the execution environment. No kernel-checking claim is
+made for these new files.
+
+The main logical theorem has explicit structure parameters for run
+semantics, determinism, compilation, simulation, and calibration.
+Such parameters expose the arithmetic and analytic obligations; they do
+not discharge them. In particular, \code{Framework.reduction} is a
+hypothesis of the parametric logical theorem. It must eventually be
+replaced by the derived object-language statement
+\eqref{eq:calibration}.
+
+The essential logical step is small enough to display in full:
+\begin{lstlisting}
+theorem negIffOfDoubleNegIff {H S : Prop}
+    (h : (Not (Not H)) <-> (Not (Not S))) :
+    (Not H) <-> (Not S) :=
+  Iff.intro
+    (fun notH s => (h.mpr (fun notS => notS s)) notH)
+    (fun notS h0 => (h.mp (fun notH => notH h0)) notS)
+\end{lstlisting}
+This is an ambient Lean proposition illustrating the proof transformation.
+It is not yet an object-language proof value.
+
+\subsection{The final object-level endpoint}
+
+After defining the coded predicates, create the closed formula
+\begin{lstlisting}
+richardsonSentence : Fm PTm 0
+\end{lstlisting}
+which is the explicit first-order sentence
+$\forall d\,\neg\Dec(d)$. The intended completed endpoint is
+\begin{lstlisting}
+theorem richardson :
+  ([] : List (Fm PTm 0)) |- [PRAAx] richardsonSentence
+\end{lstlisting}
+Here the displayed ASCII turnstile is explanatory notation for the
+repository's actual Unicode derivation notation
+\code{Prf PRAAx}; the accompanying plan states the exact syntax.
+It is not a claim that the code block above is a ready-to-compile module.
+
+A practical completion order is:
+\begin{enumerate}
+\item Implement PR codes for syntax, rational operations, finite series,
+the numerical observation test, and machine traces. Reuse the existing
+bounded-search and arithmetic derivations.
+\item Derive rational sine identities and bounds, the evaluator error
+theorems, and the coarse-rounding lemma.
+\item Derive the polynomial majorant, integer gap, density certificate
+constructor, and the two witness-map correctness formulas.
+\item Formalize the fixed source arithmetic proof and its negative
+translation, or provide the same negative representation directly in
+\code{Prf PRAAx}. This is the principal deep remaining formalization task.
+\item Derive the wrapper trace laws and combine the internal formulas
+with the two-branch logical proof.
+\item Compile the object theorem, inspect its assumptions and imports,
+and verify that the theorem returns a \code{Prf PRAAx} value for the
+intended closed formula.
+\end{enumerate}
+
+The detailed file-level obligations and numerical signatures are included
+in \path{lean/FormalizationPlan.txt}. This is a concrete path to completion;
+the report does not substitute a classical \code{Real}-valued theorem or
+an assumed reduction interface for the required internal endpoint.

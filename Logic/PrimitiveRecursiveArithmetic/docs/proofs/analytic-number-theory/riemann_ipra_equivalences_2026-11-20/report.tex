@@ -1,0 +1,256 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in,top=.91in,bottom=.92in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array,xcolor,hyperref,fancyhdr,microtype}
+\definecolor{ink}{HTML}{18324A}\definecolor{accent}{HTML}{145D66}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent,pdftitle={Three Riemann hypotheses in intuitionistic primitive recursive arithmetic}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\textcolor{ink}{Riemann hypotheses in iPRA}}\rhead{\small\textcolor{ink}{Arithmetic and formalization}}\cfoot{\small\thepage}
+\setlength{\parindent}{1.15em}\setlength{\parskip}{2pt}\renewcommand{\headrulewidth}{.3pt}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\F}{\mathbb F}
+\newcommand{\disc}{\operatorname{disc}}\newcommand{\RH}{\mathsf{RH}}\newcommand{\GRH}{\mathsf{GRH}}\newcommand{\ERH}{\mathsf{ERH}}
+\newcommand{\ip}{\mathrm{iPRA}}\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}
+\urlstyle{same}\raggedbottom
+\begin{document}
+\input{opening}
+\input{guide}
+\newpage
+\section{The arithmetic sentence}\label{sec:sentence}
+The numerical sort is \(\N=\{0,1,\ldots\}\). Set \(d=d_0+1\), \(b=H+2\), and \(n=t+100\). For \(w\in\N\), put \([w]_{b,i}=\lfloor w/b^i\rfloor\bmod b\). The four polynomial parameters name
+\[
+ F=X^d+\sum_{i=0}^{d-1}([u]_{b,i}-[v]_{b,i})X^i .
+\]
+Ordinary signed subtraction in this display describes a pair of natural digits. Every monic polynomial of positive degree occurs. Choose \(b\) larger than every absolute coefficient, with \(b\ge2\), and put the positive and negative parts into their respective words. Surplus digits are ignored. An input needs no certificate of irreducibility or maximality of an order.
+
+For a rational prime \(p\) and \(k\ge1\), compute
+\begin{align}
+ h_F(p,k)&=\deg\gcd(\overline F,X^{p^k}-X)\quad\text{in }\F_p[X],\label{eq:h}\\
+ A_F(y)&=\prod_{p^k\le y}p^{h_F(p,k)},&
+ B_F(y)&=\lfloor\log_2 A_F(y)\rfloor .\label{eq:A}
+\end{align}
+The product is over primes and positive exponents. Its empty value is \(1\). Integer logarithm is the index of the highest set bit. With \(L(y)=1+\lfloor\log_2 y\rfloor\) for \(y\ge1\), set
+\[
+ C(d,H)=1000(d+1)^4(H+2)^2,\qquad
+ W=C(d,H)L(2n)^2,\qquad D_n=B_F(2n)-2B_F(n).
+\]
+Define \(E(d_0,H,u,v,t)\) to be the truncated difference \(D_n^2\mathbin{\dot-}nW^2\), where \(a\mathbin{\dot-}b=\max(a-b,0)\). The three object-language formulas are precisely
+\begin{align*}
+ \RH_{\ip}  &:\quad \forall t\quad E(0,0,0,1,t)=0,\\
+ \GRH_{\ip} &:\quad \forall d_0\,\forall t\quad E(d_0,0,0,1,t)=0,\\
+ \ERH_{\ip} &:\quad \forall d_0\,\forall H\,\forall u\,\forall v\,\forall t
+                    \quad E(d_0,H,u,v,t)=0 .
+\end{align*}
+For example, \(d_0=0,H=u=0,v=1\) gives \(F=X-1\). Its reduction has one linear factor at every prime, hence \(A_F(n)=\operatorname{lcm}(1,\ldots,n)\). The first formula is an explicit binary-digit assertion about two ordinary least common multiples. For the second formula \(F=X^d-1\). The degree variable supplies every conductor. Repeated representations of \(F\) can change \(C(d,H)\). The forward proof covers each representation, and a single representation suffices in the reverse direction.
+
+The universal prefix and a single PR equality give a \(\Pi^0_1\) presentation in the language with PR function symbols. Pairing could replace each tuple with one number.
+\newpage
+\section{Constructing the primitive-recursive term}\label{sec:kernel}
+The repository's \code{PR k} is syntax for a function of arity \(k\). Its constructors are zero, successor, projection, composition and primitive recursion. The last takes a base \(f(\vec x)\) and a step \(g(j,a,\vec x)\), and feeds the previous value into \(a\). A term applies such a fixed tree to scoped variables or other terms. The repository's \code{Fm} supplies implication and both number quantifiers, and \code{PRAAx} admits induction for quantifier-free formulas \cite{repo}.
+
+\paragraph{Bounded operations.}
+An aggregate over \(j<N\) starts from its neutral value and updates an accumulator for each \(j\). Addition, multiplication, maximum, existential and universal bit tests have this form, including the empty range. In the step the counter is at index 0, the accumulator is at 1 and each old parameter moves up two places. \code{PacketLanguage.program} performs this translation at arbitrary arity. The theorem \code{value_program} proves by induction on the source expression that its PR tree evaluates to the direct bounded-fold semantics for every assignment. Evaluation of an arbitrary syntax tree is in the Lean metatheory. The object language uses only the fixed tree for \(E\).
+
+Truncated subtraction iterates predecessor. For \(b>0\) the quotient of \(a\) by \(b\) is the largest \(i\le a\) satisfying \(ib\le a\). The remainder is \(a-b\lfloor a/b\rfloor\). A maximum up to \(y\) computes the largest \(i\) with \(2^i\le y\) for positive \(y\). Primality tests all proposed divisors \(2,\ldots,p-1\) after testing \(p\ge2\). Thus all loops have natural-number bounds supplied by previously constructed PR functions.
+
+\paragraph{Finite-field calculation.}
+In \(\F_p[X]\), \(X^{p^k}-X\) has each monic irreducible factor of degree dividing \(k\) exactly once. Indeed its roots are precisely the elements of \(\F_{p^k}\). A degree-\(e\) root has Frobenius orbit of length \(e\), and the derivative is \(-1\). Hence \eqref{eq:h} sums \(e\) over the distinct degree-\(e\) irreducible divisors of \(\bar F\) with \(e\mid k\). A monic degree-\(e\) candidate has exactly \(p^e\) possible lower coefficient words. Divisibility by it is tested by comparing coefficients against all \(p^{d-e}\) monic quotients. A degree-\(e\) candidate is irreducible precisely when the search finds no monic divisor of degree \(1,\ldots,e-1\). Each factor is visited once, even when repeated in \(\bar F\). Digits of the two input words are reduced by computing \((a+p-(b'\bmod p))\bmod p\). The inner subtraction has no truncation loss.
+
+\paragraph{Finishing the matrix.}
+For \(p\le y\), take \(1\le k\le\lfloor\log_2 y\rfloor\), multiplying by \(p^{h_F(p,k)}\) only for primes with \(p^k\le y\). This exhausts the product since \(p\ge2\). Compute absolute difference by \((a\mathbin{\dot-}b)+(b\mathbin{\dot-}a)\), square and compare. These instructions define \code{RiemannIPRA.excess : PR 5} without analytic parameters. The Python evaluator uses Euclidean gcd and modular powering to compute the same integer more quickly.
+\newpage
+\section{What the polynomial counts at a prime}\label{sec:local}
+Write \(F=\prod_{i=1}^r f_i^{a_i}\) over \(\Q\), with the \(f_i\) distinct monic irreducibles, and set \(G=\prod_i f_i\), \(K_i=\Q[X]/(f_i)\). By Gauss's lemma all these polynomials have integral coefficients. Two different \(f_i\) may give isomorphic fields. Each contributes a summand. Define
+\[
+ \Psi_F(y)=\log A_F(\lfloor y\rfloor)
+   =\sum_{p^k\le y}h_F(p,k)\log p,\qquad
+ \psi_K(y)=\sum_{N\mathfrak p^a\le y}\log N\mathfrak p ,
+\]
+where the second sum ranges over prime ideals and \(a\ge1\). Here and below an undecorated \(\log\) is natural. Let \(D=|\disc(G)|\), with \(D=1\) in degree one.
+
+\begin{lemma}\label{lem:exception}
+For \(p\nmid D\), the coefficient of \(\log p\) at \(p^k\) in \(\sum_i\psi_{K_i}\) is \(h_F(p,k)\). For every \(y\ge2\),
+\[
+ \left|\Psi_F(y)-\sum_i\psi_{K_i}(y)\right|\le d\,\omega(D)\log y,\quad
+ \sum_i\log|\Delta_{K_i}|\le\log D\le 2d^2(H+2),
+\]
+where \(\omega(D)\) counts distinct rational prime divisors and \(\Delta_K\) is the field discriminant.
+\end{lemma}
+\begin{proof}
+The discriminant of \(G\) is the product of the discriminants of its factors times the squares of their pairwise resultants. For \(\alpha_i=X\bmod f_i\), the discriminant of \(f_i\) is \(\Delta_{K_i}[\mathcal O_{K_i}:\Z[\alpha_i]]^2\). Away from \(D\) all these indices are units modulo \(p\), the factors remain pairwise coprime, and the quotients \(\mathcal O_{K_i}/p\mathcal O_{K_i}\) and \(\F_p[X]/\bar f_i\) coincide. Decomposing the latter into finite fields identifies the degrees of its irreducible factors with the residue degrees \(e_{\mathfrak p}=[\mathcal O_{K_i}/\mathfrak p:\F_p]\). Each prime ideal with \(e_{\mathfrak p}\mid k\) contributes \(e_{\mathfrak p}\log p\) at \(p^k\). This gives the claimed coefficient by \eqref{eq:h}.
+
+At every prime the sum of the residue degrees above \(p\) is at most \([K_i:\Q]\), since the ramification indices are positive. Both competing coefficients at \(p^k\), measured in units of \(\log p\), lie between \(0\) and \(d\). At one exceptional prime their total discrepancy is at most \(d\lfloor \log y/\log p\rfloor\log p\). This proves the first inequality. The discriminant product gives \(\prod_i|\Delta_{K_i}|\le D\).
+
+Put \(R=H+2\). All lower coefficients of \(F\) have absolute value at most \(R-1\). For \(|z|>R\), the leading term exceeds the sum of the absolute values of the lower terms by the geometric series bound. All roots of \(G\) therefore have absolute value at most \(R\). The pairwise-differences formula gives \(D\le(2R)^{d(d-1)}\), including \(d=1\). Taking logarithms and using \(\log(2R)\le2R\) finishes the proof.
+\end{proof}
+Using \(G\) in this proof matters. The discriminant of \(F\) can vanish when \(F\) has a repeated factor. Neither \(G\) nor \(D\) needs to be computed by the test.
+\newpage
+\section{Why zeros on the critical line imply every test}\label{sec:forward}
+\begin{proposition}\label{prop:forward}
+Fix a code for \(F\). If the critical-strip zeros of each \(\zeta_{K_i}\) have real part \(1/2\), its arithmetic matrix holds for every \(n\ge100\).
+\end{proposition}
+\begin{proof}
+We use the fieldwise explicit prime ideal theorem of Greni\'e and Molteni \cite[Corollary 1.2]{gm}. For \(y\ge100\), under the Riemann hypothesis for \(\zeta_K\), it gives
+\begin{equation}\label{eq:gm}
+|\psi_K(y)-y|\le \sqrt y\left[
+ \left(\frac{\log y}{2\pi}+2\right)\log|\Delta_K|
+ +\left(\frac{(\log y)^2}{8\pi}+2\right)[K:\Q]\right].
+\end{equation}
+For integer \(y\ge100\), \(\log y\le L(y)\). Each multiplier in parentheses is at most \(3L(y)^2\). Write \(S=\sum_i\log|\Delta_{K_i}|\). Summing \eqref{eq:gm} gives \(3\sqrt y L(y)^2(S+d)\). By Lemma~\ref{lem:exception}, \(S+d\le3d^2R\). The extra error at bad primes is at most
+\[
+ d\,\omega(D)\log y\le 2d\log D\log y\le 4d^3R\log y,
+\]
+using \(2^{\omega(D)}\le D\) and \(1/\log 2<2\). Combining the two estimates yields
+\begin{equation}\label{eq:rough}
+             |\Psi_F(y)-ry|\le 13d^3R\sqrt y\,L(y)^2 .
+\end{equation}
+In particular the unknown rational factor count \(r\) cancels in
+\(\Psi_F(2n)-2\Psi_F(n)\). Since \(B_F(y)=\lfloor\Psi_F(y)/\log 2\rfloor\), taking integer parts adds at most \(3\) to the absolute dyadic error after division by \(\log 2\). Equation~\eqref{eq:rough} at \(n,2n\) now gives
+\[
+ |D_n|\le 3+
+ \frac{13(\sqrt2+2)}{\log2}\, d^3R\sqrt n L(2n)^2
+ \le 110d^3R\sqrt n L(2n)^2 .
+\]
+The chosen constant \(C(d,H)\) dominates \(110d^3R\) for every allowed code. Squaring proves \(D_n^2\le nW^2\).
+\end{proof}
+
+\paragraph{Why a loose constant can still imply RH.}
+For each fixed polynomial the constant is independent of \(n\). A zero at \(s=\rho\) with \(1/2<\Re\rho<1\) forces a singularity of a transform of this dyadic difference. A bound \(O_F(\sqrt n\log^2 n)\), however large its fixed coefficient, makes that transform holomorphic throughout \(\Re s>1/2\). The multiplier in the transform explains why subtracting the values at \(n\) and \(2n\) preserves every off-line obstruction in the critical strip.
+\newpage
+\section{Recovering zero-freeness from the integer inequality}\label{sec:reverse}
+\begin{proposition}\label{prop:reverse}
+Fix one code for \(F\). If its test holds for all \(n\ge100\), every zero of every \(\zeta_{K_i}\) in \(0<\Re s<1\) lies on the critical line.
+\end{proposition}
+\begin{proof}
+Set \(V(x)=\Psi_F(2x)-2\Psi_F(x)\) for real \(x\ge1\), using right-continuous step functions. At an integer \(n\ge100\), restoring the discarded fractions gives
+\(|V(n)|\le(\log2)(C(d,H)\sqrt n L(2n)^2+3)\).
+For \(n=\lfloor x\rfloor\), \(\Psi_F(x)=\Psi_F(n)\) and the interval \((2n,2x]\) contains at most one integer. Its jump is at most \(d\log(2n+1)\), since an integer is a positive power of at most one prime. Thus
+\[
+  V(x)=O_F\!\left(\sqrt{x}(1+\log x)^2\right),\qquad x\ge1.
+\]
+On the finite interval below 100 the step function is bounded. Consequently
+\[
+  T(s)=s\int_1^\infty V(x)x^{-s-1}\,dx
+\]
+is holomorphic on \(\Re s>1/2\). On compact subsets the integrand and its derivatives are dominated by an integrable power times a fixed power of \(\log x\).
+
+On \(\Re s>1\), put \(J_F(s)=\sum_{p,k}h_F(p,k)(\log p)p^{-ks}\). The coefficients at integers are bounded by \(d\log n\), so termwise integration of the step function is justified by absolute convergence and gives \(J_F(s)=s\int_1^\infty\Psi_F(x)x^{-s-1}\,dx\). Substituting \(y=2x\) in the first term of \(T\), and using \(\Psi_F=0\) on \([1,2)\), gives
+\begin{equation}\label{eq:mellin}
+ T(s)=(2^s-2)J_F(s),\qquad
+ J_F(s)=-\sum_i\frac{\zeta'_{K_i}(s)}{\zeta_{K_i}(s)}+U_F(s).
+\end{equation}
+The second equality follows by logarithmically differentiating the Euler products and using Lemma~\ref{lem:exception}. The correction \(U_F\) is a sum over the finite set \(p\mid D\) of power series in \(p^{-s}\) with coefficients of modulus at most \(d\log p\). It is holomorphic on \(\Re s>0\).
+
+Use meromorphic continuation of the field zeta functions and the identity theorem to extend the right side of \eqref{eq:mellin} in its multiplied form to \(\Re s>1/2\). At a zero \(\rho\) with \(1/2<\Re\rho<1\), each vanishing zeta factor contributes minus its multiplicity to the residue of \(J_F\). Their sum is nonzero because the only field zeta pole is at 1. Also \(2^\rho-2\ne0\), since \(|2^\rho|=2^{\Re\rho}<2\). This contradicts holomorphy of \(T\). Finally, the functional equation of the completed Dedekind zeta function reflects nontrivial zeros across the critical line. Its gamma factors are regular and nonzero in the open strip \cite[eq.~(2.3)]{gm}. A zero to the left would therefore give one to the right.
+\end{proof}
+The transform multiplier has zeros on \(\Re s=1\). The hypotheses concern the open critical strip. Nonvanishing on its boundary at \(\Re s=1\) is a separate classical theorem.
+\newpage
+\section{Identifying the three analytic families}\label{sec:families}
+\begin{theorem}\label{thm:main}
+In the classical standard model of arithmetic the three sentences of Section~\ref{sec:sentence} are respectively equivalent to RH, Dirichlet GRH and Dedekind ERH.
+\end{theorem}
+\begin{proof}
+\emph{Riemann.} \(X-1\) gives the single field \(\Q\), whose Dedekind zeta is the ordinary Riemann zeta. Propositions~\ref{prop:forward} and \ref{prop:reverse} apply directly.
+
+\emph{Dirichlet.} Over \(\Q\), \(X^m-1=\prod_{e\mid m}\Phi_e(X)\). Its distinct factors give the list of cyclotomic fields \(\Q(\zeta_e)\), with their occurrences as factors. For each \(e\), the cyclotomic factorization is
+\[
+ \zeta_{\Q(\zeta_e)}(s)
+    =\prod_{\substack{\chi\text{ primitive}\\\operatorname{cond}(\chi)\mid e}} L(s,\chi).
+\]
+It uses the primitive characters of conductors dividing \(e\), including the conductor-one character \cite[Thm.~19.15]{suth}. In the open strip each factor is holomorphic, so zeros of a factor persist in the product. If Dirichlet GRH holds, all the field factors associated to every \(X^m-1\) satisfy the premise of Proposition~\ref{prop:forward}. Conversely, for a primitive character of conductor \(m\) choose that input \(X^m-1\). Proposition~\ref{prop:reverse} gives critical-line localization for \(\zeta_{\Q(\zeta_m)}\), hence for \(L(s,\chi)\). This includes complex characters and imposes no bound on the conductor. An imprimitive character merely inserts factors \(1-\chi^*(p)p^{-s}\), whose possible zeros have real part zero.
+
+\emph{Dedekind.} Every \(K_i\) from an admissible input is a number field, giving the forward direction under ERH. Conversely, take any number field \(K\). In characteristic zero the primitive element theorem gives \(K=\Q(\alpha)\). Multiplying \(\alpha\) by an integer clearing the denominators of its monic rational equation makes it integral and leaves the generated field unchanged. Its monic minimal polynomial thus occurs in our coding. Proposition~\ref{prop:reverse} applies whether or not \(K\) is Galois.
+\end{proof}
+
+\paragraph{Quantifier scope and constructive content.}
+An input is a finite tuple and failure is the decidable strict integer inequality \(D_n^2>nW^2\). The explicit bound eliminates the need to choose a growth constant for each field. An absolute ordering of all constructive versions would require a specified comparison language. The result here is classical equivalence for the entire analytic family, with an explicit universal, decidable test.
+
+\paragraph{A contour variant.}
+In ProveIt's \emph{zeta zero distribution} packet, a rational contour carries boundary clearance, a precision and a winding number \cite{zero}. A certified nonzero winding on a pole-free rectangle strictly inside one side of the strip would locate a counterexample for ordinary \(\zeta\). Classically an isolated off-line zero admits such a rectangle. A uniform constructive characterization requires proved enclosure, clearance and completeness results for the specified functions. That packet labels its Lean interface uncompiled. The integer sentences above are independent of those obligations.
+\newpage
+\section{The original Lean derivations}\label{sec:verified}
+The project uses the ordinary iPRA interface in ProveIt at commit
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/ce0e3ceaf41a83e653857e5f60e0460733cc230c/Logic/PrimitiveRecursiveArithmetic}{\code{ce0e3ceaf41a}}. Four unchanged modules define scoped syntax, deduction, PR functions and term models. The repository also has a transfer theorem to the native scalar calculus. Our checked derivations use its ordinary \code{PRAAx} calculus directly.
+\begin{center}\small
+\begin{tabular}{@{}p{.35\linewidth}p{.60\linewidth}@{}}\toprule
+Lean declaration or file & Verified content\\\midrule
+\code{PacketLanguage.value_program} & Compilation preserves bounded-expression values at every natural assignment.\\
+\code{ArithmeticReading.lean} & Correct division, remainder, integer logarithm and primality tests.\\
+\code{PolynomialCode.lean}, \code{Hypotheses.lean} & Actual PR trees for modular factor enumeration and the excess, then three closed formulas.\\
+\code{rh_reading}, \code{grh_reading}, \code{erh_reading} & Standard-model interpretation gives the indicated universal tests in the specified argument order.\\
+\code{naturalTerms_sound} & A derivation from hypotheses true in the standard model concludes a formula true there.\\
+\code{erh_implies_grh}, \code{grh_implies_rh} & Closed \code{Prf PRAAx []} derivations of the two implications.\\
+\code{erh_iff_no_counterexample} and its two specializations & Each universal zero-test is constructively equivalent to the negation of a finite failing tuple.\\\bottomrule
+\end{tabular}
+\end{center}
+The last result uses a fact internal to iPRA. For any numerical term \(t\), one has \(t=0\lor\neg(t=0)\). Apply quantifier-free induction to \(z=0\lor\neg(z=0)\): at zero the left side holds by reflexivity, and at every successor the right side is a successor axiom. Hence \(\neg\neg(t=0)\Rightarrow t=0\). Through a universal prefix, intuitionistic quantifier introduction and elimination then derive
+\[
+  \forall\vec x\,E(\vec x)=0\quad\longleftrightarrow\quad
+        \neg\exists\vec x\,\neg(E(\vec x)=0).
+\]
+Extracting a tuple from the negation of the whole universal assertion would be an additional logical step. The two hierarchy implications need only universal specialization and generalization.
+
+The finite-field identification \eqref{eq:h}, the good-prime comparison, and the analytic equivalences in Theorem~\ref{thm:main} are justified by the mathematical proofs in this report. The Lean project contains no axiom asserting a Riemann hypothesis or those comparison theorems. Hypothesis formation and proofs of implications are distinct Lean judgments.
+\newpage
+\section{Exact examples for the prime-product test}
+For the linear input \(X-1\), \(B_F(n)\) equals the binary length of \(\operatorname{lcm}(1,\ldots,n)\) minus one. For \(X^2+1\), at the rational prime 3 the polynomial stays irreducible. It contributes 0 to \(h_F(3,1)\) and 2 to \(h_F(3,2)\). At 2 its double root contributes only 1. At 5 its two linear factors contribute 2 for every \(k\ge1\). These cases check the handling of residue degrees, splitting and repeated roots.
+\begin{center}\small
+\begin{tabular}{@{}lrlrrr@{}}\toprule
+Polynomial & \(n\) & \((d,H,u,v)\) & \(B_F(n)\) & \(B_F(2n)\) & \(D_n\)\\\midrule
+\(X-1\) &100&\((1,0,0,1)\)&135&297&27\\
+\(X^2+1\) &100&\((2,0,1,0)\)&135&299&29\\
+\(X^3-2\) &100&\((3,1,0,2)\)&111&267&45\\
+\(X^5-1\) &256&\((5,0,0,1)\)&732&1436&\(-28\)\\
+\(\Phi_5\) &256&\((4,0,15,0)\)&377&701&\(-53\)\\\bottomrule
+\end{tabular}
+\end{center}
+For the first row \(D_n^2=729\) and the right side of the inequality is \(1{,}677{,}721{,}600{,}000{,}000\). Large slack is expected at small \(n\). In the two final rows, \(X^5-1=(X-1)\Phi_5\). The test for the cyclotomic family uses the entire polynomial on the fourth row. The third row illustrates a non-Galois cubic field.
+
+Run \code{python3 check_packets.py} for the independent finite-field, least-common-multiple and Gaussian splitting comparisons. To reproduce row four run \code{python3 check_packets.py 5 0 0 1 256}. All computations use integer arithmetic. In Lean, \code{SmokePR.lean} checks four local degrees, the binary logarithm of \(7\), and the smallest nonempty prime product. Its vector evaluator is proved equivalent to the interpreter for the original PR constructors. Repeated binary digit and bounded quotient searches make that literal evaluator expensive. The two algorithms agree by the finite-field argument of Section~\ref{sec:kernel}. A general machine-checked equivalence with the Python program is outside the formal results.
+
+The archive is a Lake project pinned to Lean and Mathlib 4.32.0. The selective Mathlib cache command in \code{README.md} accelerates the first build. Running \code{lake build} checks the full default target. From a normal TeX installation, \code{latexmk -pdf report.tex} rebuilds the report. Exact dependency information and module names are in \code{README.md}.
+
+\newpage\input{objectforms}
+\input{slack}
+\input{discreteforms}
+\input{analyticforms}
+\input{matrices}
+\input{energy}
+\input{farey-rh}
+\input{series}
+\input{lagarias}
+\newpage\input{verification_notes}
+\appendix\newpage
+\section{Square-root cancellation as a second formulation}\label{sec:mertens-start}
+A familiar alternative tests the summatory coefficients \(M(x)\) of reciprocal Euler products. For an integer \(z\) set
+\[
+    P(k,c,x,z)\quad\Longleftrightarrow\quad
+     |z|^{2(k+1)}\le c\,x^{k+2}.
+\]
+The exponent on taking the \(2(k+1)\)-th root is \(1/2+1/(2(k+1))\). These exponents approach \(1/2\) from above. A bound for them gives a bound with any fixed positive slack. Conversely round the corresponding powered implied constant upwards. The sum at \(x=0\) vanishes. The file \code{MertensForms.lean} gives the following supplementary readings as constructive Lean propositions over naturals:
+\begin{align*}
+ &\forall k\,\exists c\,\forall x\ P(k,c,x,M(x)),\\
+ &\forall k\,\exists c\,\forall q,a,x\
+    ((q\ge1,\ 0\le a<q,\ (q,a)=1)\Rightarrow P(k,c,x,M_{q,a}(x))),\\
+ &\forall f,k\,\exists c\,\forall x\ P(k,c,x,M_f(x)).
+\end{align*}
+Here \(M_{q,a}\) is a progression sum and \(f\) is the single-number polynomial code specified in Appendix~\ref{sec:dedekind}. These are witness formulations: for each supplied \(k\), the existential asks for a bound valid for all \(x\). The Dirichlet version places the constant before the modulus and the residue. The object sentences in Section~\ref{sec:sentence} instead supply the entire envelope in advance. The classical correspondences proved below do not identify the witness principles with the universal sentences inside iPRA.
+
+\paragraph{A reciprocal-series estimate.}
+We record the analytic detail needed for the all-fields witness formulation. Suppose \(Z(s)=\prod_{i=1}^r\zeta_{K_i}(s)\) has no zeros for \(\Re s>1/2\), with its pole at 1 understood. Let \(A(s)=U(s)/Z(s)=\sum a_n n^{-s}\) on \(\Re s>1\), where \(U\) is a finite product of powers of \(1-p^{-js}\), integer \(j>0\), and \(\sum |a_n|n^{-2}<\infty\). Then \(\sum_{n\le x}a_n=O_{Z,U,\epsilon}(x^{1/2+\epsilon})\) for every \(\epsilon>0\).
+
+For details, fix \(1/2<b<1\). At large \(|t|\) take a disk centered at \(2+it\), of radius strictly between \(2-b\) and \(3/2\). A branch of \(\log Z\) agrees at its center with the Euler-product logarithm. The usual polynomial growth of fixed field zeta functions in fixed vertical strips bounds \(\Re\log Z=O(\log(2+|t|))\) on the disk. This growth also follows from their functional equations, Stirling's formula and the Phragm\'en--Lindel\"of principle using their classical finite order. On a slightly smaller disk with radius still larger than \(2-b\), Borel--Carath\'eodory bounds the absolute value of this logarithm by the same order. On radius \(1/2\) the Euler-product logarithm is bounded. Hadamard's three-circles theorem bounds \(|\log Z|\) on radius \(2-b\) by \(O((\log(2+|t|))^\theta)\) for a fixed \(\theta<1\). Therefore \(A(\sigma+it)\ll_{b,\eta}(1+|t|)^\eta\) for every \(\eta>0\), uniformly on \(b\le\sigma\le2\). Compact heights are covered by holomorphy of the reciprocal.
+
+Take \(X=N+1/2\), \(T=X^4\). Truncated Perron's formula on \(\sigma=2\) has error \(O(X^3/T)\): the termwise truncation error is bounded by a constant times \((X/n)^2\min(1,1/(T|\log(X/n)|))\), and \(|\log(X/n)|\gg X^{-1}\) for every integer \(n\). Shift to \(\sigma=b\). The horizontal integrals cost \(O(X^2 T^{\eta-1})\), the vertical integral \(O_{b,\eta}(X^bT^\eta)\). Choosing \(b\) sufficiently close to \(1/2\) and then \(\eta>0\) sufficiently small proves the claim. Conversely a bound with every positive slack gives local uniform convergence of the reciprocal Dirichlet series by summation by parts, detailed for characters in Appendix~\ref{sec:dirichlet}.
+\input{dirichlet}
+\input{erh}
+\begin{thebibliography}{10}\small
+\bibitem{lagarias} J. C. Lagarias. \emph{An elementary problem equivalent to the Riemann hypothesis}. Amer. Math. Monthly 109 (2002), 534--543. Theorems 1.1, 3.1--3.2 and Lemma 3.2. \href{https://arxiv.org/abs/math/0008177}{Author's paper}.
+\bibitem{wilf} H. S. Wilf. \emph{The Redheffer matrix of a partially ordered set}. Electron. J. Combin. 11 (2004), R10. \href{https://arxiv.org/abs/math/0408263}{Author's paper}.
+\bibitem{repo} V. Reshetnikov and ProveIt contributors. \emph{Intuitionistic primitive recursive arithmetic}, ordinary ConciseIPRA syntax and calculus. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/ce0e3ceaf41a83e653857e5f60e0460733cc230c/Logic/PrimitiveRecursiveArithmetic}{Pinned repository snapshot}.
+\bibitem{zero} ProveIt. \emph{Zeta zero distribution in intuitionistic primitive recursive arithmetic}, especially the status section and \code{lean/ObjectTargets.lean}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/ce0e3ceaf41a83e653857e5f60e0460733cc230c/Logic/PrimitiveRecursiveArithmetic/docs/proofs/analytic-number-theory/zeta_zeros_ipra_2026-11-15}{Research packet}.
+\bibitem{gm} L. Greni\'e and G. Molteni. \emph{Explicit versions of the prime ideal theorem for Dedekind zeta functions under GRH}. Math. Comp. 85 (2016), 889--906. Corollary 1.2 and equation (2.3). \href{https://arxiv.org/abs/1312.4463}{arXiv:1312.4463}.
+\bibitem{suth} A. V. Sutherland. \emph{The analytic class number formula}. MIT 18.785, Fall 2018, Lecture 19, Theorem 19.15. \href{https://math.mit.edu/classes/18.785/2018fa/LectureNotes19.pdf}{Lecture notes}.
+\bibitem{sound} K. Soundararajan. \emph{Partial sums of the M\"obius function}. J. Reine Angew. Math. 631 (2009), 141--152. \href{https://arxiv.org/abs/0705.0723}{arXiv:0705.0723}.
+\bibitem{ye} L. Ye. \emph{Bounding sums of the M\"obius function over arithmetic progressions}. Theorem 1.1. \href{https://arxiv.org/abs/1406.7326}{arXiv:1406.7326}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,164 @@
+\section{The arithmetic language and the meaning of an embedding}
+\label{sec:arithmetic}
+
+\subsection{The base theory}
+
+The object theory in this report is first-order intuitionistic logic with
+equality over natural numbers. Its nonlogical axioms are the defining
+equations of primitive recursive functions, successor injectivity,
+\(Sx\ne0\), and induction for quantifier-free formulas, with numerical
+parameters. Logical rules are ordinary intuitionistic introduction and
+elimination rules for \(\bot,\wedge,\vee,\to,\forall,\exists\), together
+with equality reflexivity and substitution. There is no added choice
+principle, unrestricted induction, excluded middle for arbitrary
+formulas, or axiom of analytic completeness.
+
+The presentation with a symbol for each primitive recursive definition is
+a convenient definitional language. The repository's ordinary
+\texttt{PR}, \texttt{PTm}, \texttt{Fm}, \texttt{PRAAx} and \texttt{Prf}
+provide the intended formal syntax. Its bridges and scalar
+bi-interpretation can be used after the ordinary derivation is obtained
+\cite{audit-unification}. The report needs no blanket conservation claim
+about a stronger analytic system. Foundational comparisons such as
+\cite{fefermanstrahm} give useful context, but are not substituted for the
+specific finite proofs below.
+
+\subsection{Explicit finite coding}
+
+One may fix the following coding throughout. Encode an integer \(z\) by
+\(2z\) when \(z\ge0\), and by \(2(-z-1)+1\) when \(z<0\).
+Encode a rational by a signed numerator and a natural \(d\), representing
+the fraction with denominator \(d+1\). Reduced fractions are optional.
+Rational equality and order are tested by signed cross multiplication;
+addition and multiplication use the usual product denominators. All
+operations are total primitive recursive functions on the codes.
+
+For pairs use
+\[
+ \langle a,b\rangle=(a+b)^2+a.
+\]
+Different sums \(a+b\) occupy disjoint intervals, and the final summand
+determines \(a\) within an interval. Both projections can therefore be
+defined by bounded search through \(a,b\le c\), returning zero on unused
+codes. The identities on actual pair codes follow from these finite
+interval inequalities. A list is a length paired with a nested pair
+chain; entry extraction performs the indicated number of projection
+steps and returns zero outside its length. Thus dimension, matrix
+entries, exponent vectors and iteration traces are numerical data.
+
+A rational polynomial in \(d\) variables is a list of pairs consisting of
+a coefficient and a length-\(d\) exponent vector. Its value is
+\[
+ \sum_{\alpha}c_{\alpha}\prod_{j<d}x_j^{\alpha_j}.
+\]
+Finite addition, multiplication, substitution and coefficient comparison
+are primitive recursive on these data. This is a uniform evaluator for
+\emph{this particular bounded syntax}, not a universal evaluator for
+all primitive recursive programs.
+
+The maximum of a nonempty finite list of rationals is computed by a
+left-to-right comparison scan. At equal entries keep the first index.
+This provides an actual attaining index whenever a proof below uses a
+maximum. Absolute value, coordinate clipping to a rational interval,
+and dyadic rounding are also decidable rational operations. Invalid
+certificate inputs can be given a harmless default output; correctness
+theorems are implications from the decidable validity predicate.
+
+\subsection{Bounded formulas really become quantifier-free}
+
+For a fixed primitive recursive Boolean predicate \(b(\vec u,j)\), define
+\[
+ \operatorname{All}_b(\vec u,0)=1,\qquad
+ \operatorname{All}_b(\vec u,t+1)
+   =\operatorname{All}_b(\vec u,t)b(\vec u,t).
+\]
+The two factors are bits. Quantifier-free induction proves that the
+product is a bit and that it equals one exactly when every inspected
+entry equals one. Bounded existential search is obtained by a first
+successful-index scan with the bound as failure sentinel. Its invariant
+records the current chosen index and whether a success has occurred.
+Consequently any fixed bounded formula whose atomic predicates are
+primitive recursive has a primitive recursive characteristic bit,
+together with an intuitionistic proof of its equivalence to that bit
+being one. The repository already supplies the corresponding
+\texttt{BoundedFormulas} interface.
+
+This is the precise justification for induction on statements such as
+``all \(d\) current error coordinates obey their bounds.'' The actual
+induction formula is one equality between numerical terms, optionally
+combined with other quantifier-free equations and implications. It is
+not an induction on a formula quantifying over all vectors or all
+future precisions.
+
+For example, if \(a(t)\) and \(b(t)\) are registered PR rational
+sequences and \(C(t)\) is the bit checking the first \(t\) recurrence
+inequalities, a usable induction formula is
+\[
+ C(t)=1\ \longrightarrow\ d^t a(t)\le b(t),
+ \tag{6}\label{eq:qf-invariant}
+\]
+after denominator clearing. All variables other than \(t\) are numerical
+parameters. At the successor step, \(C(t+1)=1\) supplies both
+\(C(t)=1\) and the next recurrence inequality. This avoids silently
+using induction for a universally quantified invariant.
+
+\subsection{Registered producers and numerical parameters}
+
+In theorems mentioning an evaluator \(E\), the object-language use is
+schematic in one fixed PR definition of \(E\), with input parameters
+\(u\), precision, and finite vector code as arguments. A polynomial
+implementation can instead be uniform in its finite polynomial code,
+because that restricted evaluator was just defined. Either version
+allows dimension, coefficient numerators, denominator bounds, iteration
+count and output precision to vary numerically.
+
+The hypotheses about the evaluator are ordinary first-order formulas.
+For example, ``\(E_p\) maps the box into itself'' means a universal
+statement over \(p\) and vector codes with a bounded coordinate test.
+It is used by specialization at the concrete current state. A generic
+theorem retains that hypothesis. An application removes it by the
+finite algebraic argument specific to its evaluator.
+
+\subsection{Names, equality and equations}
+
+\begin{definition}[Regular sampler]
+A regular rational sampler in a weighted finite box is a fixed PR
+function \(Q(k)\) such that all its outputs lie in the box and
+\[
+ d_w(Q(k),Q(l))\le2^{-k}+2^{-l}\quad(k,l\in\N).
+\]
+These inequalities, with denominators cleared, are the arithmetic
+content. Two samplers describe the same value if their observations
+agree to arbitrary requested precision after explicit PR reindexings.
+\end{definition}
+
+For a rational polynomial equation, a represented solution can be
+specified by a regular sampler and an explicit residual estimate, for
+example \(\abs{P(Q(k))}\le C2^{-k}\). Reindexing by a boundedly computed
+binary magnitude of \(C\) converts this to any requested error. One
+does not test equality of two arbitrary represented reals. The equality
+is the family of rational estimates that has just been proved.
+
+For a countable array the sampler has the form \(Q(i,k)\). The coordinate
+index is a numerical input, not a second-order variable. For an externally
+supplied name the proof is a schema for its fixed PR evaluator, or a
+finite-query contract for tables containing exactly the requested
+samples. Arbitrary external reals need not have such an evaluator.
+
+\subsection{Small errors and exact rational conclusions}
+
+A frequently used finite rule is worth making explicit. If rational
+\(a>b\), write the positive difference as \(u/v\), \(u,v\in\N_{>0}\).
+Then \(a-b\ge1/v\). Since \(2^v\ge v+1\), a bound
+\(a-b\le2^{-v}\) is already contradictory. Thus, when a rational
+inequality is proved with arbitrarily small dyadic slack, one particular
+precision, computed from its denominators, removes the slack. This is
+not a limit axiom. The same observation justifies the finite
+cross-multiplication and error-removal steps used in represented
+equations.
+
+Finally, ``primitive recursive'' is a logical resource bound, not a
+promise of numerical efficiency. Some exact rational iterates have
+rapidly growing denominators. The rounded construction in
+\cref{sec:lattice} is included precisely to keep the reference
+computations modest while retaining exact error proofs.

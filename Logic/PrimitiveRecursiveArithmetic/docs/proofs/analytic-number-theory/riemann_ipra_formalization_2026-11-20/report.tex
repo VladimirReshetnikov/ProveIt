@@ -1,0 +1,52 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,array,graphicx,xcolor,hyperref,fancyhdr}
+\usepackage[letterpaper,top=.85in,bottom=.84in,left=.94in,right=.94in,headheight=14pt]{geometry}
+\definecolor{ink}{HTML}{182A35}\definecolor{teal}{HTML}{176662}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal,citecolor=teal,pdftitle={Arithmetic criteria for three Riemann hypotheses},pdfauthor={Research report}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Arithmetic criteria for three Riemann hypotheses}\rhead{\small Constructive arithmetic}\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\N}{\mathbb N}\newcommand{\Q}{\mathbb Q}\newcommand{\Z}{\mathbb Z}
+\newcommand{\pos}[1]{\left(#1\right)_{+}}
+\newcommand{\sgap}{D_F}
+\raggedbottom\urlstyle{same}
+\setcounter{tocdepth}{1}
+\begin{document}
+\thispagestyle{plain}
+{\small\sffamily\color{teal} ANALYTIC NUMBER THEORY \enspace/\enspace MATHEMATICAL LOGIC}\par\vspace{12pt}
+{\LARGE\bfseries\color{ink} Arithmetic criteria for three Riemann hypotheses}\par\vspace{5pt}
+{\large Sparse prime counts, Taylor coefficients, and rational certificates in iPRA}\par\vspace{6pt}
+{\small November 20, 2026}
+\bigskip
+
+One finite computation at each of a sparse sequence of cutoffs suffices to express the Riemann hypothesis for \emph{every} number field. An explicit schedule selects one monic integer polynomial at each cutoff. It measures only an upward discrepancy in an integer built from rational prime powers. Each individual polynomial returns often enough to detect a zero anywhere off the critical line. Changing which polynomial is selected gives ordinary RH or Dirichlet GRH with the same algorithm.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.15\linewidth}p{.48\linewidth}p{.28\linewidth}@{}}\toprule
+Conjecture & Functions whose zeros in $0<\Re s<1$ must lie on $\Re s=1/2$ & Polynomials tested\\\midrule
+RH & Riemann zeta function $\zeta(s)$ & $X-1$\\[3pt]
+Dirichlet GRH & $L(s,\chi)$ for every primitive Dirichlet character $\chi$, including complex characters & $X^d-1$, $d\ge1$\\[3pt]
+Dedekind ERH & $\zeta_K(s)$ for every number field $K$, including nonnormal fields & Every monic $F\in\Z[X]$, $\deg F\ge1$\\\bottomrule
+\end{tabular}
+\end{center}
+
+A single Taylor expansion after a rational change of variable reduces all three to signed integer coefficient tests. Polynomial multiplication on Taylor disks leads to finite matrix inequalities. For ordinary RH, the Robin and Nicolas inequalities admit distinct weak and strict arithmetic readings, and the discrete Nyman--Beurling criterion admits rational least-squares witnesses with a certified tail.
+
+\paragraph{What is proved where.}
+The arithmetic statements are literal closed formulas in ProveIt's iPRA. Empty-context derivations in that calculus prove such equivalences as the two-sided prime test versus the conjunction of its one-sided tests, and strict divisor or totient certificates versus a least successful precision. Lean also checks the mathematical readings of finite computations. The identifications with zeros use classical analytic number theory, with their proofs and dependencies given below. The report marks which links have each strength. The conjectures themselves remain open.
+
+\tableofcontents
+\newpage
+\input{sections/foundations}
+\input{sections/sampling}
+\input{sections/cayley}
+\input{sections/toeplitz}
+\input{sections/named}
+\input{sections/residues}
+\input{sections/gram}
+\input{sections/countdown}
+\input{sections/precision-bounds}
+\input{sections/status}
+\end{document}

@@ -1,0 +1,163 @@
+\section{The arithmetic foundation: negative MRDP}
+\label{sec:foundation}
+
+This section separates a standard deep theorem from the elementary logical
+work needed to use it constructively. It also explains why importing a
+classical theorem about the standard natural numbers into Lean is not the
+same operation as proving the required formula in iPRA.
+
+\subsection{The one established representation theorem we use}
+
+Let $T_{\mathrm E}=I\Delta_0+\mathrm{EXP}$ be classical bounded arithmetic
+with total exponentiation. A function-symbol presentation of elementary
+arithmetic can be used instead. We need the following fixed-instance form
+of the Gaifman--Dimitracopoulos theorem \cite{gd}:
+
+\begin{theorem}[Established formalized MRDP]\label{thm:efa-mrdp}
+For each fixed $\Sigma_1$ formula $\theta(e)$ of arithmetic, there is an
+integer polynomial $P_0(e,y_1,\ldots,y_n)$ and a finite
+$T_{\mathrm E}$ proof of
+\[
+ \forall e\left(\theta(e)\longleftrightarrow
+       \exists y_1\cdots\exists y_n\;P_0(e,\boldsymbol y)=0\right).
+\]
+The witnesses range over natural numbers. The polynomial and the source
+proof are fixed before $e$ varies.
+\end{theorem}
+
+The formalized result, including the strength of the source theory, is
+explicitly confirmed in \cite[Section 1.2, p.~3 of the author preprint]{cmy}
+and \cite[slide 4]{jerabek}. We invoke it for the one formula
+$\theta(e)=\Halt(e)$ from \eqref{eq:halt-def}. Denote the right-hand
+existential formula by $\Sol_0(e)$.
+
+We are not assuming a truth predicate, an internally uniform evaluator
+for all primitive recursive definitions, or an internally proved theorem
+quantifying over all arithmetic formulas. The application uses one finite
+source formula and one finite source proof. The effective classical MRDP
+construction determines such a polynomial; listing its coefficients is
+unnecessary for the logical theorem, although generating them would be
+necessary for an executable end-to-end universal halting compiler.
+
+\subsection{Negative translation into iPRA}
+
+We give the proof transformation explicitly. For a formula $A$, its
+G\"odel--Gentzen translation $A^{\mathrm N}$ is defined as follows:
+\begin{align*}
+ (s=t)^{\mathrm N}&=\neg\neg(s=t),&
+ \bot^{\mathrm N}&=\bot,\\
+ (A\land B)^{\mathrm N}&=A^{\mathrm N}\land B^{\mathrm N},&
+ (A\to B)^{\mathrm N}&=A^{\mathrm N}\to B^{\mathrm N},\\
+ (A\lor B)^{\mathrm N}&=\neg(\neg A^{\mathrm N}\land\neg B^{\mathrm N}),&
+ (\forall x\,A)^{\mathrm N}&=\forall x\,A^{\mathrm N},\\
+ (\exists x\,A)^{\mathrm N}&=\neg\forall x\,\neg A^{\mathrm N}.&&
+\end{align*}
+Other atomic decidable relations are first expanded into arithmetic
+formulas, or treated by the same atomic double-negation clause.
+Classical logical rules translate to intuitionistically valid rules. This
+is verified by induction on a finite proof tree: the translated formulas
+are stable, and the translated instance of excluded middle is
+intuitionistically derivable. Thus only the nonlogical source axioms
+require attention.
+
+\begin{lemma}[Translation of the elementary arithmetic axioms]
+Every axiom used in the translated fixed $T_{\mathrm E}$ proof has an iPRA
+derivation.
+\end{lemma}
+\begin{proof}
+Arithmetic defining equations and successor axioms are already present
+in iPRA, after the standard definitional interpretation. Equality and
+order are decidable, so their double negations reduce to the original
+decidable statements.
+
+Consider a fixed bounded formula $B(x,\boldsymbol a)$ occurring in an
+induction axiom. Construct its primitive recursive characteristic
+function $\chi_B$ by evaluating the fixed arithmetic terms and performing
+the finitely bounded Boolean folds for its quantifiers. The internal
+correctness proof gives
+\[
+ B(x,\boldsymbol a)\longleftrightarrow\chi_B(x,\boldsymbol a)=1.
+\]
+It also gives decidability of $B$ and equivalence
+$B^{\mathrm N}\leftrightarrow B$. The translated induction axiom therefore
+follows from quantifier-free induction on
+$\chi_B(x,\boldsymbol a)=1$. Parameters are retained throughout.
+
+Finally, the total-exponentiation axiom is witnessed by iPRA's primitive
+recursive exponentiation function, defined by
+$\operatorname{pow}(a,0)=1$ and
+$\operatorname{pow}(a,Sb)=a\operatorname{pow}(a,b)$. Its agreement with the
+source arithmetic graph is proved from the same recursion equations
+using finite computation certificates. The negative translation of its
+existential conclusion follows immediately from this stronger positive
+witnessed statement.
+
+Only finitely many bounded formulas occur in the source proof. The argument
+compiles each of them separately; it makes no claim about a universal
+truth evaluator for the whole language of primitive recursive arithmetic.
+\end{proof}
+
+For a $\Sigma_1$ formula with a decidable matrix, the negative translation
+is intuitionistically equivalent to its double negation. For example,
+if $R(e,w)$ is decidable, then
+\[
+ (\exists w\,R(e,w))^{\mathrm N}
+ \longleftrightarrow\neg\forall w\,\neg R(e,w)
+ \longleftrightarrow\neg\neg\exists w\,R(e,w).
+\]
+The last equivalence uses the intuitionistically valid equivalence
+$\neg\exists w\,R\leftrightarrow\forall w\,\neg R$; it does not eliminate
+a double negation on an existential.
+
+Applying the translation to Theorem~\ref{thm:efa-mrdp} gives
+\begin{equation}\label{eq:nn-mrdp}
+ \ipra\ \vdash\quad
+ \forall e\bigl(\neg\neg\Halt(e)
+                \longleftrightarrow\neg\neg\Sol_0(e)\bigr).
+\end{equation}
+This is the exact intermediate conclusion. Claiming the positive
+equivalence from this translation would be an unjustified extra step.
+
+\begin{lemma}[Negative calibration]\label{lem:negative-calibration}
+Intuitionistic propositional logic proves
+\[
+ (\neg\neg H\leftrightarrow\neg\neg S)
+ \longrightarrow(\neg H\leftrightarrow\neg S).
+\]
+\end{lemma}
+\begin{proof}
+Assume $\neg H$ and $S$. The latter implies $\neg\neg S$, hence
+$\neg\neg H$, contradicting $\neg H$. This proves $\neg H\to\neg S$.
+Interchanging $H$ and $S$ proves the converse. Both arguments end in a
+contradiction; neither extracts a witness from a double negation.
+\end{proof}
+
+Consequently the required internal theorem is
+\begin{equation}\label{eq:negative-mrdp}
+ \ipra\ \vdash\quad
+ \forall e\bigl(\neg\Halt(e)\longleftrightarrow\neg\Sol_0(e)\bigr).
+\end{equation}
+
+\subsection{What this bridge proves, and what remains to formalize}
+
+Equation~\eqref{eq:negative-mrdp} is enough for the eventual diagonal
+argument. There is no need to prove the stronger constructive assertion
+that every halting certificate can be transformed into a polynomial root.
+The analytic part does provide positive root/nonzero-certificate maps;
+the arithmetic halting/Diophantine bridge is used only negatively.
+
+As a human mathematical proof, the argument above is an application of an
+established proof-theoretic theorem followed by an explicit finitary proof
+translation. It establishes existence of the required iPRA derivation.
+As a Lean implementation, a source proof of the chosen fixed MRDP
+instance must still be represented and checked, or the corresponding
+negative iPRA derivation must be constructed directly. A parameter field
+asserting \eqref{eq:negative-mrdp} is an interface for that work, not its
+completion.
+
+This treatment avoids an additional conservation theorem and avoids
+asserting primitive recursive witness extraction from an arbitrary
+classical MRDP proof. It also handles the natural-number witness domain
+directly: Section~\ref{sec:reduction} squares the coordinates of the dense
+curve, so no four-squares theorem is needed to convert natural witnesses
+to integer witnesses.

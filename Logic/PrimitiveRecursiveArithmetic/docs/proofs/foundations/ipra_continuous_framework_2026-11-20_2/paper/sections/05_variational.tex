@@ -1,0 +1,103 @@
+\section{An end-to-end problem over an infinite function space}\label{sec:variational}
+
+To demonstrate that the framework is not restricted to finite combinatorics disguised by continuous terminology, consider the variational problem
+\begin{equation}
+  \sup\left\{\int_0^1 f(x)\,dx:
+  f(0)=f(1)=0,\quad |f(x)-f(y)|\leq|x-y|\right\}.
+ \label{eq:variational}
+\end{equation}
+The domain is an infinite-dimensional compact family of real-valued functions. The objective is integration. We will describe its presentation, obtain its exact value and maximizer, and display the finite arithmetic identity that proves the result.
+
+\subsection{A compact presentation of the boundary condition}
+
+Let \(t(x)=\min(x,1-x)\) on \([0,1]\). For any 1-Lipschitz \(f\) with the stated endpoint values, the two endpoint inequalities give
+\begin{equation}
+  -t(x)\leq f(x)\leq t(x).
+ \label{eq:tent-bound}
+\end{equation}
+Conversely a 1-Lipschitz function obeying this bound has zero endpoints. Define
+\[
+  (Rf)(x)=\max\bigl(-t(x),\min(t(x),f(x))\bigr).
+\]
+The minimum and maximum of real-valued 1-Lipschitz functions are 1-Lipschitz. Hence \(R\) maps \(\mathcal F_{1,1}\) into the anchored class \(\mathcal F_0\) in \eqref{eq:variational}. It fixes every member of \(\mathcal F_0\). At each \(x\), clipping into the same interval is nonexpansive, so
+\[
+ D(Rf,Rg)\leq D(f,g).
+\]
+Apply \(R\) to every envelope center from Theorem~\ref{thm:function-net}. All resulting centers have the required exact boundary values and Lipschitz bound, and they form a net in \(\mathcal F_0\) with the same error. This avoids an unjustified claim that an arbitrary closed subset of an effectively compact space automatically has computable finite nets. Here the explicit nonexpansive retraction supplies the missing construction.
+
+\subsection{Integration as a presented continuous functional}
+
+For \(N\geq1\), let
+\[
+ S_N(f)=\frac1N\sum_{j=0}^{N-1}f(j/N).
+\]
+On each grid cell, the Lipschitz variation is at most \(1/N\). Thus any tagged refinement differs from the left-endpoint sum by at most \(1/N\). Comparing two sums on a common refinement shows
+\begin{equation}
+ |S_N(f)-S_{N'}(f)|\leq\frac1N+\frac1{N'}.
+ \label{eq:riemann-name}
+\end{equation}
+Taking dyadic \(N\) produces a Cauchy name. Define \(I(f)\) to be this integral value. In usual Riemann semantics it is precisely \(\int_0^1f\). If every sampled value has rational error at most \(\eta\), the computed sum has an additional error at most \(\eta\), since the weights are nonnegative and sum to one. Therefore
+\begin{equation}
+ |\widetilde S_N(f)-I(f)|\leq N^{-1}+\eta.
+ \label{eq:integral-error}
+\end{equation}
+Also \(|S_N(f)-S_N(g)|\leq D(f,g)\), and passage through \eqref{eq:riemann-name} gives
+\begin{equation}
+ |I(f)-I(g)|\leq D(f,g).
+ \label{eq:integral-lip}
+\end{equation}
+This is a nonexpansive functional on the compact function sort. Its extrema can therefore be approximated by a finite maximum over the retracted envelope net. The error is the net radius plus the integration-evaluation error. No choice of an exact optimizing function is needed to compute the optimal value.
+
+All the arithmetic content of \eqref{eq:riemann-name} is finite: a common rational refinement, a bound for each cell, and the sum of the cell lengths. Prove the inequality for the first \(j\) cells, clearing the common denominator, and induct on \(j\). This is the quantifier-free sum invariant already exemplified by the repository's grid and refinement modules. The integral symbol itself never appears in the object-language proof.
+
+\subsection{Exact optimum and an explicit attainer}
+
+\begin{theorem}[The tent variational problem]\label{thm:tent}
+The value of \eqref{eq:variational} is \(1/4\). It is attained by
+\(t(x)=\min(x,1-x)\). The finite rational inequalities proving the upper bound and the dyadic identity proving its value are derivable in \ipra\ using quantifier-free induction. The semantic integral statement follows from the preceding integral-name construction.
+\end{theorem}
+
+\begin{proof}
+The function \(t\) is 1-Lipschitz, is nonnegative, and has zero endpoint values. Equation~\eqref{eq:tent-bound} gives \(f(x)\leq t(x)\) for every admissible \(f\). For \(N=2n\), \(n\geq1\), a direct finite computation is
+\begin{align*}
+ \sum_{j=0}^{2n-1}\min(j,2n-j)
+ &=\sum_{j=0}^{n}j+\sum_{j=1}^{n-1}j\\
+ &=\frac{n(n+1)}2+\frac{n(n-1)}2=n^2.
+\end{align*}
+Thus \(S_{2n}(t)=n^2/(2n)^2=1/4\). Summing \(f(j/N)\leq t(j/N)\) gives \(S_{2n}(f)\leq1/4\). With rational samples of error \(\eta\), the finite conclusion is instead
+\begin{equation}
+   \widetilde S_{2n}(f)\leq\frac14+\eta.
+ \label{eq:finite-variational}
+\end{equation}
+The integral estimate gives \(I(f)\leq1/4+1/(2n)+2\eta\). At arbitrary requested precision choose explicit dyadic \(n\) and \(\eta\) making the last two terms as small as desired. This is exactly the inequality \(I(f)\leq1/4\) between represented reals. The constant dyadic sums for \(t\) show \(I(t)=1/4\), proving attainment.
+
+For the arithmetic derivation encode the sample table \(a_j\), its denominator data, and an error numerator. The finite premises are the endpoint-distance bounds that imply \(a_j\leq\min(j/N,1-j/N)+\eta\). Multiply by a positive common denominator. The invariant for the first \(r\) entries is the partial-sum inequality plus \(r\eta\); it is a numerical quantifier-free inequality. The displayed sum-of-integers identities follow from quantifier-free induction. This yields \eqref{eq:finite-variational} as a first-order theorem for arbitrary finite tables satisfying the specified contract. The presentation provider proves those premises for any named admissible \(f\).
+\end{proof}
+
+\subsection{A quantitative uniqueness estimate}
+
+The exact optimizer is also recoverable by the residual-diameter method, even if the search algorithm never recognizes the tent function. Let
+\[
+ J(f)=\frac14-I(f)=\int_0^1(t-f),\qquad f\in\mathcal F_0.
+\]
+The difference \(g=t-f\) is nonnegative and 2-Lipschitz. At a point where \(g(x)=a\), Lipschitz continuity gives
+\[
+ g(y)\geq\max(0,a-2|x-y|).
+\]
+Since \(g(0)=g(1)=0\), we have \(a\leq2\min(x,1-x)\). Consequently the entire triangular interval \([x-a/2,x+a/2]\) lies in \([0,1]\). Its area is \(a^2/2\). Integrating the lower bound, or using explicit dyadic lower sums and their error bound, gives
+\begin{equation}
+   g(x)^2\leq2J(f),\qquad
+   D(f,t)^2\leq2J(f).
+ \label{eq:tent-residual}
+\end{equation}
+The supremum in the second inequality needs no attained point: apply the first inequality to every point or to finite net maxima, then pass through their error bounds.
+
+If \(J(f),J(h)\leq2^{-(2k+3)}\), each of \(D(f,t),D(h,t)\) is at most \(2^{-(k+1)}\), and hence \(D(f,h)\leq2^{-k}\). Thus a residual-diameter modulus is
+\[
+  \kappa(k)=2k+3.
+\]
+The square-root notation is unnecessary in the finite arithmetic: comparisons are made after squaring nonnegative rational quantities. An arbitrary PR sequence of approximate maximizers with this residual schedule therefore converges coherently to the tent function. This connects continuous optimization, quantitative uniqueness, compact function sorts, and the completion interface in one example.
+
+For completeness, the integral of the lower triangular hat is itself a finite rational certificate. If \(x,a\) are rational and \(0\leq a\leq2\min(x,1-x)\), partition the interval at \(0,x-a/2,x,x+a/2,1\). The hat is affine on every piece. Its two nonzero trapezoid areas are each \((a/2)(0+a)/2=a^2/4\), so their sum is \(a^2/2\). The trapezoid identity for an affine function follows by summing an arithmetic progression; it is a quantifier-free arithmetic theorem after denominators are cleared. Since the hat is 2-Lipschitz, any uniform-grid sum differs from this exact piecewise-affine value by at most \(2/N\), by the common-refinement proof of \eqref{eq:riemann-name}. Summing the pointwise lower bounds and sending this explicit error to zero proves \eqref{eq:tent-residual} for rational centers and heights.
+
+For a represented center \(x\) and height \(a=g(x)\), choose a rational center \(r\in[0,1]\) with \(|r-x|\leq\epsilon\) (clipping a rational approximation to the interval preserves its error) and a rational \(b\) with \(|b-a|\leq\epsilon\). The nonnegative rational height \(c=\max(0,b-3\epsilon)\) satisfies \(c\leq g(r)\), because \(g\) is 2-Lipschitz. It also satisfies \(c\leq2\min(r,1-r)\) by the endpoint bounds. Apply the rational-center estimate to the hat of height \(c\), and let the explicit approximation error tend to zero. This proves the assertion for every represented point without integration over an unspecified real partition. The estimate is sharp: for \(f=-t\), \(D(f,t)=1\) and \(J(f)=1/2\), giving equality. Neither exact maximizer selection nor compactness choice is needed.

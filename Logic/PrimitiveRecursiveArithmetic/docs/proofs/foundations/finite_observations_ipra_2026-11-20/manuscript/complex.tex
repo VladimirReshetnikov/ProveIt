@@ -1,0 +1,304 @@
+\section{Residues at primitive-recursively named singularities}
+\label{sec:namedresidue}
+
+The residue theorem in the repository takes its singularity centres in
+$\mathbb Q(i)$. Its extension to rectifiable curves retains that restriction.
+A pole of a rational function with rational coefficients, for example
+$+\sqrt{2}$ for $1/(z^2-2)$, need not have rational coordinates.
+There are two different uses of the centre in the proof. Laurent
+coefficients use it as an origin, while the planar filling algorithm
+compares coordinates to draw a mesh. We translate the analytic origin
+by a name and draw the mesh around one rational sample. A strip joining
+the two contours proves that the computed residue is the coefficient at
+the intended origin.
+
+\paragraph{The rational case used below.}
+Write $Q_t(c)=\{z:\lVert z-c\rVert_\infty\le t\}$ and put
+$|z|_1=|\Re z|+|\Im z|$. Norms in error estimates below are $|\cdot|_1$.
+Two results from the repository's
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/cauchy_residue_ipra/report.tex}{Cauchy and residue report}
+are used as mathematical lemmas. First, the integral on the boundary of
+a finite rational triangle chain is zero under a uniform first-order
+remainder estimate on its carrier. Second, on the rational annulus
+$Q_{8r}(0)\setminus\operatorname{int} Q_{r/8}(0)$, the same effective
+holomorphy data give Laurent coefficients $a_m$, a unique expansion on
+$\partial Q_r(0)$, and $\int_{\partial Q_r(0)}g=2\pi i a_{-1}$.
+The annular result derives the coefficients by expanding the two separated
+Cauchy kernels on the outer and inner boundary. Both finite geometric
+remainders have ratio at most $1/2$. For inner and outer magnitude bounds
+at most $M$, the $2N$ terms with indices $-N,\ldots,N-1$ have uniform
+error at most $40M2^{-N}$. The moment integral of each integer power
+vanishes except for $z^{-1}$, whose integral is $2\pi i$. The linked
+report gives the human proofs in its sections on the annular Cauchy
+formula and the final residue error budget.
+
+\subsection{Translating a holomorphic chart}
+
+A name $A(n)\in\mathbb Q(i)$ for $a$ is a fixed PR function satisfying
+$|A(m)-A(n)|_1\le 2^{-m}+2^{-n}$. A holomorphic chart on a rational
+carrier supplies PR evaluators $F(z,n),D(z,n)$, each coherent with
+error $2^{-n}$, magnitude bounds $M,B$, and nondecreasing PR moduli
+$\nu,\mu$. In name notation the conditions at rational points $z,w$ are
+\begin{align*}
+ |w-z|_1\le 2^{-\nu(k)}
+   &\ \Longrightarrow\ |f(w)-f(z)|_1\le 2^{-k},\\
+ |w-z|_1\le 2^{-\mu(k)}
+   &\ \Longrightarrow\ |f(w)-f(z)-f'(z)(w-z)|_1
+                      \le 2^{-k}|w-z|_1 .
+\end{align*}
+The first bound at sample precisions $n,m$ has extra slack $2^{-n}+2^{-m}$.
+The second at a common precision $n$ has extra slack
+$2^{-n}(2+|w-z|_1)$. These clauses, with the two coherence and magnitude
+bounds, are first-order statements on rational codes.
+
+\paragraph{Lemma (a modulus for the derivative).}
+On that carrier $\mu_D(k)=\mu(k+2)$ works for $f'$. Indeed, let
+$h=w-z\ne0$, $d=|h|_1$. Add the two first-order remainders, one in
+each direction, and obtain
+$|(f'(z)-f'(w))h|_1\le 2\cdot 2^{-(k+2)}d$ when
+$d\le 2^{-\mu(k+2)}$. For $h=x+iy$ one has
+$|h^{-1}|_1=d/(x^2+y^2)\le 2/d$. Submultiplicativity gives the
+claimed $2^{-k}$ bound. The zero-displacement case uses coherence at a
+single rational point. Division in this argument is a decidable
+operation on nonzero rational $h$. At precision $m$ the two remainders
+contribute an additional $4(2+d)2^{-m}/d$ after division. This factor
+can be budgeted for each rational pair before taking the arbitrary-error
+consequence. For example, to make the extra term at most $2^{-v}$, take
+$m=v+\sigma(4(2+d)/d)$, where throughout this section
+$\sigma(u)$ is the least $s\ge0$ with $2^s\ge\max(1,u)$.
+For a nonnegative fraction $p/q$, $q\ge1$, the search is bounded by $p+1$.
+
+\paragraph{Lemma (translation).}
+Choose $r>0$ rational, $b$ with $2^{-b}\le r/64$, and
+$c=A(b)$. Assume the chart clauses on the rational closed shell
+\[
+ S(c,r)=\{z:r/16\le\lVert z-c\rVert_\infty\le 9r\}.
+\]
+For rational $x$ with $r/8\le\lVert x\rVert_\infty\le8r$, the
+translated function $g(x)=f(a+x)$ has PR holomorphy data on this
+fixed rational annulus. In particular the preceding rational Laurent
+theorem applies to $g$.
+
+To construct the data, observe that for every $t\ge b$,
+$\lVert A(t)-c\rVert_\infty\le r/32$. Thus $x+A(t)$ belongs to $S(c,r)$
+because $r/8-r/32\ge r/16$ and $8r+r/32\le9r$. To produce the value
+and derivative samples at precision $n$, use
+\[
+ t(n)=\max\{b,1+\nu(n+2),1+\mu(n+4)\}
+\]
+and evaluate $F(x+A(t(n)),n+2)$ and $D(x+A(t(n)),n+2)$.
+Every later centre sample is within $2^{1-t(n)}$ of $A(t(n))$.
+The input modulus and the derivative lemma make the centre error at
+most $2^{-(n+2)}$ in either value. The evaluator contributes at most
+another $2^{-(n+2)}$. In fully rational form, compare two output
+samples by inserting a common later centre and a common fine evaluator
+precision, then discard the arbitrarily small positive slack by
+cross-multiplication. Thus the displayed programs each have error
+at most $2^{-n}$ and the required coherence. A translated modulus or
+first-order bound for $x,y$ follows by evaluating both at the \emph{same}
+later centre $A(T)$. Their displacement is exactly $y-x$. Taking
+arbitrary rational precision recovers $\nu,\mu$ unchanged. Replacing
+the three resulting names by their output samples introduces precisely
+the allowed evaluator slack. Magnitude bounds transport in the same
+way. If two input names represent the same centre, the common-sample
+comparison with $\nu$ and $\mu_D$ gives equal translated names wherever
+the indicated shells are certified.
+
+\subsection{The moving-centre residue theorem}
+
+Let $\Gamma$ be a closed rational polygonal chain and let $A_j(n)$
+name finitely many centres $a_j$ (jointly PR in $j,n$ if their number is
+a parameter). For each $j$ choose $r_j,b_j,c_j$ as above.
+Assume that the $Q_{9r_j}(c_j)$ are pairwise disjoint and miss $\Gamma$.
+Give integer weights $w_j$ and a rational triangle chain $T$ satisfying
+the finite oriented-boundary identity
+\[
+ \partial T=\Gamma-\sum_j w_j\partial Q_{r_j}(c_j).
+\]
+Subdivisions at common rational vertices are allowed. Require
+$\lVert z-c_j\rVert_\infty\ge r_j/16$ throughout the carrier of $T$,
+and give the holomorphic chart data for $f$ on that carrier and
+the shells $S(c_j,r_j)$, with compatible values on overlaps.
+Distances and domains here refer to rational cells. Such a filling for
+a rectangle with square holes can be produced by drawing the horizontal
+and vertical side lines and splitting each retained rectangle into
+two triangles. Holomorphy on the carrier of the filling is essential.
+
+\paragraph{Theorem.}
+For each $j$, the translated local chart constructs the Laurent
+coefficient $R_j$ of degree $-1$ at $a_j$. With name equality
+interpreted at every requested precision,
+\[
+ \int_\Gamma f(z)\,dz=2\pi i\sum_j w_j R_j,\qquad
+ w_j=(2\pi i)^{-1}\int_\Gamma \frac{dz}{z-a_j}.
+\]
+Here $R_j$ is the coefficient of the presented annulus centred at $a_j$.
+When the data extend to a punctured neighbourhood of $a_j$ as specified
+below, it is the residue of that point. This includes isolated essential
+singularities.
+
+\paragraph{Proof.}
+Fix $j$ and suppress its index. For $n\ge b$, join the four vertices
+of $Q_r(c)$ to the corresponding translated vertices of $Q_r(A(n))$.
+Each of the four quadrilaterals is a signed pair of rational triangles.
+Its points are of the form $c+x+t(A(n)-c)$ with $x$ on the corresponding
+edge of $Q_r(0)$ and $0\le t\le1$. Their distances from $c$ lie between
+$r-r/32$ and $r+r/32$ in the sup norm. Thus Cauchy's triangle theorem
+applies there, including to degenerate panels. The interior diagonals
+and the four connector edges cancel with opposite signs, giving the
+exact equality of the integrals on the two rational squares.
+
+The difference between the integral over $\partial Q_r(A(n))$ and
+$\int_{\partial Q_r(0)}g(x)\,dx$ has norm at most $8r2^{-u}$ whenever
+$n\ge\max(b,1+\nu(u))$. Indeed its two integrands in the fixed $x$
+coordinate are within $2^{-u}$ at every rational quadrature node by
+the common-later-centre argument. The increments in each finite edge
+sum coincide and their total norm is $8r$. The quadrature error on
+either side has its supplied modulus and can be made arbitrarily small.
+This proves equality for the translated square. By the translation lemma
+and the rational annular theorem, its integral is $2\pi iR_j$.
+Applying Cauchy to $T$ and using the boundary identity now gives the
+first formula.
+
+For the second formula apply the same chain calculation to
+$k_j(z)=(z-a_j)^{-1}$. On $T$ and its own shell the distance to $a_j$
+is at least $r_j/16-r_j/32$. The disjoint outer squares keep
+$k_j$ holomorphic throughout every other local square. The inverse
+evaluator is effective here. When the sup distance has lower bound
+$\delta>0$, take centre error at most $\delta/2$, use
+$|v^{-1}|_1\le2/\lVert v\rVert_\infty$ and the inverse difference
+identity to budget its value error. Squaring gives derivative
+$-v^{-2}$. The identity
+$(v+h)^{-1}-v^{-1}+h/v^2=h^2/(v^2(v+h))$
+gives a remainder constant $U^3$ for any common endpoint inverse bound
+$U$. In the translated chart at $a_j$ this kernel is $1/x$ and has
+residue one. Its integral around each other square vanishes by its
+two-triangle filling. The second formula follows. In particular changing
+a rational filling or its subdivision gives the same integers since
+these normalized integral names depend only on $a_j$ and $\Gamma$.
+Independence of radius follows by Cauchy on the intervening annulus
+in translated coordinates.\hfill$\square$
+
+\paragraph{From an annular coefficient to a point residue.}
+A single shell can surround several singularities. For example,
+$(z-d)^{-1}$ with $0<|d-a|_1<r/64$ contributes one to the
+annular coefficient around $a$, although the function is regular at $a$.
+A sufficient punctured-germ presentation consists of the preceding shell
+data for every $r_m=2^{-m}r$, using $b_m=b+m$ and $c_m=A(b_m)$,
+jointly PR in $m$ and agreeing on overlaps. In translated coordinates
+the adjacent evaluations agree on the common annulus by the
+common-later-centre calculation. The square annulus between
+half-sides $r_m/2$ and $r_m$ lies in that common annulus, so Cauchy's
+theorem on its rectangular filling identifies successive coefficient
+integrals. The common value is the coefficient at the isolated point.
+For a numerical depth $m$ and precision $q$, sum the $m$ adjacent
+differences at precision $q+1+\sigma(m+1)$. This proves independence of
+depth with a rational prefix invariant. The positive gap around each
+other centre is retained at all the smaller scales.
+
+\paragraph{Rectifiable curves.}
+The same result holds for a closed PR-named curve $\gamma$ with
+a PR continuity modulus $\nu_\gamma$ and a supplied upper bound on the
+sum of its increments' norms over every dyadic partition. Give a
+positive rational $\rho$ such that $f$ has the chart data on the
+$\rho$-collar of the curve and
+$\lVert\gamma(t)-a_j\rVert_\infty\ge\rho$ for every $j,t$.
+Choose $2^{-C}\le\rho/8$, $m=\nu_\gamma(C)$, and join
+$2^{-C}$-accurate rational samples at the times $i/2^m$ to obtain a
+rational polygon $P$, using the same sample at both endpoints. On each
+subinterval both endpoint samples are within $2\cdot2^{-C}$ of
+$\gamma(t)$, so $|P(t)-\gamma(t)|_1\le\rho/4$ by convexity.
+The linear homotopy from $\gamma$ to $P$ has its $\rho/2$-collar
+in the chart and at sup distance at least $\rho/4$ from all centres.
+For a PR modulus use $\max(\nu_\gamma(k+2),k+2+d)$ where $2^d$ bounds
+one, $\rho/4$, and the greatest speed on the polygon's parameter
+segments. Changing $t$ and then the homotopy parameter in its affine
+formula proves this bound. The rational-grid homotopy theorem in the
+linked report identifies the two contour integrals, for $f$ and for
+each inverse kernel individually. Whenever $P$ has the filling and
+shell certificates above, the same coefficients and integers therefore
+give the value and the windings for $\gamma$.
+
+\paragraph{Precision and induction.}
+For a target $2^{-q}$ take
+$u=q+4+\sigma(1+\sum_j8r_j|w_j|)$. The total weighted error of replacing
+moving contours by frozen samples is then at most $2^{-q-4}$.
+A local Laurent truncation of order
+$N\ge1+q+4+\sigma(1+\sum_j 8r_j|w_j|40M_j)$ gives the same
+bound on the accumulated truncation error. For the residual of Cauchy's theorem on $T$ and on all rational
+translation panels, give each constituent triangle error at most
+$2^{-q-4-\sigma(1+L)}$ in the upstream triangle schedule, where $L$
+is the sum of absolute triangle multiplicities in $T$ plus
+$8\sum_j|w_j|$ for the panels. This bounds their combined residual by
+$2^{-q-4}$. Finally set $W=\sum_j|w_j|$ and
+$B_*=\sum_j |w_j|8r_jM_j$. The local coefficient integral and
+$|(2\pi i)^{-1}|_1\le1$ give $\sum_j|w_j|\,|R_j|_1\le B_*$.
+If the sampled $\pi$ has magnitude at most five, and its error and the
+errors in the outer integral and individual residues are
+$\eta_\pi,\eta_\Gamma,\eta_R$, the additional error in the equality is
+at most $\eta_\Gamma+2B_*\eta_\pi+10W\eta_R$. Use $q+4$ bits for the
+outer integral, $q+4+\sigma(1+2B_*)$ for $\pi$, and
+$q+4+\sigma(1+10W)$ for the residue names, with the rational-case
+schedules for quadrature and numerical coefficient evaluation. Even
+adding all six indicated error allowances gives less than $2^{-q}$.
+The proof of cancellation fixes an elementary oriented edge and inducts
+on a partial sum of signed incidences. The sum estimate inducts on the
+rational accumulator of the norm bounds at fixed precision. The
+analytic hypotheses are used by instantiation at the rational sample
+points. Equality of names means agreement to all rational accuracies.
+A violated rational inequality has a decidable positive gap and a PR
+precision that detects it.
+
+\paragraph{Example.}
+Take $a=\sqrt2$, $f(z)=(z^2-2)^{-1}$, and let $\Gamma$ be the positive
+boundary of $[1,2]\times[-1/2,1/2]$. Use the lower dyadic name
+$A(n)=2^{-n}\lfloor\sqrt{2\cdot 4^n}\rfloor$, obtained by bounded
+integer search, and put $r=1/64$, $b=12$, $c=181/128$.
+The outer square of half-side $9r$ lies strictly inside the rectangle.
+The four lines supporting the hole divide the rectangle into nine cells.
+Deleting the middle cell gives a filling of sixteen triangles with
+weight one. On the carrier and shell the factor $z-a$ is bounded away
+from zero by the clearance above and $\lVert z+a\rVert_\infty\ge1$
+by its real part. The partial-fraction identity
+\[
+ \frac1{z^2-2}=\frac1{2a}\left(\frac1{z-a}-\frac1{z+a}\right)
+\]
+supplies effective data by the inverse estimate, and gives
+$R=1/(2a)$ because the second summand is holomorphic across the
+whole square. Thus $\int_\Gamma dz/(z^2-2)=\pi i/\sqrt2$.
+The arithmetic fact $a^2=2$ follows directly from
+$A(n)^2\le2<(A(n)+2^{-n})^2$ and $A(n)\le2$.
+
+\paragraph{Lean implementation path.}
+The host file \texttt{ComplexCase.lean} defines an incidence functional
+on ordered vertex pairs, the boundary of one oriented triangle, and
+the signed two-triangle panel. Its lemmas \texttt{strip\_boundary}
+and \texttt{closed\_strip} give cancellation for every finite strip,
+and \texttt{annulus\_clearance} proves the integer-scaled shell
+inequality. The file also proves both taxicab bounds for Gaussian integer
+multiplication. Its \texttt{derivative\_variation} lemma recovers the
+factor four in the derivative modulus after clearing positive denominators. If $|Ch|_1\le 2E|h|_1$ and $|h|_1>0$, then $|C|_1\le4E$. The companion \texttt{ComplexObject.lean} proves the strip identity in
+the repository's object calculus. For an arbitrary externally fixed
+path and an incidence table $E$ whose entries are signed pairs of open
+terms, \texttt{ResidueObject.closed\_strip} constructs a
+$\Gamma\vdash_{\mathsf{PRAAx}}$ derivation of the signed boundary
+equation. Its \texttt{square\_strip} specialization gives the eight
+triangles used above. The proof interprets the incidence expressions
+in the repository's ring of formal differences, cancels them there, and
+applies \texttt{ZT.derive}. An implementation of the geometry must still
+supply the incidence terms for the chosen rational test edge, with
+normalization of endpoints and signed comparisons. A single uniform
+object formula for coded paths of variable length would additionally
+use a quantifier-free prefix induction. Next implement
+$|\cdot|_1,\lVert\cdot\rVert_\infty$,
+the rational inverse and the two displayed scheduling functions by
+cross-multiplication and bounded recursion. The derivative lemma uses
+the two instantiated remainder inequalities and the inequality
+$(|x|+|y|)^2\le2(x^2+y^2)$.
+The translated samples are the displayed compositions of PR functions.
+With these arithmetic lemmas the remaining subgoals are the
+rational triangle and Laurent derivations from the upstream roadmap,
+followed by universal elimination at the translated programs and
+the finite weighted sum. The included Python example checks the grid
+boundary, all triangle-strip incidences, dyadic brackets, and the
+rational-proxy partial-fraction identity exactly.

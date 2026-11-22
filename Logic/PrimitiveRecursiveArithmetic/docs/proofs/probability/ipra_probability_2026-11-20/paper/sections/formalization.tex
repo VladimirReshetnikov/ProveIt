@@ -1,0 +1,274 @@
+\section{Lean definitions, object-language targets, and completion plan}
+\label{sec:formalization}
+
+\subsection{What has actually been compiled}
+
+The archive contains a standalone Lean 4.19.0 project using only the bundled
+\texttt{Std} library. Its build was run successfully. The two finite
+mathematics modules contain 30 named proved theorems, and their build also
+checks three closed examples. The other modules contain compiling
+primitive-recursive syntax and representation specifications. There are no
+\texttt{sorry}, \texttt{admit}, or new axiom declarations in the source.
+Representative axiom reports use \texttt{propext} and, for some results,
+\texttt{Quot.sound}; none of those inspected reports uses
+\texttt{Classical.choice} or \texttt{sorryAx}. The reports are included.
+
+These are semantic Lean proofs of finite algebra. They are not described as
+completed object-iPRA derivations of the analytic results. ProveIt's existing
+object calculus uses a separately pinned toolchain; its imported sources were
+inspected but not rebuilt for this package. The standalone project deliberately
+has no hidden dependency on that checkout.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.26\textwidth}>{\raggedright\arraybackslash}p{.65\textwidth}}
+\toprule
+Compiled file & Verified content\\
+\midrule\endhead
+\texttt{Finite.lean} & Bounded sums, finite event mass, complement and disjoint
+additivity, finite union bounds, product rectangles, Markov, a centered
+power-Markov form of Chebyshev, and stability of event mass in symmetric
+difference.\\
+\texttt{L1Finite.lean} & Signed finite sums, the absolute-sum inequality,
+expectation stability, and the finite $L^1$ triangle inequality.\\
+\texttt{PRSyntax.lean} & Arity-indexed PR syntax, finite evaluation derivations,
+and a connection between one fixed syntax tree and its semantic function.
+No universal PR evaluator is defined.\\
+\texttt{Specifications.lean} & Positive-denominator rational codes, fixed-PR
+rational sequences, regular real specifications, PR event tables, common
+prefix refinement, and a regular event specification.\\
+\bottomrule
+\end{longtable}
+
+The compiled regular-real and event specifications use the stronger
+one-sided convention $d(x_k,x_l)\le2^{-k}$ for $l\ge k$.
+The report's symmetric convention is $d(x_k,x_l)\le2^{-k}+2^{-l}$.
+A one-bit shift converts a symmetric name to the one-sided convention, and
+the latter already implies the symmetric one. This harmless reindexing is
+explicit and should be retained when connecting the interfaces.
+
+\subsection{All representation data for the continuous layer}
+
+The following additional structures are specifications to implement; they
+are not postulated instances. Their arithmetic contents are completely
+determined by the definitions in the report.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.22\textwidth}>{\raggedright\arraybackslash}p{.69\textwidth}}
+\toprule
+Interface & Fields and exact obligation\\
+\midrule\endhead
+\texttt{PRTable} & A fixed PR depth program $\ell(k)$ and three fixed PR
+programs on $(k,i)$ for positive/negative numerator and denominator minus
+one. Only $i<2^{\ell(k)}$ is read. Prefix lifting uses
+$i\mapsto\lfloor i/2^{D-\ell(k)}\rfloor$.\\
+\texttt{RandomName0} & A \texttt{PRTable} and a derivation of the all-precision
+$d_0$ inequality, where $d_0$ is the finite rational fold of
+$\min(1,|x-y|)$.\\
+\texttt{RandomName1} & The same, using the fold of $|x-y|$. Expectation is
+the rational sum divided by the row count.\\
+\texttt{RandomName2} & The same, with
+$I((x_k-x_l)^2)\le(2^{-k}+2^{-l})^2$. No square-root test is needed
+in the validity predicate.\\
+\texttt{EventName} & Boolean tables and symmetric-difference counts;
+the cleared formula is given in Section~\ref{sec:scope}.\\
+\texttt{BandSpec} & Fixed PR $b(k),R(k)$ and proofs that for every
+$r\ge R(k)$ the finite band count at width $2^{-b(k)}$ is at most $2^{-k}$.\\
+\texttt{CompactFunction} & A fixed rational evaluator, local bound, continuity
+modulus, and the evaluator's finite consistency and oscillation proofs.
+Optional increment and derivative contracts support calculus.\\
+\texttt{KernelSpec} & A nonnegative \texttt{CompactFunction} on each compact
+range, its listed breakpoints, mass-tail radius, and a fixed positive
+normalization witness (K1)--(K2).\\
+\texttt{MomentSpec} & An integer order $p$, PR cutoff, and finite annular-tail
+proofs for $|x|^p w(x)$. A numerical bound on the moment is additional data
+when a theorem, such as the CLT, requests one.\\
+\texttt{ProductFamily} & A fixed PR bit-position map, injectivity/disjoint-row
+counting proofs, and uniform finite-dimensional approximation schedules.
+These implement the independent copies used here.\\
+\texttt{SmoothTest} & PR evaluators for $h,h',h''$, bounds, and a proved
+Taylor remainder $|R(x,u)|\le L|u|^3/6$, with the finite evaluation errors
+included. The quintic cutoff supplies a concrete instance.\\
+\texttt{TailUnionSpec} & A jointly PR event family and a PR rate for distances
+between its finite unions. A summable mass-tail provider is one constructor.\\
+\bottomrule
+\end{longtable}
+
+For clarity, the compiled syntax begins with the following shape (the source
+contains its fully typed Lean form):
+\begin{lstlisting}
+inductive PR : Nat -> Type where
+  | zero (n : Nat) : PR n
+  | succ : PR 1
+  | proj (n : Nat) (i : Fin n) : PR n
+  | comp (outer : PR m) (inner : Fin m -> PR n) : PR n
+  | primrec (base : PR n) (step : PR (n + 2)) : PR (n + 1)
+\end{lstlisting}
+A finite \texttt{Eval} derivation has separate constructors for the defining
+equations. \texttt{FixedPRFunction} carries one code, its semantic function,
+and evaluation-graph proofs for that fixed code. The function field is a
+metatheoretic convenience, not an admission of all Lean functions into iPRA.
+The final object version must carry quoted PR symbols and actual proofs of
+the numerical contracts in \texttt{Prf PRAAx}.
+
+\subsection{The main embedded theorem targets}
+
+For a fixed table program $X$ let $\operatorname{Reg}_0(X)$ denote the
+all-precision first-order formula above, and similarly for the other
+metrics. Let $\operatorname{Band}(X,t)$ abbreviate the quantified finite
+band test with its fixed $b,R$ programs. The intended targets are genuine
+formulas over natural codes, such as
+\begin{align*}
+ &\operatorname{Reg}_1(X)\ \longrightarrow\
+   \operatorname{Reg}_{\mathbb R}(\operatorname{Expect}(X)),\\
+ &\operatorname{Reg}_0(X)\wedge\operatorname{Band}(X,t)
+   \ \longrightarrow\
+   \operatorname{Reg}_{\rm ev}(\operatorname{Threshold}(X,t)),\\
+ &\operatorname{Kernel}(w)\ \longrightarrow\
+   \operatorname{Reg}_0(\operatorname{HistogramSampler}(w)),\\
+ &\operatorname{Kernel}(w)\wedge\operatorname{Moment}_2(w)
+   \ \longrightarrow\
+   \operatorname{Reg}_2(\operatorname{ReindexSampler}(w)).
+\end{align*}
+Each named construction on the right is a fixed PR program built from the
+specified input definitions. There is no free functional quantifier in these
+schemas. Event and random-variable equality are all-precision relations;
+they are not tested by an evaluator.
+
+For the strong law, quote the finite sum, maximum, event indicator, product
+weight, and error-allowance programs. The endpoint is the cleared version of
+\eqref{eq:strong-window}, universally quantified over $N,M$ and rational
+precision parameters under the fixed presentation contracts. Its derived
+union name uses $T\ge4V\,2^k/\varepsilon^2$ for residual precision
+$2^{-k}$. For the CLT, quote the quintic cutoff and the finite Taylor-error
+test; the target is a pair of expectation inequalities whose error is
+\eqref{eq:cdf-clt}, or its squared version with all positive square roots
+eliminated by rational intervals. The sample-size condition
+\eqref{eq:clt-rate} is already integral arithmetic.
+
+In ProveIt the final endpoint has the form
+\begin{lstlisting}
+-- Desired proof type after the stated formula has been constructed:
+Prf PRAAx ([] : List (Fm PTm 0)) phi
+\end{lstlisting}
+This is a target type, not an asserted theorem constant in the delivered
+code. A law field in a structure, an axiom, a standard-model truth proof,
+or a program that merely checks examples would not fill this endpoint.
+
+\subsection{A finite dependency plan with explicit induction invariants}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.08\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}>{\raggedright\arraybackslash}p{.45\textwidth}}
+\toprule
+Stage & Construction and proof & Quantifier-free invariant or finite bridge\\
+\midrule\endhead
+1 & Quote rational codes, list access, refinement, sums and norms. &
+Valid denominators, running sum identity/inequality, and prefix projection
+composition. Reuse the existing signed and bounded-sum arithmetic.\\
+2 & Prove finite probability and metric estimates. &
+Weighted partial-sum bounds; rowwise indicator identities; expanded
+nonnegative squares. Existing \texttt{Expectation} providers already
+cover much of this layer.\\
+3 & Reify regularity and extensional equality. &
+Instantiate input contracts at requested finite indices, use triangle
+inequalities, then remove rational slack. Do not induct on a quantified
+regularity predicate.\\
+4 & Quote compact quadrature and calculus. &
+Accumulated oscillation/error budget; telescoping increment identity;
+partial Taylor sum with its geometric tail.\\
+5 & Normalize kernels and realize laws. &
+Nonnegative dyadic masses, sum at most one, residual at zero, monotone
+cumulative allocation, finite clipped coupling and moment-tail bounds.\\
+6 & Extend events, products and conditioning. &
+Symmetric-difference budget, bounded-multiplier truncation bound, finite
+double-sum exchange, positive denominator guard.\\
+7 & Lift weak and maximal inequalities. &
+First-crossing partition and centered product identities; squared error
+and boundary-band budgets before the limit. Reuse \texttt{WeakLaw},
+\texttt{FirstCrossing}, and the explicitly scoped \texttt{Kolmogorov*} providers.\\
+8 & Construct strong-law exceptional events. &
+Finite dyadic-block geometric sum, finite-union residual estimate,
+then explicit diagonal schedule for the countable precision scales.\\
+9 & Prove the quantitative CLT. &
+After $j$ replacements, the expectation discrepancy is bounded by the
+sum of the first $j$ Taylor/moment errors. Verify the polynomial cutoff
+identities and allocate the finite moment-rounding errors.\\
+10 & Export and audit. &
+Construct the actual closed \texttt{Prf PRAAx} endpoints, then use the
+existing transport theorem to the chosen concise presentation. Check
+axiom and dependency reports at those endpoints.\\
+\bottomrule
+\end{longtable}
+
+Stages 1--2 have substantial existing object-level support, plus the new
+standalone finite checks. The new continuous constructions in stages 3--9
+are supplied here as human proofs and formalization specifications. Their
+full embedded implementation remains work to do. The finite examples and
+compiled specification records do not turn that remaining work into a
+completed formal proof.
+
+\clearpage
+\section{Coverage, evidence, and explicit limits}
+\label{sec:coverage}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.32\textwidth}>{\raggedright\arraybackslash}p{.58\textwidth}}
+\toprule
+Topic & Result and exact scope\\
+\midrule\endhead
+Probability space and events & Coherent rational cylinders, represented
+measure algebra, finite probability axioms, countable additivity for
+supplied finite-union tail moduli.\\
+Random variables and expectation & $L^0$, $L^1$, $L^2$ names; law through
+bounded observables; expectation, covariance, product and multiplier
+closure under their stated integrability assumptions.\\
+Continuous distributions & Uniform, exponential, normal, Cauchy, and Cantor
+singular continuous law; explicit tails, moments when finite, CDFs,
+histogram realization, and separated pointwise quantiles.\\
+Joint laws and conditioning & Explicit independent copies, represented
+Fubini with absolute tails, convolution, finite conditional averaging,
+Bayes updates with positive evidence, Gaussian conditional density.\\
+Convergence & PR-modulated completion, quantitative Vitali and dominated
+convergence, canonical dyadic-martingale convergence, certified first
+Borel--Cantelli fragment.\\
+Laws of large numbers & Finite weak-law bound, finite-window maximal/strong
+bound, and effective exceptional-event certificates when threshold events
+have the required presentation.\\
+Central limit theorem & Smooth Lindeberg replacement and uniform CDF error
+with explicit $O(\delta^{-8})$ sufficient sample size under a third-moment
+bound. An optimal Berry--Esseen estimate is not claimed.\\
+Stochastic processes & Finite-horizon continuous-state transitions, bounded
+stopping, and an explicit autoregressive Gaussian stationary-law example.
+No general continuous-time path or stochastic-integral construction.\\
+\bottomrule
+\end{longtable}
+
+The Python reference uses integer and rational arithmetic in all acceptance
+checks. The recorded run passes 2,963 checks: cylinder refinements and
+moments, conditional averaging and tower identities, independence,
+clipping, finite first-crossing inequalities, cutoff-polynomial identities,
+and certified Gaussian enclosures. In particular it certifies
+\[
+ \frac{882141}{1048576}\le\Phi(1)\le\frac{55143}{65536},
+ \qquad 0.841<\Phi(1)<0.842.
+\]
+The decimal endpoints on the right abbreviate exact rationals. The narrower
+fraction interval is obtained by positive Taylor sums, inversion, midpoint
+quadrature, and the Gaussian tail inequality. Floating-point libraries are
+not proof oracles in this calculation. Such finite checks validate the
+implementation and constants; the general conclusions rest on the human
+proofs and, for the finite Lean layer, kernel checking.
+
+For perspective, $V=1$, $\varepsilon=1/10$, $\delta=1/20$ give sufficient
+sample sizes $2{,}000$ for the weak law and $8{,}000$ for the uniform
+strong-law window. The elementary CLT with $B=2$ and desired error $1/10$
+gives the much larger sufficient value $40{,}960{,}000{,}000{,}000$.
+That conservative constant is a cost of the elementary smoothing proof,
+not a statement about the actual convergence speed of a particular law.
+The package's purpose is a transparent proof-theoretic foundation; sharper
+certified algorithms can replace these providers without changing the
+representation interfaces.
+
+The precise exclusions are as informative as the positive results.
+Arbitrary measurable-set comprehension, regular probabilities for all
+effective Borel descriptions, general rate extraction from qualitative
+convergence, and unrestricted disintegration are not available for free.
+Their absence is supported by the explicit halting obstructions and the
+conditioning results cited above, rather than by a claim that continuous
+mathematics itself is impossible in iPRA. The continuous mathematics succeeds
+when the finite information consumed by each operation is stated and proved.

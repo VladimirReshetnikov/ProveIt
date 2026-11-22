@@ -1,0 +1,321 @@
+\section{Effective nerve theorems for finite covers}
+\label{sec:nerve-case}
+
+The repository's topology report lists an effective nerve theorem with
+produced contraction data among its open tasks. Its carrier calculus handles
+ambiguity of maps between covers. Even for one cover we must determine when its incidence pattern recovers the chains in its union. We give two algorithms. The first
+tests the exact finite acyclicity hypothesis and constructs chain equivalences
+over $\mathbb F_2$. The second produces the local data directly from the
+endpoints of rational boxes. Both give explicit chain maps in both directions.
+The classical nerve theorems for closed convex covers and subcomplex covers
+are treated by Bauer, Kerber, Roll and Rolle. Here the additional arithmetic
+content is the production of bounded filling tables, homotopies and
+moduli. See the
+\repo{docs/proofs/topology/ipra_topology_framework_2026-11-15/paper/sections/12_limits.tex}{repository's topology problem list}
+and \href{https://arxiv.org/abs/2203.03571}{Bauer et al.,\ 2023}.
+
+\subsection{The input and the local computation}
+
+Let $K$ be a nonempty finite simplicial or elementary grid-cubical complex,
+given by cell and face tables, covered by a finite list of nonempty
+subcomplexes $U_1,\ldots,U_m$. Cover means that every cell occurs in some
+$U_i$. For nonempty $I\subseteq\{1,\ldots,m\}$ put
+$K_I=\bigcap_{i\in I} U_i$. The nerve $L$ consists of the $I$ for which
+$K_I$ contains a cell. We use ordinary chains unless they are expressly
+augmented. An $r$-chain is a bit vector indexed by the $r$-cells. Add by XOR
+and extend each boundary column linearly. For a vertex its ordinary boundary
+is zero. The augmented complex has one additional basis element $*$ in
+degree $-1$, and $\partial v=*$ at every vertex. The identity
+$\partial^2=0$ follows by pairing the two orders in which two
+vertices are removed or two distinct coordinate faces are taken. In degree
+one the two endpoints have the same augmentation.
+
+\paragraph{Local filling.}
+In each nonempty $K_I$ assign $h(*)$ its first vertex. Process cells $c$ in
+increasing dimension. Set $z=c+h\partial c$ and seek a vector $u$ of the
+next degree satisfying $\partial u=z$. On success set $h(c)=u$. The
+previous equations give $\partial h\partial c=\partial c$,
+so $\partial z=0$. If every augmented cycle bounds, the finite search
+therefore succeeds. Conversely, success on all cells gives
+$\partial h+h\partial=1$ by columns, hence any augmented cycle $z'$ bounds
+$h(z')$. On failure the algorithm has produced the obstructing cycle $z$ after testing every possible filling. A group of $t$ possible basis cells
+requires at most $2^t$ trials. This proves the equivalence between the test
+and vanishing of all reduced homology of the intersection, including
+connectedness in degree zero.
+
+\paragraph{Finite nerve theorem.}
+If the local test succeeds for every simplex of $L$, a primitive recursive
+algorithm constructs a chain homotopy equivalence
+$C_*(K;\mathbb F_2)\simeq C_*(L;\mathbb F_2)$ together with the two
+homotopies witnessing its inverse laws. The test uses homological
+acyclicity. The conclusion concerns chains and homology.
+
+\subsection{Eliminating the intersections}
+
+Form an incidence complex $E$ with basis $(I,c)$, where $c$ is any cell of
+$K_I$. Its bidegree is $(p,q)=(|I|-1,\dim c)$ and its ordinary total
+degree is $p+q$. Its horizontal boundary $b$ deletes one index from $I$. Its vertical boundary $v$ takes the boundary of $c$. Each is zero at its
+ordinary degree zero. They commute because every face of $c$ belongs to
+every subcomplex containing $c$. Thus $D=b+v$ squares to zero in
+characteristic two. Define the projections by
+\[
+ \pi_K(I,c)=
+ \begin{cases}c& |I|=1,\\0&\text{otherwise,}\end{cases}
+ \qquad
+ \pi_L(I,c)=
+ \begin{cases}I& \dim c=0,\\0&\text{otherwise.}\end{cases}
+\]
+They commute with the respective differentials. At the first nonzero
+horizontal degree the two deletions project to the same cell twice. In
+vertical degree one the two endpoints project to the same index simplex twice.
+
+For $\pi_K$ append a column $p=-1$ having basis $(\varnothing,c)$, and
+allow $b$ to delete the last index. Give the augmented array degree $p+q+1$,
+so the appended column is $C_*(K)$ in its ordinary degree. Fix $c$ and let
+$j$ be the least chart containing it. Its horizontal row is the augmented
+simplex on the nonempty set of charts containing $c$. Define $h(I,c)$ by
+adjoining $j$ when absent and by zero otherwise. If $j\notin I$, all
+deletions other than deletion of $j$ cancel against $hb$. If $j\in I$,
+only its deletion contributes in $hb$. This includes $I=\varnothing$
+and proves $bh+hb=1$.
+
+Consequently
+\[
+ R=1+Dh+hD=vh+hv.
+\]
+Each nonzero summand lowers $q$ by one, giving $R^{e+1}=0$ for
+$e=\dim K$. Also $DR=RD$, by expansion and $D^2=0$. With
+$H=h(1+R+\cdots+R^e)$ we obtain
+\[
+ DH+HD=(1+R)(1+R+\cdots+R^e)=1+R^{e+1}=1.
+\]
+For $\pi_L$, append instead the row $q=-1$ on $(I,*)$ and augment the
+vertical differential. Take the previously constructed $h$ of $K_I$ on each
+column. Now $vh+hv=1$ and each term of $R=bh+hb$ lowers $p$. Use the sum of
+powers through $\dim L$. Both augmented arrays thus have explicit global
+contractions, independently of the choices of local fillings.
+
+To read the result, write either augmented array in degree $n$ as
+$B_n\oplus E_{n-1}$, with $B=C_*(K)$ or $C_*(L)$. Its differential and
+contracting homotopy have block form
+\[
+ \begin{pmatrix}d_B&\pi\\0&d_E\end{pmatrix},
+ \qquad
+ \begin{pmatrix}a&b'\\s&t\end{pmatrix}.
+\]
+Three blocks of $DH+HD=1$ say that $s:B\to E$ is a chain map,
+$1+\pi s=d_Ba+ad_B$, and $1+s\pi=d_Et+td_E$. This supplies both
+inverse laws. Denote the two sets of blocks by subscripts $K,L$.
+The maps $f=\pi_L s_K$ and $g=\pi_K s_L$ go between the requested
+complexes. A homotopy for $1+gf$ is
+$a_K+\pi_Kt_Ls_K$. The other is $a_L+\pi_Lt_Ks_L$.
+Substitution proves the formulas even when $K$ is disconnected or the nerve
+contains repeated charts as distinct vertices.
+
+\subsection{Rectangular sets of any dimension}
+
+Consider a finite nonempty list of closed boxes
+$B_i=\prod_{k=1}^d[a_{ik},b_{ik}]$ with rational endpoints
+$a_{ik}\le b_{ik}$. Sort and deduplicate all endpoints separately in each
+coordinate. The products of grid vertices and intervening elementary edges
+that lie in some box, together with their faces, form $K$. Their closed
+geometric cells cover exactly the union of the boxes, since each coordinate in a
+closed box lies at a listed endpoint or in an intervening interval whose
+closed endpoints still belong to that box. This is a geometric reading
+for classical points. The internal input consists entirely of rational
+endpoints and finite cells. The intersection indexed by
+$I$ is present exactly when, in every coordinate,
+$\max_{i\in I}a_{ik}\le\min_{i\in I}b_{ik}$. Equality permits a
+lower-dimensional overlap. This formula computes the nerve from the original
+list.
+
+Here the vertical contraction has an explicit formula. In a one-dimensional
+intersection with grid vertices $w_0,\ldots,w_l$ in order, let $P$
+send each vertex to $w_0$ and each edge to zero. Let $u(w_j)$ be the sum of
+the first $j$ edges and let $u$ vanish on edges. Consecutive endpoints
+cancel, giving $\partial u+u\partial=1+P$ in the ordinary complex,
+also for $l=0$. In the product grid a cell is a tensor of vertices and
+edges. Put
+\[
+ u_{\mathrm{box}}=
+ \sum_{k=1}^d P_1\otimes\cdots\otimes P_{k-1}\otimes
+ u_k\otimes 1\otimes\cdots\otimes 1.
+\]
+The product differential acts in one coordinate at a time. Terms acting in a
+coordinate different from $k$ cancel in pairs since each $P_i$ commutes
+with boundary. The remaining term for $k$ is
+$(P_1\otimes\cdots\otimes P_{k-1})\otimes(1+P_k)\otimes
+ 1\otimes\cdots\otimes 1$. Successive summands cancel their common
+partial projections, leaving $1+P_1\otimes\cdots\otimes P_d$.
+The final projection kills all positive-dimensional cells and sends every
+vertex to the lower corner. Sending $*$ to this corner extends the formula
+to a contraction of the augmented complex. For $d=0$ the single corner
+itself furnishes the augmentation inverse. This finishes the construction
+from endpoints alone. The topological invariant calculated internally is
+grid-cubical homology. Identifying it with singular homology of the realized
+polyhedron is the external cellular comparison.
+
+\subsection{The full homotopy type of a union of rational boxes}
+
+For these boxes there is a stronger conclusion. Give $X=\bigcup_i B_i$
+its geometric grid realization. Realize $L$ by probability vectors $y$
+whose positive support is a simplex of $L$. There are explicit rational
+piecewise-affine maps $F:X\to |L|$ and $G:|L|\to X$ and effective
+homotopies from both composites to the respective identities. We construct
+them on rational points, bound their moduli, and then read them on regular
+names. The geometric argument avoids passing through an abstract nerve
+theorem.
+
+In the barycentric subdivisions of $K$ and $L$, vertices are
+barycenters of nonempty cells, and a simplex is a strict chain of such cells.
+For a box cell or simplex, coning its already subdivided boundary to its
+center gives this triangulation by dimension induction. Each point distinct
+from the center is on a unique segment from the center to a boundary point,
+as can be checked along the ray by the first bounding face it meets. The
+triangulations agree on common faces. For each grid cell $c$, let $I(c)$
+be its nonempty set of covering labels. Write $e_I$ for the probability
+vector uniform on $I$. Set
+\[
+    F(\operatorname{bar}c)=e_{I(c)},\qquad
+    G(e_I)=\ell_I,\qquad
+    (\ell_I)_k=\max_{i\in I}a_{ik}.
+\]
+Extend affinely on each simplex of the respective subdivisions. Along a
+cell chain, the sets $I(c)$ are nested in reverse order, so $F$ takes
+values in $|L|$. Along an index chain $I_0\subset\cdots\subset I_j$,
+the corners $\ell_{I_t}$ all belong to $B_{I_0}=\bigcap_{i\in I_0}B_i$.
+Their convex combinations belong there too. Common-face agreement follows
+from affine interpolation.
+
+If $x$ lies on a simplex with largest cell $c$, then $x$ and $GF(x)$
+both lie in $B_{I(c)}$. Indeed every $I(c')$ occurring in its image
+contains $I(c)$, and its lower corner belongs to each box in $I(c)$.
+Thus the straight segment from $x$ to $GF(x)$ stays in $X$.
+
+The other composite needs more care since the nerve realization need not be
+convex. Write $z=FG(y)$. In a subdivision simplex representing $y$, discard
+the zero barycentric coefficients and call the smallest surviving label set
+$I_0$. For any $i\in I_0$, every vertex contributing to $y$ gives label $i$
+weight at least $1/m$, hence $y_i\ge 1/m$. Also $G(y)\in B_i$. For
+\emph{every} point $x\in B_i$, the inequality $F_i(x)\ge1/m$ holds because the grid cells
+contained in $B_i$ form a subcomplex covering it, and the barycentric
+interpolation there uses only vertices whose covering label sets contain $i$.
+This proves $z_i\ge1/m$ even on shared faces, where multiple simplex
+representations are available. Define
+\[
+ W_i(y)=\frac{y_i z_i}{\sum_{j=1}^{m}y_jz_j}.
+\]
+The denominator is at least $1/m^2$. The support of $W$ is contained in
+each of the two supports, so the segment from $y$ to $W$ lies in the
+simplex supporting $y$, and the segment from $W$ to $z$ lies in the simplex
+supporting $z$. Traversing each segment in half the time gives a continuous
+homotopy. It agrees across all subdivision boundaries because the displayed
+formula depends only on $y$ and $z$. This establishes the full homotopy
+equivalence for this geometric class.
+
+\paragraph{Evaluation and moduli.}
+The internal calculations use rational points. A simplex of the barycentric
+triangulation containing a given rational point can be selected by bounded
+search over all chains and exact barycentric tests. More directly, for a grid
+cell $c$ with center $b$, the fraction along the center-to-boundary ray is
+$\max_k 2|x_k-b_k|/\operatorname{width}_k(c)$ over nonconstant coordinates.
+At fraction zero evaluate at the center. At a positive fraction interpolate and recurse
+on a proper face. To evaluate $G$, list the distinct positive entries
+$t_1>\cdots>t_r$ of $y$ and set $t_{r+1}=0$. Use the convex coefficients
+$|I_j|(t_j-t_{j+1})$ at the corners $\ell_{I_j}$ with
+$I_j=\{i:y_i\ge t_j\}$. They sum to one because their contributions to
+coordinate $i$ in the original convex combination of the $e_{I_j}$
+telescope to $y_i$.
+
+Here is a uniform PR recipe for Lipschitz bounds in the sup norm. Extend
+$F$ by assigning zero to the unused cell barycenters in the entire
+bounding grid and interpolating there. Extend $G$ to the entire probability
+simplex in the same way, assigning a fixed grid point to missing index
+simplices. These are continuous PL extensions to convex polytopes. On each
+maximal simplex compute the rational affine coefficient matrix by solving
+the vertex equations. Omit constant grid coordinates and use the first
+$m-1$ independent probability coordinates in the latter solve. In these
+coordinates the maximum absolute row sum gives a Lipschitz bound.
+A segment splits into finitely many intervals lying in the simplices
+(intersect the segment with their rational affine half-spaces). Summing
+their lengths along this straight line proves that the maximum bound is
+valid globally. For a zero-dimensional source use zero.
+Call the resulting bounds $A$ for $F$ and $B$ for $G$. Input in ambient
+sup norm bounds input in the independent coordinates as well.
+
+Set $M=AB$. On the nerve $z$ is $M$-Lipschitz, the numerator of $W_i$ is
+$(1+M)$-Lipschitz, and its denominator is $m(1+M)$-Lipschitz. Since
+$0\le y_i z_i\le1$ and the denominator is at least $1/m^2$, the identity
+$a/b-a'/b'=(a-a')/b+a'(b'-b)/(bb')$ gives the bound
+$C=(1+M)(m^2+m^5)$ for $W$. For the two-stage nerve homotopy use
+$\max(1,C,M)+2$ on the product with time. At fixed time the interpolation
+is a convex combination of the given maps, and at a fixed point its
+speed is at most two. For the spatial homotopy use
+$\max(1,M)+D$, with $D$ the largest coordinate span of the whole bounding
+grid (zero when $d=0$). A bound $J$ gives input demand
+$k+2+\lceil\log_2\max(1,J)\rceil$ for output scale $k$,
+with room for rational rounding. These are closed under PR composition.
+The finite subdivision searches, linear solves by rational determinants,
+and maxima run over input-bounded tables. This proves the identities and
+moduli first on rational tables with quantifier-free loop invariants. Continuity gives their regular-name interpretations by taking approximants
+at the stated demand. No name is required to decide which side of a
+grid face its limit occupies. The companion \texttt{box\_homotopy.py}
+evaluates both maps and homotopies exactly on rational examples.
+
+\paragraph{Finite filtrations.}
+Suppose a finite sequence of such families satisfies
+$B_{t,i}\subseteq B_{t+1,i}$ with fixed chart labels. Sort the endpoints
+from all stages together. Inclusion now gives literal inclusions of the
+three complexes $K_t,E_t,L_t$. Both projections commute with inclusion on
+each basis cell. On homology their induced maps are isomorphisms, so
+$(\pi_L)_*(\pi_K)_*^{-1}$ commutes with every stage map, by multiplying the two commuting squares by the inverses. Thus the inclusion maps of the unions
+are also recovered from the nerves. The proof requires no coherent choice
+of local contractions across stages. Every finite prefix admits this construction.
+
+\paragraph{Checks and failure cases.}
+The four sides of a rectangular frame thickened to overlapping strips give
+the four-cycle in Figure~\ref{fig:frame}. The six closed square faces of a cube, used
+as degenerate three-dimensional boxes, have a nerve with the eight triangles
+of an octahedral boundary. The provided program checks $DH+HD=1$ on all
+296 augmented basis columns for the frame and all 248 for the cube. Their
+Betti vectors through degree two are $(1,1,0)$ and $(1,0,1)$.
+For a counterexample to dropping the local test, cover a square boundary by
+its two length-two arcs from vertex $0$ to opposite vertex $2$. Their
+intersection consists of the two endpoints. Its augmented cycle $[0]+[2]$
+has no edge filler. The nerve is an interval, whereas the union has a
+one-dimensional homology class. The program returns the failed overlap.
+
+\input{frame}
+
+\subsection{Arithmetic and Lean realization}
+
+With $s$ cells and $m$ charts the incidence table has at most $s2^m$
+ordinary columns. The added columns number at most $s$ or $2^m$.
+A matrix can be packed as a list of bit masks of these bounded lengths.
+For boxes, $s\le (4m)^d$ before removing cells outside the union.
+Forming powers, testing local fillings, XOR summation, and sorting endpoints
+by integer cross-products are primitive recursive in the full input,
+including dimension. The outer correctness assertions quantify universally
+over input codes. Inside a loop, assert by a Boolean test that all
+previous columns obey their identity. For the power loop, test that all
+nonzero entries lower the specified coordinate degree by at least the
+current exponent. The indices in these tests range only over the two
+explicit table sizes. In the telescoping identity one may compare each
+matrix column, because equality of linear maps means equality of these
+columns. Replacing bounded tests by their primitive recursive folds leaves
+quantifier-free induction. A local test failure is an explicit alternative
+of the total algorithm.
+
+The Lean file \texttt{TopologyCase.lean} proves the nilpotent correction
+identity for an abelian group of exponent two, including commutation of the
+defect with $D$. Its bounded-lowering lemma derives nilpotence from a
+strict decrease in the largest surviving opposite-coordinate degree. Its
+common-coordinate bound proves the denominator estimate for $W$ after
+clearing rational denominators. The executable \texttt{nerve.py} implements both local
+constructions. To reach a full object derivation, represent a cell by a face
+mask or a tuple of grid indices, implement the three arrays as bit matrices,
+and instantiate in order the two-deletion cancellation, local-fill
+induction, degree-lowering induction, and telescoping identity above.
+Project the three block equations by bounded row and column indices before
+composing the final maps. These are the remaining lemmas between the host
+identity and the arithmetized chain equivalence.

@@ -1,0 +1,251 @@
+\section{Scope, logical foundation, and the meaning of a theorem}
+\label{sec:scope}
+
+The aim is a useful foundation for continuous probability inside
+intuitionistic primitive recursive arithmetic, abbreviated iPRA. The main
+outcome is an explicit arithmetic interpretation of a substantial represented
+fragment: continuous and singular continuous distributions, integration,
+products, conditioning with separation data, quantitative convergence, and
+laws of large numbers and a central limit theorem. It is not an axiom asserting
+that the full classical universe of measurable sets exists inside a
+first-order number theory.
+
+The subject outline in the requested probability-theory article motivates
+the choice of topics \cite{wikiProbability}. Constructive probability has a
+large existing literature; Chan's systematic treatment, for example, develops
+probability and stochastic processes in Bishop-style constructive analysis
+\cite{chan}. Our additional restriction is proof-theoretic: each computation
+must have a primitive recursive description, and the induction used in the
+object theory must be quantifier-free. A constructive argument in a stronger
+analysis is not automatically an iPRA argument. The following presentation
+makes the finite calculations and the quantitative hypotheses visible.
+
+\subsection{The exact object theory}
+
+Use first-order intuitionistic natural deduction with equality, the
+connectives $\bot,\wedge,\vee,\to$, and the quantifiers $\forall,\exists$.
+Negation abbreviates implication to $\bot$. The nonlogical language has
+$0,S$ and a function symbol for each \emph{fixed primitive recursive
+definition}. Its axioms are the defining equations, $Sx\ne0$, injectivity
+of $S$, and quantifier-free induction:
+\[
+ A(0,\mathbf u)\wedge
+ \forall n\bigl(A(n,\mathbf u)\to A(Sn,\mathbf u)\bigr)
+ \ \longrightarrow\ \forall n\,A(n,\mathbf u).
+\]
+Here $A$ is quantifier-free. A recursion symbol has equations
+\[
+ f(0,\mathbf u)=g(\mathbf u),\qquad
+ f(Sn,\mathbf u)=h(n,f(n,\mathbf u),\mathbf u).
+\]
+The logical inference rules are the usual intuitionistic introduction and
+elimination rules, equality substitution, and weakening/substitution of
+derivations. No excluded-middle axiom, Markov principle, countable choice,
+or comprehension principle is added. Decidable finite rational comparisons
+are justified arithmetic case splits.
+
+This is the theory implemented by ProveIt's
+\texttt{ConciseIPRA/PR.lean} and its natural-deduction library
+\cite{repoCore}. A typed Lean proof of a theorem about the standard natural
+numbers is a different object from a term of that embedded derivation type.
+The report keeps these two verification levels separate.
+
+\subsection{Numerical coding and total finite operations}
+
+A signed integer is represented by a pair $(u,v)$ with value $u-v$;
+cross multiplication gives equality and order without a quotient operation.
+A rational code is $(u,v,d)$ with denominator $d+1$, denoting
+$(u-v)/(d+1)$. Redundant codes are harmless. Addition, multiplication,
+absolute value, comparison, min/max, and division by a denominator with a
+supplied positive lower bound are fixed PR operations on these codes.
+For malformed optional data use a declared default value; the validity
+predicate guards each theorem. This keeps the underlying operations total.
+
+Pairs and finite lists have standard bounded-search codes. Concretely a
+finite list of natural entries can be stored as $(n,B,c)$ with $B\ge2$,
+$c=\sum_{i<n}a_iB^i$, and $a_i<B$. Entry extraction is
+$\lfloor c/B^i\rfloor\bmod B$. For a freshly constructed list take $B$
+larger than its finite maximum. Length, concatenation, sorting by bounded
+insertion, prefix sums, products, and table refinement are PR. Exponentially
+large tables remain primitive recursive; no claim of computational
+efficiency follows just from this classification.
+
+Every bounded Boolean condition has an explicit characteristic function.
+For example, a universal row condition becomes a fold of conjunctions over
+the coded row count. Its connection with the displayed bounded formula is
+proved by quantifier-free induction on that fold. A proof must establish this
+reflection statement; running a checker on examples is insufficient.
+
+\subsection{How continuous notation is translated}
+
+The phrase ``let $X$ be a represented random variable'' fixes PR programs for
+its approximants, their finite levels, and the required error schedules,
+together with proofs of their stated contracts. Natural parameters can remain
+free. The statement is a schema over these fixed definitions, or a theorem
+over a separately specified bounded program interpreter with a proved clock.
+It is not quantification in iPRA over arbitrary functions $\mathbb N\to\mathbb N$.
+
+For example, the regularity of an event name $A_k$ with levels $\ell(k)$ is
+the first-order formula
+\[
+ \forall k,l\quad
+ 2^{k+l}\operatorname{DiffCount}(A_k,A_l)
+ \le 2^{\max(\ell(k),\ell(l))}(2^k+2^l).
+\]
+The count compares the two tables on their common refinement. Its matrix
+is an integer inequality. A finite proof of an output estimate asks for
+finitely many instances of the input contracts, uses finite arithmetic, and
+then universally generalizes the free precision. One must not perform
+induction on the all-precision assertion itself.
+
+Here is an explicit denominator-cleared probability theorem. Let $w_i,a_i$
+be natural weights and nonnegative numerators, $W=\sum_{i<n}w_i>0$, and
+$D,b>0$. Markov's inequality for values $a_i/D$ and threshold $c/b>0$ is
+the single finite inequality
+\begin{equation}\label{eq:markov-object}
+ cD\sum_{i<n}w_i[ba_i\ge cD]
+ \le b\sum_{i<n}w_i a_i.
+\end{equation}
+The partial-sum version of this same inequality is a quantifier-free
+induction invariant. The displayed indicator is a PR Boolean comparison.
+After proof, its usual probability interpretation divides by $bDW$.
+
+Similarly, for signed $a_i$, a center $m/(WD)$, and threshold $c/b$,
+Chebyshev's power-Markov kernel is
+\[
+ (cWD)^2\sum_{i<n}w_i[b|Wa_i-m|\ge cWD]
+ \le b^2\sum_{i<n}w_i|Wa_i-m|^2.
+\]
+Only when $m=\sum_iw_ia_i$ has been established is the center the mean.
+The continuous results preserve this discipline: all analytic error terms
+are replaced by rational allowances before the final arithmetic step.
+
+\subsection{The relation to existing ProveIt work}
+
+Two source snapshots were inspected. The local arithmetic and probability
+providers are pinned to
+\texttt{b2341af5370cd8a43f72ebb2341c0d7d7395b634}. The newer measure and
+observation reports were fetched at the then-current main commit
+\texttt{83421593771f877bc1ae98f4229eb35507bff05b}.
+The repository's directory README distinguishes the checked
+\texttt{ConciseIPRA}, \texttt{Derivations}, and \texttt{Bridge} libraries
+from research packets retained as delivered. Several newer packets report
+their own checked finite Lean kernels, which still do not amount to full
+embedded analytic derivations. No repository-wide rebuild or audit is claimed.
+
+This work reuses the coherent-partition and completion approach, excess-tail
+clipping, and finite observation discipline from those newer reports
+\cite{repoObservable,repoMeasureTransport}. The existing expectation,
+normal-distribution, and CLT packets provide useful thematic context
+\cite{repoProbability}. Their finite algebra is partly implemented by actual
+\texttt{Prf PRAAx} providers. The new package connects these ingredients into
+a continuous probability foundation, gives an explicit coherent density
+realization, and supplies a self-contained conservative CLT proof. It makes
+no claim to have invented the underlying classical or constructive theorems.
+
+\section{The finite analysis needed for probability}
+\label{sec:finite-analysis}
+
+The analytic input is small and quantitative. This section specifies the
+finite content of integration and calculus used later, so that a reference
+to an integral does not silently assume a classical measure construction.
+
+\subsection{Compact quadrature as a Cauchy construction}
+
+A continuous-function presentation on a rational interval $[a,b]$ supplies
+a rational evaluator $\widehat f(x,p)$ at rational $x$, with error at most
+$2^{-p}$, a rational bound $M$, and a PR modulus $\omega$ satisfying
+\[
+ |x-y|\le2^{-\omega(k)}\ \Longrightarrow\ |f(x)-f(y)|\le2^{-k}.
+\]
+These are contracts on regular real names, with rational guards in the
+finite implementation. Piecewise presentations carry a finite list of
+breakpoints and one-sided values. The integrals of the functions considered
+here are constructed only from such data or from explicitly stronger norm
+approximations.
+
+For a partition of mesh at most $2^{-\omega(k)}$, tagged rational quadrature
+with evaluation error $2^{-p}$ has uncertainty at most
+\[
+ (b-a)(2^{-k}+2^{-p}).
+\]
+To prove this, refine two proposed partitions to their finite common list of
+endpoints. Each tag differs from any point in its cell by the mesh bound, so
+the finite upper and lower rectangle bounds enclose its value with the
+displayed error radius. Their symmetric enclosure has twice that radius;
+comparing two quadratures adds their error radii. Multiplying by cell lengths
+and summing bounds the difference between sufficiently fine quadratures. It produces a
+regular real name for the integral. No supremum or infimum over arbitrary
+functions is used. A Lipschitz constant $L$ gives the simpler mesh allowance
+$L(b-a)h$.
+
+All continuous operations used below come with local computable bounds.
+The integral is positive, additive over adjacent intervals, and linear,
+because these statements hold for the common finite sums and their errors
+can be made arbitrarily small. An improper integral is admitted only when
+its finite annular tails have a PR Cauchy bound. In particular the hypothesis
+(K1) below uses finite intervals and is not a circular assumption about an
+already-existing infinite integral.
+
+\subsection{Finite calculus identities}
+
+The form of the fundamental theorem used here is the following. Suppose
+$g,g'$ have the above presentations and a proved local increment estimate
+\[
+ |g(x+h)-g(x)-hg'(x)|\le Ah^2/2
+\]
+on a compact interval. Sum it over a partition of mesh $h_0$. The left
+increments telescope, so
+\[
+ \left|g(b)-g(a)-\sum_i g'(x_i)(x_{i+1}-x_i)\right|
+ \le A(b-a)h_0/2.
+\]
+The explicit vanishing error proves $\int_a^b g'=g(b)-g(a)$.
+More generally one may supply a proved increment contract
+$|g(x+h)-g(x)-hg'(x)|\le |h|\rho(|h|)$ with a PR decay modulus for $\rho$;
+the error is then $(b-a)\rho(h_0)$. A bare continuity assertion about a
+derivative is not substituted for this quantitative contract. Integration by parts follows by applying
+the same finite increment calculation to the product $fg$ and using its
+derivative identity. The exponential increment and derivative estimates
+follow from its finite power series and geometric remainders; rational and
+polynomial functions use exact divided differences and denominator margins.
+Thus the applications to normal and exponential kernels require no general
+differentiation oracle.
+
+The one-dimensional substitutions used later also have a finite proof.
+For a monotone differentiable map $\psi$ on $[a,b]$, carry a bound for
+$|\psi'|$, a derivative modulus, and the local modulus of $f$ on its image.
+Subdivide the domain. Replace each image-cell length
+$\psi(x_{i+1})-\psi(x_i)$ by
+$\psi'(x_i)(x_{i+1}-x_i)$ using the increment bound. Oscillation of $f$
+on each image cell controls its tagged-sum error. The resulting explicit
+error tends to zero and gives
+$\int_{\psi(a)}^{\psi(b)}f=\int_a^b(f\circ\psi)\psi'$.
+Approximating represented endpoints contributes at most the endpoint error
+times a local integrand bound. In this report the maps are affine maps or
+reciprocal maps on intervals separated from zero, where every such bound
+is a displayed rational expression. For decreasing maps reverse the
+endpoints first, or retain oriented interval lengths throughout the finite
+sum identity. Improper substitutions separately carry
+their spatial-tail estimates.
+
+On compact rectangles, Fubini is equality of finite double sums followed by
+the same oscillation bounds. For an unbounded product integral we first
+truncate so the \emph{absolute} omitted integral has a supplied bound. This
+is the finite Fubini fragment used for products and Gaussian normalization.
+It does not make the value of an arbitrary $L^1$ equivalence class on one
+specified measure-zero section meaningful.
+
+For the numerical normal example in the archive, the composite midpoint
+error is particularly convenient. A twice differentiable function with
+$|f''|\le A$ satisfies
+\[
+ \left|\int_a^b f-h\sum_i f(x_i+h/2)\right|
+ \le A(b-a)h^2/24.
+\]
+Integrate its second-order pointwise remainder symmetrically on each cell;
+the linear term cancels, and $\int_{-h/2}^{h/2}t^2/2\,dt=h^3/24$.
+For $w(x)=e^{-x^2/2}$,
+$|w''(x)|\le (1+x^2)e^{-x^2/2}\le3$, using $te^{-t}\le1$.
+This explains the exact enclosure calculation rather than treating numerical
+agreement with a floating-point library as evidence of proof.

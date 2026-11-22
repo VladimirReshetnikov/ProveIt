@@ -1,0 +1,53 @@
+\section{From finite oracle runs to arithmetic proofs}
+\label{sec:framework}
+\subsection{The language and its analytic interpretation}
+The ordinary iPRA of ProveIt uses intuitionistic first-order logic with equality, a numerical sort, defining equations for each PR symbol, the successor axioms, and induction for quantifier-free formulas. For instance, the assertion that a rational sequence is regular is a formula about numbers. With $\eps_i=2^{-i}$ it is
+\[
+   \forall i,j\quad |a(i)-a(j)|\le\eps_i+\eps_j .
+\]
+For a fixed PR term $a(e,i)$, $e$ may be an object variable. Rationals can be encoded as a signed integer and a positive denominator. Order and the displayed inequality are PR Boolean tests by clearing positive denominators. Two regular names are equivalent when $|a(i)-b(j)|\le\eps_i+\eps_j$ for every $i,j$. In the metric completion these clauses say that the names converge with the displayed errors and represent the same point. All input names for $[0,1]$ can be clamped to this interval. Clamping is rational and 1-Lipschitz.
+
+In the sequel, quantification over machines, coefficient routines or names without a numerical code is at the metalevel. A theorem about such a family means that fixing its PR definitions yields a numerical sequent from its stated arithmetic contracts. Contract assumptions can have number quantifiers. Induction inside the sequent is always on a numerical loop with a quantifier-free, or Boolean-compiled bounded, invariant. Here iPRA has neither function variables nor a total PR evaluator for every PR program. Arbitrary Type-2 oracles appear in semantic adequacy proofs. For object use we substitute a fixed term for a query or supply a finite coded table.
+
+\subsection{The existing interfaces and the change made here}
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.29\linewidth}X@{}}
+\toprule
+Repository component & What is reused or strengthened\\ \midrule
+\repo{README.md}{Ordinary iPRA} and \repo{Derivations/README.md}{its derivation library}
+& The target judgment is an actual derivation $\Gamma\vdash_{\rm PRAAx}\varphi$. Finite executable checks and mathematical interpretations have separate roles.\\[3pt]
+\repo{docs/proofs/foundations/ipra_finite_query_normal_form_2026-11-16/metadata/DIFFICULTY_MATRIX.csv}{Finite-query difficulty matrix} (D4, D12, D17)
+& It identifies a missing PR modulus or compactness witness as a producer obligation. We construct a modulus from clocked, finitely branching access to the input, including the compatibility test needed on the interval.\\[3pt]
+\repo{docs/proofs/analysis/calculus_ipra/README.md}{Constructive calculus} and \repo{Derivations/Lean/IPRADerivations/Foundations/FiniteUseSignObstruction.lean}{finite-use sign obstruction}
+& The calculus packet takes continuity data as input. The sign metatheorem already proves replay for a fuelled machine. Here we use replay to recover exact finite oscillations and dyadic masses.\\[3pt]
+\repo{docs/proofs/foundations/ipra_continuous_framework_2026-11-20_2/paper/sections/07_limits.tex}{Continuous-structures limits} and \repo{Derivations/Lean/IPRADerivations/Analysis/PolynomialRootName.lean}{polynomial root names}
+& The former supplies Lipschitz envelopes and recovery from small residual diameter. The latter handles rational polynomial data by exact signs. Sections \ref{sec:root-realizer} and \ref{sec:entropy} give a different sign producer and a smaller function-space code.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+These comparisons use the linked files at commit \texttt{b2341af5370c}. Dialogue interpretations of computation and modulus extraction from represented programs have a substantial history \cite{escardo,pauly}. The contribution here is a numerical specialization with an optimal finite-prefix formula, a sparse test for dyadic identifications, and a shared aggregation algorithm. No priority claim is needed for those underlying techniques.
+
+\subsection{Machines with a clock}
+A request has a parameter $e$ and precision $k$. Fix PR functions for initialization, the action at a state, transition on an answer, and extraction of a rational result. Actions are halt, internal step, or ask the bit at a natural address $q$. A PR clock $B(e,k)$ bounds all steps on consistent answers. An explicit decision tree of depth at most $B$ is another presentation. Inconsistent answers to a repeated query need never be explored. To make all operations total, run with fuel $B$, inspect the state after the last step, and use a distinguished failure value on a nonterminal state. The clock contract excludes that value on reachable paths.
+
+Start at the root with an empty finite map. Follow an internal transition with this map unchanged. At an old query follow the unique stored answer. At a new query fork with that coordinate set first to zero and then to one. A terminal row $s$ consists of the finite partial assignment $P_s$ and rational output $v_s$. We denote the resulting list for precision $k$ by $L_k$ and suppress $e$. A row describes all inputs extending $P_s$. Each extension follows exactly this run, by induction on its remaining steps. Conversely every run follows one row because the next actual bit chooses its unique successor. Distinct rows disagree on a common coordinate, namely the first query at which their runs branched. Every row is nonempty as a set of inputs, since unspecified bits may all be filled with zero.
+
+For a single oracle, replay needs agreement only on the addresses visited. For composition, replace each outer request by an inner run that returns its answer. By induction at the outer node, the result agrees with direct evaluation on the simulated oracle. Its query list concatenates the inner query lists in outer execution order. For outer query depth $b$ and inner query depth at most $c$ on those requests, the composite uses at most $bc$ primitive reads. In a state-machine implementation whose clocks charge internal steps as well, if $b,c$ instead bound total outer and inner steps, then $b(c+2)+1$ transitions suffice with unit-cost call and return. If the inner clock depends on the request, enumerate the reachable outer requests and take their maximum before applying this bound. This last step needs a finite answer alphabet or a separate bound on answers. Typed generalizations of replay and substitution are checked in the accompanying Lean code.
+
+\paragraph{Primitive recursion and cost.}
+At most $2^B$ terminal rows and $2^{B+1}-1$ explored state occurrences suffice even with unary transitions. One particularly simple PR construction simulates the $2^B$ padded strings of possible fresh answers and removes repeated paths. Each simulation takes at most $B$ steps. This proves PR definability independently of the implementation's traversal order. An explicit stack visits the pruned tree once, stores at most $B$ coordinates per path, and avoids the redundant simulations. Taking the largest reached address supplies an upper bound for all the addresses. Cost statements about numbers of rows, queries or comparisons do not count the bit cost of a PR transition or of rational arithmetic.
+
+\subsection{The exact prefix needed by a finite observation}
+For a tolerance $\eta\in\Q_{\ge0}$, call $N$ safe at precision $k$ if streams agreeing at coordinates $q<N$ give outputs differing by at most $\eta$. For a pair of rows define $D(s,t)=\{q\in\operatorname{dom}P_s\cap\operatorname{dom}P_t:P_s(q)\ne P_t(q)\}$.
+\begin{theorem}[Least safe prefix]\label{thm:least}
+The least safe prefix length is
+\[
+   M_k(\eta)=
+   \max\bigl(\{0\}\cup
+   \{1+\min D(s,t):s,t\in L_k,\ |v_s-v_t|>\eta\}\bigr).
+\]
+\end{theorem}
+\begin{proof}
+A pair of rows has extensions agreeing below $N$ precisely when it has no conflicting shared requirement there. For the reverse implication, fill each low coordinate from the left map if present, otherwise from the right, otherwise by zero. Above or at $N$ fill the two maps separately. These explicit extensions are PR functions of the finite data. For rows whose values differ by more than $\eta$, $D(s,t)$ is nonempty by the first divergent branch. Agreement below $N$ excludes this pair exactly when $N>\min D(s,t)$. Taking the maximum proves sufficiency and necessity, including the case of no forbidden pair. If $N$ is too short the construction supplies two counterexample streams.
+\end{proof}
+The minimum is sharp for the \emph{given finite observation}. Different approximation programs for the same continuous function can have different finite optimal prefixes. For example a program that asks bit $10^6$ but ignores the reply has exact use zero when its result is constant. One can compute all pairwise conflicts using at most $O(|L_k|^2 B^2)$ address comparisons with unsorted lists. This bound has no factor equal to the largest address.

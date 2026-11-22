@@ -1,0 +1,254 @@
+\section{The arithmetic foundation and its exact meaning}\label{sec:foundation}
+
+\subsection{The base theory}
+Throughout, \ipra\ means first-order intuitionistic primitive recursive arithmetic.
+Its only variables range over natural numbers. Its terms contain $0$, successor,
+and a symbol for each fixed primitive recursive (PR) definition; symbols come
+with their defining equations. Its nonlogical axioms are these equations,
+successor injectivity, $Sx\ne0$, and the universal closures of
+\[
+ [A(0,\vec u)\wedge\forall n(A(n,\vec u)\to A(Sn,\vec u))]
+       \longrightarrow\forall n A(n,\vec u),                 \tag{I}
+\]
+where $A$ is quantifier-free. Logical rules are the usual intuitionistic
+introduction and elimination rules for $\bot,\wedge,\vee,\to,\forall,\exists$,
+with equality reflexivity and substitution. Negation abbreviates implication
+to $\bot$. Quantifiers in a theorem need not be bounded or quantifier-free;
+only the induction formula in (I) is restricted. This is also the base theory
+specified by ProveIt's current iPRA sources \cite{repo-readme,repo-pr}.
+
+We use PR encodings of tuples, finite lists, and finite tables. For example,
+pairing and its projections may be defined by bounded search within an
+elementary numerical bound, and a list may be coded by its length and a
+base large enough for its entries. All searches in the finite algorithms below
+come with a specified numerical bound. Default values make these operations
+total on malformed inputs; no categorical conclusion concerns those defaults.
+Arithmetic order, Boolean tests, finite sums and products, finite-list lookup,
+and bounded minimization have their familiar PR definitions.
+
+\begin{lemma}[Bounded arithmetic bookkeeping]\label{lem:bounded}
+A fixed formula using PR predicates, Boolean connectives and bounded numerical
+quantifiers has a PR characteristic function. Bounded scans, table filtering,
+and finite-list updates with PR length bounds are PR. The loop invariants used
+for these constructions can be expressed quantifier-free and proved by their
+indicated base and step calculations.
+\end{lemma}
+\begin{proof}
+Use $1$ for true and $0$ for false. Conjunction is multiplication, negation is
+$1-b$, and bounded universal quantification is an iterated product of bits;
+bounded existential quantification is one minus the product of complementary
+bits. All are primitive recursions. A bounded least witness is obtained by a
+scan carrying a flag recording whether an earlier witness was found and its
+index. A table update is a scan rebuilding its coded entries.
+The defining equations prove the base and step equations for these scans.
+For example, the assertion that a returned index is the first successful
+one is expressed by its range, its test bit, and a product of failure bits
+at earlier indices. This assertion is quantifier-free after replacing the
+bounded product by its PR symbol. The same device expresses every bounded
+table invariant used below. Consequently induction is applied to a numerical
+equation or a Boolean combination of such equations, never to an assertion
+about all arbitrary functions. The correspondence between bounded quantifier
+notation and its Boolean test follows from the same scan equations, with
+any currently discussed index treated as an additional numerical parameter.
+\end{proof}
+
+\subsection{Categories as fixed arithmetic presentations}
+\begin{definition}[Presented category]\label{def:category}
+A presentation $C$ consists of fixed arithmetic formulas
+\[
+ O_C(a),\qquad H_C(a,b,f),\qquad E_C(a,b,f,g)
+\]
+and fixed PR terms $\id_C(a)$ and $\operatorname{cmp}_C(a,b,c,g,f)$.
+The formula $H_C(a,b,f)$ means that $f$ is an arrow from $a$ to $b$.
+The formula $E_C(a,b,f,g)$ compares parallel arrow codes, and is not
+necessarily numerical equality or a decidable relation. We write $f\sim g$
+for this relation, or simply $f=g$ in categorical equations with the hom
+type understood. Write $gf$ or $g\circ f$ for $\operatorname{cmp}(a,b,c,g,f)$.
+
+The presentation comes with iPRA proofs, or explicitly retained hypotheses,
+of the following laws. Hom membership entails object membership. On every
+hom domain $E_C$ is reflexive, symmetric and transitive. Identity and
+composition are well typed. Composition respects $E_C$ in both arguments.
+For composable arrows,
+\[
+ h(gf)\sim(hg)f,\qquad \id_b f\sim f,\qquad f\id_a\sim f.       \tag{C}
+\]
+All these laws are universally closed implications with the indicated
+typing premises. We also require equality judgments to concern well-typed
+parallel arrows, or include those premises explicitly whenever they are used.
+\end{definition}
+
+The definitions are abbreviations in arithmetic, not new set-existence
+axioms. Objects have literal numerical codes; isomorphic objects need not
+have equal codes. Only arrows are identified by their hom equivalence.
+Different codes for the same informal structure may therefore coexist.
+An empty category is allowed, since $O_C$ may be false everywhere.
+
+There are three distinct uses of this definition.
+\begin{enumerate}
+\item A \emph{fixed presentation}: its formulas and PR terms are chosen
+before an arithmetic sentence is formed. Theorems about it are ordinary
+iPRA sentences.
+\item A \emph{uniform numerical family}: the same formulas and terms have
+an extra parameter $p$. The family can be quantified over $p$ because
+evaluation of those fixed terms is already PR. Finite table categories
+are a particularly useful family of this kind.
+\item An \emph{external collection of presentations}: Lean or the
+mathematician ranges over formula syntax and PR term syntax. A theorem
+constructs an iPRA proof for each instance. This is a proof schema, not
+an internal universe whose elements evaluate all PR programs.
+\end{enumerate}
+Whenever the report says ``every presented category'', the third meaning
+is intended unless a numerical family is explicitly supplied.
+
+\begin{theorem}[Specialization of structural proofs]\label{thm:export}
+Fix presentations, functors, families and selected universal operations as
+defined in this report. A finite typed proof obtained by intuitionistic
+logical rules, the supplied laws, and substitution of their PR terms becomes
+an iPRA derivation after expanding the abbreviations. If its laws have iPRA
+proofs, the conclusion has an iPRA proof; if they are hypotheses, the
+conclusion is a relative iPRA theorem with those hypotheses.
+No additional induction principle is needed for such a proof.
+\end{theorem}
+\begin{proof}
+Replace every object variable by a number variable with guard $O_C$ and
+every arrow variable by a number variable with its hom guard. Replace
+categorical equality by $E_C$, and categorical operations by their fixed
+terms. A well-typed use of reflexivity, symmetry, transitivity, congruence,
+associativity or identity is exactly an instance of a supplied law.
+Composition of proof steps is implication elimination or cut. An explicit
+witness term justifies existential introduction; an existential hypothesis
+may be eliminated locally with the usual eigenvariable condition.
+Generalization introduces only numerical quantifiers and their guards.
+Thus each line translates to an allowed inference from earlier lines.
+There are finitely many lines in a fixed proof, so this construction needs
+no induction in the object theory. Formally, induction on proof syntax is
+performed in the metatheory to describe the translator, not admitted as
+an extra object-language rule. Every induction in a concrete arithmetic
+implementation must separately satisfy (I).
+\end{proof}
+
+This theorem is intentionally a specialization theorem. It does not assert
+that arbitrary Lean theorems are iPRA theorems. In particular, a Lean field
+$\N\to\N$ does not certify a PR implementation, and a proof using induction
+on a proposition containing unbounded quantifiers does not pass this audit
+merely because its conclusion is arithmetical. ProveIt's
+\texttt{SetoidInterpretation.sound} gives a more general syntactic
+interpretation mechanism when all domain and equality compatibility laws
+are supplied \cite{repo-setoid}. The present proofs use the smaller explicit
+typed calculus just described.
+
+\subsection{Examples that do not reduce the subject to finite categories}
+Every fixed PR monoid $(M,\cdot,e)$ gives a one-object presentation: arrows
+are its coded elements, identity is $e$, composition is multiplication.
+The additive monoid of natural numbers is the elementary example already
+instantiated in \texttt{PresentedCategory.natAdd\_laws}.
+A PR preorder gives a thin category: take $H(a,b,f)$ to assert the order
+relation and $f=0$; all parallel arrows are equal.
+Integer matrices give an infinite presentation with dimension codes as
+objects, finite coded matrices as arrows and matrix multiplication as
+composition. Its associativity reduces to finite distributivity and
+reindexing of bounded sums, hence to Lemma~\ref{lem:bounded} and the PR
+ring laws. This example has infinitely many objects and arrows.
+
+Equality may also have unbounded logical complexity. For instance,
+the equality of two represented numerical sequences may be
+$\forall n\,a(n)=b(n)$, and regular real names may be compared by
+an arithmetical approximation condition. For a fixed family of PR names,
+operations and a modulus, these are legitimate formulas. Establishing
+the analytic category laws is a separate mathematical task; the structural
+theorems do not decide equality or assert those laws without proof.
+
+\subsection{Relational programs: a useful extension with a different interface}
+There is a further way to have numerical program codes without a total
+PR evaluator. Fix a deterministic register-machine language and a PR
+predicate $T(e,x,y,t)$ saying that $t$ is a complete halting computation
+of code $e$ on input $x$ with output $y$. Its finite-transition check is
+PR. Let
+\[
+ \operatorname{Tot}(e)\equiv\forall x\,\exists y,t\,T(e,x,y,t).
+\]
+Take one object, arrows $e$ satisfying $\operatorname{Tot}(e)$, and
+\[
+ e\sim e'\quad\Longleftrightarrow\quad
+ \forall x,y,z,t,u\,[T(e,x,y,t)\wedge T(e',x,z,u)\to y=z].       \tag{R}
+\]
+Identity and composition are PR \emph{code constructors}. To make the
+presentation fully explicit, composition first runs its first component,
+then runs its second component on the result, with disjoint renamed
+work registers. Its trace certificate stores the two component traces
+and their joining configuration. Inlining these tagged certificates into
+ordinary transition traces is a PR operation.
+
+\begin{proposition}[Relational composition]
+Given the finite trace-composition and decomposition lemmas for this fixed
+machine language, (R) defines a presented category. The proof uses neither
+choice nor an internal assertion that all program codes terminate.
+\end{proposition}
+\begin{proof}
+Determinism gives reflexivity of (R), and symmetry is immediate. For
+transitivity on total arrows, obtain an output trace of the middle program
+at the particular input $x$; the two equality hypotheses compare the first
+and last outputs with that middle output. This is one existential
+elimination, not a simultaneous selection over all inputs.
+For totality of a composite, fix $x$, use totality of $f$ to obtain $y,t$,
+then totality of $g$ at that $y$ to obtain $z,u$, and concatenate the two
+traces. Equality is preserved by composition by applying (R) first to
+the input-side results and then to the output-side results. Both
+associations of three programs run the same three computations; decomposing
+their traces and using determinism proves equality. Identity traces give
+the identity laws. Each argument compares only finitely many runs at a
+time. The trace lemmas themselves are proved by quantifier-free induction
+on coded finite traces and their bounded local checks.
+\end{proof}
+
+This optional interface is a precise conditional construction: the report
+does not ship a newly verified register-machine trace library. It explains
+why the evaluator obstruction below does not rule out arithmetically
+defined collections of total programs. It also explains the limitation:
+$\operatorname{Tot}(e)$ is not a PR test, and extracting a table of outputs
+for a variable number of such runs requires its own trace, clock, or
+batch-totality proof. The structural development uses fixed PR operations
+on arrow codes, not a claim that semantic application is itself PR.
+
+\subsection{Elementary consequences and categorical constructions}
+An isomorphism $f:a\to b$ consists of a specified $g:b\to a$ with
+$gf=\id_a$ and $fg=\id_b$. A monomorphism cancels on the left and an
+epimorphism cancels on the right; these are guarded arithmetic formulas.
+
+\begin{proposition}\label{prop:elementary}
+In every presented category inverses are unique. Every section is monic,
+every retraction is epic, and every monic retraction is an isomorphism.
+Functors preserve isomorphisms; faithful functors reflect equality of
+parallel arrows.
+\end{proposition}
+\begin{proof}
+If $gf=\id_a$ and $fh=\id_b$, then
+$g=g\id_b=g(fh)=(gf)h=\id_a h=h$.
+If $rs=\id_a$ and $su=sv$, then
+$u=(rs)u=r(su)=r(sv)=(rs)v=v$.
+Reversing arrows gives the retraction assertion.
+If $fr=\id_b$ and $f$ is monic, then
+$f(rf)=(fr)f=f=f\id_a$, so $rf=\id_a$.
+Applying a functor to the two inverse equations gives the inverse equations
+for its image. Reflection of equality is exactly faithfulness.
+\end{proof}
+Being both monic and epic does not in general imply invertibility: in the
+thin category on $0<1$, the arrow $0\to1$ cancels on both sides, but there
+is no reverse arrow. This finite counterexample is already available in iPRA.
+
+The opposite category reverses hom domains and composition, leaving all
+codes unchanged. Its laws are the reversed laws of $C$. Reversing a fixed
+proof line by line therefore proves the dual theorem. The product of two
+categories pairs object and arrow codes and acts componentwise.
+For a fixed object $b$, the slice $C/b$ has objects $(a,u:a\to b)$ and
+arrows $f:(a,u)\to(a',u')$ satisfying $u'f=u$.
+The coslice is dual. The comma category $(F\downarrow G)$ has objects
+$(a,b,u:Fa\to Gb)$ and arrows $(f:a\to a',g:b\to b')$ satisfying
+$Gg\,u=u'\,Ff$. Equality is componentwise.
+For identity the square is an identity equation. For composition, if
+$Gg\,u=u'Ff$ and $Gg'\,u'=u''Ff'$, then
+$G(g'g)u=Gg'(Gg\,u)=Gg'(u'Ff)=u''F(f'f)$.
+Associativity and both unit laws are componentwise laws. Thus all these
+constructions have PR code operations and arithmetic domain formulas;
+no collection of arbitrary sets or functions was formed.

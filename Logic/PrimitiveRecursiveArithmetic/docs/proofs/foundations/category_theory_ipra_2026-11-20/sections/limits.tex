@@ -1,0 +1,222 @@
+\section{Universal constructions with explicit operations}\label{sec:limits}
+
+In this section, an equality of parallel arrows always means the chosen
+hom-setoid equality.  We suppress its source and target parameters, but never
+identify two object codes merely because their objects are isomorphic.  Every
+operation mentioned below is a fixed primitive recursive operation on codes.
+Its typing and algebraic laws are hypotheses already proved for the
+presentation under consideration.  An operation may return arbitrary junk on
+inputs outside its stated domain.
+
+\subsection{Terminal objects, products, and uniqueness}
+
+A \emph{chosen terminal object} consists of an object $1$ and an operation
+$!_a:a\to1$ such that every arrow $u:a\to1$ equals $!_a$.  A chosen initial
+object is the dual construction.  For an initial object $0$, its unique arrow
+$0\to a$ is supplied as an operation; the statement that an arrow exists for
+each $a$ is not silently converted into such an operation.
+
+A \emph{chosen binary product} of $a,b$ consists of an object $a\times b$,
+projections $p:a\times b\to a$ and $q:a\times b\to b$, and a pairing operation
+\[
+ (u:x\to a,\ v:x\to b)\longmapsto\langle u,v\rangle:x\to a\times b
+\]
+satisfying
+\[
+ p\langle u,v\rangle=u,\qquad q\langle u,v\rangle=v,\qquad
+ \langle pw,qw\rangle=w.
+\]
+Composition is written by juxtaposition, with the arrow on the right applied
+first.  These three equations include both existence and uniqueness.  They
+also prove that pairing respects equality: if $u=u'$ and $v=v'$, the two
+pairings have equal projections and hence are equal.
+
+\begin{proposition}[Uniqueness of universal objects]\label{prop:universal-unique}
+Two terminal objects are uniquely isomorphic.  Two products of the same
+ordered pair are uniquely isomorphic by an isomorphism preserving projections.
+More generally, two limits of a fixed diagram are uniquely isomorphic by an
+isomorphism preserving their cones.  All these isomorphisms and their inverses
+are obtained from the supplied universal operations by composition.
+\end{proposition}
+\begin{proof}
+For terminal objects $t,t'$, let $u:t\to t'$ and $v:t'\to t$ be their supplied
+unique arrows.  Since $vu$ and $\id_t$ both map $t$ to $t$, uniqueness at $t$
+gives $vu=\id_t$; similarly $uv=\id_{t'}$.  Any arrow $t\to t'$ equals $u$.
+
+For products $(p:P\to a,q:P\to b)$ and $(p':P'\to a,q':P'\to b)$, put
+$u=\langle p,q\rangle':P\to P'$ and
+$v=\langle p',q'\rangle:P'\to P$.  Then $pvu=p'u=p$ and $qvu=q'u=q$, so
+product uniqueness gives $vu=\id_P$.  The other composite is analogous.
+An arrow preserving both projections must equal the indicated pairing.
+
+For limits, let $u:L\to L'$ be the mediating arrow from the cone of $L$
+into the limiting cone of $L'$, and define $v:L'\to L$ conversely.  Every
+projection of $vu$ equals the corresponding projection of $\id_L$; limit
+uniqueness gives their equality.  Interchanging the two cones proves the
+other composite equation and the same uniqueness argument proves the final
+claim.  These are finite derivations in intuitionistic first-order logic:
+neither excluded middle nor induction is used.
+\end{proof}
+
+An \emph{equalizer} of $f,g:a\to b$ is an object $E$ and $e:E\to a$ with
+$fe=ge$, together with a supplied operation taking $u:x\to a$ and the premise
+$fu=gu$ to an arrow $\operatorname{lift}(u):x\to E$.  Its laws are
+\[
+ e\operatorname{lift}(u)=u,
+ \qquad ev=u\ \Longrightarrow\ v=\operatorname{lift}(u).
+\]
+The operation need not test the premise: its correctness is asserted only
+under that premise.  Equalizers are monomorphisms: if $er=es$, both $r$ and
+$s$ are mediating arrows for the same arrow $er$, so they are equal.
+
+A \emph{pullback} of $f:a\to c$ and $g:b\to c$ consists of
+$p:P\to a$, $q:P\to b$ with $fp=gq$, and a supplied operation
+$(u,v)\mapsto\langle u,v\rangle_{f,g}$ for compatible pairs $fu=gv$, having
+those projections and uniquely determined by them.
+
+\begin{proposition}[Pullbacks from products and equalizers]
+If the relevant chosen product and equalizer are supplied, the pullback of
+$f:a\to c$ and $g:b\to c$ is obtained by equalizing
+\[
+ f p_a,\ g p_b:a\times b\longrightarrow c.
+\]
+Conversely, a terminal object and chosen pullbacks produce binary products;
+chosen binary products and pullbacks produce equalizers.
+\end{proposition}
+\begin{proof}
+Let $e:P\to a\times b$ equalize $fp_a,gp_b$ and give $P$ the projections
+$p_a e,p_b e$.  Their compatibility is the equalizer equation.  If $fu=gv$,
+then $\langle u,v\rangle$ equalizes the two arrows, so its equalizer lift has
+the required projections.  An arrow with those projections satisfies
+$ew=\langle u,v\rangle$ by product uniqueness; equalizer uniqueness then
+identifies it with the lift.
+
+The pullback of the two unique arrows $a\to1\leftarrow b$ is a product,
+because every pair $u:x\to a,v:x\to b$ is compatible by terminal uniqueness.
+For the last assertion, pull back $(f,g):a\to b\times b$ along the diagonal
+$\Delta_b=\langle\id_b,\id_b\rangle:b\to b\times b$.  Write the resulting
+projections as $e:E\to a$ and $r:E\to b$.  The pullback equation gives
+$fe=r=ge$.  If $fu=gu$, the pair $(u,fu)$ is compatible and therefore has a
+unique lift $w$ with $ew=u$.  Any other $w'$ with $ew'=u$ has
+$rw'=few'=fu$, so pullback uniqueness proves $w'=w$.
+\end{proof}
+
+\subsection{All fixed finite limits}
+
+Fix externally a finite category $J$: a finite list of objects, a finite list
+of arrows with specified endpoints, and fixed identity and composition
+tables.  For a diagram $D:J\to C$, a cone with vertex $x$ is a finite tuple
+$c_i:x\to D_i$ satisfying $D(u)c_i=c_j$ for every listed arrow $u:i\to j$.
+A chosen limit consists of a cone $p_i:L\to D_i$ and a primitive recursive
+operation $m(x,(c_i))$ such that $p_i m=c_i$, and such that any arrow with
+those equations equals $m$.  A cone predicate is an arithmetical formula; it
+need not be decidable.  The operation is only required to have its stated
+properties under that predicate.
+
+\begin{theorem}[Finite-limit construction]\label{thm:finite-limits}
+For each fixed finite category $J$, chosen terminal objects, binary products,
+and equalizers yield a chosen limit for every $J$-diagram.  The constructor
+and the mediating operation are primitive recursive compositions of the
+supplied operations.  The proof translates into \ipra{} without any induction
+on a formula containing the category's equality predicate.
+\end{theorem}
+\begin{proof}
+Form the finite products
+\[
+ A=\prod_{i\in\operatorname{Ob}J}D_i,
+ \qquad B=\prod_{(u:i\to j)\in\operatorname{Arr}J}D_j.
+\]
+They mean fixed parenthesized iterations of binary products; an empty product
+means the terminal object.  Write $\pi_i:A\to D_i$ and
+$\rho_u:B\to D_j$.  By repeated pairing define $s,t:A\to B$ by
+\[
+ \rho_u s=D(u)\pi_i,\qquad \rho_u t=\pi_j.
+\]
+Take their equalizer $e:L\to A$ and put $p_i=\pi_i e$.  Then
+$D(u)p_i=D(u)\pi_i e=\rho_u se=\rho_u te=\pi_j e=p_j$, so these arrows
+form a cone.
+
+Given a cone $(c_i)$, repeated pairing supplies $c:x\to A$ with
+$\pi_i c=c_i$.  For every arrow $u:i\to j$,
+$\rho_u sc=D(u)c_i=c_j=\rho_u tc$.  Product uniqueness gives $sc=tc$.
+Consequently its equalizer lift $m:x\to L$ exists by the supplied operation
+and satisfies $p_i m=\pi_i em=\pi_i c=c_i$.  If $v:x\to L$ has the same
+cone projections, then all product projections of $ev$ and $c$ agree, so
+$ev=c$.  Equalizer uniqueness yields $v=m$.
+
+All lists in this proof have an externally fixed length.  Thus each use of
+``for every listed arrow'' expands to a finite conjunction, and repeated
+pairing expands to a fixed term.  The argument is a finite intuitionistic
+proof for that shape.  It does not infer a single internal theorem for
+arbitrarily long diagrams by induction on an undecidable predicate.  A
+uniform varying-length version requires an additional verified coding and
+invariant argument, as discussed in the foundational section.
+\end{proof}
+
+Applying the same argument in $C^{\op}$ proves the dual theorem: a chosen
+initial object, binary coproducts, and coequalizers give all fixed finite
+colimits.  In particular, a pushout is the coequalizer of the two induced
+arrows into a coproduct.  The hypotheses supply the coequalizer operation;
+this theorem does not manufacture quotient objects in an arbitrary category.
+
+\subsection{Idempotents and their canonical completion}
+
+An idempotent is an endomorphism $e:a\to a$ satisfying $e^2=e$.  A
+\emph{splitting} consists of $r:a\to b$ and $s:b\to a$ satisfying
+$sr=e$ and $rs=\id_b$.  A splitting is therefore a displayed retraction,
+not an unspecified existential witness.
+
+\begin{theorem}[Explicit idempotent completion]\label{thm:karoubi}
+Every presented category $C$ has a presented category $\operatorname{Kar}(C)$
+whose objects are pairs $(a,e)$ with $e^2=e$, and whose arrows
+$(a,e)\to(b,d)$ are arrows $f:a\to b$ satisfying
+\[
+ fe=f=df.
+\]
+Composition is inherited from $C$, and the identity of $(a,e)$ is $e$.
+The inclusion $a\mapsto(a,\id_a)$ is fully faithful with the identity
+operation on hom-codes.  Every idempotent in $\operatorname{Kar}(C)$ has a
+canonical primitive recursive splitting.
+\end{theorem}
+\begin{proof}
+If $f:(a,e)\to(b,d)$ and $g:(b,d)\to(c,k)$, then
+$(gf)e=g(fe)=gf$ and $k(gf)=(kg)f=gf$, so $gf$ is a valid arrow.
+The equations $fe=f=df$ make $e,d$ the appropriate identities;
+associativity follows from that in $C$.  For identity idempotents the support
+conditions impose no extra restriction, proving full faithfulness.
+
+Let $p:(a,e)\to(a,e)$ satisfy $p^2=p$.  The object $(a,p)$ is valid.
+Use the underlying arrow $p$ for both
+$r:(a,e)\to(a,p)$ and $s:(a,p)\to(a,e)$.  Their support equations follow
+from $pe=p=ep$ and $p^2=p$.  We have $sr=p$ as an endomorphism of $(a,e)$,
+while $rs=p=\id_{(a,p)}$.  Pairing and the projection operations on codes
+provide the asserted constructors.
+\end{proof}
+
+For completeness, suppose $F:C\to D$ is supplied and that every $F(e)$ has
+a chosen splitting $F(a)\xrightarrow{r_e}B_e\xrightarrow{s_e}F(a)$,
+primitive recursively in the displayed idempotent.  Then
+\[
+ \widehat F(a,e)=B_e,\qquad
+ \widehat F(f)=r_d F(f)s_e
+\]
+defines a functor.  Indeed,
+$r_eF(e)s_e=r_es_er_es_e=\id_{B_e}$, and
+\[
+ (r_kF(g)s_d)(r_dF(f)s_e)
+ =r_kF(g)F(d)F(f)s_e
+ =r_kF(gf)s_e.
+\]
+For the inclusion $I:C\to\operatorname{Kar}(C)$, this is an extension
+\emph{up to a specified natural isomorphism}, not necessarily a literal
+identity of object codes.  Its component
+$s_{\id_a}:\widehat F(Ia)\to Fa$ has inverse $r_{\id_a}$, and
+\[
+ s_{\id_b}\widehat F(I f)
+ =s_{\id_b}r_{\id_b}F(f)s_{\id_a}
+ =F(f)s_{\id_a}.
+\]
+Here $s_{\id_b}r_{\id_b}=F(\id_b)=\id_{Fb}$ modulo the given hom equality.
+If the identity splittings are chosen as the canonical trivial splittings,
+the object maps agree literally.  The theorem does not assert that arbitrary
+idempotents already split in $C$ or $D$.

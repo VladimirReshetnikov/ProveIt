@@ -1,0 +1,116 @@
+\section{Lean architecture and a concrete route to object-level proofs}\label{sec:lean}
+
+\subsection{Two layers with different purposes}
+
+The supplied \texttt{lean/} directory is a specification and reference layer. It uses rational numbers, finite vectors, lists and matrices in ordinary Lean. \nolinkurl{FeedbackReference.lean} contains actual candidate proof scripts for finite contraction and tail lemmas; the other blueprint files define the numerical mathematics and name the remaining propositions as \texttt{Prop}-valued goals. None of these files was compiled in the delivery environment. No new axiom or admitted theorem is used to present an unfinished target as a proof.
+
+The second layer must be implemented in ProveIt's \nolinkurl{IPRADerivations}. It must return actual values of \texttt{Prf PRAAx}, using the checked numerical encodings. Its final theorems quantify over the numerical input data and precision, and retain the original certificate guard. An ordinary Lean theorem about rational matrices is a reference for this layer, not an automatic transfer theorem.
+
+The baseline repository specifies Lean \texttt{v4.32.0} and Mathlib commit
+\nolinkurl{81a5d257c8e410db227a6665ed08f64fea08e997}. The included Lake configuration pins that Mathlib commit for subsequent checking. The precise baseline and source hashes appear in the provenance manifest. Reproduction should first build the small reference files, then port one object endpoint at a time.
+
+\subsection{Definitions supplied in the reference layer}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.30\textwidth}>{\raggedright\arraybackslash}p{.62\textwidth}}
+\toprule File & Principal definitions and intended role\\\midrule\endhead
+\nolinkurl{FeedbackReference.lean} & Rational finite vectors and matrices; \texttt{rowApply}; componentwise \texttt{Within}; positive half-gain certificates; invariant-domain maps; primitive iteration; finite maximum witnesses. Candidate proofs establish row domination, half contraction, increments, finite tails and residual comparison.\\
+\nolinkurl{PolynomialBlueprint.lean} & Finite rational polynomial terms; coefficient algebra and expansion; preconditioned update; coefficient gain matrix; checked finite certificate; iteration, residuals and explicit precision goals. The theorem obligations follow Sections~\ref{sec:polynomial} and \ref{sec:factors}.\\
+\nolinkurl{FactorBlueprint.lean} & Finite coefficient convolution, Sylvester map and inverse checker, norm bound, actual factor iteration, residual and precision clock. Its unproved goals express the complete finite lifting theorem.\\
+\nolinkurl{ClusterBlueprint.lean} & Numerical finite graph and matching predicates; neighborhood counts and defects; bounded public matching selector; weighted-cover and stable-locator contracts. Unproved goals correspond to the constructive proof of Section~\ref{sec:cluster-transport}.\\
+\nolinkurl{OdeBlueprint.lean} & Rational finite norms, coefficient contracts, Euler nodes, interpolation, coarse residuals, odd-node residual expression, bounded precision clock, named outputs and quadrature sums. Unproved goals isolate the produced recurrence, refinement, stability, clearance and observation adapters.\\
+\bottomrule
+\end{longtable}
+
+The common feedback definitions have the following shape. The complete code, rather than this schematic extract, is in the archive.
+\begin{lstlisting}
+abbrev Vec (m : Nat) := Fin m -> Rat
+abbrev Mat (m : Nat) := Fin m -> Fin m -> Rat
+
+-- A finite numerical assertion: no internal real-number sort.
+def Within (w : Vec m) (r : Rat) (x y : Vec m) : Prop :=
+  forall i, abs (x i - y i) <= r * w i
+
+structure HalfCertificate (m : Nat) where
+  A : Mat m
+  w : Vec m
+  weight_pos : forall i, 0 < w i
+  entry_nonneg : forall i j, 0 <= A i j
+  row_bound : forall i, 2 * rowApply A w i <= w i
+\end{lstlisting}
+Here a Lean structure packages hypotheses. It does not mean a mere file containing numbers certifies itself. The numerical implementation has a separate PR checker that verifies exactly these inequalities and shape conditions, and a proof that acceptance supplies the corresponding object-level formulas.
+
+\subsection{The actual numerical programs to internalize}
+
+Use the existing signed-rational representation, sequence encoder, length and entry operations. For each task, define one fixed PR program with the input code packed into its parameter. Keep numerical dimension and precision internal.
+
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \textbf{Feedback.} Encode matrix, weights, initial state and optional rounding schedule. The selected update is one fixed PR template. Store the orbit by primitive recursion; a finite matrix kernel is evaluated by bounded sums.
+\item \textbf{Polynomial systems.} Encode the monomial arrays and all exponents, generate the translated update polynomial, combine equal exponent lists by bounded searches, and compute \(W\) by \eqref{eq:polygain}. The checker verifies \eqref{eq:polycert} and the inverse equation. Runtime polynomial syntax is allowed because its evaluator is explicitly PR.
+\item \textbf{Factor lifting.} Construct the Sylvester map by indexed shifts, check a rational inverse, compute its column-sum bound, verify \eqref{eq:factorcertificate}, and iterate \eqref{eq:factoriteration}. Inverse production can use a fixed bounded elimination routine. Its correctness is a separate finite matrix theorem; a user-supplied inverse still must be checked.
+\item \textbf{Matching.} Use the Boolean graph, bounded queue, marks, parent array and partial permutation from the constructive proof. Alternatively, after proving existence, a bounded scan through all length-\(N\) base-\((N+1)\) lists selects the first matching; the explicit scan bound is \((N+1)^N\).
+\item \textbf{ODEs.} Encode the Euler node list and rational interpolation program. For Gauss or Meijer parameters, the rational kernel is the concrete companion formula. Matrix size, polynomial order, number of segments, mesh and input precision are natural variables.
+\end{enumerate}
+
+Every invalid input receives a fixed totalized output. Acceptance guards stay in theorem statements. The resulting programs do not use unrestricted minimization, a type containing all PR functions, or an external answer whose correctness is checked only after termination.
+
+\subsection{The QF invariant for each main proof}
+
+For feedback let \(\operatorname{Orbit}(c,n)\) be the coded orbit and let
+\(\operatorname{Inc}(c,n)\) be the comparison bit for
+\[
+ 2^n\abs{x_{n+1,i}-x_{n,i}}\le B w_i\quad\text{for every }i<m(c).
+\]
+Its comparison is performed after clearing the stored positive denominators. The induction formula is a conjunction of \(\operatorname{DomainBit}(c,n)=1\) and \(\operatorname{Inc}(c,n)=1\), not a statement quantifying over all future times.
+
+For finite tails, fix the initial index \(n\) as a parameter and induct on the finite offset \(j\). The comparison bit expresses the sharp geometric bound in \eqref{eq:feedback-tail}. Multiplication by \(2^{n+j}\) removes dyadic division. For variable dimension the universal coordinate condition is one bounded product of bits.
+
+For polynomial compilation, the invariant is coefficient equality of the partial expansion and its evaluation at an arbitrary numerical point. An outer fold over monomials and an inner fold over coordinates prove the translation identity. The monomial difference proof is a finite telescoping identity plus a bounded sum of absolute-value inequalities. One must prove this for the actual list decoder, including zero coefficients and missing entries, rather than relying on a host-level function equality.
+
+For factor lifting, retain three numerical facts in the invariant: lengths and monicity; the coefficient ball bound; and the scaled successive-displacement bound. The residual identity is a finite polynomial identity derived at an arbitrary iteration index. No induction over the assertion that a limiting factorization exists is required.
+
+For matching, Booleanize the partial-bijection equations, discovered-parent conditions and closure assertions. The number of marked vertices supplies the finite search bound. A failed augmentation outputs its actual neighbor mask and cardinality comparison. The two alternatives are generated by decidable finite tests; no classical Hall theorem is imported into the object theory.
+
+For Euler refinement, pair the node-bound invariant with the finite comparison recurrence. Parity splits the residual into its exact even and odd formulas. Prove the interpolation identity using quotient/remainder at a rational argument. The comparison kernel then instantiates the existing \texttt{OdeRefinement.node\_bound}; the tail instantiates its geometric summation. For runtime vector dimension, all coordinate and norm comparisons are reflected into finite Boolean folds.
+
+\subsection{Representative closed object sentences}
+
+The following notation denotes explicit formulas assembled from the actual PR symbols. It is not an additional schema of axioms. Let \(\mathrm{Inv}\), \(\mathrm{Close}\) and \(\mathrm{Res}\) be the reflected bits for the polynomial invariant, tail and residual in Theorem~\ref{thm:polysolver}. The desired endpoint is
+\begin{equation}\label{eq:objectpoly}
+ \ipra\vdash\forall c,n,j\;
+ \bigl(\mathrm{Cert}(c)=1\to
+   \mathrm{Inv}(c,n)=1\wedge\mathrm{Close}(c,n,j)=1
+       \wedge\mathrm{Res}(c,n)=1\bigr).
+\end{equation}
+The matrix sizes, polynomial degrees and all input arrays are decoded from \(c\); \(n,j\) are internal naturals. The certificate formula contains no assertion about an already constructed solution.
+
+For matching the endpoint is the matching-or-defect disjunction stated in Section~\ref{sec:cluster-transport}. Its coverage corollary retains the finite occurrence/count assumptions and existentially seals any private incidence witnesses. For rational ODE kernels the endpoint has the form
+\[
+ \ipra\vdash\forall c,n,t\;
+ \bigl(\mathrm{AdmissibleKernel}(c)\wedge n>0\wedge0\le t\le1
+ \to 2n\,\norm{X_n(t)-X_{2n}(t)}\le C(c)\bigr),
+\]
+where the norm inequality is the actual denominator-cleared rational comparison. For generic fixed kernels, the coefficient contracts are explicit antecedents; for the concrete companion kernels, those antecedents are proved from the clearance and finite parameter data.
+
+At the Lean level the endpoint type must be an actual sequent, schematically
+\begin{lstlisting}
+([] : List (Fm PTm 0)) |- [PRAAx] univ 3 polynomialEndpoint
+\end{lstlisting}
+with the repository's genuine notation and scoping machinery. The archive does not declare this theorem with an empty proof. It records the exact formula obligations and the implementation order needed to obtain it.
+
+\subsection{Reuse and acceptance criteria}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.30\textwidth}>{\raggedright\arraybackslash}p{.62\textwidth}}
+\toprule Existing modules & Reuse in the proposed port\\\midrule\endhead
+\nolinkurl{Core/Pairing}, \nolinkurl{Foundations/SequenceComposition}, \nolinkurl{MasterCertificate} & Length-checked arrays, append and entry identities; parameters and runtime dimensions.\\
+\texttt{Core/Order}, \nolinkurl{BoundedSyntax}, \nolinkurl{BoundedReflection} & Rational comparison bits, bounded quantifier reflection, QF invariants.\\
+\nolinkurl{Analysis/RationalArithmetic}, rational sum modules & Exact rational addition, multiplication, finite sums and positive-denominator reasoning.\\
+\nolinkurl{Core/SumLemmas}, \nolinkurl{Core/PolynomialInequalities} & Finite norm inequalities, row domination, polynomial and convolution bounds.\\
+\nolinkurl{DiscreteGronwall}, \nolinkurl{OdeRefinement} & Already checked integer growth, recurrence estimates and geometric Cauchy arithmetic.\\
+\nolinkurl{Algebra/HenselStep} & Ring identities for the correction and residual, after connecting their finite coefficient instances.\\
+\nolinkurl{PrecisionCostDAGSchedule}, \nolinkurl{OpenContracts} & Final scheduling and composition after the new producer hypotheses are discharged.\\
+\bottomrule
+\end{longtable}
+
+For each new object module, build it at the pinned provider versions, inspect the exact theorem type, and run \texttt{\#print axioms}. Absence of \texttt{sorryAx} is necessary, but the more important condition is that the target is an actual \texttt{Prf PRAAx} value with the intended original hypotheses. A theorem about an evaluator, an assumed local estimate, or an abstract proof-bearing structure must not be reported as the completed application endpoint.
+
+The recommended first port is the scalar/weighted finite comparison in \nolinkurl{FeedbackObjectPort.md}, followed by the actual polynomial difference compiler. The factor example supplies a small, exact end-to-end milestone. The ODE port can proceed independently using the existing Gronwall backend; the matching port has a separate finite combinatorial invariant. This division exposes the remaining work without circular module dependencies.

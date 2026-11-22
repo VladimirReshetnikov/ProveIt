@@ -1,0 +1,98 @@
+\section{The extension and its exact scope}\label{sec:scope}
+
+The current repository is already far beyond the proposal that continuous
+objects should be replaced by finite certificates. Its November 20 packets
+include quantitative completion, finite nets of actual Lipschitz functions,
+continuous model semantics, holomorphic gluing, coercive operators, and
+topological descent. Its \texttt{Derivations} tree contains substantial
+\emph{object-theory} arithmetic, including rational sums, weighted error
+budgets, and finite conditional-expectation identities
+\cite{repo-overview,repo-derivations,repo-abstract,repo-continuous-two}.
+The overview's older packet counts should therefore not be treated as a
+complete inventory. We inspected the pinned source tree directly.
+
+This report extends that work in a direction where the previous abstractions
+need additional structure: a small error in mean, a small uniform error, and
+a small operator error support different mathematical operations. Treating
+them interchangeably can turn a correct finite computation into an invalid
+continuous conclusion. Conversely, demanding uniform error everywhere can
+make useful constructions needlessly expensive or impossible.
+
+\subsection{What is reused and what is added}
+
+\begin{longtable}{@{}p{0.23\textwidth}p{0.34\textwidth}p{0.36\textwidth}@{}}
+\toprule
+Area & Existing material inspected & Contribution here\\
+\midrule
+\endhead
+Arithmetic and proof composition & \texttt{PRA.qfInd}, rational arithmetic and finite sums, finite Fubini, proof-carrying error DAGs & A concrete route for clipping, mean-error, and kernel estimates through those interfaces; the arithmetic infrastructure is credited rather than reintroduced as new.\\
+Completion and topology & Regular names, dense presentations, compact nets, coherent witnesses & Norm-sensitive extension: $L^1$, convergence in measure, strong operator action, and exact chain identities have distinct interfaces.\\
+Expectation & Finite natural weights, common denominators, conditional cell regrouping, a dominated truncation bound & Stable clipping-Vitali estimate, an $L^1$ limit constructor from Cauchy-in-measure/UI data, and completion of finite conditional averages.\\
+Category theory & Presented setoids, completion functors, finite diagrams and gluing & A composable category of probability-preserving operators; its tensor and identity are justified in the appropriate norms.\\
+Model theory & Quantitative transfer for compact continuous formulas with infimum and supremum & Integration binders and mixed error budgets; preservation of binder order and explicit limits of $L^1$ transfer.\\
+Complex analysis & Certified power-series and derivative tails & Integration of $L^1$-valued series, differentiation under the integral, and a complete rational example.\\
+Algebraic topology & Finite nerve and chain comparisons; a separate $\mathbb F_2$ perturbation calculation & Signed normed perturbation with a finite nilpotence clock or a Neumann gap, quantitative residuals, and stability.\\
+\bottomrule
+\end{longtable}
+
+The theory of Markov categories, probability algebras, quantitative convergence,
+and the homological perturbation lemma are established subjects
+\cite{fritz,berenstein-henson,neri-pischke,avigad-dean-rute,crainic2004}.
+The contribution is their explicit, compatible use within this repository's
+first-order presentation discipline, together with the correction and
+additional quantitative constructions below. We do not claim a new classical
+Vitali theorem or a new homological perturbation lemma.
+
+\subsection{A specific mathematical repair}
+
+The Vitali proof in
+\texttt{expected\_value\_ipra\_2026-11-16}, Section 12, uses the pointwise claim
+\begin{equation}\label{eq:false-old-vitali}
+ |X-Y|\le |X-Y|\mathbf1_{|X|\le K,\,|Y|\le K}
+       +|X|\mathbf1_{|X|>K}+|Y|\mathbf1_{|Y|>K}.
+\end{equation}
+On the one-point probability space, set $K=1$, $X=2$, $Y=-1$.
+The two sides are $3$ and $2$, respectively. This is a defect in the
+displayed proof, not a counterexample to the stated Vitali conclusion
+\cite{repo-expectation-packet}. The separate checked
+\texttt{Probability.TruncationEstimate} uses a common dominating function
+and a different, valid three-region estimate; it does not assert
+\eqref{eq:false-old-vitali} \cite{repo-truncation}.
+
+The replacement uses
+\[
+ c_K(t)=\max(-K,\min(t,K)),\quad
+ t_K(X)=\int (|X|-K)_+,\quad
+ \rho(X,Y)=\int\min(1,|X-Y|).
+\]
+For $K\ge1$ we prove
+\begin{equation}\label{eq:main-vitali-intro}
+ \norm{X-Y}_1\le t_K(X)+t_K(Y)+2K\rho(X,Y).
+\end{equation}
+All three quantities on the right are stable under $L^1$ approximation.
+Unlike a hard threshold probability, they require no decision about equality
+at a boundary. The theorem subsequently constructs the limit from pairwise
+estimates and explicit moduli; it does not presuppose that the desired limit
+has already been represented in $L^1$.
+
+\subsection{How to read the claims}
+
+There are three distinct deliverables. First, this report proves statements
+about supplied presentations and quantitative hypotheses. Second, the Lean
+project proves selected finite arithmetic and logical kernels. Third, the
+object-language plan specifies the numerical functions, quantifier-free
+invariants, existing interfaces, and missing proof values needed to export
+the new results to \texttt{Prf PRAAx}. A checked host theorem does not itself
+complete that third task.
+
+The infinite notation is a readable account of numerical constructions.
+The iPRA content is always a theorem about finite observations at arbitrary
+natural-number precisions. Each evaluator, refinement operation, tail
+modulus, and clock used in a uniform claim must be supplied as a fixed PR
+definition, or be implemented by a bounded interpreter with a separately
+proved clock. Neither arbitrary real functions nor arbitrary measures are
+being quantified over as objects of first-order iPRA.
+
+The ZIP includes editable sources, a compiled PDF, the complete standalone
+Lean sources, exact-rational reference programs, an immutable source map,
+and a claim-status ledger. No remote repository files were changed.

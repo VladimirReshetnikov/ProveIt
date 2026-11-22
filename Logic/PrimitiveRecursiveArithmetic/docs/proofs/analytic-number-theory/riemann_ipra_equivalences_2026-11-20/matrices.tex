@@ -1,0 +1,44 @@
+\section{Determinants for the three hypotheses}\label{sec:matrices}
+A matrix with entries in $\{0,1\}$ already suffices for RH and for Dirichlet GRH. For number fields the same construction uses nonnegative integer entries counting polynomials over finite fields. The determinant identity below is exact at every cutoff. It explains how a first-column change selects an arithmetic progression and why reciprocal Euler factors appear in the field version.
+
+\begin{theorem}\label{thm:matrix}
+Let $b(1)=1$ and $b(n)\in\Z$. Let $a$ be its inverse for Dirichlet convolution, so that $\sum_{d\mid n}a(d)b(n/d)=[n=1]$. For $N\ge1$ put
+\[
+ U_{ij}=[i\mid j]b(j/i),\qquad 1\le i,j\le N,
+\]
+with entry zero at a nondivisible pair. Replace the first column of $U$ by $v=(v_1,\ldots,v_N)^t$. The resulting matrix $R_N(b,v)$ satisfies
+\[
+                 \det R_N(b,v)=\sum_{j=1}^N a(j)v_j .
+\]
+\end{theorem}
+\begin{proof}
+Compute $a(1)=1$ and, at $j>1$, set $a(j)=-\sum_{i\mid j,\,i<j}a(i)b(j/i)$. This determines $a$ by finite arithmetic. Multiplying its row by $U$ gives $(1,0,\ldots,0)$ by that recursion. The matrix $U$ is upper triangular with every diagonal entry one, and thus has determinant one. Solving $Ux=v$ by back substitution gives $x_1=\sum a(j)v_j$. Expanding the replaced column $v=\sum_i x_i U_{\cdot i}$ by multilinearity, every term for $i>1$ has a repeated column, and the term for $i=1$ has determinant $x_1$. This proves the identity over the integers.
+
+There is also a bounded combinatorial proof. In a permutation contributing to the determinant, an arrow $i\to j$ with $j\ne1$ and $j\ne i$ must increase $i$ along divisibility. Every nontrivial cycle therefore passes through $1$. Such a cycle consists of a strict divisor chain $1=i_0\mid i_1\mid\cdots\mid i_\ell$ followed by a return to $1$. Its contribution is $(-1)^\ell v_{i_\ell}\prod_{s=1}^\ell b(i_s/i_{s-1})$. The identity permutation gives the chain of length zero with weight $v_1$. Group chains by endpoint, then delete the last edge. Their signed weights obey exactly the recursion for $a$. This proof only needs loops bounded by $N$, finite products and the parity of a permutation. All arrays, chains and permutations can be coded with input-bounded digits, and the recursion invariant is an equality of signed finite sums. This is a finitary proof available to quantifier-free induction. For the ordinary Redheffer matrix the same divisor-chain interpretation is given by Wilf \cite{wilf}.
+\end{proof}
+
+\paragraph{Four choices of input.}
+Write $G_r(c,N,z)$ for $|z|^{2r}\le cN^{r+1}$, where $r=k+1$. Quantifying over these positive integer $r$ gives slack $1/(2r)$ above square-root growth. Write $v^{q,a}_j=[j\bmod q=a]$ and $\mathbf1_j=1$. The four sentences quantify their bounds in the following order. Every row ends in $\forall N\ge1\;G_r(c,N,\det R_N(b,v))$; in the progression row this is required only for reduced residues.
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}\toprule
+Family & $b$ & column $v$ & quantifiers before $N$\\\midrule
+RH & $1$ everywhere & $\mathbf1$ & $\forall r\;\exists c$\\
+Dirichlet GRH & $1$ everywhere & $v^{q,a}$ & $\forall r\;\exists c\;\forall q,a$\\
+Dirichlet GRH & $b_{X^m-1}$ & $\mathbf1$ & $\forall m\ge1\;\forall r\;\exists c$\\
+Dedekind ERH & $b_F$ & $\mathbf1$ & $\forall F\;\forall r\;\exists c$\\\bottomrule
+\end{tabular}
+\end{center}
+For $b(n)=1$ the reciprocal coefficients are $\mu(n)$, since $\sum_{d\mid n}\mu(d)=[n=1]$ by expansion over the distinct prime divisors. Thus the first two rows are exactly the respective Mertens sums. The uniformity in the second row follows from the theorem of Ye used in Appendix~\ref{sec:dirichlet}.
+
+\paragraph{Field weights.}
+At $p$, let $\mathcal G_{F,p}$ be the distinct monic irreducible factors of $\bar F$. Define $b_F$ multiplicatively by
+\[
+ \sum_{j\ge0} b_F(p^j)T^j=\prod_{g\in\mathcal G_{F,p}}(1-T^{\deg g})^{-1}.
+\]
+The coefficient counts the monic degree-$j$ polynomials all of whose irreducible factors divide $\bar F$. Unique factorization identifies each such polynomial with an exponent tuple on $\mathcal G_{F,p}$. To compute it, test each of the $p^j$ monic candidates. For each degree $e=1,\ldots,j$ and word $w<p^e$, check that if $(e,w)$ is irreducible and divides the candidate, it divides $\bar F$. This is the code in \code{DivisorMatrices.supported}. The constant candidate at $j=0$ is accepted. The local inverse is precisely $\prod_g(1-T^{\deg g})$; the inverse coefficients $a_F$ therefore agree with those in Appendix~\ref{sec:dedekind} for corresponding polynomials. This identification also works at exceptional primes: both sides use the polynomial reduction. The analytic comparison with the zeta functions handles the exceptional factors separately. The cyclotomic row uses the product of the field factors of $X^m-1$ and the same reciprocal-series argument as the all-fields row. Every primitive conductor occurs.
+
+\paragraph{Direct object-language Mertens sums.}
+The four corresponding growth sentences are also implemented independently in \code{MertensSyntax.lean}. For rational primes use a square-divisor test and the parity of the number of distinct prime divisors. For a field code, enumerate the same supported degree-$e$ candidates over $\F_p$ as above. Retain a candidate if the degrees of its distinct irreducible factors sum to $e$. This equality holds exactly when it is squarefree. Give it sign $(-1)^u$, where $u$ is the number of factors. By unique factorization these candidates correspond bijectively to subsets of the factors of $\bar F$ having total degree $e$. The signed count is the $T^e$ coefficient of $\prod_g(1-T^{\deg g})$, including the empty subset at $e=0$. Multiply the absolute local coefficients over $p\mid n$ and add their negative-sign bits modulo two. A zero factor yields zero regardless of its sign. Bounded sums of the positive and negative parts, optionally filtered by $n\bmod q=a$, give the requested $M(N)$. At $N=0$ both parts vanish. This supplies first-order syntax for all four Mertens statements, alongside the executable definitions in the appendices.
+
+\paragraph{Two levels of verification.}
+\code{DivisorMatrices.lean} constructs all four closed iPRA formulas. Its determinant loops over base-$N$ words below $N^N$, checks distinct digits, counts inversions, and calculates the two nonnegative Leibniz sums before taking their absolute difference. For $N=1$ the unique word $0$ represents the identity. Independently, \code{MatrixIdentity.masked_determinant} proves Theorem~\ref{thm:matrix} for the usual Mathlib integer matrix, every dimension $N\ge1$, arithmetic weight and column. The interpretation of the PR word loop as Mathlib's determinant follows in this text by the bijection between words with distinct digits and permutations; a Lean proof joining these implementations remains open. For an example, at $N=4$ the first inverse row for $b=1$ is $(1,-1,-1,0)$. Its determinant with column $\mathbf1$ is $-1$; the progression $1\bmod 3$ instead gives column $(1,0,0,1)^t$ and determinant $1$.

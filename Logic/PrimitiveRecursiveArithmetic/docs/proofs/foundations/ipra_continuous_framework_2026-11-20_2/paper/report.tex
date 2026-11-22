@@ -1,0 +1,98 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\numberwithin{equation}{section}
+\usepackage{booktabs,longtable,tabularx,array}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{enumitem,xcolor,fancyhdr}
+\usepackage{listings}
+\usepackage[hidelinks,breaklinks]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={From finite observations to continuous structures},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\definecolor{ink}{HTML}{20344A}
+\definecolor{accent}{HTML}{176B75}
+\definecolor{pale}{HTML}{F0F5F7}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{ink}Continuous structures over iPRA}
+\fancyhead[R]{\small 20 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlist{itemsep=3pt,topsep=4pt}
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\PR}{\ensuremath{\mathsf{PR}}}\newcommand{\dist}{\operatorname{d}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\clamp}{\operatorname{clip}}
+\newcommand{\e}[1]{2^{-(#1)}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\sourcebase}{https://github.com/VladimirReshetnikov/ProveIt/blob/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic/}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{pale}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\color{ink}
+{\Large Research report\par}
+\vspace{18mm}
+{\huge\bfseries From finite observations\\[4pt]to continuous structures\par}
+\vspace{7mm}
+{\Large Quantitative completions, compact function spaces,\\continuous model semantics, and local-to-global analysis\\over intuitionistic primitive recursive arithmetic\par}
+\vspace{13mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 20 November 2026\par}
+\vspace{12mm}
+\begin{minipage}{0.94\textwidth}
+\textbf{Main result.} Explicit presentations by finite rational observations support continuous objects, maps between their completions, compact spaces of functions, and continuous logical quantifiers. The arithmetic layer proves the finite inequalities; an explicit adequacy argument explains their continuous meaning. Coherence, witnesses, domain margins, and primitive-recursive bounds remain visible throughout.
+\end{minipage}
+\vfill
+\small
+\textbf{Source baseline.} ProveIt commit
+\path{5f3be02388442f16487d2dc5c2529961dd783d2b}.
+\par\textbf{Verification boundary.} The paper gives complete human arguments and a detailed object-theory formalization path. A standalone Lean kernel checks finite extrema and continuous-formula transfer. The new continuous theorems have not all been reified as \code{Prf PRAAx} derivations. Exact checked declarations and remaining obligations are listed in the verification chapter.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\begin{abstract}
+The obstruction to using continuous mathematics in \ipra\ is rarely just the absence of real-number objects in its language. The harder issues are obtaining coherent approximations, controlling quantification over infinite domains, and transporting local certificates without silently adding choice, comprehension, or a universal evaluator. We give a layered solution for a substantial but explicitly delimited fragment.
+
+First, uniformly continuous finite evaluators extend to completed metric presentations, and a quantitative uniqueness modulus turns separately computed approximate solutions into a canonical exact solution. Second, positive overlap weights glue local approximations with an explicit global continuity bound. Third, finite clipped McShane envelopes give primitive-recursive nets consisting of actual bounded Lipschitz functions. This makes function spaces available as compact presented sorts. Fourth, a total approximate correspondence transfers continuous formulas with an error independent of quantifier depth for nonexpansive connectives. Thus nested suprema and infima can be evaluated by finite tables without constructing a truth predicate. We give an end-to-end variational example and a singular inverse example.
+
+These are conservative numerical realizations for fixed presentations and fixed formulas, not a claimed interpretation of unrestricted analysis or model theory. We identify which components already exist in ProveIt and which interfaces this report completes. Complete Lean verification of the finite formula-transfer kernel accompanies detailed definitions, arithmetic invariants, and a plan for reification into the repository's ordinary iPRA calculus.
+\end{abstract}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/01_foundations.tex}
+\input{sections/02_completion_gluing.tex}
+\input{sections/03_function_spaces.tex}
+\input{sections/04_continuous_models.tex}
+\input{sections/05_complex_descent.tex}
+\input{sections/05_variational.tex}
+\input{sections/06_verification.tex}
+\input{sections/07_limits.tex}
+\begin{thebibliography}{99}
+\bibitem{repo} V. Reshetnikov and contributors, \emph{ProveIt: Primitive Recursive Arithmetic}, source baseline \path{5f3be02388442f16487d2dc5c2529961dd783d2b}, 20 November 2026. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/5f3be02388442f16487d2dc5c2529961dd783d2b/Logic/PrimitiveRecursiveArithmetic}. Exact inspected files appear in \path{metadata/source_manifest.json}.
+\bibitem{oconnor} R. O'Connor, \emph{A monadic, functional implementation of real numbers}, Mathematical Structures in Computer Science 17 (2007), 129--159. \url{https://doi.org/10.1017/S0960129506005871}. Author's text: \url{https://r6.ca/FewDigits/CReal20060514.pdf}.
+\bibitem{continuouslogic} I. Ben Yaacov, A. Berenstein, C. W. Henson, A. Usvyatsov, \emph{Model theory for metric structures}, in Model Theory with Applications to Algebra and Analysis, vol.~2, London Mathematical Society Lecture Note Series 350 (2008), 315--427. Author's text: \url{https://math.univ-lyon1.fr/~begnac/articles/mtfms.pdf}.
+\bibitem{kohlenbach} U. Kohlenbach, \emph{Things that can and things that can't be done in PRA}, Annals of Pure and Applied Logic 102 (2000), 223--245; BRICS Report RS-98-18 (1998). \url{https://www2.mathematik.tu-darmstadt.de/~kohlenbach/paper18.pdf}.
+\bibitem{mcshane} E. J. McShane, \emph{Extension of range of functions}, Bulletin of the American Mathematical Society 40 (1934), 837--842. \url{https://doi.org/10.1090/S0002-9904-1934-05978-0}.
+\bibitem{bishop} E. Bishop and D. Bridges, \emph{Constructive Analysis}, Grundlehren der mathematischen Wissenschaften 279, Springer, 1985. \url{https://doi.org/10.1007/978-3-642-61667-9}.
+\end{thebibliography}
+\end{document}

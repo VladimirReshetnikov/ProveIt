@@ -1,0 +1,492 @@
+% Mathematical section. Citation keys repoObservable and repoMeasureTransport
+% should identify the currently fetched November 20 ProveIt packets.
+\section{A common probability space and its represented completions}
+\label{sec:prob-foundation}
+
+The coherent-partition and completion interfaces in the current ProveIt
+framework already provide the appropriate starting point
+\cite{repoObservable,repoMeasureTransport}. We specialize them to probability,
+add an explicit distinction between arbitrary random variables and integrable
+ones, and spell out the certificates needed by discontinuous event operations.
+These are constructions on one common probability space. A list of laws with
+unrelated pairwise couplings would not supply the joint structure required by
+addition, independence, conditioning, or events involving several variables.
+
+\subsection{The exact finite base}
+
+For $n\in\mathbb N$, let $\Omega_n=\{0,1\}^n$, coded by the integers below
+$2^n$. Each word has mass $2^{-n}$. A cylinder event is a Boolean table on
+$\Omega_n$; a rational cylinder variable is a rational table on $\Omega_n$.
+When $m\ge n$, lift a table to $\Omega_m$ by ignoring the last $m-n$ bits.
+Every row is then repeated $2^{m-n}$ times. Two or more tables are compared
+after lifting them to the largest of their levels. The projection from level
+$l$ to $n$ is the composite of the projections through any intermediate
+level $m$, so these joint refinements are coherent.
+
+For finite tables write
+\[
+ \mathbb P_n(A)=2^{-n}\sum_{\omega\in\Omega_n}\mathbf1_A(\omega),
+ \qquad I_n(f)=2^{-n}\sum_{\omega\in\Omega_n}f(\omega).
+\]
+Repetition preserves both quantities. Thus the subscript may be omitted once
+a common level is understood. Every construction here is primitive recursive:
+the number of rows may be very large, but there is an explicit finite bound.
+Rationals are signed integers over positive denominators; comparison is exact
+cross multiplication. The denominator guard is retained in every formula.
+
+\begin{lemma}[The finite probability kernel]\label{lem:prob-finite}
+The cylinder algebra has exact finite additivity, monotonicity, complement
+and union laws. Rational integration is positive and linear, and
+\[
+ |I(f)-I(g)|\le I(|f-g|),\qquad
+ I(|f+g|)\le I(|f|)+I(|g|).
+\]
+If $\varphi$ is rationally evaluated and $L$-Lipschitz, then
+$I(|\varphi(f)-\varphi(g)|)\le L I(|f-g|)$.
+For finite tables on independent blocks of bits,
+\[
+ I(f(\omega)g(\eta))=I(f)I(g).
+\]
+\end{lemma}
+\begin{proof}
+The event statements follow from Boolean identities on each row. For example,
+$\mathbf1_{A\cup B}+\mathbf1_{A\cap B}=\mathbf1_A+\mathbf1_B$.
+The integral inequalities follow by multiplying the corresponding rational
+pointwise inequalities by the nonnegative row mass and summing. For the last
+identity, write the expectation as a finite double sum and use distributivity:
+$\sum_{i,j}f_i g_j=(\sum_i f_i)(\sum_j g_j)$. Normalizing by the product of
+the two word counts gives the assertion.
+
+For the iPRA proof, clear the positive denominators and use the partial-sum
+inequality as the induction invariant. It is quantifier-free. Row conditions
+are decidable Boolean tests; their bounded conjunction is encoded by a Boolean
+fold. Universal presentation hypotheses are instantiated at the finitely many
+rows used. No induction on a statement about all precisions is needed.
+\end{proof}
+
+Natural-weight finite probability spaces are also available: replace
+$2^{-n}$ by $w_i/W$, where $W=\sum_iw_i>0$. They are useful for rational
+quadrature laws. Their mass vectors need not be exactly dyadic, so they should
+not be silently identified with a single finite fair-bit table. They can be
+approximated by dyadic masses with explicit rounding error, or retained as
+finite auxiliary laws with separately supplied transports.
+
+\subsection{Three different distances}
+
+On rational cylinder variables define
+\[
+ d_0(f,g)=I(\min(1,|f-g|)),\qquad
+ d_1(f,g)=I(|f-g|),\qquad
+ d_2(f,g)^2=I((f-g)^2).
+\]
+The first two are exactly rational. Square roots in $d_2$ may instead be
+handled by squared rational inequalities, or by rational bisection with a
+proved error bound. On cylinder events define
+\[
+ d_{\rm ev}(A,B)=\mathbb P(A\mathbin{\triangle}B)
+                =d_1(\mathbf1_A,\mathbf1_B).
+\]
+The triangle inequality for $d_0$ follows from
+\[
+ \min(1,|x-z|)\le\min(1,|x-y|)+\min(1,|y-z|).
+\]
+The triangle inequality for $d_1$ is Lemma~\ref{lem:prob-finite}. The usual
+$d_2$ inequality follows from finite Cauchy--Schwarz; its square-free kernel is
+\[
+ \left(\sum_i w_i a_i b_i\right)^2
+ \le\left(\sum_iw_i a_i^2\right)\left(\sum_iw_i b_i^2\right),
+\]
+proved by expanding the nonnegative sum
+$\sum_{i,j}w_iw_j(a_i b_j-a_j b_i)^2$.
+
+\begin{lemma}[Finite probability interpretation of $d_0$]
+For rational $0<\delta\le1$,
+\[
+ \delta\,\mathbb P(|f-g|>\delta)
+ \le d_0(f,g)
+ \le \delta+\mathbb P(|f-g|>\delta).
+\]
+\end{lemma}
+\begin{proof}
+On a row with $|f-g|>\delta$, the capped difference is at least $\delta$;
+on every other row it is at most $\delta$. On exceptional rows it is at most
+one. Sum these two elementary inequalities.
+\end{proof}
+
+Thus $d_0$ controls convergence in probability without requiring the first
+absolute moment. This distinction is essential for continuous laws such as
+the Cauchy distribution. An $L^1$-only foundation would exclude its identity
+random variable even though its distribution and all bounded observables are
+well defined.
+
+\subsection{Names, equality, and their arithmetic meaning}
+
+Put $\varepsilon_k=2^{-k}$. For any one of the displayed metrics, a
+\emph{regular name} is a fixed primitive-recursive family $x_k$ of finite
+tables, with their levels, satisfying
+\begin{equation}\label{eq:prob-regular}
+ d(x_k,x_l)\le\varepsilon_k+\varepsilon_l\qquad(k,l\in\mathbb N).
+\end{equation}
+Its limit notation denotes a represented object. Two names are equal when
+\begin{equation}\label{eq:prob-equal}
+ d(x_k,y_l)\le\varepsilon_k+\varepsilon_l\qquad(k,l\in\mathbb N).
+\end{equation}
+This is an arithmetical all-precision relation, not a Boolean equality test.
+It needs no quotient type inside iPRA.
+
+For completeness, the small rational fact used by this definition is worth
+recording. If rational $a,b$ satisfy $a\le b+2^{-m}$ for all $m$, then $a\le b$.
+Decide their rational comparison. If $a>b$ and $D$ is a denominator of their
+difference, then $a-b\ge1/D$; choosing $m=D+1$ contradicts the displayed
+inequality because $2^{D+1}>D$. This is a primitive-recursively bounded
+rational argument. Applying it to a triangle inequality with the intermediate
+name evaluated at precision $m$ proves transitivity of
+\eqref{eq:prob-equal}. Reflexivity and symmetry are immediate.
+
+An $L^0$ random variable means a $d_0$ name. An integrable random variable is
+a $d_1$ name; a square-integrable random variable is a $d_2$ name. Their
+forgetful maps are justified by $d_0\le d_1\le d_2$, the second inequality
+being finite Cauchy--Schwarz with total mass one. An event means a
+$d_{\rm ev}$ name of Boolean tables. It is identified modulo null distance;
+it does not carry a general procedure deciding whether an individual infinite
+bit sequence belongs to it.
+
+These names form the represented part of the usual external metric
+completions. They are closed under supplied jointly PR Cauchy families with
+explicit PR moduli, by a diagonal precision choice. They are not claimed to
+form a classically complete space under arbitrary Cauchy sequences. The
+ordinary measure-theoretic interpretation is an adequacy statement; it is
+not an additional axiom of the internal arithmetic.
+
+\begin{proposition}[Continuous finite operations extend]
+Suppose a fixed PR approximate table operation $F_p$ satisfies
+\[
+ d(F_p(a),F_q(b))\le Ld(a,b)+\varepsilon_p+\varepsilon_q
+\]
+for a supplied rational $L\ge0$. If $L\le2^h$, then
+$y_k=F_{k+2}(x_{k+h+2})$ is a regular output name, depending only on the
+represented input.
+\end{proposition}
+\begin{proof}
+Substituting \eqref{eq:prob-regular} makes the right-hand side at most
+$(\varepsilon_k+\varepsilon_l)/2$. Substituting
+\eqref{eq:prob-equal} gives the same bound for equivalent inputs. All
+precision choices are explicit PR expressions. This is the common completion
+rule already used in the repository, now applied to probability tables.
+\end{proof}
+
+Consequently addition, rational scaling, absolute value, positive and negative
+parts, minimum, maximum, and clipping have their expected representations.
+For example addition uses one guard bit because the two errors add. A
+bounded Lipschitz test function gives a real expectation from every $L^0$
+name: if $|h|\le M$ and $h$ has Lipschitz constant $L$, then
+\[
+ I(|h(f)-h(g)|)\le \max(L,2M)d_0(f,g).
+\]
+Indeed, for $|f-g|\le1$ use Lipschitz continuity; otherwise use the bound
+$2M$. This provides the law of a general random variable through bounded
+observables even when the identity has no expectation.
+
+Every $L^0$ name also supplies effective tightness. Choose one finite
+approximation $x_r$ and a rational $B$ bounding all its values. For every
+later approximation $x_s$,
+\[
+ \mathbb P(|x_s|>B+1)\le d_0(x_s,x_r)
+                         \le\varepsilon_s+\varepsilon_r.
+\]
+Thus choosing $r$ from the desired error gives an explicit tail radius.
+Effective continuous maps with supplied PR uniform moduli on rational compact
+intervals extend to $L^0$: first discard this small tail, then use the local
+modulus on the compact part. A reciprocal or logarithm additionally needs
+an explicit bound on the probability of approaching its singular set.
+
+\subsection{Integration, events, and the threshold issue}
+
+\begin{theorem}[Represented expectation]
+If $X$ has an $L^1$ name $x_k$, then $I(x_k)$ is a regular rational real
+name. It defines $\mathbb E X$, independent of the name, and
+\[
+ |\mathbb E X-\mathbb E Y|\le\|X-Y\|_1.
+\]
+The resulting expectation is linear and positive. The completed order is
+$X\le Y$ when $\|(X-Y)^+\|_1=0$.
+\end{theorem}
+\begin{proof}
+Apply the exact finite inequality
+$|I(x_k)-I(x_l)|\le d_1(x_k,x_l)$ and then
+\eqref{eq:prob-regular}. Equivalent names give equivalent scalar names by
+the same inequality. Every linear identity holds exactly on a common finite
+table and passes to names with its explicitly budgeted errors. Positivity
+follows because the negative part has zero norm. This uses order on represented
+classes, not a decision about pointwise order of completed values.
+\end{proof}
+
+\begin{proposition}[Represented Boolean event algebra]
+Complement is an isometry for $d_{\rm ev}$, and union and intersection satisfy
+\[
+ d_{\rm ev}(A\cup B,A'\cup B'),\quad
+ d_{\rm ev}(A\cap B,A'\cap B')
+ \le d_{\rm ev}(A,A')+d_{\rm ev}(B,B').
+\]
+They extend to represented events, preserving all Boolean identities modulo
+null distance. Probability is $\mathbb P(A)=\mathbb E\mathbf1_A$ and satisfies
+the finite probability laws at every precision.
+\end{proposition}
+\begin{proof}
+Changing either Boolean operation can only affect a row where at least one
+input indicator changes. The finite union bound proves the estimate.
+Complement uses the same level; the binary operations use one guard bit.
+Their exact finite identities and the expectation contraction then prove the
+asserted completed identities.
+\end{proof}
+
+There is an essential qualification. The map $x\mapsto\mathbf1_{x\le t}$
+is discontinuous. Small $L^0$ or $L^1$ distance alone does not make its
+threshold indicators close. For instance the constant tables $1/n$ converge
+to zero, while $\mathbf1_{1/n\le0}$ is always zero and
+$\mathbf1_{0\le0}$ is one.
+
+\begin{lemma}[Threshold lifting with a boundary certificate]
+Let $x_r$ be an $L^0$ name and let $t$ be rational. Suppose PR functions
+$b(k),R(k)$ satisfy, at every $r\ge R(k)$,
+\[
+ \mathbb P(|x_r-t|\le2^{-b(k)})\le2^{-k}.
+\]
+Then the threshold events $\{x_r\le t\}$ can be reindexed by a PR function
+to form a regular represented event.
+\end{lemma}
+\begin{proof}
+For two finite tables $x_r,x_s$ and $0<\delta\le1$, a change of threshold
+indicator implies either $|x_r-t|\le\delta$ or $|x_r-x_s|>\delta$.
+Consequently
+\[
+ d_{\rm ev}(\{x_r\le t\},\{x_s\le t\})
+ \le\mathbb P(|x_r-t|\le\delta)+\delta^{-1}d_0(x_r,x_s).
+\]
+At requested precision $k$, choose $\delta=2^{-b(k+3)}$ and choose a
+monotone precision schedule $r(k)$ at least
+$R(k+3)$ and $b(k+3)+k+5$. For $l\ge k$ both approximation errors are
+at most $2^{-r(k)}$, so the right-hand side is at most
+$2^{-(k+3)}+2^{-(k+4)}<2^{-k}$. This is stronger than the required
+regularity. A represented real threshold is treated by budgeting its rational
+approximation error inside the boundary band.
+\end{proof}
+
+A locally bounded density supplies the band estimate through
+$\mathbb P(t-\delta\le X\le t+\delta)\le2M\delta$ when its density is
+bounded by $M$ there. Its finite sampling or transport errors are included
+in the certificate. The same lemma can apply to singular continuous laws;
+having a density is sufficient, not necessary. Probabilities of hard events
+in later statements always require their event names or a stated band
+certificate. Finite rational threshold inequalities themselves need no such
+extra assumption.
+
+\subsection{Countable operations retain their tail data}
+
+Let $(A_j)$ be a fixed jointly PR family of represented events and let
+$H_N=\bigcup_{j<N}A_j$. Suppose a PR function $C$ supplies
+\begin{equation}\label{eq:union-cauchy}
+ M\ge N\ge C(k)\quad\Longrightarrow\quad
+ d_{\rm ev}(H_M,H_N)\le2^{-k}.
+\end{equation}
+This is a finite-union contract; it makes no reference to an already
+constructed infinite union. The regularized finite unions define a
+represented event $\bigcup_jA_j$. To obtain an actual cylinder table at
+output precision $k$, take $N=C(k+3)$ after monotone closure, approximate
+each of its $N$ events with error at most $2^{-(k+3)}/\max(1,N)$, and take
+their finite union. The union estimate and \eqref{eq:union-cauchy} give the
+required error budget. The schedule is PR; the coarser bound of $N$ additional
+guard bits is sufficient if one wishes to avoid logarithms.
+
+A useful sufficient hypothesis is
+\[
+ M\ge N\ge C(k)\quad\Longrightarrow\quad
+ \sum_{j=N}^{M-1}\mathbb P(A_j)\le2^{-k},
+\]
+by the finite union bound. If the $A_j$ are pairwise disjoint, their finite
+union probabilities are the corresponding partial sums; passing through the
+same rate proves countable additivity for this presentation. Intersections
+follow by complements. This is a substantive countable theorem, but it does
+not assert that every countable sequence automatically comes with a tail
+modulus.
+
+\subsection{A quantitative convergence theorem without hidden thresholds}
+
+Define $T_K(x)=\max(-K,\min(K,x))$ and
+$R_K(x)=(|x|-K)^+$ for rational $K\ge0$. These are continuous, 1-Lipschitz
+functions and $|x-T_K(x)|=R_K(x)$.
+
+\begin{lemma}[The clipping estimate]\label{lem:prob-clipping}
+For finite rational tables,
+\[
+ d_1(f,g)\le\max(1,2K)d_0(f,g)+I(R_K(f))+I(R_K(g)).
+\]
+\end{lemma}
+\begin{proof}
+Insert $T_K(f)$ and $T_K(g)$ between $f$ and $g$ and use the triangle
+inequality. Since clipping is nonexpansive and bounded by $K$,
+\[
+ |T_K(x)-T_K(y)|\le\min(|x-y|,2K)
+                    \le\max(1,2K)\min(1,|x-y|).
+\]
+Integrate the resulting pointwise inequality. There are no hard completed
+threshold events in this proof.
+\end{proof}
+
+\begin{theorem}[Effective Vitali completion]
+Suppose $f_n$ is a jointly PR family of finite tables with a PR $d_0$ Cauchy
+modulus. Suppose also that a PR threshold $K(k)$ satisfies
+$I(R_{K(k)}(f_n))\le2^{-k}$ for every $n$. Then the same family has a PR
+$d_1$ Cauchy modulus and hence an integrable represented limit.
+\end{theorem}
+\begin{proof}
+For desired error $2^{-k}$ choose $K=K(k+2)$, and choose $h$ with
+$\max(1,2K)\le2^h$. Request $d_0(f_m,f_n)\le2^{-(k+h+2)}$ from the
+given modulus. Lemma~\ref{lem:prob-clipping} gives
+$d_1(f_m,f_n)\le3\cdot2^{-(k+2)}<2^{-k}$. This computes the claimed
+modulus, with no extraction from qualitative convergence.
+\end{proof}
+
+The same proof gives convergence of an already represented $L^1$ family to
+an $L^0$ limit under uniform excess-tail bounds. An $L^1$ majorant supplies
+such bounds constructively. If $G\ge0$ has finite approximation $g_r$ and
+$K$ bounds every value of $g_r$, then
+\[
+ \mathbb E(G-K)^+\le\|G-g_r\|_1.
+\]
+Indeed $(G-K)^+\le|G-g_r|$ in the completed lattice. Therefore
+$|X_n|,|X|\le G$ gives uniform tail control for all $X_n$ and $X$.
+Combining this with a supplied PR convergence-in-probability rate proves a
+quantitative dominated-convergence theorem. This specializes the existing
+repository measure framework; neither domination alone nor pointwise
+convergence alone is being used to manufacture the missing rate.
+
+\subsection{Conditional expectation on the dyadic filtration}
+
+Let $\mathcal F_n$ denote observation of the first $n$ bits. For a table $f$
+at level $m\ge n$, define $C_n f$ by averaging its $2^{m-n}$ entries above
+each length-$n$ prefix. If $m<n$, simply lift $f$. Every denominator is a
+positive power of two.
+
+\begin{theorem}[Conditional averaging and a quantified martingale limit]
+The finite maps $C_n$ preserve positivity and expectation, are $d_1$
+contractions, and satisfy $C_nC_m=C_{\min(n,m)}$. They therefore extend to
+represented $L^1$ variables. If $X$ has regular name $x_k$, with $x_k$
+depending on $\ell(k)$ bits, then
+\[
+ n\ge\ell(k)\quad\Longrightarrow\quad
+ \|C_nX-X\|_1\le2\varepsilon_k.
+\]
+In particular the sequence $C_nX$ is a represented martingale converging to
+$X$ with an explicit PR rate.
+\end{theorem}
+\begin{proof}
+The inequality that the absolute value of an average is at most the average
+of the absolute values, summed over prefixes, proves contraction. Regrouping
+the same finite sums proves preservation of expectation and the tower law.
+For an $\mathcal F_n$ cylinder variable $h$, the same finite regrouping gives
+$I(hC_n f)=I(hf)$, the defining conditional-expectation identity. Positivity
+is termwise. The completion rule extends these facts to names.
+
+If $n\ge\ell(k)$, then $C_n x_k=x_k$. Hence
+\[
+ \|C_nX-X\|_1
+ \le\|C_n(X-x_k)\|_1+\|x_k-X\|_1
+ \le2\|X-x_k\|_1\le2\varepsilon_k.
+\]
+For error $2^{-p}$, the monotone schedule
+$N(p)=\max_{j\le p+1}\ell(j)$ suffices. The tower identity says exactly that
+$(C_nX)$ is a martingale. This is convergence of the canonical martingale of
+a supplied terminal variable, not an unrestricted theorem for arbitrary
+bounded martingales.
+\end{proof}
+
+Conditioning on a general represented event $B$ is also available when a
+rational margin $\beta>0$ with $\mathbb P(B)\ge\beta$ is supplied:
+$\mathbb P(A\mid B)=\mathbb P(A\cap B)/\mathbb P(B)$. Approximate the
+denominator enough to keep it above $\beta/2$; ordinary rational division
+then has an explicit error budget. A null event supplies no such division,
+and a general regular conditional distribution is extra data, not a consequence
+of this quotient formula.
+
+\subsection{Independent copies, a uniform law, and a singular continuous law}
+
+A primitive-recursive pairing function partitions the countably many bit
+positions into disjoint infinite rows. Copy the table for a represented
+variable onto row $i$ by reading only positions assigned to $(i,j)$. Each
+finite demand touches finitely many positions and is therefore a cylinder
+table; counting unused positions preserves its law and its distance bounds.
+The finite product identity proves independence of every finite family of
+different rows. Thus a supplied represented random variable has a jointly
+PR sequence of independent identically distributed copies. This is an explicit
+construction, not an appeal to an arbitrary extension theorem.
+
+Let $U_n$ assign the midpoint $(j+1/2)2^{-n}$ to the $j$th dyadic cell.
+For $m\ge n$, $|U_m-U_n|\le2^{-n-1}$ on every common row. The resulting
+$U$ is a bounded $L^1$ and $L^0$ variable. Counting cells gives
+\[
+ \left|\mathbb P(U_n\le t)-\max(0,\min(1,t))\right|\le2^{-n}
+\]
+for rational $t$, so its CDF is the uniform CDF. The same count supplies
+threshold boundary bands of mass at most $2\delta+2^{1-n}$. In particular,
+singletons have probability zero; this does not make the value of an actual
+infinite sample decidable.
+
+For a continuous law that has no density, use the same bits in
+\[
+ C_n=\sum_{j=1}^n\frac{2b_j}{3^j}.
+\]
+The remainder is bounded by $3^{-n}$, so $C_n$ is uniformly Cauchy with an
+explicit PR rate. Each prefix of length $n$ puts the limit in one of $2^n$
+closed intervals of length $3^{-n}$, with mass $2^{-n}$ each. A singleton
+lies in at most one such interval and therefore has probability at most
+$2^{-n}$ for every $n$, hence zero. More quantitatively, a sufficiently short
+band of width below the level-$n$ gaps meets at most two intervals, giving
+a boundary-band modulus and hence a represented continuous CDF.
+
+The same $2^n$ intervals cover the support with total ordinary length
+$(2/3)^n$. Choosing $n=3k$ makes this at most $2^{-k}$, since
+$(2/3)^3<1/2$. Thus the support is Lebesgue-null with an explicit covering
+rate, while the constructed law gives it full mass in the sense that every
+finite cover stage has probability one. In standard semantics this is the
+Cantor singular continuous distribution. It verifies that the foundation
+handles continuous laws beyond absolutely continuous density models.
+
+\subsection{What the arithmetic claim does and does not say}
+
+For each fixed presentation, every displayed finite estimate is an arithmetic
+formula over natural codes. The proof recipe consists of exact rational
+identities, proved Boolean tests, and quantifier-free induction on finite
+partial sums, refinements, and loops. The regularity hypotheses are used at
+the finitely many indices demanded by the output precision. A theorem about
+all precisions is obtained by universal introduction after those finite
+proofs; it is not used as an induction matrix. Completed objects are a
+convenient readable notation for this family of contracts.
+
+There is no total universal PR function evaluating every arbitrary PR
+program code: if $V(e,n)$ were such a function, then $V(n,n)+1$ would be PR
+and its own code would give a contradiction. Accordingly, names here are
+fixed PR definitions, possibly with numerical parameters. A variable program
+code requires a bounded interpreter and a supplied clock with a proof of
+sufficiency. The mathematical claims above are proof-construction schemata
+with explicit finite targets; a Lean proof of those targets in ordinary
+arithmetic is not yet a term of the embedded object-theory type
+$\mathrm{Prf}\;\mathrm{PRAAx}$.
+
+Two elementary obstructions explain why the representation data cannot be
+discarded. For a machine index $e$, the stage-$n$ assertion ``$e$ has halted
+by stage $n$'' is a PR Boolean sequence, monotone and bounded by one. A
+uniform procedure producing its regular real limit to error $1/4$ would
+decide halting. Thus bounded monotonicity does not uniformly yield a PR
+convergence modulus. Similarly, enumerate no open interval until that machine
+halts, and then enumerate $(0,1)$. The resulting effective open set has
+uniform probability either zero or one. A uniform regular probability for
+all such descriptions would again decide halting. Therefore this report does
+not identify all effective Borel descriptions with regular event names.
+
+Exact real equality, arbitrary sigma-algebra completion, automatic rates from
+qualitative almost-sure convergence, and general disintegration are not hidden
+axioms of the construction. Positive separation, tail bounds, boundary-band
+bounds, and convergence rates are retained precisely where the finite proof
+uses them. This is what keeps the continuous mathematics within the stated
+intuitionistic primitive-recursive proof discipline.

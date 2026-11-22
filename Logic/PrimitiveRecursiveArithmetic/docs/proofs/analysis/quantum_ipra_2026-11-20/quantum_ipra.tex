@@ -1,0 +1,42 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1.04in,top=.85in,bottom=.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array,xcolor,enumitem,fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[breaklinks=true,colorlinks=true]{hyperref}
+\definecolor{ink}{HTML}{17354D}\definecolor{sea}{HTML}{176B74}
+\hypersetup{linkcolor=sea,urlcolor=sea,citecolor=sea,pdftitle={Quantum mechanics in intuitionistic primitive recursive arithmetic},pdfauthor={OpenAI}}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{.65em}{}
+\setlist{topsep=.35em,itemsep=.15em}
+\setlength{\parindent}{1.1em}\setlength{\parskip}{.15em}
+\setlength{\emergencystretch}{2.2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\color{ink}Quantum mechanics in iPRA}\fancyhead[R]{\small\color{ink}Mathematical foundations}\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{.25pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}\newtheorem{example}[theorem]{Example}\newtheorem{remark}[theorem]{Remark}
+\setcounter{tocdepth}{1}\allowdisplaybreaks[2]\raggedbottom
+\begin{document}
+\thispagestyle{plain}
+\noindent{\small\sffamily\bfseries\color{sea} CONSTRUCTIVE ANALYSIS\quad /\quad MATHEMATICAL PHYSICS}\par\vspace{1em}
+\noindent{\fontsize{29}{33}\selectfont\bfseries\color{ink} Quantum mechanics\par}
+\noindent{\fontsize{18}{21}\selectfont\bfseries\color{ink}\mbox{in intuitionistic primitive recursive arithmetic}\par}
+\vspace{.7em}\noindent{\large Quantitative proofs for states, measurements and dynamics}\par
+\vspace{.6em}\noindent{\small 20 November 2026}\par\vspace{1em}
+\noindent\textbf{Abstract.} An experiment specified by preparation, evolution and an effect should determine its probability to any requested precision. We give a first-order arithmetic meaning to this statement for nonrelativistic quantum mechanics. Finite-dimensional states and channels admit positive square roots, purifications and Kraus representations with primitive-recursive precision schedules, including at singular matrices. For a separable Hilbert space, basis tails determine the information needed to evaluate operators, traces and countable experiments. We construct the continuous functional calculus and give a quantitative passage from resolvents of an unbounded Hamiltonian to its unitary group and its exact generator domain. The oscillator and the free particle exhibit discrete and continuous energy measurements. An undecidability argument already in dimension one shows why arbitrary sharp spectral cuts require additional data. The archive contains exact examples and Lean object-language derivations for selected arithmetic lemmas. The general analytic proofs are given on paper, with a formalization plan.
+\vspace{.25em}\begingroup\setlength{\parskip}{0pt}\tableofcontents\endgroup\newpage
+\input{foundations}
+\input{finite}
+\input{hilbert}
+\input{spectral}
+\input{resolvents}
+\input{unbounded_spectral}
+\input{dynamics}
+\input{manybody}
+\input{formalization}
+\input{references}
+\end{document}

@@ -1,0 +1,28 @@
+\subsection{Continuous maps from rational observations}\label{sec:completion}
+A useful connection between the finite and analytic parts is the universal property of completion in its quantitative form. A presentation $X$ here has decidable valid codes, a PR rational pseudometric $d_X$ on them, and proofs of its laws. A constant name is the constant sequence at a valid code. With $e_n=2^{-n}$, the distance assertion on names is the first-order formula
+\[
+ B_X(r;a,b):\qquad \forall i,j\quad d_X(a_i,b_j)\le r+e_i+e_j .
+\]
+The programs $a,b$ are externally fixed; $i,j$ are numerical variables. A regular name has $B_X(0;a,a)$ and valid values. Equivalent names satisfy $B_X(0;a,b)$. The triangle inequality holds for this notation: compare across the common intermediate sample $c_h$ and then remove the excess $2e_h$. For rational quantities this removal is constructive. If the proposed inequality of rationals failed, its positive gap would exceed $2e_h$ at an index calculable from a positive denominator. Thus agreement is an equivalence relation on regular names.
+
+Let a rational-input evaluator $E(x,i)$ produce valid $Y$-codes, with a PR modulus $\mu$. Assume that for all valid $x,y$ and all numerical $k,i,j$,
+\begin{equation}\label{eq:approx}
+ d_X(x,y)\le e_{\mu(k)}
+ \quad\Longrightarrow\quad
+ d_Y(E(x,i),E(y,j))\le e_i+e_k+e_j .
+\end{equation}
+This single condition includes regularity at fixed $x$ by letting $k$ increase with $y=x$.
+
+\begin{theorem}[Uniform extension and composition]\label{th:completion}
+Define $s(n)=\max(n+2,\mu(n+2)+1)$ and
+$\widehat E(a)_n=E(a_{s(n)},n+2)$. It gives a regular name, depends only on the equivalence class of $a$, and extends $E$ on constant names. It sends $B_X(e_{\mu(k)+1})$ to $B_Y(e_k)$. Among extensions with supplied uniform moduli it is unique up to equivalence of output names. Two such extensions compose by PR substitution.
+\end{theorem}
+\begin{proof}
+For equivalent inputs $a,b$, fix output indices $n,m$. Compare the two outputs through $E(a_L,j)$ with $L=\max(s(n),s(m))$ and $j=\max(n+2,m+2)$. The regularity of $a$ gives $d_X(a_{s(n)},a_L)\le2e_{s(n)}\le e_{\mu(n+2)}$. The analogous inequality $d_X(a_L,b_{s(m)})\le2e_{s(m)}$ follows from equivalence. Two applications of (\ref{eq:approx}) give a total distance at most $2e_{n+2}+2e_{m+2}+2e_j\le e_n+e_m$. This proves both regularity and presentation independence. A constant name gives samples $E(x,n+2)$, equivalent to $E(x,n)$ by fixed-input regularity.
+
+For the modulus, suppose $B_X(e_{\mu(k)+1};a,b)$. At a large common index $L$ take $2e_L\le e_{\mu(k)+1}$, so $d_X(a_L,b_L)\le e_{\mu(k)}$. For fixed $n,m$ also require $L\ge s(n),s(m)$. Compare the two output samples through $E(a_L,j)$ and $E(b_L,j)$. The two outer errors cost $2e_{n+2}+2e_{m+2}+2e_j$ by the preceding calculation applied on each input separately. The middle error costs $e_k+2e_j$. For arbitrarily large $j$ this gives the desired $e_n+e_k+e_m$ bound. All sufficiently large indices here have explicit lower bounds.
+
+The constant name at $a_L$ is within $B_X(e_L)$ of $a$. If another extension has a modulus, choose $L$ large enough to obtain output tolerance $e_k$ for each extension at this pair of inputs. Their outputs agree on the constant by hypothesis. The ball triangle inequality puts their outputs at $a$ within $B_Y(2e_k)$ for every $k$, hence they are equivalent. Finally, for $F:Y\to Z$ in this sense, use the rational-input name $G(x,n)=\widehat F(E(x,\cdot))_n$. If $d_X(x,y)\le e_{\mu_E(\mu_F(k)+1)}$, (\ref{eq:approx}) gives $B_Y(e_{\mu_F(k)+1};E(x,\cdot),E(y,\cdot))$, so the modulus just proved gives $B_Z(e_k)$ for the two $G$-names. This supplies (\ref{eq:approx}) for $G$. The composite on arbitrary names is uniformly continuous and agrees with $G$ on constants, so uniqueness gives the composition law. The identity evaluator $E(x,i)=x$ yields the identity on names by the same argument.
+\end{proof}
+
+The theorem gives a common interface for a rational piecewise-linear map, a chart evaluator, and their composites. It also specifies what must be added on a restricted domain: the sampled codes must stay in the region on which (\ref{eq:approx}) is proved. The positive annular collar in Section~\ref{sec:named-residue} furnishes precisely this input for translation. A global compactness principle is unnecessary for the extension once the modulus is supplied.

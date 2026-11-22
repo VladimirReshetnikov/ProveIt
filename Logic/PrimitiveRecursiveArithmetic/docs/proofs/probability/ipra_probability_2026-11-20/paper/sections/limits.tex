@@ -1,0 +1,342 @@
+\section{Products, convolution, and quantitative limit theorems}
+\label{sec:limit-theorems}
+
+\subsection{Independence and product integration}
+
+Independence is supplied as a product construction, or by a proved product
+factorization on a generating family; it is not inferred from a drawing or
+from uncorrelatedness.  For finite rational laws, product weights are
+$w_i v_j$ and both Fubini and
+$\mathbb E[f(X)g(Y)]=\mathbb E f(X)\,\mathbb E g(Y)$ are identities of
+finite sums.  For represented laws, use rational product approximants and
+explicit absolute-integrability tails.  The product error estimate
+\[
+ |uv-u'v'|\leq |u|\,|v-v'|+|v'|\,|u-u'|
+\]
+and truncation reduce the statement to the finite identity.  A new
+integrability condition is needed when the observable is unbounded.
+
+If independent $X,Y$ have represented densities $f,g$, then their sum has
+convolution density
+\[
+ h(z)=\int_{\mathbb R}f(z-y)g(y)\,dy,
+\]
+provided the density computation has local moduli and uniform tails on the
+requested compact $z$-range.  This condition is automatic for the four
+explicit families above and for a bounded uniformly continuous $f$ with a
+known modulus and an effectively tight $g$: the discarded integral is at
+most $\|f\|_\infty$ times the tail mass of $g$.  Normalization and the
+pushforward formula are finite double-sum identities followed by the
+specified tail limits.  Moreover $h\leq\|f\|_\infty$.
+
+For independent centered normal variables with scales $\sigma,\tau>0$,
+completing the square gives
+\[
+ \frac{(z-y)^2}{\sigma^2}+\frac{y^2}{\tau^2}
+ =\frac{z^2}{\sigma^2+\tau^2}
+  +\frac{\sigma^2+\tau^2}{\sigma^2\tau^2}
+       \left(y-\frac{\tau^2z}{\sigma^2+\tau^2}\right)^2.
+\]
+The affine substitution in the last Gaussian integral proves
+$X+Y\sim N(0,\sigma^2+\tau^2)$.  Every tail needed here is bounded by
+\eqref{eq:gaussian-tail}; no characteristic-function uniqueness theorem is
+required.  Induction gives
+$n^{-1/2}\sum_{i=1}^nG_i\sim N(0,1)$.
+
+\subsection{A Gaussian conditional density}
+
+A useful continuous conditioning example follows from the same algebra.
+Let $X,G$ be independent standard normals, let $\sigma\geq\sigma_0>0$, and
+put $Y=aX+\sigma G$.  Write $A=a^2+\sigma^2$.  The joint density is
+\[
+ f(x,y)=\frac1{\sigma Z^2}
+  \exp\!\left[-\frac12\left(x^2+\frac{(y-ax)^2}{\sigma^2}\right)\right],
+\]
+and the marginal of $Y$ is
+$m(y)=(\sqrt A Z)^{-1}e^{-y^2/(2A)}$.  Completing the square gives
+\[
+ x^2+\frac{(y-ax)^2}{\sigma^2}
+ =\frac{A}{\sigma^2}\left(x-\frac{ay}{A}\right)^2+\frac{y^2}{A}.
+\]
+Thus the density kernel $f(x,y)/m(y)$ is a normal density with mean
+$ay/A$ and variance $\sigma^2/A$.  It is a defined conditional-density
+version at every represented $y$.  It is not formed by dividing by the
+zero probability of the singleton event $\{Y=y\}$.
+
+The denominator separation is explicit on compact parameter ranges.
+If $A\leq U^2$ with rational $U\geq1$ and $|y|\leq R$, then
+\[
+ m(y)\geq
+ \frac1{4U\,3^{\lceil R^2/(2\sigma_0^2)\rceil}}.
+\]
+The finite product identity and the same Gaussian tails establish the
+conditional integration identity against bounded effectively integrable
+test functions.  The lower bound displayed above gives the local precision
+required for division and makes the usual Bayesian Gaussian update a
+primitive recursive operation on the supplied presentations.
+
+\subsection{Markov, Chebyshev, and the weak law}
+
+For a nonnegative finite observable $Y$ and rational $a>0$,
+$a\mathbf1_{\{Y\geq a\}}\leq Y$.  Multiplying by weights and summing gives
+Markov's inequality.  For a centered $X$ this yields
+\[
+ \mathbb P\{|X|\geq\varepsilon\}
+ \leq\frac{\mathbb E X^2}{\varepsilon^2}.
+\]
+For pairwise independent centered $X_1,\ldots,X_n$ with
+$\mathbb E X_i^2\leq V$, finite expansion and vanishing cross terms give
+$\mathbb E(\sum_iX_i)^2\leq nV$.  Consequently
+\begin{equation}
+ \mathbb P\!\left\{\left|\frac1n\sum_{i=1}^nX_i\right|
+                \geq\varepsilon\right\}
+ \leq\frac{V}{n\varepsilon^2}.
+ \label{eq:weak-law}
+\end{equation}
+A requested error probability $\delta>0$ is achieved by
+$n\geq\max(1,\lceil V/(\varepsilon^2\delta)\rceil)$.
+For noncentered identically distributed variables apply this to
+$X_i-\mu$ with a supplied mean and variance certificate.
+
+For general $L^2$ names, a sharp threshold need not itself be an effective
+event.  The universal conclusion is then a certified upper bound, obtained
+from finite approximants with rational threshold slack and the $L^2$
+approximation error.  For the continuous density laws above, sharp threshold
+events are available: a bounded density controls boundary strips.  In a sum
+of independent density variables, convolution preserves any one available
+global density bound; scaling by $1/n$ multiplies that bound by $n$.
+Thus every finite threshold or finite maximum event in this section has
+an explicit approximation modulus for these laws.  This is precisely what
+is needed to pass the finite inequalities to the represented variables.
+
+\subsection{A strong law with an explicit finite-window modulus}
+
+Let $X_i$ be independent, centered, and satisfy
+$\mathbb E X_i^2\leq V$.  The input is a single primitive recursive family
+of coordinate and finite-product presentations, with the needed moment and
+boundary certificates uniform in the coordinate index and finite dimension.
+Separate, nonuniform external descriptions of each $X_i$ would not suffice.
+Write $S_j=\sum_{i=1}^jX_i$.
+For every $m\geq1$ and $a>0$, the finite Kolmogorov maximal inequality is
+\begin{equation}
+ \mathbb P\{\max_{1\leq j\leq m}|S_j|\geq a\}
+ \leq mV/a^2.
+ \label{eq:kolmogorov}
+\end{equation}
+Here full independence, or the appropriate conditional-zero-increment
+property, is used; pairwise independence alone does not justify the proof.
+
+\begin{proof}
+Let $A_j$ be the event that the threshold is first reached at time $j$.
+The events are disjoint, their union is the maximum event, and on $A_j$,
+$S_j^2\geq a^2$.  Since $A_j$ and $S_j$ depend only on the first $j$
+coordinates, independence and centering give
+$\mathbb E[\mathbf1_{A_j}S_j(S_m-S_j)]=0$.  Expansion therefore yields
+\[
+ \mathbb E[\mathbf1_{A_j}S_m^2]
+ =\mathbb E[\mathbf1_{A_j}S_j^2]
+  +\mathbb E[\mathbf1_{A_j}(S_m-S_j)^2]
+ \geq a^2\mathbb P(A_j).
+\]
+Sum over $j$ and use $\sum_j\mathbf1_{A_j}\leq1$ and
+$\mathbb E S_m^2\leq mV$.  On rational finite spaces this is only an
+identity of weighted sums plus positivity.  Moment and boundary certificates
+justify the same assertion for the continuous laws.
+\end{proof}
+
+For any integers $1\leq N\leq M$, split $[N,M]$ into the dyadic blocks
+$[2^jN,2^{j+1}N)$.  Failure of $|S_n|/n<\varepsilon$ in block $j$ implies
+$\max_{n\leq2^{j+1}N}|S_n|\geq2^jN\varepsilon$.  By
+\eqref{eq:kolmogorov} its probability is at most
+$2^{1-j}V/(N\varepsilon^2)$.  The finite geometric sum is less than $4$;
+therefore
+\begin{equation}
+ \mathbb P\!\left\{\max_{N\leq n\leq M}\frac{|S_n|}{n}
+                         \geq\varepsilon\right\}
+ \leq\frac{4V}{N\varepsilon^2}.
+ \label{eq:strong-window}
+\end{equation}
+In particular, for $\varepsilon=2^{-r}$ and error probability $2^{-k}$,
+\begin{equation}
+ N(r,k)=\max\!\left(1,\left\lceil4V\,2^{2r+k}\right\rceil\right)
+ \label{eq:strong-modulus}
+\end{equation}
+works \emph{uniformly in every finite endpoint $M\geq N(r,k)$}.
+This is a substantive finite, primitive recursive form of the strong law.
+
+When each finite deviation event has a uniform effective event name,
+there is also a precise almost-sure certificate in the completed event
+algebra.  Put $D_n^\varepsilon=\{|S_n|/n\geq\varepsilon\}$ and let
+$F_{N,T}^\varepsilon$ be its union for $N\leq n\leq T$.  For $T'\geq T$,
+\eqref{eq:strong-window} bounds the distance between the two finite unions by
+\[
+ d(F_{N,T'}^\varepsilon,F_{N,T}^\varepsilon)
+ \leq\frac{4V}{(T+1)\varepsilon^2}.
+\]
+Thus their event-metric limit $A_N^\varepsilon$ exists with an explicit
+primitive recursive modulus, and
+$\mathbb P(A_N^\varepsilon)\leq4V/(N\varepsilon^2)$.  This supplies a
+countable union by its residual-event bound; it does not incorrectly sum
+the generally divergent individual Chebyshev estimates.
+
+For each error parameter $p$, define the admitted union
+\[
+ U_p=\bigcup_{r\geq0}A_{N(r,p+r+1)}^{\,2^{-r}}.
+\]
+The $r$th event has mass at most $2^{-p-r-1}$, so this union has a geometric
+residual bound and $\mathbb P(U_p)\leq2^{-p}$.  For every $r$ and every
+$n\geq N(r,p+r+1)$, the deviation event $D_n^{2^{-r}}$ is included in
+$U_p$, in the order of the event algebra.  This is an explicit almost-sure
+convergence certificate: one small exceptional event simultaneously
+controls all accuracy scales, with a supplied modulus outside it.
+Under an ordinary set realization it implies the usual strong law.
+The first-order content is the uniform finite-window estimate, the
+explicitly coded exceptional events, and these inclusion estimates; it is
+not quantification over an unrepresented powerset of all infinite sample
+sequences.  For general $L^2$ names without threshold-event certificates,
+retain the upper-envelope finite-window conclusion rather than claiming
+these additional event names.
+
+\subsection{An elementary quantitative central limit theorem}
+
+The following rate is intentionally weaker than the optimal classical
+Berry--Esseen rate; its advantage is a short proof with completely explicit
+primitive recursive bounds.
+
+Let $X_1,\ldots,X_n$ be independent and identically distributed, with
+\[
+ \mathbb E X_i=0,\qquad \mathbb E X_i^2=1,\qquad
+ \mathbb E|X_i|^3\leq B,
+\]
+where $B$ is a supplied rational bound and the third absolute moment has
+an effective tail certificate.  Let $G_i$ be independent standard normal
+variables, independent also of all the $X_i$.  If a represented test
+function $h$ is twice continuously differentiable, with second derivative
+$L$-Lipschitz, then
+\begin{equation}
+ \left|\mathbb E h\!\left(n^{-1/2}\sum_{i=1}^nX_i\right)
+               -\mathbb E h(G)\right|
+ \leq\frac{L(B+2)}{6\sqrt n},
+ \label{eq:smooth-clt}
+\end{equation}
+provided the displayed expectations are effectively integrable.  Bounded
+$h,h',h''$, as in the application below, suffice.
+
+\begin{proof}
+The integral Taylor remainder gives, for all $x,u$,
+\[
+ h(x+u)=h(x)+h'(x)u+\tfrac12h''(x)u^2+R(x,u),\qquad
+ |R(x,u)|\leq L|u|^3/6.
+\]
+This follows directly by integrating
+$|h''(x+t)-h''(x)|\leq L|t|$ twice; the calculation is valid for negative
+$u$ after reversing the integration limits.  It can alternatively be
+proved by rational Riemann sums with the same error bound.
+Replace the summands one at a time.  For replacement $i$, let $T_i$ be the
+sum of the other normalized coordinates, using already replaced Gaussian
+coordinates and the still unreplaced $X$ coordinates.  It is independent
+of both $X_i$ and $G_i$.  Conditional on a fixed value of $T_i$, the constant,
+linear, and quadratic Taylor terms have equal expectations for
+$u=X_i/\sqrt n$ and $u=G_i/\sqrt n$, since their first two moments match.
+The two remainder expectations have total magnitude at most
+\[
+ \frac{L}{6n^{3/2}}
+      \bigl(\mathbb E|X_i|^3+\mathbb E|G_i|^3\bigr)
+ \leq\frac{L(B+2)}{6n^{3/2}}.
+\]
+Product integration justifies averaging this bound in $T_i$.  Sum the $n$
+replacement errors and use the proved Gaussian convolution identity.
+For a direct arithmetic implementation, first truncate and approximate all
+coordinates with the supplied third-moment tails, prove the finite
+replacement bound with its recorded moment errors, and allocate the
+requested extra precision across the $n$ replacements.  The exact matching
+identities are recovered by those explicit error bounds, not by silently
+asserting that rounded finite approximants have exactly unit variance.
+\end{proof}
+
+To turn this into a distribution-function theorem, use the explicit cutoff
+\[
+ H(u)=\begin{cases}
+ 1,&u\leq0,\\
+ 1-10u^3+15u^4-6u^5,&0\leq u\leq1,\\
+ 0,&u\geq1.
+ \end{cases}
+\]
+It satisfies $0\leq H\leq1$, because
+$H'(u)=-30u^2(1-u)^2\leq0$ in the transition interval.
+The function is $C^2$, and $H''$ is globally $60$-Lipschitz: its third
+derivative in $(0,1)$ is $-60+360u-360u^2$, which lies between $-60$ and
+$30$, while its second derivative vanishes at both endpoints and outside
+the interval.  No assertion of a globally continuous third derivative is
+needed.
+
+For $h_{t,\eta}(x)=H((x-t)/\eta)$ the Lipschitz constant is $60\eta^{-3}$,
+and
+\[
+ \mathbf1_{(-\infty,t]}\leq h_{t,\eta}
+ \leq\mathbf1_{(-\infty,t+\eta]}.
+\]
+The analogous cutoff starting at $t-\eta$ gives the lower bracket.  Since
+$\varphi\leq1$, the Gaussian mass in an interval of length $\eta$ is at most
+$\eta$.  Applying \eqref{eq:smooth-clt} to both brackets gives
+\begin{equation}
+ \sup_{t\in\mathbb R}|F_n(t)-\Phi(t)|
+ \leq\eta+\frac{10(B+2)}{\sqrt n\,\eta^3}.
+ \label{eq:cdf-clt}
+\end{equation}
+The supremum notation abbreviates the uniform inequality for every
+represented real $t$; no operation computing an arbitrary supremum is
+required.  For a requested error $\delta=2^{-k}$, set $\eta=\delta/2$.  It is
+enough to take
+\begin{equation}
+ n\geq N_{\rm CLT}(k)
+ :=\left\lceil160(B+2)\right\rceil^2\,2^{8k}.
+ \label{eq:clt-rate}
+\end{equation}
+More generally the smooth theorem holds without identical distributions if
+each summand has mean zero, variance one, and the same third-moment bound.
+
+For continuous summand laws with the boundary certificates already given,
+$F_n$ is an effective distribution function, so \eqref{eq:cdf-clt} is an
+ordinary quantitative CDF assertion.  Without that event information, the
+same proof supplies the upper and lower smooth-probability brackets.  It
+does not manufacture a CDF name at a threshold whose boundary mass lacks the
+required certificate.  For an original
+law with mean $\mu$ and variance $\sigma^2>0$, supply a rational lower bound
+on $\sigma$ and apply the theorem to $(X_i-\mu)/\sigma$.
+
+\subsection{What remains to be formalized for these results}
+
+The finite arithmetic is not starting from zero.  In the inspected ProveIt
+snapshot, the directory
+\texttt{Derivations/Lean/IPRADerivations/Probability/} contains object-level
+\texttt{PRAAx} derivations for finite probability.  In particular,
+\texttt{WeakLaw.lean} contains \texttt{weak\_law},
+\texttt{FirstCrossing.lean} contains \texttt{cover}, \texttt{disjoint}, and
+\texttt{crossing\_bound}, and the \texttt{Kolmogorov*} files assemble the
+finite maximal argument.  These are relevant providers, not merely
+mathematical prose.
+
+The limits of that reuse matter.  \texttt{NormalMoments.lean} proves the
+arithmetic of double factorials and explicitly says that the integrals
+identifying them with normal moments are not formalized.
+\texttt{CompleteSquare.lean} proves finite polynomial identities and
+explicitly excludes normalization integrals.  \texttt{ProductReplacement.lean}
+proves a finite product telescope and bounds, while its header excludes
+characteristic functions and smoothing.  The Lindeberg proof here uses a
+sum of expectation differences rather than that characteristic-function
+product theorem, though the finite telescope infrastructure remains useful.
+
+A completion proceeds in the following concrete order.  First define
+rational quadrature and its finite error predicate, then compile the
+exponential series estimates and the kernel-tail contracts.  Next construct
+normalization and reciprocal names with their separation constants, and
+prove moment identities by finite integration-by-parts estimates.  Prove
+product integration with explicit truncation errors, boundary-strip transfer,
+and Gaussian convolution.  The finite weak and maximal inequalities can
+then be transported to the represented variables.  Finally encode the
+quintic cutoff, its $60$-Lipschitz second-derivative certificate, the Taylor
+remainder estimate, and the one-coordinate replacement inequality.  A
+quantifier-free induction on the number of replacements proves the finite
+sum bound.  Every precision choice in this section is an explicit primitive
+recursive expression or a bounded search with a displayed bound.

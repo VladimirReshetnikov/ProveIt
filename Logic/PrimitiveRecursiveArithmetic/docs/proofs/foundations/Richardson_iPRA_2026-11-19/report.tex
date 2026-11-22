@@ -1,0 +1,90 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,tabularx,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,listings,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Richardson's Theorem in Intuitionistic Primitive Recursive Arithmetic},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Constructive proof, quantitative reduction, and Lean formalization outline}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Richardson's theorem in iPRA}
+\fancyhead[R]{\small Constructive reduction}
+\fancyfoot[C]{\thepage}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{3em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\efa}{\mathsf{EFA}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\NZ}{\operatorname{NZ}}
+\newcommand{\Sol}{\operatorname{Sol}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Run}{\operatorname{Run}}
+\newcommand{\WF}{\operatorname{WF}}
+\newcommand{\Dec}{\operatorname{Dec}}
+\newcommand{\App}{\operatorname{App}}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\llbracket}{[\![}
+\newcommand{\rrbracket}{]\!]}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},showstringspaces=false}
+\title{\vspace{-10mm}\textcolor{MidnightBlue}{Richardson's Theorem}\par\large A constructive arithmetical proof in intuitionistic primitive recursive arithmetic}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{19 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove an arithmetical version of Richardson's identity-undecidability theorem in intuitionistic primitive recursive arithmetic. The reduction already works for one-variable expressions formed from rational constants, $\pi$, addition, multiplication, sine, and a single outer absolute-value occurrence. It supplies a primitive recursive conversion from natural-number polynomial equations to expressions, with explicit finite conversions in both directions between polynomial roots and strict rational nonzero-evaluation certificates.
+
+The analytic argument uses a coarse rational rounding rule, an explicit integer-lattice gap, and a quantitative rational-density construction for $(t\sin t,t\sin t^3,\ldots,t\sin t^{2n-1})$. The foundational input is the established Gaifman--Dimitracopoulos formalized MRDP theorem in $I\Delta_0+\mathrm{EXP}$. Negative translation gives exactly the negative representation required by the diagonal argument. No Markov principle, real-number trichotomy, unrestricted choice, or real intermediate-value theorem is used.
+
+The human proof is complete relative to that explicitly cited, established MRDP theorem; it is not a new proof of MRDP. The accompanying Lean files provide a detailed formalization interface and fully written constructive logical arguments, but the complete object-level iPRA derivation has not been implemented or kernel-checked. This distinction is maintained throughout.
+\end{abstract}
+\vspace{2mm}
+\noindent\fbox{\begin{minipage}{0.94\linewidth}\small
+\textbf{Deliverable status.} This report proves the reduction and its arithmetical interpretation. The archive includes exact-rational reference code, examples, verification receipts, Lean source outlines, and a repository integration plan. It does not include a computed universal MRDP polynomial, a serialized proof of its EFA representation theorem, or a completed Lean proof of the final object-language sentence.
+\end{minipage}}
+\clearpage
+\tableofcontents
+\newpage
+\input{sections/01_statement.tex}
+\input{sections/02_arithmetic.tex}
+\input{sections/03_foundation.tex}
+\input{sections/04_gap.tex}
+\input{sections/05_density.tex}
+\input{sections/06_reduction.tex}
+\input{sections/07_diagonal.tex}
+\input{sections/08_formalization.tex}
+\appendix
+\input{sections/09_primitives.tex}
+\input{sections/10_artifacts.tex}
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{richardson} D. Richardson, \emph{Some Undecidable Problems Involving Elementary Functions of a Real Variable}, Journal of Symbolic Logic \textbf{33} (1968), 514--520. DOI: \href{https://doi.org/10.2307/2271358}{10.2307/2271358}. Primary scan: \url{https://www.math.tecnico.ulisboa.pt/~lgodin/Seminario/richardson.pdf}.
+\bibitem{mathworld} E. W. Weisstein, \emph{Richardson's Theorem}, MathWorld. \url{https://mathworld.wolfram.com/RichardsonsTheorem.html}. Consulted 19 November 2026.
+\bibitem{poonen} B. Poonen, \emph{Undecidable problems: a sampler}, in J. Kennedy (ed.), \emph{Interpreting G\"odel: Critical Essays}, Cambridge University Press, 2014, 211--241. Author version, Sections 9.1.3 and 9.2: \url{https://math.mit.edu/~poonen/papers/sampler.pdf}.
+\bibitem{denef} J. Denef and L. Lipshitz, \emph{Decision problems for differential equations}, Journal of Symbolic Logic \textbf{54} (1989), 941--950, Lemma 3.2. DOI: \href{https://doi.org/10.2307/2274755}{10.2307/2274755}. The curve used here is identified in \cite[Remark 9.3]{poonen}; our quantitative proof is given in full.
+\bibitem{gd} H. Gaifman and C. Dimitracopoulos, \emph{Fragments of Peano's arithmetic and the MRDP theorem}, in \emph{Logic and Algorithmic}, Monographies de L'Enseignement Math\'ematique \textbf{30}, Universit\'e de Gen\`eve, 1982, 187--206. Bibliographic record: \url{https://cris.huji.ac.il/en/publications/fragments-of-peanos-arithmetic-and-the-mrdp-theorem/}.
+\bibitem{cmy} Y. Chen, M. M\"uller and K. Yokoyama, \emph{A parameterized halting problem, $\Delta_0$ truth and the MRDP theorem}, Journal of Symbolic Logic \textbf{90} (2025), 483--508. DOI: \href{https://doi.org/10.1017/jsl.2024.44}{10.1017/jsl.2024.44}. The author preprint of 17 October 2023, Section 1.2, p.~3, explicitly states the $I\Delta_0+\mathrm{EXP}$ formalization result: \url{https://basics.sjtu.edu.cn/~chen/papers/mrdpfull.pdf}.
+\bibitem{jerabek} E. Je\v{r}\'abek, \emph{Diophantine formulas}, Journ\'ees sur les Arithm\'etiques Faibles 35, June 2016, slide 4. \url{https://users.math.cas.cz/~jerabek/talks/jaf2016.pdf}.
+\bibitem{proveit} V. Reshetnikov and contributors, \emph{ProveIt}, repository snapshot \texttt{eb8eb6653c85aa44f1e18dd4efa243f41b5a9e98}, consulted 19 November 2026. \url{https://github.com/VladimirReshetnikov/ProveIt}. Specific audited paths and their verification boundaries are recorded in Section~\ref{sec:repo} and \code{evidence/repository-audit.txt}.
+\end{thebibliography}
+\end{document}

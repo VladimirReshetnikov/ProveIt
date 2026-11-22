@@ -1,0 +1,153 @@
+\section{An exact central-section reduction by finite trapezoids}
+The four centrally symmetric Platonic solids admit a common reduction:
+for each plane orientation, a central section has at least as much area
+as every parallel section.  In the present three-dimensional problem
+this needs only a finite polygon construction.  A general
+Brunn--Minkowski theorem, a limiting argument, and integration are
+unnecessary.
+
+\subsection{The planar finite construction}
+Let $S$ be a convex polygon with at most $m$ vertices.  We prove
+\[
+ \operatorname{area}\bigl((S-S)/2\bigr)
+ \ge \operatorname{area}(S).
+\]
+An empty polygon or a polygon of area zero causes no difficulty: its
+area is zero, and the desired inequality follows from nonnegativity.
+For completeness the construction below also handles a nonvertical
+segment.  Let the horizontal projection be $[a,b]$.  If $a=b$, the
+polygon lies on a vertical line and has area zero.  Assume $a<b$.
+
+Write its vertical fibers as $[\ell(x),u(x)]$ for $a\le x\le b$.
+The functions $\ell$ and $u$ are respectively convex and concave,
+continuous piecewise-affine functions.  Their breakpoints occur among
+the horizontal coordinates of the original polygon vertices.  This
+follows directly by reading the lower and upper boundary chains of a
+convex polygon.  Put $f(x)=u(x)-\ell(x)\ge0$, and let
+\[
+ c=(a+b)/2,\qquad \rho(x)=a+b-x.
+\]
+Construct a new polygon $W$ whose fiber over horizontal coordinate
+$x-c$ has endpoints
+\[
+ L(x)=\frac{\ell(x)-u(\rho(x))}{2},\qquad
+ H(x)=\frac{u(x)-\ell(\rho(x))}{2}.
+\]
+Their difference is
+\[
+ h(x)=H(x)-L(x)
+      =\frac{f(x)+f(\rho(x))}{2}\ge0.                 \tag{CS1}
+\]
+The lower function $L$ is convex, and the upper function $H$ is
+concave: composition with the affine reflection $\rho$ preserves
+convexity or concavity, and taking the negative interchanges them.
+Thus the region between these boundary chains is a convex polygon.
+
+Its containment is also explicit.  The point $(x-c,L(x))$ is the
+half-difference of $(x,\ell(x))\in S$ and
+$(\rho(x),u(\rho(x)))\in S$, while $(x-c,H(x))$ is the
+half-difference of $(x,u(x))\in S$ and
+$(\rho(x),\ell(\rho(x)))\in S$.  Indeed their first coordinates
+are $(x-\rho(x))/2=x-c$.  Since $(S-S)/2$ is convex, it contains the
+whole segment between these endpoints and consequently all of $W$.
+Equivalently, it suffices to check the finitely many boundary vertices
+of $W$ and then take their convex hull.
+
+\subsection{Exact equality of areas}
+Take the distinct horizontal vertex coordinates of $S$, adjoin their
+reflections under $\rho$, and sort the resulting finite set:
+\[
+ a=x_0<x_1<\cdots<x_r=b.
+\]
+There are at most $2m$ distinct breakpoints, so $r\le2m-1$.
+The list is reflection invariant:
+\[
+ x_i+x_{r-i}=a+b \qquad(0\le i\le r).
+\]
+Between consecutive breakpoints all four functions
+$\ell,u,\ell\circ\rho,u\circ\rho$ are affine.  Hence $S$ is the
+union, with disjoint interiors, of its vertical trapezoids over these
+intervals.  If $f_i=f(x_i)$ and $\Delta_i=x_{i+1}-x_i$, their areas are
+\[
+ T_i=\frac{\Delta_i}{2}(f_i+f_{i+1}),\qquad
+ \operatorname{area}(S)=\sum_{i=0}^{r-1}T_i.          \tag{CS2}
+\]
+A zero endpoint height merely gives a triangle.  The trapezoid formula
+follows by splitting into triangles or by a four-vertex shoelace
+calculation; finite area additivity gives the second equality.
+
+The corresponding slab of $W$ runs from $x_i-c$ to $x_{i+1}-c$.
+Its horizontal width is still exactly $\Delta_i$: the coordinate map
+$x\mapsto x-c$ is a translation, not a dilation.  From (CS1), its
+endpoint heights are $(f_i+f_{r-i})/2$ and
+$(f_{i+1}+f_{r-i-1})/2$.  Its area is therefore
+\[
+ \begin{split}
+ U_i
+ &=\frac{\Delta_i}{4}
+      (f_i+f_{i+1}+f_{r-i}+f_{r-i-1})\\
+ &=\frac12 T_i+\frac12 T_{r-i-1},
+ \end{split}                                       \tag{CS3}
+\]
+because reflection gives $\Delta_i=\Delta_{r-i-1}$.
+Summing (CS3), the reversed finite index list is a permutation of the
+original list, and we obtain
+\[
+ \operatorname{area}(W)
+ =\sum_{i=0}^{r-1}U_i
+ =\frac12\sum_{i=0}^{r-1}T_i
+  +\frac12\sum_{i=0}^{r-1}T_{r-i-1}
+ =\operatorname{area}(S).                           \tag{CS4}
+\]
+As $W\subseteq(S-S)/2$, area monotonicity proves the asserted inequality.
+For polygons, this monotonicity is itself a finite fact: refine by the
+finitely many vertical breakpoints of both polygons, compare the
+nonnegative fiber heights at the endpoints, and use the same trapezoid
+formula.  No measure-theoretic premise is needed.
+
+\subsection{Application to an affine section of a symmetric polytope}
+Suppose $K=-K$ is a convex three-dimensional polytope, and write
+\[
+ S=K\cap\{n\cdot x=t\},\qquad
+ S_0=K\cap\{n\cdot x=0\},\qquad n\ne0.
+\]
+For $p,q\in S$, convexity and central symmetry put $(p-q)/2$ in $K$,
+and $n\cdot((p-q)/2)=0$.  Consequently
+\[
+ (S-S)/2\subseteq S_0.
+\]
+Identify the two parallel planes by translation.  The finite planar
+construction gives a polygon $W\subseteq S_0$ having exactly the area
+of $S$.  Hence
+\[
+ \boxed{\ \operatorname{area}(S)\le\operatorname{area}(S_0).\ }
+\]
+This argument includes supporting-plane sections, so no continuity at
+a supporting face is being assumed.
+
+\subsection{Arithmetic coordinates and the iPRA invariant}
+For arithmetic inputs, an orthonormal frame is unnecessary.  Drop any
+coordinate $j$ for which $n_j\ne0$.  The remaining two coordinates
+provide an injective affine chart for both parallel planes; their
+Euclidean areas have the same positive conversion factor
+$\|n\|/|n_j|$.  Apply the preceding construction and area comparison to
+the projected polygons.  All breakpoints, fiber endpoints, translated
+coordinates, and trapezoid areas belong to the original ordered
+arithmetic field.  The common positive conversion factor cancels.
+
+The construction uses at most $2m$ distinct breakpoints and at most
+$4m$ listed boundary vertices for $W$.  Sorting, merging, boundary-chain
+traversal, and evaluating affine functions are primitive recursive.
+A quantifier-free induction invariant for the summation loop is
+\[
+ 2\sum_{i<k}U_i
+   =\sum_{i<k}T_i+\sum_{i<k}T_{r-i-1}
+ \qquad(0\le k\le r),                              \tag{CS5}
+\]
+where all sums are defined primitive-recursively on the finite lists.
+The step is exactly (CS3); at $k=r$, reversing the finite sum gives
+(CS4).  The convexity and containment checks are finite endpoint
+inequalities and arithmetic midpoint identities.  This supplies a
+direct iPRA proof of the central-section reduction for coded polygons,
+without any excluded-middle decision about arbitrary real inputs or
+any unbounded search.

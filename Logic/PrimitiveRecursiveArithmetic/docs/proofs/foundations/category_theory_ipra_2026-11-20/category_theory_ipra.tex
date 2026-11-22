@@ -1,0 +1,111 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{156A72}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Category Theory in Intuitionistic Primitive Recursive Arithmetic},
+ pdfauthor={Category theory research report},
+ pdfsubject={Constructive foundations, explicit proofs, and an object-language Lean roadmap}}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Nat}{\operatorname{Nat}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\Set}{\mathsf{Set}}
+\newcommand{\Ob}{\operatorname{Ob}}
+\newcommand{\Arr}{\operatorname{Arr}}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlist{topsep=5pt,itemsep=3pt,leftmargin=*}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Category theory in \ipra}
+\fancyhead[R]{\small 20 November 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+\vspace*{17mm}
+{\Large\color{accent}\sffamily CONSTRUCTIVE FOUNDATIONS\par}
+\vspace{9mm}
+{\Huge\bfseries\color{ink}Category Theory in\\[3mm]
+Intuitionistic Primitive\\[3mm]Recursive Arithmetic\par}
+\vspace{9mm}
+{\Large Explicit mathematical proofs and\\[2mm]
+an object-language Lean formalization path\par}
+\vspace{12mm}
+{\large Research report and reproducibility package\par}
+\vspace{2mm}
+{\large 20 November 2026\par}
+\vfill
+\noindent\rule{\linewidth}{0.6pt}
+\begin{abstract}
+A substantial structural core of category theory can be developed in
+first-order intuitionistic primitive recursive arithmetic by fixing
+arithmetic object and hom predicates, an arithmetic equivalence on
+parallel arrows, and primitive recursive code operations. The proofs
+may use undecidable equality formulas while remaining finite
+intuitionistic derivations. We give full human-readable proofs of
+Yoneda, representability and density; selected finite limits and colimits;
+adjunctions, preservation and split equivalences; idempotent completion;
+monads, Kleisli and Eilenberg--Moore constructions; pointwise Kan
+extensions under explicit hypotheses; and a constructive diagonal
+theorem. Uniform finite-table algorithms separately provide all finite
+limits, colimits and exponentials, including empty sets.
+The report distinguishes iPRA statements from external schemas,
+selected structure from bare existence, and reused upstream
+proof source from new uncompiled Lean integration drafts.
+\end{abstract}
+\noindent\rule{\linewidth}{0.6pt}\par
+\vspace{3mm}
+{\small\color{ink}
+Package includes the \LaTeX{} source, PDF, exact finite-model code,
+Lean drafts, a pinned upstream import closure, proof-status records,
+and reproduction instructions.\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\input{sections/overview}
+\input{sections/foundations}
+\input{sections/yoneda}
+\input{sections/limits}
+\input{sections/finite}
+\input{sections/adjunctions}
+\input{sections/kan}
+\input{sections/lawvere}
+\input{sections/boundaries}
+\input{sections/formalization}
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\input{references}
+\end{document}
+

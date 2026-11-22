@@ -1,0 +1,53 @@
+RiemannIPRA.RH : Fm PTm 0
+RiemannIPRA.GRH : Fm PTm 0
+RiemannIPRA.ERH : Fm PTm 0
+RiemannIPRA.erh_implies_grh : [] ⊢[PRAAx] ERH.imp GRH
+RiemannIPRA.grh_implies_rh : [] ⊢[PRAAx] GRH.imp RH
+RiemannIPRA.erh_iff_no_counterexample : [] ⊢[PRAAx] ERH.iff (RHCounterexamples.neg (RHCounterexamples.counter ERH))
+'RiemannIPRA.erh_implies_grh' depends on axioms: [propext, Quot.sound]
+'RiemannIPRA.erh_iff_no_counterexample' depends on axioms: [propext, Quot.sound]
+'RiemannIPRA.naturalTerms_sound' depends on axioms: [propext, Quot.sound]
+'RiemannIPRA.erh_reading' depends on axioms: [propext, Quot.sound]
+'PacketLanguage.value_program' depends on axioms: [propext, Quot.sound]
+'PacketLanguage.value_primeCode' depends on axioms: [propext, Quot.sound]
+PacketAudit.rh_iff (form : PacketAudit.Form) : [] ⊢[PRAAx] RH.iff (PacketAudit.RH form)
+PacketAudit.grh_iff (form : PacketAudit.Form) : [] ⊢[PRAAx] GRH.iff (PacketAudit.GRH form)
+PacketAudit.erh_iff (form : PacketAudit.Form) : [] ⊢[PRAAx] ERH.iff (PacketAudit.ERH form)
+PacketAudit.erh_counter_iff_first : [] ⊢[PRAAx] (RHCounterexamples.counter ERH).iff PacketAudit.erhFirst
+PacketSlack.rh_iff_cert (style : PacketSlack.Certificate) : [] ⊢[PRAAx] RH.iff (PacketSlack.certRH style)
+PacketSlack.grh_iff_cert (style : PacketSlack.Certificate) : [] ⊢[PRAAx] GRH.iff (PacketSlack.certGRH style)
+PacketSlack.erh_iff_cert (style : PacketSlack.Certificate) : [] ⊢[PRAAx] ERH.iff (PacketSlack.certERH style)
+'PacketAudit.erh_iff' depends on axioms: [propext, Quot.sound]
+'PacketAudit.erh_counter_iff_first' depends on axioms: [propext, Quot.sound]
+'PacketSlack.erh_iff_cert' depends on axioms: [propext, Quot.sound]
+'Lagarias.upper_no_counterexample' depends on axioms: [propext, Quot.sound]
+RiemannIPRA.Discrete.statement_equivalent (s : Discrete.Family) (m : Discrete.Form) :
+  naturalTerms.Holds (s.close excess) Fin.elim0 ↔ naturalTerms.Holds (Discrete.statement s m) Fin.elim0
+RiemannIPRA.Sparse.sparse_sentence_iff (s : Discrete.Family) :
+  naturalTerms.Holds (s.close excess) Fin.elim0 ↔ naturalTerms.Holds (s.close Sparse.eventMatrix) Fin.elim0
+'RiemannIPRA.Discrete.statement_equivalent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'RiemannIPRA.Sparse.sparse_sentence_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+PrimeForms.allPackets (family : PrimeForms.Family) (data : PR 5) : Fm PTm 0
+PrimeForms.witness (family : PrimeForms.Family) (data : PR 5) (offset order : ℕ) : Fm PTm 0
+MertensSyntax.progressionGRH : Fm PTm 0
+DivisorMatrices.ERH : Fm PTm 0
+FareyEnergy.cyclotomicGRH : Fm PTm 0
+DyadicSeries.statement (family : DyadicSeries.Family) (withRate : Bool) : Fm PTm 0
+FareyRH.GRH (squared : Bool) : Fm PTm 0
+Lagarias.upperRH : Fm PTm 0
+Lagarias.strictRH : Fm PTm 0
+MatrixIdentity.masked_determinant (b : ℕ → ℤ) (n : ℕ) (v : Fin (n + 1) → ℤ) :
+  ((MatrixIdentity.triangle b (n + 1)).updateCol 0 v).det = ∑ i, MatrixIdentity.invRow b ↑i * v i
+EnergyInequality.jordanPairs_eq (d : ℕ) :
+  EnergyInequality.jordanPairs d = {z ∈ (Finset.range d).product (Finset.range d) | (z.1.gcd z.2).gcd d = 1}.card
+EnergyInequality.jordan_quarter (d : ℕ) : ↑d ^ 2 ≤ 4 * ↑(EnergyInequality.jordanPairs d)
+EnergyInequality.jordan_inverse_mass (n : ℕ) (μ : ℕ → ℚ) (hμ : ∀ i < n, μ i ^ 2 ≤ 1) :
+  ∑ i ∈ Finset.range n, μ i ^ 2 / ↑(EnergyInequality.jordanPairs (i + 1)) ≤ 8
+EnergyInequality.recover_eight.{u_1} {ι : Type u_1} (s : Finset ι) (w t μ : ι → ℚ) (M : ℚ) (hw : ∀ i ∈ s, 0 < w i)
+  (hm : ∑ i ∈ s, μ i * t i = M) (hk : ∑ i ∈ s, μ i ^ 2 / w i ≤ 8) : M ^ 2 ≤ 8 * ∑ i ∈ s, w i * t i ^ 2
+AbelIdentity.recover (u S M : ℕ → ℚ) (B : ℚ) (hu : Monotone u) (hu0 : 0 ≤ u 0) (hS0 : S 0 = 0) (hM0 : M 0 = 0)
+  (delta : ∀ (i : ℕ), M (i + 1) - M i = u (i + 1) * (S (i + 1) - S i)) (n : ℕ) (hS : ∀ i ≤ n, |S i| ≤ B) :
+  |M n| ≤ 2 * B * u n
+'MatrixIdentity.masked_determinant' depends on axioms: [propext, Classical.choice, Quot.sound]
+'EnergyInequality.jordan_quarter' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AbelIdentity.recover' depends on axioms: [propext, Classical.choice, Quot.sound]

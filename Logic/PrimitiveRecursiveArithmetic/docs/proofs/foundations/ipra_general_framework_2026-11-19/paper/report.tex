@@ -1,0 +1,89 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage{graphicx,listings,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={Finite algebra and stable selection in iPRA},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Norm}{\operatorname{N}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\pin}{3ee850b4c2d650cf01263823fd5415963747c5d0}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{contract}[theorem]{Contract}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Finite algebra and stable selection in $\ipra$}
+\fancyhead[R]{\small 19 November 2026}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{1cm}
+\begin{center}
+{\Large\bfseries Finite algebra and stable selection in $\ipra$\par}
+\vspace{0.4cm}
+{\large A general embedding discipline with two concrete extensions\par}
+\vspace{0.7cm}
+Prepared for Vladimir Reshetnikov\\[4pt]
+19 November 2026
+\end{center}
+\vspace{0.7cm}
+\begin{abstract}
+We develop a framework for translating mathematical constructions into intuitionistic primitive recursive arithmetic by separating finite representations, actual primitive recursive producers, bounded correctness invariants, and external semantic interpretation. The framework reuses the current ProveIt arithmetic and finite-observation infrastructure rather than replacing it.
+
+The main algebraic extension separates a bound on a determinant norm from its nonvanishing proof. Repeated polynomial division and a reduced quotient algebra prove automatic nonvanishing for $y^m=f(x)$ whenever the nonconstant rational polynomial $f$ is squarefree, with no coprimality restriction on the global degrees. A more general divisor certificate covers some repeated-factor inputs. A local Newton certificate also handles mixed equations. These results yield explicit finite common-zero and proper-subspace bounds. We additionally compress the existing leading-form test from dimension $m$ to $\gcd(m,d)$.
+
+The complementary analytic construction selects a canonical point from finite Hausdorff approximations to a nonempty compact convex set. Finite least-square minimization, approximate midpoint convexity, and a quantitative cancellation estimate produce a fast Cauchy name without an exact minimum value or a preselected limiting witness.
+
+All main arguments are developed at the human mathematical level, with explicit algorithms and induction obligations. The archive supplies exact-arithmetic experiments, a current-source audit, Lean candidate code, and detailed object-theory blueprints. New Lean files were not kernel-checked in this environment. Existing checked upstream declarations are clearly distinguished from the new results and from external completion semantics. No general Siegel, Faltings, or unrestricted selection theorem is claimed.
+\end{abstract}
+\vfill
+\noindent\textbf{Source snapshot.}\quad ProveIt main, commit\\
+\texttt{\pin}.\\[6pt]
+\textbf{Verification boundary.}\quad Human proofs and exact finite computations; explicit Lean completion plan. Upstream proof status is reported from the pinned source, not from a new full repository build.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_scope}
+\input{sections/02_framework}
+\input{sections/03_norm}
+\input{sections/04_local}
+\input{sections/04b_squarefree}
+\input{sections/05_applications}
+\input{sections/06_selection}
+\input{sections/07_formalization}
+\input{sections/08_limits}
+\input{sections/09_artifacts}
+\input{references}
+\end{document}

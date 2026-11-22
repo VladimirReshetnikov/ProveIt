@@ -1,0 +1,183 @@
+/-
+UNCOMPILED SEMANTIC BLUEPRINT AND OBJECT-THEORY PLAN
+
+This text supplies definitions and proposition targets for the function-space,
+variational, and complex-analysis chapters. It is not part of `lake build`.
+Names ending in `Goal` are propositions to prove, not proved assertions.
+The compiled finite kernel is in ../lean/; the exact ordinary-iPRA translation
+is described in ../lean/ObjectTheoryPlan.lean.txt.
+
+The Mathlib-style definitions below belong to the semantic interpretation.
+Object endpoints replace function fields by FIXED PR symbols, replace finite
+lists and rational vectors by natural codes, and clear positive denominators.
+No function field becomes a quantified object of first-order iPRA.
+-/
+
+import Mathlib
+open scoped BigOperators
+
+namespace ContinuousFunctionBlueprint
+
+def eps (k : ℕ) : ℚ := 1 / (2 : ℚ)^k
+
+def clip (lo hi x : ℝ) : ℝ := max lo (min hi x)
+
+structure BoundedLip (X : Type*) [PseudoMetricSpace X] (M L : ℝ) where
+  value : X → ℝ
+  bounded : ∀ x, |value x| ≤ M
+  variation : ∀ x y, |value x - value y| ≤ L * dist x y
+
+-- A finite fold avoids any choice of an index attaining a minimum of real data.
+def minimumFrom (seed : ℝ) : List ℝ → ℝ
+  | [] => seed
+  | y :: ys => minimumFrom (min seed y) ys
+
+structure NonemptyTable (X : Type*) where
+  firstPoint : X
+  firstValue : ℝ
+  rest : List (X × ℝ)
+
+def envelope {X : Type*} [PseudoMetricSpace X]
+    (T : NonemptyTable X) (M L : ℝ) (x : X) : ℝ :=
+  clip (-M) M
+    (minimumFrom (T.firstValue + L * dist x T.firstPoint)
+      (T.rest.map (fun aq => aq.2 + L * dist x aq.1)))
+
+def TableCover {X : Type*} [PseudoMetricSpace X]
+    (T : NonemptyTable X) (h : ℝ) : Prop :=
+  ∀ x, dist x T.firstPoint ≤ h ∨
+    ∃ aq ∈ T.rest, dist x aq.1 ≤ h
+
+def TableAccuracy {X : Type*} (T : NonemptyTable X)
+    (f : X → ℝ) (δ : ℝ) : Prop :=
+  |T.firstValue - f T.firstPoint| ≤ δ ∧
+  ∀ aq ∈ T.rest, |aq.2 - f aq.1| ≤ δ
+
+def EnvelopeLegalGoal {X : Type*} [PseudoMetricSpace X]
+    (T : NonemptyTable X) (M L : ℝ) : Prop :=
+  0 ≤ M → 0 ≤ L →
+  (∀ x, |envelope T M L x| ≤ M) ∧
+  (∀ x y, |envelope T M L x - envelope T M L y| ≤ L * dist x y)
+
+def EnvelopeApproximationGoal {X : Type*} [PseudoMetricSpace X]
+    (T : NonemptyTable X) (M L δ h : ℝ)
+    (f : BoundedLip X M L) : Prop :=
+  0 ≤ M → 0 ≤ L → 0 ≤ δ → 0 ≤ h →
+  TableCover T h → TableAccuracy T f.value δ →
+  ∀ x, |envelope T M L x - f.value x| ≤ δ + 2 * L * h
+
+-- No proof of real supremum existence is hidden in this distance interface.
+-- A distance is supplied by its rational observations and pointwise contracts.
+structure UniformDistanceName {X : Type*} (f g : X → ℝ) where
+  sample : ℕ → ℚ
+  upper : ∀ k x, |f x - g x| ≤ (sample k : ℝ) + (eps k : ℝ)
+  near : ∀ k, ∃ x, (sample k : ℝ) ≤ |f x - g x| + (eps k : ℝ)
+  regular : ∀ k l, |sample k - sample l| ≤ eps k + eps l
+
+def EvaluationGoal {X : Type*} [PseudoMetricSpace X]
+    (M L D : ℝ) (f g : BoundedLip X M L) : Prop :=
+  (∀ x, |f.value x - g.value x| ≤ D) →
+  ∀ x y, |f.value x - g.value y| ≤ D + L * dist x y
+
+-- The actual grid/quantizer endpoint uses rational codes and no ambient reals:
+-- G_m = all d-tuples of integer coordinates 0..2^m divided by 2^m.
+-- δ=2^(-(k+2)); m=k+3+s; L≤2^s; M≥1; s∈N.
+-- Query f at G_m to error δ/2, rationally round to multiples of δ,
+-- and clip entries to [-M,M]. The returned table has length (2^m+1)^d.
+-- Its envelope error is at most δ+2L*2^-m≤2^(-(k+1)).
+-- Catalog code is a base-(2M*2^(k+2)+1) word of that length.
+-- Prove the grid cover and quantization inequalities before using the catalog.
+
+def tent (x : ℝ) : ℝ := min x (1-x)
+def retract (f : ℝ → ℝ) (x : ℝ) : ℝ := clip (-tent x) (tent x) (f x)
+
+def AnchoredLip (f : ℝ → ℝ) : Prop :=
+  f 0 = 0 ∧ f 1 = 0 ∧
+  ∀ x ∈ Set.Icc (0 : ℝ) 1, ∀ y ∈ Set.Icc (0 : ℝ) 1,
+    |f x - f y| ≤ |x-y|
+
+def leftSum (f : ℝ → ℝ) (N : ℕ) : ℝ :=
+  (∑ j ∈ Finset.range N, f ((j : ℝ) / N)) / N
+
+def IntegralNameGoal (f : ℝ → ℝ) : Prop :=
+  AnchoredLip f → ∀ N M : ℕ, 0 < N → 0 < M →
+    |leftSum f N - leftSum f M| ≤ 1/(N : ℝ) + 1/(M : ℝ)
+
+def TentFiniteIdentityGoal : Prop :=
+  ∀ n : ℕ, 0 < n →
+    (∑ j ∈ Finset.range (2*n), min j (2*n-j)) = n*n
+
+-- Implement integration initially as the dyadic Cauchy sequence of leftSum.
+-- To prove the residual inequality, use g=tent-f, g≥0, Lip(g)≤2.
+-- A rational supporting hat max(0,a-2*|x-r|) has rational breakpoints,
+-- exact area a^2/2, and grid error at most 2/N.
+-- Object conclusion is the all-precision inequality D(f,tent)^2≤2*J(f).
+-- The diameter schedule is κ(k)=2*k+3.
+
+end ContinuousFunctionBlueprint
+
+namespace ComplexAnalyticBlueprint
+
+def norm1 (z : ℂ) : ℝ := |z.re| + |z.im|
+
+structure PowerSeriesPresentation where
+  center : ℚ × ℚ
+  coeff : ℕ → (ℚ × ℚ)
+  radius : ℚ
+  majorant : ℚ
+  radius_pos : 0 < radius
+  majorant_pos : 0 < majorant
+
+def toComplex (z : ℚ × ℚ) : ℂ := (z.1 : ℝ) + (z.2 : ℝ) * Complex.I
+
+def CoefficientBound (P : PowerSeriesPresentation) : Prop :=
+  ∀ n, norm1 (toComplex (P.coeff n)) * (P.radius : ℝ)^n ≤ P.majorant
+
+def polynomial (P : PowerSeriesPresentation) (N : ℕ) (z : ℂ) : ℂ :=
+  ∑ n ∈ Finset.range (N+1),
+    toComplex (P.coeff n) * (z - toComplex P.center)^n
+
+def derivativePolynomial (P : PowerSeriesPresentation) (N : ℕ) (z : ℂ) : ℂ :=
+  ∑ n ∈ Finset.range N,
+    ((n+1 : ℕ) : ℂ) * toComplex (P.coeff (n+1)) *
+      (z - toComplex P.center)^n
+
+def FiniteTailGoal (P : PowerSeriesPresentation) (rho : ℚ) : Prop :=
+  CoefficientBound P → 0 < rho → rho < P.radius →
+  ∀ N m z, N < m → norm1 (z-toComplex P.center) ≤ rho →
+    norm1 (polynomial P m z - polynomial P N z) ≤
+      (P.majorant : ℝ) * ((rho / P.radius : ℚ) : ℝ)^(N+1) /
+        (1 - ((rho / P.radius : ℚ) : ℝ))
+
+def FiniteTaylorGoal (P : PowerSeriesPresentation) (rho : ℚ) : Prop :=
+  CoefficientBound P → 0 < rho → rho < P.radius →
+  ∀ N z h, norm1 (z-toComplex P.center) + norm1 h ≤ rho →
+    norm1 (polynomial P N (z+h) - polynomial P N z -
+      derivativePolynomial P N z * h) ≤
+    (P.majorant : ℝ) / ((P.radius : ℝ)^2 *
+      (1 - ((rho/P.radius : ℚ) : ℝ))^3) * (norm1 h)^2
+
+-- Complete definitions of numerical cutoffs:
+-- theta=rho/R; sigma=(1+theta)/2; u=theta/sigma.
+-- B0=M/(1-theta); B1=M/(R*(1-u)^2*(1-sigma)).
+-- Choose natural H0,H1,b0,b1 with Hi*(1-ratio_i)≥1 and Bi≤2^bi.
+-- N0(k)=H0*(k+b0+1); N1(k)=H1*(k+b1+1).
+-- valueName(k,z)=polynomial(P,N0(k),z), with input reindexing from Lip bound.
+-- derivativeName(k,z)=derivativePolynomial(P,N1(k),z), likewise.
+-- Tail bounds are ≤2^(-(k+1)).
+-- Lip(value)=M/[R*(1-theta)^2]; Lip(derivative)=2M/[R^2*(1-theta)^3].
+-- Use completion extension on BOTH names before evaluating at represented z.
+
+-- Holomorphic descent data and dependency order:
+-- 1. A positive finite number N of local presentations, with ri<Ri.
+-- 2. Rational metric weights wi=(ri-norm1(z-ci))_+; S=sum wi.
+-- 3. Guarded domain D0={rational z : S(z)≥delta}, delta>0.
+-- 4. On rational overlaps, all local sample pairs differ by ≤eps(p)+eps(q).
+-- 5. Apply AnalyticTopologyBlueprint's weighted gluing and completed restriction.
+-- 6. On Omega={represented z : S(z)>delta}, retain rational margin gamma>0.
+-- 7. Find an active chart using coarse weight lower bounds, not exact real sign.
+-- 8. Restrict increments by min(gamma/(2N),delta/(4N),derivative budget).
+-- 9. The global function equals a chart on this neighborhood, so its derivative
+--    is the chart derivative. Never differentiate the nonholomorphic weights.
+
+end ComplexAnalyticBlueprint

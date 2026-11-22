@@ -1,0 +1,301 @@
+\section{Residues at primitive-recursively named singularities}\label{sec:named-residue}
+
+The repository's \src{docs/proofs/analysis/cauchy_residue_ipra/report.tex}{Cauchy and residue manuscript} proves a quantitative
+residue theorem for rational polygonal fillings and explicitly restricts the
+singularity centres to rational points. A rational point close to a singularity
+generally has residue zero. Using it as the centre of a Laurent expansion would
+therefore give a wrong answer. A rational point can instead locate the
+\emph{hole in a triangle chain}, while a translated chart computes the Laurent
+expansion about the actual singularity. We prove this change of presentation.
+The base analytic results we reuse are the finite-chain Cauchy theorem, square
+kernel moment and annular Laurent estimate of that manuscript. These are inputs
+from its human proofs. Their deep Lean formalizations are dependencies of the
+proposed formalization here.
+
+\subsection{Quantitative chart transport}
+
+Write $|z|_1=|\Re z|+|\Im z|$, $|z|_\infty=\max(|\Re z|,|\Im z|)$ and
+$Q_r(b)=\{z:|z-b|_\infty\le r\}$. Our centres are given by a fixed PR
+procedure $A(t)\in\mathbb Q(i)$ satisfying
+$|A(t)-A(u)|_1\le2^{-t}+2^{-u}$. Write $a$ for its name. For a finite
+family of variable size, use a single procedure $A(j,t)$, and likewise
+single indexed PR procedures for the evaluators, bounds and moduli on
+the local carriers.
+Whenever a named quantity occurs in an estimate it denotes its regular
+rational approximation inequalities, with the errors of its samples
+added. For example, $|a-A(t)|_1\le2^{-t}$ means the displayed
+two-index inequality.
+
+On a rational carrier give uniform PR evaluators $F(x,n),D(x,n)$ for a
+function $f$ and its derivative coefficient $d$, each of accuracy $2^{-n}$,
+and magnitude bounds. Precisely, the samples of each at a fixed rational
+$x$ satisfy the same two-index inequality as $A$. For rational $x,y$ in
+the carrier, require the following uniform bounds with supplied PR moduli $\nu,\mu$.
+\begin{align*}
+ |y-x|_1\le2^{-\nu(k)}&\ \Longrightarrow\ |f(y)-f(x)|_1\le2^{-k},\\
+ |y-x|_1\le2^{-\mu(k)}&\ \Longrightarrow\
+ |f(y)-f(x)-d(x)(y-x)|_1\le2^{-k}|y-x|_1 .
+\end{align*}
+The finite reading of the second bound at common sample precision $n$
+adds $(2+|y-x|_1)2^{-n}$ to the right. These conditions compare the
+indicated pairs of points, and do not require a path between them.
+All moduli may be made nondecreasing by taking a running maximum.
+
+Fix a rational $r>0$, choose $s_0$ with $2^{-s_0}\le r/128$, and set
+$b=A(s_0)$. For instance $s_0=\lceil128/r\rceil$ suffices. Assume the
+above data on the closed rational annulus
+\[
+ K=\{x:r/32\le |x-b|_\infty\le9r\}.
+\]
+This is an explicit margin assumption. A presentation supplied on all
+separated compact subannuli about $a$ need only supply its data here, since
+$K$ lies inside $r/64\le|x-a|_\infty\le10r$. For $t\ge s_0$,
+$|A(t)-b|_1\le r/64$. Thus $A(t)+w$, for
+$r/8\le |w|_\infty\le8r$, remains in $K$ even after an additional
+taxicab displacement of $r/64$.
+
+\begin{lemma}[Translated evaluator on the closed annulus]\label{lem:analytic-shift}
+The function $g(w)=f(a+w)$, on rational $w$ with
+$r/8\le |w|_\infty\le8r$, has PR evaluators, magnitude bounds,
+and the same continuity and first-order remainder moduli. A modulus for
+variation of the original derivative on the sampled points is derivable
+from $\nu,\mu$ and the margin.
+\end{lemma}
+\begin{proof}
+Given $k$, let $H=\max\{\mu(k+2),\lceil64/r\rceil\}$ and
+$h=2^{-H}$, a positive \emph{real} rational step. At every sampled point
+$x=A(t)+w$, the points $x$ and $x+h$ belong to $K$. The secant
+$[f(x+h)-f(x)]/h$ differs from $d(x)$ by at most $2^{-k-2}$. If two
+such points $x,y$ satisfy $|x-y|_1\le2^{-\nu(k+H+2)}$, continuity at
+$x,y$ and at $x+h,y+h$ bounds the difference of the secants by
+$2\cdot2^{-k-H-2}/h=2^{-k-1}$. The two end errors give the derivative
+modulus $\nu_D(k)=\nu(k+H+2)$. The division is only by the explicitly
+chosen rational $h$. Comparing secants made of finite samples adds at
+most $4\cdot 2^{-n}/h$; a sample precision $n\ge q+H+2$ bounds this
+extra term by $2^{-q}$. This also justifies the regular-name shorthand
+used in the calculation.
+
+Define
+\[
+ e(n)=\max\{s_0,n+3,\nu(n+3)+2,\nu_D(n+3)+2\}.
+\]
+Evaluate the new function and derivative at $(w,n)$ by applying $F,D$
+at $(A(e(n))+w,n+3)$. For any $t\ge e(n)$ the two rational arguments
+$A(t)+w$ and $A(e(n))+w$ differ by at most $2^{1-e(n)}$. The
+continuity bounds just obtained, plus the error of the returned sample,
+put it within $2^{-n-2}$ of the corresponding value at $A(t)+w$.
+Taking a common $t$ for two proposed samples proves regularity, for
+both procedures. To compare $w$ and $v$, choose the same $t$ in both
+translates. Their difference is exactly $v-w$, so both input bounds
+apply with their original moduli. Moving the function and derivative
+samples back costs at most their prescribed sample errors. In particular
+the new remainder slack at common precision $n$ is bounded by
+$(2+|v-w|_1)2^{-n}$. The argument uses only arbitrarily accurate
+rational samples; clearing any auxiliary $2^{-q}$ error in a rational
+inequality uses decidable comparison and the denominator of a putative
+positive gap. Magnitude bounds transfer in the same way.
+\end{proof}
+
+\input{analytic_backend}
+
+\subsection{From local Laurent coefficients to a global integral}
+
+\begin{theorem}[Named-centre residue formula]\label{thm:analytic-named}
+Let $\Gamma$ be a finite closed rational polygonal integer chain and
+let $a_j$ be finitely many named points with rational data $r_j,s_j,b_j,K_j$
+as above. The rational holes $Q_{r_j}(b_j)$ are pairwise disjoint and
+avoid $\Gamma$. Give effective holomorphy data on each $K_j$, and on
+a rational triangle chain $T$ lying outside all open holes, such that
+\[
+ \partial T=\Gamma-\sum_j w_j\,\partial Q_{r_j}(b_j)
+\]
+with equality after common edge subdivision. The function evaluations
+agree on overlaps. Then the Laurent coefficient $c_{j,-1}$ of $f$ in
+the coordinate $z-a_j$ has a PR name and
+\[
+ \int_\Gamma f(z)\,dz=2\pi i\sum_j w_j c_{j,-1},
+ \qquad w_j=(2\pi i)^{-1}\int_\Gamma\frac{dz}{z-a_j}.
+\]
+The coefficient is local to the stated annulus. When the data extend
+coherently to a punctured neighbourhood, it is the residue of that germ.
+There is no bound on pole order in the hypotheses.
+\end{theorem}
+\begin{proof}
+For one hole, use Lemma~\ref{lem:analytic-shift} to construct $g$.
+Apply the rational-centre annular theorem at the rational point $0$
+in the $w$-coordinate. To specify the computation, put $R=8r$ and
+$s=r/8$. For $n\ge0$ its coefficients are
+\begin{align*}
+ c_n &=(2\pi i)^{-1}\int_{\partial Q_R(0)}g(w)w^{-n-1}\,dw,\\
+ c_{-n-1}&=(2\pi i)^{-1}\int_{\partial Q_s(0)}g(w)w^n\,dw .
+\end{align*}
+With outer and inner magnitude bounds $M_R,M_s$, its proof bounds the
+error of the sum from $-N$ through $N-1$ on $\partial Q_r(0)$ by
+$C2^{-N}$, where
+\[
+ C=16RM_R/(R-r)+16sM_s/(r-s).
+\]
+Indeed the ratios $|w/u|_1$ at the outer boundary and $|u/w|_1$ at the
+inner boundary are each at most $1/2$ in the finite geometric expansions
+of the Cauchy kernels. The square moments vanish in all degrees other than
+$-1$ and equal $2\pi i$ in that degree. Integrating the approximation
+therefore yields $\int_{\partial Q_r(0)}g=2\pi i c_{-1}$ with error
+bounded by $8rC2^{-N}$ before passage to names. The same moment test
+after multiplication by $w^{-m-1}$ recovers each coefficient of any
+PR Laurent presentation with a supplied uniform tail modulus on the square, establishing
+its uniqueness. Thus the coefficient refers to the specified centre.
+
+It remains to identify this local integral with the boundary integral
+used in the rational chain. For each $t\ge s_0$ join corresponding
+vertices of $\partial Q_r(b)$ and $\partial Q_r(A(t))$ and triangulate
+each of the four panels by one diagonal. A point in a panel is a point
+on the corresponding side of $Q_r(b)$ displaced by a scalar multiple
+between zero and one of $A(t)-b$. Hence its max-norm distance from $b$
+is between $r-r/64$ and $r+r/64$. All eight rational triangles lie in
+$K$, including degenerate panels. Orient them in the order
+$[p,q,q'],[p,q',p']$ for bottom side $p q$ and top side $p'q'$.
+Diagonals and connectors cancel, leaving the bottom boundary minus
+the top boundary. The finite-chain Cauchy theorem consequently gives
+identical integrals on the two squares. Rational translation on each
+edge changes the latter integral to
+$\int_{\partial Q_r(0)} f(A(t)+w)\,dw$ by literal equality of
+parametrized quadrature sums. For $t\ge\max(s_0,\nu(k)+2)$ the
+integrand differs uniformly from $g$ by at most $2^{-k}$, by comparison
+with all later rational translates. The integral error is at most
+$8r2^{-k}$ by the perimeter bound on quadrature. As $k$ is arbitrary
+the proxy integral equals $2\pi i c_{-1}$. Applying the finite-chain
+Cauchy theorem on $T$ and summing these identities proves the first
+claim. For example, to make the total translation error $\le2^{-q}$,
+take a common $k=q+\lceil1+\sum_j8r_j|w_j|\rceil$. This gives a
+PR schedule also when the number of holes varies.
+
+For the second identity fix $v=A_j(t)$ with $t\ge s_j$. On $T$ the
+kernel $(z-v)^{-1}$ has positive separation because $T$ avoids the open
+$j$th hole and $|v-b_j|_1\le r_j/64$. Its integral around that hole
+equals $2\pi i$ by the same rational eight-triangle construction and
+the centred kernel moment. On a different hole the kernel extends over
+its entire square; the two triangles filling that square give zero.
+The chain identity thus gives the normalized integral $w_j$.
+Put $L$ equal to the total taxicab length of $\Gamma$, counting
+absolute multiplicities, and $\delta=r_j/2$. Both centre distances
+along $\Gamma$ are at least $\delta$ in max norm. Since
+$|u^{-1}|_1\le2/\delta$ when $|u|_\infty\ge\delta$, the inverse
+difference identity bounds the integral change on replacing $v$ by
+$a_j$ by $4L2^{-t}/\delta^2$. Taking arbitrary precision proves the
+second identity and shows independence of the proxy for the index.
+Radius independence for a punctured germ follows by applying the
+centred Cauchy theorem to the intervening annulus in the translated
+coordinate. All constructions use bounded lists of rational
+operations, the given moduli and precision shifts.
+\end{proof}
+
+The geometric hypotheses are attainable without knowing an exact
+centre. For example, given a rational lower bound $d>0$ on all
+pairwise centre and centre-to-contour max-norm separations, choose a
+common $r\le d/32$ small enough for the analytic collars and approximate
+each centre to $r/128$. The rational holes then satisfy the required
+separations by the triangle inequality. The repository's rational
+planar filling algorithm applies to their proxies. For a restricted
+analytic domain the membership of its retained triangles still requires
+evidence. In the proof the singularities may have nonrational real and
+imaginary parts. The information consumed about them consists of
+approximations at finitely prescribed precisions and the supplied
+separations.
+
+\subsection{An irrational double pole and its exact integral}
+
+Take $a=\sqrt2+i\sqrt3$, $f(z)=z^2/(z-a)^2$, and let $\Gamma$ run
+counterclockwise around $[1,2]^2$. A rational approximation algorithm
+uses $m=2^{t+2}$ and returns
+\[
+ A(t)=m^{-1}\bigl(\lfloor\sqrt{2m^2}\rfloor
+                 +i\lfloor\sqrt{3m^2}\rfloor\bigr).
+\]
+The integer square roots are bounded searches for the largest $u\le N$
+with $u^2\le N$. The resulting two coordinates have error less than
+$1/m$ each. Choose $r=1/64$, $s_0=14$, so $2^{-s_0}\le r/128$.
+The rational comparisons $7/5<\sqrt2<3/2$ and
+$17/10<\sqrt3<7/4$ follow on squaring. They put the whole $9r$
+proxy square inside $[1,2]^2$. The horizontal and vertical lines
+through the proxy hole sides divide the outer square into nine
+rectangles; the eight outside the hole give sixteen triangles and
+$w=1$.
+
+Here are witnesses for the analytic hypotheses. The distance to $a$ in
+max norm on $T\cup K$ is at least $r/64$. With $U=256/r$, the inverse
+$u=(z-a)^{-1}$ and all its sufficiently precise rational approximations
+are bounded in taxicab norm by $U$: evaluate at $A(t)$ with
+$2^{-t}\le r/128$ and use the inverse bound. The inverse difference
+identity gives $|u(y)-u(x)|_1\le U^2|y-x|_1$, and the first-order
+remainder for $u$ has bound $U^3|y-x|_1^2$, since
+\[
+ u(y)-u(x)+u(x)^2(y-x)=u(x)^2u(y)(y-x)^2 .
+\]
+Expansion of $u(y)^2$ at $x$ bounds the corresponding remainder for
+$u^2$ by $3U^4|y-x|_1^2$. Indeed the two terms are twice $u(x)$
+times the preceding remainder and $(u(y)-u(x))^2$. Since
+$f=1+2au+a^2u^2$ and $|a|_1\le4$, continuity is Lipschitz with constant
+$8U^2+32U^3$, and its quadratic remainder constant is $8U^3+48U^4$.
+For any such constant $B$, $k+\lceil B+1\rceil$ is a sufficient dyadic
+modulus. Magnitude bounds follow from the same expression for $f$
+and $d=-2au^2-2a^2u^3$. To evaluate, use the equivalent formulas
+$f=z^2u^2$ and $d=2zu^2-2z^2u^3$. Since $|z|_1\le4$ on the
+carriers, replacing $a$ by $A(t)$ in $u$ incurs errors at most
+$32U^3 2^{-t}$ for $f$ and $(16U^3+96U^4)2^{-t}$ for $d$, by factoring
+the differences of the second and third powers. This supplies fixed
+PR evaluators with the required service precisions.
+
+Finally $f(a+w)=1+2a/w+a^2/w^2$ by multiplication by $w^2$.
+The exact integral is consequently
+\[
+ \int_\Gamma \frac{z^2}{(z-a)^2}\,dz=4\pi i(\sqrt2+i\sqrt3).
+\]
+In particular, the imaginary part of the centre affects the real
+part of the integral. The rational proxy itself is a regular point of $f$.
+
+\subsection{Lean targets for this extension}
+
+The included \texttt{Secant.lean} proves the two-component rational
+estimate underlying Lemma~\ref{lem:analytic-shift}. If the two
+first-difference residuals are $\le R$ and the two cross-differences
+are $\le u$, it proves $h|d-e|_1\le2R+2u$. Substituting
+$R=h2^{-k-2}$ and $u=2^{-k-H-2}$ gives the stated modulus.
+Its proof uses Mathlib's rational arithmetic at Lean 4.32.0.
+The included \texttt{ContourRibbon.lean} proves
+\texttt{panel\_cancel}, \texttt{strip\_cancel}, and \texttt{closed\_strip}
+in Lean's ordinary logic. For any antisymmetric integer observation of
+a directed edge, the signed sum over the two triangles of each panel is
+the bottom edge minus the top edge plus its end connector minus its
+start connector. Induction over consecutive pairs then leaves only
+the final and initial connectors, which cancel for a loop. Taking the
+observation to be the coefficient of one queried oriented edge gives
+the required identity of chains. The verifier uses Lean 4.32.0 and
+\texttt{Std}. To internalize the remaining argument:
+\begin{enumerate}
+\item Use integer numerator and positive denominator codes; implement
+      componentwise translation, the two norms, inverse at separated
+      points, and the predicates for $K$ and the core annulus by
+      rational cross multiplication. Define the strip as the two listed
+      triangles per paired edge. Its object induction invariant, with
+      the queried edge fixed as parameter, is the integer equation of
+      \texttt{strip\_cancel}.
+\item For fixed codes for $A,F,D,\nu,\mu$, express the two input
+      inequalities on rational samples, plus their coherence, as local
+      hypotheses of \texttt{Prf PRAAx}. Define $H,e$ by composition.
+      Prove the secant estimate at a common auxiliary precision and use
+      the positive denominator of a rational gap to discharge extra
+      slack. Apply the input inequalities at a common translate to
+      derive the two new contracts. Universally close over parameters
+      after deriving these finite inequalities.
+\item Import or implement the manuscript's finite quadrature and
+      Cauchy estimates, square moments and Laurent cutoff. Instantiate
+      them with the translated evaluators and rational centre zero.
+      For the eight triangle applications use the rational band
+      inclusion proved above. For a variable family fold weighted
+      integral discrepancies, with invariant that their norm is at
+      most the partial sum of the individual rational error budgets.
+      The centre-approximation argument for the kernel uses only
+      multiplication of separated inverses and a scalar perimeter
+      bound. These steps target the finite precision readings of both
+      identities in Theorem~\ref{thm:analytic-named}.
+\end{enumerate}

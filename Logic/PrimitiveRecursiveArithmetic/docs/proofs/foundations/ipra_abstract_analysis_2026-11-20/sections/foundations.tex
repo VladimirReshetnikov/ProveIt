@@ -1,0 +1,249 @@
+\section{Scope, baseline, and the interpretation discipline}
+\label{sec:foundations}
+
+\subsection{What the existing project already supplies}
+
+The review is pinned to commit
+\texttt{5f3be02388442f16487d2dc5c2529961dd783d2b}, rather than to a moving
+branch. The core README distinguishes research packets from checked proof
+libraries. In particular, a packet's statement that its proof is intended for
+\(\ipra\) is not itself a checked derivation. The existing source goes
+considerably beyond the early packet descriptions: it already contains
+presented-sort interpretation, observation composition, finite nets, coherent
+minimizers, and many finite analytic estimates. We reuse this architecture
+instead of proposing another renaming of a certificate interface
+\cite{repoMain,repoSetoid,repoExtensional,repoFramework,repoCoherent}.
+
+The most relevant existing mechanisms are as follows. Paths in this report are
+relative to \sourcepath{Logic/PrimitiveRecursiveArithmetic/}.
+\begin{center}
+\small
+\begin{tabular}{p{.27\textwidth}p{.64\textwidth}}
+\toprule
+Existing mechanism & Consequence for the present work\\
+\midrule
+Setoid interpretation &
+Source equality may be interpreted by an equivalence formula; it need not be
+a decidable equality test. Quantifiers are relativized to a domain formula.\\
+Precision composition &
+The demand of a composite is already derived by composing demands. This
+logical rule does not manufacture a missing modulus.\\
+Coherence and stability &
+Independent approximate witnesses require a stability or selection argument
+before they define one continuous object.\\
+Finite nets and covers &
+A finite net suffices for approximate extrema and robust observations.
+An arbitrary open cover or an infinite sequence has additional requirements.\\
+Analytic charts and contour packets &
+Radius, magnitude, separation, differentiability and tail data are explicit.
+They cannot be erased merely by calling an input analytic.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The new work develops \emph{instances that exercise these distinctions}:
+function spaces rather than only individual functions; quantification over
+metric sorts rather than only point evaluation; coercive equations in an
+infinite-dimensional completion; and simultaneous control of derivatives.
+The individual mathematical ideas are classical or constructive-analysis
+tools. No historical priority claim is made. The contribution is their
+explicit, mutually compatible arithmetic formulation, the detailed proofs,
+and the diagnosis of missing information.
+
+\subsection{The exact base theory}
+
+\begin{definition}[The arithmetic theory]
+\(\ipra\) has one numerical sort, intuitionistic first-order logic with equality,
+a symbol for each specified primitive-recursive definition, its defining
+equations, the successor axioms, and induction for quantifier-free formulas.
+Free numerical parameters are allowed in induction.
+\end{definition}
+
+A primitive-recursive definition is built from zero, successor, projections,
+composition, and primitive recursion. A finite tuple, list, polynomial or
+matrix is encoded by a natural number. The code predicates and all component
+operations used below are primitive recursive. Integers are signed natural
+codes; rational numbers are pairs consisting of an integer numerator and a
+positive natural denominator. A malformed code is assigned a harmless default
+value, and validity is kept as a separate premise. Equality and order of
+rationals are decided by multiplication by positive denominators. Reducing
+fractions to lowest terms is optional.
+
+A statement involving \(2^{-k}\), a rational power, a finite maximum, or an
+integer ceiling therefore abbreviates a finite arithmetic formula. Bounded
+search means checking every candidate below an explicit numerical bound, not
+searching until an unspecified terminating event occurs. No efficiency claim
+is implicit: bounds such as \(2^{2^k}\) are primitive recursive.
+
+\begin{lemma}[Bounded conjunctions require only quantifier-free induction]
+\label{lem:boolean}
+Let \(P(i,\vec a)\) be a decidable primitive-recursive predicate. Its bounded
+universal and existential assertions can be represented by primitive-recursive
+Boolean folds. A loop whose invariant consists of finitely many such assertions
+can be verified by quantifier-free induction.
+\end{lemma}
+\begin{proof}
+Choose a Boolean characteristic \(p(i,\vec a)\in\{0,1\}\). Define
+\(b(0,\vec a)=1\) and
+\(b(n+1,\vec a)=b(n,\vec a)p(n,\vec a)\).
+The finite scan has a quantifier-free state invariant recording the accumulated
+Boolean and any requested component index. Its defining equations give the
+bounded introduction and elimination rules: a product of Boolean values is
+\(1\) exactly when every factor is \(1\). To prove the backward implication
+one inducts on the scan while the required bounded universal premises are
+available in the context, instantiating the next premise at each step.
+To prove the forward implication fix the requested index first and use
+quantifier-free induction to preserve its implication from the accumulator.
+Existential search is the analogous disjunction fold with a stored least
+witness. Bounds and finite tuples can be included in the state.
+This does not allow an unbounded universal formula to become an induction
+invariant: each unbounded query is first fixed as a parameter.
+\end{proof}
+
+\begin{lemma}[Rational separation]
+\label{lem:separation}
+For rationals \(r,s,C\) with \(C\geq0\), if
+\(r\leq s+C2^{-k}\) for every \(k\), then \(r\leq s\).
+The conclusion has a direct intuitionistic proof from the displayed family
+of finite inequalities.
+\end{lemma}
+\begin{proof}
+Rational order is decidable. If \(r>s\), write the positive difference as
+\(a/b\), with integers \(a,b\geq1\). Choose an integer \(L\geq Cb+1\), and
+put \(k=L+1\). The elementary induction \(2^L\geq L+1\) gives
+\(C2^{-k}<1/b\leq a/b\), contradicting the \(k\)-th inequality. No real
+limit rule or Markov principle is being used.
+\end{proof}
+
+\subsection{Three levels that must not be conflated}
+
+\paragraph{Finite arithmetic.}
+A theorem at this level is a sentence or open sequent in the actual arithmetic
+language. Examples are a squared rational norm estimate, a bound on a finite
+iteration, or the correctness of a bounded scan. This is the layer whose
+proof terms must eventually have type
+\[
+                  \Gamma\vdash[\mathsf{PRAAx}]\varphi.
+\]
+
+\paragraph{Coherent presentations.}
+An infinite object is described by an externally specified primitive-recursive
+family of approximants. Its regularity and equality are \emph{formulas}, usually
+with unbounded quantifiers, whose individual instances reduce to finite
+arithmetic. Operations come with finite demand and error estimates.
+
+\paragraph{Semantic interpretation.}
+One may explain a regular rational name as a real number, a regular sequence
+of rational polynomials as a continuous function, or an energy Cauchy name
+as a weak solution. This explanation is carried out in an ambient constructive
+metatheory. It does not add real-number variables or a completeness axiom to
+first-order \(\ipra\).
+
+\begin{definition}[A regular metric name]
+\label{def:regular}
+Let \(X_0\) be a coded countable set with a rational-valued metric \(d\), or
+with rational squared norms sufficient to express the metric inequalities.
+A regular name is a specified map \(p:\N\to X_0\) satisfying
+\[
+       d(p(n),p(m))\leq2^{-n}\qquad(m\geq n).
+\]
+Two names represent the same point when their distance tends to zero with
+the usual rational precision tests. For regular names one convenient test is
+\[
+       d(p(n+2),q(n+2))\leq2^{-n}\qquad\text{for all }n.
+\]
+\end{definition}
+
+The last test agrees with equality in a metric completion. Its transitivity
+uses finer indices and rational separation, not a false assertion that
+two errors of size \(2^{-n}\) still sum to \(2^{-n}\).
+For example, if \(p\sim q\sim r\), then for a fixed index \(n\), arbitrarily
+fine indices \(j\geq n+2\) give
+\[
+d(p(n+2),r(n+2))
+ \leq 2^{-n-2}+2^{3-j}+2^{-n-2}.
+\]
+Separation gives a bound \(2^{-n-1}\), hence the required \(2^{-n}\).
+The same argument proves independence of bounded shifts used to normalize
+names. When only squared distances are rational, compare their rational
+squares, or first use rational upper bounds with an arbitrary error.
+
+The space of primitive-recursive names is not claimed complete under
+arbitrary externally given Cauchy sequences. It is closed under
+\emph{jointly primitive-recursive} Cauchy constructions with a supplied
+primitive-recursive modulus: the diagonal name uses finitely many fixed
+operations and the modulus. That is exactly the closure used below.
+
+\subsection{Schemas, numerical parameters, and the universal-evaluator trap}
+
+A fixed producer \(p(a,n)\) may depend on a natural parameter \(a\). It gives
+a numerical presented sort with domain
+\(\Reg_p(a)\) and an equality formula \(\Eq_p(a,b)\). The existing
+\texttt{SetoidInterpretation.sound} can transport a first-order theory
+through such a presentation once its domain, congruence and axiom obligations
+are actually proved.
+
+There is also a broader external statement: \emph{for every chosen
+primitive-recursive producer and every chosen list of proved contracts, the
+following construction works}. This is a theorem schema, not a single
+first-order quantifier over programs. A finite library of operation symbols
+can have a primitive-recursive syntax evaluator when its recursion is
+appropriately bounded; this does not give a universal evaluator for all
+primitive-recursive functions.
+
+The obstruction is elementary. If a total primitive-recursive
+\(U(e,n)\) evaluated every unary primitive-recursive function, then
+\(g(n)=U(n,n)+1\) would itself have an index \(e\), giving
+\(g(e)=U(e,e)+1=g(e)+1\). Thus one must not infer that a countable collection
+of names can be packaged into one such evaluator. The repository already
+records this issue \cite{repoUniversal}. In this report the categories and
+function-space constructions are external categories of specified
+presentations, with object-theory instances for each fixed signature.
+
+\subsection{A restricted compilation theorem}
+
+\begin{theorem}[Compilation of the finite parts]
+\label{thm:compilation}
+Fix the primitive-recursive symbols used by one of the constructions below.
+Suppose its input contracts are supplied as \(\ipra\) derivations. Suppose
+also that every loop has a specified quantifier-free or Booleanized bounded
+invariant, and that the displayed arithmetic inequalities proving its base
+and step have been derived. Then the finite correctness statement of the
+construction has an \(\ipra\) derivation. The transformation is effective
+on these supplied proof terms.
+\end{theorem}
+\begin{proof}
+Composition substitutes proved equations and uses ordinary intuitionistic
+cut. Primitive recursion uses its two defining equations. A loop adds the
+quantifier-free induction instance for its invariant, substitutes the proved
+base and step, and specializes the result at the explicit execution length.
+Bounded finite checks use Lemma~\ref{lem:boolean}. Rational inequalities are
+cleared with positive denominators before this process. An arbitrary
+observation index is treated as a free parameter throughout and universally
+generalized only after the finite derivation is complete. A finite collection
+of such compilations is composed by cut. All of these are rules already
+available in the object calculus.
+\end{proof}
+
+This theorem is deliberately restricted. It does not assert that every true
+primitive-recursive specification has a proof, that checking a proof yields
+its truth inside the same theory, or that every constructive analytic proof
+has primitive-recursive witnesses. In particular, a host Lean proof about
+\(\N\) or \(\Q\) is not automatically such an object derivation.
+
+\subsection{What counts as resolving a difficulty}
+
+The report uses three distinct forms of progress.
+\begin{enumerate}
+\item \textbf{Producing missing data.} A finite net produces a positive
+denominator for interpolation; coercivity produces a contraction gap and
+an iteration clock; a radius gap produces a tail modulus for derivatives.
+\item \textbf{Proving a quantitative replacement.} Uniform total boundedness
+and approximate quantifier evaluation replace a stronger qualitative
+compactness assertion at the observation level actually needed.
+\item \textbf{Identifying an irreducible input.} A Riesz tail modulus or
+analytic radius cannot generally be recovered from weaker supplied data.
+An impossibility proof prevents an unsound promise of a universal repair.
+\end{enumerate}
+The distinctions are mathematically substantive. Merely assuming the desired
+conclusion as a certificate would not resolve the corresponding problem.

@@ -1,0 +1,119 @@
+\section{The constructive diagonal contradiction}
+\label{sec:diagonal}
+
+Combine the analytic witness equivalence of Section~\ref{sec:reduction}
+with \eqref{eq:negative-mrdp}. Let
+\[
+ P_e(\boldsymbol y)=P_0(e,\boldsymbol y),\qquad C(e)=\ulcorner E_{P_e}\urcorner.
+\]
+Specialization of a fixed polynomial, computation of its coefficient
+bounds, and construction of the expression tree are primitive recursive.
+The internal calibration theorem is therefore
+\begin{equation}\label{eq:calibration}
+ \forall e\;\bigl(\Id(C(e))\longleftrightarrow\neg\Halt(e)\bigr).
+\end{equation}
+Every $C(e)$ is a valid expression in the smaller language, with a single
+outer absolute-value occurrence.
+
+\subsection{The exact decider specification}
+
+Write $\operatorname{Bit}(b)$ for $b=0\lor b=1$. Define
+\begin{align*}
+ \operatorname{Total}(d)&:\Longleftrightarrow
+  \forall a\bigl(\WF(a)\to
+      \exists s\exists b\,(
+          \operatorname{Bit}(b)\land\Run(d,a,s,b))\bigr),\\
+ \operatorname{Correct}(d)&:\Longleftrightarrow
+  \forall a\forall s\;\Bigl(\WF(a)\to
+       \bigl((\Run(d,a,s,1)\to\Id(a))\land
+             (\Run(d,a,s,0)\to\neg\Id(a))\bigr)\Bigr),\\
+ \Dec(d)&:\Longleftrightarrow
+       \operatorname{Total}(d)\land\operatorname{Correct}(d).
+\end{align*}
+Output $1$ means ``identically zero.'' The correctness condition for
+output $0$ is only $\neg\Id(a)$; we do not require the decider to return a
+positive nonzero witness. Thus the impossible task is already the weaker
+Boolean decision task.
+
+\subsection{The diagonal program and its finite trace laws}
+
+Given a proposed decider code $d$, construct a program $\delta_d$ with the
+following behavior on input $z$:
+\begin{lstlisting}
+a := C(z)
+run program d on input a
+if the returned output is 1 then halt
+otherwise enter a permanent loop
+\end{lstlisting}
+If the inner program does not terminate, neither does $\delta_d$. The
+compiler $d\mapsto\ulcorner\delta_d\urcorner$ is primitive recursive:
+it inserts the numeral $d$ into a fixed simulation-and-branching template.
+Set $e=\ulcorner\delta_d\urcorner$.
+
+Because $\Halt(e)$ is halting on input $e$, the relevant simulated input
+is exactly $C(e)$. Finite trace verification proves
+\begin{align}
+ \Run(d,C(e),s,1)&\longrightarrow\Halt(e),
+       \label{eq:diag-forward}\\
+ \Halt(e)&\longrightarrow\exists s\;\Run(d,C(e),s,1).
+       \label{eq:diag-backward}
+\end{align}
+For \eqref{eq:diag-forward}, append the compiler's evaluation trace and
+the halt branch to the supplied inner trace. For
+\eqref{eq:diag-backward}, inspect a supplied terminating trace of
+$\delta_d$ and extract its completed inner simulation. The only halt
+instruction reachable in the wrapper is the output-$1$ branch. Both
+transformations inspect or generate bounded finite data, and their
+correctness uses quantifier-free induction on that data.
+
+No recursion theorem is required. The program accepts a variable input
+$z$; after its code is constructed, we evaluate it on that same code.
+This is the ordinary diagonal-input convention from
+\eqref{eq:halt-def}.
+
+\begin{theorem}[No total correct decider]\label{thm:no-decider}
+iPRA proves $\forall d\,\neg\Dec(d)$.
+\end{theorem}
+\begin{proof}
+Fix $d$ and suppose $\Dec(d)$. Its totality, applied to the well-formed
+expression $C(e)$, supplies a finite terminating computation and a bit.
+We eliminate this existential and split the decidable two-element case.
+
+\emph{Output $1$.} By correctness, $\Id(C(e))$. By
+\eqref{eq:calibration}, $\neg\Halt(e)$. But the supplied run and
+\eqref{eq:diag-forward} give $\Halt(e)$, a contradiction.
+
+\emph{Output $0$.} First prove $\neg\Halt(e)$. If a halting trace for
+$e$ existed, \eqref{eq:diag-backward} would give a run of $d$ on $C(e)$
+with output $1$. Determinism contradicts the supplied run with output
+$0$. This proves $\neg\Halt(e)$ by implication to a contradiction.
+Now \eqref{eq:calibration} gives $\Id(C(e))$. Correctness of the
+observed output $0$ gives $\neg\Id(C(e))$, again a contradiction.
+
+Both possible outputs contradict the assumptions, so $\neg\Dec(d)$.
+Universal introduction gives the theorem.
+\end{proof}
+
+Only one instance of totality was used, namely at $C(e)$. In particular,
+even a program that is required to terminate and be correct only on all
+compiled inputs $C(z)$ is impossible. This proves the restricted-language
+claim and hence the original MathWorld statement by inclusion of syntax.
+
+\subsection{Constructive strength of the conclusion}
+
+The proof did not reason from ``the diagonal program cannot fail to halt''
+to a halting witness. In the first branch the witness is constructed from
+an observed finite run. In the second branch an assumed witness is used
+only to obtain a contradiction. Likewise, no inference
+$\neg\forall q\,B(q)\Rightarrow\exists q\,\neg B(q)$ appears.
+
+The result concerns every ordinary recursive algorithm, not just primitive
+recursive candidate deciders. Primitive recursiveness is imposed on the
+\emph{reductions, verifiers, and proof bounds}; the candidate $d$ is an
+arbitrary machine code. Its assumed totality may have no primitive
+recursive running-time bound, and none is used.
+
+Finally, the theorem is not merely a failure to find a decision procedure,
+and it is not a statement of independence of one particular expression.
+It is an internally proved nonexistence theorem for a uniform algorithm.
+There is no consistency premise in the displayed object-language theorem.

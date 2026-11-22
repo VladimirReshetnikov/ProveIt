@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "prepared_date": "2026-11-20",
+  "purpose": "Packaging status ledger; not an additional proof claim.",
+  "status_definitions": {
+    "human_argument": "A mathematical argument and finite arithmetic/formalization route are provided in the report. This status is not a machine proof.",
+    "compiled_semantic_lean_subset": "The delivered Lean kernel compiles and proves the listed finite statements in ordinary Lean; it does not itself construct Prf PRAAx objects.",
+    "compiled_specification_types": "The types and definitions compile; arbitrary instances and continuous theorem proofs have not been postulated.",
+    "upstream_object_sources_inspected": "Pinned source files with embedded proof types were inspected, but their upstream build and full transitive dependency graph were not rerun.",
+    "continuous_embedding_pending": "The complete continuous construction has a human proof and explicit target/interface plan; its final deeply embedded Prf PRAAx derivation remains to implement."
+  },
+  "lean_validation": {
+    "toolchain": "leanprover/lean4:v4.19.0",
+    "compiler_receipt": "Lean (version 4.19.0, x86_64-unknown-linux-gnu, commit 6caaee842e94, Release)",
+    "build_receipt": "lean/validation.log",
+    "command_from_archive_root": "./lean/validate.sh",
+    "named_theorem_count": 30,
+    "closed_example_count": 3,
+    "count_method": "Declaration-level enumeration of theorem and example lines in the four source modules; comments are excluded.",
+    "inventory": [
+      {
+        "file": "lean/IPRAProbability/Finite.lean",
+        "named_theorems": [
+          "nsum_zero",
+          "nsum_succ",
+          "nsum_congr",
+          "nsum_mono",
+          "nsum_const_zero",
+          "nsum_add",
+          "nsum_mul_left",
+          "nsum_mul_right",
+          "nsum_product",
+          "mass_empty",
+          "mass_univ",
+          "mass_mono",
+          "mass_le_total",
+          "mass_complement",
+          "union_bound",
+          "disjoint_additivity",
+          "intersection_comm",
+          "finite_union_bound",
+          "moment_add",
+          "moment_mono",
+          "markov_event",
+          "markov",
+          "event_mass_stability",
+          "chebyshev",
+          "product_rectangle",
+          "product_weight_is_intersection"
+        ],
+        "named_theorem_count": 26,
+        "closed_example_count": 3
+      },
+      {
+        "file": "lean/IPRAProbability/L1Finite.lean",
+        "named_theorems": [
+          "isum_sub",
+          "abs_sum_bound",
+          "expectation_stability",
+          "distance_triangle"
+        ],
+        "named_theorem_count": 4,
+        "closed_example_count": 0
+      },
+      {
+        "file": "lean/IPRAProbability/PRSyntax.lean",
+        "named_theorems": [],
+        "named_theorem_count": 0,
+        "closed_example_count": 0
+      },
+      {
+        "file": "lean/IPRAProbability/Specifications.lean",
+        "named_theorems": [],
+        "named_theorem_count": 0,
+        "closed_example_count": 0
+      }
+    ],
+    "new_axiom_declarations": 0,
+    "unfinished_proof_admissions": 0,
+    "axiom_audit_scope": "Eight representative proved endpoints listed in lean/Validation.lean; reports contain propext and for some endpoints Quot.sound, but not Classical.choice or sorryAx. Not a claim that all Lean kernel axioms are absent."
+  },
+  "python_validation": {
+    "receipt": "validation/exact_checks.json",
+    "command_from_archive_root": "python3 code/verify.py",
+    "status": "pass",
+    "total_checks": 2963,
+    "groups": {
+      "uniform_moments": 12,
+      "cantor_moments": 6,
+      "uniform_refinement": 27,
+      "cantor_refinement": 27,
+      "conditional_expectation": 12,
+      "tower": 36,
+      "independence": 3,
+      "clipping_bound": 2500,
+      "kolmogorov_finite": 32,
+      "smoothing_polynomial": 303,
+      "normal_enclosure": 2,
+      "budgets": 3
+    },
+    "arithmetic": "integers and fractions only",
+    "scope": "finite regression and certificate checks; not universal proofs"
+  },
+  "upstream_validation": {
+    "status": "upstream_object_sources_inspected",
+    "provider_map": "metadata/PROVIDERS.md",
+    "source_manifest": "metadata/source_manifest.json",
+    "upstream_build_rerun": false,
+    "upstream_full_sources_bundled": false,
+    "critical_scope_notes": [
+      "KolmogorovIid supplies past_hyp and future_mean for one crossing step, not the full maximal theorem.",
+      "NormalMoments identifies arithmetic coefficient formulas, not Gaussian integrals.",
+      "CompleteSquare proves polynomial identities and excludes normalization integrals.",
+      "ProductReplacement supplies finite product telescoping, not characteristic functions, smoothing or a full CLT.",
+      "The newer continuous framework sections are human research providers, not a fully compiled object-proof library."
+    ]
+  },
+  "results": [
+    {
+      "id": "finite_probability",
+      "result": "Finite sums, event algebra, union bounds, Markov, scaled Chebyshev, rectangular independence and finite L1 stability",
+      "report_source": "paper/sections/foundation.tex",
+      "human_status": "Human argument; a selected finite kernel is compiled in this package.",
+      "formal_status": "compiled_semantic_lean_subset",
+      "boundary": "Finite arithmetic providers also exist upstream; inspect the provider map. These standalone proofs are not Prf PRAAx objects."
+    },
+    {
+      "id": "pr_syntax",
+      "result": "Fixed PR syntax, finite Eval relation and representation specifications",
+      "report_source": "paper/sections/formalization.tex",
+      "human_status": "Definitions and target interfaces are explicit.",
+      "formal_status": "compiled_specification_types",
+      "boundary": "RegularRealSpec and RegularEventSpec compile, but their semantic proof fields are not embedded iPRA proofs. No universal PR evaluator is introduced."
+    },
+    {
+      "id": "random_names",
+      "result": "Coherent cylinders; represented event, L0, L1 and L2 names and extensional equality",
+      "report_source": "paper/sections/foundation.tex",
+      "human_status": "Human construction with finite rational contracts and explicit regularization.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "Quotients and all-precision relations are interpreted through first-order schemas; complete object-language definitions and proofs remain to implement."
+    },
+    {
+      "id": "integration",
+      "result": "Represented expectation, bounded observables and Boolean event operations",
+      "report_source": "paper/sections/foundation.tex",
+      "human_status": "Human proof from finite contraction/linearity estimates.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "Finite expectation and event stability are checked; the full continuous bridge is not compiled."
+    },
+    {
+      "id": "threshold_events",
+      "result": "Threshold lifting with PR boundary-band certificates",
+      "report_source": "paper/sections/foundation.tex",
+      "human_status": "Human proof with a displayed reindexing and rational error budget.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "No unconditional decision procedure for real comparisons or hard-event probabilities is claimed."
+    },
+    {
+      "id": "countable_operations",
+      "result": "Effective countable unions and additivity under finite-union residual moduli",
+      "report_source": "paper/sections/foundation.tex",
+      "human_status": "Human construction through regularized finite unions.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "Requires jointly PR event names and a supplied or constructed residual rate; not an arbitrary sigma-algebra completion."
+    },
+    {
+      "id": "vitali",
+      "result": "Clipping, quantitative Vitali completion and modulated dominated convergence",
+      "report_source": "paper/sections/foundation.tex",
+      "human_status": "Human finite inequality and derived convergence rate.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "Convergence and integrability data are explicit; qualitative convergence alone does not produce a PR modulus."
+    },
+    {
+      "id": "conditional_averaging",
+      "result": "Dyadic conditional averages, tower identity and terminal-variable martingale convergence",
+      "report_source": "paper/sections/foundation.tex",
+      "human_status": "Human proof from finite averaging and contraction.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "The canonical martingale of a supplied L1 terminal variable is treated, not arbitrary bounded-martingale convergence."
+    },
+    {
+      "id": "independent_copies",
+      "result": "Independent bit rows, uniform random variable and Cantor singular continuous law",
+      "report_source": "paper/sections/foundation.tex",
+      "human_status": "Explicit human constructions and finite arithmetic estimates.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "Selected finite examples and product identities are checked; no generic probability-space extension theorem is asserted."
+    },
+    {
+      "id": "continuous_densities",
+      "result": "Uniform, exponential, normal and Cauchy laws; normalization, tails and available moments",
+      "report_source": "paper/sections/distributions.tex",
+      "human_status": "Human analytic argument with rational evaluation, quadrature and tail budgets.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "Exact Gaussian enclosures are executable checks; Gaussian normalization/moment integrals are not claimed as compiled embedded proofs."
+    },
+    {
+      "id": "coherent_realization",
+      "result": "Coherent histogram realization of effective densities and certified moment upgrades",
+      "report_source": "paper/sections/realization.tex",
+      "human_status": "Human finite monotone-coupling and dyadic-sampling construction.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "Connects scalar density laws to random variables on the common cylinder space. Full deep embedding remains a target."
+    },
+    {
+      "id": "conditioning",
+      "result": "Upper-envelope bounds, positive-evidence Bayes updates, conditional densities and bounded stopping",
+      "report_source": "paper/sections/conditioning.tex",
+      "human_status": "Human finite/represented arguments with explicit hypotheses.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "No unconditional disintegration or conditioning by division by a null event."
+    },
+    {
+      "id": "processes",
+      "result": "Finite-horizon continuous-state transitions and an autoregressive Gaussian invariant law",
+      "report_source": "paper/sections/conditioning.tex",
+      "human_status": "Human construction with error recurrence and quantitative Gaussian-law comparison.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "No general continuous-time process or stochastic-integral theory; convergence of marginal laws is distinct from pathwise convergence."
+    },
+    {
+      "id": "products",
+      "result": "Represented Fubini, convolution, Gaussian convolution and Gaussian conditional kernel",
+      "report_source": "paper/sections/limits.tex",
+      "human_status": "Human proof with finite products, completion of squares and absolute tails.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "Upstream polynomial identities do not alone prove analytic normalization or convolution."
+    },
+    {
+      "id": "weak_strong_laws",
+      "result": "Quantitative weak law, finite-window strong law and small exceptional-event certificates",
+      "report_source": "paper/sections/limits.tex",
+      "human_status": "Human proof with explicit finite maximal inequality and countable residual rates.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "Existing upstream finite weak-law and crossing providers were inspected, not rebuilt; KolmogorovIid alone is not the full maximal theorem."
+    },
+    {
+      "id": "clt",
+      "result": "Smooth-test CLT and CDF smoothing with explicit sufficient sample size",
+      "report_source": "paper/sections/limits.tex",
+      "human_status": "Human Lindeberg replacement proof and explicit quintic smoothing budget.",
+      "formal_status": "continuous_embedding_pending",
+      "boundary": "Requires matching moments, third-moment/tail data and CDF boundary certificates for a genuine CDF theorem. No optimal Berry--Esseen rate or compiled analytic CLT is claimed."
+    }
+  ],
+  "not_claimed": [
+    "A completed deeply embedded continuous probability library in iPRA.",
+    "All Borel descriptions have computable probability or regular event names.",
+    "Convergence or integrability rates can be extracted from arbitrary qualitative hypotheses.",
+    "Generic conditional distributions are computable without separation and uniformity data.",
+    "A universal primitive-recursive evaluator for arbitrary PR programs.",
+    "Numerical regression checks constitute proofs of the universal analytic results."
+  ]
+}

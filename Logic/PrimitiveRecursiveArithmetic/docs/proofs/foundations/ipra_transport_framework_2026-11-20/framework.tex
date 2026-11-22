@@ -1,0 +1,99 @@
+\section{What it means to interpret an observation}
+\label{sec:language}
+
+Use first-order intuitionistic logic over the natural numbers, with equality, the successor axioms, a symbol and its defining equations for each fixed primitive recursive (PR) definition, and quantifier-free (QF) induction. This is the ordinary object theory of ProveIt \cite{target}. Three different assertions will occur:
+a numerical sequent of this theory, a schema producing such sequents for fixed mathematical presentations, and an external interpretation explaining which classical object the finite observations describe. We state which assertion is being used. In particular, a proof in Lean about an arbitrary function on $\mathbb N$ does not automatically have the type of an object-theory derivation.
+
+\paragraph{The data language.}
+Encode a pair by $2^a(2b+1)$, reserving zero for the empty list. A nonempty list has code $\langle a,t\rangle$ with head $a$ and tail $t$. Factor out the greatest power of two by a scan up to the input code, then divide. Each proper tail is smaller than the original code, so a scan bounded by the code decodes the length and entries, defaulting to zero out of range. All these functions are PR. Encode signed integers by sign and magnitude, identifying the two representations of zero by normalization. A rational is a numerator and a positive denominator. Equality and inequalities are cross-products. Sums and products can be computed without lowest terms. Reciprocals have a nonzero-input guard. Gaussian rationals are pairs of rationals. Tuples, polynomial arrays, words, graphs and row-major tables use the list encoding. Malformed codes may return fixed default values. Every theorem about a coded operation includes its typing or validity premise.
+
+A finite decision, including a test over all $i<N$, is represented by a bit. For a PR bit $P(i)$ define $b(0)=1$ and $b(j+1)=b(j)P(j)$. To derive $b(N)=1\Rightarrow P(i)=1$ for $i<N$, fix $i$ and induct on $j$ on the QF assertion $(i<j\land b(j)=1)\to P(i)=1$. For the converse assume all the required instances up to $N$ and induct on $j$ on $j\le N\to b(j)=1$. The universal hypothesis is in the context. An existential bounded test is implemented by a first-hit index with a sentinel. Induct on the prefix with the invariant that the stored index either passes the check and lies in the prefix or all entries of the prefix failed, the latter expressed by a Boolean product. The same proof deals with masks, repeated bounded tests and minimum selection. No induction on formulas asserting the existence of an infinite object occurs here.
+
+\paragraph{Exact and metric observations.}
+For an exact sort specify a PR validity test and a PR equality test, or a setoid relation accompanied by explicit witnesses and rules for transporting them. The metric theorem below uses a rational-valued pseudometric with object proofs of its laws on valid data. A named point in such a presentation consists externally of a fixed PR family $x(d,k)$ and an object proof, under the declared assumptions on $d$, of validity and
+\[
+ d_X(x(d,k),x(d,\ell))\le 2^{-k}+2^{-\ell}.
+\]
+Here and below $d_X$ is a distance, and the unadorned letter $d$ in an argument denotes numerical parameters. Equality of two names is the schema of arbitrarily small discrepancies after an explicit precision change. One convenient fixed convention is the same-index bound $d_X(x(k),y(k))\le2^{1-k}$ for regular names. If one has discrepancy $\le C2^{-j}$ at every finer $j$, the triangle inequality gives the convention by taking a still finer $j$ and eliminating the positive rational slack. Precisely, if a rational $u>v$ has denominator product $D$, then $u-v\ge1/D$. Choosing $j$ from $C,D$ refutes $u>v$ by a single comparison. This also explains exact equalities of limits used later.
+
+A map of names is specified by a PR family, a domain guard, and a precision bound on each use of an input. A finite list of requested input evaluations can stand in for an external name whenever the proof uses only that list and its finite compatibility inequalities. Treating all such compatible lists as a single indefinitely extendible name needs a separate producer. If the program itself varies, either fix the family of interpretable instructions and its PR clock, or specialize the source code in the metatheory. A universal PR evaluator for all unary PR programs would give a PR diagonal $n\mapsto U(n,n)+1$, contradicting evaluation at its own index. All uniformity statements below use fixed algorithms on varying numerical data.
+
+\section{Transport along paths presented by equations}
+\label{sec:transport}
+
+A chart change, a relabeling of a fibre and an ordinary-point analytic continuation step have the same operational form: read a valid observation at the source and produce an observation at the target. A proof that two routes represent the same operation is extra data. The following result computes the precision needed to move a local equation through a surrounding calculation. Its input includes the proof of path equivalence, so a presentation can have arbitrarily many arrows and an undecidable word problem.
+
+\paragraph{Generators and local laws.}
+A typed directed graph has vertices $v$, edge tags $e:v\to w$, an observation domain $X_v$, and at each precision $k$ a map $F_e^k:X_v\to X_w$. Vertex and edge tables may be input data; all lookups and guards belong to one fixed PR family. Put $\epsilon_k=2^{-k}$. Assume validity preservation and the following local sequents, with integers $L_e\ge1$ and $a_e\ge0$:
+\begin{equation}
+ d_w(F_e^k x,F_e^\ell y)
+ \le L_e d_v(x,y)+a_e(\epsilon_k+\epsilon_\ell).
+ \label{eq:edge}
+\end{equation}
+For numerical edge and relation indices varying within an object theorem, require one uniformly quantified object sequent for each local rule, or a fixed finite table of derivations combined by bounded case distinction. A separate external proof for each standard numerical index gives only a schema at those indices. Specifically, the proof is given for every valid pair of inputs, after any guards needed for both evaluations. One can encode restricted charts by their valid state domains, refining vertices when the outgoing map requires a stronger domain. In a partial presentation a trace must carry both validity proofs at every application and at every replacement below. This matters near poles and branch cuts.
+
+A word $w=e_1\cdots e_n$ is read left to right; $F_w^k$ is its successive evaluation, with the empty word acting as identity. A relation $r$ supplies parallel words $u_r,v_r$ and an integer $c_r\ge0$ with the local sequent
+\begin{equation}
+ d(F_{u_r}^k x,F_{v_r}^k x)\le c_r\epsilon_k .
+ \label{eq:cell}
+\end{equation}
+These sequents must be proved for the specific interpretation. In an exact finite system take $a_e=c_r=0$ and the discrete metric. An analytic disk change can produce a nonzero $c_r$ because the functions are evaluated by truncation. The relation may be parameterized by a certificate, for example an explicit common disk and two tail estimates.
+
+\begin{theorem}[Precision for a word and for a proof between words]\label{thm:transport}
+Define $P_{\varnothing}=1$, $A_{\varnothing}=0$, and, when an edge $e$ is appended, set
+\[
+ P_{we}=L_eP_w,\qquad A_{we}=L_e A_w+a_e.
+\]
+Then
+\[
+ d(F_w^k x,F_w^\ell y)\le P_w d(x,y)+A_w(\epsilon_k+\epsilon_\ell).
+\]
+For a contextual use of a relation $p\,u_r\,s\leftrightarrow p\,v_r\,s$, charge $P_s c_r+2A_s$. For a finite chain $D$ of such uses from $w$ to $w'$ let $B(D)$ be the sum of its charges. Under the validity guards,
+\[
+ d(F_w^k x,F_{w'}^k x)\le B(D)\epsilon_k .
+\]
+In particular, on regular inputs a word gives a regular output after a PR precision shift, and the two equivalent words determine the same named output. All three bounds are uniform in the coded words and the supplied chain.
+\end{theorem}
+
+\begin{proof}
+For a word prefix of length $i$, store the two actual current states, $P_i$ and $A_i$. The assertion that the states are valid and their rational discrepancy is bounded by $P_i d(x,y)+A_i(\epsilon_k+\epsilon_\ell)$ is QF after decoding. At the empty word it is equality. Apply \eqref{eq:edge} to the stored states and multiply out the nonnegative coefficients. This is exactly the next prefix bound. This induction leaves $k,\ell,x,y$ free as parameters.
+
+For one replacement evaluate the common prefix once. At that state use \eqref{eq:cell}; then apply the first assertion to the two resulting states and the common suffix at equal precisions. This gives the stated charge, including the $2A_s$ from the suffix. Reversing a step uses symmetry. For a chain store the rational distance between the initial word's evaluation and the current word's evaluation, and the accumulated charge. The triangle inequality preserves the claimed invariant. The empty chain costs zero. An expression built from composition and reversal of proof chains can first be flattened to a list of actual steps. Equivalently one can check consecutive words and explicit prefix/suffix fields by scanning a supplied flat list. No algorithm for finding a chain is part of the result.
+
+For a regular input use $x=x(k),y=x(\ell)$. The first estimate has coefficient $P_w+A_w$ in front of $\epsilon_k+\epsilon_\ell$. For $H\in\mathbb N$ write $\lambda(H)$ for the first $s\le H+1$ with $2^s\ge\max(1,H)$. The scan succeeds by $2^n\ge n+1$. Use $k=p+\lambda(P_w+A_w)$ to give a regular name. To compare two words, take a common shift dominating both normalization shifts and $\lambda(B(D))$; the discrepancy at this working precision is at most $2^{-p}$. The mixed-precision estimate compares it to either original version of the output name. The previous rational-gap argument gives equality in the stated convention.
+\end{proof}
+
+\paragraph{How much error does a proof introduce?}
+Suppose $u\simeq v$ costs three units and the surrounding suffix first applies a generator with $(L,a)=(2,1)$ and then one with $(3,0)$. The successive bounds are $3$, $8$ and $24$, so five extra bits suffice. For an empty suffix only two extra bits are needed. A common prefix has zero charge because its two evaluations at fixed inputs are identical. With one repeated generator, if $C(0,L,b,x)=x$ and $C(j+1,L,b,x)=C(j,L,b,x)L+b$, then
+\[
+ C(j,L,b,x)=C(j,L,b,0)+L^j x .
+\]
+Induct on $j$ using distributivity. The identity works also at $L=0,1$; it involves no division by $L-1$. The archive gives a checked proof of its universal closure inside \texttt{Prf PRAAx}.
+
+\paragraph{Composition and its scope.}
+Word concatenation evaluates by function composition, exactly at a chosen precision. The empty word gives identity. A relation holds on names by the theorem; prefix and suffix replacement make this equality a congruence. To check extensionality, apply the mixed-precision estimate to equal input names. To check composition after normalizing names, compare the nested evaluation of $v$ after $u$ to the single evaluation of $uv$ at level $j$. The two prefix states are evaluations of $u$ on the same regular input at indices $j+s$ and $j+t$ with fixed nonnegative shifts. Their discrepancy is at most $2(P_u+A_u)2^{-j}$. Applying the mixed-precision suffix estimate adds at most $2A_v2^{-j}$ and multiplies the prefix discrepancy by $P_v$. This gives arbitrarily fine agreement, hence equality by the rational-gap argument. Thus a fixed presented category acts on the named observations, and the action can be used in an arithmetic proof by supplying paths and proofs between paths. If types, names or operations range beyond the specified PR data, the assertion is an external interpretation. In particular, the theorem does not infer a finite presentation of all continuous maps, a finite set of generating loops of an arbitrary space, or a modulus for an arbitrary graph of compatible local data. Sections~\ref{sec:forest}--\ref{sec:resonance} exhibit distinct ways to supply the mathematical data that a use of the theorem requires.
+
+\subsection{Maps specified by a modulus instead of a Lipschitz bound}
+
+The affine bound is convenient for propagation of jets and exact maps. A continuous map can have a PR modulus even on a chart where no finite Lipschitz constant exists. There is a corresponding version of Theorem~\ref{thm:transport}. For every edge give nondecreasing PR demand functions $\omega_e,\nu_e$ and a sequent, for $k,\ell\ge\nu_e(n)$,
+\[
+ d(x,y)\le 2^{-\omega_e(n)}
+ \quad\Longrightarrow\quad d(F_e^k x,F_e^\ell y)\le 2^{-n}.
+\]
+A relation now gives $\sigma_r(n)$ such that $d(F_{u_r}^k x,F_{v_r}^k x)\le 2^{-n}$ for $k\ge\sigma_r(n)$. A dependence on additional numerical size bounds is allowed if those bounds hold throughout the trace. Use prefix maxima to make the demand functions nondecreasing if necessary.
+
+\begin{proposition}[Backward precision for presented paths]\label{prop:moduli}
+Let $w=e_1\cdots e_m$ and request precision $n$. Set $q_m=n$, $q_{i-1}=\omega_{e_i}(q_i)$ for $i=m,\ldots,1$ and $K_w(n)=\max_{1\le i\le m}\nu_{e_i}(q_i)$, with empty maximum zero. Two evaluations at precisions $k,\ell\ge K_w(n)$ whose inputs are within $2^{-q_0}$ have outputs within $2^{-n}$. For a chain of $h$ replacements, a single PR working precision suffices for a discrepancy of at most $2^{-n}$ between its endpoints at common input.
+\end{proposition}
+\begin{proof}
+Compute the list of demands in reverse order. Starting with the asserted bound at the input, the edge sequent gives the bound $2^{-q_i}$ after edge $i$. This forward induction uses a rational comparison at two actual trace states. For a regular input name evaluated at $k,\ell$, also require $\min(k,\ell)\ge q_0+1$. Taking the maximum of this requirement and $K_w(n)$ as the evaluation precision for output $n$ yields a regular output name: for $p\le p'$ both chosen working precisions meet the requirements for $p$. All bounds are monotone in the requested precision.
+
+For a nonempty chain put $j=n+\lambda(h)$. In each replacement run the backward pass on its suffix with target $j$, obtaining input demand $q_0$ and a suffix clock $K_s(j)$. Choose the working precision at least $\max(K_s(j),\sigma_r(q_0))$ for every step. The common prefix yields the same numerical state on both sides of that replacement. The relation supplies the input discrepancy for the suffix. Each replacement therefore costs at most $2^{-j}$. A finite sum of $h$ such costs is at most $2^{-n}$. The empty chain evaluates identically. Proofs of word equivalence at arbitrary output precision follow exactly as in the affine case.
+\end{proof}
+
+For example the lower dyadic square root $F^k(x)$ of $0\le x\le1$ is the largest $j2^{-k}$, $0\le j\le 2^k$, whose square is at most $x$. It satisfies $u^2\le x<(u+2^{-k})^2$. Let $\eta=2^{-(n+2)}$, take $k,\ell\ge n+2$, and suppose $|x-y|\le\eta^2$. With $v=F^\ell(y)$ we have
+\[
+ u^2\le y+\eta^2 < (v+2^{-\ell})^2+\eta^2
+       \le (v+2^{-\ell}+\eta)^2 .
+\]
+The symmetric inequality bounds $|u-v|$ by $2\eta$. Thus $\omega(n)=2n+4$, $\nu(n)=n+2$ work on the entire interval, including zero. In Theorem~\ref{thm:transport} the exact square-root operation cannot have a uniform Lipschitz constant there, since at $x=2^{-2j}$ the ratio to the distance from zero is $2^j$.

@@ -1,0 +1,140 @@
+\section{The checked arithmetic kernel and its iPRA translation}
+\label{sec:checked-kernel}
+
+The accompanying file \texttt{AffineBounds.lean} was compiled with Lean
+4.32.0 using only \texttt{Std}.  All eighteen theorem declarations were
+checked; their axiom reports contain only \texttt{propext} and
+\texttt{Quot.sound}, or the smaller subset \texttt{propext}.  They contain
+no \texttt{sorryAx} and do not depend on \texttt{Classical.choice}.
+These are host-Lean arithmetic theorems.  Their proof status must not be
+confused with an object-level theorem of the form
+\(\Gamma\vdash_{\mathrm{iPRA}} A\).  The latter is the endpoint of the
+explicit adapter described below, whose arithmetic obligations remain to
+be filled with object-level derivations.
+
+\subsection{Exact finite bounds}
+
+For natural numbers \(c,d,b\) and a fixed forcing sequence \(r_n\), define
+by primitive recursion
+\[
+ B_0=b,\qquad B_{n+1}=cB_n+d^n r_n.
+\]
+If \(d a_{n+1}\le c a_n+r_n\) and \(a_0=b\), then
+\[
+ d^n a_n\le B_n.                                      \tag{K1}
+\]
+Indeed, multiplying the step inequality by \(d^n\) and applying the
+induction hypothesis gives
+\[
+ d^{n+1}a_{n+1}\le c(d^na_n)+d^n r_n
+                 \le cB_n+d^nr_n=B_{n+1}.
+\]
+This is a quantifier-free induction on the displayed inequality.
+For constant forcing \(r\), put
+\[
+ G_0=0,\qquad G_{n+1}=cG_n+d^n.
+\]
+One more quantifier-free induction proves
+\(B_n=c^nb+rG_n\).  If \(d=c+1\), then
+\[
+ G_n+c^n=d^n.                                         \tag{K2}
+\]
+At the successor step the left side is
+\(cG_n+d^n+c^{n+1}=c(G_n+c^n)+d^n=d^{n+1}\).
+Consequently (K1) yields the subtraction-free estimate
+\[
+ d^na_n+rc^n\le c^na_0+rd^n.                          \tag{K3}
+\]
+All expressions in (K1)--(K3) are natural-number terms.  A rational
+application must first clear denominators at the finite query in question;
+these integer inequalities cannot be applied to unencoded real errors.
+
+The clock is also explicit.  Induction gives
+\[
+ c^{n+1}+(n+1)c^n\le(c+1)^{n+1}.
+\]
+Taking \(n=c\) gives \(2c^{c+1}\le(c+1)^{c+1}\), including
+\(c=0\). Multiplication of this block inequality proves
+\[
+ 2^m c^{(c+1)m}\le(c+1)^{(c+1)m}.                     \tag{K4}
+\]
+Thus \(m\) blocks of \(c+1\) steps supply \(m\) binary digits of
+geometric decay.  Neither logarithms nor a search for a stopping time is
+needed.
+
+\subsection{Simultaneous components}
+
+Let \(M=(M_{ij})\) be a nonnegative integer matrix, let \(w_i\) be
+nonnegative integer weights, and suppose the finite row certificates are
+\[
+ \sum_{j<N}M_{ij}w_j\le c w_i\qquad(i<N).
+\]
+Positivity of the weights is needed when interpreting a weighted norm,
+but the following cleared inequalities themselves allow zero weights.
+If
+\[
+ e_{0,i}\le w_i b,\qquad
+ d e_{n+1,i}\le\sum_{j<N}M_{ij}e_{n,j}+w_i r_n,
+\]
+then the checked theorem \texttt{coupled\_envelope} states
+\[
+ d^n e_{n,i}\le w_iB_n\qquad(i<N).                    \tag{K5}
+\]
+For the induction, multiply the recurrence by \(d^n\), distribute this
+factor through the finite sum, use the component induction hypotheses,
+factor out \(B_n\), and apply the row certificate.  The result is
+\(d^{n+1}e_{n+1,i}\le w_i(cB_n+d^nr_n)\).
+The single invariant for the object calculus is the bounded conjunction
+of (K5) for \(i<N\); the bounded-formula compiler turns it into one bit
+equation before induction.
+
+The module also checks a useful posterior certificate.  From
+\(dv\le cv+r\) and \(c\le d\), one obtains
+\((d-c)v\le r\), because
+\(dv=(d-c)v+cv\) and additive cancellation is constructive.
+For two components, if
+\[
+ Ax\le by+r,\qquad By\le cx+s,\qquad bc\le AB,
+\]
+then
+\[
+ (AB-bc)x\le Br+bs.                                  \tag{K6}
+\]
+Multiply the first inequality by \(B\), substitute the second after
+multiplying it by \(b\), and apply the preceding cancellation lemma.
+A strictly positive determinant gap makes (K6) a numerical residual
+bound.  Its positivity is explicit certificate data, not an implicit
+matrix-invertibility assumption.
+
+\subsection{Exact object-calculus interface}
+
+At ProveIt commit
+\texttt{3ee850b4c2d650cf01263823fd5415963747c5d0}, the namespace
+\texttt{LeanProofs.IPRA.Foundations.GuardedLoop} already provides a
+structure \texttt{Loop}. Its fields are an actual proof of
+quantifier-freeness and actual derivations of base, bounded transition,
+and final implication in \texttt{Prf PRAAx}. The theorem
+\texttt{loop\_at} exports the result at the supplied primitive-recursive
+fuel. The namespace \texttt{TraceReflection} supplies \texttt{trace} for
+the universally closed result. The namespace \texttt{BoundedFormulas}
+supplies the syntax \texttt{BF}, the formula interpretation
+\texttt{fmAt}, the primitive-recursive bit interpretation \texttt{bitAt},
+and the object-level equivalence \texttt{bf\_reflect}.
+
+The accompanying \texttt{ObjectAdapter.lean} records this interface using
+the actual inspected names and types. It is an uncompiled integration
+outline. To complete the instance, encode the state and its rational
+denominators, define the bounded invariant, prove its base and transition
+using finite-sum algebra and (K1)--(K6), and supply those proofs to
+\texttt{Loop}. A proof in the Lean proposition \(a\le b\) cannot fill a
+field expecting \(\Gamma\vdash[\mathrm{PRAAx}]\mathrm{le}(a,b)\).
+The host proof is a guide to these derivations, not an unproved
+reflection rule.
+
+Finally, every function argument in the host-Lean statements is
+schematic.  An object-level instance fixes primitive-recursive program
+bodies or supplies explicit bounded evaluation certificates.  The
+framework does not postulate a total primitive-recursive universal
+evaluator, nor does the finite error estimate alone assert existence of
+an infinite real fixed point; represented-object adequacy and the
+necessary modulus are separate obligations.
