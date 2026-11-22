@@ -290,6 +290,12 @@ recovers finite original coefficients from actual natural-grid observations.
 computes the error gain of the original inverse row.
 [GaussianShrinkingPolynomialTail](Lean/IPRADerivations/Analysis/GaussianShrinkingPolynomialTail.lean)
 retains the exact power of the shrinking radius in the finite tail bound.
+[GaussianShrinkingGridValueRecovery](Lean/IPRADerivations/Analysis/GaussianShrinkingGridValueRecovery.lean)
+uses the original full polynomial values on the shrinking grid. The
+checked low-prefix program and exact rational dilation give a bound
+for the difference of the actual coefficients.
+[GaussianGammaUnitCoefficientMass](Lean/IPRADerivations/Analysis/GaussianGammaUnitCoefficientMass.lean)
+bounds the total ordinary coefficient norm of each original polynomial.
 Agreement across radii and reconstruction of the full power series remain.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
@@ -719,16 +725,33 @@ exact rational power.
 [GaussianEulerUpperPowerCoefficients](Lean/IPRADerivations/Analysis/GaussianEulerUpperPowerCoefficients.lean)
 checks the actual doubled real multiplier bound and the nonnegative
 harmonic inputs for time at least one.
+[GaussianEulerUpperPowerBound](Lean/IPRADerivations/Analysis/GaussianEulerUpperPowerBound.lean)
+proves the bound `t^R+2^-p` at each original power sample.
+[GaussianEulerHalfDecayProduct](Lean/IPRADerivations/Analysis/GaussianEulerHalfDecayProduct.lean)
+identifies the original integrand with its power and the two half-decay
+factors. [GaussianEulerWeightedHalfDecay](Lean/IPRADerivations/Analysis/GaussianEulerWeightedHalfDecay.lean)
+checks the factorial majorant of the first product with explicit slack.
+[GaussianEulerHalfDecayReference](Lean/IPRADerivations/Analysis/GaussianEulerHalfDecayReference.lean)
+gives the nonnegative scalar representative of the second factor.
+[GaussianEulerUpperTailPointwise](Lean/IPRADerivations/Analysis/GaussianEulerUpperTailPointwise.lean)
+bounds every original integrand observation at time at least one by
+`2^R R!(H_q+2^-q)+2^-p`, where `H_q` is the independent nonnegative
+half-decay observation.
 [GaussianCompactMeshIndependence](Lean/IPRADerivations/Analysis/GaussianCompactMeshIndependence.lean),
 [GaussianCompactIntervalRescaling](Lean/IPRADerivations/Analysis/GaussianCompactIntervalRescaling.lean)
 and [GaussianEulerCompactAlignment](Lean/IPRADerivations/Analysis/GaussianEulerCompactAlignment.lean)
 identify the original compact Euler names across different legitimate
 mesh bounds and rational encodings of the same interval.
+[GaussianGammaCompactCutoffGeometry](Lean/IPRADerivations/Analysis/GaussianGammaCompactCutoffGeometry.lean)
+and [GaussianGammaCompactCutoffAlignment](Lean/IPRADerivations/Analysis/GaussianGammaCompactCutoffAlignment.lean)
+relate the actual cutoff denominators and align the earlier Euler
+quadrature name with the corresponding interval at the later cutoff.
 [GaussianCompactScalarMajorant](Lean/IPRADerivations/Analysis/GaussianCompactScalarMajorant.lean)
 sums the pointwise scalar majorant on the original grid and passes an
 independent row comparison through the actual quadrature weight.
-The upper and lower comparisons for the full Euler integrand tails
-still require the corresponding compact norm and integral bounds.
+The upper-tail pointwise comparison now holds for the original Euler
+integrand. Its compact quadrature norm bound and the corresponding
+lower-tail comparison remain.
 
 ## Every ledger family remains in scope
 
