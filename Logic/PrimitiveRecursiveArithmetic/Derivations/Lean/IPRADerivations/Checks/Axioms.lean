@@ -4132,6 +4132,61 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.QuadraticIntegerSignDispatch.actual_returned_integer_dispatch_equal_closed
 #print axioms LeanProofs.IPRA.Algebra.QuadraticIntegerSignDispatch.actual_returned_integer_positive_dispatch_closed
 #print axioms LeanProofs.IPRA.Algebra.QuadraticIntegerSignDispatch.actual_returned_integer_zero_dispatch_closed
+
+/-! ### QuadraticRationalSignDispatch -/
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.scalarTag
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.norm
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.nativeData
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.normNumerator
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.third
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.recipe
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.subst_scalarTag
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.subst_norm
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.subst_nativeData
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.subst_normNumerator
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.subst_third
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.subst_recipe
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.tag_of_representation
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.tag_positive_scale
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.radicand_representation
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.norm_representation
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.denominator_square_positive
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.norm_tag
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.native_norm
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.native_norm_tag
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.native_first_tag
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.native_second_tag
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.native_radicand_tag
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.native_third_tag
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.native_recipe
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.positive_dispatch
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.zero_integer_radicand
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.zero_dispatch
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.nonnegative_dispatch
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.output
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.outputF
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.run
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.subst_output
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.subst_run
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.program_at
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.returned_recipe
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.returned_tail
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.returned_source_sign
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.returned_norm_pair
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.returned_norm
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.returned_queries
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.returned_third
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.returned_native
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.returned_equal
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.actual_native_rational_coefficient_tags_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.actual_native_rational_norm_tag_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.actual_native_rational_conditional_third_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.actual_native_rational_dispatch_transport_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.actual_positive_rational_dispatch_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.actual_zero_rational_dispatch_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.actual_nonnegative_rational_dispatch_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.actual_rational_dispatch_program_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticRationalSignDispatch.actual_returned_rational_dispatch_equal_closed
 #print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.newton2
 #print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.newton3a
 #print axioms LeanProofs.IPRA.Algebra.ObservationAlgebra.newton3b
@@ -13685,6 +13740,55 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianFiniteExponentialWeightedNorm.returned_weighted_exponential_norm_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianFiniteExponentialWeightedNorm.returned_weighted_exponential_fields_closed
 
+/-! ### GaussianRationalUnitDiskHornerNorm -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.representationLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.subst_representationLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.representation_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.representation_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.prefix_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.size_index_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.size_step_monotone
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.sizeOrder
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.subst_sizeOrder
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.size_order_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.size_order_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.size_monotone
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.unit_prefix_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.sourceBuffer
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.query
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.subst_sourceBuffer
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.subst_query
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.source_length
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.query_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.query_unit
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.source_prefix_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.output
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.outputF
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.run
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.subst_output
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.subst_run
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.program_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_composition
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_tail
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_buffer
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_rest
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_query
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_prefix_pair
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_prefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_clear_pair
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_size
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_clear_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.actual_unit_size_prefix_representation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.actual_unit_size_monotone_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.original_euclidean_unit_prefix_norm_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.original_half_disk_rescaled_query_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.original_composition_prefix_eleven_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.actual_unit_prefix_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_unit_prefix_eleven_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalUnitDiskHornerNorm.returned_unit_prefix_cleared_budget_closed
+
 /-! ### RationalPolynomialGaussianEmbedding -/
 #print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficientBody
 #print axioms LeanProofs.IPRA.Analysis.RationalPolynomialGaussianEmbedding.coefficients
@@ -15457,6 +15561,37 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RationalPolynomialBuffersGaussianEmbedding.actual_rational_scale_evaluation_closed
 #print axioms LeanProofs.IPRA.Analysis.RationalPolynomialBuffersGaussianEmbedding.actual_rational_pad_evaluation_closed
 #print axioms LeanProofs.IPRA.Analysis.RationalPolynomialBuffersGaussianEmbedding.actual_rational_buffer_lengths_closed
+
+/-! ### RationalPolynomialPowers -/
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.powerPrefix
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.power
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.subst_powerPrefix
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.subst_power
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.prefix_zero
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.prefix_succ
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.prefix_length
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.power_length
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.evaluation_congr
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.singleton_evaluation
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.evaluationLaw
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.subst_evaluationLaw
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.prefix_evaluation_embedding
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.prefix_evaluation
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.power_evaluation
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.powerF
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.prefixF
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.run
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.prefixRun
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.program_at
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.prefix_program_at
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.returned_length
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.returned_evaluation
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.actual_original_power_prefix_recurrence_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.actual_original_polynomial_power_length_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.actual_original_power_prefix_evaluation_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.actual_original_polynomial_power_evaluation_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.actual_original_polynomial_power_program_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPolynomialPowers.actual_returned_original_power_evaluation_closed
 
 /-! ### RationalPolynomialProductGaussianEmbedding -/
 #print axioms LeanProofs.IPRA.Analysis.RationalPolynomialProductGaussianEmbedding.contribution
@@ -17366,6 +17501,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RationalPhiSection.proper_span_bound
 #print axioms LeanProofs.IPRA.Analysis.RationalPhiSection.actual_original_rational_section_bound_closed
 #print axioms LeanProofs.IPRA.Analysis.RationalPhiSection.actual_original_proper_span_section_bound_closed
+
+/-! ### RationalPhiCofactorSection -/
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCofactorSection.free_rational_coordinate
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCofactorSection.free_rational_nonzero
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCofactorSection.cofactor_nonzero
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCofactorSection.cofactor_lines
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCofactorSection.determinantal_span_bound
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCofactorSection.actual_cofactor_span_lines_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalPhiCofactorSection.actual_determinantal_span_section_bound_closed
 
 /-! ### RationalPhiCoverAssignment -/
 #print axioms LeanProofs.IPRA.Analysis.RationalPhiCoverAssignment.pointFeature

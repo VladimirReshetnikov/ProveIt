@@ -164,6 +164,10 @@ for every original truncation degree.
 then bounds the weighted norm of the original finite exponential composition
 by 72/7 at the same auxiliary weight. Convergence at the source disk still
 requires the tail and truncation comparisons.
+[GaussianRationalUnitDiskHornerNorm](Lean/IPRADerivations/Analysis/GaussianRationalUnitDiskHornerNorm.lean)
+uses the original Horner size bound to control each prefix of the same
+dilated composition by 11 at the rescaled source argument of radius at most
+9/10.
 
 ## Every ledger family remains in scope
 
