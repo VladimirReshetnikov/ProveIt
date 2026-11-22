@@ -785,10 +785,13 @@ import IPRADerivations.Analysis.OdeGrowth
 import IPRADerivations.Analysis.ClusterObservations
 import IPRADerivations.Analysis.ClusterMatching
 import IPRADerivations.Analysis.EulerResidual
+import IPRADerivations.Analysis.SignedPolysolver
 import IPRADerivations.Topology.FiniteSeparation
 import IPRADerivations.Topology.FiniteRecovery
 import IPRADerivations.Topology.FiniteNormalityConverse
 import IPRADerivations.Probability.RepresentedExpectation
+import IPRADerivations.Probability.MonotoneCoupling
+import IPRADerivations.Probability.DistributionCores
 import IPRADerivations.Topology.EulerCharacteristic
 import IPRADerivations.Topology.ChainHomotopy
 import IPRADerivations.Topology.BoundarySquare
@@ -809,6 +812,7 @@ import IPRADerivations.Topology.CarrierHomotopy
 import IPRADerivations.Topology.PrismIdentity
 import IPRADerivations.Topology.RationalHomology
 import IPRADerivations.Topology.GraphBetti
+import IPRADerivations.Topology.TowerHomology
 import IPRADerivations.Topology.OpenCubeHomeo
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
