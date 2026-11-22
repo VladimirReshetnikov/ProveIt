@@ -298,8 +298,13 @@ for the difference of the actual coefficients.
 bounds the total ordinary coefficient norm of each original polynomial.
 [GaussianGammaCoefficientRadiusIndependence](Lean/IPRADerivations/Analysis/GaussianGammaCoefficientRadiusIndependence.lean)
 proves that the actual coefficient names agree at every pair of positive
-radii, including the original canonical radius. Reconstruction of the
-full power series remains.
+radii, including the original canonical radius.
+[GaussianGammaOriginalPrefixName](Lean/IPRADerivations/Analysis/GaussianGammaOriginalPrefixName.lean)
+regularizes the unchanged original finite prefix and proves its literal
+C19 approximation bound with independent precisions. Identifying its
+finite evaluation with the canonical coefficient names remains.
+[GaussianGammaCanonicalPrefixName](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalPrefixName.lean)
+supplies the regular finite evaluator of those canonical names.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
@@ -758,12 +763,18 @@ independent row comparison through the actual quadrature weight.
 [GaussianEulerCompactUpperTail](Lean/IPRADerivations/Analysis/GaussianEulerCompactUpperTail.lean)
 proves the upper-cutoff norm bound for the original finite Euler
 quadrature using the scaled half-decay kernel and explicit mesh and
-observation errors. Passing to the varying-cutoff name and completing
-the corresponding lower-tail comparison remain.
+observation errors. [GaussianEulerNamedUpperTail](Lean/IPRADerivations/Analysis/GaussianEulerNamedUpperTail.lean)
+removes the auxiliary errors and proves the bound for the original
+varying-cutoff upper-tail name. The lower-tail comparison remains.
 [GaussianEulerLowerPowerComparison](Lean/IPRADerivations/Analysis/GaussianEulerLowerPowerComparison.lean)
 checks the signed real upper bound for the actual lower-time power
 square. [RationalHarmonicIntervalProduct](Lean/IPRADerivations/Analysis/RationalHarmonicIntervalProduct.lean)
 checks the exact product telescope of the original finite harmonic intervals.
+[GaussianHarmonicLogarithmPower](Lean/IPRADerivations/Analysis/GaussianHarmonicLogarithmPower.lean)
+binds natural powers to the original logarithm. The transformed grid
+and the sharp right-endpoint panel bound are checked by
+[GaussianEulerLowerTailRootGrid](Lean/IPRADerivations/Analysis/GaussianEulerLowerTailRootGrid.lean)
+and [GaussianEulerLowerTailPowerPanel](Lean/IPRADerivations/Analysis/GaussianEulerLowerTailPowerPanel.lean).
 
 ## Every ledger family remains in scope
 
