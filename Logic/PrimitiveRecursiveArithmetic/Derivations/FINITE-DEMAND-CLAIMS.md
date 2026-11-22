@@ -297,8 +297,27 @@ scaled determinant coefficients, including for the original fiber product.
 proves the diagonal determinant and actual row action. The constructed row
 quotients and repeated-root factor are checked separately in
 [GaussianPolynomialRowQuotient](Lean/IPRADerivations/Analysis/GaussianPolynomialRowQuotient.lean).
-The general row-factor determinant law, the original norm's weighted
-nonvanishing, and accumulation of multiplicities remain open.
+[GaussianPolynomialRowFactorDeterminant](Lean/IPRADerivations/Analysis/GaussianPolynomialRowFactorDeterminant.lean)
+composes the row quotients with the actual scalar diagonal action and
+finite grid coefficient comparison. It proves the factor identity at
+every stored coefficient after padding. The
+[original fiber quotient](Lean/IPRADerivations/Analysis/GaussianNormFiberDivisibility.lean)
+then uses `det W · det Z = 1` to transfer that factor identity to
+the original returned norm. It takes the original norm input and source
+point predicates, and preserves the exact fiber count and partition.
+
+[Linear cancellation](Lean/IPRADerivations/Analysis/GaussianRationalLinearCancellation.lean)
+and [fixed-width synthetic division](Lean/IPRADerivations/Analysis/GaussianRationalFixedWidthStrip.lean)
+give the next steps for separating factors of different abscissae.
+The [superelliptic rows](Lean/IPRADerivations/Analysis/GaussianSuperellipticTail.lean)
+give the exact original curve equation, and the
+[weighted maximum](Lean/IPRADerivations/Analysis/GaussianPolynomialWeightedDegree.lean)
+uses the original nonzero rows and computed degrees.
+The [cyclic word and wraps](Lean/IPRADerivations/Foundations/RuntimeCyclicPermutation.lean)
+and [digit sum](Lean/IPRADerivations/Foundations/RuntimePermutationDigitSum.lean)
+supply numerical permutation facts for the weighted proof. Accumulation
+of multiplicities, the actual specialized matrix entry law and weighted
+norm degree and nonvanishing remain open.
 
 ## Logical strength and program boundaries
 
