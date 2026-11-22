@@ -699,6 +699,10 @@ import IPRADerivations.Probability.RepresentedExpectation
 import IPRADerivations.Topology.EulerCharacteristic
 import IPRADerivations.Topology.ChainHomotopy
 import IPRADerivations.Topology.BoundarySquare
+import IPRADerivations.Topology.SimplicialCone
+import IPRADerivations.Topology.BooleanAtoms
+import IPRADerivations.Topology.FiniteSheaves
+import IPRADerivations.Topology.TwoColoring
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
