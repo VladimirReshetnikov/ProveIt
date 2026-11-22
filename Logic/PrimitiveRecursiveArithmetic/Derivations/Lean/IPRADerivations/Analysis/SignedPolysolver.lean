@@ -19,7 +19,9 @@ certificates of `Core/IntCertificates`. (The natural-term feedback theory is `An
 * `left_inverse`: "From the defining equation, `B F(x_0 + h_n) = h_n − h_{n+1}`. Multiplication by the checked
   left inverse `C` yields `F(x_0 + h_n) = C(h_n − h_{n+1})`", as an iPRA vector equation from `C B = I`;
 * `residual_bound` (`eq:polyresidual`): `|F_i| ≤ ∑_j A_{ij} δ_j` for entry bounds `|C_{ij}| ≤ A_{ij}` and step
-  bounds `|(h_n − h_{n+1})_j| ≤ δ_j`.
+  bounds `|(h_n − h_{n+1})_j| ≤ δ_j`;
+* `poly_step` (`eq:polystep`), `poly_tail`, `poly_tail_ball` (`eq:polytail`): the halving of the successive
+  differences and the finite geometric tail, for weighted norms given as natural terms.
 -/
 
 namespace LeanProofs.IPRA.Analysis.SignedPolysolver
@@ -146,5 +148,38 @@ theorem residual_bound (C B A : Mat d n) (f h h' : Vec d n) (δ : Fin d → ZT n
   have rb := row_bound (hC₁ i) (hC₂ i) hδ₁ hδ₂
   exact ⟨zle_of_comb (zsl rb.1) (by rw [zsl_def, e]) (nn_zsl _),
     zle_of_comb (zsl rb.2) (by rw [zsl_def, e]) (nn_zsl _)⟩
+
+/-! ## The step and tail estimates (weighted norms as natural terms) -/
+
+/-- `eq:polystep`: "The first successive difference has norm `c_0`. Each subsequent difference is at most
+half the preceding one": `s_0 ≤ c_0` and `2 s_{k+1} ≤ s_k` give `2^k s_k ≤ c_0`. -/
+theorem poly_step (s : ℕ → PTm n) (c₀ : PTm n) (h0 : Γ ⊢[PRAAx] le (s 0) c₀)
+    (hstep : ∀ k, Γ ⊢[PRAAx] le (PTm.num 2 * s (k + 1)) (s k)) (k : ℕ) :
+    Γ ⊢[PRAAx] le (PTm.num (2 ^ k) * s k) c₀ := by
+  induction k with
+  | zero => ipra_le sl h0 using push_cast; ring
+  | succ k ih =>
+    have hk := hstep k
+    ipra_le 2 ^ k * sl hk + sl ih using push_cast; ring
+
+/-- `eq:polytail`: "Sum the `m` consecutive differences beginning at `n`. The finite geometric identity gives
+`‖h_{n+m} − h_n‖_v ≤ 2 c_0 2^{-n} (1 − 2^{-m})`; after multiplying by `2^{n+m}`, this is an ordinary rational
+inequality": with `D_m` the distance from `h_j` to `h_{j+m}`, `2^{j+m} D_m + 2 c_0 ≤ 2^{m+1} c_0`. -/
+theorem poly_tail (s D : ℕ → PTm n) (c₀ : PTm n) (j : ℕ)
+    (hs : ∀ k, Γ ⊢[PRAAx] le (PTm.num (2 ^ k) * s k) c₀) (hD0 : Γ ⊢[PRAAx] le (D 0) ConciseIPRA.PTm.zero)
+    (htri : ∀ m, Γ ⊢[PRAAx] le (D (m + 1)) (D m + s (j + m))) (m : ℕ) :
+    Γ ⊢[PRAAx] le (PTm.num (2 ^ (j + m)) * D m + PTm.num 2 * c₀) (PTm.num (2 ^ (m + 1)) * c₀) := by
+  induction m with
+  | zero => ipra_le 2 ^ j * sl hD0 using push_cast; ring
+  | succ m ih =>
+    have ht := htri m
+    have hsm := hs (j + m)
+    ipra_le 2 ^ (j + m + 1) * sl ht + 2 * sl ih + 2 * sl hsm using push_cast; ring
+
+/-- The tail stays in the ball scale: `2 c_0 ≤ r` gives `2^{j+m} D_m ≤ 2^m r`, that is `D_m ≤ r 2^{-j}`. -/
+theorem poly_tail_ball {Dm c₀ r : PTm n} (j m : ℕ)
+    (ht : Γ ⊢[PRAAx] le (PTm.num (2 ^ (j + m)) * Dm + PTm.num 2 * c₀) (PTm.num (2 ^ (m + 1)) * c₀))
+    (hr : Γ ⊢[PRAAx] le (PTm.num 2 * c₀) r) : Γ ⊢[PRAAx] le (PTm.num (2 ^ (j + m)) * Dm) (PTm.num (2 ^ m) * r) := by
+  ipra_le sl ht + 2 ^ m * sl hr + 2 * Groth.ι (Q.mk Γ c₀) using push_cast; ring
 
 end LeanProofs.IPRA.Analysis.SignedPolysolver

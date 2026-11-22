@@ -805,6 +805,7 @@ import IPRADerivations.Topology.FiniteNormalityConverse
 import IPRADerivations.Probability.RepresentedExpectation
 import IPRADerivations.Probability.MonotoneCoupling
 import IPRADerivations.Probability.DistributionCores
+import IPRADerivations.Probability.UniformCantor
 import IPRADerivations.Topology.EulerCharacteristic
 import IPRADerivations.Topology.ChainHomotopy
 import IPRADerivations.Topology.BoundarySquare
@@ -826,6 +827,13 @@ import IPRADerivations.Topology.PrismIdentity
 import IPRADerivations.Topology.RationalHomology
 import IPRADerivations.Topology.GraphBetti
 import IPRADerivations.Topology.TowerHomology
+import IPRADerivations.Topology.MetricNets
+import IPRADerivations.Topology.ApproximateBrouwer
+import IPRADerivations.Topology.HairyBallEstimates
+import IPRADerivations.Combinatorics.RamseyBounds
+import IPRADerivations.Geometry.HellyCertificates
+import IPRADerivations.Geometry.HellyLine
+import IPRADerivations.Combinatorics.RamseyTriangle
 import IPRADerivations.Topology.OpenCubeHomeo
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
