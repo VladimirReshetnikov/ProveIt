@@ -50,8 +50,14 @@ The additional displayed equation `eq:constant-loss-budget` is checked in
 `numerical_constant_schedule` quantifies the loss internally and proves
 `h(t)=K+c*(N∸t)` for the actual PR schedule. The general version computes
 `c=loss(x)` from persistent data and `constant_loss_transfer_closed` derives
-the explicit initial budget. Stage-dependent additive losses and their finite
-sum formula remain separate.
+the explicit initial budget. [BackwardDemandStageLoss](Lean/IPRADerivations/Foundations/BackwardDemandStageLoss.lean)
+proves the next source formula for a fixed loss program that reads the
+original stage and persistent data. A quantifier-free invariant conserves
+the sum of the current backward demand and the unconsumed ascending prefix
+of losses. The closed initial budget is `K + Σ(n<N) d(n)`. At every
+intermediate stage the actual demand uses the shifted suffix sum, which
+is empty at or past the horizon. The closed transfer uses the explicit
+initial sum and the original local observation contract.
 
 
 The equality convention (E) is now checked by

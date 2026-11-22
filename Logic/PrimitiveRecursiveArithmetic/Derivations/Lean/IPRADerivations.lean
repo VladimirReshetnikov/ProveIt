@@ -778,6 +778,7 @@ import IPRADerivations.Foundations.BoundedFormulas
 import IPRADerivations.Foundations.BoundedSyntax
 import IPRADerivations.Foundations.BackwardDemand
 import IPRADerivations.Foundations.BackwardDemandBounds
+import IPRADerivations.Foundations.BackwardDemandStageLoss
 import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Foundations.ParameterChangingRecursion
 import IPRADerivations.Foundations.LeastEven

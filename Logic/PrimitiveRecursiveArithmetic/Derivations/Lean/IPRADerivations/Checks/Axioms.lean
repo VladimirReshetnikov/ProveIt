@@ -7324,6 +7324,27 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Foundations.BackwardDemandBounds.constant_loss_schedule
 #print axioms LeanProofs.IPRA.Foundations.BackwardDemandBounds.numerical_constant_schedule
 #print axioms LeanProofs.IPRA.Foundations.BackwardDemandBounds.constant_loss_transfer_closed
+
+/-! ### BackwardDemandStageLoss -/
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.body
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.demandF
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.prefixLoss
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.suffixLoss
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.subst_prefix
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.subst_suffix
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.demand_at
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.prefix_zero
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.prefix_succ
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.prefix_split
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.conservation_step
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.backward_conservation
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.initial_budget
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.horizon_in_range
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.horizon_suffix
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.stage_loss_transfer
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.actual_initial_budget_closed
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.actual_suffix_budget_closed
+#print axioms LeanProofs.IPRA.Foundations.BackwardDemandStageLoss.actual_stage_loss_transfer_closed
 #print axioms LeanProofs.IPRA.Foundations.FiniteQueryDemand.finiteMaximum_at
 #print axioms LeanProofs.IPRA.Foundations.FiniteQueryDemand.query_le_envelope
 #print axioms LeanProofs.IPRA.Foundations.FiniteQueryDemand.prefix_correct
