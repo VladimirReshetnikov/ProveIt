@@ -710,6 +710,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.FiniteHolder.young_pt
 #print axioms LeanProofs.IPRA.Probability.FiniteHolder.holder
 #print axioms LeanProofs.IPRA.Probability.FiniteHolder.lyapunov
+#print axioms LeanProofs.IPRA.Probability.VitaliEstimate.vitali_pt
+#print axioms LeanProofs.IPRA.Probability.VitaliEstimate.vitali_base
+#print axioms LeanProofs.IPRA.Probability.VitaliEstimate.vitali_step
+#print axioms LeanProofs.IPRA.Probability.VitaliEstimate.vitali_guard
+#print axioms LeanProofs.IPRA.Probability.VitaliEstimate.vitali_all
+#print axioms LeanProofs.IPRA.Probability.VitaliEstimate.vitali
+#print axioms LeanProofs.IPRA.Probability.VitaliEstimate.bounded_convergence
+#print axioms LeanProofs.IPRA.Probability.DominatedConvergence.four_pos
+#print axioms LeanProofs.IPRA.Probability.DominatedConvergence.quarters
+#print axioms LeanProofs.IPRA.Probability.DominatedConvergence.dct_at
+#print axioms LeanProofs.IPRA.Probability.DominatedConvergence.dct_modulus
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.trunc_pt
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.truncation
 #print axioms LeanProofs.IPRA.Probability.MomentDeterminacy.back_unique
