@@ -96,8 +96,8 @@ verifies the same programs at arbitrary numerical cutoffs satisfying
 `N≥1` and `2R≤N`, with literal specialization at `N=2R`.
 [GaussianGammaC9Bound](Lean/IPRADerivations/Analysis/GaussianGammaC9Bound.lean)
 proves the exact C9 bound `M_R` for every observation of the original
-reciprocal name. Agreement across cutoffs, the bounds on the separate
-finite approximants, and the remaining C8–C15 identities and rates remain.
+reciprocal name. The bound for the finite `P_N` approximant and the
+remaining rates and identities are tracked below.
 [GaussianGammaFiniteApproximantName](Lean/IPRADerivations/Analysis/GaussianGammaFiniteApproximantName.lean)
 constructs the folded C5 names from the original polynomial head,
 Euler constant, harmonic value, and harmonic-mesh logarithm. It proves the
@@ -110,6 +110,12 @@ precisions.
 [GaussianGammaExponentStep](Lean/IPRADerivations/Analysis/GaussianGammaExponentStep.lean)
 proves the actual exponent identity for adjacent cutoffs by combining
 the harmonic increment, tail shift and original local full logarithm.
+[GaussianGammaAdjacentCutoff](Lean/IPRADerivations/Analysis/GaussianGammaAdjacentCutoff.lean)
+uses local C4 and the literal head successor to prove agreement of the
+complete C7 names at adjacent cutoffs, including zeros of the polynomial
+head. [GaussianGammaFoldedApproximantBalance](Lean/IPRADerivations/Analysis/GaussianGammaFoldedApproximantBalance.lean)
+proves both C8 product identities for the actual folded programs. The
+arbitrary numerical cutoff comparison and C10 rate remain.
 
 [GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/GammaCanonicalRemainder.lean)
 proves the sharp finite C3 remainder between cutoffs `L` and `L+K` of the
@@ -284,8 +290,7 @@ of the real finite sums.
 [GaussianPositiveExponentialMajorant](Lean/IPRADerivations/Analysis/GaussianPositiveExponentialMajorant.lean)
 uses those positive sums and the unit factorial bound to prove `3^R`
 for the original finite exponential on the entire numerical disk at
-every cutoff. The one-step identity for the assembled C8 expression
-remains.
+every cutoff.
 [GaussianUnitDiskExponentialName](Lean/IPRADerivations/Analysis/GaussianUnitDiskExponentialName.lean)
 uses the actual scalar sums to construct a regular exponential of an
 argument name with unit-disk samples and proves preservation of name
@@ -293,7 +298,9 @@ equivalence.
 [GaussianExponentialSmallPerturbation](Lean/IPRADerivations/Analysis/GaussianExponentialSmallPerturbation.lean)
 proves the finite and named bound `3A/B` from one under a disk bound
 `A/B≤1`. The product estimate for a bounded prefactor is `3MA/B`,
-including at zeros. Instantiating the C10 perturbing exponent remains.
+including at zeros. [GaussianExactDiskShrinking](Lean/IPRADerivations/Analysis/GaussianExactDiskShrinking.lean)
+constructs an equivalent name with exact disk radius from a bound with
+dyadic observation slack. Instantiating the C10 perturbing exponent remains.
 [GaussianLocalLogarithmName](Lean/IPRADerivations/Analysis/GaussianLocalLogarithmName.lean)
 proves regularity and the unit-disk bound on every original unshifted
 logarithm observation.
