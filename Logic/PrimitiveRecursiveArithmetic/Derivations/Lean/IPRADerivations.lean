@@ -185,6 +185,7 @@ import IPRADerivations.Algebra.QuadraticTowerMultiplicationZero
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationCommutativity
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationUnit
 import IPRADerivations.Algebra.QuadraticTowerAdditionLaws
+import IPRADerivations.Algebra.QuadraticTowerMultiplicationDistributivity
 import IPRADerivations.Algebra.ObservationAlgebra
 import IPRADerivations.Algebra.JacobiRotation
 import IPRADerivations.Algebra.StableRootBounds
