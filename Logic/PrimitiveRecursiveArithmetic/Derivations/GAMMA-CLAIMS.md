@@ -171,7 +171,12 @@ dilated composition by 11 at the rescaled source argument of radius at most
 [GaussianFiniteLogarithmGeometricTail](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmGeometricTail.lean)
 identifies the actual high-prefix residual after subtracting the linear part
 and bounds it on the original half-disk by the geometric tail. The passage
-to a dyadic convergence clock and the original regular names remains.
+to a dyadic error bound is checked by
+[GaussianFiniteLogarithmDyadicTail](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmDyadicTail.lean).
+[GaussianFiniteLogarithmCompositionName](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmCompositionName.lean)
+constructs the regular cofinal name from the original finite Gamma-factor
+samples and proves its equivalence to the constant name `1+w`. The generic
+exponential-name construction on arbitrary input names remains.
 
 ## Every ledger family remains in scope
 
