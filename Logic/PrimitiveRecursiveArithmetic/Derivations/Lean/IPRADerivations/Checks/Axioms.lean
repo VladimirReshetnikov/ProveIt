@@ -1807,6 +1807,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.ChainHomotopy.ipra_boundary_map
 #print axioms LeanProofs.IPRA.Topology.ChainHomotopy.ipra_homotopy_cycle
 #print axioms LeanProofs.IPRA.Topology.ChainHomotopy.ipra_homotopy_identity
+#print axioms LeanProofs.IPRA.Topology.BoundarySquare.swap_swap
+#print axioms LeanProofs.IPRA.Topology.BoundarySquare.swap_ne
+#print axioms LeanProofs.IPRA.Topology.BoundarySquare.swap_face
+#print axioms LeanProofs.IPRA.Topology.BoundarySquare.swap_sign
+#print axioms LeanProofs.IPRA.Topology.BoundarySquare.bd_sq
+#print axioms LeanProofs.IPRA.Topology.BoundarySquare.bd_sq_coeff
+#print axioms LeanProofs.IPRA.Topology.BoundarySquare.bd_sq_chain
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
