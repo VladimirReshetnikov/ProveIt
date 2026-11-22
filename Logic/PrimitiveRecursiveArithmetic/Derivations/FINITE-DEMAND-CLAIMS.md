@@ -529,8 +529,16 @@ chooses the least shift `c` with `C≤2^c`.
 [GaussianCharacteristicNames](Lean/IPRADerivations/Analysis/GaussianCharacteristicNames.lean)
 then proves the regular lower-coefficient name contract for the actual
 characteristic samples at entry precision `s+c`, and proves the exact
-leading coefficient. Constructing the characteristic root aggregate and
-its spectral-radius name remains open.
+leading coefficient. [GaussianCharacteristicRootSupport](Lean/IPRADerivations/Analysis/GaussianCharacteristicRootSupport.lean)
+applies the existing concrete monic root-support and adequacy theorems
+to this actual coefficient program. It gives the computed disk, dyadic
+cover, and named-root characterization. It also identifies every stored
+coefficient of the root-stage polynomial with the actual characteristic
+output at the computed matrix sampling precision.
+[GaussianRationalModulus](Lean/IPRADerivations/Analysis/GaussianRationalModulus.lean)
+gives an actual dyadic-width modulus sampler and Euclidean variation
+bound. Connecting the modulus sampler to the aggregate maximum to name
+the spectral radius remains open.
 
 [RationalGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalGaussianEmbedding.lean)
 preserves field equality, zero, one, addition, multiplication and negation
