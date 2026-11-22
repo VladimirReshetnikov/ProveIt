@@ -502,9 +502,16 @@ proves the coefficient L1 product estimate for the stored convolution.
 gives the corresponding perturbation bound for the actual two products.
 [RuntimePermutationFactorialBound](Lean/IPRADerivations/Foundations/RuntimePermutationFactorialBound.lean)
 bounds the retained word count by `n!` through maximum deletion and
-an injection into the smaller enumerator. The source spectrum application
-still needs to combine these results into the quantitative coefficient
-precision budget for names and construct the spectral radius.
+an injection into the smaller enumerator.
+[GaussianPolynomialDeterminantStageNorm](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantStageNorm.lean)
+follows the actual word-product stage and proves the power bound.
+[GaussianPolynomialDeterminantNorm](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantNorm.lean)
+sums those signed-word bounds using the retained count.
+[GaussianCharacteristicEntryNorm](Lean/IPRADerivations/Analysis/GaussianCharacteristicEntryNorm.lean)
+computes the coefficient bounds for the original two-coefficient entries
+and their differences from the Euclidean bounds on the input entries.
+The word and sum perturbation estimates, the source precision budget
+for names, and the spectral-radius construction remain open.
 
 [RationalGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalGaussianEmbedding.lean)
 preserves field equality, zero, one, addition, multiplication and negation
@@ -589,9 +596,14 @@ the environment labels. Completion needs the following evidence:
    satisfy 16^abs(i-k)*S_i<=S_k at the selected radius. The actual
    [off-dominant Gaussian sum](Lean/IPRADerivations/Analysis/GaussianOffDominantSum.lean)
    now satisfies 9*normSq(otherSum)<=4*selectedScore, giving the required
-   2/3 norm estimate for every displacement within that radius. All term,
-   weight and common-denominator sum premises are derived; the stronger
-   displayed sum of individual magnitudes is not separately encoded.
+   2/3 norm estimate for every displacement within that radius.
+   [GaussianOffDominantMagnitudeSum](Lean/IPRADerivations/Analysis/GaussianOffDominantMagnitudeSum.lean)
+   separately proves the source `eq:other-terms` sum of individual magnitudes
+   for the original terms at the selected radius. Every tuple of rational
+   lower bounds satisfies the exact 2/3 inequality, and the actual
+   square-root sampler supplies individual brackets whose summed width is
+   at most `2^-m`. The finite-cut theorem uses the original polynomial
+   input and is also connected to the monic and nonmonic residual inputs.
    The actual [polynomial decomposition](Lean/IPRADerivations/Analysis/GaussianRationalDominantDecomposition.lean)
    and [strict dominant lower/upper bounds](Lean/IPRADerivations/Analysis/GaussianDominantMagnitude.lean)
    are now checked, with the unchanged source D=2^N*4^(2*N*N). The
