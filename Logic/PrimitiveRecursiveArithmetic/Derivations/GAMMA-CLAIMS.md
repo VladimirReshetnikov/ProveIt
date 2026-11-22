@@ -160,6 +160,10 @@ coefficient arithmetic used to produce that majorant.
 [GaussianFiniteLogarithmWeightedNorm](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmWeightedNorm.lean)
 bounds the actual truncated logarithm at auxiliary weight 5/9 by 65/72
 for every original truncation degree.
+[GaussianFiniteExponentialWeightedNorm](Lean/IPRADerivations/Analysis/GaussianFiniteExponentialWeightedNorm.lean)
+then bounds the weighted norm of the original finite exponential composition
+by 72/7 at the same auxiliary weight. Convergence at the source disk still
+requires the tail and truncation comparisons.
 
 ## Every ledger family remains in scope
 
