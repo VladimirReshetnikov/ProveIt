@@ -4776,6 +4776,40 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.QuadraticTowerComparisonSymmetry.original_computed_uniform_comparison_trichotomy_closed
 #print axioms LeanProofs.IPRA.Algebra.QuadraticTowerComparisonSymmetry.original_computed_uniform_comparison_zero_symmetry_closed
 
+/-! ### QuadraticTowerAdditiveComparison -/
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.negative_difference
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.negative_sign
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.order_negation
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.equivalence_negation
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.zero_addition_query
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.translated_sign
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.translated_negative_sign
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.translated_order_negation
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.translated_equivalence_negation
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.output
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.outputF
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.run
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.subst_output
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.subst_run
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.program_at
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.returned_original
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.returned_tail
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.returned_translation
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.returned_negative_pair
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.returned_negative
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.returned_cap
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.returned_translation_equal
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.returned_negative_zero_iff
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.actual_uniform_negative_difference_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.actual_uniform_negative_order_reversal_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.original_uniform_negative_equivalence_congruence_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.actual_uniform_zero_addition_query_preservation_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.actual_uniform_translated_negative_order_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.actual_additive_comparison_program_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.actual_additive_comparison_returned_translation_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.actual_additive_comparison_returned_cap_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerAdditiveComparison.original_additive_comparison_returned_zero_iff_closed
+
 /-! ### QuadraticTowerMultiplicationRecurrence -/
 #print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationRecurrence.lookup_normalized
 #print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationRecurrence.recipe_normalized
@@ -12403,6 +12437,44 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailShift.actual_tail_shift_returned_data_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailShift.source_returned_tail_shift_equivalence_closed
 
+/-! ### GaussianGammaExactTailDisk -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.original_point_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.original_raw_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exactF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exactData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exactPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exponentialF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exponentialPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.originalRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.originalExponentialF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.originalExponentialData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.originalExponentialPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.subst_exactData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.subst_exactPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.subst_exponentialPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.subst_originalRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.subst_originalExponentialData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.subst_originalExponentialPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exact_point_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exponential_point_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.original_exponential_point_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exact_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exact_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exact_disk
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exact_point_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exponential_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exponential_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exact_exponential_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.original_exponential_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.original_exponential_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.exponential_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.original_exponential_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.actual_corrected_C6_tail_observation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.original_exact_C6_tail_name_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.original_exact_C6_tail_exponential_error_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.original_independent_radii_tail_exponential_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaExactTailDisk.original_C6_tail_exponential_observation_bound_closed
+
 /-! ### GaussianGammaCanonicalTailExponential -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailExponential.scalar_zero_point
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailExponential.exponentialPoint
@@ -12632,6 +12704,40 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaAdjacentCutoff.actual_adjacent_cutoff_returned_data_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaAdjacentCutoff.original_returned_adjacent_cutoff_independence_closed
 
+/-! ### GaussianGammaCutoffIndependence -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.source_after
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.data_cutoff_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.sample_cutoff_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.prefixLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.subst_prefixLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.prefix_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.prefix_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.prefix_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.cutoff_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.offset_equivalence
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.ordered_equivalence
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.valid_cutoffs_equivalent
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.original_C7_cutoff_equivalent
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.output
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.outputF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.run
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.subst_output
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.subst_run
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.program_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.returned_first
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.returned_tail
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.returned_second
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.returned_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.returned_equivalence
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.original_fixed_precision_cutoff_distance_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.original_numerical_cutoff_envelope_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.original_numerical_cutoff_independence_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.original_any_valid_cutoffs_independence_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.original_C7_all_cutoffs_specialization_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.actual_cutoff_independence_supplier_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.actual_cutoff_independence_returned_budget_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCutoffIndependence.original_returned_all_cutoffs_equivalence_closed
+
 /-! ### GaussianGammaC9Bound -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaC9Bound.exponentialMajorant
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaC9Bound.majorant
@@ -12730,6 +12836,47 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaFoldedApproximantBalance.tail_factor_identity
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaFoldedApproximantBalance.original_folded_euler_C8_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaFoldedApproximantBalance.original_folded_tail_C8_closed
+
+/-! ### GaussianGammaEulerCorrectionDisk -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.scalar_difference_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.embedded_difference_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.subst_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.core_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.correction_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.correction_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.exactF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.exactData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.exact_correction_disk
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.original_euler_correction_envelope_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk.original_euler_correction_exact_disk_closed
+
+/-! ### GaussianGammaPerturbationExponent -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.tailData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.deltaF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.deltaData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.sumF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.sumData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.subst_tailData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.subst_deltaData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.subst_sumData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.subst_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.correction_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.delta_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.core
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.core_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.core_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.delta_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.delta_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.cancel_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.tail_plus_delta
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.original_C10_perturbation_exponent_envelope_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent.original_C10_perturbation_exponent_reconstruction_closed
 
 /-! ### GammaEulerMesh -/
 #print axioms LeanProofs.IPRA.Analysis.GammaEulerMesh.numerator
@@ -16621,6 +16768,38 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianExactDiskShrinking.actual_exact_disk_shrinking_program_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianExactDiskShrinking.original_regular_exact_disk_shrinking_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianExactDiskShrinking.original_corrected_small_exponential_closed
+
+/-! ### GaussianExactDiskExponential -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianExactDiskExponential.shrunk_unit_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianExactDiskExponential.original_exp_equiv_shrunk_unit
+#print axioms LeanProofs.IPRA.Analysis.GaussianExactDiskExponential.original_exp_sample_near_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianExactDiskExponential.original_exponential_exact_disk_properness_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianExactDiskExponential.original_exponential_exact_disk_observation_bound_closed
+
+/-! ### GaussianNamedSmallPerturbationTransport -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.prefactorSamples
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.correctionSamples
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.productClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.productSample
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.budgetNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.budgetDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.subst_prefactorSamples
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.subst_correctionSamples
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.subst_productClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.subst_productSample
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.subst_budgetNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.subst_budgetDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.prefactor_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.correction_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.recode_fixed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.product_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.product_prefactor_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.prefactor_query_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.independent_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.independent_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.actual_normalized_named_product_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedSmallPerturbationTransport.original_named_small_perturbation_transport_closed
 
 /-! ### GaussianLocalLogarithmName -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianLocalLogarithmName.source

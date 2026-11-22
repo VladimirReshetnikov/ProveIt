@@ -70,6 +70,9 @@ proves the original same-query comparison with error `8/2^(p+4)`.
 [GaussianGammaCanonicalTailShift](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailShift.lean)
 accounts for the retiming of the actual addition and proves the regular
 name identity `T_N=L_(N+1)+T_(N+1)` at independent precisions.
+[GaussianGammaExactTailDisk](Lean/IPRADerivations/Analysis/GaussianGammaExactTailDisk.lean)
+constructs an equivalent regular tail name on the exact C6 disk and
+proves its exponential bound when `R²≤N`.
 [GaussianGammaCanonicalTailExponential](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailExponential.lean)
 proves that the actual tail exponential approaches one at a computed
 cofinal cutoff. The original pure-tail finite sample comparison uses the
@@ -114,8 +117,15 @@ the harmonic increment, tail shift and original local full logarithm.
 uses local C4 and the literal head successor to prove agreement of the
 complete C7 names at adjacent cutoffs, including zeros of the polynomial
 head. [GaussianGammaFoldedApproximantBalance](Lean/IPRADerivations/Analysis/GaussianGammaFoldedApproximantBalance.lean)
-proves both C8 product identities for the actual folded programs. The
-arbitrary numerical cutoff comparison and C10 rate remain.
+proves both C8 product identities for the actual folded programs.
+[GaussianGammaCutoffIndependence](Lean/IPRADerivations/Analysis/GaussianGammaCutoffIndependence.lean)
+uses quantifier-free induction at fixed observation precision, followed
+by an envelope comparison, to derive agreement at any two valid
+numerical cutoffs. [GaussianGammaEulerCorrectionDisk](Lean/IPRADerivations/Analysis/GaussianGammaEulerCorrectionDisk.lean)
+proves the exact `R/N` disk for the represented Euler correction.
+[GaussianGammaPerturbationExponent](Lean/IPRADerivations/Analysis/GaussianGammaPerturbationExponent.lean)
+proves the actual difference-of-exponents envelope at `(R²+R)/N`
+and its relation to the original correction. The assembled C10 rate remains.
 
 [GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/GammaCanonicalRemainder.lean)
 proves the sharp finite C3 remainder between cutoffs `L` and `L+K` of the
@@ -300,7 +310,11 @@ proves the finite and named bound `3A/B` from one under a disk bound
 `A/B≤1`. The product estimate for a bounded prefactor is `3MA/B`,
 including at zeros. [GaussianExactDiskShrinking](Lean/IPRADerivations/Analysis/GaussianExactDiskShrinking.lean)
 constructs an equivalent name with exact disk radius from a bound with
-dyadic observation slack. Instantiating the C10 perturbing exponent remains.
+dyadic observation slack. [GaussianExactDiskExponential](Lean/IPRADerivations/Analysis/GaussianExactDiskExponential.lean)
+transports this correction through the actual exponential programs.
+[GaussianNamedSmallPerturbationTransport](Lean/IPRADerivations/Analysis/GaussianNamedSmallPerturbationTransport.lean)
+proves the prefactor estimate at independent precisions using the
+actual original multiplication clock.
 [GaussianLocalLogarithmName](Lean/IPRADerivations/Analysis/GaussianLocalLogarithmName.lean)
 proves regularity and the unit-disk bound on every original unshifted
 logarithm observation.
