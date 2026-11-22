@@ -56,6 +56,10 @@ uses those exact observations as a regular Gaussian rational name with the
 C6 radius and the same rounding slack. At the sufficient cutoff `4R²≤N`,
 every sample lies in the unit disk, which supplies an actual input and
 regular output for the exponential of this tail.
+[GaussianGammaCanonicalTailFiniteSplit](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailFiniteSplit.lean)
+identifies the normalized original finite tail with the exact Gaussian sum
+of its original factors. One extra factor in the original tail yields
+the first factor plus the successor tail at the same Taylor degree.
 [GaussianGammaCanonicalTailExponential](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailExponential.lean)
 proves that the actual tail exponential approaches one at a computed
 cofinal cutoff. The original pure-tail finite sample comparison uses the
@@ -229,8 +233,13 @@ binds the original rectangular product and identifies its exact difference
 with the sum of its actual high-degree coefficients.
 [GaussianScalarExponentialProductTail](Lean/IPRADerivations/Analysis/GaussianScalarExponentialProductTail.lean)
 proves the requested dyadic error of that actual high part at a computed
-cutoff. The named addition law still needs to transport these finite
-comparisons to the independently sampled exponential names.
+cutoff. [GaussianExponentialReference](Lean/IPRADerivations/Analysis/GaussianExponentialReference.lean)
+compares each actual observation with the original finite sum at a common
+later input and cutoff. [GaussianExponentialAddition](Lean/IPRADerivations/Analysis/GaussianExponentialAddition.lean)
+uses the original addition and multiplication clocks to prove
+`exp(u+v)=exp(u)exp(v)` at independent observation precisions on a common
+numerical disk with `R≥1`. The combined proof with the named C8 tail and
+Euler head remains.
 [GaussianUnitDiskExponentialName](Lean/IPRADerivations/Analysis/GaussianUnitDiskExponentialName.lean)
 uses the actual scalar sums to construct a regular exponential of an
 argument name with unit-disk samples and proves preservation of name
