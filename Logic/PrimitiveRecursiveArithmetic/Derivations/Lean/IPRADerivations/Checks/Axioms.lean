@@ -1948,6 +1948,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.MetricNeighborhoods.currying
 #print axioms LeanProofs.IPRA.Topology.MetricNeighborhoods.pow_mono_D
 #print axioms LeanProofs.IPRA.Topology.MetricNeighborhoods.metrization_inverse
+#print axioms LeanProofs.IPRA.Topology.LimitCertificates.center_interior
+#print axioms LeanProofs.IPRA.Topology.LimitCertificates.dual_bound
+#print axioms LeanProofs.IPRA.Topology.LimitCertificates.selected_vanish
+#print axioms LeanProofs.IPRA.Topology.LimitCertificates.extractor_decides
+#print axioms LeanProofs.IPRA.Topology.LimitCertificates.no_decider
+#print axioms LeanProofs.IPRA.Topology.LimitCertificates.no_extractor
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.monus_add_cancel
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.fwd_same
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.fwd_same_le
