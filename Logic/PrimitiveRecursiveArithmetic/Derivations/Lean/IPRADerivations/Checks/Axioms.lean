@@ -10507,6 +10507,168 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageNorm.actual_determinant_stage_norm_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageNorm.actual_signed_determinant_term_norm_closed
 
+/-! ### GaussianCharacteristicFactorBounds -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.rowBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.entryBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.rowDistances
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.entryDistances
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.input
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.subst_rowBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.subst_entryBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.subst_rowDistances
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.subst_entryDistances
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.subst_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.entry_bound_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.entry_distance_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.factor_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.factor_length
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.factor_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.factor_difference_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.source_tables
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.factor_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.factor_difference_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.actual_characteristic_word_factor_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.actual_characteristic_factor_norm_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.actual_characteristic_factor_difference_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds.actual_source_characteristic_tables_closed
+
+/-! ### GaussianPolynomialDeterminantStageError -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.factorDifference
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.factorDifferences
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.stageDifference
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.errorLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.subst_factorDifference
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.subst_factorDifferences
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.subst_stageDifference
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.subst_errorLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.factor_difference_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.budget_succ_scale
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.error_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.error_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.stage_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.signed_term_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.pairInput
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.actual_stage_error_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantStageError.actual_signed_term_error_closed
+
+/-! ### GaussianPolynomialDeterminantError -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.termDifference
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.difference
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.summandBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.prefixBound
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.subst_termDifference
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.subst_difference
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.subst_summandBounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.subst_prefixBound
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.summand_bound_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.budget_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.difference_length
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.difference_zero_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.difference_succ_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.prefix_error_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.determinant_count_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.determinant_error_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.output
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.outputF
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.run
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.subst_output
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.subst_run
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.program_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.returned_difference
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.returned_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.returned_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.returned_norm_is_actual
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.returned_length
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.returned_prefix_error_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.returned_determinant_error_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.actual_zero_prefix_error_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.actual_prefix_error_bound_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.actual_determinant_count_error_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.actual_determinant_factorial_error_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.actual_error_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.actual_returned_error_norm_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.actual_returned_prefix_error_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantError.actual_returned_determinant_error_closed
+
+/-! ### GaussianCharacteristicMagnitude -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.magnitude
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.input
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.subst_magnitude
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.subst_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.word_factor_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.signed_word_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.signed_summand_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.magnitude_identity
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.coefficient_norm_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.coefficient_l1_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.coefficient_magnitude_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.source_coefficient_magnitude
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.returned_coefficient_magnitude
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.magnitudeF
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.magnitude_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.actual_characteristic_norm_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.actual_characteristic_coefficient_l1_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.actual_characteristic_coefficient_magnitude_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.actual_returned_coefficient_magnitude_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude.actual_magnitude_program_closed
+
+/-! ### GaussianCharacteristicSensitivity -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.sensitivity
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.subst_sensitivity
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.integer_times_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.sensitivity_identity
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.wordRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.subst_wordRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.word_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.word_errors
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.coefficient_norm_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.coefficient_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.returned_coefficient_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.actual_characteristic_sensitivity_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.actual_returned_characteristic_sensitivity_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.sensitivityF
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.sensitivity_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity.actual_sensitivity_program_closed
+
+/-! ### GaussianRationalGridRounding -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.box
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.shifted
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.dividend
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.index
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.coordinate
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.error
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.residual
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.subst_box
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.subst_shifted
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.subst_dividend
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.subst_index
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.subst_coordinate
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.subst_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.subst_residual
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.shifted_identity
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.signed_absolute
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.box_of_absolute
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.shifted_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.division
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.dividend_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.index_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.error_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.error_square
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.output
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.outputF
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.run
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.subst_output
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.subst_run
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.program_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.returned_index
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.returned_shifted
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.returned_residual
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.actual_nearest_coordinate_range_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.actual_nearest_coordinate_error_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.actual_coordinate_box_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.actual_nearest_coordinate_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalGridRounding.actual_returned_coordinate_range_closed
+
 /-! Actual collision-tolerant root-support names and finite adequacy components. -/
 
 -- Analysis/GaussianCoefficientNormEntries
