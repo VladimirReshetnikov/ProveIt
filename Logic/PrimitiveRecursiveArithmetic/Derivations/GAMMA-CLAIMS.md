@@ -150,6 +150,10 @@ verifies the same recurrence on the actual two-coefficient linear buffer.
 [GaussianFiniteLogarithmBellIdentification](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmBellIdentification.lean)
 then identifies the coefficients of the literal finite composition with the
 original signed Bell values at each exponent within both internal cutoffs.
+[GaussianFiniteLogarithmCompositionTail](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmCompositionTail.lean)
+derives the actual residual from the stored high coefficients and bounds its
+size on the source half-disk using the computed stage coefficient budget.
+A uniform weighted majorant remains necessary for the analytic modulus.
 
 ## Every ledger family remains in scope
 
