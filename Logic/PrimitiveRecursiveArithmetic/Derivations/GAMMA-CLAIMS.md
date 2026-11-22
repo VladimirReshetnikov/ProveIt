@@ -15,8 +15,15 @@ lemmas and analytic certificate structures are separate evidence.
 [GammaEulerMesh](Lean/IPRADerivations/Analysis/GammaEulerMesh.lean)
 computes the exact sample `H_N−(H_(KN)−H_K)` on the positive integer
 mesh. It proves the C1 difference for a common mesh and the finite
-range `[0,1]` on the independently normalized samples. The regular Euler
-constant name and the bridge to the completed logarithm remain.
+range `[0,1]` on the independently normalized samples.
+[GammaEulerConstantName](Lean/IPRADerivations/Analysis/GammaEulerConstantName.lean)
+constructs the actual fixed-index and cofinal regular names and proves the
+sharp named C1 and C2 comparisons with independent observation errors.
+The construction uses the harmonic-mesh presentation of the logarithm.
+Its comparison with the separate Robin logarithm evaluator remains.
+[RationalGaussianNameEmbedding](Lean/IPRADerivations/Analysis/RationalGaussianNameEmbedding.lean)
+embeds the original regular scalar names as regular Gaussian names,
+with exact Euclidean distances and a computed exponential disk.
 
 [GammaCanonicalFactors](Lean/IPRADerivations/Analysis/GammaCanonicalFactors.lean)
 implements the finite expression
@@ -211,8 +218,11 @@ proves that the actual triangular Cauchy sum is exactly the original
 finite scalar exponential of the sum.
 [GaussianScalarExponentialProductLowDegrees](Lean/IPRADerivations/Analysis/GaussianScalarExponentialProductLowDegrees.lean)
 binds the original rectangular product and identifies its exact difference
-with the sum of its actual high-degree coefficients. A uniform bound on
-that high part remains for named addition.
+with the sum of its actual high-degree coefficients.
+[GaussianScalarExponentialProductTail](Lean/IPRADerivations/Analysis/GaussianScalarExponentialProductTail.lean)
+proves the requested dyadic error of that actual high part at a computed
+cutoff. The named addition law still needs to transport these finite
+comparisons to the independently sampled exponential names.
 [GaussianUnitDiskExponentialName](Lean/IPRADerivations/Analysis/GaussianUnitDiskExponentialName.lean)
 uses the actual scalar sums to construct a regular exponential of an
 argument name with unit-disk samples and proves preservation of name
