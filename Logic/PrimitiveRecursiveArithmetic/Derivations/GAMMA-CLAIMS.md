@@ -296,7 +296,10 @@ checked low-prefix program and exact rational dilation give a bound
 for the difference of the actual coefficients.
 [GaussianGammaUnitCoefficientMass](Lean/IPRADerivations/Analysis/GaussianGammaUnitCoefficientMass.lean)
 bounds the total ordinary coefficient norm of each original polynomial.
-Agreement across radii and reconstruction of the full power series remain.
+[GaussianGammaCoefficientRadiusIndependence](Lean/IPRADerivations/Analysis/GaussianGammaCoefficientRadiusIndependence.lean)
+proves that the actual coefficient names agree at every pair of positive
+radii, including the original canonical radius. Reconstruction of the
+full power series remains.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
@@ -746,12 +749,21 @@ mesh bounds and rational encodings of the same interval.
 and [GaussianGammaCompactCutoffAlignment](Lean/IPRADerivations/Analysis/GaussianGammaCompactCutoffAlignment.lean)
 relate the actual cutoff denominators and align the earlier Euler
 quadrature name with the corresponding interval at the later cutoff.
+[GaussianGammaCompactCutoffSplit](Lean/IPRADerivations/Analysis/GaussianGammaCompactCutoffSplit.lean)
+checks the resulting three-piece decomposition of the original
+later name, including coincident cutoffs.
 [GaussianCompactScalarMajorant](Lean/IPRADerivations/Analysis/GaussianCompactScalarMajorant.lean)
 sums the pointwise scalar majorant on the original grid and passes an
 independent row comparison through the actual quadrature weight.
-The upper-tail pointwise comparison now holds for the original Euler
-integrand. Its compact quadrature norm bound and the corresponding
-lower-tail comparison remain.
+[GaussianEulerCompactUpperTail](Lean/IPRADerivations/Analysis/GaussianEulerCompactUpperTail.lean)
+proves the upper-cutoff norm bound for the original finite Euler
+quadrature using the scaled half-decay kernel and explicit mesh and
+observation errors. Passing to the varying-cutoff name and completing
+the corresponding lower-tail comparison remain.
+[GaussianEulerLowerPowerComparison](Lean/IPRADerivations/Analysis/GaussianEulerLowerPowerComparison.lean)
+checks the signed real upper bound for the actual lower-time power
+square. [RationalHarmonicIntervalProduct](Lean/IPRADerivations/Analysis/RationalHarmonicIntervalProduct.lean)
+checks the exact product telescope of the original finite harmonic intervals.
 
 ## Every ledger family remains in scope
 
