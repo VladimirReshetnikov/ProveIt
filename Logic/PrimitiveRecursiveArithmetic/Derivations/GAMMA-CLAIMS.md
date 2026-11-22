@@ -38,7 +38,14 @@ ordered-precision bounds, exact program equations, rounding correctness and
 the C6 disk bound with only the explicit `2/2^(p+4)` rounding slack.
 `primitive_recursive_joint_tail_name` is a name for this prescribed
 power-series tail. Analytic logarithm/exponential identification C4,
-Euler/Gamma approximants C5/C7–C15 and the sharper C3 remainder remain.
+Euler/Gamma approximants C5/C7–C15 remain.
+
+[GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/GammaCanonicalRemainder.lean)
+proves the sharp finite C3 remainder between cutoffs `L` and `L+K` of the
+actual factor at the same rational argument. The cleared scale is
+`(L+3)N^(L+2)(N-R)`, and the right-hand radius power is `R^(L+3)`.
+The returned PR5 data retain both original positive denominators and the
+certificate proves the positivity of this scale under `R<N`.
 
 The reusable [ReciprocalSquareTail](Lean/IPRADerivations/Analysis/ReciprocalSquareTail.lean)
 provides the underlying uniform rational inverse-square comparison.
