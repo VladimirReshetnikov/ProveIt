@@ -498,8 +498,13 @@ matrix with numerical dimension. It proves the literal leading coefficient
 one and identifies every evaluation with the actual scalar determinant of
 `X I - A`. [GaussianRationalConvolutionNorm](Lean/IPRADerivations/Analysis/GaussianRationalConvolutionNorm.lean)
 proves the coefficient L1 product estimate for the stored convolution.
-The source spectrum application also needs the quantitative coefficient
-precision budget for names and the spectral-radius construction.
+[GaussianPolynomialConvolutionDifference](Lean/IPRADerivations/Analysis/GaussianPolynomialConvolutionDifference.lean)
+gives the corresponding perturbation bound for the actual two products.
+[RuntimePermutationFactorialBound](Lean/IPRADerivations/Foundations/RuntimePermutationFactorialBound.lean)
+bounds the retained word count by `n!` through maximum deletion and
+an injection into the smaller enumerator. The source spectrum application
+still needs to combine these results into the quantitative coefficient
+precision budget for names and construct the spectral radius.
 
 [RationalGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalGaussianEmbedding.lean)
 preserves field equality, zero, one, addition, multiplication and negation
@@ -508,8 +513,13 @@ canonical recoding. [RationalPolynomialGaussianEmbedding](Lean/IPRADerivations/A
 constructs the actual mapped coefficient list and proves that the actual
 rational Horner calculation embeds into Gaussian Horner. This also gives
 zero reflection and the evaluation formula at arbitrary raw real-axis
-queries. The rational norm specialization still needs matrix and determinant
-transport.
+queries. [RationalGaussianRealPart](Lean/IPRADerivations/Analysis/RationalGaussianRealPart.lean)
+and [RationalRowSpanGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalRowSpanGaussianEmbedding.lean)
+now transport original rational row-span membership through the actual
+rectangular embedding. Every Gaussian witness yields a rational witness
+by taking real parts. The rational norm specialization still needs the
+matrix-calculation and determinant transport that identify its norm
+polynomial.
 
 ## Logical strength and program boundaries
 
