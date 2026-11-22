@@ -192,7 +192,7 @@ precisions, including the source cutoff `N=2R`.
 proves the finite weighted coefficient bound for the original polynomial
 exponential. [GaussianWeightedPolynomialTail](Lean/IPRADerivations/Analysis/GaussianWeightedPolynomialTail.lean)
 proves the finite C19 geometric tail on the rescaled half disk. The
-Full reciprocal-product coefficient stabilization and cofinal analyticity remain.
+Comparison of coefficient names across radii and cofinal analyticity remain.
 [GaussianGammaZetaCoefficientPolynomial](Lean/IPRADerivations/Analysis/GaussianGammaZetaCoefficientPolynomial.lean)
 constructs the actual degree buffer and binds its Horner value to the
 original C16 polynomial at its original clock.
@@ -266,8 +266,18 @@ coefficient at its degree-sized truncations and original precision clock.
 checks the perturbation bound for the actual finite power cursor.
 [GaussianPolynomialExponentialCoefficientVariation](Lean/IPRADerivations/Analysis/GaussianPolynomialExponentialCoefficientVariation.lean)
 preserves each factorial weight in the original finite exponential
-coefficient error. General cofinal
-coefficient stabilization and analyticity as a power-series name remain.
+coefficient error.
+[GaussianGammaInputPrecisionNorm](Lean/IPRADerivations/Analysis/GaussianGammaInputPrecisionNorm.lean)
+proves the actual input coefficient buffer error across precisions.
+[GaussianGammaInputStaticNorm](Lean/IPRADerivations/Analysis/GaussianGammaInputStaticNorm.lean)
+gives its canonical fixed-degree norm envelope.
+[GaussianGammaFixedCoefficientVariation](Lean/IPRADerivations/Analysis/GaussianGammaFixedCoefficientVariation.lean)
+derives a computed precision modulus for the full actual fixed
+coefficient for every degree.
+[GaussianGammaHigherCoefficientName](Lean/IPRADerivations/Analysis/GaussianGammaHigherCoefficientName.lean)
+constructs a regular name at every degree from the unchanged cofinal
+coefficient sampler at radius `e+1`. Agreement across coefficient
+radii and reconstruction of the full power series remain.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
@@ -665,6 +675,19 @@ identifies the resulting compact decay name with the original
 difference of endpoint decay names.
 [GaussianSignedRealExponentialOrder](Lean/IPRADerivations/Analysis/GaussianSignedRealExponentialOrder.lean)
 proves signed real-axis order for the unchanged named exponential.
+[GaussianCompactRiemannSplit](Lean/IPRADerivations/Analysis/GaussianCompactRiemannSplit.lean)
+checks the exact finite split of the actual affine grid at a common step.
+[GaussianCompactRiemannAdditivity](Lean/IPRADerivations/Analysis/GaussianCompactRiemannAdditivity.lean)
+compares the actual shared-step observations via their zero-distance
+rate across distinct rational time encodings.
+[GaussianPositiveRationalLogarithmSign](Lean/IPRADerivations/Analysis/GaussianPositiveRationalLogarithmSign.lean)
+proves the sign of the original logarithm up to observation error.
+[GaussianExponentialRealPartMajorant](Lean/IPRADerivations/Analysis/GaussianExponentialRealPartMajorant.lean)
+bounds the original complex exponential squared modulus from its actual
+real part.
+[GaussianEulerDecayOrder](Lean/IPRADerivations/Analysis/GaussianEulerDecayOrder.lean)
+proves order in the original rational time and binds the actual
+nonnegative representative.
 The upper and lower comparisons for the full Euler integrand tails
 still require the corresponding compact norm and integral bounds.
 
