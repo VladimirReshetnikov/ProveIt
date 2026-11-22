@@ -1721,6 +1721,9 @@ import IPRADerivations.Foundations.FilteredFixedPoint
 import IPRADerivations.Analysis.PolynomialLipschitz
 import IPRADerivations.Analysis.PolynomialTaylor
 import IPRADerivations.Analysis.SignedTaylor
+import IPRADerivations.Analysis.BernoulliCoefficients
+import IPRADerivations.Analysis.BernoulliBounds
+import IPRADerivations.Analysis.BernoulliIncrements
 import IPRADerivations.Foundations.FiniteQueryTable
 import IPRADerivations.Foundations.SetoidInterpretation
 import IPRADerivations.Foundations.ObservedRelation
