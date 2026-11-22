@@ -12623,6 +12623,55 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailFiniteSplit.actual_finite_tail_split_program_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailFiniteSplit.original_returned_finite_tail_split_closed
 
+/-! ### RationalReciprocalPowerTail -/
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.reciprocalPower
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.potential
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.data
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.body
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.tail
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.subst_reciprocalPower
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.subst_potential
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.subst_data
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.subst_tail
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.reciprocal_congr
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.potential_congr
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.exponent_form
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.predecessor_form
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.predecessor_positive
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.potential_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.native_antiderivative
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.one_step_successors
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.one_step
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.term_at
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.zero_fraction
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.add_zero_right
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.tail_zero
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.tail_succ
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.tail_canonical
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.reciprocal_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.potential_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.finiteBound
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.subst_finiteBound
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.finite_bound_zero
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.finite_bound_succ
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.finite_bound
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.tail_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.finite_conservation
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.sharp_tail
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.tailF
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.run
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.subst_run
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.program_at
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.returned_nonnegative
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.returned_bound
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.native_antiderivative_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.reciprocal_power_one_step_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.actual_finite_tail_recurrence_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.finite_tail_conservation_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.source_C17_sharp_finite_tail_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.actual_tail_program_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail.actual_returned_C17_finite_bounds_closed
+
 /-! ### GaussianGammaCanonicalTailMetric -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailMetric.ofGaussian_congr
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailMetric.distance_of_cross
@@ -13012,6 +13061,24 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.returned_shift_identity
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.original_finite_Euler_head_shift_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.original_finite_Euler_returned_head_shift_closed
+
+/-! ### GaussianGammaEulerShift -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.negative_shift
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.constant_sum_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.negativeLogData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.expF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.negativeLogExpData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.negative_log_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.negative_log_exp_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.exponent_shift
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.merge_head
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.leftF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.leftData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.rightF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.rightData
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.finite_shift
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.original_Euler_exponent_shift_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerShift.original_finite_Euler_approximant_shift_closed
 
 /-! ### GaussianGammaReciprocalInverse -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaReciprocalInverse.named_product_exchange

@@ -149,6 +149,13 @@ then excludes the original C7 zero predicate in the failure branch.
 proves the finite polynomial cancellation underlying C20 for all
 numerical cutoffs. Its actual head output satisfies
 `z H_N(z+1)=(z+N+1)H_N(z)` by multiplication alone.
+[GaussianGammaEulerShift](Lean/IPRADerivations/Analysis/GaussianGammaEulerShift.lean)
+proves the corresponding shift for the original finite Euler names
+with the actual `exp(−log N)` factor.
+[RationalReciprocalPowerTail](Lean/IPRADerivations/Analysis/RationalReciprocalPowerTail.lean)
+proves the C17 sharp finite tail for the actual reciprocal-power sum.
+The bound retains the endpoint potential for every numerical length,
+with exponent `m≥2` and starting index `N≥1`.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.
