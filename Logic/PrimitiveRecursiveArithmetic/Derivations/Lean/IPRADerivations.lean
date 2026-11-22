@@ -35,6 +35,7 @@ import IPRADerivations.Core.Telescoping
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.SumPalindrome
 import IPRADerivations.Core.IntOrder
+import IPRADerivations.Core.IntCertificates
 import IPRADerivations.Algebra.CayleyHamilton
 import IPRADerivations.Algebra.AdjugateInverse
 import IPRADerivations.Algebra.CayleyHamiltonGeneral
@@ -732,6 +733,7 @@ import IPRADerivations.Topology.ApproxExtrema
 import IPRADerivations.Topology.HilbertEmbedding
 import IPRADerivations.Topology.MetricNeighborhoods
 import IPRADerivations.Topology.LimitCertificates
+import IPRADerivations.Topology.SphereEstimates
 import IPRADerivations.Topology.OpenCubeHomeo
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
