@@ -170,6 +170,7 @@ import IPRADerivations.Algebra.QuadraticTowerGrowth
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationHeight
 import IPRADerivations.Algebra.QuadraticTowerArrayNormalization
 import IPRADerivations.Algebra.QuadraticTowerOperandProperness
+import IPRADerivations.Algebra.QuadraticTowerMultiplicationCoherence
 import IPRADerivations.Algebra.ObservationAlgebra
 import IPRADerivations.Algebra.JacobiRotation
 import IPRADerivations.Algebra.StableRootBounds
@@ -1149,6 +1150,8 @@ import IPRADerivations.Analysis.RationalMatrixClearingBounds
 import IPRADerivations.Analysis.RationalSelectedMinors
 import IPRADerivations.Analysis.RationalMaximalMinors
 import IPRADerivations.Analysis.RationalMinorFreeColumn
+import IPRADerivations.Analysis.RationalMinorMaskExtension
+import IPRADerivations.Analysis.RationalMinorAugmentation
 import IPRADerivations.Analysis.RationalIntegerMinorDeterminants
 import IPRADerivations.Foundations.FiniteHausdorff
 import IPRADerivations.Foundations.FiniteHausdorffOperations
