@@ -801,6 +801,22 @@ primitive recursive output and evaluation schedule.
 [GaussianEulerFixedCutoffApproximation](Lean/IPRADerivations/Analysis/GaussianEulerFixedCutoffApproximation.lean)
 bounds its distance to the compact name at each fixed cutoff by the sum
 of both tail majorants and the two independent observation errors.
+[GaussianEulerUnitIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerUnitIntegrand.lean)
+identifies the exact sample and finite grid at one with the decay program.
+[GaussianEulerUnitEndpointDecay](Lean/IPRADerivations/Analysis/GaussianEulerUnitEndpointDecay.lean)
+bounds the actual endpoint difference at the original cutoffs.
+[GaussianEulerImproperNormalization](Lean/IPRADerivations/Analysis/GaussianEulerImproperNormalization.lean)
+proves that the original improper Euler name at the canonical unit
+argument agrees with the finite-product Gamma name at arbitrary
+independent observation precisions.
+[GaussianEulerBetaPoleGuard](Lean/IPRADerivations/Analysis/GaussianEulerBetaPoleGuard.lean)
+proves the finite weighted Euler operator identity for the actual beta
+primitive from the native positive half-plane source.
+[GaussianBetaKernelLogarithm](Lean/IPRADerivations/Analysis/GaussianBetaKernelLogarithm.lean)
+compares the original scaled logarithm with the decay exponent and gives
+a fixed compact radius. Evaluating the primitive at one and identifying
+the integral with the original Gamma construction throughout the
+right half-plane remain.
 
 ## Every ledger family remains in scope
 
