@@ -68,10 +68,9 @@ now proves a finite algebraic dependency of C4. Its actual signed Bell/history
 program uses the proved kernel `g_k=(-1)^k k!`, and derives the differential
 coefficient recurrence, initial values and zero coefficients at every
 internal degree at least two. The rational coefficients use proved-positive
-factorials. Identification with the literal finite sum of powers of the
-truncated logarithm, and transport to the actual analytic exponential/log
-names with their tail bounds, remain unproved bridges. The derived recurrence
-is not counted as the complete analytic C4 identity.
+factorials. The low coefficients of the literal finite sum of powers of the
+truncated logarithm are identified below. Transport to the actual analytic
+exponential and logarithm names requires their tail bounds.
 
 [FiniteExponential](Lean/IPRADerivations/Analysis/FiniteExponential.lean)
 and [FiniteLogarithm](Lean/IPRADerivations/Analysis/FiniteLogarithm.lean)
@@ -146,6 +145,11 @@ proves bounded uniqueness for an actual prior-coefficient recursion.
 [GaussianFiniteLogarithmCoefficientRecursion](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmCoefficientRecursion.lean)
 derives that recursion and its initial value on the original stored
 composition.
+[GaussianFiniteLogarithmLinearRecursion](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmLinearRecursion.lean)
+verifies the same recurrence on the actual two-coefficient linear buffer.
+[GaussianFiniteLogarithmBellIdentification](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmBellIdentification.lean)
+then identifies the coefficients of the literal finite composition with the
+original signed Bell values at each exponent within both internal cutoffs.
 
 ## Every ledger family remains in scope
 
