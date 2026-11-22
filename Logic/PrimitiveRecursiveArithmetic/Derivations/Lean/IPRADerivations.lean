@@ -151,6 +151,9 @@ import IPRADerivations.Algebra.QuadraticPositiveScaling
 import IPRADerivations.Algebra.QuadraticRationalClearing
 import IPRADerivations.Algebra.QuadraticRationalPairArithmetic
 import IPRADerivations.Algebra.QuadraticRationalEqualityOrder
+import IPRADerivations.Algebra.QuadraticRationalCongruence
+import IPRADerivations.Algebra.QuadraticRationalEmbedding
+import IPRADerivations.Algebra.QuadraticRationalRadicand
 import IPRADerivations.Algebra.ObservationAlgebra
 import IPRADerivations.Algebra.JacobiRotation
 import IPRADerivations.Algebra.StableRootBounds
