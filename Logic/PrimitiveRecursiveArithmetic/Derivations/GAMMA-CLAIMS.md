@@ -125,6 +125,10 @@ identifies the same coefficient with the exact inverse-factorial-weighted
 sum of stored power coefficients.
 [GaussianRationalWeightedCoefficientConvolution](Lean/IPRADerivations/Analysis/GaussianRationalWeightedCoefficientConvolution.lean)
 derives the exponent-weighted product rule on those same low coefficients.
+[GaussianRationalEulerCoefficients](Lean/IPRADerivations/Analysis/GaussianRationalEulerCoefficients.lean)
+stores the actual exponent-weighted coefficients, implements the product rule
+with the actual output buffers, and derives the alternating unit Euler
+coefficients of the original logarithm.
 
 ## Every ledger family remains in scope
 

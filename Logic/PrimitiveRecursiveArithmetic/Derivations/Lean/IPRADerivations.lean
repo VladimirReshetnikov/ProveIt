@@ -166,6 +166,7 @@ import IPRADerivations.Algebra.QuadraticTowerCoefficientArithmetic
 import IPRADerivations.Algebra.QuadraticTowerScalarBudget
 import IPRADerivations.Algebra.QuadraticTowerArrayCodec
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationTable
+import IPRADerivations.Algebra.QuadraticTowerGrowth
 import IPRADerivations.Algebra.ObservationAlgebra
 import IPRADerivations.Algebra.JacobiRotation
 import IPRADerivations.Algebra.StableRootBounds
@@ -1141,6 +1142,7 @@ import IPRADerivations.Topology.CarrierComposition
 import IPRADerivations.Algebra.PolynomialFiniteRoots
 import IPRADerivations.Analysis.LogisticName
 import IPRADerivations.Analysis.RationalSupMetric
+import IPRADerivations.Analysis.RationalMatrixClearingBounds
 import IPRADerivations.Foundations.FiniteHausdorff
 import IPRADerivations.Foundations.FiniteHausdorffOperations
 import IPRADerivations.Foundations.FiniteHausdorffConcat
@@ -1173,6 +1175,7 @@ import IPRADerivations.Analysis.GaussianRationalPolynomialPowerSupport
 import IPRADerivations.Analysis.GaussianRationalPolynomialExponentialStability
 import IPRADerivations.Analysis.GaussianRationalPolynomialExponentialCoefficients
 import IPRADerivations.Analysis.GaussianRationalWeightedCoefficientConvolution
+import IPRADerivations.Analysis.GaussianRationalEulerCoefficients
 import IPRADerivations.Analysis.AggregateEquality
 import IPRADerivations.Analysis.RationalNearest
 import IPRADerivations.DiophantineNumberTheory.MinkowskiPigeonhole
@@ -1295,6 +1298,7 @@ import IPRADerivations.Analysis.GaussianCharacteristicPrecisionShift
 import IPRADerivations.Analysis.GaussianCharacteristicNames
 import IPRADerivations.Analysis.GaussianRationalSquareGrid
 import IPRADerivations.Analysis.RationalCubeGrid
+import IPRADerivations.Analysis.RationalCubeMinimum
 import IPRADerivations.Analysis.GaussianRootSynchronizedHit
 import IPRADerivations.Analysis.GaussianMonicGridApproximateRoot
 import IPRADerivations.Analysis.GaussianAggregateCoverTransport
