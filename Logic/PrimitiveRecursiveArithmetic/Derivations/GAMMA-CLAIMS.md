@@ -276,8 +276,15 @@ derives a computed precision modulus for the full actual fixed
 coefficient for every degree.
 [GaussianGammaHigherCoefficientName](Lean/IPRADerivations/Analysis/GaussianGammaHigherCoefficientName.lean)
 constructs a regular name at every degree from the unchanged cofinal
-coefficient sampler at radius `e+1`. Agreement across coefficient
-radii and reconstruction of the full power series remain.
+coefficient sampler at radius `e+1`.
+[GaussianGammaRadiusCoefficientName](Lean/IPRADerivations/Analysis/GaussianGammaRadiusCoefficientName.lean)
+keeps the radius as an actual input.
+[GaussianGammaAllDegreeCoefficientStability](Lean/IPRADerivations/Analysis/GaussianGammaAllDegreeCoefficientStability.lean)
+and [GaussianGammaAllDegreeCoefficientVariation](Lean/IPRADerivations/Analysis/GaussianGammaAllDegreeCoefficientVariation.lean)
+remove the head-degree restriction by exact product coefficient
+preservation under padding. The unchanged name is regular for every
+internal degree at any fixed positive radius. Agreement across radii
+and reconstruction of the full power series remain.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
@@ -688,6 +695,18 @@ real part.
 [GaussianEulerDecayOrder](Lean/IPRADerivations/Analysis/GaussianEulerDecayOrder.lean)
 proves order in the original rational time and binds the actual
 nonnegative representative.
+[GaussianCompactNamedAdditivity](Lean/IPRADerivations/Analysis/GaussianCompactNamedAdditivity.lean)
+proves addition for the original regular compact names, and
+[GaussianEulerCompactAdditivity](Lean/IPRADerivations/Analysis/GaussianEulerCompactAdditivity.lean)
+instantiates it for the unchanged Euler evaluator on positive intervals.
+[GaussianEulerHalfDecayQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerHalfDecayQuadrature.lean)
+checks the actual half-argument grid transformation.
+[GaussianEulerDecayEndpointBound](Lean/IPRADerivations/Analysis/GaussianEulerDecayEndpointBound.lean)
+controls the endpoint difference using the left endpoint observation, and
+[GaussianEulerHalfDecayTailBound](Lean/IPRADerivations/Analysis/GaussianEulerHalfDecayTailBound.lean)
+checks the finite upper-cutoff bound for the half-decay kernel.
+[GaussianHarmonicLogarithmName](Lean/IPRADerivations/Analysis/GaussianHarmonicLogarithmName.lean)
+supplies an exact-order representative of the original logarithm.
 The upper and lower comparisons for the full Euler integrand tails
 still require the corresponding compact norm and integral bounds.
 
