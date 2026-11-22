@@ -91,8 +91,11 @@ provides the stored Gaussian-rational power buffers needed for the literal
 finite composition. With the original coefficient length, the computed
 buffer evaluates to the corresponding power of the original Horner value.
 Every in-range successor also has the actual convolution coefficient law.
-Connecting these power buffers to the factorial-weighted sum for the
-truncated logarithm remains open.
+[GaussianRationalPolynomialExponential](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialExponential.lean)
+constructs the actual factorial-weighted coefficient sum. Its Horner
+evaluation is the literal finite complex exponential sum of the original
+value. The application to the actual truncated logarithm, identification
+of its low-degree coefficients and the analytic C4 tail remain open.
 
 ## Every ledger family remains in scope
 

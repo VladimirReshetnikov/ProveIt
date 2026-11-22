@@ -159,6 +159,7 @@ import IPRADerivations.Algebra.QuadraticRationalRadicandEmbedding
 import IPRADerivations.Algebra.QuadraticRationalZeroProjection
 import IPRADerivations.Algebra.QuadraticRationalRing
 import IPRADerivations.Algebra.QuadraticRationalNonnegativeRadicand
+import IPRADerivations.Algebra.QuadraticRadicandScaling
 import IPRADerivations.Algebra.ObservationAlgebra
 import IPRADerivations.Algebra.JacobiRotation
 import IPRADerivations.Algebra.StableRootBounds
@@ -1019,6 +1020,7 @@ import IPRADerivations.Geometry.MonotileSubstitution
 import IPRADerivations.Combinatorics.FibonacciLucasMore
 import IPRADerivations.Core.PolynomialInequalities
 import IPRADerivations.Geometry.IsoperimetricInequalities
+import IPRADerivations.Geometry.IsoperimetricDyadicSquareRoot
 import IPRADerivations.Geometry.RootOrthogonality
 import IPRADerivations.Combinatorics.CatalanProducts
 import IPRADerivations.Combinatorics.CatalanGrowth
@@ -1155,6 +1157,7 @@ import IPRADerivations.Analysis.GammaCanonicalFactors
 import IPRADerivations.Analysis.GammaCanonicalRemainder
 import IPRADerivations.Analysis.GammaLocalFactorName
 import IPRADerivations.Analysis.GaussianRationalPolynomialPowers
+import IPRADerivations.Analysis.GaussianRationalPolynomialExponential
 import IPRADerivations.Analysis.AggregateEquality
 import IPRADerivations.Analysis.RationalNearest
 import IPRADerivations.DiophantineNumberTheory.MinkowskiPigeonhole
