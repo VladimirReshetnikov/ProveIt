@@ -1,0 +1,54 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amsthm,amssymb,mathtools}
+\usepackage[margin=1.02in,top=0.88in,bottom=0.9in]{geometry}
+\usepackage{xcolor,microtype,enumitem,tikz,needspace,hyperref,fancyhdr}
+\definecolor{ink}{HTML}{153F53}
+\definecolor{link}{HTML}{145774}
+\hypersetup{colorlinks=true,linkcolor=link,urlcolor=link,citecolor=link,
+pdftitle={The constructive hairy ball theorem in intuitionistic primitive recursive arithmetic},
+pdfauthor={Research note}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\itshape The constructive hairy ball theorem}
+\fancyhead[R]{\small iPRA}\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.25pt}\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\len}[1]{\lVert #1\rVert_1}
+\newcommand{\dy}[1]{2^{-#1}}\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\clog}{\operatorname{clog}}\newcommand{\code}[1]{\texttt{\small #1}}
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=*,itemsep=3pt,topsep=4pt}
+\setcounter{tocdepth}{1}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+\begin{document}
+\thispagestyle{plain}
+\noindent{\sffamily\bfseries\color{ink}\fontsize{23}{27}\selectfont The constructive hairy ball theorem\par}
+\vspace{3pt}
+\noindent{\sffamily\large in intuitionistic primitive recursive arithmetic\par}
+\vspace{12pt}
+\noindent
+On every even-dimensional sphere, a uniformly presented tangent field has a
+small vector at an explicitly computable point. For any requested error
+$2^{-k}$ we construct a point \emph{with rational coordinates on the
+round sphere} at which the field has norm at most $2^{-k}$. The field
+may have real values and need only come with a primitive recursive
+modulus of uniform continuity. The proof reduces to one integer
+coefficient. If every tested vector were too large, a sequence of finite
+labelings would preserve that coefficient while changing it from $1$ to
+$-1$. We also show why requiring an exact zero changes the
+computational content, even for a simple family of smooth fields.
+\par\vspace{6pt}\hrule\vspace{4pt}
+\input{sections/presentation}
+\input{sections/table}
+\input{sections/degree}
+\input{sections/search}
+\input{sections/round}
+\input{sections/sharpness}
+\input{sections/lean}
+\input{sections/sources}
+\end{document}

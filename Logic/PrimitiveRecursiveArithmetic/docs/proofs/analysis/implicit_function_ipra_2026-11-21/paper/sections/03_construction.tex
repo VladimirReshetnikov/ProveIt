@@ -1,0 +1,277 @@
+\section{Construction of the implicit function}\label{sec:construction}
+
+\subsection{Finite subdivision replaces the mean value theorem}
+
+\begin{lemma}[Segment estimates]\label{lem:segment}
+The hypotheses imply
+\begin{align}
+ \norm{H(x,y)-H(x',y)}&\le M\norm{x-x'},\label{eq:xseg}\\
+ \norm{H(x,y)-H(x,y')}&\le\tfrac32\norm{y-y'},\label{eq:yseg}\\
+ \norm{T_x(y)-T_x(y')}&\le\tfrac12\norm{y-y'},
+ \qquad T_x(y)=y-H(x,y).\label{eq:tcontract}
+\end{align}
+Consequently \(H\) is Lipschitz on \(\Omega\) with constant
+\(K=M+3/2\) for the product norm.
+\end{lemma}
+
+\begin{proof}
+Consider first rational endpoints \(y,y'\). Fix a precision \(p\)
+and put \(D=\norm{y'-y}\). Choose the explicit positive integer
+\[
+ L_p=\max\bigl(1,\lceil D\,2^{\mu(p)}\rceil\bigr),
+ \qquad y_i=y+\frac{i}{L_p}(y'-y).
+\]
+Convexity keeps every point in \(Y\). Every increment has norm
+\(D/L_p\le2^{-\mu(p)}\). Write the Taylor formula at \(y_i\):
+\[
+ T_x(y_{i+1})-T_x(y_i)
+  =(\Id-V(x,y_i))(y_{i+1}-y_i)-R_i,
+ \qquad \norm{R_i}\le2^{-p}D/L_p.
+\]
+Summing the \(L_p\) inequalities gives
+\[
+ \norm{T_x(y')-T_x(y)}
+ \le(\tfrac12+2^{-p})D.
+\]
+The extra term can be made smaller than any prescribed rational
+observation error, so \eqref{eq:tcontract} follows. Using
+\(\norm V\le1+\norm{\Id-V}\le3/2\) in the same finite subdivision
+gives \eqref{eq:yseg}. Subdivision in the \(x\)-coordinates gives
+\eqref{eq:xseg}.
+
+Here the summation is genuinely finite arithmetic. At a fixed
+auxiliary observation precision \(t\), replace every value and
+matrix by its rational evaluator. The accumulated additional error
+is bounded, for example, by
+\[
+ 2^{-t}(2L_p+2D)
+\]
+in the vertical \(T\) estimate. Induct on the finite rational
+partial sum with \(p,t,L_p\) fixed, and then remove this explicitly
+bounded error. Section~\ref{sec:arith} supplies the rational
+squeezing argument. Thus this proof does not use induction on
+the assertion that a real estimate holds at every precision.
+
+The estimates define the continuous extension from rational points
+to named points. Applying the rational bounds to sufficiently fine,
+clamped approximations to the endpoints proves the same bounds
+for those points. Finally, change \(x\) and then \(y\); the sum of
+the first two bounds is at most
+\((M+3/2)\norm{(x,y)-(x',y')}\).
+\end{proof}
+
+\subsection{The invariant box and the actual finite program}
+
+The center estimate and \eqref{eq:xseg} give
+\[
+ \norm{H(x,b)}
+ \le\norm{H(a,b)}+M\norm{x-a}\le r/2.
+\]
+For \(y\in Y\), the contraction estimate now yields
+\begin{equation}\label{eq:invariant}
+ \norm{T_x(y)-b}
+ \le\norm{T_x(y)-T_x(b)}+\norm{H(x,b)}
+ \le\tfrac12r+\tfrac12r=r.
+\end{equation}
+Thus the exact map \(T_x\) preserves \(Y\).
+
+Let \(P_Y\) clamp each coordinate to the interval
+\([b_i-r,b_i+r]\). For rational vectors it is a primitive recursive
+map, and
+\begin{equation}\label{eq:projection}
+ P_Y(v)\in Y,\quad P_Y(y)=y\ (y\in Y),\quad
+ \norm{P_Y(v)-P_Y(w)}\le\norm{v-w}.
+\end{equation}
+The scalar proof checks the order of two rational numbers and the
+two endpoints; summing no coordinates is needed for the maximum
+norm.
+
+Define the dyadic floor map coordinatewise by
+\[
+ R_p(v)_i=2^{-p}\lfloor 2^p v_i\rfloor.
+\]
+It satisfies \(\norm{R_p(v)-v}\le2^{-p}\), also for negative
+coordinates. Fix
+\begin{equation}\label{eq:schedule}
+ s=\lgup(2r),\qquad
+ N(k)=k+s+4,\qquad
+ \varepsilon_k=2^{-(k+4)}.
+\end{equation}
+For rational \(x\in X\), run exactly \(N(k)\) steps:
+\begin{align}
+ y_0^{x,k}&=b,\nonumber\\
+ y_{j+1}^{x,k}
+ &=P_Y\!\left(R_{k+5}
+       \left(y_j^{x,k}-\Hhat((x,y_j^{x,k}),k+5)\right)\right),
+       \quad j<N(k),\label{eq:algorithm}\\
+ \Ghat(x,k)&=y_{N(k)}^{x,k}.\nonumber
+\end{align}
+This is primitive recursion in \(j\), followed by substitution
+\(j=N(k)\). It never searches for a small residual.
+The fixed precision and rounding also prevent gratuitous denominator
+growth in the polynomial examples.
+
+By the evaluation error, the rounding error, \eqref{eq:projection},
+and \eqref{eq:invariant},
+\begin{equation}\label{eq:step-error}
+ y_j^{x,k}\in Y,\qquad
+ \norm{y_{j+1}^{x,k}-T_x(y_j^{x,k})}
+ \le2^{-(k+5)}+2^{-(k+5)}=\varepsilon_k.
+\end{equation}
+Projection does not change the exact image \(T_x(y_j)\), since
+that image is already in the box. This fact is what makes
+clipping a legitimate way to control evaluation and rounding
+errors.
+
+\subsection{A finite inexact contraction inequality}
+
+\begin{lemma}[Inexact finite trace]\label{lem:recurrence}
+If nonnegative rational numbers \(d_0,\ldots,d_N\) satisfy
+\(d_{j+1}\le d_j/2+\eta\), then
+\begin{equation}\label{eq:finite-bound}
+ d_j\le2^{-j}d_0+2\eta(1-2^{-j})\le2^{-j}d_0+2\eta
+ \quad(0\le j\le N).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Use the quantifier-free invariant
+\begin{equation}\label{eq:scaled-inv}
+ 2^j d_j+2\eta\le d_0+2^{j+1}\eta.
+\end{equation}
+For \(j=0\) this is equality. Multiplying the recurrence by
+\(2^{j+1}\) and adding \(2\eta\), the left side at \(j+1\)
+is at most
+\[
+ 2^j d_j+2^{j+1}\eta+2\eta
+ \le d_0+2^{j+2}\eta.
+\]
+All rational denominators may be cleared by a fixed positive
+common denominator for the target finite trace. The induction
+formula is then a natural-number inequality. Division by the
+positive rational \(2^j\) gives \eqref{eq:finite-bound}.
+\end{proof}
+
+\subsection{Coherence by aligning the ends of two finite traces}
+
+Let \(k\le l\). Compare the coarse run of length \(N(k)\)
+with the last \(N(k)\) steps of the finer run of length \(N(l)\).
+The initial points of these two pieces are in \(Y\), so their
+distance is at most \(2r\). If the parameter values are \(x,x'\),
+respectively, \eqref{eq:xseg}, \eqref{eq:tcontract}, and
+\eqref{eq:step-error} give
+\[
+ d_{j+1}\le\tfrac12d_j+
+ M\norm{x-x'}+\varepsilon_k+\varepsilon_l.
+\]
+Lemma~\ref{lem:recurrence} therefore proves
+\begin{align}
+ \norm{\Ghat(x,k)-\Ghat(x',l)}
+ &\le2r\,2^{-N(k)}
+       +2M\norm{x-x'}+2\varepsilon_k+2\varepsilon_l\nonumber\\
+ &\le2M\norm{x-x'}+3\varepsilon_k+2\varepsilon_l.
+ \label{eq:pairbound}
+\end{align}
+The last inequality uses \(2r\le2^s\).
+Every distance in this comparison is between rational outputs of
+finite programs.
+
+Taking \(x=x'\), we obtain
+\[
+ \norm{\Ghat(x,k)-\Ghat(x,l)}
+ \le5\varepsilon_k=\frac5{16}2^{-k}\quad(k\le l).
+\]
+Hence \(k\mapsto\Ghat(x,k)\) is a regular name in the sense of
+\eqref{eq:regular}. \emph{This name is the definition of \(g(x)\).}
+There is no appeal to an axiom asserting the existence of limits
+of arbitrary Cauchy sequences. Comparing with an arbitrarily
+finer stage in \eqref{eq:pairbound} gives the useful representation
+error
+\begin{equation}\label{eq:representation}
+ \norm{\Ghat(x,k)-g(x)}\le3\varepsilon_k.
+\end{equation}
+As always, this means that the corresponding rational inequalities
+hold at all requested finite observation precisions.
+
+\subsection{Zero residual without an ideal infinite orbit}
+
+For one fixed run, let
+\(e_j=\norm{y_{j+1}^{x,k}-y_j^{x,k}}\).
+We have \(e_0\le2r\), and, whenever the next term is present,
+\[
+ e_{j+1}\le\tfrac12e_j+2\varepsilon_k.
+\]
+Applying Lemma~\ref{lem:recurrence} to these finitely many
+increments and using \(N=N(k)\ge1\) gives
+\begin{align}
+ \norm{H(x,\Ghat(x,k))}
+ &=\norm{y_N-T_x(y_N)}\nonumber\\
+ &\le\varepsilon_k+\tfrac12\norm{y_N-y_{N-1}}\nonumber\\
+ &\le2r\,2^{-N}+3\varepsilon_k
+ \le4\varepsilon_k=2^{-(k+2)}.
+ \label{eq:residual}
+\end{align}
+By \eqref{eq:yseg} and \eqref{eq:representation},
+\[
+ \norm{H(x,g(x))}
+ \le \tfrac32(3\varepsilon_k)+4\varepsilon_k
+ =\tfrac{17}{2}\varepsilon_k
+ \qquad\hbox{for every }k.
+\]
+For any observation error, an explicitly larger \(k\) makes the
+right side smaller than that error. This proves \(H(x,g(x))=0\).
+The box membership of the name follows from membership of every
+term in the closed rational box.
+
+\subsection{Uniqueness, residual bounds, and parameter dependence}
+
+For \(y\in Y\), use \(T_x(g(x))=g(x)\) to obtain
+\[
+ \norm{y-g(x)}
+ \le \norm{H(x,y)}+\norm{T_x(y)-T_x(g(x))}
+ \le \norm{H(x,y)}+\tfrac12\norm{y-g(x)}.
+\]
+Rearrangement proves \eqref{eq:apost}. If \(H(x,y)=0\), the
+distance is zero at every precision, proving uniqueness. At
+\(y=b\) the same inequality and \eqref{eq:xseg} prove
+\eqref{eq:location}.
+
+Similarly,
+\[
+ \norm{g(x)-g(x')}
+ \le\tfrac12\norm{g(x)-g(x')}+M\norm{x-x'},
+\]
+which proves \eqref{eq:glip}. Alternatively, it follows directly
+by eliminating the explicit errors in \eqref{eq:pairbound}.
+This latter proof uses only the two finite rational traces.
+
+More generally, if \(\widetilde H\) has the same contraction and
+box properties and its solution is \(\widetilde g\), then
+\[
+ \norm{g(x)-\widetilde g(x)}
+ \le 2\norm{H(x,\widetilde g(x))-\widetilde H(x,\widetilde g(x))}.
+ \tag{Perturbation}
+\]
+Thus a uniform normalized equation error \(\delta\) changes the
+branch by at most \(2\delta\). This is another form of the
+quantitative uniqueness behind the construction.
+
+\subsection{Evaluation at an arbitrary primitive recursive parameter}
+
+Suppose \(x(k)\) is a regular name of a point in \(X\).
+Let \(C=\max(1,2M)\), \(c=\lgup(C)\), and set
+\[
+ q_k=P_X(x(k+c+2)),\qquad
+ G_x(k)=\Ghat(q_k,k+2).
+\]
+The extension error is at most
+\[
+ 2M\,2^{-(k+c+2)}+3\,2^{-(k+6)}
+ \le \frac{19}{64}2^{-k}<2^{-k}.
+\]
+Equivalently, the pair estimate \eqref{eq:pairbound} directly
+proves that \(G_x\) is a regular name independent of the chosen
+name of \(x\). The Lipschitz bounds for \(H\) pass the zero
+equation to this name. This construction uses only composition
+with the fixed input name and primitive recursion already used
+in \eqref{eq:algorithm}.

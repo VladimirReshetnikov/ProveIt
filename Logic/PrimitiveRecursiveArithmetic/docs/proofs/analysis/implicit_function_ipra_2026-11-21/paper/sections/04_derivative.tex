@@ -1,0 +1,211 @@
+\section{The derivative and its primitive recursive evaluator}
+\label{sec:derivative}
+
+\subsection{A finite construction of the inverse matrix}
+
+\begin{lemma}[Neumann inverse with a rate]\label{lem:neumann}
+If \(V\) is a represented \(m\times m\) matrix and
+\(\norm{\Id-V}\le1/2\), write \(E=\Id-V\) and
+\[
+ S_N(E)=\sum_{j=0}^{N-1}E^j,\qquad S_0=0.
+\]
+There is a represented inverse \(S=V^{-1}\), with
+\[
+ \norm S\le2,\qquad
+ \norm{S-S_N(E)}\le2^{1-N}.
+ \tag{Neumann tail}
+\]
+Both inverse identities hold.
+\end{lemma}
+
+\begin{proof}
+Finite multiplication and telescoping give
+\begin{equation}\label{eq:geomidentity}
+ (\Id-E)S_N(E)=S_N(E)(\Id-E)=\Id-E^N.
+\end{equation}
+The finite norm estimates are
+\[
+ \norm{E^N}\le2^{-N},\qquad
+ \norm{S_{N+L}(E)-S_N(E)}
+ \le\sum_{j=N}^{N+L-1}2^{-j}\le2^{1-N}.
+\]
+They produce a regular name for \(S\) after an explicit index
+shift and rational evaluation of the finitely many matrix entries.
+The inverse identities follow by observing \eqref{eq:geomidentity}
+at any requested precision with sufficiently large \(N\).
+The norm bound follows from the finite sum bound \(2\).
+
+For the object-theory proof, do not induct on the real-matrix
+inequality \(\norm{E^N}\le2^{-N}\) as an infinite-precision
+statement. Fix the target \(N\) and observation precision first;
+use a rational approximation to \(E\), the finite polynomial
+identity, and the perturbation estimate below. The same estimates
+also give an entirely rational evaluator for \(S\). The matrix
+loop identities themselves are quantified finite arithmetic
+identities proved by quantifier-free induction on coded arrays.
+\end{proof}
+
+\subsection{Deriving differentiability from the Taylor contract}
+
+At a fixed parameter \(x\), abbreviate
+\[
+ U_x=U(x,g(x)),\quad V_x=V(x,g(x)),\quad
+ D_x=-V_x^{-1}U_x.
+\]
+For \(x,x+h\in X\), put
+\(\Delta=g(x+h)-g(x)\). The Lipschitz bound gives
+\[
+ \norm{(h,\Delta)}
+ \le C\norm h,\qquad C=\max(1,2M).
+\]
+Let \(c=\lgup(C)\), and suppose
+\(\norm h\le2^{-\mu(p+c+1)-c}\).
+Then \(\norm{(h,\Delta)}\le2^{-\mu(p+c+1)}\).
+Apply \eqref{eq:taylor} to the two points on the graph:
+\[
+ 0=H(x+h,g(x+h))-H(x,g(x))
+   =U_xh+V_x\Delta+R,
+\]
+where
+\[
+ \norm R\le2^{-(p+c+1)}C\norm h.
+\]
+Since \(\norm{V_x^{-1}}\le2\),
+\begin{align*}
+ \norm{\Delta-D_xh}
+ &=\norm{-V_x^{-1}R}\\
+ &\le 2^{-(p+c)}C\norm h
+ \le2^{-p}\norm h.
+\end{align*}
+This proves both differentiability and the modulus \(\mu_g\) in
+\eqref{eq:outputmoduli}. No division by \(\norm h\) is used;
+the argument includes \(h=0\).
+The identity defining \(D_x\) also yields \(\norm{D_x}\le2M\).
+
+\subsection{Continuity of the derivative}
+
+At \(x'\), write \(U_{x'},V_{x'}\) analogously.
+Finite algebra gives the inverse difference identity
+\[
+ V_{x'}^{-1}-V_x^{-1}
+   =V_{x'}^{-1}(V_x-V_{x'})V_x^{-1}.
+\]
+If each of the two derivative blocks changes by at most \(\delta\),
+then
+\[
+ \norm{V_{x'}^{-1}-V_x^{-1}}\le4\delta
+\]
+and
+\begin{equation}\label{eq:differenceD}
+ \norm{D_{x'}-D_x}
+ \le 2\delta+4M\delta=(2+4M)\delta.
+\end{equation}
+The distance between the graph points is at most
+\(C\norm{x'-x}\). Put \(d=\lgup(2+4M)\).
+If \(\norm{x'-x}\le2^{-\nu(p+d)-c}\),
+\eqref{eq:duc} supplies \(\delta=2^{-(p+d)}\).
+Equation~\eqref{eq:differenceD} gives the modulus \(\nu_g\).
+This completes the \(C^1\) part of Theorem~\ref{thm:main}.
+
+\subsection{Rational computation of the derivative}
+
+The formula involving \(V_x^{-1}\) is not an instruction to
+search for an inverse of an unknown real matrix. Here is a
+bounded rational algorithm.
+
+\begin{lemma}[Coefficient errors in a finite Neumann sum]
+\label{lem:perturb}
+Suppose \(\norm E\le1/2\), \(\norm U\le M\), and rational
+approximations satisfy
+\[
+ \norm{\widetilde E-E}\le\delta,\qquad
+ \norm{\widetilde U-U}\le\delta,\qquad \delta\le1/4.
+\]
+Then, for every \(N\),
+\begin{align}
+ \norm{S_N(\widetilde E)}&\le4,\label{eq:snorm}\\
+ \norm{S_N(\widetilde E)-S_N(E)}&\le8\delta,\label{eq:sperturb}\\
+ \norm{S_N(\widetilde E)\widetilde U-S_N(E)U}
+ &\le(4+8M)\delta.\label{eq:productperturb}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+We have \(\norm{\widetilde E}\le3/4\); the finite geometric
+sum proves \eqref{eq:snorm}. For powers, use the exact telescoping
+identity
+\[
+ \widetilde E^j-E^j
+ =\sum_{i=0}^{j-1}
+   \widetilde E^i(\widetilde E-E)E^{j-1-i}.
+\]
+Summing these finite inequalities for \(j<N\), the sum over the
+triangular index set is bounded by the product of two finite
+geometric sums:
+\[
+ \norm{S_N(\widetilde E)-S_N(E)}
+ \le \delta
+  \left(\sum_{i=0}^{N-1}(3/4)^i\right)
+  \left(\sum_{l=0}^{N-1}(1/2)^l\right)
+ \le8\delta.
+\]
+Finally split the product difference into
+\[
+ S_N(\widetilde E)(\widetilde U-U)
+ +(S_N(\widetilde E)-S_N(E))U
+\]
+and apply the first two bounds.
+\end{proof}
+
+Choose once and for all
+\[
+ c_D=\max(3,\lgup(8+20M)).
+\]
+For requested derivative precision \(p\), set
+\[
+ q=p+c_D,\qquad N=q,\qquad j=\nu(q+1).
+\]
+For rational \(x\in X\), compute \(y=\Ghat(x,j)\) and evaluate
+\(\Jhat((x,y),q+1)\). Let its blocks be
+\(\widetilde U,\widetilde V\), and put
+\(\widetilde E=\Id-\widetilde V\). The bound
+\eqref{eq:representation} is at most \(2^{-j}\); graph-point
+continuity and evaluation each contribute at most \(2^{-(q+1)}\).
+Consequently both matrix errors are at most
+\(\delta=2^{-q}\). Return
+\begin{equation}\label{eq:derivativeprogram}
+ \widehat D(x,p)
+   =-S_q(\widetilde E)\widetilde U.
+\end{equation}
+All arithmetic after obtaining the matrix coefficients is exact
+rational arithmetic. Lemma~\ref{lem:perturb} and the true
+Neumann tail give
+\begin{align*}
+ \norm{\widehat D(x,p)-Dg(x)}
+ &\le(4+8M)2^{-q}+2M\,2^{-q}\\
+ &=(4+10M)2^{-(p+c_D)}
+ \le2^{-(p+1)}.
+\end{align*}
+The evaluator is therefore primitive recursive. At a named
+parameter it extends using the already proved modulus \(\nu_g\).
+
+For completeness, the analogous inverse-only evaluator uses a
+rational approximation to \(E\) of accuracy \(\delta\) and returns
+\(S_N(\widetilde E)\); its error is at most
+\(8\delta+2^{1-N}\). For example \(N=p+3\) and
+\(\delta=2^{-(p+5)}\) give an error at most \(2^{-(p+1)}\).
+Thus even the auxiliary inverse name has a direct finite
+production rule.
+
+\subsection{Why the proof remains first order}
+
+Symbols such as \(V_x^{-1}\) in the human proof abbreviate the
+specific name just constructed. Matrix multiplication is a finite
+fold, and the geometric and power-difference identities have
+explicit finite loop proofs. To establish an inverse identity at
+precision \(p\), instantiate these finite identities at the
+displayed \(N,\delta\); there is no invocation of completeness of
+an unspecified Banach space and no choice of a matrix inverse
+from a nonempty set. The formalization must preserve this
+finite-observation reading, rather than simply import a classical
+real inverse theorem.

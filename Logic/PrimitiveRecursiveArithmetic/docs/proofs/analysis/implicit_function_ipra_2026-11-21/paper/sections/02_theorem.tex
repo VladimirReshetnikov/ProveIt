@@ -1,0 +1,124 @@
+\section{The quantitative theorem}\label{sec:theorem}
+
+Let \(a\in\Q^n\), \(b\in\Q^m\), and let \(\alpha,r>0\) be rational.
+Put
+\[
+ X=\{x:\norm{x-a}\le\alpha\},\qquad
+ Y=\{y:\norm{y-b}\le r\},\qquad \Omega=X\times Y.
+\]
+We first state a normalized theorem for \(H\), and then recover the
+usual equation \(F=0\) by setting \(H=AF\).
+
+\begin{definition}[Quantitative \(C^1\) data]\label{def:c1}
+A presentation of \(H:\Omega\to\R^m\) consists of primitive recursive
+rational evaluators \(\Hhat(z,t)\) and
+\(\Jhat(z,t)\) for \(H(z)\) and
+\[
+ J(z)=D H(z)=[\,U(z)\ V(z)\,],
+ \qquad U=D_xH,\quad V=D_yH,
+\]
+with error at most \(2^{-t}\) in the indicated vector or matrix norm.
+It also contains primitive recursive moduli \(\mu,\nu:\N\to\N\)
+with the following contracts, including named points in the box:
+\begin{align}
+ \norm{H(z')-H(z)-J(z)(z'-z)}
+  &\le 2^{-p}\norm{z'-z}
+ &&\text{if }\norm{z'-z}\le2^{-\mu(p)},\label{eq:taylor}\\
+ \norm{J(z')-J(z)}
+  &\le 2^{-p}
+ &&\text{if }\norm{z'-z}\le2^{-\nu(p)}.\label{eq:duc}
+\end{align}
+Each named-point contract is shorthand for its finite rational
+form. Section~\ref{sec:raw} gives concrete quantifier-free rational
+certificates and explicit enlargements of their raw moduli that
+imply these contracts. Hence Definition~\ref{def:c1} does not assume
+an unformalized real-analysis library.
+\end{definition}
+
+\begin{theorem}[Quantitative constructive implicit function theorem]
+\label{thm:main}
+Suppose the above presentation is given, and a nonnegative rational
+\(M\) satisfies, throughout \(\Omega\),
+\begin{align}
+ \norm{\Id-V(x,y)}&\le\tfrac12,\label{eq:vertical}\\
+ \norm{U(x,y)}&\le M,\label{eq:horizontal}\\
+ \norm{H(a,b)}&\le r/4,\qquad M\alpha\le r/4.\label{eq:center}
+\end{align}
+Then there is an explicitly constructed primitive recursive
+presentation of a function \(g:X\to Y\) with these properties.
+\begin{enumerate}[label=\textup{(\roman*)}]
+ \item \(H(x,g(x))=0\), and every \(y\in Y\) satisfying \(H(x,y)=0\)
+ equals \(g(x)\).
+ \item The following bounds hold:
+ \begin{align}
+ \norm{g(x)-g(x')}&\le 2M\norm{x-x'},\label{eq:glip}\\
+ \norm{y-g(x)}&\le 2\norm{H(x,y)},\label{eq:apost}\\
+ \norm{g(x)-b}&\le
+ 2\bigl(\norm{H(a,b)}+M\norm{x-a}\bigr).\label{eq:location}
+ \end{align}
+ In particular, if \(H(a,b)=0\), then \(g(a)=b\).
+ \item On the interior of \(X\), \(g\) is differentiable and
+ \begin{equation}\label{eq:derivative}
+ Dg(x)=-V(x,g(x))^{-1}U(x,g(x)).
+ \end{equation}
+ The same Taylor estimates apply to increments whose endpoints
+ remain in \(X\).
+ \item Let
+ \[
+ C=\max(1,2M),\qquad c=\lgup(C),\qquad
+ d=\lgup(2+4M).
+ \]
+ Explicit moduli for the derivative remainder and derivative
+ continuity are
+ \begin{equation}\label{eq:outputmoduli}
+ \mu_g(p)=\mu(p+c+1)+c,\qquad
+ \nu_g(p)=\nu(p+d)+c.
+ \end{equation}
+ More precisely, with both endpoints in \(X\),
+ \begin{align*}
+ \norm{g(x+h)-g(x)-Dg(x)h}
+ &\le2^{-p}\norm h
+ &&\text{if }\norm h\le2^{-\mu_g(p)},\\
+ \norm{Dg(x')-Dg(x)}
+ &\le2^{-p}
+ &&\text{if }\norm{x'-x}\le2^{-\nu_g(p)}.
+ \end{align*}
+\end{enumerate}
+For each fixed primitive recursive input presentation, the
+finite-observation versions of these conclusions follow in \(\ipra\)
+from the corresponding certificate hypotheses. The solution
+evaluator, derivative evaluator, and their schedules are primitive
+recursive.
+\end{theorem}
+
+The theorem allows a certified approximate base zero. For the usual
+local graph theorem, one takes \(H(a,b)=0\). In that case
+\(\norm{g(x)-b}\le r/2\) on all of \(X\), by
+\eqref{eq:center}; thus the graph lies strictly inside the vertical
+box.
+
+\begin{corollary}[Original equation]\label{cor:original}
+Suppose \(A,B\in\Q^{m\times m}\) satisfy \(AB=BA=\Id\), and
+\(H=AF\) has the preceding certificates. Then
+\[
+ F(x,y)=0\quad\Longleftrightarrow\quad y=g(x)
+ \qquad(x\in X,\ y\in Y),
+\]
+and
+\[
+ Dg(x)=-D_yF(x,g(x))^{-1}D_xF(x,g(x)).
+\]
+\end{corollary}
+
+\begin{proof}
+\(F=BH\), so the zero predicates are equivalent.
+The constructed inverse of \(V=AD_yF\) gives
+\((D_yF)^{-1}=V^{-1}A\). Substituting \(U=AD_xF\) in
+\eqref{eq:derivative} gives the stated formula. Both identities are
+finite matrix calculations with represented entries.
+\end{proof}
+
+Requiring an explicit inverse for the rational preconditioner removes
+any ambiguity about the passage from \(AF=0\) to \(F=0\).
+Section~\ref{sec:conditioning} constructs such a preconditioner from
+a positive determinant bound at the base point.

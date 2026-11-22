@@ -1,0 +1,149 @@
+\section{Effective integration and the finite Green identity}\label{sec:calculus}
+
+This section proves the analytic tools used later. Integrals are specified by rational sums with a modulus. All limit notation is shorthand for bounds valid at every requested precision.
+
+\subsection{Riemann names from an explicit modulus}
+
+For a named function $f$ on $[0,1]^d$, $d=1$ or $2$, with supplied modulus $\mu_f$ in the $\ell^1$ norm, put
+\[
+S_{N,p}(f)=\frac1{N^d}
+\sum_{0\le i_1,\ldots,i_d<N}
+f\bigl(i_1/N,\ldots,i_d/N;p\bigr).
+\]
+This is a primitive recursive rational calculation. Its sample-evaluation error is at most $2^{-p}$: the sum of its positive weights is one. If $d/N\le2^{-\mu_f(r)}$, changing the sample point within any grid cell changes the exact sum by at most $2^{-r}$.
+
+\begin{lemma}[Common-refinement estimate]\label{lem:riemann}
+Suppose both $N$ and $N'$ have cell diameter at most $2^{-\mu_f(r)}$. Then
+\[
+\abs{S_{N,p}(f)-S_{N',p'}(f)}
+\le2^{1-r}+2^{-p}+2^{-p'}.
+\]
+Consequently, choosing
+\[
+N(q)=2^{\mu_f(q+4)+\ceilLog(d)},\qquad p(q)=q+4
+\]
+gives a regular name for the integral after a harmless fixed precision shift.
+Here $\ceilLog(m)$ is the least $j\le m+1$ with $m\le2^j$ for $m\ge1$; this bounded search is PR.
+\end{lemma}
+\begin{proof}
+Refine both grids to the grid with denominator $NN'$. Distribute each coarse-cell weight over its $(N')^d$ or $N^d$ subcells. In one cell the two sample points are at most its diameter apart. Multiply the modulus bound by the cell weight and sum; the weights total one. Do this for each grid and use the triangle inequality. Approximate sample values contribute the two displayed evaluation errors. These are finite weighted inequalities. The nested sums use nested quantifier-free induction, or one induction on the flattened index.
+\end{proof}
+
+The same argument proves linearity, monotonicity, the integral bound $|\int f|\le B$ when $|f|\le B$, and independence of the chosen uniformly small tagged grids. Interval rescaling is an explicit substitution in the finite sums. Finite additivity follows by splitting a grid at the prescribed rational endpoints and comparing common refinements. These proofs neither take a supremum over partitions nor invoke completeness inside \ipra.
+
+For a density $\rho$ on $\Del$, define its area integral by the square parametrization
+\begin{equation}\label{eq:Phi}
+\Phi(u,v)=(u,(1-u)v),\qquad
+\int_\Del\rho\dd x\dd y:=
+\int_{[0,1]^2}(1-u)\rho(\Phi(u,v))\dd u\dd v.
+\end{equation}
+The Jacobian is $1-u$. This is also the usual nested triangle integral: for fixed rational $u<1$, substitution $y=(1-u)v$ is just affine rescaling of finite sums, and the row $u=1$ has zero weight. Uniform continuity gives equality of the corresponding names. This definition avoids any general change-of-variables theorem.
+
+\subsection{Finite fundamental theorem of calculus}
+
+\begin{lemma}[Taylor telescope]\label{lem:ftc}
+Let $f$ and $f'$ be names on $[0,1]$ with the quantitative derivative contract. Choose $h=1/N$ such that
+\[
+\abs{f(t+h)-f(t)-hf'(t)}\le h\eps
+\]
+at all grid points. Then
+\begin{equation}\label{eq:finiteFTC}
+\abs{f(1)-f(0)-h\sum_{i<N}f'(ih)}\le\eps.
+\end{equation}
+Using rational samples at precision $p$ in both endpoint and derivative terms, with the auxiliary finite-proof precision chosen below, adds at most $4\cdot2^{-p}$. Thus $\int_0^1 f'=f(1)-f(0)$ as effective names.
+\end{lemma}
+\begin{proof}
+Sum the $N$ inequalities. The increments $f((i+1)h)-f(ih)$ cancel consecutively, and $Nh=1$. The rational endpoint errors total $2\cdot2^{-p}$, while the derivative-sum error is at most $2^{-p}$. To read this directly as a finite arithmetic proof, instantiate the name contracts at an auxiliary precision large enough to absorb $N$ intermediate evaluation errors, then telescope the shared rational samples. One may take auxiliary precision $p+\ceilLog(N)+4$, leaving at most another $2^{-p}$ of allowance. This is an explicit PR choice; it is not an appeal to an actual infinite limit.
+
+The invariant after $j$ cells is the pair of inequalities
+\[
+-jh\eps\le f(jh)-f(0)-h\sum_{i<j}f'(ih)\le jh\eps,
+\]
+with the specified rational evaluation slack. After denominator clearing, this is a quantifier-free assertion about running sums. The universal input contract supplies its next-cell premise. \ipra's quantifier-free induction proves the invariant for all $j\le N$.
+\end{proof}
+
+Conversely, if $F(x)=\int_0^x f(t)\dd t$ and $f$ has a uniform continuity modulus, finite additivity gives
+\[
+\abs{F(x+h)-F(x)-hf(x)}
+\le |h|\sup_{t\text{ between }x,x+h}|f(t)-f(x)|.
+\]
+Here the displayed ``sup'' can be removed: use the supplied uniform bound at every sample and sum it. This proves the derivative contract for $F$ with the same modulus and known rescaling shifts. This is the only direction needed to construct arctangent.
+
+\subsection{Arctangent and the constant \texorpdfstring{$\pi$}{pi}}
+
+Define
+\begin{equation}\label{eq:At}
+\At(z)=\int_0^z\frac{\dd t}{1+t^2}
+=\int_0^1\frac{z}{1+z^2t^2}\dd t,
+\qquad \pi=4\At(1).
+\end{equation}
+For $|z|\le R$, $R\ge1$, the last integrand has $t$-derivative bounded in absolute value by $2R^3$. Hence its $N$-term rational left sum at rational $z$ has error at most $2R^3/N$. For an error below $2^{-q}$ it suffices to use
+\[
+N\ge2^{q+2}(R+1)^3
+\]
+and approximate a named $z$ closely enough to leave the remaining error margin. Since $|\At(x)-\At(y)|\le|x-y|$, precision $q+3$ for $z$ suffices after a fixed additional shift. A name $\Pi(q)$ for $\pi$ follows by evaluating $4\At(1)$ with three more bits. In particular $|\Pi(q)-\pi|\le2^{-q}$.
+
+The derivative is $\At'(z)=(1+z^2)^{-1}$ by the preceding lemma. Oddness follows by substitution $t\mapsto-t$, and strict increase on a bounded interval follows because $(1+t^2)^{-1}$ has a positive rational lower bound there. On $t>0$, with a positive margin on any interval in use, the chain rule gives
+\[
+\frac{\dd}{\dd t}\bigl(\At(t)+\At(1/t)\bigr)=0.
+\]
+The finite FTC makes this expression constant. Evaluating at $t=1$ gives
+\begin{equation}\label{eq:Atreciprocal}
+\At(t)+\At(1/t)=2\At(1)=\pi/2.
+\end{equation}
+It follows that $-\pi/2<\At(z)<\pi/2$. This deduction does not require deciding the sign of a named $z$: on a known interval $[-R,R]$, monotonicity bounds it between $\pm\At(R)$, and \eqref{eq:Atreciprocal} gives a positive gap $\At(1/R)$. All arguments use bounded intervals and finite quadrature, not an improper integral.
+
+These definitions agree with the ordinary arctangent and circle constant under the usual real interpretation. One can also use them intrinsically as the definitions of angle and $\pi$: the angular one-form
+\[
+\frac{x\dd y-y\dd x}{x^2+y^2}
+\]
+has the branch primitives given in \cref{sec:angles}; each quadrant contributes $2\At(1)=\pi/2$, and a full turn contributes $8\At(1)=2\pi$. No trigonometric evaluator is needed by the proof.
+
+\subsection{An exact grid identity}
+
+Let $A,B$ be named $C^1$ functions on the square. Write $u_i=v_i=i/N$ and $h=1/N$. For any rational arrays of their values, define
+\[
+L_N=h\sum_{i<N}\bigl(A(u_i,0)-A(u_i,1)\bigr)
++h\sum_{j<N}\bigl(B(1,v_j)-B(0,v_j)\bigr).
+\]
+There is the exact finite identity
+\begin{equation}\label{eq:discretegreen}
+\begin{split}
+L_N=h\sum_{i,j<N}\bigl[&B(u_{i+1},v_j)-B(u_i,v_j)\\
+&-A(u_i,v_{j+1})+A(u_i,v_j)\bigr].
+\end{split}
+\end{equation}
+Each inner row or column telescopes. The same sample at an internal grid node is reused, so it cancels exactly. This is discrete Green's formula, proved by finite addition.
+
+If the horizontal $B$ and vertical $A$ Taylor residuals are each at most $h\eps$, then
+\begin{equation}\label{eq:greenerror}
+\abs{L_N-h^2\sum_{i,j<N}(B_u-A_v)(u_i,v_j)}\le2\eps.
+\end{equation}
+Indeed $hN^2(h\eps+h\eps)=2\eps$. There is no surviving factor $N$ in the derivative-remainder error.
+
+For clarity about arithmetic implementation, there are two equivalent ways to use this estimate. One can supply directly checked rational cell residuals in \eqref{eq:discretegreen}. Alternatively, the Taylor contracts establish them by evaluating the intermediate grid values with error at most $h\eps/16$, which costs only $\ceilLog(N)+4$ additional precision bits. Intermediate values must not be rounded at a fixed precision independent of $N$; doing so would introduce an unwanted $N$ factor. Boundary output values and interior density samples may subsequently be rounded independently. If their errors are $\eta$ and $\zeta$, respectively, the resulting bound adds at most $4\eta+\zeta$ (and the chosen small auxiliary-evaluation allowance).
+
+\subsection{Green on the reference triangle}\label{sec:green}
+
+Let $\omega=P\dd x+Q\dd y$. Under \eqref{eq:Phi} its pullback is
+\begin{equation}\label{eq:pullback}
+A(u,v)=P(\Phi(u,v))-vQ(\Phi(u,v)),\qquad
+B(u,v)=(1-u)Q(\Phi(u,v)).
+\end{equation}
+Direct differentiation gives
+\begin{equation}\label{eq:pullbackcurl}
+B_u-A_v=(1-u)(Q_x-P_y)(\Phi(u,v)).
+\end{equation}
+For example,
+\[
+B_u=-Q+(1-u)(Q_x-vQ_y),\qquad
+A_v=(1-u)P_y-Q-v(1-u)Q_y,
+\]
+which proves the identity by cancellation. Set $\rho=P_y-Q_x$. Apply \eqref{eq:greenerror} and the effective Riemann estimates to obtain
+\begin{equation}\label{eq:Green}
+\boxed{\quad\int_\Del\rho\dd x\dd y
+=-\int_{\partial\Del}(P\dd x+Q\dd y).\quad}
+\end{equation}
+The square's bottom, top, and left sides map to $AB,BC,CA$ with their counterclockwise traversal; the right side collapses to $B$, and its coefficient $B(1,v)$ is identically zero. No inverse of $\Phi$ is used.
+
+More explicitly, for target residual $2^{-r}$, use Taylor residual tolerance $2^{-(r+6)}$, auxiliary grid evaluation error at most $2^{-(r+10)}/N$, and boundary/density errors at most $2^{-(r+6)}$. Choose $N$ large enough for the compiled Taylor moduli and the required Riemann moduli at precision $r+6$. Their finite maximum is PR, as is $N=2^m$. The sum of all stated error allowances is below $2^{-r}$. This supplies a finite proof at each precision, rather than using Stokes's theorem as an unproved analytic principle.

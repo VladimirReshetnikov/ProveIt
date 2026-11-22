@@ -1,0 +1,315 @@
+CONSTRUCTIVE STOKES: OBJECT-LEVEL LEAN BLUEPRINT
+=============================================
+
+This is a design document, not a compilable Lean module.  Names in this file
+describe the modules and definitions to implement.  No axiom or placeholder
+proof in this document is claimed as an established theorem.  The accompanying
+RepositorySlice.lean is a much smaller source adapter with real proof scripts,
+also uncompiled in this environment.
+
+BASELINE
+--------
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Commit: a5688a1b37d62046c894691c3c41f7bdd53976ca
+Object theory: ConciseIPRA PR syntax and PRAAx intuitionistic proof judgments.
+Target judgment: Γ ⊢[PRAAx] φ, not an ambient proposition over Lean's ℝ.
+Inspected reusable theorem families:
+  Analysis.FiniteFTC.ftc_upper / ftc_lower
+  Analysis.TaggedFTC.tagged_upper / tagged_lower
+  Core.Fubini.fubini (namespace LeanProofs.IPRA)
+  Core.SumLemmas.sum_add / sum_congr_bounded
+  Core.SumSplit.sum_split
+  Foundations.DyadicNames.eps_anti / sample_stability / add_regular
+  Analysis.RiemannRefinement (finite refinement estimates)
+  Foundations.UniformCertificates.triangle / error_transport
+
+The source root is
+  Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/.
+The inspected Core/Fubini.lean imports Core.SumReflect and Core.MultiSums and
+declares its theorems in namespace LeanProofs.IPRA.
+
+1. RATIONAL CODES AND QF FORMULAS
+-------------------------------
+
+Use triples of naturals q = (q.pos, q.neg, q.denPred), decoded as
+  (q.pos - q.neg) / (q.denPred + 1).
+The semantic fraction is explanation only; object formulas use natural terms.
+Pairing and finite lists are PR terms already available in the repository.
+
+Planned metalevel syntax wrapper:
+
+  structure QTerm (n : Nat) where
+    pos     : PTm n
+    neg     : PTm n
+    denPred : PTm n
+
+  def QTerm.den (q : QTerm n) : PTm n := succ q.denPred
+
+  def qLe (a b : QTerm n) : Fm PTm n :=
+    le (a.pos * b.den + b.neg * a.den)
+       (b.pos * a.den + a.neg * b.den)
+
+  def qEq (a b : QTerm n) : Fm PTm n :=
+    (a.pos * b.den + b.neg * a.den) ≐
+    (b.pos * a.den + a.neg * b.den)
+
+Define qAdd, qNeg, qMul by the elementary cross-product formulas.  Either
+store a positive denominator directly with a QF positivity guard, or convert
+the positive product to denPred with predecessor and prove the reconstruction
+identity.  Define qSub = qAdd a (qNeg b).  No reduced-fraction normalization is
+needed.  Define qAbsLe a e as qLe a e AND qLe (qNeg a) e.
+The zero, one and dyadic epsilon terms are (0,0,0), (1,0,0), and 1/2^r.
+
+Needed internal lemmas: denominator positivity, ring congruence under qEq,
+transitivity of qLe, addition and nonnegative multiplication monotonicity,
+triangle bound, finite-sum bound, and independence of rational coding.
+Each is denominator-cleared natural arithmetic.  The signed ring part can use
+Core.Integers.ZT.derive, as the supplied square/curl certificates do.
+
+2. FIXED PR EVALUATORS, NOT A TOTAL UNIVERSAL PR INTERPRETER
+---------------------------------------------------------
+
+For each external finite dimension k >= 1, choose fixed PR programs for
+F_i(x,p), G_i(x,p), μ(t), τ(t).  The index i, encoded rational tuple x, and
+precision p are numeric arguments.  A Q-valued evaluator consists of three
+PTm programs for its two numerator parts and denominator predecessor.
+
+  structure QProgram (arity : Nat) where
+    pos neg denPred : PTm arity
+
+  structure CubePrograms where
+    F G : QProgram 3       -- i, x-code, precision
+    mu tau : PTm 1
+
+This is a metalevel package of object terms.  Object-level quantifiers range
+over numbers, never over arbitrary functions or programs.
+
+For uniform program-input versions, use an explicit PR bounded evaluator and
+a supplied bound/trace-success contract for every call that is made.  Do NOT
+assert that eval(code,input) for all PR codes is itself primitive recursive.
+Structural recursion over a Lean datatype of PR programs would not establish
+that false uniform claim.
+
+3. INPUT CONTRACTS AS FIRST-ORDER FORMULAS
+-----------------------------------------
+
+All following absolute-value inequalities abbreviate qAbsLe.  Every rational
+input has a finite code.  InCube_k(x), the coordinate sup-distance test, and
+Ins_i(z,h) are PR codes with QF correctness lemmas.
+
+Reg(H): for i<k, x in the rational cube, and all p,q,
+  |H_i(x,p) - H_i(x,q)| <= 2^-p + 2^-q.
+
+UC(H,μ): for i<k, x,y in the rational cube, and all t,p,q,
+  ||x-y||_infty <= 2^-μ(t) implies
+  |H_i(x,p) - H_i(y,q)| <= 2^-t + 2^-p + 2^-q.
+
+Taylor(F,G,τ): for i<k, x and x+h e_i in the rational cube,
+  0 <= h <= 2^-τ(t) implies
+  |F_i(x+h e_i,p) - F_i(x,p) - h G_i(x,p)|
+      <= h 2^-t + (2+h) 2^-p.
+
+Use the same μ for F and G by taking the pointwise maximum of their moduli.
+Use monotone envelopes μbar(t)=max_{s<=t} μ(s) and τbar analogously.
+These are bounded PR recursions, and their domination/monotonicity statements
+have QF induction proofs.  The function bound needed for product/pullback
+construction is a separate finite input, not a consequence of a choice axiom.
+
+The conjunction of the universally quantified contracts is a first-order
+formula; it need not itself be QF.  Only the arithmetic induction INVARIANTS
+must be QF.  Contract instances are hypotheses used in those inductions.
+
+4. GRID AND SUM TERMS
+--------------------
+
+N = 2^n, h = 1/N.
+Grid_k(N) is the N^k tuples a with 0<=a_i<N, in base-N lexicographic order.
+All indexing functions use bounded division/remainder and fixed-length tuple
+operations.  For k=1, Grid_0(N) contains exactly the empty tuple.
+
+Define the following Q-valued PR terms by finite primitive recursion:
+
+  V(n,p) = N^-k * sum_{a in Grid_k(N)} sum_{i<k} G_i(a/N,p).
+
+  B(n,p) = N^-(k-1) * sum_{i<k} sum_{z in Grid_(k-1)(N)}
+                (F_i(Ins_i(z/N,1),p) - F_i(Ins_i(z/N,0),p)).
+
+  T(n,p) = N^-(k-1) * sum_{i<k} sum_{z in Grid_(k-1)(N)}
+                sum_{j<N}
+                  (F_i(Ins_i(z/N,(j+1)/N),p)
+                    - F_i(Ins_i(z/N,j/N),p)).
+
+The signed flux convention is
+  ω = sum_{i=0}^{k-1} (-1)^i F_i dx_0 wedge ... omit dx_i ... wedge dx_(k-1),
+so dω has top coefficient sum_i G_i.  This makes every summand of B a plus
+(upper face minus lower face).  Orientation signs are already in F_i.
+
+Grid reordering: derive the equality between the divergence sum V and the
+direction-by-direction line sums with repeated finite Fubini, not an analytic
+Fubini theorem.  Prove cardinalities by QF induction on bounded enumerations.
+
+5. EXACT TELESCOPE AND THE MAIN FINITE ESTIMATE
+---------------------------------------------
+
+Planned internal statements, with QF terms/macros expanded:
+
+  theorem telescope_cube :
+    Γ ⊢[PRAAx] qEq (T n p) (B n p)
+
+  theorem stokes_finite_upper
+      (hmesh : Γ ⊢[PRAAx] le (τ t) n)
+      (hlocal : Γ ⊢[PRAAx] Taylor_contract) :
+    Γ ⊢[PRAAx] qLe (qSub (V n p) (B n p))
+      (k * 2^-t + k * (2*2^n+1) * 2^-p)
+
+  theorem stokes_finite_lower ... :
+    Γ ⊢[PRAAx] qLe (qSub (B n p) (V n p)) same_error
+
+This display is schematic: k and dyadic expressions must be built as QTerm
+syntax, rather than inserted as ambient rational values.
+
+Proof implementation:
+  (a) Form one PR common denominator D for all finitely many samples in play,
+      N, 2^t and 2^p.  A product is sufficient; no least common multiple or
+      unbounded search is required.  Prove D>0 and divisibility by QF induction.
+  (b) Scale each sample to its signed integer numerator.  To use FiniteFTC's
+      natural potential G, add a common natural offset M to every potential
+      value on the slice.  M can be the PR maximum of their negative parts.
+      Write the shifted value as pos+(M monus neg); prove M>=neg before using
+      the subtraction identity.  The offset cancels in every difference.
+  (c) Instantiate ftc_upper and ftc_lower with derivative-times-h positive and
+      negative parts and the scaled local error
+           h 2^-t + (2+h) 2^-p.
+      x packs the transverse tuple, direction, n,p,t and scale data.
+  (d) Sum the two line bounds over k N^(k-1) transverse rows.  The outer
+      accumulation invariants are two denominator-cleared natural inequalities,
+      hence QF.  SumLemmas and Fubini expose the target sums.
+  (e) The total multiplier is
+           N^-(k-1) * k N^k,
+      giving exactly k 2^-t + k(2N+1)2^-p.
+      Apply telescope_cube; do not introduce a limiting FTC theorem here.
+
+The supplied RepositorySlice.lean gives the actual FTC instantiation interface.
+The supplied FiniteCore.lean models the unsigned-scale-independent finite
+telescoping reasoning in Lean's ordinary integer arithmetic.
+
+6. REFINEMENT AND INTEGRAL NAMES
+------------------------------
+
+For m>=n>=μ(s), map each fine-grid point to its left coarse-grid point by
+division by 2^(m-n).  The sup-distance is <=2^-n and each coarse cell has
+exactly 2^((m-n)k) fine samples.  Apply UC pointwise and accumulate:
+
+  |V(n,p)-V(m,q)| <= k (2^-s + 2^-p + 2^-q).
+  |B(n,p)-B(m,q)| <= 2k (2^-s + 2^-p + 2^-q).
+
+Boundary refinement uses dimension k-1 and its 2k signed face contributions.
+The proof is a finite grouping identity plus a finite sum inequality.
+RiemannRefinement supplies relevant object-level arithmetic patterns; it does
+not automatically supply these multidimensional code definitions.
+
+Let ell be a fixed natural with k<=2^ell.  The following PR schedules are
+one concrete choice (the report is authoritative for its stated constants):
+  t(r) = r+ell+4,
+  n(r) = max(r, μbar(t(r)), τbar(t(r))),
+  p(r) = n(r)+t(r)+2.
+Set volumeName(r)=V(n(r),p(r)) and boundaryName(r)=B(n(r),p(r)).
+Derive their regularity and their explicitly bounded tail agreement using the
+two preceding finite estimates.  Every requested sample is a rational value
+produced by a fixed PR program; no completed real type is needed internally.
+
+Use a declared conventional equivalence relation on regular names, e.g.
+  EqName(A,B) := forall p,q, |A(p)-B(q)| <= 2^-p+2^-q,
+after ensuring the selected normalization gives that regular-name contract.
+Do not replace extensional equality by an unexplained single-index tolerance.
+Tail agreement and regularity imply this conventional relation by a rational
+separation argument: if a rational excess a/b is positive, a>=1, choose a
+sufficiently fine index bounded by a PR function of b and the known error
+constant (b(C+1)+1 is a crude adequate bound).  Then C*2^-j<1/b, contradicting
+the excess.  Only rational order is decided.  No order on arbitrary reals,
+Markov principle, or countable choice is used.
+
+7. FINITE CUBICAL CHAINS
+-----------------------
+
+A cubical cell is a finite name/jet program package with k formal parameters.
+A chain is a finite list of integer coefficients and cells.  Use formal face
+restriction operations; identity of generated double faces follows from the
+coordinate insertion identity, not an algorithm deciding equality of arbitrary
+functions.  Supplied gluing certificates may equate additional face names.
+
+  boundary(c) = sum_{i<k} (-1)^i (face(i,1,c)-face(i,0,c)).
+
+For i<j, the two orders of face restriction agree, while their signs differ by
+one exponent.  Pair their finite indices, prove cancellation with signed-ring
+arithmetic, and sum.  This is the internal proof route for boundary(boundary c)
+=0.  The supplied square certificate is its smallest nontrivial case.
+
+Linearity proves Stokes for a finite chain.  If W=sum |chain coefficient|,
+increase every cell's precision by an explicit shift with W<=2^shift; W=0 is
+handled separately.  A geometric boundary certificate says which oppositely
+oriented faces cancel; the proof does not discover an atlas or a triangulation.
+
+8. EFFECTIVE FORMS, JETS AND PULLBACK
+-----------------------------------
+
+Ambient m-dimensional r-forms are arrays indexed by increasing r-subsets of
+Fin m.  Encode a subset as a bounded list/bitmask.  Coefficients and all supplied
+partial derivatives are QPrograms with Reg, UC, magnitude and Taylor contracts.
+
+  FormProgram(m,r): coefficient a_I and derivative da_(I,j) packages.
+  Jet2Program(k,m): φ_a, J_(a,i), H_(a,i,j), with H_(a,i,j)=H_(a,j,i),
+                     all their effective remainder/continuity certificates.
+
+The map's range is certified to lie in the coefficient domain.  Evaluating a
+coefficient at φ(x) is a represented-input composition: approximate φ(x) to
+the requested UC precision and account for that error.  It is not exact
+evaluation of a real by a rational-input program.
+
+Define exterior multiplication by the finite inversion-parity sign; define
+d using insertion of j into I and the same signs.  Define pullback by minors:
+  (φ*ω)_J = sum_{|I|=r} (a_I composed with φ) det(Jacobian_(I,J)).
+Each determinant is its finite permutation sum, so all formulas are PR.
+
+Prove finite error rules for addition, multiplication and composition from
+the input magnitude bounds and moduli.  For a product of s bounded factors,
+use a telescoping product error bound; choose input precision by an explicit
+integer coefficient bound.  This constructs, rather than postulates, the
+QProgram and effective C1 contracts for every pullback coefficient.
+
+Prove the symbolic identity d(φ*ω)=φ*(dω) by differentiating finite sums/products.
+Terms differentiating a_I give the chain-rule/minor expansion.  Terms
+differentiating Jacobian factors cancel in pairs by symmetric H and alternating
+signs.  All remaining identities are signed polynomial identities with finite
+indices and can be reflected through ZT.derive.  Product/chain-rule analytic
+contracts and the H symmetry certificate remain explicit premises.
+
+RepositorySlice.curl_pullback_polynomial supplies the exact object-level
+polynomial identity in the k=2,m=3 case.  It does not prove those analytic
+premises.  General finite-dimensional determinant cancellation is an additional
+formalization obligation, described above.
+
+Finally apply the cube theorem to the constructed pullback, and apply face
+restriction compatibility to identify its boundary with the boundary of the
+parameterized chain.  Immersion/nondegeneracy is unnecessary for this chain
+identity.  To call the chain a geometric embedded surface, supply the geometric
+coverage and orientation information separately.
+
+9. COMPLETION CRITERIA
+----------------------
+
+The formalization is complete only when:
+  * all QProgram/grid/precision macros are actual PTm definitions;
+  * all regularity assumptions and conclusions are explicit Fm formulas;
+  * every induction is exhibited through PRA.qfInd (or a proved derived rule);
+  * finite algebra, refinement, name regularity/equality, face cancellation and
+    effective pullback composition yield Γ ⊢[PRAAx] judgments;
+  * the canonical final theorem has no undischarged analytic oracle beyond its
+    declared effective input contracts;
+  * source and compiled-provider closures are pinned and audited;
+  * the final theorem's axioms are inspected and a clean build succeeds.
+
+No full Lean formalization or successful compiler run is claimed for this
+delivery.  The human-readable proof in the report, the finite executable
+checks, inspected upstream object-level lemmas, supplied small proof scripts,
+and this remaining-work list are deliberately distinguished.

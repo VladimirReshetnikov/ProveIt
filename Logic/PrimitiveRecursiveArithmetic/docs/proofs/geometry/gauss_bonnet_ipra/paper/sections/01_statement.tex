@@ -1,0 +1,59 @@
+\section{The result and its scope}\label{sec:result}
+
+The constructive difficulty is not the final Euler-characteristic calculation. It is justifying the local curvature formula, the integration rules, and the finite geometric presentation within a theory whose induction is restricted to quantifier-free formulas. We address these separately, then combine their quantitative statements.
+
+\begin{theorem}[Constructive smooth Gauss--Bonnet]\label{thm:main}
+Fix primitive recursive programs for the data described in \cref{sec:data}. Let $d$ be numerical parameters supplying:
+\begin{enumerate}
+\item a finite triangulated compact two-dimensional manifold, possibly disconnected, with boundary allowed;
+\item on each reference triangle, a positive definite $C^2$ metric given by regular rational names for an upper triangular coframe and its jets through order two;
+\item primitive recursive moduli of continuity and differentiability, and rational lower bounds for every denominator used;
+\item compatible metric charts across interior edges and at vertices, including finite certificates that the vertex sectors occur once in the correct circular or interval order.
+\end{enumerate}
+Then there are explicitly described primitive recursive rational quadrature programs for curvature, boundary geodesic curvature, and corner turns. For every precision $n$ they satisfy the rational Gauss--Bonnet error bound in \cref{thm:arith}. The corresponding equality of regular names is
+\begin{equation}\label{eq:main}
+\boxed{\quad
+\sum_T\int_T K\dd A+
+\sum_{e\subset\partial M}\int_e k_g\dd s+
+\sum_{v\subset\partial M}\tau_v
+=2\pi\bigl(V-E+F\bigr).\quad}
+\end{equation}
+Here $\tau_v=\pi-\alpha_v$, where $\alpha_v\in(0,2\pi)$ is the total interior boundary angle, and $k_g=g(\nabla_TT,n_{\mathrm{in}})$ uses the inward unit conormal. At a smooth boundary vertex $\tau_v=0$. Global orientability is unnecessary.
+
+For each fixed suite of the primitive recursive programs, the numerical assertion is a theorem schema of \ipra\ from the stated presentation hypotheses. The algorithm is uniform in numerical parameters, the number of triangles, and precision.
+\end{theorem}
+
+The schema qualification is essential. First-order arithmetic does not quantify over an arbitrary real manifold or an arbitrary function $\N\to\Q$. It quantifies over natural-number parameters of fixed programs, or over finite certificates. Nor is there a single primitive recursive evaluator for every primitive recursive program. An optional alternative is a coded evaluator with an explicitly supplied primitive recursive time bound; the bound then belongs to the input contract.
+
+\begin{theorem}[Piecewise smooth form]\label{thm:piecewise_intro}
+For a finite triangulated surface with independently presented positive $C^2$ triangle metrics, write
+\[
+C_T=\int_TK\dd A,\qquad
+G_{T,e}=\int_e k_{g,T}\dd s,\qquad
+\alpha_{T,v}=\text{the interior angle of triangle $T$ at $v$}.
+\]
+For an interior edge $e=T\cap T'$, set $J_e=G_{T,e}+G_{T',e}$. For an interior vertex set $D_v=2\pi-\sum_{T\ni v}\alpha_{T,v}$; for a boundary vertex set $\tau_v=\pi-\sum_{T\ni v}\alpha_{T,v}$. Then
+\begin{equation}\label{eq:piecewise}
+\sum_T C_T+\sum_{e\text{ interior}}J_e+
+\sum_{e\text{ boundary}}G_e+
+\sum_{v\text{ interior}}D_v+
+\sum_{v\text{ boundary}}\tau_v=2\pi\chi.
+\end{equation}
+This is an equality of effective names, with a finite rational error version. If edge metrics agree on their tangential restrictions, it describes the corresponding glued piecewise Riemannian metric. The algebraic identity itself only needs the individual triangle metrics and the finite incidence data.
+\end{theorem}
+
+The smooth theorem follows because a common smooth metric makes $J_e=0$, and a one-turn tangent fan makes $D_v=0$. These facts are proved from local compatibility data in \cref{sec:gluing}; neither Gauss--Bonnet nor the desired angle-sum identities are assumed as metric hypotheses.
+
+For closed smooth surfaces, \eqref{eq:main} reduces to $\int_MK\dd A=2\pi\chi$. For Euclidean triangle metrics, \eqref{eq:piecewise} reduces to the angle-defect theorem. For a supplied geodesic triangle, the local theorem gives angle excess. Thus the smooth result contains genuine differential geometry; it is not merely a renaming of the polyhedral identity.
+
+\subsection{What has changed from a classical statement}
+
+Classical accounts begin with a compact Riemannian surface and obtain triangulations, chart refinements, and bounds by existence arguments; see, for example, the local and global treatments in \cite{new,shifrin}. Here these finite presentations and bounds are supplied. We do not claim that \ipra\ constructs an effective triangulation of every abstract compact surface, extracts moduli from qualitative $C^2$ continuity, or turns every externally computable metric into a primitive recursive one.
+
+This is a substantive constructive theorem for a broad explicitly represented class. In particular, a finite smooth triangulation with rational/algebraic/elementary chart formulas and certified margins supplies the required kind of input whenever those formulas have the stated effective bounds. The sphere-octant example in \cref{sec:examples} exhibits nonzero curvature and verifies the local identity independently by elementary integration.
+
+\subsection{The logical endpoint}
+
+We use \ipra\ with natural numbers, a symbol and defining equations for every primitive recursive function, intuitionistic first-order logic with equality, the successor axioms, and quantifier-free induction. Integers, rationals, lists, and finite matrices are numerical codes. The assertion ``this proof lies in \ipra'' means that the finite numerical lemmas have derivations using only those rules; it does not mean that a Lean theorem about Mathlib's real numbers has that strength.
+
+The report supplies a human proof and a concrete construction of the relevant primitive recursive bounds. The new Lean material separates an ambient rational algebra layer, a small proposed object-calculus bridge, and the still-to-be-implemented analytic derivations. The exact scope of each is recorded in \cref{sec:lean} and in the archive's verification notes.

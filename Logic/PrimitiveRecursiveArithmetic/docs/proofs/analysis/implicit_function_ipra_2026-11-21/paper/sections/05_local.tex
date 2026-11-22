@@ -1,0 +1,172 @@
+\section{Recovering the usual local hypothesis}\label{sec:local}
+
+\subsection{Choosing the neighborhood from a base-point certificate}
+
+Suppose the original \(F\) is quantitatively \(C^1\) on a
+neighborhood containing a closed product box of radius \(R_0>0\)
+about a zero \((a,b)\). Suppose rational matrices \(A,B\) satisfy
+\[
+ AB=BA=\Id,\qquad
+ \norm{\Id-A D_yF(a,b)}\le\tfrac14.
+ \tag{Base inverse certificate}
+\]
+Set \(H=AF\). Multiplying a value or a derivative evaluator by
+\(A\), with an additional precision shift
+\(\lgup(\max(1,\norm A))\), produces evaluators for \(H\) and
+\(D H\). A Taylor or derivative continuity modulus for \(F\)
+transfers by the same shift in its demanded error index.
+We may therefore work with the resulting moduli for \(H\).
+
+Put
+\[
+ R=\min(R_0/2,\,2^{-\nu(2)}),\qquad r=R.
+\]
+Throughout the product box of radius \(R\),
+\(\norm{V(z)-V(a,b)}\le1/4\), so
+\(\norm{\Id-V(z)}\le1/2\).
+Evaluate \(U(a,b)\) to error \(1/4\), and choose the rational
+bound
+\[
+ M=\max\bigl(1,\norm{\widehat U((a,b),2)}+\tfrac12\bigr).
+\]
+It bounds \(\norm U\) on this box: the evaluation error and
+the variation from the base point each cost \(1/4\).
+Now choose
+\[
+ \alpha=\frac{r}{4M}.
+\]
+Then \(\alpha\le r\), all points of \(X\times Y\) lie in the
+radius-\(R\) box, and \(M\alpha=r/4\).
+The exact equation \(H(a,b)=0\) satisfies the remaining
+hypothesis. Theorem~\ref{thm:main} and
+Corollary~\ref{cor:original} yield a unique local \(C^1\) graph.
+All choices are rational operations or evaluations of supplied
+primitive recursive moduli.
+
+\subsection{Constructing the rational preconditioner}
+\label{sec:conditioning}
+
+Here is a precise sufficient replacement for an unspecified
+invertibility assertion. Let \(J_0=D_yF(a,b)\). Suppose
+\[
+ |(J_0)_{ij}|\le K,\quad K\ge1,\qquad
+ |\det J_0|\ge\delta>0,
+\]
+where \(K,\delta\) are rational and the bounds are certified.
+Define
+\[
+ D=m!(K+1)^{m-1},\qquad
+ \eta=\min\left(1,\frac{\delta}{2mD},
+                         \frac{\delta}{8D}\right)>0.
+\]
+Choose a rational matrix \(R\) approximating \(J_0\) in row norm
+to error at most \(\eta\), by evaluating at precision
+\(\lgup(1/\eta)\).
+
+For each determinant product, telescope its \(m\) factors.
+Every factor has absolute value at most \(K+1\), and each
+factor changes by at most \(\eta\). Summing over \(m!\)
+permutations gives the finite estimate
+\[
+ |\det R-\det J_0|
+ \le m!m(K+1)^{m-1}\eta=mD\eta\le\delta/2.
+\]
+It follows that the rational number \(\det R\) satisfies
+\(|\det R|\ge\delta/2>0\). Its nonzero denominator and nonzero
+determinant can be checked by rational arithmetic.
+Define
+\[
+ A=\frac{\operatorname{adj}R}{\det R},\qquad B=R.
+\]
+The finite adjugate identities prove \(AB=BA=\Id\).
+Each cofactor is bounded by \((m-1)!(K+1)^{m-1}\); summing a row
+of \(m\) cofactors gives
+\[
+ \norm A\le\frac{2D}{\delta}.
+\]
+Therefore
+\[
+ \norm{\Id-AJ_0}
+ =\norm{A(R-J_0)}
+ \le\frac{2D}{\delta}\eta\le\tfrac14.
+\]
+This is the base inverse certificate used above. No search for
+a successful matrix inverse occurs: the evaluation accuracy is
+chosen before the matrix is computed.
+
+The argument uses determinant \emph{apartness}, a positive
+lower-bound witness. If a constructive inverse name and a bound
+on its norm are given instead, approximating that inverse also
+produces suitable quantitative data. A bare negative proposition
+about a determinant is not used to manufacture a numerical
+witness.
+
+\subsection{Base points given by names}
+
+Rational centers are a convenience for the rounded program,
+not a restriction to rational zeros. If \(a,b\) have fixed
+primitive recursive names, work in translated coordinates:
+\[
+ F^\circ(u,v)=F(a+u,b+v).
+\]
+The new box has rational center \((0,0)\).
+Its evaluator is obtained by approximating \(a,b\) with a
+precision prescribed by the local continuity bound for \(F\),
+then evaluating \(F\) at that rational approximation.
+For \(D F^\circ\), use the supplied derivative modulus.
+Choose the translated box strictly inside a larger certified
+domain so that the approximating rational points remain in
+that domain. The \(R_0/2\) margin above supplies this slack.
+
+For example, if \(F\) has Lipschitz bound \(K_F\) on the larger
+box, use the translated-input precision
+\[
+ t=\max\bigl(p+1+\lgup(\max(1,K_F)),\ \lgup(2/R_0)\bigr).
+\]
+The second term ensures that the input error is at most
+\(R_0/2\), so the rational evaluation stays in the larger
+domain. Evaluating \(F\) to \(2^{-(p+1)}\) then gives total
+value error at most \(2^{-p}\).
+Derivative evaluation uses its modulus-driven precision
+with the same additional domain guard. Translation preserves the Taylor inequalities,
+and uniform slack enlargements of the moduli handle rational
+approximations exactly as in Section~\ref{sec:raw}.
+Apply the theorem to \(F^\circ\), obtaining \(v=g^\circ(u)\);
+the original branch is \(b+g^\circ(x-a)\).
+
+\subsection{The constructive inverse function theorem}
+
+Let \(\Phi\) be a quantitatively \(C^1\) map between equal
+finite dimensions, with positively conditioned derivative at
+\(b\). Set \(a=\Phi(b)\) and
+\[
+ F(x,y)=\Phi(y)-x.
+\]
+Then \(D_yF=D\Phi\), and after preconditioning
+\(D_xH=-A\), so one can take \(M\ge\norm A\).
+The preceding construction gives a primitive recursive local
+inverse \(g\) with
+\[
+ \Phi(g(x))=x,\qquad
+ g(\Phi(y))=y
+\]
+whenever the displayed points remain in the constructed
+neighborhoods. The second identity follows from uniqueness.
+Moreover
+\[
+ Dg(x)=D\Phi(g(x))^{-1},
+\]
+with the derivative algorithm and explicit moduli already given.
+Thus the finite construction also supplies the usual local
+coordinate-change consequence.
+
+\subsection{Scope of the theorem}
+
+The proved result is finite-dimensional \(C^1\) regularity.
+It does not claim the full Banach-space theorem, an analytic
+implicit-function theorem, or automatic modulus extraction
+from arbitrary qualitative input. Fixed higher differentiability
+orders can be approached by differentiating the displayed
+matrix formula with additional derivative certificates, but
+those extensions are not needed for, or included in, the
+proved theorem.

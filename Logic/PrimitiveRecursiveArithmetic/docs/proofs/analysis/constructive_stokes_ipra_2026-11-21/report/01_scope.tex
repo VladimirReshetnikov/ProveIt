@@ -1,0 +1,116 @@
+\section{The theorem and the precise constructive scope}\label{sec:scope}
+
+The familiar Kelvin--Stokes formula is
+\begin{equation}\label{eq:kelvin-intro}
+ \int_{\partial S}\mathbf F\cdot\dd\mathbf r
+ =\int_S(\curl\mathbf F)\cdot\mathbf n\,\dd S.
+\end{equation}
+The differential-form version is
+\begin{equation}\label{eq:stokes-intro}
+ \int_{\partial C}\omega=\int_C\dd\omega.
+\end{equation}
+These are the classical target identities; see the source supplied in the
+request and the primary expositions in \cite{dyatlov,poonen}. Our contribution
+here is an explicit arithmetic proof for effective input presentations. No
+claim of novelty for the classical telescoping argument is intended.
+
+There are two separate questions. First, can a domain, a coefficient function,
+and an integral be represented using primitive recursive data? Second, can the
+identity between the resulting quantities be proved using only the induction
+available in $\ipra$? A statement in ordinary Lean about $\R$, or even about
+computable reals, does not by itself answer the second question.
+
+\subsection{What the input must contain}
+
+A basic $k$-dimensional cell is the parameter cube $Q^k=\cube{k}$, $k\ge1$.
+Its coefficients are given by fixed primitive recursive programs
+\[
+ F_i(x,p),\ G_i(x,p)\in\Q \qquad(1\le i\le k,\ x\in Q^k\cap\Q^k,\ p\in\N).
+\]
+The intended interpretation is that $F_i(x,p)$ approximates $f_i(x)$ and
+$G_i(x,p)$ approximates $\partial_i f_i(x)$ to error at most $2^{-p}$.
+The theorem does not merely assume that these interpretations are plausible.
+It requires the explicit arithmetic coherence, continuity, and remainder
+conditions in \cref{sec:certificates}. The moduli in those conditions are
+themselves fixed primitive recursive functions.
+
+For a curved cell in an ambient rational box, the input additionally provides
+a primitive recursive $C^2$ parameterization $\sigma:Q^k\to\R^m$ with certified
+first and second jets, bounds, and uniform moduli. An ambient $(k-1)$-form
+has certified $C^1$ coefficients. All occurrences of real-valued functions in
+this description are shorthand for rational approximation programs and the
+specified arithmetic certificates.
+
+A finite chain is a supplied list
+\[
+ C=\sum_{\lambda<L}c_\lambda\sigma_\lambda,\qquad c_\lambda\in\Z.
+\]
+Its boundary is computed from the faces of that list. If interior faces are
+to be identified, their matching data are supplied explicitly. The proof
+does not search for a cubulation, decide equality of arbitrary functions,
+or extract a uniform modulus from a bare continuity assertion.
+
+\begin{theorem}[Constructive Stokes, informal form]\label{thm:informal}
+For each fixed collection of primitive recursive programs satisfying the
+certificates specified in this report, there are primitive recursive regular
+Cauchy names for $\int_C\dd\omega$ and $\int_{\partial C}\omega$.
+Their equality is provable in $\ipra$ from those certificates.
+For a single cube the names $V_r,B_r$ constructed below satisfy
+\begin{equation}\label{eq:headline}
+ \forall r\ \forall a,b\ge r,\qquad
+ \abs{V_a-B_b}\le \frac{19}{64}\,2^{-r}.
+\end{equation}
+For a finite chain, shifting the per-cell accuracy by
+$\clog{\sum_\lambda|c_\lambda|}$ gives the same stated accuracy for the chain.
+\end{theorem}
+
+The proof of the cube result is given completely in \cref{sec:finite,sec:names-proof}.
+The effective calculus, pullback, and chain arguments in
+\cref{sec:calculus,sec:geometry} prove the curved-cell extension.
+The arithmetic interpretation in \cref{sec:ipra-audit} establishes the asserted
+proof-theoretic strength.
+
+\subsection{Why this is a substantive version of Stokes}
+
+This result permits arbitrary fixed primitive recursive evaluation and modulus
+programs satisfying the certificates, rather than only polynomial data.
+The cells may be curved, multiple cells may meet along their faces, and the
+result holds in every fixed finite dimension. The theorem includes the
+fundamental theorem of calculus, Green's formula, ordinary surface Stokes,
+and the divergence theorem for such presentations.
+
+The restrictions concern the effective presentation and its uniformity.
+It is not asserted that arbitrary classical $C^1$ data automatically possess
+primitive recursive moduli. Nor is an arbitrary abstract compact manifold
+automatically replaced by a supplied finite chain. An embedded surface
+interpretation requires the corresponding orientation, coverage, and
+compatibility data. The chain theorem itself does not require injectivity
+or an immersion condition: its integrals count the supplied parameterized
+cells with their multiplicities.
+
+\subsection{The mechanism in one paragraph}
+
+Subdivide the parameter cube into a dyadic grid. In each coordinate direction,
+replace a derivative sample multiplied by the cell width by a forward
+difference of coefficient samples. The remainder certificate bounds this
+replacement. Sum over the entire grid. Every interior sample cancels
+algebraically, leaving precisely the two opposite faces. The total error is
+computed before choosing the grid. A second finite estimate compares coarse
+and fine Riemann sums, thereby constructing the integrals. Finally, a
+primitive recursive schedule makes both errors as small as requested.
+No theorem about an unspecified limit is used as a black box.
+
+\subsection{Relation to the repository}
+
+The inspected ProveIt snapshot is \RepoCommit. It contains actual
+object-level derivations of finite FTC estimates and finite Fubini
+\cite{repo-ftc,repo-fubini}, as well as a calculus report using the same
+rational approximation convention \cite{repo-calculus}. Those are unusually
+well suited to this problem. We reprove the analytic arguments here, and use
+the inspected code to specify a concrete formalization route.
+
+The repository's distinction between kernel-oriented derivations and
+delivered research packets is preserved. Source inspection in this task was
+not a rebuild of that repository. The complete new multidimensional Stokes
+derivation is not already present in the inspected modules, and is not
+represented as completed in the accompanying Lean status ledger.

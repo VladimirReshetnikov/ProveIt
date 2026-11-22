@@ -1,0 +1,55 @@
+{
+  "date_local": "2026-11-21",
+  "timezone": "America/Los_Angeles",
+  "report": "gauss_bonnet_ipra.pdf",
+  "pages": 33,
+  "pdf_bytes": 548266,
+  "pdf_sha256": "f465175bd02a1ea99240b94e0765033e16a574556315c020c3a5e11f429fbe45",
+  "latex_engine": "pdfTeX 1.40.26 (TeX Live 2025/dev/Debian)",
+  "latex_command": "latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build gauss_bonnet_ipra.tex",
+  "build_note": "The environment needed a local pdflatex format and font map generated from its installed TeX files. The final compilation succeeded with no warnings.",
+  "latex_warnings": 0,
+  "overfull_boxes": 0,
+  "underfull_boxes": 0,
+  "out_of_page_text_blocks": 0,
+  "visual_review": {
+    "all_pages_rendered_with": "pdftoppm",
+    "all_pages_inspected_in_contact_sheets": true,
+    "detail_pages": [
+      4,
+      14,
+      19,
+      26
+    ],
+    "final_changed_page_rerendered": 19
+  },
+  "checks": [
+    {
+      "script": "tools/finite_certificate.py",
+      "result": "tools/finite_certificate_results.json",
+      "arithmetic": "exact Fraction",
+      "status": "passed"
+    },
+    {
+      "script": "tools/discrete_green.py",
+      "result": "validation/discrete_green_results.json",
+      "arithmetic": "exact Fraction and polynomial coefficients",
+      "status": "passed"
+    },
+    {
+      "script": "tools/smooth_examples.py",
+      "result": "examples/smooth_results.json",
+      "arithmetic": "exact Fraction, 34 symbolic checks, 50-digit numerical diagnostics",
+      "status": "passed"
+    }
+  ],
+  "lean": {
+    "compiled": false,
+    "reason": "No Lean, Lake, or Elan executable was available.",
+    "candidate_files": [
+      "lean/Assembly.lean",
+      "lean/IPRABridge.lean"
+    ]
+  },
+  "proveit_commit": "d36b35eed5bd01af4ade66bf539622495813ccc8"
+}

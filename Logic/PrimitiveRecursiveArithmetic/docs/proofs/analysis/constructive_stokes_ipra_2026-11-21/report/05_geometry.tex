@@ -1,0 +1,325 @@
+\section{Differential forms, pullbacks, and finite chains}\label{sec:geometry}
+
+\subsection{Finite exterior algebra}
+
+For a fixed ambient dimension $m$, a $q$-form is a finite coefficient array
+\[
+ \omega=\sum_{\substack{I=(i_1<\cdots<i_q)\\1\le i_j\le m}}
+                   a_I\,\dd y_{i_1}\wedge\cdots\wedge\dd y_{i_q}.
+\]
+For $q=0$ the index list is empty and a form is a scalar coefficient.
+Multiplication of basis words is defined as follows: concatenate their
+index lists; if an index repeats, the product is zero; otherwise sort the
+list and multiply by the sign $(-1)^{\text{number of inversions}}$.
+This defines the wedge product by finite distributivity. Sorting,
+duplicate detection, and inversion counting are all bounded operations.
+
+For $C^1$ coefficients, the exterior derivative is defined by
+\[
+ \dd\omega=\sum_I\sum_{a=1}^m
+          \partial_a a_I\,\dd y_a\wedge\dd y_{i_1}\wedge\cdots\wedge\dd y_{i_q}.
+\]
+Equivalently, its coefficient at $K=(k_1<\cdots<k_{q+1})$ is
+\[
+ (\dd\omega)_K
+   =\sum_{\nu=1}^{q+1}(-1)^{\nu-1}
+        \partial_{k_\nu}a_{K\setminus k_\nu}.
+\]
+These formulas specify all signs without a topological convention left
+implicit.
+
+Finite expansion and the scalar product rule prove the graded Leibniz
+identity
+\[
+ \dd(\alpha\wedge\beta)
+ =\dd\alpha\wedge\beta+(-1)^{\deg\alpha}\alpha\wedge\dd\beta.
+\]
+Indeed, differentiating a coefficient product produces its two scalar
+terms. In the second term the new one-form must move past
+$\deg\alpha$ basis one-forms, giving the displayed sign. Repeated-index
+terms vanish in both expansions. This is a finite matching of coefficient
+terms.
+
+\subsection{The pullback construction}
+
+Let $\sigma:Q^k\to D\subseteq\R^m$ be a certified parameterization.
+Define
+\[
+ \dd\sigma_a=\sum_{j=1}^k\partial_j\sigma_a\,\dd x_j,\qquad
+ \sigma^*\omega=\sum_I(a_I\circ\sigma)
+                  \dd\sigma_{i_1}\wedge\cdots\wedge\dd\sigma_{i_q}.
+\]
+For an increasing parameter index list $J$ of length $q$, the coefficient
+is
+\begin{equation}\label{eq:pullback-minors}
+ (\sigma^*\omega)_J
+ =\sum_{|I|=q}(a_I\circ\sigma)
+        \det\bigl(\partial_{j_b}\sigma_{i_a}\bigr)_{1\le a,b\le q}.
+\end{equation}
+The determinant here means its permutation expansion. Its construction
+requires no inverse matrix or rank decision.
+
+If $\omega$ has certified $C^1$ coefficients and $\sigma$ has a certified
+$C^2$ jet, every factor in \eqref{eq:pullback-minors} has a $C^1$
+presentation: use the composition lemma for $a_I\circ\sigma$, and the
+supplied second jets for $\partial_j\sigma_a$. Apply the sum and product
+lemmas finitely many times. This constructs the complete $C^1$ certificate
+for the pullback.
+
+For explicit size bounds, suppose a common integer $M\ge1$ bounds all
+ambient coefficient values and first derivatives, and all first and
+second derivatives of $\sigma$. Then
+\[
+ \binom mq q!M^{q+1}
+\]
+bounds every pullback coefficient. A safe bound on any of its first
+derivatives is
+\[
+ \binom mq q!(m+q+1)M^{q+2}.
+\]
+To see the latter, a derivative falling on $a_I\circ\sigma$ gives at most
+$m$ terms; a derivative falling on a determinant gives at most $q$ terms
+per permutation. Each term is a product of the bounded factors. This
+bound also covers $q=0$. The effective modulus construction is the finite
+expression-tree recursion of \cref{sec:product,sec:chain-rule}.
+
+\begin{lemma}[Naturality of the exterior derivative]\label{lem:naturality}
+For these certified presentations,
+\[
+ \dd(\sigma^*\omega)=\sigma^*(\dd\omega)
+\]
+as coefficientwise equality of named forms.
+\end{lemma}
+\begin{proof}
+First,
+\[
+ \dd(\dd\sigma_a)
+ =\sum_{i<j}
+   \bigl(\partial_i\partial_j\sigma_a
+          -\partial_j\partial_i\sigma_a\bigr)\dd x_i\wedge\dd x_j=0
+\]
+by the symmetry certificates for the second jet. For one summand of
+$\sigma^*\omega$, apply the graded product rule:
+\begin{align*}
+ &\dd\bigl((a_I\circ\sigma)
+                  \dd\sigma_{i_1}\wedge\cdots\wedge\dd\sigma_{i_q}\bigr)\\
+ &\quad=\dd(a_I\circ\sigma)
+                  \wedge\dd\sigma_{i_1}\wedge\cdots\wedge\dd\sigma_{i_q}.
+\end{align*}
+All the other terms contain a factor $\dd(\dd\sigma_{i_j})$ and vanish.
+By the chain rule already proved,
+$\dd(a_I\circ\sigma)=\sum_a(\partial_a a_I\circ\sigma)\dd\sigma_a$.
+Substitution gives exactly the pullback of
+$\sum_a\partial_a a_I\,\dd y_a\wedge\dd y_I$. Sum over $I$.
+Every equality is a finite coefficient expansion, using the explicit
+jet closure lemmas, and no integration theorem has entered the proof.
+\end{proof}
+
+\subsection{Integrating a parameterized cell}
+
+For a $k$-form $\eta$ with certified uniformly continuous coefficients,
+define
+\[
+ \int_\sigma\eta:=\int_{Q^k}\sigma^*\eta.
+\]
+The right side is the named integral of its single top-degree coefficient.
+For $\eta=\dd\omega$, the supplied first-derivative continuity of
+$\omega$ provides this condition; a second derivative of the ambient
+form is not required.
+The boundary of $\sigma$ is the formal chain
+\begin{equation}\label{eq:sigma-boundary}
+ \partial\sigma
+ =\sum_{i=1}^k(-1)^{i-1}
+         \bigl(\sigma\circ\delta_i^1-\sigma\circ\delta_i^0\bigr).
+\end{equation}
+For a zero-dimensional cell, integration of a zero-form is its value
+at the point, and its boundary is zero.
+
+Restriction of a jet to a face merely deletes the frozen coordinate
+directions; its moduli and bounds can be retained. Direct substitution
+in the finite minor formula proves
+\[
+ (\sigma\circ\delta_i^\varepsilon)^*\omega
+       =(\delta_i^\varepsilon)^*(\sigma^*\omega).
+\]
+Thus the boundary integral defined from \eqref{eq:sigma-boundary} is the
+boundary integral of the pulled-back form, with exactly the signs used
+in the cube theorem.
+
+\begin{theorem}[Stokes for a certified curved cube]\label{thm:curved}
+Let $\sigma$ be a certified $C^2$ $k$-cube in a rational ambient box, and
+let $\omega$ be a certified $C^1$ $(k-1)$-form there. Then
+\[
+ \int_\sigma\dd\omega\ \EqName\ \int_{\partial\sigma}\omega .
+\]
+The pullback construction and the schedule
+\eqref{eq:schedule-t}--\eqref{eq:schedule-values} give primitive recursive
+names and explicit equality witnesses.
+\end{theorem}
+\begin{proof}
+The effective calculus constructs the $C^1$ coefficient presentation of
+$\alpha=\sigma^*\omega$. Write it in flux form \eqref{eq:flux-form}.
+Its diagonal derivative data satisfy (D), and all coefficients and
+diagonal derivatives satisfy (C) and (U). Apply \cref{thm:rates}.
+By \cref{lem:naturality}, the volume side is
+$\int_{Q^k}\sigma^*(\dd\omega)=\int_\sigma\dd\omega$.
+The face-restriction identity identifies the boundary side with
+$\int_{\partial\sigma}\omega$.
+\end{proof}
+
+\subsection{Finite chains and the error budget}
+
+Define the integral over $C=\sum_{\lambda<L}c_\lambda\sigma_\lambda$
+by the same finite integer linear combination of integrals, and define
+$\partial C=\sum c_\lambda\partial\sigma_\lambda$. Put
+$W=\sum_{\lambda<L}|c_\lambda|$. If $W=0$, both sides are zero.
+Otherwise let $s=\ell(W)$ and define
+\[
+ V_C(r)=\sum_{\lambda<L}c_\lambda V_\lambda(r+s),\qquad
+ B_C(r)=\sum_{\lambda<L}c_\lambda B_\lambda(r+s).
+\]
+Here the individual names are those in \cref{thm:curved}. The finite
+triangle inequality multiplies every bound by at most $W$, and
+$W2^{-s}\le1$. Hence the Cauchy and equality rates of
+\cref{thm:rates} remain valid for $V_C,B_C$. This proves
+\cref{thm:informal}. One can use separate meshes for separate cells,
+or take the finite maximum of their moduli and use a common mesh.
+
+\subsection{Why the boundary has no boundary}
+
+Faces can be represented by the original cell identifier and a sorted
+list of frozen original coordinates with their endpoint values.
+This representation makes two successive face restrictions normalize
+to the same data when they freeze the same two coordinates.
+
+Fix original coordinates $i<j$ and endpoint values
+$\varepsilon,\eta$. Freezing $i$ first makes the later index for $j$
+equal to $j-1$. Its sign in the double boundary is
+\[
+ (-1)^{i-1+j-2}(2\varepsilon-1)(2\eta-1).
+\]
+Freezing $j$ first leaves the later index for $i$ equal to $i$.
+The sign is
+\[
+ (-1)^{j-1+i-1}(2\eta-1)(2\varepsilon-1),
+\]
+which is its negative. Each codimension-two face occurs exactly in
+these two ways. Their coefficients cancel, proving
+\[
+ \partial^2C=0
+\]
+by a finite sign-reversing pairing. No decision procedure for extensional
+equality of arbitrary parameterization programs is required.
+
+\subsection{Matching faces and orientation changes}
+
+For different cells, the fact that two geometric faces coincide is not
+decided by comparing arbitrary programs. An interface matching record
+may instead supply an explicit equality of their parameterizations and
+tangential first jets, with named equality witnesses. The continuity
+and finite-expression bounds then prove equality of their pulled-back
+coefficients. If their signed multiplicities are opposite, their
+integrals cancel.
+
+A useful supported reparameterization is a permutation and reflection
+of cube coordinates. Let $T:Q^d\to Q^d$ be such a signed coordinate
+permutation, with constant determinant $s\in\{-1,1\}$. The midpoint
+grid $\{(a+\tfrac12)/N\}$ is permuted exactly by $T$. For a top form
+$b(x)\,\dd x_1\wedge\cdots\wedge\dd x_d$, the rational midpoint sums
+for its pullback, using the direct valid evaluator
+$H_T(x,p)=sH(Tx,p)$, are therefore exactly $s$ times the original sums.
+The general guarded composition evaluator is equivalent to this one,
+although it need not return the same rational sample at the same
+precision. Uniform coefficient equality identifies their integral names.
+The midpoint and left-grid sums are within the same (U) bound,
+because corresponding tags are at distance at most $1/N$.
+Their names agree by refinement. Consequently
+\[
+ \int_{Q^d}T^*\eta=s\int_{Q^d}\eta.
+\]
+This proves the orientation rule needed for matching faces after a
+coordinate symmetry. A matching record must include this sign.
+
+Dyadic subdivision also preserves an integral: use direct rational affine
+evaluation and the exact determinant weight on each subcube. The
+resulting points and weights are exactly those in the refined whole-cube
+sum. Finite grouping proves the identity, and the guarded evaluator
+represents the same named integral. Thus many
+presentation changes can be certified without a general
+change-of-variables theorem. Invariance under an arbitrary smooth
+diffeomorphism is a separate theorem and is not silently assumed here.
+
+\section{Classical vector-calculus forms}\label{sec:vector}
+
+\subsection{Kelvin--Stokes on a surface patch}
+
+Let $\sigma(u,v)=(\sigma_1,\sigma_2,\sigma_3)$ be a certified $C^2$ patch,
+and let $\mathbf F=(F_1,F_2,F_3)$ have a certified $C^1$ jet.
+For $\omega=F_1\dd x+F_2\dd y+F_3\dd z$ set
+\[
+ P=\mathbf F(\sigma)\cdot\sigma_u,\qquad
+ Q=\mathbf F(\sigma)\cdot\sigma_v.
+\]
+Then $\sigma^*\omega=P\,\dd u+Q\,\dd v$. The flux coefficients of
+the cube theorem are $f_1=Q$ and $f_2=-P$.
+
+The product and chain rules give
+\begin{align*}
+ \partial_uQ-\partial_vP
+ &=\sum_{a,b}(\partial_aF_b)(\sigma)
+       \bigl((\partial_u\sigma_a)(\partial_v\sigma_b)
+             -(\partial_v\sigma_a)(\partial_u\sigma_b)\bigr).
+\end{align*}
+Terms containing $F_b(\sigma)\partial_u\partial_v\sigma_b$ cancel
+by the second-jet symmetry. Expanding the three-component cross
+product shows that the remaining finite polynomial is
+\[
+ (\curl\mathbf F)(\sigma)\cdot(\sigma_u\times\sigma_v).
+\]
+Therefore \cref{thm:curved} becomes
+\begin{align}
+ &\int_0^1P(u,0)\,\dd u+\int_0^1Q(1,v)\,\dd v
+       -\int_0^1P(u,1)\,\dd u-\int_0^1Q(0,v)\,\dd v\notag\\
+ &\hspace{2em}=
+ \int_{Q^2}(\curl\mathbf F)(\sigma(u,v))
+                       \cdot(\sigma_u\times\sigma_v)\,\dd u\,\dd v .
+ \label{eq:kelvin-explicit}
+\end{align}
+All equalities in this section are equalities of the constructed names.
+The boundary runs counterclockwise in the parameter square.
+
+For an embedded oriented surface given by compatible patches, the right
+side is the usual oriented surface integral, and the matched interior
+edges cancel. The vector area element is used directly:
+$\mathbf n\,\dd S=(\sigma_u\times\sigma_v)\dd u\,\dd v$.
+There is no need to divide by $|\sigma_u\times\sigma_v|$ or compute a unit
+normal. An immersion certificate is needed only for the additional
+geometric interpretation as a regular embedded patch, not for the
+parameterized identity itself.
+
+\subsection{Green, divergence, and exact-form consequences}
+
+For a planar patch, $\omega=P\,\dd x+Q\,\dd y$ gives
+\[
+ \int_{\partial C}P\,\dd x+Q\,\dd y
+   =\int_C(\partial_xQ-\partial_yP)\,\dd x\wedge\dd y.
+\]
+For a three-dimensional chain use
+\[
+ \omega=F_1\,\dd y\wedge\dd z
+       +F_2\,\dd z\wedge\dd x+F_3\,\dd x\wedge\dd y.
+\]
+Its exterior derivative is
+$(\partial_xF_1+\partial_yF_2+\partial_zF_3)\dd x\wedge\dd y\wedge\dd z$,
+giving the divergence theorem for the supplied presentation.
+For $k=1$, the theorem is the fundamental theorem of calculus for
+certified parameterized paths; only $C^1$ path data are needed in that
+case.
+
+If $\partial C=0$, then $\int_C\dd\eta=0$ whenever the indicated
+certificates are available. If $C_1-C_2=\partial D$ is a \emph{supplied}
+finite filling and $\dd\omega=0$ with a certificate, then
+$\int_{C_1}\omega=\int_{C_2}\omega$.
+These are constructive consequences of finite chain algebra and the
+proved Stokes identity. They do not assert the existence of a filling
+or solve a topological recognition problem.

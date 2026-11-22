@@ -1,0 +1,198 @@
+\section{The local curvature identity, proved explicitly}\label{sec:local}
+
+\subsection{Connection and Gaussian curvature}
+
+Let the dual orthonormal frame to \eqref{eq:coframe} be
+\[
+e_1=a^{-1}\partial_x,\qquad
+e_2=-\frac{b}{ac}\partial_x+c^{-1}\partial_y.
+\]
+Define
+\begin{equation}\label{eq:PQ}
+P=\frac{b_x-a_y}{c},\qquad
+Q=\frac{c_x+bP}{a},\qquad
+\omega=P\dd x+Q\dd y.
+\end{equation}
+These are rational expressions in the coframe and its first derivatives. Their first derivatives are rational expressions in its order-two jet. All denominators have positive margins from \eqref{eq:Hbounds}.
+
+\begin{lemma}[Intrinsic curvature density]\label{lem:curvature}
+The Levi--Civita connection in this frame is
+\[
+\nabla_Xe_1=\omega(X)e_2,\qquad
+\nabla_Xe_2=-\omega(X)e_1.
+\]
+With curvature convention
+$R(X,Y)=\nabla_X\nabla_Y-\nabla_Y\nabla_X-\nabla_{[X,Y]}$,
+its Gaussian curvature satisfies
+\begin{equation}\label{eq:rho}
+K=\frac{P_y-Q_x}{ac},\qquad
+K\dd A=\rho\dd x\dd y,\qquad \rho=P_y-Q_x.
+\end{equation}
+\end{lemma}
+\begin{proof}
+First compute
+\[
+\mathrm d\vartheta^1=(b_x-a_y)\dd x\wedge\dd y
+=\omega\wedge\vartheta^2,
+\]
+and
+\[
+\mathrm d\vartheta^2=c_x\dd x\wedge\dd y
+=-\omega\wedge\vartheta^1,
+\]
+the second equality being precisely $aQ-bP=c_x$. The displayed connection preserves the inner products of the orthonormal frame because its coefficient matrix is skew-symmetric. For arbitrary vector fields $X,Y$, the two displayed exterior-derivative identities say that each coframe component of
+$\nabla_XY-\nabla_YX-[X,Y]$ is zero. Thus its torsion is zero.
+
+There is only one torsion-free metric-compatible connection: in a coordinate basis these properties give
+\begin{equation}\label{eq:Christoffel}
+\Gamma^k_{ij}=
+\frac12\sum_{\ell=1}^2 g^{k\ell}
+\bigl(\partial_i g_{j\ell}+\partial_jg_{i\ell}-\partial_\ell g_{ij}\bigr).
+\end{equation}
+To derive this, write metric compatibility as
+$\partial_i g_{j\ell}=g_{m\ell}\Gamma^m_{ij}+g_{jm}\Gamma^m_{i\ell}$,
+add its $i,j$ versions and subtract its $\ell$ version, and use
+$\Gamma^m_{ij}=\Gamma^m_{ji}$. Multiplication by the explicit inverse of the $2\times2$ metric gives \eqref{eq:Christoffel}. This is finite rational algebra and proves uniqueness without an existence theorem.
+
+Applying the frame connection twice yields
+\[
+R(X,Y)e_1=\mathrm d\omega(X,Y)e_2,\qquad
+R(X,Y)e_2=-\mathrm d\omega(X,Y)e_1;
+\]
+the two products of connection coefficients cancel. Hence
+$K=\langle R(e_1,e_2)e_2,e_1\rangle=-\mathrm d\omega(e_1,e_2)$.
+Since $\mathrm d\omega=(Q_x-P_y)\dd x\wedge\dd y$ and
+$(\dd x\wedge\dd y)(e_1,e_2)=1/(ac)$, formula \eqref{eq:rho} follows.
+\end{proof}
+
+The definition uses only second derivatives of the metric presentation; no third derivatives or differential equation for parallel transport are required. For a conformal coframe $a=c=e^u$, $b=0$, it gives $P=-u_y$, $Q=u_x$, and
+$K=-e^{-2u}(u_{xx}+u_{yy})$, providing a useful sign check.
+
+\subsection{Geodesic curvature without arclength inversion}
+
+Let a regular side be parametrized by $\gamma(t)$, with coordinate velocity $v=\dot\gamma$. Put $z=B_gv$, $\sigma=|z|>0$, and $u=z/\sigma$. Thus $\sigma=\dd s/\dd t$ is the speed and $s$ denotes arclength. The vector $u$ is the orthonormal-coordinate expression of the unit tangent $T$. Denote the positive quarter-turn in this frame by $J$.
+
+\begin{lemma}[Boundary density]\label{lem:boundary}
+For the counterclockwise boundary of the reference triangle,
+\begin{equation}\label{eq:kg}
+k_g\frac{\dd s}{\dd t}
+=\frac{\det(z,\dot z)}{|z|^2}
++P\dot x+Q\dot y.
+\end{equation}
+The left side uses the inward conormal, which here is $JT$. The right side is a rational expression in the coframe and its first derivatives when the coordinate side is affine.
+\end{lemma}
+\begin{proof}
+In orthonormal coordinates, covariant differentiation along the curve is
+$\dot u+\omega(v)Ju$. Taking its component in $Ju$ gives
+$\det(u,\dot u)+\omega(v)$, because $|u|=1$. The normalization derivative parallel to $z$ disappears from the determinant, so
+$\det(u,\dot u)=\det(z,\dot z)/|z|^2$.
+On the other hand, $\nabla_{\dot\gamma}T=\sigma\nabla_TT$, whose inward-normal component is $\sigma k_g$. This proves the formula without constructing an inverse arclength parametrization.
+\end{proof}
+
+For later reference, if a different local orientation is chosen, the boundary traversal and $J$ both reverse; the vector $JT=n_{\mathrm{in}}$ does not. More directly, replacing $T$ by $-T$ leaves $\nabla_TT$ unchanged. Thus our signed $k_g$ depends on the inward side of the curve, not on a global orientation.
+
+\subsection{Three explicit angle branches}\label{sec:angles}
+
+\begin{center}
+\begin{tikzpicture}[scale=2.2,>=Stealth]
+\draw[thick] (0,0)--(1.6,0)--(0,1.25)--cycle;
+\draw[->,very thick,blue!65!black] (.32,0)--(.96,0);
+\draw[->,very thick,blue!65!black] (1.28,.25)--(.64,.75);
+\draw[->,very thick,blue!65!black] (0,1)--(0,.44);
+\node[below left] at (0,0) {$A$};
+\node[below right] at (1.6,0) {$B$};
+\node[above left] at (0,1.25) {$C$};
+\node[below] at (.8,-.07) {$v_0=(1,0)$};
+\node[above right] at (.92,.72) {$v_1=(-1,1)$};
+\node[left] at (-.04,.64) {$v_2=(0,-1)$};
+\node at (.42,.31) {$\Del$};
+\end{tikzpicture}
+\end{center}
+
+Only the directions in this diagram matter; the drawing is schematic. Along $AB$, $BC$ and $CA$ respectively, use the angle functions
+\begin{equation}\label{eq:theta}
+\theta_0=0,\qquad
+\theta_1=\frac\pi2-\At\!\left(\frac{b-a}{c}\right),\qquad
+\theta_2=\frac{3\pi}2-\At\!\left(\frac bc\right).
+\end{equation}
+Indeed the corresponding orthonormal direction vectors are
+$(a,0)$, $(b-a,c)$, and $(-b,-c)$; their angles lie respectively at $0$, in $(0,\pi)$, and in $(\pi,2\pi)$. Differentiating \eqref{eq:theta} gives
+\begin{equation}\label{eq:thetaDerivative}
+\dot\theta_j=\frac{\det(z,\dot z)}{|z|^2}.
+\end{equation}
+For the upper-half-plane branch, this follows by differentiating
+$\pi/2-\At(x/y)$; the result is $(x\dot y-y\dot x)/(x^2+y^2)$. The lower-half-plane branch has the same derivative. Consequently \eqref{eq:kg} becomes
+\begin{equation}\label{eq:kgAngle}
+k_g\dd s=\dd\theta_j+\omega
+\quad\text{on side }j.
+\end{equation}
+
+The exterior corner turns are
+\begin{equation}\label{eq:betas}
+\beta_B=\theta_1(B),\quad
+\beta_C=\theta_2(C)-\theta_1(C),\quad
+\beta_A=2\pi-\theta_2(A).
+\end{equation}
+All lie strictly between $0$ and $\pi$. For the middle one, write
+\[
+\beta_C=\pi+\At((b-a)/c)-\At(b/c).
+\]
+Since $a/c>0$, strict monotonicity gives the upper bound $\beta_C<\pi$; the range of $\At$ gives the lower bound $\beta_C>0$. The other two bounds follow immediately from that range.
+
+The interior angles $\alpha_v=\pi-\beta_v$ therefore have the explicit formulas
+\begin{equation}\label{eq:alphas}
+\begin{aligned}
+\alpha_A&=\pi/2-\At(b_A/c_A),\\
+\alpha_B&=\pi/2+\At((b_B-a_B)/c_B),\\
+\alpha_C&=\At(b_C/c_C)-\At((b_C-a_C)/c_C).
+\end{aligned}
+\end{equation}
+They are the usual unsigned angles of the metric tangent sectors: $B_g$ is an isometry into an ordinary Euclidean plane, and each image sector has opening below $\pi$. The angular one-form is unchanged by an oriented orthogonal map and changes sign under a reflection. Hence its positive sector integral, and therefore each unsigned $\alpha_v$, is independent of the chosen orthonormal coordinates. This also proves the invariance needed in the vertex gluing argument.
+
+\begin{lemma}[Turning by finite cancellation]\label{lem:turning}
+The side angle changes and corner turns satisfy
+\[
+\sum_{j=0}^2\bigl(\theta_j(\mathrm{end})-\theta_j(\mathrm{start})\bigr)
++\beta_A+\beta_B+\beta_C=2\pi.
+\]
+\end{lemma}
+\begin{proof}
+The nonzero side changes are
+$\theta_1(C)-\theta_1(B)$ and $\theta_2(A)-\theta_2(C)$.
+Add \eqref{eq:betas}; every endpoint term cancels. This is an identity involving finitely many values, not an application of a theorem about arbitrary closed curves.
+\end{proof}
+
+\subsection{The local theorem}
+
+\begin{theorem}[Gauss--Bonnet on one coordinate triangle]\label{thm:triangle}
+For every coframe presentation satisfying the stated quantitative contracts,
+\begin{equation}\label{eq:triangle}
+\boxed{\quad
+C_T+G_{T,AB}+G_{T,BC}+G_{T,CA}
+=\alpha_A+\alpha_B+\alpha_C-\pi.\quad}
+\end{equation}
+This is an equality of effective names, with PR bounds for every required precision.
+\end{theorem}
+\begin{proof}
+By \cref{lem:curvature} and the finite Green argument,
+$C_T=-\int_{\partial\Del}\omega$.
+By \cref{lem:boundary}, \eqref{eq:thetaDerivative}, and the finite FTC,
+\[
+\sum_eG_{T,e}
+=\sum_j\bigl(\theta_j(\mathrm{end})-\theta_j(\mathrm{start})\bigr)
++\int_{\partial\Del}\omega.
+\]
+Add these equations and apply \cref{lem:turning}. The result is
+$C_T+\sum_eG_{T,e}=2\pi-\sum_v\beta_v
+=\sum_v\alpha_v-\pi$.
+Every equality is backed either by finite rational algebra or by an explicit arbitrary-precision estimate already proved.
+\end{proof}
+
+\paragraph{An efficient numerical realization.}
+The geodesic-curvature integral need not be evaluated by directly integrating the quotient in \eqref{eq:kg}. Compute it as
+\[
+\widehat G_{T,e}
+=\widehat\theta_j(\mathrm{end})-\widehat\theta_j(\mathrm{start})
++\text{a rational quadrature of }\omega\text{ on }e.
+\]
+The finite FTC proves that this is a name of the same geometric integral. Reuse identical angle and $\pi$ approximations in \eqref{eq:alphas}. Then the angle telescope is exact even for the rational approximations, and the numerical face residual comes entirely from the finite Green estimate. One may use the boundary tags inherited from the square grid; different tags on paired faces are harmless because the explicit Riemann modulus bounds the resulting seam residual.

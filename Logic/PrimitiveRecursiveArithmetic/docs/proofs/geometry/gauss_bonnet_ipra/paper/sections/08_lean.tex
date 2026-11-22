@@ -1,0 +1,99 @@
+\section{Lean formalization: definitions, reusable code, and completion path}\label{sec:lean}
+
+\subsection{Three layers that must remain separate}
+
+The intended endpoint is a Lean term inhabiting an object-language derivability judgment
+\[
+\Gamma\ \vdash[\mathrm{PRAAx}]\ \varphi,
+\]
+where $\Gamma$ consists of the arithmetic presentation contracts and $\varphi$ is the rational error formula. A theorem in Lean's ambient logic about $\Q$, finite sets, or $\R$ is useful for developing the argument, but does not by itself provide that judgment.
+
+The archive therefore distinguishes:
+\begin{enumerate}
+\item the fully developed human proof in this report;
+\item ambient finite algebra in \code{lean/Assembly.lean};
+\item candidate object-level polynomial and inequality steps in \code{lean/IPRABridge.lean}, together with a detailed blueprint for the still-unimplemented analytic and finite-mesh derivations.
+\end{enumerate}
+No Lean executable, Lake executable, or Elan installation was available in the authoring runtime. The two source files contain no admitted proofs or new axioms, but they are \emph{uncompiled candidates}. This is not a claim that the final theorem, or even these candidate files, has been kernel-checked here.
+
+\subsection{Definitions required for the complete development}
+
+The following interfaces specify the data needed; they are mathematical specifications for Lean implementation, not assumed theorem fields. All evaluator programs belong to the fixed PR syntax already available in \repo\ \cite{repo-pr}.
+
+\begin{longtable}{p{0.24\linewidth}p{0.68\linewidth}}
+\toprule
+Definition & Required content\\
+\midrule
+\endhead
+\code{QCode} & A triple $(a,b,d)$ denoting $(a-b)/(d+1)$; PR equality, order, arithmetic and absolute-error checks by positive cross multiplication.\\
+\code{PRRational k} & Three fixed elements of \code{PR k}, giving the two numerator parts and the denominator minus one. This is syntax for a fixed program family, not a universal evaluator.\\
+\code{RegularContract} & The numerical formula \eqref{eq:regular}, with ordinary parameter variables and precision variables.\\
+\code{SurfaceCode} & Face triples, edge occurrence lists, vertex link traversals, boundary flags, and finite permutation witnesses as in \cref{def:mesh}.\\
+\code{surfaceOK} & A PR Boolean fold checking those lists, local degrees, and traversals.\\
+\code{Counts} & $V_i,V_b,E_i,E_b,F$ and the derived equations \eqref{eq:incidence}. In an ambient prototype these may be structure fields; in the final derivation they are conclusions of \code{surfaceOK}.\\
+\code{JetSuite} & The 18 coframe jet entries: three fields $a,b,c$, each with multi-indices $0,x,y,xx,xy,yy$; common bound $H$ and fixed modulus programs.\\
+\code{C2Contract} & Regularity, positivity, bounds, continuity \eqref{eq:continuitycontract}, and Taylor inequalities \eqref{eq:jetcontract}, all expanded to numerical formulas.\\
+\code{FrameFields} & The explicit rational expressions $P,Q,P_i,Q_i,\rho$ of \eqref{eq:PQ} and \eqref{eq:rho}, with syntactically generated derivative expressions.\\
+\code{AtApprox}, \code{PiApprox} & The bounded rational quadrature in \eqref{eq:At}, with explicit grid length and approximation bounds.\\
+\code{TriangleIntegral} & The square-grid evaluator of $(1-u)\rho(\Phi(u,v))$ using \eqref{eq:gridexp}.\\
+\code{SideIntegral} & The endpoint angle difference plus the tagged connection integral proved equivalent to \eqref{eq:kg}.\\
+\code{CornerAngle} & The three branches in \eqref{eq:alphas}, with shared endpoint evaluations where useful.\\
+\code{EdgeContract} & Common chart jets, metric first-jet identities, parameter matching, positive speed/Jacobian margins, and opposite transverse determinant signs.\\
+\code{FanCertificate} & Common tangent metric, differential identifications, half-plane labels, ordered ray lists, and strict determinant margins; no angle-sum field.\\
+\code{BoundaryTurn} & $\pi$ minus the certified opening angle, computed by its branch telescope.\\
+\code{ResidualTables} & The four rational residual arrays of \cref{sec:assembly}.\\
+\code{Valid}, \code{Defect} & The conjunction of input contracts and the PR rational function $Z(d,n)$ of \eqref{eq:Z}.\\
+\bottomrule
+\end{longtable}
+
+This makes every mathematical object in the final theorem either a finite code, a fixed PR program, or a first-order contract about one. It also identifies where semantic interpretation is needed: the regular-name construction and the proofs that the frame expressions are the conventional Gaussian and geodesic curvatures. Those interpretation proofs have already been given mathematically in \cref{sec:calculus,sec:local}.
+
+\subsection{The supplied ambient algebra candidate}
+
+The central statement in \code{Assembly.lean} uses an arbitrary rational $p$, so it does not hide an assumption about $\pi$. In abbreviated form it is:
+\begin{lstlisting}
+theorem assembly_identity (c : Counts)
+    (p C B I A Theta : Rat) :
+    C + B + Theta - 2 * p * c.eulerQ =
+      faceResidual c p C B I A - I +
+      vertexResidual c p A Theta := by
+  -- cast the two natural incidence equalities to rationals
+  -- unfold the three explicit polynomial expressions
+  -- take the combination -p * incidence + p * boundary
+\end{lstlisting}
+The actual file supplies the tactic proof, the absolute-error bound, the polyhedral specialization, and sample mesh counts. This layer checks the finite algebra once a Lean toolchain is available. It does not prove that the geometry supplies the residual hypotheses.
+
+The candidate \code{IPRABridge.lean} targets the repository's actual \code{PRAAx} judgments for a sign-free Euler-coefficient polynomial and upper/lower three-term error combination. It uses the inspected arithmetic APIs \code{natEq}, \code{deriveNat}, and \code{ipra_le}. Its scope is intentionally small: variable-length counting, grid calculations, and analytic interpretation remain separate modules to write.
+
+\subsection{Existing \repo\ results that can be reused}
+
+We inspected commit \code{d36b35eed5bd01af4ade66bf539622495813ccc8}. Its README distinguishes the checked derivation libraries from delivered research packets \cite{repo-readme}. We did not rebuild that repository in this runtime.
+
+\begin{itemize}
+\item \code{Analysis/TaggedFTC.lean} gives object-level finite telescoping and error accumulation from cell inequalities using \code{PRA.qfInd}. Its source explicitly leaves production of the derivative cell inequality and passage to names outside the module \cite{repo-ftc}.
+\item \code{Analysis/RiemannSumRules.lean} gives finite-sum linearity, scaling, bounds and closeness rules with object-level conclusions \cite{repo-sums}.
+\item Two further Analysis modules, \code{GridIntegral.lean} and \code{RiemannRefinement.lean}, provide one-dimensional finite comparison patterns. They do not already supply the two-dimensional Green calculation of this report \cite{repo-grid}.
+\item \code{Topology/EulerCharacteristic.lean} contains an object-level finite Euler--Poincare theorem. Its separate ambient additivity lemmas do not replace the surface-link counting proof required here \cite{repo-euler}.
+\item \code{Topology/BoundarySquare.lean} provides an ambient finite cancellation pattern, useful as a design reference for occurrence reindexing; it is not a Gauss--Bonnet derivation \cite{repo-boundary}.
+\end{itemize}
+
+The newer analysis and continuous-framework research packets support fixed-program names, explicit moduli and finite contracts, but should not be imported as if their application theorems were already checked. The source audit in the archive records exact paths, blob identifiers, and this distinction.
+
+\subsection{A concrete order for completing the Lean proof}
+
+\begin{enumerate}
+\item \textbf{Finite surface arithmetic.} Implement the occurrence lists and link checks, then prove double counting and reindexing with guarded QF invariants. Integrate the candidate coefficient identity. This completes the uniform finite rational theorem \cref{thm:assembly} in the object calculus.
+\item \textbf{Quantitative scalar operations.} Implement rational error propagation, the product/reciprocal Taylor rules, positive square-root approximation, and the arctangent quadrature. Prove each numerical bound as a \code{PRAAx} derivation. Keep the expression-tree compiler syntactic and fixed.
+\item \textbf{Grid integration.} Extend existing finite-sum rules to flattened $N\times N$ indices. Prove \eqref{eq:discretegreen} exactly, then the two signed versions of \eqref{eq:greenerror}. Add the explicit auxiliary evaluation error $4N\eps_{\rm grid}+2\eps_{\rm derivative}$.
+\item \textbf{Local differential algebra.} Encode order-two jet tuples and the finite formulas for $P,Q,\rho$. Clear positive denominators and prove the torsion, connection and curvature identities. Construct the Taylor-modulus proofs using the scalar-operation lemmas, rather than asking for the curvature formula as an interface assumption.
+\item \textbf{Angles and boundary curvature.} Prove the arctangent derivative, reciprocal relation, three side branches, and exact endpoint telescope. Derive the side-integral name from the finite FTC. Combine with the grid theorem to obtain the local residual bound.
+\item \textbf{Gluing.} Prove the connection transformation identity from the metric jet equations. Use opposite conormal signs for seam cancellation. Implement the two half-plane angle branches and the finite fan telescope; derive the vertex residual bound from order certificates.
+\item \textbf{Final numerical theorem.} Substitute the PR precision schedule \eqref{eq:schedule}, call each local bound, and invoke the finite assembly theorem. The result is the object-language universal precision formula corresponding to \eqref{eq:ariththeorem}.
+\item \textbf{Semantic adequacy and instances.} In a separate ambient Lean development, interpret regular names as real values and prove that the numerical expressions agree with the usual integrals and curvatures. For a closed concrete \ipra\ instance, also derive its presentation contracts. The ambient interpretation neither adds axioms to nor substitutes for the object proof.
+\end{enumerate}
+
+Every listed mathematical lemma has a proof in this report, an explicit finite computational specification, or both. The remaining work is its detailed encoding and kernel verification. A realistic completion should check each module against the pinned repository toolchain, which the inspected \code{lean-toolchain} specifies as Lean 4.32.0, and record the exact successful build command and commit. No such receipt is supplied for the new Lean files here.
+
+\subsection{Reproduction files}
+
+The archive includes the LaTeX source and PDF; three Python reference verifiers; their actual output records; two Lean candidates; a formalization blueprint; and the pinned source audit. The top-level \code{README.md} gives the build and verification commands. The exact tests exercise the finite arithmetic, including incorrect orientation and invalid-link cases. The symbolic smooth tests are explicitly separated from numerical diagnostics and from formal proof status.

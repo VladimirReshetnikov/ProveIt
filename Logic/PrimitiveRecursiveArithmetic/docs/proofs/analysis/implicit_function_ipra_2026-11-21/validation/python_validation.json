@@ -1,0 +1,134 @@
+{
+  "arithmetic": "Python integers and fractions.Fraction; no floating-point pass/fail checks",
+  "assertions_by_category": {
+    "circle_derivative_formula": 9,
+    "circle_root_accuracy": 2340,
+    "cleared_qf_error_invariant": 51864,
+    "clipping_is_exercised": 2,
+    "clipping_keeps_rational_endpoint": 2,
+    "clipping_nonexpansive_at_boundary": 2,
+    "clock_dominates_diameter": 4680,
+    "clock_edge_cases": 7,
+    "comparison_initial_diameter": 2048,
+    "comparison_order": 2048,
+    "comparison_step_recurrence": 51864,
+    "exact_step_in_box": 168480,
+    "finite_derivative_remainder_bound": 8,
+    "fixed_iteration_count": 4680,
+    "floor_error": 168480,
+    "graph_derivative_linear_equation": 18,
+    "independent_circle_root_bracket": 2340,
+    "independent_inverse_left": 18,
+    "independent_inverse_right": 18,
+    "initial_center": 4680,
+    "inverse_norm_bound": 18,
+    "local_step_defect": 168480,
+    "negative_and_positive_floor": 35,
+    "neumann_derivative_error": 126,
+    "neumann_left_identity": 126,
+    "neumann_power_bound": 126,
+    "neumann_right_identity": 126,
+    "oracle_error": 168480,
+    "pairwise_cauchy_or_lipschitz_bound": 2048,
+    "polynomial_taylor_bound": 8,
+    "polynomial_taylor_identity": 8,
+    "precision_schedule": 4680,
+    "rounded_step_in_box": 168480,
+    "sampled_derivative_contraction": 168480,
+    "sampled_parameter_gain": 168480,
+    "system_derivative_formula": 9,
+    "terminal_residual": 4680
+  },
+  "cases": [
+    {
+      "actual_contraction_bound": "1/4",
+      "demand_range_inclusive": [
+        0,
+        64
+      ],
+      "max_terminal_residual_div_epsilon": "590295810358705651711/590295810358705651712",
+      "oracle_modes": [
+        "exact",
+        "plus",
+        "minus",
+        "signed"
+      ],
+      "parameter_grid": [
+        "-1/4",
+        "-3/16",
+        "-1/8",
+        "-1/16",
+        "0",
+        "1/16",
+        "1/8",
+        "3/16",
+        "1/4"
+      ],
+      "problem": "circle",
+      "sample_k32": {
+        "iterations": 36,
+        "residual": "87031464719/9444732965739290427392",
+        "x": [
+          "1/4"
+        ],
+        "y": [
+          "66537347239/68719476736"
+        ]
+      },
+      "trace_count": 2340
+    },
+    {
+      "actual_contraction_bound": "1/8",
+      "demand_range_inclusive": [
+        0,
+        64
+      ],
+      "max_terminal_residual_div_epsilon": "4722366482869645213695/4722366482869645213696",
+      "oracle_modes": [
+        "exact",
+        "plus",
+        "minus",
+        "signed"
+      ],
+      "parameter_grid": [
+        "-1/16",
+        "-3/64",
+        "-1/32",
+        "-1/64",
+        "0",
+        "1/64",
+        "1/32",
+        "3/64",
+        "1/16"
+      ],
+      "problem": "coupled_polynomial",
+      "sample_k32": {
+        "iterations": 36,
+        "residual": "66163688543/4722366482869645213696",
+        "x": [
+          "1/16"
+        ],
+        "y": [
+          "2131345071/34359738368",
+          "1040689827/34359738368"
+        ]
+      },
+      "trace_count": 2340
+    }
+  ],
+  "comparison_bound": "3*epsilon(k) + 2*epsilon(l) + 2*M*||x-xprime||, l>=k",
+  "proof_status": "Finite computational validation, not an iPRA derivation or a Lean proof",
+  "schedule": {
+    "iterations": "N(k) = k+s+4",
+    "precision": "p(k) = k+5",
+    "shift": "least s>=0 with 2*r<=2^s, bounded by numerator(2*r)",
+    "step_error": "epsilon(k) = 2^(-(k+4))"
+  },
+  "scope": "Two fixed polynomial providers, finite parameter/precision grids, adversarial bounded oracle errors",
+  "source_sha256": {
+    "implicit_solver.py": "69b903e4839bef84988f48f1f13ce6d6d038372e55ad452c8faf7984b26649b0",
+    "validate.py": "7354d75cb995669cf7e2bdb249cb6b3f8b1ad9d10c24d49e8112bb2c5108ee9b"
+  },
+  "status": "passed",
+  "total_assertions": 1317978
+}

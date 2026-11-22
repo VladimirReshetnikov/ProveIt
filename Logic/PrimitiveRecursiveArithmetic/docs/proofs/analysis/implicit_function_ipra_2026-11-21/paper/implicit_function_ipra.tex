@@ -1,0 +1,91 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\definecolor{ink}{HTML}{17344A}
+\definecolor{linkblue}{HTML}{1C627F}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+ pdftitle={A quantitative constructive implicit function theorem in iPRA},
+ pdfauthor={Research note prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{ink}Constructive implicit functions in iPRA}
+\fancyhead[R]{\small November 21, 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=6pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_\infty}
+\newcommand{\eps}[1]{2^{-(#1)}}
+\newcommand{\Id}{I}
+\newcommand{\clip}{\operatorname{clip}}
+\newcommand{\lgup}{\operatorname{lg}}
+\newcommand{\Ghat}{\widehat g}
+\newcommand{\Hhat}{\widehat H}
+\newcommand{\Jhat}{\widehat J}
+\newcommand{\qf}{\mathrm{qf}}
+\newcommand{\Prf}{\operatorname{Prf}}
+\newcommand{\PRAAx}{\mathsf{PRAAx}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
+ frame=single,rulecolor=\color{ink!25},backgroundcolor=\color{ink!3},
+ keepspaces=true,showstringspaces=false}
+\title{\color{ink}\bfseries A quantitative constructive\\
+ implicit function theorem in iPRA}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{November 21, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove a finite-dimensional, quantitative \(C^1\) implicit function theorem
+for primitive recursively presented maps with certified local derivative
+and Taylor moduli. The implicit function is an explicitly defined rational
+approximation program. Its construction, coherence, zero property,
+uniqueness, Lipschitz estimate, derivative, and derivative-continuity
+modulus are established using finite rational calculations and
+quantifier-free induction. The usual invertibility assumption is supplied
+as positive conditioning data; a determinant-apartness witness produces
+the required rational preconditioner by a bounded construction.
+
+The central arithmetic proof compares finite, rounded, clipped contraction
+traces. It does not induct on a statement about an infinite real-valued
+orbit. A finite Neumann sum computes the derivative, including a bound for
+errors in its matrix coefficients. We specify the exact first-order
+meaning of the theorem as a schema for fixed primitive recursive
+presentations, give polynomial examples, and provide a detailed Lean
+completion plan. A small auxiliary Lean core is compiled without
+\code{sorry} or user axioms; the complete implicit theorem and its
+object-theory proof term are not claimed to be formally checked.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{sections/01_scope}
+\input{sections/02_theorem}
+\input{sections/03_construction}
+\input{sections/04_derivative}
+\input{sections/05_local}
+\input{sections/06_arithmetic}
+\input{sections/07_examples}
+\input{sections/08_formalization}
+\input{sections/09_references}
+\end{document}

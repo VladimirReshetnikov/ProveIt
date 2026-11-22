@@ -1,0 +1,57 @@
+\subsection{A rational witness on the round sphere}\label{sec:rational-round}
+
+Suppose the field $F$ on the Euclidean unit sphere has an $\ell^1$
+modulus $\nu$, so that input distance at most $2^{-\nu(j)}$ gives
+output distance at most $2^{-j}$. Apply the direction-witness result at
+precision $k+1$. It gives a rational $p$ of $\ell^1$ norm one whose
+unit direction $x=p/\|p\|_2$ satisfies $\|F(x)\|_1\leq2^{-(k+1)}$.
+We construct a rational unit vector $z$ with $\|F(z)\|_1\leq2^{-k}$.
+The construction also bounds its denominator.
+
+Choose the first $i$ maximizing $|p_i|$, put $q=|p_i|\geq 1/d$,
+and let $\sigma$ be the sign of $p_i$. For a vector $u$
+indexed by the $n=d-1$ remaining coordinates, write $U=\sum_{j\ne i}u_j^2$.
+The inverse stereographic chart is
+\[
+  \Phi(u)_j=\frac{2u_j}{1+U}\quad(j\ne i),\qquad
+  \Phi(u)_i=\sigma\frac{1-U}{1+U}.
+\]
+The identity $4U+(1-U)^2=(1+U)^2$ proves that the output lies on
+the unit sphere. If $\rho=\sqrt{p\cdot p}$, the chart parameter of
+$x$ is $u_j=p_j/(\rho+q)$. Indeed $U=(\rho-q)/(\rho+q)$, and
+substitution gives $\Phi(u)=x$.
+
+Put $a=\nu(k+1)$ and
+\[
+   t=a+\lceil\log_2(2d(d^2+d))\rceil,\qquad M=2^t,\qquad h=1/M .
+\]
+Here the integer ceiling logarithm is computed by bounded search.
+Bisect $[0,1]$ exactly $t$ times, comparing each midpoint squared with
+$p\cdot p$. Retain the upper half if the square is smaller, and the
+lower half otherwise. The upper endpoint $b$ satisfies
+$\rho\leq b\leq\rho+h$. Form $p_j/(b+q)$ and round each coordinate
+toward zero to the nearest multiple $v_j=m_j/M$ of $h$ in that direction.
+The total change from replacing $\rho$ by $b$ is at most
+\[
+  \sum_{j\ne i}\frac{|p_j|(b-\rho)}{(\rho+q)(b+q)}
+      \leq d^2 h .
+\]
+Rounding adds at most $dh$ in $\ell^1$. Set $z=\Phi(v)$.
+Expanding the chart formulas gives the chord identity
+\[
+ \|\Phi(v)-\Phi(u)\|_2^2=
+ \frac{4\|v-u\|_2^2}
+      {(1+\sum_{j\ne i}v_j^2)(1+\sum_{j\ne i}u_j^2)}.
+\]
+Thus $\|z-x\|_1\leq 2d\|v-u\|_1\leq2d(d^2+d)h\leq 2^{-a}$,
+using $\|y\|_1\leq\sqrt d\,\|y\|_2$ and $\sqrt d\leq d$.
+The modulus and the triangle inequality give the claimed bound on $F(z)$.
+All computed quantities use rational operations. The occurrences of
+$\rho$ and $u$ identify the direction whose distance the construction
+certifies. The same bounds hold for their Cauchy names by the rational
+bisection enclosures.
+
+The common denominator $M^2+\sum_{j\ne i}m_j^2$ of the displayed
+chart coordinates is at most $2M^2$, since $|v_j|\leq |u_j|$ and
+$\sum u_j^2\leq1$. Consequently the possible outputs at precision $k$
+belong to an explicit finite grid on the round sphere.

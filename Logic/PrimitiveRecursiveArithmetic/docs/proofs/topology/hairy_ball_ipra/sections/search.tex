@@ -1,0 +1,105 @@
+\section{From noisy values to a bounded witness}\label{sec:search}
+We prove Theorem~\ref{thm:main}. In this section $e=2^{-k}$.
+For $v\ge1$, write $\clog(v)$ for the smallest $j\le v$ with $2^j\ge v$.
+This is a bounded integer operation. Choose the proof precision
+\[
+ h=k+8+2\clog(d+1),\qquad \delta=2^{-h}
+       \le\frac{e}{256d(d+1)},\qquad \tau=e/2 .
+\]
+It is finer than the output precision $t=k+6$.
+
+\paragraph{Correcting each observed vector.}
+For a rational $p\in P_\Q$ put $a_p=A(p,h)$ and define
+\[
+ v_p=a_p-\frac{p\cdot a_p}{p\cdot p}\,p .
+\]
+Since $(\sum |p_i|)^2\le d\sum p_i^2$, the denominator is at least
+$1/d$. Dotting with $p$ gives exactly zero. Condition (T) and
+$\len p=1$ give the explicit correction bound $\len{v_p-a_p}\le d\delta$.
+At two points within $2^{-\mu(h)}$, condition (U) now gives
+\[
+ \len{v_p-v_q}\le(2d+3)\delta\le e/(32d)=\tau/(16d).
+\]
+This step only uses the individual errors and a same-precision
+comparison. In particular, the correction never amplifies a large
+field value in the estimate.
+
+\paragraph{The fine witness used in the proof.}
+Take $s=1+\max(\mu(h),\clog(8d))$ and $r=ns$. By
+Lemma~\ref{lem:mesh} the mesh of $K_r$ is at most
+$\min(2^{-\mu(h)},1/(8d))$. The preceding bounds verify the hypotheses
+of Theorem~\ref{thm:finite-table} on its vertices. Thus the finite
+table supplies a $p$ with $\len{v_p}\le e/2$, whence
+$\len{A(p,h)}\le e/2+d\delta$.
+
+\paragraph{Moving to the search grid.}
+Write $p_i=\sigma_i b_i$ with $\sigma_i\in\{\pm1\}$, $b_i\ge0$,
+$\sum b_i=1$ (choose $+1$ for zero). Set
+\[
+ c_i=\lfloor Db_i\rfloor\quad(i<d),\qquad
+ c_d=D-\sum_{i<d}c_i,\qquad q_i=\sigma_i c_i/D .
+\]
+Then $c_d\ge0$ and $q\in P_\Q$. The discrepancy in the last
+coordinate is the sum of the other rounding errors before restoring
+signs. Hence $\len{p-q}\le2(d-1)/D\le2^{-\mu(t)}$.
+Using (C) at $p$, then (U) between $p$ and $q$, gives
+\[
+ \len{A(q,t)}
+ \le e/2+d\delta+2\cdot2^{-t}+3\cdot2^{-t}
+ \le 3e/4 .
+\]
+For the last comparison, $d\delta\le e/256$ and $2^{-t}=e/64$.
+This proves that at least one candidate passes the rational test.
+The scan returns its first passing candidate in the chosen order.
+For any such candidate and every $j\ge t$, (C) gives
+$\len{A(q,j)}\le 3e/4+2e/64=25e/32$.
+This concludes the proof of Theorem~\ref{thm:main}.
+
+\paragraph{Search size.}
+A grid point is a choice of $d$ signs and a weak composition of $D$
+into $d$ parts. The bar positions in a string of $D$ marks and $d-1$
+bars encode those compositions, giving the count in the theorem.
+Alternatively a scan may generate signed integer tuples in $[-D,D]^d$
+and filter on $\sum|c_i|=D$. Each top facet has at most $(d!)^r$
+top simplices after $r$ subdivisions, by the flag formula in
+Section~\ref{sec:finite-degree}. Thus $d\,2^d(d!)^r$ bounds the
+number of fine vertex occurrences used in the proof. The program
+returning $W(k)$ only needs the denominator-$D$ grid. Its grid size
+can grow rapidly with the input modulus.
+
+\paragraph{An object-language induction ledger.}
+For definiteness, encode $(a,b)$ by $2^a(2b+1)-1$, finite lists by
+their length and a nested pairing, and integers by
+$0\mapsto0$, $z>0\mapsto2z$, $-z\mapsto2z-1$. Pair decoding is
+bounded by the code plus one. Use a signed numerator and a positive
+denominator for rationals, reducing by a bounded gcd. Operations
+have defaults on malformed codes and on division by zero.
+Comparisons are made by cross multiplication. Finite products of
+Boolean tests express bounded universal quantifiers.
+The following are the induction predicates needed in the proof.
+\begin{itemize}
+\item For an oriented sum, store a coefficient for every enumerated face.
+After processing $j$ terms each coefficient is its signed prefix sum.
+For a cancellation involution one may collect the two occurrences by
+their lesser index as a bucket; the equality of the two orders of
+summation follows by a rectangular double-sum calculation on prefixes.
+\item At subdivision step $i$, check the coefficient equations for all
+faces on the finite lists at the current stage. Use the finite face
+conjunction again for the carrier proof by face dimension. For the
+diameter bound, compare all vertex pairs on all enumerated simplices.
+At time step $i$, compare the top-image coefficient with the initial
+coefficient. All these assertions are equations or Boolean tests of PR
+terms, even when $d,r$ vary.
+\item For a scan of a list of length $B$, after $j$ entries a recorded
+index is in range and passes the test, or the failure flag is set and
+the Boolean disjunction through $j$ is false. The update either stores
+the next passing index or preserves the invariant. At termination the
+exhibited good grid point rules out failure.
+\end{itemize}
+To collect the required instances of (C), (U), (T) into a Boolean
+table, keep the field hypotheses fixed and induct on the number of
+instances collected, with the prefix conjunction as the induction
+formula. The tail precision $j$ in Theorem~\ref{thm:main} is arbitrary
+only after the witness has been computed. There is no induction on a
+field contract, no choice of a modulus from continuity, and no
+universal interpreter for PR programs.

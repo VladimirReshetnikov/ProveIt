@@ -1,0 +1,142 @@
+\section{Lean formalization and verification}\label{sec:lean}
+Two standalone files build with Lean 4.19.0 and its standard library.
+They give both a concrete field interface and a checked part of the
+degree argument. The mathematical proof in the preceding sections
+covers all even dimensions. The full object-theory derivation is a
+remaining formalization task.
+
+\paragraph{The two implemented layers.}
+In \code{NamedField.lean}, a vector is
+\code{Fin d} indexed with exact rational components.
+The file defines the norms, distance, dot product, projection,
+predicates (C), (U), (T), denominator $D$ (function \code{gridDen}),
+the filtered integer grid, and the actual search
+\code{firstWitness}. Its \code{GridHit} states that an accepted point
+occurs on that grid. Its \code{TailBound} is the implication from an
+accepted reading and (C) to the $25/32$ tail estimate.
+The theorems \code{witness\_onBoundary} and \code{witness\_accepted}
+extract verified properties of a returned point. The theorem
+\code{assemble} proves the complete search statement conditional on
+\code{GridHit} and \code{TailBound}. The file defines these two
+obligations as propositions.
+
+In \code{HairyBall.lean}, \code{finite\_obstruction} extracts a bounded
+hit from unequal endpoint coefficients and preservation on the failure
+branch. Its auxiliary index scan examines indices in descending order;
+either enumeration order gives a good index. The theorem
+\code{antipodal\_facet\_sign} proves the factor $(-1)^d$ by list
+induction in arbitrary dimension. The namespace \code{Octahedron}
+contains a more explicit verification for $S^2$. Its signed triangle
+cochain \code{top} picks out the all-positive facet. For all $6^4$
+ordered label quadruples the kernel verifies that its coboundary
+vanishes when the quadruple contains no opposite pair.
+\code{triangle\_prism} combines three such identities. Then
+\code{chain\_prism} sums over any finite weighted triangular source,
+and \code{degree\_step} gives equality of endpoint counts when the side
+cochain vanishes on its boundary. \code{base\_cycle\_closed},
+\code{base\_identity} and \code{base\_antipode} verify the boundary
+and both counts for the eight original facets. These are ordinary Lean
+theorems; the supplied files contain no admitted proofs.
+
+\paragraph{Completing the argument in Lean.}
+The following order puts a definite, testable statement at every interface.
+\begin{enumerate}
+\item \emph{Finite oriented chains.} Represent a complex by a duplicate-free
+list of faces on ordered vertices, closed under subfaces. Implement
+$\operatorname{orient}(u)$ as zero on duplicate tuples, else as the
+parity of the inversion count times the increasing basis tuple.
+Represent each degree's chain by a list of integer coefficients. Give
+\code{boundary}, \code{push}, and \code{subdivide} the deletion,
+pointwise-map and flag formulas of Section~\ref{sec:finite-degree}.
+Prove $\partial f_\#=f_\#\partial$ by the two-deletion argument, and
+$\partial S=S\partial$ by the explicit flag swap. A terminating
+induction on the number of uncollected terms proves the signed-sum
+pairing lemma. Use it for the boundary of $Z$ as well.
+\item \emph{Degree obstruction.} Store the support map sending each fine
+vertex to its original signed support. Prove the support and mesh bounds
+when taking a rational barycentre. For a coarse $p$-face, prove
+$c_\# S^r(s)=s$ by induction on its dimension, comparing a facet
+coefficient. Implement the ordered prism formula with source tuples in
+one global order. Prove the three deletion identities for the prism
+operator, and that $d+1$ labels in a single cross-polytope face yield
+zero. Applying these identities to $S^rZ$ gives the preservation
+argument required by \code{finite\_obstruction}. In dimension two
+\code{degree\_step} supplies the local-to-global step once the
+subdivided source cycle is built.
+\item \emph{Rational estimates.} Prove the triangle and reverse triangle
+inequalities for \code{l1} by induction over the coordinate fold.
+The identity $d\sum a_i^2-(\sum |a_i|)^2=\sum_{i<j}(|a_i|-|a_j|)^2$
+follows by expansion or by adding the last coordinate. Use
+cross multiplication with positive denominators to prove the projection
+and normalized-edge bounds. Define the least-max label by folding over
+indices, replacing only on strict improvement. The pair of inequalities
+$1/(4d)<1/d$ and the signed-coordinate lower bound prove contiguity for
+the two legs. In particular these proofs can run without a library of
+real topology.
+\item \emph{Completing the two named-field obligations.} Instantiate the
+degree result on the $r$-fold subdivision in Section~\ref{sec:search}.
+The projection gives exact tangency, and (T) controls its error.
+Implement $\operatorname{round}_D$ by integer floor and prove its
+distance bound by summing the rounding remainders. Prove membership in
+\code{integerRows} by induction on the vector length, then apply the
+filter lemma to the rounded vector. The displayed $3e/4$ bound now
+proves \code{GridHit}. The coordinate triangle inequality and (C) give
+\code{TailBound}. Apply \code{assemble}. For the round statement (R),
+implement bisection by iterating the interval update and maintain
+$l^2\le p\cdot p\le b^2$ and $b-l=2^{-j}$. The squared chord identity
+and the integer chart formula yield the denominator and rounding bounds.
+\item \emph{Embedding in the requested object theory.} Replace lists and
+coefficient arrays by the pair/list codes in Section~\ref{sec:search},
+rational comparisons by the corresponding PR Boolean terms, and each
+fold by the equations of its fixed PR recursion. Use the repository's
+\code{Core.Basic} induction and instantiation rules in
+\code{IPRADerivations} \cite{deriv}. For example set
+\[
+ \mathsf{TabOK}(d,r,V,\tau)=
+ \mathsf{MeshOK}(d,r)\ \mathbin{\wedge_B}\
+ \mathsf{AllVerticesTangent}(d,r,V)\ \mathbin{\wedge_B}\
+ \mathsf{AllEdgesSmall}(d,r,V,\tau).
+ \]
+Here the three factors respectively fold the rational tests
+$\len{p-q}\le1/(8d)$ on simplex pairs, $p\cdot V[p]=0$ on
+vertices, and $\len{V[p]-V[q]}\le\tau/(16d)$ on edges;
+include type, shape and positivity guards at input. The closed numerical
+endpoint asserts, for $d=2m+1$, that $\mathsf{TabOK}=1$ implies that
+the scan index is in range and its norm test is true. Derive it by the
+prefix invariants already given. For the main schema, specialize the
+PR symbols for $A,\mu$, derive the finite table guard from the three
+universally closed hypotheses, and instantiate the endpoint. Close the
+resulting sentence in \code{Prf PRAAx []}. The existing bridge can
+transport that derivation to Foundation's standard presentation. A
+host-level Lean theorem about rational lists and the object derivation
+are separate deliverables in this plan.
+\end{enumerate}
+
+ProveIt's \code{SphereBlueprint.lean} already defines signed vertices,
+cross faces, the fundamental coefficient and its antipodal sign.
+Its \code{SubdivisionNetTarget} and \code{BoundedApproximateZeroTarget}
+are named obligations. It is possible to reuse the sign theorems when
+porting the present proof to the repository toolchain \cite{spheres}.
+The standalone files avoid a dependency on that checkout.
+
+\Needspace{16\baselineskip}
+\paragraph{A reproducible numerical example.}
+The script \code{hairy\_ball.py} projects $b=(1,2,4)$ onto the plane
+normal to the input direction. On the grid $D=16$ with requested
+$\ell^1$ tolerance $2/5$, it returns
+\[
+ p=(-2,-5,-9)/16,\qquad V(p)=(7,-10,4)/55,\qquad
+ \len{V(p)}=21/55<2/5.
+\]
+Here the dot product vanishes because $-14+50-36=0$. The exact polar
+directions of this example have denominator $7$ in $P_\Q$, so the
+positive residual at denominator $16$ is genuine. The degree demonstration
+on that same grid uses $1{,}026$ vertices and $2{,}048$ oriented
+triangles. With eight steps per leg the signed count drops from $1$
+to $0$ between layers $6$ and $7$, and from $0$ to $-1$ between layers
+$9$ and $10$. At the first drop the program exhibits a tetrahedron with
+labels $(+2,+2,-2,-1)$. Thus one can see where the no-opposites condition
+fails when normalizing near a zero on this coarse grid. The separate script
+\code{round\_witness.py} implements rational stereographic rounding
+and checks the distance to the true unit direction by exact comparisons
+of quadratic radicals. Reproduction commands are in the archive README.

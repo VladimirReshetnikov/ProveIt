@@ -1,0 +1,176 @@
+\section{The finite obstruction on a cross-polytope}
+\label{sec:finite-degree}
+
+Write $d=n+1$. Let $K$ be the simplicial complex with vertices
+$+1,-1,\ldots,+d,-d$ whose faces are the subsets containing no opposite
+pair. Geometrically the signed index $\sigma i$ stands for $\sigma e_i$.
+Thus $|K|=\{x\in\mathbb R^d:\sum_i|x_i|=1\}$, and every simplex used
+below has rational vertices. Write $K_r$ for the $r$-fold barycentric
+subdivision, with $K_0=K$. A vertex $x$ of $K_r$ has a nonempty signed
+support, the signed indices of its nonzero coordinates. Put
+\[
+    c(x)=\operatorname{sgn}(x_i)i,\qquad
+    i=\min\{j: |x_j|=\max_k |x_k|\}.
+\]
+In particular $c(x)$ belongs to the support of $x$.
+
+\begin{theorem}[Finite obstruction]\label{thm:obstruction}
+Suppose $d$ is odd, $r\geq0$, and $T\geq1$. At every vertex $x$ of
+$K_r$ and every integer $j$ from $0$ through $T$, prescribe a label
+$\ell_j(x)\in\{\pm1,\ldots,\pm d\}$, with
+$\ell_0(x)=c(x)$ and $\ell_T(x)=-c(x)$. There is a simplex $s$ of
+$K_r$ and a $j<T$ such that among the labels
+\[
+       \{\ell_j(x),\ell_{j+1}(x):x\text{ a vertex of }s\}
+\]
+one finds opposite signed indices. A bounded scan of the finite lists
+returns $j$, $s$, two vertices and their layers witnessing this assertion.
+\end{theorem}
+
+\begin{proof}
+We compare one oriented chain at the two ends of the proposed sequence.
+
+\noindent\textit{Oriented chains.}
+Use integer formal sums of oriented simplices. A tuple
+$[v_0,\ldots,v_p]$ changes sign under a transposition and denotes zero
+if two entries coincide. Its boundary for $p>0$ is the alternating sum
+obtained by deleting one entry, and a vertex has zero boundary.
+A vertex map $f$ taking each simplex into a simplex gives a chain map
+$f_\#[v_0,\ldots,v_p]=[f(v_0),\ldots,f(v_p)]$. Indeed the
+boundary of the tuple is obtained by deleting the same entries before
+or after applying $f$. If the image has repeated entries, choose two
+equal entries in positions $a<b$. All deletion terms except possibly
+$a,b$ still have a repeat. The two exceptional lists differ by moving
+one entry across $b-a-1$ others. Their orientation signs, combined
+with their deletion signs, cancel.
+
+For an oriented simplex $s=[v_0,\ldots,v_p]$, its oriented subdivision
+$S(s)$ is the following chain. For each permutation $\pi$ of
+$0,\ldots,p$ take, with coefficient $\operatorname{sgn}(\pi)$, the
+flag of successive barycentres of
+$\{v_{\pi(0)}\},\{v_{\pi(0)},v_{\pi(1)}\},\ldots,
+\{v_{\pi(0)},\ldots,v_{\pi(p)}\}$, listed in that order. This formula
+is alternating in the vertices of $s$. In its boundary, deletion of
+any barycentre other than the last cancels with the flag obtained by
+interchanging the two consecutive vertices added across the missing
+stage. If the last vertex added was $v_i$, deletion of the last
+barycentre has coefficient $(-1)^i$ times the permutation sign on
+the other vertices. Hence $\partial S(s)=S(\partial s)$ for $p>0$,
+and the same identity holds at $p=0$. Iterate this explicit operator
+to obtain $S^r$. It sends any cycle to a cycle.
+
+\par\smallskip\noindent\textit{What the initial labels do to subdivision.}\enspace
+Every fine face inside a coarse face $s$ has all its vertices supported
+on signed indices belonging to $s$. Consequently the labels $c$ on
+that fine face belong to $s$. In fact
+\[
+                          c_\# S^r(s)=s
+\]
+for every oriented coarse face $s$. For a vertex the identity is
+immediate. For a $p$-face with $p>0$ the left side is a $p$-chain
+supported on that same face, hence an integer multiple $a s$.
+The boundary identity and the assertion for the facets of $s$ give
+$a\partial s=\partial s$. Comparing the coefficient of just one
+facet yields $a=1$. This proves the identity by induction on $p$.
+
+\par\smallskip\noindent\textit{The cycle distinguishing the endpoints.}\enspace
+For a sign vector $\sigma=(\sigma_1,\ldots,\sigma_d)$ let
+$F_\sigma=[\sigma_1 e_1,\ldots,\sigma_d e_d]$ in increasing
+order of the unsigned indices. Define the top chain
+\[
+                    Z=\sum_{\sigma\in\{\pm1\}^d}
+                           (\sigma_1\cdots\sigma_d) F_\sigma.
+\]
+It is a cycle. For $d\ge2$ a facet with the $i$th index missing occurs
+twice with the same deletion sign and opposite coefficient. For $d=1$
+the boundary of each vertex is zero. The antipodal map $A(v)=-v$
+sends $F_\sigma$ to $F_{-\sigma}$. Reindexing the finite sum gives
+$A_\#Z=(-1)^d Z$. The coefficient on the all-positive face of $Z$ is $1$.
+
+\par\smallskip\noindent\textit{What adjacent layers preserve.}\enspace
+Suppose the scan found no opposite pair. For each pair of consecutive
+layers the union of the two label sets of a fine simplex is therefore
+a face of $K$. Let $f=\ell_j$ and $g=\ell_{j+1}$, two simplicial
+vertex maps. Fix a total order on the fine vertices, and on each
+increasing oriented basis simplex put
+\[
+ P[v_0,\ldots,v_p]=\sum_{i=0}^p(-1)^i
+ [f(v_0),\ldots,f(v_i),g(v_i),\ldots,g(v_p)] .
+\]
+Extend by integer linearity. The common-face property makes every
+tuple legitimate. The identity
+\[
+                \partial P+P\partial=g_\#-f_\#
+\]
+is a finite cancellation. In summand $i$, deleting $f(v_i)$ matches
+deleting $g(v_{i-1})$ in summand $i-1$ with opposite coefficient
+when $i>0$. The unmatched end terms are $g_\#$ and $-f_\#$.
+For a deletion $f(v_k)$ with $k<i$, its coefficient is $(-1)^{i+k}$,
+opposite to the coefficient $(-1)^{k+i-1}$ in $P\partial$.
+For a deletion $g(v_k)$ with $k>i$, its coefficient is
+$(-1)^{i+k+1}$, opposite to $(-1)^{k+i}$ in $P\partial$.
+These identities also apply when images repeat, by the alternating-tuple
+rule above.
+
+The chain $S^r(Z)$ has degree $n=d-1$. Each tuple in $P(S^r(Z))$
+has $d+1$ entries belonging to a single face with at most $d$ vertices,
+so this chain vanishes. Also $\partial S^r(Z)=0$. Thus consecutive
+layers have exactly the same top image chain. Repeating this equality
+gives $Z=c_\#S^r(Z)=(A\circ c)_\#S^r(Z)=(-1)^d Z$.
+For odd $d$, the coefficient at the all-positive face would give
+$1=-1$. Therefore the finite scan cannot end in failure. Its success
+branch already records the required witnesses.
+\end{proof}
+
+\begin{lemma}[Mesh in the $\ell^1$ metric]\label{lem:mesh}
+For $n\geq1$ the diameter of every simplex after $r=ns$ barycentric
+subdivisions is at most $2^{1-s}$. For $n=0$ every diameter is zero.
+\end{lemma}
+\begin{proof}
+A coarse face has diameter at most $2$ in the $\ell^1$ norm, since
+every signed coordinate vertex has norm $1$. In a fine
+simplex its barycentric vertices come from a nested family of faces.
+For nonempty $B\supsetneq D$,
+\[
+ b_B=\frac{|D|}{|B|}b_D+
+       \frac{|B|-|D|}{|B|}b_{B\setminus D}.
+\]
+The distance of these barycentres $b_B,b_D$ is at most
+$n/(n+1)$ times the diameter of the parent simplex. Indeed the
+second term uses a convex combination of vertices of that simplex,
+and the same bound applies to every pair in the nested family.
+For $n\geq1$, Bernoulli's inequality gives
+$(1+1/n)^n\geq2$. After $r=ns$ subdivisions the diameter is at
+most $2^{1-s}$. For $n=0$ the diameter is already zero.
+\end{proof}
+
+\par\smallskip\noindent\textit{The induction used by the obstruction.}\enspace
+The finite assertion also has a uniform arithmetic reading with $n,r,T$
+as numbers. An abstract simplex can be represented by an increasing list
+of vertex identifiers, an oriented tuple by its sorted list and permutation
+sign, and a chain by an array of signed integer coefficients indexed by
+the enumerated faces of its degree. Store the coordinate tuple alongside
+each vertex identifier. To form one subdivision, enumerate nonempty faces
+of the preceding complex, assign each its average, then enumerate nested
+lists of those faces; their lengths are at most $d$. For instance, from
+$h$ face identifiers one may try all ordered lists of length up to $d$
+over $0,\ldots,h-1$ and keep strictly nested lists. This step is a
+bounded loop on explicitly given numbers, and repetition for $r$ steps
+is ordinary primitive recursion. The signs in $S$, $P$ and $Z$ and all
+chain sums similarly have primitive-recursive implementations. One can
+use signed numerator/positive denominator arithmetic throughout.
+
+In the carrier induction proving $c_\# S^r(s)=s$, the apparent assertion
+that every coarse $p$-face satisfies the identity means the Boolean
+conjunction of coefficient equalities over the already enumerated faces.
+The induction on $p$ is therefore quantifier-free induction with $n,r$
+as parameters. The same compilation applies to the boundary and mesh
+identities at subdivision stages and to equality of the image chains at
+time layers. In the sign cancellations, finite contributions of opposite
+signs are paired by the explicit transposition or deletion rule just given.
+Summing over the resulting pairs is bounded arithmetic, justified for
+example by induction on the processed prefix of a finite list. Finally,
+run the witness scan with a success flag. Its failure flag implies that
+every tested pair passed the no-opposites check, whence the displayed
+impossible integer equality. A case split on this one Boolean proves
+success and returns the stored indices intuitionistically.

@@ -1,0 +1,307 @@
+\section{Effective calculus needed for curved cells}\label{sec:calculus}
+
+The cube theorem is complete without this section. To apply it to a curved
+surface, however, the pulled-back coefficients must themselves have the
+required certificates. We now supply the relevant constructions and
+proofs. In particular, the chain rule will not be assumed as an
+unexplained analytic oracle.
+
+\subsection{Full first-order jets}
+
+Let $D\subseteq\Q^d$ be a closed rational box. A certified $C^1$ presentation
+consists of coefficient and derivative evaluators $H,J_1,\ldots,J_d$,
+coherence and uniform continuity certificates, integer bounds $A,D_1$
+on the named value and each named derivative, and a primitive recursive
+remainder modulus $\rho$. Explicitly, the bounds mean
+$|H(x,p)|\le A+\epsilon_p$ and $|J_j(x,p)|\le D_1+\epsilon_p$.
+For rational $x,y$ in the box, put $h=\|y-x\|_\infty$. The full
+remainder condition is
+\begin{align}
+ h\le2^{-\rho(t)}\quad\Longrightarrow\quad&
+ \left|H(y,p)-H(x,p)
+             -\sum_{j=1}^dJ_j(x,p)(y_j-x_j)\right|\notag\\
+ &\le h2^{-t}+(2+dh)2^{-p}.
+ \label{eq:full-jet}
+\end{align}
+For a coordinate increment only one derivative appears. To derive (D)
+rigorously from \eqref{eq:full-jet}, let $R_p$ be that coordinate residual.
+Coherence gives
+$|R_p-R_q|\le(2+h)(\epsilon_p+\epsilon_q)$.
+Applying \eqref{eq:full-jet} at auxiliary precision $q$ therefore gives
+\[
+ |R_p|\le h\epsilon_t+(2+h)\epsilon_p+
+                         \bigl(4+(d+1)h\bigr)\epsilon_q.
+\]
+On the unit cube $h\le1$, so the last coefficient is at most $d+5$.
+Remove that auxiliary slack by \cref{lem:slack}. The resulting bound is
+exactly (D), with $(2+h)\epsilon_p$. For another rational box a
+primitive recursive integer upper bound on $h$ serves the same purpose.
+
+We use the lighter notation
+\begin{equation}\label{eq:jet-semantic}
+ f(y)-f(x)=Df(x)(y-x)+R_f(x,y),\qquad
+ |R_f(x,y)|\le h2^{-t}
+\end{equation}
+for the same family of rational assertions after auxiliary evaluation
+errors have been eliminated by \cref{lem:slack}. This notation does not
+introduce new real-number quantifiers into $\ipra$.
+
+\subsection{Evaluation at named arguments and domain control}\label{sec:composition-eval}
+
+A coordinatewise regular name $a$ for a point of the closed box
+$D=\prod_j[\alpha_j,\beta_j]$ can be evaluated inside that box. Use
+\[
+ \clip_D(z)_j=\min\{\beta_j,\max\{\alpha_j,z_j\}\}.
+\]
+Clipping is a primitive recursive rational operation. It does not increase
+the distance to any point of $D$. A point name is certified to lie in $D$
+by the inequalities
+$\alpha_j-\epsilon_p\le a_j(p)\le\beta_j+\epsilon_p$ for every $p$.
+
+If $\mu_H$ is a modulus for $H$, define an extension evaluator by
+\begin{equation}\label{eq:extension}
+ H^\sharp(a,p)=H\bigl(\clip_D(a(q_p)),\,p+3\bigr),\qquad
+ q_p=\max\{p+3,\bar\mu_H(p+3)+2\}.
+\end{equation}
+For $s\ge p$, the two clipped input samples differ by at most
+$2^{-q_p}+2^{-q_s}\le2^{1-q_p}\le2^{-\mu_H(p+3)}$.
+Applying (U) gives
+\[
+ |H^\sharp(a,p)-H^\sharp(a,s)|
+ \le2^{-(p+3)}+2^{-(p+3)}+2^{-(s+3)}
+ \le\epsilon_p+\epsilon_s.
+\]
+Equivalent input names produce equivalent output names by the same
+argument at an increased precision. On a constant rational input this
+extension agrees with the original evaluator.
+
+For continuity assertions at named arguments one may conservatively replace
+a rational modulus $\mu(t)$ by $\bar\mu(t+2)+2$. This supplies room for
+the errors in both input samples. For the full-jet assertion a similar
+fixed guard, for example $\bar\rho(t+2)+2$, ensures that rational
+approximants lie within the required remainder radius. Approximate all
+arguments, apply the rational certificate, and use \cref{lem:slack} to
+remove the auxiliary errors. The sup norm, finite products, and finite sums
+are continuous with the explicit error propagation given below, so this
+procedure is entirely finite arithmetic at each precision.
+
+In the remaining formulas, $\rho$ and $\mu$ refer to valid moduli for
+these guarded named-argument statements. All displayed majorants remain
+primitive recursive after this fixed guarding. If an implementation works
+only with rational samples of an expression, the same guard can instead be
+inserted during expression compilation.
+
+This detail matters: a rational approximation to $\sigma(x)$ can fall just
+outside a box that contains the exact image. Evaluating an ambient
+coefficient there without a domain certificate would be unjustified.
+Clipping avoids that issue. It is used only in the approximation algorithm;
+we do not differentiate the clipping operation. The named composition is
+the composition with $\sigma$, whose range is certified to be in $D$.
+
+\subsection{A finite evaluator for arithmetic expressions}
+
+Suppose represented quantities $a,b$ have known absolute bounds $A,B$.
+For a sum, evaluate both at precision $p+1$. For a product, evaluate both
+at
+\[
+ q=p+\ell(A+B+1).
+\]
+If $|\widetilde a-a|,|\widetilde b-b|\le2^{-q}$, then
+\[
+ |\widetilde a\widetilde b-ab|
+ \le A2^{-q}+B2^{-q}+2^{-2q}
+ \le(A+B+1)2^{-q}\le2^{-p}.
+\]
+Bounds for new exact values are $A+B$ and $AB$. Subtraction uses sign
+reversal and addition. A finite sum uses the sum of its term bounds and
+a precision shift $\ell(M)$ for $M$ terms. Each determinant is evaluated
+using its finite permutation expansion.
+
+These recursive instructions assign both a bound and an evaluation
+precision to every node of a fixed arithmetic expression tree. Composition
+uses \eqref{eq:extension}. Hence all expressions used in pullback and
+exterior differentiation have primitive recursive evaluators with
+specified error budgets. Coherence and preservation of equality follow
+from the corresponding finite error inequalities and
+\cref{lem:slack}.
+
+\subsection{A local Lipschitz estimate without a mean-value theorem}
+
+If the derivatives of a $d$-variable presentation are bounded by $D_1$,
+\eqref{eq:jet-semantic} at $t=0$ gives
+\begin{equation}\label{eq:local-lip}
+ |f(y)-f(x)|\le(dD_1+1)h
+ \qquad(h\le2^{-\rho_f(0)}).
+\end{equation}
+Thus
+\[
+ \mu_f(t)=\max\{\rho_f(0),\ t+\ell(dD_1+1)\}
+\]
+is an explicit value-continuity modulus. This direct estimate is enough
+for every closure proof below. No existence of a maximum, mean-value
+point, or integral is involved.
+
+\subsection{Sums and products}\label{sec:product}
+
+For $f+g$, add their jets. Use
+$\rho_{f+g}(r)=\max\{\rho_f(r+1),\rho_g(r+1)\}$.
+Negation preserves the modulus. The corresponding value and derivative
+continuity moduli follow by the same precision shift.
+
+For products suppose
+\[
+ |f|\le A_f,\quad |g|\le A_g,\quad
+ |\partial_jf|\le D_f,\quad|\partial_jg|\le D_g.
+\]
+Put $L_f=dD_f+1$, $L_g=dD_g+1$, and take all remainder moduli to be
+nondecreasing. Writing $\Delta f=f(y)-f(x)$ and similarly for $g$, direct
+expansion gives
+\begin{align}
+ &(fg)(y)-(fg)(x)
+       -\sum_j(g\,\partial_jf+f\,\partial_jg)(x)(y_j-x_j)\notag\\
+ &\hspace{2em}=g(x)R_f+f(x)R_g+\Delta f\,\Delta g.
+ \label{eq:product-remainder}
+\end{align}
+When both jets are valid at accuracy $t$ and their local Lipschitz estimates
+apply, the absolute value is at most
+\[
+ h(A_f+A_g)2^{-t}+h^2L_fL_g.
+\]
+For a desired remainder accuracy $r$, set
+\begin{align}
+ t&=r+\ell\bigl(2(A_f+A_g+1)\bigr),\notag\\
+ \rho_{fg}(r)
+ &=\max\{\rho_f(t),\rho_g(t),\,r+\ell(2L_fL_g)\}.
+ \label{eq:product-modulus}
+\end{align}
+The first term of the remainder is at most $h2^{-r}/2$, and the second
+is at most $h2^{-r}/2$. Since $t\ge0$ and the moduli are monotone,
+the local Lipschitz radii at accuracy zero are automatically respected.
+This proves the product rule and its full uniform remainder certificate.
+
+The product derivative is bounded by $A_gD_f+A_fD_g$. If a common
+modulus for $f$ and its first derivatives is $\mu_f$, and similarly for
+$g$, put
+\[
+ s=r+\ell(A_f+A_g+D_f+D_g+1).
+\]
+The modulus $\max\{\mu_f(s),\mu_g(s)\}$ controls the variation of each
+product derivative: expand its two product differences, obtaining four
+terms with total coefficient bound
+$A_f+A_g+D_f+D_g$. This supplies the required derivative-continuity
+certificate as well as the remainder certificate.
+
+\subsection{Composition and its chain rule}\label{sec:chain-rule}
+
+Let $f$ have $m$ inputs with $|\partial_af|\le D$, and let
+$\sigma:Q^k\to D$ have componentwise $C^1$ jets with
+$|\partial_i\sigma_a|\le M$. The image containment in the rational box is
+part of the certificate. Let $\rho_\sigma$ majorize the component
+remainder moduli and put $L=kM+1$.
+
+For $\delta=\|y-x\|_\infty\le2^{-\rho_\sigma(0)}$,
+\eqref{eq:local-lip} gives $\|\sigma(y)-\sigma(x)\|_\infty\le L\delta$.
+Expand both jets:
+\[
+ \Delta\sigma=D\sigma(x)(y-x)+R_\sigma,\qquad
+ f(\sigma(y))-f(\sigma(x))
+   =Df(\sigma(x))\Delta\sigma+R_f.
+\]
+Subtracting the proposed chain-rule term leaves
+$Df(\sigma(x))R_\sigma+R_f$. If the component remainders of $\sigma$
+are at accuracy $u$, and the remainder of $f$ is at accuracy $t$, this
+is bounded by
+\begin{equation}\label{eq:composition-remainder}
+ mD\,\delta\,2^{-u}+L\delta\,2^{-t}.
+\end{equation}
+For target accuracy $r$, choose
+\begin{align}
+ t&=r+\ell(2L),&
+ u&=r+\ell\bigl(2(mD+1)\bigr),\notag\\
+ \rho_{f\circ\sigma}(r)
+ &=\max\{\rho_\sigma(0),\rho_\sigma(u),
+                     \rho_f(t)+\ell(L)\}.
+ \label{eq:composition-modulus}
+\end{align}
+The last condition ensures $L\delta\le2^{-\rho_f(t)}$; the other
+conditions validate the two jets. Equation
+\eqref{eq:composition-remainder} is at most $\delta2^{-r}$. Therefore
+\begin{equation}\label{eq:chain-rule}
+ \partial_i(f\circ\sigma)
+ =\sum_{a=1}^m(\partial_af)\circ\sigma\,\partial_i\sigma_a
+\end{equation}
+with the explicit remainder modulus just given.
+
+For completeness, derivative continuity can also be computed directly.
+The derivative bound is $mDM$. In the difference of the two sums in
+\eqref{eq:chain-rule}, there are $m$ product differences, with total
+coefficient bound $m(M+D)$. Put
+$s=r+\ell(m(M+D)+1)$. A valid modulus is the maximum of
+$\rho_\sigma(0)$, the modulus for $D\sigma$ at $s$, and
+the modulus for $Df$ at $s$ plus $\ell(L)$. This ensures that the
+variation of every factor has the required accuracy. A value-continuity
+modulus follows from \eqref{eq:local-lip} for the newly constructed jet.
+
+The proof of \eqref{eq:chain-rule} is an algebraic expansion with finite
+bounds. If named arguments occur, approximate them at an auxiliary
+precision, apply these rational expansions and the expression evaluator,
+and remove the final rational slack. It therefore has the same
+first-order arithmetic interpretation as the cube proof.
+
+\subsection{Second jets and symmetry}
+
+A certified $C^2$ parameterization contains a $C^1$ jet for every
+component $\sigma_a$, a $C^1$ jet for every first derivative
+$\partial_i\sigma_a$, and the named equalities
+\[
+ H^a_{ij}=H^a_{ji},\qquad
+ H^a_{ij}=\partial_i(\partial_j\sigma_a).
+\]
+Bounds and uniform moduli for all these finitely many fields are supplied.
+Thus symmetry of the second jet is an explicit part of this presentation.
+We do not silently invoke a classical theorem about interchanging
+partials. Polynomial and expression-generated examples have symmetry
+proofs by their finite algebraic differentiation rules. To admit a weaker
+input interface containing only nonsymmetric proposed partial derivatives,
+one would first need to prove the appropriate quantitative rectangular
+increment theorem; that extra interface is not used here.
+
+The following section needs exactly this much regularity: each first
+derivative of $\sigma$ must have a first jet, and its antisymmetric second
+part must vanish. An immersion lower bound is unnecessary for the
+parameterized-chain identity.
+
+\subsection{Polynomial certificates without integration}\label{sec:polynomial-jets}
+
+There are many nonvacuous inputs for these interfaces. Let
+$P(x)=\sum_\alpha c_\alpha x^\alpha$ be a rational polynomial on a box
+$|x_j|\le R$, with integer $R\ge1$, total degree at most $D$, and integer
+$A\ge\sum_\alpha|c_\alpha|$. Exact rational evaluation is primitive
+recursive. Differentiation of its finite coefficient list is primitive
+recursive too.
+
+For $\|\Delta\|_\infty=h\le1$, expand each monomial by the multivariate
+binomial identity. The constant and linear terms are $P(x)$ and
+$DP(x)\Delta$. Every remaining term has at least two factors from
+$\Delta$, hence contains $h^2$ as a bound. Summing their absolute values gives
+\begin{equation}\label{eq:polynomial-jet}
+ \abs{P(x+\Delta)-P(x)-DP(x)\Delta}
+ \le A(R+1)^D h^2.
+\end{equation}
+Indeed the full binomial coefficient sum for a monomial of degree $d$
+is bounded by $(R+1)^d\le(R+1)^D$.
+Consequently
+\[
+ \rho_P(r)=r+\ell\bigl(\max\{1,A(R+1)^D\}\bigr)
+\]
+is a remainder modulus.
+
+Bounds $AR^D$, $ADR^D$, and $AD^2R^D$ suffice for values, first
+derivatives, and second derivatives. Continuity bounds can be derived
+from the elementary product-difference identity for monomials: their
+variation is at most their degree times $R$ to an appropriate power,
+times $\|\Delta\|_\infty$. A common safe Lipschitz bound for the value
+and its first derivatives is $A(D+1)^2R^D$. The second derivatives
+are handled by differentiating the finite polynomial again. All these
+claims are finite coefficient identities and inequalities; no FTC or
+Stokes theorem is needed to validate them.

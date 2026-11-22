@@ -1,0 +1,150 @@
+\section{Consequences and worked examples}\label{sec:examples}
+
+\subsection{A curved conformal triangle with exact rational integrals}
+
+On $\Del$ let
+\[
+u(x,y)=x^2+2xy+3y^2,\qquad
+g=e^{2u}(\dd x^2+\dd y^2).
+\]
+Then $a=c=e^u$, $b=0$, and
+\[
+\omega=-(2x+6y)\dd x+(2x+2y)\dd y,
+\qquad \rho=-8.
+\]
+Thus $C_T=-8\operatorname{area}(\Del)=-4$.
+The angle functions on each straight side are constant because the metric is conformal. Direct rational integration on the three parameter intervals gives
+\[
+G_{AB}=\int_0^1-2t\dd t=-1,
+\]
+\[
+G_{BC}=\int_0^1(4+4t)\dd t=6,
+\qquad
+G_{CA}=\int_0^1-2(1-t)\dd t=-1.
+\]
+Their sum is $4$, so the curvature and smooth boundary integrals cancel. The interior angles are $(\pi/2,\pi/4,\pi/4)$, and the three exterior turns sum to $2\pi$. Hence
+\[
+-4+(-1+6-1)+2\pi=2\pi,
+\]
+as required for a disk. This example has nonzero smooth Gaussian curvature: it is not a Euclidean cone calculation.
+
+The coframe is effectively presented by the ordinary rational Taylor name for the exponential. On the triangle, $0\le u\le3$ and $1\le e^u<27$; derivative bounds follow by differentiating the fixed quadratic. On the collar
+$x,y\ge-1/100$, $x+y\le1+1/100$, one has
+$u=(x+y)^2+2y^2<4$, $|u_x|<3$, $|u_y|<7$.
+Using $e^4<81$ bounds every coframe jet through order two by $8192$, and $a,c\ge1$. The third derivatives have similarly explicit bounds, which give the required Taylor and continuity moduli. Exponential Taylor tails, bounded for example by a geometric tail once the term ratio is at most $1/2$, give a PR evaluator and all these elementary contracts. The archive checks the displayed integrals with exact fractions.
+
+\subsection{A spherical octant, including an independent area integral}
+
+Let $w=1-u-v$, $s=u^2+v^2+w^2$, and
+\[
+X(u,v)=\frac{(u,v,w)}{\sqrt s},\qquad (u,v)\in\Del.
+\]
+Its image is the positive octant of the unit sphere. Put
+$t_1=u-w$, $t_2=v-w$, and
+$A=\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)$.
+Differentiation gives
+\begin{equation}\label{eq:spheremetric}
+g_{ij}=\frac{A_{ij}}s-\frac{t_it_j}{s^2},
+\qquad \det g=s^{-3}.
+\end{equation}
+In particular,
+\[
+E=\frac2s-\frac{(u-w)^2}{s^2},\quad
+F_0=\frac1s-\frac{(u-w)(v-w)}{s^2},\quad
+G=\frac2s-\frac{(v-w)^2}{s^2}.
+\]
+All denominators have a simple rational margin: $s\ge1/3$ because
+$3(u^2+v^2+w^2)\ge(u+v+w)^2=1$.
+
+Here is an intrinsic curvature calculation that does not assume Gauss--Bonnet. Since $s_i=2t_i$ and $\partial_i t_j=A_{ij}$, the Christoffel symbols are
+\[
+\Gamma^k_{ij}=-\frac{\delta_i^kt_j+\delta_j^kt_i}{s}.
+\]
+They can be checked either in \eqref{eq:Christoffel} or by differentiating $X$ twice:
+$X_{ij}=-(t_i/s)X_j-(t_j/s)X_i-g_{ij}X$.
+For $q_i=t_i/s$ one has
+$\partial_jq_k+q_jq_k=A_{jk}/s-t_jt_k/s^2=g_{jk}$.
+Substitution into the curvature formula therefore gives
+\[
+R(\partial_i,\partial_j)\partial_k
+=g_{jk}\partial_i-g_{ik}\partial_j.
+\]
+Thus $K=1$ and $\rho=\sqrt{\det g}=s^{-3/2}$. For a straight coordinate side with constant velocity $v$, the covariant acceleration in coordinate components is
+$\Gamma(v,v)=-2(q\cdot v)v$, parallel to its velocity. Its unit-speed covariant acceleration vanishes, so each side is a geodesic. At each corner the two outgoing image tangents are orthogonal, giving three interior angles $\pi/2$.
+
+We can integrate $\rho$ independently. For fixed $u$, completing the square in $v$ and differentiating the resulting elementary primitive gives
+\[
+\int_0^{1-u}s^{-3/2}\dd v
+=\frac{2(1-u)}{\bigl(2u^2+(1-u)^2\bigr)\sqrt{u^2+(1-u)^2}}.
+\]
+For completeness, if $y=v-(1-u)/2$ and $A_u=2u^2+(1-u)^2$, then
+$s=2y^2+A_u/2$ and a primitive is $2y/(A_u\sqrt s)$.
+Now put
+\[
+z(u)=\frac{u}{\sqrt{u^2+(1-u)^2}}.
+\]
+The displayed one-variable integrand is $2z'(u)/(1+z(u)^2)$. Since $z(0)=0$ and $z(1)=1$, the finite FTC and the arctangent definition give
+\[
+\int_\Del\rho\dd u\dd v=2\At(1)-2\At(0)=\pi/2.
+\]
+Thus the local formula reads
+\[
+\pi/2+0=3\pi/2-\pi.
+\]
+The argument never uses the total area of the sphere to establish the octant area.
+
+The presentation has strong effective margins. On $\Del$, $1/3\le s\le1$, $E,G\le6$, and $\det g\ge1$. Also
+$2s-(u-w)^2=(1-v)^2+2v^2\ge2/3$, so $E\ge2/3$, and similarly $G\ge2/3$. The $2\times2$ principal-minor test gives $g\ge(1/12)I$: the shifted diagonal entries are positive and
+\[
+\det(g-(1/12)I)=\det g-\operatorname{tr}(g)/12+1/144\ge1/144>0.
+\]
+On the rational collar $u,v\ge-1/100$, $u+v\le1+1/100$, all of $u,v,w$ lie in $[-1/100,102/100]$, giving $1/3\le s\le2$. There $\det g\ge1/8$, $1/6\le E,G\le6$, and the Cholesky coefficients satisfy $a\ge1/3$, $c\ge1/7$. All higher derivative and approximation bounds come from fixed rational expressions and square roots with these positive margins. This is an actual effective smooth presentation of the required kind.
+
+Gluing eight octants gives the round sphere with $V=6$, $E=12$, $F=8$, hence $\chi=2$. The eight curvature contributions sum to $4\pi$, seam terms vanish, and each vertex has four right-angle sectors. This also illustrates the complete smooth global calculation.
+
+\subsection{Polyhedral and nonorientable checks}
+
+For a constant coframe on each face, $P=Q=\rho=0$. Each face is Euclidean, so its angles sum to $\pi$. Equation \eqref{eq:piecewise} becomes
+\[
+\sum_{v\text{ interior}}\left(2\pi-\sum_{T\ni v}\alpha_{T,v}\right)
++\sum_{v\text{ boundary}}\left(\pi-\sum_{T\ni v}\alpha_{T,v}\right)
+=2\pi\chi.
+\]
+For equilateral triangle metrics, every face angle is $\pi/3$, and all coefficients of $\pi$ are rational. The exact verifier checks the following meshes, their link conditions, and this identity.
+\begin{center}
+\begin{tabular}{lrrrrl}
+\toprule
+Mesh & $V$ & $E$ & $F$ & $\chi$ & Orientable\\
+\midrule
+Tetrahedral sphere & 4&6&4&2&Yes\\
+Two-triangle disk & 4&5&2&1&Yes\\
+Triangular annulus & 6&12&6&0&Yes\\
+Nine-vertex torus & 9&27&18&0&Yes\\
+Six-vertex projective plane & 6&15&10&1&No\\
+\bottomrule
+\end{tabular}
+\end{center}
+The projective-plane example has five equilateral sectors at each vertex, hence defect $\pi/3$ at each of six vertices and total $2\pi$. It verifies the orientation-free finite assembly, not a smooth metric claim about that particular cone metric.
+
+The verifier also tests arbitrary rational residual tables, rejects duplicate faces and disconnected vertex links, and treats a global orientation certificate as optional. These checks target genuine failure modes of the finite formulation.
+
+\subsection{Further consequences within the same presentation discipline}
+
+\paragraph{Geodesic triangle excess.}
+If the three supplied sides satisfy $k_g=0$, then
+$\int_TK\dd A=\alpha_A+\alpha_B+\alpha_C-\pi$.
+No theorem asserting the existence of geodesics is used. If $K=k$ is a constant with a supplied positive margin for $|k|$, division gives
+$\operatorname{area}(T)=(\sum\alpha-\pi)/k$.
+
+\paragraph{Closed surfaces and sign restrictions.}
+For a closed smooth presentation, $\int_MK\dd A=2\pi\chi$. If the input additionally supplies $K\ge\kappa_0>0$ and a positive rational lower bound for the total area, monotonicity of the finite integral gives $\chi>0$. An everywhere negative bound gives $\chi<0$. These are constructive sign conclusions about the finite Euler characteristic; no classification theorem is imported.
+
+\paragraph{Metric independence of total curvature.}
+Any two valid smooth metric presentations on the same closed mesh have the same total curvature because each equals $2\pi\chi$. With boundary, the invariant is the sum of curvature, geodesic curvature, and corner turns. This statement includes an explicit modulus for comparing the two numerical totals.
+
+\paragraph{Elementary refinement.}
+Splitting a face by one interior vertex changes $(V,E,F)$ by $(1,3,2)$. Splitting a boundary edge and its adjacent face changes them by $(1,2,1)$; splitting an interior edge and both adjacent faces changes them by $(1,3,2)$. Each preserves $V-E+F$ by arithmetic. Effective integral additivity and the same seam/fan cancellation show that the geometric total is preserved under the corresponding supplied smooth subdivisions. A general theorem relating arbitrary abstract triangulations is not needed for these useful refinement operations.
+
+\subsection{What the computations establish}
+
+The included Python scripts establish exact finite arithmetic identities on their stated test instances. The spherical script additionally verifies the displayed finite symbolic formulas with SymPy and compares independent quadratures at 50-digit working precision. A displayed floating-point difference of zero is only agreement at that working precision; it is not an interval error certificate. None of these executions is described as a Lean kernel check or as an executable proof of the entire theorem schema. The human proof and its explicit error bounds supply the mathematical argument; the scripts check implementation and sign conventions.

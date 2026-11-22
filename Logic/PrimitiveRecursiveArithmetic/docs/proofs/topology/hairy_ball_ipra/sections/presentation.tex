@@ -1,0 +1,73 @@
+\section{The field and the arithmetic statement}\label{sec:presentation}
+Let $n=2m$, $d=n+1$, and put
+\[
+ S^n=\{x\in\R^d:x\cdot x=1\},\qquad
+ P_{\Q}=\{p\in\Q^d:\len p=1\},\qquad
+ \rad(p)=p/\sqrt{p\cdot p}.
+\]
+The tangent plane at $\rad(p)$ consists of the vectors $v$ with
+$p\cdot v=0$. We use $\ell^1$ distance for inputs and outputs. A bound
+in this norm also bounds the Euclidean norm. Using the radial parameter
+keeps the triangulation rational. The vector values stay in the same
+ambient coordinates throughout. The classical theorem asks for an
+exact zero \cite{wiki}. Approximate-zero search for circuit inputs has
+also been studied in computational complexity \cite{gh}.
+
+Here iPRA means first-order intuitionistic arithmetic with a symbol and
+defining equations for each fixed primitive recursive (PR) definition,
+successor axioms, and quantifier-free induction. A theorem about a
+presented field is a schema for fixed PR terms, with free number
+parameters allowed. A finite table is itself a number and may be
+quantified over. This is also the convention of ProveIt's embedded
+object calculus \cite{deriv}. We give the numerical theorem first so the
+meaning of a real-valued field is explicit.
+
+\begin{definition}[A field name]\label{def:name}
+Fix PR functions $A(p,h)\in\Q^d$ and $\mu(h)\in\N$. The following
+rational inequalities are the contract on $p,q\in P_\Q$ and
+$h,j\in\N$:
+\begin{align}
+ j\ge h\quad &\Longrightarrow\quad
+       \len{A(p,j)-A(p,h)}\le 2\cdot 2^{-h},                  \tag{C}\\
+ \len{p-q}\le2^{-\mu(h)}\quad &\Longrightarrow\quad
+       \len{A(p,h)-A(q,h)}\le3\cdot 2^{-h},                   \tag{U}\\
+ & |p\cdot A(p,h)|\le2^{-h}.                                 \tag{T}
+\end{align}
+Encodings are canonical at a rational input, or the evaluator is first
+composed with rational reduction. There is no monotonicity assumption
+on $\mu$. For each fixed $p$, the sequence $A(p,h)$ is a name of the
+field value at $\rad(p)$. Condition (T) permits tangency error in each
+rational reading.
+\end{definition}
+
+\begin{theorem}[A bounded witness in iPRA]\label{thm:main}
+For every field name in dimension $n=2m$ there is a PR function $W$
+with the following property provable in iPRA under (C), (U), (T).
+Given $k\in\N$, set $t=k+6$, $D=2d\,2^{\mu(t)}$, and $q=W(k)$.
+Then
+\[
+  q\in P_\Q,\quad Dq\in\Z^d,\quad
+  \len{A(q,t)}\le\tfrac34\,2^{-k},\qquad
+  \forall j\ge t\quad \len{A(q,j)}\le\tfrac{25}{32}\,2^{-k}.
+\]
+The search evaluates $A$ at a single precision on the signed simplex
+grid of denominator $D$. A bound on the number of candidate occurrences is
+$2^d\binom{D+d-1}{d-1}$. Repeated points may be scanned or omitted.
+\end{theorem}
+
+The last inequality gives a margin for interpreting the answer as a
+real vector. Every ordinary tolerance $\varepsilon=u/v>0$ reduces to
+a dyadic request, for example $k=v$ for positive integers $u,v$ since
+$2^v\ge v$. Section~\ref{sec:round} gives the round-sphere version and
+the conversion to a rational unit-vector witness. Sections~\ref{sec:table}
+and~\ref{sec:finite-degree} prove the finite obstruction used in the search.
+For $n=0$ one may simply take $q=1$, since (T) bounds its only component.
+
+The starting point in ProveIt is the sphere chapter of the general
+topology packet \cite{spheres}. Its results S01--S06 establish the
+finite antipodal obstruction and a search for exactly tangent,
+rational-valued Lipschitz fields. The chapter identifies the
+real-valued evaluator as a remaining extension. The proof below
+supplies that extension: it corrects a single noisy evaluation
+at each proof vertex, permits a general modulus, and does not need a
+global bound on the size of the field.

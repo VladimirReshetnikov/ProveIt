@@ -1,0 +1,64 @@
+\section{Sharpness and exact zeros}\label{sec:sharpness}
+The parity restriction is sharp. If $d$ is even, pair the coordinates and
+set $J(x_1,x_2,\ldots)=(-x_2,x_1,-x_4,x_3,\ldots)$. Each pair
+contributes zero to $x\cdot Jx$, and $J$ preserves the Euclidean norm.
+Thus there is an explicit unit-length tangent field on every
+odd-dimensional unit sphere. At the other endpoint of the dimension
+range, $S^0$ has zero tangent spaces and an exact zero at either point.
+
+The uniform-modulus formulation also applies to fields that fail to be
+Lipschitz. For example on $S^2$ put
+\[
+       F(x)=(1+\sqrt{|x_1|})\,(e_1-x_1 x).
+\]
+The second factor is tangent and has $\ell^1$ norm at most $1+d$.
+Its change is bounded by $(1+d)\len{x-y}$, using $|x_1|\le1$ and
+$\len x\le d$. The change of the square-root factor is at most
+$\sqrt{\len{x-y}}$. Consequently for $\len{x-y}\le u\le1$ the total
+change is at most $3(1+d)\sqrt{u}$. This gives, for example,
+$\nu(h)=2(h+\clog(3(1+d)))$. Its values are sampled by bounded bisection.
+At $(0,1,0)$ the first component, along
+$(s,\sqrt{1-s^2},0)$ for small $s>0$, changes from $1$ to
+$(1+\sqrt{s})(1-s^2)$, while the input distance is at most $2s$.
+Thus no finite Lipschitz constant suffices.
+
+\subsection{What a uniform exact-zero procedure would decide}
+Even for $S^2$, selecting an exact zero of a uniformly given field
+would have a logical consequence. Let $b(0),b(1),\ldots$ be binary
+with at most one $1$. Form
+\[
+ u=(a,c,0),\qquad a=\sum_{s\ge0}2^{-s-1}b(2s),\qquad
+ c=\sum_{s\ge0}2^{-s-1}b(2s+1),
+ \qquad V(x)=u-(u\cdot x)x .
+\]
+The first $l$ terms give each coefficient to within $2^{-l}$.
+Truncating at $l=h+\clog(2(1+d))+1$ is more than enough for
+$\ell^1$ error $2^{-h}$ in $V$. All fields in this family have a
+common continuity modulus, since $\len u\le1$ and
+$\len{V(x)-V(y)}\le(1+d)\len{x-y}$. The field is smooth as a
+function of $x$.
+
+Suppose an exact zero $x$ is supplied by a fast name. Read a rational
+$v$ within $1/8$ of $|x_1|$. If $v\ge1/2$, an odd occurrence of $1$
+is impossible: it would make $u$ a positive multiple of $e_2$ and
+force every zero to have $x_1=0$. Thus all odd bits are zero.
+If $v<1/2$, an even occurrence would make $u$ a positive multiple
+of $e_1$ and force $|x_1|=1$. Thus all even bits are zero. These are
+constructive implications by testing each individual bit.
+The resulting disjunction is the lesser limited principle of
+omniscience (LLPO) on this input.
+
+There is already a computability obstruction for a family of PR input
+terms with a number parameter. Fix a machine enumeration $\varphi_i$.
+Let $b_i(2s+j)$, $j=0,1$, indicate that machine $i$ on input $i$
+first halts at step $s$ with output $j$. The bounded simulation is PR.
+The reported parity side would give a total computable bit $c(i)$ equal
+to $\varphi_i(i)$ whenever the latter is $0$ or $1$: report $0$ when
+all odd bits are zero and $1$ in the other case. A program for
+$i\mapsto1-c(i)$ has an index $h$; then $c(h)=1-c(h)$. This rules
+out a uniform computable exact-zero selector for this family. Each one
+of these particular fields individually has a computable pole. The
+argument concerns uniform selection; the following example concerns a
+single instance.
+
+\input{sections/no_pr_pole}

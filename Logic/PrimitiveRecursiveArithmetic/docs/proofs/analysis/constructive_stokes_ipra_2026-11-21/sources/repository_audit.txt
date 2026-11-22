@@ -1,0 +1,119 @@
+# ProveIt source audit for constructive Stokes
+
+Repository: VladimirReshetnikov/ProveIt
+Pinned main commit: a5688a1b37d62046c894691c3c41f7bdd53976ca
+Commit timestamp: 2026-11-22T01:30:12Z (2026-11-21 in the user's timezone).
+Audit status: source inspection only; no local build and no transitive dependency closure fetched.
+Complete pinned URLs, Git blob hashes, direct imports, namespaces, and theorem names are in source_manifest.json.
+
+## Useful object-level iPRA modules
+
+All paths below start with Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/.
+
+1. Analysis/FiniteFTC.lean.
+   Namespace LeanProofs.IPRA.Analysis.FiniteFTC.
+   Theorems ftc_upper and ftc_lower. The fixed PR sampled bodies G, Fpos, Fneg have type PTm 2; x packages all extra parameters, N is grid size, E the one-cell error.
+   Upper input: an object derivation of forall j, j<N -> G(j+1,x)+Fneg(j,x) <= G(j,x)+Fpos(j,x)+E.
+   Upper output: an object derivation of G(N,x)+sum_{j<N}Fneg(j,x) <= G(0,x)+sum_{j<N}Fpos(j,x)+N*E.
+   Lower reverses the relevant inequalities.
+   Output notation is Γ ⊢[PRAAx] ...; the proofs explicitly invoke PRA.qfInd on guarded quantifier-free prefix invariants UpInv and DnInv.
+   Natural-valued sampled G is enough after signed rational data is cleared of denominators and split or shifted. The signed rational adapter is still work for the Stokes formalization.
+
+2. Analysis/TaggedFTC.lean.
+   Namespace LeanProofs.IPRA.Analysis.TaggedFTC.
+   Theorems tagged_upper and tagged_lower handle variable widths Δ_j and local error Δ_j*ε_k + (4+Δ_j)*ε_p, yielding D(N)*ε_k+(4N+D(N))*ε_p where D is the prefix sum of widths.
+   Explicit source limitation: the analytic cell estimate from derivative data and passage to names are not derived here.
+   This is useful evidence that evaluation-rounding errors must be accumulated even when exact intermediate sampled endpoints telescope.
+
+3. Core/Fubini.lean.
+   Namespace LeanProofs.IPRA.
+   Theorem fubini:
+   Γ ⊢[PRAAx] ap2 (sumF (oB a)) M (pairT N x) ≐
+                    ap2 (sumF (pB a)) N (pairT M x).
+   Here a:PTm 3, and oB/pB are the two nested sum bodies. This is exactly finite interchange of Σ_{i<M}Σ_{j<N} and Σ_{j<N}Σ_{i<M}.
+   rowB, colB, oB, pB package extra arguments through pairing. Repeated adjacent interchanges place a selected cube coordinate innermost.
+   A companion sum_delta gives weighted indicator evaluation.
+
+4. Core/SumLemmas.lean and Core/SumSplit.lean.
+   Namespace LeanProofs.IPRA.
+   sum_add, sum_shift, sum_congr_bounded, term_le_sum; sum_split and sum_split₃.
+   sum_congr_bounded accepts an object derivation of equality of PR bodies on a bounded range and derives equality of finite sums.
+   These support replacing line-sum expressions and subdivision bookkeeping.
+
+5. Analysis/RiemannSumRules.lean.
+   Namespace LeanProofs.IPRA.Analysis.RiemannSumRules.
+   rs_bound: pointwise f_i <= M on i<N implies Σf <= N*M.
+   rs_close: f_i <= g_i+e_i on i<N implies Σf <= Σg+Σe.
+   rs_close_const additionally bounds e_i by C and yields Σf <= Σg+N*C.
+   rs_additive, rs_add, rs_scale prove interval splitting, additivity, scalar multiplication at the finite-sum layer.
+   All conclusions are object derivations. Apply rs_close to sum the FiniteFTC estimates over the remaining cube indices; combine both inequality directions after signed splitting.
+
+6. Analysis/RiemannRefinement.lean.
+   Namespace LeanProofs.IPRA.Analysis.RiemannRefinement.
+   refine_upper, refine_lower prove the Lipschitz refinement estimate from one-step bounds:
+      2 Σ_{i<Nr}f(i)+D*N*r <= 2*r Σ_{k<N}f(kr)+D*N*r²,
+   and the reversed inequality.
+   On a physical interval of length d with D=B*d/(N*r), this gives
+      |S_N-S_{Nr}| <= B*d²*(r-1)/(2*N*r) <= B*d²/(2N).
+   These are object derivations. The input formulas StepUp/StepDn commute with substitutions; the proof tracks this under quantifier-free induction.
+   For a general supplied continuity modulus, the Stokes report needs the corresponding direct coarse-cell estimate; the Lipschitz module is a reusable special case, not a proof of the general modulus version.
+
+7. Analysis/FiniteCalculus.lean.
+   Namespace LeanProofs.IPRA.Analysis.FiniteCalculus.
+   increments_le, lip_up, lip_down, cell_upper, cell_lower, lin_sum.
+   Arithmetic building blocks for prefix increments and Riemann refinement.
+
+8. Foundations/DyadicNames.lean.
+   Namespace LeanProofs.IPRA.Foundations.DyadicNames.
+   eps(N,m)=2^(N dotminus m) represents 2^-m after multiplying by common scale 2^N.
+   eps_anti, eps_half handle scale inequalities; sample_stability proves that samples at indices >=k+3 differ by <=2^(-k-2) on a sufficiently large common denominator.
+   add_regular constructs the regularity estimate for c(k)=a(k+2)+b(k+2).
+   reciprocal_gap proves the denominator-cleared estimate under an explicit positive separation.
+   These are rational finite estimates, not a quotient type of all real numbers.
+
+9. Foundations/UniformCertificates.lean.
+   Namespace LeanProofs.IPRA.Foundations.UniformCertificates.
+   grid_lower, grid_upper, grid_clip justify nearest-left rational grid indices.
+   net_error and error_transport add sampling and transported errors.
+   No extraction of a uniform modulus from arbitrary pointwise continuity is claimed.
+
+## Research packet whose representation convention can be reused
+
+Logic/PrimitiveRecursiveArithmetic/docs/proofs/analysis/calculus_ipra/report.tex
+and README.md, fetched in full through the GitHub connector; the foundational definitions and FTC proof sections were inspected.
+
+It gives a fully explicit representation and warns that Lean was uncompiled.
+Definition (C): |F(x,p)-F(x,q)|<=2^-p+2^-q.
+Definition (U): |x-y|<=2^-mu(k) implies |F(x,p)-F(y,q)|<=2^-k+2^-p+2^-q.
+Uniform derivative certificate (D):
+ |H(y,p)-H(x,p)-(y-x)F(x,p)|
+ <= |y-x|2^-k + (2+|y-x|)2^-p
+whenever |y-x|<=2^-nu(k).
+Finite FTC bound:
+ |H(b,p)-H(a,p)-S_(N,p)| <= L*2^-k+(2N+L)*2^-p.
+Its proof explains why the 2N evaluation term cannot be deleted merely because the exact sampled endpoints telescope.
+
+The packet explicitly uses fixed primitive-recursive definitions as a schema. It does not posit a total primitive-recursive universal evaluator. Number parameters inside one fixed definition may vary.
+Regular names are compared by cross-index inequalities; rational closure eliminates vanishing auxiliary errors.
+Bounded universal conditions are encoded by Boolean folds, so induction remains quantifier-free.
+The Stokes report should prove its multidimensional generalization rather than treating the unverified packet as an axiom.
+
+## Important status cautions
+
+The root iPRA README explicitly distinguishes:
+- ConciseIPRA, Derivations and Bridge libraries described as kernel checked;
+- docs/proofs research packets filed as delivered, not independently rerun or checked.
+
+However, inspect individual theorem signatures even under Derivations.
+Topology/BoundarySquare.lean, read in full, proves the simplicial double-boundary cancellation in ambient Lean for arbitrary AddCommGroup M using Finset.sum_involution. It does not itself expose Γ ⊢[PRAAx] for that theorem. It is a useful combinatorial proof/reference, but should not be cited as an already completed object-level cubical boundary derivation.
+Analysis/PullbackCertificates.lean concerns hypergeometric ODE transformations (Euler/Pfaff), not differential-form pullbacks. Do not reuse its name as evidence of Stokes pullback support.
+No Stokes-named path was found in the complete iPRA docs tree or Derivations tree inspected. This is a filename observation only, not a claim that no embedded discussion exists anywhere.
+
+## Integration route
+
+Pin the source snapshot. Use FiniteFTC as the coordinate-line kernel, finite Fubini to move each axis innermost, RiemannSumRules to sum all local bounds, DyadicNames for precision bookkeeping, and SumLemmas for sum congruence.
+The remaining planned work is explicit: signed-rational adapters and common denominators; grid/multi-index terms; arbitrary-modulus refinement; uniform derivative cell estimate; cross-index name equality; exterior-algebra pullbacks; cubical chain bookkeeping.
+This is a concrete route to Prf PRAAx, without claiming those bridges are already implemented.
+
+Repo toolchain according to DEPENDENCIES.md: Lean v4.32.0, Mathlib 81a5d257c8e410db227a6665ed08f64fea08e997. Historical benchmark counts in that file are not a fresh build receipt.
+

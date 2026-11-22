@@ -1,0 +1,126 @@
+\section{Gluing, Euler characteristic, and a finite error theorem}\label{sec:global}
+
+\subsection{The general triangle-metric identity}
+
+\begin{proof}[Proof of \cref{thm:piecewise_intro}]
+Sum \eqref{eq:triangle} over all faces:
+\[
+\sum_TC_T+\sum_{T,e}G_{T,e}
+=\sum_{T,v}\alpha_{T,v}-F\pi.
+\]
+Reindex the corner sum by vertices and add the defect and turn terms. By their definitions,
+\[
+\sum_{v\text{ interior}}D_v+\sum_{v\text{ boundary}}\tau_v
+=(2V_i+V_b)\pi-\sum_{T,v}\alpha_{T,v}.
+\]
+The angle terms cancel. The remaining value is
+$(2V_i+V_b-F)\pi=2\chi\pi$ by \cref{lem:incidence}.
+Finally reindex the face-side sum as one term for each boundary edge and a pair for each interior edge. This gives \eqref{eq:piecewise}. Every reindexing is a permutation of an explicitly finite list, so it is justified by finite addition.
+\end{proof}
+
+This proof makes the distinction between a cone singularity and a smooth point visible. Merely requiring equal tangential metrics on a shared edge does not imply zero vertex defect: a Euclidean cone is an immediate example. The next two lemmas use the additional smooth presentation data.
+
+\subsection{Smooth cancellation and the fan calculation}\label{sec:gluing}
+
+\begin{lemma}[Interior-edge cancellation]\label{lem:seam}
+At an interior edge with the common metric chart specified in \cref{sec:compatibilitydata},
+\[
+G_{T,e}+G_{T',e}=0.
+\]
+This remains true for orientation-reversing coordinate changes.
+\end{lemma}
+\begin{proof}
+The metric identity and its first derivatives imply the connection transformation identity
+\begin{equation}\label{eq:connectiontransform}
+\partial_{ij}\phi^\alpha+
+\Gamma'{}^\alpha_{\beta\gamma}(\phi)
+\partial_i\phi^\beta\partial_j\phi^\gamma
+=\partial_k\phi^\alpha\Gamma^k_{ij},
+\end{equation}
+where repeated indices range only over $1,2$. One proof is to push forward the connection from \cref{lem:curvature}. It is metric-compatible by differentiating the pullback metric identity, and torsion-free because $\partial_{ij}\phi=\partial_{ji}\phi$. Uniqueness, proved by \eqref{eq:Christoffel}, gives \eqref{eq:connectiontransform}. Equivalently, substitute \eqref{eq:Christoffel} and clear the explicitly positive metric denominators; the identity is the same finite algebra.
+
+Consequently the intrinsic acceleration $\nabla_TT$ of the edge is the same in the common chart whether computed from either face. Choosing the opposite unit tangent does not change this acceleration. The two inward unit conormals are opposite, because the faces lie on opposite sides of the edge. Their scalar products with the common acceleration therefore sum to zero. The arclength density is the same, since the tangential metrics agree. Integrating the pointwise identity proves the lemma. If parameters are reversed, substitute $t\mapsto1-t$ in finite tagged sums; no existence statement about reparametrization is needed.
+
+No sign of $\det D\phi$ was used. This is why the proof does not require global orientability. Notice also that the coordinate-dependent one-forms $\omega_T$ need not cancel across an edge. It is the full geodesic-curvature term, including the angle derivative, that is intrinsic and cancels.
+\end{proof}
+
+\begin{lemma}[A certified one-turn fan has angle sum $2\pi$]\label{lem:fan}
+At an interior vertex with the finite fan certificate of \cref{sec:compatibilitydata},
+\[
+\sum_{T\ni v}\alpha_{T,v}=2\pi.
+\]
+At a boundary vertex the sum is the actual opening angle of the certified sector, and it equals $\pi$ at a smooth boundary point.
+\end{lemma}
+\begin{proof}
+Apply the Cholesky map of the common tangent metric to all rays. It preserves metric angles and has positive determinant. If the image of the reference ray is $(p,q)$, multiply further by
+\[
+C=\begin{pmatrix}p&q\\-q&p\end{pmatrix}.
+\]
+This sends the reference ray to the positive horizontal axis. Since
+$C^{\mathsf T}C=(p^2+q^2)I$, it preserves angles and orientation. Thus all the determinant and half-plane order certificates remain valid.
+
+Write each transformed ray as $(x_j,y_j)$. By the supplied margins $y_j\ne0$, and define its branch angle by
+\[
+\varphi_j=
+\begin{cases}
+\pi/2-\At(x_j/y_j),&y_j>0,\\
+3\pi/2-\At(x_j/y_j),&y_j<0.
+\end{cases}
+\]
+The upper branch takes values in $(0,\pi)$ and the lower branch in $(\pi,2\pi)$. Within either half-plane,
+\[
+\det(w_j,w_{j+1})
+=y_jy_{j+1}\left(\frac{x_j}{y_j}-\frac{x_{j+1}}{y_{j+1}}\right)>0
+\]
+implies $\varphi_j<\varphi_{j+1}$ by strict monotonicity of $\At$. At the upper-to-lower transition the order is automatic, and the same determinant inequality shows that the angle difference is below $\pi$. The closing lower-to-upper difference uses $\varphi_0+2\pi$ and again lies below $\pi$.
+
+The common tangent isometries identify these consecutive smaller sectors with the triangle interior angles defined in \eqref{eq:alphas}. Summing the branch differences once around the certified list gives exactly $2\pi$. The order certificate is essential: positive determinants between consecutive rays alone would allow a list that winds around more than once.
+
+For a boundary vertex the list is open, with the cut in the omitted sector. Its sum telescopes to the difference of the endpoint branch angles, precisely the interior opening. At a smooth boundary point the endpoint rays are opposite. Their ratios $x/y$ are equal and their half-plane labels differ, so the two branch angles differ by $\pi$. This proves the last assertion.
+\end{proof}
+
+\begin{proof}[Proof of the geometric equality in \cref{thm:main}]
+Apply the piecewise identity. \Cref{lem:seam} makes every interior seam term zero. \Cref{lem:fan} makes every interior vertex defect zero and identifies each boundary term with the signed exterior turn $\pi-\alpha_v$. The remaining identity is \eqref{eq:main}. The quantitative implementation is given next and in \cref{sec:arithmetic}.
+\end{proof}
+
+\subsection{The finite rational assembly theorem}\label{sec:assembly}
+
+This is a useful theorem independently of the analytic origin of the data. Let $p\in\Q$ be arbitrary; it need not already be an approximation to $\pi$. Supply rational tables
+\[
+c_T,\quad g_{T,e},\quad a_{T,v},\quad t_v\ (v\text{ on the boundary}).
+\]
+Define the local residuals
+\begin{align*}
+r_T&=c_T+\sum_{e\subset T}g_{T,e}+p-\sum_{v\subset T}a_{T,v},\\
+j_e&=g_{T,e}+g_{T',e}\quad(e\text{ interior}),\\
+s_v&=\sum_{T\ni v}a_{T,v}-2p\quad(v\text{ interior}),\\
+s_v&=\sum_{T\ni v}a_{T,v}+t_v-p\quad(v\text{ boundary}).
+\end{align*}
+
+\begin{theorem}[Exact residual identity and stability]\label{thm:assembly}
+For every certified mesh and every such rational table,
+\begin{equation}\label{eq:residualidentity}
+\boxed{\quad
+\sum_Tc_T+\sum_{e\text{ boundary}}g_e+\sum_{v\text{ boundary}}t_v-2p\chi
+=\sum_Tr_T-\sum_{e\text{ interior}}j_e+\sum_vs_v.\quad}
+\end{equation}
+If the face, edge, interior-vertex, and boundary-vertex residuals are bounded respectively by $\eps_f,\eps_e,\eps_i,\eps_b$, then
+\begin{equation}\label{eq:stability}
+\abs{\sum_Tc_T+\sum_{e\text{ boundary}}g_e+\sum_{v\text{ boundary}}t_v-2p\chi}
+\le F\eps_f+E_i\eps_e+V_i\eps_i+V_b\eps_b.
+\end{equation}
+Both statements are uniform theorems of finite rational arithmetic in \ipra.
+\end{theorem}
+\begin{proof}
+Let $C,B,I,A,\Theta$ be respectively the total face-curvature, boundary-edge, interior edge-pair, corner-angle, and boundary-turn sums. Then
+\[
+\sum_Tr_T=C+B+I+Fp-A,
+\quad \sum_vs_v=A+\Theta-(2V_i+V_b)p.
+\]
+Subtract $I$ from their sum. The remaining expression is
+$C+B+\Theta+(F-2V_i-V_b)p=C+B+\Theta-2p\chi$
+by \eqref{eq:incidence}. This proves \eqref{eq:residualidentity}.
+For \eqref{eq:stability}, use $|x+y|\le|x|+|y|$ successively through the finite sums. An induction invariant bounds the absolute value of the processed partial sum by the processed number of terms times its prescribed tolerance. After clearing denominators it is quantifier-free.
+\end{proof}
+
+This theorem does not infer correct geometry from small residuals. It states exactly what any finite certificate proves: the global rational error follows from the checked local rational errors. The analytic sections prove that valid effective smooth presentations produce these certificates at every precision. That separation is also the most useful Lean architecture.

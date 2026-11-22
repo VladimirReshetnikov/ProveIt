@@ -1,0 +1,257 @@
+\section{Lean formalization and ProveIt integration}\label{sec:lean}
+
+\subsection{Verification status}
+
+The archive deliberately separates three kinds of evidence.
+The manuscript contains the complete human-readable proof
+and its iPRA induction audit. The executable code checks
+the concrete finite algorithm on specified instances.
+The file \code{lean/FiniteCore.lean} contains compiled
+host-Lean proofs of finite arithmetic and algebra.
+The complete implicit function theorem has not been
+formalized in that file, and the archive does not contain
+a completed \(\Prf\,\PRAAx\) derivation of the full theorem.
+
+The Lean target imports only the bundled \code{Std}
+library and was checked with Lean 4.32.0, compiler commit
+\code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}.
+Both direct compilation and \code{lake build} succeeded.
+The included compiler log records the kernel dependencies.
+There are no \code{sorry} placeholders or user-declared
+axioms in this checked target. Its reported dependencies
+include \code{propext} and \code{Quot.sound}, and do not
+include \code{Classical.choice}. This is a report about
+the host proof terms; it is not a substitute for checking
+the object theory in which a derivation is constructed.
+
+The main checked declarations, in namespace
+\code{ConstructiveIFT}, are:
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.42\textwidth}>{\raggedright\arraybackslash}p{0.50\textwidth}}
+\toprule
+Declaration & Content\\
+\midrule
+\code{errorBudget\_closed} &
+Exact finite weighted geometric error sum.\\
+\code{half\_contraction\_closed} &
+The denominator-cleared inexact contraction inequality.\\
+\code{half\_contraction\_budget\_finite} &
+The bound using only the finite prefix of recurrence hypotheses.\\
+\code{checked\_half\_contraction\_budget} &
+A primitive-recursive-style Boolean trace checker implies
+the finite bound.\\
+\code{iterate\_add} &
+Concatenation of two finite iteration segments.\\
+\code{neumann\_residual} &
+The finite vector identity \(z_N+E^Nb=Ez_N+b\), with
+the required additive laws supplied explicitly.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For example, the checked finite checker theorem has the form
+\begin{lstlisting}
+theorem checked_half_contraction_budget
+    (d : Nat -> Nat) (e N : Nat)
+    (checked : checkSteps d e N = true) :
+    2 ^ N * d N <= errorBudget (d 0) e N
+\end{lstlisting}
+The host parameter \(d\) becomes a fixed primitive recursive
+symbol in the object-language version. The checked theorem
+does not by itself assert primitive recursiveness of an
+arbitrary host function.
+
+\subsection{The repository snapshot actually inspected}
+
+The GitHub connector resolved ProveIt main to commit
+\[
+ \code{d36b35eed5bd01af4ade66bf539622495813ccc8}.
+\]
+The inspected sources and project status are recorded in
+the archive's source manifest and audit. No repository
+files were modified. The reference snapshot contains the
+selected source modules, not their complete transitive
+import closure, and those repository modules were not
+rebuilt as part of this package.
+
+The following paths are relative to
+\path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/}.
+The source uses \(\Prf\,\PRAAx\), making it relevant to
+object iPRA, rather than merely to analysis in host Lean.
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.35\textwidth}>{\raggedright\arraybackslash}p{0.57\textwidth}}
+\toprule
+Module & Inspected interface and reuse boundary\\
+\midrule
+\path{Foundations/ContractionTrace.lean} &
+\code{contraction\_iter} uses an internal object index and
+explicit \code{PRA.qfInd}. It is the best template for
+the new additive-error trace invariant.\\[3pt]
+\path{Analysis/HalfContractionTail.lean} &
+Internal-index geometric and tail bounds, using a
+nonincreasing finite potential.\\[3pt]
+\path{Analysis/DyadicCauchy.lean} &
+Closed object formulas for fixed primitive recursive
+symbols with a particular adjacent dyadic-integer
+motion hypothesis. An adapter to that format would
+need proof; it is not automatic for our name.\\[3pt]
+\path{Analysis/FiniteFTC.lean} &
+Internal finite-mesh summation of signed local errors;
+a suitable template for our polygon argument.\\[3pt]
+\path{Foundations/ContractionIterates.lean} &
+Internal exact-contraction iteration and Cauchy
+templates. The rounded evaluator needs the inexact
+adaptation.\\[3pt]
+\path{Analysis/FeedbackInexact.lean} &
+Genuine object proof terms, but the iteration count is
+an external Lean index in the inspected theorem
+family. It is not already the internally quantified
+runtime loop theorem needed here.\\[3pt]
+\path{Foundations/NeumannCorrection.lean} &
+Genuine finite matrix identities in the object
+theory, with an external truncation index.
+An internal coded matrix loop is still required.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These distinctions matter: an externally recursive family
+of proof terms containing the numeral \(2^k\) is not the
+same object theorem as a universally quantified bound
+for variable \(k\). The existing modules supply valuable
+proof patterns and elementary arithmetic, while the
+new evaluator and the variable-length inexact argument
+still require an integration layer.
+
+\subsection{Required definitions in a full Lean development}
+
+The detailed \code{lean/BLUEPRINT.md} accompanies this
+section. A clean implementation has two connected levels.
+Host Lean can use
+\[
+ \code{QVec n := Fin n -> Rat},\qquad
+ \code{QMat m n := Fin m -> Fin n -> Rat},
+\]
+with explicit finite folds for norms. Object iPRA uses
+their numerical list encodings. At either level the
+necessary definitions are:
+\begin{enumerate}
+ \item Signed rational codes, their validity predicates,
+ arithmetic, comparison, positive-denominator witnesses,
+ and numerical definitions of finite vectors and matrices.
+ \item Supremum and row-sum norms, product and triangle
+ inequalities, boxes, dyadic floor, and clipping.
+ \item Regular names, finite-observation equality and
+ order, and the bounded-precision operations on names.
+ \item The fixed evaluator symbols, raw certificates
+ R0--R4, and the named-point extension programs with
+ moduli \eqref{eq:rawenlarge}.
+ \item The numerical trace function
+ \eqref{eq:algorithm}, its clock \(N(k)\), and the finite
+ prefix checker for local error inequalities.
+ \item The primitive recursive graph evaluator,
+ parameter-name composition, residual observation
+ formulas, and quantitative uniqueness formulas.
+ \item Coded matrix powers, finite Neumann sums, their
+ rational perturbation bounds, and the derivative
+ evaluator \eqref{eq:derivativeprogram}.
+ \item The numerical Taylor and continuity output
+ formulas with \(\mu_g,\nu_g\), and the rational
+ preconditioner construction.
+\end{enumerate}
+All these definitions have been specified mathematically
+above. None requires an unspecified function-space
+quantifier in the arithmetic language.
+
+\subsection{A concrete completion order}
+
+\paragraph{1. Rational arithmetic and finite arrays.}
+Implement the encodings and prove their primitive
+recursive definitions satisfy the elementary field
+identities under the denominator guards. Keep the
+algorithmic rational operations shared between the
+producer and the certificate checker. Prove clipping
+nonexpansive by rational order cases.
+
+\paragraph{2. The internally quantified inexact trace theorem.}
+Port the integer invariant from the checked core to
+\(\Prf\,\PRAAx\), using the internal-index method in
+\code{ContractionTrace}. The induction formula is the
+Boolean-prefix-check implication to the integer
+invariant. This is the first main proof obligation
+not already discharged by the supplied host-Lean file.
+
+\paragraph{3. The raw Taylor-to-segment adapter.}
+Implement \(L_p\), the finite rational polygon, and
+the error budget at a fixed observation precision.
+Use the finite signed-sum pattern in \code{FiniteFTC}.
+Prove rational squeezing and instantiate it to obtain
+the one-step contraction estimates for actual program
+outputs. This step connects analytic input certificates
+to the finite trace theorem.
+
+\paragraph{4. The implicit-function name.}
+Define the rounded trace by primitive recursion.
+Use aligned final segments and the inexact trace
+theorem to prove \eqref{eq:pairbound}; use adjacent
+increments to prove \eqref{eq:residual}.
+Build the regular output name directly. Then prove
+the zero equation, uniqueness, residual bound,
+Lipschitz estimate, and the parameter-name extension.
+No separate theorem about an arbitrary complete
+metric space is needed.
+
+\paragraph{5. Internally variable finite matrix loops.}
+Encode a matrix as a fixed-length numerical array.
+Use componentwise rational loop invariants to prove
+the two geometric identities and the power-difference
+identity. The source in \code{NeumannCorrection}
+provides exact finite algebra, but its external index
+must be replaced by the coded internal loop. Prove
+the finite norm sums \(2,4,8\) needed in
+Lemma~\ref{lem:perturb}.
+
+\paragraph{6. The \(C^1\) conclusion.}
+Compose the Jacobian evaluator with the graph name at
+the explicit index \(\nu(q+1)\), construct the
+derivative name from a Neumann sum, and translate the
+Taylor calculation and inverse-difference calculation
+at arbitrary fixed output precision. This supplies
+the exact formulas \(\mu_g,\nu_g\). Finally formalize
+the determinant-apartness and translated-center
+adapters.
+
+\paragraph{7. Object-proof audit and an optional classical bridge.}
+The final target should be an actual
+\(\Prf\,\PRAAx\) object derivation of the finite
+observation schema, with each induction constructor
+carrying a verified quantifier-free formula.
+Audit its dependency closure for placeholders and
+unintended assumptions. A subsequent interpretation
+in ordinary real analysis may use Mathlib's real
+vectors and calculus to compare with its existing
+implicit function theorems \cite{mathlib}.
+Such a comparison is useful, but invoking Mathlib's
+noncomputable implicit-function construction would
+not establish the primitive recursive output or
+the restricted-induction claim.
+
+\subsection{Reproduction}
+
+From the package root, run
+\begin{lstlisting}
+python3 code/validate.py
+cd lean
+lake build
+\end{lstlisting}
+The project pins Lean 4.32.0. To rebuild the report,
+from the \code{paper} directory run
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error implicit_function_ipra.tex
+pdflatex -interaction=nonstopmode -halt-on-error implicit_function_ipra.tex
+\end{lstlisting}
+The figure is already included. Its optional regeneration
+script uses Matplotlib; Matplotlib is not required by
+the rational solver or its validation suite.

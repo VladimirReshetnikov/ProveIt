@@ -1,0 +1,115 @@
+\section{A finite tangent-field theorem}\label{sec:table}
+
+Put $d=n+1$. Realize the boundary of the $d$-dimensional
+cross-polytope as $P=\{p:\|p\|_1=1\}$, with vertices
+$+e_1,-e_1,\ldots,+e_d,-e_d$. We use only the rational vertices
+of its $r$-fold barycentric subdivision, denoted here by $K_r$.
+Its mesh is the largest $\ell^1$ distance between two vertices of one
+simplex. The norms in this section are the rational operations
+$\|a\|_1=\sum_i|a_i|$ and $\|a\|_\infty=\max_i|a_i|$.
+
+\begin{theorem}[Finite small-vector witness]\label{thm:finite-table}
+Suppose $n$ is even, $\tau>0$ is rational, and the mesh of $K_r$ is
+at most $1/(8d)$. At every vertex $p$ let a rational vector $v_p$
+be given, with $p\cdot v_p=0$. Assume that for every edge $[p,q]$,
+\[
+             \|v_p-v_q\|_1\leq \frac{\tau}{16d}.
+\]
+Then a bounded scan of the vertices returns a vertex $p$ with
+$\|v_p\|_1\leq\tau$.
+\end{theorem}
+
+The geometry of the failed-scan argument takes place in a plane. If a
+vertex value is large, rescale it to a tangent vector $w_p$ of unit
+$\ell^1$ norm. Join $p$ to $w_p$, then $w_p$ to $-p$, by straight
+segments. Orthogonality keeps both segments away from the origin.
+The proof measures that separation uniformly over all vertices.
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=stealth]
+  \draw[gray!65] (-2.1,0)--(2.1,0);
+  \draw[gray!65] (0,0)--(0,1.03);
+  \draw[gray] (0.15,0)--(0.15,.15)--(0,.15);
+  \draw[ink,thick,->] (1.8,0)--(.06,1.03);
+  \draw[ink,thick,->] (0,1.06)--(-1.74,.04);
+  \fill[ink] (1.8,0) circle (1.3pt) node[below] {$p$};
+  \fill[ink] (-1.8,0) circle (1.3pt) node[below] {$-p$};
+  \fill[ink] (0,1.06) circle (1.3pt) node[above] {$w_p$};
+  \fill (0,0) circle (1.1pt) node[below] {$0$};
+\end{tikzpicture}
+\end{center}
+
+\begin{proof}
+For $n=0$, the two directions are $p=\pm1$ and tangency forces
+$v_p=0$. For $n>0$, scan the table in vertex order and return the
+first entry satisfying the conclusion. The remaining branch has
+$A_p=\|v_p\|_1>\tau$ at every vertex. Define $w_p=v_p/A_p$.
+Then $p\cdot w_p=0$ and $\|p\|_1=\|w_p\|_1=1$. If $p,q$
+are vertices of one simplex, the edge hypothesis and the reverse
+triangle inequality give
+\[
+ \|w_p-w_q\|_1
+ \leq \frac{\|v_p-v_q\|_1+|A_q-A_p|}{A_p}
+ \leq \frac{2\|v_p-v_q\|_1}{\tau}
+ \leq \frac1{8d}.
+\]
+This includes $p=q$.
+
+Take $L=16d$. Make $2L+1$ tables $H_i$, each with one rational
+vector per vertex, using the two formulas
+\[
+ \begin{split}
+ H_j(p)&=(1-s)p+s w_p,\\
+ H_{L+j}(p)&=(1-s)w_p-s p,
+ \qquad s=j/L,\quad 0\leq j\leq L .
+ \end{split}
+\]
+The two formulas agree at $H_L$. The squared length of any entry
+is at least $((1-s)^2+s^2)/d$. Indeed, the cross term vanishes by
+tangency, and for any $a$ of $\ell^1$ norm one the identity
+\[
+ d\sum_i a_i^2-\Big(\sum_i|a_i|\Big)^2
+   =\sum_{i<j}(|a_i|-|a_j|)^2
+\]
+gives $\sum_i a_i^2\geq 1/d$. As $(1-s)^2+s^2\geq 1/2$,
+and $\sum_j (H_i(p)_j)^2\leq d\|H_i(p)\|_\infty^2$, it follows
+by rational comparison that
+\[
+                      \|H_i(p)\|_\infty\geq\frac{1}{2d}.
+\]
+At any one time the $\ell^1$ distance between two entries on the
+same simplex is at most $1/(8d)$, by the mesh bound and the estimate
+on $w_p-w_q$. At a fixed vertex one time step changes the entry by
+at most $2/L$ in $\ell^1$, since each endpoint vector of each leg has
+norm one. Consequently, for $p,q$ in a common simplex and
+$|i-i'|\leq1$,
+\[
+       \|H_i(p)-H_{i'}(q)\|_\infty
+        \leq \frac{1}{8d}+\frac{2}{L}=\frac{1}{4d}.
+\]
+
+Label $p$ at time $i$ by the signed basis vector corresponding to the
+first coordinate of $H_i(p)$ of largest absolute value, with its
+observed sign. If entries on the same simplex at equal or adjacent
+times received labels $+e_j$ and $-e_j$, their $j$th coordinates
+would differ by at least $1/d$. This contradicts the preceding upper
+bound. A collection of signed basis vertices containing no opposite
+pair spans a face of the cross-polytope. Hence the labels at each
+time define a simplicial map, and maps at consecutive times are
+contiguous because the union of their labels on each source simplex
+spans a target face.
+
+At time zero the label $\lambda(p)$ is the signed largest coordinate
+of $p$ with the same tie convention. Its coordinate is nonzero, so
+it belongs to the smallest original face containing $p$. Thus
+$\lambda$ is a carrier map. At the final time the labels are
+$-\lambda(p)$, because the first maximizing index is unchanged
+by negation. The contiguous sequence from $\lambda$ to $-\lambda$
+contradicts Theorem~\ref{thm:obstruction}. This eliminates the
+unsuccessful branch of the bounded scan.
+\end{proof}
+
+The computation returning $p$ only compares the entries of the
+original table with $\tau$. Normalized vectors and labels certify
+why this scan succeeds. Their denominators are positive on the branch
+where they are used, and the proof uses only rational arithmetic and
+bounded loops.

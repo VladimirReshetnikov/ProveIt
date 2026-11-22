@@ -1,0 +1,112 @@
+\section{The precise \ipra\ theorem and its precision schedule}\label{sec:arithmetic}
+
+\subsection{A numerical endpoint}
+
+Let $\operatorname{Valid}(d)$ abbreviate the first-order arithmetic presentation hypotheses: the finite mesh tests, regularity and quantitative jet contracts, positive margins, metric compatibility identities, and fan certificates. The evaluator and modulus programs occurring in this formula are fixed in advance. Their numerical parameters, including all face and chart indices, are part of $d$.
+
+For a positive integer $m$ write $\ell(m)=\ceilLog(m)$. Define
+\begin{equation}\label{eq:schedule}
+\begin{aligned}
+N_0&=F+E_i+V_i+V_b,\\
+W&=1+N_0+2|\chi|,\\
+s&=n+3+\ell(W),\\
+q&=s+4+\ell(3F+8),\qquad \delta=2^{-s},\quad\eta=2^{-q}.
+\end{aligned}
+\end{equation}
+Evaluate each face-curvature, face-side, corner-angle, and boundary-turn name to error at most $\eta$, using the routines proved above and below. Set $p=\Pi(q)$. Their values are the rational tables $c_T,g_{T,e},a_{T,v},t_v$ of \cref{sec:assembly}.
+
+\begin{theorem}[Arithmetic Gauss--Bonnet]\label{thm:arith}
+For every fixed PR presentation suite there is a primitive recursive rational function
+\begin{equation}\label{eq:Z}
+Z(d,n)=\sum_Tc_T+
+\sum_{e\text{ boundary}}g_e+
+\sum_{v\text{ boundary}}t_v-2\chi\Pi(q)
+\end{equation}
+such that \ipra\ proves
+\begin{equation}\label{eq:ariththeorem}
+\forall d\;\bigl(\operatorname{Valid}(d)\longrightarrow
+\forall n\;|Z(d,n)|\le2^{-n}\bigr).
+\end{equation}
+All rational operations and the final inequality are interpreted on natural-number codes. The constants in \eqref{eq:schedule} are conservative.
+\end{theorem}
+\begin{proof}
+Each exact local face identity has eight contributions to its approximation error: one curvature, three sides, one $\pi$, and three angles. Thus its numerical residual is at most $8\eta$. A paired smooth edge has residual at most $2\eta$. At an interior vertex of degree $d_v$, the residual is at most $(d_v+2)\eta$; at a boundary vertex it is at most $(d_v+2)\eta$. Here $d_v\le3F$. Our choice of $q$ makes each of these smaller than $\delta/8$.
+
+These error comparisons can be obtained directly from the finite Green, angle and gluing proofs, rather than by treating their exact-name interpretation as an extra axiom. In the local routines below take $r=q+8$. For a vertex calculation with $d_v$ terms, call its scalar subroutines with an additional $\ell(d_v+2)$ bits. Apply the same finite-count allocation to any subdivided edge. These choices leave, for example, another $\delta/8$ of slack for the name-contract witnesses. Therefore each rational local residual is at most $\delta$. No undecidable assertion about a real value is tested by the program.
+
+Apply \cref{thm:assembly} with all four tolerances equal to $\delta$. It gives
+\[
+|Z(d,n)|\le N_0\delta
+\le W\,2^{-(n+3+\ell(W))}
+\le2^{-(n+3)}\le2^{-n}.
+\]
+The proof works for arbitrary $n$; universal introduction closes that variable without induction on precision. All inductions used to justify the finite sums and bounds use quantifier-free running invariants, as detailed below.
+\end{proof}
+
+The small extra precision in \eqref{eq:schedule} also controls the approximation of the displayed geometric quantities themselves. Since $E_b=V_b$, there are $F+2V_b$ numerical terms on the left of \eqref{eq:main}; their total evaluation error is at most $(F+2V_b)\eta$. The right side has error at most $2|\chi|\eta$. These bounds tend to zero with an explicit PR rate. Thus \eqref{eq:ariththeorem} is exactly the effective-name interpretation of \eqref{eq:main}, not merely a collection of unrelated approximate identities.
+
+\subsection{How each integral routine chooses a finite grid}
+
+The bounds of \cref{sec:bounds} give a bound $14H^6$ for $\rho$ and a modulus $\nu_\rho$ for
+$f(u,v)=(1-u)\rho(\Phi(u,v))$. The elementary jet-operation rules give Taylor moduli $\lambda_A,\lambda_B$ for the square coefficients in \eqref{eq:pullback}. Boundary connection coefficients have first derivatives bounded by a fixed multiple of $H^6$; the combined four-side bound $80H^6$ suffices.
+
+For a local target precision $r$, a sufficient grid exponent is
+\begin{equation}\label{eq:gridexp}
+m=\max\left\{
+\nu_\rho(r+8)+2,\ \lambda_A(r+8),\ \lambda_B(r+8),\
+r+8+\ell(80H^6+1)\right\},\qquad N=2^m.
+\end{equation}
+The first entry controls two-dimensional cell oscillation; the second and third control the two finite differences in Green's formula; the last controls the boundary tagged quadrature error. A corresponding one-dimensional expression supplies every other integral, including those in the angle evaluator. The $+2$ is deliberately enough for the $\ell^1$ cell diameter and the triangle pullback.
+
+Evaluate coframe jets on this grid with
+\begin{equation}\label{eq:evalbits}
+p_{\mathrm{jet}}=r+m+20+7\ell(2H).
+\end{equation}
+The stability bounds in \cref{sec:bounds} ensure that all derived coefficients used in the finite difference proof have error far below $2^{-(r+8)}/N$. Thus intermediate cancellation and rounding are accounted for explicitly. This extra $m$ in evaluation precision is important even though the final derivative-remainder error in \eqref{eq:greenerror} does not grow with $N$.
+
+For a ratio entering an angle, $|(b-a)/c|\le2H^2$ and $|b/c|\le H^2$. Use $R=2H^2+1$ in the arctangent quadrature bound. Finite vertex fan calculations have their own supplied denominator margins; the same addition/product/reciprocal compiler determines their required precision. A finite maximum over the vertex list is a PR function of the numerical parameters.
+
+These bounds are intended to certify primitive recursiveness, not computational efficiency. The grids may be very large when an input modulus is poor. No polynomial-time claim is made. For concrete polynomial, rational, or elementary metrics one should simplify primitives or use sharper certified quadrature, as the examples do.
+
+\subsection{Why only quantifier-free induction is used}
+
+The whole calculation can be organized into the following elementary finite proof blocks.
+\begin{center}
+\begin{tabular}{p{0.25\linewidth}p{0.64\linewidth}}
+\toprule
+Block & Quantifier-free invariant or proof step\\
+\midrule
+Mesh incidence & Equality of processed face-side counts and accumulated edge multiplicities.\\
+Riemann comparison & Upper and lower bounds on a weighted processed sum.\\
+One-dimensional FTC & Endpoint increment minus processed derivative sum is bounded by processed length times the cell error.\\
+Discrete Green & A processed rectangular difference sum equals its remaining boundary terms.\\
+Angle telescope & Equality of a processed sum of branch differences with the endpoint difference.\\
+Residual assembly & A processed total differs from its expected reindexing by the explicitly accumulated residual.\\
+Error bound & Absolute processed error is bounded by the sum of nonnegative processed allowances.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each running sum is a PR function symbol. Rational comparisons are cleared by positive common denominators, and signed integers are represented by differences of naturals. The resulting invariants are equalities or inequalities of natural-number terms, combined by propositional connectives and guards such as $j\le N$. Finite tables are accessed by PR decoding functions. Nested loops can be flattened into a loop of length $N^2$ with quotient/remainder indices.
+
+The input contract may contain number quantifiers. It is never placed inside an induction formula. At a step, universal elimination instantiates it at the current rational grid points and the chosen precision, yielding the one numerical cell estimate needed by that step. If a certificate uses a bounded list of tests, its conjunction is represented by a primitive recursive Boolean fold, not by invoking an unrestricted induction schema for formulas with quantifiers. This is the same disciplined use of guarded numerical invariants seen in the inspected \repo\ module \code{TaggedFTC.lean} \cite{repo-ftc}.
+
+Algebraic differentiation and metric invariance are finite identities between rational expressions in fixed-size jet tuples. Their denominators have the supplied positive lower bounds. Multiplication by those denominators reduces the identities to polynomial arithmetic. The irrational-looking constants arise only as rational-name programs, chiefly the explicit $\At$ integral and $\Pi$. Therefore they introduce no additional sort or axiom into \ipra.
+
+\subsection{Total programs and hypotheses}
+
+All arithmetic programs are total on numerical codes. A malformed rational denominator, a failed finite mesh test, or an absent positive margin can be assigned a default output, for example zero. On valid inputs the guards prove that those defaults are never used. Division in a valid geometric expression is performed only after the requested precision guarantees a rational denominator of magnitude at least half its supplied lower bound.
+
+There are three distinct assertions worth keeping separate.
+\begin{enumerate}
+\item \textbf{Uniform finite theorem.} Any rational tables satisfying the finite residual checks obey \eqref{eq:stability}. This has no analytic hypotheses.
+\item \textbf{Conditional smooth theorem schema.} For each fixed PR presentation suite, the arithmetic validity hypotheses imply \eqref{eq:ariththeorem}. This is what the full human proof establishes.
+\item \textbf{An unconditional concrete instance.} To derive a closed theorem for a particular supplied surface in \ipra, one must additionally prove its jet contracts, margins, and gluing data in \ipra. Externally correct but unproved input contracts do not automatically supply those derivations.
+\end{enumerate}
+The archive's exact rational tests and symbolic examples are useful implementation checks. They do not replace the missing Lean object-language proofs of these contracts or of the general analytic blocks.
+
+\subsection{Why the hypotheses are mathematical content, not the conclusion}
+
+No input field asserts Gauss--Bonnet, Green's theorem, an integrated curvature identity, or a $2\pi$ interior angle sum. The input fields are local value/derivative contracts, nonsingularity and metric compatibility, and finite incidence and fan order. Green's formula is proved by the rectangular telescope; the angle sum is proved by the branch telescope; the Euler coefficient is proved by incidence counting. These three separate derivations are the mathematical content of the theorem.
+
+The geometric restrictions also explain its constructive scope. We supply a finite atlas, moduli, and bounds instead of extracting them from qualitative compactness. We supply effective common charts instead of applying an unquantified inverse-function or triangulation theorem. We supply no solutions of geodesic differential equations: the coordinate edges may be arbitrary curved edges in the surface. Geodesic edges are an optional specialization, not a prerequisite for the proof.

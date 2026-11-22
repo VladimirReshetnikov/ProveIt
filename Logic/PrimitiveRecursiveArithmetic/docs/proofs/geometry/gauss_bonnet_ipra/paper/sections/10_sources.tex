@@ -1,0 +1,71 @@
+\section{Source and verification record}\label{sec:sources}
+
+The user-specified article \cite{wiki} fixes the classical target, including boundary and corner terms. The author-hosted texts \cite{new,shifrin} provide conventional geometric context. The detailed quantitative proofs, finite-grid implementation, and proof-theoretic accounting in this report are developed here rather than attributed to those classical sources.
+
+The \repo\ snapshot was read through the selected GitHub connection at commit
+\begin{center}
+\code{d36b35eed5bd01af4ade66bf539622495813ccc8}.
+\end{center}
+The source audit records the relevant modules' exact blob identifiers. It reports source inspection, not an independent rebuild. No existing Gauss--Bonnet module was found in the inspected derivation tree, research-packet filenames, or GitHub code search; that statement does not assert exhaustive absence from every archive in the repository.
+
+\begin{center}
+\begin{tabular}{p{0.48\linewidth}p{0.42\linewidth}}
+\toprule
+Item & Status in this package\\
+\midrule
+Human mathematical argument & Developed in full, with explicit hypotheses and error bounds.\\
+Exact mesh and residual checks & Executed successfully with rational arithmetic.\\
+Exact discrete FTC/Green checks & Executed successfully, including sharp bounds and negative cases.\\
+Smooth examples & Exact rational and symbolic identities checked; floating-point quadratures labeled diagnostics.\\
+New Lean candidate files & Not compiled; no completed formal Gauss--Bonnet derivation claimed.\\
+Existing \repo\ derivations & Source inspected; existing build status recorded; not rebuilt here.\\
+General effective triangulation existence & Not assumed as a theorem; finite triangulation is supplied data.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{20}
+
+\bibitem{wiki}
+Wikipedia contributors, \emph{Gauss--Bonnet theorem}, user-specified overview.
+\href{https://en.wikipedia.org/wiki/Gauss%E2%80%93Bonnet_theorem}{User-specified article}.
+Consulted November 21, 2026.
+
+\bibitem{new}
+Steven New, \emph{Chapter 3. Geodesic Curvature and the Gauss--Bonnet Theorem}, PMATH 365 course notes, University of Waterloo, especially the local-to-global proof.
+\url{https://www.math.uwaterloo.ca/~snew/PMATH365/Chap3GaussBonnet.pdf}.
+
+\bibitem{shifrin}
+Theodore Shifrin, \emph{Differential Geometry: A First Course in Curves and Surfaces}, April 2021, Chapter 3, sections 1 and 3.
+\url{https://www.math.uga.edu/sites/default/files/inline-files/ShifrinDiffGeo.pdf}.
+
+\bibitem{repo-readme}
+Vladimir Reshetnikov and contributors, \emph{ProveIt: Primitive recursive arithmetic}, repository README at the inspected commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d36b35eed5bd01af4ade66bf539622495813ccc8/Logic/PrimitiveRecursiveArithmetic/README.md}{Pinned README and verification-status table}.
+
+\bibitem{repo-pr}
+\repo, \emph{ConciseIPRA/PR.lean}: primitive recursive syntax, \code{PRAAx}, and \code{PRA.qfInd}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d36b35eed5bd01af4ade66bf539622495813ccc8/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean}{Pinned foundation source}.
+
+\bibitem{repo-ftc}
+\repo, \emph{Analysis/TaggedFTC.lean}: the finite tagged-division estimate.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d36b35eed5bd01af4ade66bf539622495813ccc8/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Analysis/TaggedFTC.lean}{Pinned source and its explicit scope statement}.
+
+\bibitem{repo-sums}
+\repo, \emph{Analysis/RiemannSumRules.lean}: finite Riemann-sum identities and inequalities.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d36b35eed5bd01af4ade66bf539622495813ccc8/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Analysis/RiemannSumRules.lean}{Pinned source}.
+
+\bibitem{repo-grid}
+\repo, \emph{Analysis/GridIntegral.lean} and \emph{Analysis/RiemannRefinement.lean}: finite one-dimensional grid comparison.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d36b35eed5bd01af4ade66bf539622495813ccc8/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Analysis/GridIntegral.lean}{GridIntegral source};
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d36b35eed5bd01af4ade66bf539622495813ccc8/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Analysis/RiemannRefinement.lean}{RiemannRefinement source}.
+
+\bibitem{repo-euler}
+\repo, \emph{Topology/EulerCharacteristic.lean}: finite Euler--Poincare derivation and ambient auxiliary results.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d36b35eed5bd01af4ade66bf539622495813ccc8/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Topology/EulerCharacteristic.lean}{Pinned source}.
+
+\bibitem{repo-boundary}
+\repo, \emph{Topology/BoundarySquare.lean}: finite opposite-sign cancellation.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d36b35eed5bd01af4ade66bf539622495813ccc8/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Topology/BoundarySquare.lean}{Pinned source}.
+
+\end{thebibliography}

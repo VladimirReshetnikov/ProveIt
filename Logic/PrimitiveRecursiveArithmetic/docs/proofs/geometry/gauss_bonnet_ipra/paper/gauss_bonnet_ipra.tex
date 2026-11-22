@@ -1,0 +1,93 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,angles,quotes}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Constructive Gauss--Bonnet in iPRA}
+\rhead{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.3em}
+\setlist{itemsep=0.25em,topsep=0.35em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\ensuremath{\mathrm{iPRA}}}
+\newcommand{\PR}{\ensuremath{\mathrm{PR}}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Del}{\Delta}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\At}{\operatorname{At}}
+\newcommand{\ceilLog}{\operatorname{clog}_2}
+\newcommand{\Eval}{\operatorname{Eval}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\status}[1]{\par\noindent\fcolorbox{blue!30!black}{blue!3}{\parbox{0.94\linewidth}{#1}}\par}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single,rulecolor=\color{black!20}}
+\hypersetup{pdftitle={Constructive Gauss--Bonnet in intuitionistic primitive recursive arithmetic},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.65in}
+{\Large\color{blue!45!black} Constructive geometry and weak arithmetic\par}
+\vspace{0.5in}
+{\huge\bfseries Constructive Gauss--Bonnet\par}
+\vspace{0.14in}
+{\LARGE in intuitionistic primitive recursive arithmetic\par}
+\vspace{0.45in}
+{\large A quantitative proof for explicitly presented compact surfaces,\par
+including boundary, corners, and nonorientable surfaces\par}
+\vspace{0.55in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large November 21, 2026\par}
+\vfill
+\status{\textbf{Verification status.} This report gives a human-readable proof of a fixed-program \ipra\ theorem schema, together with exact finite arithmetic certificates, executable examples, and a Lean formalization plan. The new Lean files are \emph{uncompiled candidates}; a complete kernel-checked Gauss--Bonnet derivation is not claimed. Existing \repo\ source is inspected at commit \texttt{d36b35eed5bd01af4ade66bf539622495813ccc8}.}
+\vspace{0.2in}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\begin{abstract}
+We prove Gauss--Bonnet for a finite triangulated surface whose metric and local compatibility data are supplied by primitive recursive rational names, quantitative $C^2$ jets, and explicit nondegeneracy margins. The conclusion is a family of rational error inequalities provable using intuitionistic logic and quantifier-free induction. Its usual mathematical interpretation is
+\[
+\int_M K\dd A+\int_{\partial M}k_g\dd s+
+\sum_{v\in\partial M}(\pi-\alpha_v)=2\pi\chi(M).
+\]
+The boundary convention uses the inward conormal and therefore does not require global orientability. A more general identity includes seam curvature and cone defects for independently specified triangle metrics.
+
+The local proof uses an upper triangular orthonormal coframe. On the three fixed sides of the reference triangle, three explicit arctangent branches make the total turning identity telescope. A finite rectangular grid proves the required Green identity with an explicit error bound. Thus no general turning theorem, geodesic triangulation construction, unbounded search, choice principle, or abstract compactness argument is needed. We explain exactly which data replace those existence arguments, how every loop uses a quantifier-free invariant, and which additional Lean modules would complete an object-level derivation in \repo's calculus.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{sections/01_statement}
+\input{sections/02_data}
+\input{sections/03_calculus}
+\input{sections/04_local_geometry}
+\input{sections/05_global}
+\input{sections/06_arithmetic}
+\input{sections/07_examples}
+\input{sections/08_lean}
+\appendix
+\input{sections/09_bounds}
+\input{sections/10_sources}
+\end{document}

@@ -1,0 +1,264 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,tabularx,xcolor}
+\usepackage[letterpaper,top=.9in,bottom=.88in,left=.94in,right=.94in,headheight=15pt,headsep=18pt]{geometry}
+\usepackage{microtype,fancyhdr,titlesec,enumitem}
+\usepackage[colorlinks=true]{hyperref}
+\definecolor{ink}{HTML}{113B46}
+\definecolor{accent}{HTML}{16665B}
+\hypersetup{urlcolor=accent,linkcolor=accent,citecolor=accent,pdftitle={Bertrand's postulate in intuitionistic primitive recursive arithmetic}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily Bertrand's postulate in iPRA}
+\fancyhead[R]{\small\sffamily\color{accent}Number theory}
+\fancyfoot[R]{\small\sffamily\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\titleformat{\section}{\large\sffamily\bfseries\color{ink}}{\thesection}{.65em}{}
+\titlespacing*{\section}{0pt}{0pt}{9pt}
+\titleformat{\subsection}{\normalsize\sffamily\bfseries\color{ink}}{}{0pt}{}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\setlist{leftmargin=*,topsep=3pt,itemsep=2pt,parsep=1pt}
+\setlength\parindent{0pt}\setlength\parskip{4.4pt plus 1pt}
+\setlength{\emergencystretch}{1.2em}
+\setlength{\abovedisplayskip}{7pt plus 2pt}\setlength{\belowdisplayskip}{7pt plus 2pt}
+\raggedbottom
+\newcommand{\N}{\mathbb N}
+\newcommand{\Prime}{\operatorname{Prime}}
+\newcommand{\w}{w}
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+\newcommand{\fl}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\rest}[1]{\bmod #1}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\lead}[1]{\textsf{\bfseries\color{ink}#1}\enspace}
+\newcommand{\pagepart}{\clearpage}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt/blob/1e53ba5b26b144afb01bf6774d75cf35f6c760b2/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations}
+\begin{document}
+\thispagestyle{plain}
+{\fontsize{27}{30}\selectfont\sffamily\bfseries\color{ink} Bertrand's postulate}\\[5pt]
+{\large\sffamily in intuitionistic primitive recursive arithmetic}
+\vspace{11pt}\par
+\noindent\textcolor{accent}{\rule{\linewidth}{1pt}}
+\medskip
+
+\lead{Theorem.} There is a single primitive recursive function \(\w:\N\to\N\) for which iPRA proves
+\begin{align*}
+ n\ge4 &\ \Longrightarrow\quad n<\w(n)<2n-2\quad\text{and}\quad\Prime(\w(n)),\\
+ n\ge2 &\ \Longrightarrow\quad n<\w(n)<2n\phantom{{}-2}\quad\text{and}\quad\Prime(\w(n)),\\
+ n\ge1 &\ \Longrightarrow\quad n<\w(n)\le 2n\phantom{{}-2}\quad\text{and}\quad\Prime(\w(n)).
+\end{align*}
+For every \(n\ge1\), \(\w(n)\) is the least prime greater than \(n\). Thus the theorem gives both a witness term and an intuitionistic proof of the usual existential statement.
+
+\subsection*{The witness}
+Write \(a\dotminus b=\max(a-b,0)\). For \(q\ge2\), test divisibility by the integers \(2,\ldots,q-1\) using remainders. Return \(1\) for \(\Prime(q)\) exactly when they all fail. For \(q=0,1\), return \(0\). Given \(n\), scan \(n+1,\ldots,n+L(n)\) in increasing order, keeping the first prime. Return \(0\) if the scan finds none. The fuel is
+\[
+ L(n)=
+ \begin{cases}n-3& n\ge4,\\1& n=1,\\n\dotminus1& \text{otherwise}.\end{cases}
+\]
+For instance, the scan at \(n=4\) examines just \(5\). At \(n=7\) it examines \(8,9,10,11\) and returns \(11\). The short fuel gives the strict upper endpoint in the first line of the theorem.
+
+\subsection*{Why the scan succeeds}
+Put \(B=\binom{2n}{n}\). The sum of its Pascal row forces \(4^n\le(2n+1)B\). If the scan fails, the prime factors available to form \(B\) are too small. In the shorter interval one must still account for \(2n-1\), which can be prime. Keeping that factor costs at most \(2n\). A sixth-power inequality then contradicts the row sum for \(n\ge722\). Ten small primes cover the rest.
+
+The argument below gives the inductions and their bounds. The accompanying Lean development also proves the three displayed statements for ordinary Lean naturals. The final section gives the corresponding route through ProveIt's syntax for iPRA derivations.
+
+\pagepart\section{Finite arithmetic behind the proof}\label{s:finite}
+We use natural-number terms for addition, monus, multiplication, powers, quotient, remainder and bounded folds. A product with no factors is \(1\). All divisions in the argument have a positive divisor. Total definitions may return \(0\) on division by zero. Divisibility of \(a\) by a positive \(d\) means \(a\bmod d=0\).
+
+\lead{Prime cancellation.} If \(p\) is prime, \(p\nmid a\), and \(p\mid ab\), then \(p\mid b\). Indeed the Euclidean algorithm gives \(g=\gcd(p,a)\) and signed coefficients \(u,v\) with \(up+va=g\). The integer \(g>0\) divides \(p\) and \(a\), so \(g=1\). Multiplying by \(b\) gives the claim. For an explicit bounded algorithm, start with remainders \(p,a\) and coefficient pairs \((1,0),(0,1)\). At a nonzero second remainder replace the first by its remainder on division by the second, and its pair by the same linear combination. Specifically the state \((r_0,r_1)\) becomes \((r_1,r_0-\fl{r_0/r_1}r_1)\). The new second remainder is smaller than the old one. After at most \(a+1\) steps with the zero state held fixed, the surviving row is the gcd. Common divisors are preserved in each direction by the division identity. Signed coefficients are pairs of naturals. These facts follow by induction on the step counter.
+
+\lead{Prime-power reconstruction.} Fix \(1\le t\le M\) and set
+\[
+ H_M(t,p)=\sum_{j=1}^{M}[p^j\mid t],\qquad
+ t=\prod_{\substack{p\le M\\p\ {\rm prime}}}p^{H_M(t,p)}. \tag{1}\label{eq:recon}
+\]
+Here and below, brackets denote the \(0/1\) value of a finite test. To prove the identity, start with \(t=1\), when every exponent vanishes. For \(t>1\), scan \(2,\ldots,t\) for the least divisor \(q\). The scan succeeds at latest at \(t\). A proper divisor of \(q\) greater than \(1\) would have been found sooner, so \(q\) is prime. Write \(t=qu\) with \(1\le u<t\).
+
+For \(p=q\), the first test succeeds, and for \(j\ge1\), \(q^{j+1}\mid qu\) exactly when \(q^j\mid u\), by cancellation of \(q>0\). The last term of \(H_M(u,q)\) is zero since \(q^M\ge2^M>M\ge u\). Thus \(H_M(t,q)=1+H_M(u,q)\). For a different prime \(p\), \(p\nmid q\). Iterating prime cancellation gives \(p^j\mid qu\) exactly when \(p^j\mid u\). Explicitly, a first factor of \(p\) must divide \(u\). Write \(u=pv\), cancel \(p\), and apply the same argument to \(p^{j-1}\mid qv\). This is an induction on \(j\), with \(v\le M\). The product for \(t\) is therefore \(q\) times the product for \(u\). Bounded strong induction on \(t\le M\) gives (1).
+
+\lead{Factorials.} For \(a\le M\), multiply (1) for \(t=1,\ldots,a\). For fixed \(p,j\), exactly \(\fl{a/p^j}\) such integers are multiples of \(p^j\). They are \(p^j,2p^j,\ldots,\fl{a/p^j}p^j\). Reordering finite products now gives
+\[
+ a!=\prod_{\substack{p\le M\\p\ {\rm prime}}}p^{F_M(a,p)},
+ \qquad F_M(a,p)=\sum_{j=1}^{M}\fl{a/p^j}. \tag{2}\label{eq:leg}
+\]
+Equivalently, the floor increases on passing from \(a\) to \(a+1\) precisely when \(p^j\mid a+1\). This proves (2) by a single induction with \(M\) fixed.
+
+\pagepart\section{Two estimates from Pascal's triangle}\label{s:binom}
+Define \(C(r,k)\) by Pascal's recurrence, with \(C(r,0)=1\) and entries beyond the row equal to zero. For \(0\le k\le r\) it satisfies
+\[
+ C(r,k)\,k!(r-k)!=r!.
+ \tag{3}\label{eq:bin}
+\]
+For the induction proof, the endpoints are immediate. At an interior entry \(C(a+b,a)\), \(a,b>0\), multiply the sum of its two parents by \(a!b!\). Using the previous row, the two terms become \(a(a+b-1)!\) and \(b(a+b-1)!\). They add to \((a+b)!\). In particular the entries are positive within the row and symmetric under \(k\mapsto r-k\).
+
+Summing the recurrence shows that each row sum doubles, hence it is \(2^r\). For \(k<r\), cancellation in (3) yields
+\[
+ (k+1)C(r,k+1)=(r-k)C(r,k).
+\]
+In row \(2n\) the entries therefore increase weakly up to \(k=n\). Symmetry handles the decreasing half. Write \(B=C(2n,n)\). Bounding the row sum by its largest entry proves
+\[
+ 4^n\le(2n+1)B. \tag{4}\label{eq:lower}
+\]
+In row \(2a+1\), the entries \(C(2a+1,a)\) and \(C(2a+1,a+1)\) are equal. Their sum is at most the row sum, so
+\[
+ C(2a+1,a)\le4^a. \tag{5}
+\]
+
+\subsection*{A uniform bound for a product of distinct primes}
+Let \(P(r)=\prod_{p\le r,\ p\ {\rm prime}}p\). We show
+\[
+ P(r)\le4^r\qquad(r\ge0). \tag{6}\label{eq:prim}
+\]
+For \(r=0,1,2\) the assertion follows by evaluation. If \(r=2a\ge4\), then \(2\) is a proper divisor of \(r\), so \(P(r)=P(r-1)\) and the bound follows from the preceding index.
+
+For \(r=2a+1\ge3\), let \(D\) be the product of primes \(a+1<p\le2a+1\). Each \(p\) divides \((2a+1)!\) and divides neither \(a!\) nor \((a+1)!\), by repeated prime cancellation. Formula (3) gives \(p\mid C(2a+1,a)\). To see that the whole product divides the coefficient, extract the primes in increasing order. Each new \(p\) divides none of their factors, so prime cancellation puts it in the remaining quotient. This proves \(D\le C(2a+1,a)\). Since \(a+1<2a+1\), strong induction and (5) give
+\[
+ P(2a+1)=P(a+1)D\le4^{a+1}4^a=4^{2a+1}.
+\]
+The strict lower edge \(a+1<p\) in \(D\) matters because \(a+1\) itself occurs in the denominator of (3). It was included in \(P(a+1)\).
+
+\pagepart\section{Where the prime factors can occur}\label{s:factors}
+Fix \(n\ge4\), put \(x=2n\), \(m=\fl{x/3}\), and let \(s\) be the largest natural number with \(s^2\le x\). Hence \(s^2\le x<(s+1)^2\). For \(q\ge1\) define the carry
+\[
+ c(n,q)=\fl{2n/q}-2\fl{n/q}.
+\]
+On writing \(n=uq+r\), \(0\le r<q\), it is \(\fl{2r/q}\), either \(0\) or \(1\). It is zero when \(q>x\). Subtracting the two sums in (2) term by term gives the natural-number equality
+\[
+ F_x(2n,p)=2F_x(n,p)+E(n,p),\qquad
+ E(n,p)=\sum_{j=1}^{x}c(n,p^j).
+\]
+Let \(K(n,p)=p^{E(n,p)}\). By (2), \((2n)!=(n!)^2\prod_{p\le x} K(n,p)\), with product restricted to primes. Comparing with (3) and cancelling the positive \((n!)^2\) proves the exact factorization
+\[
+ B=\prod_{\substack{p\le x\\p\ {\rm prime}}} K(n,p). \tag{7}\label{eq:fac}
+\]
+
+For every prime \(p\le x\), let \(h\) be the largest \(j\le x\) with \(p^j\le x\), including \(j=0\). At most the first \(h\) carries can be nonzero. Hence \(K(n,p)\le p^h\le x\). When \(p>s\), \(p^2>x\), so only the first carry can occur and \(K(n,p)\le p\). These estimates let us count factors under the assumption that the scan found no prime in \((n,x-2)\).
+
+\smallskip
+\begin{tabularx}{\linewidth}{@{}p{.21\linewidth} X@{}}
+\toprule
+\textsf{Prime range} & \textsf{Contribution to (7)}\\ \midrule
+\(p\le s\) & At most \(s\) factors, each at most \(x\). Their product is at most \(x^s\).\\[3pt]
+\(s<p\le m\) & Each factor is at most \(p\). Their product is bounded by \(P(m)\le4^m\).\\[3pt]
+\(p>s,\ m<p\le n\) & From \(2n<3p\) and \(p\le n\), we have \(\fl{2n/p}=2\) and \(\fl{n/p}=1\). The first carry vanishes, hence \(K(n,p)=1\).\\[3pt]
+\(p>n,\ p\le x\) & Failure rules out \(n<p<x-2\). Both \(x-2=2(n-1)\) and \(x=2n\) are composite. Only \(x-1\) remains possible, and its contribution is at most \(x\).\\
+\bottomrule
+\end{tabularx}
+\smallskip
+
+Here \(s\le n\), since \(2n\le n^2\). Empty ranges contribute \(1\). Combining the table with (7) gives the consequence of a failed scan that will be contradicted.
+\[
+ \boxed{\quad B\le x^{s+1}4^{\fl{x/3}}.\quad} \tag{8}\label{eq:gap}
+\]
+\pagepart\section{The integer inequality and the finite certificate}\label{s:cut}
+Write \(u=x+1\). Equations (4) and (8) give \(4^n\le u^{s+2}4^m\). Cube this inequality. Since \(3m\le x=2n\) and \(3n=n+2n\), cancellation of \(4^{2n}>0\) gives
+\[
+ 4^n\,4^{2n}\le u^{3(s+2)}4^{3m}\le u^{3(s+2)}4^{2n},
+ \qquad 4^n\le u^{3(s+2)}. \tag{9}
+\]
+Suppose \(n\ge722\). Then \(x\ge1444=38^2\), so \(s\ge38\). We claim
+\[
+ (s+1)^6\le 2^{s-2}\qquad(s\ge38). \tag{10}
+\]
+At \(s=38\), \(39^6<64^6=2^{36}\). For the step, \(9(s+2)\le10(s+1)\) and \(10^6=1{,}000{,}000<1{,}062{,}882=2\cdot9^6\). Raise the first inequality to the sixth power and cancel \(9^6\) to obtain \((s+2)^6\le2(s+1)^6\). Induction proves (10).
+
+The strict inequality \(x<(s+1)^2\) implies \(u\le(s+1)^2\). Thus
+\[
+ u^{3(s+2)}\le ((s+1)^6)^{s+2}
+       \le 2^{(s-2)(s+2)}
+       =2^{s^2-4}<2^x=4^n. \tag{11}
+\]
+This contradicts (9). The strict step in (11) still holds when \(x=s^2\).
+
+\subsection*{Covering every small input}
+An odd prime \(p\) works for all \((p+3)/2\le n\le p-1\). The table gives a contiguous choice of such intervals. Its last column lists the remainders for each prime divisor candidate up to \(\fl{\sqrt p}\), in the order \(2,3,5,7,11,13,17,19,23,29\), stopping when the square exceeds \(p\). A composite has a prime factor whose square is at most the number, by taking a prime factor of the smaller factor in a nontrivial factorization. All composite candidates through \(29\) have a divisor in \(\{2,3,5\}\).
+\begin{center}\small
+\begin{tabular}{@{}r@{\qquad}l@{\qquad}l@{}}
+\toprule
+\textsf{Prime \(p\)} & \textsf{Inputs served} & \textsf{Nonzero remainders}\\ \midrule
+5 & 4 & 1\\
+7 & 5--6 & 1\\
+11 & 7--10 & 1, 2\\
+19 & 11--18 & 1, 1\\
+31 & 19--30 & 1, 1, 1\\
+59 & 31--58 & 1, 2, 4, 3\\
+113 & 59--112 & 1, 2, 3, 1\\
+223 & 113--222 & 1, 1, 3, 6, 3, 2\\
+443 & 223--442 & 1, 2, 3, 2, 3, 1, 1, 6\\
+883 & 443--882 & 1, 1, 3, 1, 3, 12, 16, 9, 9, 13\\
+\bottomrule
+\end{tabular}
+\end{center}
+This certifies every \(4\le n<722\). The scan's other initial values are \(\w(1)=2,\ \w(2)=3,\ \w(3)=5\). Together with (11) this proves all endpoint conventions on page 1.
+
+\pagepart\section{Why this argument is an iPRA proof}\label{s:ipra}
+We take iPRA to have intuitionistic first-order logic, defining equations for primitive recursive functions, and induction for quantifier-free formulas with parameters. Free parameters in a derivation may be universally closed at the end. A characteristic function has values in \(\{0,1\}\). Multiplication represents conjunction of tests. Every bounded universal test is a product of such bits, and bounded existence is computed by testing whether their sum is positive. The induction proving the specification of a bounded fold uses its defining equations. In particular a bounded existential can furnish the first successful index as a term.
+
+\lead{An explicit induction translation.} Suppose a mathematical proof uses the assertions \(A(i)\) for all \(i<k\), where \(A\) has characteristic term \(a(i)\). Put \(T(0)=1\) and \(T(k+1)=T(k)a(k)\). From \(T(k)=1\) one can infer \(a(j)=1\) for any \(j<k\). If that bit were zero, the product would already be zero from index \(j+1\) onward. This last claim is quantifier-free induction on the length of the suffix. A proof of the step \(T(k)=1\Rightarrow a(k)=1\) therefore gives ordinary quantifier-free induction on \(T(k)=1\). This is the strong induction used in (1) and (6). An implication between decidable tests is itself represented by a Boolean operation.
+
+\begin{tabularx}{\linewidth}{@{}p{.245\linewidth} X@{}}
+\toprule
+\textsf{Part of the argument} & \textsf{Counters, parameters and induction formula}\\ \midrule
+Factorization (1) & Fix \(M\). Take the product of truth values of (1) for all \(1\le t\le k\le M\). The cofactor is \(<t\). Divisibility and equality of products are primitive recursive. The subsidiary cancellation argument for \(p^j\) uses the bounded fold over \(u\le M\), with \(p,q,M\) fixed.\\[2pt]
+Pascal's triangle & Fix the last row \(R\). Compute each row from its predecessor, storing its first \(R+1\) entries. For a numeric coding use digits in base \(2^{R+1}+1\). The elementary entry bound \(C(r,k)\le2^r\) follows by induction from the two parents and ensures every needed digit fits. Induct on the row and take a conjunction over \(k\le R\).\\[2pt]
+Powers and products & Sums defining \(F,H,E\) use \(j\le x\) or \(M\). Products range over \(p\le x\) or \(M\). Commuting finite folds is induction on their lengths. The running inequality for (8) is the product of the pointwise bounds through the current index.\\[2pt]
+Square root and (10) & Search \(s\le x\) for the last square \(\le x\). Equivalently increase the previous root by one exactly when its next square fits. Induct on \(j=s-38\) for \((j+39)^6\le2^{j+36}\). The comparisons in (11) are integer comparisons.\\
+\bottomrule
+\end{tabularx}
+
+\pagepart\section{From bounded failure to a witness}\label{s:witness}
+For fixed \(n\), let \(W_k\) be the partial result after the first \(k\) candidates. Starting from \(W_0=0\), keep \(W_k\) if it is positive. Otherwise test \(\Prime(n+k+1)\) and return that number on success, or zero on failure. The invariant has two branches.
+\begin{itemize}
+\item \(W_k=0\) and every primality bit on \(n<i\le n+k\) is zero.
+\item \(n<W_k\le n+k\), the primality bit at \(W_k\) is one, and every bit on \(n<i<W_k\) is zero.
+\end{itemize}
+These branches are decidable and contain only bounded tests. Appending one candidate proves the next invariant. A previous first success remains first. With no previous success the one new bit decides both the result and its minimality. Thus the displayed disjunction is proved by quantifier-free induction. Put \(k=L(n)\). For \(n\ge4\), the first branch has just been refuted, by the table or by (4)--(11), while the second branch supplies the term \(\w(n)=W_k\) with the stated properties. This disjunction elimination is intuitionistically valid. The contradiction in (9)--(11) yields a prime because a verified finite scan has already supplied both possible outcomes.
+
+\subsection*{Consecutive primes}
+With conventional indexing define \(p_1=2\) and \(p_{j+1}=\w(p_j)\). This is primitive recursion after shifting the initial index to zero. The theorem makes this a strictly increasing sequence of primes and gives
+\[
+             p_{j+1}<2p_j\qquad (j\ge1).
+\]
+Minimality precludes a skipped prime between two consecutive values. To see that the sequence lists all primes, note that \(p_j\ge j+1\) by induction. For a prime \(q\ge2\), bounded search finds the least \(j\in[1,q-1]\) with \(p_j\ge q\). If \(j=1\) then \(q=2\). Otherwise \(p_{j-1}<q\le p_j\), so minimality forces \(q=p_j\). Every search bound is a term. For \(p_j\ge5\), the same proof supplies the sharper inequality \(p_{j+1}<2p_j-2\).
+
+\subsection*{The object sentence}
+For the strongest line on page 1 the entire open matrix can be written
+\[
+ [\,4\le n\,]\ \Longrightarrow\
+ [\,n<\w(n)\,]\ \land\ [\,\Prime(\w(n))\,]\ \land\
+ [\,\w(n)<(2n\dotminus2)\,].
+\]
+Each bracket asserts that the characteristic term equals one. Universal closure gives a sentence of arithmetic. Existential introduction with the term \(\w(n)\) gives the usual quantified theorem. The numeral \(722\) is a convenient proof cutoff. It has no role in the definition or running bound of \(\w\).
+\pagepart\section{Lean verification and the ProveIt formalization}\label{s:lean}
+\subsection*{Checked with Lean 4.19.0}
+The directory \code{lean/} is self-contained and imports Lean's standard library. Run \code{./check.sh} there with the pinned toolchain. It builds every module from source in a fresh temporary directory and prints the axiom dependencies of the public theorems. In \code{Bertrand.lean}, the statements \code{Bertrand.strong}, \code{Bertrand.strict} and \code{Bertrand.closed\_right} give the three endpoint conventions on page 1. The theorem \code{Bertrand.least} gives minimality. The prime sequence starts at index zero in the code.
+
+\smallskip
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.33\linewidth} X@{}}
+\toprule
+\textsf{Lean modules} & \textsf{Connection to the arithmetic proof}\\ \midrule
+\code{BertrandSearch}, \code{BertrandPrimeFactor} & The Boolean trial-divisor test agrees with the divisor definition of primality. A bounded scan returns its least prime, and the ten-prime certificate handles \(4\le n<722\). An integer \(>1\) yields a prime divisor.\\[2pt]
+\code{Binomial}, \code{Primorial}, \code{BertrandProducts} & Pascal recurrence, row sum, central maximum and the factorial identity imply (4)--(6). Finite products, cutoffs and the contribution of a single exceptional index are explicit recursors.\\[2pt]
+\code{BertrandFactorCount}, \code{BertrandReconstruction}, \code{BertrandLegendre} & Reconstruct the integer from its divisibility counts, then multiply these identities to obtain the factorial formula. Positive cancellation yields (7).\\[2pt]
+\code{BertrandValuation}, \code{BertrandBounds}, \code{BertrandAssembly} & Bound each carry, split the prime product under the gap assumption, then use the integer square root and the sixth-power induction to establish the contradiction.\\[2pt]
+\code{Bertrand} & Discharges the intermediate premises with the proved theorems, supplies the unconditional witnesses, and proves that the prime sequence is exhaustive.\\
+\bottomrule
+\end{tabularx}
+
+The completed host proof is over Lean's \code{Nat}. The axiom audit on its public results lists \code{propext} and \code{Quot.sound}. The bounded invariants in Sections \ref{s:ipra} and \ref{s:witness} give the arithmetic justification for interpreting the mathematics in iPRA. Every induction described there has a quantifier-free arithmetic matrix after the indicated translation.
+
+\subsection*{Target inside ProveIt}
+The companion \code{proveit/BertrandObject.lean} targets ProveIt commit \href{https://github.com/VladimirReshetnikov/ProveIt/commit/1e53ba5b26b144afb01bf6774d75cf35f6c760b2}{\code{1e53ba5b26b1}}. It gives source for a closed \(\vdash_{\mathrm{iPRA}}\)-sentence and a final inference parameterized by a derivation of failure's impossibility. Its scan tests \((i\dotminus n)[\Prime(i)]\ne0\) for all \(i<2n\dotminus2\). On \(n\ge4\) its least successful index is exactly \(\w(n)\). Each implementation has its own failure value. This optional client was inspected against pinned declarations. Replay under ProveIt's Lean 4.32.0 and implementation of its remaining object sequent are open.
+
+\pagepart\section*{Completing the object-level derivation}
+Use the following construction with the pinned \code{IPRADerivations} modules. All terms here take the free numeric parameter \(n\). The sequent to discharge has hypotheses \(4\le n\) and \(\mathrm{found}(n)=0\), with conclusion \(\bot\).
+\begin{enumerate}
+\item Use \code{Foundations.BoundedReflection} to obtain the failed value of each test at an index below \(2n\dotminus2\). For \(4\le n<722\), split on the ten endpoints in the table, use \code{isP} at their numerals and contradict the failed test. The three small values for the weaker endpoints are separate numeral computations.
+\item For \(n\ge722\), the lemma \code{central\_lower} in \code{Combinatorics.CentralBinomial} gives (4). Use \code{binom\_spec} in \code{Combinatorics.Binomial} for the factorial identity. The row sum and symmetry give (5). The odd-step product \(D\) is a filtered interval product. The induction on its prefix in Section \ref{s:binom} proves that it divides the middle coefficient. Fold the assertion \(P(j)\le4^j\) over predecessors as in Section \ref{s:ipra}. The \code{prim} term is supplied by \code{AnalyticNumberTheory.PrimorialLower}.
+\item Apply \code{FactorVector.reconstruct} with bound \(1+B+2n\), large enough for that lemma's strict size premise. Terms with prime \(p>2n\) have zero exponent. The bound \(p^{v_p(B)}\le 2n\) follows from \code{BinomialLcm.binom\_val\_le} and \code{PrimorialLower.factor\_le}. Together with \(p^2>2n\) it gives \(v_p(B)\le1\). In the middle strip, specialize \code{BinomialLcm.binom\_val} or use (2) and (3). The first quotients are \(2\) and \(1\), and higher quotients vanish. Each finite comparison is an object equality or inequality.
+\item Multiply the pointwise inequalities from the four ranges of Section \ref{s:factors}, using prefix products. In the top range include \(2n-1\) with bound \(2n\). Compare the resulting product with (4). Reify the primitive recursive square root, prove its two square bounds, and use the single polynomial-exponential induction (10). Natural-number order and cancellation now produce \(\bot\) by (9)--(11).
+\item Pass this derivation to \code{bertrand\_of\_failure\_refuted} in the client. Its case split on the found bit gives the positive witnessed sequent, then universal closure gives the closed theorem. Use \code{before\_witness} for the corresponding leastness assertion.
+\end{enumerate}
+\subsection*{Sources and reproducibility}
+The central-binomial strategy is due to Paul Erd\H{o}s, \href{https://www.renyi.hu/~p_erdos/1932-01.pdf}{\emph{Beweis eines Satzes von Tschebyschef}} (1932), pp.~194--198. The two strict endpoints and the consecutive-prime formulation occur in the \href{https://en.wikipedia.org/wiki/Bertrand\%27s_postulate}{linked statement}. For the conventional closed-right theorem in mathlib, see \href{https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Bertrand.html}{\code{Mathlib.NumberTheory.Bertrand}}. The standalone proof builds from \code{Std}.
+
+Pinned ProveIt source includes \href{\repo/Combinatorics/CentralBinomial.lean}{\code{CentralBinomial}}, \href{\repo/AnalyticNumberTheory/BinomialLcm.lean}{\code{BinomialLcm}}, \href{\repo/AnalyticNumberTheory/FactorVector.lean}{\code{FactorVector}}, \href{\repo/AnalyticNumberTheory/PrimorialLower.lean}{\code{PrimorialLower}}, and \href{\repo/Foundations/BoundedReflection.lean}{\code{BoundedReflection}}. Build instructions and the verification output for the standalone development are in the archive.
+\end{document}

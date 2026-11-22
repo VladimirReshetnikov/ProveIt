@@ -1,0 +1,167 @@
+\section{Explicit bounds and the elementary jet compiler}\label{sec:bounds}
+
+This appendix makes the quantitative analytic steps reproducible. Throughout, $H\ge1$ is an integer and \eqref{eq:Hbounds} holds. All norms of a jet tuple below mean the maximum absolute difference of its finitely many entries.
+
+\subsection{Bounds for the connection and density}
+
+Put $u=b_x-a_y$ and $w=c_x+bP$. Then
+\[
+|u|,|u_i|\le2H,\qquad
+|w|\le3H^3,\qquad |w_i|\le7H^5,
+\]
+because
+\[
+P_i=\frac{u_i}{c}-\frac{u c_i}{c^2},\quad
+w_i=c_{xi}+b_iP+bP_i,\quad
+Q_i=\frac{w_i}{a}-\frac{wa_i}{a^2}.
+\]
+Successive substitution gives the table
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+Quantity & Uniform absolute bound\\
+\midrule
+$P$ & $2H^2$\\
+$P_x,P_y$ & $4H^4$\\
+$Q$ & $3H^4$\\
+$Q_x,Q_y$ & $10H^6$\\
+$\rho=P_y-Q_x$ & $14H^6$\\
+$k_g\,\dd s/\dd t$ on any reference side & $13H^4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the last row, the angle density on $BC$ has numerator
+$x\dot y-y\dot x$ with $x=b-a$, $y=c$,
+$|x|\le2H$, $|y|\le H$, $|\dot x|\le4H$, $|\dot y|\le2H$.
+Its denominator is at least $c^2\ge H^{-2}$, so its absolute value is at most $8H^4$. The $CA$ angle density is at most $2H^4$, and the $AB$ angle density is zero. The connection term is at most $5H^4$ on every side. These calculations prove the uniform bound.
+
+\subsection{Stability with respect to rational jet approximations}
+
+Compare two jet tuples each satisfying the same $H$ bounds, and suppose every entry differs by at most $\eps$. Then
+\begin{equation}\label{eq:stabilityconstants}
+\begin{aligned}
+|\Delta P|&\le4H^3\eps,&
+|\Delta P_i|&\le12H^5\eps,\\
+|\Delta Q|&\le10H^5\eps,&
+|\Delta Q_i|&\le46H^7\eps,\\
+|\Delta\rho|&\le58H^7\eps.
+\end{aligned}
+\end{equation}
+Here $\Delta$ means the difference between the two evaluations, not a derivative. The useful elementary estimates are
+\[
+|c^{-1}-{c'}^{-1}|\le H^2\eps,
+\qquad |c^{-2}-{c'}^{-2}|\le2H^3\eps,
+\]
+and the same for $a$. They follow by factoring the differences, not by a mean-value theorem. Subtract products one factor at a time. This first gives
+$|\Delta w|\le7H^4\eps$ and
+$|\Delta w_i|\le23H^6\eps$.
+The two terms of $Q_i=w_i/a-wa_i/a^2$ contribute at most
+$30H^7\eps$ and $16H^7\eps$, respectively. The other rows follow directly from the formulas above.
+
+For the $BC$ angle density, the numerator changes by at most $16H\eps$, the denominator by at most $10H\eps$, and the denominator is at least $H^{-2}$. Factoring a quotient difference gives a bound $96H^7\eps$ for its change. Including the connection term bounds the change of the entire side density by $110H^7\eps$. The other sides have smaller bounds.
+
+For the square coefficients at a fixed rational point $(u,v)$,
+\[
+|\Delta A|\le14H^5\eps,\quad |\Delta B|\le10H^5\eps,
+\]
+\[
+|\Delta A_v|\le68H^7\eps,\quad
+|\Delta B_u|\le102H^7\eps.
+\]
+Now suppose one tuple is exact and the other comes from evaluation errors at most $\eps\le1/(2H)$. The approximate tuple satisfies the original bounds with $H'=2H$: its positive entries remain at least $1/(2H)$ and all jets are at most $2H$. Replacing $H$ by $2H$ in all the preceding estimates shows that
+\begin{equation}\label{eq:universalstability}
+|\Delta F|\le32768H^7\eps
+\end{equation}
+is a common conservative bound for every density or coefficient used in the square-grid proof and the reference-side density. Since
+$2^{7\ell(2H)}\ge(2H)^7$, the evaluation precision in \eqref{eq:evalbits} makes \eqref{eq:universalstability} at most
+$2^{-(r+m+12)}$, below the required $2^{-(r+8)}/N$.
+
+\subsection{A modulus for the square integrand}
+
+The map $\Phi$ satisfies
+$\norm{\Phi(z)-\Phi(z')}_1\le2\norm{z-z'}_1$.
+If the square-point distance is at most $\rho_0$ and the resulting jet differences are at most $\eps$, then
+\[
+\left|\Delta\bigl((1-u)\rho(\Phi)\bigr)\right|
+\le58H^7\eps+14H^6\rho_0.
+\]
+Let $h_H=\ell(H)$ and $s_r=r+8+7h_H$. A sufficient modulus is
+\begin{equation}\label{eq:nu}
+\nu_\rho(r)=\max\{\mu(s_r)+2,\ s_r+2\}.
+\end{equation}
+At the prescribed distance, both $\eps$ and $\rho_0$ are at most $2^{-s_r}$, so the displayed bound is below $2^{-r}$. The extra two bits safely cover the $\ell^1$ pullback factor. This is a continuity modulus, not a substitute for the derivative-remainder moduli used in finite differences.
+
+The first derivatives of the square coefficients obey
+\[
+|A_u|\le28H^6,\quad |A_v|\le17H^6,\quad
+|B_u|\le23H^6,\quad |B_v|\le10H^6.
+\]
+For example, $A_u=P_x-vP_y-vQ_x+v^2Q_y$ after pullback. The corresponding boundary left-sum error is at most
+$(2\cdot28+2\cdot10)H^6/N\le80H^6/N$.
+The one-dimensional derivative bound implies the needed Lipschitz estimate by the finite FTC, so this argument does not introduce an unproved mean-value principle.
+
+\subsection{Compiling Taylor witnesses by rational operations}
+
+Here is a direct way to generate the moduli $\lambda_A,\lambda_B$ used above. Suppose $f$ has value bound $B_f$, derivative coefficient bound $D_f$, and Taylor remainder bound $\eps\norm h_1$ at a suitably small step. At a step where $\eps\le1$, it also has the increment bound
+$|f(z+h)-f(z)|\le C_f\norm h_1$, where $C_f=D_f+1$.
+
+\paragraph{Addition.}
+Add the two remainder bounds and request one extra bit for each. Derivative and value bounds add.
+
+\paragraph{Product.}
+Writing $\Delta f=f(z+h)-f(z)$ and similarly for $g$,
+\[
+\Delta(fg)-D(fg)(z)h
+=f(z)R_g+g(z)R_f+\Delta f\,\Delta g.
+\]
+Its absolute value is at most
+\begin{equation}\label{eq:productTaylor}
+(B_f+B_g)\eps\norm h_1+C_fC_g\norm h_1^2.
+\end{equation}
+For a target $2^{-r}\norm h_1$, it suffices to use the input moduli at
+$r+2+\ell(1+B_f+B_g)$ and to impose
+$\norm h_1\le2^{-(r+2+\ell(1+C_fC_g))}$.
+Taking the maximum of these finitely many requirements gives a PR output modulus. Bounds may be rounded upward to integers before using $\ell$.
+
+\paragraph{Reciprocal.}
+Suppose $|f|\ge1/M$ with a fixed integer $M\ge1$. The exact identity
+\[
+\frac1{f+\Delta f}-\frac1f
+=-\frac{\Delta f}{f^2}
++\frac{(\Delta f)^2}{f^2(f+\Delta f)}
+\]
+gives the remainder bound
+\begin{equation}\label{eq:reciprocalTaylor}
+M^2\eps\norm h_1+M^3C_f^2\norm h_1^2.
+\end{equation}
+Use the input modulus at $r+2+\ell(1+M^2)$ and require
+$\norm h_1\le2^{-(r+2+\ell(1+M^3C_f^2))}$.
+The lower bound is required at both endpoints, as is already guaranteed on the input domain. This construction works for either sign of $f$.
+
+\paragraph{Fixed compositions.}
+For a quantitative map $\psi$ with increment bound $L\norm h_1$ and Taylor remainder $\eps_\psi\norm h_1$, expand
+\[
+f(\psi(z+h))-f(\psi(z))
+=Df(\psi(z))\bigl(\psi(z+h)-\psi(z)\bigr)+R_f.
+\]
+The remainder after subtracting $Df(\psi(z))D\psi(z)h$ is bounded by
+$(L\eps_f+D_f\eps_\psi)\norm h_1$.
+Request enough additional bits in both moduli to make this below $2^{-r}\norm h_1$, and ensure $L\norm h_1$ is within $f$'s permitted step size. The polynomial map $\Phi$ has explicit first derivatives and a quadratic remainder, so this is especially simple for the Green proof. Supplied domain margins make all evaluations legal.
+
+Apply the Taylor rules to the fixed expression trees for $P,Q,A,B$. Obtain their first derivatives algebraically, and compile only continuity moduli for those derivative expressions. An input jet of order one has its own derivative contract with the order-two entries as derivatives. Thus the compiler uses only the given $C^2$ jets. It does not ask for third derivatives or for Taylor contracts of $P_i$ and $Q_i$.
+
+\paragraph{Square roots, when starting with metric coefficients.}
+For a named $x$ with $1/M\le x\le B$, approximate $x$ by a rational within a prescribed error so the approximation is at least $1/(2M)$. Bisect the rational interval $[0,B+1]$ a predetermined number of times to approximate its square root. Every branch compares rational squares, and the iteration bound is explicit. The identity
+\[
+|\sqrt x-\sqrt y|=\frac{|x-y|}{\sqrt x+\sqrt y}
+\]
+supplies a rational Lipschitz bound on this positive range and a PR precision schedule. Differentiation gives
+\[
+(\sqrt f)_i=\frac{f_i}{2\sqrt f},\qquad
+(\sqrt f)_{ij}=\frac{f_{ij}}{2\sqrt f}
+-\frac{f_if_j}{4f^{3/2}}.
+\]
+The same difference identity, followed by the product and reciprocal estimates, proves the Taylor contracts; continuity bounds follow from the displayed formulas. This justifies the effective Cholesky construction without an unbounded search or an assumption that arbitrary square roots are exact rational operations.
+
+The angle evaluator is handled by its explicit integral and the derivative
+$(1+x^2)^{-1}$, already proved in \cref{sec:calculus}. Combining these rules supplies every local bound and modulus used in the main precision schedule.

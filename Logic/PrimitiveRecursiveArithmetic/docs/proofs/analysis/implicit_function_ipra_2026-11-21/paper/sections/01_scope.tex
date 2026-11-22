@@ -1,0 +1,114 @@
+\section{The result and its foundational meaning}
+
+The ordinary implicit function theorem starts with a \(C^1\) map
+\(F:\R^n\times\R^m\to\R^m\), a zero \((a,b)\), and an invertible
+\(y\)-Jacobian at that zero. It obtains a local graph \(y=g(x)\) and the
+formula
+\[
+ Dg(x)=-D_yF(x,g(x))^{-1}D_xF(x,g(x)).
+\]
+Our result preserves these conclusions for quantitatively presented
+finite-dimensional data. It additionally specifies how to compute the
+neighborhood, the graph, the derivative, and all relevant error bounds.
+The contraction argument is classical in origin; the contribution here
+is a complete finite-observation organization adapted to
+quantifier-free induction, rather than a claim of a new classical
+implicit function theorem. Constructive implicit function theorems and
+their quantitative uniqueness principles have an existing literature,
+including Diener--Schuster \cite{diener2011,diener2009}.
+
+\subsection{The base theory}
+
+We use first-order intuitionistic primitive recursive arithmetic:
+intuitionistic predicate logic with equality, the natural numbers
+\(0,S\), a function symbol for every fixed primitive recursive
+function, their defining equations, the usual elementary arithmetic
+axioms, and induction
+\[
+ P(0,\vec u)\ \wedge\
+ \forall j\bigl(P(j,\vec u)\to P(j+1,\vec u)\bigr)
+ \ \longrightarrow\ \forall j\,P(j,\vec u)
+ \tag{QF-Ind}
+\]
+only when \(P\) is quantifier-free. Equivalent finite-signature
+presentations can be used through a previously verified interpretation;
+we do not need such an interpretation for the mathematical proof.
+An order comparison between rational codes is decidable and can be
+represented by a primitive recursive Boolean function.
+
+All dimensions in the theorem are fixed positive integers. A finite
+tuple of rational numbers, a matrix, a finite trace, a finite sum, and
+a bounded maximum are coded by natural numbers. The coding and the
+translation of the argument into (QF-Ind) are made explicit in
+Section~\ref{sec:arith}.
+
+\subsection{What a real function in iPRA means}
+
+A primitive recursive real vector is presented by a fixed primitive
+recursive map \(u:\N\to\Q^d\) satisfying
+\begin{equation}\label{eq:regular}
+ \norm{u(k)-u(l)}\le 2^{-k}+2^{-l}\qquad(k,l\in\N).
+\end{equation}
+This is a first-order universal statement about numerical codes.
+Writing a real vector \(u\), its norm, or an inequality about it is
+convenient notation for corresponding statements at every rational
+observation precision. No set of all real numbers is introduced into
+the object theory.
+
+A function on a rational box is represented by a fixed primitive
+recursive evaluator at rational points, together with uniform
+continuity data. Its action on any fixed primitive recursive point
+name is then another primitive recursive program, obtained by
+composition and an explicit precision shift. Uniform statements about
+the evaluator use ordinary numerical quantifiers. Statements about
+arbitrary named input points are schemas over their fixed names.
+
+This distinction is essential. There is no primitive recursive universal
+evaluator for all primitive recursive program codes. If such a total
+evaluator \(U(e,x)\) existed, the primitive recursive function
+\(x\mapsto U(x,x)+1\) would contradict universality at its own code.
+We fix the input evaluators before taking primitive recursion. A
+uniform numerical family of inputs is also allowed when its evaluator
+is already primitive recursive jointly in the numerical family
+parameter.
+
+\subsection{The certificates that replace hidden existence assertions}
+
+The input contains a neighborhood radius, positive conditioning data,
+and primitive recursive moduli for a Taylor remainder and continuity
+of the derivative. These are substantive hypotheses. Merely writing
+that \(F\) is \(C^1\) without specifying the presentation, moduli, and
+their arithmetic proofs is not enough for an iPRA construction.
+Similarly, a negation \(\neg(\det J=0)\) is not silently turned into a
+positive numerical lower bound for \(|\det J|\).
+
+For polynomial maps with rational coefficients, these certificates
+come from finite polynomial identities and explicit box estimates.
+The same interface can be discharged for other functions with
+primitive recursive evaluation and certified local calculus. The
+theorem does not assert that an arbitrary computable function has a
+primitive recursive evaluator or a primitive recursive modulus.
+
+\subsection{Norms and a bounded logarithmic shift}
+
+Vectors carry the maximum norm; matrices carry its induced row-sum
+norm:
+\[
+ \norm{z}=\max_i|z_i|,\qquad
+ \norm{B}=\max_i\sum_j|B_{ij}|.
+\]
+The product \((x,y)\) also carries the maximum norm. Thus
+\(\norm{Bz}\le\norm B\norm z\) and
+\(\norm{BC}\le\norm B\norm C\). For rational matrices these statements
+are finite triangle inequalities.
+
+For a nonnegative rational \(t\), let \(\lgup(t)\) be the least
+integer \(j\) in the bounded range \(0\le j\le\lceil t\rceil+1\)
+such that \(t\le2^j\). This is a primitive recursive bounded search;
+the range contains a witness by elementary induction. No real
+logarithm is used. In particular,
+\[
+ t\,2^{-\lgup(t)}\le1.
+\]
+Every logarithmic-looking precision constant below means this bounded
+operation.

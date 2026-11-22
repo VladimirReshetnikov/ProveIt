@@ -1,0 +1,135 @@
+\section{Numerical and geometric presentation data}\label{sec:data}
+
+\subsection{Codes, regular names, and the meaning of an inequality}
+
+Encode an integer by a sign and a natural magnitude, and a rational by an integer numerator and a positive natural denominator. Normalization by a greatest common divisor is optional. Addition, multiplication, sign comparison, bounded list access, and denominator clearing are primitive recursive. Every rational inequality used below is a decidable relation on such codes, hence has a primitive recursive Boolean characteristic function.
+
+A \emph{regular rational name} is a fixed primitive recursive rational-valued function $r(d,k)$, with a proof or hypothesis of
+\begin{equation}\label{eq:regular}
+\abs{r(d,k)-r(d,l)}\le 2^{-k}+2^{-l}\qquad(k,l\in\N).
+\end{equation}
+We write its interpreted value as $r(d)$. This notation is eliminable: in the usual completion it is approximated by $r(d,k)$ within $2^{-k}$. Conversely, a quadrature algorithm whose outputs approximate a fixed integral with that bound gives such a name, by comparison through finite common refinements; an independently constructed completion is not required inside arithmetic.
+
+For example, $\abs{x-y}\le b$, with rational $b\ge0$, can be read arithmetically as
+\[
+\forall k\quad\abs{x(k)-y(k)}\le b+2^{1-k}.
+\]
+When a polynomial or quotient expression is involved, its input errors are first propagated by the explicit bounds below. We do not compare unknown real values for equality to decide a branch. Branches used by programs compare rational approximations with a supplied nonzero margin, or compare natural numbers. All claims about real names in this report are abbreviations for this type of first-order numerical assertion.
+
+\subsection{Effective jets}
+
+Let $U$ be a fixed rational polygonal domain, such as a triangle with a small rational collar. A quantitative $C^r$ name for $f$ consists of rational evaluators
+\[
+f_\nu(z,k)\quad (z\in U\cap\Q^2,\ |\nu|\le r),
+\]
+where $\nu=(\nu_1,\nu_2)$ is a multi-index, together with:
+\begin{enumerate}
+\item regular-name contracts for every jet value, uniformly in $z$;
+\item a rational bound $H\ge1$ for the absolute values of the jets;
+\item a common modulus $\mu$ such that
+\begin{equation}\label{eq:continuitycontract}
+\norm{z-w}_1\le2^{-\mu(q)}
+\quad\Longrightarrow\quad
+\abs{f_\nu(z)-f_\nu(w)}\le2^{-q};
+\end{equation}
+\item a common differentiability modulus $\lambda$ such that, for $|\nu|<r$ and a segment contained in $U$,
+\begin{equation}\label{eq:jetcontract}
+\begin{split}
+\norm{h}_1\le2^{-\lambda(q)}\quad\Longrightarrow\quad
+\abs{f_\nu(z+h)-f_\nu(z)
+-\sum_{j=1}^2f_{\nu+e_j}(z)h_j}
+\le2^{-q}\norm{h}_1.
+\end{split}
+\end{equation}
+\end{enumerate}
+The programs for $\mu$ and $\lambda$ are fixed PR programs, possibly depending on numerical parameters $d$. We replace them by their bounded running maxima when monotonicity is useful. Mixed derivatives use one shared multi-index entry, so the second-order data include the required equality of mixed partials.
+
+The finite-precision translation of \eqref{eq:jetcontract}, using all input values at precision $k$, adds at most $(2+\norm{h}_1)2^{-k}$ to its right-hand side. The translation of \eqref{eq:continuitycontract} adds $2^{1-k}$. These are explicit arithmetic formulas. They are hypotheses about the input functions; a finite mesh checker cannot decide their truth at every precision. An application can either work under them or supply separate \ipra\ derivations for its concrete formulas.
+
+The derivative contract is quantitative differentiability, not a disguised integration theorem. Products and reciprocals preserve it by finite algebra; a detailed operation rule is given in \cref{sec:bounds}. Thus one may present the initial coframe by elementary formulas and derive the contracts instead of listing unrelated functions and assuming their calculus. A composition evaluated at a named point is computed by first taking a rational approximation to that point at the outer function's supplied modulus. The rational collar and overlap margins ensure that the approximation remains in the evaluation domain; they are part of the chart data.
+
+\subsection{Finite surfaces}
+
+\begin{definition}[Certified triangulated surface]\label{def:mesh}
+A surface mesh is a finite abstract simplicial complex with explicitly enumerated vertices, edges and triangular faces, satisfying the following decidable conditions.
+\begin{enumerate}
+\item Every face has three distinct vertices, every listed edge or vertex belongs to a face, and no face is duplicated.
+\item Each edge belongs to one or two faces. An edge of degree one is a boundary edge.
+\item The link of each vertex is a connected finite cycle or a connected finite path. Cycle links define interior vertices; path links define boundary vertices.
+\end{enumerate}
+Link cycles and paths can be supplied as lists of their vertices and edges, with a finite permutation certificate matching the incidence lists. Equivalently, a bounded traversal verifies them. No orientability certificate is required.
+\end{definition}
+
+These hypotheses exclude a singular vertex with a disconnected link, even if every edge has degree one or two. They describe the precise finite topological information used. Let $V_i,V_b,E_i,E_b,F$ be the numbers of interior vertices, boundary vertices, interior edges, boundary edges, and faces. Define
+\[
+V=V_i+V_b,\qquad E=E_i+E_b,\qquad\chi=V-E+F\in\Z.
+\]
+Connectedness and the classification of surfaces are not needed. In particular, we never replace $\chi$ by $2-2g$ using an unproved classification theorem.
+
+\begin{lemma}[Incidence identities]\label{lem:incidence}
+Every certified surface mesh satisfies
+\begin{equation}\label{eq:incidence}
+3F=2E_i+E_b,\qquad E_b=V_b,
+\qquad 2\chi=2V_i+V_b-F.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Enumerate the $3F$ face-side occurrences. Each interior edge accounts for two and each boundary edge for one, giving the first identity. A path link has exactly two endpoints, corresponding to the two boundary edges at its vertex. A cycle link has none. Counting boundary edge endpoints gives $2E_b=2V_b$, whence the second identity by cancellation in natural arithmetic. Substitution into $2(V_i+V_b-E_i-E_b+F)$ gives the third identity.
+
+Each count is a finite sum. To justify it in \ipra, traverse the occurrence list while keeping the running number of incidences as a PR fold; induction on the processed length uses only an equality of natural-number expressions. The path/cycle certificates supply the local degree equations. Thus the proof uses quantifier-free induction even when the size of the mesh is variable.
+\end{proof}
+
+\subsection{The basic metric input}
+
+Use the reference triangle
+\[
+\Del=\{(x,y)\in\R^2:x\ge0,\ y\ge0,\ x+y\le1\},
+\quad A=(0,0),\ B=(1,0),\ C=(0,1).
+\]
+For each face supply $C^2$ names for $a,b,c$ on a rational collar of $\Del$, with
+\begin{equation}\label{eq:Hbounds}
+H^{-1}\le a,c\le H,\qquad
+\abs{\partial^\nu a},\abs{\partial^\nu b},\abs{\partial^\nu c}\le H
+\quad(|\nu|\le2).
+\end{equation}
+A finite maximum permits one common integer $H\ge1$ and common moduli for all faces. Set
+\begin{equation}\label{eq:coframe}
+\vartheta^1=a\dd x+b\dd y,
+\qquad \vartheta^2=c\dd y,
+\qquad g=(\vartheta^1)^2+(\vartheta^2)^2.
+\end{equation}
+In coordinates,
+\[
+g=\begin{pmatrix}a^2&ab\\ab&b^2+c^2\end{pmatrix},
+\qquad \sqrt{\det g}=ac>0.
+\]
+The matrix $B_g=\left(\begin{smallmatrix}a&b\\0&c\end{smallmatrix}\right)$ converts a coordinate tangent vector to its orthonormal components.
+
+This presentation loses no positive definite $C^2$ metric for which the requisite effective bounds are supplied. For
+$g=\left(\begin{smallmatrix}E&F_0\\F_0&G\end{smallmatrix}\right)$, take
+\[
+a=\sqrt E,\qquad b=F_0/\sqrt E,\qquad
+c=\sqrt{(EG-F_0^2)/E}.
+\]
+Rational positive lower bounds for $E$ and $EG-F_0^2$, upper bounds for the jets, and their PR moduli yield coframe bounds by the elementary operations in \cref{sec:bounds}. The symbol $F_0$ here is a metric coefficient and is unrelated to the number $F$ of faces.
+
+\subsection{Smooth compatibility, including the vertex fan}\label{sec:compatibilitydata}
+
+For the general piecewise formula no smooth compatibility is needed. For the smooth theorem we require an effective triangulated atlas, or the following local data it supplies.
+
+\paragraph{Edge data.}
+The two incident triangle collars are mapped into one common coordinate patch with a positive $C^2$ metric $h$. A full atlas may be taken quantitatively $C^3$, with supplied inverse charts and rational overlap margins; only its two-jet is used in the seam proof. The maps have nonsingular Jacobians with rational lower bounds and agree on the identified edge, with its endpoint-induced affine parameter or its reversal. On each collar the metric identity
+\[
+g_T=(D\phi_T)^{\mathsf T}\,h(\phi_T)\,D\phi_T
+\]
+holds, together with its first-jet identities. The opposite-side condition has an explicit numerical form: choose one common nonzero edge velocity $v(t)$ and reference inward transverse vectors $w_T,w_{T'}$. The determinants $\det(v,D\phi_Tw_T)$ and $\det(v,D\phi_{T'}w_{T'})$ must have opposite signs with supplied positive rational margins, uniformly along the identified edge. Quantitative inverse charts and collar widths can be supplied as part of an ordinary atlas presentation; the proof uses only the displayed jets and this determinant condition. Determinants of coordinate changes may have either sign. A finite subdivision permits several certified patches on an edge if necessary.
+
+\paragraph{Vertex data.}
+At each vertex there is one common positive inner product on a two-dimensional tangent plane. The first derivatives of the incident charts identify their radial side tangents with a listed fan of nonzero rays and preserve the metric. Consecutive sectors have positive angle strictly below $\pi$. At an interior vertex, the fan occurs exactly once around the plane. At a boundary vertex, it occupies one interval of angles of total opening strictly between $0$ and $2\pi$; the boundary may be reentrant.
+
+The phrase ``exactly once'' has a finite, noncircular certificate. Choose a ray avoiding all fan rays and their opposites with supplied determinant margins. In coordinates relative to this cut, label each ray as lying in the upper or lower half-plane. List the upper rays followed by the lower rays, ordered within each half-plane by the signs of consecutive determinants. Supply positive lower bounds on these strict inequalities and on the determinants of neighboring sectors. For an interior fan, close the list once; for a boundary fan, put the cut in the missing sector and keep an open list. These are finite order and separation tests, not assumptions that angle sums equal $2\pi$.
+
+Because only finitely many rays occur, this certificate is ordinary finite geometric data. We do not use a search procedure to extract it from a qualitative atlas. If a chosen cut is inconvenient, another certified rational direction may be included. When the rays have named rather than rational components, the tests use rational enclosures narrow enough to witness the stated margins.
+
+\paragraph{Adequacy.}
+An explicitly given smooth triangulated metric surface with these charts and bounds is an intended model of the data. Conversely, the theorem is about these presentations and their invariants; it is not a reconstruction theorem for manifolds from arbitrary unrelated jet tables. Usual chart inverse and cocycle laws belong to a full atlas presentation. Only their local edge and tangent consequences enter this proof.

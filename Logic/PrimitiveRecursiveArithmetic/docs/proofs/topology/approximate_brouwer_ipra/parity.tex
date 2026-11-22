@@ -1,0 +1,142 @@
+\section{A finite Sperner lemma with its incidence proof}
+\label{sec:finite-sperner}
+
+Fix integers $N\geq 1$ and $d\geq 0$. Use cumulative coordinates for the
+simplex grid,
+\[
+ G_d(N)=\{u\in\{0,\ldots,N\}^d: u_1\leq\cdots\leq u_d\}.
+\]
+Set $u_0=0$, $u_{d+1}=N$ and $a_i(u)=u_{i+1}-u_i$ for $0\leq i\leq d$.
+The barycentric point represented by $u$ is $(a_0(u),\ldots,a_d(u))/N$.
+The grid $G_0(N)$ consists of the empty tuple and its single gap is $N$.
+A coloring is a table $c$ with values in $\{0,\ldots,d\}$ at grid points.
+Its boundary condition is
+\[
+                       a_{c(u)}(u)>0\qquad(u\in G_d(N)).
+\]
+
+\paragraph{The cells.}
+For $d>0$, take a sorted base $b\in\{0,\ldots,N-1\}^d$ and a permutation
+$p_1,\ldots,p_d$ of $1,\ldots,d$. Its vertices are
+\[
+        v^0=b,\qquad v^s=b+\sum_{t=1}^s e_{p_t}
+                     \quad(1\leq s\leq d).
+\]
+Keep this cell when all its vertices are sorted. Equivalently, within
+each block of equal entries of $b$, the coordinates must be incremented
+in decreasing index order. Indeed, incrementing the left of two equal
+neighbors first violates their order. Two neighbors starting at distinct
+integers stay ordered after either one is incremented once.
+For $d=0$ use the single one-vertex cell. For any $s\leq t$ the
+coordinates of $v^t-v^s$ belong to $\{0,1\}$. Extending this difference
+by zero at the two endpoints shows
+\begin{equation}\label{eq:sperner-gap-mesh}
+              |a_i(v^t)-a_i(v^s)|\leq 1\qquad(0\leq i\leq d).
+\end{equation}
+
+The cells admit an enumeration with exactly $N^d$ entries. For a word
+$w=(w_1,\ldots,w_d)\in\{0,\ldots,N-1\}^d$, sort it to obtain $b$.
+Assign successive occurrences of each value in $w$ to the indices of its
+block in $b$ from right to left. The index assigned to position $t$ is
+$p_t$. The inverse reads $w_t=b_{p_t}$, because the validity criterion
+uniquely fixes the order inside each block. This enumeration also works
+for $N=1$ and for the empty word.
+
+\paragraph{Finite Sperner lemma.}
+For every coloring satisfying the boundary condition, the number of
+cells with all $d+1$ colors is odd. The first such cell in word order can
+therefore be found by scanning at most $N^d$ words.
+
+\paragraph{Counting incidences.}
+Suppose $d>0$. An incidence $(C,k)$ consists of a cell and the face
+obtained by deleting its vertex $v^k$, $0\leq k\leq d$. Count it if the
+remaining $d$ vertices carry precisely the colors $0,\ldots,d-1$.
+A cell missing one of these colors contributes zero. If it contains
+them all, its one remaining color occurrence either is $d$ or repeats
+one of these colors. In the first case just the deletion of the
+$d$-colored vertex counts. In the second case precisely the two
+deletions of the repeated color count. Thus the parity of the incidence
+count is the parity of the fully colored cell count.
+
+Here is an explicit pairing on the incidences. The formulas preserve
+the ordered list of retained vertices and hence preserve the counted
+condition.
+\begin{enumerate}
+\item If $0<k<d$, interchange $p_k$ and $p_{k+1}$, using the same
+deletion index $k$. Only the deleted vertex changes. If the interchange
+is valid, applying it twice returns to the original cell. If it is
+invalid, let $\ell=p_{k+1}$ and $y=v^{k-1}$. Increasing coordinate
+$\ell$ first must violate $y_\ell\leq y_{\ell+1}$, so $\ell<d$ and
+$y_\ell=y_{\ell+1}$. There is no possible overflow because $\ell$
+has not yet been incremented. Since the vertex after both moves is
+sorted, the other increment must be $p_k=\ell+1$. The two coordinates
+are equal at every retained vertex, as neither has been incremented
+before these moves and both have been incremented afterwards. All
+retained vertices have $a_\ell=0$, so the missing color $\ell<d$
+prevents this incidence from counting.
+\item If $k=0$, let $j=p_1$. Use base $b+e_j$, order
+$(p_2,\ldots,p_d,j)$, and delete the last vertex. Its first $d$ vertices
+are the retained vertices of $C$. For $j<d$ the validity of the
+original first move gives $b_j<b_{j+1}$, so the new last vertex is
+sorted and within the coordinate bounds. For $j=d$, the additional
+move is valid precisely when $b_d<N-1$. Thus the sole unpaired case
+has $j=d$, $b_d=N-1$. Every retained vertex then has $u_d=N$.
+\item If $k=d$, let $j=p_d$. Use base $b-e_j$, order
+$(j,p_1,\ldots,p_{d-1})$, and delete the first vertex. This operation
+inverts the preceding rotation whenever both are defined. If $j>1$,
+the original penultimate vertex gives $b_{j-1}+1\leq b_j$, so the new
+base is nonnegative and sorted. For $j=1$ the construction fails
+precisely when $b_1=0$. In that case all retained vertices have
+$u_1=0$, so none carries color zero and the incidence does not count.
+\end{enumerate}
+
+Each defined pairing exchanges distinct incidences. For the middle
+deletion it changes a permutation, and at the ends it exchanges
+deletion indices $0$ and $d$. Its counted pairs therefore contribute an
+even number. The remaining counted incidences are exactly those of the
+second case on $u_d=N$. Deleting the final coordinate of their retained
+vertices gives cells in $G_{d-1}(N)$. Conversely, append $N-1$ to a
+lower-dimensional base, prepend the step $d$ to its permutation, and
+delete the initial vertex. These constructions are inverse. On the
+top face the coloring $u'\mapsto c(u',N)$ satisfies the lower-dimensional
+boundary condition because the last gap vanishes and the earlier gaps
+are exactly the gaps of $u'$. Consequently the boundary contributes
+exactly one incidence per fully colored lower-dimensional cell.
+In dimension zero the unique vertex has color zero. This proves the
+lemma by parity descent through the top faces.
+
+\paragraph{The induction formula in iPRA.}
+To justify that last descent uniformly in the dimension, fix the
+ambient dimension $D$, $N$ and the entire finite color table $T$ as
+parameters. For $r\leq D$ use its restriction
+\[
+ c_r(u_1,\ldots,u_r)=T(u_1,\ldots,u_r,
+                           \underbrace{N,\ldots,N}_{D-r}).
+\]
+The positive-gap test on $T$ implies it for every restriction,
+since all appended gaps beyond index $r$ vanish. Let $P(r)$ be the
+number of fully colored $r$-cells modulo two computed by the word
+enumeration on $c_r$. For a fixed parameter table the statement
+$P(\min(r,D))=1$ is an equation of primitive recursive terms.
+The dimension-zero computation starts its quantifier-free induction.
+For $r<D$ the preceding incidence calculation gives
+$P(r+1)=P(r)$, and for $r\geq D$ the capped index is constant.
+
+All finite tests here may be implemented as Boolean folds. For example,
+$T$ can use $(N+1)^D$ address slots in base $D+2$, with arbitrary
+values at unused addresses and the support and range tests restricted
+to sorted tuples. Word enumeration, bounded sorting, prefix sums,
+permutation rotations and color counts are primitive recursive.
+At dimension $r$ the incidence loop has exactly $(r+1)N^r$ entries.
+For a formal counting justification, order the paired indices
+numerically and group by the smaller index of each pair. Its fiber
+consists of exactly its two members, since the pairing is an involution
+without fixed points. Summing the indicator of the grouping relation
+over the two finite indices in either order gives twice the number of
+smaller members. The boundary bijection is checked by the same
+double-sum argument with singleton fibers. Interchanging such finite
+sums follows by quantifier-free induction on their bounds, with
+bounded prefix sums as terms. All grid membership and incidence
+checks have explicit finite enumerations. In particular, the induction
+formula has no quantifier over possible color tables.
+

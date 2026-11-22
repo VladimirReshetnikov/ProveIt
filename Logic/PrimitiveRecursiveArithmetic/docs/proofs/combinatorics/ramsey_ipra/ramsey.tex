@@ -1,0 +1,287 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[letterpaper,top=.89in,bottom=.86in,left=1.02in,right=1.02in,headheight=15pt,headsep=14pt,footskip=30pt]{geometry}
+\usepackage{amsmath,amsthm,amssymb,array,booktabs,xcolor,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{1F3545}
+\definecolor{accent}{HTML}{155D67}
+\definecolor{muted}{HTML}{536573}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent,
+ pdftitle={Finite Ramsey's theorem in intuitionistic primitive recursive arithmetic},
+ pdfsubject={Constructive finite hypergraph Ramsey theorem and its first-order formalization}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{muted} Finite Ramsey's theorem}
+\fancyhead[R]{\small\sffamily\color{muted} Intuitionistic primitive recursive arithmetic}
+\renewcommand{\headrulewidth}{.3pt}
+\fancyfoot[R]{\small\sffamily\thepage}
+\fancypagestyle{first}{\fancyhf{}\fancyfoot[R]{\small\sffamily\thepage}\renewcommand{\headrulewidth}{0pt}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5.5pt plus 1pt minus 1pt}
+\linespread{1.075}\raggedbottom\setlength{\emergencystretch}{2em}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\head}[1]{\section{#1}}
+\newcommand{\point}[1]{\par\smallskip{\bfseries\color{ink}#1.}\enspace}
+\newcommand{\card}{\operatorname{card}}
+\newcommand{\valid}{\operatorname{Valid}}
+\newcommand{\checkw}{\operatorname{Check}}
+\newcommand{\win}{\operatorname{win}}
+\newcommand{\dig}{\operatorname{dig}}
+\newcommand{\ex}{\operatorname{Ex}}
+\newcommand{\allb}{\operatorname{All}}
+\newcommand{\repo}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e53ba5b26b144afb01bf6774d75cf35f6c760b2/#1}{#2}}
+\newcommand{\derive}[2]{\repo{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/#1.lean}{#2}}
+\begin{document}
+\thispagestyle{first}
+{\color{accent}\sffamily\bfseries COMBINATORICS}\par
+\vspace{4pt}
+{\fontsize{25}{29}\selectfont\bfseries\color{ink} Finite Ramsey's theorem\\[1pt] in intuitionistic primitive\\[1pt] recursive arithmetic\par}
+\vspace{4pt}
+{\large A uniform bound, a homogeneous-set algorithm, and a Lean formalization\par}
+\vspace{8pt}
+\textbf{Theorem.} There are primitive-recursive functions $B$ and $W$, uniform in the arity $r$, the number of colors $q\ge1$, and the target size $t$. Given a coloring of the $r$-element subsets of $N$ vertices, where $N\ge B(r,q,t)$, $W$ returns a set of exactly $t$ vertices and a color shared by every $r$-element subset of that set. Intuitionistic primitive recursive arithmetic proves that the returned certificate passes a primitive-recursive check.
+
+Write $[N]=\{0,\ldots,N-1\}$ and $[X]^r=\{A\subseteq X:|A|=r\}$. The finite-set reading of the conclusion is
+\[
+  \exists H\subseteq[N]\;\exists d<q\quad
+       |H|=t\quad\land\quad \forall A\in[H]^r\; c(A)=d .
+\]
+The inputs in the arithmetic theorem are natural numbers, including a single number coding the color table. Thus $r$ can itself be an input. The proof also gives a primitive-recursive function computing the \emph{least} sufficient $N$, by a bounded search over a decidable property.
+
+For a graph, choose $r=2$. If color $d$ has its own requested clique size $t_d$, use $t=\max_{d<q}t_d$ and retain the first $t_d$ elements of the returned set of color $d$. The usual two-color graph theorem follows, as do its multicolor and uniform hypergraph versions. For graphs we give the smaller classical binomial bound and work out $R(3,3)=6$ and $R(3,3,3)=17$.
+
+The infinite theorem asks for \emph{one infinite homogeneous set}. Section~\ref{s:inf} gives a primitive-recursive pair coloring for which every infinite computably enumerable set contains both colors. It also states exactly what the finite theorem supplies for a coloring on all of $\N$.
+
+\point{Proof and verification} Sections~\ref{s:stabilize}--\ref{s:arity} prove the combinatorics. Sections~\ref{s:codes}--\ref{s:internal} turn every induction invariant into a numerical equality. The accompanying Lean code checks the all-arity finite theorem in ordinary Lean. Section~\ref{s:lean} identifies the separate steps needed to produce a derivation in ProveIt's object theory.
+\clearpage
+
+\head{A stable sequence with a spare vertex}\label{s:stabilize}
+Suppose $q\ge1$. Give the subsets of a finite ordered vertex set colors in $[q]$. A coloring originally defined on just one arity is extended by color zero elsewhere. For the moment $c$ can color subsets of all sizes.
+
+\point{Finite thinning} If more than $qk$ candidates receive one of $q$ labels, at least one label occurs more than $k$ times. Compute all $q$ counts and take the first with count greater than $k$. Such a count exists because the sum of the counts is the number of candidates. With $h$ tests having $q$ outcomes each, there are at most $q^h$ profiles. More than $q^h k$ candidates therefore give a class of more than $k$ candidates on which every test agrees. One can group by a profile, or thin one test at a time, since the first thinning then leaves more than $q^{h-1}k$ candidates. Empty families of tests have one profile.
+
+\point{Reservoir lemma} For $m\ge0$ set $L=q^{2^m}$ and define
+\[
+  S_L(0)=0,\qquad S_L(j+1)=L\bigl(S_L(j)+1\bigr).
+\]
+From an ordered reservoir of size $>S_L(m)$ one can select
+$x_0<\cdots<x_{m-1}<z$ such that for every $j<m$ and every $A\subseteq\{x_i:i<j\}$,
+\begin{equation}
+         c(A\cup\{x_j\})=c(A\cup\{z\}).                 \tag{1}\label{eq:stable}
+\end{equation}
+
+\emph{Construction.} Suppose $i$ vertices have been selected and $s=m-i>0$ remain to be chosen. In the current reservoir $T$ use the tests $y\mapsto c(A\cup\{y\})$, one for each subset $A$ of the selected prefix. There are $2^i\le2^m$ tests. The invariant $|T|>S_L(s)$ and the preceding count give one profile class $D$ with
+\[
+               |D|>S_L(s-1)+1.
+\]
+Take its first element as $x_i$ and use the remaining elements of $D$ as the new reservoir. It lies above $x_i$ and has size $>S_L(s-1)$. Once $m$ elements have been selected, the remaining reservoir has size $>S_L(0)=0$. Take its first element as $z$.
+
+For a fixed $j$, the selected $x_j$ and every later survivor belong to the same class $D$ at stage $j$. In particular $z$ belongs to that class. This proves \eqref{eq:stable} simultaneously for all subsets of the earlier prefix. When $m=0$, only the spare vertex is selected. All choices use ordered scans of finite lists.\qed
+
+For a graph it is enough to test the singleton subsets. In this case \eqref{eq:stable} says that a selected vertex sees every subsequent selected vertex in the same color in which it sees $z$. The next section uses exactly this observation with an $r$-subset in place of a vertex.
+\clearpage
+
+\head{The uniform arity induction}\label{s:arity}
+For $q\ge1$ ordinary numerical primitive recursion defines the bound
+\begin{equation}
+ B(0,q,t)=t,\qquad
+ B(r+1,q,t)=S_{q^{2^m}}(m)+1,\qquad m=B(r,q,t).
+ \tag{2}\label{eq:B}
+\end{equation}
+Here exponentiation is primitive recursive in both arguments, and $S_L(j)$ is a primitive recursion with parameter $L$. The step in \eqref{eq:B} receives only the previous numerical value $m$ and the unchanged parameters. In particular, recursion at variable arity does not require evaluating a variable primitive-recursive program.
+
+\point{Proof of the theorem} At arity zero choose the first $t$ vertices and color $c(\varnothing)$. The empty set is the only $0$-subset of any such choice, including when $t=0$.
+
+Suppose the theorem holds at arity $r$. Given a coloring at arity $r+1$ on at least $B(r+1,q,t)$ vertices, apply the reservoir lemma with $m=B(r,q,t)$. Let $P=\{x_0,\ldots,x_{m-1}\}$. On the $r$-subsets of $P$, define the $q$-coloring
+\[
+                        c'(A)=c(A\cup\{z\})\qquad (A\in[P]^r).
+\]
+By the inductive hypothesis applied on the ordered set $P$, choose $H\subseteq P$ of size $t$ homogeneous for $c'$ in color $d$. Take any $E\in[H]^{r+1}$. Write $x_j=\max E$ and $A=E\setminus\{x_j\}$. Every element of $A$ precedes $x_j$, so \eqref{eq:stable} gives
+\[
+             c(E)=c(A\cup\{z\})=c'(A)=d .
+\]
+This also covers $r=0$, when $A=\varnothing$. The order-preserving bijection $j\mapsto x_j$ transports all subset operations, so the induction on a set of $m$ selected vertices is an application to a coloring of $[m]$. This proves the combinatorial assertion. The arithmetic induction justifying this use of the hypothesis is given in Section~\ref{s:internal}.\qed
+
+\point{Boundary cases} If $t<r$, a set of $t$ vertices has no $r$-subsets and any of the $q$ colors certifies it. If $t=r$, the only $r$-subset is the set itself. With one color, $t$ vertices suffice for every arity. In each of these cases the least sufficient nonnegative $N$ is $t$. For $r=1$ and $t\ge1$ it is $q(t-1)+1$. The upper bound is finite thinning, and $q$ blocks of $t-1$ vertices colored by block attain the lower obstruction. The case $t=1$ uses the empty input as the obstruction.
+
+\point{Asymmetric targets} Given a nonempty list $(t_0,\ldots,t_{q-1})$, apply the theorem at its maximum target size, read $d$, and take the first $t_d$ selected vertices. Every $r$-subset of this smaller set is still an $r$-subset of the original witness. This gives the full finite multicolor arrow with color-dependent targets.
+\clearpage
+
+\head{A smaller bound by reusing the spare vertex}\label{s:refine}
+One can save both tests and vertices. Fix a gap $g\ge0$ between target size and arity. For $r\ge1$ let $U_r$ be a sufficient bound for target $r+g$, with $q$ and $g$ as parameters. Put
+\begin{equation}
+ U_1=qg+1,\qquad
+ U_{r+1}=(m+1)q^{\binom{m-1}{r}},\qquad m=U_r .        \tag{3}\label{eq:U}
+\end{equation}
+The gap remains fixed in the recursion. Since $m\ge r+g\ge1$, the displayed $m-1$ is always defined. Use $\binom{n}{j}=0$ for $j>n$.
+
+Select $m$ pivots and a final $z$ in increasing order. Before choosing $x_i$, test only $r$-subsets of the existing prefix that first became available with $x_{i-1}$. There are no tests at $i=0$. At $i\ge1$ each new subset consists of $x_{i-1}$ and $r-1$ of its $i-1$ predecessors. The respective bounds on the number of profiles are
+\[
+         Q_0=1,\qquad Q_i=q^{\binom{i-1}{r-1}} \quad (1\le i<m).
+\]
+For an exact count of the resources sufficient for this procedure, set $D_m=1$ and $D_i=1+Q_iD_{i+1}$ for $i=m-1,\ldots,0$. If $|T|\ge D_i$, a profile class has at least $D_{i+1}+1$ elements. Its least element supplies the pivot and at least $D_{i+1}$ elements remain. Expanding the recurrence gives
+\[
+ D_0=1+Q_0+Q_0Q_1+\cdots+Q_0\cdots Q_{m-1}
+       \le (m+1)\prod_{i<m}Q_i=(m+1)q^{\binom{m-1}{r}} .
+\]
+The exponent counts all $r$-subsets of the first $m-1$ pivots exactly once, classified by their greatest member. This proves the final equality even if there are no such subsets.
+
+Apply the arity-$r$ result to $c'(A)=c(A\cup\{z\})$ on the pivots. It returns $H$ of size $r+g$ in some color $d$. Return $H\cup\{z\}$. For an $(r+1)$-edge containing $z$ its color is $d$ by definition. For an edge whose greatest vertex is a pivot $y$, remove $y$ to obtain $A$. Because $r\ge1$, $A$ has a last pivot. At the very next stage the test for $A$ put $y$ and $z$ in the same class, since both survive to that stage and are drawn from its chosen class. Thus this edge also has color $d$. If $A$ ends at the last pivot, its only possible extension in the returned set is $z$, already covered. This proves \eqref{eq:U}.
+
+Formula \eqref{eq:U} is another uniform primitive-recursive bound. Together with the trivial cases on the previous page it applies to arbitrary inputs. For example, with two colors it gives $16$ vertices for a monochromatic graph triangle and $17\cdot 2^{105}$ for a monochromatic four-set at arity three. Its purpose is to expose the cost of stabilization. The graph argument in Section~\ref{s:graph} gives the sharp triangle threshold.
+\clearpage
+
+\head{Coding the theorem by numbers}\label{s:codes}
+The underlying theory has first-order intuitionistic logic with equality, symbols and equations for primitive-recursive functions, successor axioms, and quantifier-free induction. We now describe a single numerical witness function and the exact formula on which we will induct.
+
+\point{Sets and tables} Let $M_N=2^N$ and $b=\max(2,q)$. Code $A\subseteq[N]$ by $a=\sum_{v\in A}2^v<M_N$. Put $\dig_b(C,i)=\lfloor C/b^i\rfloor\bmod b$. Denote the $i$th bit of $a$ by $a_i=\dig_2(a,i)$. Set
+\[
+ \card_N(a)=\sum_{i<N}a_i,\qquad
+ a\sqsubseteq_N h\ \Longleftrightarrow\ (\forall i<N)\;a_i\le h_i.
+\]
+A table has one base-$b$ digit at every subset mask, so its code satisfies $C<E_q(N)=b^{M_N}$. It is valid when all its digits of indices $a<M_N$ are $<q$. The digit at an $r$-subset gives its color. Every input coloring is represented by setting unused entries to zero. This convention handles $q=1$ and $r=0$ without a radix-one exception.
+
+\point{Checking a witness} Pack a witness as $w=qh+d$, with $h<M_N$, $d<q$, and let $K=qM_N$. On decoding $h=\lfloor w/q\rfloor$ and $d=w\bmod q$, the check is
+\begin{align*}
+ \checkw(q,t,r,N,C,w)\ \Longleftrightarrow &\quad h<M_N\ \land\ d<q\ \land\ \card_N(h)=t\\[-2pt]
+ &{}\land (\forall a<M_N)\bigl(a\sqsubseteq_N h\ \land\ \card_N(a)=r
+                 \ \Rightarrow\ \dig_b(C,a)=d\bigr).
+\end{align*}
+Divide and take remainders only for $q\ge1$ in this statement. All functions can be given total default values at zero. Let $W=\win(q,t,r,N,C)$ be the first $w<K$ passing this check, with $K$ as its failure value.
+
+\point{Bounded folds} For a fixed Boolean test $p$, define $\allb_p(0)=1$, $\allb_p(j+1)=\allb_p(j)\,p(j)$ and $\ex_p=1-\allb_{1-p}$. The bounded search for the first success at length $j+1$ retains a previously found value $<j$. In the other case it returns $j$ if $p(j)=1$ and $j+1$ if $p(j)=0$. Its initial value is zero. By induction each retained value either marks failure at the current bound or is the first success. The proof can track the bit asserting success at a returned value and the fold asserting failure at all earlier values. This proves witness introduction and elimination for the bounded quantifiers. It also proves reflection for compound bounded formulas by composition of these operations with ordinary Boolean connectives.
+
+\point{The induction bit} Let $G(q,t,r,N)$ be the Boolean value of the bounded assertion
+\[
+  (\forall C<E_q(N))\bigl(\valid(q,N,C)\ \Rightarrow\ \win(q,t,r,N,C)<K\bigr).
+\]
+All displayed bounds and operations are primitive recursive, with variable $r,q,t,N$. The equality $G(q,t,r,N)=1$ therefore is a quantifier-free formula of the original theory. The witness theorem is the universal closure of
+\[
+ \begin{aligned}
+ q\ge1\ \land\ N\ge B(r,q,t)\ \land\ C<E_q(N)\ \land\ \valid(q,N,C)
+  \\ {}\Longrightarrow\quad W<K\ \land\ \checkw(q,t,r,N,C,W).
+ \end{aligned}
+\]
+\clearpage
+
+\head{Why quantifier-free induction suffices}\label{s:internal}
+Fix $q\ge1$ and $t$ as free numerical parameters. The outer induction uses exactly
+\begin{equation}
+                    G(q,t,r,B(r,q,t))=1 .                     \tag{4}\label{eq:ind}
+\end{equation}
+At $r=0$ take the low $t$ bits as the witness set and read the digit at mask $0$. For the successor step, write $m=B(r,q,t)$ and $N=B(r+1,q,t)$. Open the bounded universal at $N$, fix a valid code $C$, and run the construction of Section~\ref{s:stabilize}. Here are its numerical registers and invariants.
+
+\point{Selection and counting} Store the prefix $P$ and current reservoir $T$ as masks $<2^N$. Its ordered enumeration $p(j)$ is the least position $v<N$ that belongs to $P$ and has exactly $j$ set bits below it, with $N$ as failure value. Counting bits while scanning $v<N$ proves existence and uniqueness for $j<|P|$. Map a mask $u<2^{|P|}$ to $e_P(u)=\sum_{j<|P|} u_j2^{p(j)}$. Distinct increasing positions give disjoint powers of two, so its digits describe exactly the selected vertices and $\card_N(e_P(u))=\card_{|P|}(u)$. These identities follow by adding the summands in increasing index order. Earlier powers sum to less than the next power, so no carry passes it.
+
+For a remaining vertex $y$, tabulate the test outputs for $u<2^{|P|}$ as a fixed-length base-$q$ profile if $q\ge2$ (use the single key zero if $q=1$). The profile is $<q^{2^{|P|}}\le L$. Count members of $T$ with each key by summing indicator bits over $v<N$. The counts sum to $|T|$ because each member contributes once, at its unique key. This identity follows by induction over $v$, counting the new contribution, and addition over the bounded key range. Scanning the counts for a sufficiently large class therefore succeeds. Its least vertex and its remaining mask are bounded numerical operations.
+
+\point{Local induction} At stage $i\le m$, store $|P|=i$, all elements of $P$ below those of $T$, and $|T|>S_L(m-i)$. Store also the bounded assertion that for each $j<i$, each subset $A$ of the pivots before $p(j)$, and each $y\in T$, one has $c(A\cup\{p(j)\})=c(A\cup\{y\})$. The update preserves the old equalities by inclusion of the new reservoir and establishes the new ones by equality of profile digits. Every quantified variable here is bounded by $m$, $N$, or $2^N$. A deterministic register update with a default on failure is primitive recursive. Pairing encodes its finitely many registers. Induct on the bit of the invariant for $i\le m$, freezing the state at $m$.
+
+\point{Applying the outer hypothesis} With $P$ complete and $z\in T$, the reduced table on $[m]$ has digit at $u$ equal to the color of $e_P(u)\cup\{z\}$ for $|u|=r$, and zero otherwise. Its code is a bounded digit sum $<E_q(m)$ and is valid. Hence \eqref{eq:ind} at $r$ gives a successful search on this very table. The image mask of that witness passes the original check by \eqref{eq:stable}. Bounded search then succeeds on $C$, proving the successor of \eqref{eq:ind}. For $N'>N$ restrict the table to its first $2^N$ digits and reuse the witness mask. Bits at the new vertices are zero, so its tested subsets are unchanged.
+\clearpage
+
+\head{Graph bounds and two exact thresholds}\label{s:graph}
+\point{Pascal's bound} Write $R(a,b)$ for the two-color graph number with positive targets $a,b$. A singleton is a clique in either color, so $R(1,b)=R(a,1)=1$. For $a,b\ge2$, set $A=R(a-1,b)$ and $D=R(a,b-1)$. At a pivot among $A+D$ vertices there are $A+D-1$ neighbors. Either at least $A$ are red neighbors, or at least $D$ are blue neighbors. If each group were smaller, their sum would be at most $A+D-2$. In the red group obtain a blue $b$-clique or extend a red $(a-1)$-clique by the pivot. In the blue group extend a blue $(b-1)$-clique or retain the red $a$-clique. Thus
+\[
+  R(a,b)\le R(a-1,b)+R(a,b-1)\le \binom{a+b-2}{a-1}.
+\]
+The last upper bound follows by induction on $a+b$ using Pascal's identity and the two boundary values. It can equally be used from the start as the budget for the two recursive calls. Counting subsets with and without one fixed element proves Pascal's identity by finite arithmetic. To internalize this extra induction, fix a total bound $s$ and fold over all pairs $1\le a,b\le s$ with $a+b\le j$ at induction stage $j\le s$. Each arrow is the bounded table test with its specified color-dependent targets.
+
+In particular $R(3,3)\le\binom42=6$. On five cyclically ordered vertices color the sides red and the diagonals blue. Each color forms a cycle of length five, so neither has a triangle. Consequently $R(3,3)=6$.
+
+\point{Three colors} In a three-coloring of $K_{17}$ one pivot has at least six neighbors joined to it in a common color, since $16>3\cdot5$. If that color occurs on any pair of the six, the pivot closes a triangle. Otherwise the six vertices form a two-colored $K_6$, which already has a monochromatic triangle. This proves $R(3,3,3)\le17$.
+
+For the reverse inequality take all subsets of a pentagon's five vertices, identifying each subset with its complement. Symmetric difference gives an abelian group on the resulting $16$ classes. Replacing either argument by its complement complements the result. Every class has a unique representative of size at most two. Its fifteen nonzero elements fall into three sets of five given by the singletons, the sides, and the diagonals. Color $\{x,y\}$ by the set containing the nonzero sum $x+y$.
+
+No one of the three sets contains two distinct elements and their sum. Two distinct singletons sum to a pair. Two disjoint sides sum to a four-set, represented by a singleton. Two meeting sides sum to the diagonal between their unshared endpoints. The diagonals themselves form a pentagon, so the same reasoning interchanges sides and diagonals. In a triangle on distinct $x,y,z$ the two distinct differences $x+y,y+z$ sum to $x+z$. They cannot all have the same color. This proves the Greenwood--Gleason value $R(3,3,3)=17$ \cite{gg} using only five-bit arithmetic for the lower bound.
+\clearpage
+
+\head{What survives for an infinite input}\label{s:inf}
+For each fixed primitive-recursive coloring of finite masks on $\N$ (parameters are allowed), \ipra\ proves that, for every starting point $a$ and requested size $t$, a homogeneous $t$-set lies in $[a,a+B(r,q,t))$. On input $u<2^B$ the restricted color table reads the color of $2^a u$. This realizes each finite request by a single primitive-recursive witness function. Sets obtained for different requests can have different colors and need not be nested.
+
+The usual infinite theorem quantifies over arbitrary colorings and infinite sets, which are second-order objects. A possible first-order replacement would require a code for a primitive-recursive increasing enumeration of an infinite homogeneous set, for every primitive-recursive coloring of pairs. The following example disproves even the version allowing an arbitrary computable enumeration. The argument here is metamathematical.
+
+\point{A coloring of pairs with no infinite computable solution} Fix an effective enumeration $W_e$ of the computably enumerable subsets of $\N$. Use nested finite approximations $W_{e,s}\subseteq[s]$ consisting of the $x<s$ that machine $e$ accepts within $s$ steps. Each stage test is primitive recursive by bounded simulation (iterate a coded, primitive-recursive single-step transition $s$ times). The union over stages is $W_e$.
+
+At stage $s$, begin with $[s]$ unmarked. In order $e=0,\ldots,s-1$ look among the unmarked elements of $W_{e,s}$ at least $e$. If at least two are present, reserve the least two and label them $0$ and $1$, respectively. Otherwise reserve neither. Give every unreserved element label zero. For $x<s$, let $c(\{x,s\})$ be the stage-$s$ label of $x$. The whole stage is recomputed from $s$. Its scans and simulations have primitive-recursive bounds, so $c$ is a primitive-recursive two-coloring.
+
+For each fixed $e$, its pair of reservations, or its absence, eventually stabilizes. To prove this externally, induct on $e$. Once the choices at all smaller indices have settled, they exclude a fixed finite set. In $W_e\cap[e,\infty)$ outside that set there are either fewer than two elements or there are two least elements $u<v$. In the first case the stage chooses none thereafter. In the second, both $u,v$ have appeared by some stage, and from then on the stage always selects them. This proves the stabilization claim. The case distinction only occurs in this external analysis.
+
+If $W_e$ is infinite, the second case must hold. Choose any $s\in W_e$ above both permanent markers and beyond their stabilization stage. Inside $W_e$ the edges $\{u,s\}$ and $\{v,s\}$ now have different colors. Hence there is no infinite computably enumerable homogeneous set. The range of any computable increasing sequence is computably enumerable. This single instance rules out such witnesses, even without a uniformity requirement. For any fixed arity above two, color a tuple by its two least elements. Any pair in an infinite homogeneous set would then extend to a tuple using larger members, giving an infinite homogeneous set for the pair coloring. Jockusch proved stronger arithmetical-hierarchy bounds for computable colorings \cite{jockusch}.
+
+Already for singletons there is no computable \emph{uniform} procedure selecting an unbounded color class. Color $n$ by whether a given machine has halted within $n$ steps. Its unique unbounded color determines halting. This unary argument concerns uniform choice. The pair example rules out a computable solution to one fixed instance.
+\clearpage
+\head{Computing the least Ramsey number}\label{s:least}
+The induction proves an arrow at a particular bound. The least $N$ satisfying the same arrow is itself primitive recursive, jointly in all the parameters. This conclusion concerns exact computation, even when the numerical upper bound is much too large to evaluate in practice.
+
+Write $B=B(r,q,t)$. Use the first-success operation of Section~\ref{s:codes} to scan
+\[
+ n=0,1,\ldots,B\qquad\text{for}\qquad G(q,t,r,n)=1.
+\]
+Call the result $R_q^{(r)}(t)$. Equation~\eqref{eq:ind} guarantees a success no later than $B$. The equations for bounded search give $G(q,t,r,R_q^{(r)}(t))=1$ and $G(q,t,r,n)=0$ at every smaller $n$. The successful equality supplies a witness for each valid coloring through $W$. At a smaller $n$ one can \emph{produce} a bad coloring by scanning $C<E_q(n)$ for the first valid table with $\win(q,t,r,n,C)=q2^n$. If this scan failed, every term in the universal fold for $G$ would be one, contrary to its value zero. Thus the endpoint supplies both the universal upper claim and a finite obstruction at each smaller size. On larger vertex sets restriction to the initial $R_q^{(r)}(t)$ vertices proves the arrow. The same construction with an array of targets replaces the equality $|H|=t$ in the check by $|H|=t_d$.
+
+\point{Uniformity of the smaller bound} For fixed parameters $g,q$ the induction proving \eqref{eq:U} has bounded matrix $G(q,r+g,r,U_r)=1$. Compute $\binom{n}{j}$, for example, as the number of masks $a<2^n$ with $\card_n(a)=j$. In the proof the $Q_i$ are then terms, as are the backward budgets $D_i$ obtained by reversing the index in a recursion of length $m$. Given an arbitrary $t>r\ge1$, use $g=t-r$. The bounds on every quantifier in the selection proof remain functions of the parameters and registers. This verifies that the improvement does not trade away uniformity in arity.
+
+\point{An executable check on small inputs} The Python program reads subset-mask tables and can search the actual input without first computing $B$. For the red pentagon on vertices $0,\ldots,4$, extend the coloring to vertex $5$ by making every new edge blue. The mask $37=2^0+2^2+2^5$ certifies the blue triangle $\{0,2,5\}$. Its three pair masks are $5,33,36$, none a red side. The program also implements the refinement by new profiles and lifts the lower witness by adjoining the spare vertex.
+
+A complete enumeration over the independent edge colors gives the following regression check. Graphs are labeled and the two colors are distinguished.
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+Vertices & Edge colorings checked & Colorings with no monochromatic triangle\\
+\midrule
+5 & $2^{10}=1{,}024$ & 12\\
+6 & $2^{15}=32{,}768$ & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+The twelve failures at five vertices agree with the twelve possible labeled red $5$-cycles, $5!/(2\cdot5)=12$. Section~\ref{s:graph} proves the exact result without enumeration.
+\clearpage
+
+\head{Lean proofs and the ProveIt derivation}\label{s:lean}
+\point{Checked in ordinary Lean} The package builds using Lean 4.19.0 and its standard library. The finite proof starts with \code{List.range N}; an increasing sublist represents a subset. \code{Homogeneous} says that every sublist of the specified length has the stated color. The proof of \code{finiteRamsey} uses the recurrence \eqref{eq:B}. Its lists have the reverse selection convention. Each pivot is taken from the right of the surviving pool and prepended to the selected list. Consequently it removes the first vertex of a test edge and uses a spare vertex on the left. Reversing the vertex order gives exactly the proof of Section~\ref{s:arity}.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.255\linewidth}>{\raggedright\arraybackslash}p{.69\linewidth}@{}}
+\toprule
+Source file & Main checked content\\
+\midrule
+\code{FiniteRamsey.lean} & \code{bucket}, \code{thin}, \code{stabilize}, \code{finiteRamsey}, \code{asymmetricRamsey}, and an executable search with soundness and success above the bound.\\[2pt]
+\code{Arithmetic.lean} & Explicit digit, cardinality, inclusion, certificate and census functions, \code{firstBelow\_spec} and \code{census\_spec}.\\[2pt]
+\code{MaskBridge.lean} & List--mask round trips, cardinality and containment. \code{census\_true} proves the numerical assertion for every sufficient $N$. \code{winner\_correct}, \code{exactRamsey\_spec} and \code{counterColor\_spec} certify the least witness, least sufficient size and lower countercolorings.\\[2pt]
+\code{Graph.lean} & \code{extract} returns a two-color clique with the Pascal bound and \code{pentagon\_obstruction} proves the $K_5$ lower bound.\\[2pt]
+\code{ThreeColors.lean} & \code{triangleOnSeventeen} proves the $K_{17}$ upper bound and \code{sixteen\_obstruction} checks the $K_{16}$ construction.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\point{Route to a kernel-checked object derivation} ProveIt's target is an explicit proof term of type $[]\vdash[\mathsf{PRAAx}]\,\varphi$ for an object formula $\varphi$. The following steps specify how to implement the remaining quotation of the arithmetic proof. Links refer to the repository revision listed below.
+
+1. Build fixed \code{PR} definitions for powers, digits, bit counts, mask inclusion, the index $p(j)$, image masks, the profile and class scans, $S$, $B$, and $W$ using the recursions of Sections~\ref{s:stabilize}--\ref{s:internal}. Pack extra parameters by pairing. Represent finite predicates with \derive{Foundations/BoundedSyntax}{\code{BoundedSyntax.BFm}} and use its Boolean compiler. \derive{Core/Search}{\code{Search.search\_found}} and \code{search\_minimal} discharge the first-success specifications (the repository searches for zero, so complement a success bit).
+
+2. Derive the digit and image identities by bounded index induction, the sum of fiber counts by accumulation, and the large-class and reservoir-step implications. The file \derive{Core/Pigeonhole}{\code{Core/Pigeonhole.lean}} uses the checked fiber-sum identity. Its collision result alone would only guarantee a pair. For the stronger size threshold use the same sum and the estimate $\sum_{j<L} k=Lk$.
+
+3. Apply \derive{Foundations/BoundedSyntaxInduction}{\code{BoundedSyntaxInduction.induction}} first to the register invariant in Section~\ref{s:internal} and then to \eqref{eq:ind}, keeping $q,t$ free. Instantiate the compiled bounded universal with the reduced table, perform the pullback, and universally close the resulting witness theorem. These are the obligations for the remaining ProveIt proof term. The supplied Lean build checks the mathematical and numerical theorems in ordinary Lean.
+\clearpage
+
+\section*{Sources and reproduction}
+The finite statement here includes the graph and hypergraph forms of Ramsey's theorem. Ramsey's original paper treats infinite classes and finite classes separately \cite{ramsey}. The finite proof above counts a bounded reservoir directly. The two-color graph recurrence belongs to the classical finite argument of Erd\H{o}s and Szekeres \cite{es}.
+
+\point{Repository basis} The conventions for iPRA are those of the \repo{Logic/PrimitiveRecursiveArithmetic/README.md}{ProveIt iPRA project}, revision \code{1e53ba5b26b1}. Its \repo{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}{\code{ConciseIPRA}} library defines the object derivability relation, and its \repo{Logic/PrimitiveRecursiveArithmetic/Derivations/README.md}{\code{IPRADerivations}} library supplies derived proof rules. The report uses that revision for the object-level implementation plan. The accompanying standalone Lean code has no dependency on the repository.
+
+\point{Running the checks} With \code{lean} 4.19.0 on the executable path and Python 3.10 or later, run \code{sh verify.sh} from the unpacked directory. It builds the Lean modules in a temporary directory, asks Lean for the axioms of its main theorems, and runs the Python tests. To run just the witness example, use \code{python3 code/ramsey.py}. On the audited Lean endpoints the only reported axioms were \code{propext} and \code{Quot.sound} (or just \code{propext} for the $K_{16}$ check). The PDF is built from this file with pdfLaTeX. Run it twice to resolve cross-references.
+
+\begin{thebibliography}{9}\setlength{\itemsep}{4pt}
+\bibitem{ramsey} F. P. Ramsey.
+\emph{On a Problem of Formal Logic}. Proceedings of the London Mathematical Society, series 2, 30 (1930), 264--286.
+\href{https://doi.org/10.1112/plms/s2-30.1.264}{doi:10.1112/plms/s2-30.1.264}.
+\bibitem{es} P. Erd\H{o}s and G. Szekeres.
+\emph{A combinatorial problem in geometry}. Compositio Mathematica 2 (1935), 463--470.
+\href{https://www.numdam.org/item/CM_1935__2__463_0/}{Original paper at Numdam}.
+\bibitem{gg} R. E. Greenwood and A. M. Gleason.
+\emph{Combinatorial relations and chromatic graphs}. Canadian Journal of Mathematics 7 (1955).
+\href{https://doi.org/10.4153/CJM-1955-001-4}{doi:10.4153/CJM-1955-001-4}.
+\bibitem{jockusch} C. G. Jockusch, Jr.
+\emph{Ramsey's theorem and recursion theory}. Journal of Symbolic Logic 37 (1972), 268--280.
+\href{https://doi.org/10.2307/2272972}{doi:10.2307/2272972}.
+\end{thebibliography}
+\end{document}

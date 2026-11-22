@@ -1,0 +1,129 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,booktabs,array,longtable}
+\usepackage{xcolor,microtype,enumitem}
+\usepackage{fancyhdr}
+\usepackage{placeins}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=teal!60!black,citecolor=teal!60!black,urlcolor=teal!60!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\definecolor{ink}{HTML}{18364A}
+\definecolor{teal}{HTML}{087E8B}
+\definecolor{pale}{HTML}{EDF5F7}
+\hypersetup{pdftitle={Constructive Stokes in Intuitionistic Primitive Recursive Arithmetic},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Quantitative cubical Stokes, effective analysis, and iPRA formalization}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Constructive Stokes in iPRA}
+\fancyhead[R]{\small November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\topfraction}{0.88}
+\renewcommand{\textfraction}{0.10}
+\setlist{topsep=0.25em,itemsep=0.2em}
+\setcounter{tocdepth}{1}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+  frame=single,rulecolor=\color{black!20},backgroundcolor=\color{black!2},
+  showstringspaces=false}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PR}{\mathsf{PR}}
+\newcommand{\eps}[1]{2^{-#1}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|_\infty}
+\newcommand{\cube}[1]{[0,1]^{#1}}
+\newcommand{\Grid}[2]{\{0,\ldots,#1-1\}^{#2}}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\clog}[1]{\left\lceil\log_2\max\{1,#1\}\right\rceil}
+\newcommand{\EqName}{\mathrel{\simeq}}
+\newcommand{\RepoCommit}{\texttt{a5688a1b37d62046c894691c3c41f7bdd53976ca}}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\diver}{div}
+\DeclareMathOperator{\clip}{clip}
+\DeclareMathOperator{\sgn}{sgn}
+\begin{document}
+\begin{titlepage}
+\vspace*{0.8in}
+{\large\color{teal}\sffamily CONSTRUCTIVE ANALYSIS / PROOF THEORY\par}
+\vspace{0.45in}
+{\Huge\bfseries\color{ink}Constructive Stokes\par}
+\vspace{0.15in}
+{\LARGE\color{ink}in intuitionistic primitive\\recursive arithmetic\par}
+\vspace{0.4in}
+{\large A finite cubical proof, explicit precision bounds,\\
+curved parameterizations, and a Lean formalization plan\par}
+\vspace{0.55in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large November 21, 2026\par}
+\vfill
+\noindent\colorbox{pale}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{
+\textbf{Main result.} For supplied primitive recursive coefficient names,
+uniform continuity certificates, and uniform first-order remainder certificates,
+Stokes' identity is provable as a schema in first-order $\ipra$.
+The proof constructs both integrals and an explicit rate witnessing their equality.
+It extends to finite chains of certified $C^2$ parameterizations.
+}}
+\vspace{0.3in}
+\noindent\textbf{Verification status.}
+The mathematical proof and arithmetic reduction are developed in this report.
+The accompanying Lean files are a formalization outline with proof scripts;
+they have not been compiled in this environment. No completed Lean proof of
+the full Stokes theorem is claimed. Exact-arithmetic Python checks exercise
+the finite identities and the worked example.
+\end{titlepage}
+
+\begin{abstract}
+We prove a constructive Stokes theorem for finite, explicitly presented
+parameterized cubical chains. The analytic input consists of primitive recursive
+rational evaluations with supplied uniform moduli and first-order remainder
+certificates. On a $k$-cube, an exact telescoping identity gives the rational bound
+\[
+ \abs{V_{n,p}-B_{n,p}}
+ \le k\,2^{-t}+k(2^{n+1}+1)2^{-p}
+ \qquad(n\ge\tau(t)).
+\]
+Here $V_{n,p}$ is a volume Riemann sum for the exterior derivative and $B_{n,p}$
+is the oriented boundary sum. A specified primitive recursive schedule makes
+both sequences regular Cauchy names and proves their equality with a rate.
+Every induction in the analytic core is on a finite rational identity or
+inequality, hence reduces to quantifier-free induction.
+
+We develop the named-real and integration conventions, prove effective product
+and composition rules without assuming an integral theorem, establish
+$\dd(\sigma^*\omega)=\sigma^*(\dd\omega)$ by finite alternating algebra, and
+deduce Kelvin--Stokes, Green, and divergence identities for supplied cell
+presentations. A curved polynomial example is worked out exactly. The
+formalization plan identifies concrete object-level iPRA lemmas already in
+ProveIt, and separates them from the remaining signed-rational, multidimensional,
+and geometric obligations.
+\end{abstract}
+\tableofcontents
+\newpage
+\input{01_scope}
+\input{02_arithmetic}
+\input{03_cube}
+\input{04_calculus}
+\input{05_geometry}
+\input{06_example}
+\input{07_formalization}
+\input{08_references}
+\end{document}

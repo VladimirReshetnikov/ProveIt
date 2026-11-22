@@ -1,0 +1,99 @@
+\subsection{A single primitive-recursively presented field whose poles have no primitive-recursive fast names}
+\label{sec:no-pr-pole}
+
+The following separation concerns the standard computability-theoretic
+interpretation of iPRA. By a PR fast name of a point we mean a
+primitive-recursive rational sequence with error at most $2^{-h}$ at
+input $h$. We exhibit one field on $S^2$ with a PR sampler and a linear
+modulus, for which neither of its two zeros has such a name.
+
+Enumerate unary PR programs by natural numbers, treating an ill-formed
+code as the constant-zero program. A Turing interpreter can evaluate any
+program in this enumeration. For program $i$ write $f_i$ for its
+function and put $b_i=1-\min(1,f_i(i))$. The binary sequence $(b_i)$
+is computable. If it were PR, it would equal some $f_e$ and we would
+have $b_e=1-b_e$. Define the real
+\[
+                     \alpha=\sum_{i=0}^{\infty}b_i4^{-i-1}
+                                \in[0,1/3].
+\]
+To recover $b_i$ from a $2^{-(2i+5)}$-approximation of $\alpha$,
+multiply that approximation by $4^{i+1}$ and round to the nearest
+integer. The exact scaled real equals the integer coding the first
+$i+1$ base-four digits plus a tail in $[0,1/3]$. The scaled error is
+at most $1/8$, so rounding recovers that integer. Its residue modulo
+four is $b_i$. Thus $\alpha$ has no PR fast name.
+
+Fix a Turing machine that prints $b_0,b_1,\ldots$ successively.
+After $s$ steps, let $j_s$ be the number of emitted bits and $l_s$
+the base-four prefix sum of these bits. Define
+\[
+ I_s=[l_s,l_s+4^{-j_s}/3],\qquad
+ g(t)=\sum_{s=0}^\infty 2^{-s-1}\operatorname{clamp}_{I_s}(t),
+ \qquad \operatorname{clamp}_{[a,b]}(t)=\min(b,\max(a,t)).
+\]
+The endpoints of $I_s$ are PR in $s$: one simulates exactly $s$ steps
+of a fixed machine, recording each output bit in its configuration.
+One transition and iteration for a specified number of transitions are
+PR. No bound on the waiting time for the next bit enters this operation.
+The intervals are nested and contain $\alpha$. Their lengths tend to
+zero because the machine eventually prints each bit. The sum defining
+$g$ has values in $[0,1/3]$, admits a rational approximation on rational
+inputs with error at most $2^{-M}/3$ from its first $M$ terms, and is
+$1$-Lipschitz since each clamp has that property. Its unique fixed
+point is $\alpha$. Indeed, for $t<\alpha$ every clamp is at least $t$,
+and some $I_s$ has lower endpoint strictly above $t$. The corresponding
+summand in $g(t)-t$ is strictly positive. The case $t>\alpha$ follows
+from the upper endpoints, and $g(\alpha)=\alpha$ holds term by term.
+
+On $P=\{p\in\mathbb R^3:\|p\|_1=1\}$ define
+\[
+ t(p)=\frac{p_1p_2}{\max(1/4,p_1^2)},\quad
+ u(p)=(1,g(t(p)),0),\quad
+ F(p)=u(p)-\frac{p\cdot u(p)}{p\cdot p}\,p .
+\]
+The denominator $p\cdot p$ is at least $1/3$. We give explicit
+continuity and sampling bounds to verify the presentation.
+For $\delta=\|p-q\|_1$, the numerator of $t$ changes by at most
+$\delta$ and its denominator by at most $2\delta$. The denominators
+are at least $1/4$, so $|t(p)-t(q)|\leq36\delta$ and
+$\|u(p)-u(q)\|_1\leq36\delta$. Write $a=p\cdot p$ and
+$b=p\cdot u(p)$. Since $\|u(p)\|_\infty=1$, we have $|b|\leq1$,
+the change of $b$ is at most $37\delta$, and the change of $a$ is
+at most $2\delta$. Hence $|b/a|\leq3$ and the change of $b/a$ is
+at most $(3\cdot37+9\cdot2)\delta=129\delta$. Substituting into
+$F$ gives $\|F(p)-F(q)\|_1\leq168\delta$.
+
+For $A(p,h)$ evaluate the displayed rational formula at rational
+$p$, using the first $M=h+1$ terms of $g$. The projection
+$v\mapsto v-(p\cdot v)p/(p\cdot p)$ has $\ell^1$ operator norm
+at most $4$, so the sampler error is at most $4\cdot2^{-(h+1)}/3
+\leq 2^{-h}$. Its dot product with $p$ vanishes exactly. Two such
+sample errors give the coherence bound, and the Lipschitz constant
+$168\leq 2^8$ gives the sampled continuity bound with $\mu(h)=h+8$.
+The arithmetic verification can also be made directly on truncations:
+their ranges are in $[0,1/3]$, each has Lipschitz constant at most one,
+and the difference of a longer and a shorter truncation is bounded by
+the omitted geometric tail. These finite checks require no proof in
+iPRA that the printing machine eventually emits every digit. Its
+eventual progress is used in the external argument identifying the poles.
+
+If $F(p)=0$ then $p$ and $u(p)$ are parallel. Since the first
+coordinate of $u(p)$ is $1$, we have $p_1\ne0$,
+$p_3=0$, $p_2/p_1=g(t(p))$ and $|p_1|=1/(1+g(t(p)))\geq3/4$.
+The denominator in $t(p)$ is then $p_1^2$, proving
+$t(p)=p_2/p_1=g(t(p))$. Consequently $t(p)=\alpha$.
+Conversely the two poles
+$\pm(1,\alpha,0)/(1+\alpha)$ satisfy $F(p)=0$.
+A PR fast name of either pole gives one of $t(p)$ by the displayed
+rational formula: on the coordinate cube $[-1,1]^3$ the same
+$36$-Lipschitz estimate applies, and rational approximations can first
+be clipped to the cube. This contradicts the decoding argument.
+
+On the round sphere use the tangent field $x\mapsto F(x/\|x\|_1)$.
+The radial map is $2$-Lipschitz in $\ell^1$ there, since
+$\|x\|_1\geq1$. It carries a PR-named zero on the round sphere to a
+PR-named zero on $P$. The two poles do have ordinary computable names,
+since the bit-printing program eventually evaluates every digit.
+The separation is precisely between PR finite-precision witnesses
+and a PR fast name for an exact zero of this one field.

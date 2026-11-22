@@ -1,0 +1,112 @@
+\section{Fields on the round sphere}\label{sec:round}
+First consider the geometric interpretation. Suppose that $F:S^n\to\R^d$
+is tangent and equipped with a PR modulus $\nu$ for $\ell^1$ distance.
+Suppose its values at rational unit vectors are given to any precision
+by a fixed PR rational sampler. These are data one can supply, for
+example, for expressions built from rational arithmetic, bounded
+reciprocals and square roots on bounded intervals. The value at a
+specified precision is understood to have $\ell^1$ error at most
+$2^{-h}$. A coordinatewise evaluator can meet this convention by
+requesting $\clog(d)$ additional bits.
+
+For $p,q\in P_\Q$ let $\rho=\sqrt{p\cdot p}$,
+$\eta=\sqrt{q\cdot q}$. Both belong to $[1/\sqrt d,1]$.
+The reverse triangle inequality bounds $|\rho-\eta|$ by $\len{p-q}$.
+Subtracting $p/\rho$ and $q/\eta$ and using $\len q=1$ shows
+\[
+ \len{\rad(p)-\rad(q)}
+ \le \left(\frac1{\rho}+\frac1{\rho\eta}\right)\len{p-q}
+ \le 2d\,\len{p-q}.
+\]
+This explains the precision shift between the two geometries. The
+construction below gives a rational unit point $R(p,a)$ within
+$2^{-a}$ of $\rad(p)$. Evaluate the round sampler to precision $h+2$
+at $R(p,\nu(h+2))$ to obtain $A(p,h)$. Its distance from
+$F(\rad(p))$ is at most $2^{-(h+1)}$. We may take
+$\mu(h)=\nu(h)+\clog(2d)$. The two evaluation errors and the modulus
+give (U), common-point errors give (C), and
+$p\cdot F(\rad(p))=0$ gives (T). Thus Theorem~\ref{thm:main}
+produces the asserted bound on the actual field value. The last
+subsection gives a formulation of this transfer entirely in arithmetic.
+
+\input{sections/rationalround}
+
+One also obtains a rational round witness directly from the arithmetic
+name of Definition~\ref{def:name}, using only its modulus $\mu$.
+For $q=W(k)$ and $t=k+6$, take $z=R(q,\mu(t)+1)$ and $w=z/\len z$.
+Normalization $y\mapsto y/\len y$ is $2$-Lipschitz in $\ell^1$ on
+the Euclidean unit sphere: subtract the two fractions, apply the
+reverse triangle inequality, and use $\len y\ge1$. It follows that
+$\len{w-q}\le2^{-\mu(t)}$, with both $w,q$ rational. By (U) and (C),
+for $j\ge t$ the name of the field at the rational round point $z$ obeys
+\[
+       \len{A(w,j)}
+        \le (3/4+3/64+2/64)\,2^{-k}
+        =\tfrac{53}{64}\,2^{-k}.
+\]
+
+\subsection{A first-order statement using only rational unit points}
+Here is a direct arithmetic proof for a field whose only input interface
+is a PR sampler $B(z,h)$ on rational vectors satisfying $z\cdot z=1$.
+Give it (C), (U), (T) on that domain, with $\nu$ in place of $\mu$ and
+$z$ in the tangency test. There are no real quantifiers in this
+hypothesis. We construct a PR rational $z=z(k)$ such that iPRA proves
+\[
+ z\cdot z=1,\qquad
+ \forall j\ge k+10\quad \len{B(z,j)}\le 2^{-k}.                 \tag{R}
+\]
+In particular the actual real vector named by $B(z,-)$ has that bound.
+
+Let $E(a)=2(2^{a+\clog(2d(d^2+d))})^2$, the denominator bound
+for $R(p,a)$ just proved. Compute a uniform value bound once. Enumerate
+all rational unit points written with a common denominator
+$b\le E(\nu(0))$, $1\le b$, and numerators in $[-b,b]$.
+Let $M$ be $5$ plus the ceiling of the largest $\ell^1$ norm of
+$B(z,0)$ in this list. The axes ensure the list is nonempty.
+Every rational unit $w$ has rational parameter $w/\len w$.
+Its rounding at $a=\nu(0)$ is within $2^{-\nu(0)}$ and occurs on
+the list. From (U) and (C) at scale zero we obtain
+$\len{B(w,j)}\le M$ for every $j$. This derives the bound from the
+input data.
+
+For each $h$ put $s_h=h+4$ and choose the monotone exponent
+\[
+ a_h=2+\max\!\left(\max_{i\le s_h}\nu(i),\,
+                      s_h+\clog(M+1)\right).
+\]
+Define $R_h(p)=R(p,a_h)$ and
+\[
+ A(p,h)=B(R_h(p),s_h),\qquad
+ \mu(h)=\nu(s_h)+2+\clog(2d).
+\]
+If $j\ge h$, the round inputs $R_j(p)$ and $R_h(p)$ are at distance at
+most $2\,2^{-a_h}\le2^{-\nu(s_h)}$. Compare the two samples first
+by round (U) at $s_h$ and then by round (C) at $R_j(p)$. The result is
+at most $5\,2^{-s_h}\le 2\,2^{-h}$. For (U), our $\mu(h)$ guarantees
+that the exact directions are at distance at most $2^{-\nu(s_h)}/4$;
+the two roundings add at most $2\,2^{-a_h}$. Round (U) then bounds the
+sample difference by $3\,2^{-s_h}$. Finally write $x=\rad(p)$.
+Since $p=\rho x$, $\rho\le1$, the tangency residual is bounded by
+\[
+ |p\cdot A(p,h)|
+ \le |R_h(p)\cdot B(R_h(p),s_h)| + 2^{-a_h} M
+ \le 2^{-s_h}+2^{-a_h} M\le2^{-h}.
+\]
+This verifies (T). Every estimate involving $\rho$ can equivalently be
+read using rational upper and lower bisection endpoints. To eliminate
+such an auxiliary quantity in an inequality between rationals, establish
+the inequality with error $C2^{-b}$ at each precision $b$, with $C$
+given by the displayed denominator bounds. If the rational inequality
+fails, choose $b$ by bounded comparison with its positive rational
+gap. This proves the exact rational inequality in iPRA. For example,
+$\rho\eta\ge1/d$ follows directly by squaring, and dividing in a
+bisection estimate may start with the lower bound $1/d$ for each
+length.
+
+Apply Theorem~\ref{thm:main} to this $A$ and take the resulting $q$.
+The point $z=R_t(q)$, $t=k+6$, is rational and satisfies $z\cdot z=1$.
+Its observed value is exactly $B(z,t+4)=A(q,t)$. At every $j\ge t+4$
+the bound in (R) follows by adding $2\,2^{-(t+4)}$ to
+$3\,2^{-k}/4$. Its common denominator is at most $E(a_t)$. This proof
+of (R) operates on number codes, with the real sphere serving as the
+interpretation of the rational computations.

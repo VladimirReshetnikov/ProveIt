@@ -1,0 +1,365 @@
+\section{Why the proof fits inside iPRA}\label{sec:ipra-audit}
+
+Primitive recursiveness of an algorithm alone would not prove its claimed
+correctness in $\ipra$. The relevant point is that the correctness
+arguments above use particular finite induction invariants available
+in that theory. We record them and the translation into natural-number
+arithmetic.
+
+\subsection{The exact first-order assertion}
+
+Fix all evaluator and modulus programs, allowing an optional tuple of
+number parameters $a$. Each rational expression $V(a,r)$ or $B(a,r)$
+has a primitive recursive code. Write $\mathsf H(a)$ for the universal
+arithmetic certificates in \cref{sec:certificates}.
+The main precision assertion is the first-order formula
+\begin{equation}\label{eq:object-statement}
+ \mathsf H(a)\ \longrightarrow\
+ \forall r,u,v\,
+ \left(r\le u\wedge r\le v\ \longrightarrow\
+       64\,2^r\,|V(a,u)-B(a,v)|\le19\right).
+\end{equation}
+The displayed rational inequality is expanded into a natural-number
+comparison after multiplication by positive denominators. The corresponding
+formulas for regularity and equality are expanded in the same way.
+
+There is no internal quantifier over real-valued functions in
+\eqref{eq:object-statement}. There is no assertion that a single natural
+number codes and evaluates every possible primitive recursive program.
+For each fixed syntactic instance, the newly constructed names are
+themselves fixed primitive recursive definitions. This is the usual
+schematic use of the full primitive recursive language.
+
+\subsection{Clearing denominators and handling negative values}
+
+For one requested finite grid, list the rational quantities needed in
+the proof: coefficient samples, width-weighted derivative samples,
+grid weights, and error terms. Let $D$ be the product of their positive
+denominators. There are primitive recursive bounds on the length of
+this list, and its construction is a bounded loop over the grid.
+Thus $D$ is a positive primitive recursive integer.
+
+After multiplication by $D$, a coordinate line has integer potential
+samples $A(j)$, integer derivative increments $b(j)$, and a nonnegative
+integer error $E$. Its local contract has the two forms
+\[
+ A(j+1)-A(j)-b(j)\le E,\qquad
+ b(j)-A(j+1)+A(j)\le E.
+\]
+To use a natural-valued finite-FTC module, set
+\[
+ L=\max_{j\le N}\max\{0,-A(j)\},\quad
+ G(j)=A(j)+L,\quad b(j)=b^+(j)-b^-(j)
+\]
+on the guarded range $j\le N$. One may totalize $G$ outside that range
+using $\max\{0,A(j)+L\}$.
+Then $G,b^+,b^-,E$ are natural-valued primitive recursive functions
+on the needed indices. The first local inequality becomes
+\[
+ G(j+1)+b^-(j)\le G(j)+b^+(j)+E,
+\]
+and the second has the sides reversed appropriately.
+The same offset $L$ occurs at both endpoints and cancels.
+No positivity hypothesis on the original coefficient is introduced.
+
+If multiple lines are processed together, take one denominator and one
+offset for the entire finite request, or package per-line values into
+the extra parameters. Both choices are primitive recursive. The
+common-denominator variant is slower but particularly simple to
+formalize. Reduction of fractions is unnecessary.
+
+\subsection{The induction invariants}
+
+The following ledger identifies the actual objects of induction.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.22\textwidth}p{0.70\textwidth}}
+\toprule
+Argument & Quantifier-free invariant after coding\\
+\midrule
+\endhead
+Telescoping &
+The denominator-cleared equality
+$\sum_{j<m}(A(j+1)-A(j))=A(m)-A(0)$.
+The successor case adds one difference and cancels one term.\\
+\addlinespace
+Error accumulation &
+The two inequalities bounding the signed prefix residual by $mE$,
+guarded by $m\le N$. The successor case adds the local inequality to
+the previous prefix inequality.\\
+\addlinespace
+Finite Fubini &
+Equality of two nested finite sums on a rectangular prefix.
+At the successor, distribute the newly added row and use the inner
+finite sum identity.\\
+\addlinespace
+Refinement &
+The partial grouped-sum identity and its accumulated
+$\sum w_j\eta$ error bound, with a denominator-cleared weight sum.
+One additional fine point contributes one (U) instance.\\
+\addlinespace
+Boolean finite checks &
+A prefix fold of decidable rational certificate tests equals one.
+This is an equation between primitive recursive terms.\\
+\addlinespace
+Exterior algebra &
+Coefficient equalities for finite product and permutation expansions.
+The invariants are finite polynomial equalities and inversion-count
+parity identities.\\
+\addlinespace
+Double boundary &
+The sum of paired codimension-two coefficients is zero.
+Each finite pair consists of equal terms with opposite signs.\\
+\bottomrule
+\end{longtable}
+
+The universal hypotheses (C), (U), and (D) stay in the proof context.
+Their specific rational instances provide the local inequalities.
+They are not inserted into an unbounded analytic induction invariant.
+When a bounded universal condition is convenient in a finite invariant,
+replace it by its Boolean fold. Its equivalence to the bounded
+condition follows by a finite induction because each atomic test is
+decidable.
+
+The final Cauchy and equality statements are derived by introducing
+arbitrary precision indices and applying the finite lemmas. There is no
+induction on a formula asserting convergence at every precision.
+The order split $u\le v$ or $v\le u$ is a decidable comparison of
+natural numbers. The rational slack lemma similarly uses decidable
+rational order and a specifically computed precision, not a principle
+for deciding the order of represented reals.
+
+\subsection{The remaining calculus and geometry}
+
+The product and chain rules use fixed finite algebraic expansions,
+integer bounds, and maximum/precision formulas. A purported application
+to a particular object must supply the jet hypotheses, but their
+closure does not require a stronger induction principle.
+The use of named arguments is interpreted by
+\eqref{eq:extension}; the only removal of auxiliary errors is
+\cref{lem:slack}, whose witness is primitive recursive.
+
+Each exterior coefficient is a finite expression built from those
+operations. Naturality is obtained by finite expansion, product rules,
+and the supplied symmetric second jets. The chain step is a finite
+integer linear combination with the displayed weight shift.
+These steps therefore extend the cube derivation schematically in the
+same first-order theory.
+
+This supplies a human-readable proof of the iPRA derivability claim.
+A machine-checked realization must still instantiate these invariant
+patterns in the chosen syntax and prove the necessary substitution
+lemmas. The following section gives that implementation plan.
+
+\section{Lean formalization and reuse of ProveIt}\label{sec:lean}
+
+\subsection{Three distinct validation layers}
+
+The implementation should keep the following claims separate.
+
+\begin{enumerate}
+\item \textbf{Host finite mathematics.} A Lean theorem about integer or
+rational sums checks the finite identity in Lean's ambient logic.
+\item \textbf{Object-level derivability.} A Lean term of type
+$\Gamma\vdash_{\mathsf{PRAAx}}\varphi$ is a derivation of the encoded
+formula using the specified iPRA axioms and rules.
+\item \textbf{Effective analytic interpretation.} The encoded formula
+must be proved to express the advertised evaluations, moduli,
+integrals, and equality relation. This includes the signed-rational
+adapter and the passage from finite grids to names.
+\end{enumerate}
+
+The existing Mathlib divergence theorems are useful mathematical
+comparison points, but their statements use real normed spaces and
+Henstock--Kurzweil or Bochner integration
+\cite{mathlib-box,mathlib-bochner}. Invoking one of them would not
+establish the object-level iPRA theorem. Our intended formalization
+instead follows the finite rational argument above.
+
+\subsection{Inspected repository lemmas}
+
+All paths in the table are relative to
+\path{Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/}.
+The source snapshot is \RepoCommit.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.35\textwidth}p{0.56\textwidth}}
+\toprule
+Module and names & Actual role in the planned proof\\
+\midrule
+\endhead
+\path{Analysis/FiniteFTC.lean}\newline
+\texttt{ftc\_upper}, \texttt{ftc\_lower}
+& Object derivations of the two accumulated linewise inequalities.
+The source explicitly uses guarded quantifier-free induction.\\
+\addlinespace
+\path{Core/Fubini.lean}\newline
+\texttt{LeanProofs.IPRA.fubini}
+& Object-level exchange of two bounded sums of a fixed primitive
+recursive body. Repeated exchanges move one chosen coordinate
+innermost.\\
+\addlinespace
+\path{Core/SumLemmas.lean}\newline
+\texttt{sum\_add}, \texttt{sum\_shift}, \texttt{sum\_congr\_bounded}
+& Finite sum arithmetic and replacement of equal bounded summands.\\
+\addlinespace
+\path{Analysis/RiemannSumRules.lean}\newline
+\texttt{rs\_close}, \texttt{rs\_close\_const}, \texttt{rs\_bound}
+& Object derivations that sum pointwise inequalities and accumulate
+uniform error budgets.\\
+\addlinespace
+\path{Analysis/RiemannRefinement.lean}\newline
+\texttt{refine\_upper}, \texttt{refine\_lower}
+& An inspected-source Lipschitz refinement pattern.
+The arbitrary supplied-modulus version in this report is an
+additional obligation.\\
+\addlinespace
+\path{Analysis/TaggedFTC.lean}\newline
+\texttt{tagged\_upper}, \texttt{tagged\_lower}
+& Variable-width finite estimates with evaluation-error accumulation.
+The source does not itself derive every analytic jet input or
+the passage to integral names.\\
+\addlinespace
+\path{Foundations/DyadicNames.lean}\newline
+\texttt{sample\_stability}, \texttt{add\_regular}
+& Arithmetic on dyadic errors after common scaling, with name
+addition estimates.\\
+\addlinespace
+\path{Foundations/UniformCertificates.lean}\newline
+\texttt{grid\_clip}, \texttt{net\_error}, \texttt{error\_transport}
+& Finite-grid and error-transport certificates. These do not
+extract moduli from arbitrary pointwise continuity.\\
+\bottomrule
+\end{longtable}
+
+In particular, the upper finite-FTC theorem accepts a derivation of
+\[
+ \forall j<N,\quad G(j+1)+F^-(j)\le G(j)+F^+(j)+E
+\]
+and returns a derivation of
+\[
+ G(N)+\sum_{j<N}F^-(j)
+ \le G(0)+\sum_{j<N}F^+(j)+NE.
+\]
+This is exactly the natural-number form of the line estimate described
+in \cref{sec:ipra-audit}. The lower theorem supplies the other direction.
+The rational and multidimensional adapters are genuine work still to
+be implemented, but the finite induction kernel is already concretely
+identified.
+
+Two nearby files must not be overinterpreted.
+\path{Topology/BoundarySquare.lean} contains an ambient Lean simplicial
+boundary calculation, not already the internal cubical theorem.
+\path{Analysis/PullbackCertificates.lean} concerns hypergeometric
+substitutions, not differential-form pullbacks. The source manifest
+records the exact inspected paths, hashes, imports, and theorem names.
+
+\subsection{Definitions to implement}
+
+The accompanying \path{lean/StokesBlueprint.lean.txt} specifies the
+contracts and intended statements. A practical module decomposition is:
+
+\begin{enumerate}
+\item \textbf{Rational codes and primitive recursive terms.}
+Define signed pairs, positive denominators, cross-multiplied
+comparison, powers, bounded sums and maxima, the coded sup norm,
+and their substitution rules.
+\item \textbf{Grid terms.}
+Define base-$N$ decoding of the $N^k$ grid indices, insertion of a
+coordinate, upper/lower face maps, and the terms $V,B,T$.
+Prove cardinality and weight identities.
+\item \textbf{Local contracts.}
+Encode (C), (U), and (D) as first-order formulas in the fixed terms.
+The finite local residual bound is the direct input to the signed
+adapter.
+\item \textbf{Finite Stokes.}
+Build the common denominator and offset; invoke
+\texttt{ftc\_upper}/\texttt{ftc\_lower} on each line;
+apply finite Fubini and \texttt{rs\_close};
+derive \eqref{eq:finite-bound}.
+\item \textbf{Names and integration.}
+Prove the arbitrary-modulus refinement lemma, the regular integral
+construction, evaluator independence, rational slack elimination,
+and the schedule inequalities with constants $7/64,3/32,3/16$.
+\item \textbf{Jets and forms.}
+Implement the finite-expression evaluator, clipped named-input
+composition, derivative contracts, finite exterior words and
+minors, and the coefficientwise naturality proof.
+\item \textbf{Chains and surface corollaries.}
+Represent frozen-coordinate face maps, prove their normalization
+and sign pairing, add supplied face-matching witnesses, and
+combine the finite precision budgets.
+\end{enumerate}
+
+Each item has its mathematical definition and proof in this report.
+The remaining task is to construct the actual syntax-level derivations
+and run the compiler, rather than to find an additional analytic
+principle.
+
+\subsection{The supplied Lean files}
+
+\path{lean/FiniteCore.lean} contains standard-library proof scripts for
+finite integer telescoping, upper/lower error accumulation, transverse
+row cancellation, and square double-boundary cancellation. These
+are host-level theorems.
+
+\path{lean/RepositorySlice.lean} targets the actual ProveIt derivation
+judgments. It exposes the two finite-FTC adapters and supplies
+polynomial certificates for the square-boundary identity and the
+three-dimensional curl/pullback algebra. Its polynomial identity
+does not by itself prove the analytic product or chain rule.
+
+\path{lean/StokesBlueprint.lean.txt} is intentionally a blueprint,
+not a compilable module. It gives the complete intended interface,
+proof invariants, coding choices, and order of implementation.
+The two \path{.lean} scripts contain no intentional proof-hole or
+new-axiom declarations, but \emph{they were not compiled in this
+environment}. Absence of such declarations is not a substitute
+for compilation.
+
+The inspected repository inventory specifies Lean \texttt{v4.32.0}
+and Mathlib commit
+\begin{center}
+\small\texttt{81a5d257c8e410db227a6665ed08f64fea08e997}.
+\end{center}
+These are source metadata, not a fresh build receipt. The adapter
+requires the full pinned repository and its canonical dependency
+configuration; the archive does not purport to contain that
+repository's entire transitive dependency closure.
+
+\subsection{Reproduction and completion gates}
+
+The executable finite checks are run from the package root by
+\begin{lstlisting}
+python3 code/validate.py
+\end{lstlisting}
+The optional figures are regenerated with
+\begin{lstlisting}
+python3 code/make_figures.py
+\end{lstlisting}
+The report source can be compiled by a standard LaTeX installation;
+\path{build_report.sh} also supports the installed-file fallback used
+to build this delivery. With Lean installed, first check the
+standalone core, then the adapter in the complete pinned checkout.
+The precise replay instructions are in \path{lean/README.md}.
+
+For a completed formalization the final acceptance condition is not
+merely a successful theorem about $\R$. It is a clean build of the
+specific object-level derivation of \eqref{eq:object-statement},
+followed by its named-integral interpretation, with the proof
+dependencies and axioms inspected. The present delivery supplies
+the complete human proof, an explicit route to that result, and
+executable finite checks; it does not claim this final machine
+verification has already happened.
+
+\section{Scope boundaries and useful extensions}\label{sec:boundaries}
+
+The theorem proves the integral identity for supplied effective cell
+presentations; uniform moduli and a finite chain are input data.
+The $C^2$ parameterization interface suffices for the elementary
+pullback argument. Weaker geometric regularity, singular boundaries,
+or unbounded domains would require additional explicit estimates.
+
+Rational boxes via affine pullback, dyadic subdivision, coefficients
+in fixed finite-dimensional rational normed spaces, and comparisons
+with supplied fillings fit the same finite method. Automatically
+producing uniform moduli or finite geometric presentations remains
+a separate task.

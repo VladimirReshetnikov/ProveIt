@@ -1,0 +1,308 @@
+\section{Arithmetic certificates and the iPRA proof}
+\label{sec:arith}
+
+\subsection{Numerical coding}
+
+Here is one sufficient coding; the result does not depend on the
+particular pairing convention. Encode a nonnegative integer \(z\)
+by \(2z\) and a negative integer \(z\) by \(-2z-1\).
+Encode a rational by a pair consisting of a signed numerator and
+a positive denominator. A denominator can be stored as its
+predecessor, so every such code has a valid positive denominator.
+Reduction to lowest terms is unnecessary. Rational equality and
+order are signed cross-multiplication tests.
+
+For pairs, one may use
+\(\langle u,v\rangle=2^u(2v+1)-1\). Its projections are bounded
+searches on the input code. Fixed-length tuples and finite lists
+are iterated pairs with a length tag; list lookup and finite
+folds are primitive recursive. Matrices are lists of rows with
+fixed dimensions. Invalid list lengths can be assigned a default
+value outside guarded assertions. All evaluators are total
+numerical functions.
+
+Signed addition, multiplication, absolute value, finite maxima,
+and rational division with a positive or certified nonzero
+denominator are primitive recursive. The dyadic floor in
+\eqref{eq:algorithm} is integer division with the correct
+negative-numerator case. The box projection is a finite sequence
+of rational order tests. These are decisions about rational
+codes, not decisions about equality or order of arbitrary reals.
+
+If \(u,v\) are regular names, equality can be expressed by
+\[
+ \operatorname{Eq}(u,v)\ :\!\iff\
+ \forall p\ \norm{u(p)-v(p)}\le2^{1-p}.
+\]
+This expresses equality of their represented values. Refining
+the observation index using \eqref{eq:regular} proves symmetry,
+transitivity, and compatibility with the operations below.
+A norm bound against a rational \(c\ge0\) is expressed by
+\(\forall p\,\norm{u(p)}\le c+2^{-p}\).
+Sum and difference names are obtained by shifting each input
+index by one. A product name uses rational bounds on its
+factors and a sufficiently large fixed precision shift.
+Every product in the proof has such a bound: box radii, \(M\),
+\(K\), \(2\), or the finite sum bound \(4\).
+
+\subsection{Raw input certificates}\label{sec:raw}
+
+For explicit first-order input, fix the primitive recursive
+functions
+\[
+ \Hhat(q,t),\quad \Jhat(q,t),\quad
+ \mu_0(p),\quad \nu_0(p).
+\]
+Their arguments are rational-point codes and natural precision
+indices; their outputs are rational vector or matrix codes.
+The following conditions are universally quantified numerical
+formulas. Their matrices are split into the corresponding
+blocks \(\widehat U,\widehat V\).
+
+\paragraph{R0: coherence at rational points.}
+For each rational \(q\in\Omega\) and all \(t,u\),
+\[
+ \norm{\Hhat(q,t)-\Hhat(q,u)}\le2^{-t}+2^{-u},\qquad
+ \norm{\Jhat(q,t)-\Jhat(q,u)}\le2^{-t}+2^{-u}.
+\]
+
+\paragraph{R1: derivative bounds.}
+For every rational \(q\in\Omega\) and every \(t\),
+\[
+ \norm{\Id-\widehat V(q,t)}\le\tfrac12+2^{-t},
+ \qquad \norm{\widehat U(q,t)}\le M+2^{-t}.
+\]
+
+\paragraph{R2: base residual.}
+For every \(t\),
+\[
+ \norm{\Hhat((a,b),t)}\le r/4+2^{-t}.
+\]
+For the exact-base version replace \(r/4+2^{-t}\) by \(2^{-t}\).
+
+\paragraph{R3: rational Taylor certificates.}
+For rational \(q,q'\in\Omega\), let \(D=\norm{q'-q}\).
+Whenever \(D\le2^{-\mu_0(p)}\), require, for every \(t\),
+\begin{equation}\label{eq:rawtaylor}
+ \norm{\Hhat(q',t)-\Hhat(q,t)-\Jhat(q,t)(q'-q)}
+ \le 2^{-p}D+2^{-t}(2+D).
+\end{equation}
+The term \(2^{-t}(2+D)\) is the explicit allowance for the two
+value errors and the single full-Jacobian error.
+
+\paragraph{R4: rational derivative continuity.}
+If \(\norm{q'-q}\le2^{-\nu_0(p)}\), then for all \(t,u\),
+\[
+ \norm{\Jhat(q',t)-\Jhat(q,u)}
+ \le2^{-p}+2^{-t}+2^{-u}.
+\]
+
+All norms here are norms of rational data, hence primitive
+recursive rational expressions. The domain guards are finite
+coordinate comparisons. The input also includes \(r,\alpha>0\),
+\(M\ge0\), and \(M\alpha\le r/4\).
+If convenient, replace the raw moduli by their bounded prefix
+maxima to make them nondecreasing.
+
+R0 defines values and derivative matrices at rational points.
+R1--R3 imply the rational segment estimates by the finite
+subdivision proof. In particular \(H\) has the explicit
+Lipschitz bound \(K=M+3/2\), so it extends to any named point
+\(z\in\Omega\). With \(h=\lgup(\max(1,2K))\), a value name is
+\[
+ H_z(p)=\Hhat(P_\Omega(z(p+h)),p+1).
+\]
+Its distance to the represented value is at most
+\(K2^{-(p+h)}+2^{-(p+1)}\le2^{-p}\).
+For the derivative, one possible name is
+\[
+ J_z(p)=
+ \Jhat(P_\Omega(z(\nu_0(p+2)+1)),p+1).
+\]
+R4 bounds the change to the limiting point by \(2^{-(p+2)}\);
+the evaluation error contributes \(2^{-(p+1)}\).
+These estimates, expressed pairwise for fine rational
+approximants, prove coherence and independence of the input
+name.
+
+Safe moduli for named points are
+\begin{equation}\label{eq:rawenlarge}
+ \mu(p)=\mu_0(p+1)+1,\qquad
+ \nu(p)=\nu_0(p+1)+1.
+\end{equation}
+For example, suppose
+\(\norm{z'-z}\le2^{-\mu_0(p+1)-1}\).
+Fine clamped rational approximants \(q,q'\) have combined
+endpoint error at most another
+\(2^{-\mu_0(p+1)-1}\). They therefore satisfy the raw
+distance side condition at precision \(p+1\).
+Apply \eqref{eq:rawtaylor}, and make every approximation error
+smaller than the requested observation error. The resulting
+remainder is bounded by \(2^{-(p+1)}\norm{z'-z}\), hence
+by \(2^{-p}\norm{z'-z}\).
+The same argument proves the derivative-continuity contract
+with the enlarged \(\nu\). Explicitly, endpoint-name indices
+at least \(\mu_0(p+1)+2\), or respectively
+\(\nu_0(p+1)+2\), already ensure the distance guard; the
+remaining indices are increased using the displayed
+continuity and arithmetic error bounds.
+
+This explains the harmless margin in \eqref{eq:rawenlarge}.
+Without a margin, a closed distance guard might fail for
+every finite approximation to a pair lying exactly on its
+boundary.
+
+\subsection{Removing approximation slack constructively}
+
+\begin{lemma}[Rational squeezing]\label{lem:squeeze}
+For rational \(a,b,C\) with \(C\ge0\),
+\[
+ \bigl(\forall t,\ a\le b+C2^{-t}\bigr)
+ \quad\Longrightarrow\quad a\le b
+\]
+is derivable in \(\ipra\).
+\end{lemma}
+
+\begin{proof}
+Decide the rational comparison \(a\le b\).
+If it fails, \(d=a-b\) is a positive rational.
+If \(C=0\), the premise at \(t=0\) is already contradictory.
+Otherwise choose \(t=\lgup(2C/d)\); it is a bounded
+primitive recursive calculation and gives
+\(C2^{-t}\le d/2\).
+The premise would then give \(d\le d/2\), contradicting
+\(d>0\). This is decidable rational reasoning in intuitionistic
+logic. It is not a use of excluded middle for real equality
+or of Markov's principle.
+\end{proof}
+
+For represented inequalities the goal is itself a universal
+collection of rational observations. Fix the requested
+observation first, allocate its positive error among the
+finitely many quantities, and apply the rational result when
+an exact rational comparison is needed. Geometric error
+terms are eliminated by the explicit \(\lgup\) shift.
+Thus expressions such as allowing a precision to increase
+are convenient descriptions of a known finite substitution,
+not appeals to an infinitary inference rule.
+
+\subsection{Exactly where induction is used}
+
+There are five kinds of induction in the proof.
+\begin{enumerate}
+ \item \emph{Finite list arithmetic.} Prove sums, row norms,
+ matrix products, and polynomial telescoping identities by
+ induction on a finite list length or index.
+ \item \emph{Finite polygon sums.} With target precision and
+ mesh length fixed, the invariant says that the accumulated
+ rational signed error is bounded by the sum of the
+ allotted rational local errors.
+ \item \emph{Trace preservation.} Each projected rational
+ iterate lies in the box, a finite conjunction of rational
+ comparisons.
+ \item \emph{Inexact recurrence.} The invariant is
+ \eqref{eq:scaled-inv}, with the target two traces and their
+ precisions fixed.
+ \item \emph{Finite matrix loops.} The identities for the
+ truncated geometric sum and the telescoping difference of
+ powers are componentwise rational equalities.
+\end{enumerate}
+Every assertion in this list is quantifier-free after coding.
+For a finite coordinate or prefix conjunction use a primitive
+recursive Boolean fold and the assertion that the fold equals
+one. Its extension by one entry is a defining equation.
+A universal statement about all precision indices is never
+the induction formula.
+
+For a completely literal natural-number version of
+Lemma~\ref{lem:recurrence}, fix the full target trace first.
+Let \(D_*\) be a positive product of denominators of all
+\(d_0,\ldots,d_N,\eta\). This finite product is primitive
+recursive. Set \(a_i=D_*d_i\), \(e=D_*\eta\).
+These are nonnegative integers, and the invariant is
+\[
+ 2^i a_i+2e\le a_0+2^{i+1}e.
+ \tag{Integer invariant}
+\]
+\(D_*\) is fixed while the prefix index \(i\) varies.
+This avoids changing the common denominator inside the
+induction. The compiled Lean core proves this integer
+recurrence and a finite Boolean-checker form of it.
+
+The contraction inequality needed at a particular step is
+obtained from the raw Taylor certificates by the polygon
+argument and rational squeezing. The resulting distance
+between the two actual program outputs is rational.
+Consequently the recurrence premise itself is a
+quantifier-free rational inequality, even though its
+derivation consulted universally quantified input
+certificates.
+
+\subsection{Finite matrix estimates at an observation precision}
+
+The same discipline applies to the Neumann argument.
+Fix the finite power index \(N\), and approximate the
+represented coefficient matrix at a rational precision.
+Induct on products of those rational matrices. A norm
+bound \(\norm{\widetilde E}\le1/2+\delta\) gives
+\[
+ \norm{\widetilde E^N}\le(1/2+\delta)^N
+\]
+by rational induction. The finite identity
+\[
+ u^N-v^N=(u-v)\sum_{i=0}^{N-1}u^i v^{N-1-i}
+\]
+bounds \((1/2+\delta)^N-2^{-N}\) by
+\(N\delta(3/4)^{N-1}\) when \(N\ge1\) and
+\(\delta\le1/4\). Choosing \(\delta\) from \(N\) and the
+requested observation error removes this difference.
+For \(N=0\) the identity is exact.
+Finite sums and products of matrix entries have equally
+explicit error propagation bounds. Lemma~\ref{lem:perturb}
+gives the sharper uniform constants used for the actual
+inverse and derivative programs.
+
+Thus the finite algebra is first proved for rational data
+and transferred to named coefficients at fixed finite
+indices. There is no hidden induction over a statement
+quantifying over all observations of a real-matrix power.
+
+\subsection{The precise theorem schema}
+
+Fix primitive recursive definitions for the input
+evaluators and moduli. Adjoin the derived programs
+\(\Ghat,\widehat D\) by their primitive recursive defining
+equations. Let \(\operatorname{Hyp}\) denote R0--R4 and the
+numerical box conditions. The proof above constructs an
+iPRA proof of
+\[
+ \operatorname{Hyp}\ \longrightarrow\
+ \bigl(\operatorname{Coherent}(\Ghat)
+ \wedge\operatorname{Zero}(\Ghat)
+ \wedge\operatorname{Unique}(\Ghat)
+ \wedge\operatorname{Lip}_{2M}(\Ghat)
+ \wedge\operatorname{Taylor}_{\mu_g}(\Ghat,\widehat D)
+ \wedge\operatorname{UC}_{\nu_g}(\widehat D)\bigr).
+ \tag{IFT schema}
+\]
+The displayed right side is notation for the numerical
+observation formulas described above, universally closed
+over rational inputs, precision indices, and any numerical
+parameters of the fixed presentation. For a fixed additional
+input-point name, substitute the explicit name-composition
+program. This is a metatheorem about a family of first-order
+proofs, not one object theorem quantifying over a type of
+all primitive recursive functions.
+
+If proofs of R0--R4 are supplied in iPRA, modus ponens
+discharges the hypotheses. The polynomial examples below
+have direct finite algebraic proofs of these hypotheses.
+Numerical testing of many input points is not a substitute
+for these universal proofs.
+
+The handwritten argument specifies each infinite-looking
+step by finite observation and each induction by a
+quantifier-free invariant. It is a proof at the requested
+human-readable level. Constructing and checking the entire
+corresponding object-language proof term remains a separate
+formalization task, specified in Section~\ref{sec:lean}.

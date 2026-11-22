@@ -1,0 +1,99 @@
+\section{Lean formalization and its remaining steps}\label{sec:lean}
+
+The companion \texttt{lean/Brouwer.lean} uses Lean 4.19.0 and its standard
+library. Its proofs concern executable Lean definitions and integer
+inequalities. ProveIt's embedded judgment is
+\texttt{Prf PRAAx} in \texttt{LeanProofs.ConciseIPRA}. The pinned repository
+uses Lean 4.32.0. A proof in the former setting supplies mathematics for the
+reification work in the latter. This packet includes a kernel-checked
+certificate-to-error theorem and a human proof of the general parity step.
+
+\subsection{What the companion checks}
+After clearing denominators, a vertex and a sample are integer rows having
+the same positive total mass. For instance choose a common multiple $J$ of
+$N$, all coordinate denominators of the selected sample rows and $y$, and the
+denominator of $\omega$. Multiplication by $J$ preserves the color comparisons.
+The integer tolerances for the local theorem are $J/N$ and $J\omega$.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.36\linewidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textsf{Lean declaration} & \textsf{Mathematical content}\\
+\midrule
+\texttt{maxLabel\_correct} &
+A label exists on positive support and attains the global residual maximum.\\[2pt]
+\texttt{stop\_mesh}, \texttt{gap\_mesh} &
+Cumulative coordinates are monotone along a prefix. Each gap changes by at most one.\\[2pt]
+\texttt{solveWord\_sound}, \texttt{solveWord\_complete} &
+The bounded search returns a full word when one exists, and every returned word is in range and passes the full-color test.\\[2pt]
+\texttt{certified\_error}, \texttt{solveWord\_error} &
+The full-color bit supplies each color witness. A successful grid search and the local sample bounds imply the $2d/(d+1)$ estimate.\\[2pt]
+\texttt{cubeLabel\_correct}, \texttt{cube\_anchor} &
+The cubical labeling satisfies all three boundary requirements. Its two residual signs give the cubical error bound.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+In particular, \texttt{solveWord\_complete} takes existence of a full word
+as a premise. Section~\ref{sec:finite-sperner} discharges that premise
+mathematically. An implementation of finite search alone would leave precisely
+this point open.
+
+\subsection{Completing the embedded derivation}
+The following modules can be developed in dependency order. All formula
+parameters are numerical variables or fixed PR terms as in
+Section~\ref{sec:formal}.
+\begin{enumerate}
+\item \emph{Arithmetic and tables.} Introduce PR codes for indexing,
+word digits, canonical rationals, table assembly, the full-color bit, parity
+and bounded least success. Instantiate the repository's
+\texttt{Core.Basic}, \texttt{Core.BoundedSums}, \texttt{Core.SumOrder} and
+\texttt{Analysis.RationalArithmetic}. Prove lookup after update by induction
+on the index. Prove the prefix-count and least-hit invariants given above.
+A total signed integer can instead be represented as a pair of naturals. Here
+$(p,n)$ denotes $p-n$, and $(p,n)\le(q,m)$ abbreviates $p+m\le q+n$.
+Thus all scalar comparisons used in the transfer lemmas can be expressed in
+the natural-number object language.
+\item \emph{Uniform grid parity.} Code a cell by the word of length $r$
+and an incidence by $(r+1)\,\mathrm{word}+k$. Implement the permutation
+by sorting the time positions by (digit ascending, position descending).
+The inverse sends a valid permutation to its sequence of base entries.
+Prove the tie-block characterization by checking adjacent entries; verify
+the inverse by counting the earlier appearances of each value. For each of
+the three deletion cases, encode the partner from
+Section~\ref{sec:finite-sperner}, with a sentinel for the unpaired cases.
+Prove, by bounded vertex comparison, preservation of the retained list,
+the inverse equation, and the positive-gap exclusions. Express the
+top-face bijection as append-and-drop identities on the word/base
+representation. The resulting finite double sums give the one-step
+parity equality. Apply object-level quantifier-free induction to the
+capped dimension term with the ambient table held fixed. Use
+odd-count-implies-first-hit to finish the search proof.
+\item \emph{Rational extraction.} Reify the inequalities in
+\texttt{certified\_error}. For a color $i$, obtain its first occurrence
+using the Boolean full-color proof. Compare each $j$ to $i$ at that
+occurrence, transfer to the anchor and sum. A running sum with its
+diagonal term omitted supplies the multiplier $d$. Reify
+\eqref{eq:main} by substituting $h=1/N$, $\omega=2^{-m}$ and
+cross-multiplying. Introduce arbitrary $s\ge m$ after building the
+table and generalize it after the estimate. Close the universal formula
+of Section~\ref{sec:formal} by the object rules.
+\item \emph{Shorter fixed-dimension route.} For the cube instantiate
+\texttt{sperner\_cube} in the namespace\linebreak[1] \texttt{LeanProofs.IPRA.Topology.SpernerCube}
+with the term for the least successful cubical coordinate.
+The evaluator parameters and the desired precision can be packed into
+the provider's parameter $p$. The coordinate $j$ of the mathematical
+labeling is at list depth $d-1-j$ in the provider. Reify the three
+parts of \texttt{cubeLabel\_correct} for the canonical grid codes.
+The provider then yields $\operatorname{par}(\mathrm{count})=1$.
+Scan the provider's bases and permutations for a full cell, use the two
+sign inequalities in \texttt{cube\_anchor}, and instantiate the mixed
+modulus to obtain a cube witness. For the ball, add $R$, its two
+polynomial distance identities after clearing denominators, and the affine
+maps $I,P$. One can also obtain a fixed-dimensional simplex result by applying the cube theorem to $A\circ\Pi$ in $d+1$ variables and returning $\Pi(u)$. The inclusion of the simplex in the cube is isometric and $\Pi$ is a $2$-Lipschitz retraction.
+\end{enumerate}
+
+The upstream fixed-dimension parity source was inspected at the pinned
+revision. The full object-language derivation of approximate Brouwer,
+including the dimension-uniform parity derivation, remains to be implemented.
+The supplied Lean command and Python checks can be run independently as
+described in \texttt{README.md}.
