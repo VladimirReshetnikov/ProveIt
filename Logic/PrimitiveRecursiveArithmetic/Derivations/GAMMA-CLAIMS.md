@@ -145,6 +145,10 @@ proves the converse for encoded rational inputs. The bounded search
 returns an exact pole index or derives separation with `δ=1/B` from
 the nonzero translated integer norms. The actual reciprocal anchor
 then excludes the original C7 zero predicate in the failure branch.
+[GaussianGammaEulerHeadShift](Lean/IPRADerivations/Analysis/GaussianGammaEulerHeadShift.lean)
+proves the finite polynomial cancellation underlying C20 for all
+numerical cutoffs. Its actual head output satisfies
+`z H_N(z+1)=(z+N+1)H_N(z)` by multiplication alone.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.

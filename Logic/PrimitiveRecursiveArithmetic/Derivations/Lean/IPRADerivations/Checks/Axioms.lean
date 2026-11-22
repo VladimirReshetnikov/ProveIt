@@ -12997,6 +12997,22 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadLower.original_C7_euler_head_separation_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadLower.actual_separated_euler_head_inverse_closed
 
+/-! ### GaussianGammaEulerHeadShift -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.shifted
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.linear
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.subst_shifted
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.subst_linear
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.shifted_translation
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.factor_exchange
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.shiftLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.subst_shiftLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.shift_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.shift_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.shift_identity
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.returned_shift_identity
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.original_finite_Euler_head_shift_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift.original_finite_Euler_returned_head_shift_closed
+
 /-! ### GaussianGammaReciprocalInverse -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaReciprocalInverse.named_product_exchange
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaReciprocalInverse.inverse_pairs
