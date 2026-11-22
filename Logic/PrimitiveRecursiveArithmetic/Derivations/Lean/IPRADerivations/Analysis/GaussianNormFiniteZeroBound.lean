@@ -31,7 +31,7 @@ open LeanProofs.IPRA.Analysis.GaussianRationalFiberGrouping (fiberCount groupCou
 open LeanProofs.IPRA.Analysis.GaussianRationalFixedWidthStrip (block block_length)
 open LeanProofs.IPRA.Analysis.GaussianRationalGridCoefficientEquality (gridEqual coefficientsEqual)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteGridIdentity (gridPoint)
-open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qmul horner_canonical)
+open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qmul qzero horner_canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalMonicReduction (evaluate_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialDegree (flag degree nonzero_of_flag_one degree_le)
 open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialBuffers (leftPad pad_length pad_evaluation)
@@ -370,6 +370,43 @@ theorem finite_norm_width_bound (F G m a c L p : PTm n) (h : Γ ⊢[PRAAx] input
     Γ ⊢[PRAAx] le (length L) (degreeBound m a c) :=
   le_trans (finite_norm_zero_bound F G m a c L p h) (degree_le _ _)
 
+theorem original_group_norm_zero (F G m a c L p g : PTm n)
+    (hNorm : Γ ⊢[PRAAx] GaussianPolynomialMonicNorm.input F G m a c)
+    (hPoints : Γ ⊢[PRAAx] GaussianRationalCurveFibers.sourceInput F G m L)
+    (hGroup : Γ ⊢[PRAAx] lt g (groupCount L p)) :
+    Γ ⊢[PRAAx] evaluate (sourceOriginal F G m a c) (selectedX L p g) ≐ qzero := by
+  let x := selectedX L p g
+  let t := fiberCount L p g
+  have positive := GaussianRationalFiberGrouping.fiber_nonempty L p g hGroup
+  have same := GaussianRationalValueEquality.value_equal_refl (Γ := Γ) x
+  have difference := GaussianRationalValueEquality.difference_zero_of_equal_values _ _ same
+  have powerZero : Γ ⊢[PRAAx] GaussianRationalReciprocal.power qzero t ≐ qzero := by
+    refine .orE (zero_or_succ t) ?_ ?_
+    · exact not_succ_le_self zero _ (le_congr (.eqRefl _) Prf.hyp0 positive.wk)
+    · exact (congrAp2 GaussianRationalReciprocal.powerF Prf.hyp0 (.eqRefl _)).eqTrans
+        (GaussianRationalPowerNonzero.zero_positive_power _)
+  have rootPower := (congrAp2 GaussianRationalReciprocal.powerF (.eqRefl t) difference).eqTrans powerZero
+  exact (source_evaluation_factor F G m a c L p g x hNorm hPoints).eqTrans
+    ((qmul_congr rootPower (.eqRefl _)).eqTrans (GaussianRationalSyntheticDivision.qmul_zero_left _))
+
+theorem original_point_norm_zero (F G m a c L p i : PTm n)
+    (hNorm : Γ ⊢[PRAAx] GaussianPolynomialMonicNorm.input F G m a c)
+    (hPoints : Γ ⊢[PRAAx] GaussianRationalCurveFibers.sourceInput F G m L)
+    (hi : Γ ⊢[PRAAx] lt i (length L)) : Γ ⊢[PRAAx]
+    evaluate (sourceOriginal F G m a c) (GaussianRationalFiberGrouping.abscissa L i) ≐ qzero := by
+  let g := GaussianRationalFiberGrouping.groupOf L p i
+  let slot := GaussianRationalFiberGrouping.slotOf L p i
+  have covered := GaussianRationalFiberGrouping.coverage L p i hi
+  have groupBound := Prf.andE₁ covered
+  have slotBound := Prf.andE₁ (Prf.andE₂ covered)
+  have sourceIndex := Prf.andE₂ (Prf.andE₂ covered)
+  have member := GaussianRationalFiberGrouping.member_abscissa L p g slot slotBound
+  have abscissa := congrFst (Foundations.SequenceComposition.entry_congr (.eqRefl L) sourceIndex)
+  have value := GaussianRationalValueEquality.value_equal_trans _ _ _
+    (GaussianRationalValueEquality.value_equal_of_code abscissa.eqSymm) member
+  exact (GaussianRationalValueEquality.evaluation_value_proper _ _ _ value).eqTrans
+    (original_group_norm_zero F G m a c L p g hNorm hPoints groupBound)
+
 theorem actual_norm_accumulation_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8
     (GaussianPolynomialMonicNorm.input (var 0) (var 1) (var 2) (var 3) (var 4) ⟶
       GaussianRationalCurveFibers.sourceInput (var 0) (var 1) (var 2) (var 5) ⟶
@@ -380,5 +417,12 @@ theorem actual_finite_norm_zero_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx]
     (input (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) ⟶
       le (length (var 5)) (degree (sourceOriginal (var 0) (var 1) (var 2) (var 3) (var 4)) (degreeBound (var 2) (var 3) (var 4)))) :=
   closeUniv 6 (.impI (finite_norm_zero_bound _ _ _ _ _ _ zero Prf.hyp0))
+
+theorem actual_original_point_norm_zero_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 7
+    (GaussianPolynomialMonicNorm.input (var 0) (var 1) (var 2) (var 3) (var 4) ⟶
+      GaussianRationalCurveFibers.sourceInput (var 0) (var 1) (var 2) (var 5) ⟶
+      lt (var 6) (length (var 5)) ⟶ evaluate (sourceOriginal (var 0) (var 1) (var 2) (var 3) (var 4))
+        (GaussianRationalFiberGrouping.abscissa (var 5) (var 6)) ≐ qzero) :=
+  closeUniv 7 (.impI (.impI (.impI (original_point_norm_zero _ _ _ _ _ _ zero _ Prf.hyp1.wk Prf.hyp1 Prf.hyp0))))
 
 end LeanProofs.IPRA.Analysis.GaussianNormFiniteZeroBound

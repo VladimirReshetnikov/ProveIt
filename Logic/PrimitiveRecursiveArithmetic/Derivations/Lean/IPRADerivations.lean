@@ -1558,3 +1558,5 @@ import IPRADerivations.Analysis.GaussianRationalBlockFactorTransfer
 import IPRADerivations.Analysis.GaussianNormFiniteZeroBound
 import IPRADerivations.Analysis.GaussianSuperellipticMatrixCoefficients
 import IPRADerivations.Foundations.RuntimePermutationSums
+
+import IPRADerivations.Analysis.GaussianPolynomialDeterminantLeadingSelection

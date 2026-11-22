@@ -163,8 +163,9 @@ the original coefficient-row guards, returns the norm/matrix/columns/width,
 and proves literal coefficient and evaluation Leibniz. Its width bound is
 m(a+pred(m)c)+1; no exact nonzero degree is asserted. The same returned matrix
 satisfies the source curve-action equations, including zero components at an
-original common zero. This still needs a runtime determinant-kernel theorem
-to conclude norm zero.
+original common zero. [The original point root theorem](Lean/IPRADerivations/Analysis/GaussianNormFiniteZeroBound.lean)
+uses the positive size of its actual abscissa group to derive norm zero.
+Field-value properness transports this equality to the original abscissa code.
 
 [GaussianRationalCurveFibers](Lean/IPRADerivations/Analysis/GaussianRationalCurveFibers.lean)
 constructs the actual ordinate list of every original field-x fiber. Genuine
@@ -173,9 +174,9 @@ representative x. Original pairwise field-distinctness is the negation of
 simultaneous x and y equality; it is not replaced by raw-code inequality.
 It derives field-distinct ordinates, actual specialized roots and t<=m for
 the same generated list. The PR3 ordinate and PR6 returned certificates retain
-the exact computed partition sum over all original positions. The runtime
-Vandermonde/completion matrices, determinant algebra, sharp fiber divisibility
-and accumulated norm multiplicity remain required.
+the exact computed partition sum over all original positions. The completed
+fiber matrices, local determinant divisibility and global multiplicity bound
+use this same partition.
 
 ## Field transport and completed fiber-matrix prerequisites
 
@@ -325,7 +326,11 @@ reflects the evaluated identity at a finite grid and identifies the actual
 padded cell and its tighter unpadded buffer. The
 [permutation sum law](Lean/IPRADerivations/Foundations/RuntimePermutationSums.lean)
 reindexes an arbitrary fixed numerical body along the actual retained word.
-The unique leading term and exact weighted norm degree remain open.
+[Leading coefficient selection](Lean/IPRADerivations/Analysis/GaussianPolynomialDeterminantLeadingSelection.lean)
+uses the original signed coefficient sum. Once its earlier terms vanish
+and the selected slot has a single nonzero contributor, the actual scan
+returns the first slot, degree and leading value. The unique contributor
+for the weighted norm still has to be derived.
 
 The [grouped factor product](Lean/IPRADerivations/Analysis/GaussianNormGroupFactorProduct.lean)
 is monic of computed degree equal to the original prefix sum of fiber
@@ -603,14 +608,11 @@ the environment labels. Completion needs the following evidence:
    semantics. [GaussianRationalPolynomialProductDegree](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialProductDegree.lean)
    now derives the actual product's leading value/nonvanishing and computed
    degree from the SAME coefficient convolution and factor scans; raw and
-   zero-factor cases have explicit source scopes. General high-Y reduction
-   and symbolic quotient witnesses,
-   remaining field representations, numerical-dimension determinant/norm
-   programs, fiber multiplicity/nonvanishing proofs and the Gaussian-elimination
-   annihilator producer remain. An
-   all-point base-field evaluator identity does not by itself instantiate an
-   extension field. Supplied and constructed certificates retain separate
-   acceptance claims.
+   zero-factor cases have explicit source scopes. The actual numerical
+   determinant and norm give the local and accumulated multiplicity proofs
+   for the exact Gaussian-rational coding. The weighted norm endpoint,
+   arbitrary high-Y reduction, further coded-field instances and the
+   Gaussian-elimination annihilator remain separate obligations.
 6. **Verification:** register each completed module in `IPRADerivations`, audit
    its named public endpoints in `Checks/Axioms.lean`, run normal Lake builds
    and the source import-closure gate, and document exact assumptions and
