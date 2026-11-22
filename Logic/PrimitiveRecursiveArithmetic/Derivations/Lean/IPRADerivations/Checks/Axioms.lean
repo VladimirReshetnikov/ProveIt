@@ -1933,6 +1933,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.coord_lip
 #print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.embed_lipschitz
 #print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.inverse_core
+#print axioms LeanProofs.IPRA.Topology.MetricNeighborhoods.sandwich_inner
+#print axioms LeanProofs.IPRA.Topology.MetricNeighborhoods.sandwich_outer
+#print axioms LeanProofs.IPRA.Topology.MetricNeighborhoods.margin_ball
+#print axioms LeanProofs.IPRA.Topology.MetricNeighborhoods.evaluation
+#print axioms LeanProofs.IPRA.Topology.MetricNeighborhoods.currying
+#print axioms LeanProofs.IPRA.Topology.MetricNeighborhoods.pow_mono_D
+#print axioms LeanProofs.IPRA.Topology.MetricNeighborhoods.metrization_inverse
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.monus_add_cancel
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.fwd_same
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.fwd_same_le

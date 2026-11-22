@@ -730,6 +730,7 @@ import IPRADerivations.Topology.FiniteLimits
 import IPRADerivations.Topology.MetricProducts
 import IPRADerivations.Topology.ApproxExtrema
 import IPRADerivations.Topology.HilbertEmbedding
+import IPRADerivations.Topology.MetricNeighborhoods
 import IPRADerivations.Topology.OpenCubeHomeo
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
