@@ -42,8 +42,16 @@ power-series tail.
 uses those exact observations as a regular Gaussian rational name with the
 C6 radius and the same rounding slack. At the sufficient cutoff `4R²≤N`,
 every sample lies in the unit disk, which supplies an actual input and
-regular output for the exponential of this tail. The Euler and Gamma
-approximant equations C5 and C7–C15 remain.
+regular output for the exponential of this tail.
+[GaussianGammaCanonicalTailExponential](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailExponential.lean)
+proves that the actual tail exponential approaches one at a computed
+cofinal cutoff. The original pure-tail finite sample comparison uses the
+C6 radius and the finite three-Lipschitz estimate.
+[GaussianGammaEulerHead](Lean/IPRADerivations/Analysis/GaussianGammaEulerHead.lean)
+builds the literal finite polynomial in C5 and C7, proves its finite
+split and binds each factor to the local C4 constant. At cutoff `2R` its
+Euclidean majorant is exactly the polynomial factor in C9. The assembled
+Euler and Gamma approximant equations C5 and C7–C15 remain.
 
 [GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/GammaCanonicalRemainder.lean)
 proves the sharp finite C3 remainder between cutoffs `L` and `L+K` of the
