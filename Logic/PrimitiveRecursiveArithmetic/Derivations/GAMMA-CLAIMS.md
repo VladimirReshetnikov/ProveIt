@@ -175,8 +175,12 @@ to a dyadic error bound is checked by
 [GaussianFiniteLogarithmDyadicTail](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmDyadicTail.lean).
 [GaussianFiniteLogarithmCompositionName](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmCompositionName.lean)
 constructs the regular cofinal name from the original finite Gamma-factor
-samples and proves its equivalence to the constant name `1+w`. The generic
-exponential-name construction on arbitrary input names remains.
+samples and proves its equivalence to the constant name `1+w`.
+[GaussianRationalExponentialTail](Lean/IPRADerivations/Analysis/GaussianRationalExponentialTail.lean)
+proves the original scalar-sum cutoff comparison on a bounded Gaussian
+rational input. [GaussianRationalExponentialName](Lean/IPRADerivations/Analysis/GaussianRationalExponentialName.lean)
+constructs the original cutoff name at such queries. Properness for
+general regular argument names remains.
 
 ## Every ledger family remains in scope
 
