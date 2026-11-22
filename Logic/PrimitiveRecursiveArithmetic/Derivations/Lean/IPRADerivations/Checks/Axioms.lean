@@ -1856,6 +1856,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.SphereCycle.coef_not
 #print axioms LeanProofs.IPRA.Topology.SphereCycle.antipodal
 #print axioms LeanProofs.IPRA.Topology.SphereCycle.top_coef
+#print axioms LeanProofs.IPRA.Topology.FiniteLimits.coef_bound
+#print axioms LeanProofs.IPRA.Topology.FiniteLimits.mem_box
+#print axioms LeanProofs.IPRA.Topology.FiniteLimits.card_box
+#print axioms LeanProofs.IPRA.Topology.FiniteLimits.repeat_chain
+#print axioms LeanProofs.IPRA.Topology.FiniteLimits.cert_sub
+#print axioms LeanProofs.IPRA.Topology.FiniteLimits.cost_sub
+#print axioms LeanProofs.IPRA.Topology.FiniteLimits.shared_target
+#print axioms LeanProofs.IPRA.Topology.FiniteLimits.global_support
+#print axioms LeanProofs.IPRA.Topology.FiniteLimits.local_support
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
