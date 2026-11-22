@@ -1865,6 +1865,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.FiniteLimits.shared_target
 #print axioms LeanProofs.IPRA.Topology.FiniteLimits.global_support
 #print axioms LeanProofs.IPRA.Topology.FiniteLimits.local_support
+#print axioms LeanProofs.IPRA.Topology.MetricProducts.tail_bound
+#print axioms LeanProofs.IPRA.Topology.MetricProducts.coord_bound
+#print axioms LeanProofs.IPRA.Topology.MetricProducts.local_gap
+#print axioms LeanProofs.IPRA.Topology.MetricProducts.half_gap
+#print axioms LeanProofs.IPRA.Topology.MetricProducts.local_lipschitz
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound
