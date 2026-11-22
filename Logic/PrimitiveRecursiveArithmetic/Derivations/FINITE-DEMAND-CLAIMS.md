@@ -367,6 +367,20 @@ root and cancellation at each stripping step. The
 applies this transfer through the original group count and identifies the
 sum of all removed multiplicities with the length of the input point list.
 
+For the subspace construction, the
+[bivariate power expansion](Lean/IPRADerivations/Analysis/GaussianBivariatePowerExpansion.lean)
+identifies the original evaluator with an actual nested finite sum in the
+ascending exponents. It reads the original descending storage slots in
+both coordinates. The
+[actual weighted basis](Lean/IPRADerivations/Analysis/GaussianWeightedMonomialBasis.lean)
+enumerates the original admissible pairs in lexicographic order. Its
+returned evaluation vector uses precisely those pairs. The
+[rectangular pivot operation](Lean/IPRADerivations/Analysis/GaussianRationalRowElimination.lean)
+normalizes a nonzero source pivot, eliminates its column and preserves
+the original homogeneous row equations in both directions. The
+proper-subspace proof still needs the complete rank procedure, a produced
+annihilator and the corresponding filtered evaluation binding.
+
 ## Logical strength and program boundaries
 
 The ordinary scheduling proof keeps the user's entire context fixed during

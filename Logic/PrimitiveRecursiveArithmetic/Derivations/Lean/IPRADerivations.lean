@@ -1582,3 +1582,7 @@ import IPRADerivations.Analysis.GaussianSuperellipticWordWeights
 import IPRADerivations.Analysis.GaussianSuperellipticWordTerms
 import IPRADerivations.Analysis.GaussianSuperellipticCyclicLeading
 import IPRADerivations.Analysis.GaussianSuperellipticNormDegree
+
+import IPRADerivations.Analysis.GaussianBivariatePowerExpansion
+import IPRADerivations.Analysis.GaussianWeightedMonomialBasis
+import IPRADerivations.Analysis.GaussianRationalRowElimination
