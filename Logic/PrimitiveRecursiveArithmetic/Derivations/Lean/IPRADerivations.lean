@@ -274,9 +274,13 @@ import IPRADerivations.AnalyticNumberTheory.RobinExpName
 import IPRADerivations.AnalyticNumberTheory.RobinGammaInterval
 import IPRADerivations.AnalyticNumberTheory.RobinGammaUpper
 import IPRADerivations.AnalyticNumberTheory.RobinThreePos
+import IPRADerivations.AnalyticNumberTheory.RobinLogDiff
+import IPRADerivations.AnalyticNumberTheory.RobinLogWidth
+import IPRADerivations.AnalyticNumberTheory.RobinUpperEnd
 import IPRADerivations.AnalyticNumberTheory.EtaSchedule
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeTheta
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeSide
+import IPRADerivations.AnalyticNumberTheory.LcmBridgeLoss
 import IPRADerivations.AnalyticNumberTheory.CubeScan
 import IPRADerivations.AnalyticNumberTheory.SymmetricPrefix
 import IPRADerivations.AnalyticNumberTheory.SymmetricMoment
@@ -706,6 +710,8 @@ import IPRADerivations.Topology.SimplicialCone
 import IPRADerivations.Topology.BooleanAtoms
 import IPRADerivations.Topology.FiniteSheaves
 import IPRADerivations.Topology.TwoColoring
+import IPRADerivations.Topology.SphereCycle
+import IPRADerivations.Topology.FiniteLimits
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
