@@ -14018,6 +14018,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.PolynomialTaylor.up_step
 #print axioms LeanProofs.IPRA.Analysis.PolynomialTaylor.taylor_lower
 #print axioms LeanProofs.IPRA.Analysis.PolynomialTaylor.taylor_upper
+#print axioms LeanProofs.IPRA.Analysis.SignedTaylor.signed_taylor_upper
+#print axioms LeanProofs.IPRA.Analysis.SignedTaylor.signed_taylor_lower
 #print axioms LeanProofs.IPRA.Foundations.FiniteQueryTable.table_good
 #print axioms LeanProofs.IPRA.Foundations.FiniteQueryTable.table_entry
 #print axioms LeanProofs.IPRA.Foundations.FiniteQueryTable.fix_precision
