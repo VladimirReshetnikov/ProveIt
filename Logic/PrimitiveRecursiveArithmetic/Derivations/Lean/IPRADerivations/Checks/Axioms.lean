@@ -1902,6 +1902,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.ApproxExtrema.approx_max
 #print axioms LeanProofs.IPRA.Topology.ApproxExtrema.approx_min
 #print axioms LeanProofs.IPRA.Topology.ApproxExtrema.sup_upper
+#print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.trunc_case
+#print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.tc1
+#print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.tc2
+#print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.tc3
+#print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.tc4
+#print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.trunc_lip
+#print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.rev_tri
+#print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.coord_lip
+#print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.embed_lipschitz
+#print axioms LeanProofs.IPRA.Topology.HilbertEmbedding.inverse_core
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.monus_add_cancel
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.fwd_same
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.fwd_same_le
