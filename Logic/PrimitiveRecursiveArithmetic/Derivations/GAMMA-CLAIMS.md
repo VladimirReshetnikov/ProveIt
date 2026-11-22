@@ -97,8 +97,19 @@ verifies the same programs at arbitrary numerical cutoffs satisfying
 [GaussianGammaC9Bound](Lean/IPRADerivations/Analysis/GaussianGammaC9Bound.lean)
 proves the exact C9 bound `M_R` for every observation of the original
 reciprocal name. Agreement across cutoffs, the bounds on the separate
-finite approximants, and the remaining C5 and C8–C15 identities and
-rates remain.
+finite approximants, and the remaining C8–C15 identities and rates remain.
+[GaussianGammaFiniteApproximantName](Lean/IPRADerivations/Analysis/GaussianGammaFiniteApproximantName.lean)
+constructs the folded C5 names from the original polynomial head,
+Euler constant, harmonic value, and harmonic-mesh logarithm. It proves the
+actual sampling equations and regularity. The derivation connecting
+these forms to the factor-by-factor C5 product remains.
+[GaussianGammaLogHarmonicName](Lean/IPRADerivations/Analysis/GaussianGammaLogHarmonicName.lean)
+proves that the actual sum of the fixed-index Euler and harmonic-mesh
+logarithm names agrees with the exact harmonic constant at independent
+precisions.
+[GaussianGammaExponentStep](Lean/IPRADerivations/Analysis/GaussianGammaExponentStep.lean)
+proves the actual exponent identity for adjacent cutoffs by combining
+the harmonic increment, tail shift and original local full logarithm.
 
 [GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/GammaCanonicalRemainder.lean)
 proves the sharp finite C3 remainder between cutoffs `L` and `L+K` of the
@@ -279,6 +290,10 @@ remains.
 uses the actual scalar sums to construct a regular exponential of an
 argument name with unit-disk samples and proves preservation of name
 equivalence.
+[GaussianExponentialSmallPerturbation](Lean/IPRADerivations/Analysis/GaussianExponentialSmallPerturbation.lean)
+proves the finite and named bound `3A/B` from one under a disk bound
+`A/B≤1`. The product estimate for a bounded prefactor is `3MA/B`,
+including at zeros. Instantiating the C10 perturbing exponent remains.
 [GaussianLocalLogarithmName](Lean/IPRADerivations/Analysis/GaussianLocalLogarithmName.lean)
 proves regularity and the unit-disk bound on every original unshifted
 logarithm observation.
