@@ -105,6 +105,7 @@ import IPRADerivations.Analysis.RobbinsSeries
 import IPRADerivations.Analysis.ExponentialSeries
 import IPRADerivations.Analysis.ExponentialMajorant
 import IPRADerivations.Analysis.WeierstrassProduct
+import IPRADerivations.Analysis.WeightedCauchySchwarz
 import IPRADerivations.Analysis.BinomialExponentialGap
 import IPRADerivations.Analysis.StirlingElimination
 import IPRADerivations.Analysis.FiniteDifferenceIdentities

@@ -15990,6 +15990,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.ExponentialMajorant.exp_split
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.weierstrass_lower
 #print axioms LeanProofs.IPRA.Analysis.WeierstrassProduct.weierstrass_upper
+#print axioms LeanProofs.IPRA.Analysis.WeightedCauchySchwarz.four_le_sq
+#print axioms LeanProofs.IPRA.Analysis.WeightedCauchySchwarz.sq_pw
+#print axioms LeanProofs.IPRA.Analysis.WeightedCauchySchwarz.amgm2
+#print axioms LeanProofs.IPRA.Analysis.WeightedCauchySchwarz.cs_alg
+#print axioms LeanProofs.IPRA.Analysis.WeightedCauchySchwarz.inst2_mul
+#print axioms LeanProofs.IPRA.Analysis.WeightedCauchySchwarz.cs_base
+#print axioms LeanProofs.IPRA.Analysis.WeightedCauchySchwarz.cs_step
+#print axioms LeanProofs.IPRA.Analysis.WeightedCauchySchwarz.cs_all
+#print axioms LeanProofs.IPRA.Analysis.WeightedCauchySchwarz.weighted_cs
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.DnInv
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.UpInv
 #print axioms LeanProofs.IPRA.Analysis.FiniteFTC.dn_base
