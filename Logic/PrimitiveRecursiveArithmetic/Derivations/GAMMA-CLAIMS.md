@@ -12,6 +12,12 @@ lemmas and analytic certificate structures are separate evidence.
 
 ## Current checked arithmetic
 
+[GammaEulerMesh](Lean/IPRADerivations/Analysis/GammaEulerMesh.lean)
+computes the exact sample `H_N−(H_(KN)−H_K)` on the positive integer
+mesh. It proves the C1 difference for a common mesh and the finite
+range `[0,1]` on the independently normalized samples. The regular Euler
+constant name and the bridge to the completed logarithm remain.
+
 [GammaCanonicalFactors](Lean/IPRADerivations/Analysis/GammaCanonicalFactors.lean)
 implements the finite expression
 
@@ -193,6 +199,13 @@ constructs the original cutoff name at such queries.
 [GaussianRationalExponentialLipschitz](Lean/IPRADerivations/Analysis/GaussianRationalExponentialLipschitz.lean)
 proves the uniform three-Lipschitz estimate for the original finite
 scalar exponential on the unit disk.
+[GaussianRationalRadiusExponentialLipschitz](Lean/IPRADerivations/Analysis/GaussianRationalRadiusExponentialLipschitz.lean)
+proves the cutoff-dependent Lipschitz estimate on any numerical disk
+and bounds it by the computed binary precision factor.
+[GaussianScalarExponentialDiagonal](Lean/IPRADerivations/Analysis/GaussianScalarExponentialDiagonal.lean)
+proves that the actual triangular Cauchy sum is exactly the original
+finite scalar exponential of the sum. Bounding the difference from the
+rectangular product truncation is a remaining step in named addition.
 [GaussianUnitDiskExponentialName](Lean/IPRADerivations/Analysis/GaussianUnitDiskExponentialName.lean)
 uses the actual scalar sums to construct a regular exponential of an
 argument name with unit-disk samples and proves preservation of name
