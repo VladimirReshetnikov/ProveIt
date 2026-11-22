@@ -180,8 +180,14 @@ proves the exact change with factor horizon at a fixed degree and
 constructs its regular cofinal name with the original factor clock.
 [GaussianGammaCofinalDegreeTail](Lean/IPRADerivations/Analysis/GaussianGammaCofinalDegreeTail.lean)
 proves the same C18 error against the original cofinal tail at independent
-precisions, with the two requested observation errors. Identification of
-the cofinal degree coefficients with zeta tails remains.
+precisions, with the two requested observation errors.
+[GaussianGammaZetaDegreeName](Lean/IPRADerivations/Analysis/GaussianGammaZetaDegreeName.lean)
+identifies the original fixed-degree tail with the actual C17 zeta-tail
+polynomial, retaining the exact C18 bound.
+[GaussianGammaZetaTailSeries](Lean/IPRADerivations/Analysis/GaussianGammaZetaTailSeries.lean)
+uses the cofinal degree `L_p=p+R²` to construct the actual C16 zeta series
+and proves its equivalence with the original tail at independent
+precisions, including the source cutoff `N=2R`.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
@@ -197,6 +203,12 @@ mesh logarithm remains a C20 dependency.
 [GaussianRobinLogRangeReduction](Lean/IPRADerivations/Analysis/GaussianRobinLogRangeReduction.lean)
 identifies the actual exponentials of the original two binary components
 as `2` and `a/Bt(a,b)`.
+[GaussianRobinLowerDecomposition](Lean/IPRADerivations/Analysis/GaussianRobinLowerDecomposition.lean)
+proves the exact decomposition of the original stored lower endpoint at
+every numerical cutoff into the two actual odd sums and the binary exponent.
+[GaussianRobinMeshLogDecomposition](Lean/IPRADerivations/Analysis/GaussianRobinMeshLogDecomposition.lean)
+identifies their named weighted sum with the original mesh logarithm
+at independent observation precisions.
 [GaussianRationalConjugation](Lean/IPRADerivations/Analysis/GaussianRationalConjugation.lean)
 proves exact conjugation for rational code, metric and scalar Taylor sums.
 [GaussianGammaFiniteConjugation](Lean/IPRADerivations/Analysis/GaussianGammaFiniteConjugation.lean)
@@ -209,6 +221,9 @@ proves conjugation of the original C7 reciprocal via the literal C11
 cofinal Weierstrass sampler, including at every zero of the original head.
 [GaussianGammaInverseConjugation](Lean/IPRADerivations/Analysis/GaussianGammaInverseConjugation.lean)
 proves conjugation for the same pole-free Gamma inverse.
+[GaussianGammaRealValues](Lean/IPRADerivations/Analysis/GaussianGammaRealValues.lean)
+constructs actual rational regular names for the real values of both
+original Gamma names at encoded real rational inputs.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.
@@ -475,7 +490,7 @@ composition. These are object-theory derivations of the local C4 identity.
 | --- | --- |
 | 1 | Actual harmonic/logarithm Euler-constant evaluator, C1–C2 inequalities, a regular name, and its bounds. |
 | 2–3 | Actual cofinal samplers establish C11 for the literal Weierstrass product and C15 for the Euler reciprocals. The C7 and Gamma names agree on overlapping disks for the same encoded rational point. Agreement with the right half-plane integral construction remains. |
-| 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The coefficient majorants, entire analyticity, zero classification for general named inputs, simplicity of the zeros, poles and residues, functional equation and normalization, factorial values and the explicit real-domain representation remain. C26 conjugation is proved for the original reciprocal and pole-free Gamma names. |
+| 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The coefficient majorants, entire analyticity, zero classification for general named inputs, simplicity of the zeros, poles and residues, functional equation and normalization, and factorial values remain. C26 conjugation and the real value representation for encoded real rational inputs are proved for the original reciprocal and pole-free Gamma names. |
 | 11–17 | Actual quadrature and both endpoint tails, Euler-integral identification, quantitative positive lower/upper bounds, vertical absolute-value comparison, fixed-order derivative integrals, substitution/scaling formulas, and incomplete-Gamma sum/recurrence/integer formulas. |
 | 18–24 | Reflection with an explicit sine margin, multiplication at arbitrary internal positive integer multiplier, duplication/triplication, beta–Gamma relation, beta symmetry/recurrence and all stated integral forms with their positive half-plane margins. |
 | 25–30 | Positive-root selection and half-integer values, the listed fractional-argument relations and fractional products, rising/binomial cancellation through apparent poles, and imaginary/half-shifted modulus formulas, including their zero-safe versions. |
