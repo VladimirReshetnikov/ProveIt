@@ -744,6 +744,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.MartingaleRate.ad_symm
 #print axioms LeanProofs.IPRA.Probability.MartingaleRate.rate_pt
 #print axioms LeanProofs.IPRA.Probability.MartingaleRate.martingale_rate
+#print axioms LeanProofs.IPRA.Probability.QuantumExpectation.toZ_zz
+#print axioms LeanProofs.IPRA.Probability.QuantumExpectation.toZ_zsum
+#print axioms LeanProofs.IPRA.Probability.QuantumExpectation.two_cancel
+#print axioms LeanProofs.IPRA.Probability.QuantumExpectation.imag_alg
+#print axioms LeanProofs.IPRA.Probability.QuantumExpectation.square_alg
+#print axioms LeanProofs.IPRA.Probability.QuantumExpectation.variance_alg
+#print axioms LeanProofs.IPRA.Probability.QuantumExpectation.hX_at
+#print axioms LeanProofs.IPRA.Probability.QuantumExpectation.hY_at
+#print axioms LeanProofs.IPRA.Probability.QuantumExpectation.quantum_real
+#print axioms LeanProofs.IPRA.Probability.QuantumExpectation.quantum_square
+#print axioms LeanProofs.IPRA.Probability.QuantumExpectation.quantum_variance
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.trunc_pt
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.truncation
 #print axioms LeanProofs.IPRA.Probability.MomentDeterminacy.back_unique
