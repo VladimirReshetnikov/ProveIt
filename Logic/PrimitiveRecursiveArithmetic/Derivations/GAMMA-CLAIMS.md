@@ -19,8 +19,13 @@ range `[0,1]` on the independently normalized samples.
 [GammaEulerConstantName](Lean/IPRADerivations/Analysis/GammaEulerConstantName.lean)
 constructs the actual fixed-index and cofinal regular names and proves the
 sharp named C1 and C2 comparisons with independent observation errors.
-The construction uses the harmonic-mesh presentation of the logarithm.
-Its comparison with the separate Robin logarithm evaluator remains.
+[GammaMeshRobinLogBridge](Lean/IPRADerivations/Analysis/GammaMeshRobinLogBridge.lean)
+proves independent-precision agreement of the regular harmonic-mesh and
+binary-reduced Robin logarithm names for positive integers. Its Robin
+observations use the original numerator and denominator at `p+N+4`. It
+also proves that the fixed-index Euler sample plus the logarithm at the
+same mesh equals the original exact harmonic value. The unreduced artanh
+sampler still needs its own comparison.
 [RationalGaussianNameEmbedding](Lean/IPRADerivations/Analysis/RationalGaussianNameEmbedding.lean)
 embeds the original regular scalar names as regular Gaussian names,
 with exact Euclidean distances and a computed exponential disk.
@@ -72,6 +77,13 @@ Euclidean majorant is exactly the polynomial factor in C9.
 constructs the actual regular C7 exponent from the Euler constant mesh
 name, the exact harmonic value and the original canonical tail at `2R`.
 The computed zeroth-observation radius gives a regular exponential.
+[GaussianGammaHarmonicIncrement](Lean/IPRADerivations/Analysis/GaussianGammaHarmonicIncrement.lean)
+proves the exact scalar and Gaussian identity `H_(N+1)=H_N+1/(N+1)`
+for the original harmonic programs.
+[GaussianGammaCanonicalExponentBound](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalExponentBound.lean)
+proves that every original C7 exponent observation lies in the numerical
+disk of radius `2R²+2R`, using the original tail with its rounding error.
+The exponential magnitude `3^(2R²+2R)` remains to finish C9.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk. Agreement

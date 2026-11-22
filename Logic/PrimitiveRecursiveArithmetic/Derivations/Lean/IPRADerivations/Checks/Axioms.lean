@@ -4616,6 +4616,46 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationDistributivity.actual_computed_cap_distributivity_program_closed
 #print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationDistributivity.original_heights_computed_cap_returned_distributivity_closed
 
+/-! ### QuadraticTowerMultiplicationNegative -/
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.added_negative_cancel
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.inverse_unique
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.negative_involution
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.query_operands_congr
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.query_right_negative
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.query_left_negative
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.query_double_negative
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.left_negative
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.right_negative
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.norm_negative
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.source
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.input
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.subst_source
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.subst_input
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.query_negatives
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.output
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.outputF
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.run
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.subst_output
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.subst_run
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.program_at
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.returned_right
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.returned_tail
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.returned_negative
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.returned_products
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.returned_double
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.returned_original_pair
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.returned_original
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.returned_cap
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.returned_equalities
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.actual_constructed_additive_inverse_unique_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.actual_constructed_negative_involution_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.original_actual_multiplication_negatives_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.actual_constructed_negative_halves_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.original_actual_sign_norm_negative_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.actual_negative_multiplication_program_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.actual_negative_multiplication_returned_cap_closed
+#print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative.original_returned_negative_multiplication_closed
+
 /-! ### QuadraticTowerMultiplicationRecurrence -/
 #print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationRecurrence.lookup_normalized
 #print axioms LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationRecurrence.recipe_normalized
@@ -12271,6 +12311,83 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GammaEulerConstantName.original_named_C2_closed
 #print axioms LeanProofs.IPRA.Analysis.GammaEulerConstantName.original_named_C1_closed
 
+/-! ### GammaMeshRobinLogBridge -/
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.gridNumerator
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.gridDenominator
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.gain
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.leftSum
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.rightSum
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_gridNumerator
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_gridDenominator
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_gain
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_leftSum
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_rightSum
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.grid_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.left_zero
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.right_zero
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.left_succ
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.right_succ
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.grid_step
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.prefixBounds
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_prefixBounds
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.prefix_zero
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.prefix_step
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.grid_telescope
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.rectangleBalance
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_rectangleBalance
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.rectangle_balance
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.left_sum_bound
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.count
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.grid_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.terminal_left_bound
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.harmonicNumerator
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.harmonicLog
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.gridValue
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.robinValue
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.robin_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.terminal_grid_value
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.harmonic_value
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.finite_bridge
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.robinClock
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_harmonicNumerator
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_harmonicLog
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_robinValue
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_robinClock
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.binary_gain
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.gain_positive
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.clock_error_budget
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.clocked_values
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.meshLogF
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.robinLogF
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.meshLogSample
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.robinLogSample
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_meshLogSample
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_robinLogSample
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.mesh_log_at
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.robin_log_at
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.cross_compatibility
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.gapClock
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.remove_cross_error
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.join_cross_errors
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.mesh_samples_regularity
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.robin_samples_regularity
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.mesh_name_regular
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.robin_name_regular
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.mesh_sample_canonical
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.robin_sample_canonical
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.harmonicValue
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.subst_harmonicValue
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.fixed_mesh_sum
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.fixed_log_samples_sum
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.actual_original_robin_grid_telescope_closed
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.original_finite_mesh_robin_comparison_closed
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.actual_mesh_log_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.actual_robin_log_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.original_named_mesh_robin_compatibility_closed
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.original_mesh_log_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.original_robin_log_regular_closed
+#print axioms LeanProofs.IPRA.Analysis.GammaMeshRobinLogBridge.original_fixed_mesh_log_harmonic_identity_closed
+
 -- Actual least-neighbor chain and pure signed mesh extraction.
 #print axioms LeanProofs.IPRA.Analysis.AggregateChain.index_in_range
 #print axioms LeanProofs.IPRA.Analysis.AggregateChain.adjacent
@@ -15870,6 +15987,35 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponent.actual_gamma_C7_exponential_sample_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponent.actual_gamma_C7_preparation_program_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponent.actual_returned_gamma_C7_exponential_data_closed
+
+/-! ### GaussianGammaHarmonicIncrement -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.reciprocal
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.reciprocalPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.subst_reciprocal
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.subst_reciprocalPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.reciprocal_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.reciprocal_canonical
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.harmonic_increment
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.embedded_reciprocal
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.harmonic_point_increment
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.actual_original_harmonic_increment_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.actual_gaussian_reciprocal_embedding_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaHarmonicIncrement.actual_original_gaussian_harmonic_increment_closed
+
+/-! ### GaussianGammaCanonicalExponentBound -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.numerator_range
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.scalar_representation_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.gamma_observation_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.harmonic_point_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.tail_point_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.numericalRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.subst_numericalRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.difference_value_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.product_value_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.exponent_point_numerical_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.exact_exponential_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.original_gamma_C7_exact_exponent_radius_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound.original_gamma_C7_exact_exponential_input_closed
 
 /-! ### GaussianUnitDiskExponentialName -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianUnitDiskExponentialName.shifted
