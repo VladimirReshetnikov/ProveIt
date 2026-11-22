@@ -65,6 +65,11 @@ regular output for the exponential of this tail.
 identifies the normalized original finite tail with the exact Gaussian sum
 of its original factors. One extra factor in the original tail yields
 the first factor plus the successor tail at the same Taylor degree.
+[GaussianGammaCanonicalTailMetric](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailMetric.lean)
+proves the original same-query comparison with error `8/2^(p+4)`.
+[GaussianGammaCanonicalTailShift](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailShift.lean)
+accounts for the retiming of the actual addition and proves the regular
+name identity `T_N=L_(N+1)+T_(N+1)` at independent precisions.
 [GaussianGammaCanonicalTailExponential](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailExponential.lean)
 proves that the actual tail exponential approaches one at a computed
 cofinal cutoff. The original pure-tail finite sample comparison uses the
@@ -83,12 +88,17 @@ for the original harmonic programs.
 [GaussianGammaCanonicalExponentBound](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalExponentBound.lean)
 proves that every original C7 exponent observation lies in the numerical
 disk of radius `2R²+2R`, using the original tail with its rounding error.
-The exponential magnitude `3^(2R²+2R)` remains to finish C9.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
-for the displayed C7 expression on each fixed input disk. Agreement
-across cutoffs, the exact C9 majorant, the C5 approximants and the
-C8–C15 identities and rates remain.
+for the displayed C7 expression on each fixed input disk.
+[GaussianGammaCutoffName](Lean/IPRADerivations/Analysis/GaussianGammaCutoffName.lean)
+verifies the same programs at arbitrary numerical cutoffs satisfying
+`N≥1` and `2R≤N`, with literal specialization at `N=2R`.
+[GaussianGammaC9Bound](Lean/IPRADerivations/Analysis/GaussianGammaC9Bound.lean)
+proves the exact C9 bound `M_R` for every observation of the original
+reciprocal name. Agreement across cutoffs, the bounds on the separate
+finite approximants, and the remaining C5 and C8–C15 identities and
+rates remain.
 
 [GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/GammaCanonicalRemainder.lean)
 proves the sharp finite C3 remainder between cutoffs `L` and `L+K` of the
@@ -250,8 +260,21 @@ compares each actual observation with the original finite sum at a common
 later input and cutoff. [GaussianExponentialAddition](Lean/IPRADerivations/Analysis/GaussianExponentialAddition.lean)
 uses the original addition and multiplication clocks to prove
 `exp(u+v)=exp(u)exp(v)` at independent observation precisions on a common
-numerical disk with `R≥1`. The combined proof with the named C8 tail and
-Euler head remains.
+numerical disk with `R≥1`.
+[GaussianExponentialRadiusIndependence](Lean/IPRADerivations/Analysis/GaussianExponentialRadiusIndependence.lean)
+proves exponential properness with independent input disks and agreement
+with the actual specialized unit-disk exponential.
+[GaussianExponentialDiskMajorant](Lean/IPRADerivations/Analysis/GaussianExponentialDiskMajorant.lean)
+transfers the actual finite series on the nonnegative real axis to a
+Euclidean bound throughout the disk.
+[GaussianPositiveExponentialProduct](Lean/IPRADerivations/Analysis/GaussianPositiveExponentialProduct.lean)
+proves positivity of the original high-degree part and submultiplicativity
+of the real finite sums.
+[GaussianPositiveExponentialMajorant](Lean/IPRADerivations/Analysis/GaussianPositiveExponentialMajorant.lean)
+uses those positive sums and the unit factorial bound to prove `3^R`
+for the original finite exponential on the entire numerical disk at
+every cutoff. The one-step identity for the assembled C8 expression
+remains.
 [GaussianUnitDiskExponentialName](Lean/IPRADerivations/Analysis/GaussianUnitDiskExponentialName.lean)
 uses the actual scalar sums to construct a regular exponential of an
 argument name with unit-disk samples and proves preservation of name
