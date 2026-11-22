@@ -160,6 +160,7 @@ import IPRADerivations.Algebra.QuadraticRationalZeroProjection
 import IPRADerivations.Algebra.QuadraticRationalRing
 import IPRADerivations.Algebra.QuadraticRationalNonnegativeRadicand
 import IPRADerivations.Algebra.QuadraticRadicandScaling
+import IPRADerivations.Algebra.QuadraticRationalRepresentationInvariance
 import IPRADerivations.Algebra.ObservationAlgebra
 import IPRADerivations.Algebra.JacobiRotation
 import IPRADerivations.Algebra.StableRootBounds
@@ -1326,6 +1327,7 @@ import IPRADerivations.Analysis.RationalSubtupleSpan
 import IPRADerivations.Analysis.RationalFiniteSpanCover
 import IPRADerivations.Analysis.RationalSubspaceCoverCandidates
 import IPRADerivations.Analysis.RationalSubspaceCoverSearch
+import IPRADerivations.Analysis.RationalPhiFeatures
 import IPRADerivations.Analysis.RationalPolynomialMonicHornerReductionGaussianEmbedding
 import IPRADerivations.Analysis.RationalHighYNormBound
 import IPRADerivations.Analysis.RationalPolynomialYShiftGaussianEmbedding
