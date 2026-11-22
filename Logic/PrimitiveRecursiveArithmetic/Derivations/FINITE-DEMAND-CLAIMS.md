@@ -537,8 +537,13 @@ coefficient of the root-stage polynomial with the actual characteristic
 output at the computed matrix sampling precision.
 [GaussianRationalModulus](Lean/IPRADerivations/Analysis/GaussianRationalModulus.lean)
 gives an actual dyadic-width modulus sampler and Euclidean variation
-bound. Connecting the modulus sampler to the aggregate maximum to name
-the spectral radius remains open.
+bound. [GaussianCoordinateRadius](Lean/IPRADerivations/Analysis/GaussianCoordinateRadius.lean)
+proves the same-radius comparison on each real and imaginary coordinate.
+[GaussianModulusAggregateMap](Lean/IPRADerivations/Analysis/GaussianModulusAggregateMap.lean)
+gives the converse bound with factor two and proves the actual
+sup-coordinate modulus evaluator satisfies the exact aggregate map
+contract. Transporting the root list into that contract and deriving its
+aggregate maximum still remain.
 
 [RationalGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalGaussianEmbedding.lean)
 preserves field equality, zero, one, addition, multiplication and negation
@@ -551,9 +556,12 @@ queries. [RationalGaussianRealPart](Lean/IPRADerivations/Analysis/RationalGaussi
 and [RationalRowSpanGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalRowSpanGaussianEmbedding.lean)
 now transport original rational row-span membership through the actual
 rectangular embedding. Every Gaussian witness yields a rational witness
-by taking real parts. The rational norm specialization still needs the
-matrix-calculation and determinant transport that identify its norm
-polynomial.
+by taking real parts.
+[RationalScalarDeterminantGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalScalarDeterminantGaussianEmbedding.lean)
+identifies the literal original rational scalar determinant with the
+actual Gaussian determinant of the embedded matrix and reflects zero.
+The rational norm specialization still needs polynomial-valued matrix
+and determinant transport that identify its norm polynomial.
 
 ## Logical strength and program boundaries
 

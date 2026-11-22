@@ -10939,6 +10939,110 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalModulus.actual_modulus_interval_program_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalModulus.actual_returned_modulus_bracket_closed
 
+/-! ### GaussianCoordinateRadius -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianCoordinateRadius.scaled_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianCoordinateRadius.scalar_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianCoordinateRadius.native_squared
+#print axioms LeanProofs.IPRA.Analysis.GaussianCoordinateRadius.native_coordinates
+#print axioms LeanProofs.IPRA.Analysis.GaussianCoordinateRadius.coordinates_of_representations
+#print axioms LeanProofs.IPRA.Analysis.GaussianCoordinateRadius.coordinates
+#print axioms LeanProofs.IPRA.Analysis.GaussianCoordinateRadius.original_gaussian_coordinate_radius_closed
+
+/-! ### GaussianModulusAggregateMap -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.point
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.coordinateBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.vector
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.common
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.scaledValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.differenceValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.evaluatorF
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.subst_point
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.subst_vector
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.subst_common
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.vector_length
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.vector_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.vector_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.common_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.point_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.difference_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.difference_norm1
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.coordinate_to_euclidean
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.evaluator_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.map_instance
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.map_contract
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.point_vector_fst
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.point_vector_snd
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.point_vector_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.point_vector_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.encoded_modulus_bracket
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.vectorF
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.vector_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.actual_gaussian_vector_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.actual_gaussian_vector_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.actual_coordinate_euclidean_bound_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.actual_modulus_aggregate_evaluator_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.actual_modulus_map_instance_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.actual_modulus_aggregate_contract_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.actual_encoded_point_norm_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap.actual_encoded_modulus_bracket_closed
+
+/-! ### RationalScalarDeterminantGaussianEmbedding -/
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.productStep
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.productF
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.product
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.subst_product
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.product_zero
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.product_succ
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.productLaw
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.subst_productLaw
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.product_embedding_step
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.product_embedding
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.sign
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.rawProduct
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.signedTerm
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.signedBody
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.determinant
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.subst_sign
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.subst_rawProduct
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.subst_signedTerm
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.subst_determinant
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.sign_even
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.sign_odd
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.sign_embedding
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.product_matrix_embedding
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.signed_term_embedding
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.signed_body_at
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.determinant_embedding
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.determinant_well_formed
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.determinant_axis
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.determinant_real_part
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.determinant_zero_iff
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.determinant_equality_iff
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.empty_determinant
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.determinantF
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.output
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.outputF
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.run
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.subst_output
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.subst_run
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.determinant_at
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.program_at
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.returned_rational
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.returned_matrix
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.returned_gaussian_run
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.returned_gaussian_scalar
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.returned_embedding
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.actual_rational_product_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.actual_sign_branches_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.actual_sign_embedding_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.actual_word_product_embedding_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.actual_signed_term_embedding_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.actual_determinant_embedding_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.actual_determinant_zero_reflection_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.actual_determinant_axis_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.actual_empty_determinant_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalScalarDeterminantGaussianEmbedding.actual_returned_embedding_closed
+
 /-! Actual collision-tolerant root-support names and finite adequacy components. -/
 
 -- Analysis/GaussianCoefficientNormEntries
