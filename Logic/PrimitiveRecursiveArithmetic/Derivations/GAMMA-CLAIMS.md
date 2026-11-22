@@ -168,6 +168,10 @@ requires the tail and truncation comparisons.
 uses the original Horner size bound to control each prefix of the same
 dilated composition by 11 at the rescaled source argument of radius at most
 9/10.
+[GaussianFiniteLogarithmGeometricTail](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmGeometricTail.lean)
+identifies the actual high-prefix residual after subtracting the linear part
+and bounds it on the original half-disk by the geometric tail. The passage
+to a dyadic convergence clock and the original regular names remains.
 
 ## Every ledger family remains in scope
 
