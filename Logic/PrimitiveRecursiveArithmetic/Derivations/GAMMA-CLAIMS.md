@@ -110,6 +110,9 @@ identifies that sample with the sum of the original linear term and
 the original canonical factor and evaluates the actual finite exponential
 composition at that argument. The composite low-degree coefficient identity
 and the analytic C4 tail remain open.
+[GaussianRationalLowCoefficientConvolution](Lean/IPRADerivations/Analysis/GaussianRationalLowCoefficientConvolution.lean)
+identifies low coefficients of the actual stored polynomial product with
+their finite ascending Cauchy sums.
 
 ## Every ledger family remains in scope
 
