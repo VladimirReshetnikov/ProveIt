@@ -624,8 +624,21 @@ the computed norm, and the distinct list has length at most its degree
 whenever the computed norm is nonzero.
 [RationalPolynomialNonvanishing](Lean/IPRADerivations/Analysis/RationalPolynomialNonvanishing.lean)
 identifies this nonzero flag with a bounded nonzero rational coefficient.
-The proof covers already reduced input polynomials. Arbitrary-Y rational
-reduction is a further application.
+The proof covers already reduced input polynomials.
+[RationalPolynomialConstantInjectionGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialConstantInjectionGaussianEmbedding.lean)
+constructs the actual constant-row injection and transports its
+coefficients. The bounded row relation also transports both Horner
+folds. These results support the original rational arbitrary-Y fold.
+
+[RationalSuperellipticTail](Lean/IPRADerivations/Analysis/RationalSuperellipticTail.lean)
+constructs the original rational table for `Y^m - f(X)` and proves that
+its embedded table is literally the Gaussian tail. The equality uses
+the two actual sequence layouts and their bounded lookups.
+[RationalScalarPowerGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalScalarPowerGaussianEmbedding.lean)
+and [RationalPolynomialLeadingGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialLeadingGaussianEmbedding.lean)
+check the original signed rational powers and the leading coefficient
+returned by the original nonzero scan. The weighted rational
+norm-degree specialization remains open.
 
 [GaussianRationalVariableHornerBudget](Lean/IPRADerivations/Analysis/GaussianRationalVariableHornerBudget.lean)
 computes a coefficient-dependent variation bound by following actual
