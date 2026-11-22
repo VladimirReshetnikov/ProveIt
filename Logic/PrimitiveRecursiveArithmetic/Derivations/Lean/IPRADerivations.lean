@@ -734,6 +734,7 @@ import IPRADerivations.Topology.HilbertEmbedding
 import IPRADerivations.Topology.MetricNeighborhoods
 import IPRADerivations.Topology.LimitCertificates
 import IPRADerivations.Topology.SphereEstimates
+import IPRADerivations.Topology.FiniteSheafTheory
 import IPRADerivations.Topology.OpenCubeHomeo
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
