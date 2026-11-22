@@ -31,6 +31,9 @@ bash "$variants/check-controller-final.sh" PA1944L "$four_l" "$four_l_coverage" 
 
 ## ConciseIPRA export
 
+The [iPRA unification plan](../../../../../../../../../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+uses this literal endpoint as a pilot for proof transport and shared arithmetic.
+
 [`PA1944LConcise.consistency_iff_literal_nonhalt`](PA1944LConcise.lean)
 transports the exact Foundation endpoint to a closed derivation in
 `Prf PRAAx`. Its source sentence retains the same PA refutation predicate

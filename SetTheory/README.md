@@ -3,6 +3,9 @@
 This topic contains set theory; the `Cardinals` package below also holds a
 collection of research reports on other subjects.
 
+- [`BoundedConsistency/`](BoundedConsistency/README.md) develops bounded ZFC
+  consistency. The [iPRA unification plan](../Logic/PrimitiveRecursiveArithmetic/UNIFICATION-PLAN.md)
+  covers its proof-coding interfaces.
 - [`ZF/`](ZF/) supplies reusable first-order ZF syntax/axioms, semantic
   bridges, internal set algebra, and the finite-recursion theorem needed by
   the Closure result. The research report
