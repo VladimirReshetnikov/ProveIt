@@ -135,6 +135,12 @@ powers, including the source logarithm.
 [GaussianRationalFactorialEulerSums](Lean/IPRADerivations/Analysis/GaussianRationalFactorialEulerSums.lean)
 shifts the exact factorial-weighted sum after applying that rule to the
 original composition.
+[GaussianRationalExponentialProductCoefficients](Lean/IPRADerivations/Analysis/GaussianRationalExponentialProductCoefficients.lean)
+identifies the shifted finite sum with the actual product of the Euler-weighted
+base and the accumulated exponential.
+[GaussianRationalFiniteExponentialEuler](Lean/IPRADerivations/Analysis/GaussianRationalFiniteExponentialEuler.lean)
+combines power support with the exact cutoff to derive the finite exponential
+Euler rule for the original logarithm at every exponent within both cutoffs.
 
 ## Every ledger family remains in scope
 
