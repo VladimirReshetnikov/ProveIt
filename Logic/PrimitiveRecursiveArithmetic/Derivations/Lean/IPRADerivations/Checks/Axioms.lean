@@ -1870,6 +1870,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.MetricProducts.local_gap
 #print axioms LeanProofs.IPRA.Topology.MetricProducts.half_gap
 #print axioms LeanProofs.IPRA.Topology.MetricProducts.local_lipschitz
+#print axioms LeanProofs.IPRA.Topology.ApproxExtrema.exists_max
+#print axioms LeanProofs.IPRA.Topology.ApproxExtrema.exists_min
+#print axioms LeanProofs.IPRA.Topology.ApproxExtrema.max_le
+#print axioms LeanProofs.IPRA.Topology.ApproxExtrema.min_ge
+#print axioms LeanProofs.IPRA.Topology.ApproxExtrema.approx_max
+#print axioms LeanProofs.IPRA.Topology.ApproxExtrema.approx_min
+#print axioms LeanProofs.IPRA.Topology.ApproxExtrema.sup_upper
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.PolyModular.residue_unimodular
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.mul_quo_le
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount.term_bound

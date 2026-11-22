@@ -716,6 +716,7 @@ import IPRADerivations.Topology.TwoColoring
 import IPRADerivations.Topology.SphereCycle
 import IPRADerivations.Topology.FiniteLimits
 import IPRADerivations.Topology.MetricProducts
+import IPRADerivations.Topology.ApproxExtrema
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
 import IPRADerivations.DiophantineNumberTheory.DirichletPadding
