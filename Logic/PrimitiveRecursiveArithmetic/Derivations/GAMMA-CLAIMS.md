@@ -188,6 +188,11 @@ polynomial, retaining the exact C18 bound.
 uses the cofinal degree `L_p=p+R²` to construct the actual C16 zeta series
 and proves its equivalence with the original tail at independent
 precisions, including the source cutoff `N=2R`.
+[GaussianFiniteExponentialCoefficientMajorant](Lean/IPRADerivations/Analysis/GaussianFiniteExponentialCoefficientMajorant.lean)
+proves the finite weighted coefficient bound for the original polynomial
+exponential. [GaussianWeightedPolynomialTail](Lean/IPRADerivations/Analysis/GaussianWeightedPolynomialTail.lean)
+proves the finite C19 geometric tail on the rescaled half disk. The
+Gamma-specific coefficient sequence and cofinal analyticity remain.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
@@ -198,8 +203,7 @@ its equivalence with the actual difference of the two regular local
 logarithm names.
 [GaussianRobinOddExponential](Lean/IPRADerivations/Analysis/GaussianRobinOddExponential.lean)
 identifies the actual exponential of that odd name with the constant
-`(b+a)/(b−a)` on the half disk. Exponential inversion for the entire
-mesh logarithm remains a C20 dependency.
+`(b+a)/(b−a)` on the half disk.
 [GaussianRobinLogRangeReduction](Lean/IPRADerivations/Analysis/GaussianRobinLogRangeReduction.lean)
 identifies the actual exponentials of the original two binary components
 as `2` and `a/Bt(a,b)`.
@@ -209,6 +213,24 @@ every numerical cutoff into the two actual odd sums and the binary exponent.
 [GaussianRobinMeshLogDecomposition](Lean/IPRADerivations/Analysis/GaussianRobinMeshLogDecomposition.lean)
 identifies their named weighted sum with the original mesh logarithm
 at independent observation precisions.
+[GaussianNamedNaturalScale](Lean/IPRADerivations/Analysis/GaussianNamedNaturalScale.lean)
+and [GaussianNaturalScaleProductName](Lean/IPRADerivations/Analysis/GaussianNaturalScaleProductName.lean)
+identify the actual retimed scaling with named multiplication.
+[GaussianRobinIntegerExponential](Lean/IPRADerivations/Analysis/GaussianRobinIntegerExponential.lean)
+proves the exponential law for every numerical binary exponent by
+quantifier-free induction on a finite error comparison.
+[GaussianMeshLogSign](Lean/IPRADerivations/Analysis/GaussianMeshLogSign.lean)
+checks the exact named negation and reciprocal transport.
+[GaussianRobinMeshExponential](Lean/IPRADerivations/Analysis/GaussianRobinMeshExponential.lean)
+combines the original range-reduced components and proves
+`exp(log N)=N` and `exp(−log N)=1/N` for the original mesh name.
+This proves C20 with its original disk conditions.
+[GaussianGammaNormalization](Lean/IPRADerivations/Analysis/GaussianGammaNormalization.lean)
+uses the original Euler head at one and the finite convergence rate
+to prove `P(1)=1` and `Γ(1)=1` once the mesh identity is supplied.
+[GaussianGammaShift](Lean/IPRADerivations/Analysis/GaussianGammaShift.lean)
+uses the reciprocal shift and checked inverse product to prove
+`Γ(z+1)=zΓ(z)` on the recorded original two pole-free domains.
 [GaussianRationalConjugation](Lean/IPRADerivations/Analysis/GaussianRationalConjugation.lean)
 proves exact conjugation for rational code, metric and scalar Taylor sums.
 [GaussianGammaFiniteConjugation](Lean/IPRADerivations/Analysis/GaussianGammaFiniteConjugation.lean)
@@ -490,7 +512,7 @@ composition. These are object-theory derivations of the local C4 identity.
 | --- | --- |
 | 1 | Actual harmonic/logarithm Euler-constant evaluator, C1–C2 inequalities, a regular name, and its bounds. |
 | 2–3 | Actual cofinal samplers establish C11 for the literal Weierstrass product and C15 for the Euler reciprocals. The C7 and Gamma names agree on overlapping disks for the same encoded rational point. Agreement with the right half-plane integral construction remains. |
-| 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The coefficient majorants, entire analyticity, zero classification for general named inputs, simplicity of the zeros, poles and residues, functional equation and normalization, and factorial values remain. C26 conjugation and the real value representation for encoded real rational inputs are proved for the original reciprocal and pole-free Gamma names. |
+| 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The Gamma-specific coefficient majorant, entire analyticity, zero classification for general named inputs, simplicity of the zeros, poles and residues, and factorial values remain. C20 and the C21 normalization at one are proved. C26 conjugation and the real value representation for encoded real rational inputs are proved for the original reciprocal and pole-free Gamma names. |
 | 11–17 | Actual quadrature and both endpoint tails, Euler-integral identification, quantitative positive lower/upper bounds, vertical absolute-value comparison, fixed-order derivative integrals, substitution/scaling formulas, and incomplete-Gamma sum/recurrence/integer formulas. |
 | 18–24 | Reflection with an explicit sine margin, multiplication at arbitrary internal positive integer multiplier, duplication/triplication, beta–Gamma relation, beta symmetry/recurrence and all stated integral forms with their positive half-plane margins. |
 | 25–30 | Positive-root selection and half-integer values, the listed fractional-argument relations and fractional products, rising/binomial cancellation through apparent poles, and imaginary/half-shifted modulus formulas, including their zero-safe versions. |
