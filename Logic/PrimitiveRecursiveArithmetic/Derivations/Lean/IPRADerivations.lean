@@ -912,6 +912,9 @@ import IPRADerivations.Probability.KolmogorovBlock
 import IPRADerivations.Probability.DyadicUnion
 import IPRADerivations.Probability.DyadicBlock
 import IPRADerivations.Probability.DyadicSLLN
+import IPRADerivations.Probability.DyadicAssembly
+import IPRADerivations.Probability.DyadicCover
+import IPRADerivations.Probability.DyadicTheorem
 import IPRADerivations.Probability.TruncationEstimate
 import IPRADerivations.Probability.MomentDeterminacy
 import IPRADerivations.Probability.Variance
