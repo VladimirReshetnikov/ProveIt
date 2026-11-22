@@ -283,8 +283,14 @@ keeps the radius as an actual input.
 and [GaussianGammaAllDegreeCoefficientVariation](Lean/IPRADerivations/Analysis/GaussianGammaAllDegreeCoefficientVariation.lean)
 remove the head-degree restriction by exact product coefficient
 preservation under padding. The unchanged name is regular for every
-internal degree at any fixed positive radius. Agreement across radii
-and reconstruction of the full power series remain.
+internal degree at any fixed positive radius.
+[GaussianLagrangeInterpolation](Lean/IPRADerivations/Analysis/GaussianLagrangeInterpolation.lean)
+recovers finite original coefficients from actual natural-grid observations.
+[GaussianLagrangeCoefficientSensitivity](Lean/IPRADerivations/Analysis/GaussianLagrangeCoefficientSensitivity.lean)
+computes the error gain of the original inverse row.
+[GaussianShrinkingPolynomialTail](Lean/IPRADerivations/Analysis/GaussianShrinkingPolynomialTail.lean)
+retains the exact power of the shrinking radius in the finite tail bound.
+Agreement across radii and reconstruction of the full power series remain.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
@@ -707,6 +713,20 @@ controls the endpoint difference using the left endpoint observation, and
 checks the finite upper-cutoff bound for the half-decay kernel.
 [GaussianHarmonicLogarithmName](Lean/IPRADerivations/Analysis/GaussianHarmonicLogarithmName.lean)
 supplies an exact-order representative of the original logarithm.
+[GaussianHarmonicIntegerExponential](Lean/IPRADerivations/Analysis/GaussianHarmonicIntegerExponential.lean)
+identifies the actual exponential of its natural multiple with the
+exact rational power.
+[GaussianEulerUpperPowerCoefficients](Lean/IPRADerivations/Analysis/GaussianEulerUpperPowerCoefficients.lean)
+checks the actual doubled real multiplier bound and the nonnegative
+harmonic inputs for time at least one.
+[GaussianCompactMeshIndependence](Lean/IPRADerivations/Analysis/GaussianCompactMeshIndependence.lean),
+[GaussianCompactIntervalRescaling](Lean/IPRADerivations/Analysis/GaussianCompactIntervalRescaling.lean)
+and [GaussianEulerCompactAlignment](Lean/IPRADerivations/Analysis/GaussianEulerCompactAlignment.lean)
+identify the original compact Euler names across different legitimate
+mesh bounds and rational encodings of the same interval.
+[GaussianCompactScalarMajorant](Lean/IPRADerivations/Analysis/GaussianCompactScalarMajorant.lean)
+sums the pointwise scalar majorant on the original grid and passes an
+independent row comparison through the actual quadrature weight.
 The upper and lower comparisons for the full Euler integrand tails
 still require the corresponding compact norm and integral bounds.
 
