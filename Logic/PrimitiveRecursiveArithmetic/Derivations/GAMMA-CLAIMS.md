@@ -152,6 +152,10 @@ numerical cutoffs. Its actual head output satisfies
 [GaussianGammaEulerShift](Lean/IPRADerivations/Analysis/GaussianGammaEulerShift.lean)
 proves the corresponding shift for the original finite Euler names
 with the actual `exp(−log N)` factor.
+[GaussianGammaEulerShiftLimit](Lean/IPRADerivations/Analysis/GaussianGammaEulerShiftLimit.lean)
+computes the correction and its exact error under the mesh-log inverse
+identity. [GaussianGammaFunctionalEquation](Lean/IPRADerivations/Analysis/GaussianGammaFunctionalEquation.lean)
+proves the original C7 shift under that identity for all positive cutoffs.
 [RationalReciprocalPowerTail](Lean/IPRADerivations/Analysis/RationalReciprocalPowerTail.lean)
 proves the C17 sharp finite tail for the actual reciprocal-power sum.
 The bound retains the endpoint potential for every numerical length,
@@ -174,8 +178,10 @@ of degrees `L+2` and `L+J+2`, including the original `N=2R` choice.
 [GaussianGammaFixedDegreeHorizon](Lean/IPRADerivations/Analysis/GaussianGammaFixedDegreeHorizon.lean)
 proves the exact change with factor horizon at a fixed degree and
 constructs its regular cofinal name with the original factor clock.
-The comparison to the original tail at independent precisions and
-identification of the cofinal degree coefficients with zeta tails remain.
+[GaussianGammaCofinalDegreeTail](Lean/IPRADerivations/Analysis/GaussianGammaCofinalDegreeTail.lean)
+proves the same C18 error against the original cofinal tail at independent
+precisions, with the two requested observation errors. Identification of
+the cofinal degree coefficients with zeta tails remains.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
@@ -183,13 +189,26 @@ the two original local logarithm polynomials evaluated at opposite rational
 inputs. [GaussianRobinOddLogarithmName](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithmName.lean)
 constructs a regular sampler from the stored odd series and proves
 its equivalence with the actual difference of the two regular local
-logarithm names. Exponential inversion for the entire mesh logarithm
-remains a C20 dependency.
+logarithm names.
+[GaussianRobinOddExponential](Lean/IPRADerivations/Analysis/GaussianRobinOddExponential.lean)
+identifies the actual exponential of that odd name with the constant
+`(b+a)/(b−a)` on the half disk. Exponential inversion for the entire
+mesh logarithm remains a C20 dependency.
+[GaussianRobinLogRangeReduction](Lean/IPRADerivations/Analysis/GaussianRobinLogRangeReduction.lean)
+identifies the actual exponentials of the original two binary components
+as `2` and `a/Bt(a,b)`.
 [GaussianRationalConjugation](Lean/IPRADerivations/Analysis/GaussianRationalConjugation.lean)
 proves exact conjugation for rational code, metric and scalar Taylor sums.
 [GaussianGammaFiniteConjugation](Lean/IPRADerivations/Analysis/GaussianGammaFiniteConjugation.lean)
 proves covariance of the original finite head, local factors and literal
-prefix for C26. Conjugation of the original cofinal Gamma names remains.
+prefix for C26.
+[GaussianNameConjugation](Lean/IPRADerivations/Analysis/GaussianNameConjugation.lean)
+transports conjugation through the actual regular-name operations.
+[GaussianGammaNameConjugation](Lean/IPRADerivations/Analysis/GaussianGammaNameConjugation.lean)
+proves conjugation of the original C7 reciprocal via the literal C11
+cofinal Weierstrass sampler, including at every zero of the original head.
+[GaussianGammaInverseConjugation](Lean/IPRADerivations/Analysis/GaussianGammaInverseConjugation.lean)
+proves conjugation for the same pole-free Gamma inverse.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.
@@ -456,7 +475,7 @@ composition. These are object-theory derivations of the local C4 identity.
 | --- | --- |
 | 1 | Actual harmonic/logarithm Euler-constant evaluator, C1–C2 inequalities, a regular name, and its bounds. |
 | 2–3 | Actual cofinal samplers establish C11 for the literal Weierstrass product and C15 for the Euler reciprocals. The C7 and Gamma names agree on overlapping disks for the same encoded rational point. Agreement with the right half-plane integral construction remains. |
-| 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The coefficient majorants, entire analyticity, zero classification for general named inputs, simplicity of the zeros, poles and residues, functional equation and normalization, factorial values, conjugation and real-domain values remain. |
+| 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The coefficient majorants, entire analyticity, zero classification for general named inputs, simplicity of the zeros, poles and residues, functional equation and normalization, factorial values and the explicit real-domain representation remain. C26 conjugation is proved for the original reciprocal and pole-free Gamma names. |
 | 11–17 | Actual quadrature and both endpoint tails, Euler-integral identification, quantitative positive lower/upper bounds, vertical absolute-value comparison, fixed-order derivative integrals, substitution/scaling formulas, and incomplete-Gamma sum/recurrence/integer formulas. |
 | 18–24 | Reflection with an explicit sine margin, multiplication at arbitrary internal positive integer multiplier, duplication/triplication, beta–Gamma relation, beta symmetry/recurrence and all stated integral forms with their positive half-plane margins. |
 | 25–30 | Positive-root selection and half-integer values, the listed fractional-argument relations and fractional products, rising/binomial cancellation through apparent poles, and imaginary/half-shifted modulus formulas, including their zero-safe versions. |
