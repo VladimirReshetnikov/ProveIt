@@ -13617,6 +13617,27 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialFirstCoefficients.actual_convolution_constant_coefficient_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialFirstCoefficients.actual_convolution_linear_coefficient_closed
 
+/-! ### GaussianGammaPolynomialConstantLinear -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.linear_buffer_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.linear_buffer_linear
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.input_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.input_linear
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.factor_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.headLowLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.subst_headLowLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.head_low_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.head_low_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.head_low
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.constant_reader
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.exponential_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.whole_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.whole_linear
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.firstObservation
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.first_observation_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.first_coefficient_named
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.original_finite_Gamma_zero_constant_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear.original_cofinal_Gamma_first_coefficient_is_one_closed
+
 /-! ### GaussianGammaWeierstrassFactors -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaWeierstrassFactors.localArgument
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaWeierstrassFactors.harmonicArgument
@@ -14999,6 +15020,40 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithm.original_positive_rational_logarithm_exponential_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithm.actual_positive_rational_logarithm_exponential_regular_closed
 
+/-! ### RationalHarmonicInterval -/
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.numerator
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.common
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.horizon
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.interval
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.subst_common
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.subst_horizon
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.subst_interval
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.common_value
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.common_canonical
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.left_horizon
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.right_horizon
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.at_common
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.ordered_refinement
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.refinement_bounds
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.common_refinement
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.refinement
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.equal_ratio_refined
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.equal_ratio_finite
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.input
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.output
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.outputF
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.run
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.subst_output
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.program_at
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.returned_fine
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.returned_coarse
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.returned_denominator
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.actual_harmonic_interval_refinement_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.actual_equal_ratio_common_refinement_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.actual_equal_ratio_finite_interval_error_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalHarmonicInterval.actual_harmonic_interval_program_closed
+
 /-! ### GaussianEulerIntegrandName -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrandName.logarithmF
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrandName.coefficient
@@ -15125,6 +15180,23 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.original_half_decay_factor_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.original_Euler_decay_integer_dyadic_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.original_Euler_decay_half_argument_monomial_closed
+
+/-! ### GaussianExponentialLinearRemainder -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.count
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.weight
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.subst_count
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.subst_weight
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.count_succ
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.weight_succ
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.factorial_reserve
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.fractional_term_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.scaledLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.subst_scaledLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.actual_quadratic_tail
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.original_finite_linear_remainder
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.original_finite_exponential_linear_remainder_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.original_constant_exponential_linear_remainder
+#print axioms LeanProofs.IPRA.Analysis.GaussianExponentialLinearRemainder.original_constant_exponential_linear_remainder_closed
 
 /-! ### GaussianGammaIntegralTailBudget -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget.lowerRoot
