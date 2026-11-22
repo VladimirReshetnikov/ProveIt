@@ -254,8 +254,30 @@ range/involution contracts for the actual field-sum reindexing. Thus the SAME
 original/swapped determinant programs have opposite evaluations at every numerical
 query under only original shape and the adjacent-position guard. Its PR4 returns
 both original program payloads; empty and singleton inactive cases retain their
-correct evaluations. Stored coefficient alternation, row alternation, determinant
-multiplication and norm nonvanishing/multiplicity remain separate obligations.
+correct evaluations.
+[GaussianPolynomialColumnCoefficients](Lean/IPRADerivations/Analysis/GaussianPolynomialColumnCoefficients.lean)
+adds the original and swapped buffers, whose combined width is `mL+1`, and
+derives its vanishing on the actual grid from the evaluation theorem.
+[GaussianRationalFiniteGridIdentity](Lean/IPRADerivations/Analysis/GaussianRationalFiniteGridIdentity.lean)
+uses that many distinct points to force the computed zero flag and the
+zero value of every coefficient. Canonicality then gives literal negation of
+the original stored coefficients at all bounded indices. The PR4 result
+retains both buffers and the original swap payload.
+
+[RuntimeWordAppend](Lean/IPRADerivations/Foundations/RuntimeWordAppend.lean)
+proves the append and bounded digit laws used by
+[GaussianRationalTupleExpansion](Lean/IPRADerivations/Analysis/GaussianRationalTupleExpansion.lean).
+The latter expands the product of the first `d ≤ m` Gaussian-rational row sums
+into the sum over all `m^d` words, using
+[GaussianRationalBlockSums](Lean/IPRADerivations/Analysis/GaussianRationalBlockSums.lean)
+to flatten the folds. The same block-sum library proves that masking by a
+fixed selector agrees with summing the indices in the actual retained list.
+[RuntimeWordSorting](Lean/IPRADerivations/Foundations/RuntimeWordSorting.lean)
+derives a computed sort using `m²+1` steps of the adjacent swap. It preserves
+the checker and produces either the identity word or a repeated adjacent
+digit. The corresponding determinant law for selecting columns by those
+words remains open, along with row alternation, determinant multiplication
+and norm nonvanishing and multiplicity.
 
 ## Logical strength and program boundaries
 
