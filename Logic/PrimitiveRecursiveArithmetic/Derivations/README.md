@@ -2119,6 +2119,57 @@ proved over an arbitrary commutative ring, for instance by `Matrix.mul_adjugate`
 and read back as an iPRA derivation. This is how a single Lean theorem gives
 iPRA theorems for matrices of every size.
 
+## Working patterns for finite sums and signed quantities
+
+Most packet theorems reduce to statements about bounded sums `ap2 (sumF body) N x`, where `body : PTm 2` has the
+summation index as variable `0` and one parameter as variable `1`, and `inst2 body i x` is its value. The rules below
+are the ones that recur; each is a derived iPRA theorem, not a metatheoretic shortcut.
+
+| Step | Lemma | Module |
+|---|---|---|
+| Recursion | `sum_zero`, `sum_succ'` | [`Core/Definitions`](Lean/IPRADerivations/Core/Definitions.lean), [`Core/BoundedSums`](Lean/IPRADerivations/Core/BoundedSums.lean) |
+| Equal summands below the bound, possibly with different parameters | `sum_congr_bounded` | [`Core/SumLemmas`](Lean/IPRADerivations/Core/SumLemmas.lean) |
+| Vanishing summands | `sum_zero_of_bounded` | [`Core/BoundedSums`](Lean/IPRADerivations/Core/BoundedSums.lean) |
+| Sum of two bodies | `sum_add` (`addBody`), `sum_add2`, `sum_mix` (separate parameters) | [`Core/SumLemmas`](Lean/IPRADerivations/Core/SumLemmas.lean), [`AnalyticNumberTheory/FactorialLambda`](Lean/IPRADerivations/AnalyticNumberTheory/FactorialLambda.lean), [`Foundations/SignedSums`](Lean/IPRADerivations/Foundations/SignedSums.lean) |
+| A factor that does not depend on the index | `sum_scale`, `sum_const_mul` | [`Probability/Independence`](Lean/IPRADerivations/Probability/Independence.lean), [`Probability/Lotus`](Lean/IPRADerivations/Probability/Lotus.lean) |
+| Termwise inequality | `sum_le` | [`Analysis/PowerSums`](Lean/IPRADerivations/Analysis/PowerSums.lean) |
+| Splitting the range, dropping a vanishing tail | `sum_split`, `sum_ext` | [`Core/SumSplit`](Lean/IPRADerivations/Core/SumSplit.lean), [`AnalyticNumberTheory/MobiusBounds`](Lean/IPRADerivations/AnalyticNumberTheory/MobiusBounds.lean) |
+| Selecting one index | `sum_delta` | [`Core/Fubini`](Lean/IPRADerivations/Core/Fubini.lean) |
+| Exchanging two sums | `fubini` (bodies `rowB`, `colB`, `oB`, `pB` of a three-variable body) | [`Core/Fubini`](Lean/IPRADerivations/Core/Fubini.lean) |
+| Double sums | `dsum`, `dsum_rows`, `dsum_add`, `sum_mul_sum`, `dsum_le` | [`Probability/Independence`](Lean/IPRADerivations/Probability/Independence.lean), [`Probability/SymmetrizedMoments`](Lean/IPRADerivations/Probability/SymmetrizedMoments.lean) |
+| Reindexing the multiples of `p`, counting them | `reindex_eq`, `count_multiples` | [`AnalyticNumberTheory/SumReindex`](Lean/IPRADerivations/AnalyticNumberTheory/SumReindex.lean), [`AnalyticNumberTheory/Totient`](Lean/IPRADerivations/AnalyticNumberTheory/Totient.lean) |
+| Divisor sums as Dirichlet convolutions | `conv`, `cv_at`, `conv_comm`, `conv_assoc`, `pt_n` (Möbius inversion) | [`AnalyticNumberTheory/DirichletLeibniz`](Lean/IPRADerivations/AnalyticNumberTheory/DirichletLeibniz.lean), [`AnalyticNumberTheory/DivisorSwapP`](Lean/IPRADerivations/AnalyticNumberTheory/DivisorSwapP.lean), [`AnalyticNumberTheory/ConvolutionAssoc`](Lean/IPRADerivations/AnalyticNumberTheory/ConvolutionAssoc.lean), [`AnalyticNumberTheory/MobiusSummatory`](Lean/IPRADerivations/AnalyticNumberTheory/MobiusSummatory.lean) |
+
+The same few techniques carry these rules through a proof:
+
+- **Equations and inequalities by certificate.** An equation between natural terms is derived by
+  `apply deriveNat; ipra_simps; ring`, or by `linear_combination` over hypotheses `natEq h`. An inequality is derived
+  by `ipra_le z`, where `z` is a combination of slacks `sl h` of derived inequalities
+  ([`Core/OrderCertificates`](Lean/IPRADerivations/Core/OrderCertificates.lean)). Integer terms (`ZT`, pairs read as differences) use `ZT.derive`,
+  `ZT.toZ_eq` and the order certificates of [`Core/IntCertificates`](Lean/IPRADerivations/Core/IntCertificates.lean).
+- **Algebra over opaque terms.** A ring or order step is stated once for arbitrary terms and then instantiated, as
+  `col_alg` in [`AnalyticNumberTheory/SieveInversion`](Lean/IPRADerivations/AnalyticNumberTheory/SieveInversion.lean) or `one_fold` in
+  [`AnalyticNumberTheory/SieveCount`](Lean/IPRADerivations/AnalyticNumberTheory/SieveCount.lean). The certificate then does not depend on how the simplifier
+  rewrites the concrete summands.
+- **Pointwise lemma first, binder second.** The summand identity is proved for arbitrary terms in an arbitrary
+  context. Under the binder of `sum_congr_bounded` or `sum_scale` it is applied after `simp only [shift_pairT]`;
+  a hypothesis `h` of the outer context is carried along as `(shift_pos h).wk` or as `h.shift` followed by
+  `simpa [Fm.shift, Syn.shift]`.
+- **Several parameters.** A body has one parameter, so several are packed with `pairT`. Each body gets a syntactic
+  lemma for `inst2` and an `_at` lemma at an explicit pair, proved with `fst_pair`, `snd_pair`, `congrFst` and
+  `congrSnd`.
+- **Signed quantities.** A signed coefficient is a pair of natural bodies, as `μ⁺`, `μ⁻` in
+  [`AnalyticNumberTheory/Mobius`](Lean/IPRADerivations/AnalyticNumberTheory/Mobius.lean); a statement `A = B` becomes `A⁺ + B⁻ = B⁺ + A⁻`. For bounded sums of
+  signed bodies, [`Foundations/SignedSums`](Lean/IPRADerivations/Foundations/SignedSums.lean) gives the rules as ring equations between evaluations
+  (`ZB.toZ_sum_congr`, `toZ_sum_add`, `sum_zle`, `ZB3.toZ_fubini`).
+- **Rational statements.** Denominators are cleared, so `|C − X/(q l)| ≤ 1` is the pair `q l C ≤ X + q l`,
+  `X ≤ q l C + q l` ([`AnalyticNumberTheory/SieveCount`](Lean/IPRADerivations/AnalyticNumberTheory/SieveCount.lean)).
+- **Bounded search and decidable conditions.** A bounded existential is a primitive recursive bit with its witness
+  (`exB`, `wit`, `ex_cases`, `ex_elim`, `ex_least`, `ex_none` in [`Foundations/BoundedReflection`](Lean/IPRADerivations/Foundations/BoundedReflection.lean)), and a
+  bounded formula compiles to a bit with a closed correctness proof (`BFm`, `bitF`, `boolean_reflection_closed` in
+  [`Foundations/BoundedSyntax`](Lean/IPRADerivations/Foundations/BoundedSyntax.lean)). A decidable side condition can also be multiplied in as a 0/1 factor
+  (`eqb s t`, `sg d`), so that a summand identity holds at every index.
+
 ## Relation to other iPRA work in the repository
 
 `Computability/DiophantineConsistency` and `Computability/BusyBeaver/Research/PA`
