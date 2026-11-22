@@ -132,6 +132,9 @@ coefficients of the original logarithm.
 [GaussianRationalPolynomialPowerEuler](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialPowerEuler.lean)
 derives the exact Euler rule for the low coefficients of the original stored
 powers, including the source logarithm.
+[GaussianRationalFactorialEulerSums](Lean/IPRADerivations/Analysis/GaussianRationalFactorialEulerSums.lean)
+shifts the exact factorial-weighted sum after applying that rule to the
+original composition.
 
 ## Every ledger family remains in scope
 
