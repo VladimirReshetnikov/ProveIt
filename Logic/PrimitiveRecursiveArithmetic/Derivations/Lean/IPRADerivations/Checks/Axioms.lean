@@ -11428,6 +11428,32 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialDiagonal.actual_triangular_exponential_program_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialDiagonal.original_returned_triangular_exponential_closed
 
+/-! ### GaussianScalarExponentialProductLowDegrees -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.bufferBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.buffer
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.subst_buffer
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.buffer_length
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.descending_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.ascending_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.term_at_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.buffer_at_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.product
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.subst_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.product_length
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.product_at_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.product_low_degree
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.evaluationData
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.highPart
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.subst_evaluationData
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.subst_highPart
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.original_low_part
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.high_part_term
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.exact_rectangular_product_split
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.original_scalar_buffer_at_one_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.exact_rectangular_low_coefficient_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.exact_rectangular_high_entry_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductLowDegrees.exact_rectangular_product_split_closed
+
 /-! ### GaussianRationalFiniteExponentialEuler -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalFiniteExponentialEuler.cauchy_term_zero
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalFiniteExponentialEuler.cauchy_zero
@@ -15364,6 +15390,60 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRadiusExponentialLipschitz.original_disk_finite_exponential_lipschitz_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRadiusExponentialLipschitz.actual_radius_lipschitz_factor_program_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalRadiusExponentialLipschitz.actual_returned_radius_lipschitz_factor_closed
+
+/-! ### GaussianRadiusExponentialName -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.index
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.inputPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.query
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.value
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.boundedSamples
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.input
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.commonDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.subst_index
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.subst_inputPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.subst_query
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.subst_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.subst_boundedSamples
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.subst_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.subst_commonDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.bounded_samples_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.query_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.index_add
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.index_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.index_later
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.index_monotone
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.precision_monotone
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.precision_unit
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.precision_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.query_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.earlier_cutoff_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.cutoff_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.later_comparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.value_regularity
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.nameTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.subst_nameTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.subst_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.sample_canonical
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.sample_regularity
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.query_equivalence
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.value_equivalence
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.diagonal_proper
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.cross_proper
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.actual_radius_exponential_sample_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.actual_radius_exponential_canonical_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.actual_radius_exponential_precision_budget_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.actual_radius_exponential_monotone_clock_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.original_radius_exponential_earlier_cutoff_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.original_radius_exponential_regularity_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.original_radius_regular_exponential_name_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.original_radius_exponential_diagonal_proper_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName.original_radius_exponential_cross_proper_closed
 
 /-! ### GaussianUnitDiskExponentialName -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianUnitDiskExponentialName.shifted

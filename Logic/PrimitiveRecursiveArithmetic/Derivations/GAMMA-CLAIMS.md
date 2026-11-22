@@ -202,10 +202,17 @@ scalar exponential on the unit disk.
 [GaussianRationalRadiusExponentialLipschitz](Lean/IPRADerivations/Analysis/GaussianRationalRadiusExponentialLipschitz.lean)
 proves the cutoff-dependent Lipschitz estimate on any numerical disk
 and bounds it by the computed binary precision factor.
+[GaussianRadiusExponentialName](Lean/IPRADerivations/Analysis/GaussianRadiusExponentialName.lean)
+uses that factor to compute the sampling clock for an actual regular
+exponential on any fixed numerical disk. The exponential preserves
+independent-precision equivalence of input names on that disk.
 [GaussianScalarExponentialDiagonal](Lean/IPRADerivations/Analysis/GaussianScalarExponentialDiagonal.lean)
 proves that the actual triangular Cauchy sum is exactly the original
-finite scalar exponential of the sum. Bounding the difference from the
-rectangular product truncation is a remaining step in named addition.
+finite scalar exponential of the sum.
+[GaussianScalarExponentialProductLowDegrees](Lean/IPRADerivations/Analysis/GaussianScalarExponentialProductLowDegrees.lean)
+binds the original rectangular product and identifies its exact difference
+with the sum of its actual high-degree coefficients. A uniform bound on
+that high part remains for named addition.
 [GaussianUnitDiskExponentialName](Lean/IPRADerivations/Analysis/GaussianUnitDiskExponentialName.lean)
 uses the actual scalar sums to construct a regular exponential of an
 argument name with unit-disk samples and proves preservation of name
