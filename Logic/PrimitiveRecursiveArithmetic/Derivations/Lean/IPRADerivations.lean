@@ -1225,6 +1225,7 @@ import IPRADerivations.DiophantineNumberTheory.MinkowskiPigeonhole
 import IPRADerivations.DiophantineNumberTheory.SignedEuclidean
 import IPRADerivations.DiophantineNumberTheory.MinkowskiResidues
 import IPRADerivations.Analysis.GammaCanonicalNames
+import IPRADerivations.Analysis.GaussianGammaCanonicalTailName
 import IPRADerivations.Analysis.AggregateChain
 import IPRADerivations.DiophantineNumberTheory.MinkowskiMesh
 import IPRADerivations.Analysis.RationalArgmin
@@ -1314,6 +1315,8 @@ import IPRADerivations.Analysis.RationalOriginalConvexModulus
 import IPRADerivations.Analysis.RationalConvexSourceRLC
 import IPRADerivations.Analysis.RationalCofinalPowerOrder
 import IPRADerivations.Analysis.RationalConvexScheduledModulus
+import IPRADerivations.Analysis.RationalConvexCoarseIntervalBudget
+import IPRADerivations.Analysis.RationalConvexLipschitzBound
 import IPRADerivations.Analysis.GaussianDescentClock
 import IPRADerivations.Analysis.GaussianRationalSyntheticBounds
 import IPRADerivations.Analysis.GaussianRationalDeflation

@@ -37,8 +37,13 @@ quotient observations at scale `2^(p+4)` satisfy closed regularity and
 ordered-precision bounds, exact program equations, rounding correctness and
 the C6 disk bound with only the explicit `2/2^(p+4)` rounding slack.
 `primitive_recursive_joint_tail_name` is a name for this prescribed
-power-series tail. Equations C5 and C7–C15 for the Euler and Gamma
-approximants remain.
+power-series tail.
+[GaussianGammaCanonicalTailName](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalTailName.lean)
+uses those exact observations as a regular Gaussian rational name with the
+C6 radius and the same rounding slack. At the sufficient cutoff `4R²≤N`,
+every sample lies in the unit disk, which supplies an actual input and
+regular output for the exponential of this tail. The Euler and Gamma
+approximant equations C5 and C7–C15 remain.
 
 [GammaCanonicalRemainder](Lean/IPRADerivations/Analysis/GammaCanonicalRemainder.lean)
 proves the sharp finite C3 remainder between cutoffs `L` and `L+K` of the

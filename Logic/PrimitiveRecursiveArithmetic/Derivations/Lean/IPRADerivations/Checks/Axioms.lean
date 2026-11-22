@@ -11607,6 +11607,51 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GammaCanonicalNames.joint_tail_sample_rounding
 #print axioms LeanProofs.IPRA.Analysis.GammaCanonicalNames.joint_tail_name_disk_bound
 
+/-! ### GaussianGammaCanonicalTailName -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.safeSource
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.value
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.subst_safeSource
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.subst_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.subst_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.value_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.safe_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.value_unit_disk
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.ordered_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.ordered_unit_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.value_congr_precision
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.later_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.value_regularity
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.pointTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.pointF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.point
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.subst_pointTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.subst_point
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.point_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.point_canonical
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.point_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.point_unit_disk
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.point_regularity
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.name_unit_samples
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.original_exponential_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.original_exponential_name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.actual_original_tail_point_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.actual_tail_point_canonical_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.source_sharp_tail_point_bound_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.source_independent_tail_precisions_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.original_tail_regular_name_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.original_safe_tail_unit_disk_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.original_safe_tail_exponential_input_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailName.original_safe_tail_exponential_regular_closed
+
 -- Actual least-neighbor chain and pure signed mesh extraction.
 #print axioms LeanProofs.IPRA.Analysis.AggregateChain.index_in_range
 #print axioms LeanProofs.IPRA.Analysis.AggregateChain.adjacent
@@ -13751,6 +13796,32 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RationalConvexScheduledModulus.inInterval
 #print axioms LeanProofs.IPRA.Analysis.RationalConvexScheduledModulus.actual_scheduled_modulus_on_interval
 #print axioms LeanProofs.IPRA.Analysis.RationalConvexScheduledModulus.original_scheduled_modulus_on_interval_closed
+
+/-! ### RationalConvexCoarseIntervalBudget -/
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexCoarseIntervalBudget.upper_of_coarse_midpoint
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexCoarseIntervalBudget.interval_upper_at_budget
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexCoarseIntervalBudget.actual_two_upper_endpoint_bounds
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexCoarseIntervalBudget.actual_two_zero_upper_endpoint_bounds
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexCoarseIntervalBudget.original_two_upper_endpoint_bounds
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexCoarseIntervalBudget.actual_two_upper_endpoint_bounds_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexCoarseIntervalBudget.original_two_upper_endpoint_bounds_closed
+
+/-! ### RationalConvexLipschitzBound -/
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.exact_rational_secant
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.actual_exact_rational_secant_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.exact_named_secant
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.distanceWord
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.distanceBudget
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.marginWord
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.crossBounds
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.ordered_distance_word
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.distance_word_on_original_codes
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.original_margin_word_positive
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.actual_original_distance_word_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.actual_original_margin_word_positive_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.original_ordered_lipschitz
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.original_lipschitz
+#print axioms LeanProofs.IPRA.Analysis.RationalConvexLipschitzBound.original_rational_lipschitz_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianDescentClock.subst_valueDenominator
 #print axioms LeanProofs.IPRA.Analysis.GaussianDescentClock.subst_valueNumerator
 #print axioms LeanProofs.IPRA.Analysis.GaussianDescentClock.subst_canonicalize
