@@ -94,8 +94,14 @@ Every in-range successor also has the actual convolution coefficient law.
 [GaussianRationalPolynomialExponential](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialExponential.lean)
 constructs the actual factorial-weighted coefficient sum. Its Horner
 evaluation is the literal finite complex exponential sum of the original
-value. The application to the actual truncated logarithm, identification
-of its low-degree coefficients and the analytic C4 tail remain open.
+value.
+
+[GaussianFiniteLogarithmPolynomial](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmPolynomial.lean)
+constructs the original truncated logarithm polynomial and identifies each
+stored coefficient with the original factorial kernel. Its actual finite
+exponential composition has the literal finite complex Horner value.
+Identification of the composite low-degree coefficients, comparison with
+the older cleared-integer sampler, and the analytic C4 tail remain open.
 
 ## Every ledger family remains in scope
 
