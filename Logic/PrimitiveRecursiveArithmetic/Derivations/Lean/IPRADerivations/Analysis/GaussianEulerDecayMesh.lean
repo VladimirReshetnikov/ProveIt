@@ -42,6 +42,7 @@ def gridData (a b p : PTm n) : PTm n := pairT a (pairT b p)
 def sample (i x : PTm n) : PTm n := observation (fstT x+i) (fstT (sndT x)) (sndT (sndT x))
 def weightedBody : PTm 2 := qmul (sample (var 0) (var 1)) (fraction one (fstT (sndT (var 1))))
 def differenceBody : PTm 2 := qsub (sample (var 0) (var 1)) (sample (succ (var 0)) (var 1))
+def stepError (b c p : PTm n) : PTm n := three*c*c*unit p+num 20*(b*b)
 def errorNum (b p : PTm n) : PTm n := three*unit p+num 20*(b*b)
 def errorDen (b p : PTm n) : PTm n := b*b*unit p
 
@@ -73,14 +74,25 @@ private theorem obs_point_congr (a b c d p : PTm n) (h : Γ ⊢[PRAAx] decayPoin
       (σ := ![p,decayPoint a b]) (σ' := ![p,decayPoint c d])
       (fun k => by fin_cases k; exact .eqRefl p; exact h)
 
-private theorem observation_step (a b p : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
-    Γ ⊢[PRAAx] observation (a*b+one*b) (b*b) p ≐ observation (a+one) b p := by
-  have h : Γ ⊢[PRAAx] equal (scale (a*b+one*b) oneCode) (scale b (scale (a+one) oneCode)) := by
+theorem observation_numerator_congr (a c b p : PTm n) (e : Γ ⊢[PRAAx] a ≐ c) :
+    Γ ⊢[PRAAx] observation a b p ≐ observation c b p :=
+  obs_point_congr _ _ _ _ _ (GaussianInverseBinomialRows.negative_congr
+    (GaussianCompactRiemannName.fraction_congr _ _ _ _ e (.eqRefl b)))
+
+theorem observation_rescale (a b k p : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hk : Γ ⊢[PRAAx] le one k) :
+    Γ ⊢[PRAAx] observation (a*k) (b*k) p ≐ observation a b p := by
+  have h : Γ ⊢[PRAAx] equal (scale (a*k) oneCode) (scale k (scale a oneCode)) := by
     apply equal_of_values
     all_goals simp only [re_scale,im_scale,re_one,im_one]; ipra_simps; ring
-  have e := (GaussianGammaFiniteValueProperness.fraction_equal _ _ (b*b) (positive_product b b hb hb) h).eqTrans
-    (GaussianGammaEncodingRescaling.fraction_rescale (scale (a+one) oneCode) b b hb hb)
+  have hf := positive_product b k hb hk
+  have e := (GaussianGammaFiniteValueProperness.fraction_equal _ _ (b*k) hf h).eqTrans
+    ((GaussianGammaEncodingRescaling.fraction_denominator_congr _ _ _ (mul_comm b k)).eqTrans
+      (GaussianGammaEncodingRescaling.fraction_rescale (scale a oneCode) b k hb hk))
   exact obs_point_congr _ _ _ _ _ (GaussianInverseBinomialRows.negative_congr e)
+
+private theorem observation_step (a b c p : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
+    Γ ⊢[PRAAx] observation (a*b+c*b) (b*b) p ≐ observation (a+c) b p :=
+  (observation_numerator_congr _ _ (b*b) p (by ipra_ring)).eqTrans (observation_rescale (a+c) b b p hb hb)
 
 private theorem translating_step (X Y h D E : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hX : Γ ⊢[PRAAx] GaussianRationalHorner.canonical X)
@@ -101,6 +113,16 @@ private theorem translating_step (X Y h D E : PTm n) (hD : Γ ⊢[PRAAx] le one 
   exact distance_congr (GaussianRationalSyntheticDivision.qadd_sub_cancel Y W (qmul_canonical X h))
     (.eqRefl _) (add_zero E) (.eqRefl _) added
 
+theorem adjacent_step (a b c p : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b)
+    (hc : Γ ⊢[PRAAx] le one c) (hcb : Γ ⊢[PRAAx] le c b) :
+    Γ ⊢[PRAAx] distanceBounded (qmul (observation a b p) (fraction c b))
+      (qsub (observation a b p) (observation (a+c) b p)) (stepError b c p) (errorDen b p) := by
+  have hx : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (observation a b p) :=
+    GaussianRadiusExponentialName.sample_canonical constantF _ p (decayPoint a b)
+  have remainder := decay_linear_increment a b c b p ha hb hc hb hcb
+  refine translating_step _ _ _ _ _ (positive_product _ _ (positive_product b b hb hb) (unit_positive p)) hx ?_
+  exact distance_congr (observation_step a b c p hb) (.eqRefl _) (.eqRefl _) (.eqRefl _) remainder
+
 theorem grid_step (a b p i : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] distanceBounded (inst2 weightedBody i (gridData a b p))
       (inst2 differenceBody i (gridData a b p)) (errorNum b p) (errorDen b p) := by
@@ -108,18 +130,12 @@ theorem grid_step (a b p i : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[P
   let Y := observation (a+succ i) b p
   let h := fraction one b
   let x := gridData a b p
-  have hX : Γ ⊢[PRAAx] GaussianRationalHorner.canonical X :=
-    GaussianRadiusExponentialName.sample_canonical constantF _ p (decayPoint (a+i) b)
-  have y : Γ ⊢[PRAAx] observation ((a+i)*b+one*b) (b*b) p ≐ Y := by
-    refine (observation_step (a+i) b p hb).eqTrans ?_
-    have eq : Γ ⊢[PRAAx] a+i+one ≐ a+succ i := by ipra_ring
-    exact obs_point_congr _ _ _ _ _ (GaussianInverseBinomialRows.negative_congr
-      (GaussianCompactRiemannName.fraction_congr _ _ _ _ eq (.eqRefl b)))
-  have remainder := decay_linear_increment (a+i) b one b p (le_trans ha (le_add_right a i)) hb (le_refl one) hb hb
-  have bound : Γ ⊢[PRAAx] distanceBounded Y (qmul X (qsub qone h)) (errorNum b p) (errorDen b p) :=
-    distance_congr y (.eqRefl _) (by dsimp only [errorNum,three]; ipra_ring) (.eqRefl _) remainder
-  have distance := translating_step X Y h (errorDen b p) (errorNum b p)
-    (positive_product _ _ (positive_product b b hb hb) (unit_positive p)) hX bound
+  have y : Γ ⊢[PRAAx] observation (a+i+one) b p ≐ Y :=
+    observation_numerator_congr _ _ b p (by ipra_ring)
+  have distance : Γ ⊢[PRAAx] distanceBounded (qmul X h) (qsub X Y) (errorNum b p) (errorDen b p) :=
+    distance_congr (.eqRefl _) (GaussianRationalSyntheticDivision.qsub_congr (.eqRefl X) y)
+      (by dsimp only [stepError,errorNum]; ipra_ring) (.eqRefl _)
+      (adjacent_step (a+i) b one p (le_trans ha (le_add_right a i)) hb (le_refl one) hb)
   have den : Γ ⊢[PRAAx] fstT (sndT x) ≐ b := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
   have w : Γ ⊢[PRAAx] inst2 weightedBody i x ≐ qmul X h := by
     simpa [weightedBody,inst2,fraction,x,X,h] using GaussianRationalSyntheticDivision.qmul_congr (read_grid a b p i)
@@ -134,17 +150,41 @@ def telescopeLaw (x k : PTm n) : Fm PTm n :=
 @[simp] theorem subst_telescopeLaw {m : ℕ} (σ : Fin n → PTm m) (x k : PTm n) :
     (telescopeLaw x k).subst σ = telescopeLaw (Syn.subst σ x) (Syn.subst σ k) := by simp [telescopeLaw]
 
-theorem telescope (x k : PTm n) : Γ ⊢[PRAAx] telescopeLaw x k := by
-  have all : Γ ⊢[PRAAx] .all (telescopeLaw (Syn.shift x) (var 0)) := by
+def consecutiveDifference (f : PTm 2) : PTm 2 :=
+  qsub (inst2 f (var 0) (var 1)) (inst2 f (succ (var 0)) (var 1))
+
+@[simp] theorem consecutive_difference_at (f : PTm 2) (i x : PTm n) :
+    inst2 (consecutiveDifference f) i x = qsub (inst2 f i x) (inst2 f (succ i) x) := by
+  change Syn.subst ![i,x] (consecutiveDifference f) = _
+  simp [consecutiveDifference]
+
+private def differenceSumLaw (f : PTm 2) (x k : PTm n) : Fm PTm n :=
+  sum (consecutiveDifference f) k x ≐ qsub (inst2 f zero x) (inst2 f k x)
+
+@[simp] private theorem subst_differenceSumLaw {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (x k : PTm n) :
+    (differenceSumLaw f x k).subst σ = differenceSumLaw f (Syn.subst σ x) (Syn.subst σ k) := by
+  simp [differenceSumLaw]
+
+theorem consecutive_difference_sum (f : PTm 2) (x k : PTm n) :
+    Γ ⊢[PRAAx] sum (consecutiveDifference f) k x ≐ qsub (inst2 f zero x) (inst2 f k x) := by
+  have all : Γ ⊢[PRAAx] .all (differenceSumLaw f (Syn.shift x) (var 0)) := by
     refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_telescopeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
+    · simp only [subst_differenceSumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
       exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianCoefficientNormOrder.qsub_self _).eqSymm
-    · simp only [subst_telescopeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (GaussianRationalFiniteSum.sum_succ differenceBody _ _).eqTrans ((qadd_congr Prf.hyp0 (.eqRefl _)).eqTrans
-        (by simpa [differenceBody,inst2] using
-          (GaussianReconstructionRoots.difference_chain (sample zero (Syn.shift x))
-            (sample (var 0) (Syn.shift x)) (sample (succ (var 0)) (Syn.shift x)))))
-  simpa only [subst_telescopeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+    · simp only [subst_differenceSumLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
+      refine (GaussianRationalFiniteSum.sum_succ (consecutiveDifference f) _ _).eqTrans ?_
+      rw [consecutive_difference_at]
+      exact (qadd_congr Prf.hyp0 (.eqRefl _)).eqTrans
+        (GaussianReconstructionRoots.difference_chain (inst2 f zero (Syn.shift x))
+          (inst2 f (var 0) (Syn.shift x)) (inst2 f (succ (var 0)) (Syn.shift x)))
+  have done : Γ ⊢[PRAAx] differenceSumLaw f x k := by
+    simpa only [subst_differenceSumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+  exact done
+
+theorem telescope (x k : PTm n) : Γ ⊢[PRAAx] telescopeLaw x k := by
+  have body : consecutiveDifference (sample (var 0) (var 1) : PTm 2) = differenceBody := by
+    simp [consecutiveDifference,differenceBody,inst2]
+  simpa [body,telescopeLaw,inst2] using consecutive_difference_sum (sample (var 0) (var 1)) x k
 
 theorem actual_decay_mesh (a b p N : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] distanceBounded (sum weightedBody N (gridData a b p))
