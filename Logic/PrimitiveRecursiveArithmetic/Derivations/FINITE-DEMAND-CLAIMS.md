@@ -558,6 +558,11 @@ at stage `k+2`. The derived dyadic bounds give regularity, arbitrarily
 accurate aggregate witnesses, and a named upper bound on every
 represented root. The same upper bound holds for actual characteristic
 polynomial-name zeros under the original adequacy disk hypotheses.
+[GaussianCharacteristicAggregateDecoding](Lean/IPRADerivations/Analysis/GaussianCharacteristicAggregateDecoding.lean)
+proves that any regular two-coordinate stream supported by these actual
+stages decodes to an original represented characteristic root. The
+decoded point samples use one extra coordinate precision, and stage
+`k+2` supplies the original Gaussian distance cut at precision `k`.
 
 [RationalGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalGaussianEmbedding.lean)
 preserves field equality, zero, one, addition, multiplication and negation
@@ -578,15 +583,27 @@ actual Gaussian determinant of the embedded matrix and reflects zero.
 and [RationalPolynomialProductGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialProductGaussianEmbedding.lean)
 compute the original rational zero, padding, addition, scaling, and
 convolution buffers. They prove the actual coefficient conjugacy and
-corresponding canonical rational evaluation laws. The rational norm
-specialization still needs polynomial-valued matrix and determinant
-transport that identify its norm polynomial.
+corresponding canonical rational evaluation laws.
+[RationalBivariateGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalBivariateGaussianEmbedding.lean)
+transports original rational bivariate and monic Horner evaluation.
+[RationalCurvePointsGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalCurvePointsGaussianEmbedding.lean)
+maps every original point index and derives the Gaussian common-zero
+hypotheses from rational distinctness and both original zero tests.
+[RationalPolynomialDeterminantTermsGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialDeterminantTermsGaussianEmbedding.lean)
+and [RationalPolynomialDeterminantGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialDeterminantGaussianEmbedding.lean)
+transport the actual signed polynomial products and the retained
+determinant sum. [RationalPolynomialDegreeGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialDegreeGaussianEmbedding.lean)
+shows that coefficient embedding preserves the actual nonzero flag and
+computed degree. The original rational monic multiplication matrix
+and the resulting norm specialization remain open.
 
 [GaussianRationalVariableHornerBudget](Lean/IPRADerivations/Analysis/GaussianRationalVariableHornerBudget.lean)
 computes a coefficient-dependent variation bound by following actual
 Horner evaluations over the original cleared coefficients. Its guarded
 size and variation invariants give a sharper bound directly from the
-coefficient list. The exact weighted-sum identity and the grid scan at
+coefficient list. [GaussianRationalDerivativeWeights](Lean/IPRADerivations/Analysis/GaussianRationalDerivativeWeights.lean)
+identifies this recurrence with the exact coefficient-weighted sum on
+cleared numerators. The scalar rational maximum and the grid scan at
 the source's ceiling mesh remain open.
 
 ## Logical strength and program boundaries
