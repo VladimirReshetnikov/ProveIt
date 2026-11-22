@@ -48,6 +48,7 @@ import IPRADerivations.Analysis.Products
 import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.Analysis.HypergeometricRatio
 import IPRADerivations.Analysis.HypergeometricThreshold
+import IPRADerivations.Analysis.HypergeometricRatioBound
 import IPRADerivations.Analysis.TerminatingSeries
 import IPRADerivations.Analysis.ChuVandermonde
 import IPRADerivations.Analysis.ContiguousRelations
