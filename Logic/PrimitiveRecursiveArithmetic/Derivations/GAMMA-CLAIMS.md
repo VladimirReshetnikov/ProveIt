@@ -221,7 +221,9 @@ error at most `M_(2R)/2^(d+1)` on the radius-`R` disk.
 [GaussianGammaSynchronousExponentName](Lean/IPRADerivations/Analysis/GaussianGammaSynchronousExponentName.lean)
 proves that a regular sampler evaluates the same sampled exponent
 coefficient buffer with clocks determined solely by radius and precision.
-Its identification with the original C7 exponent remains.
+[GaussianGammaSynchronousExponentCompatibility](Lean/IPRADerivations/Analysis/GaussianGammaSynchronousExponentCompatibility.lean)
+identifies that sampler with the original C7 exponent at independent
+precisions on the original disk.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
@@ -292,7 +294,7 @@ check the exact center values of the reciprocal quotient and regularized
 Gamma name against the signed factorial and signed inverse factorial.
 [GaussianGammaPoleInverseContinuity](Lean/IPRADerivations/Analysis/GaussianGammaPoleInverseContinuity.lean)
 proves the corresponding actual inverse-factor perturbation bound on
-the half disk. The named derivative and residue limits remain.
+the half disk.
 [GaussianGammaTerminalContinuity](Lean/IPRADerivations/Analysis/GaussianGammaTerminalContinuity.lean)
 proves the fixed half-disk certificate for the actual terminal argument
 and transfers an independent C7 rate at one to the original Gamma name.
@@ -301,6 +303,12 @@ and transfers an independent C7 rate at one to the original Gamma name.
 and [GaussianGammaPoleLimitModulus](Lean/IPRADerivations/Analysis/GaussianGammaPoleLimitModulus.lean)
 derive both local product observations at a common computed precision
 from a specified terminal C7 rate.
+[GaussianGammaPoleDifferenceQuotient](Lean/IPRADerivations/Analysis/GaussianGammaPoleDifferenceQuotient.lean)
+binds the factored quotient to the actual division on the punctured disk.
+[GaussianGammaPoleLimits](Lean/IPRADerivations/Analysis/GaussianGammaPoleLimits.lean)
+derives the terminal rate and proves the C23 and C25 dyadic limits of
+the actual divided reciprocal and the original cleared Gamma on encoded
+rational increments. The bound holds for every later observation.
 [GaussianRationalConjugation](Lean/IPRADerivations/Analysis/GaussianRationalConjugation.lean)
 proves exact conjugation for rational code, metric and scalar Taylor sums.
 [GaussianGammaFiniteConjugation](Lean/IPRADerivations/Analysis/GaussianGammaFiniteConjugation.lean)
@@ -330,6 +338,9 @@ denominator, including all positive encodings of one.
 and [GaussianGammaEulerContinuityReference](Lean/IPRADerivations/Analysis/GaussianGammaEulerContinuityReference.lean)
 derive the original C7 comparison with a finite shared reference and
 bound the reference variation in the input.
+[GaussianGammaInputContinuity](Lean/IPRADerivations/Analysis/GaussianGammaInputContinuity.lean)
+derives the uniform input modulus for the original C7 name from this
+reference. It preserves independent observation errors.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.
@@ -596,7 +607,7 @@ composition. These are object-theory derivations of the local C4 identity.
 | --- | --- |
 | 1 | Actual harmonic/logarithm Euler-constant evaluator, C1–C2 inequalities, a regular name, and its bounds. |
 | 2–3 | Actual cofinal samplers establish C11 for the literal Weierstrass product and C15 for the Euler reciprocals. The C7 and Gamma names agree on overlapping disks for the same encoded rational point. Agreement with the right half-plane integral construction remains. |
-| 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The whole finite coefficient product has the C9 majorant and the radius-doubled degree tail. Cofinal coefficient stabilization, entire analyticity, zero classification for general named inputs, and the derivative and residue limits remain. C20, the original C21 shift and factorial values, C22, and the C24 punctured-disk identity are proved on their recorded domains. C26 conjugation and the real value representation for encoded real rational inputs are proved for the original reciprocal and pole-free Gamma names. |
+| 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The whole finite coefficient product has the C9 majorant and the radius-doubled degree tail. C23 and C25 have checked difference-quotient and residue limits on encoded rational increments. Cofinal coefficient stabilization, entire analyticity and classification for general named inputs remain. C20, the original C21 shift and factorial values, C22, and the C24 punctured-disk identity are proved on their recorded domains. C26 conjugation and the real value representation for encoded real rational inputs are proved for the original reciprocal and pole-free Gamma names. |
 | 11–17 | Actual quadrature and both endpoint tails, Euler-integral identification, quantitative positive lower/upper bounds, vertical absolute-value comparison, fixed-order derivative integrals, substitution/scaling formulas, and incomplete-Gamma sum/recurrence/integer formulas. |
 | 18–24 | Reflection with an explicit sine margin, multiplication at arbitrary internal positive integer multiplier, duplication/triplication, beta–Gamma relation, beta symmetry/recurrence and all stated integral forms with their positive half-plane margins. |
 | 25–30 | Positive-root selection and half-integer values, the listed fractional-argument relations and fractional products, rising/binomial cancellation through apparent poles, and imaginary/half-shifted modulus formulas, including their zero-safe versions. |
