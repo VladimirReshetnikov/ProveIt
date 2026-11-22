@@ -141,6 +141,11 @@ base and the accumulated exponential.
 [GaussianRationalFiniteExponentialEuler](Lean/IPRADerivations/Analysis/GaussianRationalFiniteExponentialEuler.lean)
 combines power support with the exact cutoff to derive the finite exponential
 Euler rule for the original logarithm at every exponent within both cutoffs.
+[GaussianRationalCoefficientRecursion](Lean/IPRADerivations/Analysis/GaussianRationalCoefficientRecursion.lean)
+proves bounded uniqueness for an actual prior-coefficient recursion.
+[GaussianFiniteLogarithmCoefficientRecursion](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmCoefficientRecursion.lean)
+derives that recursion and its initial value on the original stored
+composition.
 
 ## Every ledger family remains in scope
 

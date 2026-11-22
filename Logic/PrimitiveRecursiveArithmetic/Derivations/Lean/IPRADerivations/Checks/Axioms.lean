@@ -9351,6 +9351,43 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RationalMinorAugmentation.actual_extended_free_column_position_closed
 #print axioms LeanProofs.IPRA.Analysis.RationalMinorAugmentation.actual_extended_inserted_cell_closed
 
+/-! ### RationalMinorMaskDeletion -/
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.flip
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.erase
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.subst_flip
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.subst_erase
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.complement_digit_bounds
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.flip_bound
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.flip_bit
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.count_flipped
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.count_complements
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.erase_bound
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.erased_bit
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.other_bit
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.erase_count
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.actual_erased_mask_range_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.actual_erased_mask_digit_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.actual_erased_mask_other_digit_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion.actual_erased_mask_count_closed
+
+/-! ### RationalCofactorMinorBounds -/
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.columnMask
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.minorValue
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.bound
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.subst_columnMask
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.free_mask
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.other_mask
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.column_count_congr
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.cofactor_size
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.free_minor_value
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.free_minor_nonzero
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.factorial_step_mono
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.factorial_mono
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.cofactor_minor_bound
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.actual_cofactor_minor_size_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.actual_free_cofactor_minor_nonzero_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalCofactorMinorBounds.actual_cofactor_minor_bound_closed
+
 /-! ### RationalIntegerMinorDeterminants -/
 #print axioms LeanProofs.IPRA.Analysis.RationalIntegerMinorDeterminants.content
 #print axioms LeanProofs.IPRA.Analysis.RationalIntegerMinorDeterminants.subst_content
@@ -10297,6 +10334,91 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalFiniteExponentialEuler.original_logarithm_finite_exponential_euler_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalFiniteExponentialEuler.actual_finite_exponential_euler_program_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalFiniteExponentialEuler.actual_returned_finite_exponential_euler_closed
+
+/-! ### GaussianRationalCoefficientRecursion -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.inversePoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.subst_inversePoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.inverse_multiplier
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.scale_recovery
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.scale_cancel
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.priorTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.priorBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.priorSum
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.subst_priorTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.subst_priorSum
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.prior_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.recursion
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.prefixEqual
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.subst_recursion
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.subst_prefixEqual
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.recursion_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.prefix_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.prefix_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.prior_sum_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.next_coefficient
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.prefix_extend
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.uniqueLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.prefixSyntax
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.uniqueSyntax
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.subst_uniqueLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.prefix_formula
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.unique_formula
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.unique_base
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.unique_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.uniqueness
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.input
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.subst_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.unique_of_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.coefficient_unique
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.inverseF
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.priorF
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.comparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.comparisonF
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.run
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.subst_comparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.subst_run
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.inverse_program_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.prior_program_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.program_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.returned_left
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.returned_right
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.returned_agreement
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.actual_positive_scale_inverse_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.actual_positive_scale_cancellation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.actual_prior_coefficient_sum_canonical_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.actual_bounded_coefficient_recursion_unique_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.actual_coefficient_recursion_unique_at_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.actual_scale_inverse_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.actual_prior_coefficient_sum_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.actual_coefficient_comparison_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianRationalCoefficientRecursion.actual_returned_coefficient_recursion_unique_closed
+
+/-! ### GaussianFiniteLogarithmCoefficientRecursion -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.product_commuted_exponent
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.cauchy_to_prior_term
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.cauchy_to_prior
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.last_prior_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.product_prior
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.finite_recursion_point
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.logarithm_recursion_point
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.logarithm_recursion
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.finite_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.logarithm_constant
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.output
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.outputF
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.run
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.subst_output
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.subst_run
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.program_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.returned_polynomial
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.returned_prior
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.returned_recursion
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.actual_zero_constant_product_prior_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.original_logarithm_prior_recursion_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.original_logarithm_bounded_prior_recursion_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.original_logarithm_exponential_constant_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.original_logarithm_coefficient_recursion_program_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion.original_returned_logarithm_coefficient_recursion_closed
 
 -- Original rational aggregate equality/selection and the signed Minkowski mesh kernels.
 #print axioms LeanProofs.IPRA.Analysis.AggregateEquality.unit_positive
@@ -13979,6 +14101,46 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.RationalCubeCoherentMinimizer.actual_coherent_minimizer_point_program_closed
 #print axioms LeanProofs.IPRA.Analysis.RationalCubeCoherentMinimizer.actual_coherent_minimizer_evaluation_program_closed
 #print axioms LeanProofs.IPRA.Analysis.RationalCubeCoherentMinimizer.actual_coherent_minimizer_output_program_closed
+
+/-! ### RationalCubeMinimizerUniqueness -/
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.evaluation
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.sameValue
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.equivalent
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.subst_evaluation
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.subst_sameValue
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.subst_equivalent
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.point_name_at
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.same_value_at
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.point_tail_radius
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.approximant_near_at
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.approximant_near
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.tailIndex
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.subst_tailIndex
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.tail_index_ge
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.tail_index_modulus
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.approximate_cross_radius
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.unique_radius
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.unique_name_radius
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.unique_name
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.selected_evaluation_at
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.selected_same_value_at
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.source_same_value
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.source_cube_points
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.source_minimizer
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.unique_diagonal
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.evaluationF
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.evaluateName
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.tailF
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.runTail
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.evaluation_program_at
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.tail_program_at
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.actual_point_name_tail_radius_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.actual_same_value_approximant_near_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.actual_source_constructed_minimizer_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.actual_source_minimizer_unique_point_name_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.actual_source_minimizer_unique_diagonal_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.actual_competing_point_evaluation_program_closed
+#print axioms LeanProofs.IPRA.Analysis.RationalCubeMinimizerUniqueness.actual_finite_comparison_tail_program_closed
 
 /-! ### GaussianRootSynchronizedHit -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianRootSynchronizedHit.cover_at
