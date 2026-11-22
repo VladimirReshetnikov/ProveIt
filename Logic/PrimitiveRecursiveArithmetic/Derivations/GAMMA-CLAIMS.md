@@ -154,6 +154,12 @@ original signed Bell values at each exponent within both internal cutoffs.
 derives the actual residual from the stored high coefficients and bounds its
 size on the source half-disk using the computed stage coefficient budget.
 A uniform weighted majorant remains necessary for the analytic modulus.
+[GaussianRationalPolynomialDilation](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialDilation.lean)
+constructs the actual scaled-argument buffer and proves the weighted
+coefficient arithmetic used to produce that majorant.
+[GaussianFiniteLogarithmWeightedNorm](Lean/IPRADerivations/Analysis/GaussianFiniteLogarithmWeightedNorm.lean)
+bounds the actual truncated logarithm at auxiliary weight 5/9 by 65/72
+for every original truncation degree.
 
 ## Every ledger family remains in scope
 
