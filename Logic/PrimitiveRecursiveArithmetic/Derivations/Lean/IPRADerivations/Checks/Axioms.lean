@@ -12957,6 +12957,21 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaWeierstrassLimit.original_literal_C11_weierstrass_limit_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaWeierstrassLimit.original_literal_C11_regular_closed
 
+/-! ### GaussianGammaRadiusOverlap -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.commonCutoff
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.subst_commonCutoff
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.common_cutoff_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.finite_cutoff_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.original_P_overlap_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.original_P_observation_overlap
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.original_P_overlap
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.original_Gamma_overlap
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.original_Gamma_observation_overlap
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.actual_common_cutoff_cofinal_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.original_C7_radius_overlap_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.original_Gamma_radius_and_certificate_overlap_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap.original_Gamma_independent_overlap_observations_closed
+
 /-! ### GaussianGammaEulerHeadLower -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadLower.translated
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadLower.poleAt
@@ -13060,6 +13075,18 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaObservationLower.original_C14_P_observation_separation_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaObservationLower.original_C14_Q_observation_separation_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaObservationLower.original_Gamma_nonvanishing_observations_closed
+
+/-! ### GaussianGammaPoleZeros -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.factor_zero_at_pole
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.head_at_pole_index
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.head_zero_at_pole
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.C7_sample_zero_at_pole
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.poleNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.translated_pole_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.C7_negative_integer_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.actual_euler_head_zero_at_pole_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.original_C7_sample_zero_at_pole_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.original_C7_negative_integer_zero_closed
 
 /-! ### GaussianGammaC7Name -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaC7Name.head

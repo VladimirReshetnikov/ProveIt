@@ -105,6 +105,10 @@ reciprocal and Gamma with independent observation errors.
 [GaussianGammaEulerInverseApproximationName](Lean/IPRADerivations/Analysis/GaussianGammaEulerInverseApproximationName.lean)
 constructs an actual cofinal sampler from this exact fractional
 coefficient and proves that it gives the same regular name as Gamma.
+[GaussianGammaRadiusOverlap](Lean/IPRADerivations/Analysis/GaussianGammaRadiusOverlap.lean)
+proves agreement of the original C7 and Gamma names at the same
+encoded rational point on two supplied disks. Gamma permits separate
+pole certificates and actual computed anchors on the two disks.
 [GaussianGammaCanonicalExponent](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalExponent.lean)
 constructs the actual regular C7 exponent from the Euler constant mesh
 name, the exact harmonic value and the original canonical tail at `2R`.
@@ -133,6 +137,9 @@ uses them to bound the actual `P` and `Q_N` observations below by
 `λ max(0,1−K/2^p)` and the Gamma observations below by
 `(1/M_R) max(0,1−K/2^p)`. Each `K` is given by the corresponding
 original multiplication clock.
+[GaussianGammaPoleZeros](Lean/IPRADerivations/Analysis/GaussianGammaPoleZeros.lean)
+proves exact zero of the original C7 observations at each encoded
+negative integer whose pole index is included in the head.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.
@@ -398,8 +405,8 @@ composition. These are object-theory derivations of the local C4 identity.
 | Ledger IDs | Complete source deliverables still required |
 | --- | --- |
 | 1 | Actual harmonic/logarithm Euler-constant evaluator, C1–C2 inequalities, a regular name, and its bounds. |
-| 2–3 | Actual cofinal samplers establish C11 for the literal Weierstrass product and C15 for the Euler reciprocals. The corresponding Gamma presentation on disk overlaps and its agreement with the right half-plane integral construction remain. |
-| 4–10 | Coefficient majorants on a larger disk, entire reciprocal analyticity, exact zeros and their simplicity, nonvanishing of Gamma, simple poles/residues, functional equation/normalization, factorial values, conjugation and real-domain values. Finite product identities are dependencies rather than replacements for the named-function endpoints. |
+| 2–3 | Actual cofinal samplers establish C11 for the literal Weierstrass product and C15 for the Euler reciprocals. The C7 and Gamma names agree on overlapping disks for the same encoded rational point. Agreement with the right half-plane integral construction remains. |
+| 4–10 | The original C7 samples vanish at encoded nonpositive integers, and the actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The coefficient majorants, entire analyticity, converse and simplicity of the zeros, poles and residues, functional equation and normalization, factorial values, conjugation and real-domain values remain. |
 | 11–17 | Actual quadrature and both endpoint tails, Euler-integral identification, quantitative positive lower/upper bounds, vertical absolute-value comparison, fixed-order derivative integrals, substitution/scaling formulas, and incomplete-Gamma sum/recurrence/integer formulas. |
 | 18–24 | Reflection with an explicit sine margin, multiplication at arbitrary internal positive integer multiplier, duplication/triplication, beta–Gamma relation, beta symmetry/recurrence and all stated integral forms with their positive half-plane margins. |
 | 25–30 | Positive-root selection and half-integer values, the listed fractional-argument relations and fractional products, rising/binomial cancellation through apparent poles, and imaginary/half-shifted modulus formulas, including their zero-safe versions. |
