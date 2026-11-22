@@ -81,6 +81,13 @@ C6 radius and the finite three-Lipschitz estimate.
 builds the literal finite polynomial in C5 and C7, proves its finite
 split and binds each factor to the local C4 constant. At cutoff `2R` its
 Euclidean majorant is exactly the polynomial factor in C9.
+[GaussianGammaEulerHeadLower](Lean/IPRADerivations/Analysis/GaussianGammaEulerHeadLower.lean)
+proves that the original pole guard gives the exact lower bound
+`δ^(N+1)/N!` on the literal head. Its actual rational reciprocal
+multiplies the head to one and satisfies the corresponding upper bound.
+[GaussianBoundedInverseApartness](Lean/IPRADerivations/Analysis/GaussianBoundedInverseApartness.lean)
+computes a finite anchor for the original reciprocal-name program from
+a bounded regular inverse and proves agreement with that inverse.
 [GaussianGammaCanonicalExponent](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalExponent.lean)
 constructs the actual regular C7 exponent from the Euler constant mesh
 name, the exact harmonic value and the original canonical tail at `2R`.
@@ -101,8 +108,10 @@ verifies the same programs at arbitrary numerical cutoffs satisfying
 proves the exact C9 bound `M_R` for every observation of the original
 reciprocal name. [GaussianGammaFoldedMajorantExponent](Lean/IPRADerivations/Analysis/GaussianGammaFoldedMajorantExponent.lean)
 constructs the same bound for a representative formed from the original
-head and the exponent at `2R` minus the tail at `N`. Its identification
-with the finite folded `P_N` approximant remains.
+head and the exponent at `2R` minus the tail at `N`.
+[GaussianGammaFoldedC9Bound](Lean/IPRADerivations/Analysis/GaussianGammaFoldedC9Bound.lean)
+identifies this bounded representative with the original folded finite
+`P_N` program. Its original observations obey `M_R+2/2^p`.
 [GaussianGammaFiniteApproximantName](Lean/IPRADerivations/Analysis/GaussianGammaFiniteApproximantName.lean)
 constructs the folded C5 names from the original polynomial head,
 Euler constant, harmonic value, and harmonic-mesh logarithm. It proves the
