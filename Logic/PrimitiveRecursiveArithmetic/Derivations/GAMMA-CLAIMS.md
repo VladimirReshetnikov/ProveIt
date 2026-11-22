@@ -218,6 +218,10 @@ evaluates the full finite product of the original head and sampled
 finite exponential. Its exact weighted coefficient majorant is the
 original `M_R`. A prefix through degree `d` has discarded-tail
 error at most `M_(2R)/2^(d+1)` on the radius-`R` disk.
+[GaussianGammaSynchronousExponentName](Lean/IPRADerivations/Analysis/GaussianGammaSynchronousExponentName.lean)
+proves that a regular sampler evaluates the same sampled exponent
+coefficient buffer with clocks determined solely by radius and precision.
+Its identification with the original C7 exponent remains.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
@@ -289,6 +293,14 @@ Gamma name against the signed factorial and signed inverse factorial.
 [GaussianGammaPoleInverseContinuity](Lean/IPRADerivations/Analysis/GaussianGammaPoleInverseContinuity.lean)
 proves the corresponding actual inverse-factor perturbation bound on
 the half disk. The named derivative and residue limits remain.
+[GaussianGammaTerminalContinuity](Lean/IPRADerivations/Analysis/GaussianGammaTerminalContinuity.lean)
+proves the fixed half-disk certificate for the actual terminal argument
+and transfers an independent C7 rate at one to the original Gamma name.
+[GaussianGammaPoleProductRate](Lean/IPRADerivations/Analysis/GaussianGammaPoleProductRate.lean),
+[GaussianGammaPoleLimitTransport](Lean/IPRADerivations/Analysis/GaussianGammaPoleLimitTransport.lean),
+and [GaussianGammaPoleLimitModulus](Lean/IPRADerivations/Analysis/GaussianGammaPoleLimitModulus.lean)
+derive both local product observations at a common computed precision
+from a specified terminal C7 rate.
 [GaussianRationalConjugation](Lean/IPRADerivations/Analysis/GaussianRationalConjugation.lean)
 proves exact conjugation for rational code, metric and scalar Taylor sums.
 [GaussianGammaFiniteConjugation](Lean/IPRADerivations/Analysis/GaussianGammaFiniteConjugation.lean)
@@ -311,6 +323,13 @@ is respected by the original reciprocal and pole-free Gamma names.
 [GaussianGammaEulerHeadContinuity](Lean/IPRADerivations/Analysis/GaussianGammaEulerHeadContinuity.lean)
 proves the actual finite head modulus on each fixed-radius disk for
 two encodings with the same denominator.
+[GaussianGammaEncodingRescaling](Lean/IPRADerivations/Analysis/GaussianGammaEncodingRescaling.lean)
+proves C7 agreement under positive rescaling of both numerator and
+denominator, including all positive encodings of one.
+[GaussianGammaLogExponentContinuity](Lean/IPRADerivations/Analysis/GaussianGammaLogExponentContinuity.lean)
+and [GaussianGammaEulerContinuityReference](Lean/IPRADerivations/Analysis/GaussianGammaEulerContinuityReference.lean)
+derive the original C7 comparison with a finite shared reference and
+bound the reference variation in the input.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.
