@@ -13088,6 +13088,25 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.original_C7_sample_zero_at_pole_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleZeros.original_C7_negative_integer_zero_closed
 
+/-! ### GaussianGammaPoleSearch -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.testBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.search
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.hit
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.subst_search
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.test_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.norm_zero_at_pole
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.returned_hit
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.failed_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.failed_guard
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.apart_excludes_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.zero_returns_pole
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.returned_pole_gives_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.rational_zero_iff_pole
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.original_rational_pole_search_sound_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.original_rational_pole_search_guard_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.original_rational_C7_zero_returns_pole_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaPoleSearch.original_rational_C7_zero_iff_pole_closed
+
 /-! ### GaussianGammaC7Name -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaC7Name.head
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaC7Name.nameF

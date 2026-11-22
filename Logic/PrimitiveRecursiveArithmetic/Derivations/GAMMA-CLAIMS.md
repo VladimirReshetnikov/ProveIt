@@ -140,6 +140,11 @@ original multiplication clock.
 [GaussianGammaPoleZeros](Lean/IPRADerivations/Analysis/GaussianGammaPoleZeros.lean)
 proves exact zero of the original C7 observations at each encoded
 negative integer whose pole index is included in the head.
+[GaussianGammaPoleSearch](Lean/IPRADerivations/Analysis/GaussianGammaPoleSearch.lean)
+proves the converse for encoded rational inputs. The bounded search
+returns an exact pole index or derives separation with `δ=1/B` from
+the nonzero translated integer norms. The actual reciprocal anchor
+then excludes the original C7 zero predicate in the failure branch.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.
@@ -406,7 +411,7 @@ composition. These are object-theory derivations of the local C4 identity.
 | --- | --- |
 | 1 | Actual harmonic/logarithm Euler-constant evaluator, C1–C2 inequalities, a regular name, and its bounds. |
 | 2–3 | Actual cofinal samplers establish C11 for the literal Weierstrass product and C15 for the Euler reciprocals. The C7 and Gamma names agree on overlapping disks for the same encoded rational point. Agreement with the right half-plane integral construction remains. |
-| 4–10 | The original C7 samples vanish at encoded nonpositive integers, and the actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The coefficient majorants, entire analyticity, converse and simplicity of the zeros, poles and residues, functional equation and normalization, factorial values, conjugation and real-domain values remain. |
+| 4–10 | The original C7 zero predicate is characterized by an exact pole search for encoded rational inputs. The actual Gamma observations have a quantitative nonvanishing bound on pole-free disks. The coefficient majorants, entire analyticity, zero classification for general named inputs, simplicity of the zeros, poles and residues, functional equation and normalization, factorial values, conjugation and real-domain values remain. |
 | 11–17 | Actual quadrature and both endpoint tails, Euler-integral identification, quantitative positive lower/upper bounds, vertical absolute-value comparison, fixed-order derivative integrals, substitution/scaling formulas, and incomplete-Gamma sum/recurrence/integer formulas. |
 | 18–24 | Reflection with an explicit sine margin, multiplication at arbitrary internal positive integer multiplier, duplication/triplication, beta–Gamma relation, beta symmetry/recurrence and all stated integral forms with their positive half-plane margins. |
 | 25–30 | Positive-root selection and half-integer values, the listed fractional-argument relations and fractional products, rising/binomial cancellation through apparent poles, and imaginary/half-shifted modulus formulas, including their zero-safe versions. |

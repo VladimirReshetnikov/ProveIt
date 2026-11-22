@@ -1267,6 +1267,7 @@ import IPRADerivations.Analysis.GaussianGammaReciprocalInverse
 import IPRADerivations.Analysis.GaussianGammaEulerReciprocalInverse
 import IPRADerivations.Analysis.GaussianGammaObservationLower
 import IPRADerivations.Analysis.GaussianGammaPoleZeros
+import IPRADerivations.Analysis.GaussianGammaPoleSearch
 import IPRADerivations.Analysis.GaussianGammaC7Name
 import IPRADerivations.Analysis.GaussianGammaCutoffName
 import IPRADerivations.Analysis.GaussianGammaExponentStep
