@@ -43,7 +43,7 @@ Implementation links are relative to `Lean/IPRADerivations`. Names have prefix
 | `thm:general-norm`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked sharp finite norm zero bound in the exact Gaussian-rational coding.** [GaussianNormFiniteZeroBound](Lean/IPRADerivations/Analysis/GaussianNormFiniteZeroBound.lean) proves `actual_finite_norm_zero_bound_closed` for the original norm and original distinct common-zero list. The only arithmetic and source guards are the monic input shape, the original point predicates and the actual nonzero coefficient flag of the returned norm. Its conclusion uses the actual computed degree. [The reconstruction theorem](Lean/IPRADerivations/Analysis/GaussianNormFiniteZeroBound.lean) derives bounded literal coefficient equality at every group prefix before applying the nonzero flag. Its two bounded inductions first transfer factors within one fiber and then reconstruct the product across the original groups. Each induction runs on a quantifier-free compiled observation. Singular and ramified fibers are included through their original exact sizes. | Further coded-field instances require their own arithmetic contracts. The source norm takes the supplied reduced function `G`. Arbitrary high-`Y` preprocessing and the literal Vandermonde determinant product are separate obligations. |
 | `thm:norm-degree`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked exact Gaussian-rational norm degree and nonvanishing.** [GaussianSuperellipticNormDegree](Lean/IPRADerivations/Analysis/GaussianSuperellipticNormDegree.lean) derives `actual_superelliptic_norm_degree_closed` for the original returned determinant. The actual nonzero coefficient flag, exact weighted degree and signed cyclic leading coefficient follow from `m≥2`, positive computed degree of the nonzero `f`, coprimality and the original nonzero reduced `G`. The proof uses the real retained cyclic rank and derives that all other successful terms have strictly smaller degree. | Other coded-field instances require their own arithmetic and polynomial contracts. |
 | `cor:norm-zeros`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked sharp weighted finite zero count in the exact Gaussian-rational coding.** [The closed bound](Lean/IPRADerivations/Analysis/GaussianSuperellipticNormDegree.lean) consumes the original point distinctness, power equation `Y^m=f(X)` and original `G=0`. The bound uses the computed weighted degree, with the actual norm flag proved from the original input. | The supplied-subspace application also needs the original monomial evaluation vectors and a produced annihilator. Other coded-field instances remain separate. |
-| `cor:norm-subspace`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked Gaussian-rational subspace bound from a nonzero null vector.** [GaussianSuperellipticSubspaceFromSpan](Lean/IPRADerivations/Analysis/GaussianSuperellipticSubspaceFromSpan.lean) proves the closed bound for the original distinct curve points and per-point span membership in the given row matrix. The original evaluator, exact norm, and weighted cutoff all come from the compiled vector. [GaussianRationalPivotSearch](Lean/IPRADerivations/Analysis/GaussianRationalPivotSearch.lean) proves the actual least eligible pivot search and preservation of the homogeneous row system by its conditional matrix update. | The rank-only source corollary still needs the full bounded elimination loop and a nonzero null vector computed from the rank condition. Further coded fields require their own arithmetic contracts. |
+| `cor:norm-subspace`, [05_norm_certificates.tex](../docs/proofs/foundations/ipra_finite_demand/sections/05_norm_certificates.tex) | **Checked Gaussian-rational subspace bound from a nonzero null vector.** [GaussianSuperellipticSubspaceFromSpan](Lean/IPRADerivations/Analysis/GaussianSuperellipticSubspaceFromSpan.lean) proves the closed bound for the original distinct curve points and per-point span membership in the given row matrix. The original evaluator, exact norm, and weighted cutoff all come from the compiled vector. [GaussianRationalPivotSearch](Lean/IPRADerivations/Analysis/GaussianRationalPivotSearch.lean) proves the actual least eligible pivot search and preservation of the homogeneous row system by its conditional matrix update. | The computed elimination preserves the homogeneous system. The rank-only corollary still needs the pivot-column invariant and assembly of the free-column vector into an original null vector. Further coded fields require their own arithmetic contracts. |
 
 The additional displayed equation `eq:constant-loss-budget` is checked in
 [BackwardDemandBounds](Lean/IPRADerivations/Foundations/BackwardDemandBounds.lean).
@@ -394,8 +394,21 @@ uses each point’s existential coefficient witness to derive its zero
 equation and applies the exact norm bound to the same compiled polynomial.
 The [pivot search](Lean/IPRADerivations/Analysis/GaussianRationalPivotSearch.lean)
 chooses the least available row with a nonzero field entry, or derives
-field-zero entries for all available rows on failure. The complete rank
-procedure and its free-column null-vector construction remain open.
+field-zero entries for all available rows on failure. The
+[elimination loop](Lean/IPRADerivations/Analysis/GaussianRationalEliminationLoop.lean)
+computes the full rectangular update and its tag history, preserving the
+original homogeneous equations. The
+[tag profile](Lean/IPRADerivations/Analysis/GaussianRationalEliminationTagProfile.lean)
+shows that bounded pivot rows have unique tags and provides their actual
+column lookup. The
+[unmarked-row invariant](Lean/IPRADerivations/Analysis/GaussianRationalEliminationUnmarkedRows.lean)
+makes every processed entry of an unmarked row field-zero. The
+[pivot history count](Lean/IPRADerivations/Analysis/GaussianRationalPivotHistoryCount.lean)
+computes the least free column from strict count deficiency. The
+[free-column vector](Lean/IPRADerivations/Analysis/GaussianRationalFreeColumnVector.lean)
+has a unit at that column and satisfies the row equations given the
+individual reduced pivot profiles. The pivot-column invariant and final
+assembly into a null vector for the original matrix remain to be derived.
 
 ## Logical strength and program boundaries
 
