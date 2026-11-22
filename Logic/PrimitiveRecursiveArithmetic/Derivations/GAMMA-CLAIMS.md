@@ -47,6 +47,15 @@ actual factor at the same rational argument. The cleared scale is
 The returned PR5 data retain both original positive denominators and the
 certificate proves the positivity of this scale under `R<N`.
 
+[GammaLocalFactorName](Lean/IPRADerivations/Analysis/GammaLocalFactorName.lean)
+constructs the actual local-factor name on `N≥1`, `|z|≤R` and `2R≤N`.
+It gives a PR4 signed dyadic observation at scale `2^(p+4)`, proves
+regularity at independent precisions, and gives the disk bound
+`R²/N² + 2/2^(p+4)`. The sharp finite C3 bound also compares an original
+fixed cutoff with a cofinal name observation, with explicit rounding
+slack. Identifying the name with the analytic expression in C4 remains
+separate.
+
 The reusable [ReciprocalSquareTail](Lean/IPRADerivations/Analysis/ReciprocalSquareTail.lean)
 provides the underlying uniform rational inverse-square comparison.
 The [complex logarithm modules](Lean/IPRADerivations/Analysis/ComplexLogarithmName.lean)
