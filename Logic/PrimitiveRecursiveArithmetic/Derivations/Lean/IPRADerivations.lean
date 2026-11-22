@@ -289,6 +289,9 @@ import IPRADerivations.AnalyticNumberTheory.RobinLipArg
 import IPRADerivations.AnalyticNumberTheory.RobinLipLog
 import IPRADerivations.AnalyticNumberTheory.RobinLipSum
 import IPRADerivations.AnalyticNumberTheory.RobinLipBound
+import IPRADerivations.AnalyticNumberTheory.RobinLipWidth
+import IPRADerivations.AnalyticNumberTheory.LcmBridgeDPsi
+import IPRADerivations.AnalyticNumberTheory.LcmBridgeDLoss
 import IPRADerivations.AnalyticNumberTheory.CubeScan
 import IPRADerivations.AnalyticNumberTheory.SymmetricPrefix
 import IPRADerivations.AnalyticNumberTheory.SymmetricMoment
