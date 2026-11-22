@@ -10159,6 +10159,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.prodL_perm
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.pochL_perm
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.pfq_ratio
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricThreshold.pair_le
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricThreshold.one_le_shift
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricThreshold.shift_le
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricThreshold.cancel_alg
+#print axioms LeanProofs.IPRA.Analysis.HypergeometricThreshold.half_ratio
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.gauss_symm
 #print axioms LeanProofs.IPRA.Analysis.HypergeometricRatio.gauss_norm
 #print axioms LeanProofs.IPRA.Analysis.TerminatingSeries.ff_vanish

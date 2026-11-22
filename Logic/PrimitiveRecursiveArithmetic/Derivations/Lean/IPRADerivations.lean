@@ -47,6 +47,7 @@ import IPRADerivations.Analysis.Chebyshev
 import IPRADerivations.Analysis.Products
 import IPRADerivations.Analysis.Pochhammer
 import IPRADerivations.Analysis.HypergeometricRatio
+import IPRADerivations.Analysis.HypergeometricThreshold
 import IPRADerivations.Analysis.TerminatingSeries
 import IPRADerivations.Analysis.ChuVandermonde
 import IPRADerivations.Analysis.ContiguousRelations
