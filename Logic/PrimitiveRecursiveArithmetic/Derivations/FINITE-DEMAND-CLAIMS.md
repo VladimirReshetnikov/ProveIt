@@ -545,7 +545,19 @@ sup-coordinate modulus evaluator satisfies the exact aggregate map
 contract. [GaussianRootSynchronizedHit](Lean/IPRADerivations/Analysis/GaussianRootSynchronizedHit.lean)
 proves that every original represented root has an actual finite hit at
 the same root stage, with the exact dyadic radius needed for support.
-Transporting the root list and deriving its aggregate maximum still remain.
+[GaussianAggregateCoverTransport](Lean/IPRADerivations/Analysis/GaussianAggregateCoverTransport.lean)
+preserves stored root indices and passes the original two-sided covers to
+the coordinate metric. [GaussianCharacteristicAggregate](Lean/IPRADerivations/Analysis/GaussianCharacteristicAggregate.lean)
+proves that these actual stages form a shaped, nonempty regular aggregate.
+Every represented characteristic root has zero distance to it.
+[GaussianSpectralRadius](Lean/IPRADerivations/Analysis/GaussianSpectralRadius.lean)
+then proves the spectral-radius construction of
+[§3](../docs/proofs/foundations/ipra_finite_demand/sections/03_aggregates.tex).
+Its PR3 sample is literally the maximum modulus sample of a stored root
+at stage `k+2`. The derived dyadic bounds give regularity, arbitrarily
+accurate aggregate witnesses, and a named upper bound on every
+represented root. The same upper bound holds for actual characteristic
+polynomial-name zeros under the original adequacy disk hypotheses.
 
 [RationalGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalGaussianEmbedding.lean)
 preserves field equality, zero, one, addition, multiplication and negation
@@ -562,8 +574,20 @@ by taking real parts.
 [RationalScalarDeterminantGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalScalarDeterminantGaussianEmbedding.lean)
 identifies the literal original rational scalar determinant with the
 actual Gaussian determinant of the embedded matrix and reflects zero.
-The rational norm specialization still needs polynomial-valued matrix
-and determinant transport that identify its norm polynomial.
+[RationalPolynomialBuffersGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialBuffersGaussianEmbedding.lean)
+and [RationalPolynomialProductGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalPolynomialProductGaussianEmbedding.lean)
+compute the original rational zero, padding, addition, scaling, and
+convolution buffers. They prove the actual coefficient conjugacy and
+corresponding canonical rational evaluation laws. The rational norm
+specialization still needs polynomial-valued matrix and determinant
+transport that identify its norm polynomial.
+
+[GaussianRationalVariableHornerBudget](Lean/IPRADerivations/Analysis/GaussianRationalVariableHornerBudget.lean)
+computes a coefficient-dependent variation bound by following actual
+Horner evaluations over the original cleared coefficients. Its guarded
+size and variation invariants give a sharper bound directly from the
+coefficient list. The exact weighted-sum identity and the grid scan at
+the source's ceiling mesh remain open.
 
 ## Logical strength and program boundaries
 
