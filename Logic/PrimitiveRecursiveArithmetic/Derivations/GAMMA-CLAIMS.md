@@ -164,14 +164,27 @@ same zeta name at independent observation precisions.
 [GaussianGammaFiniteDegreeRearrangement](Lean/IPRADerivations/Analysis/GaussianGammaFiniteDegreeRearrangement.lean)
 proves the finite C16 degree rearrangement for the actual normalized tail.
 Its returned PR program computes both equal rectangle values, and the
-original `R²/N` bound applies to the value. The infinite rearrangement
-and the C18 degree error require further derivations.
+original `R²/N` bound applies to the value.
+[GaussianGammaReciprocalDegreeCells](Lean/IPRADerivations/Analysis/GaussianGammaReciprocalDegreeCells.lean)
+separates each literal degree column into its signed monomial and the
+actual rational reciprocal-power partial sum.
+[GaussianGammaDegreeTail](Lean/IPRADerivations/Analysis/GaussianGammaDegreeTail.lean)
+proves the exact C18 error `R²/(N·2^(L+1))` between finite rectangles
+of degrees `L+2` and `L+J+2`, including the original `N=2R` choice.
+[GaussianGammaFixedDegreeHorizon](Lean/IPRADerivations/Analysis/GaussianGammaFixedDegreeHorizon.lean)
+proves the exact change with factor horizon at a fixed degree and
+constructs its regular cofinal name with the original factor clock.
+The comparison to the original tail at independent precisions and
+identification of the cofinal degree coefficients with zeta tails remain.
 [GaussianRobinOddLogarithm](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithm.lean)
 and [GaussianRobinLogarithmParity](Lean/IPRADerivations/Analysis/GaussianRobinLogarithmParity.lean)
 identify the original finite Robin artanh component with the difference of
 the two original local logarithm polynomials evaluated at opposite rational
-inputs. The corresponding identity at name level and the exponential
-inverse for the entire mesh logarithm remain C20 dependencies.
+inputs. [GaussianRobinOddLogarithmName](Lean/IPRADerivations/Analysis/GaussianRobinOddLogarithmName.lean)
+constructs a regular sampler from the stored odd series and proves
+its equivalence with the actual difference of the two regular local
+logarithm names. Exponential inversion for the entire mesh logarithm
+remains a C20 dependency.
 [GaussianRationalConjugation](Lean/IPRADerivations/Analysis/GaussianRationalConjugation.lean)
 proves exact conjugation for rational code, metric and scalar Taylor sums.
 [GaussianGammaFiniteConjugation](Lean/IPRADerivations/Analysis/GaussianGammaFiniteConjugation.lean)
