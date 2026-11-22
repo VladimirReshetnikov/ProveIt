@@ -1564,3 +1564,6 @@ import IPRADerivations.Analysis.GaussianSuperellipticMatrixCoefficients
 import IPRADerivations.Foundations.RuntimePermutationSums
 
 import IPRADerivations.Analysis.GaussianPolynomialDeterminantLeadingSelection
+
+import IPRADerivations.Analysis.GaussianRationalPowerProduct
+import IPRADerivations.Analysis.GaussianSuperellipticMatrixLeading
