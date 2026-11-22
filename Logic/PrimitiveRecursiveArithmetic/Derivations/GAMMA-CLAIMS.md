@@ -102,6 +102,9 @@ preserves the exact base rate across replacements by equivalent names.
 [GaussianGammaEulerInverseConvergence](Lean/IPRADerivations/Analysis/GaussianGammaEulerInverseConvergence.lean)
 instantiates the C15 rate `3M_R(R²+R)/(λ²N)` for the actual Euler
 reciprocal and Gamma with independent observation errors.
+[GaussianGammaEulerInverseApproximationName](Lean/IPRADerivations/Analysis/GaussianGammaEulerInverseApproximationName.lean)
+constructs an actual cofinal sampler from this exact fractional
+coefficient and proves that it gives the same regular name as Gamma.
 [GaussianGammaCanonicalExponent](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalExponent.lean)
 constructs the actual regular C7 exponent from the Euler constant mesh
 name, the exact harmonic value and the original canonical tail at `2R`.
@@ -122,6 +125,14 @@ then factors the original `Q_N` and gives its exact bounded representative.
 [GaussianGammaEulerReciprocalInverse](Lean/IPRADerivations/Analysis/GaussianGammaEulerReciprocalInverse.lean)
 constructs its actual reciprocal on the pole-free disk using the same
 C13 constant `λ`. The exact representative has bound `1/λ`.
+[GaussianRationalLowerPerturbation](Lean/IPRADerivations/Analysis/GaussianRationalLowerPerturbation.lean)
+proves the exact Gaussian lower bound near one and the fractional lower
+bound for one factor of a product.
+[GaussianGammaObservationLower](Lean/IPRADerivations/Analysis/GaussianGammaObservationLower.lean)
+uses them to bound the actual `P` and `Q_N` observations below by
+`λ max(0,1−K/2^p)` and the Gamma observations below by
+`(1/M_R) max(0,1−K/2^p)`. Each `K` is given by the corresponding
+original multiplication clock.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.
@@ -147,8 +158,13 @@ normalizes the actual factor fold and compares it to the negative
 harmonic exponential.
 [GaussianGammaWeierstrassApproximant](Lean/IPRADerivations/Analysis/GaussianGammaWeierstrassApproximant.lean)
 attaches the original Euler-constant exponential and identifies the
-literal factor-by-factor name with the original folded `P_N`. The
-cofinal comparison of these finite products with C7 remains.
+literal factor-by-factor name with the original folded `P_N`.
+[GaussianGammaWeierstrassConvergence](Lean/IPRADerivations/Analysis/GaussianGammaWeierstrassConvergence.lean)
+proves that the folded name approaches C7 at rate `3M_R R²/N`.
+[GaussianGammaWeierstrassLimit](Lean/IPRADerivations/Analysis/GaussianGammaWeierstrassLimit.lean)
+transfers the exact rate to the literal factor program and evaluates
+it at a computed cofinal cutoff. The resulting actual regular sampler
+agrees with the original C7 reciprocal at independent precisions.
 [GaussianGammaLogHarmonicName](Lean/IPRADerivations/Analysis/GaussianGammaLogHarmonicName.lean)
 proves that the actual sum of the fixed-index Euler and harmonic-mesh
 logarithm names agrees with the exact harmonic constant at independent
@@ -382,7 +398,7 @@ composition. These are object-theory derivations of the local C4 identity.
 | Ledger IDs | Complete source deliverables still required |
 | --- | --- |
 | 1 | Actual harmonic/logarithm Euler-constant evaluator, C1–C2 inequalities, a regular name, and its bounds. |
-| 2–3 | The actual folded Euler reciprocals satisfy the independent-precision C15 estimate on pole-separated disks. The literal finite Weierstrass approximants agree with `P_N`. The explicit cofinal comparison of these products with C7, and the corresponding Gamma presentation on overlap and agreement with the right half-plane integral construction, remain. |
+| 2–3 | Actual cofinal samplers establish C11 for the literal Weierstrass product and C15 for the Euler reciprocals. The corresponding Gamma presentation on disk overlaps and its agreement with the right half-plane integral construction remain. |
 | 4–10 | Coefficient majorants on a larger disk, entire reciprocal analyticity, exact zeros and their simplicity, nonvanishing of Gamma, simple poles/residues, functional equation/normalization, factorial values, conjugation and real-domain values. Finite product identities are dependencies rather than replacements for the named-function endpoints. |
 | 11–17 | Actual quadrature and both endpoint tails, Euler-integral identification, quantitative positive lower/upper bounds, vertical absolute-value comparison, fixed-order derivative integrals, substitution/scaling formulas, and incomplete-Gamma sum/recurrence/integer formulas. |
 | 18–24 | Reflection with an explicit sine margin, multiplication at arbitrary internal positive integer multiplier, duplication/triplication, beta–Gamma relation, beta symmetry/recurrence and all stated integral forms with their positive half-plane margins. |
