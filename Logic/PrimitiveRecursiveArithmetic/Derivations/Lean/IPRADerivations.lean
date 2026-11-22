@@ -779,6 +779,8 @@ import IPRADerivations.Analysis.FeedbackInexact
 import IPRADerivations.Analysis.PolynomialCertificates
 import IPRADerivations.Analysis.OdeGrowth
 import IPRADerivations.Analysis.ClusterObservations
+import IPRADerivations.Analysis.ClusterMatching
+import IPRADerivations.Analysis.EulerResidual
 import IPRADerivations.Topology.FiniteSeparation
 import IPRADerivations.Topology.FiniteRecovery
 import IPRADerivations.Topology.FiniteNormalityConverse
@@ -799,6 +801,10 @@ import IPRADerivations.Topology.MetricNeighborhoods
 import IPRADerivations.Topology.LimitCertificates
 import IPRADerivations.Topology.SphereEstimates
 import IPRADerivations.Topology.FiniteSheafTheory
+import IPRADerivations.Topology.CarrierHomotopy
+import IPRADerivations.Topology.PrismIdentity
+import IPRADerivations.Topology.RationalHomology
+import IPRADerivations.Topology.GraphBetti
 import IPRADerivations.Topology.OpenCubeHomeo
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
