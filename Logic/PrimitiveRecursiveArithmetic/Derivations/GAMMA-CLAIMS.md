@@ -88,6 +88,16 @@ multiplies the head to one and satisfies the corresponding upper bound.
 [GaussianBoundedInverseApartness](Lean/IPRADerivations/Analysis/GaussianBoundedInverseApartness.lean)
 computes a finite anchor for the original reciprocal-name program from
 a bounded regular inverse and proves agreement with that inverse.
+[GaussianGammaReciprocalInverse](Lean/IPRADerivations/Analysis/GaussianGammaReciprocalInverse.lean)
+constructs the original reciprocal of C7 under the supplied pole guard.
+It proves the C13 constant is positive and gives a regular multiplicative
+inverse bounded by exactly `1/λ`. The actual Gamma observations obey
+`1/λ+2/2^p`.
+[GaussianApproximateInverseDistance](Lean/IPRADerivations/Analysis/GaussianApproximateInverseDistance.lean)
+and [GaussianNamedInverseRate](Lean/IPRADerivations/Analysis/GaussianNamedInverseRate.lean)
+transfer a direct comparison with base rate `D/N` to the exact inverse
+rate `A²D/(B²N)` when both inverses have bounds `A/B`. The C15
+application still needs the bounded inverse for the original `Q_N`.
 [GaussianGammaCanonicalExponent](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalExponent.lean)
 constructs the actual regular C7 exponent from the Euler constant mesh
 name, the exact harmonic value and the original canonical tail at `2R`.
@@ -98,6 +108,9 @@ for the original harmonic programs.
 [GaussianGammaCanonicalExponentBound](Lean/IPRADerivations/Analysis/GaussianGammaCanonicalExponentBound.lean)
 proves that every original C7 exponent observation lies in the numerical
 disk of radius `2R²+2R`, using the original tail with its rounding error.
+[GaussianGammaFixedEulerExponent](Lean/IPRADerivations/Analysis/GaussianGammaFixedEulerExponent.lean)
+constructs an exact representative in the same disk for the exponent
+built from the fixed Euler observation and both finite-tail summands.
 [GaussianGammaC7Name](Lean/IPRADerivations/Analysis/GaussianGammaC7Name.lean)
 multiplies it by the original polynomial head and gives a regular name
 for the displayed C7 expression on each fixed input disk.
