@@ -785,6 +785,14 @@ proves the original pointwise estimate at those transformed times.
 [GaussianEulerLowerTailLocalComparison](Lean/IPRADerivations/Analysis/GaussianEulerLowerTailLocalComparison.lean)
 applies the actual sampled modulus to each row of the exact lower
 partition and its right endpoint.
+[GaussianEulerCompactLowerTail](Lean/IPRADerivations/Analysis/GaussianEulerCompactLowerTail.lean)
+sums the weighted panel bounds through the exact original grouping.
+[GaussianEulerLowerTailFiniteBudget](Lean/IPRADerivations/Analysis/GaussianEulerLowerTailFiniteBudget.lean)
+and [GaussianEulerLowerCofinalQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerLowerCofinalQuadrature.lean)
+give the cofinal norm bound and approximation to the actual lower name.
+[GaussianEulerVaryingCutoffName](Lean/IPRADerivations/Analysis/GaussianEulerVaryingCutoffName.lean)
+checks the actual varying-cutoff sampler and its regularity with the
+lower-tail norm bound as the remaining input.
 
 ## Every ledger family remains in scope
 
