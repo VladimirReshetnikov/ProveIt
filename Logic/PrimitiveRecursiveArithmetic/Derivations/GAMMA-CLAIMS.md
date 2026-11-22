@@ -129,6 +129,9 @@ derives the exponent-weighted product rule on those same low coefficients.
 stores the actual exponent-weighted coefficients, implements the product rule
 with the actual output buffers, and derives the alternating unit Euler
 coefficients of the original logarithm.
+[GaussianRationalPolynomialPowerEuler](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialPowerEuler.lean)
+derives the exact Euler rule for the low coefficients of the original stored
+powers, including the source logarithm.
 
 ## Every ledger family remains in scope
 
