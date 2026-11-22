@@ -13585,6 +13585,26 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCofinalCoefficientName.actual_cofinal_Gamma_polynomial_observation_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCofinalCoefficientName.actual_Gamma_polynomial_cutoffs_cofinal_closed
 
+/-! ### GaussianGammaOriginalC19Prefix -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.stage
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.buffer
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.totalDegree
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.prefixValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.halfQuery
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.subst_prefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.larger_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.degree_dominates
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.half_query_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.query_recovery
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.prefix_query_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.finite_prefix_tail
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.original_to_polynomial
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.original_C19_observation_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.prefixF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.prefix_program
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalC19Prefix.original_C7_computed_coefficient_prefix_C19_closed
+
 /-! ### GaussianPolynomialFirstCoefficients -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialFirstCoefficients.prefix_one
 #print axioms LeanProofs.IPRA.Analysis.GaussianPolynomialFirstCoefficients.prefix_two
@@ -15081,6 +15101,42 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRationalExponentialDecay.doubled_monomial
 #print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRationalExponentialDecay.original_half_exponential_monomial_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRationalExponentialDecay.original_half_exponential_tail_bound_closed
+
+/-! ### GaussianNaturalExponentialDyadicBound -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound.binomialPrefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound.prefixLower
+#print axioms LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound.subst_binomialPrefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound.subst_prefixLower
+#print axioms LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound.prefix_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound.prefix_succ
+#print axioms LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound.cleared_term
+#print axioms LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound.original_prefix_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound.natural_scalar_partial_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound.original_natural_scalar_dyadic_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound.original_finite_natural_exponential_dyadic_lower_closed
+
+/-! ### GaussianEulerDecayFactorBounds -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.fraction_is_radius_point
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.negative_constant_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.negative_constant_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.original_decay_matches_reciprocal
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.natural_inverse_sample_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.original_integer_decay_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.original_half_decay_factor_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.original_Euler_decay_integer_dyadic_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayFactorBounds.original_Euler_decay_half_argument_monomial_closed
+
+/-! ### GaussianGammaIntegralTailBudget -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget.lowerRoot
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget.lowerValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget.observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget.upperValue
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget.endpointValues
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget.actual_left_root
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget.actual_left_majorant
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget.endpoint_observation_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget.original_Euler_left_endpoint_dyadic_root_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaIntegralTailBudget.original_Euler_observed_endpoint_majorants_closed
 
 /-! ### GaussianRobinOddLogarithm -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianRobinOddLogarithm.fraction
