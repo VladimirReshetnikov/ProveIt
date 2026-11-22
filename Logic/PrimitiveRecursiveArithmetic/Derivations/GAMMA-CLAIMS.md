@@ -113,6 +113,13 @@ and the analytic C4 tail remain open.
 [GaussianRationalLowCoefficientConvolution](Lean/IPRADerivations/Analysis/GaussianRationalLowCoefficientConvolution.lean)
 identifies low coefficients of the actual stored polynomial product with
 their finite ascending Cauchy sums.
+[GaussianRationalPolynomialPowerSupport](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialPowerSupport.lean)
+uses that identity to derive the zero coefficients below the original
+power exponent.
+[GaussianRationalPolynomialExponentialStability](Lean/IPRADerivations/Analysis/GaussianRationalPolynomialExponentialStability.lean)
+proves that the actual low coefficient of the original composition is
+already attained at the stage indexed by that coefficient. The remaining
+coefficient comparison is with the Bell recurrence.
 
 ## Every ledger family remains in scope
 
