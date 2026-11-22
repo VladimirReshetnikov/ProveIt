@@ -214,9 +214,9 @@ identify WM with the actual WP*M finite sums. Original norm and field-point
 predicates produce the same ordinate list and selected x, derive 1<=t<=m,
 and prove the returned first-t polynomial rows vanish at that x. The lower
 standard rows use coordinate r, and the actual PR8 payload keeps the exact
-original partition sum. No desired row-zero law is a premise. A full right
-inverse, numerical Vandermonde determinant, actual determinant multiplication,
-row-factor extraction and accumulated sharp norm multiplicity remain open.
+original partition sum. The right inverse and nonzero completed determinant
+are derived below. The explicit Vandermonde determinant product, row-factor
+extraction and accumulated sharp norm multiplicity remain open.
 
 [GaussianRationalLagrangeCardinals](Lean/IPRADerivations/Analysis/GaussianRationalLagrangeCardinals.lean)
 now constructs actual numerical skip/deletion lists with proved full coverage.
@@ -241,10 +241,13 @@ Original curveZeros and pointDistinct yield the actual field distinction and
 t<=m for the original generated ordinate list. PR2/PR4 output identities keep
 N/C/W/Z/WZ/R/t/m, the original selected x and exact cardinal partition.
 Empty and full fibers, zero dimensions, singleton and raw ordinate codes have
-explicit guarded endpoints. This is an entrywise whole-matrix right inverse;
-determinant multiplicativity, det(I)=1, bounded-entry determinant congruence,
-nonzero det(W), the literal Vandermonde determinant product, and the sharp
-norm factor/multiplicity arguments remain separate required proofs.
+explicit guarded endpoints.
+[GaussianFiberDeterminantNonzero](Lean/IPRADerivations/Analysis/GaussianFiberDeterminantNonzero.lean)
+uses the actual right inverse and the scalar determinant laws to derive
+`det W · det Z = 1`. It identifies the sole coefficient of the constant
+polynomial lift with the same nonzero determinant and retains the original
+fiber data. The literal Vandermonde product and sharp norm multiplicity
+remain separate obligations.
 
 [GaussianPolynomialColumnAlternation](Lean/IPRADerivations/Analysis/GaussianPolynomialColumnAlternation.lean)
 now constructs the actual adjacent-column table with inactive raw-row fallback.
@@ -275,9 +278,27 @@ fixed selector agrees with summing the indices in the actual retained list.
 [RuntimeWordSorting](Lean/IPRADerivations/Foundations/RuntimeWordSorting.lean)
 derives a computed sort using `m²+1` steps of the adjacent swap. It preserves
 the checker and produces either the identity word or a repeated adjacent
-digit. The corresponding determinant law for selecting columns by those
-words remains open, along with row alternation, determinant multiplication
-and norm nonvanishing and multiplicity.
+digit. [GaussianScalarColumnSelection](Lean/IPRADerivations/Analysis/GaussianScalarColumnSelection.lean)
+uses that trace to prove the signed permutation law and zero for repeated
+columns. [GaussianScalarDeterminant](Lean/IPRADerivations/Analysis/GaussianScalarDeterminant.lean)
+derives the scalar Leibniz formula and bounded cell congruence, and
+[GaussianScalarIdentityDeterminant](Lean/IPRADerivations/Analysis/GaussianScalarIdentityDeterminant.lean)
+proves that the actual identity table has determinant one.
+[GaussianScalarDeterminantMultiplication](Lean/IPRADerivations/Analysis/GaussianScalarDeterminantMultiplication.lean)
+expands the true product of dot sums and uses this selection law and the
+original retained-word scan to prove scalar multiplicativity.
+
+[GaussianPolynomialScalarLeftDeterminant](Lean/IPRADerivations/Analysis/GaussianPolynomialScalarLeftDeterminant.lean)
+applies the result to evaluation of the actual scalar-left polynomial product.
+The [grid comparison](Lean/IPRADerivations/Analysis/GaussianRationalGridCoefficientEquality.lean)
+then gives equality of its determinant coefficients with the independently
+scaled determinant coefficients, including for the original fiber product.
+[GaussianScalarDiagonalDeterminant](Lean/IPRADerivations/Analysis/GaussianScalarDiagonalDeterminant.lean)
+proves the diagonal determinant and actual row action. The constructed row
+quotients and repeated-root factor are checked separately in
+[GaussianPolynomialRowQuotient](Lean/IPRADerivations/Analysis/GaussianPolynomialRowQuotient.lean).
+The general row-factor determinant law, the original norm's weighted
+nonvanishing, and accumulation of multiplicities remain open.
 
 ## Logical strength and program boundaries
 
