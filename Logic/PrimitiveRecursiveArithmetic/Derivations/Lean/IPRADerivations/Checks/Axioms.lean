@@ -702,6 +702,14 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Probability.DyadicTheorem.lw_pt
 #print axioms LeanProofs.IPRA.Probability.DyadicTheorem.cover_wt
 #print axioms LeanProofs.IPRA.Probability.DyadicTheorem.dyadic_slln
+#print axioms LeanProofs.IPRA.Probability.FiniteHolder.lin_base
+#print axioms LeanProofs.IPRA.Probability.FiniteHolder.lin_step
+#print axioms LeanProofs.IPRA.Probability.FiniteHolder.lin3_le
+#print axioms LeanProofs.IPRA.Probability.FiniteHolder.pw_comm_exp
+#print axioms LeanProofs.IPRA.Probability.FiniteHolder.young
+#print axioms LeanProofs.IPRA.Probability.FiniteHolder.young_pt
+#print axioms LeanProofs.IPRA.Probability.FiniteHolder.holder
+#print axioms LeanProofs.IPRA.Probability.FiniteHolder.lyapunov
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.trunc_pt
 #print axioms LeanProofs.IPRA.Probability.TruncationEstimate.truncation
 #print axioms LeanProofs.IPRA.Probability.MomentDeterminacy.back_unique

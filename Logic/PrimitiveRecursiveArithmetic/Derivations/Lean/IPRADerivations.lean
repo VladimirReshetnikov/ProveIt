@@ -916,6 +916,7 @@ import IPRADerivations.Probability.DyadicSLLN
 import IPRADerivations.Probability.DyadicAssembly
 import IPRADerivations.Probability.DyadicCover
 import IPRADerivations.Probability.DyadicTheorem
+import IPRADerivations.Probability.FiniteHolder
 import IPRADerivations.Probability.TruncationEstimate
 import IPRADerivations.Probability.MomentDeterminacy
 import IPRADerivations.Probability.Variance
