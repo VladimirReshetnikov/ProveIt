@@ -17265,6 +17265,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicFrozenRate.frozen_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicFrozenRate.actual_original_logarithmic_frozen_rate_closed
 
+/-! ### GaussianNamedEulerLogarithmicParameterRate -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate.inputRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate.freezeClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate.subst_inputRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate.native_comparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate.original_parameter_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicParameterRate.actual_original_logarithmic_two_named_parameter_rate_closed
+
 /-! ### GaussianNamedEulerLogarithmicIncrementBinding -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicIncrementBinding.lateClock
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicIncrementBinding.shiftDemand
@@ -17297,6 +17308,27 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicDerivative.original_observations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicDerivative.original_derivative_rate
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicDerivative.actual_original_improper_logarithmic_derivative_at_fixed_name_closed
+
+/-! ### GaussianNamedEulerLogarithmicNamedDerivative -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.incrementModulus
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.quotientF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.quotientData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.differenceBound
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.variationPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.variationDemand
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.freezeDelay
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.freezeIndex
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.subst_incrementModulus
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.subst_quotientData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.shifted_name_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.native_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.quotient_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.quotient_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.quotient_comparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.original_derivative_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicNamedDerivative.actual_original_logarithmic_derivative_along_a_named_increment_closed
 
 /-! ### GaussianNamedGammaLateInput -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaLateInput.encodedData
@@ -18939,6 +18971,23 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingIntegrand.original_pullback_observations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingIntegrand.actual_original_positive_rational_integrand_scaling_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingIntegrand.actual_original_positive_rational_integrand_pullback_closed
+
+/-! ### GaussianEulerPositiveScalingQuadrature -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.evaluatorTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.evaluatorF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.subst_evaluatorTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.subst_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.evaluator_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.sample_readback
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.grid_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.row_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.original_quadrature_scaling
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.original_compact_grid_scaling
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature.actual_original_positive_rational_finite_quadrature_scaling_closed
 
 /-! ### GaussianPositiveRadiusFiniteSum -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRadiusFiniteSum.boundBy
@@ -24277,6 +24326,41 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementInput.actual_named_complex_increment_half_plane_source_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementInput.actual_named_complex_increment_decoded_fraction_closed
 
+/-! ### GaussianNamedGammaSmallIncrementInput -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.sumF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.sumData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.observationNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.observationDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.subst_sumData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.sum_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.sum_fraction
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.sample_fraction
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.decoded_sum
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.native_source_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.native_sample_alignment
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.certificate_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.original_certificate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.original_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.independent_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.frozen_disk
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.actual_named_small_increment_half_plane_source_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput.actual_named_sum_independent_observations_closed
+
+/-! ### GaussianNamedGammaIncrementApproximation -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementApproximation.frozenData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementApproximation.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementApproximation.subst_frozenData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementApproximation.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementApproximation.frozen_sample_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementApproximation.frozen_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementApproximation.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementApproximation.original_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementApproximation.actual_original_named_increment_frozen_rate_closed
+
 /-! ### GaussianNamedHalfPlaneCorrection -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedHalfPlaneCorrection.weight
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedHalfPlaneCorrection.correctedNumerator
@@ -28174,6 +28258,30 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedRateComposition.actual_independent_rate_composition_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedRateComposition.actual_same_denominator_rate_composition_closed
 
+/-! ### GaussianNamedRateRadius -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedRateRadius.observation_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedRateRadius.weaken
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedRateRadius.original_independent_rate_radius_weakening_closed
+
+/-! ### GaussianNamedMultiplyRate -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.sampleBound
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.leadingNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.leadingDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.observationCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.subst_sampleBound
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.subst_leadingNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.subst_leadingDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.subst_observationCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.subst_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.sample_bound_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.original_diagonal
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.original_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.rate_of_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.independent_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.independent_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate.actual_normalized_product_independent_rate_closed
+
 /-! ### GaussianNamedLipschitzRate -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedLipschitzRate.diagonalNumerator
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedLipschitzRate.diagonalDenominator
@@ -28248,6 +28356,53 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotientProperness.proper
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotientProperness.actual_original_divided_difference_endpoint_replacement_closed
 
+/-! ### GaussianNamedIncrementDifferenceQuotient -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.leftData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.rightData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.nativeNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.nativeDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.subst_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.subst_leftData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.subst_rightData
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.subst_nativeNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.subst_nativeDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.left_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.right_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.inverse_sample_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.late_native_separated
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.late_native_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.actual_named_increment_divided_difference_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotient.actual_named_increment_late_native_separation_closed
+
+/-! ### GaussianNamedReciprocalFrozenRate -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.rawFrozen
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.frozen
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.subst_rawFrozen
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.subst_frozen
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.late_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.lower_recode
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.reciprocal_recode_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.reciprocal_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.raw_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.raw_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.frozen_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.frozen_inverse_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.frozen_rate_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.frozen_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.actual_named_reciprocal_late_decoded_rate_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedReciprocalFrozenRate.actual_named_reciprocal_frozen_constant_rate_closed
+
 /-! ### GaussianNamedDifferenceQuotientApproximation -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotientApproximation.numerator
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotientApproximation.denominator
@@ -28261,6 +28416,22 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotientApproximation.gapQuery
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotientApproximation.independent_at
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotientApproximation.actual_original_quotient_endpoint_rate_transport_closed
+
+/-! ### GaussianNamedDifferenceRate -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.leadingNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.leadingDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.subst_leadingNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.subst_leadingDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.original_diagonal
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.original_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.self_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.rate_parameters_congr
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.same_right_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianNamedDifferenceRate.actual_original_named_difference_rate_closed
 
 /-! ### GaussianNamedAffineRemainderRate -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianNamedAffineRemainderRate.affine
