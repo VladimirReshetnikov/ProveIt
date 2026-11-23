@@ -8560,6 +8560,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ThreeSquaresPowers.r3_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ThreeSquaresPowers.obstruction_open
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ThreeSquaresPowers.three_square_obstruction_powers
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellApprox.Q_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellApprox.one_pos
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellApprox.sq_lower
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellApprox.sq_upper
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellApprox.norm_upper
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellApprox.norm_lower
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellApprox.absurd_alg
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellApprox.q_large
+#print axioms LeanProofs.IPRA.DiophantineNumberTheory.PellApprox.pell_approx
 #print axioms LeanProofs.IPRA.Foundations.CrtLcm.mul_one_r
 #print axioms LeanProofs.IPRA.Foundations.CrtLcm.lcm_crt
 #print axioms LeanProofs.IPRA.Foundations.CrtLcm.lcm_cong
