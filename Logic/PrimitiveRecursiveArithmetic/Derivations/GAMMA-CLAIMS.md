@@ -847,11 +847,25 @@ successive primitive samples to the actual weighted beta row.
 [GaussianBetaPrimitiveGridTelescope](Lean/IPRADerivations/Analysis/GaussianBetaPrimitiveGridTelescope.lean)
 checks the exact finite telescoping and sums that shape of cell error
 on the original affine mesh.
+[GaussianBetaPrimitiveCompactGridAccuracy](Lean/IPRADerivations/Analysis/GaussianBetaPrimitiveCompactGridAccuracy.lean)
+discharges the local conditions from the native compact interval bounds
+and computes the mesh and observation precision for any requested
+dyadic error.
+[GaussianBetaPrimitiveLowerEndpointRefinement](Lean/IPRADerivations/Analysis/GaussianBetaPrimitiveLowerEndpointRefinement.lean)
+gives the vanishing degree-scaled lower endpoint at the actual grid
+clock. [GaussianBetaUpperEndpointInverse](Lean/IPRADerivations/Analysis/GaussianBetaUpperEndpointInverse.lean)
+identifies the literal degree-scaled upper endpoint name with the
+original finite Euler reciprocal.
+[GaussianBetaUpperGridEndpoint](Lean/IPRADerivations/Analysis/GaussianBetaUpperGridEndpoint.lean)
+makes this comparison for the raw upper grid observation at the
+original row clock, with two independent dyadic errors.
 [GaussianBetaKernelCompactUpperTail](Lean/IPRADerivations/Analysis/GaussianBetaKernelCompactUpperTail.lean)
 bounds the original upper beta quadrature through the support endpoint
-using the existing half-decay estimates. Matching the full finite
-quadratures and identifying the improper name with Gamma throughout
-the right half-plane remain.
+using the existing half-decay estimates.
+[GaussianBetaKernelLowerTransformedPower](Lean/IPRADerivations/Analysis/GaussianBetaKernelLowerTransformedPower.lean)
+bounds the original lower transformed rows uniformly in the finite
+degree. The lower-tail aggregation and the comparison identifying
+the improper name with Gamma throughout the right half-plane remain.
 
 ## Every ledger family remains in scope
 
