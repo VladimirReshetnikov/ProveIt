@@ -36,7 +36,8 @@ private structure ScalarStage (δ : ℝ) (n : ℕ) where
   good : Set (ℝ × ℝ)
   good_measurable : MeasurableSet good
   discarded_le : volume (sphereClosedBox \ good) ≤
-    ENNReal.ofReal (sphericalCoordinateArea / (2 : ℝ)^n)
+    ENNReal.ofReal (if n = 0 then sphericalCoordinateArea
+      else 7 * stageMargin n * sphericalCoordinateArea)
   lowerSlope : ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 ≤ q.1 →
     stageTarget δ n p.2 * (q.1 - p.1) ≤ approx q - approx p
   affine_near : ∀ p ∈ good, ∃ intercept slope : ℝ, ∀ q, dist q p ≤ radius →
@@ -74,7 +75,7 @@ private def zeroStage {δ : ℝ} (hδ : 0 < δ) : ScalarStage δ 0 where
   good := ∅
   good_measurable := MeasurableSet.empty
   discarded_le := by
-    rw [sdiff_empty, volume_sphereClosedBox, pow_zero, div_one]
+    rw [sdiff_empty, volume_sphereClosedBox, if_pos rfl]
     rfl
   lowerSlope := by
     intro p hp q hq hlat hlong
@@ -87,7 +88,6 @@ private def zeroStage {δ : ℝ} (hδ : 0 < δ) : ScalarStage δ 0 where
 private theorem exists_nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ}
     (before : ScalarStage δ n) :
     ∃ after : ScalarStage δ (n + 1), StageTransition before after := by
-  let gap := 3 * δ / (4 : ℝ) ^ (n + 1)
   obtain ⟨g, hgrect, hgmargin, hgratio, hg4, hgarea, hg_gap, hg_radius, hg_half, hgosc⟩ :=
     exists_scheduledSphereMesh before.continuousOn hδ before.radius_pos n
   have newSlopeGap := stageTarget_gap hg_gap
@@ -105,18 +105,8 @@ private theorem exists_nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ}
       good_measurable := g.isClosed_trimmedTiles.measurableSet
       discarded_le := by
         rw [← hgrect]
-        refine (g.volume_discarded hg4).trans (ENNReal.ofReal_le_ofReal ?_)
-        rw [hgarea, hgratio]
-        change 7 * stageMargin (n + 1) * sphericalCoordinateArea ≤ _
-        have hθbound : 7 * stageMargin (n + 1) ≤ 1 / (2 : ℝ)^(n + 1) := by
-          unfold stageMargin
-          rw [pow_add, show (2 : ℝ)^(3 : ℕ) = 8 by norm_num]
-          have hpow : 0 < (2 : ℝ) ^ (n + 1) := by positivity
-          field_simp; nlinarith
-        calc
-          _ ≤ (1 / (2 : ℝ)^(n + 1)) * sphericalCoordinateArea :=
-            mul_le_mul_of_nonneg_right hθbound (by unfold sphericalCoordinateArea; positivity)
-          _ = _ := by ring
+        simpa only [hgratio, hgarea, Nat.succ_ne_zero, if_false, sphericalCoordinateArea]
+          using g.volume_discarded hg4
       lowerSlope := by
         rw [← hgrect, ← g.hasLowerSlope_iff_same_latitude]
         exact g.refineStage_lowerSlope holdSlope newSlopeGap (stageTarget_variation δ (n + 1))
@@ -178,15 +168,14 @@ theorem exists_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
       ∀ p ∈ E, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p := by
   let s := scalarStages hδ
   have hbad : (∑' n, volume (sphereLongitudeDomain \ (s n).good)) ≠ ∞ := by
-    have hsum : Summable (fun n : ℕ => sphericalCoordinateArea / (2 : ℝ)^n) := by
-      simpa [div_eq_mul_inv, inv_pow] using
-        (summable_geometric_of_lt_one
-          (show (0 : ℝ) ≤ 2⁻¹ by norm_num) (show (2 : ℝ)⁻¹ < 1 by norm_num)).mul_left
-          sphericalCoordinateArea
-    apply ne_top_of_le_ne_top hsum.tsum_ofReal_ne_top (ENNReal.tsum_le_tsum ?_)
-    intro n
-    exact (measure_mono (sdiff_subset_sdiff_left sphereLongitudeDomain_subset_box)).trans
-      (s n).discarded_le
+    have hcompare (n : ℕ) :
+        volume (sphereLongitudeDomain \ (s n).good) ≤ volume (sphereClosedBox \ (s n).good) :=
+      measure_mono (sdiff_subset_sdiff_left sphereLongitudeDomain_subset_box)
+    apply sphereMesh_bad_area_summable
+    · exact ne_top_of_le_ne_top ENNReal.ofReal_ne_top ((hcompare 0).trans (s 0).discarded_le)
+    · intro n
+      simpa only [Nat.succ_ne_zero, if_false, sphericalCoordinateArea] using
+        (hcompare (n + 1)).trans (s (n + 1)).discarded_le
   refine exists_scalar_limit_of_refinement_stages isOpen_sphereLongitudeDomain
     sphereLongitudeDomain_subset_box
     (approx := fun n => (s n).approx) (good := fun n => (s n).good)
