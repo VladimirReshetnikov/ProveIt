@@ -30,8 +30,7 @@ theorem singular_stieltjes_sum (f : ℕ → StieltjesFunction ℝ) (F : Stieltje
     (hzero : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
     ∀ᵐ x, HasDerivAt F 0 x := by
   have hmeasure : F.measure = Measure.sum (fun n => (f n).measure) := by
-    apply Measure.ext_of_Ioc
-    intro a b hab
+    refine Measure.ext_of_Ioc _ _ fun a b hab => ?_
     simp only [StieltjesFunction.measure_Ioc, Measure.sum_apply _ measurableSet_Ioc]
     have hdiff := (hsum b).sub (hsum a)
     rw [← ENNReal.ofReal_tsum_of_nonneg (fun n => sub_nonneg.mpr ((f n).mono hab.le)) hdiff.summable,
@@ -56,7 +55,7 @@ theorem singular_bounded_weighted_tsum
     (hsing : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
     ∀ᵐ x, HasDerivAt (fun y => ∑' n, w n * f n y) 0 x := by
   let g (n : ℕ) : StieltjesFunction ℝ :=
-    ⟨fun x => w n * f n x, fun _ _ h => mul_le_mul_of_nonneg_left (hmono n h) (hw n),
+    ⟨fun x => w n * f n x, (hmono n).const_mul (hw n),
       fun _ => (continuous_const.mul (hcont n)).continuousWithinAt⟩
   have hnorm (n : ℕ) (x : ℝ) : ‖g n x‖ ≤ w n * C :=
     norm_mul_le_of_le (by simp [Real.norm_eq_abs, abs_of_nonneg (hw n)]) (hbound n x)
@@ -66,10 +65,8 @@ theorem singular_bounded_weighted_tsum
     ⟨fun x => ∑' n, g n x, fun x y h => (hs x).tsum_le_tsum (fun n => (g n).mono h) (hs y),
       fun _ => (continuous_tsum (fun n => continuous_const.mul (hcont n))
         (hwSum.mul_right C) hnorm).continuousWithinAt⟩
-  apply singular_stieltjes_sum g G (fun x => (hs x).hasSum)
-  intro n
-  filter_upwards [hsing n] with x hx
-  simpa using hx.const_mul (w n)
+  exact singular_stieltjes_sum g G (fun x => (hs x).hasSum) fun n =>
+    (hsing n).mono (fun x hx => by simpa using hx.const_mul (w n))
 
 /-- Pull a full-measure derivative event back to the two coordinates, allowing a nonzero rescaling. -/
 theorem exists_scaled_product_derivative_good
