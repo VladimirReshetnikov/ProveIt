@@ -1,5 +1,11 @@
 # Incoming reports
 
+The 23 November 2026 `globe_flattening_verification.zip` arrival
+(`e270ff954f`) was placed in the standalone
+[`Geometry/GlobeFlattening`](../../Geometry/GlobeFlattening/README.md) project
+and retired from this directory. Its mathematical claims have not been
+independently checked or formalized here.
+
 This directory is ProveIt's drop zone for new external research reports,
 delivered as `.zip` archives. Each archive is one manuscript package. It holds
 a LaTeX article, and usually its PDF, a delivery README, verification code,
