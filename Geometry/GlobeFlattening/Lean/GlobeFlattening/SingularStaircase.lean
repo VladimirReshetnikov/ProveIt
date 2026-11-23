@@ -146,26 +146,25 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
   · unfold g A H
     fun_prop
   · intro x
-    have hmul : A x * w = x - a := div_mul_cancel₀ (x - a) hw.ne'
-    have hAx : a + w * A x = x := by linarith only [hmul]
+    have hAx : a + w * A x = x := by rw [mul_comm]; simp [A, hw.ne']
     have hx : max a (min b x) = a + w * max 0 (min (n : ℝ) (A x)) := by
       rw [mul_max_of_nonneg _ _ hw.le, mul_min_of_nonneg _ _ hw.le, mul_zero,
         ← max_add_add_left, ← min_add_add_left, add_zero, hwidth, hAx]
     rw [hx, show g x = a + w * H n (A x) from rfl, add_sub_add_left_eq_sub, ← mul_sub, abs_mul,
       abs_of_pos hw]
     exact (mul_le_of_le_one_right hw.le (hclamp n (A x))).trans hwε
-  · have hshift (j : ℕ) : ∀ᵐ y ∂volume, HasDerivAt f 0 (y - j) :=
-      (measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd
-    have hscale := Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) (inv_ne_zero hw.ne')
+  · have hH : ∀ᵐ y ∂volume, HasDerivAt (H n) 0 y := by
+      filter_upwards [ae_all_iff.2 fun j : ℕ =>
+        (measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd] with y hy
+      simpa [H, Function.comp_def] using HasDerivAt.fun_sum (u := Finset.range n)
+        (fun j _ => (hy j).comp y ((hasDerivAt_id y).sub_const (j : ℝ)))
     have hA : Measure.QuasiMeasurePreserving A volume volume := by
       simpa [A, Function.comp_def, smul_eq_mul, div_eq_inv_mul] using
-        hscale.comp (measurePreserving_sub_right volume a).quasiMeasurePreserving
-    filter_upwards [hA.ae (ae_all_iff.2 hshift)] with x hx
-    have hs : HasDerivAt (fun y => H n (A y)) 0 x := by
-      have hAx := ((hasDerivAt_id x).sub_const a).div_const w
-      simpa [H, Function.comp_def] using HasDerivAt.fun_sum (u := Finset.range n)
-        (fun j _ => (hx j).comp x (hAx.sub_const (j : ℝ)))
-    simpa [g] using (hs.const_mul w).const_add a
+        (Measure.quasiMeasurePreserving_smul volume (inv_ne_zero hw.ne')).comp
+          (measurePreserving_sub_right volume a).quasiMeasurePreserving
+    filter_upwards [hA.ae hH] with x hx
+    have hs := hx.comp x (((hasDerivAt_id x).sub_const a).div_const w)
+    simpa [g, Function.comp_def] using (hs.const_mul w).const_add a
 
 end
 
