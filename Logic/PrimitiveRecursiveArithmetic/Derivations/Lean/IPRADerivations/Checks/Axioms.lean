@@ -20214,6 +20214,17 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIntervalName.rescaled_source
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIntervalName.actual_logarithmic_separate_geometry_client_name_regular_closed
 
+/-! ### GaussianEulerLogarithmicClientIndependence -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIndependence.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIndependence.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIndependence.agreement_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIndependence.local_agreement
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIndependence.comparison_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIndependence.original_independence
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIndependence.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIndependence.original_rescaled_client
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIndependence.actual_logarithmic_original_client_name_independence_closed
+
 /-! ### GaussianPositiveExponentialPowerTerm -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianPositiveExponentialPowerTerm.factorial_power_order
 #print axioms LeanProofs.IPRA.Analysis.GaussianPositiveExponentialPowerTerm.finite_power_bound
@@ -20363,6 +20374,33 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerCutoffBudget.original_cutoff_tail_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerCutoffBudget.original_scheduled_tail_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerCutoffBudget.original_logarithmic_lower_tail_cutoff_closed
+
+/-! ### GaussianEulerLogarithmicLowerGuardBound -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerGuardBound.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerGuardBound.point
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerGuardBound.interval_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerGuardBound.original_client_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerGuardBound.original_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerGuardBound.original_named_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerGuardBound.original_cutoff_tail_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerGuardBound.actual_logarithmic_lower_tail_at_larger_top_guard_closed
+
+/-! ### GaussianEulerLogarithmicCommonCutoff -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.indexOffset
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.lowerIndex
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.cutoff
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.subst_indexOffset
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.subst_lowerIndex
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.subst_cutoff
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.coefficient_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.height_shift
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.eta_shift
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.top_shift
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.lower_width_shift
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.later_lower_index
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.cutoff_later
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.cutoff_pays_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff.actual_original_logarithmic_common_cutoff_alignment_closed
 
 /-! ### GaussianUpperTimeLogarithmBound -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianUpperTimeLogarithmBound.finite_interval_bound

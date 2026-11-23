@@ -1133,6 +1133,13 @@ for any requested tail tolerance.
 checks finite additivity at fixed evaluator guards.
 [GaussianEulerLogarithmicClientRate](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicClientRate.lean)
 proves the original logarithmic rows agree when the evaluator guards change.
+[GaussianEulerLogarithmicClientIndependence](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicClientIndependence.lean)
+lifts that agreement to the actual compact names.
+[GaussianEulerLogarithmicLowerGuardBound](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicLowerGuardBound.lean)
+preserves the exact lower coefficient under a larger valid upper-time guard.
+[GaussianEulerLogarithmicCommonCutoff](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCommonCutoff.lean)
+identifies the physical cutoff intervals using a computed lower index offset,
+with the original integrand radius retained.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
