@@ -25,11 +25,8 @@ theorem measurableSet_spherePoint_image {s : Set (ℝ × ℝ)} (hs : MeasurableS
   hs.image_of_continuousOn_injOn continuous_spherePoint.continuousOn
     (spherePoint_bijOn.injOn.mono hsub)
 
-theorem spherePoint_image_domain : spherePoint '' sphereLongitudeDomain = cutSphere :=
-  spherePoint_bijOn.image_eq
-
 theorem measurableSet_cutSphere : MeasurableSet cutSphere :=
-  spherePoint_image_domain ▸
+  spherePoint_bijOn.image_eq ▸
     measurableSet_spherePoint_image isOpen_sphereLongitudeDomain.measurableSet Subset.rfl
 
 /-- Spherical area of subsets of the cut unit sphere, using its longitude chart. -/
@@ -51,19 +48,18 @@ good set in the rectangle. -/
 def sphereExceptional (good : Set (ℝ × ℝ)) : Set (EuclideanSpace ℝ (Fin 3)) :=
   cutSphere \ (spherePoint '' good)
 
-theorem measurableSet_sphereExceptional {good : Set (ℝ × ℝ)} (hgood : MeasurableSet good)
-    (hsub : good ⊆ sphereLongitudeDomain) : MeasurableSet (sphereExceptional good) :=
-  measurableSet_cutSphere.diff (measurableSet_spherePoint_image hgood hsub)
-
 theorem sphereExceptional_eq_image {good : Set (ℝ × ℝ)} (hsub : good ⊆ sphereLongitudeDomain) :
     sphereExceptional good = spherePoint '' (sphereLongitudeDomain \ good) := by
-  rw [sphereExceptional, ← spherePoint_image_domain, spherePoint_bijOn.injOn.image_sdiff_subset hsub]
+  rw [sphereExceptional, ← spherePoint_bijOn.image_eq, spherePoint_bijOn.injOn.image_sdiff_subset hsub]
 
-theorem measure_sphereExceptional_eq_zero {good : Set (ℝ × ℝ)} (hgood : MeasurableSet good)
+/-- The exceptional set is Borel and has spherical area zero. -/
+theorem sphereExceptional_measurable_null {good : Set (ℝ × ℝ)} (hgood : MeasurableSet good)
     (hsub : good ⊆ sphereLongitudeDomain) (hnull : volume (sphereLongitudeDomain \ good) = 0) :
-    sphericalArea (sphereExceptional good) = 0 := by
-  rw [sphereExceptional_eq_image hsub, sphericalArea_spherePoint_image
-    (isOpen_sphereLongitudeDomain.measurableSet.diff hgood) sdiff_subset,
+    MeasurableSet (sphereExceptional good) ∧ sphericalArea (sphereExceptional good) = 0 := by
+  rw [sphereExceptional_eq_image hsub]
+  have hdiff := isOpen_sphereLongitudeDomain.measurableSet.diff hgood
+  refine ⟨measurableSet_spherePoint_image hdiff sdiff_subset, ?_⟩
+  rw [sphericalArea_spherePoint_image hdiff sdiff_subset,
     Measure.restrict_eq_zero.mpr hnull, lintegral_zero_measure]
 
 end

@@ -95,7 +95,7 @@ def globeFlattening_from_scalar
   have hvol : volume T = volume g.target := volume_planarEuclideanEquiv_image _
   have hgoodSource : cutSphere \ Z = spherePoint '' good :=
     sdiff_sdiff_cancel_left (spherePoint_mapsTo.mono_left hsub).image_subset
-  have hZmeas : MeasurableSet Z := measurableSet_sphereExceptional hgood hsub
+  obtain ⟨hZmeas, hZnull⟩ := sphereExceptional_measurable_null hgood hsub hnull
   have hBorelImage {s : Set (EuclideanSpace ℝ (Fin 3))} (hs : MeasurableSet s) (hss : s ⊆ cutSphere) :
       MeasurableSet (f '' s) :=
     hs.image_of_continuousOn_injOn (hfcont.mono hss) (hfleft.injOn.mono hss)
@@ -125,7 +125,7 @@ def globeFlattening_from_scalar
             (image_mono sphereLongitudeDomain_subset_box))
       exceptional_subset := sdiff_subset
       exceptional_measurable := hZmeas
-      exceptional_null := measure_sphereExceptional_eq_zero hgood hsub hnull
+      exceptional_null := hZnull
       target_area_lower := by
         rw [hvol, ← lintegral_cos_chartRectangle]
         exact lintegral_cos_lt_volume_chartImage hab (neg_lt_self (half_pos Real.pi_pos)) hcu
@@ -162,7 +162,7 @@ def globeFlattening_from_scalar
 
 /-- The cut sphere has the usual total area of the unit sphere. -/
 theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * Real.pi) := by
-  rw [← spherePoint_image_domain, sphericalArea_spherePoint_image
+  rw [← spherePoint_bijOn.image_eq, sphericalArea_spherePoint_image
     isOpen_sphereLongitudeDomain.measurableSet Subset.rfl, lintegral_cos_chartRectangle]
 
 /-- For every positive tolerance a cut unit sphere has a flattening with the
