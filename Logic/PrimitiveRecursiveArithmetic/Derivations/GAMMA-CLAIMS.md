@@ -880,6 +880,15 @@ weighted half-decay quadrature.
 [GaussianBetaZeroExtension](Lean/IPRADerivations/Analysis/GaussianBetaZeroExtension.lean)
 keeps the literal beta evaluator on the support and returns the
 canonical zero at the degree and beyond.
+[GaussianBetaZeroExtendedGrid](Lean/IPRADerivations/Analysis/GaussianBetaZeroExtendedGrid.lean)
+checks the finite support and exterior grid identities.
+[GaussianCompactAlignedSplit](Lean/IPRADerivations/Analysis/GaussianCompactAlignedSplit.lean)
+splits a shared mesh using actual equal-time observations, including
+zero-width panels.
+[GaussianBetaContiguousUpperTail](Lean/IPRADerivations/Analysis/GaussianBetaContiguousUpperTail.lean)
+uses one factorially weighted original decay observation at a quarter
+of the degree for the contiguous upper grid, with explicit sampling
+and mesh allowances. The degree may be any fixed natural at least two.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
