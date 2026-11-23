@@ -4,6 +4,7 @@ import GlobeFlattening.GoodSet
 import GlobeFlattening.InverseDerivative
 import GlobeFlattening.LatitudeProfile
 import GlobeFlattening.LimitDifferentiability
+import GlobeFlattening.LocalExcess
 import GlobeFlattening.LongitudeProfile
 import GlobeFlattening.RectangularMesh
 import GlobeFlattening.RectangularRefinement
@@ -11,7 +12,11 @@ import GlobeFlattening.RefinementLimit
 import GlobeFlattening.RestrictedArea
 import GlobeFlattening.ScalarConstruction
 import GlobeFlattening.SphereChart
+import GlobeFlattening.SphereDifferential
 import GlobeFlattening.SphereFrame
+import GlobeFlattening.SphereLocalExcess
+import GlobeFlattening.SphereMeasure
 import GlobeFlattening.SphereMesh
+import GlobeFlattening.SphereMetric
 import GlobeFlattening.TriangularChart
 import GlobeFlattening.TrimmedTiles
