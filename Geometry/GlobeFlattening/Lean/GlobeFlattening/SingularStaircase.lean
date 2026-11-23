@@ -83,7 +83,7 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
   let w := (b - a) / (n : ℝ)
   have hw : 0 < w := div_pos (sub_pos.mpr hab) hn₀
   have hwε : w ≤ ε := (div_le_comm₀ hn₀ hε).2 hn.le
-  have hwidth : a + w * n = b := by simp [w, hn₀.ne']
+  have hwidth : w * n + a = b := by simp [w, hn₀.ne']
   let H (m : ℕ) (y : ℝ) := ∑ j ∈ Finset.range m, f (y - j)
   have hHm (m : ℕ) : Monotone (H m) :=
     fun _ _ hy => Finset.sum_le_sum fun _ _ => hfm (sub_le_sub_right hy _)
@@ -103,33 +103,28 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
       have h1 : (m : ℝ) + 1 ≤ y → f (y - m) = 1 := fun h => hf₁ _ (by linarith)
       have hr := hf (y - m)
       grind [abs_le]
-  let A (x : ℝ) := (x - a) / w
-  let g (x : ℝ) := a + w * H n (A x)
-  have hA : Monotone A := fun _ _ hx => div_le_div_of_nonneg_right (sub_le_sub_right hx _) hw.le
-  have hgm : Monotone g := (((hHm n).comp hA).const_mul hw.le).const_add a
-  have hgr (x : ℝ) : g x ∈ Icc a b := ⟨
-    le_add_of_nonneg_right (mul_nonneg hw.le (hH n _).1.1), hwidth ▸
-      add_le_add le_rfl (mul_le_mul_of_nonneg_left (hH n _).1.2 hw.le)⟩
-  refine ⟨g, ?_, hgm, hgr, ?_, ?_⟩
-  · unfold g A H
-    fun_prop
+  let B := (OrderIso.mulLeft₀ w hw).trans (OrderIso.addRight a)
+  have hB (x : ℝ) : B x = w * x + a := rfl
+  have hBinv (x : ℝ) : B.symm x = w⁻¹ * (x - a) := rfl
+  have hHc : Continuous (H n) := by unfold H; fun_prop
+  refine ⟨B ∘ H n ∘ B.symm, B.continuous.comp (hHc.comp B.symm.continuous),
+    B.monotone.comp ((hHm n).comp B.symm.monotone), ?_, ?_, ?_⟩
   · intro x
-    have hAx : a + w * A x = x := by rw [mul_comm]; simp [A, hw.ne']
-    have hx : max a (min b x) = a + w * max 0 (min (n : ℝ) (A x)) := by
-      rw [mul_max_of_nonneg _ _ hw.le, mul_min_of_nonneg _ _ hw.le, mul_zero,
-        ← max_add_add_left, ← min_add_add_left, add_zero, hwidth, hAx]
-    rw [hx, show g x = a + w * H n (A x) from rfl, add_sub_add_left_eq_sub, ← mul_sub, abs_mul,
-      abs_of_pos hw]
-    exact (mul_le_of_le_one_right hw.le (hH n (A x)).2.2).trans hwε
-  · have hA : Measure.QuasiMeasurePreserving A volume volume := by
-      simpa [A, Function.comp_def, smul_eq_mul, div_eq_inv_mul] using
-        (Measure.quasiMeasurePreserving_smul volume (inv_ne_zero hw.ne')).comp
-          (measurePreserving_sub_right volume a).quasiMeasurePreserving
+    simpa [hB, hwidth] using B.monotone.mapsTo_Icc (hH n (B.symm x)).1
+  · intro x
+    have hclip : B (max 0 (min (n : ℝ) (B.symm x))) = max a (min b x) := by
+      rw [B.monotone.map_max, B.monotone.map_min, B.apply_symm_apply]
+      simp [hB, hwidth]
+    simp only [Function.comp_apply, ← hclip, hB, add_sub_add_right_eq_sub, ← mul_sub, abs_mul, abs_of_pos hw]
+    exact (mul_le_of_le_one_right hw.le (hH n (B.symm x)).2.2).trans hwε
+  · have hqmp : Measure.QuasiMeasurePreserving B.symm volume volume :=
+      (Measure.quasiMeasurePreserving_smul volume (inv_ne_zero hw.ne')).comp
+        (measurePreserving_sub_right volume a).quasiMeasurePreserving
     filter_upwards [ae_all_iff.2 fun j : ℕ =>
-      hA.ae ((measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd)] with x hx
-    have hAx := ((hasDerivAt_id x).sub_const a).div_const w
+      hqmp.ae ((measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd)] with x hx
+    have hAx := ((hasDerivAt_id x).sub_const a).const_mul w⁻¹
     have hs := HasDerivAt.fun_sum (u := Finset.range n) fun j _ => (hx j).comp x (hAx.sub_const (j : ℝ))
-    simpa [g, H, A, Function.comp_def] using (hs.const_mul w).const_add a
+    simpa [H, Function.comp_def, hB, hBinv] using (hs.const_mul w).add_const a
 
 end
 
