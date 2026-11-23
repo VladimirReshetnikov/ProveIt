@@ -99,8 +99,7 @@ theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
 /-- Monotone singular approximants to the identity on a compact interval. -/
 theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
     ∃ g : ℝ → ℝ, Continuous g ∧ Monotone g ∧ (∀ x, g x ∈ Icc a b) ∧
-      g a = a ∧ g b = b ∧ (∀ x, |g x - max a (min b x)| ≤ ε) ∧
-      (∀ᵐ x ∂volume, HasDerivAt g 0 x) := by
+      (∀ x, |g x - max a (min b x)| ≤ ε) ∧ (∀ᵐ x ∂volume, HasDerivAt g 0 x) := by
   obtain ⟨f, hfc, hfm, hf₀, hf₁, hfd⟩ := exists_singular_staircase
   obtain ⟨n, hn⟩ := exists_nat_gt ((b - a) / ε)
   have hn₀ : (0 : ℝ) < n := (by positivity : 0 ≤ (b - a) / ε).trans_lt hn
@@ -108,59 +107,56 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
   have hw : 0 < w := div_pos (sub_pos.mpr hab) hn₀
   have hwε : w ≤ ε := (div_le_comm₀ hn₀ hε).2 hn.le
   have hwidth : a + w * n = b := by simp [w, hn₀.ne']
-  let H (y : ℝ) := ∑ j ∈ Finset.range n, f (y - j)
-  have hHm : Monotone H :=
+  let H (m : ℕ) (y : ℝ) := ∑ j ∈ Finset.range m, f (y - j)
+  have hHm (m : ℕ) : Monotone (H m) :=
     fun _ _ hy => Finset.sum_le_sum fun _ _ => hfm (sub_le_sub_right hy _)
-  have hfRange (x : ℝ) : f x ∈ Icc 0 1 := ⟨by
-    simpa only [hf₀ _ (min_le_left 0 x)] using hfm (min_le_right 0 x), by
-    simpa only [hf₁ _ (le_max_left 1 x)] using hfm (le_max_right 1 x)⟩
-  have hHr (y : ℝ) : H y ∈ Icc 0 (n : ℝ) := ⟨
-    Finset.sum_nonneg fun j _ => (hfRange (y - j)).1, by
-    simpa [H] using Finset.sum_le_card_nsmul (Finset.range n) (fun j => f (y - j)) 1
-      (fun j _ => (hfRange (y - j)).2)⟩
-  have hgrid (i : ℕ) (hi : i ≤ n) : H i = i := by
+  have hlow (m : ℕ) {y : ℝ} (hy : y ≤ 0) : H m y = 0 :=
+    Finset.sum_eq_zero fun j _ => hf₀ _ (sub_nonpos.mpr (hy.trans (Nat.cast_nonneg j)))
+  have hhigh (m : ℕ) {y : ℝ} (hy : (m : ℝ) ≤ y) : H m y = m := by
     unfold H
-    rw [← Finset.sum_range_add_sum_Ico _ hi,
-      Finset.sum_eq_card_nsmul (b := 1) (fun j hj => hf₁ _ (by
-        have hj' : (j : ℝ) + 1 ≤ i := by exact_mod_cast (Finset.mem_range.mp hj)
-        linarith)),
-      Finset.sum_eq_zero (fun j hj => hf₀ _ (sub_nonpos.mpr (by
-        exact_mod_cast (Finset.mem_Ico.mp hj).1)))]
+    rw [Finset.sum_eq_card_nsmul (b := 1) (fun j hj => hf₁ _ (by
+      have hj' : (j : ℝ) + 1 ≤ m := by exact_mod_cast Finset.mem_range.mp hj
+      linarith))]
     simp
-  have hunit (y : ℝ) (hy : y ∈ Icc 0 (n : ℝ)) : |H y - y| ≤ 1 := by
-    have hlo : (⌊y⌋₊ : ℝ) ≤ H y :=
-      (hgrid _ (Nat.floor_le_of_le hy.2)).ge.trans (hHm (Nat.floor_le hy.1))
-    have hhi : H y ≤ (⌈y⌉₊ : ℝ) :=
-      (hHm (Nat.le_ceil y)).trans_eq (hgrid _ (Nat.ceil_le.2 hy.2))
-    exact abs_le.2 ⟨by linarith [Nat.self_sub_floor_lt_one y],
-      by linarith [Nat.ceil_lt_add_one hy.1]⟩
+  -- the sum of `m` translates stays within one step of the clamp to `[0, m]`
+  have hclamp (m : ℕ) : ∀ y, |H m y - max 0 (min (m : ℝ) y)| ≤ 1 := by
+    induction m with
+    | zero => intro y; simp [H]
+    | succ m ih =>
+      intro y
+      have hs : H (m + 1) y = H m y + f (y - m) := Finset.sum_range_succ _ _
+      rw [Nat.cast_succ, hs]
+      rcases le_total y m with hy | hy
+      · rw [hf₀ _ (sub_nonpos.mpr hy), add_zero, min_eq_right (hy.trans (lt_add_one _).le)]
+        simpa only [min_eq_right hy] using ih y
+      · have hf0 : 0 ≤ f (y - m) := (hf₀ 0 le_rfl).ge.trans (hfm (sub_nonneg.mpr hy))
+        have hf1 : f (y - m) ≤ 1 := (hfm (le_max_left _ 1)).trans_eq (hf₁ _ (le_max_right _ _))
+        have hc0 : (m : ℝ) ≤ min ((m : ℝ) + 1) y := le_min (lt_add_one _).le hy
+        have hc1 := min_le_left ((m : ℝ) + 1) y
+        rw [hhigh m hy, max_eq_right ((Nat.cast_nonneg m).trans hc0)]
+        exact abs_le.mpr ⟨by linarith, by linarith⟩
+  have hHr (y : ℝ) : H n y ∈ Icc 0 (n : ℝ) :=
+    ⟨(hlow n (min_le_right y 0)).ge.trans (hHm n (min_le_left y 0)),
+      (hHm n (le_max_left y n)).trans_eq (hhigh n (le_max_right y n))⟩
   let A (x : ℝ) := (x - a) / w
-  let g (x : ℝ) := a + w * H (A x)
+  let g (x : ℝ) := a + w * H n (A x)
   have hA : Monotone A := fun _ _ hx => div_le_div_of_nonneg_right (sub_le_sub_right hx _) hw.le
-  have hgm : Monotone g := ((hHm.comp hA).const_mul hw.le).const_add a
+  have hgm : Monotone g := (((hHm n).comp hA).const_mul hw.le).const_add a
   have hgr (x : ℝ) : g x ∈ Icc a b := ⟨
     le_add_of_nonneg_right (mul_nonneg hw.le (hHr _).1), hwidth ▸
       add_le_add le_rfl (mul_le_mul_of_nonneg_left (hHr _).2 hw.le)⟩
-  have hga : g a = a := by
-    simpa [g, A] using congrArg (fun t : ℝ => a + w * t) (hgrid 0 (Nat.zero_le n))
-  have hAb : A b = n := (div_eq_iff hw.ne').2 (by linarith only [hwidth])
-  have hgb : g b = b := by rw [show g b = a + w * H (A b) from rfl, hAb, hgrid n le_rfl, hwidth]
-  refine ⟨g, ?_, hgm, hgr, hga, hgb, ?_, ?_⟩
+  refine ⟨g, ?_, hgm, hgr, ?_, ?_⟩
   · unfold g A H
     fun_prop
   · intro x
-    let y := projIcc a b hab.le x
-    have hgclip : g y = g x := by
-      change g (max a (min b x)) = g x
-      rw [hgm.map_max, hgm.map_min, hga, hgb, min_eq_right (hgr x).2, max_eq_right (hgr x).1]
-    have hy : A y ∈ Icc 0 (n : ℝ) := ⟨div_nonneg (sub_nonneg.mpr y.2.1) hw.le,
-      (div_le_iff₀ hw).2 (by linarith only [y.2.2, hwidth])⟩
-    change |g x - y| ≤ ε
-    have hmul : A y * w = (y : ℝ) - a := div_mul_cancel₀ _ hw.ne'
-    rw [← hgclip, show g y - y = w * (H (A y) - A y) by
-      unfold g
-      linarith only [hmul], abs_mul, abs_of_pos hw]
-    exact (mul_le_mul_of_nonneg_left (hunit _ hy) hw.le).trans (by simpa using hwε)
+    have hmul : A x * w = x - a := div_mul_cancel₀ (x - a) hw.ne'
+    have hAx : a + w * A x = x := by linarith only [hmul]
+    have hx : max a (min b x) = a + w * max 0 (min (n : ℝ) (A x)) := by
+      rw [mul_max_of_nonneg _ _ hw.le, mul_min_of_nonneg _ _ hw.le, mul_zero,
+        ← max_add_add_left, ← min_add_add_left, add_zero, hwidth, hAx]
+    rw [hx, show g x = a + w * H n (A x) from rfl, add_sub_add_left_eq_sub, ← mul_sub, abs_mul,
+      abs_of_pos hw]
+    exact (mul_le_of_le_one_right hw.le (hclamp n (A x))).trans hwε
   · have hshift (j : ℕ) : ∀ᵐ y ∂volume, HasDerivAt f 0 (y - j) :=
       (measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd
     have hscale := Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) (inv_ne_zero hw.ne')
@@ -168,7 +164,7 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
       simpa [A, Function.comp_def, smul_eq_mul, div_eq_inv_mul] using
         hscale.comp (measurePreserving_sub_right volume a).quasiMeasurePreserving
     filter_upwards [hA.ae (ae_all_iff.2 hshift)] with x hx
-    have hs : HasDerivAt (fun y => H (A y)) 0 x := by
+    have hs : HasDerivAt (fun y => H n (A y)) 0 x := by
       have hAx := ((hasDerivAt_id x).sub_const a).div_const w
       simpa [H, Function.comp_def] using HasDerivAt.fun_sum (u := Finset.range n)
         (fun j _ => (hx j).comp x (hAx.sub_const (j : ℝ)))

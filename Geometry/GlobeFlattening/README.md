@@ -20,6 +20,8 @@ is injective, so the distribution has no atoms and its distribution
 function is continuous. Support on the null Cantor set makes the
 distribution singular, so its distribution function has derivative zero
 almost everywhere.
+Induction on the number of translates bounds the staircase error by one
+grid step, and affine rescaling carries that estimate to the desired interval.
 The scalar coordinate is a uniformly converging series of longitude
 staircase increments weighted by shifted latitude cosines. On the chart,
 telescoping the product differences gives the sinusoidal coordinate plus
