@@ -132,36 +132,32 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
     simpa only [hf₁ _ (le_max_left 1 x)] using hfm (le_max_right 1 x)⟩
   have hHr (y : ℝ) : H y ∈ Icc 0 (n : ℝ) := ⟨
     Finset.sum_nonneg fun j _ => (hfRange (y - j)).1, by
-    simpa only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one] using
-      (Finset.sum_le_sum (s := Finset.range n) fun j _ => (hfRange (y - j)).2)⟩
+    simpa [H] using Finset.sum_le_card_nsmul (Finset.range n) (fun j => f (y - j)) 1
+      (fun j _ => (hfRange (y - j)).2)⟩
   have hgrid (i : ℕ) (hi : i ≤ n) : H i = i := by
-    have hplateau (j : ℕ) : f ((i : ℝ) - j) = if j < i then 1 else 0 := by
-      split_ifs with h
-      · have hj : ((j : ℝ) + 1) ≤ i := by exact_mod_cast h
-        exact hf₁ _ (by linarith)
-      · exact hf₀ _ (sub_nonpos.mpr (Nat.cast_le.mpr (le_of_not_gt h)))
-    have hcount : (Finset.range n).filter (· < i) = Finset.range i := by
-      ext j
-      simp only [Finset.mem_filter, Finset.mem_range]
-      omega
-    simp_rw [H, hplateau]
-    rw [Finset.sum_boole, hcount, Finset.card_range]
-  have hunit (y : ℝ) (hlo : 0 ≤ y) (hhi : y < n) : |H y - y| ≤ 1 := by
+    unfold H
+    rw [← Finset.sum_range_add_sum_Ico _ hi,
+      Finset.sum_eq_card_nsmul (b := 1) (fun j hj => hf₁ _ (by
+        have hj' : (j : ℝ) + 1 ≤ i := by exact_mod_cast (Finset.mem_range.mp hj)
+        linarith)),
+      Finset.sum_eq_zero (fun j hj => hf₀ _ (sub_nonpos.mpr (by
+        exact_mod_cast (Finset.mem_Ico.mp hj).1)))]
+    simp
+  have hunit (y : ℝ) (hy : y ∈ Icc 0 (n : ℝ)) : |H y - y| ≤ 1 := by
+    rcases hy.2.eq_or_lt with h | h
+    · simp [h, hgrid n le_rfl]
     let j := ⌊y⌋₊
-    have hj : j < n := (Nat.floor_lt hlo).2 hhi
-    have hl := Nat.floor_le hlo
-    have hr := (Nat.lt_floor_add_one y).le
-    have hH₀ : (j : ℝ) ≤ H y := (hgrid j hj.le).ge.trans (hHm hl)
-    have hH₁ : H y ≤ (j : ℝ) + 1 := by
-      calc
-        _ ≤ H (↑(j + 1) : ℝ) := hHm (by exact_mod_cast hr)
-        _ = _ := (hgrid (j + 1) hj).trans (Nat.cast_succ _)
+    have hj : j < n := (Nat.floor_lt hy.1).2 h
+    have hl := Nat.floor_le hy.1
+    have hr := Nat.lt_succ_floor y
+    have hH₀ := (hgrid j hj.le).ge.trans (hHm hl)
+    have hH₁ := (hHm hr.le).trans_eq (hgrid (j + 1) hj)
+    simp only [Nat.cast_succ] at hr hH₁
     exact abs_le.2 ⟨by linarith, by linarith⟩
   let A (x : ℝ) := (x - a) / w
   let g (x : ℝ) := a + w * H (A x)
-  have hgm : Monotone g := fun _ _ hx =>
-    add_le_add le_rfl (mul_le_mul_of_nonneg_left
-      (hHm (div_le_div_of_nonneg_right (sub_le_sub_right hx _) hw.le)) hw.le)
+  have hA : Monotone A := fun _ _ hx => div_le_div_of_nonneg_right (sub_le_sub_right hx _) hw.le
+  have hgm : Monotone g := ((hHm.comp hA).const_mul hw.le).const_add a
   have hgr (x : ℝ) : g x ∈ Icc a b := ⟨
     le_add_of_nonneg_right (mul_nonneg hw.le (hHr _).1), hwidth ▸
       add_le_add le_rfl (mul_le_mul_of_nonneg_left (hHr _).2 hw.le)⟩
@@ -173,23 +169,18 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
   · unfold g A H
     fun_prop
   · intro x
-    by_cases hxa : a ≤ x
-    · by_cases hxb : x < b
-      · rw [min_eq_right hxb.le, max_eq_right hxa]
-        have hAx : A x < n := (div_lt_iff₀ hw).2 (by linarith only [hxb, hwidth])
-        have hmul : A x * w = x - a := div_mul_cancel₀ (x - a) hw.ne'
-        have hd : g x - x = w * (H (A x) - A x) := by
-          dsimp only [g]
-          linarith only [hmul]
-        rw [hd, abs_mul, abs_of_pos hw]
-        have he := hunit (A x) (div_nonneg (sub_nonneg.mpr hxa) hw.le) hAx
-        exact (mul_le_mul_of_nonneg_left he hw.le).trans (by simpa only [mul_one] using hwε)
-      · have hx : b ≤ x := le_of_not_gt hxb
-        have he : g x = b := le_antisymm (hgr x).2 (hgb.ge.trans (hgm hx))
-        simpa [min_eq_left hx, max_eq_right hab.le, he] using hε.le
-    · have hx : x ≤ a := (lt_of_not_ge hxa).le
-      have he : g x = a := le_antisymm ((hgm hx).trans hga.le) (hgr x).1
-      simpa [min_eq_right (hx.trans hab.le), max_eq_left hx, he] using hε.le
+    let y := projIcc a b hab.le x
+    have hgclip : g y = g x := by
+      change g (max a (min b x)) = g x
+      rw [hgm.map_max, hgm.map_min, hga, hgb, min_eq_right (hgr x).2, max_eq_right (hgr x).1]
+    have hy : A y ∈ Icc 0 (n : ℝ) := ⟨div_nonneg (sub_nonneg.mpr y.2.1) hw.le,
+      (div_le_iff₀ hw).2 (by linarith only [y.2.2, hwidth])⟩
+    change |g x - y| ≤ ε
+    have hmul : A y * w = (y : ℝ) - a := div_mul_cancel₀ _ hw.ne'
+    rw [← hgclip, show g y - y = w * (H (A y) - A y) by
+      unfold g
+      linarith only [hmul], abs_mul, abs_of_pos hw]
+    exact (mul_le_mul_of_nonneg_left (hunit _ hy) hw.le).trans (by simpa using hwε)
   · have hae (j : ℕ) : ∀ᵐ x ∂volume, HasDerivAt (fun x => f (A x - j)) 0 x := by
       have hpres (t : ℝ) := (measurePreserving_sub_right volume t).quasiMeasurePreserving
       have hmul := Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) (inv_ne_zero hw.ne')
