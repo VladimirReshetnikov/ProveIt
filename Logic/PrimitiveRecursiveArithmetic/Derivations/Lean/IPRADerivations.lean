@@ -296,6 +296,7 @@ import IPRADerivations.DiophantineNumberTheory.ThreeSquares
 import IPRADerivations.DiophantineNumberTheory.ThreeSquaresPowers
 import IPRADerivations.DiophantineNumberTheory.ResidueCharacter
 import IPRADerivations.AnalyticNumberTheory.PrimesModFour
+import IPRADerivations.AnalyticNumberTheory.SigmaR
 import IPRADerivations.AnalyticNumberTheory.GcdLcm
 import IPRADerivations.AnalyticNumberTheory.OrderProduct
 import IPRADerivations.AnalyticNumberTheory.MobiusMult
