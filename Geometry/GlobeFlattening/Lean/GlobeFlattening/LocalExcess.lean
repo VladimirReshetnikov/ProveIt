@@ -39,22 +39,25 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
   have hRsub := chartRectangle_subset_closed.trans hbox
   have hRectNull : volume (R \ good) = 0 :=
     measure_mono_null (sdiff_subset_sdiff_left hRsub) hnull
-  have hcos : ∀ y ∈ Ioo c d, 0 ≤ Real.cos y := by
+  have hcos : ∀ y ∈ Icc c d, 0 ≤ Real.cos y := by
     intro y hy
     have hp : (a, y) ∈ chartClosedRectangle a b c d :=
-      ⟨⟨le_rfl, hab.le⟩, Ioo_subset_Icc_self hy⟩
+      ⟨⟨le_rfl, hab.le⟩, hy⟩
     exact (Real.cos_pos_of_mem_Ioo (hbox hp).2).le
   have hslope' (p) (hp) (q) (hq) := hslope p (hsub hp) q (hsub hq)
   have hmono := strictMonoOn_chartRows_of_lowerSlope hcos hslope'
-  have hinj : InjOn (flattenCoordinates u) R := (triangularChart hab.le (hu.mono hsub) hmono).injOn
+  have hinj : InjOn (flattenCoordinates u) R :=
+    (injOn_flattenCoordinates_closedRectangle hmono).mono chartRectangle_subset_closed
   have hAreaLt : volume (flattenCoordinates u '' (R ∩ good)) <
       volume (flattenCoordinates u '' R) := by
     rw [measure_flattened_good_image (hR.measurableSet.inter hgood) inter_subset_left
         (by rwa [sdiff_self_inter]) hinj
-        (fun p hp => (hderiv p hp.2).hasFDerivWithinAt) (fun p hp => hcos p.2 hp.1.2),
+        (fun p hp => (hderiv p hp.2).hasFDerivWithinAt) (fun p hp => hcos p.2 (Ioo_subset_Icc_self hp.1.2)),
       show R = chartRectangle a b c d from rfl,
-      image_flattenCoordinates_chartRectangle hab.le (hu.mono hsub) hmono]
-    exact lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsub) hcos hslope'
+      image_flattenCoordinates_chartRectangle hab.le (hu.mono hsub)
+        (fun y hy => hmono y (Ioo_subset_Icc_self hy))]
+    exact lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsub)
+      (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope'
   by_contra! hnpos
   have hazero : volume (flattenCoordinates u '' (R \ good)) = 0 := le_antisymm hnpos bot_le
   have hsplit := measure_union_le (μ := volume) (flattenCoordinates u '' (R ∩ good))

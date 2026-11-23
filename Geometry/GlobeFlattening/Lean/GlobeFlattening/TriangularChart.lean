@@ -83,13 +83,22 @@ theorem isOpen_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ 
 
 /-- A strict lower slope bound with a nonnegative slope gives increasing longitude rows. -/
 theorem strictMonoOn_chartRows_of_lowerSlope {u : ℝ × ℝ → ℝ} {slope : ℝ → ℝ} {a b c d : ℝ}
-    (hnonneg : ∀ y ∈ Ioo c d, 0 ≤ slope y)
+    (hnonneg : ∀ y ∈ Icc c d, 0 ≤ slope y)
     (hslope : ∀ p ∈ chartClosedRectangle a b c d, ∀ q ∈ chartClosedRectangle a b c d,
       p.2 = q.2 → p.1 < q.1 → slope p.2 * (q.1 - p.1) < u q - u p) :
-    ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b) := by
+    ∀ y ∈ Icc c d, StrictMonoOn (fun x => u (x, y)) (Icc a b) := by
   intro y hy x hx z hz hxz
   exact sub_pos.mp ((mul_nonneg (hnonneg y hy) (sub_nonneg.mpr hxz.le)).trans_lt
-    (hslope (x, y) ⟨hx, Ioo_subset_Icc_self hy⟩ (z, y) ⟨hz, Ioo_subset_Icc_self hy⟩ rfl hxz))
+    (hslope (x, y) ⟨hx, hy⟩ (z, y) ⟨hz, hy⟩ rfl hxz))
+
+theorem injOn_flattenCoordinates_closedRectangle {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
+    (hmono : ∀ y ∈ Icc c d, StrictMonoOn (fun x => u (x, y)) (Icc a b)) :
+    InjOn (flattenCoordinates u) (chartClosedRectangle a b c d) := by
+  apply injOn_flattenCoordinates
+  rintro ⟨x, y⟩ hp ⟨x', y'⟩ hq hlat hlt
+  change y = y' at hlat
+  subst y'
+  exact hmono y hp.2 hp.1 hq.1 hlt
 
 theorem image_flattenCoordinates_chartRectangle {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))
@@ -118,74 +127,44 @@ theorem isBounded_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hu.prodMk continuous_snd.continuousOn)).isBounded).subset
       (image_mono chartRectangle_subset_closed)
 
-private theorem isOpen_image_flattenCoordinates {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
-    (hu : ContinuousOn u (chartClosedRectangle a b c d))
-    (hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b))
-    {W : Set (ℝ × ℝ)} (hW : IsOpen W) (hsub : W ⊆ chartRectangle a b c d) :
-    IsOpen (flattenCoordinates u '' W) := by
-  refine isOpen_iff_mem_nhds.mpr ?_
-  rintro _ ⟨p, hp, rfl⟩
-  obtain ⟨a', b', c', d', hp', hbox⟩ :=
-    exists_chartClosedRectangle_subset_of_mem_nhds (hW.mem_nhds hp)
-  have hrect := hbox.trans hsub
-  have hab' : a' ≤ b' := (hp'.1.1.trans hp'.1.2).le
-  have hmono' : ∀ y ∈ Ioo c' d', StrictMonoOn (fun x => u (x, y)) (Icc a' b') := by
-    intro y hy x hx z hz hxz
-    have hx' : (x, y) ∈ chartRectangle a b c d := hrect ⟨hx, Ioo_subset_Icc_self hy⟩
-    have hz' : (z, y) ∈ chartRectangle a b c d := hrect ⟨hz, Ioo_subset_Icc_self hy⟩
-    exact hmono y hx'.2 (Ioo_subset_Icc_self hx'.1) (Ioo_subset_Icc_self hz'.1) hxz
-  have hopen : IsOpen (flattenCoordinates u '' chartRectangle a' b' c' d') := by
-    have hu' := hu.mono (hrect.trans chartRectangle_subset_closed)
-    rw [image_flattenCoordinates_chartRectangle hab' hu' hmono']
-    exact isOpen_chartImage hab' hu'
-  exact mem_of_superset (hopen.mem_nhds (mem_image_of_mem _ hp'))
-    (image_mono (chartRectangle_subset_closed.trans hbox))
-
-/-- The scalar flattening is a homeomorphism from the open rectangle to the
-open region between its endpoint profiles. It is open because each point
-of an open patch lies inside a smaller rectangle whose image is open. -/
+/-- The closed rectangle embeds by compactness. Its interior maps onto the
+open region between the endpoint profiles. -/
 noncomputable def triangularChart {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))
-    (hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b)) :
+    (hmono : ∀ y ∈ Icc c d, StrictMonoOn (fun x => u (x, y)) (Icc a b)) :
     OpenPartialHomeomorph (ℝ × ℝ) (ℝ × ℝ) := by
   let s := chartRectangle a b c d
   let t := chartImage u a b c d
-  have hcont : ContinuousOn (flattenCoordinates u) s :=
-    (hu.mono chartRectangle_subset_closed).prodMk continuous_snd.continuousOn
-  have hinj : InjOn (flattenCoordinates u) s := by
-    apply injOn_flattenCoordinates
-    intro p hp q hq hlat hlt
-    rcases p with ⟨x, y⟩
-    rcases q with ⟨x', y'⟩
-    change y = y' at hlat
-    subst y'
-    exact hmono y hp.2 (Ioo_subset_Icc_self hp.1) (Ioo_subset_Icc_self hq.1) hlt
-  have hbij : BijOn (flattenCoordinates u) s t := by
-    change BijOn (flattenCoordinates u) (chartRectangle a b c d) (chartImage u a b c d)
-    rw [← image_flattenCoordinates_chartRectangle hab hu hmono]
-    exact hinj.bijOn_image
-  let e := hbij.toPartialEquiv (flattenCoordinates u) s t
-  have hs : IsOpen s := isOpen_chartRectangle a b c d
-  refine OpenPartialHomeomorph.ofContinuousOpenRestrict e hcont ?_ hs
-  change IsOpenMap (fun p : s => flattenCoordinates u p)
-  intro V hV
-  have hsub : Subtype.val '' V ⊆ s := by rintro _ ⟨q, _, rfl⟩; exact q.2
-  simpa only [image_image] using
-    isOpen_image_flattenCoordinates hu hmono (hs.isOpenMap_subtype_val V hV) hsub
+  let box := chartClosedRectangle a b c d
+  have hcont : ContinuousOn (flattenCoordinates u) box := hu.prodMk continuous_snd.continuousOn
+  have hinj := injOn_flattenCoordinates_closedRectangle hmono
+  have himage : flattenCoordinates u '' s = t :=
+    image_flattenCoordinates_chartRectangle hab hu (fun y hy => hmono y (Ioo_subset_Icc_self hy))
+  have hbij : BijOn (flattenCoordinates u) s t :=
+    himage ▸ (hinj.mono chartRectangle_subset_closed).bijOn_image
+  letI : CompactSpace box := isCompact_iff_compactSpace.mp (isCompact_chartClosedRectangle a b c d)
+  have hclosed := (continuousOn_iff_continuous_restrict.mp hcont).isClosedEmbedding hinj.injective
+  have hopen : IsOpenEmbedding (s.restrict (flattenCoordinates u)) := by
+    refine ⟨hclosed.isEmbedding.comp (IsEmbedding.inclusion chartRectangle_subset_closed), ?_⟩
+    rw [range_restrict, himage]
+    exact isOpen_chartImage hab hu
+  exact OpenPartialHomeomorph.ofContinuousOpenRestrict
+    (hbij.toPartialEquiv (flattenCoordinates u) s t) (hcont.mono chartRectangle_subset_closed)
+    hopen.isOpenMap (isOpen_chartRectangle _ _ _ _)
 
 @[simp] theorem triangularChart_source {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))
-    (hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b)) :
+    (hmono : ∀ y ∈ Icc c d, StrictMonoOn (fun x => u (x, y)) (Icc a b)) :
     (triangularChart hab hu hmono).source = chartRectangle a b c d := rfl
 
 @[simp] theorem triangularChart_target {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))
-    (hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b)) :
+    (hmono : ∀ y ∈ Icc c d, StrictMonoOn (fun x => u (x, y)) (Icc a b)) :
     (triangularChart hab hu hmono).target = chartImage u a b c d := rfl
 
 @[simp] theorem triangularChart_apply {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))
-    (hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b))
+    (hmono : ∀ y ∈ Icc c d, StrictMonoOn (fun x => u (x, y)) (Icc a b))
     (p : ℝ × ℝ) : triangularChart hab hu hmono p = flattenCoordinates u p := rfl
 
 end GlobeFlattening

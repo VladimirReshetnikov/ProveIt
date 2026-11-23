@@ -78,8 +78,7 @@ def globeFlattening_from_scalar
     (hDeriv : ∀ p ∈ good, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
     GlobeFlatteningResult ε := by
   have hab : -Real.pi ≤ Real.pi := by linarith [Real.pi_pos]
-  have hmono := strictMonoOn_chartRows_of_lowerSlope
-    (fun _ hy => (Real.cos_pos_of_mem_Ioo hy).le) hSlope
+  have hmono := strictMonoOn_chartRows_of_lowerSlope (fun _ => Real.cos_nonneg_of_mem_Icc) hSlope
   let g := triangularChart hab hcu hmono
   let target := planarEuclideanEquiv '' g.target
   let Z := sphereExceptional good
@@ -123,7 +122,7 @@ def globeFlattening_from_scalar
       inverse_agrees := fun q => rfl
       target_open := hOpen
       target_bounded := planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image
-        (isBounded_chartImage hab hcu hmono)
+        (isBounded_chartImage hab hcu (fun y hy => hmono y (Ioo_subset_Icc_self hy)))
       exceptional_subset := sdiff_subset
       exceptional_measurable := measurableSet_sphereExceptional hgood hsub
       exceptional_null := measure_sphereExceptional_eq_zero hgood hsub hnull

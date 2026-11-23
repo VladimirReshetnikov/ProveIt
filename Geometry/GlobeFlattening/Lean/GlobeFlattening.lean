@@ -1,2 +1,1 @@
 import GlobeFlattening.FlatteningTheorem
-import GlobeFlattening.InverseDerivative
