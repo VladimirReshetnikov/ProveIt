@@ -1140,10 +1140,20 @@ preserves the exact lower coefficient under a larger valid upper-time guard.
 [GaussianEulerLogarithmicCommonCutoff](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCommonCutoff.lean)
 identifies the physical cutoff intervals using a computed lower index offset,
 with the original integrand radius retained.
+[GaussianEulerLogarithmicImproperName](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicImproperName.lean)
+constructs the actual regular varying-cutoff name at every numerical
+logarithmic order.
+[GaussianEulerLogarithmicFixedCutoff](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicFixedCutoff.lean)
+proves an independent observation rate to any sufficiently late fixed interval.
+[GaussianEulerLogarithmicZeroIdentification](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicZeroIdentification.lean)
+identifies the order-zero improper name with the original Gamma program.
 [GaussianEulerLogarithmicParameterTaylor](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicParameterTaylor.lean)
 checks the actual pointwise first-order remainder at every numerical
 order. It derives the shifted radius from the increment bound and
 leaves all three original observation queries independent.
+[GaussianEulerLogarithmicTaylorGrid](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicTaylorGrid.lean)
+integrates the actual quadratic bound on a shared finite grid with
+the exact interval-length factor.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
