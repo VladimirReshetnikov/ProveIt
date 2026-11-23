@@ -21,8 +21,9 @@ function is continuous. Scaling the Cantor set by three gives the union
 of two translates of the set, forcing its Lebesgue measure to be zero.
 The distribution function is locally constant off the Cantor set, so it
 has derivative zero almost everywhere.
-Induction on the number of translates bounds the staircase error by one
-grid step, and affine rescaling carries that estimate to the desired interval.
+One induction on the number of translates proves the range, upper plateau,
+and one-step error bound for the staircase approximants. Affine rescaling
+carries those estimates to the desired interval.
 The scalar coordinate is a uniformly converging series of longitude
 staircase increments weighted by shifted latitude cosines. On the chart,
 telescoping the product differences gives the sinusoidal coordinate plus

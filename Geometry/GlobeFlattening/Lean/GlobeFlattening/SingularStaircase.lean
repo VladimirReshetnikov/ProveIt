@@ -100,41 +100,29 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
   let H (m : ℕ) (y : ℝ) := ∑ j ∈ Finset.range m, f (y - j)
   have hHm (m : ℕ) : Monotone (H m) :=
     fun _ _ hy => Finset.sum_le_sum fun _ _ => hfm (sub_le_sub_right hy _)
-  have hlow (m : ℕ) {y : ℝ} (hy : y ≤ 0) : H m y = 0 :=
-    Finset.sum_eq_zero fun j _ => hf₀ _ (sub_nonpos.mpr (hy.trans (Nat.cast_nonneg j)))
-  have hhigh (m : ℕ) {y : ℝ} (hy : (m : ℝ) ≤ y) : H m y = m := by
-    unfold H
-    rw [Finset.sum_eq_card_nsmul (b := 1) (fun j hj => hf₁ _ (by
-      have hj' : (j : ℝ) + 1 ≤ m := by exact_mod_cast Finset.mem_range.mp hj
-      linarith))]
-    simp
-  -- the sum of `m` translates stays within one step of the clamp to `[0, m]`
-  have hclamp (m : ℕ) : ∀ y, |H m y - max 0 (min (m : ℝ) y)| ≤ 1 := by
+  have hf (y : ℝ) : 0 ≤ f y ∧ f y ≤ 1 :=
+    ⟨(hf₀ _ (min_le_right y 0)).ge.trans (hfm (min_le_left y 0)),
+      (hfm (le_max_left y 1)).trans_eq (hf₁ _ (le_max_right y 1))⟩
+  -- Only the translate containing `y` can differ from its linear ramp.
+  have hH (m : ℕ) (y : ℝ) :
+      H m y ∈ Icc 0 (m : ℝ) ∧ ((m : ℝ) ≤ y → H m y = m) ∧
+        |H m y - max 0 (min (m : ℝ) y)| ≤ 1 := by
     induction m with
-    | zero => intro y; simp [H]
+    | zero => simp [H]
     | succ m ih =>
-      intro y
-      have hs : H (m + 1) y = H m y + f (y - m) := Finset.sum_range_succ _ _
-      rw [Nat.cast_succ, hs]
-      rcases le_total y m with hy | hy
-      · rw [hf₀ _ (sub_nonpos.mpr hy), add_zero, min_eq_right (hy.trans (lt_add_one _).le)]
-        simpa only [min_eq_right hy] using ih y
-      · have hf0 : 0 ≤ f (y - m) := (hf₀ 0 le_rfl).ge.trans (hfm (sub_nonneg.mpr hy))
-        have hf1 : f (y - m) ≤ 1 := (hfm (le_max_left _ 1)).trans_eq (hf₁ _ (le_max_right _ _))
-        have hc0 : (m : ℝ) ≤ min ((m : ℝ) + 1) y := le_min (lt_add_one _).le hy
-        have hc1 := min_le_left ((m : ℝ) + 1) y
-        rw [hhigh m hy, max_eq_right ((Nat.cast_nonneg m).trans hc0)]
-        exact abs_le.mpr ⟨by linarith, by linarith⟩
-  have hHr (y : ℝ) : H n y ∈ Icc 0 (n : ℝ) :=
-    ⟨(hlow n (min_le_right y 0)).ge.trans (hHm n (min_le_left y 0)),
-      (hHm n (le_max_left y n)).trans_eq (hhigh n (le_max_right y n))⟩
+      rw [Nat.cast_succ, show H (m + 1) y = H m y + f (y - m) from Finset.sum_range_succ _ _]
+      have hm : (0 : ℝ) ≤ m := Nat.cast_nonneg m
+      have h0 : y ≤ m → f (y - m) = 0 := fun h => hf₀ _ (sub_nonpos.mpr h)
+      have h1 : (m : ℝ) + 1 ≤ y → f (y - m) = 1 := fun h => hf₁ _ (by linarith)
+      have hr := hf (y - m)
+      grind [abs_le]
   let A (x : ℝ) := (x - a) / w
   let g (x : ℝ) := a + w * H n (A x)
   have hA : Monotone A := fun _ _ hx => div_le_div_of_nonneg_right (sub_le_sub_right hx _) hw.le
   have hgm : Monotone g := (((hHm n).comp hA).const_mul hw.le).const_add a
   have hgr (x : ℝ) : g x ∈ Icc a b := ⟨
-    le_add_of_nonneg_right (mul_nonneg hw.le (hHr _).1), hwidth ▸
-      add_le_add le_rfl (mul_le_mul_of_nonneg_left (hHr _).2 hw.le)⟩
+    le_add_of_nonneg_right (mul_nonneg hw.le (hH n _).1.1), hwidth ▸
+      add_le_add le_rfl (mul_le_mul_of_nonneg_left (hH n _).1.2 hw.le)⟩
   refine ⟨g, ?_, hgm, hgr, ?_, ?_⟩
   · unfold g A H
     fun_prop
@@ -145,19 +133,16 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
         ← max_add_add_left, ← min_add_add_left, add_zero, hwidth, hAx]
     rw [hx, show g x = a + w * H n (A x) from rfl, add_sub_add_left_eq_sub, ← mul_sub, abs_mul,
       abs_of_pos hw]
-    exact (mul_le_of_le_one_right hw.le (hclamp n (A x))).trans hwε
-  · have hH : ∀ᵐ y ∂volume, HasDerivAt (H n) 0 y := by
-      filter_upwards [ae_all_iff.2 fun j : ℕ =>
-        (measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd] with y hy
-      simpa [H, Function.comp_def] using HasDerivAt.fun_sum (u := Finset.range n)
-        (fun j _ => (hy j).comp y ((hasDerivAt_id y).sub_const (j : ℝ)))
-    have hA : Measure.QuasiMeasurePreserving A volume volume := by
+    exact (mul_le_of_le_one_right hw.le (hH n (A x)).2.2).trans hwε
+  · have hA : Measure.QuasiMeasurePreserving A volume volume := by
       simpa [A, Function.comp_def, smul_eq_mul, div_eq_inv_mul] using
         (Measure.quasiMeasurePreserving_smul volume (inv_ne_zero hw.ne')).comp
           (measurePreserving_sub_right volume a).quasiMeasurePreserving
-    filter_upwards [hA.ae hH] with x hx
-    have hs := hx.comp x (((hasDerivAt_id x).sub_const a).div_const w)
-    simpa [g, Function.comp_def] using (hs.const_mul w).const_add a
+    filter_upwards [ae_all_iff.2 fun j : ℕ =>
+      hA.ae ((measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd)] with x hx
+    have hAx := ((hasDerivAt_id x).sub_const a).div_const w
+    have hs := HasDerivAt.fun_sum (u := Finset.range n) fun j _ => (hx j).comp x (hAx.sub_const (j : ℝ))
+    simpa [g, H, A, Function.comp_def] using (hs.const_mul w).const_add a
 
 end
 
