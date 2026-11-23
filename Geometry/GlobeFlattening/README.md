@@ -17,8 +17,17 @@ use the same sum of clipped ramps. At each point in a retained affine tile,
 the local error bound controls the difference quotient for all sufficiently
 small increments. [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) · [Ramp profiles](Lean/GlobeFlattening/RampProfile.lean)
 
+The triangular chart is open because it maps open rectangles to regions
+between continuous longitude endpoint curves.
+[Chart homeomorphism](Lean/GlobeFlattening/TriangularChart.lean)
+
 Spherical area is defined in the longitude–latitude chart with density
-`cos(latitude)`, as in the report. [Spherical area](Lean/GlobeFlattening/SphereMeasure.lean)
+`cos(latitude)`, as in the report. The exceptional set also has zero
+two-dimensional Hausdorff measure by Lipschitz continuity of the sphere
+parametrization. A local Lipschitz bound would therefore give zero planar
+area for its image on an open target patch, contradicting the local area
+result. [Spherical area](Lean/GlobeFlattening/SphereMeasure.lean) ·
+[Local distortion](Lean/GlobeFlattening/SphereLocalExcess.lean)
 
 Build from the repository root with `lake build GlobeFlattening`.
 

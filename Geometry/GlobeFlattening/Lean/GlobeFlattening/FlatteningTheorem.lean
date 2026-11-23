@@ -122,6 +122,12 @@ def globeFlattening_from_scalar
     planarEuclideanEquiv.toHomeomorph.measurableEmbedding.measurableSet_image.mpr
       (hs.image_of_continuousOn_injOn (g.continuousOn.mono hss) (g.injOn.mono hss))
   have hclose' := flattenCoordinates_close_to_sinusoidal hε hclose
+  have hOpen : IsOpen target := planarEuclideanEquiv.toHomeomorph.isOpenMap _ g.open_target
+  have hexcess (V : Set (EuclideanSpace ℝ (Fin 2))) (hV : IsOpen V) (hne : V.Nonempty)
+      (hVsub : V ⊆ target) : 0 < volume (V ∩ f '' Z) := by
+    change V ⊆ planarEuclideanEquiv '' g.target at hVsub
+    rw [← g.image_source_eq_target] at hVsub
+    exact volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne hVsub
   refine
     { target := target
       exceptional := Z
@@ -130,7 +136,7 @@ def globeFlattening_from_scalar
       inverse := fInv
       forward_agrees := fun p => rfl
       inverse_agrees := fun q => rfl
-      target_open := planarEuclideanEquiv.toHomeomorph.isOpenMap _ g.open_target
+      target_open := hOpen
       target_bounded := planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image
         (isBounded_chartImage hab hcu hmono)
       exceptional_subset := sdiff_subset
@@ -151,8 +157,9 @@ def globeFlattening_from_scalar
       inverse_derivative := ?_
       distance_bound := ?_
       no_lipschitz_patch := fun _ hU hne K =>
-        not_lipschitzOn_sphereFlatten_of_open hcu hSlope hgood hnull hDeriv hU hne K
-      exceptional_area_positive := ?_ }
+        not_lipschitzOn_of_exceptional_area F (fun _ => rfl) hOpen sdiff_subset
+          (hausdorffMeasure_sphereExceptional_eq_zero hsub hnull) hexcess hU hne K
+      exceptional_area_positive := hexcess }
   · intro w hw
     rw [hgoodSource] at hw
     obtain ⟨p, hp, rfl⟩ := hw
@@ -180,10 +187,6 @@ def globeFlattening_from_scalar
     rw [dist_planarEuclideanEquiv_of_snd_eq
       (a := flattenCoordinates u p) (b := sinusoidalCoordinates p) rfl]
     exact hclose'.1 p hsub'
-  · intro V hV hne hVsub
-    change V ⊆ planarEuclideanEquiv '' g.target at hVsub
-    rw [← g.image_source_eq_target] at hVsub
-    exact volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne hVsub
 
 /-- The cut sphere has the usual total area of the unit sphere. -/
 theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * Real.pi) := by

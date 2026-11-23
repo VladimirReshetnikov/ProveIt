@@ -1,6 +1,5 @@
 import GlobeFlattening.CoordinateArea
 import Mathlib.Analysis.Calculus.Deriv.Prod
-import Mathlib.MeasureTheory.Measure.Hausdorff
 
 /-!
 # Strict local excess in the flattening chart
@@ -171,13 +170,6 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
   rw [← image_union, inter_union_sdiff, hazero, add_zero] at hsplit
   exact hAreaLt.not_ge hsplit
 
-private theorem exists_closed_subrectangle {W : Set (ℝ × ℝ)} (hW : IsOpen W) (hne : W.Nonempty) :
-    ∃ a b c d : ℝ, a < b ∧ c < d ∧ chartClosedRectangle a b c d ⊆ W := by
-  obtain ⟨p, hp⟩ := hne
-  obtain ⟨a, b, c, d, hp', hbox⟩ :=
-    exists_chartClosedRectangle_subset_of_mem_nhds (hW.mem_nhds hp)
-  exact ⟨a, b, c, d, hp'.1.1.trans hp'.1.2, hp'.2.1.trans hp'.2.2, hbox⟩
-
 /-- Every nonempty open subset of the planar image meets the exceptional
 image in a set of positive area. -/
 theorem volume_exceptional_inter_of_open {u : ℝ × ℝ → ℝ} {good W : Set (ℝ × ℝ)}
@@ -197,35 +189,13 @@ theorem volume_exceptional_inter_of_open {u : ℝ × ℝ → ℝ} {good W : Set 
     obtain ⟨q, hq⟩ := hne
     obtain ⟨p, hp, rfl⟩ := hWsub hq
     exact ⟨p, hp, hq⟩
-  obtain ⟨a, b, c, d, hab, hcd, hsub⟩ := exists_closed_subrectangle hV hVne
+  obtain ⟨p, hp⟩ := hVne
+  obtain ⟨a, b, c, d, hp', hsub⟩ := exists_chartClosedRectangle_subset_of_mem_nhds (hV.mem_nhds hp)
   have hbox : chartClosedRectangle a b c d ⊆ globeDomain := hsub.trans inter_subset_left
-  refine (volume_local_exceptional_image_pos hab hcd hbox hu hslope hgood hnull hderiv).trans_le
-    (measure_mono ?_)
+  refine (volume_local_exceptional_image_pos (hp'.1.1.trans hp'.1.2) (hp'.2.1.trans hp'.2.2)
+    hbox hu hslope hgood hnull hderiv).trans_le (measure_mono ?_)
   rintro _ ⟨p, hp, rfl⟩
   have hpV := hsub (chartRectangle_subset_closed hp.1)
   exact ⟨hpV.2, ⟨p, ⟨hpV.1, hp.2⟩, rfl⟩⟩
-
-/-- Lipschitz maps in the plane take null sets to null sets. The exceptional
-image therefore prevents a Lipschitz bound on any open source patch. -/
-theorem not_lipschitzOn_flattenCoordinates_of_open {u : ℝ × ℝ → ℝ} {good W : Set (ℝ × ℝ)}
-    (hu : ContinuousOn u globeBox)
-    (hslope : ∀ p ∈ globeBox, ∀ q ∈ globeBox,
-      p.2 = q.2 → p.1 ≤ q.1 → Real.cos p.2 * (q.1 - p.1) ≤ u q - u p)
-    (hgood : MeasurableSet good) (hnull : volume (globeDomain \ good) = 0)
-    (hderiv : ∀ p ∈ good, HasFDerivAt u
-      (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p)
-    (hW : IsOpen W) (hne : W.Nonempty) (hWsub : W ⊆ globeDomain) (K : ℝ≥0) :
-    ¬ LipschitzOnWith K (flattenCoordinates u) W := by
-  intro hlip
-  obtain ⟨a, b, c, d, hab, hcd, hsub⟩ := exists_closed_subrectangle hW hne
-  have hbox : chartClosedRectangle a b c d ⊆ globeDomain := hsub.trans hWsub
-  have hpos := volume_local_exceptional_image_pos hab hcd hbox hu hslope hgood hnull hderiv
-  let S := chartRectangle a b c d \ good
-  have hS : S ⊆ W := sdiff_subset.trans (chartRectangle_subset_closed.trans hsub)
-  have hSnull : volume S = 0 :=
-    measure_mono_null (sdiff_subset_sdiff_left (chartRectangle_subset_closed.trans hbox)) hnull
-  have hImage := (hlip.mono hS).hausdorffMeasure_image_le (d := 2) (by norm_num)
-  rw [hausdorffMeasure_prod_real, hSnull, mul_zero] at hImage
-  exact hpos.not_ge hImage
 
 end GlobeFlattening

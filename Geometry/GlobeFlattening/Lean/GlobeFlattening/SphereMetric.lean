@@ -58,14 +58,6 @@ theorem lipschitzWith_spherePoint : LipschitzWith 2 spherePoint := by
     rw [(hasFDerivAt_spherePoint p).fderiv]
     exact_mod_cast norm_sphereDerivative_le p
 
-/-- Pulling a Lipschitz estimate back to longitude and latitude changes the
-constant by at most a factor of two. -/
-theorem lipschitzOnWith_spherePoint_pullback {F : Type*} [PseudoMetricSpace F]
-    {f : EuclideanSpace ℝ (Fin 3) → F} {s : Set (EuclideanSpace ℝ (Fin 3))}
-    {K : NNReal} (hf : LipschitzOnWith K f s) :
-    LipschitzOnWith (K * 2) (f ∘ spherePoint) (spherePoint ⁻¹' s) :=
-  hf.comp lipschitzWith_spherePoint.lipschitzOnWith (mapsTo_preimage _ _)
-
 end
 
 end GlobeFlattening
