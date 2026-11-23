@@ -19,25 +19,15 @@ private theorem sum_weighted_increment_succ (e A : ℕ → ℝ) (h0 : A 0 = 0) (
   rw [h, sub_eq_add_neg, ← sum_neg_distrib]
   simp only [← neg_mul, neg_sub]
 
-/-- Discrete summation by parts for convergent series with vanishing boundary term. -/
-theorem tsum_weighted_increment {e A : ℕ → ℝ} (h0 : A 0 = 0)
+/-- Discrete summation by parts retains the limit of the boundary term. -/
+theorem tsum_weighted_increment {e A : ℕ → ℝ} {L : ℝ} (h0 : A 0 = 0)
     (hs : Summable (fun n => (e n - e (n + 1)) * A (n + 1)))
     (ht : Summable (fun n => e n * (A (n + 1) - A n)))
-    (hend : Tendsto (fun n => e n * A (n + 1)) atTop (𝓝 0)) :
-    (∑' n, (e n - e (n + 1)) * A (n + 1)) = ∑' n, e n * (A (n + 1) - A n) := by
+    (hend : Tendsto (fun n => e n * A (n + 1)) atTop (𝓝 L)) :
+    (∑' n, e n * (A (n + 1) - A n)) = L + ∑' n, (e n - e (n + 1)) * A (n + 1) := by
   have hleft := ht.hasSum.tendsto_sum_nat.comp (tendsto_add_atTop_nat 1)
-  have hright := hend.add hs.hasSum.tendsto_sum_nat
   simp only [Function.comp_def, sum_weighted_increment_succ e A h0] at hleft
-  exact tendsto_nhds_unique (by simpa only [zero_add] using hright) hleft
-
-/-- An absolutely summable increment series telescopes to the limit of its partial sums. -/
-theorem tsum_increment {A : ℕ → ℝ} {x : ℝ} (h0 : A 0 = 0)
-    (hs : Summable (fun n => A (n + 1) - A n))
-    (hA : Tendsto (fun n => A (n + 1)) atTop (𝓝 x)) :
-    (∑' n, (A (n + 1) - A n)) = x := by
-  have hpartial := hs.hasSum.tendsto_sum_nat.comp (tendsto_add_atTop_nat 1)
-  exact tendsto_nhds_unique (by simpa only [Function.comp_def, sum_range_sub, h0, sub_zero]
-    using hpartial) hA
+  exact tendsto_nhds_unique hleft (hend.add hs.hasSum.tendsto_sum_nat)
 
 /-- Successive drops of a decreasing sequence tending to zero sum to its initial value. -/
 theorem hasSum_antitone_drop {e : ℕ → ℝ} (he : Antitone e)
@@ -46,25 +36,6 @@ theorem hasSum_antitone_drop {e : ℕ → ℝ} (he : Antitone e)
   have ht : Tendsto (fun n => e 0 - e n) atTop (𝓝 (e 0)) := by
     simpa only [sub_zero] using tendsto_const_nhds.sub hzero
   simpa only [sum_range_sub'] using ht
-
-/-- Bounded partial sums and summable increments supply all convergence
-conditions for summation by parts with decreasing weights tending to zero. -/
-theorem tsum_weighted_increment_of_antitone {e A : ℕ → ℝ} {C : ℝ}
-    (h0 : A 0 = 0) (he : Antitone e) (hzero : Tendsto e atTop (𝓝 0))
-    (hΔ : Summable (fun n => A (n + 1) - A n)) (hA : ∀ n, |A (n + 1)| ≤ C) :
-    (∑' n, (e n - e (n + 1)) * A (n + 1)) = ∑' n, e n * (A (n + 1) - A n) := by
-  have hnonneg (n : ℕ) : 0 ≤ e n :=
-    le_of_tendsto hzero (eventually_atTop.2 ⟨n, fun _ hm => he hm⟩)
-  apply tsum_weighted_increment h0
-  · refine ((hasSum_antitone_drop he hzero).summable.mul_left C).of_norm_bounded fun n => ?_
-    have hdrop := sub_nonneg.mpr (he (Nat.le_succ n))
-    rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg hdrop, mul_comm C]
-    exact mul_le_mul_of_nonneg_left (hA n) hdrop
-  · refine (hΔ.abs.mul_left (e 0)).of_norm_bounded fun n => ?_
-    rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (hnonneg n)]
-    exact mul_le_mul_of_nonneg_right (he (Nat.zero_le n)) (abs_nonneg _)
-  · exact NormedField.tendsto_zero_smul_of_tendsto_zero_of_bounded hzero
-      ⟨C, eventually_map.mpr (Eventually.of_forall hA)⟩
 
 /-- An absolute termwise difference bound passes to the corresponding difference of sums. -/
 theorem abs_tsum_sub_le_of_termwise {f g u v : ℕ → ℝ}
@@ -81,6 +52,12 @@ theorem summable_mul_of_abs_le {b c d : ℕ → ℝ} {C : ℝ} (hb : Summable b)
   refine (hb.mul_left C).of_norm_bounded fun n => ?_
   rw [Real.norm_eq_abs, abs_mul]
   exact mul_le_mul (hc n) (hd n) (abs_nonneg _) ((abs_nonneg _).trans (hc n))
+
+theorem summable_add_cos_mul {ξ b a Y : ℕ → ℝ} {A : ℝ}
+    (hb : Summable b) (hξ : ∀ n, |ξ n| ≤ b n) (ha : ∀ n, |a n| ≤ A) :
+    Summable (fun n => (a n + Real.cos (Y n)) * ξ n) :=
+  summable_mul_of_abs_le hb
+    (fun n => (abs_add_le _ _).trans (add_le_add (ha n) (Real.abs_cos_le_one _))) hξ
 
 /-- Compare absolute increments of two series using an ordered bound on each term. -/
 private theorem abs_tsum_increment_le {f g : ℕ → ℝ → ℝ}
@@ -102,8 +79,7 @@ theorem abs_tsum_cos_sub_le_of_bounded {ξ b a : ℕ → ℝ} {Y : ℕ → ℝ �
       |(∑' n, b n * Y n y') - ∑' n, b n * Y n y| := by
   have hnonneg (n : ℕ) : 0 ≤ b n := (abs_nonneg _).trans (hξ n)
   have hf (t : ℝ) : Summable (fun n => (a n + Real.cos (Y n t)) * ξ n) :=
-    summable_mul_of_abs_le hb
-      (fun n => (abs_add_le _ _).trans (add_le_add (ha n) (Real.abs_cos_le_one _))) hξ
+    summable_add_cos_mul hb hξ ha
   have hg (t : ℝ) : Summable (fun n => b n * Y n t) := by
     simpa only [mul_comm] using
       summable_mul_of_abs_le hb (fun n => hY n t) (fun n => (abs_of_nonneg (hnonneg n)).le)

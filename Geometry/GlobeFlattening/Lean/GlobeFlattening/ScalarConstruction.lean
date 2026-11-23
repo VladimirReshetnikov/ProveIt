@@ -103,12 +103,18 @@ theorem tendsto_X (x : ℝ) : Tendsto (fun n => S.X n x) atTop (𝓝 (longitude 
     squeeze_zero (fun _ => norm_nonneg _) (fun n => S.errorRateX n x)
       (summable_rate δ).tendsto_atTop_zero
 
-def excess (n : ℕ) (y : ℝ) : ℝ := rate δ n + Real.cos (S.Y n y) - Real.cos (latitude y)
-def coefficient (n : ℕ) (y : ℝ) : ℝ := S.excess n y - S.excess (n + 1) y
+def latitudeProfile (n : ℕ) (y : ℝ) : ℝ := rate δ n + Real.cos (S.Y n y)
+def excess (n : ℕ) (y : ℝ) : ℝ := S.latitudeProfile n y - Real.cos (latitude y)
+def coefficient (n : ℕ) (y : ℝ) : ℝ := S.latitudeProfile n y - S.latitudeProfile (n + 1) y
+
+theorem coefficient_eq (n : ℕ) (y : ℝ) :
+    S.coefficient n y = S.excess n y - S.excess (n + 1) y := by
+  unfold coefficient excess
+  ring
 
 theorem excess_error (n : ℕ) (y : ℝ) : |S.excess n y - rate δ n| ≤ rate δ n / 8 := by
   rw [show S.excess n y - rate δ n = Real.cos (S.Y n y) - Real.cos (latitude y) by
-    unfold excess
+    unfold excess latitudeProfile
     ring]
   exact (Real.abs_cos_sub_cos_le _ _).trans (S.errorY n y)
 
@@ -122,7 +128,7 @@ theorem coefficient_bounds (n : ℕ) (y : ℝ) :
   have hc := S.excess_bounds n y
   have hc' := S.excess_bounds (n + 1) y
   rw [rate_succ] at hc'
-  unfold coefficient
+  rw [S.coefficient_eq]
   constructor <;> linarith only [hc.1, hc.2, hc'.1, hc'.2, S.rate_nonneg n]
 
 theorem coefficient_pos (n : ℕ) (y : ℝ) : 0 < S.coefficient n y :=
@@ -137,10 +143,11 @@ theorem summable_excess (y : ℝ) : Summable (fun n => S.excess n y) :=
   ((summable_rate δ).mul_left 2).of_norm_bounded (fun n => S.abs_excess_le n y)
 
 theorem antitone_excess (y : ℝ) : Antitone (fun n => S.excess n y) :=
-  antitone_nat_of_succ_le (fun n => sub_nonneg.mp (S.coefficient_pos n y).le)
+  antitone_nat_of_succ_le (fun n => sub_nonneg.mp (S.coefficient_eq n y ▸ (S.coefficient_pos n y).le))
 
-theorem hasSum_coefficient (y : ℝ) : HasSum (fun n => S.coefficient n y) (S.excess 0 y) :=
-  hasSum_antitone_drop (S.antitone_excess y) (S.summable_excess y).tendsto_atTop_zero
+theorem hasSum_coefficient (y : ℝ) : HasSum (fun n => S.coefficient n y) (S.excess 0 y) := by
+  simpa only [S.coefficient_eq] using
+    hasSum_antitone_drop (S.antitone_excess y) (S.summable_excess y).tendsto_atTop_zero
 
 def correctionTerm (n : ℕ) (p : ℝ × ℝ) :=
   S.coefficient n p.2 * S.X n p.1
@@ -163,11 +170,11 @@ theorem summable_correction (p : ℝ × ℝ) : Summable (fun n => S.correctionTe
 theorem continuous_scalar : Continuous S.scalar := by
   have hLat : Continuous latitude := continuous_clamp _ _
   have hLon : Continuous longitude := continuous_clamp _ _
-  have he (n : ℕ) : Continuous (S.excess n) :=
-    (continuous_const.add (Real.continuous_cos.comp (S.continuousY n))).sub
-      (Real.continuous_cos.comp hLat)
+  have hprofile (n : ℕ) : Continuous (S.latitudeProfile n) :=
+    continuous_const.add (Real.continuous_cos.comp (S.continuousY n))
   have hterm (n : ℕ) : Continuous (S.correctionTerm n) :=
-    (((he n).sub (he (n+1))).comp continuous_snd).mul ((S.continuousX n).comp continuous_fst)
+    (((hprofile n).sub (hprofile (n + 1))).comp continuous_snd).mul
+      ((S.continuousX n).comp continuous_fst)
   exact ((hLon.comp continuous_fst).mul (Real.continuous_cos.comp (hLat.comp continuous_snd))).add
     (continuous_tsum hterm ((summable_rate δ).mul_left Real.pi) S.norm_correctionTerm)
 
@@ -249,32 +256,20 @@ theorem longitudeIncrement_bound (n : ℕ) (x : ℝ) :
         exact add_le_add (S.errorRateX _ x) (S.errorRateX _ x)
       _ ≤ _ := by rw [rate_succ]; linarith only [S.rate_nonneg n]
 
-theorem summable_longitudeIncrement (x : ℝ) : Summable (fun n => S.longitudeIncrement n x) :=
-  (summable_incrementWeight δ).of_norm_bounded (fun n => S.longitudeIncrement_bound n x)
-
-theorem tsum_longitudeIncrement (x : ℝ) : (∑' n, S.longitudeIncrement n x) = longitude x :=
-  tsum_increment (A := fun n => S.longitudeStream n x) rfl
-    (S.summable_longitudeIncrement x) (S.tendsto_X x)
-
 theorem scalar_series (x y : ℝ) :
     S.scalar (x, y) = ∑' n, (rate δ n + Real.cos (S.Y n y)) * S.longitudeIncrement n x := by
-  have heq : S.correction (x, y) = ∑' n, S.excess n y * S.longitudeIncrement n x :=
-    tsum_weighted_increment_of_antitone (A := fun n => S.longitudeStream n x)
-      rfl (S.antitone_excess y) (S.summable_excess y).tendsto_atTop_zero
-      (S.summable_longitudeIncrement x) (S.boundX · x)
-  have hEbound (n : ℕ) : |S.excess n y| ≤ 2 * δ :=
-    (S.abs_excess_le n y).trans (mul_le_mul_of_nonneg_left
-      ((le_abs_self _).trans (S.abs_rate_le n)) (by norm_num))
-  have hEΔ := summable_mul_of_abs_le (summable_incrementWeight δ) hEbound
-    (fun n => S.longitudeIncrement_bound n x)
-  have hbase := (S.summable_longitudeIncrement x).mul_left (Real.cos (latitude y))
-  change longitude x * Real.cos (latitude y) + S.correction (x, y) = _
-  rw [heq, ← S.tsum_longitudeIncrement x, mul_comm _ (Real.cos (latitude y)),
-    ← tsum_mul_left, ← hbase.tsum_add hEΔ]
-  congr 1
-  funext n
-  unfold excess
-  ring
+  have hlat : Tendsto (fun n => S.latitudeProfile n y) atTop (𝓝 (Real.cos (latitude y))) := by
+    simpa only [excess, sub_add_cancel, zero_add] using
+      (S.summable_excess y).tendsto_atTop_zero.add
+        (tendsto_const_nhds (x := Real.cos (latitude y)))
+  have h := tsum_weighted_increment (A := fun n => S.longitudeStream n x)
+    (e := fun n => S.latitudeProfile n y) rfl (S.summable_correction (x, y))
+    (summable_add_cos_mul (summable_incrementWeight δ)
+      (fun n => S.longitudeIncrement_bound n x) S.abs_rate_le)
+    (hlat.mul (S.tendsto_X x))
+  change (∑' n, (rate δ n + Real.cos (S.Y n y)) * S.longitudeIncrement n x) =
+    Real.cos (latitude y) * longitude x + S.correction (x, y) at h
+  simpa only [scalar, mul_comm (longitude x) (Real.cos (latitude y))] using h.symm
 
 def verticalControl (y : ℝ) := ∑' n, incrementWeight δ n * S.Y n y
 

@@ -1,7 +1,6 @@
 import Mathlib.Analysis.Calculus.Monotone
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.DerivIntegrable
 import Mathlib.Analysis.Normed.Group.FunctionSeries
-import Mathlib.Analysis.Calculus.FDeriv.Measurable
 import Mathlib.MeasureTheory.Measure.Prod
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Analysis.Calculus.Deriv.Comp
@@ -38,28 +37,18 @@ private theorem singular_of_monotone_remainders
     filter_upwards [hF.ae_differentiableAt, (htail n).ae_differentiableAt, hpartial n] with x hf ht hp
     have h := (hf.hasDerivAt.sub ht.hasDerivAt).unique hp
     linarith
-  have hintF := (hF.monotoneOn (uIcc a b)).intervalIntegrable_deriv
-  have hbound (n : ℕ) : (∫ x in a..b, deriv F x) ≤ tail n b - tail n a := by
+  have hFint := ((hF.monotoneOn (uIcc a b)).intervalIntegrable_deriv).1
+  have hbound (n : ℕ) : (∫ x in Ioc a b, deriv F x) ≤ tail n b - tail n a := by
+    rw [integral_congr_ae (ae_restrict_of_ae (heq n)), ← intervalIntegral.integral_of_le hab]
     have hi := ((htail n).monotoneOn (uIcc a b)).intervalIntegral_deriv_mem_uIcc
-    have hpos : 0 ≤ tail n b - tail n a := sub_nonneg.mpr ((htail n) hab)
-    have hi' : (∫ x in a..b, deriv (tail n) x) ≤ tail n b - tail n a := by
-      rw [uIcc_of_le hpos] at hi
-      exact hi.2
-    have eqint : (∫ x in a..b, deriv F x) = ∫ x in a..b, deriv (tail n) x := by
-      rw [intervalIntegral.integral_of_le hab, intervalIntegral.integral_of_le hab]
-      exact integral_congr_ae (ae_restrict_of_ae (heq n))
-    exact eqint.le.trans hi'
-  have hle : (∫ x in a..b, deriv F x) ≤ 0 := by
-    exact le_of_tendsto_of_tendsto tendsto_const_nhds hsmall (Eventually.of_forall hbound)
-  have hge : 0 ≤ (∫ x in a..b, deriv F x) := by
-    apply intervalIntegral.integral_nonneg_of_ae_restrict hab
-    exact Eventually.of_forall (fun _ => hF.deriv_nonneg)
-  have hintzero : (∫ x in a..b, deriv F x) = 0 := le_antisymm hle hge
-  have hzero : deriv F =ᵐ[volume.restrict (Ioc a b)] 0 := by
-    have hnonneg : 0 ≤ᵐ[volume.restrict (Ioc a b ∪ Ioc b a)] deriv F :=
-      Eventually.of_forall (fun _ => hF.deriv_nonneg)
-    have h := (intervalIntegral.integral_eq_zero_iff_of_nonneg_ae hnonneg hintF).mp hintzero
-    simpa [Ioc_eq_empty_of_le hab] using h
+    rw [uIcc_of_le (sub_nonneg.mpr ((htail n) hab))] at hi
+    exact hi.2
+  have hle : (∫ x in Ioc a b, deriv F x) ≤ 0 :=
+    le_of_tendsto_of_tendsto tendsto_const_nhds hsmall (Eventually.of_forall hbound)
+  have hge : 0 ≤ (∫ x in Ioc a b, deriv F x) := integral_nonneg fun _ => hF.deriv_nonneg
+  have hzero : deriv F =ᵐ[volume.restrict (Ioc a b)] 0 :=
+    (integral_eq_zero_iff_of_nonneg_ae (ae_of_all _ fun _ => hF.deriv_nonneg) hFint).mp
+      (le_antisymm hle hge)
   filter_upwards [ae_restrict_of_ae hF.ae_differentiableAt, hzero] with x hx hz
   have h := hx.hasDerivAt
   rw [show deriv F x = 0 from hz] at h
@@ -91,16 +80,10 @@ private theorem singular_tsum_on_Ioc
     filter_upwards [hAll] with x hx
     have h := HasDerivAt.fun_sum (u := Finset.range n) (A := f) (A' := fun _ => 0)
       (fun i _ => hx i)
-    simp only [Finset.sum_const_zero] at h
-    have he : (fun y => F y - tail n y) = (fun y => ∑ i ∈ Finset.range n, f i y) := by
-      funext y
-      simp [tail]
-    rw [he]
-    exact h
+    simpa only [tail, sub_sub_cancel, Finset.sum_const_zero] using h
   have htail_tendsto (x : ℝ) : Tendsto (fun n => tail n x) atTop (𝓝 0) := by
-    have hc : Tendsto (fun _ : ℕ => F x) atTop (𝓝 (F x)) := tendsto_const_nhds
-    have h := hc.sub (hsum x).hasSum.tendsto_sum_nat
-    simpa [tail, F] using h
+    simpa [tail, F] using
+      (tendsto_const_nhds (x := F x)).sub (hsum x).hasSum.tendsto_sum_nat
   have hsmall : Tendsto (fun n => tail n b - tail n a) atTop (𝓝 0) := by
     simpa using (htail_tendsto b).sub (htail_tendsto a)
   exact singular_of_monotone_remainders F tail a b hab hF htail hpartial hsmall
@@ -147,48 +130,22 @@ theorem singular_bounded_weighted_tsum
     filter_upwards [hsing n] with x hx
     simpa using hx.const_mul (w n)
 
-/-- A Borel set whose members are exactly the points with the given derivative. -/
-theorem measurableSet_hasDerivAt_zero (f : ℝ → ℝ) :
-    MeasurableSet {x | HasDerivAt f 0 x} := by
-  have heq : {x | HasDerivAt f 0 x} =
-      {x | DifferentiableAt ℝ f x} ∩ {x | deriv f x = 0} := by
-    ext x
-    constructor
-    · intro hx
-      exact ⟨hx.differentiableAt, hx.deriv⟩
-    · rintro ⟨hx, hz⟩
-      have h := hx.hasDerivAt
-      rw [hz] at h
-      exact h
-  rw [heq]
-  exact (measurableSet_of_differentiableAt ℝ f).inter
-    (measurableSet_eq_fun (measurable_deriv f) measurable_const)
-
-/-- Intersect a measurable planar domain with the two one-dimensional good sets. -/
+/-- Choose a measurable good set for the two derivatives using a measurable null cover. -/
 theorem exists_product_derivative_good
     (H V : ℝ → ℝ) (D : Set (ℝ × ℝ)) (hD : MeasurableSet D)
     (hH : ∀ᵐ x ∂volume, HasDerivAt H 0 x)
     (hV : ∀ᵐ y ∂volume, HasDerivAt V 0 y) :
     ∃ E : Set (ℝ × ℝ), MeasurableSet E ∧ E ⊆ D ∧ volume (D \ E) = 0 ∧
       ∀ p ∈ E, HasDerivAt H 0 p.1 ∧ HasDerivAt V 0 p.2 := by
-  let A : Set ℝ := {x | HasDerivAt H 0 x}
-  let B : Set ℝ := {y | HasDerivAt V 0 y}
-  have hA : MeasurableSet A := measurableSet_hasDerivAt_zero H
-  have hB : MeasurableSet B := measurableSet_hasDerivAt_zero V
-  have hab : ∀ᵐ p : ℝ × ℝ, p ∈ A ×ˢ B := by
+  have hae : ∀ᵐ p : ℝ × ℝ ∂volume, HasDerivAt H 0 p.1 ∧ HasDerivAt V 0 p.2 := by
     rw [Measure.volume_eq_prod]
-    apply (Measure.ae_prod_iff_ae_ae (hA.prod hB)).2
-    filter_upwards [hH] with x hx
-    filter_upwards [hV] with y hy
-    exact ⟨hx, hy⟩
-  refine ⟨D ∩ (A ×ˢ B), hD.inter (hA.prod hB), inter_subset_left, ?_, ?_⟩
-  · apply measure_mono_null (show D \ (D ∩ (A ×ˢ B)) ⊆ (A ×ˢ B)ᶜ by
-      intro p hp
-      simp only [Set.mem_sdiff, mem_inter_iff, mem_compl_iff] at hp ⊢
-      exact fun h => hp.2 ⟨hp.1, h⟩)
-    exact ae_iff.mp hab
+    exact (Measure.quasiMeasurePreserving_fst.ae hH).and (Measure.quasiMeasurePreserving_snd.ae hV)
+  obtain ⟨N, hN, hmeas, hnull⟩ := exists_measurable_superset_of_null (ae_iff.1 hae)
+  refine ⟨D \ N, hD.diff hmeas, sdiff_subset, measure_mono_null ?_ hnull, ?_⟩
+  · rw [sdiff_sdiff_right_self]
+    exact inter_subset_right
   · intro p hp
-    exact hp.2
+    exact Classical.not_not.mp fun h => hp.2 (hN h)
 
 /-- Two one-dimensional zero derivatives control the full linearization
 error through separate increment bounds. -/
