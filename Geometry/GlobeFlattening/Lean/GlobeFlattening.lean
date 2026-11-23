@@ -1,4 +1,7 @@
 import GlobeFlattening.CellProfile
 import GlobeFlattening.GoodSet
 import GlobeFlattening.InverseDerivative
+import GlobeFlattening.LatitudeProfile
 import GlobeFlattening.LimitDifferentiability
+import GlobeFlattening.LongitudeProfile
+import GlobeFlattening.RestrictedArea
