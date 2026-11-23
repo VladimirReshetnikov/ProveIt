@@ -296,6 +296,9 @@ import IPRADerivations.DiophantineNumberTheory.ThreeSquares
 import IPRADerivations.DiophantineNumberTheory.ThreeSquaresPowers
 import IPRADerivations.DiophantineNumberTheory.ResidueCharacter
 import IPRADerivations.AnalyticNumberTheory.PrimesModFour
+import IPRADerivations.DiophantineNumberTheory.PellCollision
+import IPRADerivations.DiophantineNumberTheory.PellSequence
+import IPRADerivations.DiophantineNumberTheory.PellExistence
 import IPRADerivations.DiophantineNumberTheory.PellApprox
 import IPRADerivations.Foundations.CrtLcm
 import IPRADerivations.Foundations.CrtGeneral
