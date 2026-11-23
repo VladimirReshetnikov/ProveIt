@@ -88,10 +88,8 @@ def globeFlattening_from_scalar
   have hfopen : Topology.IsOpenEmbedding (cutSphere.restrict f) :=
     G.open_target.isOpenEmbedding_subtypeVal.comp F.isOpenEmbedding
   have hfcont : ContinuousOn f cutSphere := continuousOn_iff_continuous_restrict.2 hfopen.continuous
-  have hfleft : LeftInvOn fInv f cutSphere := by
-    intro w hw
-    change spherePoint (G.symm (G (sphereChartInverse w))) = w
-    rw [G.left_inv (sphereChartInverse_mapsTo hw), spherePoint_sphereChartInverse hw]
+  have hfleft : LeftInvOn fInv f cutSphere :=
+    fun w hw => congrArg Subtype.val (F.symm_apply_apply ⟨w, hw⟩)
   have htarget : G.target = planarEuclideanEquiv '' g.target :=
     (planarEuclideanEquiv.toEquiv.image_eq_preimage_symm _).symm
   have hcloseCoordinates := flattenCoordinates_close_to_sinusoidal hε hclose
