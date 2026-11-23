@@ -42,8 +42,7 @@ theorem lintegral_cos_lt_volume_chartImage
     {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a < b) (hcd : c < d)
     (hu : ContinuousOn u (chartClosedRectangle a b c d))
     (hcos : ∀ y ∈ Ioo c d, 0 ≤ Real.cos y)
-    (hslope : ∀ p ∈ chartClosedRectangle a b c d, ∀ q ∈ chartClosedRectangle a b c d,
-      p.2 = q.2 → p.1 < q.1 → Real.cos p.2 * (q.1 - p.1) < u q - u p) :
+    (hslope : StrictLowerSlopeOn u Real.cos (chartClosedRectangle a b c d)) :
     (∫⁻ p in chartRectangle a b c d, ENNReal.ofReal (Real.cos p.2)) <
       volume (chartImage u a b c d) := by
   rw [lintegral_cos_rectangle hab.le, volume_chartImage_eq_lintegral_width hab.le hu]

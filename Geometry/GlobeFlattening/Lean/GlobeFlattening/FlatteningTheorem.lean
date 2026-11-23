@@ -72,8 +72,7 @@ def globeFlattening_from_scalar
     (hnull : volume (sphereLongitudeDomain \ good) = 0)
     (hclose : ∀ q ∈ sphereClosedBox,
       |u q - (Real.cos q.2 + globeErrorParameter ε) * q.1| ≤ globeErrorParameter ε)
-    (hSlope : ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 < q.1 →
-      Real.cos p.2 * (q.1 - p.1) < u q - u p)
+    (hSlope : StrictLowerSlopeOn u Real.cos sphereClosedBox)
     (hDeriv : ∀ p ∈ good, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
     GlobeFlatteningResult ε := by
   have hab := neg_lt_self Real.pi_pos

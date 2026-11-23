@@ -48,8 +48,7 @@ theorem isOpen_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ 
 /-- A strict lower slope bound with a nonnegative slope gives increasing longitude rows. -/
 theorem strictMonoOn_chartRows_of_lowerSlope {u : ℝ × ℝ → ℝ} {slope : ℝ → ℝ} {a b c d : ℝ}
     (hnonneg : ∀ y ∈ Icc c d, 0 ≤ slope y)
-    (hslope : ∀ p ∈ chartClosedRectangle a b c d, ∀ q ∈ chartClosedRectangle a b c d,
-      p.2 = q.2 → p.1 < q.1 → slope p.2 * (q.1 - p.1) < u q - u p) :
+    (hslope : StrictLowerSlopeOn u slope (chartClosedRectangle a b c d)) :
     ∀ y ∈ Icc c d, StrictMonoOn (fun x => u (x, y)) (Icc a b) := by
   intro y hy x hx z hz hxz
   exact sub_pos.mp ((mul_nonneg (hnonneg y hy) (sub_nonneg.mpr hxz.le)).trans_lt

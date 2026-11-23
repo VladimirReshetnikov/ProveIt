@@ -188,9 +188,7 @@ theorem scalar_eq_correction {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
     S.scalar p = p.1 * Real.cos p.2 + S.correction p := by
   simpa only [zero_mul, sub_zero, correction] using S.scalar_sub_eq_centered_correction hp 0
 
-theorem scalar_strictLowerSlope :
-    ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 < q.1 →
-      Real.cos p.2 * (q.1 - p.1) < S.scalar q - S.scalar p := by
+theorem scalar_strictLowerSlope : StrictLowerSlopeOn S.scalar Real.cos sphereClosedBox := by
   rintro ⟨x, y⟩ hp ⟨x', y'⟩ hq rfl hxx'
   obtain ⟨n, hX⟩ := ((S.tendsto_X hp.1).eventually_lt (S.tendsto_X hq.1) hxx').exists
   have hsum : S.correction (x, y) < S.correction (x', y) :=
@@ -257,8 +255,7 @@ theorem exists_strict_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
       ContinuousOn u sphereClosedBox ∧ MeasurableSet E ∧ E ⊆ sphereLongitudeDomain ∧
       volume (sphereLongitudeDomain \ E) = 0 ∧
       (∀ q ∈ sphereClosedBox, |u q - (Real.cos q.2 + δ) * q.1| ≤ δ) ∧
-      (∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 < q.1 →
-        Real.cos p.2 * (q.1 - p.1) < u q - u p) ∧
+      StrictLowerSlopeOn u Real.cos sphereClosedBox ∧
       ∀ p ∈ E, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p := by
   obtain ⟨S⟩ := exists_staircases hδ
   have hsingular : ∀ᵐ x ∂volume, HasDerivAt S.horizontalControl 0 x :=

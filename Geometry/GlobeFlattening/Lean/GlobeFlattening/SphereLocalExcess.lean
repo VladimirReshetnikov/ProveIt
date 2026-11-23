@@ -39,8 +39,7 @@ area from the exceptional image. -/
 theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
     {good : Set (ℝ × ℝ)} {W : Set (EuclideanSpace ℝ (Fin 2))}
     (hu : ContinuousOn u sphereClosedBox)
-    (hslope : ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox,
-      p.2 = q.2 → p.1 < q.1 → Real.cos p.2 * (q.1 - p.1) < u q - u p)
+    (hslope : StrictLowerSlopeOn u Real.cos sphereClosedBox)
     (hgood : MeasurableSet good) (hsub : good ⊆ sphereLongitudeDomain)
     (hnull : volume (sphereLongitudeDomain \ good) = 0)
     (hderiv : ∀ p ∈ good, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p)

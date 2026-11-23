@@ -39,4 +39,8 @@ theorem sphereLongitudeDomain_subset_box : sphereLongitudeDomain ⊆ sphereClose
 coordinate. -/
 def flattenCoordinates (u : ℝ × ℝ → ℝ) (p : ℝ × ℝ) : ℝ × ℝ := (u p, p.2)
 
+/-- The secant slope between points on the same row exceeds `slope` at that latitude. -/
+abbrev StrictLowerSlopeOn (u : ℝ × ℝ → ℝ) (slope : ℝ → ℝ) (s : Set (ℝ × ℝ)) : Prop :=
+  ∀ p ∈ s, ∀ q ∈ s, p.2 = q.2 → p.1 < q.1 → slope p.2 * (q.1 - p.1) < u q - u p
+
 end GlobeFlattening
