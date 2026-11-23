@@ -41,11 +41,9 @@ def sphericalArea : Measure (EuclideanSpace ℝ (Fin 3)) :=
 theorem sphericalArea_spherePoint_image {s : Set (ℝ × ℝ)} (hs : MeasurableSet s)
     (hsub : s ⊆ sphereLongitudeDomain) :
     sphericalArea (spherePoint '' s) = ∫⁻ p in s, ENNReal.ofReal (Real.cos p.2) := by
-  have hmeas := continuous_spherePoint.measurable
-  have hBorel := measurableSet_spherePoint_image hs hsub
-  have hpre := hBorel.preimage hmeas
-  rw [sphericalArea, Measure.map_apply hmeas hBorel, withDensity_apply _ hpre,
-    Measure.restrict_restrict hpre,
+  rw [sphericalArea, Measure.map_apply continuous_spherePoint.measurable
+    (measurableSet_spherePoint_image hs hsub), withDensity_apply',
+    Measure.restrict_restrict' isOpen_sphereLongitudeDomain.measurableSet,
     spherePoint_bijOn.injOn.preimage_image_inter hsub]
 
 /-- The spherical exceptional set corresponding to the complement of the

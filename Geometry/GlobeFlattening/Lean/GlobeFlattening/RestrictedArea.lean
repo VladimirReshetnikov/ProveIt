@@ -1,6 +1,5 @@
 import Mathlib.Analysis.Calculus.FDeriv.Prod
 import Mathlib.MeasureTheory.Function.Jacobian
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 
 /-!
 # Restricted area of the good image
@@ -39,12 +38,12 @@ theorem measure_flattened_good_image
     (hnonneg : ∀ p ∈ good, 0 ≤ slope p) :
     volume (flattenCoordinates u '' good) = ∫⁻ p in domain, ENNReal.ofReal (slope p) := by
   rw [Measure.volume_eq_prod] at hnull ⊢
-  have hrestrict := Measure.restrict_congr_set (hsub.eventuallyLE.antisymm (ae_le_set.2 hnull))
-  rw [← hrestrict, ← lintegral_abs_det_fderiv_eq_addHaar_image
+  rw [← lintegral_abs_det_fderiv_eq_addHaar_image
     (f := flattenCoordinates u) (f' := coordinateDerivative ∘ slope) (volume.prod volume) hgood
     (fun p hp => ((hDeriv p hp).mono hsub).prodMk hasFDerivAt_snd.hasFDerivWithinAt) (hf.mono hsub)]
-  exact setLIntegral_congr_fun hgood fun p hp => by
-    simp [abs_of_nonneg (hnonneg p hp)]
+  refine (setLIntegral_congr_fun hgood fun p hp => ?_).trans
+    (setLIntegral_congr (hsub.eventuallyLE.antisymm (ae_le_set.2 hnull)))
+  simp [abs_of_nonneg (hnonneg p hp)]
 
 end
 
