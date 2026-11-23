@@ -109,9 +109,6 @@ def planarEuclideanEquiv : (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
   (ContinuousLinearEquiv.finTwoArrow ℝ ℝ).symm.trans
     (PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin 2 => ℝ)).symm
 
-theorem planarEuclideanEquiv_apply (v : ℝ × ℝ) :
-    planarEuclideanEquiv v = !₂[v.1, v.2] := rfl
-
 /-- The differential of the spherical parametrization is the tangent lift
 with longitude scaled by the cosine of latitude. -/
 def sphereDerivative (p : ℝ × ℝ) : ℝ × ℝ →L[ℝ] EuclideanSpace ℝ (Fin 3) :=

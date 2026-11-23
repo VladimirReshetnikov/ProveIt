@@ -296,23 +296,5 @@ theorem exists_strict_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
     exact S.linearization_bound (sphereLongitudeDomain_subset_box (hsub hp))
       (sphereLongitudeDomain_subset_box hq)
 
-/-- The scalar construction also supplies the nonstrict row slope bound. -/
-theorem exists_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
-    ∃ u : ℝ × ℝ → ℝ, ∃ E : Set (ℝ × ℝ),
-      ContinuousOn u sphereClosedBox ∧ MeasurableSet E ∧ E ⊆ sphereLongitudeDomain ∧
-      volume (sphereLongitudeDomain \ E) = 0 ∧
-      (∀ q ∈ sphereClosedBox, |u q - (Real.cos q.2 + δ) * q.1| ≤ δ) ∧
-      (∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 ≤ q.1 →
-        Real.cos p.2 * (q.1 - p.1) ≤ u q - u p) ∧
-      ∀ p ∈ E, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p := by
-  obtain ⟨u, E, hcu, hE, hsub, hnull, hclose, hslope, hderiv⟩ :=
-    exists_strict_scalar_flattening hδ
-  refine ⟨u, E, hcu, hE, hsub, hnull, hclose, ?_, hderiv⟩
-  intro p hp q hq hlat hlong
-  rcases hlong.lt_or_eq with h | h
-  · exact (hslope p hp q hq hlat h).le
-  · obtain rfl : p = q := Prod.ext h hlat
-    simp
-
 end
 end GlobeFlattening
