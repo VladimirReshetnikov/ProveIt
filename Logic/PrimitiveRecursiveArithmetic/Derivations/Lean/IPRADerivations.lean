@@ -994,6 +994,8 @@ import IPRADerivations.Combinatorics.MarkovContraction
 import IPRADerivations.Combinatorics.OrbitCounting
 import IPRADerivations.Combinatorics.PlanarBounds
 import IPRADerivations.Combinatorics.WallisCentral
+import IPRADerivations.Combinatorics.FibonacciDiagonal
+import IPRADerivations.Combinatorics.DegreeBounds
 import IPRADerivations.Topology.OpenCubeHomeo
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
