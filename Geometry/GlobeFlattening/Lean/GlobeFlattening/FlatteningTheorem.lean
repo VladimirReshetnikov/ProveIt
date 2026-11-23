@@ -75,13 +75,6 @@ private theorem strictlyIncreasing_interior_rows
   have hpos := mul_pos (Real.cos_pos_of_mem_Ioo hy) (sub_pos.mpr hxx')
   exact sub_pos.mp (hpos.trans_le h)
 
-private theorem volume_planarEuclideanEquiv_image (s : Set (ℝ × ℝ)) :
-    volume (planarEuclideanEquiv '' s) = volume s := by
-  have h := measurePreserving_planarEuclideanEquiv.measure_preimage_emb
-    planarEuclideanEquiv.toHomeomorph.measurableEmbedding (planarEuclideanEquiv '' s)
-  rw [preimage_image_eq s planarEuclideanEquiv.injective] at h
-  exact h.symm
-
 private theorem tangent_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
     ⟪spherePoint p, sphereTangentLift p v⟫ = 0 := by
   have he : ⟪spherePoint p, sphereEast p⟫ = 0 :=
@@ -104,53 +97,30 @@ def globeFlattening_from_scalar
       Real.cos p.2 * (q.1 - p.1) ≤ u q - u p)
     (hDeriv : ∀ p ∈ good, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
     GlobeFlatteningResult ε := by
-  let g := triangularChart (by linarith [Real.pi_pos] : -Real.pi ≤ Real.pi) hcu
-    (strictlyIncreasing_interior_rows hSlope)
+  have hab : -Real.pi ≤ Real.pi := by linarith [Real.pi_pos]
+  have hmono := strictlyIncreasing_interior_rows hSlope
+  let g := triangularChart hab hcu hmono
   let target := planarEuclideanEquiv '' g.target
   let Z := sphereExceptional good
-  let f := planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)
+  let f := sphereFlattenForward u
   let fInv := spherePoint ∘ (g.symm ∘ planarEuclideanEquiv.symm)
   let chart : sphereLongitudeDomain ≃ₜ g.target := g.toHomeomorphSourceTarget
   let F : cutSphere ≃ₜ target :=
     (sphereLongitudeChart.symm.trans chart).trans (planarEuclideanEquiv.toHomeomorph.image g.target)
-  have hmono := strictlyIncreasing_interior_rows hSlope
-  have hab : -Real.pi ≤ Real.pi := by linarith [Real.pi_pos]
-  have hbound := isBounded_chartImage hab hcu hmono
-  have harea := volume_chartImage_with_tolerance hε hcu hclose
-  have hEuclideanArea : volume target = volume g.target := volume_planarEuclideanEquiv_image _
-  have hgarea : volume g.target = volume (chartImage u (-Real.pi) Real.pi
-      (-(Real.pi / 2)) (Real.pi / 2)) := rfl
-  have hGinj : InjOn (flattenCoordinates u) sphereLongitudeDomain := g.injOn
-  have htarget : flattenCoordinates u '' sphereLongitudeDomain = g.target :=
-    g.image_source_eq_target
-  have hgoodSource : cutSphere \ Z = spherePoint '' good := by
-    ext p
-    constructor
-    · intro hp
-      by_contra hnot
-      exact hp.2 ⟨hp.1, hnot⟩
-    · intro hp
-      obtain ⟨q, hq, hqp⟩ := hp
-      exact ⟨hqp ▸ spherePoint_mapsTo (hsub hq), fun hnot => hnot.2 ⟨q, hq, hqp⟩⟩
-  have hf_eval {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
-      f (spherePoint p) = planarEuclideanEquiv (flattenCoordinates u p) := by
-    simp [f, sphereChartInverse_spherePoint hp]
-  have hgoodImage :
-      f '' (cutSphere \ Z) = planarEuclideanEquiv '' (flattenCoordinates u '' good) := by
+  have harea : ENNReal.ofReal (4 * Real.pi) < volume target ∧
+      volume target < ENNReal.ofReal (4 * Real.pi * (1 + ε)) := by
+    dsimp [target]
+    rw [volume_planarEuclideanEquiv_image]
+    exact volume_chartImage_with_tolerance hε hcu hclose
+  have hgoodSource : cutSphere \ Z = spherePoint '' good :=
+    sdiff_sdiff_cancel_left ((image_mono hsub).trans spherePoint_mapsTo.image_subset)
+  have hgoodImage : f '' (cutSphere \ Z) = planarEuclideanEquiv '' (flattenCoordinates u '' good) := by
     rw [hgoodSource, image_image, image_image]
-    exact image_congr fun p hp => hf_eval (hsub hp)
-  have hCoordImage {s : Set (ℝ × ℝ)} (hmeas : MeasurableSet s) (hss : s ⊆ sphereLongitudeDomain) :
-      MeasurableSet (flattenCoordinates u '' s) :=
-    hmeas.image_of_continuousOn_injOn
-      ((hcu.prodMk continuous_snd.continuousOn).mono (hss.trans chartRectangle_subset_closed))
-      (hGinj.mono hss)
-  have hPlaneImage {s : Set (ℝ × ℝ)} (hmeas : MeasurableSet s) (hss : s ⊆ sphereLongitudeDomain) :
+    exact image_congr fun _ hp => sphereFlattenForward_spherePoint (hsub hp)
+  have hPlaneImage {s : Set (ℝ × ℝ)} (hs : MeasurableSet s) (hss : s ⊆ sphereLongitudeDomain) :
       MeasurableSet (planarEuclideanEquiv '' (flattenCoordinates u '' s)) :=
     planarEuclideanEquiv.toHomeomorph.measurableEmbedding.measurableSet_image.mpr
-      (hCoordImage hmeas hss)
-  have hgoodCoordArea : volume (flattenCoordinates u '' good) = ENNReal.ofReal (4 * Real.pi) :=
-    volume_good_image_eq_four_pi hgood hsub hnull hGinj fun p hp =>
-      (hDeriv p hp).hasFDerivWithinAt
+      (hs.image_of_continuousOn_injOn (g.continuousOn.mono hss) (g.injOn.mono hss))
   have hclose' := flattenCoordinates_close_to_sinusoidal hε hclose
   refine
     { target := target
@@ -161,20 +131,22 @@ def globeFlattening_from_scalar
       forward_agrees := fun p => rfl
       inverse_agrees := fun q => rfl
       target_open := planarEuclideanEquiv.toHomeomorph.isOpenMap _ g.open_target
-      target_bounded := planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image hbound
+      target_bounded := planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image
+        (isBounded_chartImage hab hcu hmono)
       exceptional_subset := sdiff_subset
       exceptional_measurable := measurableSet_sphereExceptional hgood hsub
       exceptional_null := measure_sphereExceptional_eq_zero hgood hsub hnull
-      target_area_lower := by rw [hEuclideanArea, hgarea]; exact harea.1
-      target_area_upper := by rw [hEuclideanArea, hgarea]; exact harea.2
+      target_area_lower := harea.1
+      target_area_upper := harea.2
       exceptional_image_measurable := by
-        change MeasurableSet
-          ((planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)) '' sphereExceptional good)
+        change MeasurableSet (sphereFlattenForward u '' sphereExceptional good)
         rw [sphereFlattenForward_exceptional_image hsub]
         exact hPlaneImage (isOpen_sphereLongitudeDomain.measurableSet.diff hgood) sdiff_subset
       good_image_measurable := hgoodImage.symm ▸ hPlaneImage hgood hsub
-      good_image_area := (congrArg volume hgoodImage).trans
-        ((volume_planarEuclideanEquiv_image _).trans hgoodCoordArea)
+      good_image_area := by
+        rw [hgoodImage, volume_planarEuclideanEquiv_image]
+        exact volume_good_image_eq_four_pi hgood hsub hnull g.injOn
+          (fun p hp => (hDeriv p hp).hasFDerivWithinAt)
       forward_derivative := ?_
       inverse_derivative := ?_
       distance_bound := ?_
@@ -210,7 +182,7 @@ def globeFlattening_from_scalar
     exact hclose'.1 p hsub'
   · intro V hV hne hVsub
     change V ⊆ planarEuclideanEquiv '' g.target at hVsub
-    rw [← htarget] at hVsub
+    rw [← g.image_source_eq_target] at hVsub
     exact volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne hVsub
 
 /-- The cut sphere has the usual total area of the unit sphere. -/

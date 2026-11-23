@@ -12,10 +12,13 @@ source patch. [Lean theorem](Lean/GlobeFlattening/FlatteningTheorem.lean)
 
 The construction chooses a square mesh at each stage. The slope at the
 latitude midpoint plus one mesh width majorizes the target slope across
-each row and its interpolation layers. The error inside an old affine
-tile controls the difference quotient at every sufficiently nearby point.
+each row and its interpolation layers. The longitude and latitude profiles
+use the same sum of clipped ramps. At each point in a retained affine tile,
+the local error bound controls the difference quotient for all sufficiently
+small increments. [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) · [Ramp profiles](Lean/GlobeFlattening/RampProfile.lean)
+
 Spherical area is defined in the longitude–latitude chart with density
-`cos(latitude)`, as in the report. [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) · [Spherical area](Lean/GlobeFlattening/SphereMeasure.lean)
+`cos(latitude)`, as in the report. [Spherical area](Lean/GlobeFlattening/SphereMeasure.lean)
 
 Build from the repository root with `lake build GlobeFlattening`.
 
