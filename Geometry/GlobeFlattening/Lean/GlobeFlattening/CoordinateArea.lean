@@ -1,5 +1,6 @@
 import GlobeFlattening.TriangularChart
-import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.MeasureTheory.Function.JacobianOneDim
 import Mathlib.MeasureTheory.Integral.Lebesgue.Markov
 
 /-!
@@ -23,13 +24,13 @@ theorem volume_chartImage_eq_lintegral_width
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) :
     volume (chartImage u a b c d) =
       ∫⁻ y in Ioo c d, ENNReal.ofReal (u (b, y) - u (a, y)) := by
-  rw [chartImage, Measure.volume_eq_prod,
-    Measure.measurePreserving_swap.measure_preimage_emb MeasurableEquiv.prodComm.measurableEmbedding]
-  have hprofile (x : ℝ) (hx : x ∈ Icc a b) :
-      AEMeasurable (fun y => u (x, y)) (volume.restrict (Ioo c d)) :=
-    ((continuousOn_latitudeProfile hu hx).mono Ioo_subset_Icc_self).aemeasurable measurableSet_Ioo
-  exact volume_regionBetween_eq_lintegral
-    (hprofile a ⟨le_rfl, hab⟩) (hprofile b ⟨hab, le_rfl⟩) measurableSet_Ioo
+  rw [Measure.volume_eq_prod, Measure.prod_apply_symm (isOpen_chartImage hab hu).measurableSet,
+    ← lintegral_indicator measurableSet_Ioo]
+  refine lintegral_congr fun y => ?_
+  change volume {x | y ∈ Ioo c d ∧ x ∈ Ioo (u (a, y)) (u (b, y))} = _
+  by_cases hy : y ∈ Ioo c d <;>
+    simp only [indicator_apply, hy, if_true, if_false, true_and, false_and, setOf_mem_eq,
+      setOf_false, measure_empty, Real.volume_Ioo]
 
 /-- Integrate the cosine density by horizontal slices of a rectangle. -/
 theorem lintegral_cos_rectangle {a b c d : ℝ} (hab : a ≤ b) :
@@ -99,14 +100,13 @@ private abbrev latitudeInterval : Set ℝ := Ioo (-(Real.pi / 2)) (Real.pi / 2)
 private theorem lintegral_sinusoidalWidth :
     (∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y)) =
       ENNReal.ofReal (4 * Real.pi) := by
-  have hcont : Continuous (fun y => 2 * Real.pi * Real.cos y) :=
-    continuous_const.mul Real.continuous_cos
-  rw [← ofReal_integral_eq_lintegral_ofReal
-    (hcont.integrableOn_Icc.mono_set Ioo_subset_Icc_self)
-    ((ae_restrict_mem measurableSet_Ioo).mono fun y hy =>
-      mul_nonneg (by positivity) (Real.cos_pos_of_mem_Ioo hy).le)]
-  rw [← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le (by linarith [Real.pi_pos]),
-    intervalIntegral.integral_const_mul, integral_cos, Real.sin_neg, Real.sin_pi_div_two]
+  have hmono : StrictMonoOn (fun y => 2 * Real.pi * Real.sin y) (Icc (-(Real.pi / 2)) (Real.pi / 2)) :=
+    (strictMono_mul_left_of_pos (by positivity)).comp_strictMonoOn Real.strictMonoOn_sin
+  rw [lintegral_deriv_eq_volume_image_of_monotoneOn measurableSet_Ioo
+    (fun y _ => ((Real.hasDerivAt_sin y).const_mul (2 * Real.pi)).hasDerivWithinAt)
+    (hmono.monotoneOn.mono Ioo_subset_Icc_self),
+    ContinuousOn.image_Ioo_of_strictMonoOn (by linarith [Real.pi_pos]) (by fun_prop) hmono,
+    Real.volume_Ioo, Real.sin_neg, Real.sin_pi_div_two]
   congr 1
   ring
 

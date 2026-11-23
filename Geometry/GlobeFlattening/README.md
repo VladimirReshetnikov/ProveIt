@@ -43,6 +43,8 @@ open region between the continuous longitude endpoint curves. The strict
 width comparison proves total area excess. For local exceptional area,
 the proof pulls the open target patch back to coordinates, picks a
 rectangle there, and uses the same width comparison on that rectangle.
+The reference cosine integral is the length of the interval swept out by
+`2π sin(latitude)`, by the one-dimensional change-of-variables formula.
 The uniform projection error bounds the total area from above.
 [Chart homeomorphism](Lean/GlobeFlattening/TriangularChart.lean)
 
