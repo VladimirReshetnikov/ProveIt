@@ -73,19 +73,12 @@ variable {δ : ℝ} (S : Staircases δ)
 theorem errorRateX (n : ℕ) (x : ℝ) : |S.X n x - longitude x| ≤ rate δ n / 4 :=
   (S.errorX n x).trans (min_le_left _ _)
 
-theorem rate_nonneg (S : Staircases δ) (n : ℕ) : 0 ≤ rate δ n := (rate_pos S.delta_pos n).le
-
-private theorem X_step_bound (n : ℕ) (x : ℝ) : |S.X n x - S.X (n + 1) x| ≤ rate δ (n + 1) := by
-  calc
-    _ ≤ |S.X n x - longitude x| + |longitude x - S.X (n + 1) x| := abs_sub_le ..
-    _ ≤ rate δ n / 4 + rate δ (n + 1) / 4 := by
-      rw [abs_sub_comm (longitude x)]
-      exact add_le_add (S.errorRateX _ _) (S.errorRateX _ _)
-    _ ≤ _ := by rw [rate_succ]; linarith only [S.rate_nonneg n]
-
-theorem abs_rate_le (S : Staircases δ) (n : ℕ) : |rate δ n| ≤ δ := by
-  rw [abs_of_nonneg (S.rate_nonneg n)]
-  exact mul_le_of_le_one_right S.delta_pos.le (pow_le_one₀ (by norm_num) (by norm_num))
+private theorem X_step_bound (n : ℕ) (x : ℝ) : |S.X (n + 1) x - S.X n x| ≤ rate δ (n + 1) := by
+  have h := abs_sub_le (S.X (n + 1) x) (longitude x) (S.X n x)
+  rw [abs_sub_comm (longitude x)] at h
+  have hnext := S.errorRateX (n + 1) x
+  rw [rate_succ] at hnext ⊢
+  linarith only [h, hnext, S.errorRateX n x, (rate_pos S.delta_pos n).le]
 
 theorem tendsto_X {x : ℝ} (hx : x ∈ Icc (-Real.pi) Real.pi) :
     Tendsto (fun n => S.X n x) atTop (𝓝 x) := by
@@ -100,8 +93,10 @@ def latitudeProfile (n : ℕ) (y : ℝ) : ℝ := latitudeWeight δ n (S.X n (2 *
 def coefficient (n : ℕ) (y : ℝ) : ℝ := S.latitudeProfile n y - S.latitudeProfile (n + 1) y
 
 private theorem abs_latitudeWeight_le (S : Staircases δ) (n : ℕ) (t : ℝ) :
-    |latitudeWeight δ n t| ≤ δ + 1 :=
-  (abs_add_le _ _).trans (add_le_add (S.abs_rate_le n) (Real.abs_cos_le_one _))
+    |latitudeWeight δ n t| ≤ δ + 1 := by
+  refine (abs_add_le _ _).trans (add_le_add ?_ (Real.abs_cos_le_one _))
+  rw [abs_of_pos (rate_pos S.delta_pos n)]
+  exact mul_le_of_le_one_right S.delta_pos.le (pow_le_one₀ (by norm_num) (by norm_num))
 
 theorem tendsto_latitudeProfile {y : ℝ} (hy : y ∈ Icc (-(Real.pi / 2)) (Real.pi / 2)) :
     Tendsto (fun n => S.latitudeProfile n y) atTop (𝓝 (Real.cos y)) := by
@@ -122,15 +117,6 @@ private theorem lipschitzWith_latitudeWeight (δ : ℝ) (n : ℕ) :
   refine LipschitzWith.of_dist_le_mul fun x y => ?_
   simp only [latitudeWeight, Real.dist_eq, add_sub_add_left_eq_sub, NNReal.coe_one, one_mul]
   exact (abs_cos_half_sub_le x y).trans (half_le_self (abs_nonneg _))
-
-private theorem latitudeProfile_zero_error {y : ℝ} (hy : y ∈ Icc (-(Real.pi / 2)) (Real.pi / 2)) :
-    |S.latitudeProfile 0 y - (Real.cos y + δ)| ≤ δ / 8 := by
-  have hX := S.errorRateX 0 (2 * y)
-  rw [longitude_of_mem (double_latitude_mem hy), rate, pow_zero, mul_one] at hX
-  have hcos := abs_cos_half_sub_le (S.X 0 (2 * y)) (2 * y)
-  rw [mul_div_cancel_left₀ y two_ne_zero] at hcos
-  simpa only [latitudeProfile, latitudeWeight, rate, pow_zero, mul_one, add_comm (Real.cos y) δ,
-    add_sub_add_left_eq_sub] using hcos.trans (show _ ≤ δ / 8 by linarith only [hX])
 
 theorem coefficient_bounds (n : ℕ) (y : ℝ) :
     0 < S.coefficient n y ∧ |S.coefficient n y| ≤ rate δ n := by
@@ -166,7 +152,7 @@ theorem longitudeIncrement_bound (n : ℕ) (x : ℝ) :
   | zero => simpa [longitudeIncrement, rate] using
       (S.boundX 0 x).trans (le_add_of_nonneg_left S.delta_pos.le)
   | succ n =>
-    exact (abs_sub_comm _ _).trans_le ((S.X_step_bound n x).trans (rate_le_rate_add_pi δ _))
+    exact (S.X_step_bound n x).trans (rate_le_rate_add_pi δ _)
 
 def incrementTerm (n : ℕ) (p : ℝ × ℝ) :=
   S.longitudeIncrement n p.1 * S.latitudeProfile n p.2
@@ -228,8 +214,15 @@ theorem scalar_error {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
       simpa only [Real.norm_eq_abs, longitude_of_mem hp.1] using
         (S.errorX n p.1).trans (min_le_right _ _))
   have hlat : |S.latitudeProfile 0 p.2 * p.1 - (Real.cos p.2 + δ) * p.1| ≤ δ / 2 := by
+    have hprofile : |S.latitudeProfile 0 p.2 - (Real.cos p.2 + δ)| ≤ δ / 8 := by
+      have hX := S.errorRateX 0 (2 * p.2)
+      rw [longitude_of_mem (double_latitude_mem hp.2), rate, pow_zero, mul_one] at hX
+      have hcos := abs_cos_half_sub_le (S.X 0 (2 * p.2)) (2 * p.2)
+      rw [mul_div_cancel_left₀ p.2 two_ne_zero] at hcos
+      simpa only [latitudeProfile, latitudeWeight, rate, pow_zero, mul_one, add_comm (Real.cos p.2) δ,
+        add_sub_add_left_eq_sub] using hcos.trans (show _ ≤ δ / 8 by linarith only [hX])
     rw [← sub_mul, ← Real.norm_eq_abs]
-    refine (norm_mul_le_of_le (S.latitudeProfile_zero_error hp.2) (abs_le.mpr hp.1)).trans ?_
+    refine (norm_mul_le_of_le hprofile (abs_le.mpr hp.1)).trans ?_
     nlinarith only [mul_nonneg S.delta_pos.le (sub_nonneg.mpr Real.pi_le_four)]
   exact (abs_sub_le ..).trans (by linarith only [hcor, hlat])
 
