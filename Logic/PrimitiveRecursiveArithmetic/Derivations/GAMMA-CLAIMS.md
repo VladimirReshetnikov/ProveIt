@@ -865,6 +865,16 @@ checks the report’s exact choice `N=4(C_R+D_R+p+10)·2^(p+4)`,
 the rational bound `C_R/N≤2^(-p-3)`, and the original decay bound at
 `N/4` with explicit observation error and a computed precision. The
 full integrated sharp comparison remains.
+[GaussianBetaLowGridError](Lean/IPRADerivations/Analysis/GaussianBetaLowGridError.lean)
+proves the exact `1/N` contribution below time one from the actual
+beta and Euler row observations, with independently requested errors.
+[GaussianBetaEulerTailDifferencePointwise](Lean/IPRADerivations/Analysis/GaussianBetaEulerTailDifferencePointwise.lean)
+bounds the actual difference on the upper support by one factorial
+half-decay reference and supplies the corresponding scalar majorant.
+[GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
+locates one and the two degree endpoints on the same original dyadic
+grid and identifies the original half-time decay at the split with
+the literal quarter-degree observation.
 [GaussianBetaKernelGridComparison](Lean/IPRADerivations/Analysis/GaussianBetaKernelGridComparison.lean)
 compares the literal finite beta-kernel grid with the original improper
 Euler observation at its actual evaluation clock and also allows
