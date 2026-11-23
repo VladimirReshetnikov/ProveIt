@@ -296,6 +296,7 @@ import IPRADerivations.DiophantineNumberTheory.ThreeSquares
 import IPRADerivations.DiophantineNumberTheory.ThreeSquaresPowers
 import IPRADerivations.DiophantineNumberTheory.ResidueCharacter
 import IPRADerivations.AnalyticNumberTheory.PrimesModFour
+import IPRADerivations.AnalyticNumberTheory.SigmaR
 import IPRADerivations.AnalyticNumberTheory.GcdLcm
 import IPRADerivations.AnalyticNumberTheory.OrderProduct
 import IPRADerivations.AnalyticNumberTheory.MobiusMult
@@ -1057,6 +1058,13 @@ import IPRADerivations.Combinatorics.TriangleDensity
 import IPRADerivations.Combinatorics.CodingBounds
 import IPRADerivations.Combinatorics.FanoPlane
 import IPRADerivations.Combinatorics.IsingChain
+import IPRADerivations.Combinatorics.DerivedDesigns
+import IPRADerivations.Combinatorics.FirstMoment
+import IPRADerivations.Combinatorics.PetersenGraph
+import IPRADerivations.Combinatorics.PetersenSpectrum
+import IPRADerivations.Combinatorics.GraphProducts
+import IPRADerivations.Combinatorics.ChromaticSmall
+import IPRADerivations.Combinatorics.SumFreeResidues
 import IPRADerivations.Topology.OpenCubeHomeo
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
