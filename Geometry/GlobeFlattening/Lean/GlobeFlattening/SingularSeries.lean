@@ -8,8 +8,8 @@ The Stieltjes measure of a sum of monotone functions is the sum of their
 Stieltjes measures. Mutual singularity with Lebesgue measure is preserved
 by countable sums, so the derivative remains zero almost everywhere.
 
-For functions of two variables, independent increments controlled by two
-such functions give an almost-everywhere bound on the joint linearization error.
+For a function of two variables, the same singular control at longitude
+and scaled latitude bounds the joint linearization error almost everywhere.
 -/
 
 open Asymptotics Filter MeasureTheory Set
