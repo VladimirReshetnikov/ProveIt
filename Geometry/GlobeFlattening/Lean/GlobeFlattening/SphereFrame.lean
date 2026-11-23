@@ -51,18 +51,13 @@ private theorem mem_sphereTangentPlane {p : ℝ × ℝ} {w : EuclideanSpace ℝ 
     w ∈ sphereTangentPlane p ↔ ⟪spherePoint p, w⟫ = 0 :=
   Submodule.mem_orthogonal_singleton_iff_inner_right
 
-private def sphereTangentFrame (p : ℝ × ℝ) (i : Fin 2) : sphereTangentPlane p :=
-  ⟨sphereFrame p i.castSucc, mem_sphereTangentPlane.2
-    ((orthonormal_sphereFrame p).inner_eq_zero (Fin.castSucc_ne_last i).symm)⟩
-
 private def sphereTangentBasis (p : ℝ × ℝ) : OrthonormalBasis (Fin 2) ℝ (sphereTangentPlane p) := by
-  have hon : Orthonormal ℝ (sphereTangentFrame p) :=
-    (sphereTangentPlane p).subtypeₗᵢ.orthonormal_comp_iff.mp <|
-      (orthonormal_sphereFrame p).comp Fin.castSucc (Fin.castSucc_injective 2)
+  have h := orthonormal_sphereFrame p
+  have hon := (h.comp Fin.castSucc (Fin.castSucc_injective 2)).codRestrict (sphereTangentPlane p)
+    (fun i => mem_sphereTangentPlane.2 (h.inner_eq_zero (Fin.castSucc_ne_last i).symm))
   letI : Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) = 2 + 1) := ⟨by simp⟩
-  refine OrthonormalBasis.mk hon (hon.linearIndependent.span_eq_top_of_card_eq_finrank ?_).ge
-  have hp : spherePoint p ≠ 0 := (orthonormal_sphereFrame p).ne_zero (2 : Fin 3)
-  rw [Fintype.card_fin, sphereTangentPlane, Submodule.finrank_orthogonal_span_singleton (n := 2) hp]
+  exact OrthonormalBasis.mk hon (hon.linearIndependent.span_eq_top_of_card_eq_finrank
+    (Submodule.finrank_orthogonal_span_singleton (n := 2) (h.ne_zero (2 : Fin 3))).symm).ge
 
 /-- East and north coordinates of the orthogonal projection onto the tangent plane. -/
 def sphereFlattenDerivative (p : ℝ × ℝ) :
@@ -115,7 +110,7 @@ theorem sphereDerivative_apply (p v : ℝ × ℝ) :
     sphereDerivative p v = (Real.cos p.2 * v.1) • sphereEast p + v.2 • sphereNorth p := by
   change ((sphereTangentBasis p).repr.symm !₂[Real.cos p.2 * v.1, v.2]).1 = _
   rw [← (sphereTangentBasis p).sum_repr_symm, Fin.sum_univ_two]
-  simp [sphereTangentBasis, sphereTangentFrame, sphereFrame]
+  simp [sphereTangentBasis, sphereFrame]
 
 theorem hasFDerivAt_spherePoint (p : ℝ × ℝ) :
     HasFDerivAt spherePoint (sphereDerivative p) p := by
