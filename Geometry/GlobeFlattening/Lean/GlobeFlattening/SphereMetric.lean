@@ -23,9 +23,8 @@ theorem measurePreserving_planarEuclideanEquiv :
 
 theorem volume_planarEuclideanEquiv_image (s : Set (ℝ × ℝ)) :
     volume (planarEuclideanEquiv '' s) = volume s := by
-  simpa only [preimage_image_eq s planarEuclideanEquiv.injective] using
-    (measurePreserving_planarEuclideanEquiv.measure_preimage_emb
-      planarEuclideanEquiv.toHomeomorph.measurableEmbedding (planarEuclideanEquiv '' s)).symm
+  have he : MeasurableEmbedding planarEuclideanEquiv := planarEuclideanEquiv.toHomeomorph.measurableEmbedding
+  rw [← measurePreserving_planarEuclideanEquiv.map_eq, he.map_apply, preimage_image_eq s he.injective]
 
 /-- With latitude fixed, the two planar metrics give the same distance. -/
 theorem dist_planarEuclideanEquiv_of_snd_eq {a b : ℝ × ℝ} (hy : a.2 = b.2) :

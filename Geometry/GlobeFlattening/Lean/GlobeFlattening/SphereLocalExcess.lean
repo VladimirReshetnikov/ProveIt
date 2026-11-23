@@ -91,17 +91,17 @@ theorem not_lipschitzOn_of_exceptional_area
     {U : Set cutSphere} (hU : IsOpen U) (hne : U.Nonempty) (K : ℝ≥0) :
     ¬ LipschitzOnWith K (fun p : cutSphere => f p) U := by
   intro hLip
-  let Z' : Set cutSphere := Subtype.val ⁻¹' Z
-  have himage : Subtype.val '' Z' = Z := image_preimage_eq_of_subset (by simpa using hZ)
-  have hnull : μH[2] Z' = 0 := by
-    rw [← isometry_subtype_coe.hausdorffMeasure_image (Or.inl (by norm_num)), himage, hZnull]
+  have hLip' : LipschitzOnWith K f ((U : Set _) ∩ Z) := by
+    rintro _ ⟨⟨x, hx, rfl⟩, _⟩ _ ⟨⟨y, hy, rfl⟩, _⟩
+    exact hLip hx hy
   have hpos := hexcess _ (hf.isOpenMap _ hU) (hne.image _)
     (Set.image_subset_iff.2 fun p _ => hmaps p.2)
-  rw [← himage, ← Set.image_comp, ← Set.restrict_eq, ← image_inter hf.injective] at hpos
+  rw [← Set.image_image_val_eq_restrict_image,
+    ← (injOn_iff_injective.2 hf.injective).image_inter Set.image_val_subset hZ] at hpos
   refine hpos.ne' (Measure.absolutelyContinuous_isAddHaarMeasure volume
     (μH[Module.finrank ℝ (EuclideanSpace ℝ (Fin 2))]) ?_)
-  simpa [measure_mono_null inter_subset_right hnull] using
-    (hLip.mono (inter_subset_left : U ∩ Z' ⊆ U)).hausdorffMeasure_image_le (d := 2) (by norm_num)
+  simpa [measure_mono_null inter_subset_right hZnull] using
+    hLip'.hausdorffMeasure_image_le (d := 2) (by norm_num)
 
 end
 
