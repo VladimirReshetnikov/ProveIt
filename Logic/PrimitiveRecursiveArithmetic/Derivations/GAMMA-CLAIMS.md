@@ -1140,6 +1140,8 @@ preserves the exact lower coefficient under a larger valid upper-time guard.
 [GaussianEulerLogarithmicCommonCutoff](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCommonCutoff.lean)
 identifies the physical cutoff intervals using a computed lower index offset,
 with the original integrand radius retained.
+[GaussianEulerLogarithmicCertificateGeometry](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCertificateGeometry.lean)
+matches the actual lower endpoints for two independent cutoff certificates.
 [GaussianEulerLogarithmicImproperName](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicImproperName.lean)
 constructs the actual regular varying-cutoff name at every numerical
 logarithmic order.
@@ -1154,6 +1156,16 @@ leaves all three original observation queries independent.
 [GaussianEulerLogarithmicTaylorGrid](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicTaylorGrid.lean)
 integrates the actual quadratic bound on a shared finite grid with
 the exact interval-length factor.
+[GaussianEulerLogarithmicCompactTaylor](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCompactTaylor.lean)
+lifts the finite estimate to the three independently meshed compact
+names and retains the exact quadratic coefficient.
+[GaussianEulerLogarithmicCompactParameterRate](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCompactParameterRate.lean)
+derives a fixed-interval parameter Lipschitz estimate from that bound
+and the actual compact majorant at the next logarithmic order.
+[GaussianEulerDerivativeParameterPath](Lean/IPRADerivations/Analysis/GaussianEulerDerivativeParameterPath.lean)
+and [GaussianEulerDerivativeSubdivisionBudget](Lean/IPRADerivations/Analysis/GaussianEulerDerivativeSubdivisionBudget.lean)
+verify the native parameter segment, its endpoint and step identities,
+and the computed subdivision and relative error budgets.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
