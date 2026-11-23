@@ -859,12 +859,20 @@ original finite Euler reciprocal.
 [GaussianBetaUpperGridEndpoint](Lean/IPRADerivations/Analysis/GaussianBetaUpperGridEndpoint.lean)
 makes this comparison for the raw upper grid observation at the
 original row clock, with two independent dyadic errors.
+[GaussianBetaFiniteEulerComparison](Lean/IPRADerivations/Analysis/GaussianBetaFiniteEulerComparison.lean)
+compares the unchanged beta quadrature on the whole interval from a
+computed lower cutoff to the support endpoint with the original finite
+Euler reciprocal at independently requested precisions. The positive
+mesh and evaluation precision are computed and may be refined.
 [GaussianBetaKernelCompactUpperTail](Lean/IPRADerivations/Analysis/GaussianBetaKernelCompactUpperTail.lean)
 bounds the original upper beta quadrature through the support endpoint
 using the existing half-decay estimates.
 [GaussianBetaKernelLowerTransformedPower](Lean/IPRADerivations/Analysis/GaussianBetaKernelLowerTransformedPower.lean)
 bounds the original lower transformed rows uniformly in the finite
-degree. The lower-tail aggregation and the comparison identifying
+degree.
+[GaussianBetaKernelCompactModulus](Lean/IPRADerivations/Analysis/GaussianBetaKernelCompactModulus.lean)
+proves the compact sampled modulus of that same evaluator uniformly in
+the degree. The lower-tail aggregation and the comparison identifying
 the improper name with Gamma throughout the right half-plane remain.
 
 ## Every ledger family remains in scope
