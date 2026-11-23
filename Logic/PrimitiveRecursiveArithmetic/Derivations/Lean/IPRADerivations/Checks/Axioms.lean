@@ -1770,6 +1770,48 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalAffine.rational_affine_evaluation_closed
 #print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalAffine.rational_discriminant_covariance_closed
 #print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalAffine.rational_affine_output_guards_closed
+
+/-! ### AnalyticConicRationalInverse -/
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.nativeDeterminant
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.pivot
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.source
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.inverseNumerators
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.inverse
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.multiplier
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.canonicalPoint
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.subst_nativeDeterminant
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.subst_pivot
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.subst_source
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.subst_inverseNumerators
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.subst_inverse
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.subst_multiplier
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.subst_coefficient
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.subst_canonicalPoint
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.absolute_positive
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.pivot_positive
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.inverse_denominator
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.inverse_valid
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.inverse_read_value
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.image_denominator_value
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.inverse_denominator_value
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.native_roundtrips
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.roundtrip_denominators
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.canonical_roundtrips
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.evaluation_roundtrips
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.inverse_evaluation
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.inverse_pullback_evaluation
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.inverseF
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.pointF
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.inverse_at
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.point_at
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.actual_inverse_guard
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.actual_coordinate_roundtrips
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.actual_inverse_evaluation
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.actual_inverse_zero_locus
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.actual_rational_affine_inverse_guard_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.actual_rational_affine_coordinate_roundtrips_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.actual_rational_conic_inverse_evaluation_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse.actual_rational_conic_inverse_zero_locus_closed
 #print axioms LeanProofs.IPRA.Analysis.Quantum.Identities.ports_at
 #print axioms LeanProofs.IPRA.Analysis.Quantum.Identities.ports_closed
 #print axioms LeanProofs.IPRA.Analysis.Quantum.Identities.spin_at
@@ -19646,6 +19688,45 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsStep.original_cell_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsStep.original_Euler_integration_by_parts_cell_bound_closed
 
+/-! ### GaussianEulerIntegrationByPartsObservation -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.factor
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.query
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.auxiliaryCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.original_product_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.normalized_product_observation
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.original_auxiliary_slack
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.original_diagonal
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsObservation.actual_original_normalized_Euler_independent_product_observations_closed
+
+/-! ### GaussianEulerIntegrationByPartsGridObservation -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation.rawTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation.rawF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation.rowCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation.subst_rawTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation.subst_rowCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation.raw_evaluator_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation.raw_grid_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation.grid_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation.grid_row_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation.original_grid_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGridObservation.actual_original_Euler_grid_vs_power_decay_grid_closed
+
+/-! ### GaussianEulerIntegrationByPartsEndpoints -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsEndpoints.lower_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsEndpoints.integer_decay_factorial
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsEndpoints.upper_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsEndpoints.original_lower_integration_by_parts_endpoint_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsEndpoints.original_upper_integration_by_parts_endpoint_closed
+
+/-! ### GaussianEulerIntegrationByPartsEndpointRescale -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsEndpointRescale.original_boundary_rescale
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsEndpointRescale.original_affine_cutoff_endpoints
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsEndpointRescale.actual_integration_by_parts_affine_cutoff_endpoints_closed
+
 /-! ### GaussianEulerCompactPowerMajorant -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerCompactPowerMajorant.exponentRadius
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerCompactPowerMajorant.majorant
@@ -21419,6 +21500,38 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedProjection.projected_late_source
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedProjection.actual_named_vertical_projected_fraction_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedProjection.actual_named_vertical_projection_original_disk_closed
+
+/-! ### GaussianEulerVerticalNamedRadius -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedRadius.commonRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedRadius.encodedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedRadius.subst_commonRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedRadius.subst_encodedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedRadius.source_enlarge
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedRadius.original_independent_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedRadius.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedRadius.common_radius_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedRadius.original_named_Gamma_enlarged_disk_closed
+
+/-! ### GaussianEulerVerticalNamedReference -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedReference.equal_fraction_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedReference.subst_gammaData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedReference.equal_fraction_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedReference.realEncodedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedReference.subst_realEncodedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedReference.projected_encoded_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedReference.projected_independent_rate
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedReference.original_decoded_real_Gamma_reference_closed
+
+/-! ### GaussianEulerVerticalNamedGammaBound -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedGammaBound.point
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedGammaBound.realPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedGammaBound.radiusNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedGammaBound.radiusDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedGammaBound.realBound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedGammaBound.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedGammaBound.radius_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedGammaBound.original_named_gamma_vertical_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedGammaBound.original_named_Gamma_vertical_independent_queries_closed
 
 /-! ### GaussianEulerVerticalNativeProjection -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNativeProjection.argument
