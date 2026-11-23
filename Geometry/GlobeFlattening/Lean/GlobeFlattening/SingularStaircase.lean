@@ -135,16 +135,12 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
         exact_mod_cast (Finset.mem_Ico.mp hj).1)))]
     simp
   have hunit (y : ℝ) (hy : y ∈ Icc 0 (n : ℝ)) : |H y - y| ≤ 1 := by
-    rcases hy.2.eq_or_lt with h | h
-    · simp [h, hgrid n le_rfl]
-    let j := ⌊y⌋₊
-    have hj : j < n := (Nat.floor_lt hy.1).2 h
-    have hl := Nat.floor_le hy.1
-    have hr := Nat.lt_succ_floor y
-    have hH₀ := (hgrid j hj.le).ge.trans (hHm hl)
-    have hH₁ := (hHm hr.le).trans_eq (hgrid (j + 1) hj)
-    simp only [Nat.cast_succ] at hr hH₁
-    exact abs_le.2 ⟨by linarith, by linarith⟩
+    have hlo : (⌊y⌋₊ : ℝ) ≤ H y :=
+      (hgrid _ (Nat.floor_le_of_le hy.2)).ge.trans (hHm (Nat.floor_le hy.1))
+    have hhi : H y ≤ (⌈y⌉₊ : ℝ) :=
+      (hHm (Nat.le_ceil y)).trans_eq (hgrid _ (Nat.ceil_le.2 hy.2))
+    exact abs_le.2 ⟨by linarith [Nat.self_sub_floor_lt_one y],
+      by linarith [Nat.ceil_lt_add_one hy.1]⟩
   let A (x : ℝ) := (x - a) / w
   let g (x : ℝ) := a + w * H (A x)
   have hA : Monotone A := fun _ _ hx => div_le_div_of_nonneg_right (sub_le_sub_right hx _) hw.le
