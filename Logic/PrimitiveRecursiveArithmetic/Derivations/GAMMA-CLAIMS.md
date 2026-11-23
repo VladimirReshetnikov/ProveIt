@@ -920,6 +920,14 @@ independent output and decay precisions.
 [GaussianEulerSharpReportTerms](Lean/IPRADerivations/Analysis/GaussianEulerSharpReportTerms.lean)
 checks that each of the two leading terms is strictly below
 `2^-(p+3)` at the stated degree and computed decay query.
+[GaussianBetaAllDegreeMixedInverseContinuity](Lean/IPRADerivations/Analysis/GaussianBetaAllDegreeMixedInverseContinuity.lean)
+proves a cutoff-independent input modulus for the actual all-degree
+finite Euler evaluator with separately encoded rational inputs.
+[GaussianEulerRealPowerLowerOrder](Lean/IPRADerivations/Analysis/GaussianEulerRealPowerLowerOrder.lean)
+and [GaussianEulerDecayLowerEnvelope](Lean/IPRADerivations/Analysis/GaussianEulerDecayLowerEnvelope.lean)
+prove the separate one-half and one-ninth lower estimates on the
+original power and decay factors on the interval from one to two.
+Each bound retains the tolerance of its actual requested observation.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
