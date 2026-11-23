@@ -1,20 +1,19 @@
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.MeasureTheory.Group.Prod
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
-import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.Analysis.SpecificLimits.Basic
+import Mathlib.Topology.ContinuousMap.Bounded.Normed
 import Mathlib.Topology.Instances.CantorSet
-import Mathlib.Topology.UniformSpace.UniformApproximation
+import Mathlib.Topology.MetricSpace.Contracting
 
 /-!
 # Singular staircases close to the identity
 
-Iterate the Cantor function's averaging rule from the clamped identity.
-The iterates converge uniformly, and the limit is locally constant off
-the null Cantor set. Finite sums of scaled copies approximate the clamped
-identity on any interval while preserving the zero derivative almost everywhere.
+The Cantor staircase is a fixed point of the Cantor averaging operator
+on continuous monotone functions with prescribed endpoint plateaus.
+The fixed-point equation gives local constancy off the null Cantor set.
+Finite sums of scaled copies approximate the clamped identity on any
+interval and have derivative zero almost everywhere.
 -/
 
 open Filter MeasureTheory Set
@@ -24,86 +23,84 @@ namespace GlobeFlattening
 
 noncomputable section
 
-private def stage : ℕ → ℝ → ℝ
-  | 0, x => max 0 (min 1 x)
-  | n + 1, x => (stage n (3 * x) + stage n (3 * x - 2)) / 2
+private abbrev Profile := BoundedContinuousFunction ℝ ℝ
 
-private theorem stage_zero (n : ℕ) {x : ℝ} (hx : x ≤ 0) : stage n x = 0 := by
-  induction n generalizing x with
-  | zero => exact max_eq_left ((min_le_right _ _).trans hx)
-  | succ n ih => simp [stage, ih (x := 3 * x) (by linarith [hx]),
-      ih (x := 3 * x - 2) (by linarith [hx])]
+private def normalized : Set Profile :=
+  {f | Monotone f ∧ (∀ x ≤ 0, f x = 0) ∧ ∀ x ≥ 1, f x = 1}
 
-private theorem stage_one (n : ℕ) {x : ℝ} (hx : 1 ≤ x) : stage n x = 1 := by
-  induction n generalizing x with
-  | zero => simp [stage, min_eq_left hx]
-  | succ n ih =>
-    have ha : 1 ≤ 3 * x := by linarith
-    have hb : 1 ≤ 3 * x - 2 := by linarith
-    norm_num [stage, ih ha, ih hb]
+private theorem isClosed_normalized : IsClosed normalized := by
+  unfold normalized
+  simp only [Monotone, setOf_and, setOf_forall]
+  exact (isClosed_iInter fun x => isClosed_iInter fun y => isClosed_iInter fun _ =>
+    isClosed_le (continuous_eval_const x) (continuous_eval_const y)).inter
+    ((isClosed_iInter fun x => isClosed_iInter fun _ =>
+      isClosed_eq (continuous_eval_const x) continuous_const).inter
+     (isClosed_iInter fun x => isClosed_iInter fun _ =>
+      isClosed_eq (continuous_eval_const x) continuous_const))
 
-private theorem continuous_stage (n : ℕ) : Continuous (stage n) := by
-  induction n with
-  | zero =>
-    change Continuous (fun x : ℝ => max 0 (min 1 x))
-    fun_prop
-  | succ n ih =>
-    change Continuous (fun x => (stage n (3 * x) + stage n (3 * x - 2)) / 2)
-    fun_prop
+private theorem normalized_nonempty : normalized.Nonempty := by
+  let f (x : ℝ) := max 0 (min 1 x)
+  let F := BoundedContinuousFunction.ofNormedAddCommGroup f (by unfold f; fun_prop) 1
+    (fun x => by
+      rw [Real.norm_eq_abs, abs_of_nonneg (le_max_left _ _)]
+      exact max_le zero_le_one (min_le_left _ _))
+  exact ⟨F, fun _ _ h => max_le_max le_rfl (min_le_min_left _ h),
+    fun _ h => max_eq_left ((min_le_right _ _).trans h),
+    fun _ h => by simp [F, f, min_eq_left h]⟩
 
-private theorem monotone_stage (n : ℕ) : Monotone (stage n) := by
-  induction n with
-  | zero => exact fun _ _ h => max_le_max le_rfl (min_le_min_left _ h)
-  | succ n ih =>
-    intro a b hab
+private def cantorAverage (f : Profile) : Profile := (1 / 2 : ℝ) •
+  (f.compContinuous ⟨fun x => 3 * x, by fun_prop⟩ +
+   f.compContinuous ⟨fun x => 3 * x - 2, by fun_prop⟩)
+
+private theorem cantorAverage_apply (f : Profile) (x : ℝ) :
+    cantorAverage f x = (f (3 * x) + f (3 * x - 2)) / 2 := by
+  change (1 / 2 : ℝ) * (f (3 * x) + f (3 * x - 2)) = _
+  ring
+
+private theorem cantorAverage_normalized : MapsTo cantorAverage normalized normalized := by
+  rintro f ⟨hm, h₀, h₁⟩
+  refine ⟨?_, ?_, ?_⟩
+  · intro x y h
+    simp only [cantorAverage_apply]
     exact div_le_div_of_nonneg_right
-      (add_le_add (ih (by linarith [hab])) (ih (by linarith [hab]))) (by norm_num)
+      (add_le_add (hm (by linarith)) (hm (by linarith))) (by norm_num)
+  · intro x hx
+    simp [cantorAverage_apply, h₀ _ (by linarith : 3 * x ≤ 0),
+      h₀ _ (by linarith : 3 * x - 2 ≤ 0)]
+  · intro x hx
+    norm_num [cantorAverage_apply, h₁ _ (by linarith : 1 ≤ 3 * x),
+      h₁ _ (by linarith : 1 ≤ 3 * x - 2)]
 
-private theorem stage_mem_unitInterval (n : ℕ) (x : ℝ) : stage n x ∈ Icc 0 1 := by
-  obtain hx | hx := le_total x 0
-  · rw [stage_zero n hx]; simp
-  obtain hx' | hx' := le_total 1 x
-  · rw [stage_one n hx']; simp
-  exact ⟨(stage_zero n le_rfl).symm.le.trans (by
-    simpa only [stage_zero n le_rfl] using monotone_stage n hx),
-    by simpa only [stage_one n le_rfl] using monotone_stage n hx'⟩
+private theorem contracting_cantorAverage :
+    ContractingWith (1 / 2) (cantorAverage_normalized.restrict cantorAverage _ _) := by
+  refine ⟨by norm_num, LipschitzWith.of_dist_le_mul fun f g => ?_⟩
+  change dist (cantorAverage f.val) (cantorAverage g.val) ≤ (1 / 2 : ℝ) * dist f.val g.val
+  apply BoundedContinuousFunction.dist_le_iff_of_nonempty.mpr
+  intro x
+  rw [cantorAverage_apply, cantorAverage_apply, Real.dist_eq, ← sub_div, abs_div,
+    abs_of_pos (show (0 : ℝ) < 2 by norm_num), one_div_mul_eq_div,
+    div_le_div_iff_of_pos_right (show (0 : ℝ) < 2 by norm_num)]
+  rcases le_total x (1 / 2) with hx | hx
+  · have hx' : 3 * x - 2 ≤ 0 := by linarith
+    rw [f.2.2.1 _ hx', g.2.2.1 _ hx', add_zero, add_zero, ← Real.dist_eq]
+    exact BoundedContinuousFunction.dist_coe_le_dist (f := f.val) (g := g.val) (3 * x)
+  · have hx' : 1 ≤ 3 * x := by linarith
+    rw [f.2.2.2 _ hx', g.2.2.2 _ hx', add_sub_add_left_eq_sub, ← Real.dist_eq]
+    exact BoundedContinuousFunction.dist_coe_le_dist (f := f.val) (g := g.val) (3 * x - 2)
 
-private theorem stage_diff (n : ℕ) (x : ℝ) :
-    dist (stage n x) (stage (n + 1) x) ≤ (1 / 2 : ℝ) ^ n := by
-  induction n generalizing x with
-  | zero =>
-    rw [Real.dist_eq, pow_zero, abs_le]
-    have h := stage_mem_unitInterval 0 x
-    have h' := stage_mem_unitInterval 1 x
-    exact ⟨by linarith [h.1, h'.2], by linarith [h.2, h'.1]⟩
-  | succ n ih =>
-    rw [Real.dist_eq, pow_succ]
-    rcases le_total x (1 / 2) with hx | hx
-    · have h : 3 * x - 2 ≤ 0 := by linarith
-      change |(stage n (3 * x) + stage n (3 * x - 2)) / 2 -
-        (stage (n + 1) (3 * x) + stage (n + 1) (3 * x - 2)) / 2| ≤ _
-      rw [stage_zero n h, stage_zero (n + 1) h, add_zero, add_zero, ← sub_div, abs_div]
-      linarith [show |stage n (3 * x) - stage (n + 1) (3 * x)| ≤ _ from ih (3 * x)]
-    · have h : 1 ≤ 3 * x := by linarith
-      change |(stage n (3 * x) + stage n (3 * x - 2)) / 2 -
-        (stage (n + 1) (3 * x) + stage (n + 1) (3 * x - 2)) / 2| ≤ _
-      rw [stage_one n h, stage_one (n + 1) h, ← sub_div, add_sub_add_left_eq_sub, abs_div]
-      linarith [show |stage n (3 * x - 2) - stage (n + 1) (3 * x - 2)| ≤ _ from ih (3 * x - 2)]
-
-/-- Once a point lies outside a stage's support, all subsequent profiles
-are the same constant on a neighborhood of that point. -/
-private theorem stage_locally_constant (n : ℕ) {x : ℝ} (hx : x ∉ preCantorSet n) :
-    ∀ᶠ y in 𝓝 x, ∀ m, stage (n + m) y = stage n x := by
+private theorem cantor_locally_constant (f : normalized)
+    (hfix : ∀ x, cantorAverage f.val x = f.val x) (n : ℕ) {x : ℝ}
+    (hx : x ∉ preCantorSet n) : ∀ᶠ y in 𝓝 x, f.val y = f.val x := by
   induction n generalizing x with
   | zero =>
     have hx' : x < 0 ∨ 1 < x := by
       by_contra! h
       exact hx ⟨h.1, h.2⟩
     rcases hx' with hx' | hx'
-    · filter_upwards [Iio_mem_nhds hx'] with y hy m
-      rw [stage_zero _ hy.le, stage_zero _ hx'.le]
-    · filter_upwards [Ioi_mem_nhds hx'] with y hy m
-      rw [stage_one _ hy.le, stage_one _ hx'.le]
+    · filter_upwards [Iio_mem_nhds hx'] with y hy
+      rw [f.2.2.1 _ hy.le, f.2.2.1 _ hx'.le]
+    · filter_upwards [Ioi_mem_nhds hx'] with y hy
+      rw [f.2.2.2 _ hy.le, f.2.2.2 _ hx'.le]
   | succ n ih =>
     have ha : 3 * x ∉ preCantorSet n := fun h => hx
       (Or.inl ⟨3 * x, h, by ring⟩)
@@ -112,8 +109,9 @@ private theorem stage_locally_constant (n : ℕ) {x : ℝ} (hx : x ∉ preCantor
     have hA : Continuous (fun y : ℝ => 3 * y) := by fun_prop
     have hB : Continuous (fun y : ℝ => 3 * y - 2) := by fun_prop
     filter_upwards [(hA.tendsto x).eventually (ih ha), (hB.tendsto x).eventually (ih hb)]
-      with y hy hy' m
-    simp only [Nat.succ_add, stage, hy m, hy' m]
+      with y hy hy'
+    conv_lhs => rw [← hfix y, cantorAverage_apply, hy, hy']
+    rw [← cantorAverage_apply, hfix]
 
 private theorem volume_cantorSet : volume cantorSet = 0 := by
   have hscale (b : ℝ) : volume ((fun x : ℝ => (b + x) / 3) '' cantorSet) ≤
@@ -146,64 +144,17 @@ private theorem volume_cantorSet : volume cantorSet = 0 := by
 theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
     Continuous f ∧ Monotone f ∧ (∀ x ≤ 0, f x = 0) ∧ (∀ x ≥ 1, f x = 1) ∧
       (∀ᵐ x ∂volume, HasDerivAt f 0 x) := by
-  have hlim (x : ℝ) : ∃ a, Tendsto (fun n => stage n x) atTop (𝓝 a) :=
-    cauchySeq_tendsto_of_complete (cauchySeq_of_le_geometric (1 / 2) 1
-      (by norm_num) (fun n => by simpa only [one_mul] using stage_diff n x))
-  choose f hf using hlim
-  have hbounded (n : ℕ) (x : ℝ) : dist (f x) (stage n x) ≤ 2 * (1 / 2 : ℝ) ^ n := by
-    rw [dist_comm]
-    have h := dist_le_of_le_geometric_of_tendsto (r := 1 / 2) (C := 1)
-      (by norm_num) (fun m => by simpa only [one_mul] using stage_diff m x) (hf x) n
-    convert h using 1
-    ring
-  have huni : TendstoUniformly stage f atTop := by
-    rw [Metric.tendstoUniformly_iff]
-    intro ε hε
-    have ht : Tendsto (fun n : ℕ => 2 * (1 / 2 : ℝ) ^ n) atTop (𝓝 0) := by
-      simpa only [mul_zero] using
-        (tendsto_pow_atTop_nhds_zero_of_lt_one (r := (1 / 2 : ℝ)) (by norm_num)
-          (by norm_num)).const_mul 2
-    filter_upwards [ht.eventually (Iio_mem_nhds hε)] with n hn x
-    exact (hbounded n x).trans_lt hn
-  refine ⟨f, huni.continuous ((Eventually.of_forall continuous_stage).frequently), ?_, ?_, ?_, ?_⟩
-  · exact fun x y h => le_of_tendsto_of_tendsto' (hf x) (hf y)
-      (fun n => monotone_stage n h)
-  · exact fun x h => tendsto_nhds_unique_of_eventuallyEq (hf x) tendsto_const_nhds
-      (Eventually.of_forall fun n => stage_zero n h)
-  · exact fun x h => tendsto_nhds_unique_of_eventuallyEq (hf x) tendsto_const_nhds
-      (Eventually.of_forall fun n => stage_one n h)
-  · have hae : ∀ᵐ x ∂volume, x ∉ cantorSet := by
-      simpa only [ae_iff, not_not, setOf_mem_eq] using volume_cantorSet
-    filter_upwards [hae] with x hx
-    obtain ⟨n, hn⟩ : ∃ n, x ∉ preCantorSet n := by simpa [cantorSet] using hx
-    apply (hasDerivAt_const x (stage n x)).congr_of_eventuallyEq
-    filter_upwards [stage_locally_constant n hn] with y hy
-    exact tendsto_nhds_unique_of_eventuallyEq (hf y) tendsto_const_nhds
-      (eventually_atTop.2 ⟨n, fun m hm => by simpa only [Nat.add_sub_of_le hm] using hy (m - n)⟩)
-
-private def meshPoint (a w : ℝ) (i : ℕ) : ℝ := a + i * w
-
-private theorem meshPoint_succ (a w : ℝ) (i : ℕ) :
-    meshPoint a w (i + 1) = meshPoint a w i + w := by
-  simp only [meshPoint, Nat.cast_succ]
-  ring
-
-private theorem exists_mesh_cell {left width x : ℝ} {count : ℕ} (hcount : 0 < count)
-    (hx₁ : left ≤ x) (hx₂ : x ≤ meshPoint left width count) :
-    ∃ j < count, meshPoint left width j ≤ x ∧ x ≤ meshPoint left width (j + 1) := by
-  have hlast : x ≤ meshPoint left width ((count - 1) + 1) := by
-    simpa only [show count - 1 + 1 = count by omega] using hx₂
-  have hex : ∃ j, x ≤ meshPoint left width (j + 1) := ⟨count - 1, hlast⟩
-  have hmin := Nat.find_min' hex hlast
-  refine ⟨Nat.find hex, by omega, ?_, Nat.find_spec hex⟩
-  rcases Nat.eq_zero_or_pos (Nat.find hex) with hzero | hpos
-  · have hpoint : meshPoint left width (Nat.find hex) = left := by
-      rw [hzero]
-      simp [meshPoint]
-    exact hpoint.le.trans hx₁
-  · apply le_of_lt
-    have hnot := Nat.find_min hex (show Nat.find hex - 1 < Nat.find hex by omega)
-    rwa [show Nat.find hex - 1 + 1 = Nat.find hex by omega, not_le] at hnot
+  letI : Nonempty normalized := normalized_nonempty.to_subtype
+  letI : CompleteSpace normalized := completeSpace_coe_iff_isComplete.mpr isClosed_normalized.isComplete
+  let f := ContractingWith.fixedPoint _ contracting_cantorAverage
+  have hfix (x : ℝ) : cantorAverage f.val x = f.val x :=
+    congrArg (fun g : normalized => g.val x) contracting_cantorAverage.fixedPoint_isFixedPt.eq
+  refine ⟨f.val, f.val.continuous, f.2.1, f.2.2.1, f.2.2.2, ?_⟩
+  have hae : ∀ᵐ x ∂volume, x ∉ cantorSet := by
+    simpa only [ae_iff, not_not, setOf_mem_eq] using volume_cantorSet
+  filter_upwards [hae] with x hx
+  obtain ⟨n, hn⟩ : ∃ n, x ∉ preCantorSet n := by simpa [cantorSet] using hx
+  exact (hasDerivAt_const x (f.val x)).congr_of_eventuallyEq (cantor_locally_constant f hfix n hn)
 
 /-- Monotone singular approximants to the identity on a compact interval. -/
 theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
@@ -218,90 +169,88 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
   have hwε : w ≤ ε := by
     apply (div_le_iff₀ hn₀).2
     linarith [(div_lt_iff₀ hε).1 hn]
-  have hlast : meshPoint a w n = b := by
-    unfold meshPoint w
-    field_simp [hn₀.ne']
+  have hwidth : a + w * n = b := by
+    rw [div_mul_cancel₀ (b - a) hn₀.ne']
     ring
-  let A (j : ℕ) (x : ℝ) := (x - a) / w - j
-  let g (x : ℝ) := a + w * ∑ j ∈ Finset.range n, f (A j x)
-  have hgm : Monotone g := by
-    intro x y hxy
-    refine add_le_add le_rfl (mul_le_mul_of_nonneg_left ?_ hw.le)
-    exact Finset.sum_le_sum fun j _ => hfm
-      (sub_le_sub_right (div_le_div_of_nonneg_right (sub_le_sub_right hxy _) hw.le) _)
-  have hgrid (i : ℕ) (hi : i ≤ n) : g (meshPoint a w i) = meshPoint a w i := by
-    have hA (j : ℕ) : A j (meshPoint a w i) = (i : ℝ) - j := by
-      unfold A meshPoint
-      field_simp [hw.ne']
-      ring
-    unfold g
-    simp_rw [hA]
-    rw [← Finset.sum_range_add_sum_Ico _ hi]
-    have hones : (∑ j ∈ Finset.range i, f ((i : ℝ) - j)) = i := by
+  let H (y : ℝ) := ∑ j ∈ Finset.range n, f (y - j)
+  have hHm : Monotone H :=
+    fun _ _ hy => Finset.sum_le_sum fun _ _ => hfm (sub_le_sub_right hy _)
+  have hfRange (x : ℝ) : f x ∈ Icc 0 1 := ⟨by
+    simpa only [hf₀ _ (min_le_left 0 x)] using hfm (min_le_right 0 x), by
+    simpa only [hf₁ _ (le_max_left 1 x)] using hfm (le_max_right 1 x)⟩
+  have hHr (y : ℝ) : H y ∈ Icc 0 (n : ℝ) := ⟨
+    Finset.sum_nonneg fun j _ => (hfRange (y - j)).1, by
+    simpa only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one] using
+      (Finset.sum_le_sum (s := Finset.range n) fun j _ => (hfRange (y - j)).2)⟩
+  have hgrid (i : ℕ) (hi : i ≤ n) : H i = i := by
+    have hplateau (j : ℕ) : f ((i : ℝ) - j) = if j < i then 1 else 0 := by
+      split_ifs with h
+      · have hj : ((j : ℝ) + 1) ≤ i := by exact_mod_cast h
+        exact hf₁ _ (by linarith)
+      · exact hf₀ _ (sub_nonpos.mpr (Nat.cast_le.mpr (le_of_not_gt h)))
+    have hcount : (Finset.range n).filter (· < i) = Finset.range i := by
+      ext j
+      simp only [Finset.mem_filter, Finset.mem_range]
+      omega
+    simp_rw [H, hplateau]
+    rw [Finset.sum_boole, hcount, Finset.card_range]
+  have hunit (y : ℝ) (hlo : 0 ≤ y) (hhi : y < n) : |H y - y| ≤ 1 := by
+    let j := ⌊y⌋₊
+    have hj : j < n := (Nat.floor_lt hlo).2 hhi
+    have hl := Nat.floor_le hlo
+    have hr := (Nat.lt_floor_add_one y).le
+    have hH₀ : (j : ℝ) ≤ H y := (hgrid j hj.le).ge.trans (hHm hl)
+    have hH₁ : H y ≤ (j : ℝ) + 1 := by
       calc
-        _ = ∑ _j ∈ Finset.range i, (1 : ℝ) := by
-          refine Finset.sum_congr rfl fun j hj => hf₁ _ ?_
-          have hij : ((j : ℝ) + 1) ≤ i := by exact_mod_cast Finset.mem_range.mp hj
-          linarith
-        _ = _ := by simp
-    have hzeros : (∑ j ∈ Finset.Ico i n, f ((i : ℝ) - j)) = 0 :=
-      Finset.sum_eq_zero fun j hj =>
-        hf₀ _ (sub_nonpos.mpr (Nat.cast_le.mpr (Finset.mem_Ico.mp hj).1))
-    simp only [hones, hzeros, add_zero, meshPoint]
-    ring
-  have hga : g a = a := by simpa [meshPoint] using hgrid 0 (Nat.zero_le n)
-  have hgb : g b = b := hlast ▸ hgrid n le_rfl
-  have hgr (x : ℝ) : g x ∈ Icc a b := by
-    have hlo (j : ℕ) : 0 ≤ f (A j x) := by
-      rcases le_total (A j x) 0 with h | h
-      · rw [hf₀ _ h]
-      · simpa only [hf₀ 0 le_rfl] using hfm h
-    have hhi (j : ℕ) : f (A j x) ≤ 1 := by
-      rcases le_total (A j x) 1 with h | h
-      · simpa only [hf₁ 1 le_rfl] using hfm h
-      · rw [hf₁ _ h]
-    refine ⟨le_add_of_nonneg_right (mul_nonneg hw.le (Finset.sum_nonneg fun j _ => hlo j)), ?_⟩
-    have hsum : (∑ j ∈ Finset.range n, f (A j x)) ≤ n := by
-      simpa only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one] using
-        Finset.sum_le_sum (s := Finset.range n) (fun j _ => hhi j)
-    rw [← hlast, meshPoint]
-    dsimp [g]
-    simpa only [mul_comm w (n : ℝ)] using
-      add_le_add le_rfl (mul_le_mul_of_nonneg_left hsum hw.le)
-  have hlocal (x : ℝ) (hx : x ∈ Icc a b) : |g x - x| ≤ ε := by
-    obtain ⟨i, hi, hleft, hright⟩ := exists_mesh_cell (width := w)
-      (by exact_mod_cast hn₀) hx.1 (hlast ▸ hx.2)
-    have hl : meshPoint a w i ≤ g x := (hgrid i hi.le).ge.trans (hgm hleft)
-    have hr : g x ≤ meshPoint a w (i + 1) := (hgm hright).trans
-      (hgrid (i + 1) (Nat.succ_le_of_lt hi)).le
-    apply (abs_le.2 ⟨?_, ?_⟩ : |g x - x| ≤ w).trans hwε <;>
-      linarith [meshPoint_succ a w i]
+        _ ≤ H (↑(j + 1) : ℝ) := hHm (by exact_mod_cast hr)
+        _ = _ := (hgrid (j + 1) hj).trans (Nat.cast_succ _)
+    exact abs_le.2 ⟨by linarith, by linarith⟩
+  let A (x : ℝ) := (x - a) / w
+  let g (x : ℝ) := a + w * H (A x)
+  have hgm : Monotone g := fun _ _ hx =>
+    add_le_add le_rfl (mul_le_mul_of_nonneg_left
+      (hHm (div_le_div_of_nonneg_right (sub_le_sub_right hx _) hw.le)) hw.le)
+  have hgr (x : ℝ) : g x ∈ Icc a b := ⟨
+    le_add_of_nonneg_right (mul_nonneg hw.le (hHr _).1), hwidth ▸
+      add_le_add le_rfl (mul_le_mul_of_nonneg_left (hHr _).2 hw.le)⟩
+  have hH₀ : H 0 = 0 := by simpa only [Nat.cast_zero] using hgrid 0 (Nat.zero_le n)
+  have hga : g a = a := by simp [g, A, hH₀]
+  have hAb : A b = n := (div_eq_iff hw.ne').2 (by linarith only [hwidth])
+  have hgb : g b = b := by rw [show g b = a + w * H (A b) from rfl, hAb, hgrid n le_rfl, hwidth]
   refine ⟨g, ?_, hgm, hgr, hga, hgb, ?_, ?_⟩
-  · unfold g A
+  · unfold g A H
     fun_prop
   · intro x
     by_cases hxa : a ≤ x
-    · by_cases hxb : x ≤ b
-      · simpa only [min_eq_right hxb, max_eq_right hxa] using hlocal x ⟨hxa, hxb⟩
-      · have hx : b ≤ x := (lt_of_not_ge hxb).le
+    · by_cases hxb : x < b
+      · rw [min_eq_right hxb.le, max_eq_right hxa]
+        have hAx : A x < n := (div_lt_iff₀ hw).2 (by linarith only [hxb, hwidth])
+        have hmul : A x * w = x - a := div_mul_cancel₀ (x - a) hw.ne'
+        have hd : g x - x = w * (H (A x) - A x) := by
+          dsimp only [g]
+          linarith only [hmul]
+        rw [hd, abs_mul, abs_of_pos hw]
+        have he := hunit (A x) (div_nonneg (sub_nonneg.mpr hxa) hw.le) hAx
+        exact (mul_le_mul_of_nonneg_left he hw.le).trans (by simpa only [mul_one] using hwε)
+      · have hx : b ≤ x := le_of_not_gt hxb
         have he : g x = b := le_antisymm (hgr x).2 (hgb.ge.trans (hgm hx))
         simpa [min_eq_left hx, max_eq_right hab.le, he] using hε.le
     · have hx : x ≤ a := (lt_of_not_ge hxa).le
       have he : g x = a := le_antisymm ((hgm hx).trans hga.le) (hgr x).1
       simpa [min_eq_right (hx.trans hab.le), max_eq_left hx, he] using hε.le
-  · have hae (j : ℕ) : ∀ᵐ x ∂volume, HasDerivAt (fun x => f (A j x)) 0 x := by
+  · have hae (j : ℕ) : ∀ᵐ x ∂volume, HasDerivAt (fun x => f (A x - j)) 0 x := by
       have hpres (t : ℝ) := (measurePreserving_sub_right volume t).quasiMeasurePreserving
       have hmul := Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) (inv_ne_zero hw.ne')
-      have hA : Measure.QuasiMeasurePreserving (A j) volume volume := by
+      have hA : Measure.QuasiMeasurePreserving (fun x => A x - j) volume volume := by
         simpa [A, Function.comp_def, smul_eq_mul, div_eq_inv_mul] using
           (hpres j).comp (hmul.comp (hpres a))
       filter_upwards [hA.ae hfd] with x hx
-      have hAffine : HasDerivAt (A j) (1 / w) x :=
+      have hAffine : HasDerivAt (fun x => A x - j) (1 / w) x :=
         (((hasDerivAt_id x).sub_const a).div_const w).sub_const (j : ℝ)
       simpa [Function.comp_def] using hx.comp x hAffine
     filter_upwards [ae_all_iff.2 hae] with x hx
-    have hs : HasDerivAt (fun y => ∑ j ∈ Finset.range n, f (A j y)) 0 x := by
-      simpa only [Finset.sum_const_zero] using
+    have hs : HasDerivAt (fun y => H (A y)) 0 x := by
+      simpa only [Finset.sum_const_zero, H] using
         HasDerivAt.fun_sum (u := Finset.range n) (fun j _ => hx j)
     simpa [g] using (hs.const_mul w).const_add a
 
