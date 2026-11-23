@@ -19027,6 +19027,33 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpAlignedFourSplit.original_aligned_four_piece_split
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpAlignedFourSplit.original_aligned_sharp_four_actual_grids_closed
 
+/-! ### GaussianBetaSharpAlignedThreeSplit -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpAlignedThreeSplit.tailWidth
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpAlignedThreeSplit.threePieces
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpAlignedThreeSplit.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpAlignedThreeSplit.tail_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpAlignedThreeSplit.original_aligned_three_piece_split
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpAlignedThreeSplit.original_modulus_three_piece_split
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpAlignedThreeSplit.original_Euler_three_piece_split
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpAlignedThreeSplit.actual_sharp_three_contiguous_grids_aligned_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpAlignedThreeSplit.actual_source_only_Euler_three_contiguous_grids_closed
+
+/-! ### GaussianBetaSharpPieceAlignment -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.low
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.middle
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.tail
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.three_pieces_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.middle_supported
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.low_supported
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.doubled_half_point
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.middle_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.original_middle_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.tail_width_alignment
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.tail_beta_alignment
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.tail_euler_alignment
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.original_tail_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment.actual_sharp_contiguous_tail_width_closed
+
 /-! ### GaussianEulerUpperTailPointwise -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailPointwise.referenceTop
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailPointwise.referenceBottom
@@ -19565,6 +19592,20 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.actual_original_upper_shared_grid_monomial_transfer_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.original_source_only_upper_beta_Euler_exact_monomial_cap_closed
 
+/-! ### GaussianBetaMiddleDyadicBudget -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.minimumMesh
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.minimumAuxiliary
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.auxiliary_threshold
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.monomial_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.residual_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.scalar_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.original_middle_dyadic_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaMiddleDyadicBudget.actual_middle_original_independent_queries_dyadic_budget_closed
+
 /-! ### RationalUpperRepresentation -/
 #print axioms LeanProofs.IPRA.Analysis.RationalUpperRepresentation.upper_from_representations
 #print axioms LeanProofs.IPRA.Analysis.RationalUpperRepresentation.original_scalar_upper_to_native_signed_representation_closed
@@ -19712,6 +19753,18 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowGridError.original_low_grid_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowGridError.original_low_grid_unit_error
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowGridError.original_low_interval_beta_Euler_finite_grid_closed
+
+/-! ### GaussianBetaLowDyadicBudget -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowDyadicBudget.minimumPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowDyadicBudget.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowDyadicBudget.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowDyadicBudget.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowDyadicBudget.query_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowDyadicBudget.two_query_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowDyadicBudget.original_low_dyadic_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowDyadicBudget.original_sharp_low_dyadic_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowDyadicBudget.actual_original_low_grid_exact_degree_dyadic_budget_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaLowDyadicBudget.original_eta_to_one_arbitrary_fixed_degree_budget_closed
 
 /-! ### GaussianBetaKernelLowerTransformedPower -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelLowerTransformedPower.numerator
@@ -19945,6 +19998,28 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTail.actual_quarter_sample_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTail.original_grid
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTail.original_contiguous_upper_tail_one_quarter_degree_observation_closed
+
+/-! ### GaussianBetaContiguousUpperTailBudget -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.fixedNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.fixedDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.meshCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.precisionCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.queryCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.minimumMesh
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.minimumPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.minimumQuery
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.exactNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.exactDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.coarseNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.coarseDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.fixed_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.fixed_quarter_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.original_exact_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.original_coarse_envelope
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.original_cofinal_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaContiguousUpperTailBudget.original_contiguous_single_fixed_decay_observation_budget_closed
 
 /-! ### GaussianBetaZeroExtensionAligned -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaZeroExtensionAligned.equal_time_cleared
@@ -28593,6 +28668,61 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaFiniteEulerAtCutoff.observation
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaFiniteEulerAtCutoff.original_at_cutoff
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaFiniteEulerAtCutoff.original_degree_independent_cutoff_finite_Euler_inverse_closed
+
+/-! ### GaussianBetaSharpFiniteBinding -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.fullBeta
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.fullEuler
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.multiplier
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.multiplier_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.support_and_exterior_width
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.finite_support_comparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.original_finite_euler
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.original_improper_euler
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.actual_extended_grid_original_finite_Euler_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.actual_shared_grid_original_improper_Euler_closed
+
+/-! ### GaussianBetaSharpCofinalSchedule -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.cutoff
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.factor
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.supportCount
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.minimumH
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.minimumPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.minimumTailQuery
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.minimumMiddleQuery
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.cutoff_bounds
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.degree_two
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.original_partition
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.factor_growth
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.mesh_budgets
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.factor_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.support_width_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.support_cells
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.low_count_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.precision_budgets
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.finite_binding_time_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.split_time_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.middle_time_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.tail_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.actual_sharp_cutoff_dominates_fixed_degree_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.actual_sharp_source_only_support_mesh_schedule_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.actual_sharp_evaluator_clock_spends_original_split_budget_closed
+
+/-! ### GaussianEulerSharpResidualAssembly -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpResidualAssembly.panel_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpResidualAssembly.split_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpResidualAssembly.boundNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpResidualAssembly.boundDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpResidualAssembly.sampler_distance
+
+/-! ### GaussianEulerSharpFiniteRate -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpFiniteRate.finitePoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpFiniteRate.improperPoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpFiniteRate.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpFiniteRate.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpFiniteRate.cofinal_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpFiniteRate.original_sharp_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpFiniteRate.actual_finite_Euler_sharp_rate_to_original_improper_integral_closed
 
 /-! ### GaussianBetaPrimitiveLowerEndpoint -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveLowerEndpoint.rootDen
