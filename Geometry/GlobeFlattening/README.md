@@ -13,8 +13,13 @@ source patch. [Lean theorem](Lean/GlobeFlattening/FlatteningTheorem.lean)
 The Lean construction uses continuous monotone staircases with derivative
 zero almost everywhere. One sequence approximates longitude, and rescaling
 it by `Yₙ(y) = Xₙ(2y) / 2` gives the latitude sequence. Each longitude
-approximant is a finite sum of scaled copies of the fixed point of the
-Cantor averaging rule.
+approximant sums scaled copies of the Cantor distribution function. The
+distribution comes from the binary digits of a uniform point in `[0, 1)`,
+read in base three after replacing each `1` with `2`. The digit encoding
+is injective, so the distribution has no atoms and its distribution
+function is continuous. Support on the null Cantor set makes the
+distribution singular, so its distribution function has derivative zero
+almost everywhere.
 Positive longitude correction weights give a strict slope bound on every
 nontrivial horizontal interval. Summation by parts recovers the sinusoidal
 term as the boundary term. The two formulas bound the horizontal and
@@ -26,9 +31,11 @@ rescaled, giving the joint derivative. Scaling the scalar tolerance by
 
 Strict row increase gives injectivity on the closed coordinate rectangle.
 Compactness makes the map an embedding, and the interior maps onto the
-open region between the continuous longitude endpoint curves. The same
-strict width comparison proves total area excess and local exceptional
-area. The uniform projection error bounds the total area from above.
+open region between the continuous longitude endpoint curves. The strict
+width comparison proves total area excess. For local exceptional area,
+the proof pulls the open target patch back to coordinates, picks a
+rectangle there, and uses the same width comparison on that rectangle.
+The uniform projection error bounds the total area from above.
 [Chart homeomorphism](Lean/GlobeFlattening/TriangularChart.lean)
 
 The inverse derivative is the tangent lift. Applying its linear left

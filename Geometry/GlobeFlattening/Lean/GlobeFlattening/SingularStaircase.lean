@@ -1,113 +1,28 @@
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.Calculus.Monotone
+import Mathlib.MeasureTheory.Function.Floor
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
-import Mathlib.Topology.ContinuousMap.Bounded.Normed
+import Mathlib.Probability.CDF
 import Mathlib.Topology.Instances.CantorSet
-import Mathlib.Topology.MetricSpace.Contracting
 
 /-!
 # Singular staircases close to the identity
 
-The Cantor staircase is a fixed point of the Cantor averaging operator
-on continuous monotone functions with prescribed endpoint plateaus.
-The fixed-point equation gives local constancy off the null Cantor set.
+The Cantor staircase is the cumulative distribution function of the
+pushforward of uniform measure on `[0, 1)` by the binary-to-ternary
+encoding. The measure has no atoms and is supported on the null Cantor set.
 Finite sums of scaled copies approximate the clamped identity on any
 interval and have derivative zero almost everywhere.
 -/
 
-open Filter MeasureTheory Set
-open scoped Topology ENNReal NNReal
+open Filter MeasureTheory ProbabilityTheory Set
+open scoped Topology ENNReal
 
 namespace GlobeFlattening
 
 noncomputable section
-
-private abbrev Profile := BoundedContinuousFunction ℝ ℝ
-
-private def normalized : Set Profile :=
-  {f | Monotone f ∧ (∀ x ≤ 0, f x = 0) ∧ ∀ x ≥ 1, f x = 1}
-
-private theorem isClosed_normalized : IsClosed normalized := by
-  unfold normalized
-  simp only [setOf_and, setOf_forall]
-  exact (isClosed_monotone.preimage BoundedContinuousFunction.continuous_coe).inter
-    ((isClosed_iInter fun x => isClosed_iInter fun _ =>
-      isClosed_eq (continuous_eval_const x) continuous_const).inter
-     (isClosed_iInter fun x => isClosed_iInter fun _ =>
-      isClosed_eq (continuous_eval_const x) continuous_const))
-
-private theorem normalized_nonempty : normalized.Nonempty := by
-  let proj := projIcc (0 : ℝ) 1 zero_le_one
-  let F := BoundedContinuousFunction.ofNormedAddCommGroup (Subtype.val ∘ proj)
-    (continuous_subtype_val.comp continuous_projIcc) 1 (fun x => by
-      simpa only [Function.comp_apply, Real.norm_of_nonneg (proj x).2.1] using (proj x).2.2)
-  exact ⟨F, monotone_projIcc zero_le_one,
-    fun _ h => congrArg Subtype.val (projIcc_of_le_left zero_le_one h),
-    fun _ h => congrArg Subtype.val (projIcc_of_right_le zero_le_one h)⟩
-
-private def cantorAverage (f : Profile) : Profile := (1 / 2 : ℝ) •
-  (f.compContinuous ⟨fun x => 3 * x, by fun_prop⟩ +
-   f.compContinuous ⟨fun x => 3 * x - 2, by fun_prop⟩)
-
-private theorem cantorAverage_apply (f : Profile) (x : ℝ) :
-    cantorAverage f x = (f (3 * x) + f (3 * x - 2)) / 2 := by
-  change (1 / 2 : ℝ) * (f (3 * x) + f (3 * x - 2)) = _
-  ring
-
-private theorem cantorAverage_normalized : MapsTo cantorAverage normalized normalized := by
-  rintro f ⟨hm, h₀, h₁⟩
-  refine ⟨?_, ?_, ?_⟩
-  · intro x y h
-    simp only [cantorAverage_apply]
-    exact div_le_div_of_nonneg_right
-      (add_le_add (hm (by linarith)) (hm (by linarith))) (by norm_num)
-  · intro x hx
-    simp [cantorAverage_apply, h₀ _ (by linarith : 3 * x ≤ 0),
-      h₀ _ (by linarith : 3 * x - 2 ≤ 0)]
-  · intro x hx
-    norm_num [cantorAverage_apply, h₁ _ (by linarith : 1 ≤ 3 * x),
-      h₁ _ (by linarith : 1 ≤ 3 * x - 2)]
-
-private theorem contracting_cantorAverage :
-    ContractingWith (1 / 2) (cantorAverage_normalized.restrict cantorAverage _ _) := by
-  refine ⟨by norm_num, LipschitzWith.of_dist_le_mul fun f g => ?_⟩
-  change dist (cantorAverage f.val) (cantorAverage g.val) ≤ (1 / 2 : ℝ) * dist f.val g.val
-  apply BoundedContinuousFunction.dist_le_iff_of_nonempty.mpr
-  intro x
-  rw [cantorAverage_apply, cantorAverage_apply, Real.dist_eq, ← sub_div, abs_div,
-    abs_of_pos (show (0 : ℝ) < 2 by norm_num), one_div_mul_eq_div,
-    div_le_div_iff_of_pos_right (show (0 : ℝ) < 2 by norm_num)]
-  rcases le_total x (1 / 2) with hx | hx
-  · have hx' : 3 * x - 2 ≤ 0 := by linarith
-    rw [f.2.2.1 _ hx', g.2.2.1 _ hx', add_zero, add_zero, ← Real.dist_eq]
-    exact BoundedContinuousFunction.dist_coe_le_dist (f := f.val) (g := g.val) (3 * x)
-  · have hx' : 1 ≤ 3 * x := by linarith
-    rw [f.2.2.2 _ hx', g.2.2.2 _ hx', add_sub_add_left_eq_sub, ← Real.dist_eq]
-    exact BoundedContinuousFunction.dist_coe_le_dist (f := f.val) (g := g.val) (3 * x - 2)
-
-private theorem cantor_locally_constant (f : normalized)
-    (hfix : ∀ x, cantorAverage f.val x = f.val x) (n : ℕ) {x : ℝ}
-    (hx : x ∉ preCantorSet n) : ∀ᶠ y in 𝓝 x, f.val y = f.val x := by
-  induction n generalizing x with
-  | zero =>
-    simp only [preCantorSet_zero, mem_Icc, not_and_or, not_le] at hx
-    rcases hx with hx' | hx'
-    · filter_upwards [Iio_mem_nhds hx'] with y hy
-      rw [f.2.2.1 _ hy.le, f.2.2.1 _ hx'.le]
-    · filter_upwards [Ioi_mem_nhds hx'] with y hy
-      rw [f.2.2.2 _ hy.le, f.2.2.2 _ hx'.le]
-  | succ n ih =>
-    have ha : 3 * x ∉ preCantorSet n := fun h => hx
-      (Or.inl ⟨3 * x, h, by ring⟩)
-    have hb : 3 * x - 2 ∉ preCantorSet n := fun h => hx
-      (Or.inr ⟨3 * x - 2, h, by ring⟩)
-    have hA : Continuous (fun y : ℝ => 3 * y) := by fun_prop
-    have hB : Continuous (fun y : ℝ => 3 * y - 2) := by fun_prop
-    filter_upwards [(hA.tendsto x).eventually (ih ha), (hB.tendsto x).eventually (ih hb)]
-      with y hy hy'
-    conv_lhs => rw [← hfix y, cantorAverage_apply, hy, hy']
-    rw [← cantorAverage_apply, hfix]
 
 private theorem volume_cantorSet : volume cantorSet = 0 := by
   let c := ENNReal.ofReal (1 / 3)
@@ -138,17 +53,60 @@ private theorem volume_cantorSet : volume cantorSet = 0 := by
 theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
     Continuous f ∧ Monotone f ∧ (∀ x ≤ 0, f x = 0) ∧ (∀ x ≥ 1, f x = 1) ∧
       (∀ᵐ x ∂volume, HasDerivAt f 0 x) := by
-  letI : Nonempty normalized := normalized_nonempty.to_subtype
-  letI : CompleteSpace normalized := completeSpace_coe_iff_isComplete.mpr isClosed_normalized.isComplete
-  let f := ContractingWith.fixedPoint _ contracting_cantorAverage
-  have hfix (x : ℝ) : cantorAverage f.val x = f.val x :=
-    congrArg (fun g : normalized => g.val x) contracting_cantorAverage.fixedPoint_isFixedPt.eq
-  refine ⟨f.val, f.val.continuous, f.2.1, f.2.2.1, f.2.2.2, ?_⟩
-  have hae : ∀ᵐ x ∂volume, x ∉ cantorSet := by
-    simpa only [ae_iff, not_not, setOf_mem_eq] using volume_cantorSet
-  filter_upwards [hae] with x hx
-  obtain ⟨n, hn⟩ : ∃ n, x ∉ preCantorSet n := by simpa [cantorSet] using hx
-  exact (hasDerivAt_const x (f.val x)).congr_of_eventuallyEq (cantor_locally_constant f hfix n hn)
+  let digit : Fin 2 → Fin 3 := fun d => if d = 0 then 0 else 2
+  have hdigit : Function.Injective digit := by decide
+  have hne1 (d : Fin 2) : digit d ≠ 1 := by fin_cases d <;> decide
+  let encode (x : ℝ) := Real.ofDigits (digit ∘ Real.digits x 2)
+  have hmem (x : ℝ) : encode x ∈ cantorSet :=
+    ofDigits_zero_two_sequence_mem_cantorSet fun i => hne1 (Real.digits x 2 i)
+  have hmeas : Measurable encode := by
+    refine Real.continuous_ofDigits.measurable.comp (measurable_pi_lambda _ fun i => ?_)
+    exact (measurable_of_countable (digit ∘ Fin.ofNat 2)).comp
+      (measurable_id.mul_const ((2 : ℝ) ^ (i + 1))).nat_floor
+  have hinj : InjOn encode (Ico 0 1) := by
+    intro x hx y hy hxy
+    have h := ofDigits_zero_two_sequence_unique (fun i => hne1 (Real.digits x 2 i))
+      (fun i => hne1 (Real.digits y 2 i)) hxy
+    rw [← Real.ofDigits_digits (b := 2) (by decide) hx,
+      ← Real.ofDigits_digits (b := 2) (by decide) hy]
+    exact congrArg Real.ofDigits (funext fun i => hdigit (congrFun h i))
+  let μ := (volume.restrict (Ico 0 1)).map encode
+  have hμ (s : Set ℝ) (hs : MeasurableSet s) : μ s = volume (encode ⁻¹' s ∩ Ico 0 1) := by
+    dsimp only [μ]
+    rw [Measure.map_apply hmeas hs, Measure.restrict_apply' measurableSet_Ico]
+  letI : IsProbabilityMeasure μ := ⟨by
+    rw [hμ _ MeasurableSet.univ]
+    simp [Real.volume_Ico]⟩
+  have hnull (x : ℝ) : volume (encode ⁻¹' {x} ∩ Ico 0 1) = 0 := by
+    apply Set.Subsingleton.measure_zero
+    intro y hy z hz
+    exact hinj hy.2 hz.2 ((mem_singleton_iff.mp hy.1).trans (mem_singleton_iff.mp hz.1).symm)
+  refine ⟨cdf μ, ?_, monotone_cdf μ, ?_, ?_, ?_⟩
+  · apply continuous_iff_continuousAt.mpr
+    intro x
+    rw [(monotone_cdf μ).continuousAt_iff_leftLim_eq_rightLim, (cdf μ).rightLim_eq]
+    have h := ((cdf μ).measure_singleton x).symm
+    rw [measure_cdf μ, hμ _ (measurableSet_singleton x), hnull,
+      ENNReal.ofReal_eq_zero, sub_nonpos] at h
+    exact le_antisymm ((monotone_cdf μ).leftLim_le le_rfl) h
+  · intro x hx
+    have hsubset : encode ⁻¹' Iic x ∩ Ico 0 1 ⊆ encode ⁻¹' {0} ∩ Ico 0 1 := by
+      intro y hy
+      exact ⟨le_antisymm ((mem_Iic.mp hy.1).trans hx)
+        (cantorSet_subset_unitInterval (hmem y)).1, hy.2⟩
+    rw [cdf_eq_real, measureReal_def, hμ _ measurableSet_Iic,
+      measure_mono_null hsubset (hnull 0), ENNReal.toReal_zero]
+  · intro x hx
+    rw [cdf_eq_real, measureReal_def, hμ _ measurableSet_Iic, inter_eq_right.2]
+    · simp [Real.volume_Ico]
+    · exact fun y _ => (cantorSet_subset_unitInterval (hmem y)).2.trans hx
+  · have hpreimage : encode ⁻¹' cantorSetᶜ = ∅ :=
+      eq_empty_iff_forall_notMem.2 (fun x hx => hx (hmem x))
+    have hsing : (cdf μ).measure ⟂ₘ volume := by
+      refine ⟨cantorSetᶜ, isClosed_cantorSet.measurableSet.compl, ?_, by simpa using volume_cantorSet⟩
+      simp [measure_cdf μ, hμ _ isClosed_cantorSet.measurableSet.compl, hpreimage]
+    filter_upwards [(cdf μ).ae_hasDerivAt, hsing.rnDeriv_ae_eq_zero] with x hd hz
+    simpa [show (cdf μ).measure.rnDeriv volume x = 0 from hz] using hd
 
 /-- Monotone singular approximants to the identity on a compact interval. -/
 theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
