@@ -114,14 +114,38 @@ theorem refineStage_on_core {old : ℝ × ℝ → ℝ} {target : ℝ → ℝ} {i
   · change x - g.longitude i ≤ g.width - g.margin
     linarith
 
-private theorem dist_le_width {p q : ℝ × ℝ} {width : ℝ}
-    (hx : |p.1 - q.1| ≤ width) (hy : |p.2 - q.2| ≤ width) :
-    dist p q ≤ width := by
-  rw [Prod.dist_eq, Real.dist_eq, Real.dist_eq]
-  exact max_le hx hy
+/-- Each sample in the active cell and frozen row is within one mesh width
+of the point being refined, in the product metric. -/
+private theorem rowSample {i j : ℕ} {p : ℝ × ℝ} {x : ℝ}
+    (hi : i < g.columns) (hj : j ≤ g.transitions)
+    (hp : p.1 ∈ Icc (g.longitude i) (g.longitude (i + 1)))
+    (hx : x ∈ Icc (g.longitude i) (g.longitude (i + 1)))
+    (hclose : |p.2 - g.midlatitude j| ≤ g.width) :
+    (x, g.midlatitude j) ∈ g.rectangle ∧ dist (x, g.midlatitude j) p ≤ g.width := by
+  refine ⟨⟨⟨(g.longitude_mem hi.le).1.trans hx.1,
+      hx.2.trans (g.longitude_mono (Nat.succ_le_of_lt hi))⟩, g.midlatitude_mem hj⟩, ?_⟩
+  rw [Prod.dist_eq, Real.dist_eq, Real.dist_eq, max_le_iff]
+  have ⟨hp₁, hp₂⟩ := hp
+  have ⟨hx₁, hx₂⟩ := hx
+  exact ⟨abs_le.mpr ⟨by linarith [g.longitude_succ i], by linarith [g.longitude_succ i]⟩,
+    (abs_sub_comm _ _).trans_le hclose⟩
 
-/-- Twice the old oscillation over distances of one mesh width bounds the
-uniform change. This includes the layers which interpolate two rows. -/
+/-- An error bound on both nearby row profiles passes through interpolation. -/
+private theorem refineStage_error_of_cell_rows {old : ℝ × ℝ → ℝ} {target : ℝ → ℝ}
+    {p : ℝ × ℝ} (hp : p ∈ g.rectangle) {bound : ℝ}
+    (hrow : ∀ i < g.columns, p.1 ∈ Icc (g.longitude i) (g.longitude (i + 1)) →
+      ∀ j ≤ g.transitions, |p.2 - g.midlatitude j| ≤ g.width →
+        |g.rowRefinement old target j p.1 - old p| ≤ bound) :
+    |g.refineStage old target p - old p| ≤ bound := by
+  obtain ⟨i, hi, hcell⟩ := exists_mesh_cell (width := g.width) g.columns_pos hp.1.1 hp.1.2
+  obtain ⟨j, k, t, hj, hk, ht₀, ht₁, hclosej, hclosek, hblend⟩ :=
+    g.exists_latitude_blend (g.rowRefinement old target) hp.2
+  unfold refineStage
+  rw [← Prod.eta p, hblend p.1, Prod.eta]
+  exact latitude_blend_error ht₀ ht₁ (hrow i hi hcell j hj hclosej) (hrow i hi hcell k hk hclosek)
+
+/-- The uniform change is controlled by the old oscillation over one mesh
+width. Both endpoint samples lie within this distance of the given point. -/
 theorem refineStage_uniform_error {old : ℝ × ℝ → ℝ} {target previous : ℝ → ℝ} {osc : ℝ}
     (hold : g.HasLowerSlope old previous)
     (hgap : ∀ y, target y + g.width ≤ previous y)
@@ -129,51 +153,22 @@ theorem refineStage_uniform_error {old : ℝ × ℝ → ℝ} {target previous : 
     (hosc : ∀ p ∈ g.rectangle, ∀ q ∈ g.rectangle, dist p q ≤ g.width → |old p - old q| ≤ osc)
     {p : ℝ × ℝ} (hp : p ∈ g.rectangle) :
     |g.refineStage old target p - old p| ≤ 2 * osc := by
-  obtain ⟨x, y⟩ := p
-  obtain ⟨i, hi, hx₁, hx₂⟩ := exists_mesh_cell (width := g.width) (count := g.columns)
-    g.columns_pos hp.1.1 hp.1.2
-  change g.longitude i ≤ x at hx₁
-  change x ≤ g.longitude (i + 1) at hx₂
-  obtain ⟨j₁, j₂, t, h₁, h₂, ht₀, ht₁, hclose₁, hclose₂, hblend⟩ :=
-    g.exists_latitude_blend (g.rowRefinement old target) hp.2
-  have hrow (j : ℕ) (hj : j ≤ g.transitions) (hclose : |y - g.midlatitude j| ≤ g.width) :
-      |g.rowRefinement old target j x - old (x, y)| ≤ 2 * osc := by
-    let mid := g.midlatitude j
-    have hmid := g.midlatitude_mem hj
-    have hleft := g.longitude_mem hi.le
-    have hright := g.longitude_mem (Nat.succ_le_of_lt hi)
-    have hmono₁ := hold mid hmid (g.longitude i) hleft x hp.1 hx₁
-    have hmono₂ := hold mid hmid x hp.1 (g.longitude (i + 1)) hright hx₂
-    have hpos : 0 ≤ previous mid := by linarith [hgap mid, hnonneg mid hmid, g.width_pos]
-    have hslope : 0 ≤ g.rowSlope target j := add_nonneg (hnonneg _ hmid) g.width_pos.le
-    have ha := stripProfile_cell_error (old := fun x => old (x, mid)) (slope := g.rowSlope target j)
-      (sub_nonneg.mpr g.margin_lt_width.le) (sub_lt_self _ g.margin_pos) hslope
-      (g.cell_rise hold hgap hj) hi hx₁ hx₂
-      ((mul_nonneg hpos (sub_nonneg.mpr hx₁)).trans hmono₁ |> sub_nonneg.mp)
-      ((mul_nonneg hpos (sub_nonneg.mpr hx₂)).trans hmono₂ |> sub_nonneg.mp)
-    have hrise : old (g.longitude (i + 1), mid) - old (g.longitude i, mid) ≤ osc := by
-      apply le_trans (le_abs_self _)
-      apply hosc _ ⟨hright, hmid⟩ _ ⟨hleft, hmid⟩
-      apply dist_le_width
-      · have hstep := g.longitude_succ i
-        change |g.longitude (i + 1) - g.longitude i| ≤ g.width
-        rw [hstep, add_sub_cancel_left, abs_of_nonneg g.width_pos.le]
-      · simp [g.width_pos.le]
-    have hfreeze : |old (x, mid) - old (x, y)| ≤ osc := by
-      apply hosc (x, mid) ⟨hp.1, hmid⟩ (x, y) hp
-      apply dist_le_width
-      · simp [g.width_pos.le]
-      · exact (abs_sub_comm _ _).trans_le hclose
-    calc
-      _ ≤ |g.rowRefinement old target j x - old (x, mid)| + |old (x, mid) - old (x, y)| :=
-        abs_sub_le _ _ _
-      _ ≤ osc + osc := add_le_add (ha.trans hrise) hfreeze
-      _ = 2 * osc := by ring
-  change |latitudeProfile g.layerStart (2 * g.margin) g.transitions
-    (g.rowRefinement old target) (x, y) - old (x, y)| ≤ 2 * osc
-  rw [hblend x]
-  exact latitude_blend_error ht₀ ht₁ (hrow j₁ h₁ hclose₁) (hrow j₂ h₂ hclose₂)
-
+  apply g.refineStage_error_of_cell_rows hp
+  intro i hi hcell j hj hclose
+  have hmono := g.longitude_mono (Nat.le_succ i)
+  obtain ⟨hleft, hdleft⟩ := g.rowSample hi hj hcell ⟨le_rfl, hmono⟩ hclose
+  obtain ⟨hright, hdright⟩ := g.rowSample hi hj hcell ⟨hmono, le_rfl⟩ hclose
+  have hlo := (abs_le.mp (hosc _ hleft p hp hdleft)).1
+  have hhi := (abs_le.mp (hosc _ hright p hp hdright)).2
+  have hosc₀ := (abs_nonneg _).trans (hosc _ hleft p hp hdleft)
+  have hb : g.rowRefinement old target j p.1 ∈
+      Icc (old (g.longitude i, g.midlatitude j)) (old (g.longitude (i + 1), g.midlatitude j)) :=
+    stripProfile_cell_bounds (old := fun x => old (x, g.midlatitude j))
+    (sub_nonneg.mpr g.margin_lt_width.le) (sub_lt_self _ g.margin_pos)
+    (add_nonneg (hnonneg _ (g.midlatitude_mem hj)) g.width_pos.le)
+    (g.cell_rise hold hgap hj) hi hcell.1 hcell.2
+  obtain ⟨hb₁, hb₂⟩ := hb
+  exact abs_le.mpr ⟨by linarith [hb₁], by linarith [hb₂]⟩
 
 /-- Inside an old affine tile, only the change in slope contributes to the
 new error. It is enough that the affine and slope conditions hold one mesh
@@ -188,60 +183,46 @@ theorem refineStage_local_error {old : ℝ × ℝ → ℝ} {target previous : �
       previous q.2 ≤ a ∧ a ≤ previous q.2 + accuracy) :
     |g.refineStage old target p - old p| ≤ (accuracy + gap) * g.width := by
   obtain ⟨x, y⟩ := p
-  obtain ⟨i, hi, hx₁, hx₂⟩ := exists_mesh_cell (width := g.width) (count := g.columns)
-    g.columns_pos hp.1.1 hp.1.2
-  change g.longitude i ≤ x at hx₁
-  change x ≤ g.longitude (i + 1) at hx₂
-  obtain ⟨j₁, j₂, t, h₁, h₂, ht₀, ht₁, hclose₁, hclose₂, hblend⟩ :=
-    g.exists_latitude_blend (g.rowRefinement old target) hp.2
-  have hrow (j : ℕ) (hj : j ≤ g.transitions) (hclose : |y - g.midlatitude j| ≤ g.width) :
-      |g.rowRefinement old target j x - old (x, y)| ≤ (accuracy + gap) * g.width := by
-    let mid := g.midlatitude j
-    have hmid := g.midlatitude_mem hj
-    have hstep := g.longitude_succ i
-    have hcloseY : |mid - y| ≤ g.width := (abs_sub_comm _ _).trans_le hclose
-    have hcloseL : dist (g.longitude i, mid) (x, y) ≤ g.width :=
-      dist_le_width (abs_le.mpr ⟨by linarith, by linarith [g.width_pos]⟩) hcloseY
-    have hcloseR : dist (g.longitude (i + 1), mid) (x, y) ≤ g.width :=
-      dist_le_width (abs_le.mpr ⟨by linarith [g.width_pos], by linarith⟩) hcloseY
-    have hcloseM : dist (x, mid) (x, y) ≤ g.width :=
-      dist_le_width (by simp [g.width_pos.le]) hcloseY
-    have hl := haffine (g.longitude i, mid) ⟨g.longitude_mem hi.le, hmid⟩ hcloseL
-    have hr := haffine (g.longitude (i + 1), mid)
-      ⟨g.longitude_mem (Nat.succ_le_of_lt hi), hmid⟩ hcloseR
-    have ho := haffine (x, y) hp (by simpa using g.width_pos.le)
-    have ha := haccuracy (x, mid) ⟨hp.1, hmid⟩ hcloseM
-    have hb : g.rowSlope target j ≤ a := (hgap mid).trans ha.1
-    have habound : a - g.rowSlope target j ≤ accuracy + gap := by
-      unfold rowSlope
-      dsimp [mid] at ha
-      linarith [ha.2, hgap_upper (g.midlatitude j), g.width_pos]
-    have hrise : old (g.longitude (i + 1), mid) - old (g.longitude i, mid) = a * g.width := by
-      rw [hr, hl]
-      dsimp
-      rw [hstep]
-      ring
-    unfold rowRefinement
-    change |stripProfile g.left g.width (g.width - g.margin) (g.rowSlope target j) g.columns
-        (fun x => old (x, mid)) x - old (x, y)| ≤ _
-    rw [stripProfile_eq_cellProfile (sub_nonneg.mpr g.margin_lt_width.le)
-      (sub_lt_self _ g.margin_pos) hi hx₁ hx₂]
-    change |old (g.longitude i, mid) + cellProfile _ _ _
-      (old (g.longitude (i + 1), mid) - old (g.longitude i, mid))
-      (x - g.longitude i) - old (x, y)| ≤ _
-    rw [hrise, hl, ho]
-    have hrewrite : ∀ v : ℝ,
-        intercept + a * (g.longitude i, mid).1 + v - (intercept + a * (x, y).1) =
-          v - a * (x - g.longitude i) := by intro v; dsimp; ring
-    rw [hrewrite]
-    refine (cellProfile_affine_error (sub_nonneg.mpr g.margin_lt_width.le)
-      (sub_lt_self _ g.margin_pos) hb (sub_nonneg.mpr hx₁) (by linarith)).trans ?_
-    exact (mul_le_mul_of_nonneg_left (by linarith [g.margin_pos]) (sub_nonneg.mpr hb)).trans
-      (mul_le_mul_of_nonneg_right habound g.width_pos.le)
-  change |latitudeProfile g.layerStart (2 * g.margin) g.transitions
-    (g.rowRefinement old target) (x, y) - old (x, y)| ≤ _
-  rw [hblend x]
-  exact latitude_blend_error ht₀ ht₁ (hrow j₁ h₁ hclose₁) (hrow j₂ h₂ hclose₂)
+  apply g.refineStage_error_of_cell_rows hp
+  intro i hi hcell j hj hclose
+  have ⟨hx₁, hx₂⟩ := hcell
+  let mid := g.midlatitude j
+  have hstep := g.longitude_succ i
+  have hmono := g.longitude_mono (Nat.le_succ i)
+  obtain ⟨hleft, hdleft⟩ := g.rowSample hi hj hcell ⟨le_rfl, hmono⟩ hclose
+  obtain ⟨hright, hdright⟩ := g.rowSample hi hj hcell ⟨hmono, le_rfl⟩ hclose
+  obtain ⟨hmiddle, hdmiddle⟩ := g.rowSample hi hj hcell hcell hclose
+  have hl := haffine _ hleft hdleft
+  have hr := haffine _ hright hdright
+  have ho := haffine (x, y) hp (by simpa using g.width_pos.le)
+  have ha := haccuracy _ hmiddle hdmiddle
+  have hb : g.rowSlope target j ≤ a := (hgap mid).trans ha.1
+  have habound : a - g.rowSlope target j ≤ accuracy + gap := by
+    unfold rowSlope
+    dsimp [mid] at ha
+    linarith [ha.2, hgap_upper (g.midlatitude j), g.width_pos]
+  have hrise : old (g.longitude (i + 1), mid) - old (g.longitude i, mid) = a * g.width := by
+    rw [hr, hl]
+    dsimp
+    rw [hstep]
+    ring
+  unfold rowRefinement
+  change |stripProfile g.left g.width (g.width - g.margin) (g.rowSlope target j) g.columns
+      (fun x => old (x, mid)) x - old (x, y)| ≤ _
+  rw [stripProfile_eq_cellProfile (sub_nonneg.mpr g.margin_lt_width.le)
+    (sub_lt_self _ g.margin_pos) hi hx₁ hx₂]
+  change |old (g.longitude i, mid) + cellProfile _ _ _
+    (old (g.longitude (i + 1), mid) - old (g.longitude i, mid))
+    (x - g.longitude i) - old (x, y)| ≤ _
+  rw [hrise, hl, ho]
+  have hrewrite : ∀ v : ℝ,
+      intercept + a * (g.longitude i, mid).1 + v - (intercept + a * (x, y).1) =
+        v - a * (x - g.longitude i) := by intro v; dsimp; ring
+  rw [hrewrite]
+  refine (cellProfile_affine_error (sub_nonneg.mpr g.margin_lt_width.le)
+    (sub_lt_self _ g.margin_pos) hb (sub_nonneg.mpr hx₁) (by linarith)).trans ?_
+  exact (mul_le_mul_of_nonneg_left (by linarith [g.margin_pos]) (sub_nonneg.mpr hb)).trans
+    (mul_le_mul_of_nonneg_right habound g.width_pos.le)
 
 end
 

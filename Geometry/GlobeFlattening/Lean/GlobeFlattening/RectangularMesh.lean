@@ -113,86 +113,60 @@ theorem interpolate_at_core (g : RectangularMesh) (row : ℕ → ℝ → ℝ)
     dsimp
     linarith
 
-private theorem layer_blend (g : RectangularMesh) (row : ℕ → ℝ → ℝ)
-    {j : ℕ} {y : ℝ} (hj : j < g.transitions)
-    (hy₁ : g.latitude (j + 1) - g.margin ≤ y)
-    (hy₂ : y ≤ g.latitude (j + 1) + g.margin) :
-    ∀ x, latitudeProfile g.layerStart (2 * g.margin) g.transitions row (x, y) =
-      (1 - latitudeWeight (g.layerStart j) (2 * g.margin) y) * row j x +
-        latitudeWeight (g.layerStart j) (2 * g.margin) y * row (j + 1) x := by
-  intro x
-  apply latitudeProfile_at_layer (by linarith [g.margin_pos]) hj
-  · intro i hi
-    have hgrid := g.latitude_mono (show i + 1 ≤ j by omega)
-    have hstep := g.latitude_succ j
-    unfold layerStart
-    dsimp
-    linarith [g.layer_small]
-  · intro i _ hi
-    have hgrid := g.latitude_mono (show j + 1 + 1 ≤ i + 1 by omega)
-    have hstep := g.latitude_succ (j + 1)
-    unfold layerStart
-    dsimp
-    linarith [g.layer_small]
-
-/-- At any latitude in the closed rectangle the interpolation is a convex
-combination of rows whose midpoints are within one mesh width. The row
-indices and weights work for every longitude on that latitude. -/
+/-- Locate the first unfinished interpolation layer, or the last row if
+all layers have finished. This gives the two contributing rows uniformly
+at the boundary and in the interior. -/
 theorem exists_latitude_blend (g : RectangularMesh) (row : ℕ → ℝ → ℝ) {y : ℝ}
     (hy : y ∈ Icc g.bottom (g.latitude (g.transitions + 1))) :
     ∃ i j : ℕ, ∃ t : ℝ, i ≤ g.transitions ∧ j ≤ g.transitions ∧ 0 ≤ t ∧ t ≤ 1 ∧
       |y - g.midlatitude i| ≤ g.width ∧ |y - g.midlatitude j| ≤ g.width ∧
       ∀ x, latitudeProfile g.layerStart (2 * g.margin) g.transitions row (x, y) =
         (1 - t) * row i x + t * row j x := by
-  obtain ⟨j, hj, hyleft, hyright⟩ :=
-    exists_mesh_cell (width := g.width) (count := g.transitions + 1) (by omega) hy.1 hy.2
-  change g.latitude j ≤ y at hyleft
-  change y ≤ g.latitude (j + 1) at hyright
-  have hleft_margin : g.latitude j - g.margin ≤ y := by linarith [g.margin_pos]
-  have hright_margin : y ≤ g.latitude (j + 1) + g.margin := by linarith [g.margin_pos]
-  by_cases hl : 0 < j ∧ y < g.latitude j + g.margin
-  · let i := j - 1
-    have hij : i + 1 = j := by dsimp [i]; omega
-    have hi : i < g.transitions := by omega
-    let t := latitudeWeight (g.layerStart i) (2 * g.margin) y
-    have ht : 0 ≤ t ∧ t ≤ 1 := latitudeWeight_bounds (by linarith [g.margin_pos])
-    have hprev : g.latitude i ≤ g.latitude j := g.latitude_mono (by omega)
-    refine ⟨i, j, t, by omega, by omega, ht.1, ht.2, ?_, ?_, ?_⟩
-    · exact g.midlatitude_close (by linarith) (by rw [hij]; exact hl.2.le)
-    · exact g.midlatitude_close hleft_margin hright_margin
-    · have h := g.layer_blend row (y := y) hi (by simpa only [hij] using hleft_margin)
-        (by simpa only [hij] using hl.2.le)
-      simpa only [hij, t] using h
-  by_cases hr : j < g.transitions ∧ g.latitude (j + 1) - g.margin < y
+  have hex : ∃ j, g.transitions ≤ j ∨ y ≤ g.latitude (j + 1) + g.margin :=
+    ⟨g.transitions, Or.inl le_rfl⟩
+  let j := Nat.find hex
+  have hcount : j ≤ g.transitions := Nat.find_min' hex (Or.inl le_rfl)
+  have hprev (i : ℕ) (hi : i < j) : g.latitude (i + 1) + g.margin ≤ y :=
+    (lt_of_not_ge fun h => Nat.find_min hex hi (Or.inr h)).le
+  have hbefore (i : ℕ) (hi : i < j) : g.layerStart i + 2 * g.margin ≤ y := by
+    unfold layerStart
+    linarith [hprev i hi]
+  have hleft : g.latitude j - g.margin ≤ y := by
+    rcases Nat.eq_zero_or_pos j with hz | hpos
+    · rw [hz]
+      simpa [latitude, meshPoint] using (sub_le_self g.bottom g.margin_pos.le).trans hy.1
+    · have h := hprev (j - 1) (by omega)
+      rw [show j - 1 + 1 = j by omega] at h
+      linarith [g.margin_pos]
+  have hright : y ≤ g.latitude (j + 1) + g.margin := by
+    rcases Nat.find_spec hex with hlast | hright
+    · have h : j = g.transitions := le_antisymm hcount hlast
+      rw [h]
+      linarith [hy.2, g.margin_pos]
+    · exact hright
+  have hmid := g.midlatitude_close hleft hright
+  have hw : 0 < 2 * g.margin := by positivity [g.margin_pos]
+  by_cases hj : j < g.transitions ∧ g.layerStart j ≤ y
   · let t := latitudeWeight (g.layerStart j) (2 * g.margin) y
-    have ht : 0 ≤ t ∧ t ≤ 1 := latitudeWeight_bounds (by linarith [g.margin_pos])
-    have hnext : g.latitude (j + 1) ≤ g.latitude (j + 1 + 1) :=
-      g.latitude_mono (Nat.le_succ _)
-    refine ⟨j, j + 1, t, by omega, by omega, ht.1, ht.2,
-      g.midlatitude_close hleft_margin hright_margin, g.midlatitude_close hr.2.le ?_, ?_⟩
-    · linarith
-    · exact g.layer_blend row hr.1 hr.2.le hright_margin
-  have hmid := g.midlatitude_close hleft_margin hright_margin
-  refine ⟨j, j, 0, by omega, by omega, le_rfl, zero_le_one, hmid, hmid, ?_⟩
+    have ht := latitudeWeight_bounds (start := g.layerStart j) (y := y) hw
+    have hmid' : |y - g.midlatitude (j + 1)| ≤ g.width :=
+      g.midlatitude_close hj.2
+        (hright.trans (add_le_add (g.latitude_mono (Nat.le_succ _)) le_rfl))
+    refine ⟨j, j + 1, t, hcount, Nat.succ_le_of_lt hj.1, ht.1, ht.2, hmid, hmid', ?_⟩
+    intro x
+    apply latitudeProfile_at_layer hw hj.1 hbefore
+    intro i _ hi
+    have hgrid := g.latitude_mono (show j + 2 ≤ i + 1 by omega)
+    unfold layerStart
+    dsimp
+    linarith [g.latitude_succ (j + 1), g.layer_small]
+  refine ⟨j, j, 0, hcount, hcount, le_rfl, zero_le_one, hmid, hmid, ?_⟩
   intro x
-  have heq : latitudeProfile g.layerStart (2 * g.margin) g.transitions row (x, y) =
-      row j x := by
-    apply latitudeProfile_at_core (by linarith [g.margin_pos]) (by omega : j ≤ g.transitions)
-    · intro i hi
-      have hgrid := g.latitude_mono (show i + 1 ≤ j by omega)
-      have hmargin : g.latitude j + g.margin ≤ y :=
-        le_of_not_gt fun h => hl ⟨by omega, h⟩
-      unfold layerStart
-      dsimp
-      linarith
-    · intro i hi hji
-      have hgrid := g.latitude_mono (show j + 1 ≤ i + 1 by omega)
-      have hmargin : y ≤ g.latitude (j + 1) - g.margin :=
-        le_of_not_gt fun h => hr ⟨by omega, h⟩
-      unfold layerStart
-      dsimp
-      linarith
-  simpa using heq
+  simp only [sub_zero, one_mul, zero_mul, add_zero]
+  apply latitudeProfile_at_core hw hcount hbefore
+  intro i hi hji
+  have hstart : y ≤ g.layerStart j := le_of_not_ge fun h => hj ⟨lt_of_le_of_lt hji hi, h⟩
+  exact hstart.trans (sub_le_sub_right (g.latitude_mono (Nat.succ_le_succ hji)) _)
 
 end RectangularMesh
 
