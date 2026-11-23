@@ -38,11 +38,14 @@ def source (z R B A N : PTm n) : Fm PTm n :=
 def slack (t : PTm n) : PTm n := succ (succ t)
 def lowerCutoff (t z B N : PTm n) : PTm n := GaussianBetaPrimitiveLowerEndpoint.precision (slack t) z B N
 def denominator (t z R B A N : PTm n) : PTm n := etaDen (lowerCutoff t z B N) A R
-def width (t z R B A N : PTm n) : PTm n := monus (denominator t z R B A N*N) one
+def supportWidth (E N : PTm n) : PTm n := monus (E*N) one
+def width (t z R B A N : PTm n) : PTm n := supportWidth (denominator t z R B A N) N
+
+def supportCells (t z R B E N : PTm n) : PTm n :=
+  GaussianBetaPrimitiveCompactGridAccuracy.cells (demand (slack t) N) z R B (supportWidth E N) E N N
 
 def minimumCells (t z R B A N : PTm n) : PTm n :=
-  GaussianBetaPrimitiveCompactGridAccuracy.cells (demand (slack t) N) z R B
-    (width t z R B A N) (denominator t z R B A N) N N
+  supportCells t z R B (denominator t z R B A N) N
 def gridPrecision (t z B N M : PTm n) : PTm n :=
   GaussianBetaPrimitiveCompactGridAccuracy.precisionAt (demand (slack t) N) z B N M
 def upperPrecision (t z R B A N M : PTm n) : PTm n :=
@@ -56,9 +59,13 @@ theorem degree_positive (z R B A N : PTm n) (h : Γ ⊢[PRAAx] source z R B A N)
     Γ ⊢[PRAAx] le one N :=
   le_trans h.andE₂.andE₁ (le_trans (le_congr (.eqRefl _) (by ipra_ring) (le_add_right R R)) h.andE₂.andE₂)
 
+theorem support_width_endpoint (E N : PTm n) (hE : Γ ⊢[PRAAx] le one E)
+    (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] one+supportWidth E N ≐ E*N :=
+  (eq_add_of_le (positive_product _ _ hE hN)).eqSymm
+
 theorem width_endpoint (t z R B A N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] one+width t z R B A N ≐ denominator t z R B A N*N :=
-  (eq_add_of_le (positive_product _ _ (eta_den_positive _ _ _) hN)).eqSymm
+  support_width_endpoint _ _ (eta_den_positive _ _ _) hN
 
 private theorem endpoint_numerator_congr (p z B b N u v : PTm n) (h : Γ ⊢[PRAAx] u ≐ v) :
     Γ ⊢[PRAAx] endpoint p z B u b N ≐ endpoint p z B v b N := by
@@ -71,20 +78,30 @@ private theorem endpoint_numerator_congr (p z B b N u v : PTm n) (h : Γ ⊢[PRA
         (σ := ![p,z,B,u,b,N]) (σ' := ![p,z,B,v,b,N])
         (fun i => by fin_cases i; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _; exact h; exact .eqRefl _; exact .eqRefl _)
 
+theorem cutoff_lower_endpoint_code (k p z R B A N M : PTm n) :
+    Γ ⊢[PRAAx] scaledEndpoint zero p z B one (supportWidth (etaDen k A R) N) (etaDen k A R) M N ≐
+      GaussianBetaPrimitiveEndpointEncoding.clockScaledEndpoint p z B k A R N M :=
+  qmul_congr (.eqRefl _) (endpoint_numerator_congr p z B _ _ _ _ (by ipra_ring))
+
 theorem lower_endpoint_code (t p z R B A N M : PTm n) :
     Γ ⊢[PRAAx] scaledEndpoint zero p z B one (width t z R B A N) (denominator t z R B A N) M N ≐
       GaussianBetaPrimitiveEndpointEncoding.clockScaledEndpoint p z B (lowerCutoff t z B N) A R N M :=
-  qmul_congr (.eqRefl _) (endpoint_numerator_congr p z B _ _ _ _ (by ipra_ring))
+  cutoff_lower_endpoint_code _ _ _ _ _ _ _ _
+
+theorem support_upper_endpoint_code (p z B E N M : PTm n) (hE : Γ ⊢[PRAAx] le one E)
+    (hN : Γ ⊢[PRAAx] le one N) :
+    Γ ⊢[PRAAx] scaledEndpoint M p z B one (supportWidth E N) E M N ≐
+      GaussianBetaUpperGridEndpoint.scaledEndpoint p z B (E*M) N := by
+  let C := supportWidth E N
+  have eq : Γ ⊢[PRAAx] one*M+C*M ≐ (E*M)*N :=
+    (show Γ ⊢[PRAAx] one*M+C*M ≐ (one+C)*M from by ipra_ring).eqTrans
+      ((congrMul (support_width_endpoint E N hE hN) (.eqRefl M)).eqTrans (by ipra_ring))
+  exact qmul_congr (.eqRefl _) (endpoint_numerator_congr p z B _ _ _ _ eq)
 
 theorem upper_endpoint_code (t p z R B A N M : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] scaledEndpoint M p z B one (width t z R B A N) (denominator t z R B A N) M N ≐
-      GaussianBetaUpperGridEndpoint.scaledEndpoint p z B (denominator t z R B A N*M) N := by
-  let D := denominator t z R B A N
-  let C := width t z R B A N
-  have eq : Γ ⊢[PRAAx] one*M+C*M ≐ (D*M)*N :=
-    (show Γ ⊢[PRAAx] one*M+C*M ≐ (one+C)*M from by ipra_ring).eqTrans
-      ((congrMul (width_endpoint t z R B A N hN) (.eqRefl M)).eqTrans (by ipra_ring))
-  exact qmul_congr (.eqRefl _) (endpoint_numerator_congr p z B _ _ _ _ eq)
+      GaussianBetaUpperGridEndpoint.scaledEndpoint p z B (denominator t z R B A N*M) N :=
+  support_upper_endpoint_code _ _ _ _ _ _ (eta_den_positive _ _ _) hN
 
 private theorem next_clock_errors (t z R B A N M : PTm n) :
     Γ ⊢[PRAAx] le (gridPrecision t z B N M) (minimumPrecision t z R B A N M) ⋏
@@ -130,27 +147,29 @@ theorem upper_error_at (t p q z R B A b N : PTm n)
     (positive_product _ _ (unit_positive t) (unit_positive q)) leRate
     (GaussianBetaUpperGridEndpoint.sampled_endpoint_error p q z R B A b N h)
 
-theorem original_quadrature_euler_error (t p q z R B A N M : PTm n)
-    (h : Γ ⊢[PRAAx] source z R B A N) (hm : Γ ⊢[PRAAx] le (minimumCells t z R B A N) M)
-    (hp : Γ ⊢[PRAAx] le (minimumPrecision t z R B A N M) p) : Γ ⊢[PRAAx]
-    distanceBounded (observation t p z R B A N M) (ap2 eulerF q (eulerData z R B A N))
+/-- The finite telescope and upper endpoint work at every positive
+encoded cutoff. Its actual lower endpoint is the remaining input. -/
+theorem full_support_euler_error (t p q z R B A E N M : PTm n)
+    (h : Γ ⊢[PRAAx] source z R B A N) (hE : Γ ⊢[PRAAx] le one E)
+    (hm : Γ ⊢[PRAAx] le (supportCells t z R B E N) M)
+    (hgrid : Γ ⊢[PRAAx] le (gridPrecision t z B N M) p)
+    (hupper : Γ ⊢[PRAAx] le (GaussianBetaUpperGridEndpoint.precision (slack t) z B (E*M) N) p)
+    (lower : Γ ⊢[PRAAx] bounded (scaledEndpoint zero p z B one (supportWidth E N) E M N) one (unit (slack t))) :
+    Γ ⊢[PRAAx] distanceBounded (quadrature p z B one (supportWidth E N) E M N) (ap2 eulerF q (eulerData z R B A N))
       (unit t+unit q) (unit t*unit q) := by
   let k := slack t
-  let E := denominator t z R B A N
-  let C := width t z R B A N
+  let C := supportWidth E N
   let v := unit k
   let w := unit q
   let D := v*w
   let L := scaledEndpoint zero p z B one C E M N
   let U := scaledEndpoint M p z B one C E M N
-  let Q := observation t p z R B A N M
+  let Q := quadrature p z B one C E M N
   let Y := ap2 eulerF q (eulerData z R B A N)
   have hN := degree_positive z R B A N h
-  have hE : Γ ⊢[PRAAx] le one E := eta_den_positive _ _ _
   have hM : Γ ⊢[PRAAx] le one M :=
     le_trans (GaussianBetaPrimitiveCompactGridAccuracy.mesh_positive (demand k N) z R B C E N N) hm
-  have hp0 := next_clock_errors (Γ := Γ) t z R B A N M
-  have endEq : Γ ⊢[PRAAx] one+C ≐ E*N := width_endpoint t z R B A N hN
+  have endEq : Γ ⊢[PRAAx] one+C ≐ E*N := support_width_endpoint E N hE hN
   have atEnd : Γ ⊢[PRAAx] le (one+C) (E*N) := le_congr endEq.eqSymm (.eqRefl _) (le_refl _)
   have compact : Γ ⊢[PRAAx] GaussianBetaPrimitiveCompactGridAccuracy.source z R B A one C E N N :=
     .andI h.andE₁ (.andI hE (.andI hN (.andI (le_refl _) (.andI atEnd atEnd))))
@@ -159,18 +178,14 @@ theorem original_quadrature_euler_error (t p q z R B A N M : PTm n)
   have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ hV hW
   have integral : Γ ⊢[PRAAx] distanceBounded Q (qsub U L) one v :=
     distance_symmetric _ _ _ _ hV (GaussianBetaPrimitiveGridUnscale.original_dyadic_accuracy k p z R B A one C E N M N
-      compact hm (le_trans hp0.andE₁ hp))
-  have lower : Γ ⊢[PRAAx] bounded L one v :=
-    GaussianRationalReciprocal.bound_congr (lower_endpoint_code t p z R B A N M).eqSymm (.eqRefl _) (.eqRefl _)
-      (GaussianBetaPrimitiveLowerEndpointRefinement.constructive_endpoint_small_at k p z R B A N M
-        h.andE₁ hN hM (le_trans hp0.andE₂.andE₁ hp))
+      compact hm hgrid)
   have small : Γ ⊢[PRAAx] distanceBounded (qsub U L) U one v :=
     distance_drop_subtrahend U L v hV (qmul_canonical _ _) (qmul_canonical _ _) lower
   have upper : Γ ⊢[PRAAx] distanceBounded U Y (v+w) D :=
-    distance_congr (upper_endpoint_code t p z R B A N M hN).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
+    distance_congr (support_upper_endpoint_code p z B E N M hE hN).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
       (upper_error_at k p q z R B A (E*M) N
         (.andI h.andE₁ (.andI h.andE₂.andE₁ (.andI (positive_product _ _ hE hM) (.andI hN h.andE₂.andE₂))))
-        (le_trans hp0.andE₂.andE₂ hp))
+        hupper)
   have enlarge : Γ ⊢[PRAAx] le (one*D) (w*v) := le_of_eq_add (d := zero) (by dsimp only [D]; ipra_ring)
   have intScaled := distance_radius_mono _ _ _ _ _ _ hV hD enlarge integral
   have lowerScaled := distance_radius_mono _ _ _ _ _ _ hV hD enlarge small
@@ -189,6 +204,25 @@ theorem original_quadrature_euler_error (t p q z R B A N M : PTm n)
       le_of_eq_add (d := unit t*w*w) (by dsimp only [V]; ipra_ring)
     exact le_congr lhs.eqSymm rhs.eqSymm reduced
   exact distance_radius_mono _ _ _ _ _ _ hD (positive_product _ _ (unit_positive t) hW) compare combine
+
+theorem original_quadrature_euler_error (t p q z R B A N M : PTm n)
+    (h : Γ ⊢[PRAAx] source z R B A N) (hm : Γ ⊢[PRAAx] le (minimumCells t z R B A N) M)
+    (hp : Γ ⊢[PRAAx] le (minimumPrecision t z R B A N M) p) : Γ ⊢[PRAAx]
+    distanceBounded (observation t p z R B A N M) (ap2 eulerF q (eulerData z R B A N))
+      (unit t+unit q) (unit t*unit q) := by
+  let k := slack t
+  let E := denominator t z R B A N
+  let C := width t z R B A N
+  have hN := degree_positive z R B A N h
+  have hM : Γ ⊢[PRAAx] le one M :=
+    le_trans (GaussianBetaPrimitiveCompactGridAccuracy.mesh_positive (demand k N) z R B C E N N) hm
+  have hp0 := next_clock_errors (Γ := Γ) t z R B A N M
+  have lower : Γ ⊢[PRAAx] bounded (scaledEndpoint zero p z B one C E M N) one (unit k) :=
+    GaussianRationalReciprocal.bound_congr (lower_endpoint_code t p z R B A N M).eqSymm (.eqRefl _) (.eqRefl _)
+      (GaussianBetaPrimitiveLowerEndpointRefinement.constructive_endpoint_small_at k p z R B A N M
+        h.andE₁ hN hM (le_trans hp0.andE₂.andE₁ hp))
+  exact full_support_euler_error t p q z R B A E N M h (eta_den_positive _ _ _) hm
+    (le_trans hp0.andE₁ hp) (le_trans hp0.andE₂.andE₂ hp) lower
 
 theorem computed_quadrature_euler_error (t q z R B A N : PTm n)
     (h : Γ ⊢[PRAAx] source z R B A N) : Γ ⊢[PRAAx]

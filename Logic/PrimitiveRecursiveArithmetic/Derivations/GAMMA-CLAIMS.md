@@ -872,8 +872,16 @@ bounds the original lower transformed rows uniformly in the finite
 degree.
 [GaussianBetaKernelCompactModulus](Lean/IPRADerivations/Analysis/GaussianBetaKernelCompactModulus.lean)
 proves the compact sampled modulus of that same evaluator uniformly in
-the degree. The lower-tail aggregation and the comparison identifying
-the improper name with Gamma throughout the right half-plane remain.
+the degree.
+[GaussianBetaKernelLowerRootQuadrature](Lean/IPRADerivations/Analysis/GaussianBetaKernelLowerRootQuadrature.lean)
+derives the original lower root-grid tail estimate uniformly in the degree.
+[GaussianBetaFiniteEulerAtCutoff](Lean/IPRADerivations/Analysis/GaussianBetaFiniteEulerAtCutoff.lean)
+uses the uniform beta primitive bound to let the lower cutoff be
+chosen independently of the degree.
+[GaussianBetaFixedCutoffSplit](Lean/IPRADerivations/Analysis/GaussianBetaFixedCutoffSplit.lean)
+splits that grid into the actual compact middle and upper tail at the
+same step. The comparison identifying the improper name with Gamma
+throughout the right half-plane remains.
 
 ## Every ledger family remains in scope
 
