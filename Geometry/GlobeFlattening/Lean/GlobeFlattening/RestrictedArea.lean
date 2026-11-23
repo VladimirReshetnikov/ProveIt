@@ -40,13 +40,10 @@ theorem measure_flattened_good_image
       HasFDerivWithinAt u (slope p • ContinuousLinearMap.fst ℝ ℝ ℝ) domain p)
     (hnonneg : ∀ p ∈ good, 0 ≤ slope p) :
     volume (flattenCoordinates u '' good) = ∫⁻ p in domain, ENNReal.ofReal (slope p) := by
-  letI : IsAddHaarMeasure (volume : Measure (ℝ × ℝ)) := by
-    rw [Measure.volume_eq_prod]
-    infer_instance
-  have hrestrict : volume.restrict good = volume.restrict domain :=
-    Measure.restrict_congr_set (ae_eq_set.2 ⟨by simp [sdiff_eq_empty.mpr hsub], hnull⟩)
+  rw [Measure.volume_eq_prod] at hnull ⊢
+  have hrestrict := Measure.restrict_congr_set (hsub.eventuallyLE.antisymm (ae_le_set.2 hnull))
   rw [← hrestrict, ← lintegral_abs_det_fderiv_eq_addHaar_image
-    (f := flattenCoordinates u) (f' := coordinateDerivative ∘ slope) volume hgood
+    (f := flattenCoordinates u) (f' := coordinateDerivative ∘ slope) (volume.prod volume) hgood
     (fun p hp => ((hDeriv p hp).mono hsub).prodMk hasFDerivAt_snd.hasFDerivWithinAt) (hf.mono hsub)]
   exact setLIntegral_congr_fun hgood fun p hp => by
     simp [abs_of_nonneg (hnonneg p hp)]

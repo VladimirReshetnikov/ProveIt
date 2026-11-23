@@ -74,25 +74,23 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
     (hderiv : ∀ p ∈ good, HasFDerivAt u
       (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
     0 < volume (flattenCoordinates u '' (chartRectangle a b c d \ good)) := by
-  let R := chartRectangle a b c d
   have hsub := hbox.trans sphereLongitudeDomain_subset_box
-  have hRectNull : volume (R \ good) = 0 :=
-    measure_mono_null (sdiff_subset_sdiff_left (chartRectangle_subset_closed.trans hbox)) hnull
   have hcos (y : ℝ) (hy : y ∈ Icc c d) : 0 ≤ Real.cos y :=
     Real.cos_nonneg_of_mem_Icc (hsub (show (a, y) ∈ _ from ⟨⟨le_rfl, hab.le⟩, hy⟩)).2
   have hslope' (p) (hp) (q) (hq) := hslope p (hsub hp) q (hsub hq)
-  have hmono := strictMonoOn_chartRows_of_lowerSlope hcos hslope'
-  have hinj : InjOn (flattenCoordinates u) R :=
-    (injOn_flattenCoordinates_closedRectangle hmono).mono chartRectangle_subset_closed
-  have hAreaLt := lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsub)
-    (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope'
-  rw [← image_flattenCoordinates_chartRectangle hab.le (hu.mono hsub)
-      (fun y hy => hmono y (Ioo_subset_Icc_self hy)),
-    ← measure_flattened_good_image ((isOpen_chartRectangle a b c d).measurableSet.inter hgood)
-      inter_subset_left (by rwa [sdiff_self_inter]) hinj
+  let g := triangularChart hab.le (hu.mono hsub) (strictMonoOn_chartRows_of_lowerSlope hcos hslope')
+  have hnull' : volume (g.source \ good) = 0 :=
+    measure_mono_null (sdiff_subset_sdiff_left (chartRectangle_subset_closed.trans hbox)) hnull
+  have hAreaLt : (∫⁻ p in g.source, ENNReal.ofReal (Real.cos p.2)) < volume g.target :=
+    lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsub)
+      (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope'
+  rw [← g.image_source_eq_target,
+    ← measure_flattened_good_image (g.open_source.measurableSet.inter hgood)
+      inter_subset_left (by rwa [sdiff_self_inter]) g.injOn
       (fun p hp => (hderiv p hp.2).hasFDerivWithinAt)
       (fun p hp => hcos p.2 (Ioo_subset_Icc_self hp.1.2))] at hAreaLt
-  rw [hinj.image_sdiff]
+  change 0 < volume (g '' (g.source \ good))
+  rw [g.injOn.image_sdiff]
   exact (tsub_pos_of_lt hAreaLt).trans_le le_measure_sdiff
 
 private abbrev latitudeInterval : Set ℝ := Ioo (-(Real.pi / 2)) (Real.pi / 2)
