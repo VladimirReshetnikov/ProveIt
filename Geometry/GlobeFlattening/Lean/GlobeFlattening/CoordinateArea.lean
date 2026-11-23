@@ -37,8 +37,7 @@ theorem lintegral_cos_rectangle {a b c d : ℝ} (hab : a ≤ b) :
     (∫⁻ p in chartRectangle a b c d, ENNReal.ofReal (Real.cos p.2)) =
       ∫⁻ y in Ioo c d, ENNReal.ofReal ((b - a) * Real.cos y) := by
   rw [chartRectangle, Measure.volume_eq_prod, setLIntegral_prod_symm _ (by fun_prop)]
-  simp only [setLIntegral_const, Real.volume_Ioo, ENNReal.ofReal_mul (sub_nonneg.mpr hab)]
-  exact lintegral_congr fun _ => mul_comm _ _
+  simp [Real.volume_Ioo, ENNReal.ofReal_mul (sub_nonneg.mpr hab), mul_comm]
 
 /-- A strict longitude slope bound gives greater image area than the cosine density. -/
 theorem lintegral_cos_lt_volume_chartImage
@@ -50,17 +49,17 @@ theorem lintegral_cos_lt_volume_chartImage
     (∫⁻ p in chartRectangle a b c d, ENNReal.ofReal (Real.cos p.2)) <
       volume (chartImage u a b c d) := by
   rw [lintegral_cos_rectangle hab.le, volume_chartImage_eq_lintegral_width hab.le hu]
-  have hLcon : Continuous (fun y => (b - a) * Real.cos y) := continuous_const.mul Real.continuous_cos
-  refine lintegral_strict_mono ?_
+  refine lintegral_strict_mono
+    (Measure.restrict_eq_zero.not.mpr ((Measure.measure_Ioo_pos volume).2 hcd).ne')
     (((continuousOn_chartWidth hab.le hu).mono Ioo_subset_Icc_self).aemeasurable
       measurableSet_Ioo).ennreal_ofReal
-    (hLcon.integrableOn_Icc.mono_set Ioo_subset_Icc_self).lintegral_lt_top.ne ?_
-  · exact Measure.restrict_eq_zero.not.mpr ((Measure.measure_Ioo_pos volume).2 hcd).ne'
-  · refine (ae_restrict_mem measurableSet_Ioo).mono fun y hy => ?_
-    have hy' := Ioo_subset_Icc_self hy
-    apply (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (mul_nonneg (sub_nonneg.mpr hab.le) (hcos y hy))).2
-    simpa only [mul_comm (b - a)] using
-      hslope (a, y) ⟨⟨le_rfl, hab.le⟩, hy'⟩ (b, y) ⟨⟨hab.le, le_rfl⟩, hy'⟩ rfl hab
+    (((continuous_const.mul Real.continuous_cos).integrableOn_Icc.mono_set
+      Ioo_subset_Icc_self).lintegral_lt_top.ne) ?_
+  refine (ae_restrict_mem measurableSet_Ioo).mono fun y hy => ?_
+  have hy' := Ioo_subset_Icc_self hy
+  apply ENNReal.ofReal_lt_ofReal_iff_of_nonneg (mul_nonneg (sub_nonneg.mpr hab.le) (hcos y hy)) |>.2
+  simpa only [mul_comm (b - a)] using
+    hslope (a, y) ⟨⟨le_rfl, hab.le⟩, hy'⟩ (b, y) ⟨⟨hab.le, le_rfl⟩, hy'⟩ rfl hab
 
 /-- On every open rectangle with closure inside the cut-sphere chart,
 the exceptional image has positive planar measure. -/
@@ -81,17 +80,15 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
   let g := triangularChart hab.le (hu.mono hsub) (strictMonoOn_chartRows_of_lowerSlope hcos hslope')
   have hnull' : volume (g.source \ good) = 0 :=
     measure_mono_null (sdiff_subset_sdiff_left (chartRectangle_subset_closed.trans hbox)) hnull
-  have hAreaLt : (∫⁻ p in g.source, ENNReal.ofReal (Real.cos p.2)) < volume g.target :=
-    lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsub)
-      (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope'
-  rw [← g.image_source_eq_target,
-    ← measure_flattened_good_image (g.open_source.measurableSet.inter hgood)
-      inter_subset_left (by rwa [sdiff_self_inter]) g.injOn
-      (fun p hp => (hderiv p hp.2).hasFDerivWithinAt)
-      (fun p hp => hcos p.2 (Ioo_subset_Icc_self hp.1.2))] at hAreaLt
   change 0 < volume (g '' (g.source \ good))
-  rw [g.injOn.image_sdiff]
-  exact (tsub_pos_of_lt hAreaLt).trans_le le_measure_sdiff
+  rw [g.injOn.image_sdiff, g.image_source_eq_target]
+  refine (tsub_pos_of_lt ?_).trans_le le_measure_sdiff
+  exact (measure_flattened_good_image (g.open_source.measurableSet.inter hgood)
+    inter_subset_left (by rwa [sdiff_self_inter]) g.injOn
+    (fun p hp => (hderiv p hp.2).hasFDerivWithinAt)
+    (fun p hp => hcos p.2 (Ioo_subset_Icc_self hp.1.2))).trans_lt
+      (lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsub)
+        (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope')
 
 private abbrev latitudeInterval : Set ℝ := Ioo (-(Real.pi / 2)) (Real.pi / 2)
 

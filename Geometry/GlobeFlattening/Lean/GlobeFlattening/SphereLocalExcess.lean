@@ -24,8 +24,8 @@ abbrev sphereFlattenForward (u : ℝ × ℝ → ℝ) :=
 theorem sphereFlattenForward_spherePoint {u : ℝ × ℝ → ℝ} {p : ℝ × ℝ}
     (hp : p ∈ sphereLongitudeDomain) :
     sphereFlattenForward u (spherePoint p) =
-      planarEuclideanEquiv (flattenCoordinates u p) := by
-  simp only [Function.comp_apply, sphereChartInverse_spherePoint hp]
+      planarEuclideanEquiv (flattenCoordinates u p) :=
+  congrArg (planarEuclideanEquiv ∘ flattenCoordinates u) (sphereChartInverse_spherePoint hp)
 
 theorem sphereFlattenForward_image {u : ℝ × ℝ → ℝ} {s : Set (ℝ × ℝ)}
     (hs : s ⊆ sphereLongitudeDomain) :
@@ -95,11 +95,9 @@ theorem not_lipschitzOn_of_exceptional_area
   have himage : Subtype.val '' Z' = Z := image_preimage_eq_of_subset (by simpa using hZ)
   have hnull : μH[2] Z' = 0 := by
     rw [← isometry_subtype_coe.hausdorffMeasure_image (Or.inl (by norm_num)), himage, hZnull]
-  have heq : cutSphere.restrict f '' Z' = f '' Z := by
-    rw [Set.restrict_eq, Set.image_comp, himage]
   have hpos := hexcess _ (hf.isOpenMap _ hU) (hne.image _)
     (Set.image_subset_iff.2 fun p _ => hmaps p.2)
-  rw [← heq, ← image_inter hf.injective] at hpos
+  rw [← himage, ← Set.image_comp, ← Set.restrict_eq, ← image_inter hf.injective] at hpos
   refine hpos.ne' (Measure.absolutelyContinuous_isAddHaarMeasure volume
     (μH[Module.finrank ℝ (EuclideanSpace ℝ (Fin 2))]) ?_)
   simpa [measure_mono_null inter_subset_right hnull] using

@@ -57,10 +57,8 @@ structure GlobeFlatteningResult (ε : ℝ) where
 theorem GlobeFlatteningResult.sup_distance_lt {ε : ℝ} (result : GlobeFlatteningResult ε) :
     sSup ((fun p => dist (result.forward p) (sinusoidalProjection p)) '' cutSphere) < 2 * ε := by
   obtain ⟨d, hd, hbound⟩ := result.distance_bound
-  have hp : (0, 0) ∈ sphereLongitudeDomain :=
-    ⟨⟨neg_lt_zero.mpr Real.pi_pos, Real.pi_pos⟩,
-      ⟨neg_lt_zero.mpr (half_pos Real.pi_pos), half_pos Real.pi_pos⟩⟩
-  have hne : cutSphere.Nonempty := ⟨spherePoint (0, 0), spherePoint_mapsTo hp⟩
+  have hne : cutSphere.Nonempty := ⟨spherePoint (0, 0), spherePoint_mapsTo
+    (by simp [sphereLongitudeDomain, chartRectangle, Real.pi_pos])⟩
   exact (csSup_le (hne.image _) (forall_mem_image.2 hbound)).trans_lt hd
 
 /-- The scalar function and its full-measure good set give the spherical
@@ -107,11 +105,11 @@ def globeFlattening_from_scalar
       (hVsub : V ⊆ T) : 0 < volume (V ∩ f '' Z) :=
     volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne (hTimage ▸ hVsub)
   have hInv (p : ℝ × ℝ) (hp : p ∈ good) :
-      HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p)) :=
-    (show planarEuclideanEquiv (g p) = f (spherePoint p) from
-      (sphereFlattenForward_spherePoint (hsub hp)).symm) ▸
-      hasFDerivAt_sphereFlatten_inverse g (hsub hp) (Real.cos_pos_of_mem_Ioo (hsub hp).2).ne'
-        ((hDeriv p hp).prodMk hasFDerivAt_snd)
+      HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p)) := by
+    change HasFDerivAt fInv _ (sphereFlattenForward u (spherePoint p))
+    rw [sphereFlattenForward_spherePoint (hsub hp)]
+    exact hasFDerivAt_sphereFlatten_inverse g (hsub hp) (Real.cos_pos_of_mem_Ioo (hsub hp).2).ne'
+      ((hDeriv p hp).prodMk hasFDerivAt_snd)
   refine
     { target := T
       exceptional := Z
@@ -163,9 +161,8 @@ def globeFlattening_from_scalar
 
 /-- The cut sphere has the usual total area of the unit sphere. -/
 theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * Real.pi) := by
-  rw [← spherePoint_image_domain,
-    sphericalArea_spherePoint_image isOpen_sphereLongitudeDomain.measurableSet Subset.rfl]
-  exact lintegral_cos_chartRectangle
+  rw [← spherePoint_image_domain, sphericalArea_spherePoint_image
+    isOpen_sphereLongitudeDomain.measurableSet Subset.rfl, lintegral_cos_chartRectangle]
 
 /-- For every positive tolerance a cut unit sphere has a flattening with the
 area, differential, approximation and local distortion properties above. -/
