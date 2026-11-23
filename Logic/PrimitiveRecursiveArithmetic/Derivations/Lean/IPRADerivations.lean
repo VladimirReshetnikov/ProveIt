@@ -923,6 +923,7 @@ import IPRADerivations.Combinatorics.RamseyPentagon
 import IPRADerivations.Combinatorics.UniformThinning
 import IPRADerivations.Combinatorics.RamseySixteen
 import IPRADerivations.Combinatorics.Averaging
+import IPRADerivations.Combinatorics.GraphIncidence
 import IPRADerivations.Topology.OpenCubeHomeo
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal

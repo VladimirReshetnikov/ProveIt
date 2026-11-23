@@ -2578,6 +2578,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.RamseySixteen.greenwood_gleason
 #print axioms LeanProofs.IPRA.Combinatorics.Averaging.average
 #print axioms LeanProofs.IPRA.Combinatorics.Averaging.zero_row
+#print axioms LeanProofs.IPRA.Combinatorics.GraphIncidence.sum_sym
+#print axioms LeanProofs.IPRA.Combinatorics.GraphIncidence.laplacian_identity
+#print axioms LeanProofs.IPRA.Combinatorics.GraphIncidence.handshake
+#print axioms LeanProofs.IPRA.Combinatorics.GraphIncidence.laplacian_energy
+#print axioms LeanProofs.IPRA.Combinatorics.GraphIncidence.laplacian_nonneg
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.monus_add_cancel
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.fwd_same
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.fwd_same_le
