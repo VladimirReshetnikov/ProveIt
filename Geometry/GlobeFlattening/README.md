@@ -25,14 +25,15 @@ One induction on the number of translates proves the range, upper plateau,
 and one-step error bound for the staircase approximants. Affine rescaling
 carries those estimates to the desired interval.
 The scalar coordinate is a uniformly converging series of longitude
-staircase increments weighted by shifted latitude cosines. On the chart,
-telescoping the product differences gives the sinusoidal coordinate plus
-a correction with positive weights, yielding a strict slope bound on every
-nontrivial horizontal interval. Comparing each weighted staircase with the
-clamped identity gives the uniform approximation estimate. The geometric
-staircase error bound already gives an initial latitude profile error of
-`δ / 8`. Since the absolute longitude is at most `π ≤ 4`, its contribution
-is at most `δ / 2`. The two formulas bound
+staircase increments weighted by shifted latitude cosines. Summation by parts
+allows the longitude staircases to be centered at a fixed value. Centering at
+zero gives the sinusoidal coordinate plus a correction with positive weights,
+yielding the strict horizontal slope bound. Centering at the longitude being
+evaluated cancels the boundary term and expresses the approximation error
+as a sum of weighted staircase errors plus the first latitude profile
+error. The geometric staircase error bounds that profile error by `δ / 8`.
+Since the absolute longitude is at most `π ≤ 4`, its contribution is at most
+`δ / 2`. The increment and correction formulas bound
 horizontal and vertical errors by increments of the same staircase sum,
 with latitude rescaled, giving the joint derivative. The Stieltjes measure
 of that sum is the sum of the individual singular measures, so the control

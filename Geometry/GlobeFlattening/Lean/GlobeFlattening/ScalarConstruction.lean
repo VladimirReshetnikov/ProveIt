@@ -141,17 +141,17 @@ theorem coefficient_bounds (n : ℕ) (y : ℝ) :
   refine ⟨?_, abs_le.mpr ⟨?_, ?_⟩⟩ <;>
     linarith only [hcos.1, hcos.2, rate_pos S.delta_pos n]
 
-theorem hasSum_coefficient {y : ℝ} (hy : y ∈ Icc (-(Real.pi / 2)) (Real.pi / 2)) :
-    HasSum (fun n => S.coefficient n y) (S.latitudeProfile 0 y - Real.cos y) := by
-  refine (hasSum_iff_tendsto_nat_of_nonneg (fun n => (S.coefficient_bounds n y).1.le) _).2 ?_
-  simpa only [coefficient, Finset.sum_range_sub'] using
-    (tendsto_const_nhds (x := S.latitudeProfile 0 y)).sub (S.tendsto_latitudeProfile hy)
-
 def correction (p : ℝ × ℝ) := ∑' n, S.coefficient n p.2 * S.X n p.1
 
-theorem summable_correction (p : ℝ × ℝ) : Summable (fun n => S.coefficient n p.2 * S.X n p.1) :=
-  ((summable_rate δ).mul_right Real.pi).of_norm_bounded
-    (fun n => norm_mul_le_of_le (S.coefficient_bounds n p.2).2 (S.boundX n p.1))
+private theorem summable_centered_correction (p : ℝ × ℝ) (z : ℝ) :
+    Summable (fun n => S.coefficient n p.2 * (S.X n p.1 - z)) :=
+  ((summable_rate δ).mul_right (Real.pi + |z|)).of_norm_bounded fun n =>
+    norm_mul_le_of_le (S.coefficient_bounds n p.2).2 (by
+      simpa only [Real.norm_eq_abs] using (abs_sub (S.X n p.1) z).trans
+        (add_le_add (S.boundX n p.1) le_rfl))
+
+theorem summable_correction (p : ℝ × ℝ) : Summable (fun n => S.coefficient n p.2 * S.X n p.1) := by
+  simpa only [sub_zero] using S.summable_centered_correction p 0
 
 def longitudeIncrement : ℕ → ℝ → ℝ
   | 0 => S.X 0
@@ -188,13 +188,19 @@ theorem continuous_scalar : Continuous S.scalar := by
   refine continuous_tsum (fun n => ?_) ((summable_rate (δ + Real.pi)).mul_right (δ + 1)) S.norm_incrementTerm
   exact ((hinc n).comp continuous_fst).mul ((hprofile n).comp continuous_snd)
 
-theorem scalar_eq_correction {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
-    S.scalar p = p.1 * Real.cos p.2 + S.correction p := by
+private theorem scalar_sub_eq_centered_correction {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) (z : ℝ) :
+    S.scalar p - z * S.latitudeProfile 0 p.2 =
+      (p.1 - z) * Real.cos p.2 + ∑' n, S.coefficient n p.2 * (S.X n p.1 - z) := by
   have hsum : Summable (fun n => S.incrementTerm n p) :=
     ((summable_rate (δ + Real.pi)).mul_right (δ + 1)).of_norm_bounded (fun n => S.norm_incrementTerm n p)
-  rw [scalar, hsum.tsum_eq_zero_add, mul_comm p.1 (Real.cos p.2)]
-  exact tsum_weighted_increment (S.summable_correction p) ((summable_nat_add_iff 1).2 hsum)
-    ((S.tendsto_latitudeProfile hp.2).mul (S.tendsto_X hp.1))
+  rw [scalar, hsum.tsum_eq_zero_add, mul_comm (p.1 - z) (Real.cos p.2)]
+  exact tsum_weighted_increment_centered (S.summable_centered_correction p z)
+    ((summable_nat_add_iff 1).2 hsum)
+    ((S.tendsto_latitudeProfile hp.2).mul ((S.tendsto_X hp.1).sub_const z))
+
+theorem scalar_eq_correction {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
+    S.scalar p = p.1 * Real.cos p.2 + S.correction p := by
+  simpa only [zero_mul, sub_zero, correction] using S.scalar_sub_eq_centered_correction hp 0
 
 theorem scalar_strictLowerSlope {x x' y : ℝ}
     (hx : x ∈ Icc (-Real.pi) Real.pi) (hx' : x' ∈ Icc (-Real.pi) Real.pi)
@@ -212,17 +218,15 @@ theorem scalar_strictLowerSlope {x x' y : ℝ}
 
 theorem scalar_error {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
     |S.scalar p - (Real.cos p.2 + δ) * p.1| ≤ δ := by
-  have hcoef := S.hasSum_coefficient hp.2
-  have hrate := (hasSum_rate δ).mul_right (1 / 4)
-  rw [show δ * 2 * (1 / 4) = δ / 2 by ring] at hrate
   have hcor : |S.scalar p - S.latitudeProfile 0 p.2 * p.1| ≤ δ / 2 := by
-    rw [S.scalar_eq_correction hp, show p.1 * Real.cos p.2 + S.correction p - S.latitudeProfile 0 p.2 * p.1 =
-      S.correction p - (S.latitudeProfile 0 p.2 - Real.cos p.2) * p.1 by
-      ring]
-    refine abs_sub_le_of_hasSum_weighted (S.summable_correction p).hasSum (hcoef.mul_right p.1)
-      hrate (fun n => (S.coefficient_bounds n p.2).2) (fun n => ?_)
-    simpa only [longitude_of_mem hp.1] using
-      (S.errorX n p.1).trans (min_le_right _ _)
+    rw [mul_comm (S.latitudeProfile 0 p.2), S.scalar_sub_eq_centered_correction hp,
+      sub_self, zero_mul, zero_add, ← Real.norm_eq_abs]
+    have hrate := (hasSum_rate δ).mul_right (1 / 4 : ℝ)
+    rw [show δ * 2 * (1 / 4) = δ / 2 by ring] at hrate
+    refine tsum_of_norm_bounded hrate fun n => ?_
+    exact norm_mul_le_of_le (S.coefficient_bounds n p.2).2 (by
+      simpa only [Real.norm_eq_abs, longitude_of_mem hp.1] using
+        (S.errorX n p.1).trans (min_le_right _ _))
   have hlat : |S.latitudeProfile 0 p.2 * p.1 - (Real.cos p.2 + δ) * p.1| ≤ δ / 2 := by
     rw [← sub_mul, ← Real.norm_eq_abs]
     refine (norm_mul_le_of_le (S.latitudeProfile_zero_error hp.2) (abs_le.mpr hp.1)).trans ?_

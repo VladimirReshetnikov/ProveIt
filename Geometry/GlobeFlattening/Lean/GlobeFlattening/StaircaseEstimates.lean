@@ -11,29 +11,20 @@ open scoped Topology
 
 namespace GlobeFlattening
 
-/-- Discrete summation by parts retains the limit of the boundary term. -/
-theorem tsum_weighted_increment {e A : ℕ → ℝ} {L : ℝ}
-    (hs : Summable (fun n => (e n - e (n + 1)) * A n))
+/-- Summation by parts with the sequence centered at `z`. -/
+theorem tsum_weighted_increment_centered {e A : ℕ → ℝ} {z L : ℝ}
+    (hs : Summable (fun n => (e n - e (n + 1)) * (A n - z)))
     (ht : Summable (fun n => (A (n + 1) - A n) * e (n + 1)))
-    (hend : Tendsto (fun n => e n * A n) atTop (𝓝 L)) :
-    A 0 * e 0 + (∑' n, (A (n + 1) - A n) * e (n + 1)) =
-      L + ∑' n, (e n - e (n + 1)) * A n := by
+    (hend : Tendsto (fun n => e n * (A n - z)) atTop (𝓝 L)) :
+    A 0 * e 0 + (∑' n, (A (n + 1) - A n) * e (n + 1)) - z * e 0 =
+      L + ∑' n, (e n - e (n + 1)) * (A n - z) := by
   have hstep (n : ℕ) :
-      (A (n + 1) - A n) * e (n + 1) - (e n - e (n + 1)) * A n =
-        e (n + 1) * A (n + 1) - e n * A n := by ring
+      (A (n + 1) - A n) * e (n + 1) - (e n - e (n + 1)) * (A n - z) =
+        e (n + 1) * (A (n + 1) - z) - e n * (A n - z) := by ring
   have h := (ht.hasSum.sub hs.hasSum).tendsto_sum_nat
-  simp only [hstep, sum_range_sub (fun n => e n * A n)] at h
+  simp only [hstep, sum_range_sub (fun n => e n * (A n - z))] at h
   rw [eq_add_of_sub_eq (tendsto_nhds_unique h (hend.sub_const _))]
   ring
-
-/-- A summable product majorant bounds the difference of weighted sums. -/
-theorem abs_sub_le_of_hasSum_weighted {a b c f g : ℕ → ℝ} {F G C : ℝ}
-    (hf : HasSum (fun n => a n * f n) F) (hg : HasSum (fun n => a n * g n) G)
-    (hC : HasSum (fun n => b n * c n) C)
-    (ha : ∀ n, |a n| ≤ b n) (hd : ∀ n, |f n - g n| ≤ c n) : |F - G| ≤ C := by
-  refine (hf.sub hg).norm_le_of_bounded hC fun n => ?_
-  rw [← mul_sub]
-  exact norm_mul_le_of_le (ha n) (hd n)
 
 /-- Absolute increments of a weighted sum of Lipschitz transforms are
 bounded by the corresponding increments of the monotone majorant. -/
@@ -51,12 +42,11 @@ theorem abs_tsum_weighted_comp_sub_le {a b : ℕ → ℝ} {X f : ℕ → ℝ →
   wlog h : x ≤ y generalizing x y
   · rw [abs_sub_comm (∑' n, a n * f n (X n y)), abs_sub_comm (∑' n, b n * X n y)]
     exact this y x (le_of_not_ge h)
-  have hdiff : HasSum (fun n => b n * (X n y - X n x))
-      ((∑' n, b n * X n y) - ∑' n, b n * X n x) := by
-    simpa only [mul_sub] using (ht y).hasSum.sub (ht x).hasSum
-  refine (abs_sub_le_of_hasSum_weighted (hs y).hasSum (hs x).hasSum hdiff ha fun n => ?_).trans
-    (le_abs_self _)
-  simpa only [Real.dist_eq, NNReal.coe_one, one_mul, abs_of_nonneg (sub_nonneg.mpr (hmono n h))]
-    using (hlip n).dist_le_mul (X n y) (X n x)
+  refine (((hs y).hasSum.sub (hs x).hasSum).norm_le_of_bounded
+    ((ht y).hasSum.sub (ht x).hasSum) fun n => ?_).trans (le_abs_self _)
+  rw [← mul_sub, ← mul_sub]
+  refine norm_mul_le_of_le (ha n) ?_
+  simpa only [Real.dist_eq, Real.norm_eq_abs, NNReal.coe_one, one_mul,
+    abs_of_nonneg (sub_nonneg.mpr (hmono n h))] using (hlip n).dist_le_mul (X n y) (X n x)
 
 end GlobeFlattening
