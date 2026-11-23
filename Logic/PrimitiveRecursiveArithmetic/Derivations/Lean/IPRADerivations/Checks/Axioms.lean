@@ -22966,6 +22966,65 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartJacobian.actual_positive_power_chart_first_order_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartJacobian.actual_evaluated_positive_power_Jacobian_closed
 
+/-! ### GaussianEulerPositivePowerChartOrder -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.logarithmF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.inputF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.inputData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.subst_inputData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.fraction_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.coefficient_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.input_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.input_real_samples
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.input_positive_samples
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.input_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.original_power_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.scale_upper
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartOrder.actual_original_positive_power_chart_monotone_closed
+
+/-! ### GaussianEulerPositivePowerChartLogarithm -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm.logarithmF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm.logarithmData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm.exponentialF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm.exponentialData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm.subst_logarithmData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm.subst_exponentialData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm.power_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm.logarithm_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm.exponential_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm.original_chart
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLogarithm.actual_original_power_chart_as_exponential_closed
+
+/-! ### GaussianEulerPowerScalingParameter -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingParameter.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingParameter.scaled
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingParameter.original_rescaled_value
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingParameter.rescaled_times_power
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingParameter.original_rescaled_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingParameter.actual_power_scaling_parameter_source_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingParameter.actual_rescaled_gamma_parameter_times_chart_power_closed
+
+/-! ### GaussianEulerPowerScalingKernel -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.scaleF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.scaleData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.scaleExpF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.scaleExpData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.originalExponentF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.originalExponentData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.originalF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.originalData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.transformedF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.transformedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.productF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.productData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.original_linear_rescaling
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.original_transformed_exponent
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.original_transformed_kernel
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingKernel.actual_original_power_scaling_kernel_closed
+
 /-! ### GaussianBoundedIntegerExponentialStages -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianBoundedIntegerExponentialStages.input
 #print axioms LeanProofs.IPRA.Analysis.GaussianBoundedIntegerExponentialStages.scaledF
@@ -23606,6 +23665,39 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerParameterExponentialIncrement.original_power_product
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerParameterExponentialIncrement.original_integrand_product
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerParameterExponentialIncrement.original_encoded_Euler_parameter_product_closed
+
+/-! ### GaussianEulerIntegerMomentIntegrand -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.monomial
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.momentF
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.momentData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.shiftedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.subst_monomial
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.subst_momentData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.subst_shiftedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.subst_clock
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.time_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.native_parameter
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.shifted_fraction_equal
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.increment_is_monomial
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.monomial_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.moment_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.original_pointwise
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.moment_sample
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.original_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.actual_original_Euler_integer_moment_integrand_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand.actual_original_Euler_integer_moment_sample_closed
+
+/-! ### GaussianGammaDensityDomain -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDensityDomain.shifted_real_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDensityDomain.shifted_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDensityDomain.base_gamma_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDensityDomain.shifted_gamma_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDensityDomain.rising_input
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDensityDomain.actual_original_Gamma_density_shifted_domain_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaDensityDomain.actual_original_Gamma_density_V8_source_closed
 
 /-! ### GaussianEulerParameterIncrementObservation -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerParameterIncrementObservation.clock
@@ -24747,6 +24839,19 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianSignedRealExponentialOrder.actual_positive_cross_gap_addition_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianSignedRealExponentialOrder.actual_positive_cross_gap_exponential_unit_lower_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianSignedRealExponentialOrder.original_signed_rational_exponential_order_closed
+
+/-! ### GaussianRealExponentialPositiveIncrement -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement.retimedF
+#print axioms LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement.retimedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement.subst_retimedData
+#print axioms LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement.unit_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement.retimed_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement.retimed_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement.retimed_cross
+#print axioms LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement.sum_real_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement.input_sample_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement.exponential_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianRealExponentialPositiveIncrement.actual_real_exponential_nonnegative_increment_closed
 
 /-! ### GaussianEulerDecayOrder -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerDecayOrder.signedTime
@@ -34098,6 +34203,40 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixName.sample_at
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixName.actual_canonical_Gamma_finite_coefficient_evaluation_name_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixName.actual_canonical_Gamma_finite_coefficient_evaluation_sample_closed
+
+/-! ### GaussianGammaCanonicalPrefixTaylor -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.canonicalTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.body
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.canonicalPrefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.taylor
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.rowNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.rowDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.prefixLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.subst_canonicalTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.subst_prefix
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.subst_taylor
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.subst_rowNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.subst_rowDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.subst_buffer
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.subst_totalDegree
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.subst_prefixLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.body_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.unit_power_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.original_term_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.prefix_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.original_prefix_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.original_finite_taylor
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.taylorF
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.original_taylor_program
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.actual_original_canonical_coefficient_prefix_error_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.actual_original_all_order_shrinking_finite_taylor_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixTaylor.actual_original_all_order_canonical_taylor_program_closed
 
 /-! ### GaussianGammaOriginalPrefixCoefficientNames -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianGammaOriginalPrefixCoefficientNames.reader
