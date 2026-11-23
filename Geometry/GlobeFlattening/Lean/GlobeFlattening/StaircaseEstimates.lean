@@ -29,8 +29,7 @@ theorem abs_sub_le_of_hasSum_weighted {a b c f g : ℕ → ℝ} {F G C : ℝ}
     (hf : HasSum (fun n => a n * f n) F) (hg : HasSum (fun n => a n * g n) G)
     (hC : HasSum (fun n => b n * c n) C)
     (ha : ∀ n, |a n| ≤ b n) (hd : ∀ n, |f n - g n| ≤ c n) : |F - G| ≤ C := by
-  rw [← (hf.sub hg).tsum_eq]
-  refine tsum_of_norm_bounded (f := fun n => a n * f n - a n * g n) hC fun n => ?_
+  refine (hf.sub hg).norm_le_of_bounded hC fun n => ?_
   rw [← mul_sub]
   exact norm_mul_le_of_le (ha n) (hd n)
 

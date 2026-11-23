@@ -72,8 +72,6 @@ namespace Staircases
 
 variable {δ : ℝ} (S : Staircases δ)
 
-def Y (n : ℕ) (y : ℝ) : ℝ := S.X n (2 * y) / 2
-
 theorem errorRateX (n : ℕ) (x : ℝ) : |S.X n x - longitude x| ≤ rate δ n / 4 :=
   (S.errorX n x).trans (min_le_left _ _)
 
@@ -107,9 +105,9 @@ private theorem abs_latitudeWeight_le (S : Staircases δ) (n : ℕ) (t : ℝ) :
 
 theorem tendsto_latitudeProfile {y : ℝ} (hy : y ∈ Icc (-(Real.pi / 2)) (Real.pi / 2)) :
     Tendsto (fun n => S.latitudeProfile n y) atTop (𝓝 (Real.cos y)) := by
-  have hY : Tendsto (fun n => S.Y n y) atTop (𝓝 y) := by
-    simpa only [Y, longitude_scale hy] using (S.tendsto_X (2 * y)).div_const 2
-  simpa only [latitudeProfile, latitudeWeight, Y, Function.comp_def, zero_add] using
+  have hY := (S.tendsto_X (2 * y)).div_const 2
+  rw [longitude_scale hy] at hY
+  simpa only [latitudeProfile, latitudeWeight, Function.comp_def, zero_add] using
     (summable_rate δ).tendsto_atTop_zero.add ((Real.continuous_cos.tendsto y).comp hY)
 
 private theorem abs_cos_half_sub_le (x y : ℝ) :
@@ -123,9 +121,10 @@ private theorem lipschitzWith_latitudeWeight (δ : ℝ) (n : ℕ) :
   simp only [latitudeWeight, Real.dist_eq, add_sub_add_left_eq_sub, NNReal.coe_one, one_mul]
   exact (abs_cos_half_sub_le x y).trans (half_le_self (abs_nonneg _))
 
-theorem latitude_cos_error (n : ℕ) {y : ℝ} (hy : y ∈ Icc (-(Real.pi / 2)) (Real.pi / 2)) :
-    |Real.cos (S.Y n y) - Real.cos y| ≤ rate δ n / 8 := by
-  simpa only [Y, longitude_scale hy] using
+private theorem latitudeProfile_error (n : ℕ) {y : ℝ} (hy : y ∈ Icc (-(Real.pi / 2)) (Real.pi / 2)) :
+    |S.latitudeProfile n y - (rate δ n + Real.cos y)| ≤ rate δ n / 8 := by
+  rw [latitudeProfile, latitudeWeight, add_sub_add_left_eq_sub]
+  simpa only [longitude_scale hy] using
     (abs_cos_half_sub_le _ _).trans
       ((div_le_div_of_nonneg_right (S.errorRateX n (2 * y)) (by norm_num)).trans_eq
         (show rate δ n / 4 / 2 = rate δ n / 8 by ring))
@@ -235,14 +234,10 @@ theorem scalar_error {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
       hrate (S.abs_coefficient_le · p.2) (fun n => ?_)
     simpa only [longitude, clamp_eq hp.1] using (S.errorX n p.1).trans (min_le_right _ _)
   have hlat : |S.latitudeProfile 0 p.2 * p.1 - (Real.cos p.2 + δ) * p.1| ≤ δ / 2 := by
-    rw [← sub_mul, latitudeProfile, latitudeWeight, rate, pow_zero, mul_one,
-      add_comm (Real.cos p.2) δ, add_sub_add_left_eq_sub]
-    have hcos := S.latitude_cos_error 0 hp.2
-    simp only [rate, pow_zero, mul_one] at hcos
-    rw [← Real.norm_eq_abs]
-    calc
-      _ ≤ (δ / 8) * 4 := norm_mul_le_of_le hcos ((abs_le.mpr hp.1).trans Real.pi_lt_four.le)
-      _ = δ / 2 := by ring
+    have hcos := S.latitudeProfile_error 0 hp.2
+    simp only [rate, pow_zero, mul_one, add_comm δ] at hcos
+    rw [← sub_mul, ← Real.norm_eq_abs]
+    exact (norm_mul_le_of_le hcos ((abs_le.mpr hp.1).trans Real.pi_lt_four.le)).trans_eq (by ring)
   exact (abs_sub_le ..).trans (by linarith only [hcor, hlat])
 
 def horizontalControl (x : ℝ) := ∑' n, rate (δ + Real.pi) n * S.X n x

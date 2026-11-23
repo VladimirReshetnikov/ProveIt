@@ -81,12 +81,10 @@ theorem exists_product_derivative_good
   have hae : ∀ᵐ p : ℝ × ℝ ∂volume, HasDerivAt H 0 p.1 ∧ HasDerivAt V 0 p.2 := by
     rw [Measure.volume_eq_prod]
     exact (Measure.quasiMeasurePreserving_fst.ae hH).and (Measure.quasiMeasurePreserving_snd.ae hV)
-  obtain ⟨N, hN, hmeas, hnull⟩ := exists_measurable_superset_of_null (ae_iff.1 hae)
-  refine ⟨D \ N, hD.diff hmeas, sdiff_subset, measure_mono_null ?_ hnull, ?_⟩
-  · rw [sdiff_sdiff_right_self]
-    exact inter_subset_right
-  · intro p hp
-    exact Classical.not_not.mp fun h => hp.2 (hN h)
+  obtain ⟨E, hE, hm, hgood⟩ := hae.exists_measurable_mem
+  refine ⟨D ∩ E, hD.inter hm, inter_subset_left, ?_, fun p hp => hgood p hp.2⟩
+  rw [sdiff_self_inter]
+  exact measure_mono_null (sdiff_subset_compl D E) (mem_ae_iff.1 hE)
 
 /-- Two one-dimensional zero derivatives control the full linearization
 error through separate increment bounds. -/
