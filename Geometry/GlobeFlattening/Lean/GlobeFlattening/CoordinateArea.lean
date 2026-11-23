@@ -65,16 +65,12 @@ private theorem lintegral_sinusoidalWidth :
     (∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y)) =
       ENNReal.ofReal (4 * Real.pi) := by
   simp_rw [ENNReal.ofReal_mul (by positivity : 0 ≤ 2 * Real.pi), lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
-  have harea := lintegral_abs_det_fderiv_eq_addHaar_image volume
-    (s := latitudeInterval) measurableSet_Ioo
-    (fun y _ => (Real.hasDerivAt_sin y).hasFDerivAt.hasFDerivWithinAt)
-    (Real.strictMonoOn_sin.injOn.mono Ioo_subset_Icc_self)
-  simp only [ContinuousLinearMap.det_toSpanSingleton] at harea
-  rw [setLIntegral_congr_fun measurableSet_Ioo
-      (fun y hy => congrArg ENNReal.ofReal (abs_of_pos (Real.cos_pos_of_mem_Ioo hy)).symm),
-    harea, ContinuousOn.image_Ioo_of_strictMonoOn (neg_lt_self (half_pos Real.pi_pos)).le
-      Real.continuous_sin.continuousOn Real.strictMonoOn_sin, Real.volume_Ioo,
-    Real.sin_neg, Real.sin_pi_div_two, ← ENNReal.ofReal_mul (by positivity)]
+  have harea := lintegral_abs_det_fderiv_eq_addHaar_image volume measurableSet_Icc
+    (fun y _ => (Real.hasDerivAt_sin y).hasFDerivAt.hasFDerivWithinAt) Real.bijOn_sin.injOn
+  simp only [ContinuousLinearMap.det_toSpanSingleton, Real.bijOn_sin.image_eq, Real.volume_Icc] at harea
+  rw [setLIntegral_congr Ioo_ae_eq_Icc, setLIntegral_congr_fun measurableSet_Icc
+    (fun y hy => congrArg ENNReal.ofReal (abs_of_nonneg (Real.cos_nonneg_of_mem_Icc hy)).symm),
+    harea, ← ENNReal.ofReal_mul (by positivity)]
   congr 1
   ring
 

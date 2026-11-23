@@ -79,7 +79,7 @@ def sphereChartInverse (w : EuclideanSpace ℝ (Fin 3)) : ℝ × ℝ :=
 
 theorem sphereChartInverse_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
     sphereChartInverse (spherePoint p) = p :=
-  Prod.ext (polar_spherePoint hp).2 (Real.arcsin_sin hp.2.1.le hp.2.2.le)
+  Prod.ext (polar_spherePoint hp).2 (Real.sinPartialHomeomorph.left_inv hp.2)
 
 private theorem cutSphere_horizontal_norm_sq {w : EuclideanSpace ℝ (Fin 3)}
     (hw : w ∈ cutSphere) : ‖horizontalComplex w‖ ^ 2 = 1 - (w 2)^2 := by
@@ -96,19 +96,18 @@ theorem cutSphere_vertical_bounds {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ c
 
 theorem sphereChartInverse_mapsTo : MapsTo sphereChartInverse cutSphere sphereLongitudeDomain := by
   intro w hw
-  have hz := cutSphere_vertical_bounds hw
   exact ⟨⟨Complex.neg_pi_lt_arg _, (Complex.arg_le_pi _).lt_of_ne (Complex.slitPlane_arg_ne_pi hw.2)⟩,
-    ⟨Real.neg_pi_div_two_lt_arcsin.mpr hz.1, Real.arcsin_lt_pi_div_two.mpr hz.2⟩⟩
+    Real.sinPartialHomeomorph.map_target (cutSphere_vertical_bounds hw)⟩
 
 theorem spherePoint_sphereChartInverse {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
     spherePoint (sphereChartInverse w) = w := by
   have hr : Real.cos (Real.arcsin (w 2)) = ‖horizontalComplex w‖ := by
     rw [Real.cos_arcsin, ← cutSphere_horizontal_norm_sq hw, Real.sqrt_sq (norm_nonneg _)]
-  have hz := cutSphere_vertical_bounds hw
   apply PiLp.ext
   simpa [Fin.forall_fin_succ, spherePoint, sphereChartInverse, hr] using
     And.intro (Complex.norm_mul_cos_arg (horizontalComplex w))
-      (And.intro (Complex.norm_mul_sin_arg (horizontalComplex w)) (Real.sin_arcsin hz.1.le hz.2.le))
+      (And.intro (Complex.norm_mul_sin_arg (horizontalComplex w))
+        (Real.sinPartialHomeomorph.right_inv (cutSphere_vertical_bounds hw)))
 
 theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
   (show InvOn sphereChartInverse spherePoint sphereLongitudeDomain cutSphere from
