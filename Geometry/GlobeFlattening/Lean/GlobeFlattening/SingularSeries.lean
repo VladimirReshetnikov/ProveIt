@@ -1,10 +1,5 @@
 import Mathlib.Analysis.Calculus.Monotone
 import Mathlib.Analysis.Normed.Group.FunctionSeries
-import Mathlib.MeasureTheory.Measure.Prod
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Analysis.Calculus.Deriv.Comp
-import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.Analysis.Calculus.FDeriv.Prod
 
 /-!
 # Singular comparison functions and joint differentiability
@@ -35,16 +30,14 @@ theorem singular_stieltjes_sum (f : ℕ → StieltjesFunction ℝ) (F : Stieltje
     have hdiff := (hsum b).sub (hsum a)
     rw [← ENNReal.ofReal_tsum_of_nonneg (fun n => sub_nonneg.mpr ((f n).mono hab.le)) hdiff.summable,
       hdiff.tsum_eq]
-  have hsing : F.measure ⟂ₘ volume := by
-    rw [hmeasure, Measure.MutuallySingular.sum_left]
-    intro n
+  have hsing (g : StieltjesFunction ℝ) :
+      (∀ᵐ x, HasDerivAt g 0 x) ↔ g.measure ⟂ₘ volume := by
     rw [← Measure.rnDeriv_eq_zero]
-    filter_upwards [(f n).ae_hasDerivAt, hzero n, Measure.rnDeriv_lt_top (f n).measure volume]
-      with x hd hz ht
-    have heq := hd.unique hz
-    rwa [ENNReal.toReal_eq_zero_iff, or_iff_left ht.ne] at heq
-  filter_upwards [F.ae_hasDerivAt, hsing.rnDeriv_ae_eq_zero] with x hx hz
-  simpa [show F.measure.rnDeriv volume x = 0 from hz] using hx
+    apply Filter.eventually_congr
+    filter_upwards [g.ae_hasDerivAt, Measure.rnDeriv_ne_top g.measure volume] with x hd ht
+    simpa [ENNReal.toReal_eq_zero_iff, ht] using
+      (show HasDerivAt g 0 x ↔ (g.measure.rnDeriv volume x).toReal = 0 from ⟨hd.unique, hd.congr_deriv⟩)
+  simpa only [hsing, hmeasure, Measure.MutuallySingular.sum_left] using hzero
 
 /-- A nonnegative summable combination of bounded continuous monotone singular functions is singular. -/
 theorem singular_bounded_weighted_tsum
@@ -66,7 +59,8 @@ theorem singular_bounded_weighted_tsum
       fun _ => (continuous_tsum (fun n => continuous_const.mul (hcont n))
         (hwSum.mul_right C) hnorm).continuousWithinAt⟩
   exact singular_stieltjes_sum g G (fun x => (hs x).hasSum) fun n =>
-    (hsing n).mono (fun x hx => by simpa using hx.const_mul (w n))
+    (hsing n).mono fun x hx => by
+      simpa [g, Pi.smul_def, smul_eq_mul] using (hx.hasFDerivAt.const_smul (w n)).hasDerivAt
 
 /-- Pull a full-measure derivative event back to the two coordinates, allowing a nonzero rescaling. -/
 theorem exists_scaled_product_derivative_good
@@ -93,7 +87,7 @@ theorem hasFDerivAt_of_increment_bounds {u : ℝ × ℝ → ℝ} {H V : ℝ → 
     HasFDerivAt u (slope • ContinuousLinearMap.fst ℝ ℝ ℝ) p := by
   have hcomp {f : ℝ → ℝ} (A : (ℝ × ℝ) →L[ℝ] ℝ) (hA : HasDerivAt f 0 (A p)) :
       (fun q => |f (A q) - f (A p)|) =o[𝓝 p] fun q => q - p := by
-    simpa [Function.comp_def] using (hA.comp_hasFDerivAt p A.hasFDerivAt).isLittleO.abs_left
+    simpa [Function.comp_def] using (hA.hasFDerivAt.comp p A.hasFDerivAt).isLittleO.abs_left
   exact HasFDerivAt.of_isLittleO (herror.isBigO.trans_isLittleO ((hcomp L hL).add (hcomp M hM)))
 
 end
