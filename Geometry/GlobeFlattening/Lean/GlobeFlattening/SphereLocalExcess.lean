@@ -1,7 +1,6 @@
 import GlobeFlattening.CoordinateArea
 import GlobeFlattening.SphereMeasure
 import GlobeFlattening.SphereMetric
-import Mathlib.MeasureTheory.Measure.Haar.Unique
 import Mathlib.MeasureTheory.Measure.Hausdorff
 
 /-!
@@ -90,28 +89,6 @@ theorem hausdorffMeasure_sphereExceptional_eq_zero {good : Set (ℝ × ℝ)}
   simpa [hausdorffMeasure_prod_real, hnull] using
     lipschitzWith_spherePoint.hausdorffMeasure_image_le (d := 2) (by norm_num)
       (sphereLongitudeDomain \ good)
-
-/-- Positive exceptional image area in every open target patch precludes
-Lipschitz bounds on open source patches. -/
-theorem not_lipschitzOn_of_exceptional_area
-    {target : Set (EuclideanSpace ℝ (Fin 2))}
-    {f : EuclideanSpace ℝ (Fin 3) → EuclideanSpace ℝ (Fin 2)}
-    (hf : IsOpenEmbedding (cutSphere.restrict f)) (hmaps : MapsTo f cutSphere target)
-    {Z : Set (EuclideanSpace ℝ (Fin 3))} (hZ : Z ⊆ cutSphere) (hZnull : μH[2] Z = 0)
-    (hexcess : ∀ W, IsOpen W → W.Nonempty → W ⊆ target → 0 < volume (W ∩ f '' Z))
-    {U : Set cutSphere} (hU : IsOpen U) (hne : U.Nonempty) (K : ℝ≥0) :
-    ¬ LipschitzOnWith K (fun p : cutSphere => f p) U := by
-  intro hLip
-  have hLip' : LipschitzOnWith K f ((U : Set _) ∩ Z) :=
-    (lipschitzOnWith_restrict.1 hLip).mono (subset_inter (inter_subset_right.trans hZ) inter_subset_left)
-  have hpos := hexcess _ (hf.isOpenMap _ hU) (hne.image _)
-    (Set.image_subset_iff.2 fun p _ => hmaps p.2)
-  rw [← Set.image_image_val_eq_restrict_image,
-    ← (injOn_iff_injective.2 hf.injective).image_inter Set.image_val_subset hZ] at hpos
-  refine hpos.ne' (Measure.absolutelyContinuous_isAddHaarMeasure volume
-    (μH[Module.finrank ℝ (EuclideanSpace ℝ (Fin 2))]) ?_)
-  simpa [measure_mono_null inter_subset_right hZnull] using
-    hLip'.hausdorffMeasure_image_le (d := 2) (by norm_num)
 
 end
 
