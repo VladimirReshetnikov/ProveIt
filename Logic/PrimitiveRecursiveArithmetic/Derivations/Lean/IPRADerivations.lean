@@ -286,6 +286,8 @@ import IPRADerivations.DiophantineNumberTheory.GaussLemma
 import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocity
 import IPRADerivations.DiophantineNumberTheory.QuadraticSupplements
 import IPRADerivations.DiophantineNumberTheory.SecondSupplement
+import IPRADerivations.DiophantineNumberTheory.ThueGrid
+import IPRADerivations.DiophantineNumberTheory.FermatTwoSquares
 import IPRADerivations.Analysis.StokesSlice
 import IPRADerivations.Analysis.StokesCube
 import IPRADerivations.Geometry.GaussBonnetBridge
