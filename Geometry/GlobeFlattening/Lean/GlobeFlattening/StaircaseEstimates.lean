@@ -33,12 +33,6 @@ theorem abs_sub_le_of_hasSum_weighted {a b c f g : ℕ → ℝ} {F G C : ℝ}
   rw [← mul_sub]
   exact norm_mul_le_of_le (ha n) (hd n)
 
-/-- Multiplying a summably bounded sequence by a uniformly bounded one preserves summability. -/
-theorem summable_mul_of_abs_le {b c d : ℕ → ℝ} {C : ℝ} (hb : Summable b)
-    (hc : ∀ n, |c n| ≤ b n) (hd : ∀ n, |d n| ≤ C) :
-    Summable (fun n => c n * d n) :=
-  (hb.mul_right C).of_norm_bounded (fun n => norm_mul_le_of_le (hc n) (hd n))
-
 /-- Absolute increments of a weighted sum of Lipschitz transforms are
 bounded by the corresponding increments of the monotone majorant. -/
 theorem abs_tsum_weighted_comp_sub_le {a b : ℕ → ℝ} {X f : ℕ → ℝ → ℝ} {A B : ℝ}
@@ -48,9 +42,10 @@ theorem abs_tsum_weighted_comp_sub_le {a b : ℕ → ℝ} {X f : ℕ → ℝ →
     |(∑' n, a n * f n (X n y)) - ∑' n, a n * f n (X n x)| ≤
       |(∑' n, b n * X n y) - ∑' n, b n * X n x| := by
   have hb₀ (n : ℕ) : 0 ≤ b n := (abs_nonneg _).trans (ha n)
-  have hs (t : ℝ) := summable_mul_of_abs_le hb ha (fun n => hf n t)
-  have ht (t : ℝ) := summable_mul_of_abs_le hb
-    (fun n => (abs_of_nonneg (hb₀ n)).le) (fun n => hX n t)
+  have hs (t : ℝ) : Summable (fun n => a n * f n (X n t)) :=
+    (hb.mul_right A).of_norm_bounded (fun n => norm_mul_le_of_le (ha n) (hf n t))
+  have ht (t : ℝ) : Summable (fun n => b n * X n t) :=
+    (hb.mul_right B).of_norm_bounded (fun n => norm_mul_le_of_le (abs_of_nonneg (hb₀ n)).le (hX n t))
   wlog h : x ≤ y generalizing x y
   · rw [abs_sub_comm (∑' n, a n * f n (X n y)), abs_sub_comm (∑' n, b n * X n y)]
     exact this y x (le_of_not_ge h)

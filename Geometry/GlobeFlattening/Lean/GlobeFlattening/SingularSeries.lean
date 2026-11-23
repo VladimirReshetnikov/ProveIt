@@ -71,34 +71,33 @@ theorem singular_bounded_weighted_tsum
   filter_upwards [hsing n] with x hx
   simpa using hx.const_mul (w n)
 
-/-- Choose a measurable good set for the two derivatives using a measurable null cover. -/
-theorem exists_product_derivative_good
-    (H V : ℝ → ℝ) (D : Set (ℝ × ℝ)) (hD : MeasurableSet D)
-    (hH : ∀ᵐ x ∂volume, HasDerivAt H 0 x)
-    (hV : ∀ᵐ y ∂volume, HasDerivAt V 0 y) :
+/-- Pull a full-measure derivative event back to the two coordinates, allowing a nonzero rescaling. -/
+theorem exists_scaled_product_derivative_good
+    (H : ℝ → ℝ) {c : ℝ} (hc : c ≠ 0) (D : Set (ℝ × ℝ)) (hD : MeasurableSet D)
+    (hH : ∀ᵐ x ∂volume, HasDerivAt H 0 x) :
     ∃ E : Set (ℝ × ℝ), MeasurableSet E ∧ E ⊆ D ∧ volume (D \ E) = 0 ∧
-      ∀ p ∈ E, HasDerivAt H 0 p.1 ∧ HasDerivAt V 0 p.2 := by
-  have hae : ∀ᵐ p : ℝ × ℝ ∂volume, HasDerivAt H 0 p.1 ∧ HasDerivAt V 0 p.2 := by
+      ∀ p ∈ E, HasDerivAt H 0 p.1 ∧ HasDerivAt H 0 (c * p.2) := by
+  have hscale := Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) hc
+  have hae : ∀ᵐ p : ℝ × ℝ ∂volume, HasDerivAt H 0 p.1 ∧ HasDerivAt H 0 (c * p.2) := by
     rw [Measure.volume_eq_prod]
-    exact (Measure.quasiMeasurePreserving_fst.ae hH).and (Measure.quasiMeasurePreserving_snd.ae hV)
+    exact (Measure.quasiMeasurePreserving_fst.ae hH).and
+      (Measure.quasiMeasurePreserving_snd.ae (hscale.ae hH))
   obtain ⟨E, hE, hm, hgood⟩ := hae.exists_measurable_mem
   refine ⟨D ∩ E, hD.inter hm, inter_subset_left, ?_, fun p hp => hgood p hp.2⟩
   rw [sdiff_self_inter]
   exact measure_mono_null (sdiff_subset_compl D E) (mem_ae_iff.1 hE)
 
-/-- Two one-dimensional zero derivatives control the full linearization
-error through separate increment bounds. -/
+/-- Zero derivatives at two linear coordinates control the full linearization error. -/
 theorem hasFDerivAt_of_increment_bounds {u : ℝ × ℝ → ℝ} {H V : ℝ → ℝ} {p : ℝ × ℝ}
-    {slope : ℝ} (hH : HasDerivAt H 0 p.1) (hV : HasDerivAt V 0 p.2)
+    {slope : ℝ} {L M : (ℝ × ℝ) →L[ℝ] ℝ}
+    (hL : HasDerivAt H 0 (L p)) (hM : HasDerivAt V 0 (M p))
     (herror : ∀ᶠ q in 𝓝 p, |u q - u p - slope * (q.1 - p.1)| ≤
-      |H q.1 - H p.1| + |V q.2 - V p.2|) :
+      |H (L q) - H (L p)| + |V (M q) - V (M p)|) :
     HasFDerivAt u (slope • ContinuousLinearMap.fst ℝ ℝ ℝ) p := by
-  have hcomp {f : ℝ → ℝ} (L : (ℝ × ℝ) →L[ℝ] ℝ) (hf : HasDerivAt f 0 (L p)) :
-      (fun q => |f (L q) - f (L p)|) =o[𝓝 p] fun q => q - p := by
-    simpa [Function.comp_def] using (hf.comp_hasFDerivAt p L.hasFDerivAt).isLittleO.abs_left
-  exact HasFDerivAt.of_isLittleO (herror.isBigO.trans_isLittleO
-    ((hcomp (ContinuousLinearMap.fst ℝ ℝ ℝ) hH).add
-      (hcomp (ContinuousLinearMap.snd ℝ ℝ ℝ) hV)))
+  have hcomp {f : ℝ → ℝ} (A : (ℝ × ℝ) →L[ℝ] ℝ) (hA : HasDerivAt f 0 (A p)) :
+      (fun q => |f (A q) - f (A p)|) =o[𝓝 p] fun q => q - p := by
+    simpa [Function.comp_def] using (hA.comp_hasFDerivAt p A.hasFDerivAt).isLittleO.abs_left
+  exact HasFDerivAt.of_isLittleO (herror.isBigO.trans_isLittleO ((hcomp L hL).add (hcomp M hM)))
 
 end
 

@@ -242,8 +242,6 @@ theorem scalar_error {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
 
 def horizontalControl (x : ℝ) := ∑' n, rate (δ + Real.pi) n * S.X n x
 
-def verticalControl (y : ℝ) := S.horizontalControl (2 * y)
-
 theorem horizontal_increment_bound (x x' y : ℝ) :
     |S.correction (x', y) - S.correction (x, y)| ≤ |S.horizontalControl x' - S.horizontalControl x| :=
   abs_tsum_weighted_comp_sub_le (f := fun _ => id) (summable_rate (δ + Real.pi))
@@ -251,7 +249,7 @@ theorem horizontal_increment_bound (x x' y : ℝ) :
     S.monoX S.boundX (fun _ => LipschitzWith.id) S.boundX x x'
 
 theorem vertical_increment_bound (x y y' : ℝ) :
-    |S.scalar (x, y') - S.scalar (x, y)| ≤ |S.verticalControl y' - S.verticalControl y| :=
+    |S.scalar (x, y') - S.scalar (x, y)| ≤ |S.horizontalControl (2 * y') - S.horizontalControl (2 * y)| :=
   abs_tsum_weighted_comp_sub_le (f := latitudeWeight δ)
     (summable_rate (δ + Real.pi)) (fun n => S.longitudeIncrement_bound n x)
     S.monoX S.boundX (lipschitzWith_latitudeWeight δ)
@@ -262,16 +260,10 @@ theorem horizontal_singular : ∀ᵐ x ∂volume, HasDerivAt S.horizontalControl
     (fun n => (rate_pos (add_pos S.delta_pos Real.pi_pos) n).le)
     (summable_rate (δ + Real.pi)) S.boundX S.continuousX S.monoX S.singularX
 
-theorem vertical_singular : ∀ᵐ y ∂volume, HasDerivAt S.verticalControl 0 y := by
-  have hscale := Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) (by norm_num : (2 : ℝ) ≠ 0)
-  filter_upwards [hscale.ae S.horizontal_singular] with y hy
-  change HasDerivAt (fun t => S.horizontalControl (2 * t)) 0 y
-  simpa [Function.comp_def] using hy.comp y ((hasDerivAt_id y).const_mul (2 : ℝ))
-
 theorem linearization_bound {p q : ℝ × ℝ} (hp : p ∈ sphereClosedBox) (hq : q ∈ sphereClosedBox) :
     |S.scalar q - S.scalar p - Real.cos p.2 * (q.1 - p.1)| ≤
       |S.horizontalControl q.1 - S.horizontalControl p.1| +
-        |S.verticalControl q.2 - S.verticalControl p.2| := by
+        |S.horizontalControl (2 * q.2) - S.horizontalControl (2 * p.2)| := by
   let mid := (q.1, p.2)
   calc
     _ = |(S.correction mid - S.correction p) + (S.scalar q - S.scalar mid)| := by
@@ -297,8 +289,8 @@ theorem exists_strict_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
       ∀ p ∈ E, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p := by
   obtain ⟨S⟩ := exists_staircases hδ
   obtain ⟨E, hm, hsub, hnull, hderiv⟩ :=
-    exists_product_derivative_good S.horizontalControl S.verticalControl sphereLongitudeDomain
-      isOpen_sphereLongitudeDomain.measurableSet S.horizontal_singular S.vertical_singular
+    exists_scaled_product_derivative_good S.horizontalControl (c := 2) (by norm_num) sphereLongitudeDomain
+      isOpen_sphereLongitudeDomain.measurableSet S.horizontal_singular
   refine ⟨S.scalar, E, S.continuous_scalar.continuousOn, hm, hsub, hnull, fun _ => S.scalar_error, ?_, ?_⟩
   · intro p hp q hq hlat hlong
     change _ < S.scalar (q.1, q.2) - S.scalar p
@@ -306,7 +298,8 @@ theorem exists_strict_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
     exact S.scalar_strictLowerSlope hp.1 hq.1 hp.2 hlong
   · intro p hp
     have hd := hderiv p hp
-    apply hasFDerivAt_of_increment_bounds hd.1 hd.2
+    apply hasFDerivAt_of_increment_bounds (L := ContinuousLinearMap.fst ℝ ℝ ℝ)
+      (M := (2 : ℝ) • ContinuousLinearMap.snd ℝ ℝ ℝ) hd.1 hd.2
     filter_upwards [isOpen_sphereLongitudeDomain.mem_nhds (hsub hp)] with q hq
     exact S.linearization_bound (sphereLongitudeDomain_subset_box (hsub hp))
       (sphereLongitudeDomain_subset_box hq)

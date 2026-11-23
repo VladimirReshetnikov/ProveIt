@@ -28,8 +28,10 @@ nontrivial horizontal interval. The two formulas bound the horizontal and
 vertical errors by increments of the same staircase sum, with latitude
 rescaled, giving the joint derivative. The Stieltjes measure of that sum
 is the sum of the individual singular measures, so the control function
-also has derivative zero almost everywhere. Scaling the scalar tolerance by
-`1 / (1 + π)` gives a uniform distance bound of `ε` for the constructed map.
+also has derivative zero almost everywhere. Longitude and doubled latitude
+pull back that same derivative event to the chart. Scaling the scalar
+tolerance by `1 / (1 + π)` gives a uniform distance bound of `ε` for the
+constructed map.
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·
 [Singular staircases](Lean/GlobeFlattening/SingularStaircase.lean)
 
