@@ -1,18 +1,17 @@
 import Mathlib.Analysis.Calculus.Monotone
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.DerivIntegrable
 import Mathlib.Analysis.Normed.Group.FunctionSeries
 import Mathlib.MeasureTheory.Measure.Prod
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Analysis.Calculus.Deriv.Comp
+import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.FDeriv.Prod
-import Mathlib.Tactic.Linarith
 
 /-!
 # Singular comparison functions and joint differentiability
 
-A sum of monotone singular functions has derivative zero almost everywhere
-when the series converges with nonnegative weights. The derivative of each
-monotone tail has integral bounded by that tail's oscillation.
+The Stieltjes measure of a sum of monotone functions is the sum of their
+Stieltjes measures. Mutual singularity with Lebesgue measure is preserved
+by countable sums, so the derivative remains zero almost everywhere.
 
 For functions of two variables, independent increments controlled by two
 such functions give an almost-everywhere bound on the joint linearization error.
@@ -25,71 +24,52 @@ namespace GlobeFlattening
 
 noncomputable section
 
-/-- A pointwise summable series of monotone singular functions is singular. On every interval
-the derivative of the sum agrees almost everywhere with that of each monotone tail, so its
-integral is at most the oscillation of the tail. -/
-theorem singular_tsum
-    (f : ℕ → ℝ → ℝ) (hsum : ∀ x, Summable (fun n => f n x))
-    (hmono : ∀ n, Monotone (f n))
-    (hsing : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
-    ∀ᵐ x, HasDerivAt (fun y => ∑' n, f n y) 0 x := by
-  let F : ℝ → ℝ := fun x => ∑' n, f n x
-  let tail : ℕ → ℝ → ℝ := fun n x => ∑' i, f (i + n) x
-  have hF : Monotone F := fun x y hxy =>
-    Summable.tsum_le_tsum (fun i => hmono i hxy) (hsum x) (hsum y)
-  have htail (n : ℕ) : Monotone (tail n) := fun x y hxy =>
-    Summable.tsum_le_tsum (fun i => hmono (i + n) hxy)
-      ((summable_nat_add_iff n).2 (hsum x)) ((summable_nat_add_iff n).2 (hsum y))
-  have heq (n : ℕ) : ∀ᵐ x, deriv F x = deriv (tail n) x := by
-    filter_upwards [hF.ae_differentiableAt, (htail n).ae_differentiableAt, ae_all_iff.mpr hsing]
-      with x hf ht hx
-    have hs (y : ℝ) : F y - tail n y = ∑ i ∈ Finset.range n, f i y :=
-      sub_eq_of_eq_add ((hsum y).sum_add_tsum_nat_add n).symm
-    have hp : HasDerivAt (fun y => F y - tail n y) 0 x := by
-      simpa only [hs, Finset.sum_const_zero] using
-        HasDerivAt.fun_sum (u := Finset.range n) (A := f) (A' := fun _ => 0) fun i _ => hx i
-    exact sub_eq_zero.mp ((hf.hasDerivAt.sub ht.hasDerivAt).unique hp)
-  have hloc (a b : ℝ) (hab : a < b) : ∀ᵐ x, x ∈ univ ∩ Ioo a b → HasDerivAt F 0 x := by
-    have hbound (n : ℕ) : (∫ x in Ioc a b, deriv F x) ≤ tail n b - tail n a := by
-      rw [integral_congr_ae (ae_restrict_of_ae (heq n)), ← intervalIntegral.integral_of_le hab.le]
-      have hi := ((htail n).monotoneOn (uIcc a b)).intervalIntegral_deriv_mem_uIcc
-      rw [uIcc_of_le (sub_nonneg.mpr (htail n hab.le))] at hi
-      exact hi.2
-    have hsmall : Tendsto (fun n => tail n b - tail n a) atTop (𝓝 0) := by
-      simpa only [sub_zero] using
-        (tendsto_sum_nat_add fun i => f i b).sub (tendsto_sum_nat_add fun i => f i a)
-    have hzero : deriv F =ᵐ[volume.restrict (Ioc a b)] 0 :=
-      (integral_eq_zero_iff_of_nonneg_ae (ae_of_all _ fun _ => hF.deriv_nonneg)
-        ((hF.monotoneOn (uIcc a b)).intervalIntegrable_deriv).1).mp
-        (le_antisymm
-          (le_of_tendsto_of_tendsto tendsto_const_nhds hsmall (Eventually.of_forall hbound))
-          (integral_nonneg fun _ => hF.deriv_nonneg))
-    filter_upwards [hF.ae_differentiableAt, (ae_restrict_iff' measurableSet_Ioc).mp hzero]
-      with x hx hd hmem
-    exact hx.hasDerivAt.congr_deriv (hd (Ioo_subset_Ioc_self hmem.2))
-  exact (ae_of_mem_of_ae_of_mem_inter_Ioo (μ := volume) (s := univ) fun a b _ _ => hloc a b).mono
-    fun x hx => hx (mem_univ x)
+/-- The sum of Stieltjes functions with derivative zero almost everywhere is singular. -/
+theorem singular_stieltjes_sum (f : ℕ → StieltjesFunction ℝ) (F : StieltjesFunction ℝ)
+    (hsum : ∀ x, HasSum (fun n => f n x) (F x))
+    (hzero : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
+    ∀ᵐ x, HasDerivAt F 0 x := by
+  have hmeasure : F.measure = Measure.sum (fun n => (f n).measure) := by
+    apply Measure.ext_of_Ioc
+    intro a b hab
+    simp only [StieltjesFunction.measure_Ioc, Measure.sum_apply _ measurableSet_Ioc]
+    have hdiff := (hsum b).sub (hsum a)
+    rw [← ENNReal.ofReal_tsum_of_nonneg (fun n => sub_nonneg.mpr ((f n).mono hab.le)) hdiff.summable,
+      hdiff.tsum_eq]
+  have hsing : F.measure ⟂ₘ volume := by
+    rw [hmeasure, Measure.MutuallySingular.sum_left]
+    intro n
+    rw [← Measure.rnDeriv_eq_zero]
+    filter_upwards [(f n).ae_hasDerivAt, hzero n, Measure.rnDeriv_lt_top (f n).measure volume]
+      with x hd hz ht
+    have heq := hd.unique hz
+    rwa [ENNReal.toReal_eq_zero_iff, or_iff_left ht.ne] at heq
+  filter_upwards [F.ae_hasDerivAt, hsing.rnDeriv_ae_eq_zero] with x hx hz
+  simpa [show F.measure.rnDeriv volume x = 0 from hz] using hx
 
-/-- Summable nonnegative weights and pointwise bounded summands suffice. -/
+/-- A nonnegative summable combination of bounded continuous monotone singular functions is singular. -/
 theorem singular_bounded_weighted_tsum
-    (f : ℕ → ℝ → ℝ) (w : ℕ → ℝ)
+    (f : ℕ → ℝ → ℝ) (w : ℕ → ℝ) {C : ℝ}
     (hw : ∀ n, 0 ≤ w n) (hwSum : Summable w)
-    (hbound : ∀ x, ∃ C : ℝ, ∀ n, ‖f n x‖ ≤ C)
+    (hbound : ∀ n x, ‖f n x‖ ≤ C) (hcont : ∀ n, Continuous (f n))
     (hmono : ∀ n, Monotone (f n))
     (hsing : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
     ∀ᵐ x, HasDerivAt (fun y => ∑' n, w n * f n y) 0 x := by
-  apply singular_tsum (fun n x => w n * f n x)
-  · intro x
-    obtain ⟨C, hC⟩ := hbound x
-    apply Summable.of_norm_bounded (hwSum.mul_right C)
-    intro n
-    rw [norm_mul, Real.norm_eq_abs, abs_of_nonneg (hw n)]
-    exact mul_le_mul_of_nonneg_left (hC n) (hw n)
-  · intro n x y hxy
-    exact mul_le_mul_of_nonneg_left (hmono n hxy) (hw n)
-  · intro n
-    filter_upwards [hsing n] with x hx
-    simpa using hx.const_mul (w n)
+  let g (n : ℕ) : StieltjesFunction ℝ :=
+    ⟨fun x => w n * f n x, fun _ _ h => mul_le_mul_of_nonneg_left (hmono n h) (hw n),
+      fun _ => (continuous_const.mul (hcont n)).continuousWithinAt⟩
+  have hnorm (n : ℕ) (x : ℝ) : ‖g n x‖ ≤ w n * C :=
+    norm_mul_le_of_le (by simp [Real.norm_eq_abs, abs_of_nonneg (hw n)]) (hbound n x)
+  have hs (x : ℝ) : Summable (fun n => g n x) :=
+    (hwSum.mul_right C).of_norm_bounded (fun n => hnorm n x)
+  let G : StieltjesFunction ℝ :=
+    ⟨fun x => ∑' n, g n x, fun x y h => (hs x).tsum_le_tsum (fun n => (g n).mono h) (hs y),
+      fun _ => (continuous_tsum (fun n => continuous_const.mul (hcont n))
+        (hwSum.mul_right C) hnorm).continuousWithinAt⟩
+  apply singular_stieltjes_sum g G (fun x => (hs x).hasSum)
+  intro n
+  filter_upwards [hsing n] with x hx
+  simpa using hx.const_mul (w n)
 
 /-- Choose a measurable good set for the two derivatives using a measurable null cover. -/
 theorem exists_product_derivative_good

@@ -23,8 +23,10 @@ almost everywhere.
 Positive longitude correction weights give a strict slope bound on every
 nontrivial horizontal interval. Summation by parts recovers the sinusoidal
 term as the boundary term. The two formulas bound the horizontal and
-vertical errors by increments of the same singular function, with latitude
-rescaled, giving the joint derivative. Scaling the scalar tolerance by
+vertical errors by increments of the same staircase sum, with latitude
+rescaled, giving the joint derivative. The Stieltjes measure of that sum
+is the sum of the individual singular measures, so the control function
+also has derivative zero almost everywhere. Scaling the scalar tolerance by
 `1 / (1 + π)` gives a uniform distance bound of `ε` for the constructed map.
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·
 [Singular staircases](Lean/GlobeFlattening/SingularStaircase.lean)
