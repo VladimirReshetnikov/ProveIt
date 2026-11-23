@@ -69,24 +69,14 @@ theorem hasFDerivAt_sphereFlatten_inverse
   rw [← hD]
   exact hs'.comp (G p) hGinv
 
-/-- The forward differential is the left inverse of the tangent lift.
-The homeomorphism supplies continuity and the inverse identity on the cut sphere. -/
+/-- The forward differential is the linear left inverse of the tangent lift. -/
 theorem hasFDerivWithinAt_sphereFlatten
-    {target : Set (EuclideanSpace ℝ (Fin 2))} (F : cutSphere ≃ₜ target)
     {f : EuclideanSpace ℝ (Fin 3) → EuclideanSpace ℝ (Fin 2)}
     {fInv : EuclideanSpace ℝ (Fin 2) → EuclideanSpace ℝ (Fin 3)} {p : ℝ × ℝ}
-    (hf : ∀ w : cutSphere, f w = (F w).val)
-    (hfInv : ∀ z : target, fInv z = (F.symm z).val)
+    (hcont : ContinuousOn f cutSphere) (hleft : LeftInvOn fInv f cutSphere)
     (hp : spherePoint p ∈ cutSphere)
     (hinv : HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p))) :
     HasFDerivWithinAt f (sphereFlattenDerivative p) cutSphere (spherePoint p) := by
-  have hcont : ContinuousOn f cutSphere :=
-    continuousOn_iff_continuous_restrict.2
-      ((continuous_subtype_val.comp F.continuous).congr fun w => (hf w).symm)
-  have hleft : LeftInvOn fInv f cutSphere := by
-    intro w hw
-    rw [hf ⟨w, hw⟩, hfInv (F ⟨w, hw⟩)]
-    exact congrArg Subtype.val (F.symm_apply_apply ⟨w, hw⟩)
   simpa only [ContinuousLinearMap.comp_id] using
     (hinv.hasFDerivWithinAt (s := univ)).of_comp_of_leftInverse
       (by rw [nhdsWithin_univ]; exact hcont (spherePoint p) hp)

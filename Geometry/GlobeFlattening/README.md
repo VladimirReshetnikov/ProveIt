@@ -33,7 +33,9 @@ area. The uniform projection error bounds the total area from above.
 
 The inverse derivative is the tangent lift. Applying its linear left
 inverse to the differentiated inverse identity gives the forward derivative
-along the cut sphere. [Differential proof](Lean/GlobeFlattening/SphereDifferential.lean)
+along the cut sphere. The same inverse identity gives the injectivity used
+to prove that the good and exceptional images are Borel.
+[Differential proof](Lean/GlobeFlattening/SphereDifferential.lean)
 
 Spherical area is defined in the longitude–latitude chart with density
 `cos(latitude)`, as in the report. The exceptional set also has zero

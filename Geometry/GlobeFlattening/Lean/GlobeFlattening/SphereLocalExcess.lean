@@ -13,7 +13,7 @@ the Euclidean target.
 
 namespace GlobeFlattening
 
-open MeasureTheory Set
+open MeasureTheory Set Topology
 open scoped NNReal ENNReal MeasureTheory
 
 noncomputable section
@@ -77,9 +77,9 @@ theorem hausdorffMeasure_sphereExceptional_eq_zero {good : Set (ℝ × ℝ)}
 /-- Positive exceptional image area in every open target patch precludes
 Lipschitz bounds on open source patches. -/
 theorem not_lipschitzOn_of_exceptional_area
-    {target : Set (EuclideanSpace ℝ (Fin 2))} (F : cutSphere ≃ₜ target)
+    {target : Set (EuclideanSpace ℝ (Fin 2))}
     {f : EuclideanSpace ℝ (Fin 3) → EuclideanSpace ℝ (Fin 2)}
-    (hf : ∀ p : cutSphere, f p = (F p).val) (htarget : IsOpen target)
+    (hf : IsOpenEmbedding (cutSphere.restrict f)) (hmaps : MapsTo f cutSphere target)
     {Z : Set (EuclideanSpace ℝ (Fin 3))} (hZ : Z ⊆ cutSphere) (hZnull : μH[2] Z = 0)
     (hexcess : ∀ W, IsOpen W → W.Nonempty → W ⊆ target → 0 < volume (W ∩ f '' Z))
     {U : Set cutSphere} (hU : IsOpen U) (hne : U.Nonempty) (K : ℝ≥0) :
@@ -87,11 +87,10 @@ theorem not_lipschitzOn_of_exceptional_area
   intro hLip
   let W := Subtype.val '' U
   have hWsub : W ⊆ cutSphere := Subtype.coe_image_subset _ _
-  have hpatch : f '' W = Subtype.val '' (F '' U) := by
-    rw [image_image, image_image]
-    exact image_congr fun p _ => hf p
-  have hOpen : IsOpen (f '' W) := hpatch ▸ htarget.isOpenMap_subtype_val _ (F.isOpenMap _ hU)
-  have hsub : f '' W ⊆ target := hpatch ▸ Subtype.coe_image_subset _ _
+  have hOpen : IsOpen (f '' W) := by
+    rw [image_image]
+    exact hf.isOpenMap _ hU
+  have hsub : f '' W ⊆ target := (image_mono hWsub).trans hmaps.image_subset
   have hpos := hexcess _ hOpen ((hne.image _).image _) hsub
   have hLip' : LipschitzOnWith K f W := by
     rintro _ ⟨p, hp, rfl⟩ _ ⟨q, hq, rfl⟩
@@ -105,10 +104,7 @@ theorem not_lipschitzOn_of_exceptional_area
   have hzero : volume (f '' (W ∩ Z)) = 0 :=
     Measure.absolutelyContinuous_isAddHaarMeasure volume _ (le_zero_iff.mp <| by
       simpa [measure_mono_null inter_subset_right hZnull] using hbound)
-  have hInj : InjOn f cutSphere := by
-    rw [injOn_iff_injective, show cutSphere.restrict f = Subtype.val ∘ F from funext hf]
-    exact Subtype.coe_injective.comp F.injective
-  rw [hInj.image_inter hWsub hZ] at hzero
+  rw [(injOn_iff_injective.2 hf.injective).image_inter hWsub hZ] at hzero
   exact hpos.ne' hzero
 
 end
