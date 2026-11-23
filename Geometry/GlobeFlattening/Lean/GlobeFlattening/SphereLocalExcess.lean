@@ -1,4 +1,5 @@
 import GlobeFlattening.CoordinateArea
+import GlobeFlattening.RestrictedArea
 import GlobeFlattening.SphereMeasure
 import GlobeFlattening.SphereMetric
 import Mathlib.MeasureTheory.Measure.Hausdorff

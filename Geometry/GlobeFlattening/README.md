@@ -55,10 +55,10 @@ after swapping coordinates. The strict width comparison proves total area
 excess. For local exceptional area, the proof pulls the open target patch
 back to coordinates, picks a rectangle there, and uses the same triangular
 chart and width formula for its image.
-The reference width integral factors out `2π` and adjoins the two null
-latitude endpoints. The one-dimensional Jacobian formula then uses sine's
-bijection from the closed latitude interval onto `[-1, 1]`.
-The uniform projection error bounds the total area from above.
+Both the reference area and the upper estimate use the same antiderivative
+`2π sin(y) + r y` for the sinusoidal width plus a constant offset. The
+reference uses `r = 0`. For the upper estimate, the uniform projection error
+bounds the two endpoint errors by a combined `r = 2ε`.
 [Chart homeomorphism](Lean/GlobeFlattening/TriangularChart.lean)
 
 The inverse derivative is the isometric lift into the plane perpendicular

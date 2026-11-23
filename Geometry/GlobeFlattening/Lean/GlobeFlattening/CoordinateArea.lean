@@ -1,6 +1,6 @@
-import GlobeFlattening.RestrictedArea
 import GlobeFlattening.TriangularChart
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
 /-!
 # Area and closeness in longitude and latitude coordinates
@@ -61,16 +61,18 @@ theorem lintegral_cos_lt_volume_chartImage
 
 private abbrev latitudeInterval : Set ℝ := Ioo (-(Real.pi / 2)) (Real.pi / 2)
 
-private theorem lintegral_sinusoidalWidth :
-    (∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y)) =
-      ENNReal.ofReal (4 * Real.pi) := by
-  simp_rw [ENNReal.ofReal_mul (by positivity : 0 ≤ 2 * Real.pi), lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
-  have harea := lintegral_abs_det_fderiv_eq_addHaar_image volume measurableSet_Icc
-    (fun y _ => (Real.hasDerivAt_sin y).hasFDerivAt.hasFDerivWithinAt) Real.bijOn_sin.injOn
-  simp only [ContinuousLinearMap.det_toSpanSingleton, Real.bijOn_sin.image_eq, Real.volume_Icc] at harea
-  rw [setLIntegral_congr Ioo_ae_eq_Icc, setLIntegral_congr_fun measurableSet_Icc
-    (fun y hy => congrArg ENNReal.ofReal (abs_of_nonneg (Real.cos_nonneg_of_mem_Icc hy)).symm),
-    harea, ← ENNReal.ofReal_mul (by positivity)]
+private theorem lintegral_sinusoidalWidth_add (r : ℝ) (hr : 0 ≤ r) :
+    (∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y + r)) =
+      ENNReal.ofReal (4 * Real.pi + Real.pi * r) := by
+  have hab := neg_le_self (half_pos Real.pi_pos).le
+  have hcont : Continuous (fun y => 2 * Real.pi * Real.cos y + r) := by fun_prop
+  rw [← ofReal_integral_eq_lintegral_ofReal (hcont.integrableOn_Icc.mono_set Ioo_subset_Icc_self)
+    ((ae_restrict_mem measurableSet_Ioo).mono fun y hy =>
+      add_nonneg (mul_nonneg (by positivity) (Real.cos_pos_of_mem_Ioo hy).le) hr),
+    ← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le hab,
+    intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun y => 2 * Real.pi * Real.sin y + r * y)
+      (fun y _ => ((Real.hasDerivAt_sin y).const_mul (2 * Real.pi)).add (hasDerivAt_const_mul r))
+      (hcont.intervalIntegrable _ _), Real.sin_neg, Real.sin_pi_div_two]
   exact congrArg ENNReal.ofReal (by ring)
 
 /-- The spherical area density integrates to `4π` over the cut-sphere
@@ -78,8 +80,8 @@ coordinate rectangle. -/
 theorem lintegral_cos_chartRectangle :
     (∫⁻ p in sphereLongitudeDomain,
         ENNReal.ofReal (Real.cos p.2)) = ENNReal.ofReal (4 * Real.pi) := by
-  rw [sphereLongitudeDomain, lintegral_cos_rectangle (neg_le_self Real.pi_pos.le), sub_neg_eq_add,
-    ← two_mul, lintegral_sinusoidalWidth]
+  simpa only [sphereLongitudeDomain, lintegral_cos_rectangle (neg_le_self Real.pi_pos.le),
+    sub_neg_eq_add, ← two_mul, add_zero, mul_zero] using lintegral_sinusoidalWidth_add 0 le_rfl
 
 /-- A uniform sinusoidal distance bound gives at most two endpoint errors per slice. -/
 theorem volume_chartImage_upper_of_sinusoidal_closeness
@@ -92,17 +94,14 @@ theorem volume_chartImage_upper_of_sinusoidal_closeness
   have hab := neg_le_self Real.pi_pos.le
   rw [volume_chartImage_eq_lintegral_width hab hu]
   calc
-    _ ≤ ∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y) + ENNReal.ofReal (2 * ε) := by
-      refine setLIntegral_mono' measurableSet_Ioo fun y hy =>
-        (ENNReal.ofReal_le_ofReal ?_).trans ENNReal.ofReal_add_le
+    _ ≤ ∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y + 2 * ε) := by
+      refine setLIntegral_mono' measurableSet_Ioo fun y hy => ENNReal.ofReal_le_ofReal ?_
       have hleft := hclose (-Real.pi, y) ⟨⟨le_rfl, hab⟩, Ioo_subset_Icc_self hy⟩
       have hright := hclose (Real.pi, y) ⟨⟨hab, le_rfl⟩, Ioo_subset_Icc_self hy⟩
       rw [dist_flattenCoordinates_sinusoidalCoordinates] at hleft hright
       linarith only [(abs_le.mp hleft).1, (abs_le.mp hright).2]
     _ < _ := by
-      rw [lintegral_add_right _ measurable_const, lintegral_sinusoidalWidth, setLIntegral_const,
-        Real.volume_Ioo, sub_neg_eq_add, add_halves,
-        ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_add (by positivity) (by positivity)]
+      rw [lintegral_sinusoidalWidth_add _ (by positivity)]
       exact (ENNReal.ofReal_lt_ofReal_iff (by positivity)).2 (by
         nlinarith only [mul_pos Real.pi_pos hε])
 
