@@ -23,10 +23,6 @@ def flattenCoordinates (u : ℝ × ℝ → ℝ) (p : ℝ × ℝ) : ℝ × ℝ :=
 def coordinateDerivative (slope : ℝ) : ℝ × ℝ →L[ℝ] ℝ × ℝ :=
   (slope • ContinuousLinearMap.id ℝ ℝ).prodMap (ContinuousLinearMap.id ℝ ℝ)
 
-@[simp] theorem det_coordinateDerivative (slope : ℝ) :
-    (coordinateDerivative slope).det = slope := by
-  simp [coordinateDerivative, ContinuousLinearMap.det, LinearMap.det_prodMap]
-
 /-- The width-reparametrized chart has area density equal to its positive
 longitude slope wherever the scalar derivative has the prescribed form. -/
 theorem measure_flattened_good_image
@@ -43,7 +39,8 @@ theorem measure_flattened_good_image
     (fun p hp => ((hDeriv p hp).mono hsub).prodMk hasFDerivAt_snd.hasFDerivWithinAt) (hf.mono hsub)]
   refine (setLIntegral_congr_fun hgood fun p hp => ?_).trans
     (setLIntegral_congr (hsub.eventuallyLE.antisymm (ae_le_set.2 hnull)))
-  simp [abs_of_nonneg (hnonneg p hp)]
+  simp [coordinateDerivative, ContinuousLinearMap.det, LinearMap.det_prodMap,
+    abs_of_nonneg (hnonneg p hp)]
 
 end
 

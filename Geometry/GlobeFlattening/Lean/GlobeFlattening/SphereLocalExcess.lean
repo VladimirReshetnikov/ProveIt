@@ -56,8 +56,27 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
   rw [image_image] at hWsub
   obtain ⟨p, hp⟩ := image_inter_nonempty_iff.mp (hne.mono (subset_inter hWsub Subset.rfl))
   obtain ⟨a, b, c, d, hp', hbox⟩ := exists_chartClosedRectangle_subset_of_mem_nhds (hopen.mem_nhds hp)
-  have hpos := volume_local_exceptional_image_pos (hp'.1.1.trans hp'.1.2)
-    (hp'.2.1.trans hp'.2.2) (hbox.trans inter_subset_left) hu hslope hgood hnull hderiv
+  have hpos : 0 < volume (flattenCoordinates u '' (chartRectangle a b c d \ good)) := by
+    have hab := hp'.1.1.trans hp'.1.2
+    have hcd := hp'.2.1.trans hp'.2.2
+    have hboxDomain := hbox.trans inter_subset_left
+    have hsubBox := hboxDomain.trans sphereLongitudeDomain_subset_box
+    have hcos (y : ℝ) (hy : y ∈ Icc c d) : 0 ≤ Real.cos y :=
+      Real.cos_nonneg_of_mem_Icc (hsubBox (show (a, y) ∈ _ from ⟨⟨le_rfl, hab.le⟩, hy⟩)).2
+    have hslope' (p) (hp) (q) (hq) := hslope p (hsubBox hp) q (hsubBox hq)
+    have hmono := strictMonoOn_chartRows_of_lowerSlope hcos hslope'
+    have hinj := (injOn_flattenCoordinates_closedRectangle hmono).mono chartRectangle_subset_closed
+    have hnull' : volume (chartRectangle a b c d \ good) = 0 :=
+      measure_mono_null (sdiff_subset_sdiff_left (chartRectangle_subset_closed.trans hboxDomain)) hnull
+    rw [hinj.image_sdiff, image_flattenCoordinates_chartRectangle hab.le (hu.mono hsubBox)
+      (fun y hy => hmono y (Ioo_subset_Icc_self hy))]
+    refine (tsub_pos_of_lt ?_).trans_le le_measure_sdiff
+    exact (measure_flattened_good_image ((isOpen_chartRectangle a b c d).measurableSet.inter hgood)
+      inter_subset_left (by rwa [sdiff_self_inter]) hinj
+      (fun p hp => (hderiv p hp.2).hasFDerivWithinAt)
+      (fun p hp => hcos p.2 (Ioo_subset_Icc_self hp.1.2))).trans_lt
+        (lintegral_cos_lt_volume_chartImage hab hcd (hu.mono hsubBox)
+          (fun y hy => hcos y (Ioo_subset_Icc_self hy)) hslope')
   rw [← volume_planarEuclideanEquiv_image, image_image] at hpos
   rw [sphereExceptional_eq_image hsub, sphereFlattenForward_image sdiff_subset, image_image,
     ← image_preimage_inter,
