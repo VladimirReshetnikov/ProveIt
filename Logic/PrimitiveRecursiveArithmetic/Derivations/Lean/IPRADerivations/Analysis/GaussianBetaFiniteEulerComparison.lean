@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.GaussianBetaPrimitiveGridUnscale
 import IPRADerivations.Analysis.GaussianBetaPrimitiveLowerEndpointRefinement
 import IPRADerivations.Analysis.GaussianBetaUpperGridEndpoint
+import IPRADerivations.Analysis.GaussianBetaFiniteEndpointTelescope
 
 /-!
 # The original full finite beta quadrature and the finite Euler reciprocal
@@ -17,10 +18,10 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianBetaFiniteEulerComparison
 
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open GaussianRationalHorner (positive_product qmul_canonical)
-open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
-open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
+open GaussianRationalHorner (positive_product)
+open GaussianRationalMetric (bounded distanceBounded)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianBetaPrimitiveGridTelescope (gridEndpoint endpoint)
 open GaussianBetaPrimitiveGridUnscale (quadrature scaledEndpoint demand)
@@ -117,16 +118,6 @@ private theorem next_clock_errors (t z R B A N M : PTm n) :
     le_congr (.eqRefl _) (by ipra_ring) (le_add_right U (P+K))
   exact .andI first (.andI second third)
 
-private theorem distance_drop_subtrahend (u v B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
-    (hu : Γ ⊢[PRAAx] GaussianRationalHorner.canonical u)
-    (hv : Γ ⊢[PRAAx] GaussianRationalHorner.canonical v)
-    (h : Γ ⊢[PRAAx] bounded v one B) : Γ ⊢[PRAAx] distanceBounded (qsub u v) u one B := by
-  have undo : Γ ⊢[PRAAx] qsub u (qsub u v) ≐ v :=
-    (qsub_congr (GaussianRationalLinearProduct.add_sub_right v u hu).eqSymm (.eqRefl _)).eqTrans
-      (GaussianReciprocalHorner.qsub_add_cancel v (qsub u v) hv)
-  exact distance_symmetric _ _ _ _ hB
-    (GaussianRationalReciprocal.bound_congr undo.eqSymm (.eqRefl _) (.eqRefl _) h)
-
 theorem upper_error_at (t p q z R B A b N : PTm n)
     (h : Γ ⊢[PRAAx] GaussianBetaUpperEndpointInverse.source z R B A b N)
     (hp : Γ ⊢[PRAAx] le (GaussianBetaUpperGridEndpoint.precision t z B b N) p) :
@@ -159,13 +150,6 @@ theorem full_support_euler_error (t p q z R B A E N M : PTm n)
       (unit t+unit q) (unit t*unit q) := by
   let k := slack t
   let C := supportWidth E N
-  let v := unit k
-  let w := unit q
-  let D := v*w
-  let L := scaledEndpoint zero p z B one C E M N
-  let U := scaledEndpoint M p z B one C E M N
-  let Q := quadrature p z B one C E M N
-  let Y := ap2 eulerF q (eulerData z R B A N)
   have hN := degree_positive z R B A N h
   have hM : Γ ⊢[PRAAx] le one M :=
     le_trans (GaussianBetaPrimitiveCompactGridAccuracy.mesh_positive (demand k N) z R B C E N N) hm
@@ -173,37 +157,13 @@ theorem full_support_euler_error (t p q z R B A E N M : PTm n)
   have atEnd : Γ ⊢[PRAAx] le (one+C) (E*N) := le_congr endEq.eqSymm (.eqRefl _) (le_refl _)
   have compact : Γ ⊢[PRAAx] GaussianBetaPrimitiveCompactGridAccuracy.source z R B A one C E N N :=
     .andI h.andE₁ (.andI hE (.andI hN (.andI (le_refl _) (.andI atEnd atEnd))))
-  have hV : Γ ⊢[PRAAx] le one v := unit_positive k
-  have hW : Γ ⊢[PRAAx] le one w := unit_positive q
-  have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ hV hW
-  have integral : Γ ⊢[PRAAx] distanceBounded Q (qsub U L) one v :=
-    distance_symmetric _ _ _ _ hV (GaussianBetaPrimitiveGridUnscale.original_dyadic_accuracy k p z R B A one C E N M N
-      compact hm hgrid)
-  have small : Γ ⊢[PRAAx] distanceBounded (qsub U L) U one v :=
-    distance_drop_subtrahend U L v hV (qmul_canonical _ _) (qmul_canonical _ _) lower
-  have upper : Γ ⊢[PRAAx] distanceBounded U Y (v+w) D :=
-    distance_congr (support_upper_endpoint_code p z B E N M hE hN).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-      (upper_error_at k p q z R B A (E*M) N
-        (.andI h.andE₁ (.andI h.andE₂.andE₁ (.andI (positive_product _ _ hE hM) (.andI hN h.andE₂.andE₂))))
-        hupper)
-  have enlarge : Γ ⊢[PRAAx] le (one*D) (w*v) := le_of_eq_add (d := zero) (by dsimp only [D]; ipra_ring)
-  have intScaled := distance_radius_mono _ _ _ _ _ _ hV hD enlarge integral
-  have lowerScaled := distance_radius_mono _ _ _ _ _ _ hV hD enlarge small
-  have combine := distance_triangle_same Q (qsub U L) Y w (w+(v+w)) D hD intScaled
-    (distance_triangle_same (qsub U L) U Y w (v+w) D hD lowerScaled upper)
-  have quad : Γ ⊢[PRAAx] v ≐ (num 4)*unit t := by
-    change Γ ⊢[PRAAx] pw two (succ (succ t)) ≐ (num 4)*pw two t
-    exact (pw_succ two (succ t)).eqTrans ((congrMul (pw_succ two t) (.eqRefl _)).eqTrans (by ipra_ring))
-  have compare : Γ ⊢[PRAAx] le ((w+(w+(v+w)))*(unit t*w)) ((unit t+w)*D) := by
-    let V := num 4*unit t
-    have lhs : Γ ⊢[PRAAx] (w+(w+(v+w)))*(unit t*w) ≐ (w+(w+(V+w)))*(unit t*w) :=
-      congrMul (congrAdd (.eqRefl _) (congrAdd (.eqRefl _) (congrAdd quad (.eqRefl _)))) (.eqRefl _)
-    have rhs : Γ ⊢[PRAAx] (unit t+w)*D ≐ (unit t+w)*(V*w) :=
-      congrMul (.eqRefl _) (congrMul quad (.eqRefl _))
-    have reduced : Γ ⊢[PRAAx] le ((w+(w+(V+w)))*(unit t*w)) ((unit t+w)*(V*w)) :=
-      le_of_eq_add (d := unit t*w*w) (by dsimp only [V]; ipra_ring)
-    exact le_congr lhs.eqSymm rhs.eqSymm reduced
-  exact distance_radius_mono _ _ _ _ _ _ hD (positive_product _ _ (unit_positive t) hW) compare combine
+  have upper := distance_congr (support_upper_endpoint_code p z B E N M hE hN).eqSymm
+    (.eqRefl _) (.eqRefl _) (.eqRefl _)
+    (upper_error_at k p q z R B A (E*M) N
+      (.andI h.andE₁ (.andI h.andE₂.andE₁ (.andI (positive_product _ _ hE hM) (.andI hN h.andE₂.andE₂))))
+      hupper)
+  exact GaussianBetaFiniteEndpointTelescope.grid_to_certified_endpoint t p q z R B A one C E N M _
+    compact hm hgrid lower upper
 
 theorem original_quadrature_euler_error (t p q z R B A N M : PTm n)
     (h : Γ ⊢[PRAAx] source z R B A N) (hm : Γ ⊢[PRAAx] le (minimumCells t z R B A N) M)

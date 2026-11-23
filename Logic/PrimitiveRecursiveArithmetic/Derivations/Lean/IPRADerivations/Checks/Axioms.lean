@@ -19037,6 +19037,21 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpScheduleBudget.literal_sharp_degree_covers_original_radius_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpScheduleBudget.literal_sharp_degree_evaluated_coefficient_budget_closed
 
+/-! ### GaussianEulerSharpRealScheduleBudget -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpRealScheduleBudget.weighted_real_raw_l1_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpRealScheduleBudget.fixed_tail_exact_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpRealScheduleBudget.fixed_tail_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpRealScheduleBudget.coefficient_quarter_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpRealScheduleBudget.main_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpRealScheduleBudget.literal_sharp_degree_real_tail_budget_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpRealScheduleBudget.literal_sharp_degree_real_main_budget_closed
+
+/-! ### GaussianEulerSharpReportTerms -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpReportTerms.next_unit
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpReportTerms.coefficient_strict_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpReportTerms.fixed_tail_strict_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpReportTerms.literal_sharp_Euler_report_terms_strict_closed
+
 /-! ### GaussianEulerSharpScheduledApproximation -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpScheduledApproximation.source
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpScheduledApproximation.numerator
@@ -28736,6 +28751,53 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaFiniteEulerAtCutoff.original_at_cutoff
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaFiniteEulerAtCutoff.original_degree_independent_cutoff_finite_Euler_inverse_closed
 
+/-! ### GaussianBetaFiniteEndpointTelescope -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaFiniteEndpointTelescope.grid_to_certified_endpoint
+
+/-! ### GaussianBetaAllDegreeEulerInverse -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.endpointF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.nameF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.endpointData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.height
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.query
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.subst_endpointData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.subst_radius
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.subst_original_head
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.subst_height
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.subst_data
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.subst_query
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.endpoint_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.endpoint_disk
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.original_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.original_upper_inverse
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.name_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.original_product
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.sample_literal
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.original_endpoint_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.original_compatible
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.dataF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.sampleF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.data_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.program_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.original_all_positive_degrees_finite_Euler_inverse_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse.literal_all_degree_original_finite_sampler_closed
+
+/-! ### GaussianBetaAllDegreeUpperEndpoint -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeUpperEndpoint.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeUpperEndpoint.sampled_endpoint_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeUpperEndpoint.upper_error_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeUpperEndpoint.retimed_endpoint_error
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeUpperEndpoint.all_degree_original_grid_upper_endpoint_error_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeUpperEndpoint.all_degree_retimed_grid_upper_endpoint_error_closed
+
+/-! ### GaussianBetaAllDegreeFiniteBinding -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeFiniteBinding.original_at_cutoff
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeFiniteBinding.original_finite_euler
+
 /-! ### GaussianBetaSharpFiniteBinding -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.fullBeta
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpFiniteBinding.fullEuler
@@ -28775,6 +28837,24 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.actual_sharp_source_only_support_mesh_schedule_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpCofinalSchedule.actual_sharp_evaluator_clock_spends_original_split_budget_closed
 
+/-! ### GaussianBetaSharpNaturalDegreeSchedule -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpNaturalDegreeSchedule.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpNaturalDegreeSchedule.degree_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpNaturalDegreeSchedule.original_partition
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpNaturalDegreeSchedule.support_cells
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpNaturalDegreeSchedule.low_count_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpNaturalDegreeSchedule.middle_time_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpNaturalDegreeSchedule.tail_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpNaturalDegreeSchedule.original_natural_degree_source_support_schedule_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharpNaturalDegreeSchedule.original_natural_degree_middle_sampling_budget_closed
+
+/-! ### GaussianEulerSharpGridRate -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpGridRate.sampleClock
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpGridRate.mesh
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpGridRate.mainNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpGridRate.mainDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpGridRate.original_grids
+
 /-! ### GaussianEulerSharpResidualAssembly -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpResidualAssembly.panel_distance
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpResidualAssembly.split_distance
@@ -28790,6 +28870,12 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpFiniteRate.cofinal_observations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpFiniteRate.original_sharp_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpFiniteRate.actual_finite_Euler_sharp_rate_to_original_improper_integral_closed
+
+/-! ### GaussianEulerSharpAllDegrees -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpAllDegrees.finitePoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpAllDegrees.cofinal_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpAllDegrees.original_sharp_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpAllDegrees.original_sharp_Euler_integral_rate_every_degree_two_closed
 
 /-! ### GaussianEulerSharpGammaRate -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerSharpGammaRate.gammaPoint
