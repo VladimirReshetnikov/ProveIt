@@ -99,11 +99,10 @@ def globeFlattening_from_scalar
   have hBorelImage {s : Set (EuclideanSpace ℝ (Fin 3))} (hs : MeasurableSet s) (hss : s ⊆ cutSphere) :
       MeasurableSet (f '' s) :=
     hs.image_of_continuousOn_injOn (hfcont.mono hss) (hfleft.injOn.mono hss)
-  have hTimage : T = planarEuclideanEquiv '' (flattenCoordinates u '' sphereLongitudeDomain) :=
-    congrArg (Set.image planarEuclideanEquiv) g.image_source_eq_target.symm
   have hexcess (V : Set (EuclideanSpace ℝ (Fin 2))) (hV : IsOpen V) (hne : V.Nonempty)
       (hVsub : V ⊆ T) : 0 < volume (V ∩ f '' Z) :=
-    volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne (hTimage ▸ hVsub)
+    volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne
+      ((congrArg (fun t => V ⊆ planarEuclideanEquiv '' t) g.image_source_eq_target.symm).mp hVsub)
   have hInv (p : ℝ × ℝ) (hp : p ∈ good) :
       HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p)) := by
     convert hasFDerivAt_sphereFlatten_inverse g (hsub hp) (Real.cos_pos_of_mem_Ioo (hsub hp).2).ne'
@@ -157,16 +156,14 @@ def globeFlattening_from_scalar
           measure_mono_null inter_subset_right (hausdorffMeasure_sphereExceptional_eq_zero hsub hnull)
         simpa [hHaus] using hLip'.hausdorffMeasure_image_le (d := 2) (by norm_num)
       exceptional_area_positive := hexcess }
-  · rw [hgoodSource]
-    rintro _ ⟨p, hp, rfl⟩
-    exact ⟨sphereFlattenDerivative p,
+  · simp only [hgoodSource, forall_mem_image]
+    exact fun p hp => ⟨sphereFlattenDerivative p,
       hasFDerivWithinAt_sphereFlatten hfcont hfleft (spherePoint_mapsTo (hsub hp)) (hInv p hp),
       fun _ h => norm_sphereFlattenDerivative_of_tangent p h⟩
-  · rw [hgoodSource, image_image]
-    rintro _ ⟨p, hp, rfl⟩
-    have hval := hfleft (spherePoint_mapsTo (hsub hp))
-    exact ⟨sphereTangentLift p, hInv p hp, fun v =>
-      ⟨hval.symm ▸ tangent_sphereTangentLift p v, norm_sphereTangentLift p v⟩⟩
+  · simp only [hgoodSource, forall_mem_image]
+    exact fun p hp => ⟨sphereTangentLift p, hInv p hp, fun v =>
+      ⟨(hfleft (spherePoint_mapsTo (hsub hp))).symm ▸ tangent_sphereTangentLift p v,
+        norm_sphereTangentLift p v⟩⟩
   · refine ⟨ε, lt_two_mul_self hε, fun w hw => ?_⟩
     convert hclose _ (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)) using 1
     exact dist_planarEuclideanEquiv_of_snd_eq rfl
