@@ -1,5 +1,6 @@
 import GlobeFlattening.CellProfile
 import GlobeFlattening.CoordinateArea
+import GlobeFlattening.FlatteningTheorem
 import GlobeFlattening.GoodSet
 import GlobeFlattening.InverseDerivative
 import GlobeFlattening.LatitudeProfile

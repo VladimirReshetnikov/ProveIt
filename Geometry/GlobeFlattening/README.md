@@ -1,20 +1,26 @@
 # Almost-everywhere globe flattening
 
-This project contains the delivered report
-[Flattening a Sphere Almost Everywhere](globe_flattening_verification.pdf)
-and its [LaTeX source](globe_flattening_verification.tex). It concerns a
-homeomorphism from a cut sphere to a planar domain whose classical
-differential is an isometry almost everywhere. The report's claims are
-presented as delivered and have not been independently verified here.
+Lean proves the main flattening theorem as
+`GlobeFlattening.exists_globe_flattening`. For every positive tolerance, it
+gives a homeomorphism of the cut unit sphere onto a bounded open planar
+domain. The result includes the strict area bounds, the exact area of the
+good image, the classical isometric differentials of the map and its
+inverse, and the uniform bound relative to the sinusoidal projection. It
+also proves positive exceptional image area in every nonempty open target
+patch and rules out a Lipschitz bound on any nonempty relatively open
+source patch. [Lean theorem](Lean/GlobeFlattening/FlatteningTheorem.lean)
 
-The Lean development proves the rectangular refinement estimates, including
-the local error inside an old affine tile and the bound on the area discarded
-by trimming. `GlobeFlattening.exists_scalar_flattening` constructs the
-mesh sequence and proves the scalar prescribed-gradient proposition with a
-classical derivative at every point of a measurable co-null set. The
-spherical theorem is being assembled from that result.
-Build the current Lean modules from the repository root with
-`lake build GlobeFlattening`.
+The construction chooses a square mesh at each stage. The slope at the
+latitude midpoint plus one mesh width majorizes the target slope across
+each row and its interpolation layers. The error inside an old affine
+tile controls the difference quotient at every sufficiently nearby point.
+Spherical area is defined in the longitude–latitude chart with density
+`cos(latitude)`, as in the report. [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) · [Spherical area](Lean/GlobeFlattening/SphereMeasure.lean)
+
+Build from the repository root with `lake build GlobeFlattening`.
+
+The delivered [report](globe_flattening_verification.pdf) and
+[LaTeX source](globe_flattening_verification.tex) are preserved.
 
 The delivered [README](README.txt),
 [original claim](original_claim.md), and figures are retained alongside the

@@ -1,5 +1,4 @@
 # Geometry
 
-- [GlobeFlattening](GlobeFlattening/): an almost-everywhere sphere-flattening
-  report and a planned Lean formalization. The delivered claims are not yet
-  independently verified or formalized here.
+- A Lean proof of almost-everywhere isometric flattening of the cut unit sphere.
+  [GlobeFlattening](GlobeFlattening/)
