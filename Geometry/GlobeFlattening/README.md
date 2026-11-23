@@ -24,9 +24,10 @@ has derivative zero almost everywhere.
 One induction on the number of translates proves the range, upper plateau,
 and one-step error bound for the staircase approximants. Affine rescaling
 carries those estimates to the desired interval.
-The scalar coordinate is a uniformly converging series of longitude
-staircase increments weighted by shifted latitude cosines. Summation by parts
-allows the longitude staircases to be centered at a fixed value. Centering at
+The scalar coordinate sums longitude staircase increments weighted by
+shifted latitude cosines. Uniform convergence gives continuity and the
+pointwise sums used in summation by parts, which allows the longitude
+staircases to be centered at a fixed value. Centering at
 zero gives the sinusoidal coordinate plus a correction with positive weights,
 yielding the strict horizontal slope bound. Centering at the longitude being
 evaluated cancels the boundary term and expresses the approximation error
