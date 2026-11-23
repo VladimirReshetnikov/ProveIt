@@ -1147,6 +1147,15 @@ constructs the actual regular varying-cutoff name at every numerical
 logarithmic order.
 [GaussianEulerLogarithmicFixedCutoff](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicFixedCutoff.lean)
 proves an independent observation rate to any sufficiently late fixed interval.
+[GaussianEulerLogarithmicTopExtension](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicTopExtension.lean)
+compares an actual compact cutoff with its extension to an arbitrary larger top.
+[GaussianEulerLogarithmicCertificateOverlap](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicCertificateOverlap.lean),
+[GaussianEulerLogarithmicInputProperness](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicInputProperness.lean),
+and [GaussianEulerLogarithmicImproperInputProperness](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicImproperInputProperness.lean)
+prove agreement across independent certificates and equal normalized rational inputs.
+[GaussianEulerLogarithmicContinuity](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicContinuity.lean)
+computes a parameter modulus and proves the independent observation estimate
+for the original improper names on certified rational shifts.
 [GaussianEulerLogarithmicZeroIdentification](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicZeroIdentification.lean)
 identifies the order-zero improper name with the original Gamma program.
 [GaussianEulerLogarithmicParameterTaylor](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicParameterTaylor.lean)
@@ -1166,6 +1175,17 @@ and the actual compact majorant at the next logarithmic order.
 and [GaussianEulerDerivativeSubdivisionBudget](Lean/IPRADerivations/Analysis/GaussianEulerDerivativeSubdivisionBudget.lean)
 verify the native parameter segment, its endpoint and step identities,
 and the computed subdivision and relative error budgets.
+[GaussianEulerDerivativeSlopeVariation](Lean/IPRADerivations/Analysis/GaussianEulerDerivativeSlopeVariation.lean)
+bounds variation of the original improper slopes along the whole path, uniformly
+in its subdivision count.
+[GaussianEulerLogarithmicPathCompactTaylor](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicPathCompactTaylor.lean)
+checks the exact local remainder on successive original compact path observations.
+[GaussianEulerDerivativeCommonInterval](Lean/IPRADerivations/Analysis/GaussianEulerDerivativeCommonInterval.lean)
+constructs a common physical interval for adjacent orders at every path point
+and preserves the independently chosen truncation tolerances.
+[GaussianRationalParameterTelescope](Lean/IPRADerivations/Analysis/GaussianRationalParameterTelescope.lean)
+sums the finite parameter errors and converts the repeated substep to the actual
+whole increment. The derivative integral identity remains to be assembled.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
