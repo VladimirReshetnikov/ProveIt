@@ -827,6 +827,8 @@ import IPRADerivations.Analysis.ClusterObservations
 import IPRADerivations.Analysis.ClusterMatching
 import IPRADerivations.Analysis.EulerResidual
 import IPRADerivations.Analysis.SignedPolysolver
+import IPRADerivations.Analysis.FactorTransport
+import IPRADerivations.Analysis.ClusterTransport
 import IPRADerivations.Topology.FiniteSeparation
 import IPRADerivations.Topology.FiniteRecovery
 import IPRADerivations.Topology.FiniteNormalityConverse
@@ -837,6 +839,7 @@ import IPRADerivations.Probability.UniformCantor
 import IPRADerivations.Probability.CompletionRates
 import IPRADerivations.Probability.HistogramSampler
 import IPRADerivations.Probability.CylinderAlgebra
+import IPRADerivations.Probability.RegularNames
 import IPRADerivations.Topology.EulerCharacteristic
 import IPRADerivations.Topology.ChainHomotopy
 import IPRADerivations.Topology.BoundarySquare
@@ -865,11 +868,16 @@ import IPRADerivations.Topology.BrouwerInterval
 import IPRADerivations.Topology.AntipodalObstruction
 import IPRADerivations.Topology.DegenerateBoundary
 import IPRADerivations.Topology.ObstructionAlternating
+import IPRADerivations.Topology.BarycentricMesh
+import IPRADerivations.Topology.HairyBallSearch
+import IPRADerivations.Topology.SimplexProjection
+import IPRADerivations.Topology.SpernerWitness
 import IPRADerivations.Combinatorics.RamseyBounds
 import IPRADerivations.Geometry.HellyCertificates
 import IPRADerivations.Geometry.HellyLine
 import IPRADerivations.Geometry.HellyIntervals
 import IPRADerivations.Geometry.RadonPartition
+import IPRADerivations.Geometry.HellyPrecision
 import IPRADerivations.Combinatorics.RamseyTriangle
 import IPRADerivations.Combinatorics.RamseyPentagon
 import IPRADerivations.Combinatorics.UniformThinning
