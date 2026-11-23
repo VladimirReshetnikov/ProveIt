@@ -17,9 +17,10 @@ approximant sums scaled copies of the Cantor distribution function. The
 distribution comes from the binary digits of a uniform point in `[0, 1)`,
 read in base three after replacing each `1` with `2`. The digit encoding
 is injective, so the distribution has no atoms and its distribution
-function is continuous. Support on the null Cantor set makes the
-distribution singular. Its distribution function is locally constant off
-the Cantor set, so it has derivative zero almost everywhere.
+function is continuous. Scaling the Cantor set by three gives the union
+of two translates of the set, forcing its Lebesgue measure to be zero.
+The distribution function is locally constant off the Cantor set, so it
+has derivative zero almost everywhere.
 Induction on the number of translates bounds the staircase error by one
 grid step, and affine rescaling carries that estimate to the desired interval.
 The scalar coordinate is a uniformly converging series of longitude
@@ -29,11 +30,10 @@ a correction with positive weights, yielding a strict slope bound on every
 nontrivial horizontal interval. Comparing each weighted staircase with the
 clamped identity gives the uniform approximation estimate. Bounding the
 initial latitude profile error by `δ / (2π)` makes its contribution at
-most `δ / 2` after multiplication by longitude. The two
-formulas bound horizontal and vertical errors by increments of the same
-staircase sum, with latitude rescaled, giving the joint derivative. The
-Stieltjes measure of that sum
-is the sum of the individual singular measures, so the control function
+most `δ / 2` after multiplication by longitude. The two formulas bound
+horizontal and vertical errors by increments of the same staircase sum,
+with latitude rescaled, giving the joint derivative. The Stieltjes measure
+of that sum is the sum of the individual singular measures, so the control function
 also has derivative zero almost everywhere. Longitude and doubled latitude
 pull back that same derivative event to the chart. Scaling the scalar
 tolerance by `1 / (1 + π)` gives a uniform distance bound of `ε` for the
@@ -53,7 +53,7 @@ strict width comparison proves total area excess. For local exceptional area,
 the proof pulls the open target patch back to coordinates, picks a
 rectangle there, and uses the same width comparison on that rectangle.
 The reference cosine integral is the length of the interval swept out by
-`2π sin(latitude)`, by the one-dimensional change-of-variables formula.
+`2π sin(latitude)`, by the same Jacobian formula applied in one dimension.
 The uniform projection error bounds the total area from above.
 [Chart homeomorphism](Lean/GlobeFlattening/TriangularChart.lean)
 

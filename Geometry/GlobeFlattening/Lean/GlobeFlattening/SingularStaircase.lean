@@ -24,22 +24,16 @@ namespace GlobeFlattening
 noncomputable section
 
 private theorem volume_cantorSet : volume cantorSet = 0 := by
-  have hscale (b : ℝ) : volume ((fun x : ℝ => (b + x) / 3) '' cantorSet) =
-      ENNReal.ofReal (1 / 3) * volume cantorSet := by
-    rw [show (fun x : ℝ => (b + x) / 3) '' cantorSet = (3 : ℝ)⁻¹ • ((b + ·) '' cantorSet) by
-      simp only [← image_smul, image_image, smul_eq_mul, div_eq_inv_mul]]
-    rw [Measure.addHaar_smul, image_add_left, measure_preimage_add, Module.finrank_self, pow_one]
-    norm_num
-  have hle : volume cantorSet ≤ ENNReal.ofReal (2 / 3) * volume cantorSet := by
-    nth_rw 1 [cantorSet_eq_union_halves]
-    refine (measure_union_le _ _).trans_eq ?_
-    rw [show volume ((· / 3) '' cantorSet) = ENNReal.ofReal (1 / 3) * volume cantorSet by
-      simpa using hscale 0, hscale 2, ← add_mul, ← ENNReal.ofReal_add (by norm_num) (by norm_num)]
-    norm_num
+  have hsplit : (3 : ℝ) • cantorSet = cantorSet ∪ ((2 + · : ℝ → ℝ) '' cantorSet) := by
+    nth_rw 1 [cantorSet_eq_union_halves, smul_set_union]
+    simp only [← image_smul, image_image, smul_eq_mul,
+      mul_div_cancel₀ _ (by norm_num : (3 : ℝ) ≠ 0), image_id']
+  have hle : (3 : ℝ≥0∞) * volume cantorSet ≤ 2 * volume cantorSet := by
+    have h := measure_union_le (μ := volume) cantorSet ((2 + · : ℝ → ℝ) '' cantorSet)
+    rw [← hsplit, Measure.addHaar_smul_of_nonneg volume (by norm_num : 0 ≤ (3 : ℝ))] at h
+    simpa [Module.finrank_self, image_add_left, measure_preimage_add, two_mul] using h
   by_contra hn
-  have hc := ENNReal.ofReal_lt_one.2 (show (2 / 3 : ℝ) < 1 by norm_num)
-  exact (not_lt_of_ge hle) (by
-    simpa using ENNReal.mul_lt_mul_left hn isCompact_cantorSet.measure_lt_top.ne hc)
+  exact (not_lt_of_ge hle) (ENNReal.mul_lt_mul_left hn isCompact_cantorSet.measure_lt_top.ne (by norm_num))
 
 theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
     Continuous f ∧ Monotone f ∧ (∀ x ≤ 0, f x = 0) ∧ (∀ x ≥ 1, f x = 1) ∧
@@ -65,32 +59,31 @@ theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
   have hμ (s : Set ℝ) (hs : MeasurableSet s) : μ s = volume (encode ⁻¹' s ∩ Ico 0 1) := by
     simp only [μ, Measure.map_apply hmeas hs, Measure.restrict_apply' measurableSet_Ico]
   letI : IsProbabilityMeasure μ := ⟨by simp [hμ _ MeasurableSet.univ, Real.volume_Ico]⟩
-  have hnull (x : ℝ) : volume (encode ⁻¹' {x} ∩ Ico 0 1) = 0 := by
-    refine Set.Subsingleton.measure_zero ?_ volume
-    exact fun y hy z hz => hinj hy.2 hz.2 ((mem_singleton_iff.mp hy.1).trans (mem_singleton_iff.mp hz.1).symm)
+  letI : NullSingletonClass μ := ⟨fun x => by
+    rw [hμ _ (measurableSet_singleton x)]
+    exact (show (encode ⁻¹' {x} ∩ Ico 0 1).Subsingleton from
+      fun y hy z hz => hinj hy.2 hz.2 ((mem_singleton_iff.mp hy.1).trans (mem_singleton_iff.mp hz.1).symm)).measure_zero volume⟩
+  have hs : ∀ᵐ t ∂μ, t ∈ cantorSet :=
+    (ae_map_iff hmeas.aemeasurable isClosed_cantorSet.measurableSet).2 (ae_of_all _ hmem)
   let F (x : ℝ) := μ.real (Iic x)
   refine ⟨F, continuous_iff_continuousAt.2 fun x => ?_,
     fun _ _ h => measureReal_mono (Iic_subset_Iic.2 h), ?_, ?_, ?_⟩
-  · letI : NullSingletonClass μ := ⟨fun x => (hμ _ (measurableSet_singleton x)).trans (hnull x)⟩
-    have hi : IntegrableOn (fun _ : ℝ => (1 : ℝ)) (Iic (x + 1)) μ := (integrable_const 1).integrableOn
+  · have hi : IntegrableOn (fun _ : ℝ => (1 : ℝ)) (Iic (x + 1)) μ := (integrable_const 1).integrableOn
     simpa only [F, setIntegral_const, smul_eq_mul, mul_one] using
       hi.continuousOn_Iic_primitive_Iic.continuousAt (Iic_mem_nhds (lt_add_one x))
   · intro x hx
-    have hsubset : encode ⁻¹' Iic x ∩ Ico 0 1 ⊆ encode ⁻¹' {0} ∩ Ico 0 1 :=
-      fun y hy => ⟨((mem_Iic.mp hy.1).trans hx).antisymm (cantorSet_subset_unitInterval (hmem y)).1, hy.2⟩
-    simp only [F, measureReal_def, hμ _ measurableSet_Iic, measure_mono_null hsubset (hnull 0), ENNReal.toReal_zero]
+    have hle : Iic x ≤ᵐ[μ] ({0} : Set ℝ) := hs.mono fun t ht htx =>
+      mem_singleton_iff.mpr (((mem_Iic.mp htx).trans hx).antisymm (cantorSet_subset_unitInterval ht).1)
+    simp [F, measureReal_def, measure_mono_null_ae hle (measure_singleton 0)]
   · intro x hx
-    have hfull : Ico (0 : ℝ) 1 ⊆ encode ⁻¹' Iic x :=
-      fun y _ => (cantorSet_subset_unitInterval (hmem y)).2.trans hx
-    simp [F, measureReal_def, hμ _ measurableSet_Iic, inter_eq_right.2 hfull, Real.volume_Ico]
+    exact (measureReal_congr (t := univ) (hs.mono fun t ht =>
+      propext (iff_true_intro ((cantorSet_subset_unitInterval ht).2.trans hx)))).trans probReal_univ
   · filter_upwards [measure_eq_zero_iff_ae_notMem.1 volume_cantorSet] with x hx
     obtain ⟨a, b, hx', hab⟩ := mem_nhds_iff_exists_Ioo_subset.1 (isClosed_cantorSet.isOpen_compl.mem_nhds hx)
     apply (hasDerivAt_const x (F x)).congr_of_eventuallyEq
     filter_upwards [Ioo_mem_nhds hx'.1 hx'.2] with y hy
-    simp only [F, measureReal_def, hμ _ measurableSet_Iic]
-    congr 2
-    ext z
-    have hz : encode z ∉ Ioo a b := fun hz => hab hz (hmem z)
+    refine measureReal_congr (hs.mono fun t ht => propext (show t ≤ y ↔ t ≤ x from ?_))
+    have hgap : t ∉ Ioo a b := fun ht' => hab ht' ht
     grind
 
 /-- Monotone singular approximants to the identity on a compact interval. -/
