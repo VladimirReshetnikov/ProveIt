@@ -2,8 +2,8 @@
 
 This audit covers every theorem, lemma, proposition and corollary environment
 in [`diophantine-number-theory/number_theory_ipra_2026-11-22`](../docs/proofs/diophantine-number-theory/number_theory_ipra_2026-11-22/).
-There are 106 such environments in seven chapters: 59 are derived, 31 are derived
-in part and 16 are open. The full repository scope is recorded in
+There are 106 such environments in seven chapters: 60 are derived, 31 are derived
+in part and 15 are open. The full repository scope is recorded in
 [PROGRESS.md](PROGRESS.md).
 
 **Derived** means that a statement of the same mathematical content is proved
@@ -153,5 +153,5 @@ against those modules statement by statement.
 | Source claim | Status | Checked scope and remaining work |
 | --- | --- | --- |
 | `tr:polynomial`, Finite polynomial estimates and a rational Liouville bound, [transcendence.tex](../docs/proofs/diophantine-number-theory/number_theory_ipra_2026-11-22/chapters/transcendence.tex), line 22 | **Partial** | [VandermondeDeterminant](Lean/IPRADerivations/Foundations/VandermondeDeterminant.lean) `root_bound` (part 1). Missing: the rational lower bound and the Lipschitz separation. |
-| `tr:name`, The Liouville name and its approximation bounds, [transcendence.tex](../docs/proofs/diophantine-number-theory/number_theory_ipra_2026-11-22/chapters/transcendence.tex), line 94 | **Open** |  |
+| `tr:name`, The Liouville name and its approximation bounds, [transcendence.tex](../docs/proofs/diophantine-number-theory/number_theory_ipra_2026-11-22/chapters/transcendence.tex), line 94 | **Derived** | The truncations `r_n = P_n/q_n` with `P_{n+1} = P_n q_n^n + 1`, `q_{n+1} = q_n^n q_n`: `incr` (`r_{n+1} − r_n = 1/q_{n+1}`), `increasing`, `below_ninth` (`9 P_n + 1 ≤ q_n`, so `r_n < 1`), `tail_bound` (`r_m − r_n + 1/q_m ≤ 2 · 10^{−(n+1)!}` for `n < m`), `lowest_terms` (`gcd(P_n, q_n) = 1`, from `P_n ≡ 1 (mod 10)`), `modulus_bound` (`2 · 2^n ≤ q_{n+1}`) and `liouville_gap` (`2 q_n^h < q_{n+1}` for `h ≤ n`) in [LiouvilleName](Lean/IPRADerivations/DiophantineNumberTheory/LiouvilleName.lean), all cleared of denominators. |
 | `tr:transcendence`, Uniform polynomial separation and transcendence, [transcendence.tex](../docs/proofs/diophantine-number-theory/number_theory_ipra_2026-11-22/chapters/transcendence.tex), line 141 | **Open** |  |
