@@ -1,4 +1,5 @@
 import GlobeFlattening.CoordinateArea
+import Mathlib.MeasureTheory.Integral.Lebesgue.Markov
 
 /-!
 # Strict local excess in the flattening chart
@@ -47,26 +48,22 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
       ⟨⟨le_rfl, hab.le⟩, Ioo_subset_Icc_self hy⟩
     exact Real.cos_pos_of_mem_Ioo (hbox hp).2
   have hLcon : Continuous L := continuous_const.mul Real.continuous_cos
-  have hRow (x : ℝ) (hx : x ∈ Icc a b) : ContinuousOn (fun y => u (x, y)) (Icc c d) :=
-    (hu.mono hsub).comp' ((continuous_const.prodMk continuous_id).continuousOn)
-      (fun _ hy => ⟨hx, hy⟩)
-  have hUcon : ContinuousOn U (Icc c d) := (hRow b ⟨hab.le, le_rfl⟩).sub (hRow a ⟨le_rfl, hab.le⟩)
-  have hUInt : IntegrableOn U (Ioo c d) := hUcon.integrableOn_Icc.mono_set Ioo_subset_Icc_self
-  have hLInt : IntegrableOn L (Ioo c d) := hLcon.integrableOn_Icc.mono_set Ioo_subset_Icc_self
   have hLU : ∀ y ∈ Icc c d, L y < U y := by
     intro y hy
     simpa only [L, U, mul_comm (b - a)] using
       hslope (a, y) (hsub ⟨⟨le_rfl, hab.le⟩, hy⟩) (b, y) (hsub ⟨⟨hab.le, le_rfl⟩, hy⟩) rfl hab
-  have hLnn : 0 ≤ᵐ[volume.restrict (Ioo c d)] L :=
-    (ae_restrict_mem measurableSet_Ioo).mono (fun y hy => mul_nonneg (sub_nonneg.mpr hab.le) (hcos y hy).le)
-  have hUnn : 0 ≤ᵐ[volume.restrict (Ioo c d)] U :=
-    (hLnn.and (ae_restrict_mem measurableSet_Ioo)).mono
-      (fun y hy => hy.1.trans (hLU y (Ioo_subset_Icc_self hy.2)).le)
-  have hreal : (∫ y in Ioo c d, L y) < ∫ y in Ioo c d, U y := by
-    simp_rw [← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le hcd.le]
-    exact intervalIntegral.integral_lt_integral_of_continuousOn_of_le_of_exists_lt hcd
-      hLcon.continuousOn hUcon (fun y hy => (hLU y (Ioc_subset_Icc_self hy)).le)
-      ⟨c, ⟨le_rfl, hcd.le⟩, hLU c ⟨le_rfl, hcd.le⟩⟩
+  have hcomparison : (∫⁻ y in Ioo c d, ENNReal.ofReal (L y)) <
+      ∫⁻ y in Ioo c d, ENNReal.ofReal (U y) := by
+    refine lintegral_strict_mono ?_
+      (((continuousOn_chartWidth hab.le (hu.mono hsub)).mono Ioo_subset_Icc_self).aemeasurable
+        measurableSet_Ioo).ennreal_ofReal
+      (hLcon.integrableOn_Icc.mono_set Ioo_subset_Icc_self).lintegral_lt_top.ne ?_
+    · rw [Ne, Measure.restrict_eq_zero, Real.volume_Ioo]
+      exact (ENNReal.ofReal_pos.mpr (sub_pos.mpr hcd)).ne'
+    · exact (ae_restrict_mem measurableSet_Ioo).mono fun y hy =>
+        (ENNReal.ofReal_lt_ofReal_iff_of_nonneg
+          (mul_nonneg (sub_nonneg.mpr hab.le) (hcos y hy).le)).2
+          (hLU y (Ioo_subset_Icc_self hy))
   have hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b) := by
     intro y hy x₁ hx₁ x₂ hx₂ hx
     have hlo := hslope (x₁, y) (hsub ⟨hx₁, Ioo_subset_Icc_self hy⟩)
@@ -78,12 +75,10 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
     rw [measure_flattened_good_image (hR.measurableSet.inter hgood) inter_subset_left
         (by rwa [sdiff_self_inter]) hinj
         (fun p hp => (hderiv p hp.2).hasFDerivWithinAt) (fun p hp => (hcos p.2 hp.1.2).le),
-      lintegral_cos_rectangle hab.le,
-      ← ofReal_integral_eq_lintegral_ofReal hLInt hLnn, show R = chartRectangle a b c d from rfl,
+      lintegral_cos_rectangle hab.le, show R = chartRectangle a b c d from rfl,
       image_flattenCoordinates_chartRectangle hab.le (hu.mono hsub) hmono,
-      volume_chartImage_eq_lintegral_width hab.le (hu.mono hsub),
-      ← ofReal_integral_eq_lintegral_ofReal hUInt hUnn]
-    exact (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (integral_nonneg_of_ae hLnn)).mpr hreal
+      volume_chartImage_eq_lintegral_width hab.le (hu.mono hsub)]
+    exact hcomparison
   by_contra! hnpos
   have hazero : volume (flattenCoordinates u '' (R \ good)) = 0 := le_antisymm hnpos bot_le
   have hsplit := measure_union_le (μ := volume) (flattenCoordinates u '' (R ∩ good))

@@ -30,14 +30,18 @@ theorem sphereFlattenForward_spherePoint {u : ℝ × ℝ → ℝ} {p : ℝ × �
       planarEuclideanEquiv (flattenCoordinates u p) := by
   simp only [Function.comp_apply, sphereChartInverse_spherePoint hp]
 
+theorem sphereFlattenForward_image {u : ℝ × ℝ → ℝ} {s : Set (ℝ × ℝ)}
+    (hs : s ⊆ sphereLongitudeDomain) :
+    sphereFlattenForward u '' (spherePoint '' s) =
+      planarEuclideanEquiv '' (flattenCoordinates u '' s) := by
+  rw [image_image, image_image]
+  exact image_congr fun _ hp => sphereFlattenForward_spherePoint (hs hp)
+
 theorem sphereFlattenForward_exceptional_image {u : ℝ × ℝ → ℝ} {good : Set (ℝ × ℝ)}
     (hsub : good ⊆ sphereLongitudeDomain) :
-    (planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)) '' sphereExceptional good =
+    sphereFlattenForward u '' sphereExceptional good =
       planarEuclideanEquiv '' (flattenCoordinates u '' (sphereLongitudeDomain \ good)) := by
-  simp only [sphereExceptional_eq_image hsub, image_image]
-  exact (show EqOn (sphereFlattenForward u ∘ spherePoint)
-      (planarEuclideanEquiv ∘ flattenCoordinates u) (sphereLongitudeDomain \ good) from
-    fun _ hp => sphereFlattenForward_spherePoint hp.1).image_eq
+  rw [sphereExceptional_eq_image hsub, sphereFlattenForward_image sdiff_subset]
 
 /-- Every nonempty open patch of the Euclidean target contains positive
 area from the exceptional image. -/

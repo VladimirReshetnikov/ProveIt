@@ -22,12 +22,29 @@ def planarEuclideanEquiv : (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
 theorem planarEuclideanEquiv_apply (v : ℝ × ℝ) :
     planarEuclideanEquiv v = !₂[v.1, v.2] := rfl
 
+/-- A nonzero longitude scale makes the triangular derivative invertible. -/
+def coordinateDerivativeEquiv (slope : ℝ) (hs : slope ≠ 0) : (ℝ × ℝ) ≃L[ℝ] ℝ × ℝ :=
+  (ContinuousLinearEquiv.smulLeft (R₁ := ℝ) (M₁ := ℝ) (Units.mk0 slope hs)).prodCongr
+    (ContinuousLinearEquiv.refl ℝ ℝ)
+
+theorem coordinateDerivativeEquiv_toContinuousLinearMap (slope : ℝ) (hs : slope ≠ 0) :
+    (coordinateDerivativeEquiv slope hs).toContinuousLinearMap = coordinateDerivative slope := rfl
+
+theorem coordinateDerivativeEquiv_symm_toContinuousLinearMap (slope : ℝ) (hs : slope ≠ 0) :
+    (coordinateDerivativeEquiv slope hs).symm.toContinuousLinearMap =
+      coordinateDerivative slope⁻¹ := rfl
+
+/-- The coordinate identification after changing longitude to eastward arc length. -/
+private def scaledPlanarEquiv (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
+    (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
+  (coordinateDerivativeEquiv (Real.cos p.2) hc).trans planarEuclideanEquiv
+
 /-- The ambient left inverse to the coordinate derivative. Dividing the east
 component by the cosine of latitude changes from arc length to longitude. -/
 def sphereChartInverseDerivative (p : ℝ × ℝ) :
     EuclideanSpace ℝ (Fin 3) →L[ℝ] ℝ × ℝ :=
-  ((Real.cos p.2)⁻¹ • (EuclideanSpace.proj 0).comp (sphereFlattenDerivative p)).prod
-    ((EuclideanSpace.proj 1).comp (sphereFlattenDerivative p))
+  (coordinateDerivative (Real.cos p.2)⁻¹).comp
+    (planarEuclideanEquiv.symm.toContinuousLinearMap.comp (sphereFlattenDerivative p))
 
 theorem sphereChartInverseDerivative_apply (p : ℝ × ℝ) (w : EuclideanSpace ℝ (Fin 3)) :
     sphereChartInverseDerivative p w =
@@ -37,9 +54,9 @@ theorem sphereChartInverseDerivative_apply (p : ℝ × ℝ) (w : EuclideanSpace 
 theorem sphereChartInverseDerivative_leftInverse (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
     Function.LeftInverse (sphereChartInverseDerivative p) (sphereDerivative p) := by
   intro v
-  rw [sphereChartInverseDerivative_apply, sphereFlattenDerivative_sphereDerivative]
-  change ((Real.cos p.2)⁻¹ * (Real.cos p.2 * v.1), v.2) = v
-  simp [hc]
+  change (scaledPlanarEquiv p hc).symm (sphereFlattenDerivative p
+    (sphereTangentLift p (scaledPlanarEquiv p hc v))) = v
+  rw [sphereFlattenDerivative_leftInverse, ContinuousLinearEquiv.symm_apply_apply]
 
 theorem hasFDerivWithinAt_sphereChartInverse {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
     HasFDerivWithinAt sphereChartInverse (sphereChartInverseDerivative p) cutSphere
@@ -64,17 +81,8 @@ theorem sphereFlatten_comp_inverseDerivative (p : ℝ × ℝ) (hc : Real.cos p.2
     planarEuclideanEquiv.toContinuousLinearMap.comp
       ((coordinateDerivative (Real.cos p.2)).comp (sphereChartInverseDerivative p)) =
       sphereFlattenDerivative p := by
-  apply ContinuousLinearMap.ext
-  intro w
-  change planarEuclideanEquiv ((coordinateDerivative (Real.cos p.2))
-    (sphereChartInverseDerivative p w)) = _
-  rw [sphereChartInverseDerivative_apply, planarEuclideanEquiv_apply]
-  ext i
-  fin_cases i
-  · change Real.cos p.2 * ((Real.cos p.2)⁻¹ * (sphereFlattenDerivative p w) 0) = _
-    rw [← mul_assoc, mul_inv_cancel₀ hc, one_mul]
-    rfl
-  · rfl
+  ext w : 1
+  exact (scaledPlanarEquiv p hc).apply_symm_apply (sphereFlattenDerivative p w)
 
 /-- The prescribed longitude derivative in rectangular coordinates gives the
 ambient differential that extracts the two orthonormal tangent components. -/
@@ -93,32 +101,6 @@ theorem hasFDerivWithinAt_sphereFlatten {u : ℝ × ℝ → ℝ} {p : ℝ × ℝ
   rw [← sphereFlatten_comp_inverseDerivative p hc]
   exact planarEuclideanEquiv.hasFDerivAt.comp_hasFDerivWithinAt (spherePoint p) hrect
 
-private def sphereFrameBasis (p : ℝ × ℝ) : OrthonormalBasis (Fin 3) ℝ (EuclideanSpace ℝ (Fin 3)) :=
-  let h := orthonormal_sphereFrame p
-  let b := basisOfOrthonormalOfCardEqFinrank h (by simp [finrank_euclideanSpace])
-  b.toOrthonormalBasis (by simpa [b] using h)
-
-private theorem sphereFrameBasis_apply (p : ℝ × ℝ) (i : Fin 3) :
-    sphereFrameBasis p i = sphereFrame p i := by
-  simp [sphereFrameBasis]
-
-/-- Zero radial component is exactly what is needed to recover the original
-vector from its two tangent coordinates. -/
-theorem sphereTangentLift_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ)
-    {w : EuclideanSpace ℝ (Fin 3)} (h : ⟪spherePoint p, w⟫ = 0) :
-    sphereTangentLift p (sphereFlattenDerivative p w) = w := by
-  have hexpand := (sphereFrameBasis p).sum_repr' w
-  simp only [Fin.sum_univ_three, sphereFrameBasis_apply, sphereFrame, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.cons_val_two] at hexpand
-  rw [sphereTangentLift_apply, sphereFlattenDerivative_apply]
-  change ⟪sphereEast p, w⟫ • sphereEast p + ⟪sphereNorth p, w⟫ • sphereNorth p = w
-  simpa [h] using hexpand
-
-theorem norm_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ) {w : EuclideanSpace ℝ (Fin 3)}
-    (hw : ⟪spherePoint p, w⟫ = 0) : ‖sphereFlattenDerivative p w‖ = ‖w‖ := by
-  rw [← norm_sphereTangentLift p (sphereFlattenDerivative p w),
-    sphereTangentLift_sphereFlattenDerivative_of_tangent p hw]
-
 /-- The metric in spherical coordinates has diagonal entries
 `cos latitude` squared and `1`. -/
 theorem sq_norm_sphereDerivative (p v : ℝ × ℝ) :
@@ -126,18 +108,6 @@ theorem sq_norm_sphereDerivative (p v : ℝ × ℝ) :
   change ‖sphereTangentLift p !₂[Real.cos p.2 * v.1, v.2]‖ ^ 2 = _
   rw [norm_sphereTangentLift, EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_two]
   rfl
-
-/-- A nonzero longitude scale makes the triangular derivative invertible. -/
-def coordinateDerivativeEquiv (slope : ℝ) (hs : slope ≠ 0) : (ℝ × ℝ) ≃L[ℝ] ℝ × ℝ :=
-  (ContinuousLinearEquiv.smulLeft (R₁ := ℝ) (M₁ := ℝ) (Units.mk0 slope hs)).prodCongr
-    (ContinuousLinearEquiv.refl ℝ ℝ)
-
-theorem coordinateDerivativeEquiv_toContinuousLinearMap (slope : ℝ) (hs : slope ≠ 0) :
-    (coordinateDerivativeEquiv slope hs).toContinuousLinearMap = coordinateDerivative slope := rfl
-
-theorem coordinateDerivativeEquiv_symm_toContinuousLinearMap (slope : ℝ) (hs : slope ≠ 0) :
-    (coordinateDerivativeEquiv slope hs).symm.toContinuousLinearMap =
-      coordinateDerivative slope⁻¹ := rfl
 
 /-- The differential of the inverse planar chart followed by the spherical
 parametrization is the lift into the tangent plane. -/
@@ -147,26 +117,23 @@ theorem hasFDerivAt_sphereFlatten_inverse
     (hg : HasFDerivAt g (coordinateDerivative (Real.cos p.2)) p) :
     HasFDerivAt (spherePoint ∘ (g.symm ∘ planarEuclideanEquiv.symm)) (sphereTangentLift p)
       (planarEuclideanEquiv (g p)) := by
-  have hinv : HasFDerivAt g.symm (coordinateDerivative (Real.cos p.2)⁻¹) (g p) := by
-    rw [← coordinateDerivativeEquiv_symm_toContinuousLinearMap _ hc]
-    apply g.hasFDerivAt_symm (g.map_source hp)
+  let D := scaledPlanarEquiv p hc
+  have hinv : HasFDerivAt g.symm
+      (coordinateDerivativeEquiv (Real.cos p.2) hc).symm.toContinuousLinearMap (g p) := by
+    apply g.hasFDerivAt_symm (f' := coordinateDerivativeEquiv (Real.cos p.2) hc) (g.map_source hp)
     rw [g.left_inv hp, coordinateDerivativeEquiv_toContinuousLinearMap]
     exact hg
-  have hg' := hinv.comp (planarEuclideanEquiv (g p))
-    planarEuclideanEquiv.symm.hasFDerivAt
+  have hg' : HasFDerivAt (g.symm ∘ planarEuclideanEquiv.symm) D.symm.toContinuousLinearMap
+      (planarEuclideanEquiv (g p)) :=
+    hinv.comp (planarEuclideanEquiv (g p)) planarEuclideanEquiv.symm.hasFDerivAt
   have hs' : HasFDerivAt spherePoint (sphereDerivative p)
       ((g.symm ∘ planarEuclideanEquiv.symm) (planarEuclideanEquiv (g p))) := by
     simpa only [Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply, g.left_inv hp]
       using hasFDerivAt_spherePoint p
-  have hD : (sphereDerivative p).comp
-      ((coordinateDerivative (Real.cos p.2)⁻¹).comp planarEuclideanEquiv.symm.toContinuousLinearMap) =
-      sphereTangentLift p := by
-    apply ContinuousLinearMap.ext
-    intro v
-    rw [ContinuousLinearMap.comp_apply, sphereDerivative_apply, sphereTangentLift_apply]
-    change (Real.cos p.2 * ((Real.cos p.2)⁻¹ * v 0)) • sphereEast p +
-      v 1 • sphereNorth p = _
-    rw [← mul_assoc, mul_inv_cancel₀ hc, one_mul]
+  have hD : (sphereDerivative p).comp D.symm.toContinuousLinearMap = sphereTangentLift p := by
+    ext v : 1
+    change sphereTangentLift p (D (D.symm v)) = _
+    rw [ContinuousLinearEquiv.apply_symm_apply]
   rw [← hD]
   exact hs'.comp (planarEuclideanEquiv (g p)) hg'
 

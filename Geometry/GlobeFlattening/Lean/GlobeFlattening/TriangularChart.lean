@@ -59,6 +59,13 @@ private theorem continuousOn_latitudeProfile {u : ℝ × ℝ → ℝ} {a b c d x
   hu.comp' ((continuous_const.prodMk continuous_id).continuousOn)
     (fun _ hy => ⟨hx, hy⟩)
 
+/-- The difference of the two endpoint profiles is the width of a chart slice. -/
+theorem continuousOn_chartWidth {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ b)
+    (hu : ContinuousOn u (chartClosedRectangle a b c d)) :
+    ContinuousOn (fun y => u (b, y) - u (a, y)) (Icc c d) :=
+  (continuousOn_latitudeProfile hu ⟨hab, le_rfl⟩).sub
+    (continuousOn_latitudeProfile hu ⟨le_rfl, hab⟩)
+
 theorem isOpen_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ b)
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) :
     IsOpen (chartImage u a b c d) := by

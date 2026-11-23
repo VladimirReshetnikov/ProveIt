@@ -137,10 +137,10 @@ theorem continuousOn_sphereChartInverse : ContinuousOn sphereChartInverse cutSph
 
 theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
   ⟨spherePoint_mapsTo,
-    fun _ hx _ hy h => by simpa only [sphereChartInverse_spherePoint hx,
-      sphereChartInverse_spherePoint hy] using congrArg sphereChartInverse h,
-    fun w hw => ⟨sphereChartInverse w, sphereChartInverse_mapsTo hw,
-      spherePoint_sphereChartInverse hw⟩⟩
+    (show LeftInvOn sphereChartInverse spherePoint sphereLongitudeDomain from
+      fun _ hp => sphereChartInverse_spherePoint hp).injOn,
+    (show RightInvOn sphereChartInverse spherePoint cutSphere from
+      fun _ hw => spherePoint_sphereChartInverse hw).surjOn sphereChartInverse_mapsTo⟩
 
 /-- The coordinates of the report give a homeomorphism onto the cut sphere. -/
 def sphereLongitudeChart : sphereLongitudeDomain ≃ₜ cutSphere where

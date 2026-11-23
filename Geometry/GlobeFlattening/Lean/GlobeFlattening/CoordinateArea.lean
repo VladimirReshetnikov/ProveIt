@@ -142,13 +142,15 @@ theorem volume_chartImage_bounds_of_closeness
       (fun y hy => ENNReal.ofReal_le_ofReal (chartWidth_bounds_of_closeness hclose
         (Ioo_subset_Icc_self hy)).2)
 
-/-- The scalar refinement parameter used for a prescribed final tolerance. -/
-def globeErrorParameter (ε : ℝ) : ℝ := min (ε / 3) (1 / 2)
+/-- Scale the scalar error so its contribution to the uniform distance is `ε`. -/
+def globeErrorParameter (ε : ℝ) : ℝ := ε / (1 + Real.pi)
 
-theorem globeErrorParameter_bounds {ε : ℝ} (hε : 0 < ε) :
-    0 < globeErrorParameter ε ∧ globeErrorParameter ε < 1 ∧ globeErrorParameter ε ≤ ε / 3 := by
-  exact ⟨lt_min (by linarith) (by norm_num), (min_le_right _ _).trans_lt (by norm_num),
-    min_le_left _ _⟩
+theorem globeErrorParameter_pos {ε : ℝ} (hε : 0 < ε) : 0 < globeErrorParameter ε :=
+  div_pos hε (by positivity)
+
+private theorem globeErrorParameter_scale (ε : ℝ) :
+    (1 + Real.pi) * globeErrorParameter ε = ε :=
+  mul_div_cancel₀ ε (by positivity)
 
 theorem volume_chartImage_with_tolerance
     {u : ℝ × ℝ → ℝ} {ε : ℝ} (hε : 0 < ε)
@@ -159,20 +161,16 @@ theorem volume_chartImage_with_tolerance
         volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) ∧
       volume (chartImage u (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)) <
         ENNReal.ofReal (4 * Real.pi * (1 + ε)) := by
-  obtain ⟨hδ, -, hδupper⟩ := globeErrorParameter_bounds hε
+  have hδ := globeErrorParameter_pos hε
   obtain ⟨hlo, hhi⟩ := volume_chartImage_bounds_of_closeness hδ.le hu hclose
   have hπsub : 0 < Real.pi - 1 := by linarith [Real.pi_gt_three]
-  have hπadd : 0 < Real.pi + 1 := by linarith [Real.pi_pos]
   have hexcess : 0 < 2 * Real.pi * (Real.pi - 1) * globeErrorParameter ε := by positivity
   have hfrom : 4 * Real.pi < 4 * Real.pi + 2 * Real.pi * (Real.pi - 1) * globeErrorParameter ε :=
     lt_add_of_pos_right _ hexcess
   have hto : 4 * Real.pi + 2 * Real.pi * (Real.pi + 1) * globeErrorParameter ε <
       4 * Real.pi * (1 + ε) := by
-    have hscale := mul_le_mul_of_nonneg_left hδupper
-      (show 0 ≤ 2 * Real.pi * (Real.pi + 1) by positivity)
-    have hstrict := mul_lt_mul_of_pos_right (show Real.pi + 1 < 6 by linarith [Real.pi_lt_four])
-      (show 0 < Real.pi * ε by positivity)
-    linarith only [hscale, hstrict]
+    have hscale := congrArg (fun x : ℝ => 2 * Real.pi * x) (globeErrorParameter_scale ε)
+    linarith only [hscale, mul_pos Real.pi_pos hε]
   constructor
   · exact ((ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by positivity)).2 hfrom).trans_le hlo
   · exact hhi.trans_lt ((ENNReal.ofReal_lt_ofReal_iff (by positivity)).2 hto)
@@ -180,36 +178,29 @@ theorem volume_chartImage_with_tolerance
 /-- The sinusoidal projection written in the cut-sphere coordinates. -/
 def sinusoidalCoordinates (p : ℝ × ℝ) : ℝ × ℝ := (p.1 * Real.cos p.2, p.2)
 
-/-- The same point-independent error bound holds throughout the coordinate
-rectangle. In particular the supremum of the coordinate errors is below
-`2ε`. -/
+/-- The scalar tolerance gives a uniform bound on the projection error. -/
 theorem flattenCoordinates_close_to_sinusoidal
     {u : ℝ × ℝ → ℝ} {ε : ℝ} (hε : 0 < ε)
     (hclose : ∀ p ∈ chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2),
       |u p - (Real.cos p.2 + globeErrorParameter ε) * p.1| ≤ globeErrorParameter ε) :
-    (∀ p ∈ chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2),
-      dist (flattenCoordinates u p) (sinusoidalCoordinates p) ≤ (1 + Real.pi) * globeErrorParameter ε) ∧
-      (1 + Real.pi) * globeErrorParameter ε < 2 * ε := by
-  obtain ⟨hδ, -, hδupper⟩ := globeErrorParameter_bounds hε
-  have hπ : 0 < Real.pi := Real.pi_pos
-  constructor
-  · intro p hp
-    have hx : |p.1| ≤ Real.pi := abs_le.mpr hp.1
-    rw [Prod.dist_eq, flattenCoordinates, sinusoidalCoordinates, dist_self,
-      max_eq_left dist_nonneg, Real.dist_eq]
-    have heq : u p - p.1 * Real.cos p.2 =
-        (u p - (Real.cos p.2 + globeErrorParameter ε) * p.1) + globeErrorParameter ε * p.1 := by ring
-    rw [heq]
-    calc
-      _ ≤ |u p - (Real.cos p.2 + globeErrorParameter ε) * p.1| +
-          |globeErrorParameter ε * p.1| := abs_add_le ..
-      _ ≤ globeErrorParameter ε + globeErrorParameter ε * Real.pi := by
-        rw [abs_mul, abs_of_pos hδ]
-        exact add_le_add (hclose p hp) (mul_le_mul_of_nonneg_left hx hδ.le)
-      _ = (1 + Real.pi) * globeErrorParameter ε := by ring
-  · have hscale := mul_le_mul_of_nonneg_left hδupper (show 0 ≤ 1 + Real.pi by linarith)
-    have hstrict := mul_lt_mul_of_pos_right (show 1 + Real.pi < 6 by linarith [Real.pi_lt_four]) hε
-    linarith only [hscale, hstrict]
+    ∀ p ∈ chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2),
+      dist (flattenCoordinates u p) (sinusoidalCoordinates p) ≤ ε := by
+  have hδ := globeErrorParameter_pos hε
+  intro p hp
+  have hx : |p.1| ≤ Real.pi := abs_le.mpr hp.1
+  rw [Prod.dist_eq, flattenCoordinates, sinusoidalCoordinates, dist_self,
+    max_eq_left dist_nonneg, Real.dist_eq]
+  have heq : u p - p.1 * Real.cos p.2 =
+      (u p - (Real.cos p.2 + globeErrorParameter ε) * p.1) + globeErrorParameter ε * p.1 := by ring
+  rw [heq]
+  calc
+    _ ≤ |u p - (Real.cos p.2 + globeErrorParameter ε) * p.1| +
+        |globeErrorParameter ε * p.1| := abs_add_le ..
+    _ ≤ globeErrorParameter ε + globeErrorParameter ε * Real.pi := by
+      rw [abs_mul, abs_of_pos hδ]
+      exact add_le_add (hclose p hp) (mul_le_mul_of_nonneg_left hx hδ.le)
+    _ = (1 + Real.pi) * globeErrorParameter ε := by ring
+    _ = ε := globeErrorParameter_scale ε
 
 end
 

@@ -75,16 +75,8 @@ private theorem strictlyIncreasing_interior_rows
   have hpos := mul_pos (Real.cos_pos_of_mem_Ioo hy) (sub_pos.mpr hxx')
   exact sub_pos.mp (hpos.trans h)
 
-private theorem tangent_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
-    ⟪spherePoint p, sphereTangentLift p v⟫ = 0 := by
-  have he : ⟪spherePoint p, sphereEast p⟫ = 0 :=
-    (orthonormal_sphereFrame p).inner_eq_zero (i := 2) (j := 0) (by decide)
-  have hn : ⟪spherePoint p, sphereNorth p⟫ = 0 :=
-    (orthonormal_sphereFrame p).inner_eq_zero (i := 2) (j := 1) (by decide)
-  simp [sphereTangentLift_apply, inner_add_right, real_inner_smul_right, he, hn]
-
-/-- The scalar limit with its co-null set gives the spherical homeomorphism
-and the quantitative conclusions. -/
+/-- The scalar function and its full-measure good set give the spherical
+homeomorphism and the quantitative conclusions. -/
 def globeFlattening_from_scalar
     {ε : ℝ} (hε : 0 < ε) {u : ℝ × ℝ → ℝ} {good : Set (ℝ × ℝ)}
     (hcu : ContinuousOn u sphereClosedBox)
@@ -114,14 +106,12 @@ def globeFlattening_from_scalar
     exact volume_chartImage_with_tolerance hε hcu hclose
   have hgoodSource : cutSphere \ Z = spherePoint '' good :=
     sdiff_sdiff_cancel_left ((image_mono hsub).trans spherePoint_mapsTo.image_subset)
-  have hgoodImage : f '' (cutSphere \ Z) = planarEuclideanEquiv '' (flattenCoordinates u '' good) := by
-    rw [hgoodSource, image_image, image_image]
-    exact image_congr fun _ hp => sphereFlattenForward_spherePoint (hsub hp)
+  have hgoodImage : f '' (cutSphere \ Z) = planarEuclideanEquiv '' (flattenCoordinates u '' good) := hgoodSource ▸
+    sphereFlattenForward_image hsub
   have hPlaneImage {s : Set (ℝ × ℝ)} (hs : MeasurableSet s) (hss : s ⊆ sphereLongitudeDomain) :
       MeasurableSet (planarEuclideanEquiv '' (flattenCoordinates u '' s)) :=
     planarEuclideanEquiv.toHomeomorph.measurableEmbedding.measurableSet_image.mpr
       (hs.image_of_continuousOn_injOn (g.continuousOn.mono hss) (g.injOn.mono hss))
-  have hclose' := flattenCoordinates_close_to_sinusoidal hε hclose
   have hOpen : IsOpen target := planarEuclideanEquiv.toHomeomorph.isOpenMap _ g.open_target
   have hexcess (V : Set (EuclideanSpace ℝ (Fin 2))) (hV : IsOpen V) (hne : V.Nonempty)
       (hVsub : V ⊆ target) : 0 < volume (V ∩ f '' Z) := by
@@ -171,14 +161,13 @@ def globeFlattening_from_scalar
     obtain ⟨_, ⟨p, hp, rfl⟩, rfl⟩ := hz
     have hc := (Real.cos_pos_of_mem_Ioo (hsub hp).2).ne'
     have hG : HasFDerivAt g (coordinateDerivative (Real.cos p.2)) p :=
-      (hasFDerivWithinAt_flattenCoordinates (hDeriv p hp).hasFDerivWithinAt).hasFDerivAt
-        (isOpen_sphereLongitudeDomain.mem_nhds (hsub hp))
+      (hDeriv p hp).prodMk hasFDerivAt_snd
     have hval : fInv (planarEuclideanEquiv (flattenCoordinates u p)) = spherePoint p := by
       change spherePoint (g.symm (planarEuclideanEquiv.symm (planarEuclideanEquiv (g p)))) = _
       rw [ContinuousLinearEquiv.symm_apply_apply, g.left_inv (hsub hp)]
     refine ⟨sphereTangentLift p, hasFDerivAt_sphereFlatten_inverse g (hsub hp) hc hG, fun v => ?_⟩
     exact ⟨hval.symm ▸ tangent_sphereTangentLift p v, norm_sphereTangentLift p v⟩
-  · refine ⟨(1 + Real.pi) * globeErrorParameter ε, hclose'.2, ?_⟩
+  · refine ⟨ε, by linarith, ?_⟩
     intro w hw
     let p := sphereChartInverse w
     have hsub' : p ∈ sphereClosedBox := chartRectangle_subset_closed (sphereChartInverse_mapsTo hw)
@@ -186,7 +175,7 @@ def globeFlattening_from_scalar
       (planarEuclideanEquiv (sinusoidalCoordinates p)) ≤ _
     rw [dist_planarEuclideanEquiv_of_snd_eq
       (a := flattenCoordinates u p) (b := sinusoidalCoordinates p) rfl]
-    exact hclose'.1 p hsub'
+    exact flattenCoordinates_close_to_sinusoidal hε hclose p hsub'
 
 /-- The cut sphere has the usual total area of the unit sphere. -/
 theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * Real.pi) := by
@@ -198,8 +187,7 @@ theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * 
 area, differential, approximation and local distortion properties above. -/
 theorem exists_globe_flattening {ε : ℝ} (hε : 0 < ε) :
     Nonempty (GlobeFlatteningResult ε) := by
-  obtain ⟨hδ, _, _⟩ := globeErrorParameter_bounds hε
-  obtain ⟨u, E, hcu, hE, hsub, hnull, hclose, hSlope, hDeriv⟩ := exists_strict_scalar_flattening hδ
+  obtain ⟨u, E, hcu, hE, hsub, hnull, hclose, hSlope, hDeriv⟩ := exists_strict_scalar_flattening (globeErrorParameter_pos hε)
   exact ⟨globeFlattening_from_scalar hε hcu hE hsub hnull hclose hSlope hDeriv⟩
 
 end

@@ -16,7 +16,8 @@ everywhere. The longitude correction has positive weights, giving a
 strict lower bound on the slope of every nontrivial horizontal interval.
 Summation by parts gives a second expression for the
 same function. Together the two expressions bound horizontal and vertical
-errors and give the joint derivative.
+errors and give the joint derivative. Scaling the scalar tolerance by
+`1 / (1 + π)` gives a uniform distance bound of `ε` for the constructed map.
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·
 [Singular staircases](Lean/GlobeFlattening/SingularStaircase.lean)
 

@@ -17,7 +17,7 @@ namespace GlobeFlattening
 noncomputable section
 
 /-- The triangular map keeps latitude and replaces longitude by the scalar
-function constructed by the refinements. -/
+coordinate. -/
 def flattenCoordinates (u : ℝ × ℝ → ℝ) (p : ℝ × ℝ) : ℝ × ℝ := (u p, p.2)
 
 theorem injOn_flattenCoordinates {u : ℝ × ℝ → ℝ} {domain : Set (ℝ × ℝ)}
@@ -48,28 +48,6 @@ theorem hasFDerivWithinAt_flattenCoordinates {u : ℝ × ℝ → ℝ} {domain : 
   rw [LinearMap.det_prodMap]
   simp
 
-variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
-  [MeasurableSpace E] [BorelSpace E]
-
-/-- Compute the measure of the image of a full-measure subset of the domain
-using just the derivative on that subset. A separate nonnegative weight gives
-the desired determinant on the good set. -/
-theorem measure_good_image_eq_integral
-    (μ : Measure E) [IsAddHaarMeasure μ] {domain good : Set E}
-    {f : E → E} {D : E → E →L[ℝ] E} {weight : E → ℝ≥0∞}
-    (hgood : MeasurableSet good) (hsub : good ⊆ domain) (hnull : μ (domain \ good) = 0)
-    (hf : InjOn f domain) (hDeriv : ∀ x ∈ good, HasFDerivWithinAt f (D x) domain x)
-    (hDet : ∀ x ∈ good, ENNReal.ofReal |(D x).det| = weight x) :
-    μ (f '' good) = ∫⁻ x in domain, weight x ∂μ := by
-  have hrestrict : μ.restrict good = μ.restrict domain :=
-    Measure.restrict_congr_set (ae_eq_set.2 ⟨by simp [sdiff_eq_empty.mpr hsub], hnull⟩)
-  calc
-    μ (f '' good) = ∫⁻ x in good, ENNReal.ofReal |(D x).det| ∂μ :=
-      (lintegral_abs_det_fderiv_eq_addHaar_image μ hgood
-        (fun x hx => (hDeriv x hx).mono hsub) (hf.mono hsub)).symm
-    _ = ∫⁻ x in good, weight x ∂μ := setLIntegral_congr_fun hgood hDet
-    _ = ∫⁻ x in domain, weight x ∂μ := by rw [hrestrict]
-
 /-- The width-reparametrized chart has area density equal to its positive
 longitude slope wherever the scalar derivative has the prescribed form. -/
 theorem measure_flattened_good_image
@@ -83,10 +61,16 @@ theorem measure_flattened_good_image
   letI : IsAddHaarMeasure (volume : Measure (ℝ × ℝ)) := by
     rw [Measure.volume_eq_prod]
     infer_instance
-  refine measure_good_image_eq_integral volume hgood hsub hnull hf
-    (fun p hp => hasFDerivWithinAt_flattenCoordinates (hDeriv p hp)) ?_
-  intro p hp
-  rw [det_coordinateDerivative, abs_of_nonneg (hnonneg p hp)]
+  have hrestrict : volume.restrict good = volume.restrict domain :=
+    Measure.restrict_congr_set (ae_eq_set.2 ⟨by simp [sdiff_eq_empty.mpr hsub], hnull⟩)
+  rw [← hrestrict]
+  calc
+    _ = ∫⁻ p in good, ENNReal.ofReal |(coordinateDerivative (slope p)).det| :=
+      (lintegral_abs_det_fderiv_eq_addHaar_image volume hgood
+        (fun p hp => hasFDerivWithinAt_flattenCoordinates ((hDeriv p hp).mono hsub))
+        (hf.mono hsub)).symm
+    _ = _ := setLIntegral_congr_fun hgood fun p hp => by
+      rw [det_coordinateDerivative, abs_of_nonneg (hnonneg p hp)]
 
 end
 

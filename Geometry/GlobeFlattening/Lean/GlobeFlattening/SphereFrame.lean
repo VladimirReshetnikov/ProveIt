@@ -15,7 +15,7 @@ planar target use Euclidean norms.
 
 namespace GlobeFlattening
 
-open scoped RealInnerProductSpace BigOperators
+open scoped RealInnerProductSpace
 
 noncomputable section
 
@@ -113,33 +113,68 @@ theorem sphereTangentLift_apply (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)
     sphereTangentLift p v = v 0 • sphereEast p + v 1 • sphereNorth p :=
   rfl
 
-private def tangentFrame (p : ℝ × ℝ) : Fin 2 → EuclideanSpace ℝ (Fin 3) :=
-  sphereFrame p ∘ Fin.castSucc
+private def sphereFrameBasis (p : ℝ × ℝ) : OrthonormalBasis (Fin 3) ℝ (EuclideanSpace ℝ (Fin 3)) :=
+  let h := orthonormal_sphereFrame p
+  let b := basisOfOrthonormalOfCardEqFinrank h (by simp [finrank_euclideanSpace])
+  b.toOrthonormalBasis (by simpa [b] using h)
 
-private theorem orthonormal_tangentFrame (p : ℝ × ℝ) : Orthonormal ℝ (tangentFrame p) :=
-  (orthonormal_sphereFrame p).comp _ (Fin.castSucc_injective _)
+private theorem sphereFrameBasis_apply (p : ℝ × ℝ) (i : Fin 3) :
+    sphereFrameBasis p i = sphereFrame p i := by
+  simp [sphereFrameBasis]
 
-private theorem sphereTangentLift_eq_sum (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
-    sphereTangentLift p v = ∑ i, v i • tangentFrame p i := by
-  rw [Fin.sum_univ_two]
-  rfl
+private theorem sphereFrameBasis_repr (p : ℝ × ℝ) (w : EuclideanSpace ℝ (Fin 3)) :
+    (sphereFrameBasis p).repr w =
+      !₂[(sphereFlattenDerivative p w) 0, (sphereFlattenDerivative p w) 1, ⟪spherePoint p, w⟫] := by
+  rw [sphereFlattenDerivative_apply]
+  ext i
+  rw [OrthonormalBasis.repr_apply_apply, sphereFrameBasis_apply]
+  fin_cases i <;> rfl
+
+private theorem sphereTangentLift_eq_repr_symm (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
+    sphereTangentLift p v = (sphereFrameBasis p).repr.symm !₂[v 0, v 1, 0] := by
+  rw [← (sphereFrameBasis p).sum_repr_symm, Fin.sum_univ_three, sphereTangentLift_apply]
+  simp [sphereFrameBasis_apply, sphereFrame]
 
 theorem norm_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
     ‖sphereTangentLift p v‖ = ‖v‖ := by
   apply (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp
-  rw [← real_inner_self_eq_norm_sq, sphereTangentLift_eq_sum,
-    (orthonormal_tangentFrame p).inner_sum, EuclideanSpace.real_norm_sq_eq]
-  simp [pow_two]
+  rw [sphereTangentLift_eq_repr_symm, LinearIsometryEquiv.norm_map,
+    EuclideanSpace.real_norm_sq_eq, EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three,
+    Fin.sum_univ_two]
+  change v 0 ^ 2 + v 1 ^ 2 + 0 ^ 2 = _
+  simp
+
+private theorem sphereFrameBasis_repr_tangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
+    (sphereFrameBasis p).repr (sphereTangentLift p v) = !₂[v 0, v 1, 0] := by
+  rw [sphereTangentLift_eq_repr_symm, LinearIsometryEquiv.apply_symm_apply]
 
 theorem sphereFlattenDerivative_leftInverse (p : ℝ × ℝ) :
     Function.LeftInverse (sphereFlattenDerivative p) (sphereTangentLift p) := by
   intro v
-  rw [sphereFlattenDerivative_apply, sphereTangentLift_eq_sum]
+  have h := sphereFrameBasis_repr_tangentLift p v
+  rw [sphereFrameBasis_repr] at h
   ext i
-  change (!₂[⟪sphereEast p, ∑ j, v j • tangentFrame p j⟫,
-    ⟪sphereNorth p, ∑ j, v j • tangentFrame p j⟫] : EuclideanSpace ℝ (Fin 2)) i = v i
-  have hi := (orthonormal_tangentFrame p).inner_right_fintype (fun j => v j) i
+  have hi := congrArg (fun x : EuclideanSpace ℝ (Fin 3) => x i.castSucc) h
   fin_cases i <;> exact hi
+
+theorem tangent_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
+    ⟪spherePoint p, sphereTangentLift p v⟫ = 0 := by
+  have h := sphereFrameBasis_repr_tangentLift p v
+  rw [sphereFrameBasis_repr] at h
+  exact congrArg (fun x : EuclideanSpace ℝ (Fin 3) => x 2) h
+
+/-- Zero radial component is exactly what is needed to recover the original
+vector from its two tangent coordinates. -/
+theorem sphereTangentLift_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ)
+    {w : EuclideanSpace ℝ (Fin 3)} (h : ⟪spherePoint p, w⟫ = 0) :
+    sphereTangentLift p (sphereFlattenDerivative p w) = w := by
+  apply (sphereFrameBasis p).repr.injective
+  rw [sphereFrameBasis_repr_tangentLift, sphereFrameBasis_repr, h]
+
+theorem norm_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ) {w : EuclideanSpace ℝ (Fin 3)}
+    (hw : ⟪spherePoint p, w⟫ = 0) : ‖sphereFlattenDerivative p w‖ = ‖w‖ := by
+  rw [← norm_sphereTangentLift p (sphereFlattenDerivative p w),
+    sphereTangentLift_sphereFlattenDerivative_of_tangent p hw]
 
 /-- The projection of the spherical coordinate differential has precisely
 the two coefficients of the planar triangular derivative. -/

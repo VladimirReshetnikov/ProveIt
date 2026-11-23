@@ -39,17 +39,14 @@ theorem dist_planarEuclideanEquiv_of_snd_eq {a b : ℝ × ℝ} (hy : a.2 = b.2) 
 theorem norm_sphereDerivative_le (p : ℝ × ℝ) : ‖sphereDerivative p‖ ≤ 2 := by
   apply ContinuousLinearMap.opNorm_le_bound _ (by norm_num)
   intro v
-  have hx : (Real.cos p.2 * v.1)^2 ≤ ‖v‖ ^ 2 := by
-    rw [sq_le_sq, abs_mul, abs_of_nonneg (norm_nonneg _)]
-    exact (mul_le_of_le_one_left (abs_nonneg _)
-      (abs_le.mpr ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩)).trans
-      (by simpa [Real.norm_eq_abs] using norm_fst_le v)
-  have hy : v.2^2 ≤ ‖v‖ ^ 2 := by
-    rw [sq_le_sq, abs_of_nonneg (norm_nonneg _)]
-    simpa [Real.norm_eq_abs] using norm_snd_le v
-  apply (sq_le_sq₀ (norm_nonneg _) (mul_nonneg (by norm_num) (norm_nonneg _))).mp
-  rw [sq_norm_sphereDerivative]
-  nlinarith [sq_nonneg ‖v‖]
+  have he : ‖sphereEast p‖ = 1 := (orthonormal_sphereFrame p).norm_eq_one (0 : Fin 3)
+  have hn : ‖sphereNorth p‖ = 1 := (orthonormal_sphereFrame p).norm_eq_one (1 : Fin 3)
+  have hcos : ‖Real.cos p.2‖ ≤ 1 := by simpa [Real.norm_eq_abs] using Real.abs_cos_le_one p.2
+  rw [sphereDerivative_apply, two_mul]
+  refine (norm_add_le _ _).trans ?_
+  simp only [norm_smul, he, hn, mul_one, norm_mul]
+  exact add_le_add ((mul_le_of_le_one_left (norm_nonneg _) hcos).trans (norm_fst_le v))
+    (norm_snd_le v)
 
 theorem lipschitzWith_spherePoint : LipschitzWith 2 spherePoint := by
   apply lipschitzWith_of_nnnorm_fderiv_le (𝕜 := ℝ)
