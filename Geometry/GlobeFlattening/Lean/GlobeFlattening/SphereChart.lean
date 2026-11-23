@@ -26,9 +26,6 @@ def horizontalComplex (w : EuclideanSpace ℝ (Fin 3)) : ℂ :=
 @[simp] theorem horizontalComplex_im (w : EuclideanSpace ℝ (Fin 3)) :
     (horizontalComplex w).im = w 1 := rfl
 
-theorem continuous_horizontalComplex : Continuous horizontalComplex := by
-  fun_prop [horizontalComplex]
-
 theorem horizontalComplex_spherePoint (p : ℝ × ℝ) :
     horizontalComplex (spherePoint p) =
       (Real.cos p.2 : ℂ) * (Complex.cos p.1 + Complex.sin p.1 * Complex.I) := by
@@ -113,7 +110,8 @@ def sphereLongitudeChart : sphereLongitudeDomain ≃ₜ cutSphere where
   right_inv w := Subtype.ext (spherePoint_sphereChartInverse w.2)
   continuous_toFun := (continuous_spherePoint.comp continuous_subtype_val).subtype_mk _
   continuous_invFun :=
-    ((Complex.continuousOn_arg.comp continuous_horizontalComplex.continuousOn (fun _ hw => hw.2)).prodMk
+    ((Complex.continuousOn_arg.comp (f := horizontalComplex) (by fun_prop [horizontalComplex])
+      (fun _ hw => hw.2)).prodMk
       (by fun_prop : ContinuousOn (fun w => Real.arcsin (w 2)) cutSphere)).restrict.subtype_mk _
 
 end

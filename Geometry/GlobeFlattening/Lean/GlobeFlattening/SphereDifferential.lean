@@ -14,12 +14,6 @@ open scoped RealInnerProductSpace Topology
 
 noncomputable section
 
-/-- The coordinate identification after changing longitude to eastward arc length. -/
-private def scaledPlanarEquiv (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
-    (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
-  ((ContinuousLinearEquiv.smulLeft (R₁ := ℝ) (M₁ := ℝ) (Units.mk0 (Real.cos p.2) hc)).prodCongr
-    (ContinuousLinearEquiv.refl ℝ ℝ)).trans planarEuclideanEquiv
-
 /-- The metric in spherical coordinates has diagonal entries
 `cos latitude` squared and `1`. -/
 theorem sq_norm_sphereDerivative (p v : ℝ × ℝ) :
@@ -35,7 +29,8 @@ theorem hasFDerivAt_sphereFlatten_inverse
     (hg : HasFDerivAt g (coordinateDerivative (Real.cos p.2)) p) :
     HasFDerivAt (spherePoint ∘ (g.symm ∘ planarEuclideanEquiv.symm)) (sphereTangentLift p)
       (planarEuclideanEquiv (g p)) := by
-  let D := scaledPlanarEquiv p hc
+  let D := ((ContinuousLinearEquiv.smulLeft (R₁ := ℝ) (M₁ := ℝ)
+    (Units.mk0 (Real.cos p.2) hc)).prodCongr (ContinuousLinearEquiv.refl ℝ ℝ)).trans planarEuclideanEquiv
   let G := g.transHomeomorph planarEuclideanEquiv.toHomeomorph
   have hGinv := G.hasFDerivAt_symm (f' := D) (G.map_source hp)
     ((G.left_inv hp).symm ▸ planarEuclideanEquiv.hasFDerivAt.comp p hg)
