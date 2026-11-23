@@ -840,6 +840,19 @@ positive decay reference and independently queried beta and Euler
 observations. [GaussianEulerLowTimePowerOrder](Lean/IPRADerivations/Analysis/GaussianEulerLowTimePowerOrder.lean)
 gives the reciprocal-power reference comparison for the actual
 lower-time power square.
+[GaussianEulerLowTimeReciprocalReference](Lean/IPRADerivations/Analysis/GaussianEulerLowTimeReciprocalReference.lean)
+identifies that reference with the exact rational square, and
+[GaussianEulerLowTimePowerBound](Lean/IPRADerivations/Analysis/GaussianEulerLowTimePowerBound.lean)
+bounds the original lower-time power norm by `b/a+2^-p`.
+[GaussianBetaKernelTailDifference](Lean/IPRADerivations/Analysis/GaussianBetaKernelTailDifference.lean)
+bounds the absolute full-support kernel difference with one positive
+decay factor and explicit observation allowances.
+[GaussianBetaRowMonomialReference](Lean/IPRADerivations/Analysis/GaussianBetaRowMonomialReference.lean)
+compares the actual high-time scalar majorant to the literal monomial
+decay evaluator scaled by `1/N`.
+[GaussianRationalQuadratureDifference](Lean/IPRADerivations/Analysis/GaussianRationalQuadratureDifference.lean)
+binds the exact weighted sum of row differences to the original pair
+of quadratures.
 [GaussianMonomialDecayMajorant](Lean/IPRADerivations/Analysis/GaussianMonomialDecayMajorant.lean)
 bounds the actual monomial times decay through the weighted half-decay
 majorant at coefficient `2^d d!`.
@@ -847,6 +860,11 @@ majorant at coefficient `2^d d!`.
 and [GaussianMonomialDecayBudget](Lean/IPRADerivations/Analysis/GaussianMonomialDecayBudget.lean)
 retain its integrated coefficient `2^(d+1) d!` above time one with
 a computed dyadic allowance.
+[GaussianEulerSharpDegreeSchedule](Lean/IPRADerivations/Analysis/GaussianEulerSharpDegreeSchedule.lean)
+checks the report’s exact choice `N=4(C_R+D_R+p+10)·2^(p+4)`,
+the rational bound `C_R/N≤2^(-p-3)`, and the original decay bound at
+`N/4` with explicit observation error and a computed precision. The
+full integrated sharp comparison remains.
 [GaussianBetaKernelGridComparison](Lean/IPRADerivations/Analysis/GaussianBetaKernelGridComparison.lean)
 compares the literal finite beta-kernel grid with the original improper
 Euler observation at its actual evaluation clock and also allows
