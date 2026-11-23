@@ -9,10 +9,10 @@ presented as delivered and have not been independently verified here.
 
 The Lean development proves the rectangular refinement estimates, including
 the local error inside an old affine tile and the bound on the area discarded
-by trimming. The scalar limit theorem gives a classical derivative on a
-measurable co-null set once a sequence of these refinements is supplied.
-The choice and iteration of the spherical meshes and the final spherical
-theorem remain to be assembled.
+by trimming. `GlobeFlattening.exists_scalar_flattening` constructs the
+mesh sequence and proves the scalar prescribed-gradient proposition with a
+classical derivative at every point of a measurable co-null set. The
+spherical theorem is being assembled from that result.
 Build the current Lean modules from the repository root with
 `lake build GlobeFlattening`.
 

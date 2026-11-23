@@ -1,4 +1,4 @@
-import GlobeFlattening.RectangularMesh
+import GlobeFlattening.RectangularRefinement
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Topology.MetricSpace.Pseudo.Constructions
 
@@ -86,6 +86,27 @@ theorem trimmedTiles_subset : g.trimmedTiles ⊆ g.rectangle := by
   intro p hp
   obtain ⟨⟨i, j⟩, h⟩ := Set.mem_iUnion.mp hp
   exact g.trimmedTile_subset i.isLt (by have := j.isLt; omega) h
+
+/-- Near a trimmed point, the stage is affine in longitude, with the
+same row slope throughout the whole neighborhood. -/
+theorem exists_affine_near_trimmed {u : ℝ × ℝ → ℝ} {target : ℝ → ℝ} {p : ℝ × ℝ}
+    (hlip : ∀ y z : ℝ, |target y - target z| ≤ |y - z|)
+    (hp : p ∈ g.trimmedTiles) :
+    ∃ intercept slope : ℝ, ∀ q, dist q p ≤ g.margin →
+      g.refineStage u target q = intercept + slope * q.1 ∧
+      target q.2 ≤ slope ∧ slope ≤ target q.2 + 2 * g.width := by
+  obtain ⟨⟨i, j⟩, htile⟩ := Set.mem_iUnion.mp hp
+  have hj : (j : ℕ) ≤ g.transitions := by have := j.isLt; omega
+  let slope := g.rowSlope target j
+  refine ⟨u (g.longitude i, g.midlatitude j) - slope * g.longitude i, slope, ?_⟩
+  intro q hdist
+  have hcore := g.mem_affineTile_of_dist htile hdist
+  have hval := g.refineStage_on_core (old := u) (target := target)
+    i.isLt hj hcore.1.1 hcore.1.2 hcore.2.1 hcore.2.2
+  refine ⟨?_, g.rowSlope_bounds hlip (g.midlatitude_close_of_mem_affineTile hcore)⟩
+  rw [show q = (q.1, q.2) from (Prod.eta q).symm, hval]
+  dsimp [slope]
+  ring
 
 theorem pairwise_trimmedTile :
     Pairwise (Function.onFun Disjoint (fun a : Fin g.columns × Fin (g.transitions + 1) =>

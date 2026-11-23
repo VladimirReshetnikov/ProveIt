@@ -34,6 +34,20 @@ def HasLowerSlope (u : ℝ × ℝ → ℝ) (target : ℝ → ℝ) : Prop :=
     ∀ x₂ ∈ Icc g.left (g.longitude g.columns), x₁ ≤ x₂ →
       target y * (x₂ - x₁) ≤ u (x₂, y) - u (x₁, y)
 
+theorem hasLowerSlope_iff_same_latitude {u : ℝ × ℝ → ℝ} {target : ℝ → ℝ} :
+    g.HasLowerSlope u target ↔
+      ∀ p ∈ g.rectangle, ∀ q ∈ g.rectangle, p.2 = q.2 → p.1 ≤ q.1 →
+        target p.2 * (q.1 - p.1) ≤ u q - u p := by
+  constructor
+  · intro h p hp q hq hlat hlong
+    obtain ⟨x, y⟩ := p
+    obtain ⟨x', y'⟩ := q
+    change y = y' at hlat
+    subst y'
+    exact h y hp.2 x hp.1 x' hq.1 hlong
+  · intro h y hy x hx x' hx' hlong
+    exact h (x, y) ⟨hx, hy⟩ (x', y) ⟨hx', hy⟩ rfl hlong
+
 theorem continuous_refineStage (old : ℝ × ℝ → ℝ) (target : ℝ → ℝ) :
     Continuous (g.refineStage old target) :=
   continuous_latitudeProfile _ _ _ fun _ => continuous_stripProfile _ _ _ _ _ _

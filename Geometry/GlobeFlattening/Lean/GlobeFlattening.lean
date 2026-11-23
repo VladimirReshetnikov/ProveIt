@@ -9,7 +9,9 @@ import GlobeFlattening.RectangularMesh
 import GlobeFlattening.RectangularRefinement
 import GlobeFlattening.RefinementLimit
 import GlobeFlattening.RestrictedArea
+import GlobeFlattening.ScalarConstruction
 import GlobeFlattening.SphereChart
 import GlobeFlattening.SphereFrame
+import GlobeFlattening.SphereMesh
 import GlobeFlattening.TriangularChart
 import GlobeFlattening.TrimmedTiles
