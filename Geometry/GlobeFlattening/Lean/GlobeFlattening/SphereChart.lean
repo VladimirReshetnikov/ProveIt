@@ -89,22 +89,21 @@ theorem cutSphere_vertical_bounds {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ c
 theorem sphereChartInverse_mapsTo : MapsTo sphereChartInverse cutSphere sphereLongitudeDomain := by
   intro w hw
   have hz := cutSphere_vertical_bounds hw
-  exact ⟨⟨Complex.neg_pi_lt_arg _, lt_of_le_of_ne (Complex.arg_le_pi _)
-    (Complex.slitPlane_arg_ne_pi hw.2)⟩,
+  exact ⟨⟨Complex.neg_pi_lt_arg _, (Complex.arg_le_pi _).lt_of_ne (Complex.slitPlane_arg_ne_pi hw.2)⟩,
     ⟨Real.neg_pi_div_two_lt_arcsin.mpr hz.1, Real.arcsin_lt_pi_div_two.mpr hz.2⟩⟩
 
 theorem spherePoint_sphereChartInverse {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
     spherePoint (sphereChartInverse w) = w := by
-  obtain ⟨hrad, harg⟩ := polar_spherePoint (sphereChartInverse_mapsTo hw)
   have hxy : horizontalComplex (spherePoint (sphereChartInverse w)) = horizontalComplex w := by
-    apply Complex.ext_norm_arg _ harg
-    rw [hrad, sphereChartInverse, Real.cos_arcsin, ← cutSphere_horizontal_norm_sq hw,
-      Real.sqrt_sq (norm_nonneg _)]
+    rw [horizontalComplex_spherePoint, sphereChartInverse, Real.cos_arcsin,
+      ← cutSphere_horizontal_norm_sq hw, Real.sqrt_sq (norm_nonneg _),
+      Complex.norm_mul_cos_add_sin_mul_I]
+  have hz := cutSphere_vertical_bounds hw
   ext i
   fin_cases i
   · exact congrArg Complex.re hxy
   · exact congrArg Complex.im hxy
-  · exact Real.sin_arcsin (cutSphere_vertical_bounds hw).1.le (cutSphere_vertical_bounds hw).2.le
+  · exact Real.sin_arcsin hz.1.le hz.2.le
 
 theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
   (show InvOn sphereChartInverse spherePoint sphereLongitudeDomain cutSphere from
@@ -118,9 +117,9 @@ def sphereLongitudeChart : sphereLongitudeDomain ≃ₜ cutSphere where
   left_inv p := Subtype.ext (sphereChartInverse_spherePoint p.2)
   right_inv w := Subtype.ext (spherePoint_sphereChartInverse w.2)
   continuous_toFun := (continuous_spherePoint.comp continuous_subtype_val).subtype_mk _
-  continuous_invFun := (continuousOn_iff_continuous_restrict.1
+  continuous_invFun :=
     ((Complex.continuousOn_arg.comp continuous_horizontalComplex.continuousOn (fun _ hw => hw.2)).prodMk
-      (Real.continuous_arcsin.comp (EuclideanSpace.proj (𝕜 := ℝ) (2 : Fin 3)).continuous).continuousOn)).subtype_mk _
+      (by fun_prop : ContinuousOn (fun w => Real.arcsin (w 2)) cutSphere)).restrict.subtype_mk _
 
 end
 

@@ -38,16 +38,14 @@ theorem hasFDerivAt_sphereFlatten_inverse
       (planarEuclideanEquiv (g p)) := by
   let D := scaledPlanarEquiv p hc
   let G := g.transHomeomorph planarEuclideanEquiv.toHomeomorph
-  have hG : HasFDerivAt G D.toContinuousLinearMap p :=
-    planarEuclideanEquiv.hasFDerivAt.comp p hg
-  have hGinv := G.hasFDerivAt_symm (f' := D) (G.map_source hp) (by rwa [G.left_inv hp])
-  have hs' : HasFDerivAt spherePoint (sphereDerivative p) (G.symm (G p)) := by
+  have hGinv := G.hasFDerivAt_symm (f' := D) (G.map_source hp) (by
     rw [G.left_inv hp]
-    exact hasFDerivAt_spherePoint p
+    exact planarEuclideanEquiv.hasFDerivAt.comp p hg)
+  have hs' : HasFDerivAt spherePoint (sphereDerivative p) (G.symm (G p)) :=
+    (G.left_inv hp).symm ▸ hasFDerivAt_spherePoint p
   apply (hs'.comp (G p) hGinv).congr_fderiv
   ext v : 1
-  change sphereTangentLift p (D (D.symm v)) = _
-  rw [ContinuousLinearEquiv.apply_symm_apply]
+  exact congrArg (sphereTangentLift p) (D.apply_symm_apply v)
 
 /-- The forward differential is the linear left inverse of the tangent lift. -/
 theorem hasFDerivWithinAt_sphereFlatten

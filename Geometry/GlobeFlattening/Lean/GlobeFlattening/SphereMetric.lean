@@ -39,10 +39,9 @@ theorem norm_sphereDerivative_le (p : ℝ × ℝ) : ‖sphereDerivative p‖ ≤
   have hLon : |Real.cos p.2 * v.1| ≤ ‖v‖ := by
     rw [abs_mul]
     exact (mul_le_of_le_one_left (abs_nonneg _) (Real.abs_cos_le_one _)).trans (norm_fst_le v)
-  have hLat : |v.2| ≤ ‖v‖ := norm_snd_le v
-  rw [← abs_of_nonneg (norm_nonneg v)] at hLon hLat
   rw [← sq_le_sq₀ (norm_nonneg _) (by positivity), sq_norm_sphereDerivative]
-  nlinarith [sq_le_sq.2 hLon, sq_le_sq.2 hLat]
+  nlinarith only [sq_le_sq.2 (hLon.trans (le_abs_self _)),
+    sq_le_sq.2 ((norm_snd_le v).trans (le_abs_self _)), sq_nonneg ‖v‖]
 
 theorem lipschitzWith_spherePoint : LipschitzWith 2 spherePoint := by
   apply lipschitzWith_of_nnnorm_fderiv_le (𝕜 := ℝ)

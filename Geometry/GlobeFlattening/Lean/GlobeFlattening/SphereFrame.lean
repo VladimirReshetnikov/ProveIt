@@ -35,8 +35,7 @@ def sphereFrame (p : ℝ × ℝ) : Fin 3 → EuclideanSpace ℝ (Fin 3) :=
   ![sphereEast p, sphereNorth p, spherePoint p]
 
 theorem orthonormal_sphereFrame (p : ℝ × ℝ) : Orthonormal ℝ (sphereFrame p) := by
-  rw [orthonormal_iff_ite]
-  intro i j
+  refine orthonormal_iff_ite.2 fun i j => ?_
   have hLon := Real.sin_sq_add_cos_sq p.1
   have hLat := Real.sin_sq_add_cos_sq p.2
   fin_cases i <;> fin_cases j <;>
@@ -127,9 +126,8 @@ theorem sphereDerivative_apply (p v : ℝ × ℝ) :
 
 theorem hasFDerivAt_spherePoint (p : ℝ × ℝ) :
     HasFDerivAt spherePoint (sphereDerivative p) p := by
-  rw [← hasFDerivWithinAt_univ, hasFDerivWithinAt_piLp]
+  rw [← (PiLp.continuousLinearEquiv 2 ℝ _).comp_hasFDerivAt_iff, hasFDerivAt_pi']
   intro i
-  rw [hasFDerivWithinAt_univ]
   have hfst := hasFDerivAt_fst (𝕜 := ℝ) (E := ℝ) (F := ℝ) (p := p)
   have hsnd := hasFDerivAt_snd (𝕜 := ℝ) (E := ℝ) (F := ℝ) (p := p)
   fin_cases i
