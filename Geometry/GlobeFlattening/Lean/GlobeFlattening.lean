@@ -1,4 +1,5 @@
 import GlobeFlattening.CellProfile
+import GlobeFlattening.CoordinateArea
 import GlobeFlattening.GoodSet
 import GlobeFlattening.InverseDerivative
 import GlobeFlattening.LatitudeProfile
@@ -8,4 +9,7 @@ import GlobeFlattening.RectangularMesh
 import GlobeFlattening.RectangularRefinement
 import GlobeFlattening.RefinementLimit
 import GlobeFlattening.RestrictedArea
+import GlobeFlattening.SphereChart
+import GlobeFlattening.SphereFrame
+import GlobeFlattening.TriangularChart
 import GlobeFlattening.TrimmedTiles
