@@ -26,8 +26,8 @@ def affineTile (i j : ℕ) : Set (ℝ × ℝ) :=
 
 /-- Trimmed rectangles have a full additional margin inside each affine tile. -/
 def trimmedTile (i j : ℕ) : Set (ℝ × ℝ) :=
-  Icc (g.longitude i + g.margin) (g.longitude i + g.width - 2 * g.margin) ×ˢ
-    Icc (g.latitude j + 2 * g.margin) (g.latitude (j + 1) - 2 * g.margin)
+  Icc (g.longitude i + g.margin) (g.longitude i + (g.width - 2 * g.margin)) ×ˢ
+    Icc (g.latitude j + 2 * g.margin) (g.latitude j + (g.width - 2 * g.margin))
 
 def trimmedTiles : Set (ℝ × ℝ) :=
   ⋃ a : Fin g.columns × Fin (g.transitions + 1), g.trimmedTile a.1 a.2
@@ -41,12 +41,12 @@ theorem mem_affineTile_of_dist {i j : ℕ} {p q : ℝ × ℝ}
   have hx := abs_le.mp hdist.1
   have hy := abs_le.mp hdist.2
   have hx₁ : g.longitude i + g.margin ≤ p.1 := hp.1.1
-  have hx₂ : p.1 ≤ g.longitude i + g.width - 2 * g.margin := hp.1.2
+  have hx₂ : p.1 ≤ g.longitude i + (g.width - 2 * g.margin) := hp.1.2
   have hy₁ : g.latitude j + 2 * g.margin ≤ p.2 := hp.2.1
-  have hy₂ : p.2 ≤ g.latitude (j + 1) - 2 * g.margin := hp.2.2
+  have hy₂ : p.2 ≤ g.latitude j + (g.width - 2 * g.margin) := hp.2.2
   show (g.longitude i ≤ q.1 ∧ q.1 ≤ g.longitude i + (g.width - g.margin)) ∧
     (g.latitude j + g.margin ≤ q.2 ∧ q.2 ≤ g.latitude (j + 1) - g.margin)
-  exact ⟨⟨by linarith, by linarith⟩, ⟨by linarith, by linarith⟩⟩
+  exact ⟨⟨by linarith, by linarith⟩, ⟨by linarith, by linarith [g.latitude_succ j]⟩⟩
 
 theorem midlatitude_close_of_mem_affineTile {i j : ℕ} {p : ℝ × ℝ}
     (hp : p ∈ g.affineTile i j) : |p.2 - g.midlatitude j| ≤ g.width := by
@@ -76,11 +76,11 @@ theorem trimmedTile_subset {i j : ℕ} (hi : i < g.columns) (hj : j ≤ g.transi
   have hy₁ := hp.2.1
   have hy₂ := hp.2.2
   change g.longitude i + g.margin ≤ p.1 at hx₁
-  change p.1 ≤ g.longitude i + g.width - 2 * g.margin at hx₂
+  change p.1 ≤ g.longitude i + (g.width - 2 * g.margin) at hx₂
   change g.latitude j + 2 * g.margin ≤ p.2 at hy₁
-  change p.2 ≤ g.latitude (j + 1) - 2 * g.margin at hy₂
+  change p.2 ≤ g.latitude j + (g.width - 2 * g.margin) at hy₂
   exact ⟨⟨by linarith [g.margin_pos], by linarith [g.longitude_succ i, g.margin_pos]⟩,
-    ⟨by linarith [g.margin_pos], by linarith [g.margin_pos]⟩⟩
+    ⟨by linarith [g.margin_pos], by linarith [g.latitude_succ j, g.margin_pos]⟩⟩
 
 theorem trimmedTiles_subset : g.trimmedTiles ⊆ g.rectangle := by
   intro p hp
@@ -108,27 +108,25 @@ theorem exists_affine_near_trimmed {u : ℝ × ℝ → ℝ} {target : ℝ → �
   dsimp [slope]
   ring
 
+private theorem pairwise_mesh_intervals {count : ℕ} (left width lower upper : ℝ)
+    (hwidth : 0 ≤ width) (hgap : upper < width + lower) :
+    (univ : Set (Fin count)).PairwiseDisjoint
+      (fun i => Icc (meshPoint left width i + lower) (meshPoint left width i + upper)) := by
+  rw [Set.PairwiseDisjoint, pairwise_univ, pairwise_iff_lt]
+  intro i j hij
+  refine disjoint_left.mpr fun x hx hy => ?_
+  have hstep := meshPoint_mono (left := left) hwidth (show (i : ℕ) + 1 ≤ j from hij)
+  rw [meshPoint_succ] at hstep
+  linarith [hx.2, hy.1]
+
 theorem pairwise_trimmedTile :
     Pairwise (Function.onFun Disjoint (fun a : Fin g.columns × Fin (g.transitions + 1) =>
       g.trimmedTile a.1 a.2)) := by
-  intro a b hab
-  rw [Function.onFun, Set.disjoint_left]
-  intro p ha hb
-  have hxupper (i k : ℕ) (hik : i < k) :
-      g.longitude i + g.width - 2 * g.margin < g.longitude k + g.margin := by
-    have h := g.longitude_mono (Nat.succ_le_of_lt hik)
-    linarith [g.longitude_succ i, g.margin_pos]
-  have hyupper (j k : ℕ) (hjk : j < k) :
-      g.latitude (j + 1) - 2 * g.margin < g.latitude k + 2 * g.margin := by
-    have h := g.latitude_mono (Nat.succ_le_of_lt hjk)
-    linarith [g.margin_pos]
-  rcases lt_trichotomy a.1.val b.1.val with h | h | h
-  · exact (not_le_of_gt (hxupper _ _ h)) (hb.1.1.trans ha.1.2)
-  · rcases lt_trichotomy a.2.val b.2.val with h' | h' | h'
-    · exact (not_le_of_gt (hyupper _ _ h')) (hb.2.1.trans ha.2.2)
-    · exact hab (Prod.ext (Fin.ext h) (Fin.ext h'))
-    · exact (not_le_of_gt (hyupper _ _ h')) (ha.2.1.trans hb.2.2)
-  · exact (not_le_of_gt (hxupper _ _ h)) (ha.1.1.trans hb.1.2)
+  have hx := pairwise_mesh_intervals (count := g.columns) g.left g.width
+    g.margin (g.width - 2 * g.margin) g.width_pos.le (by linarith [g.margin_pos])
+  have hy := pairwise_mesh_intervals (count := g.transitions + 1) g.bottom g.width
+    (2 * g.margin) (g.width - 2 * g.margin) g.width_pos.le (by linarith [g.margin_pos])
+  simpa only [univ_prod_univ, Set.PairwiseDisjoint, pairwise_univ, trimmedTile, longitude, latitude] using hx.prod hy
 
 theorem volume_rectangle :
     volume g.rectangle =
@@ -143,10 +141,10 @@ theorem volume_rectangle :
 theorem volume_trimmedTile (hmargin : 4 * g.margin ≤ g.width) (i j : ℕ) :
     volume (g.trimmedTile i j) =
       ENNReal.ofReal ((g.width - 3 * g.margin) * (g.width - 4 * g.margin)) := by
-  have hx : g.longitude i + g.width - 2 * g.margin -
+  have hx : g.longitude i + (g.width - 2 * g.margin) -
       (g.longitude i + g.margin) = g.width - 3 * g.margin := by ring
-  have hy : g.latitude (j + 1) - 2 * g.margin -
-      (g.latitude j + 2 * g.margin) = g.width - 4 * g.margin := by rw [g.latitude_succ]; ring
+  have hy : g.latitude j + (g.width - 2 * g.margin) -
+      (g.latitude j + 2 * g.margin) = g.width - 4 * g.margin := by ring
   rw [trimmedTile, Measure.volume_eq_prod, Measure.prod_prod, Real.volume_Icc, Real.volume_Icc,
     hx, hy, ← ENNReal.ofReal_mul (by linarith [g.margin_pos])]
 
