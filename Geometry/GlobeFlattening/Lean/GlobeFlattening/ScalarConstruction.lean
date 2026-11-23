@@ -1,3 +1,4 @@
+import GlobeFlattening.RefinementLimit
 import GlobeFlattening.SphereChart
 import GlobeFlattening.SphereMesh
 import GlobeFlattening.TrimmedTiles
@@ -33,14 +34,12 @@ private structure ScalarStage (δ : ℝ) (n : ℕ) where
   meshWidth_le : meshWidth ≤ 3 * δ / (4 : ℝ)^n
   good : Set (ℝ × ℝ)
   good_measurable : MeasurableSet good
-  discarded_le : volume (sphereClosedBox \ good) ≤
-    ENNReal.ofReal ((2 * Real.pi^2) * ((2 : ℝ)⁻¹)^n)
+  discarded_le : volume (sphereClosedBox \ good) ≤ volume sphereClosedBox * ((2 : ℝ≥0∞)⁻¹)^n
   lowerSlope : ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 ≤ q.1 →
     stageTarget δ n p.2 * (q.1 - p.1) ≤ approx q - approx p
-  tileSlope : ℝ × ℝ → ℝ
-  affine_near : ∀ p ∈ good, ∃ intercept : ℝ, ∀ q, dist q p ≤ radius →
-    approx q = intercept + tileSlope p * q.1 ∧
-    stageTarget δ n q.2 ≤ tileSlope p ∧ tileSlope p ≤ stageTarget δ n q.2 + 2 * meshWidth
+  affine_near : ∀ p ∈ good, ∃ intercept slope : ℝ, ∀ q, dist q p ≤ radius →
+    approx q = intercept + slope * q.1 ∧
+    stageTarget δ n q.2 ≤ slope ∧ slope ≤ stageTarget δ n q.2 + 2 * meshWidth
 
 private structure StageTransition {δ : ℝ} {n : ℕ}
     (before : ScalarStage δ n) (after : ScalarStage δ (n + 1)) : Prop where
@@ -59,28 +58,24 @@ private def zeroStage {δ : ℝ} (hδ : 0 < δ) : ScalarStage δ 0 where
   meshWidth_le := by positivity
   good := ∅
   good_measurable := MeasurableSet.empty
-  discarded_le := by simp [volume_sphereClosedBox]
+  discarded_le := by simp
   lowerSlope := by
     intro p hp q hq hlat hlong
     unfold initialScalar
     rw [hlat, stageTarget_zero]
     apply le_of_eq
     ring
-  tileSlope := fun _ => 0
   affine_near := by simp
 
 private theorem exists_nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ}
     (before : ScalarStage δ n) :
     ∃ after : ScalarStage δ (n + 1), StageTransition before after := by
-  obtain ⟨g, hgrect, hgmargin, hgratio, hg4, hgarea, hg_gap, hg_radius, hg_half, hgosc⟩ :=
+  obtain ⟨g, hgrect, hgmargin, hg4, hg_gap, hg_radius, hg_half, hgosc⟩ :=
     exists_scheduledSphereMesh before.continuousOn hδ before.radius_pos n
   have newSlopeGap := stageTarget_gap hg_gap
   have holdSlope : g.HasLowerSlope before.approx (stageTarget δ n) := by
     apply g.hasLowerSlope_iff_same_latitude.mpr
     simpa only [hgrect] using before.lowerSlope
-  choose! intercept slope haffine using
-    (fun (p : ℝ × ℝ) (hp : p ∈ g.trimmedTiles) => g.exists_affine_near_trimmed
-      (u := before.approx) (stageTarget_variation δ (n + 1)) hp)
   let after : ScalarStage δ (n + 1) :=
     { approx := g.refineStage before.approx (stageTarget δ (n + 1))
       continuousOn := (g.continuous_refineStage _ _).continuousOn
@@ -91,18 +86,18 @@ private theorem exists_nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ}
       good := g.trimmedTiles
       good_measurable := g.isClosed_trimmedTiles.measurableSet
       discarded_le := by
-        rw [← hgrect]
+        rw [← hgrect, g.volume_rectangle, mul_comm]
         refine (g.volume_discarded hg4).trans ?_
-        rw [hgratio, hgarea]
-        apply ENNReal.ofReal_le_ofReal
-        calc
-          _ = (2 * Real.pi^2) * (7 * stageMargin (n + 1)) := by ring
-          _ ≤ _ := mul_le_mul_of_nonneg_left (seven_stageMargin_le_dyadic _) (by positivity)
+        rw [hgmargin, mul_div_cancel_right₀ _ g.width_pos.ne', ENNReal.ofReal_mul' (by positivity)]
+        apply mul_le_mul_left
+        have h := ENNReal.ofReal_le_ofReal (seven_stageMargin_le_dyadic (n + 1))
+        simpa only [ENNReal.ofReal_pow (by positivity : 0 ≤ (2 : ℝ)⁻¹),
+          ENNReal.ofReal_inv_of_pos (by norm_num : (0 : ℝ) < 2), ENNReal.ofReal_ofNat] using h
       lowerSlope := by
         rw [← hgrect, ← g.hasLowerSlope_iff_same_latitude]
         exact g.refineStage_lowerSlope holdSlope newSlopeGap (stageTarget_variation δ (n + 1))
-      tileSlope := slope
-      affine_near := fun p hp => ⟨intercept p, haffine p hp⟩ }
+      affine_near := fun _ hp => g.exists_affine_near_trimmed
+        (u := before.approx) (stageTarget_variation δ (n + 1)) hp }
   refine ⟨after, ?_, ?_, ?_⟩
   · change g.margin ≤ before.radius / 2
     exact hg_half
@@ -115,11 +110,9 @@ private theorem exists_nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ}
       have hmem : (g.left, y) ∈ sphereClosedBox := hgrect ▸ ⟨hleft, hy⟩
       exact stageTarget_nonneg δ hδ.le (n + 1) hmem.2
     have hqg : q ∈ g.rectangle := hgrect.symm ▸ hq
-    have hs := g.refineStage_uniform_error holdSlope newSlopeGap hnonneg hgosc hqg
-    convert hs using 1
-    ring
+    exact g.refineStage_uniform_error holdSlope newSlopeGap hnonneg hgosc hqg
   · intro p hp q hq hnear
-    obtain ⟨a, haffine⟩ := before.affine_near p hp
+    obtain ⟨intercept, slope, haffine⟩ := before.affine_near p hp
     have htile (z : ℝ × ℝ) (hz : dist z q ≤ g.width) : dist z p ≤ before.radius := by
       have ht := (dist_triangle z q p).trans (add_le_add hz hnear)
       linarith [before.radius_pos]
@@ -128,13 +121,8 @@ private theorem exists_nextStage {δ : ℝ} (hδ : 0 < δ) {n : ℕ}
       (fun z _ hz => (haffine z (htile z hz)).2)
     change |g.refineStage before.approx (stageTarget δ (n + 1)) q - before.approx q| ≤
       (108 * δ / (2 : ℝ)^n) * g.margin
-    refine hlocal.trans ?_
     rw [hgmargin]
-    have hnormalize : stageMargin (n + 1) * g.width = g.width / (2 : ℝ) ^ (n + 4) := by
-      unfold stageMargin
-      ring
-    rw [hnormalize]
-    exact local_refinement_dyadic_bound before.meshWidth_le g.width_pos.le
+    exact hlocal.trans (local_refinement_dyadic_bound before.meshWidth_le g.width_pos.le)
 
 private def scalarStages {δ : ℝ} (hδ : 0 < δ) : (n : ℕ) → ScalarStage δ n
   | 0 => zeroStage hδ
@@ -163,34 +151,35 @@ theorem exists_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
   refine exists_scalar_limit_of_refinement_stages isOpen_sphereLongitudeDomain
     sphereLongitudeDomain_subset_box
     (approx := fun n => (s n).approx) (good := fun n => (s n).good)
-    (radius := fun n => (s n).radius) (stageSlope := stageTarget δ)
-    (tileSlope := fun n => (s n).tileSlope) (slopeError := fun n => 7 * δ / (4 : ℝ)^n)
+    (radius := fun n => (s n).radius)
+    (linearError := fun n => 7 * δ / (4 : ℝ)^n)
     (localCoeff := fun n => 108 * δ / (2 : ℝ)^n)
     (fun n => (s n).radius_pos) (fun n => (scalarStages_transition hδ n).radius_le)
     (fun n => (s n).continuousOn) (fun n => (scalarStages_transition hδ n).uniformError)
-    (fun n => (s n).good_measurable) hbad (stageTarget_tendsto δ)
-    (fun n => (s n).lowerSlope) (tendsto_quarter_ratio_zero _) (tendsto_dyadic_ratio_zero _) ?_ ?_
-  · intro n p hp _
-    obtain ⟨_, htile⟩ := (s n).affine_near p hp
-    have hb := (htile p (by simpa using (s n).radius_pos.le)).2
-    unfold stageTarget at hb
-    have hwidth := (s n).meshWidth_le
-    rw [mul_div_assoc] at hwidth
-    have hnonneg : 0 ≤ δ / (4 : ℝ)^n := by positivity
-    rw [mul_div_assoc]
-    refine abs_le.mpr ⟨?_, ?_⟩
-    · linarith only [hb.1, hnonneg]
-    · linarith only [hb.2, hwidth]
-  · intro n p hp _ q hq hdist
-    have hnear : dist q p ≤ (s n).radius / 2 := by
-      simpa [dist_eq_norm] using hdist.le
-    obtain ⟨intercept, htile⟩ := (s n).affine_near p hp
-    have hpval := (htile p (by simpa using (s n).radius_pos.le)).1
+    (fun n => (s n).good_measurable) hbad ?_
+    (tendsto_quarter_ratio_zero _) (tendsto_dyadic_ratio_zero _) ?_
+  · intro n p hp q hq hlat hlong
+    refine le_trans (mul_le_mul_of_nonneg_right ?_ (sub_nonneg.mpr hlong))
+      ((s n).lowerSlope p hp q hq hlat hlong)
+    exact le_add_of_nonneg_right (by positivity)
+  · intro n p hp q hq hnear
+    obtain ⟨intercept, slope, htile⟩ := (s n).affine_near p hp
+    obtain ⟨hpval, hlo, hhi⟩ := htile p (by simpa using (s n).radius_pos.le)
     have hqval := (htile q (hnear.trans (by linarith [(s n).radius_pos]))).1
+    have hwidth := (s n).meshWidth_le
+    unfold stageTarget at hlo hhi
+    have hnonneg : 0 ≤ δ / (4 : ℝ)^n := by positivity
+    have hslope : |slope - Real.cos p.2| ≤ 7 * δ / (4 : ℝ)^n := by
+      rw [mul_div_assoc] at hwidth ⊢
+      exact abs_le.mpr ⟨by linarith only [hlo, hnonneg], by linarith only [hhi, hwidth]⟩
+    have hcoord : |q.1 - p.1| ≤ dist q p := by
+      simpa only [dist_eq_norm, Prod.fst_sub, Real.norm_eq_abs] using norm_fst_le (q - p)
     refine ⟨?_, (scalarStages_transition hδ n).localError p hp q
       (sphereLongitudeDomain_subset_box hq) hnear⟩
-    rw [hpval, hqval]
-    ring
+    calc
+      _ = |(slope - Real.cos p.2) * (q.1 - p.1)| := by
+        rw [hpval, hqval]; congr 1; ring
+      _ ≤ _ := by rw [abs_mul]; gcongr
 
 end
 

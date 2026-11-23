@@ -1,6 +1,7 @@
 import GlobeFlattening.RectangularMesh
-import GlobeFlattening.RefinementLimit
+import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Topology.UniformSpace.HeineCantor
 
 /-!
@@ -23,12 +24,6 @@ def sphereClosedBox : Set (ℝ × ℝ) :=
 
 theorem isCompact_sphereClosedBox : IsCompact sphereClosedBox :=
   isCompact_Icc.prod isCompact_Icc
-
-theorem volume_sphereClosedBox : volume sphereClosedBox = ENNReal.ofReal (2 * Real.pi^2) := by
-  rw [sphereClosedBox, Measure.volume_eq_prod, Measure.prod_prod, Real.volume_Icc, Real.volume_Icc,
-    ← ENNReal.ofReal_mul (by linarith [Real.pi_pos])]
-  congr 1
-  ring
 
 /-- Equal spacing in both coordinates, with `n + 1` rows and twice as many columns. -/
 def sphereMesh (n : ℕ) (θ : ℝ) (hθ : 0 < θ) (hθsmall : θ ≤ 1 / 8) :
@@ -64,15 +59,6 @@ theorem sphereMesh_rectangle : (sphereMesh n θ hθ hθsmall).rectangle = sphere
   change g.rectangle = sphereClosedBox
   rw [RectangularMesh.rectangle, hlon, hlat]
   rfl
-
-theorem sphereMesh_area_factor :
-    ((sphereMesh n θ hθ hθsmall).columns : ℝ) *
-      ((sphereMesh n θ hθ hθsmall).transitions + 1 : ℕ) *
-      (sphereMesh n θ hθ hθsmall).width^2 = 2 * Real.pi^2 := by
-  change ((2 * (n + 1) : ℕ) : ℝ) * ((n + 1 : ℕ) : ℝ) *
-    (Real.pi / ((n + 1 : ℕ) : ℝ))^2 = _
-  rw [Nat.cast_mul, Nat.cast_ofNat]
-  field_simp
 
 /-- Relative margin θₙ, reserving the same proportion at every edge of each
 cell of a given stage. Stage zero has this value too, though it uses no mesh. -/
@@ -120,27 +106,36 @@ theorem tendsto_quarter_ratio_zero (c : ℝ) :
     Tendsto (fun n : ℕ => c / (4 : ℝ)^n) atTop (𝓝 0) :=
   (tendsto_pow_atTop_atTop_of_one_lt (by norm_num : (1 : ℝ) < 4)).const_div_atTop c
 
-theorem stageTarget_tendsto (δ y : ℝ) :
-    Tendsto (fun n => stageTarget δ n y) atTop (𝓝 (Real.cos y)) := by
-  simpa only [stageTarget, add_zero] using (tendsto_quarter_ratio_zero δ).const_add (Real.cos y)
+/-- The local error inside an old tile is bounded by the next trimming
+radius times a dyadic coefficient. -/
+theorem local_refinement_dyadic_bound {δ hOld hNew : ℝ} {n : ℕ}
+    (hOld_le : hOld ≤ 3 * δ / (4 : ℝ)^n) (hNew_nonneg : 0 ≤ hNew) :
+    (2 * hOld + 3 * δ / (4 : ℝ)^(n + 1)) * hNew ≤
+      (108 * δ / (2 : ℝ)^n) * (stageMargin (n + 1) * hNew) := by
+  have hpow : (4 : ℝ)^n = ((2 : ℝ)^n)^2 := by
+    rw [show (4 : ℝ) = 2^2 by norm_num, ← pow_mul, Nat.mul_comm, pow_mul]
+  calc
+    _ ≤ (2 * (3 * δ / (4 : ℝ)^n) + 3 * δ / (4 : ℝ)^(n + 1)) * hNew := by gcongr
+    _ = _ := by
+      simp only [stageMargin, show n + 1 + 3 = n + 4 by rfl]
+      rw [pow_succ, hpow, pow_add (2 : ℝ) n 4]
+      field_simp; ring
 
 /-- All numerical requirements when choosing the next mesh, including the
-oscillation budget whose double is the global step bound. -/
+oscillation budget for the global step bound. -/
 theorem exists_scheduledSphereMesh {f : ℝ × ℝ → ℝ} (hf : ContinuousOn f sphereClosedBox)
     {δ previousRadius : ℝ} (hδ : 0 < δ) (hprevious : 0 < previousRadius) (k : ℕ) :
     ∃ g : RectangularMesh,
       g.rectangle = sphereClosedBox ∧
       g.margin = stageMargin (k + 1) * g.width ∧
-      g.margin / g.width = stageMargin (k + 1) ∧
       4 * g.margin ≤ g.width ∧
-      (g.columns : ℝ) * (g.transitions + 1 : ℕ) * g.width^2 = 2 * Real.pi^2 ∧
       g.width ≤ 3 * δ / (4 : ℝ)^(k + 1) ∧
       g.width ≤ previousRadius / 4 ∧
       g.margin ≤ previousRadius / 2 ∧
       ∀ p ∈ g.rectangle, ∀ q ∈ g.rectangle, dist p q ≤ g.width →
-        |f p - f q| ≤ previousRadius / 4 / (2 : ℝ)^k := by
+        |f p - f q| ≤ previousRadius / 2 / (2 : ℝ)^k := by
   let theta := stageMargin (k + 1)
-  let osc := previousRadius / 4 / (2 : ℝ)^k
+  let osc := previousRadius / 2 / (2 : ℝ)^k
   obtain ⟨r, hr, hmod⟩ := Metric.uniformContinuousOn_iff.mp
     (isCompact_sphereClosedBox.uniformContinuousOn_of_continuous hf) osc (by unfold osc; positivity)
   let cap := min r (min (3 * δ / (4 : ℝ)^(k + 1)) (previousRadius / 4))
@@ -162,13 +157,11 @@ theorem exists_scheduledSphereMesh {f : ℝ × ℝ → ℝ} (hf : ContinuousOn f
     hwidth.le.trans ((min_le_right _ _).trans (min_le_left _ _))
   have hwidth' : g.width ≤ previousRadius / 4 :=
     hwidth.le.trans ((min_le_right _ _).trans (min_le_right _ _))
-  refine ⟨g, hgrect, hmargin, ?_, htrim, sphereMesh_area_factor _ _ _ _,
-    hscale, hwidth', by linarith [g.margin_lt_width], ?_⟩
-  · rw [hmargin, mul_div_cancel_right₀ _ g.width_pos.ne']
-  · intro p hp q hq hdist
-    rw [hgrect] at hp hq
-    rw [← Real.dist_eq]
-    exact (hmod p hp q hq (hdist.trans_lt (hwidth.trans_le (min_le_left _ _)))).le
+  refine ⟨g, hgrect, hmargin, htrim, hscale, hwidth', by linarith [g.margin_lt_width], ?_⟩
+  intro p hp q hq hdist
+  rw [hgrect] at hp hq
+  rw [← Real.dist_eq]
+  exact (hmod p hp q hq (hdist.trans_lt (hwidth.trans_le (min_le_left _ _)))).le
 
 /-- The loss fraction of a trimmed mesh is bounded by the dyadic budget,
 leaving a common budget that also covers the initial rectangle. -/
@@ -187,17 +180,13 @@ theorem seven_stageMargin_le_dyadic (n : ℕ) :
 /-- The bad areas have finite sum whenever they are under the common
 dyadic budget. -/
 theorem sphereMesh_bad_area_summable {bad : ℕ → ℝ≥0∞}
-    (hbad : ∀ n, bad n ≤ ENNReal.ofReal ((2 * Real.pi^2) * ((2 : ℝ)⁻¹)^n)) :
+    (hbad : ∀ n, bad n ≤ volume sphereClosedBox * ((2 : ℝ≥0∞)⁻¹)^n) :
     (∑' n, bad n) ≠ ∞ := by
-  have hnonneg : 0 ≤ 2 * Real.pi^2 := by positivity
-  apply ne_top_of_le_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (by simp : (2 : ℝ≥0∞) ≠ ∞))
+  have hfinite : volume sphereClosedBox ≠ ∞ := isCompact_sphereClosedBox.measure_lt_top.ne
+  apply ne_top_of_le_ne_top (ENNReal.mul_ne_top hfinite (by simp : (2 : ℝ≥0∞) ≠ ∞))
   calc
-    (∑' n, bad n) ≤ ∑' n : ℕ, ENNReal.ofReal (2 * Real.pi^2) * ((2 : ℝ≥0∞)⁻¹)^n := by
-      apply ENNReal.tsum_le_tsum
-      intro n
-      simpa only [ENNReal.ofReal_mul hnonneg,
-        ENNReal.ofReal_pow (by positivity : 0 ≤ (2 : ℝ)⁻¹),
-        ENNReal.ofReal_inv_of_pos (by norm_num : (0 : ℝ) < 2), ENNReal.ofReal_ofNat] using hbad n
+    (∑' n, bad n) ≤ ∑' n : ℕ, volume sphereClosedBox * ((2 : ℝ≥0∞)⁻¹)^n :=
+      ENNReal.tsum_le_tsum hbad
     _ = _ := by rw [ENNReal.tsum_mul_left, ENNReal.tsum_geometric_two]
 
 end

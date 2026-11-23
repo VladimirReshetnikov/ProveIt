@@ -31,22 +31,22 @@ theorem exists_radius_band {radius : ℕ → ℝ} (hanti : Antitone radius)
 variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   [NormedAddCommGroup F] [NormedSpace ℝ F]
 
-/-- At a point lying sufficiently deep in every late affine tile, a tail bound
-at the next radius suffices for classical Fréchet differentiability. The
-coefficient `control n` bounds the slope error and the two endpoint errors. -/
-theorem hasFDerivWithinAt_of_affine_approximations
+/-- Approximate linearity inside each late tile, with a tail bound at the
+next radius, suffices for Fréchet differentiability. -/
+theorem hasFDerivWithinAt_of_linearization_bounds
     {s : Set E} {p : E} {u : E → F} {uStage : ℕ → E → F}
-    {radius tail control : ℕ → ℝ} {D : ℕ → E →L[ℝ] F} {A : E →L[ℝ] F}
+    {radius tail linearError : ℕ → ℝ} {A : E →L[ℝ] F}
     (hp : p ∈ s) (hanti : Antitone radius) (hpos : ∀ n, 0 < radius n)
     (hzero : Tendsto radius atTop (𝓝 0))
-    (hcontrol : Tendsto control atTop (𝓝 0))
-    (hbound : ∀ n, ‖D n - A‖ + 2 * tail n ≤ control n)
+    (hlinearError : Tendsto linearError atTop (𝓝 0)) (htail : Tendsto tail atTop (𝓝 0))
     (hgood : ∀ᶠ n in atTop, ∀ q ∈ s, ‖q - p‖ < radius n →
-      uStage n q - uStage n p = D n (q - p) ∧
+      ‖uStage n q - uStage n p - A (q - p)‖ ≤ linearError n * ‖q - p‖ ∧
       ‖u q - uStage n q‖ ≤ tail n * radius (n + 1)) :
     HasFDerivWithinAt u A s p := by
   rw [hasFDerivWithinAt_iff_isLittleO, Asymptotics.isLittleO_iff]
   intro ε hε
+  have hcontrol : Tendsto (fun n => linearError n + 2 * tail n) atTop (𝓝 0) := by
+    simpa using hlinearError.add (htail.const_mul 2)
   obtain ⟨N, hN⟩ := eventually_atTop.1 (hgood.and ((tendsto_order.1 hcontrol).2 ε hε))
   have hnear : ∀ᶠ q in 𝓝[s] p, ‖q - p‖ < radius N :=
     (Metric.eventually_nhds_iff.2 ⟨radius N, hpos N, fun q hq => by
@@ -58,22 +58,18 @@ theorem hasFDerivWithinAt_of_affine_approximations
   obtain ⟨n, hn, hlo, hhi⟩ := exists_radius_band hanti hzero hdist hnearq
   obtain ⟨hlinear, hqerror⟩ := (hN n hn).1 q hq hhi
   have hperror := ((hN n hn).1 p hp (by simpa using hpos n)).2
-  have htail : 0 ≤ tail n :=
+  have htail_nonneg : 0 ≤ tail n :=
     nonneg_of_mul_nonneg_left ((norm_nonneg _).trans hperror) (hpos (n + 1))
   have hdecompose : u q - u p - A (q - p) =
-      (u q - uStage n q) - (u p - uStage n p) + (D n - A) (q - p) := by
-    rw [sub_apply, ← hlinear]
-    abel
+      (u q - uStage n q) - (u p - uStage n p) + (uStage n q - uStage n p - A (q - p)) := by abel
   rw [hdecompose]
   calc
-    _ ≤ ‖u q - uStage n q‖ + ‖u p - uStage n p‖ + ‖(D n - A) (q - p)‖ :=
+    _ ≤ ‖u q - uStage n q‖ + ‖u p - uStage n p‖ + ‖uStage n q - uStage n p - A (q - p)‖ :=
       (norm_add_le _ _).trans (add_le_add (norm_sub_le _ _) le_rfl)
-    _ ≤ tail n * ‖q - p‖ + tail n * ‖q - p‖ + ‖D n - A‖ * ‖q - p‖ := by
-      have hscale := mul_le_mul_of_nonneg_left hlo htail
-      exact add_le_add (add_le_add (hqerror.trans hscale) (hperror.trans hscale))
-        ((D n - A).le_opNorm _)
-    _ = (‖D n - A‖ + 2 * tail n) * ‖q - p‖ := by ring
-    _ ≤ ε * ‖q - p‖ :=
-      mul_le_mul_of_nonneg_right ((hbound n).trans (hN n hn).2.le) hdist.le
+    _ ≤ tail n * ‖q - p‖ + tail n * ‖q - p‖ + linearError n * ‖q - p‖ := by
+      have hscale := mul_le_mul_of_nonneg_left hlo htail_nonneg
+      exact add_le_add (add_le_add (hqerror.trans hscale) (hperror.trans hscale)) hlinear
+    _ = (linearError n + 2 * tail n) * ‖q - p‖ := by ring
+    _ ≤ ε * ‖q - p‖ := mul_le_mul_of_nonneg_right (hN n hn).2.le hdist.le
 
 end GlobeFlattening

@@ -152,7 +152,7 @@ theorem refineStage_uniform_error {old : ℝ × ℝ → ℝ} {target previous : 
     (hnonneg : ∀ y ∈ Icc g.bottom (g.latitude (g.transitions + 1)), 0 ≤ target y)
     (hosc : ∀ p ∈ g.rectangle, ∀ q ∈ g.rectangle, dist p q ≤ g.width → |old p - old q| ≤ osc)
     {p : ℝ × ℝ} (hp : p ∈ g.rectangle) :
-    |g.refineStage old target p - old p| ≤ 2 * osc := by
+    |g.refineStage old target p - old p| ≤ osc := by
   apply g.refineStage_error_of_cell_rows hp
   intro i hi hcell j hj hclose
   have hmono := g.longitude_mono (Nat.le_succ i)
@@ -160,7 +160,6 @@ theorem refineStage_uniform_error {old : ℝ × ℝ → ℝ} {target previous : 
   obtain ⟨hright, hdright⟩ := g.rowSample hi hj hcell ⟨hmono, le_rfl⟩ hclose
   have hlo := (abs_le.mp (hosc _ hleft p hp hdleft)).1
   have hhi := (abs_le.mp (hosc _ hright p hp hdright)).2
-  have hosc₀ := (abs_nonneg _).trans (hosc _ hleft p hp hdleft)
   have hb : g.rowRefinement old target j p.1 ∈
       Icc (old (g.longitude i, g.midlatitude j)) (old (g.longitude (i + 1), g.midlatitude j)) :=
     stripProfile_cell_bounds (old := fun x => old (x, g.midlatitude j))

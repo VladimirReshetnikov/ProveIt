@@ -1,5 +1,4 @@
 import GlobeFlattening.CellProfile
-import GlobeFlattening.RampProfile
 
 /-!
 # Continuous longitude profiles across a row of cells
@@ -89,18 +88,13 @@ theorem stripProfile_eq_cellProfile {left width cut slope : ℝ} {count j : ℕ}
     intro i _ hi
     exact rampWeight_eq_zero
       ((hx₂.trans (hmono (Nat.succ_le_of_lt hi))).trans (le_add_of_nonneg_right hcut₀))
-  have hcurrent : x - (grid j + cut) ≤ width - cut := by
-    have hstep : grid (j + 1) = grid j + width := meshPoint_succ _ _ _
-    change x ≤ grid (j + 1) at hx₂
-    linarith
+  have hweight : rampWeight (grid j + cut) (width - cut) x =
+      rampWeight cut (width - cut) (x - grid j) := by
+    unfold rampWeight
+    rw [sub_sub]
   unfold stripProfile
-  rw [rampProfile_at_layer hj h₁ h₂, stripOffset_rise]
-  unfold rampWeight clippedRamp stripOffset cellProfile catchUpSlope
-  rw [min_eq_left hcurrent]
-  have hx : x - (grid j + cut) = x - grid j - cut := by ring
-  change _ = old (grid j) + _
-  rw [hx]
-  field_simp [hw.ne']
+  rw [rampProfile_at_layer hj h₁ h₂, stripOffset_rise, hweight]
+  unfold stripOffset cellProfile
   ring
 
 theorem stripProfile_cell_endpoints {left width cut slope : ℝ} {count j : ℕ}
@@ -138,19 +132,6 @@ theorem stripProfile_cell_bounds {left width cut slope : ℝ} {count j : ℕ}
   rw [hright] at hhi
   exact ⟨sub_nonneg.mp ((mul_nonneg hslope (sub_nonneg.mpr hx₁)).trans hlo),
     sub_nonneg.mp ((mul_nonneg hslope (sub_nonneg.mpr hx₂)).trans hhi)⟩
-
-theorem stripProfile_cell_error {left width cut slope : ℝ} {count j : ℕ}
-    {old : ℝ → ℝ} {x : ℝ} (hcut₀ : 0 ≤ cut) (hcut : cut < width) (hslope : 0 ≤ slope)
-    (hrise : ∀ i < count, slope * width ≤
-      old (meshPoint left width (i + 1)) - old (meshPoint left width i))
-    (hj : j < count) (hx₁ : meshPoint left width j ≤ x)
-    (hx₂ : x ≤ meshPoint left width (j + 1))
-    (hold₁ : old (meshPoint left width j) ≤ old x)
-    (hold₂ : old x ≤ old (meshPoint left width (j + 1))) :
-    |stripProfile left width cut slope count old x - old x| ≤
-      old (meshPoint left width (j + 1)) - old (meshPoint left width j) := by
-  obtain ⟨hlo, hhi⟩ := stripProfile_cell_bounds hcut₀ hcut hslope hrise hj hx₁ hx₂
-  exact abs_le.mpr ⟨by linarith, by linarith⟩
 
 end
 
