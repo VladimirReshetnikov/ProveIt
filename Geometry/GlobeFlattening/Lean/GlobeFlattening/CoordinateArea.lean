@@ -93,18 +93,17 @@ private abbrev latitudeInterval : Set ℝ := Ioo (-(Real.pi / 2)) (Real.pi / 2)
 private theorem lintegral_sinusoidalWidth :
     (∫⁻ y in latitudeInterval, ENNReal.ofReal (2 * Real.pi * Real.cos y)) =
       ENNReal.ofReal (4 * Real.pi) := by
-  have hmono : StrictMonoOn (fun y => 2 * Real.pi * Real.sin y) (Icc (-(Real.pi / 2)) (Real.pi / 2)) :=
-    (strictMono_mul_left_of_pos (by positivity)).comp_strictMonoOn Real.strictMonoOn_sin
+  simp_rw [ENNReal.ofReal_mul (by positivity : 0 ≤ 2 * Real.pi), lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
   have harea := lintegral_abs_det_fderiv_eq_addHaar_image volume
     (s := latitudeInterval) measurableSet_Ioo
-    (fun y _ => ((Real.hasDerivAt_sin y).const_mul (2 * Real.pi)).hasFDerivAt.hasFDerivWithinAt)
-    (hmono.injOn.mono Ioo_subset_Icc_self)
+    (fun y _ => (Real.hasDerivAt_sin y).hasFDerivAt.hasFDerivWithinAt)
+    (Real.strictMonoOn_sin.injOn.mono Ioo_subset_Icc_self)
   simp only [ContinuousLinearMap.det_toSpanSingleton] at harea
   rw [setLIntegral_congr_fun measurableSet_Ioo
-      (fun y hy => congrArg ENNReal.ofReal (abs_of_nonneg
-        (mul_nonneg (by positivity : 0 ≤ 2 * Real.pi) (Real.cos_pos_of_mem_Ioo hy).le)).symm),
+      (fun y hy => congrArg ENNReal.ofReal (abs_of_pos (Real.cos_pos_of_mem_Ioo hy)).symm),
     harea, ContinuousOn.image_Ioo_of_strictMonoOn (neg_lt_self (half_pos Real.pi_pos)).le
-      (by fun_prop) hmono, Real.volume_Ioo, Real.sin_neg, Real.sin_pi_div_two]
+      Real.continuous_sin.continuousOn Real.strictMonoOn_sin, Real.volume_Ioo,
+    Real.sin_neg, Real.sin_pi_div_two, ← ENNReal.ofReal_mul (by positivity)]
   congr 1
   ring
 
@@ -177,12 +176,12 @@ theorem flattenCoordinates_close_to_sinusoidal
       dist (flattenCoordinates u p) (sinusoidalCoordinates p) ≤ ε := by
   have hδ := globeErrorParameter_pos hε
   intro p hp
-  rw [dist_flattenCoordinates_sinusoidalCoordinates]
-  have htri := abs_sub_le (u p) ((Real.cos p.2 + globeErrorParameter ε) * p.1) (p.1 * Real.cos p.2)
-  rw [show (Real.cos p.2 + globeErrorParameter ε) * p.1 - p.1 * Real.cos p.2 =
-    globeErrorParameter ε * p.1 by ring, abs_mul, abs_of_pos hδ] at htri
-  rw [← mul_div_cancel₀ ε (by positivity : 1 + Real.pi ≠ 0), add_mul, one_mul, mul_comm Real.pi]
-  exact htri.trans (add_le_add (hclose p hp) (mul_le_mul_of_nonneg_left (abs_le.mpr hp.1) hδ.le))
+  rw [dist_flattenCoordinates_sinusoidalCoordinates,
+    ← mul_div_cancel₀ ε (by positivity : 1 + Real.pi ≠ 0), add_mul, one_mul, mul_comm Real.pi]
+  refine (abs_sub_le _ ((Real.cos p.2 + globeErrorParameter ε) * p.1) _).trans
+    (add_le_add (hclose p hp) ?_)
+  rw [mul_comm p.1, ← sub_mul, add_sub_cancel_left, abs_mul, abs_of_pos hδ]
+  exact mul_le_mul_of_nonneg_left (abs_le.mpr hp.1) hδ.le
 
 end
 

@@ -57,8 +57,8 @@ after swapping coordinates. The strict width comparison proves total area
 excess. For local exceptional area, the proof pulls the open target patch
 back to coordinates, picks a rectangle there, and applies the same formula
 to its image.
-The reference cosine integral is the length of the interval swept out by
-`2π sin(latitude)`, by the same Jacobian formula applied in one dimension.
+The reference width integral factors out `2π` and applies the same
+one-dimensional Jacobian formula to `sin(latitude)`.
 The uniform projection error bounds the total area from above.
 [Chart homeomorphism](Lean/GlobeFlattening/TriangularChart.lean)
 

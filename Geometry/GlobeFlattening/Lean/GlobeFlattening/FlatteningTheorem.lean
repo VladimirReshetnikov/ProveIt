@@ -106,10 +106,9 @@ def globeFlattening_from_scalar
     volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne (hTimage ▸ hVsub)
   have hInv (p : ℝ × ℝ) (hp : p ∈ good) :
       HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p)) := by
-    change HasFDerivAt fInv _ (sphereFlattenForward u (spherePoint p))
-    rw [sphereFlattenForward_spherePoint (hsub hp)]
-    exact hasFDerivAt_sphereFlatten_inverse g (hsub hp) (Real.cos_pos_of_mem_Ioo (hsub hp).2).ne'
-      ((hDeriv p hp).prodMk hasFDerivAt_snd)
+    convert hasFDerivAt_sphereFlatten_inverse g (hsub hp) (Real.cos_pos_of_mem_Ioo (hsub hp).2).ne'
+      ((hDeriv p hp).prodMk hasFDerivAt_snd) using 1
+    exact sphereFlattenForward_spherePoint (hsub hp)
   refine
     { target := T
       exceptional := Z
@@ -153,11 +152,11 @@ def globeFlattening_from_scalar
     have hval := hfleft (spherePoint_mapsTo (hsub hp))
     exact ⟨sphereTangentLift p, hInv p hp, fun v =>
       ⟨hval.symm ▸ tangent_sphereTangentLift p v, norm_sphereTangentLift p v⟩⟩
-  · refine ⟨ε, by linarith, fun w hw => ?_⟩
+  · refine ⟨ε, lt_two_mul_self hε, fun w hw => ?_⟩
     let p := sphereChartInverse w
     exact (dist_planarEuclideanEquiv_of_snd_eq (a := flattenCoordinates u p)
-      (b := sinusoidalCoordinates p) rfl).le.trans
-        (hcloseCoordinates p (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)))
+      (b := sinusoidalCoordinates p) rfl).trans_le
+      (hcloseCoordinates p (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)))
 
 /-- The cut sphere has the usual total area of the unit sphere. -/
 theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * Real.pi) := by
