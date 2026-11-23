@@ -1104,6 +1104,9 @@ approach to the zero-split values on the original dyadic sequence.
 proves the same uniform bound for every positive rational split at most
 the cutoff, with the original lower and upper programs and independent
 requested observations.
+[GaussianEulerIncompleteZeroModulus](Lean/IPRADerivations/Analysis/GaussianEulerIncompleteZeroModulus.lean)
+computes a positive rational threshold directly from any requested
+endpoint tolerance.
 [GaussianLogarithmFactorialPowerBound](Lean/IPRADerivations/Analysis/GaussianLogarithmFactorialPowerBound.lean)
 derives the literal logarithmic power bound from the corresponding
 factorial term of the original finite exponential.
@@ -1122,6 +1125,14 @@ with the exact doubled upper factorial coefficient.
 [GaussianEulerLogarithmicLowerFiniteBudget](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicLowerFiniteBudget.lean)
 checks the actual finite lower logarithmic root quadrature with the
 exact factorial coefficient at the doubled root degree.
+[GaussianEulerLogarithmicNamedLowerBound](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicNamedLowerBound.lean)
+and [GaussianEulerLogarithmicLowerCutoffBudget](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicLowerCutoffBudget.lean)
+lift the bound to the actual compact lower name and compute a cutoff
+for any requested tail tolerance.
+[GaussianEulerLogarithmicIntervalAdditivity](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicIntervalAdditivity.lean)
+checks finite additivity at fixed evaluator guards.
+[GaussianEulerLogarithmicClientRate](Lean/IPRADerivations/Analysis/GaussianEulerLogarithmicClientRate.lean)
+proves the original logarithmic rows agree when the evaluator guards change.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
