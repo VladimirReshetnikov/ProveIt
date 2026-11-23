@@ -296,6 +296,9 @@ import IPRADerivations.DiophantineNumberTheory.ThreeSquares
 import IPRADerivations.DiophantineNumberTheory.ThreeSquaresPowers
 import IPRADerivations.DiophantineNumberTheory.ResidueCharacter
 import IPRADerivations.AnalyticNumberTheory.PrimesModFour
+import IPRADerivations.Foundations.CrtLcm
+import IPRADerivations.Foundations.CrtGeneral
+import IPRADerivations.DiophantineNumberTheory.CfRational
 import IPRADerivations.AnalyticNumberTheory.ValuationExt
 import IPRADerivations.AnalyticNumberTheory.MertensLcm
 import IPRADerivations.AnalyticNumberTheory.ZetaTail
