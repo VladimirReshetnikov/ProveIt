@@ -14,15 +14,6 @@ open scoped RealInnerProductSpace Topology
 
 noncomputable section
 
-/-- The usual coordinate identification of the real plane with Euclidean space.
-The pair carries the product norm for the analytic construction. -/
-def planarEuclideanEquiv : (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
-  (ContinuousLinearEquiv.finTwoArrow ℝ ℝ).symm.trans
-    (PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin 2 => ℝ)).symm
-
-theorem planarEuclideanEquiv_apply (v : ℝ × ℝ) :
-    planarEuclideanEquiv v = !₂[v.1, v.2] := rfl
-
 /-- The coordinate identification after changing longitude to eastward arc length. -/
 private def scaledPlanarEquiv (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
     (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=

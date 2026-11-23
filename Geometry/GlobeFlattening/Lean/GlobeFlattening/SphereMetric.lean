@@ -1,6 +1,5 @@
 import GlobeFlattening.SphereDifferential
 import Mathlib.Analysis.Calculus.MeanValue
-import Mathlib.Analysis.Normed.Operator.Prod
 import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace
 
 /-!
@@ -36,13 +35,14 @@ theorem dist_planarEuclideanEquiv_of_snd_eq {a b : ℝ × ℝ} (hy : a.2 = b.2) 
   simp [hy, Real.sqrt_sq dist_nonneg]
 
 theorem norm_sphereDerivative_le (p : ℝ × ℝ) : ‖sphereDerivative p‖ ≤ 2 := by
-  have he : ‖sphereEast p‖ = 1 := (orthonormal_sphereFrame p).norm_eq_one (0 : Fin 3)
-  have hn : ‖sphereNorth p‖ = 1 := (orthonormal_sphereFrame p).norm_eq_one (1 : Fin 3)
-  rw [sphereDerivative, ← (one_add_one_eq_two : (1 : ℝ) + 1 = 2)]
-  refine (norm_add_le _ _).trans ?_
-  simp only [ContinuousLinearMap.norm_smulRight_apply, norm_smul, he, hn,
-    ContinuousLinearMap.norm_fst, ContinuousLinearMap.norm_snd, mul_one, Real.norm_eq_abs]
-  exact add_le_add (Real.abs_cos_le_one _) le_rfl
+  refine ContinuousLinearMap.opNorm_le_bound _ (by norm_num) fun v => ?_
+  have hLon : |Real.cos p.2 * v.1| ≤ ‖v‖ := by
+    rw [abs_mul]
+    exact (mul_le_of_le_one_left (abs_nonneg _) (Real.abs_cos_le_one _)).trans (norm_fst_le v)
+  have hLat : |v.2| ≤ ‖v‖ := norm_snd_le v
+  rw [← abs_of_nonneg (norm_nonneg v)] at hLon hLat
+  rw [← sq_le_sq₀ (norm_nonneg _) (by positivity), sq_norm_sphereDerivative]
+  nlinarith [sq_le_sq.2 hLon, sq_le_sq.2 hLat]
 
 theorem lipschitzWith_spherePoint : LipschitzWith 2 spherePoint := by
   apply lipschitzWith_of_nnnorm_fderiv_le (𝕜 := ℝ)

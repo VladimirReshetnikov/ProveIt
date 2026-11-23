@@ -47,15 +47,83 @@ theorem orthonormal_sphereFrame (p : ℝ × ℝ) : Orthonormal ℝ (sphereFrame 
 @[simp] theorem norm_spherePoint (p : ℝ × ℝ) : ‖spherePoint p‖ = 1 :=
   (orthonormal_sphereFrame p).norm_eq_one (2 : Fin 3)
 
-/-- The differential of the spherical parametrization. -/
-def sphereDerivative (p : ℝ × ℝ) :
-    ℝ × ℝ →L[ℝ] EuclideanSpace ℝ (Fin 3) :=
-  (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ).smulRight (sphereEast p) +
-    (ContinuousLinearMap.snd ℝ ℝ ℝ).smulRight (sphereNorth p)
+private def sphereTangentPlane (p : ℝ × ℝ) : Submodule ℝ (EuclideanSpace ℝ (Fin 3)) :=
+  (ℝ ∙ spherePoint p)ᗮ
+
+private theorem mem_sphereTangentPlane {p : ℝ × ℝ} {w : EuclideanSpace ℝ (Fin 3)} :
+    w ∈ sphereTangentPlane p ↔ ⟪spherePoint p, w⟫ = 0 :=
+  Submodule.mem_orthogonal_singleton_iff_inner_right
+
+private def sphereTangentFrame (p : ℝ × ℝ) (i : Fin 2) : sphereTangentPlane p :=
+  ⟨sphereFrame p i.castSucc, mem_sphereTangentPlane.2
+    ((orthonormal_sphereFrame p).inner_eq_zero (Fin.castSucc_ne_last i).symm)⟩
+
+private def sphereTangentBasis (p : ℝ × ℝ) : OrthonormalBasis (Fin 2) ℝ (sphereTangentPlane p) := by
+  have hon : Orthonormal ℝ (sphereTangentFrame p) :=
+    (sphereTangentPlane p).subtypeₗᵢ.orthonormal_comp_iff.mp <|
+      (orthonormal_sphereFrame p).comp Fin.castSucc (Fin.castSucc_injective 2)
+  letI : Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) = 2 + 1) := ⟨by simp⟩
+  refine OrthonormalBasis.mk hon (hon.linearIndependent.span_eq_top_of_card_eq_finrank ?_).ge
+  have hp : spherePoint p ≠ 0 := fun h => by simpa [h] using norm_spherePoint p
+  rw [Fintype.card_fin, sphereTangentPlane, Submodule.finrank_orthogonal_span_singleton (n := 2) hp]
+
+/-- East and north coordinates of the orthogonal projection onto the tangent plane. -/
+def sphereFlattenDerivative (p : ℝ × ℝ) :
+    EuclideanSpace ℝ (Fin 3) →L[ℝ] EuclideanSpace ℝ (Fin 2) :=
+  (sphereTangentBasis p).repr.toContinuousLinearMap ∘L (sphereTangentPlane p).orthogonalProjectionOnto
+
+/-- The inverse isometry sends a planar vector into the tangent plane. -/
+def sphereTangentLift (p : ℝ × ℝ) :
+    EuclideanSpace ℝ (Fin 2) →L[ℝ] EuclideanSpace ℝ (Fin 3) :=
+  (sphereTangentPlane p).subtypeL ∘L (sphereTangentBasis p).repr.symm.toContinuousLinearMap
+
+theorem norm_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
+    ‖sphereTangentLift p v‖ = ‖v‖ :=
+  (sphereTangentBasis p).repr.symm.norm_map v
+
+theorem sphereFlattenDerivative_leftInverse (p : ℝ × ℝ) :
+    Function.LeftInverse (sphereFlattenDerivative p) (sphereTangentLift p) := fun v => by
+  simp [sphereFlattenDerivative, sphereTangentLift, Submodule.orthogonalProjectionOnto_mem_subspace_eq_self]
+
+theorem tangent_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
+    ⟪spherePoint p, sphereTangentLift p v⟫ = 0 :=
+  mem_sphereTangentPlane.1 ((sphereTangentBasis p).repr.symm v).2
+
+/-- Zero radial component is exactly what is needed to recover the original
+vector from its two tangent coordinates. -/
+theorem sphereTangentLift_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ)
+    {w : EuclideanSpace ℝ (Fin 3)} (h : ⟪spherePoint p, w⟫ = 0) :
+    sphereTangentLift p (sphereFlattenDerivative p w) = w := by
+  change ((sphereTangentBasis p).repr.symm
+    ((sphereTangentBasis p).repr ((sphereTangentPlane p).orthogonalProjectionOnto w))).1 = w
+  rw [LinearIsometryEquiv.symm_apply_apply]
+  exact Submodule.starProjection_eq_self_iff.2 (mem_sphereTangentPlane.2 h)
+
+theorem norm_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ) {w : EuclideanSpace ℝ (Fin 3)}
+    (hw : ⟪spherePoint p, w⟫ = 0) : ‖sphereFlattenDerivative p w‖ = ‖w‖ := by
+  rw [← norm_sphereTangentLift p (sphereFlattenDerivative p w),
+    sphereTangentLift_sphereFlattenDerivative_of_tangent p hw]
+
+/-- The usual coordinate identification of the real plane with Euclidean space.
+The pair carries the product norm for the analytic construction. -/
+def planarEuclideanEquiv : (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
+  (ContinuousLinearEquiv.finTwoArrow ℝ ℝ).symm.trans
+    (PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin 2 => ℝ)).symm
+
+theorem planarEuclideanEquiv_apply (v : ℝ × ℝ) :
+    planarEuclideanEquiv v = !₂[v.1, v.2] := rfl
+
+/-- The differential of the spherical parametrization is the tangent lift
+with longitude scaled by the cosine of latitude. -/
+def sphereDerivative (p : ℝ × ℝ) : ℝ × ℝ →L[ℝ] EuclideanSpace ℝ (Fin 3) :=
+  sphereTangentLift p ∘L planarEuclideanEquiv.toContinuousLinearMap ∘L
+    (Real.cos p.2 • ContinuousLinearMap.id ℝ ℝ).prodMap (ContinuousLinearMap.id ℝ ℝ)
 
 theorem sphereDerivative_apply (p v : ℝ × ℝ) :
-    sphereDerivative p v = (Real.cos p.2 * v.1) • sphereEast p + v.2 • sphereNorth p :=
-  rfl
+    sphereDerivative p v = (Real.cos p.2 * v.1) • sphereEast p + v.2 • sphereNorth p := by
+  change ((sphereTangentBasis p).repr.symm !₂[Real.cos p.2 * v.1, v.2]).1 = _
+  rw [← (sphereTangentBasis p).sum_repr_symm, Fin.sum_univ_two]
+  simp [sphereTangentBasis, sphereTangentFrame, sphereFrame]
 
 theorem hasFDerivAt_spherePoint (p : ℝ × ℝ) :
     HasFDerivAt spherePoint (sphereDerivative p) p := by
@@ -76,75 +144,6 @@ theorem hasFDerivAt_spherePoint (p : ℝ × ℝ) :
 
 theorem continuous_spherePoint : Continuous spherePoint :=
   continuous_iff_continuousAt.2 fun p => (hasFDerivAt_spherePoint p).continuousAt
-
-private def sphereFrameBasis (p : ℝ × ℝ) : OrthonormalBasis (Fin 3) ℝ (EuclideanSpace ℝ (Fin 3)) :=
-  OrthonormalBasis.mk (orthonormal_sphereFrame p)
-    ((orthonormal_sphereFrame p).linearIndependent.span_eq_top_of_card_eq_finrank
-      (by simp [finrank_euclideanSpace])).ge
-
-private theorem sphereFrameBasis_apply (p : ℝ × ℝ) (i : Fin 3) :
-    sphereFrameBasis p i = sphereFrame p i := by simp [sphereFrameBasis]
-
-/-- Euclidean tangent coordinates in the orthonormal east-north frame. -/
-def sphereFlattenDerivative (p : ℝ × ℝ) :
-    EuclideanSpace ℝ (Fin 3) →L[ℝ] EuclideanSpace ℝ (Fin 2) :=
-  (ContinuousLinearMap.fst ℝ _ (EuclideanSpace ℝ (Fin 1))).comp
-    (EuclideanSpace.finAddEquivProd.toContinuousLinearMap.comp
-      (sphereFrameBasis p).repr.toContinuousLinearMap)
-
-/-- The inverse isometry sends a planar vector into the tangent plane. -/
-def sphereTangentLift (p : ℝ × ℝ) :
-    EuclideanSpace ℝ (Fin 2) →L[ℝ] EuclideanSpace ℝ (Fin 3) :=
-  (EuclideanSpace.proj 0).smulRight (sphereEast p) +
-    (EuclideanSpace.proj 1).smulRight (sphereNorth p)
-
-private theorem sphereFrameBasis_repr_tangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
-    (sphereFrameBasis p).repr (sphereTangentLift p v) = !₂[v 0, v 1, 0] := by
-  apply (sphereFrameBasis p).repr.symm.injective
-  rw [LinearIsometryEquiv.symm_apply_apply, ← (sphereFrameBasis p).sum_repr_symm, Fin.sum_univ_three]
-  simp [sphereTangentLift, sphereFrameBasis_apply, sphereFrame]
-
-theorem norm_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
-    ‖sphereTangentLift p v‖ = ‖v‖ := by
-  rw [← (sphereFrameBasis p).repr.norm_map, sphereFrameBasis_repr_tangentLift]
-  apply (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp
-  simp [EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three, Fin.sum_univ_two]
-
-theorem sphereFlattenDerivative_leftInverse (p : ℝ × ℝ) :
-    Function.LeftInverse (sphereFlattenDerivative p) (sphereTangentLift p) := by
-  intro v
-  change (EuclideanSpace.finAddEquivProd (n := 2) (m := 1)
-    ((sphereFrameBasis p).repr (sphereTangentLift p v))).1 = v
-  rw [sphereFrameBasis_repr_tangentLift]
-  ext i
-  fin_cases i <;> rfl
-
-private theorem sphereFrameBasis_radial (p : ℝ × ℝ) (w : EuclideanSpace ℝ (Fin 3)) :
-    (sphereFrameBasis p).repr w 2 = ⟪spherePoint p, w⟫ := by
-  simp [OrthonormalBasis.repr_apply_apply, sphereFrameBasis_apply, sphereFrame]
-
-theorem tangent_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
-    ⟪spherePoint p, sphereTangentLift p v⟫ = 0 := by
-  rw [← sphereFrameBasis_radial, sphereFrameBasis_repr_tangentLift]
-  rfl
-
-/-- Zero radial component is exactly what is needed to recover the original
-vector from its two tangent coordinates. -/
-theorem sphereTangentLift_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ)
-    {w : EuclideanSpace ℝ (Fin 3)} (h : ⟪spherePoint p, w⟫ = 0) :
-    sphereTangentLift p (sphereFlattenDerivative p w) = w := by
-  apply (sphereFrameBasis p).repr.injective
-  rw [sphereFrameBasis_repr_tangentLift]
-  ext i
-  fin_cases i
-  · rfl
-  · rfl
-  · exact (sphereFrameBasis_radial p w ▸ h).symm
-
-theorem norm_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ) {w : EuclideanSpace ℝ (Fin 3)}
-    (hw : ⟪spherePoint p, w⟫ = 0) : ‖sphereFlattenDerivative p w‖ = ‖w‖ := by
-  rw [← norm_sphereTangentLift p (sphereFlattenDerivative p w),
-    sphereTangentLift_sphereFlattenDerivative_of_tangent p hw]
 
 end
 

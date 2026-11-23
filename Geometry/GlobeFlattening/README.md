@@ -42,10 +42,12 @@ rectangle there, and uses the same width comparison on that rectangle.
 The uniform projection error bounds the total area from above.
 [Chart homeomorphism](Lean/GlobeFlattening/TriangularChart.lean)
 
-The inverse derivative is the tangent lift. Applying its linear left
-inverse to the differentiated inverse identity gives the forward derivative
-along the cut sphere. The same inverse identity gives the injectivity used
-to prove that the good and exceptional images are Borel.
+The inverse derivative is the isometric lift into the plane perpendicular
+to the radius. Its left inverse is orthogonal projection followed by east
+and north coordinates. Applying it to the differentiated inverse identity
+gives the forward derivative along the cut sphere. The same inverse
+identity gives the injectivity used to prove that the good and exceptional
+images are Borel.
 [Differential proof](Lean/GlobeFlattening/SphereDifferential.lean)
 
 Spherical area is defined in the longitude–latitude chart with density
