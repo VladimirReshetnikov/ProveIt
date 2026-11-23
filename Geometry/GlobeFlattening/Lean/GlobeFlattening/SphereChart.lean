@@ -63,18 +63,17 @@ theorem cutSphere_eq_sphere_sdiff_meridian :
     Complex.mem_slitPlane_iff, horizontalComplex_re, horizontalComplex_im, not_and_or, not_le, or_comm]
 
 private theorem polar_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
-    0 < ‖horizontalComplex (spherePoint p)‖ ∧
+    horizontalComplex (spherePoint p) ∈ Complex.slitPlane ∧
       (horizontalComplex (spherePoint p)).arg = p.1 := by
   have hcos := Real.cos_pos_of_mem_Ioo hp.2
-  simpa only [horizontalComplex_spherePoint, Complex.arg_mul_cos_add_sin_mul_I hcos
-    ⟨hp.1.1, hp.1.2.le⟩, norm_mul, Complex.norm_cos_add_sin_mul_I,
-    Complex.norm_of_nonneg hcos.le, mul_one, and_true] using hcos
+  rw [horizontalComplex_spherePoint, Complex.mem_slitPlane_iff_arg,
+    Complex.arg_mul_cos_add_sin_mul_I hcos (Ioo_subset_Ioc_self hp.1)]
+  refine ⟨⟨hp.1.2.ne, norm_ne_zero_iff.1 ?_⟩, rfl⟩
+  simpa only [norm_mul, Complex.norm_cos_add_sin_mul_I, Complex.norm_of_nonneg hcos.le, mul_one]
+    using hcos.ne'
 
-theorem spherePoint_mapsTo : MapsTo spherePoint sphereLongitudeDomain cutSphere := by
-  intro p hp
-  obtain ⟨hrad, harg⟩ := polar_spherePoint hp
-  exact ⟨norm_spherePoint p, Complex.mem_slitPlane_iff_arg.2
-    ⟨harg ▸ hp.1.2.ne, norm_ne_zero_iff.1 hrad.ne'⟩⟩
+theorem spherePoint_mapsTo : MapsTo spherePoint sphereLongitudeDomain cutSphere :=
+  fun p hp => ⟨norm_spherePoint p, (polar_spherePoint hp).1⟩
 
 /-- Longitude and latitude computed directly from an ambient point. -/
 def sphereChartInverse (w : EuclideanSpace ℝ (Fin 3)) : ℝ × ℝ :=
@@ -103,11 +102,11 @@ theorem spherePoint_sphereChartInverse {w : EuclideanSpace ℝ (Fin 3)} (hw : w 
     spherePoint (sphereChartInverse w) = w := by
   have hr : Real.cos (Real.arcsin (w 2)) = ‖horizontalComplex w‖ := by
     rw [Real.cos_arcsin, ← cutSphere_horizontal_norm_sq hw, Real.sqrt_sq (norm_nonneg _)]
+  have hz : Real.sin (Real.arcsin (w 2)) = w 2 :=
+    Real.sinPartialHomeomorph.right_inv (cutSphere_vertical_bounds hw)
   apply PiLp.ext
-  simpa [Fin.forall_fin_succ, spherePoint, sphereChartInverse, hr] using
-    And.intro (Complex.norm_mul_cos_arg (horizontalComplex w))
-      (And.intro (Complex.norm_mul_sin_arg (horizontalComplex w))
-        (Real.sinPartialHomeomorph.right_inv (cutSphere_vertical_bounds hw)))
+  simp [Fin.forall_fin_succ, spherePoint, sphereChartInverse, hr, hz,
+    Complex.norm_mul_cos_arg, Complex.norm_mul_sin_arg]
 
 theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
   (show InvOn sphereChartInverse spherePoint sphereLongitudeDomain cutSphere from

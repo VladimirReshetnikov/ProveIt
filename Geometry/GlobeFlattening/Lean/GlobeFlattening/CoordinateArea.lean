@@ -45,12 +45,12 @@ theorem lintegral_cos_lt_volume_chartImage
     (hslope : StrictLowerSlopeOn u Real.cos (chartClosedRectangle a b c d)) :
     (∫⁻ p in chartRectangle a b c d, ENNReal.ofReal (Real.cos p.2)) <
       volume (chartImage u a b c d) := by
+  have hwidth := (continuousOn_latitudeProfile hu ⟨hab.le, le_rfl⟩).sub
+    (continuousOn_latitudeProfile hu ⟨le_rfl, hab.le⟩)
   rw [lintegral_cos_rectangle hab.le, volume_chartImage_eq_lintegral_width hab.le hu]
   refine lintegral_strict_mono
     (Measure.restrict_eq_zero.not.mpr ((Measure.measure_Ioo_pos volume).2 hcd).ne')
-    ((((continuousOn_latitudeProfile hu ⟨hab.le, le_rfl⟩).sub
-      (continuousOn_latitudeProfile hu ⟨le_rfl, hab.le⟩)).mono Ioo_subset_Icc_self).aemeasurable
-      measurableSet_Ioo).ennreal_ofReal
+    ((hwidth.mono Ioo_subset_Icc_self).aemeasurable measurableSet_Ioo).ennreal_ofReal
     (((continuous_const.mul Real.continuous_cos).integrableOn_Icc.mono_set
       Ioo_subset_Icc_self).lintegral_lt_top.ne) ?_
   refine (ae_restrict_mem measurableSet_Ioo).mono fun y hy => ?_
@@ -71,8 +71,7 @@ private theorem lintegral_sinusoidalWidth :
   rw [setLIntegral_congr Ioo_ae_eq_Icc, setLIntegral_congr_fun measurableSet_Icc
     (fun y hy => congrArg ENNReal.ofReal (abs_of_nonneg (Real.cos_nonneg_of_mem_Icc hy)).symm),
     harea, ← ENNReal.ofReal_mul (by positivity)]
-  congr 1
-  ring
+  exact congrArg ENNReal.ofReal (by ring)
 
 /-- The spherical area density integrates to `4π` over the cut-sphere
 coordinate rectangle. -/
