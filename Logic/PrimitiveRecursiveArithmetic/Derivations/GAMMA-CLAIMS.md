@@ -331,6 +331,10 @@ name at the native zero input.
 [GaussianGammaShiftedDeflatedIdentification](Lean/IPRADerivations/Analysis/GaussianGammaShiftedDeflatedIdentification.lean) proves the same original name equivalence over the full
 native source, including zero. [GaussianGammaDeflatedFiniteTaylor](Lean/IPRADerivations/Analysis/GaussianGammaDeflatedFiniteTaylor.lean) proves the true deflated
 polynomial remainder with the full power of the shrinking radius.
+[GaussianGammaShiftedTaylorSampler](Lean/IPRADerivations/Analysis/GaussianGammaShiftedTaylorSampler.lean) transfers that remainder to the original shifted reciprocal
+Gamma observation at every internal order. It retains the original
+canonical coefficient observations and their independent clock, and
+covers zero increment.
 [GaussianGammaPrefixCompatibility](Lean/IPRADerivations/Analysis/GaussianGammaPrefixCompatibility.lean)
 identifies the two prefix names and proves the literal C19 rate with
 these canonical coefficients on the original encoded disk.
@@ -1515,6 +1519,8 @@ rescaled Gamma parameter and a single common scale observation.
 an explicit count and two clocks for an arbitrary dyadic accuracy
 request. The scheduled source grid refines the unchanged compact
 quadrature mesh and gives a comparison to the actual compact name.
+[GaussianEulerPositivePowerChartCorrectedPanel](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartCorrectedPanel.lean) proves the corrected nodes lie in their exact rational
+endpoint panel and gives a common denominator for the two endpoints.
 The comparison to independent ordinary image quadratures, the
 improper limit for the general power chart, and arbitrary positive real
 parameters remain open.
@@ -1529,6 +1535,10 @@ independent observation precision on a fixed cutoff interval.
 [GaussianEulerBetaProductValue](Lean/IPRADerivations/Analysis/GaussianEulerBetaProductValue.lean)
 identifies the original reciprocal head with the factorial quotient
 of the actual rising product.
+[GaussianGammaHalfEulerHead](Lean/IPRADerivations/Analysis/GaussianGammaHalfEulerHead.lean) evaluates the original finite head at one half and checks
+its exact inverse product. [GaussianGammaHalfEulerExponential](Lean/IPRADerivations/Analysis/GaussianGammaHalfEulerExponential.lean) proves that the square of its
+original exponential factor is the rational number `1/N` for every
+positive finite cutoff.
 [GaussianEulerBetaPrimitivePascal](Lean/IPRADerivations/Analysis/GaussianEulerBetaPrimitivePascal.lean)
 proves the actual primitive coefficient recurrence at all degrees.
 [GaussianEulerBetaEndpoint](Lean/IPRADerivations/Analysis/GaussianEulerBetaEndpoint.lean)
