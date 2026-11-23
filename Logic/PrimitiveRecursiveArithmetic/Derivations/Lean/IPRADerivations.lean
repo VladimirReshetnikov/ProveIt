@@ -986,6 +986,7 @@ import IPRADerivations.Geometry.EuclideanSpace
 import IPRADerivations.Geometry.CircleRadical
 import IPRADerivations.Geometry.OrientedMeasure
 import IPRADerivations.Geometry.Butterfly
+import IPRADerivations.Geometry.InscribedAngles
 import IPRADerivations.Combinatorics.RamseyTriangle
 import IPRADerivations.Combinatorics.RamseyPentagon
 import IPRADerivations.Combinatorics.UniformThinning
@@ -1004,6 +1005,9 @@ import IPRADerivations.Combinatorics.PlanarBounds
 import IPRADerivations.Combinatorics.WallisCentral
 import IPRADerivations.Combinatorics.FibonacciDiagonal
 import IPRADerivations.Combinatorics.DegreeBounds
+import IPRADerivations.Combinatorics.Turan
+import IPRADerivations.Combinatorics.FisherInequality
+import IPRADerivations.Combinatorics.SteinerResidues
 import IPRADerivations.Topology.OpenCubeHomeo
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
