@@ -26,7 +26,8 @@ Differences from the paper's statement:
 
 * the count is over `0 ≤ m < X` rather than `1 ≤ n ≤ x`;
 * `q = 1` is not covered (the count modulo `q` of `SieveCount` assumes `q ≥ 2`);
-* the second inequality of `eq:finite-sieve` (`eq:sieve-denominator`: `G_q(z) ≥ (φ(q)/q) H_z`) is not derived.
+* the second inequality of `eq:finite-sieve` (`eq:sieve-denominator`: `G_q(z) ≥ (φ(q)/q) H_z`) is derived in
+  `DenominatorBound` (`sieve_denominator`, `finite_sieve_second`).
 
 The proof follows the paper: the quadratic majorant summed over the progression (`SieveInequality.sieve_ineq`,
 `SievePrimesSharp.prime_sieve_ineq_sharp`), the explicit weights with `λ_1 = 1` and `Q(λ) = 1/G`
