@@ -830,9 +830,20 @@ quotient for arbitrary internal degree under the native half-plane
 guard.
 [GaussianPositiveRationalLogarithmIncrement](Lean/IPRADerivations/Analysis/GaussianPositiveRationalLogarithmIncrement.lean)
 checks the original positive-rational logarithm increment with its
-quadratic remainder and independent observation errors. The finite
-integral comparison and identification with the original Gamma
-construction throughout the right half-plane remain.
+quadratic remainder and independent observation errors.
+[GaussianBetaKernelDomination](Lean/IPRADerivations/Analysis/GaussianBetaKernelDomination.lean)
+gives nonnegativity and the original decay upper bound across the
+entire finite support.
+[GaussianRationalFirstOrderPolynomial](Lean/IPRADerivations/Analysis/GaussianRationalFirstOrderPolynomial.lean)
+gives the actual beta primitive polynomial increment with a
+quadratic residual. [GaussianRationalUniformFirstOrderPolynomial](Lean/IPRADerivations/Analysis/GaussianRationalUniformFirstOrderPolynomial.lean)
+makes the polynomial estimate uniform on the compact disk.
+[GaussianEulerPowerIncrement](Lean/IPRADerivations/Analysis/GaussianEulerPowerIncrement.lean)
+checks the original power increment with the compact quadratic
+remainder and the two requested observation errors. The finite
+integral comparison and identification
+with the original Gamma construction throughout the right half-plane
+remain.
 
 ## Every ledger family remains in scope
 
