@@ -276,6 +276,8 @@ import IPRADerivations.DiophantineNumberTheory.PairProduct
 import IPRADerivations.DiophantineNumberTheory.WilsonProduct
 import IPRADerivations.DiophantineNumberTheory.GaussLemma
 import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocity
+import IPRADerivations.DiophantineNumberTheory.QuadraticSupplements
+import IPRADerivations.DiophantineNumberTheory.SecondSupplement
 import IPRADerivations.Analysis.StokesSlice
 import IPRADerivations.Geometry.GaussBonnetBridge
 import IPRADerivations.Analysis.InexactTrace
