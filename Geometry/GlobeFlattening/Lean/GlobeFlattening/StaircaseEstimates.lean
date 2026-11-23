@@ -23,8 +23,7 @@ theorem tsum_weighted_increment_centered {e A : ℕ → ℝ} {z L : ℝ}
         e (n + 1) * (A (n + 1) - z) - e n * (A n - z) := by ring
   have h := (ht.hasSum.sub hs.hasSum).tendsto_sum_nat
   simp only [hstep, sum_range_sub (fun n => e n * (A n - z))] at h
-  rw [eq_add_of_sub_eq (tendsto_nhds_unique h (hend.sub_const _))]
-  ring
+  linarith only [tendsto_nhds_unique h (hend.sub_const _)]
 
 /-- Absolute increments of a weighted sum of Lipschitz transforms are
 bounded by the corresponding increments of the monotone majorant. -/
@@ -40,8 +39,7 @@ theorem abs_tsum_weighted_comp_sub_le {a b : ℕ → ℝ} {X f : ℕ → ℝ →
   have ht (t : ℝ) : Summable (fun n => b n * X n t) :=
     (hb.mul_right B).of_norm_bounded (fun n => norm_mul_le_of_le (abs_of_nonneg (hb₀ n)).le (hX n t))
   wlog h : x ≤ y generalizing x y
-  · rw [abs_sub_comm (∑' n, a n * f n (X n y)), abs_sub_comm (∑' n, b n * X n y)]
-    exact this y x (le_of_not_ge h)
+  · simpa only [abs_sub_comm] using this y x (le_of_not_ge h)
   refine (((hs y).hasSum.sub (hs x).hasSum).norm_le_of_bounded
     ((ht y).hasSum.sub (ht x).hasSum) fun n => ?_).trans (le_abs_self _)
   rw [← mul_sub, ← mul_sub]
