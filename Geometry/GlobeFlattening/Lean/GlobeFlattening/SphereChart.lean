@@ -67,10 +67,8 @@ private theorem polar_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDo
       (horizontalComplex (spherePoint p)).arg = p.1 := by
   have hcos := Real.cos_pos_of_mem_Ioo hp.2
   rw [horizontalComplex_spherePoint, Complex.mem_slitPlane_iff_arg,
-    Complex.arg_mul_cos_add_sin_mul_I hcos (Ioo_subset_Ioc_self hp.1)]
-  refine ⟨⟨hp.1.2.ne, norm_ne_zero_iff.1 ?_⟩, rfl⟩
-  simpa only [norm_mul, Complex.norm_cos_add_sin_mul_I, Complex.norm_of_nonneg hcos.le, mul_one]
-    using hcos.ne'
+    Complex.arg_mul_cos_add_sin_mul_I hcos (Ioo_subset_Ioc_self hp.1), ← Complex.exp_mul_I]
+  simp [hp.1.2.ne, hcos.ne', -Complex.ofReal_cos]
 
 theorem spherePoint_mapsTo : MapsTo spherePoint sphereLongitudeDomain cutSphere :=
   fun p hp => ⟨norm_spherePoint p, (polar_spherePoint hp).1⟩
