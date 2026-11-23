@@ -61,7 +61,7 @@ theorem GlobeFlatteningResult.sup_distance_lt {ε : ℝ} (result : GlobeFlatteni
     ⟨⟨neg_lt_zero.mpr Real.pi_pos, Real.pi_pos⟩,
       ⟨neg_lt_zero.mpr (half_pos Real.pi_pos), half_pos Real.pi_pos⟩⟩
   have hne : cutSphere.Nonempty := ⟨spherePoint (0, 0), spherePoint_mapsTo hp⟩
-  exact (csSup_le (hne.image _) (by rintro _ ⟨p, hp, rfl⟩; exact hbound p hp)).trans_lt hd
+  exact (csSup_le (hne.image _) (forall_mem_image.2 hbound)).trans_lt hd
 
 /-- The scalar function and its full-measure good set give the spherical
 homeomorphism and the quantitative conclusions. -/
@@ -77,71 +77,65 @@ def globeFlattening_from_scalar
       Real.cos p.2 * (q.1 - p.1) < u q - u p)
     (hDeriv : ∀ p ∈ good, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
     GlobeFlatteningResult ε := by
-  have hab : -Real.pi ≤ Real.pi := by linarith [Real.pi_pos]
+  have hab := neg_lt_self Real.pi_pos
   have hmono := strictMonoOn_chartRows_of_lowerSlope (fun _ => Real.cos_nonneg_of_mem_Icc) hSlope
-  let g := triangularChart hab hcu hmono
-  let G := g.transHomeomorph planarEuclideanEquiv.toHomeomorph
+  let g := triangularChart hab.le hcu hmono
+  let e := planarEuclideanEquiv.toHomeomorph
+  let T := planarEuclideanEquiv '' g.target
   let Z := sphereExceptional good
   let f := sphereFlattenForward u
-  let fInv := spherePoint ∘ G.symm
-  let F : cutSphere ≃ₜ G.target := sphereLongitudeChart.symm.trans G.toHomeomorphSourceTarget
+  let fInv := spherePoint ∘ (g.symm ∘ planarEuclideanEquiv.symm)
+  let F : cutSphere ≃ₜ T := sphereLongitudeChart.symm.trans
+    (g.toHomeomorphSourceTarget.trans (e.image g.target))
+  have hTopen : IsOpen T := e.isOpenMap _ g.open_target
   have hfopen : Topology.IsOpenEmbedding (cutSphere.restrict f) :=
-    G.open_target.isOpenEmbedding_subtypeVal.comp F.isOpenEmbedding
+    hTopen.isOpenEmbedding_subtypeVal.comp F.isOpenEmbedding
   have hfcont : ContinuousOn f cutSphere := continuousOn_iff_continuous_restrict.2 hfopen.continuous
   have hfleft : LeftInvOn fInv f cutSphere :=
     fun w hw => congrArg Subtype.val (F.symm_apply_apply ⟨w, hw⟩)
-  have htarget : G.target = planarEuclideanEquiv '' g.target :=
-    (planarEuclideanEquiv.toEquiv.image_eq_preimage_symm _).symm
   have hcloseCoordinates := flattenCoordinates_close_to_sinusoidal hε hclose
-  have harea : ENNReal.ofReal (4 * Real.pi) < volume G.target ∧
-      volume G.target < ENNReal.ofReal (4 * Real.pi * (1 + ε)) := by
-    rw [htarget, volume_planarEuclideanEquiv_image]
-    have hlo := lintegral_cos_lt_volume_chartImage
-      (by linarith [Real.pi_pos] : -Real.pi < Real.pi)
-      (by linarith [Real.pi_pos] : -(Real.pi / 2) < Real.pi / 2) hcu
-      (fun _ hy => (Real.cos_pos_of_mem_Ioo hy).le) hSlope
-    exact ⟨lintegral_cos_chartRectangle ▸ hlo,
-      volume_chartImage_upper_of_sinusoidal_closeness hε hcu hcloseCoordinates⟩
+  have hvol : volume T = volume g.target := volume_planarEuclideanEquiv_image _
   have hgoodSource : cutSphere \ Z = spherePoint '' good :=
-    sdiff_sdiff_cancel_left ((image_mono hsub).trans spherePoint_mapsTo.image_subset)
-  have hgoodImage : f '' (cutSphere \ Z) = planarEuclideanEquiv '' (flattenCoordinates u '' good) := hgoodSource ▸
-    sphereFlattenForward_image hsub
+    sdiff_sdiff_cancel_left (spherePoint_mapsTo.mono_left hsub).image_subset
   have hZmeas : MeasurableSet Z := measurableSet_sphereExceptional hgood hsub
   have hBorelImage {s : Set (EuclideanSpace ℝ (Fin 3))} (hs : MeasurableSet s) (hss : s ⊆ cutSphere) :
       MeasurableSet (f '' s) :=
     hs.image_of_continuousOn_injOn (hfcont.mono hss) (hfleft.injOn.mono hss)
+  have hTimage : T = planarEuclideanEquiv '' (flattenCoordinates u '' sphereLongitudeDomain) :=
+    congrArg (Set.image planarEuclideanEquiv) g.image_source_eq_target.symm
   have hexcess (V : Set (EuclideanSpace ℝ (Fin 2))) (hV : IsOpen V) (hne : V.Nonempty)
-      (hVsub : V ⊆ G.target) : 0 < volume (V ∩ f '' Z) := by
-    rw [htarget, ← g.image_source_eq_target] at hVsub
-    exact volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne hVsub
+      (hVsub : V ⊆ T) : 0 < volume (V ∩ f '' Z) :=
+    volume_sphereExceptional_inter_of_open hcu hSlope hgood hsub hnull hDeriv hV hne (hTimage ▸ hVsub)
   have hInv (p : ℝ × ℝ) (hp : p ∈ good) :
-      HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p)) := by
-    rw [show f (spherePoint p) = planarEuclideanEquiv (g p) from
-      sphereFlattenForward_spherePoint (hsub hp)]
-    exact hasFDerivAt_sphereFlatten_inverse g (hsub hp) (Real.cos_pos_of_mem_Ioo (hsub hp).2).ne'
-      ((hDeriv p hp).prodMk hasFDerivAt_snd)
+      HasFDerivAt fInv (sphereTangentLift p) (f (spherePoint p)) :=
+    (show planarEuclideanEquiv (g p) = f (spherePoint p) from
+      (sphereFlattenForward_spherePoint (hsub hp)).symm) ▸
+      hasFDerivAt_sphereFlatten_inverse g (hsub hp) (Real.cos_pos_of_mem_Ioo (hsub hp).2).ne'
+        ((hDeriv p hp).prodMk hasFDerivAt_snd)
   refine
-    { target := G.target
+    { target := T
       exceptional := Z
       homeomorph := F
       forward := f
       inverse := fInv
       forward_agrees := fun p => rfl
       inverse_agrees := fun q => rfl
-      target_open := G.open_target
-      target_bounded := by
-        rw [htarget]
-        exact planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image
-          (isBounded_chartImage hab hcu (fun y hy => hmono y (Ioo_subset_Icc_self hy)))
+      target_open := hTopen
+      target_bounded := planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image
+        (isBounded_chartImage hab.le hcu (fun y hy => hmono y (Ioo_subset_Icc_self hy)))
       exceptional_subset := sdiff_subset
       exceptional_measurable := hZmeas
       exceptional_null := measure_sphereExceptional_eq_zero hgood hsub hnull
-      target_area_lower := harea.1
-      target_area_upper := harea.2
+      target_area_lower := by
+        rw [hvol, ← lintegral_cos_chartRectangle]
+        exact lintegral_cos_lt_volume_chartImage hab (neg_lt_self (half_pos Real.pi_pos)) hcu
+          (fun _ hy => (Real.cos_pos_of_mem_Ioo hy).le) hSlope
+      target_area_upper :=
+        hvol.symm ▸ volume_chartImage_upper_of_sinusoidal_closeness hε hcu hcloseCoordinates
       exceptional_image_measurable := hBorelImage hZmeas sdiff_subset
       good_image_measurable := hBorelImage (measurableSet_cutSphere.diff hZmeas) sdiff_subset
       good_image_area := by
-        rw [hgoodImage, volume_planarEuclideanEquiv_image]
+        rw [hgoodSource, sphereFlattenForward_image hsub, volume_planarEuclideanEquiv_image]
         exact volume_good_image_eq_four_pi hgood hsub hnull g.injOn
           (fun p hp => (hDeriv p hp).hasFDerivWithinAt)
       forward_derivative := ?_
@@ -151,27 +145,21 @@ def globeFlattening_from_scalar
         not_lipschitzOn_of_exceptional_area hfopen (fun w hw => (F ⟨w, hw⟩).2) sdiff_subset
           (hausdorffMeasure_sphereExceptional_eq_zero hsub hnull) hexcess hU hne K
       exceptional_area_positive := hexcess }
-  · intro w hw
-    rw [hgoodSource] at hw
-    obtain ⟨p, hp, rfl⟩ := hw
+  · rw [hgoodSource]
+    rintro _ ⟨p, hp, rfl⟩
     exact ⟨sphereFlattenDerivative p,
       hasFDerivWithinAt_sphereFlatten hfcont hfleft (spherePoint_mapsTo (hsub hp)) (hInv p hp),
       fun _ h => norm_sphereFlattenDerivative_of_tangent p h⟩
-  · intro z hz
-    rw [hgoodSource, image_image] at hz
-    obtain ⟨p, hp, rfl⟩ := hz
+  · rw [hgoodSource, image_image]
+    rintro _ ⟨p, hp, rfl⟩
     have hval := hfleft (spherePoint_mapsTo (hsub hp))
     exact ⟨sphereTangentLift p, hInv p hp, fun v =>
       ⟨hval.symm ▸ tangent_sphereTangentLift p v, norm_sphereTangentLift p v⟩⟩
-  · refine ⟨ε, by linarith, ?_⟩
-    intro w hw
+  · refine ⟨ε, by linarith, fun w hw => ?_⟩
     let p := sphereChartInverse w
-    have hsub' : p ∈ sphereClosedBox := sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)
-    change dist (planarEuclideanEquiv (flattenCoordinates u p))
-      (planarEuclideanEquiv (sinusoidalCoordinates p)) ≤ _
-    rw [dist_planarEuclideanEquiv_of_snd_eq
-      (a := flattenCoordinates u p) (b := sinusoidalCoordinates p) rfl]
-    exact hcloseCoordinates p hsub'
+    exact (dist_planarEuclideanEquiv_of_snd_eq (a := flattenCoordinates u p)
+      (b := sinusoidalCoordinates p) rfl).le.trans
+        (hcloseCoordinates p (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)))
 
 /-- The cut sphere has the usual total area of the unit sphere. -/
 theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * Real.pi) := by
