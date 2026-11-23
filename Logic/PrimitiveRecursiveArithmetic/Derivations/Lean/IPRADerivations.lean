@@ -898,6 +898,8 @@ import IPRADerivations.Topology.SimplexProjection
 import IPRADerivations.Topology.SpernerWitness
 import IPRADerivations.Topology.BrouwerIntervalMain
 import IPRADerivations.Topology.ObstructionLabels
+import IPRADerivations.Topology.FacetCoefficient
+import IPRADerivations.Topology.CrossPolytopeObstruction
 import IPRADerivations.Combinatorics.RamseyBounds
 import IPRADerivations.Geometry.HellyCertificates
 import IPRADerivations.Geometry.HellyLine
@@ -908,6 +910,7 @@ import IPRADerivations.Combinatorics.RamseyTriangle
 import IPRADerivations.Combinatorics.RamseyPentagon
 import IPRADerivations.Combinatorics.UniformThinning
 import IPRADerivations.Combinatorics.RamseySixteen
+import IPRADerivations.Combinatorics.Averaging
 import IPRADerivations.Topology.OpenCubeHomeo
 import IPRADerivations.DiophantineNumberTheory.ConicCoprimeCount
 import IPRADerivations.DiophantineNumberTheory.DirichletReal

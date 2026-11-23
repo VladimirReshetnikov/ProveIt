@@ -2239,6 +2239,16 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Topology.BrouwerIntervalMain.main_interval
 #print axioms LeanProofs.IPRA.Topology.ObstructionLabels.repeat_of_no_opposite
 #print axioms LeanProofs.IPRA.Topology.ObstructionLabels.finite_obstruction_labels
+#print axioms LeanProofs.IPRA.Topology.FacetCoefficient.sgnMap_id
+#print axioms LeanProofs.IPRA.Topology.FacetCoefficient.sgnMap_comp_swap
+#print axioms LeanProofs.IPRA.Topology.FacetCoefficient.coefFn_congr
+#print axioms LeanProofs.IPRA.Topology.FacetCoefficient.coefFn_facet
+#print axioms LeanProofs.IPRA.Topology.FacetCoefficient.coefFn_repeat
+#print axioms LeanProofs.IPRA.Topology.FacetCoefficient.coefFn_swap
+#print axioms LeanProofs.IPRA.Topology.FacetCoefficient.obstruction_of_cycle
+#print axioms LeanProofs.IPRA.Topology.CrossPolytopeObstruction.face_ext
+#print axioms LeanProofs.IPRA.Topology.CrossPolytopeObstruction.cycle_ext
+#print axioms LeanProofs.IPRA.Topology.CrossPolytopeObstruction.cross_polytope_obstruction
 #print axioms LeanProofs.IPRA.Combinatorics.RamseyBounds.thinning
 #print axioms LeanProofs.IPRA.Combinatorics.RamseyBounds.reservoir_step
 #print axioms LeanProofs.IPRA.Combinatorics.RamseyBounds.chain_step
@@ -2298,6 +2308,8 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Combinatorics.RamseySixteen.no_triangle
 #print axioms LeanProofs.IPRA.Combinatorics.RamseySixteen.gg_partition
 #print axioms LeanProofs.IPRA.Combinatorics.RamseySixteen.greenwood_gleason
+#print axioms LeanProofs.IPRA.Combinatorics.Averaging.average
+#print axioms LeanProofs.IPRA.Combinatorics.Averaging.zero_row
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.monus_add_cancel
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.fwd_same
 #print axioms LeanProofs.IPRA.Topology.OpenCubeHomeo.fwd_same_le
