@@ -18,35 +18,28 @@ interval and have derivative zero almost everywhere.
 -/
 
 open Filter MeasureTheory ProbabilityTheory Set
-open scoped Topology ENNReal
+open scoped Topology ENNReal Pointwise
 
 namespace GlobeFlattening
 
 noncomputable section
 
 private theorem volume_cantorSet : volume cantorSet = 0 := by
-  let c := ENNReal.ofReal (1 / 3)
   have hscale (b : ℝ) : volume ((fun x : ℝ => (b + x) / 3) '' cantorSet) =
-      c * volume cantorSet := by
-    have hfun : (fun x : ℝ => (b + x) / 3) =
-        (fun x => b / 3 + (1 / 3 : ℝ) * x) := by
-      funext x
-      ring
-    rw [hfun, ← image_image]
-    simp only [← smul_eq_mul, image_smul, image_add_left, measure_preimage_add,
-      Measure.addHaar_smul, Module.finrank_self, pow_one]
-    norm_num [c]
-  have hle : volume cantorSet ≤ (c + c) * volume cantorSet := by
+      ENNReal.ofReal (1 / 3) * volume cantorSet := by
+    rw [show (fun x : ℝ => (b + x) / 3) '' cantorSet = (3 : ℝ)⁻¹ • ((b + ·) '' cantorSet) by
+      simp only [← image_smul, image_image, smul_eq_mul, div_eq_inv_mul]]
+    rw [Measure.addHaar_smul, image_add_left, measure_preimage_add, Module.finrank_self, pow_one]
+    norm_num
+  have hleft : volume ((· / 3) '' cantorSet) = ENNReal.ofReal (1 / 3) * volume cantorSet := by
+    simpa using hscale 0
+  have hle : volume cantorSet ≤ ENNReal.ofReal (2 / 3) * volume cantorSet := by
     nth_rw 1 [cantorSet_eq_union_halves]
     refine (measure_union_le _ _).trans_eq ?_
-    rw [show volume ((· / 3) '' cantorSet) = c * volume cantorSet by simpa using hscale 0,
-      hscale 2, add_mul]
-  have hc : c + c < 1 := by
-    dsimp only [c]
-    rw [← ENNReal.ofReal_add (by norm_num) (by norm_num), ← ENNReal.ofReal_one,
-      ENNReal.ofReal_lt_ofReal_iff zero_lt_one]
+    rw [hleft, hscale 2, ← add_mul, ← ENNReal.ofReal_add (by norm_num) (by norm_num)]
     norm_num
   by_contra hn
+  have hc := ENNReal.ofReal_lt_one.2 (show (2 / 3 : ℝ) < 1 by norm_num)
   exact (not_lt_of_ge hle) (by
     simpa using ENNReal.mul_lt_mul_left hn isCompact_cantorSet.measure_lt_top.ne hc)
 
@@ -74,9 +67,7 @@ theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
   have hμ (s : Set ℝ) (hs : MeasurableSet s) : μ s = volume (encode ⁻¹' s ∩ Ico 0 1) := by
     dsimp only [μ]
     rw [Measure.map_apply hmeas hs, Measure.restrict_apply' measurableSet_Ico]
-  letI : IsProbabilityMeasure μ := ⟨by
-    rw [hμ _ MeasurableSet.univ]
-    simp [Real.volume_Ico]⟩
+  letI : IsProbabilityMeasure μ := ⟨by simp [hμ _ MeasurableSet.univ, Real.volume_Ico]⟩
   have hnull (x : ℝ) : volume (encode ⁻¹' {x} ∩ Ico 0 1) = 0 := by
     apply Set.Subsingleton.measure_zero
     intro y hy z hz
@@ -181,20 +172,17 @@ theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :
       unfold g
       linarith only [hmul], abs_mul, abs_of_pos hw]
     exact (mul_le_mul_of_nonneg_left (hunit _ hy) hw.le).trans (by simpa using hwε)
-  · have hae (j : ℕ) : ∀ᵐ x ∂volume, HasDerivAt (fun x => f (A x - j)) 0 x := by
-      have hpres (t : ℝ) := (measurePreserving_sub_right volume t).quasiMeasurePreserving
-      have hmul := Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) (inv_ne_zero hw.ne')
-      have hA : Measure.QuasiMeasurePreserving (fun x => A x - j) volume volume := by
-        simpa [A, Function.comp_def, smul_eq_mul, div_eq_inv_mul] using
-          (hpres j).comp (hmul.comp (hpres a))
-      filter_upwards [hA.ae hfd] with x hx
-      have hAffine : HasDerivAt (fun x => A x - j) (1 / w) x :=
-        (((hasDerivAt_id x).sub_const a).div_const w).sub_const (j : ℝ)
-      simpa [Function.comp_def] using hx.comp x hAffine
-    filter_upwards [ae_all_iff.2 hae] with x hx
+  · have hshift (j : ℕ) : ∀ᵐ y ∂volume, HasDerivAt f 0 (y - j) :=
+      (measurePreserving_sub_right volume (j : ℝ)).quasiMeasurePreserving.ae hfd
+    have hscale := Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) (inv_ne_zero hw.ne')
+    have hA : Measure.QuasiMeasurePreserving A volume volume := by
+      simpa [A, Function.comp_def, smul_eq_mul, div_eq_inv_mul] using
+        hscale.comp (measurePreserving_sub_right volume a).quasiMeasurePreserving
+    filter_upwards [hA.ae (ae_all_iff.2 hshift)] with x hx
     have hs : HasDerivAt (fun y => H (A y)) 0 x := by
-      simpa only [Finset.sum_const_zero, H] using
-        HasDerivAt.fun_sum (u := Finset.range n) (fun j _ => hx j)
+      have hAx := ((hasDerivAt_id x).sub_const a).div_const w
+      simpa [H, Function.comp_def] using HasDerivAt.fun_sum (u := Finset.range n)
+        (fun j _ => (hx j).comp x (hAx.sub_const (j : ℝ)))
     simpa [g] using (hs.const_mul w).const_add a
 
 end
