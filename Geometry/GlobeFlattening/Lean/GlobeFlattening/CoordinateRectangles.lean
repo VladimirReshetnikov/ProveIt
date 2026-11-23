@@ -39,6 +39,13 @@ theorem sphereLongitudeDomain_subset_box : sphereLongitudeDomain ⊆ sphereClose
 coordinate. -/
 def flattenCoordinates (u : ℝ × ℝ → ℝ) (p : ℝ × ℝ) : ℝ × ℝ := (u p, p.2)
 
+/-- The sinusoidal projection written in the cut-sphere coordinates. -/
+noncomputable def sinusoidalCoordinates (p : ℝ × ℝ) : ℝ × ℝ := (p.1 * Real.cos p.2, p.2)
+
+theorem dist_flattenCoordinates_sinusoidalCoordinates (u : ℝ × ℝ → ℝ) (p : ℝ × ℝ) :
+    dist (flattenCoordinates u p) (sinusoidalCoordinates p) = |u p - p.1 * Real.cos p.2| :=
+  dist_prod_same_right.trans (Real.dist_eq _ _)
+
 /-- The derivative is diagonal in the longitude and latitude coordinates. -/
 def coordinateDerivative (slope : ℝ) : ℝ × ℝ →L[ℝ] ℝ × ℝ :=
   (slope • ContinuousLinearMap.id ℝ ℝ).prodMap (ContinuousLinearMap.id ℝ ℝ)

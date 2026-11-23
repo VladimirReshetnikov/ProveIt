@@ -82,19 +82,6 @@ theorem lintegral_cos_chartRectangle :
   rw [sphereLongitudeDomain, lintegral_cos_rectangle (neg_le_self Real.pi_pos.le), sub_neg_eq_add,
     ← two_mul, lintegral_sinusoidalWidth]
 
-/-- Scale the scalar error so its contribution to the uniform distance is `ε`. -/
-def globeErrorParameter (ε : ℝ) : ℝ := ε / (1 + Real.pi)
-
-theorem globeErrorParameter_pos {ε : ℝ} (hε : 0 < ε) : 0 < globeErrorParameter ε :=
-  div_pos hε (by positivity)
-
-/-- The sinusoidal projection written in the cut-sphere coordinates. -/
-def sinusoidalCoordinates (p : ℝ × ℝ) : ℝ × ℝ := (p.1 * Real.cos p.2, p.2)
-
-private theorem dist_flattenCoordinates_sinusoidalCoordinates (u : ℝ × ℝ → ℝ) (p : ℝ × ℝ) :
-    dist (flattenCoordinates u p) (sinusoidalCoordinates p) = |u p - p.1 * Real.cos p.2| :=
-  dist_prod_same_right.trans (Real.dist_eq _ _)
-
 /-- A uniform sinusoidal distance bound gives at most two endpoint errors per slice. -/
 theorem volume_chartImage_upper_of_sinusoidal_closeness
     {u : ℝ × ℝ → ℝ} {ε : ℝ} (hε : 0 < ε)
@@ -119,22 +106,6 @@ theorem volume_chartImage_upper_of_sinusoidal_closeness
         ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_add (by positivity) (by positivity)]
       exact (ENNReal.ofReal_lt_ofReal_iff (by positivity)).2 (by
         nlinarith only [mul_pos Real.pi_pos hε])
-
-/-- The scalar tolerance gives a uniform bound on the projection error. -/
-theorem flattenCoordinates_close_to_sinusoidal
-    {u : ℝ × ℝ → ℝ} {ε : ℝ} (hε : 0 < ε)
-    (hclose : ∀ p ∈ sphereClosedBox,
-      |u p - (Real.cos p.2 + globeErrorParameter ε) * p.1| ≤ globeErrorParameter ε) :
-    ∀ p ∈ sphereClosedBox,
-      dist (flattenCoordinates u p) (sinusoidalCoordinates p) ≤ ε := by
-  have hδ := globeErrorParameter_pos hε
-  intro p hp
-  rw [dist_flattenCoordinates_sinusoidalCoordinates,
-    ← mul_div_cancel₀ ε (by positivity : 1 + Real.pi ≠ 0), add_mul, one_mul, mul_comm Real.pi]
-  refine (abs_sub_le _ ((Real.cos p.2 + globeErrorParameter ε) * p.1) _).trans
-    (add_le_add (hclose p hp) ?_)
-  rw [mul_comm p.1, ← sub_mul, add_sub_cancel_left, abs_mul, abs_of_pos hδ]
-  exact mul_le_mul_of_nonneg_left (abs_le.mpr hp.1) hδ.le
 
 end
 

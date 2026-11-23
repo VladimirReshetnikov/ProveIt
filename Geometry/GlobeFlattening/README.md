@@ -26,23 +26,20 @@ and one-step error bound for the staircase approximants. Affine rescaling
 carries those estimates to the desired interval.
 The scalar coordinate sums longitude staircase increments weighted by
 shifted latitude cosines. Uniform convergence gives continuity and the
-pointwise sums used in summation by parts, which allows the longitude
-staircases to be centered at a fixed value. Centering at
-zero gives the sinusoidal coordinate plus a correction with positive weights,
-yielding the strict horizontal slope bound. Centering at the longitude being
-evaluated cancels the boundary term and expresses the approximation error
-as a sum of weighted staircase errors plus the first latitude profile
-error. The geometric staircase error bounds that profile error by `δ / 8`.
-Since the absolute longitude is at most `π ≤ 4`, its contribution is at most
-`δ / 2`. The increment and correction formulas bound
-horizontal and vertical errors by increments of the same staircase sum,
-with latitude rescaled, giving the joint derivative. The Stieltjes measure
-of that sum is the sum of the individual singular measures, so the control
-function has derivative zero almost everywhere. The increment estimates use
-the pointwise sums already provided by the convergence proofs. Longitude and doubled
-latitude pull back that same derivative event to the chart. Scaling the scalar
-tolerance by `1 / (1 + π)` gives a uniform distance bound of `ε` for the
-constructed map.
+pointwise sums used in summation by parts. On the chart, summation by
+parts writes the scalar coordinate as the sinusoidal coordinate plus a
+correction with positive weights. Those weights give the strict horizontal
+slope bound. Each staircase is bounded by `π`, and the correction weights
+are bounded by a geometric sequence with sum `2δ`. Taking
+`δ = ε / (2π)` bounds the uniform distance to the sinusoidal map by `ε`.
+
+The increment and correction formulas bound horizontal and vertical errors
+by increments of the same staircase sum, with latitude rescaled, giving
+the joint derivative. The Stieltjes measure of the control sum is the sum
+of the individual singular measures, so the control function has derivative
+zero almost everywhere. The increment estimates use the pointwise sums
+already provided by the convergence proofs. Longitude and doubled latitude
+pull back that derivative event to the chart.
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·
 [Singular staircases](Lean/GlobeFlattening/SingularStaircase.lean)
 

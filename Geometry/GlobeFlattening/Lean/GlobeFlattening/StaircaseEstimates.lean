@@ -10,18 +10,18 @@ open scoped Topology
 
 namespace GlobeFlattening
 
-/-- Summation by parts with the sequence centered at `z`. -/
-theorem tsum_weighted_increment_centered {e A : ℕ → ℝ} {z L : ℝ}
-    (hs : Summable (fun n => (e n - e (n + 1)) * (A n - z)))
+/-- Summation by parts retains the limit of the boundary product. -/
+theorem tsum_weighted_increment {e A : ℕ → ℝ} {L : ℝ}
+    (hs : Summable (fun n => (e n - e (n + 1)) * A n))
     (ht : Summable (fun n => (A (n + 1) - A n) * e (n + 1)))
-    (hend : Tendsto (fun n => e n * (A n - z)) atTop (𝓝 L)) :
-    A 0 * e 0 + (∑' n, (A (n + 1) - A n) * e (n + 1)) - z * e 0 =
-      L + ∑' n, (e n - e (n + 1)) * (A n - z) := by
+    (hend : Tendsto (fun n => e n * A n) atTop (𝓝 L)) :
+    A 0 * e 0 + (∑' n, (A (n + 1) - A n) * e (n + 1)) =
+      L + ∑' n, (e n - e (n + 1)) * A n := by
   have hstep (n : ℕ) :
-      (A (n + 1) - A n) * e (n + 1) - (e n - e (n + 1)) * (A n - z) =
-        e (n + 1) * (A (n + 1) - z) - e n * (A n - z) := by ring
+      (A (n + 1) - A n) * e (n + 1) - (e n - e (n + 1)) * A n =
+        e (n + 1) * A (n + 1) - e n * A n := by ring
   have h := (ht.hasSum.sub hs.hasSum).tendsto_sum_nat
-  simp only [hstep, sum_range_sub (fun n => e n * (A n - z))] at h
+  simp only [hstep, sum_range_sub (fun n => e n * A n)] at h
   linarith only [tendsto_nhds_unique h (hend.sub_const _)]
 
 /-- Absolute increments of a weighted sum of Lipschitz transforms are

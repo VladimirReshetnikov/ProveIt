@@ -71,8 +71,7 @@ def globeFlattening_from_scalar
     (hgood : MeasurableSet good)
     (hsub : good ⊆ sphereLongitudeDomain)
     (hnull : volume (sphereLongitudeDomain \ good) = 0)
-    (hclose : ∀ q ∈ sphereClosedBox,
-      |u q - (Real.cos q.2 + globeErrorParameter ε) * q.1| ≤ globeErrorParameter ε)
+    (hclose : ∀ q ∈ sphereClosedBox, dist (flattenCoordinates u q) (sinusoidalCoordinates q) ≤ ε)
     (hSlope : StrictLowerSlopeOn u Real.cos sphereClosedBox)
     (hDeriv : ∀ p ∈ good, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
     GlobeFlatteningResult ε := by
@@ -93,7 +92,6 @@ def globeFlattening_from_scalar
   have hfcont : ContinuousOn f cutSphere := continuousOn_iff_continuous_restrict.2 hfopen.continuous
   have hfleft : LeftInvOn fInv f cutSphere :=
     fun w hw => congrArg Subtype.val (F.symm_apply_apply ⟨w, hw⟩)
-  have hcloseCoordinates := flattenCoordinates_close_to_sinusoidal hε hclose
   have hvol : volume T = volume g.target := volume_planarEuclideanEquiv_image _
   have hgoodSource : cutSphere \ Z = spherePoint '' good :=
     sdiff_sdiff_cancel_left (spherePoint_mapsTo.mono_left hsub).image_subset
@@ -133,7 +131,7 @@ def globeFlattening_from_scalar
         exact lintegral_cos_lt_volume_chartImage hab (neg_lt_self (half_pos Real.pi_pos)) hcu
           (fun _ hy => (Real.cos_pos_of_mem_Ioo hy).le) hSlope
       target_area_upper :=
-        hvol.symm ▸ volume_chartImage_upper_of_sinusoidal_closeness hε hcu hcloseCoordinates
+        hvol.symm ▸ volume_chartImage_upper_of_sinusoidal_closeness hε hcu hclose
       exceptional_image_measurable := hBorelImage hZmeas hZsub
       good_image_measurable := hBorelImage (measurableSet_cutSphere.diff hZmeas) sdiff_subset
       good_image_area := by
@@ -170,7 +168,7 @@ def globeFlattening_from_scalar
     exact ⟨sphereTangentLift p, hInv p hp, fun v =>
       ⟨hval.symm ▸ tangent_sphereTangentLift p v, norm_sphereTangentLift p v⟩⟩
   · refine ⟨ε, lt_two_mul_self hε, fun w hw => ?_⟩
-    convert hcloseCoordinates _ (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)) using 1
+    convert hclose _ (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)) using 1
     exact dist_planarEuclideanEquiv_of_snd_eq rfl
 
 /-- The cut sphere has the usual total area of the unit sphere. -/
@@ -182,7 +180,7 @@ theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * 
 area, differential, approximation and local distortion properties above. -/
 theorem exists_globe_flattening {ε : ℝ} (hε : 0 < ε) :
     Nonempty (GlobeFlatteningResult ε) := by
-  obtain ⟨u, E, hcu, hE, hsub, hnull, hclose, hSlope, hDeriv⟩ := exists_strict_scalar_flattening (globeErrorParameter_pos hε)
+  obtain ⟨u, E, hcu, hE, hsub, hnull, hclose, hSlope, hDeriv⟩ := exists_strict_scalar_flattening hε
   exact ⟨globeFlattening_from_scalar hε hcu hE hsub hnull hclose hSlope hDeriv⟩
 
 end
