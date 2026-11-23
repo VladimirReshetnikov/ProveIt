@@ -1,10 +1,9 @@
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.Analysis.Calculus.Monotone
 import Mathlib.MeasureTheory.Function.Floor
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
-import Mathlib.Probability.CDF
+import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.Topology.Instances.CantorSet
 
 /-!
@@ -12,12 +11,12 @@ import Mathlib.Topology.Instances.CantorSet
 
 The Cantor staircase is the cumulative distribution function of the
 pushforward of uniform measure on `[0, 1)` by the binary-to-ternary
-encoding. The measure has no atoms and is supported on the null Cantor set.
-Finite sums of scaled copies approximate the clamped identity on any
-interval and have derivative zero almost everywhere.
+encoding. Its atomless measure gives a continuous distribution function
+that is locally constant off the null Cantor set. Finite sums of scaled
+copies approximate the clamped identity and have derivative zero almost everywhere.
 -/
 
-open Filter MeasureTheory ProbabilityTheory Set
+open Filter MeasureTheory Set
 open scoped Topology ENNReal Pointwise
 
 namespace GlobeFlattening
@@ -64,37 +63,35 @@ theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
     exact congrArg Real.ofDigits (funext fun i => hdigit (congrFun h i))
   let μ := (volume.restrict (Ico 0 1)).map encode
   have hμ (s : Set ℝ) (hs : MeasurableSet s) : μ s = volume (encode ⁻¹' s ∩ Ico 0 1) := by
-    dsimp only [μ]
-    rw [Measure.map_apply hmeas hs, Measure.restrict_apply' measurableSet_Ico]
+    simp only [μ, Measure.map_apply hmeas hs, Measure.restrict_apply' measurableSet_Ico]
   letI : IsProbabilityMeasure μ := ⟨by simp [hμ _ MeasurableSet.univ, Real.volume_Ico]⟩
   have hnull (x : ℝ) : volume (encode ⁻¹' {x} ∩ Ico 0 1) = 0 := by
-    apply Set.Subsingleton.measure_zero
-    intro y hy z hz
-    exact hinj hy.2 hz.2 ((mem_singleton_iff.mp hy.1).trans (mem_singleton_iff.mp hz.1).symm)
-  refine ⟨cdf μ, ?_, monotone_cdf μ, ?_, ?_, ?_⟩
-  · apply continuous_iff_continuousAt.mpr
-    intro x
-    rw [(monotone_cdf μ).continuousAt_iff_leftLim_eq_rightLim, (cdf μ).rightLim_eq]
-    have h := ((cdf μ).measure_singleton x).symm
-    rw [measure_cdf μ, hμ _ (measurableSet_singleton x), hnull,
-      ENNReal.ofReal_eq_zero, sub_nonpos] at h
-    exact le_antisymm ((monotone_cdf μ).leftLim_le le_rfl) h
+    refine Set.Subsingleton.measure_zero ?_ volume
+    exact fun y hy z hz => hinj hy.2 hz.2 ((mem_singleton_iff.mp hy.1).trans (mem_singleton_iff.mp hz.1).symm)
+  let F (x : ℝ) := μ.real (Iic x)
+  refine ⟨F, continuous_iff_continuousAt.2 fun x => ?_,
+    fun _ _ h => measureReal_mono (Iic_subset_Iic.2 h), ?_, ?_, ?_⟩
+  · letI : NullSingletonClass μ := ⟨fun x => (hμ _ (measurableSet_singleton x)).trans (hnull x)⟩
+    have hi : IntegrableOn (fun _ : ℝ => (1 : ℝ)) (Iic (x + 1)) μ := (integrable_const 1).integrableOn
+    simpa only [F, setIntegral_const, smul_eq_mul, mul_one] using
+      hi.continuousOn_Iic_primitive_Iic.continuousAt (Iic_mem_nhds (lt_add_one x))
   · intro x hx
     have hsubset : encode ⁻¹' Iic x ∩ Ico 0 1 ⊆ encode ⁻¹' {0} ∩ Ico 0 1 :=
       fun y hy => ⟨((mem_Iic.mp hy.1).trans hx).antisymm (cantorSet_subset_unitInterval (hmem y)).1, hy.2⟩
-    rw [cdf_eq_real, measureReal_def, hμ _ measurableSet_Iic,
-      measure_mono_null hsubset (hnull 0), ENNReal.toReal_zero]
+    simp only [F, measureReal_def, hμ _ measurableSet_Iic, measure_mono_null hsubset (hnull 0), ENNReal.toReal_zero]
   · intro x hx
-    rw [cdf_eq_real, measureReal_def, hμ _ measurableSet_Iic, inter_eq_right.2]
-    · simp [Real.volume_Ico]
-    · exact fun y _ => (cantorSet_subset_unitInterval (hmem y)).2.trans hx
-  · have hpreimage : encode ⁻¹' cantorSetᶜ = ∅ :=
-      eq_empty_iff_forall_notMem.2 (fun x hx => hx (hmem x))
-    have hsing : (cdf μ).measure ⟂ₘ volume := by
-      refine ⟨cantorSetᶜ, isClosed_cantorSet.measurableSet.compl, ?_, by simpa using volume_cantorSet⟩
-      simp [measure_cdf μ, hμ _ isClosed_cantorSet.measurableSet.compl, hpreimage]
-    filter_upwards [(cdf μ).ae_hasDerivAt, hsing.rnDeriv_ae_eq_zero] with x hd hz
-    simpa [show (cdf μ).measure.rnDeriv volume x = 0 from hz] using hd
+    have hfull : Ico (0 : ℝ) 1 ⊆ encode ⁻¹' Iic x :=
+      fun y _ => (cantorSet_subset_unitInterval (hmem y)).2.trans hx
+    simp [F, measureReal_def, hμ _ measurableSet_Iic, inter_eq_right.2 hfull, Real.volume_Ico]
+  · filter_upwards [measure_eq_zero_iff_ae_notMem.1 volume_cantorSet] with x hx
+    obtain ⟨a, b, hx', hab⟩ := mem_nhds_iff_exists_Ioo_subset.1 (isClosed_cantorSet.isOpen_compl.mem_nhds hx)
+    apply (hasDerivAt_const x (F x)).congr_of_eventuallyEq
+    filter_upwards [Ioo_mem_nhds hx'.1 hx'.2] with y hy
+    simp only [F, measureReal_def, hμ _ measurableSet_Iic]
+    congr 2
+    ext z
+    have hz : encode z ∉ Ioo a b := fun hz => hab hz (hmem z)
+    grind
 
 /-- Monotone singular approximants to the identity on a compact interval. -/
 theorem exists_singular_approx {a b ε : ℝ} (hab : a < b) (hε : 0 < ε) :

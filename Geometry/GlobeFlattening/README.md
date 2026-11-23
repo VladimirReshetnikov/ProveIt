@@ -18,17 +18,19 @@ distribution comes from the binary digits of a uniform point in `[0, 1)`,
 read in base three after replacing each `1` with `2`. The digit encoding
 is injective, so the distribution has no atoms and its distribution
 function is continuous. Support on the null Cantor set makes the
-distribution singular, so its distribution function has derivative zero
-almost everywhere.
+distribution singular. Its distribution function is locally constant off
+the Cantor set, so it has derivative zero almost everywhere.
 Induction on the number of translates bounds the staircase error by one
 grid step, and affine rescaling carries that estimate to the desired interval.
 The scalar coordinate is a uniformly converging series of longitude
 staircase increments weighted by shifted latitude cosines. On the chart,
 telescoping the product differences gives the sinusoidal coordinate plus
 a correction with positive weights, yielding a strict slope bound on every
-nontrivial horizontal interval. The two formulas bound the horizontal and
-vertical errors by increments of the same staircase sum, with latitude
-rescaled, giving the joint derivative. The Stieltjes measure of that sum
+nontrivial horizontal interval. Comparing each weighted staircase with the
+clamped identity also gives the uniform approximation estimate. The two
+formulas bound horizontal and vertical errors by increments of the same
+staircase sum, with latitude rescaled, giving the joint derivative. The
+Stieltjes measure of that sum
 is the sum of the individual singular measures, so the control function
 also has derivative zero almost everywhere. Longitude and doubled latitude
 pull back that same derivative event to the chart. Scaling the scalar
