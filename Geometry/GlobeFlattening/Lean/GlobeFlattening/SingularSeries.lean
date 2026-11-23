@@ -115,18 +115,12 @@ theorem hasFDerivAt_of_increment_bounds {u : ℝ × ℝ → ℝ} {H V : ℝ → 
     (herror : ∀ᶠ q in 𝓝 p, |u q - u p - slope * (q.1 - p.1)| ≤
       |H q.1 - H p.1| + |V q.2 - V p.2|) :
     HasFDerivAt u (slope • ContinuousLinearMap.fst ℝ ℝ ℝ) p := by
-  have hfirst : (fun q : ℝ × ℝ => H q.1 - H p.1) =o[𝓝 p] fun q => q - p := by
-    simpa [Function.comp_def] using (hH.comp_hasFDerivAt p
-      (show HasFDerivAt Prod.fst (ContinuousLinearMap.fst ℝ ℝ ℝ) p from hasFDerivAt_fst)).isLittleO
-  have hsecond : (fun q : ℝ × ℝ => V q.2 - V p.2) =o[𝓝 p] fun q => q - p := by
-    simpa [Function.comp_def] using (hV.comp_hasFDerivAt p
-      (show HasFDerivAt Prod.snd (ContinuousLinearMap.snd ℝ ℝ ℝ) p from hasFDerivAt_snd)).isLittleO
-  apply HasFDerivAt.of_isLittleO
-  refine (isLittleO_iff.2 fun ε hε => ?_)
-  filter_upwards [herror, isLittleO_iff.1 (hfirst.abs_left.add hsecond.abs_left) hε] with q hq hb
-  change ‖u q - u p - slope * (q.1 - p.1)‖ ≤ ε * ‖q - p‖
-  rw [Real.norm_eq_abs]
-  exact hq.trans ((le_abs_self _).trans hb)
+  have hcomp {f : ℝ → ℝ} (L : (ℝ × ℝ) →L[ℝ] ℝ) (hf : HasDerivAt f 0 (L p)) :
+      (fun q => |f (L q) - f (L p)|) =o[𝓝 p] fun q => q - p := by
+    simpa [Function.comp_def] using (hf.comp_hasFDerivAt p L.hasFDerivAt).isLittleO.abs_left
+  exact HasFDerivAt.of_isLittleO (herror.isBigO.trans_isLittleO
+    ((hcomp (ContinuousLinearMap.fst ℝ ℝ ℝ) hH).add
+      (hcomp (ContinuousLinearMap.snd ℝ ℝ ℝ) hV)))
 
 end
 

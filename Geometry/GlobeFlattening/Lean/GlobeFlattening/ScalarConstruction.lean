@@ -167,11 +167,9 @@ theorem scalar_strictLowerSlope {x x' y : ℝ}
     (hx : x ∈ Icc (-Real.pi) Real.pi) (hx' : x' ∈ Icc (-Real.pi) Real.pi)
     (hy : y ∈ Icc (-(Real.pi / 2)) (Real.pi / 2)) (hxx' : x < x') :
     Real.cos y * (x' - x) < S.scalar (x', y) - S.scalar (x, y) := by
-  have hlim : Tendsto (fun n => S.X n x) atTop (𝓝 x) := by
-    simpa only [longitude, clamp_eq hx] using S.tendsto_X x
-  have hlim' : Tendsto (fun n => S.X n x') atTop (𝓝 x') := by
-    simpa only [longitude, clamp_eq hx'] using S.tendsto_X x'
-  obtain ⟨n, hX⟩ := (hlim.eventually_lt hlim' hxx').exists
+  have hlong : longitude x < longitude x' := by
+    simpa only [longitude, clamp_eq hx, clamp_eq hx'] using hxx'
+  obtain ⟨n, hX⟩ := ((S.tendsto_X x).eventually_lt (S.tendsto_X x') hlong).exists
   have hsum : S.correction (x, y) < S.correction (x', y) :=
     Summable.tsum_lt_tsum
       (fun k => mul_le_mul_of_nonneg_left (S.monoX k hxx'.le) (S.coefficient_bounds k y).1.le)
@@ -282,18 +280,14 @@ theorem linearization_bound {p q : ℝ × ℝ} (hp : p ∈ sphereClosedBox) (hq 
       |S.horizontalControl q.1 - S.horizontalControl p.1| +
         |S.verticalControl q.2 - S.verticalControl p.2| := by
   let mid := (q.1, p.2)
-  have h : S.scalar mid - S.scalar p - Real.cos p.2 * (q.1 - p.1) =
-      S.correction mid - S.correction p := by
-    have hx : p.1 ∈ Icc (-Real.pi) Real.pi := hp.1
-    have hx' : q.1 ∈ Icc (-Real.pi) Real.pi := hq.1
-    have hy : p.2 ∈ Icc (-(Real.pi / 2)) (Real.pi / 2) := hp.2
-    simp only [scalar, longitude, mid, clamp_eq hx, clamp_eq hx', latitude_eq hy]
-    ring
-  rw [show S.scalar q - S.scalar p - Real.cos p.2 * (q.1 - p.1) =
-    (S.correction mid - S.correction p) + (S.scalar q - S.scalar mid) by rw [← h]; ring]
-  exact (abs_add_le _ _).trans
-    (add_le_add (S.horizontal_increment_bound p.1 q.1 p.2)
-      (S.vertical_increment_bound q.1 p.2 q.2))
+  calc
+    _ = |(S.correction mid - S.correction p) + (S.scalar q - S.scalar mid)| := by
+      simp only [scalar, longitude, mid, clamp_eq hp.1, clamp_eq hq.1, latitude_eq hp.2]
+      congr 1
+      ring
+    _ ≤ _ := (abs_add_le _ _).trans
+      (add_le_add (S.horizontal_increment_bound p.1 q.1 p.2)
+        (S.vertical_increment_bound q.1 p.2 q.2))
 
 end Staircases
 
@@ -314,9 +308,9 @@ theorem exists_strict_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
   refine ⟨S.scalar, E, S.continuous_scalar.continuousOn, hm, hsub, hnull, ?_, ?_, ?_⟩
   · intro p hp
     simpa only [longitude, clamp_eq hp.1, latitude_eq hp.2] using S.scalar_error p
-  · rintro ⟨x, y⟩ hp ⟨x', y'⟩ hq hlat hlong
-    change y = y' at hlat
-    subst y'
+  · intro p hp q hq hlat hlong
+    change _ < S.scalar (q.1, q.2) - S.scalar p
+    rw [← hlat]
     exact S.scalar_strictLowerSlope hp.1 hq.1 hp.2 hlong
   · intro p hp
     have hd := hderiv p hp
