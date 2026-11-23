@@ -30,71 +30,42 @@ theorem tsum_weighted_increment {e A : ℕ → ℝ} {L : ℝ} (h0 : A 0 = 0)
   exact tendsto_nhds_unique hleft (hend.add hs.hasSum.tendsto_sum_nat)
 
 /-- An absolute termwise difference bound passes to the corresponding difference of sums. -/
-theorem abs_tsum_sub_le_of_termwise {f g u v : ℕ → ℝ}
+private theorem abs_tsum_sub_le_of_termwise {f g u v : ℕ → ℝ}
     (hf : Summable f) (hg : Summable g) (hu : Summable u) (hv : Summable v)
     (h : ∀ n, |f n - g n| ≤ u n - v n) :
     |(∑' n, f n) - ∑' n, g n| ≤ (∑' n, u n) - ∑' n, v n := by
   rw [← hf.tsum_sub hg, ← hu.tsum_sub hv]
   exact tsum_of_norm_bounded (f := fun n => f n - g n) (hu.sub hv).hasSum h
 
-/-- Multiplying a summably bounded real sequence by a uniformly bounded one preserves summability. -/
+/-- Multiplying a summably bounded sequence by a uniformly bounded one preserves summability. -/
 theorem summable_mul_of_abs_le {b c d : ℕ → ℝ} {C : ℝ} (hb : Summable b)
-    (hc : ∀ n, |c n| ≤ C) (hd : ∀ n, |d n| ≤ b n) :
+    (hc : ∀ n, |c n| ≤ b n) (hd : ∀ n, |d n| ≤ C) :
     Summable (fun n => c n * d n) := by
-  refine (hb.mul_left C).of_norm_bounded fun n => ?_
+  refine (hb.mul_right C).of_norm_bounded fun n => ?_
   rw [Real.norm_eq_abs, abs_mul]
   exact mul_le_mul (hc n) (hd n) (abs_nonneg _) ((abs_nonneg _).trans (hc n))
 
-theorem summable_add_cos_mul {ξ b a Y : ℕ → ℝ} {A : ℝ}
-    (hb : Summable b) (hξ : ∀ n, |ξ n| ≤ b n) (ha : ∀ n, |a n| ≤ A) :
-    Summable (fun n => (a n + Real.cos (Y n)) * ξ n) :=
-  summable_mul_of_abs_le hb
-    (fun n => (abs_add_le _ _).trans (add_le_add (ha n) (Real.abs_cos_le_one _))) hξ
-
-/-- Compare absolute increments of two series using an ordered bound on each term. -/
-private theorem abs_tsum_increment_le {f g : ℕ → ℝ → ℝ}
-    (hf : ∀ x, Summable (fun n => f n x)) (hg : ∀ x, Summable (fun n => g n x))
-    (hstep : ∀ x y : ℝ, x ≤ y → ∀ n, |f n y - f n x| ≤ g n y - g n x)
-    (x y : ℝ) :
-    |(∑' n, f n y) - ∑' n, f n x| ≤ |(∑' n, g n y) - ∑' n, g n x| := by
+/-- Absolute increments of a weighted sum of Lipschitz transforms are
+bounded by the corresponding increments of the monotone majorant. -/
+theorem abs_tsum_weighted_comp_sub_le {a b : ℕ → ℝ} {X f : ℕ → ℝ → ℝ} {A B : ℝ}
+    (hb : Summable b) (ha : ∀ n, |a n| ≤ b n) (hmono : ∀ n, Monotone (X n))
+    (hX : ∀ n x, |X n x| ≤ B) (hlip : ∀ n, LipschitzWith 1 (f n))
+    (hf : ∀ n x, |f n (X n x)| ≤ A) (x y : ℝ) :
+    |(∑' n, a n * f n (X n y)) - ∑' n, a n * f n (X n x)| ≤
+      |(∑' n, b n * X n y) - ∑' n, b n * X n x| := by
+  have hb₀ (n : ℕ) : 0 ≤ b n := (abs_nonneg _).trans (ha n)
+  have hs (t : ℝ) := summable_mul_of_abs_le hb ha (fun n => hf n t)
+  have ht (t : ℝ) := summable_mul_of_abs_le hb
+    (fun n => (abs_of_nonneg (hb₀ n)).le) (fun n => hX n t)
   wlog h : x ≤ y generalizing x y
-  · rw [abs_sub_comm (∑' n, f n y), abs_sub_comm (∑' n, g n y)]
+  · rw [abs_sub_comm (∑' n, a n * f n (X n y)), abs_sub_comm (∑' n, b n * X n y)]
     exact this y x (le_of_not_ge h)
-  exact (abs_tsum_sub_le_of_termwise (hf y) (hf x) (hg y) (hg x) (hstep x y h)).trans
-    (le_abs_self _)
-
-/-- Changes of latitude are bounded by increments of the monotone comparison series. -/
-theorem abs_tsum_cos_sub_le_of_bounded {ξ b a : ℕ → ℝ} {Y : ℕ → ℝ → ℝ} {A B : ℝ}
-    (hb : Summable b) (hξ : ∀ n, |ξ n| ≤ b n) (ha : ∀ n, |a n| ≤ A)
-    (hmono : ∀ n, Monotone (Y n)) (hY : ∀ n y, |Y n y| ≤ B) (y y' : ℝ) :
-    |(∑' n, (a n + Real.cos (Y n y')) * ξ n) - ∑' n, (a n + Real.cos (Y n y)) * ξ n| ≤
-      |(∑' n, b n * Y n y') - ∑' n, b n * Y n y| := by
-  have hnonneg (n : ℕ) : 0 ≤ b n := (abs_nonneg _).trans (hξ n)
-  have hf (t : ℝ) : Summable (fun n => (a n + Real.cos (Y n t)) * ξ n) :=
-    summable_add_cos_mul hb hξ ha
-  have hg (t : ℝ) : Summable (fun n => b n * Y n t) := by
-    simpa only [mul_comm] using
-      summable_mul_of_abs_le hb (fun n => hY n t) (fun n => (abs_of_nonneg (hnonneg n)).le)
-  refine abs_tsum_increment_le hf hg (fun x x' h n => ?_) y y'
+  refine (abs_tsum_sub_le_of_termwise (hs y) (hs x) (ht y) (ht x) fun n => ?_).trans (le_abs_self _)
   have hdelta := sub_nonneg.mpr (hmono n h)
-  rw [← sub_mul, add_sub_add_left_eq_sub, abs_mul, ← mul_sub, mul_comm (b n)]
-  exact mul_le_mul ((Real.abs_cos_sub_cos_le _ _).trans_eq (abs_of_nonneg hdelta))
-    (hξ n) (abs_nonneg _) hdelta
-
-/-- Increasing summands with smaller nonnegative weights have smaller absolute increments. -/
-theorem abs_tsum_weighted_sub_le {a b : ℕ → ℝ} {X : ℕ → ℝ → ℝ} {B : ℝ}
-    (hb : Summable b) (ha : ∀ n, 0 ≤ a n ∧ a n ≤ b n)
-    (hmono : ∀ n, Monotone (X n)) (hX : ∀ n x, |X n x| ≤ B) (x x' : ℝ) :
-    |(∑' n, a n * X n x') - ∑' n, a n * X n x| ≤
-      |(∑' n, b n * X n x') - ∑' n, b n * X n x| := by
-  have hs (c : ℕ → ℝ) (hc : ∀ n, |c n| ≤ b n) (t : ℝ) :
-      Summable (fun n => c n * X n t) := by
-    simpa only [mul_comm] using summable_mul_of_abs_le hb (fun n => hX n t) hc
-  have hf := hs a (fun n => (abs_of_nonneg (ha n).1).le.trans (ha n).2)
-  have hg := hs b (fun n => (abs_of_nonneg ((ha n).1.trans (ha n).2)).le)
-  refine abs_tsum_increment_le hf hg (fun y y' h n => ?_) x x'
-  have hdelta := sub_nonneg.mpr (hmono n h)
-  rw [← mul_sub, abs_of_nonneg (mul_nonneg (ha n).1 hdelta), ← mul_sub]
-  exact mul_le_mul_of_nonneg_right (ha n).2 hdelta
+  have hcomp : |f n (X n y) - f n (X n x)| ≤ X n y - X n x := by
+    simpa only [Real.dist_eq, NNReal.coe_one, one_mul, abs_of_nonneg hdelta] using
+      (hlip n).dist_le_mul (X n y) (X n x)
+  rw [← mul_sub, abs_mul, ← mul_sub]
+  exact mul_le_mul (ha n) hcomp (abs_nonneg _) (hb₀ n)
 
 end GlobeFlattening

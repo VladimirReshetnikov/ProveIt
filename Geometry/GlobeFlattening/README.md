@@ -17,8 +17,9 @@ approximant is a finite sum of scaled copies of the fixed point of the
 Cantor averaging rule.
 Positive longitude correction weights give a strict slope bound on every
 nontrivial horizontal interval. Summation by parts recovers the sinusoidal
-term as the boundary term. The two formulas then control horizontal and
-vertical errors and give the joint derivative. Scaling the scalar tolerance by
+term as the boundary term. The two formulas bound the horizontal and
+vertical errors by increments of the same singular function, with latitude
+rescaled, giving the joint derivative. Scaling the scalar tolerance by
 `1 / (1 + π)` gives a uniform distance bound of `ε` for the constructed map.
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·
 [Singular staircases](Lean/GlobeFlattening/SingularStaircase.lean)

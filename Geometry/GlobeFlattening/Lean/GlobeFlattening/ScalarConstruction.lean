@@ -14,7 +14,8 @@ longitude slope.
 
 Summation by parts expresses the same scalar coordinate with increments of
 `X` and coefficients `rate n + cos (Y n y)`. The two expressions bound
-horizontal and vertical errors by increments of monotone singular sums.
+horizontal and vertical errors by a single monotone singular sum and its
+latitude rescaling.
 -/
 
 namespace GlobeFlattening
@@ -78,13 +79,6 @@ theorem monoY (n : ℕ) : Monotone (S.Y n) := fun _ _ h =>
 theorem continuousY (n : ℕ) : Continuous (S.Y n) :=
   ((S.continuousX n).comp (continuous_const.mul continuous_id)).div_const 2
 
-theorem singularY (n : ℕ) : ∀ᵐ y ∂volume, HasDerivAt (S.Y n) 0 y := by
-  have hscale := Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) (by norm_num : (2 : ℝ) ≠ 0)
-  filter_upwards [hscale.ae (S.singularX n)] with y hy
-  change HasDerivAt (fun t => S.X n (2 * t) / 2) 0 y
-  simpa [Function.comp_def] using
-    (hy.comp y ((hasDerivAt_id y).const_mul (2 : ℝ))).div_const 2
-
 theorem boundY (n : ℕ) (y : ℝ) : |S.Y n y| ≤ Real.pi / 2 := by
   rw [Y, abs_div, abs_of_pos (by norm_num : (0 : ℝ) < 2)]
   exact div_le_div_of_nonneg_right (S.boundX n (2 * y)) (by norm_num)
@@ -108,6 +102,9 @@ theorem tendsto_Y (y : ℝ) : Tendsto (fun n => S.Y n y) atTop (𝓝 (latitude y
 
 def latitudeProfile (n : ℕ) (y : ℝ) : ℝ := rate δ n + Real.cos (S.Y n y)
 def coefficient (n : ℕ) (y : ℝ) : ℝ := S.latitudeProfile n y - S.latitudeProfile (n + 1) y
+
+theorem abs_latitudeProfile_le (n : ℕ) (y : ℝ) : |S.latitudeProfile n y| ≤ δ + 1 :=
+  (abs_add_le _ _).trans (add_le_add (S.abs_rate_le n) (Real.abs_cos_le_one _))
 
 theorem tendsto_latitudeProfile (y : ℝ) :
     Tendsto (fun n => S.latitudeProfile n y) atTop (𝓝 (Real.cos (latitude y))) := by
@@ -208,13 +205,6 @@ theorem scalar_error (p : ℝ × ℝ) :
       (div_nonneg S.delta_pos.le (by norm_num))]
   exact (abs_sub_le ..).trans (by linarith only [hcor, hlat])
 
-def horizontalControl (x : ℝ) := ∑' n, rate δ n * S.X n x
-
-theorem horizontal_increment_bound (x x' y : ℝ) :
-    |S.correction (x', y) - S.correction (x, y)| ≤ |S.horizontalControl x' - S.horizontalControl x| :=
-  abs_tsum_weighted_sub_le (summable_rate δ)
-    (fun n => let h := S.coefficient_bounds n y; ⟨h.1.le, h.2⟩) S.monoX S.boundX x x'
-
 def longitudeStream : ℕ → ℝ → ℝ
   | 0 => 0
   | n + 1 => S.X n
@@ -222,54 +212,71 @@ def longitudeStream : ℕ → ℝ → ℝ
 def longitudeIncrement (n : ℕ) (x : ℝ) :=
   S.longitudeStream (n + 1) x - S.longitudeStream n x
 
-def incrementWeight (δ : ℝ) : ℕ → ℝ := Function.update (rate δ) 0 Real.pi
-
-theorem summable_incrementWeight (δ : ℝ) : Summable (incrementWeight δ) :=
-  (summable_rate δ).update 0 Real.pi
+private theorem rate_le_rate_add_pi (δ : ℝ) (n : ℕ) : rate δ n ≤ rate (δ + Real.pi) n :=
+  mul_le_mul_of_nonneg_right (le_add_of_nonneg_right Real.pi_pos.le) (by positivity)
 
 theorem longitudeIncrement_bound (n : ℕ) (x : ℝ) :
-    |S.longitudeIncrement n x| ≤ incrementWeight δ n := by
+    |S.longitudeIncrement n x| ≤ rate (δ + Real.pi) n := by
   cases n with
-  | zero => simpa [longitudeIncrement, longitudeStream, incrementWeight] using S.boundX 0 x
+  | zero => simpa [longitudeIncrement, longitudeStream, rate] using
+      (S.boundX 0 x).trans (le_add_of_nonneg_left S.delta_pos.le)
   | succ n =>
-    simp only [longitudeIncrement, longitudeStream, incrementWeight,
-      Function.update_of_ne (Nat.succ_ne_zero n)]
+    change |S.X (n + 1) x - S.X n x| ≤ rate (δ + Real.pi) (n + 1)
     calc
       _ ≤ |S.X (n + 1) x - longitude x| + |longitude x - S.X n x| := abs_sub_le ..
       _ ≤ rate δ (n + 1) / 4 + rate δ n / 4 := by
         rw [abs_sub_comm (longitude x)]
         exact add_le_add (S.errorRateX _ x) (S.errorRateX _ x)
-      _ ≤ _ := by rw [rate_succ]; linarith only [S.rate_nonneg n]
+      _ ≤ rate δ (n + 1) := by rw [rate_succ]; linarith only [S.rate_nonneg n]
+      _ ≤ _ := rate_le_rate_add_pi δ _
 
 theorem scalar_series (x y : ℝ) :
-    S.scalar (x, y) = ∑' n, (rate δ n + Real.cos (S.Y n y)) * S.longitudeIncrement n x := by
+    S.scalar (x, y) = ∑' n, S.longitudeIncrement n x * S.latitudeProfile n y := by
   have h := tsum_weighted_increment (A := fun n => S.longitudeStream n x)
     (e := fun n => S.latitudeProfile n y) rfl (S.summable_correction (x, y))
-    (summable_add_cos_mul (summable_incrementWeight δ)
-      (fun n => S.longitudeIncrement_bound n x) S.abs_rate_le)
+    (by
+      simpa only [longitudeIncrement, mul_comm] using summable_mul_of_abs_le (summable_rate (δ + Real.pi))
+        (fun n => S.longitudeIncrement_bound n x) (fun n => S.abs_latitudeProfile_le n y))
     ((S.tendsto_latitudeProfile y).mul (S.tendsto_X x))
-  change (∑' n, (rate δ n + Real.cos (S.Y n y)) * S.longitudeIncrement n x) =
+  change (∑' n, S.latitudeProfile n y * S.longitudeIncrement n x) =
     Real.cos (latitude y) * longitude x + S.correction (x, y) at h
-  simpa only [scalar, mul_comm (longitude x) (Real.cos (latitude y))] using h.symm
+  simpa only [scalar, mul_comm] using h.symm
 
-def verticalControl (y : ℝ) := ∑' n, incrementWeight δ n * S.Y n y
+def horizontalControl (x : ℝ) := ∑' n, rate (δ + Real.pi) n * S.X n x
+
+def verticalControl (y : ℝ) := S.horizontalControl (2 * y) / 2
+
+theorem horizontal_increment_bound (x x' y : ℝ) :
+    |S.correction (x', y) - S.correction (x, y)| ≤ |S.horizontalControl x' - S.horizontalControl x| :=
+  abs_tsum_weighted_comp_sub_le (f := fun _ => id) (summable_rate (δ + Real.pi))
+    (fun n => by
+      obtain ⟨hpos, hle⟩ := S.coefficient_bounds n y
+      exact (abs_of_pos hpos).le.trans (hle.trans (rate_le_rate_add_pi δ n)))
+    S.monoX S.boundX (fun _ => LipschitzWith.id) S.boundX x x'
 
 theorem vertical_increment_bound (x y y' : ℝ) :
     |S.scalar (x, y') - S.scalar (x, y)| ≤ |S.verticalControl y' - S.verticalControl y| := by
   rw [S.scalar_series x y', S.scalar_series x y]
-  exact abs_tsum_cos_sub_le_of_bounded (summable_incrementWeight δ)
-    (fun n => S.longitudeIncrement_bound n x) S.abs_rate_le S.monoY S.boundY y y'
+  simp only [verticalControl, horizontalControl, ← tsum_div_const, mul_div_assoc]
+  refine abs_tsum_weighted_comp_sub_le (f := fun n t => rate δ n + Real.cos t) (X := S.Y)
+    (summable_rate (δ + Real.pi)) (fun n => S.longitudeIncrement_bound n x)
+    S.monoY S.boundY ?_ S.abs_latitudeProfile_le y y'
+  intro n
+  simpa only [one_mul, Function.comp_def] using
+    (isometry_add_left (rate δ n)).lipschitz.comp Real.lipschitzWith_cos
 
 theorem horizontal_singular : ∀ᵐ x ∂volume, HasDerivAt S.horizontalControl 0 x :=
-  singular_bounded_weighted_tsum S.X (rate δ) S.rate_nonneg
-    (summable_rate δ) (fun x => ⟨Real.pi, fun n => S.boundX n x⟩)
+  singular_bounded_weighted_tsum S.X (rate (δ + Real.pi))
+    (fun n => (rate_pos (add_pos S.delta_pos Real.pi_pos) n).le)
+    (summable_rate (δ + Real.pi)) (fun x => ⟨Real.pi, fun n => S.boundX n x⟩)
     S.monoX S.singularX
 
-theorem vertical_singular : ∀ᵐ x ∂volume, HasDerivAt S.verticalControl 0 x :=
-  singular_bounded_weighted_tsum S.Y (incrementWeight δ)
-    (fun n => (abs_nonneg _).trans (S.longitudeIncrement_bound n 0))
-    (summable_incrementWeight δ) (fun y => ⟨Real.pi / 2, fun n => S.boundY n y⟩)
-    S.monoY S.singularY
+theorem vertical_singular : ∀ᵐ y ∂volume, HasDerivAt S.verticalControl 0 y := by
+  have hscale := Measure.quasiMeasurePreserving_smul (volume : Measure ℝ) (by norm_num : (2 : ℝ) ≠ 0)
+  filter_upwards [hscale.ae S.horizontal_singular] with y hy
+  change HasDerivAt (fun t => S.horizontalControl (2 * t) / 2) 0 y
+  simpa [Function.comp_def] using
+    (hy.comp y ((hasDerivAt_id y).const_mul (2 : ℝ))).div_const 2
 
 theorem linearization_bound {p q : ℝ × ℝ} (hp : p ∈ sphereClosedBox) (hq : q ∈ sphereClosedBox) :
     |S.scalar q - S.scalar p - Real.cos p.2 * (q.1 - p.1)| ≤
