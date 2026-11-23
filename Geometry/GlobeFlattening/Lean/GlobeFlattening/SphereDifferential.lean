@@ -30,10 +30,6 @@ def coordinateDerivativeEquiv (slope : ℝ) (hs : slope ≠ 0) : (ℝ × ℝ) �
 theorem coordinateDerivativeEquiv_toContinuousLinearMap (slope : ℝ) (hs : slope ≠ 0) :
     (coordinateDerivativeEquiv slope hs).toContinuousLinearMap = coordinateDerivative slope := rfl
 
-theorem coordinateDerivativeEquiv_symm_toContinuousLinearMap (slope : ℝ) (hs : slope ≠ 0) :
-    (coordinateDerivativeEquiv slope hs).symm.toContinuousLinearMap =
-      coordinateDerivative slope⁻¹ := rfl
-
 /-- The coordinate identification after changing longitude to eastward arc length. -/
 private def scaledPlanarEquiv (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
     (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
@@ -45,11 +41,6 @@ def sphereChartInverseDerivative (p : ℝ × ℝ) :
     EuclideanSpace ℝ (Fin 3) →L[ℝ] ℝ × ℝ :=
   (coordinateDerivative (Real.cos p.2)⁻¹).comp
     (planarEuclideanEquiv.symm.toContinuousLinearMap.comp (sphereFlattenDerivative p))
-
-theorem sphereChartInverseDerivative_apply (p : ℝ × ℝ) (w : EuclideanSpace ℝ (Fin 3)) :
-    sphereChartInverseDerivative p w =
-      ((Real.cos p.2)⁻¹ * (sphereFlattenDerivative p w) 0, (sphereFlattenDerivative p w) 1) :=
-  rfl
 
 theorem sphereChartInverseDerivative_leftInverse (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
     Function.LeftInverse (sphereChartInverseDerivative p) (sphereDerivative p) := by
@@ -71,11 +62,11 @@ theorem hasFDerivWithinAt_sphereChartInverse {p : ℝ × ℝ} (hp : p ∈ sphere
       (sphereChartInverse (spherePoint p)) := by
     rw [sphereChartInverse_spherePoint hp]
     exact (hasFDerivAt_spherePoint p).hasFDerivWithinAt
-  have hcomp : spherePoint ∘ sphereChartInverse =ᶠ[𝓝[cutSphere] (spherePoint p)] id := by
-    filter_upwards [self_mem_nhdsWithin] with w hw
-    exact spherePoint_sphereChartInverse hw
+  have hcomp : EqOn (spherePoint ∘ sphereChartInverse) id cutSphere :=
+    fun _ hw => spherePoint_sphereChartInverse hw
   simpa only [ContinuousLinearMap.comp_id] using hf.of_comp_of_leftInverse hcont
-    (hasFDerivWithinAt_id _ _) hcomp (sphereChartInverseDerivative_leftInverse p hcos) hw
+    (hasFDerivWithinAt_id _ _) hcomp.eventuallyEq_nhdsWithin
+    (sphereChartInverseDerivative_leftInverse p hcos) hw
 
 theorem sphereFlatten_comp_inverseDerivative (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
     planarEuclideanEquiv.toContinuousLinearMap.comp

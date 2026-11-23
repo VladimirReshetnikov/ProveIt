@@ -130,10 +130,9 @@ theorem spherePoint_sphereChartInverse {w : EuclideanSpace ℝ (Fin 3)} (hw : w 
   · exact hsin
 
 theorem continuousOn_sphereChartInverse : ContinuousOn sphereChartInverse cutSphere := by
-  intro w hw
-  exact (((Complex.continuousAt_arg hw.2).comp continuous_horizontalComplex.continuousAt).prodMk
-    (Real.continuous_arcsin.continuousAt.comp
-      (EuclideanSpace.proj (𝕜 := ℝ) (2 : Fin 3)).continuous.continuousAt)).continuousWithinAt
+  exact (Complex.continuousOn_arg.comp continuous_horizontalComplex.continuousOn
+    (fun _ hw => hw.2)).prodMk
+    (Real.continuous_arcsin.comp (EuclideanSpace.proj (𝕜 := ℝ) (2 : Fin 3)).continuous).continuousOn
 
 theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
   ⟨spherePoint_mapsTo,

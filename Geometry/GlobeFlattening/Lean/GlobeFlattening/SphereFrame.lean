@@ -73,20 +73,14 @@ theorem hasFDerivAt_spherePoint (p : ℝ × ℝ) :
   have hfst := hasFDerivAt_fst (𝕜 := ℝ) (E := ℝ) (F := ℝ) (p := p)
   have hsnd := hasFDerivAt_snd (𝕜 := ℝ) (E := ℝ) (F := ℝ) (p := p)
   fin_cases i
-  · convert hsnd.cos.mul hfst.cos using 1 <;> try rfl
+  case' «0» => apply (hsnd.cos.mul hfst.cos).congr_fderiv
+  case' «1» => apply (hsnd.cos.mul hfst.sin).congr_fderiv
+  case' «2» => apply hsnd.sin.congr_fderiv
+  all_goals
     apply ContinuousLinearMap.ext
     intro v
     simp [sphereDerivative_apply, sphereEast, sphereNorth]
     ring
-  · convert hsnd.cos.mul hfst.sin using 1 <;> try rfl
-    apply ContinuousLinearMap.ext
-    intro v
-    simp [sphereDerivative_apply, sphereEast, sphereNorth]
-    ring
-  · convert hsnd.sin using 1 <;> try rfl
-    apply ContinuousLinearMap.ext
-    intro v
-    simp [sphereDerivative_apply, sphereEast, sphereNorth, mul_comm]
 
 theorem continuous_spherePoint : Continuous spherePoint :=
   continuous_iff_continuousAt.2 fun p => (hasFDerivAt_spherePoint p).continuousAt
@@ -130,23 +124,22 @@ private theorem sphereFrameBasis_repr (p : ℝ × ℝ) (w : EuclideanSpace ℝ (
   rw [OrthonormalBasis.repr_apply_apply, sphereFrameBasis_apply]
   fin_cases i <;> rfl
 
-private theorem sphereTangentLift_eq_repr_symm (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
-    sphereTangentLift p v = (sphereFrameBasis p).repr.symm !₂[v 0, v 1, 0] := by
-  rw [← (sphereFrameBasis p).sum_repr_symm, Fin.sum_univ_three, sphereTangentLift_apply]
+private theorem sphereFrameBasis_repr_tangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
+    (sphereFrameBasis p).repr (sphereTangentLift p v) = !₂[v 0, v 1, 0] := by
+  apply (sphereFrameBasis p).repr.symm.injective
+  rw [LinearIsometryEquiv.symm_apply_apply, ← (sphereFrameBasis p).sum_repr_symm,
+    Fin.sum_univ_three, sphereTangentLift_apply]
   simp [sphereFrameBasis_apply, sphereFrame]
 
 theorem norm_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
     ‖sphereTangentLift p v‖ = ‖v‖ := by
   apply (sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).mp
-  rw [sphereTangentLift_eq_repr_symm, LinearIsometryEquiv.norm_map,
+  rw [← (sphereFrameBasis p).repr.norm_map (sphereTangentLift p v),
+    sphereFrameBasis_repr_tangentLift,
     EuclideanSpace.real_norm_sq_eq, EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three,
     Fin.sum_univ_two]
   change v 0 ^ 2 + v 1 ^ 2 + 0 ^ 2 = _
   simp
-
-private theorem sphereFrameBasis_repr_tangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
-    (sphereFrameBasis p).repr (sphereTangentLift p v) = !₂[v 0, v 1, 0] := by
-  rw [sphereTangentLift_eq_repr_symm, LinearIsometryEquiv.apply_symm_apply]
 
 theorem sphereFlattenDerivative_leftInverse (p : ℝ × ℝ) :
     Function.LeftInverse (sphereFlattenDerivative p) (sphereTangentLift p) := by
@@ -175,14 +168,6 @@ theorem norm_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ) {w : EuclideanS
     (hw : ⟪spherePoint p, w⟫ = 0) : ‖sphereFlattenDerivative p w‖ = ‖w‖ := by
   rw [← norm_sphereTangentLift p (sphereFlattenDerivative p w),
     sphereTangentLift_sphereFlattenDerivative_of_tangent p hw]
-
-/-- The projection of the spherical coordinate differential has precisely
-the two coefficients of the planar triangular derivative. -/
-theorem sphereFlattenDerivative_sphereDerivative (p v : ℝ × ℝ) :
-    sphereFlattenDerivative p (sphereDerivative p v) = !₂[Real.cos p.2 * v.1, v.2] := by
-  calc
-    _ = sphereFlattenDerivative p (sphereTangentLift p !₂[Real.cos p.2 * v.1, v.2]) := rfl
-    _ = _ := sphereFlattenDerivative_leftInverse p _
 
 end
 

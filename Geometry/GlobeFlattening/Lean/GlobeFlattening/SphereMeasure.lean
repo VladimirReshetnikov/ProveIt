@@ -25,13 +25,9 @@ theorem measurableSet_cutSphere : MeasurableSet cutSphere :=
 /-- Borel subsets of the longitude rectangle remain Borel in the ambient
 space when mapped to the cut sphere. -/
 theorem measurableSet_spherePoint_image {s : Set (ℝ × ℝ)} (hs : MeasurableSet s)
-    (hsub : s ⊆ sphereLongitudeDomain) : MeasurableSet (spherePoint '' s) := by
-  have hchart : MeasurableEmbedding (spherePoint ∘ (Subtype.val : sphereLongitudeDomain → _)) :=
-    (MeasurableEmbedding.subtype_coe measurableSet_cutSphere).comp
-      sphereLongitudeChart.toMeasurableEquiv.measurableEmbedding
-  simpa only [image_comp, image_preimage_eq_inter_range, Subtype.range_coe,
-    inter_eq_left.mpr hsub] using
-    hchart.measurableSet_image.mpr (hs.preimage measurable_subtype_coe)
+    (hsub : s ⊆ sphereLongitudeDomain) : MeasurableSet (spherePoint '' s) :=
+  hs.image_of_continuousOn_injOn continuous_spherePoint.continuousOn
+    (spherePoint_bijOn.injOn.mono hsub)
 
 /-- Spherical area of subsets of the cut unit sphere, using its longitude chart. -/
 def sphericalArea : Measure (EuclideanSpace ℝ (Fin 3)) :=
