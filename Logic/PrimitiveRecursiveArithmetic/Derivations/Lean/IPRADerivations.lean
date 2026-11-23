@@ -293,6 +293,8 @@ import IPRADerivations.DiophantineNumberTheory.FourSquaresDescent
 import IPRADerivations.DiophantineNumberTheory.FourSquaresSeed
 import IPRADerivations.DiophantineNumberTheory.FourSquares
 import IPRADerivations.DiophantineNumberTheory.ThreeSquares
+import IPRADerivations.DiophantineNumberTheory.ThreeSquaresPowers
+import IPRADerivations.DiophantineNumberTheory.ResidueCharacter
 import IPRADerivations.AnalyticNumberTheory.PrimesModFour
 import IPRADerivations.Analysis.StokesSlice
 import IPRADerivations.Analysis.StokesCube
