@@ -10,32 +10,34 @@ open scoped Topology
 
 namespace GlobeFlattening
 
-/-- Summation by parts retains the limit of the boundary product. -/
-theorem tsum_weighted_increment {e A : ℕ → ℝ} {L : ℝ}
-    (hs : Summable (fun n => (e n - e (n + 1)) * A n))
-    (ht : Summable (fun n => (A (n + 1) - A n) * e (n + 1)))
-    (hend : Tendsto (fun n => e n * A n) atTop (𝓝 L)) :
-    A 0 * e 0 + (∑' n, (A (n + 1) - A n) * e (n + 1)) =
-      L + ∑' n, (e n - e (n + 1)) * A n := by
+/-- The weighted increments converge to the boundary limit plus the correction. -/
+theorem tendsto_sum_weighted_increment {e A : ℕ → ℝ} {L C : ℝ}
+    (hs : HasSum (fun n => (e n - e (n + 1)) * A n) C)
+    (hend : Tendsto (fun n => A n * e n) atTop (𝓝 L)) :
+    Tendsto (fun N => (∑ n ∈ range N, (A (n + 1) - A n) * e (n + 1)) + A 0 * e 0)
+      atTop (𝓝 (L + C)) := by
   have hstep (n : ℕ) :
       (A (n + 1) - A n) * e (n + 1) - (e n - e (n + 1)) * A n =
-        e (n + 1) * A (n + 1) - e n * A n := by ring
-  have h := (ht.hasSum.sub hs.hasSum).tendsto_sum_nat
-  simp only [hstep, sum_range_sub (fun n => e n * A n)] at h
-  linarith only [tendsto_nhds_unique h (hend.sub_const _)]
+        A (n + 1) * e (n + 1) - A n * e n := by ring
+  refine (hend.add hs.tendsto_sum_nat).congr' (Eventually.of_forall fun N => ?_)
+  have h := sum_range_sub (fun n => A n * e n) N
+  simp_rw [← hstep, sum_sub_distrib] at h
+  linarith only [h]
 
-/-- Absolute increments of a weighted sum of Lipschitz transforms are
-bounded by the corresponding increments of the monotone majorant. -/
-theorem abs_tsum_weighted_comp_sub_le {a b : ℕ → ℝ} {X f : ℕ → ℝ → ℝ}
+/-- Compare the limits of weighted increments with the increments of their monotone majorant. -/
+theorem abs_sub_le_of_tendsto_weighted_comp {a b : ℕ → ℝ} {X f : ℕ → ℝ → ℝ} {A B : ℝ}
     (hb : ∀ t, Summable (fun n => b n * X n t)) (ha : ∀ n, |a n| ≤ b n)
     (hmono : ∀ n, Monotone (X n)) (hlip : ∀ n x y, |f n y - f n x| ≤ |y - x|)
-    (x y : ℝ) (hx : Summable (fun n => a n * f n (X n x))) (hy : Summable (fun n => a n * f n (X n y))) :
-    |(∑' n, a n * f n (X n y)) - ∑' n, a n * f n (X n x)| ≤
-      |(∑' n, b n * X n y) - ∑' n, b n * X n x| := by
-  wlog h : x ≤ y generalizing x y
+    (x y : ℝ)
+    (hx : Tendsto (fun N => ∑ n ∈ range N, a n * f n (X n x)) atTop (𝓝 A))
+    (hy : Tendsto (fun N => ∑ n ∈ range N, a n * f n (X n y)) atTop (𝓝 B)) :
+    |B - A| ≤ |(∑' n, b n * X n y) - ∑' n, b n * X n x| := by
+  wlog h : x ≤ y generalizing x y A B
   · simpa only [abs_sub_comm] using this y x hy hx (le_of_not_ge h)
-  refine ((hy.hasSum.sub hx.hasSum).norm_le_of_bounded
-    ((hb y).hasSum.sub (hb x).hasSum) fun n => ?_).trans (le_abs_self _)
+  refine (le_of_tendsto_of_tendsto' (hy.sub hx).norm
+    ((hb y).hasSum.tendsto_sum_nat.sub (hb x).hasSum.tendsto_sum_nat) fun N => ?_).trans (le_abs_self _)
+  rw [← sum_sub_distrib, ← sum_sub_distrib]
+  refine norm_sum_le_of_le _ fun n _ => ?_
   rw [← mul_sub, ← mul_sub]
   refine norm_mul_le_of_le (ha n) ?_
   simpa only [Real.norm_eq_abs, abs_of_nonneg (sub_nonneg.mpr (hmono n h))] using hlip n (X n x) (X n y)
