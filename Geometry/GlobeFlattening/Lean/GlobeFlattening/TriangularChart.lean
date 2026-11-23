@@ -27,11 +27,10 @@ theorem isCompact_chartClosedRectangle (a b c d : ℝ) :
 theorem exists_chartClosedRectangle_subset_of_mem_nhds {p : ℝ × ℝ} {W : Set (ℝ × ℝ)}
     (hW : W ∈ 𝓝 p) :
     ∃ a b c d : ℝ, p ∈ chartRectangle a b c d ∧ chartClosedRectangle a b c d ⊆ W := by
-  obtain ⟨U, hU, V, hV, hsub⟩ := mem_nhds_prod_iff.mp hW
-  obtain ⟨a, b, _, hab, hUa⟩ := exists_Icc_mem_subset_of_mem_nhds hU
-  obtain ⟨c, d, _, hcd, hVc⟩ := exists_Icc_mem_subset_of_mem_nhds hV
-  exact ⟨a, b, c, d, ⟨Icc_mem_nhds_iff.mp hab, Icc_mem_nhds_iff.mp hcd⟩,
-    (prod_mono hUa hVc).trans hsub⟩
+  obtain ⟨r, hr, hsub⟩ := Metric.nhds_basis_closedBall.mem_iff.mp hW
+  refine ⟨p.1 - r, p.1 + r, p.2 - r, p.2 + r, ?_, ?_⟩
+  · exact ⟨⟨sub_lt_self _ hr, lt_add_of_pos_right _ hr⟩, ⟨sub_lt_self _ hr, lt_add_of_pos_right _ hr⟩⟩
+  · simpa only [chartClosedRectangle, ← Real.closedBall_eq_Icc, closedBall_prod_same] using hsub
 
 private theorem continuousOn_longitudeRow {u : ℝ × ℝ → ℝ} {a b c d y : ℝ}
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) (hy : y ∈ Icc c d) :
@@ -89,12 +88,11 @@ theorem image_flattenCoordinates_chartRectangle {u : ℝ × ℝ → ℝ} {a b c 
   ext ⟨x, y⟩
   change (∃ p ∈ Ioo a b ×ˢ Ioo c d, (u p, p.2) = (x, y)) ↔
     y ∈ Ioo c d ∧ x ∈ Ioo (u (a, y)) (u (b, y))
-  simp only [Prod.exists, mem_prod, Prod.mk.injEq, and_assoc]
-  by_cases hy : y ∈ Ioo c d
-  · rw [← (continuousOn_longitudeRow hu (Ioo_subset_Icc_self hy)).image_Ioo_of_strictMonoOn hab
-      (hmono y hy)]
-    simp [hy]
-  · simp [hy]
+  simp only [Prod.exists, mem_prod, Prod.mk.injEq, ← and_assoc, exists_eq_right]
+  simp only [and_assoc, @and_left_comm _ (y ∈ Ioo c d) _, exists_and_left]
+  exact and_congr_right fun hy => Set.ext_iff.mp
+    ((continuousOn_longitudeRow hu (Ioo_subset_Icc_self hy)).image_Ioo_of_strictMonoOn hab
+      (hmono y hy)) x
 
 theorem isBounded_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))

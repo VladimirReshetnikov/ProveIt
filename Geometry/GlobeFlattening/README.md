@@ -33,6 +33,10 @@ also has derivative zero almost everywhere. Scaling the scalar tolerance by
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·
 [Singular staircases](Lean/GlobeFlattening/SingularStaircase.lean)
 
+The sphere chart recovers longitude from the complex argument of the
+horizontal projection and latitude from the arcsine of height.
+[Sphere chart](Lean/GlobeFlattening/SphereChart.lean)
+
 Strict row increase gives injectivity on the closed coordinate rectangle.
 Compactness makes the map an embedding, and the interior maps onto the
 open region between the continuous longitude endpoint curves. The strict
