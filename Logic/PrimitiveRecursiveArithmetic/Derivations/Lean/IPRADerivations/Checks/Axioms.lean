@@ -16878,6 +16878,20 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactComparison.original_refined_beta_comparison
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactComparison.original_refined_beta_arbitrary_later_query_fixed_Euler_observation_closed
 
+/-! ### GaussianBetaRefinedFixedCompactBudget -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.degreeCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.precisionCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.minimumDegree
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.minimumPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.scalar_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.refinement_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.degree_threshold
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.precision_threshold
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.original_refined_middle_dyadic
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.computed_middle_dyadic
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.original_arbitrarily_refined_middle_exact_dyadic_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaRefinedFixedCompactBudget.original_computed_middle_exact_dyadic_closed
+
 /-! ### GaussianBetaSharedMeshAlignment -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharedMeshAlignment.sharedMesh
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaSharedMeshAlignment.middleFactor
@@ -19178,6 +19192,20 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLaterCutoffObservation.original_later_fixed_Euler_observations_dyadic_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLaterCutoffObservation.original_successor_precision_fixed_Euler_observations_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLaterCutoffObservation.actual_original_later_Euler_observation_program_closed
+
+/-! ### GaussianEulerIntegralGammaIdentification -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.cutoff
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.degree
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.meshFactor
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.evaluationPrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.improper_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.original_diagonal_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.original_gamma_regular
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.original_Euler_integral_is_Gamma
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.original_encoded_right_half_plane_Euler_integral_is_Gamma_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegralGammaIdentification.original_encoded_Euler_and_Gamma_independent_observations_closed
 
 /-! ### GaussianEulerLowerTailPowerPanel -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerLowerTailPowerPanel.width
