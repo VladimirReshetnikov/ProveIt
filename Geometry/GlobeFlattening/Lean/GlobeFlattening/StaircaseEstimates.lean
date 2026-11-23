@@ -1,6 +1,6 @@
-import Mathlib.Analysis.SpecificLimits.Normed
-import Mathlib.Analysis.Normed.Group.InfiniteSum
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import Mathlib.Algebra.BigOperators.Module
+import Mathlib.Analysis.Normed.Ring.InfiniteSum
+import Mathlib.Topology.MetricSpace.Lipschitz
 
 /-!
 # Summation by parts and increment comparison for the staircase series
@@ -29,21 +29,22 @@ theorem tsum_weighted_increment {e A : ℕ → ℝ} {L : ℝ} (h0 : A 0 = 0)
   simp only [Function.comp_def, sum_weighted_increment_succ e A h0] at hleft
   exact tendsto_nhds_unique hleft (hend.add hs.hasSum.tendsto_sum_nat)
 
-/-- An absolute termwise difference bound passes to the corresponding difference of sums. -/
-private theorem abs_tsum_sub_le_of_termwise {f g u v : ℕ → ℝ}
-    (hf : Summable f) (hg : Summable g) (hu : Summable u) (hv : Summable v)
-    (h : ∀ n, |f n - g n| ≤ u n - v n) :
-    |(∑' n, f n) - ∑' n, g n| ≤ (∑' n, u n) - ∑' n, v n := by
-  rw [← hf.tsum_sub hg, ← hu.tsum_sub hv]
-  exact tsum_of_norm_bounded (f := fun n => f n - g n) (hu.sub hv).hasSum h
+/-- A summable product majorant bounds the difference of weighted sums. -/
+theorem abs_tsum_weighted_sub_le {a b c f g : ℕ → ℝ} {C : ℝ}
+    (hf : Summable (fun n => a n * f n)) (hg : Summable (fun n => a n * g n))
+    (hC : HasSum (fun n => b n * c n) C)
+    (ha : ∀ n, |a n| ≤ b n) (hd : ∀ n, |f n - g n| ≤ c n) :
+    |(∑' n, a n * f n) - ∑' n, a n * g n| ≤ C := by
+  rw [← hf.tsum_sub hg]
+  refine tsum_of_norm_bounded (f := fun n => a n * f n - a n * g n) hC fun n => ?_
+  rw [← mul_sub]
+  exact norm_mul_le_of_le (ha n) (hd n)
 
 /-- Multiplying a summably bounded sequence by a uniformly bounded one preserves summability. -/
 theorem summable_mul_of_abs_le {b c d : ℕ → ℝ} {C : ℝ} (hb : Summable b)
     (hc : ∀ n, |c n| ≤ b n) (hd : ∀ n, |d n| ≤ C) :
-    Summable (fun n => c n * d n) := by
-  refine (hb.mul_right C).of_norm_bounded fun n => ?_
-  rw [Real.norm_eq_abs, abs_mul]
-  exact mul_le_mul (hc n) (hd n) (abs_nonneg _) ((abs_nonneg _).trans (hc n))
+    Summable (fun n => c n * d n) :=
+  (hb.mul_right C).of_norm_bounded (fun n => norm_mul_le_of_le (hc n) (hd n))
 
 /-- Absolute increments of a weighted sum of Lipschitz transforms are
 bounded by the corresponding increments of the monotone majorant. -/
@@ -60,12 +61,11 @@ theorem abs_tsum_weighted_comp_sub_le {a b : ℕ → ℝ} {X f : ℕ → ℝ →
   wlog h : x ≤ y generalizing x y
   · rw [abs_sub_comm (∑' n, a n * f n (X n y)), abs_sub_comm (∑' n, b n * X n y)]
     exact this y x (le_of_not_ge h)
-  refine (abs_tsum_sub_le_of_termwise (hs y) (hs x) (ht y) (ht x) fun n => ?_).trans (le_abs_self _)
-  have hdelta := sub_nonneg.mpr (hmono n h)
-  have hcomp : |f n (X n y) - f n (X n x)| ≤ X n y - X n x := by
-    simpa only [Real.dist_eq, NNReal.coe_one, one_mul, abs_of_nonneg hdelta] using
-      (hlip n).dist_le_mul (X n y) (X n x)
-  rw [← mul_sub, abs_mul, ← mul_sub]
-  exact mul_le_mul (ha n) hcomp (abs_nonneg _) (hb₀ n)
+  have hdiff : HasSum (fun n => b n * (X n y - X n x))
+      ((∑' n, b n * X n y) - ∑' n, b n * X n x) := by
+    simpa only [mul_sub] using (ht y).hasSum.sub (ht x).hasSum
+  refine (abs_tsum_weighted_sub_le (hs y) (hs x) hdiff ha fun n => ?_).trans (le_abs_self _)
+  simpa only [Real.dist_eq, NNReal.coe_one, one_mul, abs_of_nonneg (sub_nonneg.mpr (hmono n h))]
+    using (hlip n).dist_le_mul (X n y) (X n x)
 
 end GlobeFlattening

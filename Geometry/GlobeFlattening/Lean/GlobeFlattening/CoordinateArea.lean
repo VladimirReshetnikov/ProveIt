@@ -35,14 +35,13 @@ theorem volume_chartImage_eq_lintegral_width
 theorem lintegral_cos_rectangle {a b c d : ℝ} (hab : a ≤ b) :
     (∫⁻ p in chartRectangle a b c d, ENNReal.ofReal (Real.cos p.2)) =
       ∫⁻ y in Ioo c d, ENNReal.ofReal ((b - a) * Real.cos y) := by
-  have hmeas : Measurable (fun p : ℝ × ℝ => ENNReal.ofReal (Real.cos p.2)) :=
-    ENNReal.measurable_ofReal.comp (Real.continuous_cos.measurable.comp measurable_snd)
-  rw [chartRectangle, Measure.volume_eq_prod, setLIntegral_prod_symm _ hmeas.aemeasurable]
-  apply setLIntegral_congr_fun measurableSet_Ioo
-  intro y _
-  change (∫⁻ _ in Ioo a b, ENNReal.ofReal (Real.cos y)) = _
-  rw [setLIntegral_const, Real.volume_Ioo, mul_comm]
-  exact (ENNReal.ofReal_mul (sub_nonneg.mpr hab)).symm
+  have hcos : Measurable (fun y => ENNReal.ofReal (Real.cos y)) :=
+    ENNReal.measurable_ofReal.comp Real.continuous_cos.measurable
+  rw [chartRectangle, Measure.volume_eq_prod, ← Measure.prod_restrict,
+    ← lintegral_map hcos measurable_snd, Measure.map_snd_prod, lintegral_smul_measure,
+    Measure.restrict_apply_univ, Real.volume_Ioo, smul_eq_mul]
+  simp_rw [ENNReal.ofReal_mul (sub_nonneg.mpr hab)]
+  rw [lintegral_const_mul _ hcos]
 
 /-- A strict longitude slope bound gives greater image area than the cosine density. -/
 theorem lintegral_cos_lt_volume_chartImage
@@ -59,8 +58,7 @@ theorem lintegral_cos_lt_volume_chartImage
     (((continuousOn_chartWidth hab.le hu).mono Ioo_subset_Icc_self).aemeasurable
       measurableSet_Ioo).ennreal_ofReal
     (hLcon.integrableOn_Icc.mono_set Ioo_subset_Icc_self).lintegral_lt_top.ne ?_
-  · rw [Ne, Measure.restrict_eq_zero, Real.volume_Ioo]
-    exact (ENNReal.ofReal_pos.mpr (sub_pos.mpr hcd)).ne'
+  · exact Measure.restrict_eq_zero.not.mpr ((Measure.measure_Ioo_pos volume).2 hcd).ne'
   · refine (ae_restrict_mem measurableSet_Ioo).mono fun y hy => ?_
     have hy' := Ioo_subset_Icc_self hy
     apply (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (mul_nonneg (sub_nonneg.mpr hab.le) (hcos y hy))).2

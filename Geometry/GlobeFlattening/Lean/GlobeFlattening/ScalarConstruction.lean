@@ -126,6 +126,10 @@ theorem coefficient_bounds (n : ℕ) (y : ℝ) :
   rw [rate_succ] at hc' ⊢
   constructor <;> linarith only [hc.1, hc.2, hc'.1, hc'.2, rate_pos S.delta_pos n]
 
+theorem abs_coefficient_le (n : ℕ) (y : ℝ) : |S.coefficient n y| ≤ rate δ n := by
+  obtain ⟨hpos, hle⟩ := S.coefficient_bounds n y
+  simpa only [abs_of_pos hpos] using hle
+
 theorem hasSum_coefficient (y : ℝ) :
     HasSum (fun n => S.coefficient n y) (S.latitudeProfile 0 y - Real.cos (latitude y)) := by
   refine (hasSum_iff_tendsto_nat_of_nonneg (fun n => (S.coefficient_bounds n y).1.le) _).2 ?_
@@ -142,9 +146,8 @@ def scalar (p : ℝ × ℝ) :=
 
 theorem norm_correctionTerm (n : ℕ) (p : ℝ × ℝ) :
     ‖S.correctionTerm n p‖ ≤ Real.pi * rate δ n := by
-  obtain ⟨hpos, hle⟩ := S.coefficient_bounds n p.2
-  rw [correctionTerm, Real.norm_eq_abs, abs_mul, abs_of_pos hpos, mul_comm Real.pi]
-  exact mul_le_mul hle (S.boundX n p.1) (abs_nonneg _) (S.rate_nonneg n)
+  rw [correctionTerm, mul_comm Real.pi]
+  exact norm_mul_le_of_le (S.abs_coefficient_le n p.2) (S.boundX n p.1)
 
 theorem summable_correction (p : ℝ × ℝ) : Summable (fun n => S.correctionTerm n p) :=
   ((summable_rate δ).mul_left Real.pi).of_norm_bounded (fun n => S.norm_correctionTerm n p)
@@ -187,22 +190,20 @@ theorem scalar_error (p : ℝ × ℝ) :
     rw [show S.scalar p - S.latitudeProfile 0 p.2 * x =
       S.correction p - (S.latitudeProfile 0 p.2 - Real.cos (latitude p.2)) * x by
       simp only [scalar, x]; ring,
-      correction, ← hcoef.tsum_eq, ← tsum_mul_right,
-      ← (S.summable_correction p).tsum_sub (hcoef.summable.mul_right x)]
-    refine tsum_of_norm_bounded (f := fun n => S.correctionTerm n p - S.coefficient n p.2 * x)
-      hrate fun n => ?_
-    obtain ⟨hpos, hle⟩ := S.coefficient_bounds n p.2
-    rw [Real.norm_eq_abs, correctionTerm, ← mul_sub, abs_mul, abs_of_pos hpos]
-    exact mul_le_mul hle ((S.errorX n p.1).trans (min_le_right _ _)) (abs_nonneg _) (S.rate_nonneg n)
+      correction, ← hcoef.tsum_eq, ← tsum_mul_right]
+    exact abs_tsum_weighted_sub_le (S.summable_correction p) (hcoef.summable.mul_right x)
+      hrate (S.abs_coefficient_le · p.2) (fun n => (S.errorX n p.1).trans (min_le_right _ _))
   have hlat : |S.latitudeProfile 0 p.2 * x - (Real.cos (latitude p.2) + δ) * x| ≤ δ / 2 := by
     rw [← sub_mul, latitudeProfile, rate, pow_zero, mul_one, add_comm (Real.cos (latitude p.2)) δ,
-      add_sub_add_left_eq_sub, abs_mul]
+      add_sub_add_left_eq_sub]
     have hcos := S.latitude_cos_error 0 p.2
     simp only [rate, pow_zero, mul_one] at hcos
     have hx : |x| ≤ Real.pi := abs_le.mpr
       ⟨le_max_left _ _, max_le (neg_le_self Real.pi_pos.le) (min_le_left _ _)⟩
-    linarith only [mul_le_mul hcos (hx.trans Real.pi_lt_four.le) (abs_nonneg _)
-      (div_nonneg S.delta_pos.le (by norm_num))]
+    rw [← Real.norm_eq_abs]
+    calc
+      _ ≤ (δ / 8) * 4 := norm_mul_le_of_le hcos (hx.trans Real.pi_lt_four.le)
+      _ = δ / 2 := by ring
   exact (abs_sub_le ..).trans (by linarith only [hcor, hlat])
 
 def longitudeStream : ℕ → ℝ → ℝ
@@ -249,9 +250,7 @@ def verticalControl (y : ℝ) := S.horizontalControl (2 * y) / 2
 theorem horizontal_increment_bound (x x' y : ℝ) :
     |S.correction (x', y) - S.correction (x, y)| ≤ |S.horizontalControl x' - S.horizontalControl x| :=
   abs_tsum_weighted_comp_sub_le (f := fun _ => id) (summable_rate (δ + Real.pi))
-    (fun n => by
-      obtain ⟨hpos, hle⟩ := S.coefficient_bounds n y
-      exact (abs_of_pos hpos).le.trans (hle.trans (rate_le_rate_add_pi δ n)))
+    (fun n => (S.abs_coefficient_le n y).trans (rate_le_rate_add_pi δ n))
     S.monoX S.boundX (fun _ => LipschitzWith.id) S.boundX x x'
 
 theorem vertical_increment_bound (x y y' : ℝ) :
