@@ -1,3 +1,4 @@
+import GlobeFlattening.CoordinateRectangles
 import Mathlib.Analysis.Calculus.FDeriv.WithLp
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 import Mathlib.Analysis.InnerProductSpace.PiL2
@@ -104,7 +105,7 @@ def planarEuclideanEquiv : (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
 with longitude scaled by the cosine of latitude. -/
 def sphereDerivative (p : ℝ × ℝ) : ℝ × ℝ →L[ℝ] EuclideanSpace ℝ (Fin 3) :=
   sphereTangentLift p ∘L planarEuclideanEquiv.toContinuousLinearMap ∘L
-    (Real.cos p.2 • ContinuousLinearMap.id ℝ ℝ).prodMap (ContinuousLinearMap.id ℝ ℝ)
+    coordinateDerivative (Real.cos p.2)
 
 theorem sphereDerivative_apply (p v : ℝ × ℝ) :
     sphereDerivative p v = (Real.cos p.2 * v.1) • sphereEast p + v.2 • sphereNorth p := by

@@ -16,10 +16,6 @@ namespace GlobeFlattening
 
 noncomputable section
 
-/-- The derivative is diagonal in the longitude and latitude coordinates. -/
-def coordinateDerivative (slope : ℝ) : ℝ × ℝ →L[ℝ] ℝ × ℝ :=
-  (slope • ContinuousLinearMap.id ℝ ℝ).prodMap (ContinuousLinearMap.id ℝ ℝ)
-
 /-- The width-reparametrized chart has area density equal to its positive
 longitude slope wherever the scalar derivative has the prescribed form. -/
 theorem measure_flattened_good_image

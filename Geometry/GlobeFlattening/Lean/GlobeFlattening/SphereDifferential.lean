@@ -1,5 +1,4 @@
 import GlobeFlattening.SphereChart
-import GlobeFlattening.RestrictedArea
 import Mathlib.Analysis.Calculus.FDeriv.OfCompLeft
 import Mathlib.Topology.OpenPartialHomeomorph.Constructions
 

@@ -46,18 +46,18 @@ theorem cutSphere_eq_sphere_sdiff_meridian :
     Complex.mem_slitPlane_iff, horizontalComplex_re, horizontalComplex_im, not_and_or, not_le, or_comm]
 
 private theorem polar_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
-    ‖horizontalComplex (spherePoint p)‖ = Real.cos p.2 ∧
+    0 < ‖horizontalComplex (spherePoint p)‖ ∧
       (horizontalComplex (spherePoint p)).arg = p.1 := by
   have hcos := Real.cos_pos_of_mem_Ioo hp.2
-  simp only [horizontalComplex_spherePoint, Complex.arg_mul_cos_add_sin_mul_I hcos
+  simpa only [horizontalComplex_spherePoint, Complex.arg_mul_cos_add_sin_mul_I hcos
     ⟨hp.1.1, hp.1.2.le⟩, norm_mul, Complex.norm_cos_add_sin_mul_I,
-    Complex.norm_of_nonneg hcos.le, mul_one, and_self]
+    Complex.norm_of_nonneg hcos.le, mul_one, and_true] using hcos
 
 theorem spherePoint_mapsTo : MapsTo spherePoint sphereLongitudeDomain cutSphere := by
   intro p hp
   obtain ⟨hrad, harg⟩ := polar_spherePoint hp
   exact ⟨norm_spherePoint p, Complex.mem_slitPlane_iff_arg.2
-    ⟨harg ▸ hp.1.2.ne, norm_ne_zero_iff.1 (hrad ▸ (Real.cos_pos_of_mem_Ioo hp.2).ne')⟩⟩
+    ⟨harg ▸ hp.1.2.ne, norm_ne_zero_iff.1 hrad.ne'⟩⟩
 
 /-- Longitude and latitude computed directly from an ambient point. -/
 def sphereChartInverse (w : EuclideanSpace ℝ (Fin 3)) : ℝ × ℝ :=
@@ -69,10 +69,10 @@ theorem sphereChartInverse_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongit
 
 private theorem cutSphere_horizontal_norm_sq {w : EuclideanSpace ℝ (Fin 3)}
     (hw : w ∈ cutSphere) : ‖horizontalComplex w‖ ^ 2 = 1 - (w 2)^2 := by
-  have h : ‖w‖ ^ 2 = (1 : ℝ) ^ 2 := congrArg (fun r : ℝ => r ^ 2) hw.1
-  rw [EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three, one_pow] at h
-  rw [Complex.sq_norm, Complex.normSq_apply, horizontalComplex_re, horizontalComplex_im]
-  exact eq_sub_of_add_eq (by simpa only [pow_two] using h)
+  apply eq_sub_of_add_eq
+  simpa only [Complex.sq_norm, Complex.normSq_apply, horizontalComplex_re, horizontalComplex_im,
+    ← pow_two, EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three, one_pow] using
+    congrArg (· ^ (2 : ℕ)) hw.1
 
 theorem cutSphere_vertical_bounds {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
     w 2 ∈ Ioo (-1 : ℝ) 1 := by
