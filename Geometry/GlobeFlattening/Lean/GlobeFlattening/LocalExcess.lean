@@ -1,13 +1,10 @@
 import GlobeFlattening.CoordinateArea
-import Mathlib.Analysis.Calculus.Deriv.Prod
 
 /-!
 # Strict local excess in the flattening chart
 
-Equality in the width bound throughout a rectangle would force the
-scalar function to have the form `x cos y + v(y)` for a function `v`
-of latitude. The vertical derivatives at two good points of one row
-rule this out.
+The strict longitude slope gives excess width at every latitude.
+Comparing the area formulas isolates the exceptional image.
 -/
 
 open Filter MeasureTheory Set
@@ -24,81 +21,6 @@ private abbrev globeBox : Set (ℝ × ℝ) :=
 private theorem isOpen_globeDomain : IsOpen globeDomain :=
   isOpen_chartRectangle _ _ _ _
 
-private theorem ae_restrict_Ioo_neBot {a b : ℝ} (hab : a < b) :
-    (ae (volume.restrict (Ioo a b))).NeBot := by
-  rw [ae_neBot, ne_eq, Measure.restrict_eq_zero, Real.volume_Ioo]
-  exact ENNReal.ofReal_ne_zero_iff.mpr (sub_pos.mpr hab)
-
-private theorem ae_good_rows {good : Set (ℝ × ℝ)} {a b c d : ℝ}
-    (hgood : MeasurableSet good) (hnull : volume (chartRectangle a b c d \ good) = 0) :
-    ∀ᵐ y ∂volume.restrict (Ioo c d), ∀ᵐ x ∂volume.restrict (Ioo a b), (x, y) ∈ good := by
-  have hae : ∀ᵐ p ∂volume.restrict (chartRectangle a b c d), p ∈ good := by
-    apply (ae_restrict_iff' (isOpen_chartRectangle _ _ _ _).measurableSet).2
-    rw [ae_iff]
-    simpa only [Classical.not_imp, ← Set.mem_sdiff, setOf_mem_eq] using hnull
-  rw [chartRectangle, Measure.volume_eq_prod, ← Measure.prod_restrict] at hae
-  exact (Measure.ae_ae_comm (p := fun x y => (x, y) ∈ good) hgood).mp
-    (Measure.ae_ae_of_ae_prod hae)
-
-private theorem zero_vertical_derivative {u : ℝ × ℝ → ℝ} {x y : ℝ}
-    (h : HasFDerivAt u (Real.cos y • ContinuousLinearMap.fst ℝ ℝ ℝ) (x, y)) :
-    HasDerivAt (fun t => u (x, t)) 0 y := by
-  have hv : HasDerivAt (fun t : ℝ => (x, t)) (0, 1) y :=
-    (hasDerivAt_const y x).prodMk (hasDerivAt_id y)
-  simpa [Function.comp_def] using h.comp_hasDerivAt y hv
-
-/-- Equality of the width bound on each row would force the difference
-of two longitude values to be a nonzero multiple of cosine. -/
-private theorem exists_strict_width {u : ℝ × ℝ → ℝ} {good : Set (ℝ × ℝ)}
-    {a b c d : ℝ} (hab : a < b) (hcd : c < d)
-    (hbox : chartClosedRectangle a b c d ⊆ globeDomain)
-    (hslope : ∀ p ∈ chartClosedRectangle a b c d, ∀ q ∈ chartClosedRectangle a b c d,
-      p.2 = q.2 → p.1 ≤ q.1 → Real.cos p.2 * (q.1 - p.1) ≤ u q - u p)
-    (hgood : MeasurableSet good) (hnull : volume (chartRectangle a b c d \ good) = 0)
-    (hderiv : ∀ p ∈ good, HasFDerivAt u
-      (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
-    ∃ y ∈ Ioo c d, (b - a) * Real.cos y < u (b, y) - u (a, y) := by
-  by_contra! hbad
-  letI := ae_restrict_Ioo_neBot hcd
-  have hyGood : ∀ᵐ y ∂volume.restrict (Ioo c d),
-      y ∈ Ioo c d ∧ y ≠ 0 ∧ ∀ᵐ x ∂volume.restrict (Ioo a b), (x, y) ∈ good := by
-    filter_upwards [ae_restrict_mem measurableSet_Ioo, (volume.restrict (Ioo c d)).ae_ne 0,
-      ae_good_rows hgood hnull] with y hy hne hg
-    exact ⟨hy, hne, hg⟩
-  obtain ⟨y, hy, hy0, hyGood⟩ := hyGood.exists
-  letI := ae_restrict_Ioo_neBot hab
-  have hxGood : ∀ᵐ x ∂volume.restrict (Ioo a b), x ∈ Ioo a b ∧ (x, y) ∈ good :=
-    (ae_restrict_mem measurableSet_Ioo).and hyGood
-  obtain ⟨x₁, hx₁, hp₁⟩ := hxGood.exists
-  obtain ⟨x₂, ⟨hx₂, hp₂⟩, hne⟩ := (hxGood.and ((volume.restrict (Ioo a b)).ae_ne x₁)).exists
-  have hxy : (x₁, y) ∈ chartClosedRectangle a b c d :=
-    ⟨Ioo_subset_Icc_self hx₁, Ioo_subset_Icc_self hy⟩
-  have hyLat : y ∈ Ioo (-(Real.pi / 2)) (Real.pi / 2) := (hbox hxy).2
-  have hsin : Real.sin y ≠ 0 := by
-    rw [Ne, Real.sin_eq_zero_iff_of_lt_of_lt (by linarith [hyLat.1, Real.pi_pos])
-      (by linarith [hyLat.2, Real.pi_pos])]
-    exact hy0
-  have hzero : HasDerivAt (fun t => u (x₂, t) - u (x₁, t)) 0 y := by
-    change HasDerivAt ((fun t => u (x₂, t)) - fun t => u (x₁, t)) 0 y
-    simpa only [sub_self] using
-      (zero_vertical_derivative (hderiv (x₂, y) hp₂)).sub
-        (zero_vertical_derivative (hderiv (x₁, y) hp₁))
-  have hcos : HasDerivAt (fun t => (x₂ - x₁) * Real.cos t)
-      ((x₂ - x₁) * -Real.sin y) y := (Real.hasDerivAt_cos y).const_mul _
-  have heq : (fun t => u (x₂, t) - u (x₁, t)) =ᶠ[𝓝 y]
-      (fun t => (x₂ - x₁) * Real.cos t) := by
-    filter_upwards [isOpen_Ioo.mem_nhds hy] with t ht
-    have ha : (a, t) ∈ chartClosedRectangle a b c d := ⟨⟨le_rfl, hab.le⟩, Ioo_subset_Icc_self ht⟩
-    have hb : (b, t) ∈ chartClosedRectangle a b c d := ⟨⟨hab.le, le_rfl⟩, Ioo_subset_Icc_self ht⟩
-    have hlinear {x : ℝ} (hx : x ∈ Ioo a b) : u (x, t) - u (a, t) = Real.cos t * (x - a) := by
-      have hp : (x, t) ∈ chartClosedRectangle a b c d :=
-        ⟨Ioo_subset_Icc_self hx, Ioo_subset_Icc_self ht⟩
-      linarith only [hslope (a, t) ha (x, t) hp rfl hx.1.le,
-        hslope (x, t) hp (b, t) hb rfl hx.2.le, hbad t ht]
-    linarith only [hlinear hx₁, hlinear hx₂]
-  exact (mul_ne_zero (sub_ne_zero.mpr hne) (neg_ne_zero.mpr hsin))
-    ((hcos.congr_of_eventuallyEq heq).unique hzero)
-
 /-- On every open rectangle with closure inside the cut-sphere chart,
 the exceptional image has positive planar measure. -/
 theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set (ℝ × ℝ)}
@@ -106,7 +28,7 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
     (hbox : chartClosedRectangle a b c d ⊆ globeDomain)
     (hu : ContinuousOn u globeBox)
     (hslope : ∀ p ∈ globeBox, ∀ q ∈ globeBox,
-      p.2 = q.2 → p.1 ≤ q.1 → Real.cos p.2 * (q.1 - p.1) ≤ u q - u p)
+      p.2 = q.2 → p.1 < q.1 → Real.cos p.2 * (q.1 - p.1) < u q - u p)
     (hgood : MeasurableSet good) (hnull : volume (globeDomain \ good) = 0)
     (hderiv : ∀ p ∈ good, HasFDerivAt u
       (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
@@ -131,26 +53,25 @@ theorem volume_local_exceptional_image_pos {u : ℝ × ℝ → ℝ} {good : Set 
   have hUcon : ContinuousOn U (Icc c d) := (hRow b ⟨hab.le, le_rfl⟩).sub (hRow a ⟨le_rfl, hab.le⟩)
   have hUInt : IntegrableOn U (Ioo c d) := hUcon.integrableOn_Icc.mono_set Ioo_subset_Icc_self
   have hLInt : IntegrableOn L (Ioo c d) := hLcon.integrableOn_Icc.mono_set Ioo_subset_Icc_self
-  have hLU : ∀ y ∈ Icc c d, L y ≤ U y := by
+  have hLU : ∀ y ∈ Icc c d, L y < U y := by
     intro y hy
     simpa only [L, U, mul_comm (b - a)] using
-      hslope (a, y) (hsub ⟨⟨le_rfl, hab.le⟩, hy⟩) (b, y) (hsub ⟨⟨hab.le, le_rfl⟩, hy⟩) rfl hab.le
+      hslope (a, y) (hsub ⟨⟨le_rfl, hab.le⟩, hy⟩) (b, y) (hsub ⟨⟨hab.le, le_rfl⟩, hy⟩) rfl hab
   have hLnn : 0 ≤ᵐ[volume.restrict (Ioo c d)] L :=
     (ae_restrict_mem measurableSet_Ioo).mono (fun y hy => mul_nonneg (sub_nonneg.mpr hab.le) (hcos y hy).le)
   have hUnn : 0 ≤ᵐ[volume.restrict (Ioo c d)] U :=
     (hLnn.and (ae_restrict_mem measurableSet_Ioo)).mono
-      (fun y hy => hy.1.trans (hLU y (Ioo_subset_Icc_self hy.2)))
+      (fun y hy => hy.1.trans (hLU y (Ioo_subset_Icc_self hy.2)).le)
   have hreal : (∫ y in Ioo c d, L y) < ∫ y in Ioo c d, U y := by
     simp_rw [← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le hcd.le]
-    obtain ⟨y, hy, hlt⟩ := exists_strict_width hab hcd hbox
-      (fun p hp q hq => hslope p (hsub hp) q (hsub hq)) hgood hRectNull hderiv
     exact intervalIntegral.integral_lt_integral_of_continuousOn_of_le_of_exists_lt hcd
-      hLcon.continuousOn hUcon (fun y hy => hLU y (Ioc_subset_Icc_self hy)) ⟨y, Ioo_subset_Icc_self hy, hlt⟩
+      hLcon.continuousOn hUcon (fun y hy => (hLU y (Ioc_subset_Icc_self hy)).le)
+      ⟨c, ⟨le_rfl, hcd.le⟩, hLU c ⟨le_rfl, hcd.le⟩⟩
   have hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b) := by
     intro y hy x₁ hx₁ x₂ hx₂ hx
     have hlo := hslope (x₁, y) (hsub ⟨hx₁, Ioo_subset_Icc_self hy⟩)
-      (x₂, y) (hsub ⟨hx₂, Ioo_subset_Icc_self hy⟩) rfl hx.le
-    exact sub_pos.mp ((mul_pos (hcos y hy) (sub_pos.mpr hx)).trans_le hlo)
+      (x₂, y) (hsub ⟨hx₂, Ioo_subset_Icc_self hy⟩) rfl hx
+    exact sub_pos.mp ((mul_pos (hcos y hy) (sub_pos.mpr hx)).trans hlo)
   have hinj : InjOn (flattenCoordinates u) R := (triangularChart hab.le (hu.mono hsub) hmono).injOn
   have hAreaLt : volume (flattenCoordinates u '' (R ∩ good)) <
       volume (flattenCoordinates u '' R) := by
@@ -175,7 +96,7 @@ image in a set of positive area. -/
 theorem volume_exceptional_inter_of_open {u : ℝ × ℝ → ℝ} {good W : Set (ℝ × ℝ)}
     (hu : ContinuousOn u globeBox)
     (hslope : ∀ p ∈ globeBox, ∀ q ∈ globeBox,
-      p.2 = q.2 → p.1 ≤ q.1 → Real.cos p.2 * (q.1 - p.1) ≤ u q - u p)
+      p.2 = q.2 → p.1 < q.1 → Real.cos p.2 * (q.1 - p.1) < u q - u p)
     (hgood : MeasurableSet good) (hnull : volume (globeDomain \ good) = 0)
     (hderiv : ∀ p ∈ good, HasFDerivAt u
       (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p)

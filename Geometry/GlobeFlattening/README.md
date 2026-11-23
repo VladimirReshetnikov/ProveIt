@@ -12,8 +12,9 @@ source patch. [Lean theorem](Lean/GlobeFlattening/FlatteningTheorem.lean)
 
 The Lean construction uses two sequences of continuous monotone staircases
 that approximate longitude and latitude and have derivative zero almost
-everywhere. The longitude correction has nonnegative weights, preserving
-the row slope bound. Summation by parts gives a second expression for the
+everywhere. The longitude correction has positive weights, giving a
+strict lower bound on the slope of every nontrivial horizontal interval.
+Summation by parts gives a second expression for the
 same function. Together the two expressions bound horizontal and vertical
 errors and give the joint derivative.
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·

@@ -165,14 +165,30 @@ theorem continuous_scalar : Continuous S.scalar := by
   have hLon : Continuous longitude := by unfold longitude clamp; fun_prop
   exact ((hLon.comp continuous_fst).mul (Real.continuous_cos.comp (hLat.comp continuous_snd))).add hsum
 
-theorem scalar_lowerSlope {x x' y : ℝ} (hx : x ∈ Icc (-Real.pi) Real.pi)
-    (hx' : x' ∈ Icc (-Real.pi) Real.pi)
-    (hy : y ∈ Icc (-(Real.pi/2)) (Real.pi/2)) (hxx' : x ≤ x') :
-    Real.cos y * (x' - x) ≤ S.scalar (x', y) - S.scalar (x, y) := by
-  have hsum := (S.summable_correction (x, y)).tsum_le_tsum
-    (fun n => mul_le_mul_of_nonneg_left (S.monoX n hxx') (S.coefficient_bounds n y).1)
-    (S.summable_correction (x', y))
-  change (∑' n, S.correctionTerm n (x, y)) ≤ (∑' n, S.correctionTerm n (x', y)) at hsum
+theorem coefficient_pos (hδ : 0 < δ) (n : ℕ) (y : ℝ) : 0 < S.coefficient n y := by
+  have hnow := (S.excess_bounds n y).1
+  have hnext := (S.excess_bounds (n + 1) y).2
+  rw [rate_succ] at hnext
+  have hrate : 0 < rate δ n := by unfold rate; positivity
+  unfold coefficient
+  linarith only [hnow, hnext, hrate]
+
+theorem scalar_strictLowerSlope (hδ : 0 < δ) {x x' y : ℝ}
+    (hx : x ∈ Icc (-Real.pi) Real.pi) (hx' : x' ∈ Icc (-Real.pi) Real.pi)
+    (hy : y ∈ Icc (-(Real.pi / 2)) (Real.pi / 2)) (hxx' : x < x') :
+    Real.cos y * (x' - x) < S.scalar (x', y) - S.scalar (x, y) := by
+  obtain ⟨n, hn⟩ := ((tendsto_order.1 (summable_rate δ).tendsto_atTop_zero).2
+    ((x' - x) / 2) (half_pos (sub_pos.mpr hxx'))).exists
+  have hxerr := (abs_le.mp (S.errorRateX n x)).2
+  have hxerr' := (abs_le.mp (S.errorRateX n x')).1
+  rw [longitude, clamp_eq hx] at hxerr
+  rw [longitude, clamp_eq hx'] at hxerr'
+  have hX : S.X n x < S.X n x' := by linarith only [hn, hxerr, hxerr']
+  have hsum : (∑' n, S.correctionTerm n (x, y)) < ∑' n, S.correctionTerm n (x', y) :=
+    Summable.tsum_lt_tsum
+      (fun k => mul_le_mul_of_nonneg_left (S.monoX k hxx'.le) (S.coefficient_bounds k y).1)
+      (mul_lt_mul_of_pos_left hX (S.coefficient_pos hδ n y))
+      (S.summable_correction (x, y)) (S.summable_correction (x', y))
   simp only [scalar, longitude, latitude, clamp_eq hx, clamp_eq hx', clamp_eq hy]
   nlinarith only [hsum]
 
@@ -335,13 +351,13 @@ end Staircases
 
 /-- A close approximation to the sinusoidal longitude coordinate with the
 prescribed horizontal differential almost everywhere and increasing rows. -/
-theorem exists_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
+theorem exists_strict_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
     ∃ u : ℝ × ℝ → ℝ, ∃ E : Set (ℝ × ℝ),
       ContinuousOn u sphereClosedBox ∧ MeasurableSet E ∧ E ⊆ sphereLongitudeDomain ∧
       volume (sphereLongitudeDomain \ E) = 0 ∧
       (∀ q ∈ sphereClosedBox, |u q - (Real.cos q.2 + δ) * q.1| ≤ δ) ∧
-      (∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 ≤ q.1 →
-        Real.cos p.2 * (q.1 - p.1) ≤ u q - u p) ∧
+      (∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 < q.1 →
+        Real.cos p.2 * (q.1 - p.1) < u q - u p) ∧
       ∀ p ∈ E, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p := by
   obtain ⟨S⟩ := exists_staircases hδ
   obtain ⟨E, hm, hsub, hnull, hderiv⟩ :=
@@ -354,12 +370,30 @@ theorem exists_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
   · rintro ⟨x, y⟩ hp ⟨x', y'⟩ hq hlat hlong
     change y = y' at hlat
     subst y'
-    exact S.scalar_lowerSlope hp.1 hq.1 hp.2 hlong
+    exact S.scalar_strictLowerSlope hδ hp.1 hq.1 hp.2 hlong
   · intro p hp
     have hd := hderiv p hp
     apply hasFDerivAt_of_increment_bounds hd.1 hd.2
     filter_upwards [isOpen_sphereLongitudeDomain.mem_nhds (hsub hp)] with q hq
     exact S.linearization_bound (hbox (hsub hp)) (hbox hq)
+
+/-- The scalar construction also supplies the nonstrict row slope bound. -/
+theorem exists_scalar_flattening {δ : ℝ} (hδ : 0 < δ) :
+    ∃ u : ℝ × ℝ → ℝ, ∃ E : Set (ℝ × ℝ),
+      ContinuousOn u sphereClosedBox ∧ MeasurableSet E ∧ E ⊆ sphereLongitudeDomain ∧
+      volume (sphereLongitudeDomain \ E) = 0 ∧
+      (∀ q ∈ sphereClosedBox, |u q - (Real.cos q.2 + δ) * q.1| ≤ δ) ∧
+      (∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 ≤ q.1 →
+        Real.cos p.2 * (q.1 - p.1) ≤ u q - u p) ∧
+      ∀ p ∈ E, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p := by
+  obtain ⟨u, E, hcu, hE, hsub, hnull, hclose, hslope, hderiv⟩ :=
+    exists_strict_scalar_flattening hδ
+  refine ⟨u, E, hcu, hE, hsub, hnull, hclose, ?_, hderiv⟩
+  intro p hp q hq hlat hlong
+  rcases hlong.lt_or_eq with h | h
+  · exact (hslope p hp q hq hlat h).le
+  · obtain rfl : p = q := Prod.ext h hlat
+    simp
 
 end
 end GlobeFlattening

@@ -65,15 +65,15 @@ theorem GlobeFlatteningResult.sup_distance_lt {ε : ℝ} (result : GlobeFlatteni
 
 private theorem strictlyIncreasing_interior_rows
     {u : ℝ × ℝ → ℝ}
-    (hSlope : ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 ≤ q.1 →
-      Real.cos p.2 * (q.1 - p.1) ≤ u q - u p) :
+    (hSlope : ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 < q.1 →
+      Real.cos p.2 * (q.1 - p.1) < u q - u p) :
     ∀ y ∈ Ioo (-(Real.pi / 2)) (Real.pi / 2),
       StrictMonoOn (fun x => u (x, y)) (Icc (-Real.pi) Real.pi) := by
   intro y hy x hx x' hx' hxx'
   have h := hSlope (x, y) ⟨hx, Ioo_subset_Icc_self hy⟩ (x', y)
-    ⟨hx', Ioo_subset_Icc_self hy⟩ rfl hxx'.le
+    ⟨hx', Ioo_subset_Icc_self hy⟩ rfl hxx'
   have hpos := mul_pos (Real.cos_pos_of_mem_Ioo hy) (sub_pos.mpr hxx')
-  exact sub_pos.mp (hpos.trans_le h)
+  exact sub_pos.mp (hpos.trans h)
 
 private theorem tangent_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 2)) :
     ⟪spherePoint p, sphereTangentLift p v⟫ = 0 := by
@@ -93,8 +93,8 @@ def globeFlattening_from_scalar
     (hnull : volume (sphereLongitudeDomain \ good) = 0)
     (hclose : ∀ q ∈ sphereClosedBox,
       |u q - (Real.cos q.2 + globeErrorParameter ε) * q.1| ≤ globeErrorParameter ε)
-    (hSlope : ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 ≤ q.1 →
-      Real.cos p.2 * (q.1 - p.1) ≤ u q - u p)
+    (hSlope : ∀ p ∈ sphereClosedBox, ∀ q ∈ sphereClosedBox, p.2 = q.2 → p.1 < q.1 →
+      Real.cos p.2 * (q.1 - p.1) < u q - u p)
     (hDeriv : ∀ p ∈ good, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p) :
     GlobeFlatteningResult ε := by
   have hab : -Real.pi ≤ Real.pi := by linarith [Real.pi_pos]
@@ -199,7 +199,7 @@ area, differential, approximation and local distortion properties above. -/
 theorem exists_globe_flattening {ε : ℝ} (hε : 0 < ε) :
     Nonempty (GlobeFlatteningResult ε) := by
   obtain ⟨hδ, _, _⟩ := globeErrorParameter_bounds hε
-  obtain ⟨u, E, hcu, hE, hsub, hnull, hclose, hSlope, hDeriv⟩ := exists_scalar_flattening hδ
+  obtain ⟨u, E, hcu, hE, hsub, hnull, hclose, hSlope, hDeriv⟩ := exists_strict_scalar_flattening hδ
   exact ⟨globeFlattening_from_scalar hε hcu hE hsub hnull hclose hSlope hDeriv⟩
 
 end
