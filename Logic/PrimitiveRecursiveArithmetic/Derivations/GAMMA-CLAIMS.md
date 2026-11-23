@@ -321,6 +321,13 @@ shrinking tail plus one output observation error and the coefficient
 observation error multiplied by the number of retained terms.
 [GaussianGammaDeflatedPrefixTaylor](Lean/IPRADerivations/Analysis/GaussianGammaDeflatedPrefixTaylor.lean) factors the exact canonical prefix by its argument and
 checks the value one at zero for the deflated prefix.
+[GaussianGammaShiftedDeflatedPolynomial](Lean/IPRADerivations/Analysis/GaussianGammaShiftedDeflatedPolynomial.lean) factors the original full Euler polynomial and compares
+its deflated value with the shifted reciprocal Gamma at independent
+precisions on the certified nonzero native guard.
+[GaussianGammaShiftedDeflatedName](Lean/IPRADerivations/Analysis/GaussianGammaShiftedDeflatedName.lean) packages this comparison as a regular name through a
+computed retiming and proves equivalence to the original shifted name.
+[GaussianGammaShiftedDeflatedZero](Lean/IPRADerivations/Analysis/GaussianGammaShiftedDeflatedZero.lean) evaluates the same deflated polynomial and shifted reciprocal
+name at the native zero input.
 [GaussianGammaPrefixCompatibility](Lean/IPRADerivations/Analysis/GaussianGammaPrefixCompatibility.lean)
 identifies the two prefix names and proves the literal C19 rate with
 these canonical coefficients on the original encoded disk.
@@ -1480,9 +1487,20 @@ the compact image and exact positive-real sample guards at uniformly
 late precisions. [GaussianEulerDampedNamedIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerDampedNamedIntegrand.lean) identifies the original power-damped Euler
 integrand times t with the logarithmic kernel. [GaussianEulerPowerScalingCompactRate](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingCompactRate.lean) gives a
 uniform majorant and a compact variation bound for the actual
-power-damped integrand. Finite quadrature transport, the improper limit
-for the general power chart, and arbitrary positive real parameters
-remain open.
+power-damped integrand. [GaussianEulerPositivePowerChartImage](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartImage.lean) decodes the original retimed chart
+samples as exact positive rationals. [GaussianEulerPositivePowerChartMesh](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartMesh.lean) gives ordered corrected
+image nodes and a finite mesh bound. [GaussianEulerPositivePowerChartMeshJacobian](Lean/IPRADerivations/Analysis/GaussianEulerPositivePowerChartMeshJacobian.lean) compares individual
+corrected widths with the original Jacobian times the physical step and
+gives the exact correction on a repeated cell. [GaussianNamedPositiveLogarithm](Lean/IPRADerivations/Analysis/GaussianNamedPositiveLogarithm.lean) extends the original
+positive-rational logarithm to compact positive names, and [GaussianNamedPositiveLogarithmExponential](Lean/IPRADerivations/Analysis/GaussianNamedPositiveLogarithmExponential.lean)
+recovers the named input under the original exponential. [GaussianEulerPowerChartNamedLogarithm](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartNamedLogarithm.lean)
+identifies the lifted chart logarithm with its affine coordinate.
+[GaussianEulerPowerChartFrozenKernel](Lean/IPRADerivations/Analysis/GaussianEulerPowerChartFrozenKernel.lean) gives the compact comparison with the literal time-weighted
+Euler row at the frozen decoded image. [GaussianEulerPowerScalingFrozenIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingFrozenIntegrand.lean) cancels the
+source time and compares the original power-damped integrand directly
+to the frozen Euler row with its inverse scale factor. Finite quadrature transport,
+the improper limit for the general power chart, and arbitrary
+positive real parameters remain open.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
@@ -1607,7 +1625,7 @@ exponential tail rate of the report remains.
 | 43–48 | Quantitative strict convexity, effective Bohr–Mollerup uniqueness at fixed presentations, Wendel/Gautschi inequalities, rate-bearing Gamma ratios, actual positive-minimum location and negative-pole interval extremum/sign constructions. |
 | 49–53 | Leading Stirling/relative errors, Robbins bounds, every fixed order of log-Stirling and digamma expansions with the signed positive-real-axis remainder, and the actual multiplicative-coefficient/error algorithm. Generic Euler–Maclaurin components need application-specific endpoint and positivity proofs. |
 | 54–58 | Branch-specified analytic log-Gamma on the certified right half-plane, both Binet formulas and their finite kernel/tail bounds, complete monotonicity, Raabe/unit-interval log-Gamma integrals and the Gamma–zeta Mellin identity for `Re(s)>1`. |
-| 59–62 | Wallis product with a rational rate, Gaussian moments and Gamma-density normalization/moments. [GaussianEulerIntegerMomentIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentIntegrand.lean) proves the original weighted Euler row identity at every internal integer order. [GaussianGammaDensityDomain](Lean/IPRADerivations/Analysis/GaussianGammaDensityDomain.lean) derives the shifted integral and Gamma guards. [GaussianEulerIntegerMomentUniform](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentUniform.lean) gives a uniform compact clock for the literal weighted rows. [GaussianGammaDensityMomentReference](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentReference.lean) evaluates the normalized original shifted integral as the rising product. The finite comparison to actual density rows remains open. Both Gamma-crossing equations with the golden-ratio solution, and the stated alternative factorial interpolations. |
+| 59–62 | Wallis product with a rational rate, Gaussian moments and Gamma-density normalization/moments. [GaussianEulerIntegerMomentIntegrand](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentIntegrand.lean) proves the original weighted Euler row identity at every internal integer order. [GaussianGammaDensityDomain](Lean/IPRADerivations/Analysis/GaussianGammaDensityDomain.lean) derives the shifted integral and Gamma guards. [GaussianEulerIntegerMomentUniform](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentUniform.lean) gives a uniform compact clock for the literal weighted rows. [GaussianGammaDensityMomentReference](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentReference.lean) evaluates the normalized original shifted integral as the rising product. [GaussianEulerIntegerMomentGrid](Lean/IPRADerivations/Analysis/GaussianEulerIntegerMomentGrid.lean) and [GaussianGammaDensityMomentGrid](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentGrid.lean) bind the literal weighted rows to the normalized cofinal sampler. [GaussianGammaDensityMomentName](Lean/IPRADerivations/Analysis/GaussianGammaDensityMomentName.lean) proves the original density moments for every internal nonnegative integer on the encoded half-plane. [GaussianGammaDensityMeanVariance](Lean/IPRADerivations/Analysis/GaussianGammaDensityMeanVariance.lean) gives normalization, mean and variance for that same sampler. Both Gamma-crossing equations with the golden-ratio solution, and the stated alternative factorial interpolations. |
 
 In particular, a finite factor bound or a generic exponentiation/logarithm
 interface does not prove a source assertion identifying the completed named
