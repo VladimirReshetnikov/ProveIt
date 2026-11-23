@@ -1,7 +1,5 @@
 import GlobeFlattening.TriangularChart
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import Mathlib.MeasureTheory.Function.JacobianOneDim
-import Mathlib.MeasureTheory.Integral.Lebesgue.Markov
 
 /-!
 # Area and closeness in longitude and latitude coordinates
@@ -97,11 +95,16 @@ private theorem lintegral_sinusoidalWidth :
       ENNReal.ofReal (4 * Real.pi) := by
   have hmono : StrictMonoOn (fun y => 2 * Real.pi * Real.sin y) (Icc (-(Real.pi / 2)) (Real.pi / 2)) :=
     (strictMono_mul_left_of_pos (by positivity)).comp_strictMonoOn Real.strictMonoOn_sin
-  rw [lintegral_deriv_eq_volume_image_of_monotoneOn measurableSet_Ioo
-    (fun y _ => ((Real.hasDerivAt_sin y).const_mul (2 * Real.pi)).hasDerivWithinAt)
-    (hmono.monotoneOn.mono Ioo_subset_Icc_self),
-    ContinuousOn.image_Ioo_of_strictMonoOn (by linarith [Real.pi_pos]) (by fun_prop) hmono,
-    Real.volume_Ioo, Real.sin_neg, Real.sin_pi_div_two]
+  have harea := lintegral_abs_det_fderiv_eq_addHaar_image volume
+    (s := latitudeInterval) measurableSet_Ioo
+    (fun y _ => ((Real.hasDerivAt_sin y).const_mul (2 * Real.pi)).hasFDerivAt.hasFDerivWithinAt)
+    (hmono.injOn.mono Ioo_subset_Icc_self)
+  simp only [ContinuousLinearMap.det_toSpanSingleton] at harea
+  rw [setLIntegral_congr_fun measurableSet_Ioo
+      (fun y hy => congrArg ENNReal.ofReal (abs_of_nonneg
+        (mul_nonneg (by positivity : 0 ≤ 2 * Real.pi) (Real.cos_pos_of_mem_Ioo hy).le)).symm),
+    harea, ContinuousOn.image_Ioo_of_strictMonoOn (neg_lt_self (half_pos Real.pi_pos)).le
+      (by fun_prop) hmono, Real.volume_Ioo, Real.sin_neg, Real.sin_pi_div_two]
   congr 1
   ring
 
@@ -132,10 +135,6 @@ def globeErrorParameter (ε : ℝ) : ℝ := ε / (1 + Real.pi)
 
 theorem globeErrorParameter_pos {ε : ℝ} (hε : 0 < ε) : 0 < globeErrorParameter ε :=
   div_pos hε (by positivity)
-
-private theorem globeErrorParameter_scale (ε : ℝ) :
-    (1 + Real.pi) * globeErrorParameter ε = ε :=
-  mul_div_cancel₀ ε (by positivity)
 
 /-- The sinusoidal projection written in the cut-sphere coordinates. -/
 def sinusoidalCoordinates (p : ℝ × ℝ) : ℝ × ℝ := (p.1 * Real.cos p.2, p.2)
@@ -182,7 +181,7 @@ theorem flattenCoordinates_close_to_sinusoidal
   have htri := abs_sub_le (u p) ((Real.cos p.2 + globeErrorParameter ε) * p.1) (p.1 * Real.cos p.2)
   rw [show (Real.cos p.2 + globeErrorParameter ε) * p.1 - p.1 * Real.cos p.2 =
     globeErrorParameter ε * p.1 by ring, abs_mul, abs_of_pos hδ] at htri
-  rw [← globeErrorParameter_scale ε, add_mul, one_mul, mul_comm Real.pi]
+  rw [← mul_div_cancel₀ ε (by positivity : 1 + Real.pi ≠ 0), add_mul, one_mul, mul_comm Real.pi]
   exact htri.trans (add_le_add (hclose p hp) (mul_le_mul_of_nonneg_left (abs_le.mpr hp.1) hδ.le))
 
 end
