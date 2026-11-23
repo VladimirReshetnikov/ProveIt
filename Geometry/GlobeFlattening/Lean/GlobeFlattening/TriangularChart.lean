@@ -1,7 +1,5 @@
 import GlobeFlattening.CoordinateRectangles
 import GlobeFlattening.RestrictedArea
-import Mathlib.Topology.OpenPartialHomeomorph.Basic
-import Mathlib.Topology.Order.IntermediateValue
 
 /-!
 # The triangular flattening chart
@@ -18,10 +16,6 @@ namespace GlobeFlattening
 /-- The region between the left and right endpoint profiles. -/
 def chartImage (u : ℝ × ℝ → ℝ) (a b c d : ℝ) : Set (ℝ × ℝ) :=
   Prod.swap ⁻¹' regionBetween (fun y => u (a, y)) (fun y => u (b, y)) (Ioo c d)
-
-theorem isCompact_chartClosedRectangle (a b c d : ℝ) :
-    IsCompact (chartClosedRectangle a b c d) :=
-  isCompact_Icc.prod isCompact_Icc
 
 /-- Every neighborhood contains a closed rectangle with the point in its interior. -/
 theorem exists_chartClosedRectangle_subset_of_mem_nhds {p : ℝ × ℝ} {W : Set (ℝ × ℝ)}
@@ -71,23 +65,13 @@ theorem image_flattenCoordinates_chartRectangle {u : ℝ × ℝ → ℝ} {a b c 
     (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))
     (hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b)) :
     flattenCoordinates u '' chartRectangle a b c d = chartImage u a b c d := by
+  have hrow (y : ℝ) (hy : y ∈ Ioo c d) :=
+    ContinuousOn.image_Ioo_of_strictMonoOn hab
+      (ContinuousOn.uncurry_right (f := fun x y => u (x, y)) y (Ioo_subset_Icc_self hy) hu) (hmono y hy)
   ext ⟨x, y⟩
   change (∃ p ∈ Ioo a b ×ˢ Ioo c d, (u p, p.2) = (x, y)) ↔
     y ∈ Ioo c d ∧ x ∈ Ioo (u (a, y)) (u (b, y))
-  simp only [Prod.exists, mem_prod, Prod.mk.injEq, ← and_assoc, exists_eq_right]
-  simp only [and_assoc, @and_left_comm _ (y ∈ Ioo c d) _, exists_and_left]
-  exact and_congr_right fun hy => Set.ext_iff.mp
-    (ContinuousOn.image_Ioo_of_strictMonoOn hab (f := fun x => u (x, y))
-      (hu.comp' (by fun_prop) fun _ hx => ⟨hx, Ioo_subset_Icc_self hy⟩) (hmono y hy)) x
-
-theorem isBounded_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
-    (hab : a ≤ b) (hu : ContinuousOn u (chartClosedRectangle a b c d))
-    (hmono : ∀ y ∈ Ioo c d, StrictMonoOn (fun x => u (x, y)) (Icc a b)) :
-    Bornology.IsBounded (chartImage u a b c d) := by
-  rw [← image_flattenCoordinates_chartRectangle hab hu hmono]
-  exact (((isCompact_chartClosedRectangle a b c d).image_of_continuousOn
-    (hu.prodMk continuous_snd.continuousOn)).isBounded).subset
-      (image_mono chartRectangle_subset_closed)
+  grind [Prod.exists]
 
 /-- The closed rectangle embeds by compactness. Its interior maps onto the
 open region between the endpoint profiles. -/
@@ -100,7 +84,7 @@ noncomputable def triangularChart {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
   let box := chartClosedRectangle a b c d
   have hcont : ContinuousOn (flattenCoordinates u) box := hu.prodMk continuous_snd.continuousOn
   have hinj := injOn_flattenCoordinates_closedRectangle hmono
-  letI : CompactSpace box := isCompact_iff_compactSpace.mp (isCompact_chartClosedRectangle a b c d)
+  letI : CompactSpace box := isCompact_iff_compactSpace.mp (isCompact_Icc.prod isCompact_Icc)
   have he : IsEmbedding (s.restrict (flattenCoordinates u)) :=
     (hcont.restrict.isClosedEmbedding hinj.injective).isEmbedding.comp
       (IsEmbedding.inclusion chartRectangle_subset_closed)

@@ -46,8 +46,7 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
     (hderiv : ∀ p ∈ good, HasFDerivAt u (Real.cos p.2 • ContinuousLinearMap.fst ℝ ℝ ℝ) p)
     (hW : IsOpen W) (hne : W.Nonempty)
     (hWsub : W ⊆ planarEuclideanEquiv '' (flattenCoordinates u '' sphereLongitudeDomain)) :
-    0 < volume (W ∩
-      (planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)) '' sphereExceptional good) := by
+    0 < volume (W ∩ sphereFlattenForward u '' sphereExceptional good) := by
   let g := planarEuclideanEquiv ∘ flattenCoordinates u
   have hopen : IsOpen (sphereLongitudeDomain ∩ g ⁻¹' W) :=
     ContinuousOn.isOpen_inter_preimage (planarEuclideanEquiv.continuous.comp_continuousOn
@@ -105,9 +104,8 @@ theorem not_lipschitzOn_of_exceptional_area
     {U : Set cutSphere} (hU : IsOpen U) (hne : U.Nonempty) (K : ℝ≥0) :
     ¬ LipschitzOnWith K (fun p : cutSphere => f p) U := by
   intro hLip
-  have hLip' : LipschitzOnWith K f ((U : Set _) ∩ Z) := by
-    rintro _ ⟨⟨x, hx, rfl⟩, _⟩ _ ⟨⟨y, hy, rfl⟩, _⟩
-    exact hLip hx hy
+  have hLip' : LipschitzOnWith K f ((U : Set _) ∩ Z) :=
+    (lipschitzOnWith_restrict.1 hLip).mono (subset_inter (inter_subset_right.trans hZ) inter_subset_left)
   have hpos := hexcess _ (hf.isOpenMap _ hU) (hne.image _)
     (Set.image_subset_iff.2 fun p _ => hmaps p.2)
   rw [← Set.image_image_val_eq_restrict_image,

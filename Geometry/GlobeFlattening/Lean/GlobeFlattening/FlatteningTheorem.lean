@@ -119,8 +119,11 @@ def globeFlattening_from_scalar
       forward_agrees := fun p => rfl
       inverse_agrees := fun q => rfl
       target_open := hTopen
-      target_bounded := planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image
-        (isBounded_chartImage hab.le hcu (fun y hy => hmono y (Ioo_subset_Icc_self hy)))
+      target_bounded := planarEuclideanEquiv.toContinuousLinearMap.lipschitz.isBounded_image (by
+        rw [← g.image_source_eq_target]
+        exact ((isCompact_Icc.prod isCompact_Icc).image_of_continuousOn
+          (hcu.prodMk continuous_snd.continuousOn)).isBounded.subset
+            (image_mono sphereLongitudeDomain_subset_box))
       exceptional_subset := sdiff_subset
       exceptional_measurable := hZmeas
       exceptional_null := measure_sphereExceptional_eq_zero hgood hsub hnull
@@ -155,10 +158,8 @@ def globeFlattening_from_scalar
     exact ⟨sphereTangentLift p, hInv p hp, fun v =>
       ⟨hval.symm ▸ tangent_sphereTangentLift p v, norm_sphereTangentLift p v⟩⟩
   · refine ⟨ε, lt_two_mul_self hε, fun w hw => ?_⟩
-    let p := sphereChartInverse w
-    exact (dist_planarEuclideanEquiv_of_snd_eq (a := flattenCoordinates u p)
-      (b := sinusoidalCoordinates p) rfl).trans_le
-      (hcloseCoordinates p (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)))
+    convert hcloseCoordinates _ (sphereLongitudeDomain_subset_box (sphereChartInverse_mapsTo hw)) using 1
+    exact dist_planarEuclideanEquiv_of_snd_eq rfl
 
 /-- The cut sphere has the usual total area of the unit sphere. -/
 theorem sphericalArea_cutSphere : sphericalArea cutSphere = ENNReal.ofReal (4 * Real.pi) := by
