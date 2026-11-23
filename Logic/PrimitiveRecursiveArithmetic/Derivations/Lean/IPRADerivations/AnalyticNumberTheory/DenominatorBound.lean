@@ -28,13 +28,13 @@ With `H^{(a)}(N) = ∑_{1 ≤ m < N} [gcd(m, a) = 1] ⌊F/m⌋` (`DenominatorSmo
 * `Hz`, `Hq_one`: `H^{(1)}(N) = ∑_{1 ≤ m < N} ⌊F/m⌋`;
 * **`sieve_denominator`**: `φ(q) · ∑_{1 ≤ m ≤ z} ⌊z!/m⌋ ≤ q · z! G_q(z)` for `q ≥ 1`, that is
   `G_q(z) ≥ (φ(q)/q) H_z` (`eq:sieve-denominator`);
-* **`finite_sieve_second`**: for `q ≥ 2`, `gcd(a, q) = 1`, `z ≥ 1`, with `H = ∑_{1 ≤ m ≤ z} ⌊z!/m⌋ = z! H_z`,
+* **`finite_sieve_second`**: for `q ≥ 1`, `gcd(a, q) = 1`, `z ≥ 1`, with `H = ∑_{1 ≤ m ≤ z} ⌊z!/m⌋ = z! H_z`,
 
     `φ(q) H · π(X; q, a) ≤ X z! + φ(q) H (z² + z)`,
 
   that is `π(X; q, a) ≤ X/(φ(q) H_z) + z² + z`.
 
-Not derived: the case `q = 1` (the first inequality `FiniteSieve.finite_sieve` assumes `q ≥ 2`).
+The modulus is any `q ≥ 1`, as in the first inequality `FiniteSieve.finite_sieve`.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -378,9 +378,9 @@ theorem transfer {c c' t B R : PTm n} (h1 : Γ ⊢[PRAAx] le c' c)
 theorem assoc_alg (a b c : PTm n) : Γ ⊢[PRAAx] a * (b * c) ≐ (a * b) * c := by
   apply deriveNat; ipra_simps; ring
 
-/-- **`thm:finite-sieve`, second inequality**, for `q ≥ 2`: with `H = ∑_{1 ≤ m ≤ z} ⌊z!/m⌋ = z! H_z`,
+/-- **`thm:finite-sieve`, second inequality**, for `q ≥ 1`: with `H = ∑_{1 ≤ m ≤ z} ⌊z!/m⌋ = z! H_z`,
 `φ(q) H · π(X; q, a) ≤ X z! + φ(q) H (z² + z)`. -/
-theorem finite_sieve_second {X q a z : PTm n} (hq : Γ ⊢[PRAAx] le two q)
+theorem finite_sieve_second {X q a z : PTm n} (hq : Γ ⊢[PRAAx] le one q)
     (ha : Γ ⊢[PRAAx] gcd a q ≐ one) (hz : Γ ⊢[PRAAx] le one z) :
     Γ ⊢[PRAAx] le
       ((phi q * Hz (fact z) (succ z)) *
@@ -401,7 +401,7 @@ theorem finite_sieve_second {X q a z : PTm n} (hq : Γ ⊢[PRAAx] le two q)
       (congrAdd (congrMul (.eqRefl _) (congrAp2 factF ez (.eqRefl _)))
         ((congrMul eq (congrMul (.eqRefl _) (congrAdd (congrMul ez ez) ez))).eqTrans (assoc_alg _ _ _))) fs
   have qpos : Γ ⊢[PRAAx] q ≐ succ (pred q) :=
-    AnalyticNumberTheory.Primes.eq_succ_pred (AnalyticNumberTheory.Smooth.K_eq hq)
+    AnalyticNumberTheory.CoprimeModulus.pos_of_one_le hq
   exact transfer (sieve_denominator qpos a z) fs'
 
 end LeanProofs.IPRA.AnalyticNumberTheory.DenominatorBound

@@ -20,7 +20,7 @@ this module derives the triangle inequality for the Möbius inversion,
 
 from `μ⁺ + μ⁻ ≤ 1` (`mu_sum_le`), and reduces `eq:weight-bound` to one statement about each `d`:
 
-  if `d · W_d ≤ A` for `1 ≤ d ≤ z` (and `q ≥ 2`), then `Σ_{d ≤ z} (λ⁺_d + λ⁻_d) ≤ z · A`         (`weights_le`),
+  if `d · W_d ≤ A` for `1 ≤ d ≤ z` (and `q ≥ 1`), then `Σ_{d ≤ z} (λ⁺_d + λ⁻_d) ≤ z · A`         (`weights_le`),
 
 by `Foundations/SumPositive.sum_le_pos_const` (the summand at `d = 0` vanishes).
 
@@ -162,8 +162,8 @@ theorem tri (X P : PTm n) :
 /-! ## Reduction of the weight bound to one statement about each `d` -/
 
 /-- `eq:weight-bound` from `|λ_d| ≤ 1`: if `d W_d ≤ A` for `1 ≤ d ≤ z`, then `Σ_{d ≤ z} (λ⁺_d + λ⁻_d) ≤ z A`. -/
-theorem weights_le (X : PTm n) {P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
-    (hpt : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (d P : PTm k), (Δ ⊢[PRAAx] le two (fstT P)) →
+theorem weights_le (X : PTm n) {P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
+    (hpt : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (d P : PTm k), (Δ ⊢[PRAAx] le one (fstT P)) →
       (Δ ⊢[PRAAx] lt d (sndT (sndT P))) →
       (Δ ⊢[PRAAx] le (succ d * (inst2 (wS YP) (succ d) P + inst2 (wS YN) (succ d) P)) (Asum P))) :
     Γ ⊢[PRAAx] le
@@ -173,7 +173,7 @@ theorem weights_le (X : PTm n) {P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
   refine le_trans (tri X P) (sum_le_pos_const _ ?_ ?_)
   · rw [inst2_lB]
     exact zero_mul _
-  · have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le two (fstT (Syn.shift P)) := by
+  · have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le one (fstT (Syn.shift P)) := by
       simpa [Fm.shift, Syn.shift] using hq.shift
     have sN : Syn.shift (sndT (sndT P)) = sndT (sndT (Syn.shift P)) := by simp [Syn.shift]
     have sA : Syn.shift (Asum P) = Asum (Syn.shift P) := by simp [Syn.shift]

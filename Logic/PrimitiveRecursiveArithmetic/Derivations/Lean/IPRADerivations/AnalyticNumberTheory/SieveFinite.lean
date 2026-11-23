@@ -11,7 +11,7 @@ Packet: `analytic-number-theory/prime_distribution_ipra`, `paper/sections/05_sie
   larger than `z` survives this sieve. At most `z` other primes occur."
 
 This module assembles that argument at the explicit weights `eq:explicit-sieve-weights`, with the bound on the sum of
-the weights left as a hypothesis. For `P = ⟨q, ⟨a, z⟩⟩`, `q ≥ 2`, `gcd(a, q) = 1`, `z ≥ 1`,
+the weights left as a hypothesis. For `P = ⟨q, ⟨a, z⟩⟩`, `q ≥ 1`, `gcd(a, q) = 1`, `z ≥ 1`,
 `A = z! G_q(z)` (`SieveWeightOne.Asum`), the prime count `π = π(X; q, a)` over `m < X` (`SievePrimes.piB`) and the sum
 `L = Σ_{d ≤ z} (λ⁺_d + λ⁻_d)` of the natural parts of the cleared weights:
 
@@ -67,7 +67,7 @@ theorem zero_case {q A π X B c Z : PTm n} (h : Γ ⊢[PRAAx] A ≐ zero) :
 
 /-- The finite sieve inequality at the explicit weights, from a bound `L ≤ c A` on the sum of the weights:
 `q A π ≤ X z! + q A (c² + z)`. -/
-theorem finite_sieve_of_bound {X P c : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+theorem finite_sieve_of_bound {X P c : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) (hz : Γ ⊢[PRAAx] le one (sndT (sndT P)))
     (hL : Γ ⊢[PRAAx] le
       (ap2 (sumF (sndB (lB UPw))) (succ (sndT (sndT P))) (pairT X P) +

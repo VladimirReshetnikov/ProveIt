@@ -296,6 +296,7 @@ import IPRADerivations.DiophantineNumberTheory.ThreeSquares
 import IPRADerivations.DiophantineNumberTheory.ThreeSquaresPowers
 import IPRADerivations.DiophantineNumberTheory.ResidueCharacter
 import IPRADerivations.AnalyticNumberTheory.PrimesModFour
+import IPRADerivations.AnalyticNumberTheory.CoprimeModulus
 import IPRADerivations.Combinatorics.LucasStep
 import IPRADerivations.Combinatorics.LucasDigits
 import IPRADerivations.Combinatorics.KummerCarries

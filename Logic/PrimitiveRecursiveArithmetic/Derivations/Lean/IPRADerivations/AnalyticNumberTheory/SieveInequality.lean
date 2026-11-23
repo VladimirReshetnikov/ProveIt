@@ -56,7 +56,7 @@ theorem combine {q X S K1 K2 Npp Nnn Npn Nnp Gpp Gnn Gpn Gnp Lp Ln : PTm n}
   ipra_le 𝔞 q * sl M + sl h1 + sl h2 + sl h3 + sl h4
 
 /-- The sieve inequality for arbitrary signed weights, cleared of signs. -/
-theorem sieve_ineq (UP UN : PTm 2) {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+theorem sieve_ineq (UP UN : PTm 2) {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) (hZ : Γ ⊢[PRAAx] lt one Z) :
     Γ ⊢[PRAAx] le
       (fstT P * ((inst2 (lB UP) one P * inst2 (lB UP) one P + inst2 (lB UN) one P * inst2 (lB UN) one P) *

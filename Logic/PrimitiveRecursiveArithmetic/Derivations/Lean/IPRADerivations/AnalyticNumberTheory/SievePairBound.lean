@@ -6,7 +6,7 @@ import IPRADerivations.AnalyticNumberTheory.SievePairCount
 Packet: `analytic-number-theory/prime_distribution_ipra`, `paper/sections/05_sieve.tex`, proof of `thm:finite-sieve`:
 the estimate `eq:crt-count` is applied to every pair `(d, e)` of indices of the sieve weights and then summed.
 
-`SievePairCount.pair_le` and `pair_ge` hold for `d, e ≥ 1` coprime to `q ≥ 2` and `gcd(a, q) = 1`. To sum them over
+`SievePairCount.pair_le` and `pair_ge` hold for `d, e ≥ 1` coprime to `q ≥ 1` and `gcd(a, q) = 1`. To sum them over
 all pairs below a bound (where a monotonicity lemma for double sums needs the inequality at every index), the side
 conditions are carried by the 0/1 factor
 
@@ -73,20 +73,20 @@ theorem one_factor {A B : PTm n} (h : Γ ⊢[PRAAx] le A B) : Γ ⊢[PRAAx] le (
 
 /-- `[2 ≤ q] [gcd(a, q) = 1] [d ≥ 1] [gcd(d, q) = 1] [e ≥ 1] [gcd(e, q) = 1]`. -/
 abbrev ind (d e q a : PTm n) : PTm n :=
-  eqb (monus two q) zero * (eqb (gcd a q) one * (sg d * (eqb (gcd d q) one * (sg e * (eqb (gcd e q) one * one)))))
+  eqb (monus one q) zero * (eqb (gcd a q) one * (sg d * (eqb (gcd d q) one * (sg e * (eqb (gcd e q) one * one)))))
 
 /-- `ind · W · (q d e · K) ≤ ind · W · (gcd(d, e) X + q d e)`. -/
 theorem pw_upper (W d e q a X : PTm n) :
     Γ ⊢[PRAAx] le (ind d e q a * (W * (q * (d * e) * cnt X q (lc d e) a)))
       (ind d e q a * (W * (gcd d e * X + q * (d * e)))) := by
   refine eqb_factor (eqb_factor (sg_factor (eqb_factor (sg_factor (eqb_factor (one_factor ?_))))))
-  let C1 : List (Fm PTm n) := (monus two q ≐ zero) :: Γ
+  let C1 : List (Fm PTm n) := (monus one q ≐ zero) :: Γ
   let C2 : List (Fm PTm n) := (gcd a q ≐ one) :: C1
   let C3 : List (Fm PTm n) := (d ≐ succ (pred d)) :: C2
   let C4 : List (Fm PTm n) := (gcd d q ≐ one) :: C3
   let C5 : List (Fm PTm n) := (e ≐ succ (pred e)) :: C4
   let C6 : List (Fm PTm n) := (gcd e q ≐ one) :: C5
-  have hq : C6 ⊢[PRAAx] le two q := (Prf.hyp0 : C1 ⊢[PRAAx] monus two q ≐ zero).wk.wk.wk.wk.wk
+  have hq : C6 ⊢[PRAAx] le one q := (Prf.hyp0 : C1 ⊢[PRAAx] monus one q ≐ zero).wk.wk.wk.wk.wk
   have ha : C6 ⊢[PRAAx] gcd a q ≐ one := (Prf.hyp0 : C2 ⊢[PRAAx] gcd a q ≐ one).wk.wk.wk.wk
   have hd : C6 ⊢[PRAAx] d ≐ succ (pred d) := (Prf.hyp0 : C3 ⊢[PRAAx] d ≐ succ (pred d)).wk.wk.wk
   have hdq : C6 ⊢[PRAAx] gcd d q ≐ one := (Prf.hyp0 : C4 ⊢[PRAAx] gcd d q ≐ one).wk.wk
@@ -99,13 +99,13 @@ theorem pw_lower (W d e q a X : PTm n) :
     Γ ⊢[PRAAx] le (ind d e q a * (W * (gcd d e * X)))
       (ind d e q a * (W * (q * (d * e) * cnt X q (lc d e) a + q * (d * e)))) := by
   refine eqb_factor (eqb_factor (sg_factor (eqb_factor (sg_factor (eqb_factor (one_factor ?_))))))
-  let C1 : List (Fm PTm n) := (monus two q ≐ zero) :: Γ
+  let C1 : List (Fm PTm n) := (monus one q ≐ zero) :: Γ
   let C2 : List (Fm PTm n) := (gcd a q ≐ one) :: C1
   let C3 : List (Fm PTm n) := (d ≐ succ (pred d)) :: C2
   let C4 : List (Fm PTm n) := (gcd d q ≐ one) :: C3
   let C5 : List (Fm PTm n) := (e ≐ succ (pred e)) :: C4
   let C6 : List (Fm PTm n) := (gcd e q ≐ one) :: C5
-  have hq : C6 ⊢[PRAAx] le two q := (Prf.hyp0 : C1 ⊢[PRAAx] monus two q ≐ zero).wk.wk.wk.wk.wk
+  have hq : C6 ⊢[PRAAx] le one q := (Prf.hyp0 : C1 ⊢[PRAAx] monus one q ≐ zero).wk.wk.wk.wk.wk
   have ha : C6 ⊢[PRAAx] gcd a q ≐ one := (Prf.hyp0 : C2 ⊢[PRAAx] gcd a q ≐ one).wk.wk.wk.wk
   have hd : C6 ⊢[PRAAx] d ≐ succ (pred d) := (Prf.hyp0 : C3 ⊢[PRAAx] d ≐ succ (pred d)).wk.wk.wk
   have hdq : C6 ⊢[PRAAx] gcd d q ≐ one := (Prf.hyp0 : C4 ⊢[PRAAx] gcd d q ≐ one).wk.wk

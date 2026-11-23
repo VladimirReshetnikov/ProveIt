@@ -158,7 +158,7 @@ theorem primes_le_sharp (X Z P : PTm n) :
 
 /-- The sieve inequality for the primes of a progression, for arbitrary signed weights, with `Z − 1` other
 primes: `q (λ_1)² (π − (Z − 1)) ≤ X Σ λ_d λ_e / [d, e] + q (Σ |λ_d|)²`, cleared of signs. -/
-theorem prime_sieve_ineq_sharp (UP UN : PTm 2) {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+theorem prime_sieve_ineq_sharp (UP UN : PTm 2) {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) (hZ : Γ ⊢[PRAAx] lt one Z) :
     Γ ⊢[PRAAx] le
       (fstT P * ((inst2 (lB UP) one P * inst2 (lB UP) one P + inst2 (lB UN) one P * inst2 (lB UN) one P) *

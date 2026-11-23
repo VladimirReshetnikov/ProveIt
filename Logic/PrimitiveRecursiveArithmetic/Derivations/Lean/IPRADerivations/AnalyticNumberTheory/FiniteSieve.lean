@@ -11,12 +11,12 @@ inequality of `eq:finite-sieve`:
 
 where `G_q(z) = Σ_{d ≤ z, d squarefree, gcd(d, q) = 1} 1/φ(d)`.
 
-`finite_sieve` is this inequality for `q ≥ 2`, cleared of its denominators. With `P = ⟨q, ⟨a, z⟩⟩`,
+`finite_sieve` is this inequality for `q ≥ 1`, cleared of its denominators. With `P = ⟨q, ⟨a, z⟩⟩`,
 
 * `A = Σ_{r ≤ z} [r ≥ 1] μ(r)² [gcd(r, q) = 1] z!/φ(r) = z! · G_q(z)`   (`SieveWeightOne.Asum`), and
 * `π = Σ_{m < X} [m ≡ a (mod q)] [m prime]`                              (`SievePrimes.piB`),
 
-it states, for `q ≥ 2`, `gcd(a, q) = 1` and `z ≥ 1`,
+it states, for `q ≥ 1`, `gcd(a, q) = 1` and `z ≥ 1`,
 
   `q · A · π ≤ X · z! + q · A · (z² + z)`,
 
@@ -25,7 +25,6 @@ that is `π ≤ X / (q G_q(z)) + z² + z` after division by `q A` (`A ≥ z! ≥
 Differences from the paper's statement:
 
 * the count is over `0 ≤ m < X` rather than `1 ≤ n ≤ x`;
-* `q = 1` is not covered (the count modulo `q` of `SieveCount` assumes `q ≥ 2`);
 * the second inequality of `eq:finite-sieve` (`eq:sieve-denominator`: `G_q(z) ≥ (φ(q)/q) H_z`) is derived in
   `DenominatorBound` (`sieve_denominator`, `finite_sieve_second`).
 
@@ -50,9 +49,9 @@ open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-/-- `thm:finite-sieve`, first inequality, for `q ≥ 2`: `q A π(X; q, a) ≤ X z! + q A (z² + z)` with
+/-- `thm:finite-sieve`, first inequality, for `q ≥ 1`: `q A π(X; q, a) ≤ X z! + q A (z² + z)` with
 `A = z! G_q(z)`. -/
-theorem finite_sieve {X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+theorem finite_sieve {X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) (hz : Γ ⊢[PRAAx] le one (sndT (sndT P))) :
     Γ ⊢[PRAAx] le
       (fstT P * (Asum P *

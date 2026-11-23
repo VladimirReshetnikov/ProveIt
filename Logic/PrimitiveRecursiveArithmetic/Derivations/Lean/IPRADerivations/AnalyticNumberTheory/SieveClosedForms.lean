@@ -79,11 +79,11 @@ theorem inst2_sgV (V : PTm 2) (e P : PTm n) :
 
 /-- `χ · X` as a term in the parameter `y = ⟨X, P⟩`. -/
 def kC : PTm 1 :=
-  (eqb (monus two (fstT (sndT (var 0)))) zero * eqb (gcd (fstT (sndT (sndT (var 0)))) (fstT (sndT (var 0)))) one) *
+  (eqb (monus one (fstT (sndT (var 0)))) zero * eqb (gcd (fstT (sndT (sndT (var 0)))) (fstT (sndT (var 0)))) one) *
     fstT (var 0)
 
 theorem at1_kC (y : PTm n) : at1 kC y =
-    (eqb (monus two (fstT (sndT y))) zero * eqb (gcd (fstT (sndT (sndT y))) (fstT (sndT y))) one) * fstT y := by
+    (eqb (monus one (fstT (sndT y))) zero * eqb (gcd (fstT (sndT (sndT y))) (fstT (sndT y))) one) * fstT y := by
   simp only [at1, kC, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, LeanProofs.IPRA.PTm.subst_monus, subst_gcd',
     subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, ConciseIPRA.PTm.subst_succ,
     ConciseIPRA.PTm.subst_zero]
@@ -120,21 +120,21 @@ theorem E_closed (Z y : PTm n) :
 
 /-! ## The estimate -/
 
-/-- Under `q ≥ 2` and `gcd(a, q) = 1`, the factor `χ X` is `X`. -/
-theorem kX {X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) :
+/-- Under `q ≥ 1` and `gcd(a, q) = 1`, the factor `χ X` is `X`. -/
+theorem kX {X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) :
     Γ ⊢[PRAAx] at1 kC (pairT X P) ≐ X := by
   rw [at1_kC]
   have s := snd_pair (Γ := Γ) X P
   have cq : Γ ⊢[PRAAx] fstT (sndT (pairT X P)) ≐ fstT P := congrFst s
   have ca : Γ ⊢[PRAAx] fstT (sndT (sndT (pairT X P))) ≐ fstT (sndT P) := congrFst (congrSnd s)
-  have k1 : Γ ⊢[PRAAx] eqb (monus two (fstT (sndT (pairT X P)))) zero ≐ one :=
+  have k1 : Γ ⊢[PRAAx] eqb (monus one (fstT (sndT (pairT X P)))) zero ≐ one :=
     (congrEqb' (congrMonus (.eqRefl _) cq) (.eqRefl _)).eqTrans (eqb_of_eq hq)
   have k2 : Γ ⊢[PRAAx] eqb (gcd (fstT (sndT (sndT (pairT X P)))) (fstT (sndT (pairT X P)))) one ≐ one :=
     (congrEqb' (congrGcd ca cq) (.eqRefl _)).eqTrans (eqb_of_eq ha)
   exact (congrMul (congrMul k1 k2) (fst_pair X P)).eqTrans (ooq _)
 
 /-- `q N ≤ X G + q L L'`. -/
-theorem bil_le {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+theorem bil_le {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) :
     Γ ⊢[PRAAx] le (fstT P * ap2 (sumF (LW (LW cB (lB V)) (sndB (lB U)))) X (pairT Z (pairT Z P)))
       (X * dsum (Lb (sndB (gU U)) (sndB (sgV V))) Z Z (pairT X P) +
@@ -145,7 +145,7 @@ theorem bil_le {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
     (bil_upper U V hq ha)
 
 /-- `X G ≤ q N + q L L'`. -/
-theorem bil_ge {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+theorem bil_ge {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) :
     Γ ⊢[PRAAx] le (X * dsum (Lb (sndB (gU U)) (sndB (sgV V))) Z Z (pairT X P))
       (fstT P * ap2 (sumF (LW (LW cB (lB V)) (sndB (lB U)))) X (pairT Z (pairT Z P)) +

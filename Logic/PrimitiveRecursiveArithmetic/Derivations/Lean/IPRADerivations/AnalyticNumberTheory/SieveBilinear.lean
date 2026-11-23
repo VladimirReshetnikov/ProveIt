@@ -85,35 +85,35 @@ theorem Dm_split (Z y : PTm n) :
     Γ ⊢[PRAAx] dsum (Dm U V) Z Z y ≐ dsum (Am U V) Z Z y + dsum (Em U V) Z Z y :=
   (dsum_congr (Dm U V) (Am U V + Em U V) (fun i j x => Dm_pt U V i j x) Z Z y).eqTrans (dsum_add _ _ _ _ _)
 
-/-- Under `q ≥ 2` and `gcd(a, q) = 1`, the factor `χ q` is `q`. -/
-theorem kq {X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) :
+/-- Under `q ≥ 1` and `gcd(a, q) = 1`, the factor `χ q` is `q`. -/
+theorem kq {X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) :
     Γ ⊢[PRAAx] at1 kT (pairT X P) ≐ fstT P := by
   rw [at1_kT]
   have s := snd_pair (Γ := Γ) X P
   have cq : Γ ⊢[PRAAx] fstT (sndT (pairT X P)) ≐ fstT P := congrFst s
   have ca : Γ ⊢[PRAAx] fstT (sndT (sndT (pairT X P))) ≐ fstT (sndT P) := congrFst (congrSnd s)
-  have k1 : Γ ⊢[PRAAx] eqb (monus two (fstT (sndT (pairT X P)))) zero ≐ one :=
+  have k1 : Γ ⊢[PRAAx] eqb (monus one (fstT (sndT (pairT X P)))) zero ≐ one :=
     (congrEqb' (congrMonus (.eqRefl _) cq) (.eqRefl _)).eqTrans (eqb_of_eq hq)
   have k2 : Γ ⊢[PRAAx] eqb (gcd (fstT (sndT (sndT (pairT X P)))) (fstT (sndT (pairT X P)))) one ≐ one :=
     (congrEqb' (congrGcd ca cq) (.eqRefl _)).eqTrans (eqb_of_eq ha)
   exact (congrMul (congrMul k1 k2) cq).eqTrans (ooq _)
 
 /-- The expanded square, times `q`, is the double sum of the pair counts. -/
-theorem qN {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+theorem qN {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) :
     Γ ⊢[PRAAx] dsum (Am U V) Z Z (pairT X P) ≐
       fstT P * ap2 (sumF (LW (LW cB (lB V)) (sndB (lB U)))) X (pairT Z (pairT Z P)) :=
   (expansion U V X Z P).eqTrans (congrMul (kq hq ha) (.eqRefl _))
 
 /-- `q N ≤ C + E`. -/
-theorem bil_upper {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+theorem bil_upper {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) :
     Γ ⊢[PRAAx] le (fstT P * ap2 (sumF (LW (LW cB (lB V)) (sndB (lB U)))) X (pairT Z (pairT Z P)))
       (dsum (Cm U V) Z Z (pairT X P) + dsum (Em U V) Z Z (pairT X P)) :=
   le_congr (qN U V hq ha) (Bm_split U V Z (pairT X P)) (upper U V Z (pairT X P))
 
 /-- `C ≤ q N + E`. -/
-theorem bil_lower {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+theorem bil_lower {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) :
     Γ ⊢[PRAAx] le (dsum (Cm U V) Z Z (pairT X P))
       (fstT P * ap2 (sumF (LW (LW cB (lB V)) (sndB (lB U)))) X (pairT Z (pairT Z P)) +

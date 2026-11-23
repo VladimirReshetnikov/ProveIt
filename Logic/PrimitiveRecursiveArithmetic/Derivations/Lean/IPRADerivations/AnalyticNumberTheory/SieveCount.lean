@@ -3,6 +3,7 @@ import IPRADerivations.AnalyticNumberTheory.PowerResidue
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.EulerProduct
+import IPRADerivations.AnalyticNumberTheory.CoprimeModulus
 
 /-!
 # Counting a progression inside the multiples of `l` (the sieve counting step)
@@ -11,12 +12,13 @@ Packet: `analytic-number-theory/prime_distribution_ipra`, `paper/sections/05_sie
 `l = [d, e]`, we have `gcd(l, q) = 1`. The simultaneous conditions `n ≡ a (mod q)` and `l ∣ n` select one residue
 class modulo `ql`. Counting that class in `1, …, x` gives `#{…} = x/(ql) + r_l`, `|r_l| ≤ 1`."
 
-For `q ≥ 2`, `l ≥ 1`, `gcd(l, q) = 1` and `gcd(a, q) = 1`, with the window `0 ≤ n < X` and
+For `q ≥ 1`, `l ≥ 1`, `gcd(l, q) = 1` and `gcd(a, q) = 1`, with the window `0 ≤ n < X` and
 
   `C(X) = Σ_{n<X} [n ≡ a (mod q)] [l ∣ n]`,
 
 the two cleared inequalities are `q l · C(X) ≤ X + q l` (`count_le`) and `X ≤ q l · C(X) + q l` (`count_ge`).
-Since `a` is a unit modulo `q ≥ 2`, the term `n = 0` is not counted, so the window `1 ≤ n ≤ x` is `X = x + 1`.
+For `q ≥ 2` the residue `a` is a unit modulo `q`, so the term `n = 0` is not counted and the window `1 ≤ n ≤ x` is
+`X = x + 1`; for `q = 1` every `n` is in the class, the term `n = 0` included.
 
 * `cls_pt`: the summand depends only on `n mod q l` (`Multiplicative.rem_rem_mul`), so `C` is a
   `BrunCounting` sum for the modulus `q l`;
@@ -34,7 +36,7 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveCount
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting (gB g_at A count_upper count_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (res res_lt ind_transport)
-open LeanProofs.IPRA.AnalyticNumberTheory.Euler (N_pos)
+open LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus (pos_of_one_le two_le_of_ne)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_eq cM)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (mulBody count_multiples quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_rem_mul)
@@ -183,32 +185,9 @@ theorem h_pt {q l a j : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hc : Γ ⊢[PRAAx]
 
 /-! ## One element per period -/
 
-/-- `ρ = Σ_{t < q l} [t ≡ a (mod q)] [l ∣ t] = 1`. -/
-theorem rho_one {q l a : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hl : Γ ⊢[PRAAx] l ≐ succ (pred l))
-    (hc : Γ ⊢[PRAAx] gcd l q ≐ one) (ha : Γ ⊢[PRAAx] gcd a q ≐ one) :
-    Γ ⊢[PRAAx] cnt (succ (pred (q * l))) q l a ≐ one := by
-  have hqp : Γ ⊢[PRAAx] q ≐ succ (pred q) := N_pos hq
-  have hD : Γ ⊢[PRAAx] succ (pred (q * l)) ≐ q * l := (pos_mul hqp hl).eqSymm
-  -- the summand as `[l ∣ t] h(t / l)`
-  have s1 : Γ ⊢[PRAAx] cnt (succ (pred (q * l))) q l a ≐
-      ap2 (sumF (riB hB)) (succ (pred (q * l))) (pairT l (pairT l (pairT q a))) := by
-    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-    have hqp' := MobiusBounds.shift_pos hqp
-    have hl' := MobiusBounds.shift_pos hl
-    have hD' : (Γ.map Fm.shift) ⊢[PRAAx] succ (pred (Syn.shift q * Syn.shift l)) ≐ Syn.shift q * Syn.shift l :=
-      (pos_mul hqp' hl').eqSymm
-    have sh1 : Syn.shift (pairT (succ (pred (q * l))) (par q l a)) =
-        pairT (succ (pred (Syn.shift q * Syn.shift l))) (par (Syn.shift q) (Syn.shift l) (Syn.shift a)) := by
-      simp [Syn.shift]
-    have sh2 : Syn.shift (pairT l (pairT l (pairT q a))) =
-        pairT (Syn.shift l) (pairT (Syn.shift l) (pairT (Syn.shift q) (Syn.shift a))) := by
-      simp [Syn.shift]
-    rw [sh1, sh2]
-    exact (cls_pt hqp'.wk hl'.wk hD'.wk _).eqTrans (ri_pt hl'.wk _)
-  -- reindex the multiples of `l`
-  have s2 := reindex_eq (Γ := Γ) hB (x := pairT l (pairT q a)) (succ (pred (q * l))) hl
-  have s3 : Γ ⊢[PRAAx] ap2 (sumF hB) (cM (succ (pred (q * l))) l) (pairT l (pairT q a)) ≐
-      ap2 (sumF hB) q (pairT l (pairT q a)) := congrAp2 (sumF hB) (cM_eq hl hD) (.eqRefl _)
+/-- One period for `q ≥ 2`: `Σ_{j < q} [l j ≡ a (mod q)] = 1`. -/
+theorem period_two {q l a : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hc : Γ ⊢[PRAAx] gcd l q ≐ one)
+    (ha : Γ ⊢[PRAAx] gcd a q ≐ one) : Γ ⊢[PRAAx] ap2 (sumF hB) q (pairT l (pairT q a)) ≐ one := by
   -- each `j < q` contributes `[j = b]`
   have s4 : Γ ⊢[PRAAx] ap2 (sumF hB) q (pairT l (pairT q a)) ≐
       ap2 (sumF (dB one)) q (pairT (res l q a) zero) := by
@@ -233,33 +212,79 @@ theorem rho_one {q l a : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hl : Γ ⊢[PRAAx
     exact h_pt hq'.wk hc'.wk ha'.wk Prf.hyp0
   have s5 := sum_delta (Γ := Γ) (one : PTm 2) (N := q) (c := res l q a) (x := zero) (res_lt hq)
   rw [one_inst] at s5
-  exact s1.eqTrans (s2.eqTrans (s3.eqTrans (s4.eqTrans s5)))
+  exact s4.eqTrans s5
+
+/-- One period for `q = 1`: the single term `j = 0`. -/
+theorem period_one {q l a : PTm n} (e1 : Γ ⊢[PRAAx] q ≐ one) :
+    Γ ⊢[PRAAx] ap2 (sumF hB) q (pairT l (pairT q a)) ≐ one := by
+  have ss := sum_succ' (Γ := Γ) hB zero (pairT l (pairT q a))
+  have r0 : Γ ⊢[PRAAx] rem (l * zero) q ≐ rem a q :=
+    (congrAp2 remF (.eqRefl _) e1).eqTrans ((AnalyticNumberTheory.Euler.rem_one _).eqTrans
+      ((AnalyticNumberTheory.Euler.rem_one _).eqSymm.eqTrans (congrAp2 remF (.eqRefl _) e1.eqSymm)))
+  have t0 : Γ ⊢[PRAAx] inst2 hB zero (pairT l (pairT q a)) ≐ one :=
+    (hB_at zero l q a).eqTrans (eqb_of_eq r0)
+  exact (congrAp2 (sumF hB) e1 (.eqRefl _)).eqTrans
+    (ss.eqTrans ((congrAdd (sum_zero _ _) t0).eqTrans (zero_add one)))
+
+/-- `ρ = Σ_{t < q l} [t ≡ a (mod q)] [l ∣ t] = 1`. -/
+theorem rho_one {q l a : PTm n} (hq : Γ ⊢[PRAAx] le one q) (hl : Γ ⊢[PRAAx] l ≐ succ (pred l))
+    (hc : Γ ⊢[PRAAx] gcd l q ≐ one) (ha : Γ ⊢[PRAAx] gcd a q ≐ one) :
+    Γ ⊢[PRAAx] cnt (succ (pred (q * l))) q l a ≐ one := by
+  have hqp : Γ ⊢[PRAAx] q ≐ succ (pred q) := pos_of_one_le hq
+  have hD : Γ ⊢[PRAAx] succ (pred (q * l)) ≐ q * l := (pos_mul hqp hl).eqSymm
+  -- the summand as `[l ∣ t] h(t / l)`
+  have s1 : Γ ⊢[PRAAx] cnt (succ (pred (q * l))) q l a ≐
+      ap2 (sumF (riB hB)) (succ (pred (q * l))) (pairT l (pairT l (pairT q a))) := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    have hqp' := MobiusBounds.shift_pos hqp
+    have hl' := MobiusBounds.shift_pos hl
+    have hD' : (Γ.map Fm.shift) ⊢[PRAAx] succ (pred (Syn.shift q * Syn.shift l)) ≐ Syn.shift q * Syn.shift l :=
+      (pos_mul hqp' hl').eqSymm
+    have sh1 : Syn.shift (pairT (succ (pred (q * l))) (par q l a)) =
+        pairT (succ (pred (Syn.shift q * Syn.shift l))) (par (Syn.shift q) (Syn.shift l) (Syn.shift a)) := by
+      simp [Syn.shift]
+    have sh2 : Syn.shift (pairT l (pairT l (pairT q a))) =
+        pairT (Syn.shift l) (pairT (Syn.shift l) (pairT (Syn.shift q) (Syn.shift a))) := by
+      simp [Syn.shift]
+    rw [sh1, sh2]
+    exact (cls_pt hqp'.wk hl'.wk hD'.wk _).eqTrans (ri_pt hl'.wk _)
+  -- reindex the multiples of `l`
+  have s2 := reindex_eq (Γ := Γ) hB (x := pairT l (pairT q a)) (succ (pred (q * l))) hl
+  have s3 : Γ ⊢[PRAAx] ap2 (sumF hB) (cM (succ (pred (q * l))) l) (pairT l (pairT q a)) ≐
+      ap2 (sumF hB) q (pairT l (pairT q a)) := congrAp2 (sumF hB) (cM_eq hl hD) (.eqRefl _)
+  -- one period: `q = 1` directly, `q ≥ 2` through the representative `b`
+  have s45 : Γ ⊢[PRAAx] ap2 (sumF hB) q (pairT l (pairT q a)) ≐ one := by
+    refine .orE (eq_or_ne q one) ?_ ?_
+    · exact period_one Prf.hyp0
+    · exact period_two (two_le_of_ne (hq.wk (ψ := neg (q ≐ one))) Prf.hyp0) (hc.wk (ψ := neg (q ≐ one)))
+        (ha.wk (ψ := neg (q ≐ one)))
+  exact s1.eqTrans (s2.eqTrans (s3.eqTrans s45))
 
 /-! ## The count -/
 
 /-- `eq:crt-count`, upper half: `q l · C(X) ≤ X + q l`. -/
-theorem count_le {q l a : PTm n} (X : PTm n) (hq : Γ ⊢[PRAAx] le two q) (hl : Γ ⊢[PRAAx] l ≐ succ (pred l))
+theorem count_le {q l a : PTm n} (X : PTm n) (hq : Γ ⊢[PRAAx] le one q) (hl : Γ ⊢[PRAAx] l ≐ succ (pred l))
     (hc : Γ ⊢[PRAAx] gcd l q ≐ one) (ha : Γ ⊢[PRAAx] gcd a q ≐ one) :
     Γ ⊢[PRAAx] le (q * l * cnt X q l a) (X + q * l) := by
-  have hD : Γ ⊢[PRAAx] succ (pred (q * l)) ≐ q * l := (pos_mul (N_pos hq) hl).eqSymm
+  have hD : Γ ⊢[PRAAx] succ (pred (q * l)) ≐ q * l := (pos_mul (pos_of_one_le hq) hl).eqSymm
   have u := count_upper (Γ := Γ) fB X (pred (q * l)) (par q l a)
   have r := rho_one hq hl hc ha
   exact le_congr (congrMul hD (.eqRefl _)) ((one_fold r).eqTrans (congrAdd (.eqRefl _) hD)) u
 
 /-- `eq:crt-count`, lower half: `X ≤ q l · C(X) + q l`. -/
-theorem count_ge {q l a : PTm n} (X : PTm n) (hq : Γ ⊢[PRAAx] le two q) (hl : Γ ⊢[PRAAx] l ≐ succ (pred l))
+theorem count_ge {q l a : PTm n} (X : PTm n) (hq : Γ ⊢[PRAAx] le one q) (hl : Γ ⊢[PRAAx] l ≐ succ (pred l))
     (hc : Γ ⊢[PRAAx] gcd l q ≐ one) (ha : Γ ⊢[PRAAx] gcd a q ≐ one) :
     Γ ⊢[PRAAx] le X (q * l * cnt X q l a + q * l) := by
-  have hD : Γ ⊢[PRAAx] succ (pred (q * l)) ≐ q * l := (pos_mul (N_pos hq) hl).eqSymm
+  have hD : Γ ⊢[PRAAx] succ (pred (q * l)) ≐ q * l := (pos_mul (pos_of_one_le hq) hl).eqSymm
   have u := count_lower (Γ := Γ) fB X (pred (q * l)) (par q l a)
   have r := rho_one hq hl hc ha
   exact le_congr ((congrMul (.eqRefl _) r).eqTrans (mul_one'' _))
     ((one_fold' r).eqTrans (congrAdd (congrMul hD (.eqRefl _)) hD)) u
 
 /-- The summand of `C(X)` at `t` is `[t ≡ a (mod q)] [l ∣ t]`. -/
-theorem cnt_pt {q l a : PTm n} (hq : Γ ⊢[PRAAx] le two q) (hl : Γ ⊢[PRAAx] l ≐ succ (pred l)) (t : PTm n) :
+theorem cnt_pt {q l a : PTm n} (hq : Γ ⊢[PRAAx] le one q) (hl : Γ ⊢[PRAAx] l ≐ succ (pred l)) (t : PTm n) :
     Γ ⊢[PRAAx] inst2 (gB fB) t (pairT (succ (pred (q * l))) (par q l a)) ≐
       eqb (rem t q) (rem a q) * eqb (rem t l) zero :=
-  cls_pt (N_pos hq) hl (pos_mul (N_pos hq) hl).eqSymm t
+  cls_pt (pos_of_one_le hq) hl (pos_mul (pos_of_one_le hq) hl).eqSymm t
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveCount

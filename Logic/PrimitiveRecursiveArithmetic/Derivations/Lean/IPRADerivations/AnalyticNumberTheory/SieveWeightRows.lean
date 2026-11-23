@@ -108,7 +108,7 @@ theorem wB_s (y : PTm 2)
   exact e1.eqTrans ((r1_alg h1 (ha _ _ _)).eqTrans (congrMul (.eqRefl _) e2.eqSymm))
 
 /-- `[d ≥ 1] · ([gcd(d, q) = 1] · ([d ∣ r] [gcd(r, q) = 1])) = [d ≥ 1] · ([d ∣ r] [gcd(r, q) = 1])`. -/
-theorem sg_supp {d r q : PTm n} (hq : Γ ⊢[PRAAx] le two q) :
+theorem sg_supp {d r q : PTm n} (hq : Γ ⊢[PRAAx] le one q) :
     Γ ⊢[PRAAx] sg d * (eqb (gcd d q) one * (eqb (rem r d) zero * eqb (gcd r q) one)) ≐
       sg d * (eqb (rem r d) zero * eqb (gcd r q) one) := by
   refine .orE (zero_or_succ d) ?_ ?_
@@ -117,7 +117,7 @@ theorem sg_supp {d r q : PTm n} (hq : Γ ⊢[PRAAx] le two q) :
   · exact congrMul (.eqRefl _) (g_supp (hq.wk (ψ := d ≐ succ (pred d))) Prf.hyp0)
 
 /-- `[d ≥ 1][gcd(d, q) = 1]` times the summand at `s = 1` is that summand, when `y = [gcd(r, q) = 1] y₀`. -/
-theorem wB_g {d r p : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT p)) :
+theorem wB_g {d r p : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT p)) :
     Γ ⊢[PRAAx] (sg d * eqb (gcd d (fstT p)) one) * inst3 (wB (gU y0) a) d r (pairT one p) ≐
       inst3 (wB (gU y0) a) d r (pairT one p) := by
   have e2 : Γ ⊢[PRAAx] inst3 (wB (gU y0) a) d r (pairT one p) ≐
@@ -130,7 +130,7 @@ theorem wB_g {d r p : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT p)) :
 
 /-- The summand at `s`, for `y = [gcd(r, q) = 1] y₀`: `[s ∣ d] [d ≥ 1][gcd(d, q) = 1]` times the summand at `1`. -/
 theorem w_pt (ha : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (i p p' : PTm k), Δ ⊢[PRAAx] inst2 a i p ≐ inst2 a i p')
-    {d r s p : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT p)) :
+    {d r s p : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT p)) :
     Γ ⊢[PRAAx] inst3 (wB (gU y0) a) d r (pairT s p) ≐
       (eqb (rem d s) zero * (sg d * eqb (gcd d (fstT p)) one)) * inst3 (wB (gU y0) a) d r (pairT one p) :=
   (wB_s a (gU y0) ha d r s p).eqTrans
@@ -140,13 +140,13 @@ theorem w_pt (ha : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (i p p' : PTm k), Δ ⊢
 
 /-- The row at `s` is `[s ∣ d] [d ≥ 1][gcd(d, q) = 1]` times the row at `s = 1`. -/
 theorem row_s (ha : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (i p p' : PTm k), Δ ⊢[PRAAx] inst2 a i p ≐ inst2 a i p')
-    {d s p : PTm n} (N : PTm n) (hq : Γ ⊢[PRAAx] le two (fstT p)) :
+    {d s p : PTm n} (N : PTm n) (hq : Γ ⊢[PRAAx] le one (fstT p)) :
     Γ ⊢[PRAAx] ap2 (sumF (rowB (wB (gU y0) a))) N (pairT d (pairT s p)) ≐
       (eqb (rem d s) zero * (sg d * eqb (gcd d (fstT p)) one)) *
         ap2 (sumF (rowB (wB (gU y0) a))) N (pairT d (pairT one p)) := by
   refine sum_scale (rowB (wB (gU y0) a)) (rowB (wB (gU y0) a)) N _ (pairT d (pairT one p)) (pairT d (pairT s p))
     (.allI (.impI ?_))
-  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le two (fstT (Syn.shift p)) := by
+  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le one (fstT (Syn.shift p)) := by
     simpa [Fm.shift, Syn.shift] using hq.shift
   have hK : Syn.shift (eqb (rem d s) zero * (sg d * eqb (gcd d (fstT p)) one)) =
       eqb (rem (Syn.shift d) (Syn.shift s)) zero * (sg (Syn.shift d) * eqb (gcd (Syn.shift d) (fstT (Syn.shift p))) one) := by
@@ -173,7 +173,7 @@ theorem inst2_uB (y : PTm 2) (d P : PTm n) :
 /-- The summand of the first sum of `SieveDiagonal.diag_term` at `d`, for the weight `gU (uB y a)`, is the row of
 `wB` at `s`. -/
 theorem Ab_row (ha : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (i p p' : PTm k), Δ ⊢[PRAAx] inst2 a i p ≐ inst2 a i p')
-    {d s X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+    {d s X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx] inst2 (Ab (sndB (gU (uB a (gU y0))))) d (pairT s (pairT X P)) ≐
       inst2 (oB (wB (gU y0) a)) d (pairT (succ (sndT (sndT P))) (pairT s P)) := by
   have l : Γ ⊢[PRAAx] inst2 (Ab (sndB (gU (uB a (gU y0))))) d (pairT s (pairT X P)) ≐
@@ -189,11 +189,11 @@ theorem Ab_row (ha : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (i p p' : PTm k), Δ �
 
 /-- `Σ_{d ≤ z} [d ≥ 1][s ∣ d] [gcd(d, q) = 1] U_d` is the double sum of `SieveInversion.dual_inversion`. -/
 theorem Ab_sum (ha : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (i p p' : PTm k), Δ ⊢[PRAAx] inst2 a i p ≐ inst2 a i p')
-    {s X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+    {s X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx] ap2 (sumF (Ab (sndB (gU (uB a (gU y0)))))) (succ (sndT (sndT P))) (pairT s (pairT X P)) ≐
       dsum (wB (gU y0) a) (succ (sndT (sndT P))) (succ (sndT (sndT P))) (pairT s P) := by
   refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le two (fstT (Syn.shift P)) := by
+  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le one (fstT (Syn.shift P)) := by
     simpa [Fm.shift, Syn.shift] using hq.shift
   have s1 : Syn.shift (pairT s (pairT X P)) = pairT (Syn.shift s) (pairT (Syn.shift X) (Syn.shift P)) := by
     simp [Syn.shift]
@@ -206,7 +206,7 @@ theorem Ab_sum (ha : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (i p p' : PTm k), Δ �
 /-- The summand of the second sum of `diag_term` at `e`, for the weight `sgV (uB y a)`: `φ(s)` times the row at
 `s`. -/
 theorem Bb_row (ha : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (i p p' : PTm k), Δ ⊢[PRAAx] inst2 a i p ≐ inst2 a i p')
-    {e s X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+    {e s X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx] inst2 (Bb (sndB (sgV (uB a (gU y0))))) e (pairT s (pairT X P)) ≐
       phi s * inst2 (oB (wB (gU y0) a)) e (pairT (succ (sndT (sndT P))) (pairT s P)) := by
   have l : Γ ⊢[PRAAx] inst2 (Bb (sndB (sgV (uB a (gU y0))))) e (pairT s (pairT X P)) ≐
@@ -222,11 +222,11 @@ theorem Bb_row (ha : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (i p p' : PTm k), Δ �
 
 /-- `Σ_{e ≤ z} [s ∣ e] [e ≥ 1][gcd(e, q) = 1] U_e φ(s) = φ(s) ·` the double sum of `dual_inversion`. -/
 theorem Bb_sum (ha : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (i p p' : PTm k), Δ ⊢[PRAAx] inst2 a i p ≐ inst2 a i p')
-    {s X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+    {s X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx] ap2 (sumF (Bb (sndB (sgV (uB a (gU y0)))))) (succ (sndT (sndT P))) (pairT s (pairT X P)) ≐
       phi s * dsum (wB (gU y0) a) (succ (sndT (sndT P))) (succ (sndT (sndT P))) (pairT s P) := by
   refine sum_scale _ (oB (wB (gU y0) a)) (succ (sndT (sndT P))) (phi s) _ _ (.allI (.impI ?_))
-  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le two (fstT (Syn.shift P)) := by
+  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le one (fstT (Syn.shift P)) := by
     simpa [Fm.shift, Syn.shift] using hq.shift
   have s1 : Syn.shift (pairT s (pairT X P)) = pairT (Syn.shift s) (pairT (Syn.shift X) (Syn.shift P)) := by
     simp [Syn.shift]

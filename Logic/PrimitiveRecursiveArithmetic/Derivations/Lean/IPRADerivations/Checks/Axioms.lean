@@ -7931,10 +7931,13 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.mul_one''
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.shift_res0
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.one_fold
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.one_fold'
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.cls_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.ri_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.cM_eq
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.h_pt
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.period_two
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.period_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.rho_one
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.count_le
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SieveCount.count_ge
@@ -8076,7 +8079,7 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount.pair_pt
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount.scale_l
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount.scale_r
-#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount.scale_r
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount.scale_r'
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount.pair_le
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount.pair_ge
 #print axioms LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange.rot
@@ -8506,6 +8509,11 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ThreeSquaresPowers.r3_zero
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ThreeSquaresPowers.obstruction_open
 #print axioms LeanProofs.IPRA.DiophantineNumberTheory.ThreeSquaresPowers.three_square_obstruction_powers
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus.pos_of_one_le
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus.two_le_of_ne
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus.cop_symm
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus.cop_mul
+#print axioms LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus.cop_of_mul
 #print axioms LeanProofs.IPRA.Combinatorics.LucasStep.mul_one_r
 #print axioms LeanProofs.IPRA.Combinatorics.LucasStep.add_one_r
 #print axioms LeanProofs.IPRA.Combinatorics.LucasStep.dig_no

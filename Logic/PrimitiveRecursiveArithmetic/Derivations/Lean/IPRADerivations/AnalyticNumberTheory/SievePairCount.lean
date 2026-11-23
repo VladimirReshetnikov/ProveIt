@@ -13,7 +13,7 @@ With `lc d e = d · (e / gcd(d, e))` for `d, e ≥ 1`:
 * `gl_eq`: `gcd(d, e) · lc(d, e) = d e`; `lc_pos`; `d_dvd_lc`, `e_dvd_lc`;
 * `dvd_pair`: `[d ∣ x] [e ∣ x] = [lc(d, e) ∣ x]` (indicators); the forward direction is
   `ChineseRemainder.crt_unique_at` against `0`;
-* `lc_cop`: `gcd(lc(d, e), q) = 1` when `gcd(d, q) = gcd(e, q) = 1`, for `q ≥ 2`;
+* `lc_cop`: `gcd(lc(d, e), q) = 1` when `gcd(d, q) = gcd(e, q) = 1`, for `q ≥ 1`;
 * `pair_pt`: the summand `[t ≡ a (mod q)] [d ∣ t] [e ∣ t]` is the summand of `SieveCount.cnt` at `l = lc(d, e)`;
 * `pair_le`, `pair_ge`: with `K(X) = SieveCount.cnt X q (lc d e) a`,
   `q d e · K(X) ≤ gcd(d, e) · X + q d e` and `gcd(d, e) · X ≤ q d e · K(X) + q d e`, the two counting bounds
@@ -28,7 +28,7 @@ open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting (gB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveCount (fB cnt cnt_pt count_le count_ge pos_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.Euler (cop_mul cop_of_mul)
+open LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus (cop_mul cop_of_mul pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos crt_unique_at)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' gcd_dvd' dvd_trans' pos_of_eq_mul)
@@ -104,19 +104,19 @@ theorem dvd_pair {d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : Γ
       exact dvd_trans' hd.wk.wk (lc_pos hd he).wk.wk (d_dvd_lc (e := e) hd).wk.wk Prf.hyp0
     exact ((congrMul (eqb_of_ne hne) (.eqRefl _)).eqTrans (zero_mul _)).eqTrans (eqb_of_ne hn).eqSymm
 
-/-- `gcd(lc(d, e), q) = 1` when `d` and `e` are units modulo `q ≥ 2`. -/
-theorem lc_cop {d e q : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hq : Γ ⊢[PRAAx] le two q)
+/-- `gcd(lc(d, e), q) = 1` when `d` and `e` are units modulo `q ≥ 1`. -/
+theorem lc_cop {d e q : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hq : Γ ⊢[PRAAx] le one q)
     (hdq : Γ ⊢[PRAAx] gcd d q ≐ one) (heq : Γ ⊢[PRAAx] gcd e q ≐ one) :
     Γ ⊢[PRAAx] gcd (lc d e) q ≐ one := by
-  have h := cop_mul hq hdq heq
+  have h := cop_mul (pos_of_one_le hq) hdq heq
   have h' : Γ ⊢[PRAAx] gcd (gcd d e * lc d e) q ≐ one := (congrGcd (gl_eq (e := e) hd) (.eqRefl _)).eqTrans h
-  exact cop_of_mul hq h'
+  exact cop_of_mul (pos_of_one_le hq) h'
 
 /-! ## The pair count -/
 
 /-- The summand `[t ≡ a (mod q)] [d ∣ t] [e ∣ t]` is the summand of `cnt` at `l = lc(d, e)`. -/
 theorem pair_pt {d e q a : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : Γ ⊢[PRAAx] e ≐ succ (pred e))
-    (hq : Γ ⊢[PRAAx] le two q) (t : PTm n) :
+    (hq : Γ ⊢[PRAAx] le one q) (t : PTm n) :
     Γ ⊢[PRAAx] eqb (rem t q) (rem a q) * (eqb (rem t d) zero * eqb (rem t e) zero) ≐
       inst2 (gB fB) t (pairT (succ (pred (q * lc d e))) (SieveCount.par q (lc d e) a)) :=
   (congrMul (.eqRefl _) (dvd_pair hd he t)).eqTrans (cnt_pt (a := a) hq (lc_pos hd he) t).eqSymm
@@ -140,7 +140,7 @@ theorem scale_r' {g L D q C : PTm n} (h : Γ ⊢[PRAAx] g * L ≐ D) :
 
 /-- `q d e · K(X) ≤ gcd(d, e) · X + q d e`. -/
 theorem pair_le {d e q a : PTm n} (X : PTm n) (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
-    (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) (hq : Γ ⊢[PRAAx] le two q) (hdq : Γ ⊢[PRAAx] gcd d q ≐ one)
+    (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) (hq : Γ ⊢[PRAAx] le one q) (hdq : Γ ⊢[PRAAx] gcd d q ≐ one)
     (heq : Γ ⊢[PRAAx] gcd e q ≐ one) (ha : Γ ⊢[PRAAx] gcd a q ≐ one) :
     Γ ⊢[PRAAx] le (q * (d * e) * cnt X q (lc d e) a) (gcd d e * X + q * (d * e)) := by
   have c := count_le (a := a) X hq (lc_pos hd he) (lc_cop hd hq hdq heq) ha
@@ -149,7 +149,7 @@ theorem pair_le {d e q a : PTm n} (X : PTm n) (hd : Γ ⊢[PRAAx] d ≐ succ (pr
 
 /-- `gcd(d, e) · X ≤ q d e · K(X) + q d e`. -/
 theorem pair_ge {d e q a : PTm n} (X : PTm n) (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
-    (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) (hq : Γ ⊢[PRAAx] le two q) (hdq : Γ ⊢[PRAAx] gcd d q ≐ one)
+    (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) (hq : Γ ⊢[PRAAx] le one q) (hdq : Γ ⊢[PRAAx] gcd d q ≐ one)
     (heq : Γ ⊢[PRAAx] gcd e q ≐ one) (ha : Γ ⊢[PRAAx] gcd a q ≐ one) :
     Γ ⊢[PRAAx] le (gcd d e * X) (q * (d * e) * cnt X q (lc d e) a + q * (d * e)) := by
   have c := count_ge (a := a) X hq (lc_pos hd he) (lc_cop hd hq hdq heq) ha

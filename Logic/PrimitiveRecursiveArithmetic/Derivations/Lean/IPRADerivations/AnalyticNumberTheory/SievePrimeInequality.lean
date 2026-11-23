@@ -56,7 +56,7 @@ theorem combine {q X Z S π a b Goff Gdiag L : PTm n}
   ipra_le sl h + 𝔞 q * (sl hab * sl hp)
 
 /-- The sieve inequality for the primes of a progression, for arbitrary signed weights. -/
-theorem prime_sieve_ineq (UP UN : PTm 2) {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+theorem prime_sieve_ineq (UP UN : PTm 2) {X Z P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (ha : Γ ⊢[PRAAx] gcd (fstT (sndT P)) (fstT P) ≐ one) (hZ : Γ ⊢[PRAAx] lt one Z) :
     Γ ⊢[PRAAx] le
       (fstT P * ((inst2 (lB UP) one P * inst2 (lB UP) one P + inst2 (lB UN) one P * inst2 (lB UN) one P) *

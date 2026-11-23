@@ -16,7 +16,7 @@ derived one prime at a time, for the parts `Y^±_r = [gcd(r, q) = 1] [r ≥ 1] �
 (`SieveWeightValues`), a prime `p` and `k ≥ 1`:
 
 * `Y_kill`: `Y^±_{kp} = 0` when `p ∣ k` (`kp` is not squarefree; `Mobius.kill`);
-* `Y_step`: `(p − 1) Y⁺_{kp} ≤ Y⁻_k` and `(p − 1) Y⁻_{kp} ≤ Y⁺_k` when `p ∤ k`, `kp ≤ z` and `q ≥ 2`
+* `Y_step`: `(p − 1) Y⁺_{kp} ≤ Y⁻_k` and `(p − 1) Y⁻_{kp} ≤ Y⁺_k` when `p ∤ k`, `kp ≤ z` and `q ≥ 1`
   (`Mobius.swap` with `MobiusBounds.mu_bound`, `φ(kp) = φ(k)(p − 1)` by `Multiplicative.phi_mul_at` and
   `Radical.phi_prime`, and the exact divisions `z! = φ(r) · (z!/φ(r))`);
 * `abs_step`: `(p − 1) (Y⁺_{kp} + Y⁻_{kp}) ≤ Y⁺_k + Y⁻_k`, i.e. `(p − 1) |Y_{kp}| ≤ |Y_k|`.
@@ -44,7 +44,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.Radical (phi_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (phi_mul_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit (mul_cancel)
-open LeanProofs.IPRA.AnalyticNumberTheory.Euler (cop_of_mul)
+open LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus (cop_of_mul pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightFacts (phi_quo)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN YP_at YN_at)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one)
@@ -127,7 +127,7 @@ theorem mid_alg {pm m w1 w2 : PTm n} (hw : Γ ⊢[PRAAx] pm * w1 ≐ w2) :
 
 /-- The step for one part: `(p − 1) · [gcd(kp, q) = 1] [kp ≥ 1] m₁ z!/φ(kp) ≤ [gcd(k, q) = 1] [k ≥ 1] m₂ z!/φ(k)`
 when `m₁ = m₂`. -/
-theorem step_gen {p k P m1 m2 : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
+theorem step_gen {p k P m1 m2 : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
     (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (hna : Γ ⊢[PRAAx] neg (dvd p k))
     (hz : Γ ⊢[PRAAx] le (k * p) (sndT (sndT P))) (hm : Γ ⊢[PRAAx] m1 ≐ m2) :
     Γ ⊢[PRAAx] le
@@ -147,7 +147,7 @@ theorem step_gen {p k P m1 m2 : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) (hp 
   · let C : List (Fm PTm n) := (gcd (k * p) (fstT P) ≐ one) :: Γ
     have g1 : C ⊢[PRAAx] gcd (k * p) (fstT P) ≐ one := Prf.hyp0
     have g2 : C ⊢[PRAAx] gcd k (fstT P) ≐ one :=
-      cop_of_mul hq.wk ((congrGcd (mul_comm p k) (.eqRefl _)).eqTrans g1)
+      cop_of_mul (pos_of_one_le hq.wk) ((congrGcd (mul_comm p k) (.eqRefl _)).eqTrans g1)
     have l : C ⊢[PRAAx] monus p one * (eqb (gcd (k * p) (fstT P)) one *
         ((sg (k * p) * m1) * quo (fact (sndT (sndT P))) (phi (k * p)))) ≐
         monus p one * (one * ((one * m2) * quo (fact (sndT (sndT P))) (phi (k * p)))) :=
@@ -162,8 +162,8 @@ theorem step_gen {p k P m1 m2 : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) (hp 
       (congrMul (.eqRefl _) (zero_mul_l (eqb_of_ne Prf.hyp0) _)).eqTrans (mul_zero _)
     exact le_congr z.eqSymm (.eqRefl _) (zero_le _)
 
-/-- `(p − 1) Y⁺_{kp} ≤ Y⁻_k` and `(p − 1) Y⁻_{kp} ≤ Y⁺_k` for a prime `p ∤ k`, `k ≥ 1`, `kp ≤ z`, `q ≥ 2`. -/
-theorem Y_step {p k P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
+/-- `(p − 1) Y⁺_{kp} ≤ Y⁻_k` and `(p − 1) Y⁻_{kp} ≤ Y⁺_k` for a prime `p ∤ k`, `k ≥ 1`, `kp ≤ z`, `q ≥ 1`. -/
+theorem Y_step {p k P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
     (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (hna : Γ ⊢[PRAAx] neg (dvd p k))
     (hz : Γ ⊢[PRAAx] le (k * p) (sndT (sndT P))) :
     Γ ⊢[PRAAx] le (monus p one * inst2 YP (k * p) P) (inst2 YN k P) ⋏
@@ -182,7 +182,7 @@ theorem add_step {pm a b c d : PTm n} (h1 : Γ ⊢[PRAAx] le (pm * a) d) (h2 : �
   ipra_le sl h1 + sl h2
 
 /-- `(p − 1) (Y⁺_{kp} + Y⁻_{kp}) ≤ Y⁺_k + Y⁻_k`. -/
-theorem abs_step {p k P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
+theorem abs_step {p k P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
     (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (hna : Γ ⊢[PRAAx] neg (dvd p k))
     (hz : Γ ⊢[PRAAx] le (k * p) (sndT (sndT P))) :
     Γ ⊢[PRAAx] le (monus p one * (inst2 YP (k * p) P + inst2 YN (k * p) P)) (inst2 YP k P + inst2 YN k P) := by

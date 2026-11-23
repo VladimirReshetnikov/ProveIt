@@ -23,7 +23,7 @@ where `Am` is the body of `SievePairSum` (the pair counts `K = cnt X q (lc d e) 
 `χ = [2 ≤ q][gcd(a, q) = 1]`. No hypothesis on `q` and `a` is needed: the indicators make both sides vanish outside
 the range of `SieveCount`.
 
-* `kn_cnt`: for `d, e ≥ 1` and `q ≥ 2`, the nested count `Σ_{m<X} [m ≡ a][d ∣ m][e ∣ m]` is `cnt X q (lc d e) a`;
+* `kn_cnt`: for `d, e ≥ 1` and `q ≥ 1`, the nested count `Σ_{m<X} [m ≡ a][d ∣ m][e ∣ m]` is `cnt X q (lc d e) a`;
 * `eqb_factor_eq`, `sg_factor_eq`: an equation under a hypothesis holds outright with the indicator of the hypothesis;
 * `pair_id`: the summand identity, at all terms;
 * `row_F`: one row of the double sum is the outer body `SqR` of `SieveSquare`;
@@ -74,15 +74,15 @@ theorem inst2_lB (U : PTm 2) (d P : PTm n) :
 
 /-! ## The nested count is the progression count at the least common multiple -/
 
-/-- `Σ_{m<X} [m ≡ a (mod q)][d ∣ m][e ∣ m] = cnt X q (lc d e) a` for `d, e ≥ 1` and `q ≥ 2`. -/
+/-- `Σ_{m<X} [m ≡ a (mod q)][d ∣ m][e ∣ m] = cnt X q (lc d e) a` for `d, e ≥ 1` and `q ≥ 1`. -/
 theorem kn_cnt {d e P : PTm n} (X : PTm n) (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
-    (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+    (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx] ap2 (sumF (mdB (mdB cB))) X (pairT e (pairT d P)) ≐
       cnt X (fstT P) (lc d e) (fstT (sndT P)) := by
   refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
   have hd' := MobiusBounds.shift_pos hd
   have he' := MobiusBounds.shift_pos he
-  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le two (fstT (Syn.shift P)) := by
+  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le one (fstT (Syn.shift P)) := by
     simpa [Fm.shift, Syn.shift] using hq.shift
   have sh1 : Syn.shift (pairT e (pairT d P)) = pairT (Syn.shift e) (pairT (Syn.shift d) (Syn.shift P)) := by
     simp only [Syn.shift, subst_pairT]
@@ -135,13 +135,13 @@ theorem ind_cnt (W d e X P : PTm n) :
         (W * (fstT P * (d * e) * ap2 (sumF (mdB (mdB cB))) X (pairT e (pairT d P)))) := by
   refine eqb_factor_eq (eqb_factor_eq (sg_factor_eq (eqb_factor_eq (sg_factor_eq (eqb_factor_eq
     (one_factor_eq ?_))))))
-  let C1 : List (Fm PTm n) := (monus two (fstT P) ≐ zero) :: Γ
+  let C1 : List (Fm PTm n) := (monus one (fstT P) ≐ zero) :: Γ
   let C2 : List (Fm PTm n) := (gcd (fstT (sndT P)) (fstT P) ≐ one) :: C1
   let C3 : List (Fm PTm n) := (d ≐ succ (pred d)) :: C2
   let C4 : List (Fm PTm n) := (gcd d (fstT P) ≐ one) :: C3
   let C5 : List (Fm PTm n) := (e ≐ succ (pred e)) :: C4
   let C6 : List (Fm PTm n) := (gcd e (fstT P) ≐ one) :: C5
-  have hq : C6 ⊢[PRAAx] le two (fstT P) := (Prf.hyp0 : C1 ⊢[PRAAx] monus two (fstT P) ≐ zero).wk.wk.wk.wk.wk
+  have hq : C6 ⊢[PRAAx] le one (fstT P) := (Prf.hyp0 : C1 ⊢[PRAAx] monus one (fstT P) ≐ zero).wk.wk.wk.wk.wk
   have hd : C6 ⊢[PRAAx] d ≐ succ (pred d) := (Prf.hyp0 : C3 ⊢[PRAAx] d ≐ succ (pred d)).wk.wk.wk
   have he : C6 ⊢[PRAAx] e ≐ succ (pred e) := (Prf.hyp0 : C5 ⊢[PRAAx] e ≐ succ (pred e)).wk
   exact congrMul (.eqRefl _) (congrMul (.eqRefl _) (kn_cnt X hd he hq).eqSymm)
@@ -175,11 +175,11 @@ theorem inst3_Fb (i j y : PTm n) : inst3 (Fb U V) i j y =
 
 /-- `χ · q` as a term in the parameter `y = ⟨X, P⟩`. -/
 def kT : PTm 1 :=
-  (eqb (monus two (fstT (sndT (var 0)))) zero * eqb (gcd (fstT (sndT (sndT (var 0)))) (fstT (sndT (var 0)))) one) *
+  (eqb (monus one (fstT (sndT (var 0)))) zero * eqb (gcd (fstT (sndT (sndT (var 0)))) (fstT (sndT (var 0)))) one) *
     fstT (sndT (var 0))
 
 theorem at1_kT (y : PTm n) : at1 kT y =
-    (eqb (monus two (fstT (sndT y))) zero * eqb (gcd (fstT (sndT (sndT y))) (fstT (sndT y))) one) *
+    (eqb (monus one (fstT (sndT y))) zero * eqb (gcd (fstT (sndT (sndT y))) (fstT (sndT y))) one) *
       fstT (sndT y) := by
   simp only [at1, kT, LeanProofs.IPRA.PTm.subst_mul, subst_eqb, LeanProofs.IPRA.PTm.subst_monus, subst_gcd',
     subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, ConciseIPRA.PTm.subst_succ,

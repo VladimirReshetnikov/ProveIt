@@ -16,7 +16,7 @@ In the cleared normalization, with `|Y_r| = Y⁺_r + Y⁻_r` (`hv`) and `W_D = �
 (the sum of `SieveDiagonal.Ab habs`), `|λ_D| ≤ 1` is `D · W_D ≤ W_1`. The paper proves it by an injection
 `(e, s) ↦ es` over all divisors `e` of `d` at once. Here it is split into steps of one prime:
 
-  `p · W_{Dp} ≤ W_D`   for a prime `p`, `D ≥ 1` and `q ≥ 2`                             (`prime_step`).
+  `p · W_{Dp} ≤ W_D`   for a prime `p`, `D ≥ 1` and `q ≥ 1`                             (`prime_step`).
 
 The multiples `r = kp` of `Dp` are multiples of `D`, and so are their quotients `k`; `|Y_{kp}| = 0` when `p ∣ k`
 and `(p − 1) |Y_{kp}| ≤ |Y_k|` when `p ∤ k` (`SieveWeightPrime`). So
@@ -107,7 +107,7 @@ theorem split_alg {e ne T : PTm n} (h : Γ ⊢[PRAAx] ne + e ≐ one) : Γ ⊢[P
 
 /-- `p [r ≥ 1] [Dp ∣ r] |Y_r| ≤ [p ∣ r] [r ≥ 1] [D ∣ r] |Y_r| + [p ∣ r] [p ∤ k] [k ≥ 1] [D ∣ k] |Y_k|` with
 `k = r / p`, for `r ≤ z`. -/
-theorem main_pt {p D r P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
+theorem main_pt {p D r P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
     (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hr : Γ ⊢[PRAAx] lt r (succ (sndT (sndT P)))) :
     Γ ⊢[PRAAx] le (p * ((sg r * eqb (rem r (D * p)) zero) * hv r P))
       (eqb (rem r p) zero * ((sg r * eqb (rem r D) zero) * hv r P) +
@@ -214,7 +214,7 @@ theorem ri_at (r p x : PTm n) :
     (congrInst2 hB (congrAp2 quoF (.eqRefl _) (fst_pair _ _)) (snd_pair _ _))
 
 /-- The summand inequality for the bodies. -/
-theorem pt_le {p D r P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
+theorem pt_le {p D r P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
     (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hr : Γ ⊢[PRAAx] lt r (succ (sndT (sndT P)))) :
     Γ ⊢[PRAAx] le (inst2 (cmB (Ab habs)) r (pairT p (pairT (D * p) P)))
       (inst2 (mixB g1B (riB hB)) r (pairT (pairT p (pairT D P)) (pairT p (pairT p (pairT D P))))) :=
@@ -230,13 +230,13 @@ theorem split_pt (r p D P : PTm n) :
 
 /-! ## The prime step -/
 
-/-- `p · W_{Dp} ≤ W_D` for a prime `p`, `D ≥ 1` and `q ≥ 2`. -/
-theorem prime_step {p D P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
+/-- `p · W_{Dp} ≤ W_D` for a prime `p`, `D ≥ 1` and `q ≥ 1`. -/
+theorem prime_step {p D P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) (hp : Γ ⊢[PRAAx] prime p)
     (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) :
     Γ ⊢[PRAAx] le (p * ap2 (sumF (Ab habs)) (succ (sndT (sndT P))) (pairT (D * p) P))
       (ap2 (sumF (Ab habs)) (succ (sndT (sndT P))) (pairT D P)) := by
   have hp1 := p_pos (prime_two hp)
-  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le two (fstT (Syn.shift P)) := by
+  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le one (fstT (Syn.shift P)) := by
     simpa [Fm.shift, Syn.shift] using hq.shift
   have hp' : (Γ.map Fm.shift) ⊢[PRAAx] prime (Syn.shift p) := by simpa [Fm.shift, Syn.shift] using hp.shift
   have hD' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift D ≐ succ (pred (Syn.shift D)) := by

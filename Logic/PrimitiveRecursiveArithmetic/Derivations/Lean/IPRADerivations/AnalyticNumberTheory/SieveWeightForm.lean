@@ -18,7 +18,7 @@ where `Y^±` are the parts of the explicit vector (`SieveWeightValues`) and `uB`
 
   `G(U⁺, U⁺) + G(U⁻, U⁻) = (G(U⁺, U⁻) + G(U⁻, U⁺)) + Σ_{r ≤ z} z! (Y⁺_r + Y⁻_r)`              (`form_value`),
 
-for `q ≥ 2`: the signed quadratic form is `z! · A` with `A = Σ_{r ≤ z} μ(r)² [gcd(r, q) = 1] z!/φ(r)`, which is
+for `q ≥ 1`: the signed quadratic form is `z! · A` with `A = Σ_{r ≤ z} μ(r)² [gcd(r, q) = 1] z!/φ(r)`, which is
 `Q(λ) = 1/G` after division by `(z! G)² = A²`.
 
 * `Ab_add`, `Bb_add`: the sums over multiples are additive in the weight;
@@ -159,25 +159,25 @@ def UNw : PTm 2 := addBody (uB aPB YN) (uB aNB YP)
 abbrev tT (y a : PTm 2) (r P : PTm n) : PTm n :=
   dsum (wB y a) (succ (sndT (sndT P))) (succ (sndT (sndT P))) (pairT r P)
 
-theorem alphaP {r X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+theorem alphaP {r X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx] ap2 (sumF (Ab (sndB (gU UPw)))) (succ (sndT (sndT P))) (pairT r (pairT X P)) ≐
       tT YP aPB r P + tT YN aNB r P :=
   (Ab_add _ _ _ _ _).eqTrans (congrAdd (Ab_sum y0P aPB (fun i p p' => aP_indep i p p') hq)
     (Ab_sum y0N aNB (fun i p p' => aN_indep i p p') hq))
 
-theorem alphaN {r X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+theorem alphaN {r X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx] ap2 (sumF (Ab (sndB (gU UNw)))) (succ (sndT (sndT P))) (pairT r (pairT X P)) ≐
       tT YN aPB r P + tT YP aNB r P :=
   (Ab_add _ _ _ _ _).eqTrans (congrAdd (Ab_sum y0N aPB (fun i p p' => aP_indep i p p') hq)
     (Ab_sum y0P aNB (fun i p p' => aN_indep i p p') hq))
 
-theorem betaP {r X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+theorem betaP {r X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx] ap2 (sumF (Bb (sndB (sgV UPw)))) (succ (sndT (sndT P))) (pairT r (pairT X P)) ≐
       phi r * tT YP aPB r P + phi r * tT YN aNB r P :=
   (Bb_add _ _ _ _ _).eqTrans (congrAdd (Bb_sum y0P aPB (fun i p p' => aP_indep i p p') hq)
     (Bb_sum y0N aNB (fun i p p' => aN_indep i p p') hq))
 
-theorem betaN {r X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+theorem betaN {r X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx] ap2 (sumF (Bb (sndB (sgV UNw)))) (succ (sndT (sndT P))) (pairT r (pairT X P)) ≐
       phi r * tT YN aPB r P + phi r * tT YP aNB r P :=
   (Bb_add _ _ _ _ _).eqTrans (congrAdd (Bb_sum y0N aPB (fun i p p' => aP_indep i p p') hq)
@@ -204,7 +204,7 @@ theorem YN_zero {r P : PTm n} (h : Γ ⊢[PRAAx] r ≐ zero) : Γ ⊢[PRAAx] ins
   exact (congrMul (.eqRefl _) (zero_mul_l (zero_mul_l ((congrSg h).eqTrans sg_zero) _) _)).eqTrans (mul_zero _)
 
 /-- The summand identity at `r ≤ z`. -/
-theorem form_pt {r X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+theorem form_pt {r X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (hr : Γ ⊢[PRAAx] lt r (succ (sndT (sndT P)))) :
     Γ ⊢[PRAAx]
       inst2 (gT UPw UPw) r (pairT (succ (sndT (sndT P))) (pairT (succ (sndT (sndT P))) (pairT X P))) +
@@ -235,7 +235,7 @@ theorem form_pt {r X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
 /-! ## The value of the quadratic form -/
 
 /-- `G(U⁺, U⁺) + G(U⁻, U⁻) = (G(U⁺, U⁻) + G(U⁻, U⁺)) + Σ_{r ≤ z} z! (Y⁺_r + Y⁻_r)`. -/
-theorem form_value {X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+theorem form_value {X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx]
       dsum (Lb (sndB (gU UPw)) (sndB (sgV UPw))) (succ (sndT (sndT P))) (succ (sndT (sndT P))) (pairT X P) +
         dsum (Lb (sndB (gU UNw)) (sndB (sgV UNw))) (succ (sndT (sndT P))) (succ (sndT (sndT P))) (pairT X P) ≐
@@ -255,7 +255,7 @@ theorem form_value {X P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
           (pairT (succ (sndT (sndT P))) (pairT (succ (sndT (sndT P))) (pairT X P)))) +
         ap2 (sumF kyB) (succ (sndT (sndT P))) P := by
     refine sum_five _ _ _ _ _ _ _ _ ?_
-    have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le two (fstT (Syn.shift P)) := by
+    have hq' : (Γ.map Fm.shift) ⊢[PRAAx] le one (fstT (Syn.shift P)) := by
       simpa [Fm.shift, Syn.shift] using hq.shift
     have s1 : Syn.shift (pairT (succ (sndT (sndT P))) (pairT (succ (sndT (sndT P))) (pairT X P))) =
         pairT (succ (sndT (sndT (Syn.shift P))))

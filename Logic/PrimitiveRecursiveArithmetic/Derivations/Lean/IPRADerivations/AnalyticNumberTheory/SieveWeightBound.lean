@@ -11,7 +11,7 @@ Packet: `analytic-number-theory/prime_distribution_ipra`, `paper/sections/05_sie
 "`|λ_d| ≤ 1`, `Σ_{d ∈ D} |λ_d| ≤ |D| ≤ z`".
 
 In the cleared normalization (`A = z! G`, `|Y_r| = Y⁺_r + Y⁻_r`, `W_D = Σ_{r ≤ z} [r ≥ 1] [D ∣ r] |Y_r|`) this module
-derives, for `q ≥ 2`,
+derives, for `q ≥ 1`,
 
   `D · W_D ≤ A`   for every `D`                                                       (`point_bound`),
   `Σ_{d ≤ z} (λ⁺_d + λ⁻_d) ≤ z · A`                                                   (`weight_bound`),
@@ -27,8 +27,8 @@ Here it is a strong induction on `D` (`Foundations/StrongInduction`): `D = 0` is
 by the prime step `SieveWeightStep.prime_step` and the induction hypothesis at `D' < D`. No case distinction on
 `p ∣ D'` is needed: the prime step holds for every `D' ≥ 1`.
 
-The step function of `strong_ind` is quantified over all contexts and cannot assume `q ≥ 2`, so the violation term
-`vB` carries the factor `[q ≥ 2]`: `((D · W_D) ∸ A) · sg(q ∸ 1)`.
+The step function of `strong_ind` is quantified over all contexts and cannot assume `q ≥ 1`, so the violation term
+`vB` carries the factor `[q ≥ 1]`: `((D · W_D) ∸ A) · sg(q)`.
 
 * `wS_add`: `W_D` as one sum over `|Y_r|`;
 * `W1_le`: the case `D = 1`;
@@ -84,14 +84,9 @@ theorem unit_r {m s : PTm n} (h : Γ ⊢[PRAAx] m * s ≐ zero) (hs : Γ ⊢[PRA
   apply deriveNat; ipra_simps
   linear_combination a - 𝔞 m * b
 
-/-- `[q ≥ 2] = 1` for `q ≥ 2`. -/
-theorem sg_q {q : PTm n} (hq : Γ ⊢[PRAAx] le two q) : Γ ⊢[PRAAx] sg (monus q one) ≐ one := by
-  have x := natEq (eq_add_of_le hq)
-  have y := natEq (eq_add_of_le (le_trans (le_succ_self _) hq))
-  have e : Γ ⊢[PRAAx] monus q one ≐ succ (monus q two) := by
-    apply deriveNat; ipra_simps
-    linear_combination x - y
-  exact (congrSg e).eqTrans (sg_succ _)
+/-- `[q ≥ 1] = 1` for `q ≥ 1`. -/
+theorem sg_q {q : PTm n} (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx] sg q ≐ one :=
+  (congrSg (AnalyticNumberTheory.CoprimeModulus.pos_of_one_le hq)).eqTrans (sg_succ _)
 
 /-! ## `W_D` as one sum, and the case `D = 1` -/
 
@@ -116,15 +111,15 @@ theorem W1_le (P : PTm n) : Γ ⊢[PRAAx] le (one * inst2 (wS habs) one P) (Asum
 
 /-! ## The induction -/
 
-/-- The violation term `((D · W_D) ∸ A) · [q ≥ 2]` over `0 = D`, `1 = P`. -/
-def vB : PTm 2 := monus (var 0 * wS habs) (Asum (var 1)) * sg (monus (fstT (var 1)) one)
+/-- The violation term `((D · W_D) ∸ A) · [q ≥ 1]` over `0 = D`, `1 = P`. -/
+def vB : PTm 2 := monus (var 0 * wS habs) (Asum (var 1)) * sg (fstT (var 1))
 
 theorem inst2_vB (D P : PTm n) :
-    inst2 vB D P = monus (D * inst2 (wS habs) D P) (Asum P) * sg (monus (fstT P) one) := by
+    inst2 vB D P = monus (D * inst2 (wS habs) D P) (Asum P) * sg (fstT P) := by
   simp [inst2, vB]
 
-/-- The induction step for `q ≥ 2`. -/
-theorem bound_step {N P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
+/-- The induction step for `q ≥ 1`. -/
+theorem bound_step {N P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P))
     (hV : Γ ⊢[PRAAx] ap2 (sumF vB) N P ≐ zero) :
     Γ ⊢[PRAAx] le (N * inst2 (wS habs) N P) (Asum P) := by
   refine .orE (zero_or_succ N) ?_ ?_
@@ -174,27 +169,27 @@ theorem bound_step {N P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P))
 theorem v_step {k : ℕ} {Δ : List (Fm PTm k)} (N x : PTm k) (hV : Δ ⊢[PRAAx] ap2 (sumF vB) N x ≐ zero) :
     Δ ⊢[PRAAx] inst2 vB N x ≐ zero := by
   rw [inst2_vB]
-  refine .orE (lt_or_le one (fstT x)) ?_ ?_
-  · have hq : (lt one (fstT x) :: Δ) ⊢[PRAAx] le two (fstT x) := Prf.hyp0
-    have h0 : (lt one (fstT x) :: Δ) ⊢[PRAAx] monus (N * inst2 (wS habs) N x) (Asum x) ≐ zero :=
-      bound_step hq hV.wk
-    exact zero_mul_l h0 _
-  · have m0 : (le (fstT x) one :: Δ) ⊢[PRAAx] monus (fstT x) one ≐ zero := Prf.hyp0
-    have s0 : (le (fstT x) one :: Δ) ⊢[PRAAx] sg (monus (fstT x) one) ≐ zero := (congrSg m0).eqTrans sg_zero
+  refine .orE (zero_or_succ (fstT x)) ?_ ?_
+  · have s0 : ((fstT x ≐ zero) :: Δ) ⊢[PRAAx] sg (fstT x) ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
     exact (congrMul (.eqRefl _) s0).eqTrans (mul_zero _)
+  · have hq : ((fstT x ≐ succ (pred (fstT x))) :: Δ) ⊢[PRAAx] le one (fstT x) :=
+      DiophantineNumberTheory.Coprime.one_le_of_pos Prf.hyp0
+    have h0 : ((fstT x ≐ succ (pred (fstT x))) :: Δ) ⊢[PRAAx]
+        monus (N * inst2 (wS habs) N x) (Asum x) ≐ zero := bound_step hq hV.wk
+    exact zero_mul_l h0 _
 
 /-! ## The bounds -/
 
-/-- `|λ_D| ≤ 1` in the cleared normalization: `D · W_D ≤ A` for `q ≥ 2`. -/
-theorem point_bound {D P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+/-- `|λ_D| ≤ 1` in the cleared normalization: `D · W_D ≤ A` for `q ≥ 1`. -/
+theorem point_bound {D P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx] le (D * (inst2 (wS YP) D P + inst2 (wS YN) D P)) (Asum P) := by
   have h := strong_ind (Γ := Γ) vB (fun N x hV => v_step N x hV) D P
   rw [inst2_vB] at h
   have m : Γ ⊢[PRAAx] le (D * inst2 (wS habs) D P) (Asum P) := unit_r h (sg_q hq)
   exact le_congr (congrMul (.eqRefl _) (wS_add D P).eqSymm) (.eqRefl _) m
 
-/-- `eq:weight-bound` in the cleared normalization: `Σ_{d ≤ z} (λ⁺_d + λ⁻_d) ≤ z · A` for `q ≥ 2`. -/
-theorem weight_bound (X : PTm n) {P : PTm n} (hq : Γ ⊢[PRAAx] le two (fstT P)) :
+/-- `eq:weight-bound` in the cleared normalization: `Σ_{d ≤ z} (λ⁺_d + λ⁻_d) ≤ z · A` for `q ≥ 1`. -/
+theorem weight_bound (X : PTm n) {P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
     Γ ⊢[PRAAx] le
       (ap2 (sumF (sndB (lB UPw))) (succ (sndT (sndT P))) (pairT X P) +
         ap2 (sumF (sndB (lB UNw))) (succ (sndT (sndT P))) (pairT X P))
