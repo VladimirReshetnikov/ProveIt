@@ -63,7 +63,7 @@ private def sphereTangentBasis (p : ℝ × ℝ) : OrthonormalBasis (Fin 2) ℝ (
       (orthonormal_sphereFrame p).comp Fin.castSucc (Fin.castSucc_injective 2)
   letI : Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin 3)) = 2 + 1) := ⟨by simp⟩
   refine OrthonormalBasis.mk hon (hon.linearIndependent.span_eq_top_of_card_eq_finrank ?_).ge
-  have hp : spherePoint p ≠ 0 := fun h => by simpa [h] using norm_spherePoint p
+  have hp : spherePoint p ≠ 0 := (orthonormal_sphereFrame p).ne_zero (2 : Fin 3)
   rw [Fintype.card_fin, sphereTangentPlane, Submodule.finrank_orthogonal_span_singleton (n := 2) hp]
 
 /-- East and north coordinates of the orthogonal projection onto the tangent plane. -/
@@ -93,10 +93,9 @@ vector from its two tangent coordinates. -/
 theorem sphereTangentLift_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ)
     {w : EuclideanSpace ℝ (Fin 3)} (h : ⟪spherePoint p, w⟫ = 0) :
     sphereTangentLift p (sphereFlattenDerivative p w) = w := by
-  change ((sphereTangentBasis p).repr.symm
-    ((sphereTangentBasis p).repr ((sphereTangentPlane p).orthogonalProjectionOnto w))).1 = w
-  rw [LinearIsometryEquiv.symm_apply_apply]
-  exact Submodule.starProjection_eq_self_iff.2 (mem_sphereTangentPlane.2 h)
+  exact (congrArg Subtype.val ((sphereTangentBasis p).repr.symm_apply_apply
+    ((sphereTangentPlane p).orthogonalProjectionOnto w))).trans
+      ((sphereTangentPlane p).starProjection_eq_self_iff.2 (mem_sphereTangentPlane.2 h))
 
 theorem norm_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ) {w : EuclideanSpace ℝ (Fin 3)}
     (hw : ⟪spherePoint p, w⟫ = 0) : ‖sphereFlattenDerivative p w‖ = ‖w‖ := by

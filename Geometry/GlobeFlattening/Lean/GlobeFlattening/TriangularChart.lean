@@ -35,14 +35,12 @@ theorem exists_chartClosedRectangle_subset_of_mem_nhds {p : ℝ × ℝ} {W : Set
 private theorem continuousOn_longitudeRow {u : ℝ × ℝ → ℝ} {a b c d y : ℝ}
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) (hy : y ∈ Icc c d) :
     ContinuousOn (fun x => u (x, y)) (Icc a b) :=
-  hu.comp' ((continuous_id.prodMk continuous_const).continuousOn)
-    (fun _ hx => ⟨hx, hy⟩)
+  hu.comp' (by fun_prop) fun _ hx => ⟨hx, hy⟩
 
 theorem continuousOn_latitudeProfile {u : ℝ × ℝ → ℝ} {a b c d x : ℝ}
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) (hx : x ∈ Icc a b) :
     ContinuousOn (fun y => u (x, y)) (Icc c d) :=
-  hu.comp' ((continuous_const.prodMk continuous_id).continuousOn)
-    (fun _ hy => ⟨hx, hy⟩)
+  hu.comp' (by fun_prop) fun _ hy => ⟨hx, hy⟩
 
 /-- The difference of the two endpoint profiles is the width of a chart slice. -/
 theorem continuousOn_chartWidth {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ b)
@@ -121,10 +119,9 @@ noncomputable def triangularChart {u : ℝ × ℝ → ℝ} {a b c d : ℝ}
     himage ▸ (hinj.mono chartRectangle_subset_closed).bijOn_image
   letI : CompactSpace box := isCompact_iff_compactSpace.mp (isCompact_chartClosedRectangle a b c d)
   have hclosed := (continuousOn_iff_continuous_restrict.mp hcont).isClosedEmbedding hinj.injective
-  have hopen : IsOpenEmbedding (s.restrict (flattenCoordinates u)) := by
-    refine ⟨hclosed.isEmbedding.comp (IsEmbedding.inclusion chartRectangle_subset_closed), ?_⟩
-    rw [range_restrict, himage]
-    exact isOpen_chartImage hab hu
+  have hopen : IsOpenEmbedding (s.restrict (flattenCoordinates u)) :=
+    ⟨hclosed.isEmbedding.comp (IsEmbedding.inclusion chartRectangle_subset_closed), by
+      simpa only [range_restrict, himage] using isOpen_chartImage hab hu⟩
   exact OpenPartialHomeomorph.ofContinuousOpenRestrict
     (hbij.toPartialEquiv (flattenCoordinates u) s t) (hcont.mono chartRectangle_subset_closed)
     hopen.isOpenMap (isOpen_chartRectangle _ _ _ _)

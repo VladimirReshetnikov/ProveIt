@@ -27,8 +27,7 @@ def horizontalComplex (w : EuclideanSpace ℝ (Fin 3)) : ℂ :=
     (horizontalComplex w).im = w 1 := rfl
 
 theorem continuous_horizontalComplex : Continuous horizontalComplex := by
-  unfold horizontalComplex
-  fun_prop
+  fun_prop [horizontalComplex]
 
 theorem horizontalComplex_spherePoint (p : ℝ × ℝ) :
     horizontalComplex (spherePoint p) =
@@ -47,8 +46,7 @@ theorem cutSphere_eq_sphere_sdiff_meridian :
       {w | w 1 = 0 ∧ w 0 ≤ 0} := by
   ext w
   simp only [cutSphere, mem_setOf_eq, mem_sdiff, Metric.mem_sphere, dist_zero_right,
-    Complex.mem_slitPlane_iff, horizontalComplex_re, horizontalComplex_im, not_and_or, not_le]
-  rw [or_comm]
+    Complex.mem_slitPlane_iff, horizontalComplex_re, horizontalComplex_im, not_and_or, not_le, or_comm]
 
 private theorem polar_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
     ‖horizontalComplex (spherePoint p)‖ = Real.cos p.2 ∧
@@ -74,17 +72,16 @@ theorem sphereChartInverse_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongit
 
 private theorem cutSphere_horizontal_norm_sq {w : EuclideanSpace ℝ (Fin 3)}
     (hw : w ∈ cutSphere) : ‖horizontalComplex w‖ ^ 2 = 1 - (w 2)^2 := by
-  have h := congrArg (fun r : ℝ => r ^ 2) hw.1
+  have h : ‖w‖ ^ 2 = (1 : ℝ) ^ 2 := congrArg (fun r : ℝ => r ^ 2) hw.1
   rw [EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three, one_pow] at h
   rw [Complex.sq_norm, Complex.normSq_apply, horizontalComplex_re, horizontalComplex_im]
-  nlinarith only [h]
+  exact eq_sub_of_add_eq (by simpa only [pow_two] using h)
 
 theorem cutSphere_vertical_bounds {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
     w 2 ∈ Ioo (-1 : ℝ) 1 := by
-  have hrad := sq_pos_of_pos (norm_pos_iff.mpr (Complex.slitPlane_ne_zero hw.2))
-  rw [cutSphere_horizontal_norm_sq hw] at hrad
-  have hlt : (w 2)^2 < (1 : ℝ)^2 := by simpa using sub_pos.mp hrad
-  exact abs_lt.mp (by simpa using sq_lt_sq.mp hlt)
+  apply abs_lt.mp
+  rw [← abs_one, ← sq_lt_sq, one_pow, ← sub_pos, ← cutSphere_horizontal_norm_sq hw]
+  exact sq_pos_of_pos (norm_pos_iff.mpr (Complex.slitPlane_ne_zero hw.2))
 
 theorem sphereChartInverse_mapsTo : MapsTo sphereChartInverse cutSphere sphereLongitudeDomain := by
   intro w hw

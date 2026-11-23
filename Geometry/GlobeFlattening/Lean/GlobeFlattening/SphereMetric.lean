@@ -30,9 +30,8 @@ theorem volume_planarEuclideanEquiv_image (s : Set (ℝ × ℝ)) :
 /-- With latitude fixed, the two planar metrics give the same distance. -/
 theorem dist_planarEuclideanEquiv_of_snd_eq {a b : ℝ × ℝ} (hy : a.2 = b.2) :
     dist (planarEuclideanEquiv a) (planarEuclideanEquiv b) = dist a b := by
-  rw [PiLp.dist_eq_of_L2, Fin.sum_univ_two, Prod.dist_eq]
-  change Real.sqrt (dist a.1 b.1 ^ 2 + dist a.2 b.2 ^ 2) = _
-  simp [hy, Real.sqrt_sq dist_nonneg]
+  change dist !₂[a.1, a.2] !₂[b.1, b.2] = dist a b
+  simp [PiLp.dist_eq_of_L2, Fin.sum_univ_two, Prod.dist_eq, hy, Real.sqrt_sq dist_nonneg]
 
 theorem norm_sphereDerivative_le (p : ℝ × ℝ) : ‖sphereDerivative p‖ ≤ 2 := by
   refine ContinuousLinearMap.opNorm_le_bound _ (by norm_num) fun v => ?_
@@ -44,11 +43,10 @@ theorem norm_sphereDerivative_le (p : ℝ × ℝ) : ‖sphereDerivative p‖ ≤
     sq_le_sq.2 ((norm_snd_le v).trans (le_abs_self _)), sq_nonneg ‖v‖]
 
 theorem lipschitzWith_spherePoint : LipschitzWith 2 spherePoint := by
-  apply lipschitzWith_of_nnnorm_fderiv_le (𝕜 := ℝ)
-  · exact fun p => (hasFDerivAt_spherePoint p).differentiableAt
-  · intro p
-    rw [(hasFDerivAt_spherePoint p).fderiv]
-    exact_mod_cast norm_sphereDerivative_le p
+  rw [← lipschitzOnWith_univ]
+  exact convex_univ.lipschitzOnWith_of_nnnorm_hasFDerivWithin_le
+    (fun p _ => (hasFDerivAt_spherePoint p).hasFDerivWithinAt)
+    (fun p _ => by exact_mod_cast norm_sphereDerivative_le p)
 
 end
 
