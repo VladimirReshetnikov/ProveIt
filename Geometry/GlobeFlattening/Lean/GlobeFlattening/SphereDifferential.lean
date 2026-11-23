@@ -15,28 +15,9 @@ noncomputable section
 
 /-- The usual coordinate identification of the real plane with Euclidean space.
 The pair carries the product norm for the analytic construction. -/
-def planarEuclideanEquiv : (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) where
-  toFun v := !₂[v.1, v.2]
-  invFun w := (w 0, w 1)
-  left_inv _ := rfl
-  right_inv w := by
-    ext i
-    fin_cases i <;> rfl
-  map_add' a b := by
-    ext i
-    fin_cases i <;> rfl
-  map_smul' r v := by
-    ext i
-    fin_cases i <;> rfl
-  continuous_toFun :=
-    ((PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin 2 => ℝ)).symm.continuous.comp
-      (continuous_pi fun i => by
-        fin_cases i
-        · exact continuous_fst
-        · exact continuous_snd))
-  continuous_invFun :=
-    (EuclideanSpace.proj (0 : Fin 2)).continuous.prodMk
-      (EuclideanSpace.proj (1 : Fin 2)).continuous
+def planarEuclideanEquiv : (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
+  (ContinuousLinearEquiv.finTwoArrow ℝ ℝ).symm.trans
+    (PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin 2 => ℝ)).symm
 
 theorem planarEuclideanEquiv_apply (v : ℝ × ℝ) :
     planarEuclideanEquiv v = !₂[v.1, v.2] := rfl
@@ -138,7 +119,6 @@ theorem norm_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ) {w : EuclideanS
   rw [← norm_sphereTangentLift p (sphereFlattenDerivative p w),
     sphereTangentLift_sphereFlattenDerivative_of_tangent p hw]
 
-
 /-- The metric in spherical coordinates has diagonal entries
 `cos latitude` squared and `1`. -/
 theorem sq_norm_sphereDerivative (p v : ℝ × ℝ) :
@@ -172,11 +152,8 @@ theorem hasFDerivAt_sphereFlatten_inverse
     apply g.hasFDerivAt_symm (g.map_source hp)
     rw [g.left_inv hp, coordinateDerivativeEquiv_toContinuousLinearMap]
     exact hg
-  have hpair := planarEuclideanEquiv.symm.hasFDerivAt
-    (x := planarEuclideanEquiv (g p))
-  have hloc : HasFDerivAt g.symm (coordinateDerivative (Real.cos p.2)⁻¹)
-      (planarEuclideanEquiv.symm (planarEuclideanEquiv (g p))) := by simpa using hinv
-  have hg' := hloc.comp (planarEuclideanEquiv (g p)) hpair
+  have hg' := hinv.comp (planarEuclideanEquiv (g p))
+    planarEuclideanEquiv.symm.hasFDerivAt
   have hs' : HasFDerivAt spherePoint (sphereDerivative p)
       ((g.symm ∘ planarEuclideanEquiv.symm) (planarEuclideanEquiv (g p))) := by
     simpa only [Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply, g.left_inv hp]

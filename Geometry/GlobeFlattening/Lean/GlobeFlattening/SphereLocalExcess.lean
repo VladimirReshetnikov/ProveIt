@@ -16,13 +16,13 @@ open scoped NNReal ENNReal
 
 noncomputable section
 
-private abbrev sphereFlattenForward (u : ℝ × ℝ → ℝ) :=
+abbrev sphereFlattenForward (u : ℝ × ℝ → ℝ) :=
   planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)
 
 private abbrev sphereClosedCoordinates : Set (ℝ × ℝ) :=
   chartClosedRectangle (-Real.pi) Real.pi (-(Real.pi / 2)) (Real.pi / 2)
 
-private theorem sphereFlattenForward_spherePoint {u : ℝ × ℝ → ℝ} {p : ℝ × ℝ}
+theorem sphereFlattenForward_spherePoint {u : ℝ × ℝ → ℝ} {p : ℝ × ℝ}
     (hp : p ∈ sphereLongitudeDomain) :
     sphereFlattenForward u (spherePoint p) =
       planarEuclideanEquiv (flattenCoordinates u p) := by
@@ -32,13 +32,10 @@ theorem sphereFlattenForward_exceptional_image {u : ℝ × ℝ → ℝ} {good : 
     (hsub : good ⊆ sphereLongitudeDomain) :
     (planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)) '' sphereExceptional good =
       planarEuclideanEquiv '' (flattenCoordinates u '' (sphereLongitudeDomain \ good)) := by
-  rw [sphereExceptional_eq_image hsub]
-  ext w
-  constructor
-  · rintro ⟨_, ⟨p, hp, rfl⟩, rfl⟩
-    exact ⟨flattenCoordinates u p, ⟨p, hp, rfl⟩, (sphereFlattenForward_spherePoint hp.1).symm⟩
-  · rintro ⟨_, ⟨p, hp, rfl⟩, rfl⟩
-    exact ⟨spherePoint p, ⟨p, hp, rfl⟩, sphereFlattenForward_spherePoint hp.1⟩
+  simp only [sphereExceptional_eq_image hsub, image_image]
+  exact (show EqOn (sphereFlattenForward u ∘ spherePoint)
+      (planarEuclideanEquiv ∘ flattenCoordinates u) (sphereLongitudeDomain \ good) from
+    fun _ hp => sphereFlattenForward_spherePoint hp.1).image_eq
 
 /-- Every nonempty open patch of the Euclidean target contains positive
 area from the exceptional image. -/
@@ -56,21 +53,13 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
       (planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)) '' sphereExceptional good) := by
   let V := planarEuclideanEquiv ⁻¹' W
   have hV : IsOpen V := hW.preimage planarEuclideanEquiv.continuous
-  have hVne : V.Nonempty := by
-    obtain ⟨w, hw⟩ := hne
-    exact ⟨planarEuclideanEquiv.symm w, by simpa [V] using hw⟩
+  have hVne : V.Nonempty := hne.preimage planarEuclideanEquiv.surjective
   have hVsub : V ⊆ flattenCoordinates u '' sphereLongitudeDomain := by
-    intro v hv
-    obtain ⟨v', hv', eq⟩ := hWsub hv
-    rwa [planarEuclideanEquiv.injective eq] at hv'
-  have hpos := volume_exceptional_inter_of_open hu hslope hgood hnull hderiv hV hVne hVsub
-  let e := planarEuclideanEquiv.toHomeomorph.toMeasurableEquiv
-  have he : MeasurePreserving e volume volume := measurePreserving_planarEuclideanEquiv
-  rw [sphereFlattenForward_exceptional_image hsub, ← he.measure_preimage_equiv]
-  change 0 < volume (planarEuclideanEquiv ⁻¹'
-    (W ∩ planarEuclideanEquiv '' (flattenCoordinates u '' (sphereLongitudeDomain \ good))))
-  rw [preimage_inter, planarEuclideanEquiv.injective.preimage_image]
-  exact hpos
+    simpa only [preimage_image_eq _ planarEuclideanEquiv.injective] using
+      preimage_mono (f := planarEuclideanEquiv) hWsub
+  rw [sphereFlattenForward_exceptional_image hsub, ← image_preimage_inter,
+    volume_planarEuclideanEquiv_image]
+  exact volume_exceptional_inter_of_open hu hslope hgood hnull hderiv hV hVne hVsub
 
 /-- The spherical flattening has no Lipschitz bound on any relatively open
 nonempty subset of the cut sphere. -/
@@ -90,35 +79,30 @@ theorem not_lipschitzOn_sphereFlatten_of_open {u : ℝ × ℝ → ℝ}
   let V := Subtype.val '' U'
   have hV : IsOpen V := isOpen_sphereLongitudeDomain.isOpenMap_subtype_val U'
     (hU.preimage sphereLongitudeChart.continuous)
-  have hVne : V.Nonempty := by
-    obtain ⟨w, hw⟩ := hne
-    exact ⟨(sphereLongitudeChart.symm w).val, sphereLongitudeChart.symm w,
-      by simpa [U'] using hw, rfl⟩
+  have hVne : V.Nonempty := (hne.preimage sphereLongitudeChart.surjective).image _
   have hVsub : V ⊆ sphereLongitudeDomain := by
     rintro _ ⟨p, _, rfl⟩
     exact p.2
   let A := planarEuclideanEquiv.symm.toContinuousLinearMap
-  apply not_lipschitzOn_flattenCoordinates_of_open hu hslope hgood hnull hderiv hV hVne hVsub
-    (‖A‖₊ * K * 2)
-  rintro _ ⟨p, hp, rfl⟩ _ ⟨q, hq, rfl⟩
-  have hidentity (z : sphereLongitudeDomain) :
-      A (sphereFlattenForward u (sphereLongitudeChart z)) = flattenCoordinates u z := by
-    change planarEuclideanEquiv.symm (sphereFlattenForward u (spherePoint z)) = _
-    simp only [sphereFlattenForward_spherePoint z.2, ContinuousLinearEquiv.symm_apply_apply]
-  rw [← hidentity p, ← hidentity q]
-  have h₁ := A.lipschitz (sphereFlattenForward u (sphereLongitudeChart p))
-    (sphereFlattenForward u (sphereLongitudeChart q))
-  have h₂ := hLip hp hq
-  have h₃ := lipschitzWith_spherePoint p.val q.val
-  calc
-    _ ≤ (↑‖A‖₊ : ℝ≥0∞) *
-        edist (sphereFlattenForward u (sphereLongitudeChart p))
-          (sphereFlattenForward u (sphereLongitudeChart q)) := h₁
-    _ ≤ (↑‖A‖₊ : ℝ≥0∞) * (↑K * edist (spherePoint p) (spherePoint q)) :=
-      mul_le_mul_right h₂ _
-    _ ≤ (↑‖A‖₊ : ℝ≥0∞) * (↑K * ((2 : ℝ≥0∞) * edist p.val q.val)) :=
-      mul_le_mul_right (mul_le_mul_right h₃ _) _
-    _ = _ := by simp [mul_assoc]
+  have hchart : LipschitzWith 2 sphereLongitudeChart :=
+    fun p q => lipschitzWith_spherePoint p.val q.val
+  have hcomp := A.lipschitz.comp_lipschitzOnWith
+    (hLip.comp hchart.lipschitzOnWith (mapsTo_preimage _ _))
+  have hpull : LipschitzOnWith (‖A‖₊ * (K * 2))
+      (sphereLongitudeDomain.restrict (flattenCoordinates u)) U' := by
+    have hidentity (p : sphereLongitudeDomain) :
+        A (sphereFlattenForward u (sphereLongitudeChart p)) = flattenCoordinates u p := by
+      change planarEuclideanEquiv.symm (sphereFlattenForward u (spherePoint p)) = _
+      rw [sphereFlattenForward_spherePoint p.2, ContinuousLinearEquiv.symm_apply_apply]
+    intro p hp q hq
+    have hbound := hcomp hp hq
+    change edist (A (sphereFlattenForward u (sphereLongitudeChart p)))
+      (A (sphereFlattenForward u (sphereLongitudeChart q))) ≤ _ at hbound
+    rwa [hidentity p, hidentity q] at hbound
+  have hflat := lipschitzOnWith_restrict.mp hpull
+  rw [inter_eq_right.mpr hVsub] at hflat
+  exact not_lipschitzOn_flattenCoordinates_of_open hu hslope hgood hnull hderiv
+    hV hVne hVsub _ hflat
 
 end
 

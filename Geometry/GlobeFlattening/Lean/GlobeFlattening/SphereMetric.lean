@@ -21,6 +21,12 @@ theorem measurePreserving_planarEuclideanEquiv :
     MeasurePreserving planarEuclideanEquiv volume volume := by
   exact (PiLp.volume_preserving_toLp (Fin 2)).comp (volume_preserving_finTwoArrow ℝ).symm
 
+theorem volume_planarEuclideanEquiv_image (s : Set (ℝ × ℝ)) :
+    volume (planarEuclideanEquiv '' s) = volume s := by
+  simpa only [preimage_image_eq s planarEuclideanEquiv.injective] using
+    (measurePreserving_planarEuclideanEquiv.measure_preimage_emb
+      planarEuclideanEquiv.toHomeomorph.measurableEmbedding (planarEuclideanEquiv '' s)).symm
+
 /-- With latitude fixed, the two planar metrics give the same distance. -/
 theorem dist_planarEuclideanEquiv_of_snd_eq {a b : ℝ × ℝ} (hy : a.2 = b.2) :
     dist (planarEuclideanEquiv a) (planarEuclideanEquiv b) = dist a b := by
@@ -33,17 +39,14 @@ theorem dist_planarEuclideanEquiv_of_snd_eq {a b : ℝ × ℝ} (hy : a.2 = b.2) 
 theorem norm_sphereDerivative_le (p : ℝ × ℝ) : ‖sphereDerivative p‖ ≤ 2 := by
   apply ContinuousLinearMap.opNorm_le_bound _ (by norm_num)
   intro v
-  have hx : |Real.cos p.2 * v.1| ≤ ‖v‖ := by
-    rw [abs_mul]
-    calc
-      |Real.cos p.2| * |v.1| ≤ 1 * |v.1| :=
-        mul_le_mul_of_nonneg_right (abs_le.mpr ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩)
-          (abs_nonneg _)
-      _ ≤ ‖v‖ := by simpa [Real.norm_eq_abs] using norm_fst_le v
-  have hy : |v.2| ≤ ‖v‖ := by simpa [Real.norm_eq_abs] using norm_snd_le v
-  have hx₂ := (sq_le_sq₀ (abs_nonneg _) (norm_nonneg _)).mpr hx
-  have hy₂ := (sq_le_sq₀ (abs_nonneg _) (norm_nonneg _)).mpr hy
-  rw [sq_abs] at hx₂ hy₂
+  have hx : (Real.cos p.2 * v.1)^2 ≤ ‖v‖ ^ 2 := by
+    rw [sq_le_sq, abs_mul, abs_of_nonneg (norm_nonneg _)]
+    exact (mul_le_of_le_one_left (abs_nonneg _)
+      (abs_le.mpr ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩)).trans
+      (by simpa [Real.norm_eq_abs] using norm_fst_le v)
+  have hy : v.2^2 ≤ ‖v‖ ^ 2 := by
+    rw [sq_le_sq, abs_of_nonneg (norm_nonneg _)]
+    simpa [Real.norm_eq_abs] using norm_snd_le v
   apply (sq_le_sq₀ (norm_nonneg _) (mul_nonneg (by norm_num) (norm_nonneg _))).mp
   rw [sq_norm_sphereDerivative]
   nlinarith [sq_nonneg ‖v‖]

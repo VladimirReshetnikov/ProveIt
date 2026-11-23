@@ -33,14 +33,9 @@ def horizontalComplex (w : EuclideanSpace ℝ (Fin 3)) : ℂ := ⟨w 0, w 1⟩
     (horizontalComplex w).im = w 1 := rfl
 
 theorem continuous_horizontalComplex : Continuous horizontalComplex := by
-  have h₀ := (EuclideanSpace.proj (𝕜 := ℝ) (0 : Fin 3)).continuous
-  have h₁ := (EuclideanSpace.proj (𝕜 := ℝ) (1 : Fin 3)).continuous
-  have he : horizontalComplex = (fun w : EuclideanSpace ℝ (Fin 3) =>
-      (w 0 : ℂ) + (w 1 : ℂ) * Complex.I) :=
-    funext fun w => Complex.mk_eq_add_mul_I (w 0) (w 1)
-  rw [he]
-  exact (Complex.continuous_ofReal.comp h₀).add
-    ((Complex.continuous_ofReal.comp h₁).mul continuous_const)
+  exact Complex.equivRealProdCLM.symm.continuous.comp
+    ((EuclideanSpace.proj (𝕜 := ℝ) (0 : Fin 3)).continuous.prodMk
+      (EuclideanSpace.proj (𝕜 := ℝ) (1 : Fin 3)).continuous)
 
 theorem horizontalComplex_spherePoint (p : ℝ × ℝ) :
     horizontalComplex (spherePoint p) =
@@ -67,24 +62,20 @@ theorem cutSphere_eq_sphere_sdiff_meridian :
     Complex.mem_slitPlane_iff, horizontalComplex_re, horizontalComplex_im, not_and_or, not_le]
   rw [or_comm]
 
+private theorem longitude_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
+    (horizontalComplex (spherePoint p)).arg = p.1 := by
+  rw [horizontalComplex_spherePoint, Complex.arg_mul_cos_add_sin_mul_I
+    (Real.cos_pos_of_mem_Ioo hp.2) ⟨hp.1.1, hp.1.2.le⟩]
+
 theorem spherePoint_mapsTo : MapsTo spherePoint sphereLongitudeDomain cutSphere := by
   intro p hp
-  have hx : p.1 ∈ Ioo (-Real.pi) Real.pi := hp.1
-  have hy : p.2 ∈ Ioo (-(Real.pi / 2)) (Real.pi / 2) := hp.2
-  have hcos := Real.cos_pos_of_mem_Ioo hy
-  refine ⟨norm_spherePoint p, Complex.mem_slitPlane_iff_arg.2 ⟨?_, ?_⟩⟩
-  · rw [horizontalComplex_spherePoint, Complex.arg_mul_cos_add_sin_mul_I hcos
-      ⟨hx.1, hx.2.le⟩]
-    exact hx.2.ne
-  · rw [horizontalComplex_spherePoint]
-    refine mul_ne_zero (by exact_mod_cast hcos.ne') ?_
-    intro hz
-    rw [← Complex.ofReal_cos, ← Complex.ofReal_sin] at hz
-    have h₁ : Real.cos p.1 = 0 := by
-      simpa [Complex.mul_re, -Complex.ofReal_cos] using congrArg Complex.re hz
-    have h₂ : Real.sin p.1 = 0 := by
-      simpa [Complex.mul_im, -Complex.ofReal_sin] using congrArg Complex.im hz
-    simpa [h₁, h₂] using Real.sin_sq_add_cos_sq p.1
+  have hcos := Real.cos_pos_of_mem_Ioo hp.2
+  refine ⟨norm_spherePoint p, Complex.mem_slitPlane_iff_arg.2 ⟨?_, norm_ne_zero_iff.1 ?_⟩⟩
+  · rw [longitude_spherePoint hp]
+    exact hp.1.2.ne
+  · rw [horizontalComplex_spherePoint, norm_mul, Complex.norm_cos_add_sin_mul_I,
+      Complex.norm_of_nonneg hcos.le, mul_one]
+    exact hcos.ne'
 
 /-- Longitude and latitude computed directly from an ambient point. -/
 def sphereChartInverse (w : EuclideanSpace ℝ (Fin 3)) : ℝ × ℝ :=
@@ -92,13 +83,7 @@ def sphereChartInverse (w : EuclideanSpace ℝ (Fin 3)) : ℝ × ℝ :=
 
 theorem sphereChartInverse_spherePoint {p : ℝ × ℝ} (hp : p ∈ sphereLongitudeDomain) :
     sphereChartInverse (spherePoint p) = p := by
-  have hx : p.1 ∈ Ioo (-Real.pi) Real.pi := hp.1
-  have hy : p.2 ∈ Ioo (-(Real.pi / 2)) (Real.pi / 2) := hp.2
-  apply Prod.ext
-  · change (horizontalComplex (spherePoint p)).arg = p.1
-    rw [horizontalComplex_spherePoint, Complex.arg_mul_cos_add_sin_mul_I
-      (Real.cos_pos_of_mem_Ioo hy) ⟨hx.1, hx.2.le⟩]
-  · exact Real.arcsin_sin hy.1.le hy.2.le
+  exact Prod.ext (longitude_spherePoint hp) (Real.arcsin_sin hp.2.1.le hp.2.2.le)
 
 private theorem cutSphere_sq_identity {w : EuclideanSpace ℝ (Fin 3)} (hw : w ∈ cutSphere) :
     ‖horizontalComplex w‖ ^ 2 + (w 2)^2 = 1 := by
@@ -146,14 +131,20 @@ theorem continuousOn_sphereChartInverse : ContinuousOn sphereChartInverse cutSph
     (Real.continuous_arcsin.continuousAt.comp
       (EuclideanSpace.proj (𝕜 := ℝ) (2 : Fin 3)).continuous.continuousAt)).continuousWithinAt
 
+theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
+  ⟨spherePoint_mapsTo,
+    fun _ hx _ hy h => by simpa only [sphereChartInverse_spherePoint hx,
+      sphereChartInverse_spherePoint hy] using congrArg sphereChartInverse h,
+    fun w hw => ⟨sphereChartInverse w, sphereChartInverse_mapsTo hw,
+      spherePoint_sphereChartInverse hw⟩⟩
+
 /-- The coordinates of the report give a homeomorphism onto the cut sphere. -/
 def sphereLongitudeChart : sphereLongitudeDomain ≃ₜ cutSphere where
   toFun p := ⟨spherePoint p, spherePoint_mapsTo p.2⟩
   invFun w := ⟨sphereChartInverse w, sphereChartInverse_mapsTo w.2⟩
   left_inv p := Subtype.ext (sphereChartInverse_spherePoint p.2)
   right_inv w := Subtype.ext (spherePoint_sphereChartInverse w.2)
-  continuous_toFun := ((continuous_iff_continuousAt.2 fun p =>
-    (hasFDerivAt_spherePoint p).continuousAt).comp continuous_subtype_val).subtype_mk _
+  continuous_toFun := (continuous_spherePoint.comp continuous_subtype_val).subtype_mk _
   continuous_invFun := (continuousOn_iff_continuous_restrict.1
     continuousOn_sphereChartInverse).subtype_mk _
 
