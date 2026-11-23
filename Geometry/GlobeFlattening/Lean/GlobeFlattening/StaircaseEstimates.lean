@@ -29,14 +29,6 @@ theorem tsum_weighted_increment {e A : ℕ → ℝ} {L : ℝ} (h0 : A 0 = 0)
   simp only [Function.comp_def, sum_weighted_increment_succ e A h0] at hleft
   exact tendsto_nhds_unique hleft (hend.add hs.hasSum.tendsto_sum_nat)
 
-/-- Successive drops of a decreasing sequence tending to zero sum to its initial value. -/
-theorem hasSum_antitone_drop {e : ℕ → ℝ} (he : Antitone e)
-    (hzero : Tendsto e atTop (𝓝 0)) : HasSum (fun n => e n - e (n + 1)) (e 0) := by
-  refine (hasSum_iff_tendsto_nat_of_nonneg (fun n => sub_nonneg.mpr (he (Nat.le_succ n))) _).2 ?_
-  have ht : Tendsto (fun n => e 0 - e n) atTop (𝓝 (e 0)) := by
-    simpa only [sub_zero] using tendsto_const_nhds.sub hzero
-  simpa only [sum_range_sub'] using ht
-
 /-- An absolute termwise difference bound passes to the corresponding difference of sums. -/
 theorem abs_tsum_sub_le_of_termwise {f g u v : ℕ → ℝ}
     (hf : Summable f) (hg : Summable g) (hu : Summable u) (hv : Summable v)

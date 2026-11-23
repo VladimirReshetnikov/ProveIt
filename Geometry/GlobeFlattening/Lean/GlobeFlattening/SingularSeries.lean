@@ -35,8 +35,7 @@ private theorem singular_of_monotone_remainders
     ∀ᵐ x ∂volume.restrict (Ioc a b), HasDerivAt F 0 x := by
   have heq (n : ℕ) : ∀ᵐ x, deriv F x = deriv (tail n) x := by
     filter_upwards [hF.ae_differentiableAt, (htail n).ae_differentiableAt, hpartial n] with x hf ht hp
-    have h := (hf.hasDerivAt.sub ht.hasDerivAt).unique hp
-    linarith
+    exact sub_eq_zero.mp ((hf.hasDerivAt.sub ht.hasDerivAt).unique hp)
   have hFint := ((hF.monotoneOn (uIcc a b)).intervalIntegrable_deriv).1
   have hbound (n : ℕ) : (∫ x in Ioc a b, deriv F x) ≤ tail n b - tail n a := by
     rw [integral_congr_ae (ae_restrict_of_ae (heq n)), ← intervalIntegral.integral_of_le hab]
@@ -50,9 +49,7 @@ private theorem singular_of_monotone_remainders
     (integral_eq_zero_iff_of_nonneg_ae (ae_of_all _ fun _ => hF.deriv_nonneg) hFint).mp
       (le_antisymm hle hge)
   filter_upwards [ae_restrict_of_ae hF.ae_differentiableAt, hzero] with x hx hz
-  have h := hx.hasDerivAt
-  rw [show deriv F x = 0 from hz] at h
-  exact h
+  exact hx.hasDerivAt.congr_deriv hz
 
 /-- A pointwise summable series of monotone singular functions is singular. -/
 private theorem singular_tsum_on_Ioc
@@ -65,8 +62,8 @@ private theorem singular_tsum_on_Ioc
   let tail : ℕ → ℝ → ℝ := fun n x => F x - ∑ i ∈ Finset.range n, f i x
   have htail_eq (n : ℕ) (x : ℝ) : tail n x = ∑' i, f (i + n) x := by
     dsimp [tail, F]
-    have h := (hsum x).sum_add_tsum_nat_add n
-    linarith
+    rw [← (hsum x).sum_add_tsum_nat_add n]
+    exact add_sub_cancel_left _ _
   have hF : Monotone F := by
     intro x y hxy
     exact Summable.tsum_le_tsum (fun i => hmono i hxy) (hsum x) (hsum y)
@@ -76,11 +73,10 @@ private theorem singular_tsum_on_Ioc
     exact Summable.tsum_le_tsum (fun i => hmono (i+n) hxy)
       ((summable_nat_add_iff n).2 (hsum x)) ((summable_nat_add_iff n).2 (hsum y))
   have hpartial (n : ℕ) : ∀ᵐ x, HasDerivAt (fun y => F y - tail n y) 0 x := by
-    have hAll : ∀ᵐ x, ∀ i, HasDerivAt (f i) 0 x := ae_all_iff.mpr hsing
-    filter_upwards [hAll] with x hx
-    have h := HasDerivAt.fun_sum (u := Finset.range n) (A := f) (A' := fun _ => 0)
-      (fun i _ => hx i)
-    simpa only [tail, sub_sub_cancel, Finset.sum_const_zero] using h
+    filter_upwards [ae_all_iff.mpr hsing] with x hx
+    simpa only [tail, sub_sub_cancel, Finset.sum_const_zero] using
+      (HasDerivAt.fun_sum (u := Finset.range n) (A := f) (A' := fun _ => 0)
+        fun i _ => hx i)
   have htail_tendsto (x : ℝ) : Tendsto (fun n => tail n x) atTop (𝓝 0) := by
     simpa [tail, F] using
       (tendsto_const_nhds (x := F x)).sub (hsum x).hasSum.tendsto_sum_nat

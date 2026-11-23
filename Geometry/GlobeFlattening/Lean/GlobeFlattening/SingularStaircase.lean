@@ -30,23 +30,21 @@ private def normalized : Set Profile :=
 
 private theorem isClosed_normalized : IsClosed normalized := by
   unfold normalized
-  simp only [Monotone, setOf_and, setOf_forall]
-  exact (isClosed_iInter fun x => isClosed_iInter fun y => isClosed_iInter fun _ =>
-    isClosed_le (continuous_eval_const x) (continuous_eval_const y)).inter
+  simp only [setOf_and, setOf_forall]
+  exact (isClosed_monotone.preimage BoundedContinuousFunction.continuous_coe).inter
     ((isClosed_iInter fun x => isClosed_iInter fun _ =>
       isClosed_eq (continuous_eval_const x) continuous_const).inter
      (isClosed_iInter fun x => isClosed_iInter fun _ =>
       isClosed_eq (continuous_eval_const x) continuous_const))
 
 private theorem normalized_nonempty : normalized.Nonempty := by
-  let f (x : ℝ) := max 0 (min 1 x)
-  let F := BoundedContinuousFunction.ofNormedAddCommGroup f (by unfold f; fun_prop) 1
-    (fun x => by
-      rw [Real.norm_eq_abs, abs_of_nonneg (le_max_left _ _)]
-      exact max_le zero_le_one (min_le_left _ _))
-  exact ⟨F, fun _ _ h => max_le_max le_rfl (min_le_min_left _ h),
-    fun _ h => max_eq_left ((min_le_right _ _).trans h),
-    fun _ h => by simp [F, f, min_eq_left h]⟩
+  let proj := projIcc (0 : ℝ) 1 zero_le_one
+  let F := BoundedContinuousFunction.ofNormedAddCommGroup (Subtype.val ∘ proj)
+    (continuous_subtype_val.comp continuous_projIcc) 1 (fun x => by
+      simpa only [Function.comp_apply, Real.norm_of_nonneg (proj x).2.1] using (proj x).2.2)
+  exact ⟨F, monotone_projIcc zero_le_one,
+    fun _ h => congrArg Subtype.val (projIcc_of_le_left zero_le_one h),
+    fun _ h => congrArg Subtype.val (projIcc_of_right_le zero_le_one h)⟩
 
 private def cantorAverage (f : Profile) : Profile := (1 / 2 : ℝ) •
   (f.compContinuous ⟨fun x => 3 * x, by fun_prop⟩ +
@@ -93,10 +91,8 @@ private theorem cantor_locally_constant (f : normalized)
     (hx : x ∉ preCantorSet n) : ∀ᶠ y in 𝓝 x, f.val y = f.val x := by
   induction n generalizing x with
   | zero =>
-    have hx' : x < 0 ∨ 1 < x := by
-      by_contra! h
-      exact hx ⟨h.1, h.2⟩
-    rcases hx' with hx' | hx'
+    simp only [preCantorSet_zero, mem_Icc, not_and_or, not_le] at hx
+    rcases hx with hx' | hx'
     · filter_upwards [Iio_mem_nhds hx'] with y hy
       rw [f.2.2.1 _ hy.le, f.2.2.1 _ hx'.le]
     · filter_upwards [Ioi_mem_nhds hx'] with y hy
@@ -114,8 +110,9 @@ private theorem cantor_locally_constant (f : normalized)
     rw [← cantorAverage_apply, hfix]
 
 private theorem volume_cantorSet : volume cantorSet = 0 := by
-  have hscale (b : ℝ) : volume ((fun x : ℝ => (b + x) / 3) '' cantorSet) ≤
-      (1 / 3 : ℝ≥0∞) * volume cantorSet := by
+  let c := ENNReal.ofReal (1 / 3)
+  have hscale (b : ℝ) : volume ((fun x : ℝ => (b + x) / 3) '' cantorSet) =
+      c * volume cantorSet := by
     have hfun : (fun x : ℝ => (b + x) / 3) =
         (fun x => b / 3 + (1 / 3 : ℝ) * x) := by
       funext x
@@ -123,23 +120,20 @@ private theorem volume_cantorSet : volume cantorSet = 0 := by
     rw [hfun, ← image_image]
     simp only [← smul_eq_mul, image_smul, image_add_left, measure_preimage_add,
       Measure.addHaar_smul, Module.finrank_self, pow_one]
-    norm_num [ENNReal.ofReal_div_of_pos]
-  have hle : volume cantorSet ≤ (1 / 3 + 1 / 3 : ℝ≥0∞) * volume cantorSet := calc
-    volume cantorSet = volume ((· / 3) '' cantorSet ∪
-        (fun x : ℝ => (2 + x) / 3) '' cantorSet) := congrArg volume cantorSet_eq_union_halves
-    _ ≤ _ := (measure_union_le _ _).trans <| by
-      rw [add_mul]
-      exact add_le_add (by simpa only [zero_add] using hscale 0) (hscale 2)
+    norm_num [c]
+  have hle : volume cantorSet ≤ (c + c) * volume cantorSet := by
+    nth_rw 1 [cantorSet_eq_union_halves]
+    refine (measure_union_le _ _).trans_eq ?_
+    rw [show volume ((· / 3) '' cantorSet) = c * volume cantorSet by simpa using hscale 0,
+      hscale 2, add_mul]
+  have hc : c + c < 1 := by
+    dsimp only [c]
+    rw [← ENNReal.ofReal_add (by norm_num) (by norm_num), ← ENNReal.ofReal_one,
+      ENNReal.ofReal_lt_ofReal_iff zero_lt_one]
+    norm_num
   by_contra hn
-  apply (not_lt_of_ge hle)
-  calc
-    _ < (1 : ℝ≥0∞) * volume cantorSet :=
-      ENNReal.mul_lt_mul_left hn isCompact_cantorSet.measure_lt_top.ne (by
-        have hcast : (↑(1 / 3 + 1 / 3 : ℝ≥0) : ℝ≥0∞) < ↑(1 : ℝ≥0) :=
-          ENNReal.coe_lt_coe.2 (by norm_num)
-        simpa only [ENNReal.coe_add, ENNReal.coe_div', ENNReal.coe_one,
-          ENNReal.coe_ofNat, ENNReal.coe_natCast] using hcast)
-    _ = _ := one_mul _
+  exact (not_lt_of_ge hle) (by
+    simpa using ENNReal.mul_lt_mul_left hn isCompact_cantorSet.measure_lt_top.ne hc)
 
 theorem exists_singular_staircase : ∃ f : ℝ → ℝ,
     Continuous f ∧ Monotone f ∧ (∀ x ≤ 0, f x = 0) ∧ (∀ x ≥ 1, f x = 1) ∧

@@ -10,10 +10,11 @@ also proves positive exceptional image area in every nonempty open target
 patch and rules out a Lipschitz bound on any nonempty relatively open
 source patch. [Lean theorem](Lean/GlobeFlattening/FlatteningTheorem.lean)
 
-The Lean construction uses two sequences of continuous monotone staircases
-that approximate longitude and latitude and have derivative zero almost
-everywhere. Each approximant is a finite sum of scaled copies of the
-staircase obtained as the fixed point of the Cantor averaging rule.
+The Lean construction uses continuous monotone staircases with derivative
+zero almost everywhere. One sequence approximates longitude, and rescaling
+it by `Yₙ(y) = Xₙ(2y) / 2` gives the latitude sequence. Each longitude
+approximant is a finite sum of scaled copies of the fixed point of the
+Cantor averaging rule.
 Positive longitude correction weights give a strict slope bound on every
 nontrivial horizontal interval. Summation by parts recovers the sinusoidal
 term as the boundary term. The two formulas then control horizontal and
@@ -22,10 +23,11 @@ vertical errors and give the joint derivative. Scaling the scalar tolerance by
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·
 [Singular staircases](Lean/GlobeFlattening/SingularStaircase.lean)
 
-The triangular chart is open because it maps open rectangles to regions
-between continuous longitude endpoint curves. The same strict width
-comparison proves total area excess and local exceptional area. The
-uniform projection error bounds the total area from above.
+Strict row increase gives injectivity on the closed coordinate rectangle.
+Compactness makes the map an embedding, and the interior maps onto the
+open region between the continuous longitude endpoint curves. The same
+strict width comparison proves total area excess and local exceptional
+area. The uniform projection error bounds the total area from above.
 [Chart homeomorphism](Lean/GlobeFlattening/TriangularChart.lean)
 
 Spherical area is defined in the longitude–latitude chart with density
