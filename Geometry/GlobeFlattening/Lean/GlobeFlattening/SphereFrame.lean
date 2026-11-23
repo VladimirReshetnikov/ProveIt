@@ -2,7 +2,6 @@ import Mathlib.Analysis.Calculus.FDeriv.WithLp
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.Ring
 
 /-!
@@ -35,13 +34,12 @@ def sphereFrame (p : ℝ × ℝ) : Fin 3 → EuclideanSpace ℝ (Fin 3) :=
   ![sphereEast p, sphereNorth p, spherePoint p]
 
 theorem orthonormal_sphereFrame (p : ℝ × ℝ) : Orthonormal ℝ (sphereFrame p) := by
-  refine orthonormal_iff_ite.2 fun i j => ?_
   have hLon := Real.sin_sq_add_cos_sq p.1
   have hLat := Real.sin_sq_add_cos_sq p.2
-  fin_cases i <;> fin_cases j <;>
-    rw [PiLp.inner_apply, Fin.sum_univ_three] <;>
-    simp [RCLike.inner_apply, sphereFrame, sphereEast, sphereNorth, spherePoint, mul_pow, sq_abs] <;>
-    grind only
+  simp [sphereFrame, Fin.forall_fin_succ, ← pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero,
+    EuclideanSpace.real_norm_sq_eq, PiLp.inner_apply, Fin.sum_univ_three, RCLike.inner_apply,
+    sphereEast, sphereNorth, spherePoint, mul_pow]
+  grind only
 
 @[simp] theorem norm_spherePoint (p : ℝ × ℝ) : ‖spherePoint p‖ = 1 :=
   (orthonormal_sphereFrame p).norm_eq_one (2 : Fin 3)
@@ -122,13 +120,11 @@ theorem sphereDerivative_apply (p v : ℝ × ℝ) :
 theorem hasFDerivAt_spherePoint (p : ℝ × ℝ) :
     HasFDerivAt spherePoint (sphereDerivative p) p := by
   rw [← (PiLp.continuousLinearEquiv 2 ℝ _).comp_hasFDerivAt_iff, hasFDerivAt_pi']
-  intro i
+  simp only [Fin.forall_fin_succ, Fin.forall_fin_zero, and_true]
   have hfst := hasFDerivAt_fst (𝕜 := ℝ) (E := ℝ) (F := ℝ) (p := p)
   have hsnd := hasFDerivAt_snd (𝕜 := ℝ) (E := ℝ) (F := ℝ) (p := p)
-  fin_cases i
-  case' «0» => apply (hsnd.cos.mul hfst.cos).congr_fderiv
-  case' «1» => apply (hsnd.cos.mul hfst.sin).congr_fderiv
-  case' «2» => apply hsnd.sin.congr_fderiv
+  refine ⟨(hsnd.cos.mul hfst.cos).congr_fderiv ?_, (hsnd.cos.mul hfst.sin).congr_fderiv ?_,
+    hsnd.sin.congr_fderiv ?_⟩
   all_goals
     apply ContinuousLinearMap.ext
     intro v
