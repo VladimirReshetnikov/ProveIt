@@ -765,7 +765,13 @@ independent row comparison through the actual quadrature weight.
 [GaussianEulerCompactUpperTail](Lean/IPRADerivations/Analysis/GaussianEulerCompactUpperTail.lean)
 proves the upper-cutoff norm bound for the original finite Euler
 quadrature using the scaled half-decay kernel and explicit mesh and
-observation errors. [GaussianEulerNamedUpperTail](Lean/IPRADerivations/Analysis/GaussianEulerNamedUpperTail.lean)
+observation errors.
+[GaussianEulerHalfDecayLeftNorm](Lean/IPRADerivations/Analysis/GaussianEulerHalfDecayLeftNorm.lean)
+retains a bound on the actual left decay observation at arbitrary
+rational time. [GaussianEulerUpperTailLeftNorm](Lean/IPRADerivations/Analysis/GaussianEulerUpperTailLeftNorm.lean)
+uses it in the original upper-tail grid, with coefficient
+`D_R=2^(R+1) R!` and the actual decay observation at `N/4` when
+the grid starts at `N/2`. [GaussianEulerNamedUpperTail](Lean/IPRADerivations/Analysis/GaussianEulerNamedUpperTail.lean)
 removes the auxiliary errors and proves the bound for the original
 varying-cutoff upper-tail name.
 [GaussianEulerUpperTailCauchyBudget](Lean/IPRADerivations/Analysis/GaussianEulerUpperTailCauchyBudget.lean)
@@ -815,6 +821,10 @@ primitive from the native positive half-plane source.
 [GaussianBetaKernelLogarithm](Lean/IPRADerivations/Analysis/GaussianBetaKernelLogarithm.lean)
 compares the original scaled logarithm with the decay exponent and gives
 a fixed compact radius.
+[GaussianBetaKernelSignedLogarithm](Lean/IPRADerivations/Analysis/GaussianBetaKernelSignedLogarithm.lean)
+proves the finite Taylor sign and transfers it to the same original
+rounded observation. The real remainder is at least the negative
+dyadic allowance and obeys the original quadratic norm bound.
 [GaussianBetaKernelGridComparison](Lean/IPRADerivations/Analysis/GaussianBetaKernelGridComparison.lean)
 compares the literal finite beta-kernel grid with the original improper
 Euler observation at its actual evaluation clock and also allows

@@ -18475,6 +18475,24 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayQuadrature.original_half_decay_grid_change_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayQuadrature.original_half_decay_endpoint_estimate_closed
 
+/-! ### GaussianEulerHalfDecayLeftNorm -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.errorNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.errorDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.subst_errorNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.subst_errorDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.error_denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.natural_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.original_half_decay_left_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.original_weighted_half_decay_left_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.original_rational_time_half_decay_retains_left_observation_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayLeftNorm.original_rational_time_weighted_half_decay_left_observation_closed
+
 /-! ### GaussianEulerHalfDecayProduct -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayProduct.halfProductData
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayProduct.subst_halfProductData
@@ -18547,6 +18565,18 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerCompactUpperTail.original_grid_bound_from_half
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerCompactUpperTail.original_upper_cutoff_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerCompactUpperTail.original_Euler_compact_upper_cutoff_bound_closed
+
+/-! ### GaussianEulerUpperTailLeftNorm -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.errorNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.subst_errorNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.subst_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.subst_denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.original_coefficient
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.original_grid_left_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.original_half_degree_upper_grid
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailLeftNorm.original_Euler_rational_time_grid_retains_left_decay_norm_closed
 
 /-! ### GaussianEulerUpperTailNameBudget -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUpperTailNameBudget.halfCost
@@ -18790,6 +18820,36 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelLogarithm.actual_beta_scaled_logarithm_sample_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelLogarithm.original_beta_logarithm_quadratic_rate_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelLogarithm.original_beta_logarithm_compact_exponential_input_closed
+
+/-! ### GaussianBetaKernelSignedLogarithm -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.positivePowerLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.subst_positivePowerLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.positive_power_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.positive_power_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.positive_power
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.seriesLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.subst_seriesLaw
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.series_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.series_step
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.negative_series
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.negative_factor
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.finite_scaled_order
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.finiteObservation
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.observation_finite_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.original_signed_remainder
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.original_signed_quadratic_remainder
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.subtraction_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.remainder
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.original_remainder_lower
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.original_remainder_norm
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.actual_negative_real_Taylor_factor_exact_signed_majorant_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.actual_negative_real_finite_scaled_logarithm_order_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.original_scaled_beta_logarithm_signed_quadratic_remainder_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm.original_beta_delta_lower_and_quadratic_norm_closed
+
+/-! ### RationalUpperRepresentation -/
+#print axioms LeanProofs.IPRA.Analysis.RationalUpperRepresentation.upper_from_representations
+#print axioms LeanProofs.IPRA.Analysis.RationalUpperRepresentation.original_scalar_upper_to_native_signed_representation_closed
 
 /-! ### GaussianBetaKernelExponential -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelExponential.base
