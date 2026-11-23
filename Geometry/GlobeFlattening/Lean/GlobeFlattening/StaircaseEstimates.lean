@@ -1,6 +1,6 @@
-import Mathlib.Algebra.BigOperators.Module
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Topology.MetricSpace.Lipschitz
+import Mathlib.Tactic.Ring
 
 /-!
 # Summation by parts and increment comparison for the staircase series
@@ -11,31 +11,25 @@ open scoped Topology
 
 namespace GlobeFlattening
 
-private theorem sum_weighted_increment_succ (e A : ℕ → ℝ) (h0 : A 0 = 0) (n : ℕ) :
-    (∑ i ∈ range (n + 1), e i * (A (i + 1) - A i)) =
-      e n * A (n + 1) + ∑ i ∈ range n, (e i - e (i + 1)) * A (i + 1) := by
-  have h := sum_range_by_parts e (fun i => A (i + 1) - A i) (n + 1)
-  simp only [smul_eq_mul, Nat.add_sub_cancel, sum_range_sub, h0, sub_zero] at h
-  rw [h, sub_eq_add_neg, ← sum_neg_distrib]
-  simp only [← neg_mul, neg_sub]
-
 /-- Discrete summation by parts retains the limit of the boundary term. -/
 theorem tsum_weighted_increment {e A : ℕ → ℝ} {L : ℝ} (h0 : A 0 = 0)
     (hs : Summable (fun n => (e n - e (n + 1)) * A (n + 1)))
-    (ht : Summable (fun n => e n * (A (n + 1) - A n)))
-    (hend : Tendsto (fun n => e n * A (n + 1)) atTop (𝓝 L)) :
-    (∑' n, e n * (A (n + 1) - A n)) = L + ∑' n, (e n - e (n + 1)) * A (n + 1) := by
-  have hleft := ht.hasSum.tendsto_sum_nat.comp (tendsto_add_atTop_nat 1)
-  simp only [Function.comp_def, sum_weighted_increment_succ e A h0] at hleft
-  exact tendsto_nhds_unique hleft (hend.add hs.hasSum.tendsto_sum_nat)
+    (ht : Summable (fun n => (A (n + 1) - A n) * e n))
+    (hend : Tendsto (fun n => e n * A n) atTop (𝓝 L)) :
+    (∑' n, (A (n + 1) - A n) * e n) = L + ∑' n, (e n - e (n + 1)) * A (n + 1) := by
+  have hstep (n : ℕ) :
+      (A (n + 1) - A n) * e n - (e n - e (n + 1)) * A (n + 1) =
+        e (n + 1) * A (n + 1) - e n * A n := by ring
+  have h := (ht.hasSum.sub hs.hasSum).tendsto_sum_nat
+  simp only [hstep, sum_range_sub (fun n => e n * A n), h0, mul_zero, sub_zero] at h
+  exact eq_add_of_sub_eq (tendsto_nhds_unique h hend)
 
 /-- A summable product majorant bounds the difference of weighted sums. -/
-theorem abs_tsum_weighted_sub_le {a b c f g : ℕ → ℝ} {C : ℝ}
-    (hf : Summable (fun n => a n * f n)) (hg : Summable (fun n => a n * g n))
+theorem abs_sub_le_of_hasSum_weighted {a b c f g : ℕ → ℝ} {F G C : ℝ}
+    (hf : HasSum (fun n => a n * f n) F) (hg : HasSum (fun n => a n * g n) G)
     (hC : HasSum (fun n => b n * c n) C)
-    (ha : ∀ n, |a n| ≤ b n) (hd : ∀ n, |f n - g n| ≤ c n) :
-    |(∑' n, a n * f n) - ∑' n, a n * g n| ≤ C := by
-  rw [← hf.tsum_sub hg]
+    (ha : ∀ n, |a n| ≤ b n) (hd : ∀ n, |f n - g n| ≤ c n) : |F - G| ≤ C := by
+  rw [← (hf.sub hg).tsum_eq]
   refine tsum_of_norm_bounded (f := fun n => a n * f n - a n * g n) hC fun n => ?_
   rw [← mul_sub]
   exact norm_mul_le_of_le (ha n) (hd n)
@@ -64,7 +58,8 @@ theorem abs_tsum_weighted_comp_sub_le {a b : ℕ → ℝ} {X f : ℕ → ℝ →
   have hdiff : HasSum (fun n => b n * (X n y - X n x))
       ((∑' n, b n * X n y) - ∑' n, b n * X n x) := by
     simpa only [mul_sub] using (ht y).hasSum.sub (ht x).hasSum
-  refine (abs_tsum_weighted_sub_le (hs y) (hs x) hdiff ha fun n => ?_).trans (le_abs_self _)
+  refine (abs_sub_le_of_hasSum_weighted (hs y).hasSum (hs x).hasSum hdiff ha fun n => ?_).trans
+    (le_abs_self _)
   simpa only [Real.dist_eq, NNReal.coe_one, one_mul, abs_of_nonneg (sub_nonneg.mpr (hmono n h))]
     using (hlip n).dist_le_mul (X n y) (X n x)
 

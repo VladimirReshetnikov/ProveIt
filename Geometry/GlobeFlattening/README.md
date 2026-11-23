@@ -20,9 +20,11 @@ is injective, so the distribution has no atoms and its distribution
 function is continuous. Support on the null Cantor set makes the
 distribution singular, so its distribution function has derivative zero
 almost everywhere.
-Positive longitude correction weights give a strict slope bound on every
-nontrivial horizontal interval. Summation by parts recovers the sinusoidal
-term as the boundary term. The two formulas bound the horizontal and
+The scalar coordinate is a uniformly converging series of longitude
+staircase increments weighted by shifted latitude cosines. On the chart,
+telescoping the product differences gives the sinusoidal coordinate plus
+a correction with positive weights, yielding a strict slope bound on every
+nontrivial horizontal interval. The two formulas bound the horizontal and
 vertical errors by increments of the same staircase sum, with latitude
 rescaled, giving the joint derivative. The Stieltjes measure of that sum
 is the sum of the individual singular measures, so the control function
