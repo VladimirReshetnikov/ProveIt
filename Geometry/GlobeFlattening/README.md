@@ -27,7 +27,9 @@ staircase increments weighted by shifted latitude cosines. On the chart,
 telescoping the product differences gives the sinusoidal coordinate plus
 a correction with positive weights, yielding a strict slope bound on every
 nontrivial horizontal interval. Comparing each weighted staircase with the
-clamped identity also gives the uniform approximation estimate. The two
+clamped identity gives the uniform approximation estimate. Bounding the
+initial latitude profile error by `δ / (2π)` makes its contribution at
+most `δ / 2` after multiplication by longitude. The two
 formulas bound horizontal and vertical errors by increments of the same
 staircase sum, with latitude rescaled, giving the joint derivative. The
 Stieltjes measure of that sum

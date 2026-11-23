@@ -12,17 +12,19 @@ open scoped Topology
 namespace GlobeFlattening
 
 /-- Discrete summation by parts retains the limit of the boundary term. -/
-theorem tsum_weighted_increment {e A : ℕ → ℝ} {L : ℝ} (h0 : A 0 = 0)
-    (hs : Summable (fun n => (e n - e (n + 1)) * A (n + 1)))
-    (ht : Summable (fun n => (A (n + 1) - A n) * e n))
+theorem tsum_weighted_increment {e A : ℕ → ℝ} {L : ℝ}
+    (hs : Summable (fun n => (e n - e (n + 1)) * A n))
+    (ht : Summable (fun n => (A (n + 1) - A n) * e (n + 1)))
     (hend : Tendsto (fun n => e n * A n) atTop (𝓝 L)) :
-    (∑' n, (A (n + 1) - A n) * e n) = L + ∑' n, (e n - e (n + 1)) * A (n + 1) := by
+    A 0 * e 0 + (∑' n, (A (n + 1) - A n) * e (n + 1)) =
+      L + ∑' n, (e n - e (n + 1)) * A n := by
   have hstep (n : ℕ) :
-      (A (n + 1) - A n) * e n - (e n - e (n + 1)) * A (n + 1) =
+      (A (n + 1) - A n) * e (n + 1) - (e n - e (n + 1)) * A n =
         e (n + 1) * A (n + 1) - e n * A n := by ring
   have h := (ht.hasSum.sub hs.hasSum).tendsto_sum_nat
-  simp only [hstep, sum_range_sub (fun n => e n * A n), h0, mul_zero, sub_zero] at h
-  exact eq_add_of_sub_eq (tendsto_nhds_unique h hend)
+  simp only [hstep, sum_range_sub (fun n => e n * A n)] at h
+  rw [eq_add_of_sub_eq (tendsto_nhds_unique h (hend.sub_const _))]
+  ring
 
 /-- A summable product majorant bounds the difference of weighted sums. -/
 theorem abs_sub_le_of_hasSum_weighted {a b c f g : ℕ → ℝ} {F G C : ℝ}
