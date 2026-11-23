@@ -55,17 +55,15 @@ theorem continuousOn_chartWidth {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : 
 theorem isOpen_chartImage {u : ℝ × ℝ → ℝ} {a b c d : ℝ} (hab : a ≤ b)
     (hu : ContinuousOn u (chartClosedRectangle a b c d)) :
     IsOpen (chartImage u a b c d) := by
-  refine isOpen_iff_mem_nhds.2 (fun p hp => ?_)
-  have hlat : Ioo c d ∈ 𝓝 p.2 := isOpen_Ioo.mem_nhds hp.1
+  let latitudeStrip := (Prod.snd : ℝ × ℝ → ℝ) ⁻¹' Ioo c d
   have hprofile (x : ℝ) (hx : x ∈ Icc a b) :
-      ContinuousAt (fun q : ℝ × ℝ => u (x, q.2)) p :=
-    (((continuousOn_latitudeProfile hu hx).mono Ioo_subset_Icc_self).continuousAt hlat).comp
-      continuous_snd.continuousAt
-  have hy : ∀ᶠ q : ℝ × ℝ in 𝓝 p, q.2 ∈ Ioo c d :=
-    continuous_snd.continuousAt.tendsto.eventually_mem hlat
-  filter_upwards [hy, (hprofile a ⟨le_rfl, hab⟩).eventually_lt continuous_fst.continuousAt hp.2.1,
-    continuous_fst.continuousAt.eventually_lt (hprofile b ⟨hab, le_rfl⟩) hp.2.2] with q hq hlow hhigh
-  exact ⟨hq, hlow, hhigh⟩
+      ContinuousOn (fun p : ℝ × ℝ => u (x, p.2)) latitudeStrip :=
+    (continuousOn_latitudeProfile hu hx).comp' continuous_snd.continuousOn
+      (fun _ hp => Ioo_subset_Icc_self hp)
+  have hlower := (hprofile a ⟨le_rfl, hab⟩).prodMk continuous_fst.continuousOn
+  have hupper := continuous_fst.continuousOn.prodMk (hprofile b ⟨hab, le_rfl⟩)
+  exact (hlower.prodMk hupper).isOpen_inter_preimage
+    (isOpen_Ioo.preimage continuous_snd) (isOpen_lt_prod.prod isOpen_lt_prod)
 
 /-- A strict lower slope bound with a nonnegative slope gives increasing longitude rows. -/
 theorem strictMonoOn_chartRows_of_lowerSlope {u : ℝ × ℝ → ℝ} {slope : ℝ → ℝ} {a b c d : ℝ}

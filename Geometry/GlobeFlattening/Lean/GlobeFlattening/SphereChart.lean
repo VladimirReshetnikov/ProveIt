@@ -17,7 +17,8 @@ open scoped Real
 noncomputable section
 
 /-- The projection to the equatorial plane, identified with the complex plane. -/
-def horizontalComplex (w : EuclideanSpace ℝ (Fin 3)) : ℂ := ⟨w 0, w 1⟩
+def horizontalComplex (w : EuclideanSpace ℝ (Fin 3)) : ℂ :=
+  Complex.equivRealProdCLM.symm (w 0, w 1)
 
 @[simp] theorem horizontalComplex_re (w : EuclideanSpace ℝ (Fin 3)) :
     (horizontalComplex w).re = w 0 := rfl
@@ -26,9 +27,8 @@ def horizontalComplex (w : EuclideanSpace ℝ (Fin 3)) : ℂ := ⟨w 0, w 1⟩
     (horizontalComplex w).im = w 1 := rfl
 
 theorem continuous_horizontalComplex : Continuous horizontalComplex := by
-  exact Complex.equivRealProdCLM.symm.continuous.comp
-    ((EuclideanSpace.proj (𝕜 := ℝ) (0 : Fin 3)).continuous.prodMk
-      (EuclideanSpace.proj (𝕜 := ℝ) (1 : Fin 3)).continuous)
+  unfold horizontalComplex
+  fun_prop
 
 theorem horizontalComplex_spherePoint (p : ℝ × ℝ) :
     horizontalComplex (spherePoint p) =
@@ -101,22 +101,18 @@ theorem spherePoint_sphereChartInverse {w : EuclideanSpace ℝ (Fin 3)} (hw : w 
   have hz := cutSphere_vertical_bounds hw
   have hrad : Real.cos (Real.arcsin (w 2)) = ‖horizontalComplex w‖ := by
     rw [Real.cos_arcsin, ← cutSphere_horizontal_norm_sq hw, Real.sqrt_sq (norm_nonneg _)]
-  have hh : horizontalComplex (spherePoint (sphereChartInverse w)) = horizontalComplex w := by
-    rw [horizontalComplex_spherePoint]
-    simpa only [sphereChartInverse, hrad] using
-      Complex.norm_mul_cos_add_sin_mul_I (horizontalComplex w)
   ext i
   fin_cases i
-  · exact congrArg Complex.re hh
-  · exact congrArg Complex.im hh
+  · change Real.cos (Real.arcsin (w 2)) * Real.cos (horizontalComplex w).arg = w 0
+    exact hrad.symm ▸ Complex.norm_mul_cos_arg (horizontalComplex w)
+  · change Real.cos (Real.arcsin (w 2)) * Real.sin (horizontalComplex w).arg = w 1
+    exact hrad.symm ▸ Complex.norm_mul_sin_arg (horizontalComplex w)
   · exact Real.sin_arcsin hz.1.le hz.2.le
 
 theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
-  ⟨spherePoint_mapsTo,
-    (show LeftInvOn sphereChartInverse spherePoint sphereLongitudeDomain from
-      fun _ hp => sphereChartInverse_spherePoint hp).injOn,
-    (show RightInvOn sphereChartInverse spherePoint cutSphere from
-      fun _ hw => spherePoint_sphereChartInverse hw).surjOn sphereChartInverse_mapsTo⟩
+  (show InvOn sphereChartInverse spherePoint sphereLongitudeDomain cutSphere from
+    ⟨fun _ => sphereChartInverse_spherePoint, fun _ => spherePoint_sphereChartInverse⟩).bijOn
+    spherePoint_mapsTo sphereChartInverse_mapsTo
 
 /-- The coordinates of the report give a homeomorphism onto the cut sphere. -/
 def sphereLongitudeChart : sphereLongitudeDomain ≃ₜ cutSphere where

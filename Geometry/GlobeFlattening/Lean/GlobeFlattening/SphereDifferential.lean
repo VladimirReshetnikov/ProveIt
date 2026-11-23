@@ -23,18 +23,11 @@ def planarEuclideanEquiv : (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
 theorem planarEuclideanEquiv_apply (v : ℝ × ℝ) :
     planarEuclideanEquiv v = !₂[v.1, v.2] := rfl
 
-/-- A nonzero longitude scale makes the triangular derivative invertible. -/
-def coordinateDerivativeEquiv (slope : ℝ) (hs : slope ≠ 0) : (ℝ × ℝ) ≃L[ℝ] ℝ × ℝ :=
-  (ContinuousLinearEquiv.smulLeft (R₁ := ℝ) (M₁ := ℝ) (Units.mk0 slope hs)).prodCongr
-    (ContinuousLinearEquiv.refl ℝ ℝ)
-
-theorem coordinateDerivativeEquiv_toContinuousLinearMap (slope : ℝ) (hs : slope ≠ 0) :
-    (coordinateDerivativeEquiv slope hs).toContinuousLinearMap = coordinateDerivative slope := rfl
-
 /-- The coordinate identification after changing longitude to eastward arc length. -/
 private def scaledPlanarEquiv (p : ℝ × ℝ) (hc : Real.cos p.2 ≠ 0) :
     (ℝ × ℝ) ≃L[ℝ] EuclideanSpace ℝ (Fin 2) :=
-  (coordinateDerivativeEquiv (Real.cos p.2) hc).trans planarEuclideanEquiv
+  ((ContinuousLinearEquiv.smulLeft (R₁ := ℝ) (M₁ := ℝ) (Units.mk0 (Real.cos p.2) hc)).prodCongr
+    (ContinuousLinearEquiv.refl ℝ ℝ)).trans planarEuclideanEquiv
 
 /-- The metric in spherical coordinates has diagonal entries
 `cos latitude` squared and `1`. -/
@@ -56,9 +49,7 @@ theorem hasFDerivAt_sphereFlatten_inverse
   let G := g.transHomeomorph planarEuclideanEquiv.toHomeomorph
   have hG : HasFDerivAt G D.toContinuousLinearMap p :=
     planarEuclideanEquiv.hasFDerivAt.comp p hg
-  have hGinv : HasFDerivAt G.symm D.symm.toContinuousLinearMap (G p) := by
-    apply G.hasFDerivAt_symm (f' := D) (G.map_source hp)
-    rwa [G.left_inv hp]
+  have hGinv := G.hasFDerivAt_symm (f' := D) (G.map_source hp) (by rwa [G.left_inv hp])
   have hs' : HasFDerivAt spherePoint (sphereDerivative p) (G.symm (G p)) := by
     rw [G.left_inv hp]
     exact hasFDerivAt_spherePoint p

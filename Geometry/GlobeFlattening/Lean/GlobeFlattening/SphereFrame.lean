@@ -98,13 +98,12 @@ def sphereTangentLift (p : ℝ × ℝ) :
     (EuclideanSpace.proj 1).smulRight (sphereNorth p)
 
 private def sphereFrameBasis (p : ℝ × ℝ) : OrthonormalBasis (Fin 3) ℝ (EuclideanSpace ℝ (Fin 3)) :=
-  let h := orthonormal_sphereFrame p
-  let b := basisOfOrthonormalOfCardEqFinrank h (by simp [finrank_euclideanSpace])
-  b.toOrthonormalBasis (by simpa [b] using h)
+  OrthonormalBasis.mk (orthonormal_sphereFrame p)
+    ((orthonormal_sphereFrame p).linearIndependent.span_eq_top_of_card_eq_finrank
+      (by simp [finrank_euclideanSpace])).ge
 
 private theorem sphereFrameBasis_apply (p : ℝ × ℝ) (i : Fin 3) :
-    sphereFrameBasis p i = sphereFrame p i := by
-  simp [sphereFrameBasis]
+    sphereFrameBasis p i = sphereFrame p i := by simp [sphereFrameBasis]
 
 private theorem sphereFrameBasis_repr (p : ℝ × ℝ) (w : EuclideanSpace ℝ (Fin 3)) :
     (sphereFrameBasis p).repr w =
