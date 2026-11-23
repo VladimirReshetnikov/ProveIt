@@ -19242,6 +19242,15 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaEulerTailDifferencePointwise.original_full_support_beta_Euler_difference_scalar_majorant_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaEulerTailDifferencePointwise.original_difference_scalar_half_decay_reference_closed
 
+/-! ### GaussianBetaEulerUpperDifferenceGrid -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaEulerUpperDifferenceGrid.scalarBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaEulerUpperDifferenceGrid.scalar_body_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaEulerUpperDifferenceGrid.majorized_row
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaEulerUpperDifferenceGrid.reference_row
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaEulerUpperDifferenceGrid.original_grid_bound_from_scaled_half
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaEulerUpperDifferenceGrid.original_grid_bound_from_half
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaEulerUpperDifferenceGrid.original_shared_upper_difference_one_half_decay_grid_closed
+
 /-! ### GaussianScalarRadiusProductBound -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianScalarRadiusProductBound.original_product_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianScalarRadiusProductBound.actual_product_transfers_through_exact_scalar_radius_closed
@@ -19294,6 +19303,30 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaRowMonomialReference.subst_comparisonNumerator
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaRowMonomialReference.subst_comparisonDenominator
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaRowMonomialReference.original_beta_Euler_row_actual_scalar_majorant_closed
+
+/-! ### GaussianBetaUpperGridMonomialComparison -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.majorantData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.subst_majorantData
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.scalarBody
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.scalar_body_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.scaledEval
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.scaledF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.subst_scaledEval
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.scaled_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.scaled_quadrature
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.subst_source
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.grid_guards
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.rows_majorized
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.reference_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.original_grid_from_monomial_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.monomialBoundNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.monomialBoundDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.original_upper_grid_monomial_cap
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.actual_original_upper_shared_grid_monomial_transfer_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison.original_source_only_upper_beta_Euler_exact_monomial_cap_closed
 
 /-! ### RationalUpperRepresentation -/
 #print axioms LeanProofs.IPRA.Analysis.RationalUpperRepresentation.upper_from_representations
@@ -19623,6 +19656,18 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelGridComparison.originalGridBeta
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelGridComparison.original_grid
 #print axioms LeanProofs.IPRA.Analysis.GaussianBetaKernelGridComparison.original_improper_Euler_sampler_beta_grid_comparison_closed
+
+/-! ### GaussianBetaZeroExtension -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaZeroExtension.evaluatorTerm
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaZeroExtension.evaluatorF
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaZeroExtension.evaluator_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaZeroExtension.row_at
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaZeroExtension.row_at_supported
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaZeroExtension.row_at_exterior
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaZeroExtension.original_endpoint_zero
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaZeroExtension.row_at_endpoint
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaZeroExtension.original_beta_zero_extended_row_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianBetaZeroExtension.original_beta_zero_extended_degree_endpoint_closed
 
 /-! ### GaussianEulerBetaPolynomialPrimitive -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerBetaPolynomialPrimitive.base

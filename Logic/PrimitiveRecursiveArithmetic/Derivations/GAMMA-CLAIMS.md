@@ -868,9 +868,18 @@ full integrated sharp comparison remains.
 [GaussianBetaLowGridError](Lean/IPRADerivations/Analysis/GaussianBetaLowGridError.lean)
 proves the exact `1/N` contribution below time one from the actual
 beta and Euler row observations, with independently requested errors.
+[GaussianBetaUpperGridMonomialComparison](Lean/IPRADerivations/Analysis/GaussianBetaUpperGridMonomialComparison.lean)
+proves the exact factorial cap divided by the degree for the actual
+middle shared grid, with explicit mesh and evaluation allowances.
 [GaussianBetaEulerTailDifferencePointwise](Lean/IPRADerivations/Analysis/GaussianBetaEulerTailDifferencePointwise.lean)
 bounds the actual difference on the upper support by one factorial
 half-decay reference and supplies the corresponding scalar majorant.
+[GaussianBetaEulerUpperDifferenceGrid](Lean/IPRADerivations/Analysis/GaussianBetaEulerUpperDifferenceGrid.lean)
+transfers that majorant on the original grid through a single
+weighted half-decay quadrature.
+[GaussianBetaZeroExtension](Lean/IPRADerivations/Analysis/GaussianBetaZeroExtension.lean)
+keeps the literal beta evaluator on the support and returns the
+canonical zero at the degree and beyond.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with
