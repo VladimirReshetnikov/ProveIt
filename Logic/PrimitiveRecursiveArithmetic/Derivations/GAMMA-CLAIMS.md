@@ -1511,6 +1511,10 @@ and compares their original Euler samples to those at the raw image.
 [GaussianEulerPowerScalingCorrectedQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingCorrectedQuadrature.lean) lifts that comparison to the full finite weighted sum.
 [GaussianEulerPowerScalingFiniteSubstitution](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingFiniteSubstitution.lean) combines both finite comparisons with the source-derived
 rescaled Gamma parameter and a single common scale observation.
+[GaussianEulerPowerScalingFiniteBudget](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingFiniteBudget.lean) separates the mesh and observation errors. [GaussianEulerPowerScalingGridSchedule](Lean/IPRADerivations/Analysis/GaussianEulerPowerScalingGridSchedule.lean) gives
+an explicit count and two clocks for an arbitrary dyadic accuracy
+request. The scheduled source grid refines the unchanged compact
+quadrature mesh and gives a comparison to the actual compact name.
 The comparison to independent ordinary image quadratures, the
 improper limit for the general power chart, and arbitrary positive real
 parameters remain open.

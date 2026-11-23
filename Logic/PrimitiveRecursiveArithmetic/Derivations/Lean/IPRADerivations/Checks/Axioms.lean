@@ -23764,6 +23764,37 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteSubstitution.original_finite_substitution
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteSubstitution.actual_original_finite_power_substitution_closed
 
+/-! ### GaussianEulerPowerScalingFiniteBudget -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.denominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.meshCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.chartCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.observationCost
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.separatedNumerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.separatedDenominator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.bound_separated_numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.denominator_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.native_budget_identity
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.original_finite_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.original_separated_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingFiniteBudget.separated_radius_budget
+
+/-! ### GaussianEulerPowerScalingGridSchedule -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.source
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.meshFactor
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.count
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.sourcePrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.precision
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.imagePrecision
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.comparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.mesh_factor_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.mesh_factor_le_count
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.original_scheduled_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.namedComparison
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.original_scheduled_name_distance
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.actual_original_scheduled_power_scaling_closed
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingGridSchedule.actual_original_scheduled_compact_power_scaling_closed
+
 /-! ### GaussianEulerPositivePowerChartMeshJacobian -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartMeshJacobian.input
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartMeshJacobian.correctedPoint
