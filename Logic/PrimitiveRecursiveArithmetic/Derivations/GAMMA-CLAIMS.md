@@ -985,6 +985,16 @@ give the actual real-axis observations a nonnegative radius with a
 dyadic correction. [GaussianPositiveRadiusFiniteSum](Lean/IPRADerivations/Analysis/GaussianPositiveRadiusFiniteSum.lean)
 and [GaussianPositiveRadiusQuadrature](Lean/IPRADerivations/Analysis/GaussianPositiveRadiusQuadrature.lean)
 carry certified row bounds through the unchanged finite weighted sums.
+[GaussianEulerVerticalNormTransfer](Lean/IPRADerivations/Analysis/GaussianEulerVerticalNormTransfer.lean)
+transfers an actual sample radius across the squared norm identity.
+[GaussianEulerVerticalPointwise](Lean/IPRADerivations/Analysis/GaussianEulerVerticalPointwise.lean)
+then bounds each original complex row by its original real companion
+and four requested dyadic allowances.
+[GaussianEulerVerticalQuadrature](Lean/IPRADerivations/Analysis/GaussianEulerVerticalQuadrature.lean)
+gives the actual same-query compact and improper bounds with the precise
+grid width and row precision.
+[GaussianEulerIntegrationByPartsLinear](Lean/IPRADerivations/Analysis/GaussianEulerIntegrationByPartsLinear.lean)
+checks the original time-weighted product's linear term.
 [GaussianBetaSharpPartition](Lean/IPRADerivations/Analysis/GaussianBetaSharpPartition.lean)
 locates one and the two degree endpoints on the same original dyadic
 grid and identifies the original half-time decay at the split with

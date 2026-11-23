@@ -1544,6 +1544,112 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Geometry.PlaneMetric.midpointOpen
 #print axioms LeanProofs.IPRA.Geometry.PlaneMetric.gramClosed
 #print axioms LeanProofs.IPRA.Geometry.PlaneMetric.midpointClosed
+
+/-! ### AnalyticGeometryPolynomialCertificates -/
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.N2
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.D2
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.W2
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.N3
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.D3
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.Q2
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.F2
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.zvar
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.lagrange2
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.lagrange2_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.lagrange2_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.lagrange2_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.parallelogram
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.parallelogram_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.parallelogram_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.parallelogram_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cosine
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cosine_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cosine_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cosine_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_row1
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_row1_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_row1_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_row1_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_row2
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_row2_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_row2_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_row2_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_recover
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_recover_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_recover_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cramer_recover_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.rotation_norm
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.rotation_norm_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.rotation_norm_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.rotation_norm_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.rotation_dot
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.rotation_dot_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.rotation_dot_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.rotation_dot_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.affine_determinant
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.affine_determinant_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.affine_determinant_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.affine_determinant_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.reflection_norm
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.reflection_norm_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.reflection_norm_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.reflection_norm_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.projection_remainder
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.projection_remainder_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.projection_remainder_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.projection_remainder_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.circle_parameter
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.circle_parameter_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.circle_parameter_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.circle_parameter_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.sphere_parameter
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.sphere_parameter_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.sphere_parameter_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.sphere_parameter_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.quadratic_completion
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.quadratic_completion_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.quadratic_completion_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.quadratic_completion_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.parabola_focus
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.parabola_focus_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.parabola_focus_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.parabola_focus_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.conic_line_expansion
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.conic_line_expansion_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.conic_line_expansion_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.conic_line_expansion_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.discriminant_congruence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.discriminant_congruence_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.discriminant_congruence_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.discriminant_congruence_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cross_orthogonal
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cross_orthogonal_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cross_orthogonal_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.cross_orthogonal_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.lagrange3
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.lagrange3_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.lagrange3_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.lagrange3_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.vector_triple
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.vector_triple_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.vector_triple_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.vector_triple_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.skew_line_invariant
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.skew_line_invariant_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.skew_line_invariant_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.skew_line_invariant_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.weighted_variance
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.weighted_variance_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.weighted_variance_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.weighted_variance_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.radical_axis
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.radical_axis_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.radical_axis_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.radical_axis_closed
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.conic_midpoint
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.conic_midpoint_open
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.conic_midpoint_sentence
+#print axioms LeanProofs.IPRA.Geometry.Distinct.AnalyticGeometryPolynomialCertificates.conic_midpoint_closed
 #print axioms LeanProofs.IPRA.Analysis.Quantum.Identities.ports_at
 #print axioms LeanProofs.IPRA.Analysis.Quantum.Identities.ports_closed
 #print axioms LeanProofs.IPRA.Analysis.Quantum.Identities.spin_at
@@ -17261,6 +17367,18 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRadiusQuadrature.weighted_bound
 #print axioms LeanProofs.IPRA.Analysis.GaussianPositiveRadiusQuadrature.actual_weighted_row_domination_closed
 
+/-! ### GaussianEulerVerticalQuadrature -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalQuadrature.rowData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalQuadrature.subst_rowData
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalQuadrature.row_readback
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalQuadrature.original_grid_rows
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalQuadrature.original_grid_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalQuadrature.cutoffRadius
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalQuadrature.cutoff_radius_budget
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalQuadrature.original_compact_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalQuadrature.original_improper_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalQuadrature.original_improper_Euler_vertical_same_query_closed
+
 /-! ### GaussianRationalQuadratureDifference -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalQuadratureDifference.leftBody
 #print axioms LeanProofs.IPRA.Analysis.GaussianRationalQuadratureDifference.rightBody
@@ -19306,6 +19424,27 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitNormalization.original_Gamma_one_from_integral
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitNormalization.original_Euler_integral_normalization_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerUnitNormalization.original_Gamma_unit_from_Euler_integral_closed
+
+/-! ### GaussianEulerIntegrationByPartsLinear -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.decay
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.originalProduct
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.primitive
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.decayLinear
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.productLinear
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.linear
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.cell
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.subst_decay
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.subst_originalProduct
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.subst_primitive
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.subst_decayLinear
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.subst_productLinear
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.subst_linear
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.subst_cell
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.original_product_linear
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.original_ratio_time
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.coefficient_plus_one
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.original_linear_is_cell
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear.original_Euler_integration_by_parts_linear_closed
 
 /-! ### GaussianEulerCompactPowerMajorant -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerCompactPowerMajorant.exponentRadius
@@ -24655,6 +24794,22 @@ import IPRADerivations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalIntegrandSquare.original_squared_observations
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalIntegrandSquare.original_Euler_vertical_integrand_square_identity_closed
 #print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalIntegrandSquare.original_Euler_vertical_literal_squared_observations_closed
+
+/-! ### GaussianEulerVerticalNormTransfer -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNormTransfer.later_observations
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNormTransfer.square_clock_later
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNormTransfer.cofinal_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNormTransfer.original_norm_transfer
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalNormTransfer.actual_equal_square_names_norm_radius_transfer_closed
+
+/-! ### GaussianEulerVerticalPointwise -/
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalPointwise.corrected
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalPointwise.numerator
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalPointwise.corrected_represents
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalPointwise.corrected_positive
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalPointwise.original_named_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalPointwise.original_row_bound
+#print axioms LeanProofs.IPRA.Analysis.GaussianEulerVerticalPointwise.original_vertical_Euler_pointwise_domination_closed
 
 /-! ### GaussianExponentialRealPartMajorant -/
 #print axioms LeanProofs.IPRA.Analysis.GaussianExponentialRealPartMajorant.doubleScalar
