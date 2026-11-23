@@ -97,8 +97,7 @@ private theorem abs_cos_half_sub_le (x y : ℝ) :
     |Real.cos (x / 2) - Real.cos (y / 2)| ≤ |x - y| / 2 := by
   have hcos : LipschitzWith 1 Real.cos :=
     lipschitzWith_of_nnnorm_deriv_le Real.differentiable_cos <| by simpa using! Real.abs_sin_le_one
-  simpa only [Real.dist_eq, NNReal.coe_one, one_mul, ← sub_div,
-    abs_div, abs_of_pos (by norm_num : (0 : ℝ) < 2)] using hcos.dist_le_mul (x / 2) (y / 2)
+  simpa [Real.dist_eq, ← sub_div, abs_div] using hcos.dist_le_mul (x / 2) (y / 2)
 
 theorem coefficient_bounds (n : ℕ) (y : ℝ) :
     0 < S.coefficient n y ∧ |S.coefficient n y| ≤ rate δ n := by
@@ -225,17 +224,11 @@ theorem exists_strict_scalar_flattening {ε : ℝ} (hε : 0 < ε) :
     (fun n => (rate_pos (add_pos hδ Real.pi_pos) n).le)
     (summable_rate (δ + Real.pi)) S.boundX S.continuousX S.monoX S.singularX
   obtain ⟨E, hm, hsub, hnull, hderiv⟩ :=
-    exists_scaled_product_derivative_good S.horizontalControl (c := 2) (by norm_num) sphereLongitudeDomain
-      isOpen_sphereLongitudeDomain.measurableSet hsingular
-  refine ⟨S.scalar, E, S.continuous_scalar.continuousOn, hm, hsub, hnull, fun _ hq => (S.scalar_error hq).trans_eq hscale,
-    S.scalar_strictLowerSlope, ?_⟩
-  intro p hp
-  have hd := hderiv p hp
-  apply hasFDerivAt_of_increment_bounds (L := ContinuousLinearMap.fst ℝ ℝ ℝ)
-    (M := (2 : ℝ) • ContinuousLinearMap.snd ℝ ℝ ℝ) hd.1 hd.2
-  filter_upwards [isOpen_sphereLongitudeDomain.mem_nhds (hsub hp)] with q hq
-  exact S.linearization_bound hcontrol (sphereLongitudeDomain_subset_box (hsub hp))
-    (sphereLongitudeDomain_subset_box hq)
+    exists_hasFDerivAt_of_increment_bounds S.horizontalControl (fun p => Real.cos p.2)
+      (c := 2) (by norm_num) isOpen_sphereLongitudeDomain hsingular (fun p hp q hq =>
+        S.linearization_bound hcontrol (sphereLongitudeDomain_subset_box hp) (sphereLongitudeDomain_subset_box hq))
+  exact ⟨S.scalar, E, S.continuous_scalar.continuousOn, hm, hsub, hnull,
+    fun _ hq => (S.scalar_error hq).trans_eq hscale, S.scalar_strictLowerSlope, hderiv⟩
 
 end
 end GlobeFlattening
