@@ -292,6 +292,8 @@ import IPRADerivations.DiophantineNumberTheory.FourSquaresAlgebra
 import IPRADerivations.DiophantineNumberTheory.FourSquaresDescent
 import IPRADerivations.DiophantineNumberTheory.FourSquaresSeed
 import IPRADerivations.DiophantineNumberTheory.FourSquares
+import IPRADerivations.DiophantineNumberTheory.ThreeSquares
+import IPRADerivations.AnalyticNumberTheory.PrimesModFour
 import IPRADerivations.Analysis.StokesSlice
 import IPRADerivations.Analysis.StokesCube
 import IPRADerivations.Geometry.GaussBonnetBridge
