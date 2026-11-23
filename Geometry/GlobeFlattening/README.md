@@ -33,9 +33,9 @@ initial latitude profile error by `δ / (2π)` makes its contribution at
 most `δ / 2` after multiplication by longitude. The two formulas bound
 horizontal and vertical errors by increments of the same staircase sum,
 with latitude rescaled, giving the joint derivative. The Stieltjes measure
-of that sum is the sum of the individual singular measures, so the control function
-also has derivative zero almost everywhere. Longitude and doubled latitude
-pull back that same derivative event to the chart. Scaling the scalar
+of that sum is the sum of the individual singular measures, so the control
+function also has derivative zero almost everywhere. Longitude and doubled
+latitude pull back that same derivative event to the chart. Scaling the scalar
 tolerance by `1 / (1 + π)` gives a uniform distance bound of `ε` for the
 constructed map.
 [Scalar construction](Lean/GlobeFlattening/ScalarConstruction.lean) ·

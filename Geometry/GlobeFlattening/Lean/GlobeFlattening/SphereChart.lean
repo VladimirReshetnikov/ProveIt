@@ -32,9 +32,9 @@ theorem continuous_horizontalComplex : Continuous horizontalComplex := by
 theorem horizontalComplex_spherePoint (p : ℝ × ℝ) :
     horizontalComplex (spherePoint p) =
       (Real.cos p.2 : ℂ) * (Complex.cos p.1 + Complex.sin p.1 * Complex.I) := by
-  rw [← Complex.ofReal_cos, ← Complex.ofReal_sin]
-  apply Complex.ext <;>
-    simp [spherePoint, Complex.mul_re, Complex.mul_im, -Complex.ofReal_cos, -Complex.ofReal_sin]
+  simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin, horizontalComplex, spherePoint,
+    Complex.equivRealProdCLM_symm_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Complex.ofReal_mul, mul_add, mul_assoc]
 
 /-- The unit sphere minus the negative-real equatorial ray's meridian,
 including both poles in the removed meridian. -/
@@ -96,11 +96,9 @@ theorem spherePoint_sphereChartInverse {w : EuclideanSpace ℝ (Fin 3)} (hw : w 
       ← cutSphere_horizontal_norm_sq hw, Real.sqrt_sq (norm_nonneg _),
       Complex.norm_mul_cos_add_sin_mul_I]
   have hz := cutSphere_vertical_bounds hw
-  ext i
-  fin_cases i
-  · exact congrArg Complex.re hxy
-  · exact congrArg Complex.im hxy
-  · exact Real.sin_arcsin hz.1.le hz.2.le
+  apply PiLp.ext
+  simp only [Fin.forall_fin_succ, Fin.forall_fin_zero, and_true]
+  exact ⟨congrArg Complex.re hxy, congrArg Complex.im hxy, Real.sin_arcsin hz.1.le hz.2.le⟩
 
 theorem spherePoint_bijOn : BijOn spherePoint sphereLongitudeDomain cutSphere :=
   (show InvOn sphereChartInverse spherePoint sphereLongitudeDomain cutSphere from

@@ -93,9 +93,8 @@ vector from its two tangent coordinates. -/
 theorem sphereTangentLift_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ)
     {w : EuclideanSpace ℝ (Fin 3)} (h : ⟪spherePoint p, w⟫ = 0) :
     sphereTangentLift p (sphereFlattenDerivative p w) = w := by
-  exact (congrArg Subtype.val ((sphereTangentBasis p).repr.symm_apply_apply
-    ((sphereTangentPlane p).orthogonalProjectionOnto w))).trans
-      ((sphereTangentPlane p).starProjection_eq_self_iff.2 (mem_sphereTangentPlane.2 h))
+  simpa [sphereTangentLift, sphereFlattenDerivative] using
+    (sphereTangentPlane p).starProjection_eq_self_iff.2 (mem_sphereTangentPlane.2 h)
 
 theorem norm_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ) {w : EuclideanSpace ℝ (Fin 3)}
     (hw : ⟪spherePoint p, w⟫ = 0) : ‖sphereFlattenDerivative p w‖ = ‖w‖ := by
