@@ -1,4 +1,4 @@
-import GlobeFlattening.LocalExcess
+import GlobeFlattening.CoordinateArea
 import GlobeFlattening.SphereMeasure
 import GlobeFlattening.SphereMetric
 import Mathlib.MeasureTheory.Measure.Haar.Unique
@@ -14,7 +14,7 @@ the Euclidean target.
 namespace GlobeFlattening
 
 open MeasureTheory Set Topology
-open scoped NNReal ENNReal MeasureTheory
+open scoped NNReal ENNReal MeasureTheory Topology
 
 noncomputable section
 
@@ -54,15 +54,25 @@ theorem volume_sphereExceptional_inter_of_open {u : ℝ × ℝ → ℝ}
     (hWsub : W ⊆ planarEuclideanEquiv '' (flattenCoordinates u '' sphereLongitudeDomain)) :
     0 < volume (W ∩
       (planarEuclideanEquiv ∘ (flattenCoordinates u ∘ sphereChartInverse)) '' sphereExceptional good) := by
-  let V := planarEuclideanEquiv ⁻¹' W
-  have hV : IsOpen V := hW.preimage planarEuclideanEquiv.continuous
-  have hVne : V.Nonempty := hne.preimage planarEuclideanEquiv.surjective
-  have hVsub : V ⊆ flattenCoordinates u '' sphereLongitudeDomain := by
-    simpa only [preimage_image_eq _ planarEuclideanEquiv.injective] using
-      preimage_mono (f := planarEuclideanEquiv) hWsub
-  rw [sphereFlattenForward_exceptional_image hsub, ← image_preimage_inter,
-    volume_planarEuclideanEquiv_image]
-  exact volume_exceptional_inter_of_open hu hslope hgood hnull hderiv hV hVne hVsub
+  let g := planarEuclideanEquiv ∘ flattenCoordinates u
+  let V := sphereLongitudeDomain ∩ g ⁻¹' W
+  have hcont : ContinuousOn g sphereLongitudeDomain :=
+    planarEuclideanEquiv.continuous.comp_continuousOn
+      ((hu.mono sphereLongitudeDomain_subset_box).prodMk continuous_snd.continuousOn)
+  have hV : IsOpen V := hcont.isOpen_inter_preimage isOpen_sphereLongitudeDomain hW
+  obtain ⟨z, hz⟩ := hne
+  rw [image_image] at hWsub
+  obtain ⟨p, hp, rfl⟩ := hWsub hz
+  obtain ⟨a, b, c, d, hp', hbox⟩ :=
+    exists_chartClosedRectangle_subset_of_mem_nhds (hV.mem_nhds ⟨hp, hz⟩)
+  have hpos := volume_local_exceptional_image_pos (hp'.1.1.trans hp'.1.2)
+    (hp'.2.1.trans hp'.2.2) (hbox.trans inter_subset_left) hu hslope hgood hnull hderiv
+  rw [← volume_planarEuclideanEquiv_image, image_image] at hpos
+  rw [sphereFlattenForward_exceptional_image hsub, image_image]
+  refine hpos.trans_le (measure_mono ?_)
+  rintro _ ⟨q, hq, rfl⟩
+  obtain ⟨hqdom, hqW⟩ := hbox (chartRectangle_subset_closed hq.1)
+  exact ⟨hqW, ⟨q, ⟨hqdom, hq.2⟩, rfl⟩⟩
 
 /-- The chart-null exceptional set also has zero two-dimensional Hausdorff measure. -/
 theorem hausdorffMeasure_sphereExceptional_eq_zero {good : Set (ℝ × ℝ)}
@@ -97,15 +107,10 @@ theorem not_lipschitzOn_of_exceptional_area
     exact hLip hp hq
   have hbound := (hLip'.mono (inter_subset_left : W ∩ Z ⊆ W)).hausdorffMeasure_image_le
     (d := 2) (by norm_num)
-  have hHaar : Measure.IsAddHaarMeasure (μH[2] : Measure (EuclideanSpace ℝ (Fin 2))) := by
-    convert (inferInstance : Measure.IsAddHaarMeasure (μH[Module.finrank ℝ
-      (EuclideanSpace ℝ (Fin 2))] : Measure (EuclideanSpace ℝ (Fin 2)))) using 1
-    simp
-  have hzero : volume (f '' (W ∩ Z)) = 0 :=
-    Measure.absolutelyContinuous_isAddHaarMeasure volume _ (le_zero_iff.mp <| by
-      simpa [measure_mono_null inter_subset_right hZnull] using hbound)
-  rw [(injOn_iff_injective.2 hf.injective).image_inter hWsub hZ] at hzero
-  exact hpos.ne' hzero
+  have hnull : μH[Module.finrank ℝ (EuclideanSpace ℝ (Fin 2))] (f '' (W ∩ Z)) = 0 := by
+    simpa [measure_mono_null inter_subset_right hZnull] using hbound
+  rw [← (injOn_iff_injective.2 hf.injective).image_inter hWsub hZ] at hpos
+  exact hpos.ne' (Measure.absolutelyContinuous_isAddHaarMeasure volume _ hnull)
 
 end
 
