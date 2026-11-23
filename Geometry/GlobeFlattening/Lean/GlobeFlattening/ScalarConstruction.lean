@@ -57,12 +57,12 @@ structure Staircases (δ : ℝ) where
   continuousX : ∀ n, Continuous (X n)
   singularX : ∀ n, ∀ᵐ x ∂volume, HasDerivAt (X n) 0 x
   boundX : ∀ n x, |X n x| ≤ Real.pi
-  errorX : ∀ n x, |X n x - longitude x| ≤ min (rate δ n / 4) (min (1 / 4) (δ / Real.pi))
+  errorX : ∀ n x, |X n x - longitude x| ≤ min (rate δ n / 4) (1 / 4)
 
 theorem exists_staircases {δ : ℝ} (hδ : 0 < δ) : Nonempty (Staircases δ) := by
   have hX (n : ℕ) := exists_singular_approx (neg_lt_self Real.pi_pos)
     (lt_min (div_pos (rate_pos hδ n) (by norm_num : (0 : ℝ) < 4))
-      (lt_min (by norm_num : (0 : ℝ) < 1 / 4) (div_pos hδ Real.pi_pos)))
+      (by norm_num : (0 : ℝ) < 1 / 4))
   choose X hc hm hr he hd using hX
   exact ⟨⟨hδ, X, hm, hc, hd, fun n x => abs_le.mpr (hr n x), he⟩⟩
 
@@ -124,13 +124,13 @@ private theorem lipschitzWith_latitudeWeight (δ : ℝ) (n : ℕ) :
   exact (abs_cos_half_sub_le x y).trans (half_le_self (abs_nonneg _))
 
 private theorem latitudeProfile_zero_error {y : ℝ} (hy : y ∈ Icc (-(Real.pi / 2)) (Real.pi / 2)) :
-    |S.latitudeProfile 0 y - (Real.cos y + δ)| ≤ δ / Real.pi / 2 := by
-  have hX : |S.X 0 (2 * y) - longitude (2 * y)| ≤ δ / Real.pi :=
-    (S.errorX 0 (2 * y)).trans ((min_le_right _ _).trans (min_le_right _ _))
-  rw [latitudeProfile, latitudeWeight, rate, pow_zero, mul_one, add_comm (Real.cos y) δ,
-    add_sub_add_left_eq_sub]
-  simpa only [longitude_of_mem (double_latitude_mem hy), mul_div_cancel_left₀ y two_ne_zero] using
-    (abs_cos_half_sub_le _ _).trans (div_le_div_of_nonneg_right hX (by norm_num))
+    |S.latitudeProfile 0 y - (Real.cos y + δ)| ≤ δ / 8 := by
+  have hX := S.errorRateX 0 (2 * y)
+  rw [longitude_of_mem (double_latitude_mem hy), rate, pow_zero, mul_one] at hX
+  have hcos := abs_cos_half_sub_le (S.X 0 (2 * y)) (2 * y)
+  rw [mul_div_cancel_left₀ y two_ne_zero] at hcos
+  simpa only [latitudeProfile, latitudeWeight, rate, pow_zero, mul_one, add_comm (Real.cos y) δ,
+    add_sub_add_left_eq_sub] using hcos.trans (show _ ≤ δ / 8 by linarith only [hX])
 
 theorem coefficient_bounds (n : ℕ) (y : ℝ) :
     0 < S.coefficient n y ∧ |S.coefficient n y| ≤ rate δ n := by
@@ -222,11 +222,11 @@ theorem scalar_error {p : ℝ × ℝ} (hp : p ∈ sphereClosedBox) :
     refine abs_sub_le_of_hasSum_weighted (S.summable_correction p).hasSum (hcoef.mul_right p.1)
       hrate (fun n => (S.coefficient_bounds n p.2).2) (fun n => ?_)
     simpa only [longitude_of_mem hp.1] using
-      (S.errorX n p.1).trans ((min_le_right _ _).trans (min_le_left _ _))
+      (S.errorX n p.1).trans (min_le_right _ _)
   have hlat : |S.latitudeProfile 0 p.2 * p.1 - (Real.cos p.2 + δ) * p.1| ≤ δ / 2 := by
     rw [← sub_mul, ← Real.norm_eq_abs]
-    exact (norm_mul_le_of_le (S.latitudeProfile_zero_error hp.2) (abs_le.mpr hp.1)).trans_eq
-      (by rw [div_mul_eq_mul_div, div_mul_cancel₀ _ Real.pi_ne_zero])
+    refine (norm_mul_le_of_le (S.latitudeProfile_zero_error hp.2) (abs_le.mpr hp.1)).trans ?_
+    nlinarith only [mul_nonneg S.delta_pos.le (sub_nonneg.mpr Real.pi_le_four)]
   exact (abs_sub_le ..).trans (by linarith only [hcor, hlat])
 
 def horizontalControl (x : ℝ) := ∑' n, rate (δ + Real.pi) n * S.X n x
