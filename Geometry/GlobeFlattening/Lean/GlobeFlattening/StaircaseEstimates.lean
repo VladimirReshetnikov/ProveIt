@@ -1,5 +1,4 @@
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
-import Mathlib.Topology.MetricSpace.Lipschitz
 import Mathlib.Tactic.Ring
 
 /-!
@@ -27,24 +26,18 @@ theorem tsum_weighted_increment_centered {e A : ℕ → ℝ} {z L : ℝ}
 
 /-- Absolute increments of a weighted sum of Lipschitz transforms are
 bounded by the corresponding increments of the monotone majorant. -/
-theorem abs_tsum_weighted_comp_sub_le {a b : ℕ → ℝ} {X f : ℕ → ℝ → ℝ} {A B : ℝ}
-    (hb : Summable b) (ha : ∀ n, |a n| ≤ b n) (hmono : ∀ n, Monotone (X n))
-    (hX : ∀ n x, |X n x| ≤ B) (hlip : ∀ n, LipschitzWith 1 (f n))
-    (hf : ∀ n x, |f n (X n x)| ≤ A) (x y : ℝ) :
+theorem abs_tsum_weighted_comp_sub_le {a b : ℕ → ℝ} {X f : ℕ → ℝ → ℝ}
+    (hb : ∀ t, Summable (fun n => b n * X n t)) (ha : ∀ n, |a n| ≤ b n)
+    (hmono : ∀ n, Monotone (X n)) (hlip : ∀ n x y, |f n y - f n x| ≤ |y - x|)
+    (x y : ℝ) (hx : Summable (fun n => a n * f n (X n x))) (hy : Summable (fun n => a n * f n (X n y))) :
     |(∑' n, a n * f n (X n y)) - ∑' n, a n * f n (X n x)| ≤
       |(∑' n, b n * X n y) - ∑' n, b n * X n x| := by
-  have hb₀ (n : ℕ) : 0 ≤ b n := (abs_nonneg _).trans (ha n)
-  have hs (t : ℝ) : Summable (fun n => a n * f n (X n t)) :=
-    (hb.mul_right A).of_norm_bounded (fun n => norm_mul_le_of_le (ha n) (hf n t))
-  have ht (t : ℝ) : Summable (fun n => b n * X n t) :=
-    (hb.mul_right B).of_norm_bounded (fun n => norm_mul_le_of_le (abs_of_nonneg (hb₀ n)).le (hX n t))
   wlog h : x ≤ y generalizing x y
-  · simpa only [abs_sub_comm] using this y x (le_of_not_ge h)
-  refine (((hs y).hasSum.sub (hs x).hasSum).norm_le_of_bounded
-    ((ht y).hasSum.sub (ht x).hasSum) fun n => ?_).trans (le_abs_self _)
+  · simpa only [abs_sub_comm] using this y x hy hx (le_of_not_ge h)
+  refine ((hy.hasSum.sub hx.hasSum).norm_le_of_bounded
+    ((hb y).hasSum.sub (hb x).hasSum) fun n => ?_).trans (le_abs_self _)
   rw [← mul_sub, ← mul_sub]
   refine norm_mul_le_of_le (ha n) ?_
-  simpa only [Real.dist_eq, Real.norm_eq_abs, NNReal.coe_one, one_mul,
-    abs_of_nonneg (sub_nonneg.mpr (hmono n h))] using (hlip n).dist_le_mul (X n y) (X n x)
+  simpa only [Real.norm_eq_abs, abs_of_nonneg (sub_nonneg.mpr (hmono n h))] using hlip n (X n x) (X n y)
 
 end GlobeFlattening

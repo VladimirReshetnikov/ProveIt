@@ -38,7 +38,8 @@ Since the absolute longitude is at most `π ≤ 4`, its contribution is at most
 horizontal and vertical errors by increments of the same staircase sum,
 with latitude rescaled, giving the joint derivative. The Stieltjes measure
 of that sum is the sum of the individual singular measures, so the control
-function also has derivative zero almost everywhere. Longitude and doubled
+function has derivative zero almost everywhere. The increment estimates use
+the pointwise sums already provided by the convergence proofs. Longitude and doubled
 latitude pull back that same derivative event to the chart. Scaling the scalar
 tolerance by `1 / (1 + π)` gives a uniform distance bound of `ε` for the
 constructed map.

@@ -39,14 +39,16 @@ theorem singular_stieltjes_sum (f : ℕ → StieltjesFunction ℝ) (F : Stieltje
       (show HasDerivAt g 0 x ↔ (g.measure.rnDeriv volume x).toReal = 0 from ⟨hd.unique, hd.congr_deriv⟩)
   simpa only [hsing, hmeasure, Measure.MutuallySingular.sum_left] using hzero
 
-/-- A nonnegative summable combination of bounded continuous monotone singular functions is singular. -/
-theorem singular_bounded_weighted_tsum
+/-- A nonnegative summable combination of bounded continuous monotone singular functions
+is summable pointwise and has zero derivative almost everywhere. -/
+theorem summable_and_singular_weighted_tsum
     (f : ℕ → ℝ → ℝ) (w : ℕ → ℝ) {C : ℝ}
     (hw : ∀ n, 0 ≤ w n) (hwSum : Summable w)
     (hbound : ∀ n x, ‖f n x‖ ≤ C) (hcont : ∀ n, Continuous (f n))
     (hmono : ∀ n, Monotone (f n))
     (hsing : ∀ n, ∀ᵐ x, HasDerivAt (f n) 0 x) :
-    ∀ᵐ x, HasDerivAt (fun y => ∑' n, w n * f n y) 0 x := by
+    (∀ x, Summable (fun n => w n * f n x)) ∧
+      (∀ᵐ x, HasDerivAt (fun y => ∑' n, w n * f n y) 0 x) := by
   have hg (n : ℕ) : Continuous (w n • f n) := (hcont n).const_smul (w n)
   let g (n : ℕ) : StieltjesFunction ℝ :=
     ⟨w n • f n, (hmono n).const_mul (hw n), fun _ => (hg n).continuousWithinAt⟩
@@ -57,9 +59,9 @@ theorem singular_bounded_weighted_tsum
     ⟨fun x => ∑' n, g n x, fun x y h => hasSum_le (fun n => (g n).mono h) (hs x) (hs y),
       fun _ => (hu.continuous
         (Frequently.of_forall fun s => continuous_finsetSum _ fun n _ => hg n)).continuousWithinAt⟩
-  exact singular_stieltjes_sum g G hs fun n =>
-    (hsing n).mono fun x hx => by
-      simpa [g] using (hx.hasFDerivAt.const_smul (w n)).hasDerivAt
+  refine ⟨fun x => (hs x).summable, singular_stieltjes_sum g G hs fun n => (hsing n).mono ?_⟩
+  intro x hx
+  simpa [g] using (hx.hasFDerivAt.const_smul (w n)).hasDerivAt
 
 /-- Pull a full-measure derivative event back to the two coordinates, allowing a nonzero rescaling. -/
 theorem exists_scaled_product_derivative_good
