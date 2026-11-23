@@ -75,14 +75,6 @@ theorem tangent_sphereTangentLift (p : ℝ × ℝ) (v : EuclideanSpace ℝ (Fin 
     ⟪spherePoint p, sphereTangentLift p v⟫ = 0 :=
   mem_sphereTangentPlane.1 ((sphereTangentBasis p).repr.symm v).2
 
-/-- Zero radial component is exactly what is needed to recover the original
-vector from its two tangent coordinates. -/
-theorem sphereTangentLift_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ)
-    {w : EuclideanSpace ℝ (Fin 3)} (h : ⟪spherePoint p, w⟫ = 0) :
-    sphereTangentLift p (sphereFlattenDerivative p w) = w := by
-  simpa [sphereTangentLift, sphereFlattenDerivative] using
-    (sphereTangentPlane p).starProjection_eq_self_iff.2 (mem_sphereTangentPlane.2 h)
-
 theorem norm_sphereFlattenDerivative_of_tangent (p : ℝ × ℝ) {w : EuclideanSpace ℝ (Fin 3)}
     (hw : ⟪spherePoint p, w⟫ = 0) : ‖sphereFlattenDerivative p w‖ = ‖w‖ := by
   simpa [sphereFlattenDerivative] using
