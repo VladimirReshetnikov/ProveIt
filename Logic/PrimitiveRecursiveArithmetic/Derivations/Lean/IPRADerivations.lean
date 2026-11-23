@@ -287,6 +287,7 @@ import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocity
 import IPRADerivations.DiophantineNumberTheory.QuadraticSupplements
 import IPRADerivations.DiophantineNumberTheory.SecondSupplement
 import IPRADerivations.Analysis.StokesSlice
+import IPRADerivations.Analysis.StokesCube
 import IPRADerivations.Geometry.GaussBonnetBridge
 import IPRADerivations.Analysis.InexactTrace
 import IPRADerivations.AnalyticNumberTheory.SievePairSum
@@ -572,6 +573,7 @@ import IPRADerivations.Foundations.BoundedCases
 import IPRADerivations.Foundations.GridSums
 import IPRADerivations.Foundations.TermSums
 import IPRADerivations.Foundations.GridSumsContext
+import IPRADerivations.Foundations.GridSumsOrder
 import IPRADerivations.Foundations.GridSumsPoints
 import IPRADerivations.Foundations.RationalFloors
 import IPRADerivations.Foundations.DigitCodes
