@@ -1,6 +1,5 @@
 import GlobeFlattening.SphereFrame
 import Mathlib.Analysis.Calculus.FDeriv.OfCompLeft
-import Mathlib.Topology.OpenPartialHomeomorph.Constructions
 
 /-!
 # Tangent isometries and the differential in the ambient spaces
@@ -21,15 +20,16 @@ theorem hasFDerivAt_sphereFlatten_inverse
     (hg : HasFDerivAt g (coordinateDerivative (Real.cos p.2)) p) :
     HasFDerivAt (spherePoint ∘ (g.symm ∘ planarEuclideanEquiv.symm)) (sphereTangentLift p)
       (planarEuclideanEquiv (g p)) := by
-  let D := ((ContinuousLinearEquiv.smulLeft (R₁ := ℝ) (M₁ := ℝ)
-    (Units.mk0 (Real.cos p.2) hc)).prodCongr (ContinuousLinearEquiv.refl ℝ ℝ)).trans planarEuclideanEquiv
-  let G := g.transHomeomorph planarEuclideanEquiv.toHomeomorph
-  have hGinv := G.hasFDerivAt_symm (f' := D) (G.map_source hp)
-    ((G.left_inv hp).symm ▸ planarEuclideanEquiv.hasFDerivAt.comp p hg)
-  have hs' : HasFDerivAt spherePoint (sphereDerivative p) (G.symm (G p)) :=
-    (G.left_inv hp).symm ▸ hasFDerivAt_spherePoint p
-  exact (hs'.comp (G p) hGinv).congr_fderiv <|
-    ContinuousLinearMap.ext fun v => congrArg (sphereTangentLift p) (D.apply_symm_apply v)
+  rw [← Function.comp_assoc, planarEuclideanEquiv.symm.comp_right_hasFDerivAt_iff',
+    planarEuclideanEquiv.symm_apply_apply]
+  let D := (ContinuousLinearEquiv.smulLeft (R₁ := ℝ) (M₁ := ℝ)
+    (Units.mk0 (Real.cos p.2) hc)).prodCongr (ContinuousLinearEquiv.refl ℝ ℝ)
+  have hginv := g.hasFDerivAt_symm (f' := D) (g.map_source hp) ((g.left_inv hp).symm ▸ hg)
+  have hs' : HasFDerivAt spherePoint (sphereDerivative p) (g.symm (g p)) :=
+    (g.left_inv hp).symm ▸ hasFDerivAt_spherePoint p
+  exact (hs'.comp (g p) hginv).congr_fderiv <|
+    ContinuousLinearMap.ext fun v => congrArg (sphereTangentLift p ∘ planarEuclideanEquiv)
+      (D.apply_symm_apply v)
 
 /-- The forward differential is the linear left inverse of the tangent lift. -/
 theorem hasFDerivWithinAt_sphereFlatten
